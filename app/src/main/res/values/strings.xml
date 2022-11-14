@@ -168,10 +168,10 @@ Découvrez les initiatives de votre quartier et tissez des liens avec vos voisin
 
     <string name="group_name">Nom du groupe</string>
     <string name="event_name">Nom de l\'événement</string>
-    <string name="group_name_hint">"Atelier Ping pong"</string>
+    <string name="group_name_hint">Les voisins de Paris 18</string>
     <string name="event_name_hint">Donnez un nom explicite à l\'événement</string>
     <string name="write_description">Rédiger un descriptif</string>
-    <string name="write_description_hint">"Pour se rencontrer entre voisins du 18e"</string>
+    <string name="write_description_hint">Pour se rencontrer entre voisins du 18e</string>
     <string name="add_location">Ajouter un lieu</string>
     <string name="add_location_hint">Adresse, ville ou département</string>
     <string name="mandatory">- obligatoire</string>
@@ -304,7 +304,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="contributions_event_empty">Participez à votre premier événement</string>
     <string name="contributions_group">Groupes de voisins</string>
     <string name="contribution_group">Groupe de voisins</string>
-    <string name="contributions_group_empty">N\'attendez plus pour rejoindre un groupe de voisin !</string>
+    <string name="contributions_group_empty">N\'attendez plus pour rejoindre un groupe de voisins !</string>
     <string name="zero">0</string>
     <string name="all_pedago_content">Tout le contenu pédagogique</string>
     <string name="pedago_details">Contenu pédagogique</string>
@@ -315,7 +315,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="all">Tout</string>
     <string name="want_to_act">Je commence simplement :</string>
     <string name="not_implemented">Not Implemented</string>
-    <string name="pedagogical_content">Me former pour passer à l’action</string>
+    <string name="pedagogical_content">Découvrir les astuces pour passer à l\'action</string>
     <string name="picture">Photo</string>
     <string name="image_mandatory">La photo est obligatoire</string>
     <string name="show_more_lined"><u>Voir plus</u></string>
@@ -361,7 +361,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="canceled">- Annulé</string>
     <string name="event_list_empty_state_title">Vous n’avez pas encore rejoint d’événement</string>
     <string name="event_list_empty_state_subtitle">C\'est l\'occasion de découvrir ce qu\'il se passe près de chez vous, ou de créer un nouvel événement !</string>
-    <string name="discover_event_list_empty_state_title">Oups, aucun évènement autour de vous</string>
+    <string name="discover_event_list_empty_state_title">Mince, aucun résultat ne correspond à votre recherche !</string>
     <string name="discover_event_list_empty_state_subtitle">Vous ne trouvez pas l\'événement de vos rêves ? N\'attendez plus pour le créer ou élargissez votre zone de recherche.</string>
     <string name="need_help">Besoin d\'aide sur l\'app ?</string>
     <string name="solidarity_places_map">Guide de la solidarité</string>

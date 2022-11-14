@@ -141,8 +141,9 @@
                             style="@style/left_courant_bold_black"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:maxLines="2"
-                            android:text="@string/contributions_meeting_empty" />
+                            android:maxLines="3"
+                            android:text="@string/contributions_meeting_empty"
+                            android:textSize="14sp" />
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -181,7 +182,7 @@
 
                     <ImageView
                         android:id="@+id/meeting_icon"
-                        android:layout_width="154dp"
+                        android:layout_width="140dp"
                         android:layout_height="0dp"
                         android:layout_gravity="bottom"
                         android:layout_weight="0.5"

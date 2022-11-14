@@ -77,7 +77,7 @@
     <string name="action_create_location_subtitle">Votre position précise ne sera pas partagée, vous pouvez mettre une autre localisation que la zone d’action de votre profil.</string>
 
     <string name="action_create_success_title">Votre %s\nà bien été créée !</string>
-    <string name="action_create_success_subtitle">Félicitation, vous venez de créer une nouvelle %s. Pour la rendre plus visible parlez-en sur vos groupes !</string>
+    <string name="action_create_success_subtitle">Félicitations, vous venez de créer une nouvelle %s. Pour la rendre plus visible parlez-en sur vos groupes !</string>
     <string name="action_create_end_finish_bt">Terminer</string>
     <string name="action_error_create_action">Erreur lors de la création de la %s</string>
     <string name="action_error_edit_action">Erreur lors de la modification de la %s</string>
