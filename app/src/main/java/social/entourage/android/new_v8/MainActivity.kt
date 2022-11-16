@@ -2,9 +2,11 @@ package social.entourage.android.new_v8
 
 import android.content.Intent
 import android.os.Bundle
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
+import com.google.android.material.badge.BadgeDrawable
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.messaging.FirebaseMessaging
 import social.entourage.android.EntourageApplication
@@ -17,14 +19,24 @@ import social.entourage.android.base.BaseSecuredActivity
 import social.entourage.android.base.location.EntLocation
 import social.entourage.android.entourage.information.FeedItemInformationFragment
 import social.entourage.android.message.push.PushNotificationManager
+import social.entourage.android.new_v8.home.CommunicationHandlerBadgeViewModel
+import social.entourage.android.new_v8.home.UnreadMessages
 
 class MainActivity : BaseSecuredActivity() {
 
     private lateinit var navController: NavController
     private val presenter: MainPresenter = MainPresenter(MainActivity_v7())
 
+    private lateinit var viewModel: CommunicationHandlerBadgeViewModel
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        viewModel = ViewModelProvider(this)[CommunicationHandlerBadgeViewModel::class.java]
+
+        viewModel.badgeCount.observe(this,::handleupdateBadgeResponse)
+
         setContentView(R.layout.new_activity_main)
         initializeNavBar()
         initializeMetaData()
@@ -34,6 +46,10 @@ class MainActivity : BaseSecuredActivity() {
             //initialize the push notifications
             initializePushNotifications()
         }
+    }
+
+    private fun handleupdateBadgeResponse(unreadMessages: UnreadMessages) {
+        addBadge(unreadMessages.unreadCount ?: 0)
     }
 
     override fun onResume() {
@@ -121,5 +137,20 @@ class MainActivity : BaseSecuredActivity() {
         editor.putInt(EntourageApplication.KEY_NB_OF_LAUNCH, 0)
         editor.apply()
         super.logout()
+    }
+
+    private fun addBadge(count : Int) {
+        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.nav_view)
+        val badge: BadgeDrawable = bottomNavigationView.getOrCreateBadge(
+            R.id.navigation_messages)
+        badge.number = count
+        badge.isVisible = true
+        badge.maxCharacterCount = 2
+        badge.verticalOffsetWithText = 10
+        badge.backgroundColor = resources.getColor(R.color.light_orange)
+        badge.badgeTextColor = resources.getColor(R.color.white)
+        if (count == 0) {
+            bottomNavigationView.removeBadge(R.id.navigation_messages)
+        }
     }
 }

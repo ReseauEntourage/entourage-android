@@ -47,6 +47,11 @@
 
     <!-- Override design_bottom_navigation_active_text_size to prevent bottom bar text grow when selected -->
 
+    <dimen name="design_bottom_navigation_active_icon_size">25dp</dimen>
+    <dimen name="design_bottom_navigation_icon_size">25dp</dimen>
+
+    <dimen name="design_bottom_navigation_text_size">12sp</dimen>
+    <dimen name="design_bottom_navigation_active_text_size">12sp</dimen>
     <!--New-->
     <dimen name="profile_name">20sp</dimen>
     <dimen name="profile_labels">13sp</dimen>

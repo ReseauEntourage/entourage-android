@@ -61,6 +61,9 @@ class HomeFragment : Fragment() {
         updateView()
         handleProfileButton()
         handlePedagogicalContentButton()
+
+        homePresenter.unreadMessages.observe(requireActivity(), ::updateUnreadCount)
+        homePresenter.getUnreadCount()
     }
 
     override fun onResume() {
@@ -70,6 +73,14 @@ class HomeFragment : Fragment() {
         }
         else {
             isAlreadyLoadSummary = false
+        }
+    }
+
+    private fun updateUnreadCount(unreadMessages: UnreadMessages?) {
+        val count:Int = unreadMessages?.unreadCount ?: 0
+       EntourageApplication.get().getMainActivity()?.let {
+           val viewModel = ViewModelProvider(it)[CommunicationHandlerBadgeViewModel::class.java]
+           viewModel.badgeCount.postValue(UnreadMessages(count))
         }
     }
 

@@ -7,14 +7,18 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.tabs.TabLayoutMediator
+import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.databinding.NewFragmentGroupsBinding
 import social.entourage.android.new_v8.RefreshController
 import social.entourage.android.new_v8.ViewPagerDefaultPageController
 import social.entourage.android.new_v8.groups.create.CreateGroupActivity
+import social.entourage.android.new_v8.home.CommunicationHandlerBadgeViewModel
+import social.entourage.android.new_v8.home.UnreadMessages
 import social.entourage.android.tools.log.AnalyticsEvents
 import kotlin.math.abs
 
@@ -41,6 +45,10 @@ class GroupsFragment : Fragment() {
         initializeTab()
         handleImageViewAnimation()
         setPage()
+
+        val presenter = GroupPresenter()
+        presenter.unreadMessages.observe(requireActivity(), ::updateUnreadCount)
+        presenter.getUnreadCount()
     }
 
     private fun setPage() {
@@ -86,6 +94,14 @@ class GroupsFragment : Fragment() {
         if (RefreshController.shouldRefreshFragment) {
             initializeTab()
             RefreshController.shouldRefreshFragment = false
+        }
+    }
+
+    private fun updateUnreadCount(unreadMessages: UnreadMessages?) {
+        val count:Int = unreadMessages?.unreadCount ?: 0
+        EntourageApplication.get().getMainActivity()?.let {
+            val viewModel = ViewModelProvider(it)[CommunicationHandlerBadgeViewModel::class.java]
+            viewModel.badgeCount.postValue(UnreadMessages(count))
         }
     }
 

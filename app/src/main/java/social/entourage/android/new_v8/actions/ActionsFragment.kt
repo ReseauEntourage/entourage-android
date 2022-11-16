@@ -16,8 +16,10 @@ import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.core.view.doOnPreDraw
 import androidx.core.widget.TextViewCompat
+import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.tabs.TabLayoutMediator
+import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.databinding.NewFragmentActionsBinding
 import social.entourage.android.new_v8.RefreshController
@@ -26,6 +28,8 @@ import social.entourage.android.new_v8.actions.create.CreateActionActivity
 import social.entourage.android.new_v8.actions.list.ActionsViewPagerAdapter
 import social.entourage.android.new_v8.actions.list.me.MyActionsListActivity
 import social.entourage.android.new_v8.groups.details.feed.rotationDegree
+import social.entourage.android.new_v8.home.CommunicationHandlerBadgeViewModel
+import social.entourage.android.new_v8.home.UnreadMessages
 import social.entourage.android.new_v8.models.ActionSectionFilters
 import social.entourage.android.new_v8.models.EventActionLocationFilters
 import social.entourage.android.new_v8.utils.Const
@@ -173,6 +177,10 @@ class ActionsFragment : Fragment() {
         initializeFilters()
         handleImageViewAnimation()
         setPage()
+
+        val presenter = ActionsPresenter()
+        presenter.unreadMessages.observe(requireActivity(), ::updateUnreadCount)
+        presenter.getUnreadCount()
     }
 
     override fun onResume() {
@@ -237,6 +245,14 @@ class ActionsFragment : Fragment() {
                 true
             )
             ViewPagerDefaultPageController.shouldSelectDiscoverEvents = false
+        }
+    }
+
+    private fun updateUnreadCount(unreadMessages: UnreadMessages?) {
+        val count:Int = unreadMessages?.unreadCount ?: 0
+        EntourageApplication.get().getMainActivity()?.let {
+            val viewModel = ViewModelProvider(it)[CommunicationHandlerBadgeViewModel::class.java]
+            viewModel.badgeCount.postValue(UnreadMessages(count))
         }
     }
 

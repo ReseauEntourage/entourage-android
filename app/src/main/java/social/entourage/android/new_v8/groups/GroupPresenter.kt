@@ -15,6 +15,7 @@ import social.entourage.android.api.model.EntourageUser
 import social.entourage.android.api.request.*
 import social.entourage.android.new_v8.RefreshController
 import social.entourage.android.new_v8.groups.list.groupPerPage
+import social.entourage.android.new_v8.home.UnreadMessages
 import social.entourage.android.new_v8.models.Events
 import social.entourage.android.new_v8.models.Group
 import social.entourage.android.new_v8.models.Post
@@ -47,6 +48,8 @@ class GroupPresenter {
     var isLastPage: Boolean = false
 
     var isSendingCreatePost = false
+
+    var unreadMessages = MutableLiveData<UnreadMessages?>()
 
     fun createGroup(group: Group) {
         EntourageApplication.get().apiModule.groupRequest.createGroup(GroupWrapper(group))
@@ -432,6 +435,24 @@ class GroupPresenter {
                 }
 
                 override fun onFailure(call: Call<EventsListWrapper>, t: Throwable) {
+                }
+            })
+    }
+
+    fun getUnreadCount() {
+        EntourageApplication.get().apiModule.userRequest.getUnreadCountForUser()
+            .enqueue(object : Callback<UnreadCountWrapper> {
+                override fun onResponse(
+                    call: Call<UnreadCountWrapper>,
+                    response: Response<UnreadCountWrapper>
+                ) {
+                    if (response.isSuccessful) {
+                        unreadMessages.value = response.body()?.unreadMessages
+                    }
+                }
+
+                override fun onFailure(call: Call<UnreadCountWrapper>, t: Throwable) {
+                    unreadMessages.value = null
                 }
             })
     }

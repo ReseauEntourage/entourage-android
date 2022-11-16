@@ -16,6 +16,7 @@ import social.entourage.android.api.request.*
 import social.entourage.android.new_v8.RefreshController
 import social.entourage.android.new_v8.events.create.CreateEvent
 import social.entourage.android.new_v8.events.list.EVENTS_PER_PAGE
+import social.entourage.android.new_v8.home.UnreadMessages
 import social.entourage.android.new_v8.models.Events
 import social.entourage.android.new_v8.models.Post
 import timber.log.Timber
@@ -46,6 +47,8 @@ class EventsPresenter {
     var isLastPage: Boolean = false
 
     var isSendingCreatePost = false
+
+    var unreadMessages = MutableLiveData<UnreadMessages?>()
 
     fun getMyEvents(userId: Int, page: Int, per: Int) {
         EntourageApplication.get().apiModule.eventsRequest.getMyEvents(userId, page, per)
@@ -419,6 +422,24 @@ class EventsPresenter {
 
                 override fun onFailure(call: Call<EventWrapper>, t: Throwable) {
                     isEventUpdated.value = false
+                }
+            })
+    }
+
+    fun getUnreadCount() {
+        EntourageApplication.get().apiModule.userRequest.getUnreadCountForUser()
+            .enqueue(object : Callback<UnreadCountWrapper> {
+                override fun onResponse(
+                    call: Call<UnreadCountWrapper>,
+                    response: Response<UnreadCountWrapper>
+                ) {
+                    if (response.isSuccessful) {
+                        unreadMessages.value = response.body()?.unreadMessages
+                    }
+                }
+
+                override fun onFailure(call: Call<UnreadCountWrapper>, t: Throwable) {
+                    unreadMessages.value = null
                 }
             })
     }

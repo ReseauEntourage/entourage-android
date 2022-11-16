@@ -13,6 +13,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import social.entourage.android.EntourageApplication
 import social.entourage.android.api.request.*
+import social.entourage.android.new_v8.home.UnreadMessages
 import social.entourage.android.new_v8.models.Action
 import social.entourage.android.new_v8.models.ActionCancel
 import social.entourage.android.new_v8.utils.Utils
@@ -35,6 +36,8 @@ class ActionsPresenter {
     var isLoading: Boolean = false
     var isLastPage: Boolean = false
     var isSendingCreateContrib = false
+
+    var unreadMessages = MutableLiveData<UnreadMessages?>()
 
     /*
         Gets
@@ -436,6 +439,24 @@ class ActionsPresenter {
                 }
 
                 override fun onFailure(call: Call<ContribWrapper>, t: Throwable) {}
+            })
+    }
+
+    fun getUnreadCount() {
+        EntourageApplication.get().apiModule.userRequest.getUnreadCountForUser()
+            .enqueue(object : Callback<UnreadCountWrapper> {
+                override fun onResponse(
+                    call: Call<UnreadCountWrapper>,
+                    response: Response<UnreadCountWrapper>
+                ) {
+                    if (response.isSuccessful) {
+                        unreadMessages.value = response.body()?.unreadMessages
+                    }
+                }
+
+                override fun onFailure(call: Call<UnreadCountWrapper>, t: Throwable) {
+                    unreadMessages.value = null
+                }
             })
     }
 }

@@ -8,6 +8,7 @@ import social.entourage.android.EntourageApplication
 import social.entourage.android.api.request.PedagogicResponse
 import social.entourage.android.api.request.PedagogicSingleResponse
 import social.entourage.android.api.request.SummaryResponse
+import social.entourage.android.api.request.UnreadCountWrapper
 import social.entourage.android.new_v8.models.Pedago
 import social.entourage.android.new_v8.models.Summary
 
@@ -16,6 +17,8 @@ class HomePresenter {
     var summary = MutableLiveData<Summary>()
     var pedagogicalContent = MutableLiveData<MutableList<Pedago>>()
     var pedagolSingle = MutableLiveData<Pedago>()
+
+    var unreadMessages = MutableLiveData<UnreadMessages?>()
 
     fun getSummary() {
         EntourageApplication.get().apiModule.homeRequest
@@ -71,6 +74,24 @@ class HomePresenter {
 
                 override fun onFailure(call: Call<PedagogicSingleResponse>, t: Throwable) {
 
+                }
+            })
+    }
+
+    fun getUnreadCount() {
+        EntourageApplication.get().apiModule.userRequest.getUnreadCountForUser()
+            .enqueue(object : Callback<UnreadCountWrapper> {
+                override fun onResponse(
+                    call: Call<UnreadCountWrapper>,
+                    response: Response<UnreadCountWrapper>
+                ) {
+                    if (response.isSuccessful) {
+                        unreadMessages.value = response.body()?.unreadMessages
+                    }
+                }
+
+                override fun onFailure(call: Call<UnreadCountWrapper>, t: Throwable) {
+                    unreadMessages.value = null
                 }
             })
     }

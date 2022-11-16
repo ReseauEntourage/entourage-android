@@ -1,15 +1,19 @@
 package social.entourage.android.api.request
 
 import androidx.collection.ArrayMap
+import com.google.gson.annotations.SerializedName
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.*
 import social.entourage.android.api.model.User
 import social.entourage.android.api.model.UserReportWrapper
+import social.entourage.android.new_v8.home.UnreadMessages
+import social.entourage.android.new_v8.models.Conversation
 import social.entourage.android.user.PrepareAvatarUploadRepository
 
 
 class UserResponse(val user: User)
+class UnreadCountWrapper(@field:SerializedName("user") val unreadMessages: UnreadMessages)
 
 interface UserRequest {
     @PATCH("users/me.json")
@@ -65,4 +69,7 @@ interface UserRequest {
 
     @POST("users/request_phone_change")
     fun changePhone(@Body userInfo: ArrayMap<String, Any>): Call<ResponseBody>
+
+    @GET("users/unread")
+    fun getUnreadCountForUser(): Call<UnreadCountWrapper>
 }

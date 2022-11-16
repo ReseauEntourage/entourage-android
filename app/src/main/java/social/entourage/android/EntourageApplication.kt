@@ -102,6 +102,10 @@ class EntourageApplication : MultiDexApplication() {
         newMainActivity?.logout()
     }
 
+    fun getMainActivity() : social.entourage.android.new_v8.MainActivity? {
+        return newMainActivity
+    }
+
     // ----------------------------------
     // Push notifications and badge handling
     // ----------------------------------
