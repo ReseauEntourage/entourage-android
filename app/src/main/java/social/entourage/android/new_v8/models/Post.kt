@@ -1,7 +1,9 @@
 package social.entourage.android.new_v8.models
 
 import com.google.gson.annotations.SerializedName
+import social.entourage.android.R
 import social.entourage.android.api.model.EntourageUser
+import java.text.SimpleDateFormat
 import java.util.*
 
 class Post(
@@ -27,6 +29,13 @@ class Post(
     val read: Boolean? = null,
     val idInternal: UUID? = null,
 ) {
+    var datePostText = ""
+    var isDatePostOnly = false
+
+    fun getFormatedStr() : String {
+        return createdTime?.let { SimpleDateFormat("EEEE dd MMMM yyyy",Locale.FRANCE).format(it) } ?: ""
+    }
+
     override fun toString(): String {
         return "Post(id=$id, content=$content, user=$user, createdTime=$createdTime, messageType=$messageType, postId=$postId, hasComments=$hasComments, commentsCount=$commentsCount, imageUrl=$imageUrl, read=$read)"
     }

@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import kotlinx.android.synthetic.main.new_comment_item_date.view.*
 import kotlinx.android.synthetic.main.new_comment_item_left.view.*
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
@@ -21,6 +22,7 @@ import java.util.*
 enum class CommentsTypes(val code: Int) {
     TYPE_LEFT(0),
     TYPE_RIGHT(1),
+    TYPE_DATE(2),
 }
 
 interface OnItemClickListener {
@@ -32,12 +34,20 @@ interface OnItemClickListener {
 class CommentsListAdapter(
     var commentsList: List<Post>,
     var postAuthorId: Int,
+    var isOne2One:Boolean,
+    var isConversation:Boolean,
     var onItemClick: OnItemClickListener
 ) : RecyclerView.Adapter<CommentsListAdapter.ViewHolder>() {
 
     inner class ViewHolder(val binding: View) :
         RecyclerView.ViewHolder(binding) {
         fun bind(comment: Post) {
+
+            if (comment.isDatePostOnly) {
+                binding.publication_day.text = comment.datePostText
+                return
+            }
+
             binding.comment.text = comment.content
             binding.report.setOnClickListener {
                 onItemClick.onCommentReport(comment.id)
@@ -45,10 +55,18 @@ class CommentsListAdapter(
             comment.createdTime?.let {
                 binding.information_layout.visibility = View.VISIBLE
                 binding.error.visibility = View.GONE
-                binding.publication_date.text = SimpleDateFormat(
-                    binding.context.getString(R.string.comments_date),
-                    Locale.FRANCE
-                ).format(it)
+                if (isConversation) {
+                    binding.publication_date.text = SimpleDateFormat("HH'h'mm",
+                        Locale.FRANCE
+                    ).format(it)
+                }
+                else {
+                    binding.publication_date.text = SimpleDateFormat(
+                        binding.context.getString(R.string.comments_date),
+                        Locale.FRANCE
+                    ).format(it)
+                }
+
             } ?: run {
                 binding.information_layout.visibility = View.GONE
                 binding.error.visibility = View.VISIBLE
@@ -56,8 +74,11 @@ class CommentsListAdapter(
                     onItemClick.onItemClick(comment)
                 }
             }
+
+            val isMe = comment.user?.userId == EntourageApplication.get().me()?.id
+
             comment.user?.let {
-                binding.author_name.text = comment.user?.displayName
+                binding.author_name.text = if (isOne2One || isMe) "" else comment.user?.displayName
                 comment.user?.avatarURLAsString?.let {
                     Glide.with(binding.context)
                         .load(it)
@@ -75,9 +96,11 @@ class CommentsListAdapter(
                 }
             }
 
-            val isMe = comment.user?.userId == EntourageApplication.get().me()?.id
-            binding.report.visibility = if (isMe) View.GONE else View.VISIBLE
-            if (!isMe) {
+            if (isMe || isConversation) {
+                binding.report.visibility = View.GONE
+            }
+            else {
+                binding.report.visibility = View.VISIBLE
                 binding.image.setOnClickListener {
                     binding.image.context.startActivity(
                         Intent(binding.image.context, UserProfileActivity::class.java).putExtra(
@@ -93,7 +116,8 @@ class CommentsListAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val layout = when (viewType) {
             CommentsTypes.TYPE_LEFT.code -> R.layout.new_comment_item_left
-            else -> R.layout.new_comment_item_right
+            CommentsTypes.TYPE_RIGHT.code -> R.layout.new_comment_item_right
+            else -> R.layout.new_comment_item_date
         }
         val view = LayoutInflater
             .from(parent.context)
@@ -112,6 +136,9 @@ class CommentsListAdapter(
     }
 
     override fun getItemViewType(position: Int): Int {
+
+        if (commentsList[position].isDatePostOnly) return CommentsTypes.TYPE_DATE.code
+
         return if (commentsList[position].user?.id?.toInt() == postAuthorId) {
             CommentsTypes.TYPE_RIGHT.code
         } else CommentsTypes.TYPE_LEFT.code

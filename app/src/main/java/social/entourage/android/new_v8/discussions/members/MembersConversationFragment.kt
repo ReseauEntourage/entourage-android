@@ -1,4 +1,4 @@
-package social.entourage.android.new_v8.groups.details.members
+package social.entourage.android.new_v8.discussions.members
 
 import android.content.Intent
 import android.os.Bundle
@@ -10,62 +10,48 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
-import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.textfield.TextInputLayout
 import social.entourage.android.R
-import social.entourage.android.api.model.EntourageUser
-import social.entourage.android.databinding.NewFragmentMembersBinding
-import social.entourage.android.new_v8.actions.list.me.OnItemClick
+import social.entourage.android.base.BaseDialogFragment
+import social.entourage.android.databinding.NewFragmentMembersDiscussionBinding
 import social.entourage.android.new_v8.discussions.DetailConversationActivity
 import social.entourage.android.new_v8.discussions.DiscussionsPresenter
-import social.entourage.android.new_v8.events.EventsPresenter
-import social.entourage.android.new_v8.groups.GroupPresenter
-import social.entourage.android.new_v8.models.Action
+import social.entourage.android.new_v8.groups.details.members.OnItemShowListener
 import social.entourage.android.new_v8.models.Conversation
+import social.entourage.android.new_v8.models.GroupMember
 import social.entourage.android.new_v8.utils.Const
 import social.entourage.android.new_v8.utils.Utils
-import social.entourage.android.tools.log.AnalyticsEvents
-import timber.log.Timber
 
+class MembersConversationFragment : BaseDialogFragment() {
 
-enum class MembersType(val code: Int) {
-    GROUP(0),
-    EVENT(1),
-}
-
-open class MembersFragment : Fragment() {
-
-    private var _binding: NewFragmentMembersBinding? = null
-    val binding: NewFragmentMembersBinding get() = _binding!!
-    private var membersList: MutableList<EntourageUser> = mutableListOf()
-    private var membersListSearch: MutableList<EntourageUser> = ArrayList()
+    private var _binding: NewFragmentMembersDiscussionBinding? = null
+    val binding: NewFragmentMembersDiscussionBinding get() = _binding!!
+    private var membersList: MutableList<GroupMember> = mutableListOf()
+    private var membersListSearch: MutableList<GroupMember> = ArrayList()
     private var id: Int? = Const.DEFAULT_VALUE
-    private var type: MembersType? = MembersType.GROUP
-    private val groupPresenter: GroupPresenter by lazy { GroupPresenter() }
-    private val eventPresenter: EventsPresenter by lazy { EventsPresenter() }
+    private val discussionsPresenter: DiscussionsPresenter by lazy { DiscussionsPresenter() }
 
-    private val navArgs: MembersFragmentArgs by navArgs()
-    private val discussionPresenter: DiscussionsPresenter by lazy { DiscussionsPresenter() }
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        arguments?.let {
+            id = it.getInt(ARG_CONVID)
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = NewFragmentMembersBinding.inflate(inflater, container, false)
-        AnalyticsEvents.logEvent(
-            AnalyticsEvents.VIEW_GROUP_MEMBER_SHOW_LIST
-        )
+        _binding = NewFragmentMembersDiscussionBinding.inflate(inflater, container, false)
+
         return binding.root
     }
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        getArgs()
+
         getMembers()
         handleCloseButton()
         initializeMembers()
@@ -76,41 +62,31 @@ open class MembersFragment : Fragment() {
         handleCrossButton()
         binding.searchBarLayout.endIconMode = TextInputLayout.END_ICON_NONE
 
-        //Use to show or create conversation 1 to 1
-        discussionPresenter.newConversation.observe(requireActivity(), ::handleGetConversation)
+        discussionsPresenter.newConversation.observe(requireActivity(), ::handleGetConversation)
     }
 
     private fun getMembers() {
-        if (type == MembersType.GROUP) {
-            id?.let {
-                groupPresenter.getGroupMembers(it)
-            }
-            groupPresenter.getMembers.observe(viewLifecycleOwner, ::handleResponseGetMembers)
-            groupPresenter.getMembersSearch.observe(
-                viewLifecycleOwner,
-                ::handleResponseGetMembersSearch
-            )
-        } else if (type == MembersType.EVENT) {
-            id?.let {
-                eventPresenter.getEventMembers(it)
-            }
-            eventPresenter.getMembers.observe(viewLifecycleOwner, ::handleResponseGetMembers)
-            eventPresenter.getMembersSearch.observe(
-                viewLifecycleOwner,
-                ::handleResponseGetMembersSearch
-            )
+        discussionsPresenter.detailConversation.observe(viewLifecycleOwner, ::handleResponseGetMembers)
+        discussionsPresenter.getMembersSearch.observe(
+            viewLifecycleOwner,
+            ::handleResponseGetMembersSearch
+        )
+
+        id?.let {
+            discussionsPresenter.getDetailConversation(it)
         }
     }
 
-    private fun handleResponseGetMembers(allMembers: MutableList<EntourageUser>?) {
+    private fun handleResponseGetMembers(conversation:Conversation?) {
         membersList.clear()
-        allMembers?.let { membersList.addAll(it) }
+        conversation?.members?.let { membersList.addAll(it) }
         binding.progressBar.visibility = View.GONE
-        allMembers?.isEmpty()?.let { updateView(it) }
+
+        updateView(membersList.isEmpty())
         binding.recyclerView.adapter?.notifyDataSetChanged()
     }
 
-    private fun handleResponseGetMembersSearch(allMembersSearch: MutableList<EntourageUser>?) {
+    private fun handleResponseGetMembersSearch(allMembersSearch: MutableList<GroupMember>?) {
         membersListSearch.clear()
         allMembersSearch?.let { membersListSearch.addAll(it) }
         binding.progressBar.visibility = View.GONE
@@ -120,22 +96,7 @@ open class MembersFragment : Fragment() {
 
     private fun handleCloseButton() {
         binding.header.iconBack.setOnClickListener {
-            findNavController().popBackStack()
-        }
-    }
-
-    private fun initializeMembers() {
-        val itemDecorator = DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL)
-        ContextCompat.getDrawable(requireContext(), R.drawable.new_divider)
-            ?.let { itemDecorator.setDrawable(it) }
-        binding.recyclerView.apply {
-            layoutManager = LinearLayoutManager(context)
-            adapter = MembersListAdapter(membersList, object : OnItemShowListener {
-                override fun onShowConversation(userId: Int) {
-                    discussionPresenter.createOrGetConversation(userId)
-                }
-            })
-            addItemDecoration(itemDecorator)
+            dismiss()
         }
     }
 
@@ -159,21 +120,36 @@ open class MembersFragment : Fragment() {
         }
     }
 
-    private fun initializeMembersSearch() {
+    private fun initializeMembers() {
         val itemDecorator = DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL)
         ContextCompat.getDrawable(requireContext(), R.drawable.new_divider)
             ?.let { itemDecorator.setDrawable(it) }
-        binding.searchRecyclerView.apply {
+
+        binding.recyclerView.apply {
             layoutManager = LinearLayoutManager(context)
-            adapter = MembersListAdapter(membersListSearch, object : OnItemShowListener {
+            adapter = MembersConversationListAdapter(membersList, object : OnItemShowListener {
                 override fun onShowConversation(userId: Int) {
-                    discussionPresenter.createOrGetConversation(userId)
+                    discussionsPresenter.createOrGetConversation(userId)
                 }
             })
             addItemDecoration(itemDecorator)
         }
     }
 
+    private fun initializeMembersSearch() {
+        val itemDecorator = DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL)
+        ContextCompat.getDrawable(requireContext(), R.drawable.new_divider)
+            ?.let { itemDecorator.setDrawable(it) }
+        binding.searchRecyclerView.apply {
+            layoutManager = LinearLayoutManager(context)
+            adapter = MembersConversationListAdapter(membersListSearch, object : OnItemShowListener {
+                override fun onShowConversation(userId: Int) {
+                    discussionsPresenter.createOrGetConversation(userId)
+                }
+            })
+            addItemDecoration(itemDecorator)
+        }
+    }
 
     private fun updateViewSearch(isListEmpty: Boolean) {
         if (isListEmpty) {
@@ -190,24 +166,16 @@ open class MembersFragment : Fragment() {
     private fun updateView(isListEmpty: Boolean) {
         if (isListEmpty) {
             binding.emptyStateLayout.visibility = View.VISIBLE
-            binding.title.text = getString(R.string.group_list_empty_state_title)
+            binding.title.text = getString(R.string.discussion_settings_search_empty)
         } else {
             binding.recyclerView.visibility = View.VISIBLE
         }
     }
 
-    private fun getArgs() {
-        id = navArgs.id
-        type = navArgs.type
-    }
-
-
     private fun handleEnterButton() {
         binding.searchBar.setOnEditorActionListener { _, actionId, _ ->
             var handled = false
-            AnalyticsEvents.logEvent(
-                AnalyticsEvents.ACTION_GROUP_MEMBER_SEARCH_VALIDATE
-            )
+
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 Utils.hideKeyboard(requireActivity())
                 binding.searchRecyclerView.visibility = View.GONE
@@ -216,14 +184,9 @@ open class MembersFragment : Fragment() {
                 binding.progressBar.visibility = View.VISIBLE
                 Utils.hideKeyboard(requireActivity())
                 id?.let {
-                    if (type == MembersType.GROUP)
-                        groupPresenter.getGroupMembersSearch(
-                            binding.searchBar.text.toString()
-                        )
-                    else if (type == MembersType.EVENT)
-                        eventPresenter.getEventMembersSearch(
-                            binding.searchBar.text.toString()
-                        )
+                    discussionsPresenter.getMembersSearch(
+                        binding.searchBar.text.toString()
+                    )
                 }
                 handled = true
             }
@@ -233,9 +196,6 @@ open class MembersFragment : Fragment() {
 
     private fun handleSearchOnFocus() {
         binding.searchBar.setOnFocusChangeListener { _, _ ->
-            AnalyticsEvents.logEvent(
-                AnalyticsEvents.ACTION_GROUP_MEMBER_SEARCH_START
-            )
             binding.recyclerView.visibility = View.GONE
             binding.searchRecyclerView.visibility = View.VISIBLE
         }
@@ -259,20 +219,28 @@ open class MembersFragment : Fragment() {
                     handleCross()
                 }
             }
-
         })
     }
 
     private fun handleCross() {
         binding.searchBarLayout.setEndIconOnClickListener {
-            AnalyticsEvents.logEvent(
-                AnalyticsEvents.ACTION_GROUP_MEMBER_SEARCH_DELETE
-            )
             binding.searchBar.text?.clear()
             binding.searchRecyclerView.visibility = View.GONE
             binding.emptyStateLayout.visibility = View.GONE
             updateView(membersList.isEmpty())
             Utils.hideKeyboard(requireActivity())
+        }
+    }
+
+    companion object {
+        private val ARG_CONVID = "conversationid"
+        const val TAG = "MembersConversationFragment"
+        fun newInstance(conversationId:Int?): MembersConversationFragment {
+            val fragment = MembersConversationFragment()
+            val args = Bundle()
+            args.putInt(ARG_CONVID,conversationId ?: 0)
+            fragment.arguments = args
+            return fragment
         }
     }
 }

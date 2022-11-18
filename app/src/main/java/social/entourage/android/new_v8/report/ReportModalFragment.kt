@@ -19,6 +19,7 @@ import social.entourage.android.api.model.MetaData
 import social.entourage.android.api.model.Tags
 import social.entourage.android.databinding.NewFragmentReportBinding
 import social.entourage.android.new_v8.actions.ActionsPresenter
+import social.entourage.android.new_v8.discussions.DiscussionsPresenter
 import social.entourage.android.new_v8.events.EventsPresenter
 import social.entourage.android.new_v8.groups.GroupPresenter
 import social.entourage.android.new_v8.user.UserPresenter
@@ -32,7 +33,8 @@ enum class ReportTypes(val code: Int) {
     REPORT_COMMENT(3),
     REPORT_EVENT(4),
     REPORT_CONTRIB(5),
-    REPORT_DEMAND(6)
+    REPORT_DEMAND(6),
+    REPORT_CONVERSATION(7)
 }
 
 class ReportModalFragment : BottomSheetDialogFragment() {
@@ -45,6 +47,7 @@ class ReportModalFragment : BottomSheetDialogFragment() {
     private val groupPresenter: GroupPresenter by lazy { GroupPresenter() }
     private val eventPresenter: EventsPresenter by lazy { EventsPresenter() }
     private val actionPresenter: ActionsPresenter by lazy { ActionsPresenter() }
+    private val discussionsPresenter: DiscussionsPresenter by lazy { DiscussionsPresenter() }
     private var reportedId: Int? = Const.DEFAULT_VALUE
     private var groupId: Int? = Const.DEFAULT_VALUE
     private var reportType: Int? = Const.DEFAULT_VALUE
@@ -69,6 +72,8 @@ class ReportModalFragment : BottomSheetDialogFragment() {
         groupPresenter.isPostReported.observe(requireActivity(), ::handleReportResponse)
         eventPresenter.isEventReported.observe(requireActivity(), ::handleReportResponse)
         actionPresenter.isActionReported.observe(requireActivity(), ::handleReportResponse)
+        discussionsPresenter.isConversationReported.observe(requireActivity(), ::handleReportResponse)
+
         setupViewStep1()
         handleCloseButton()
         setView()
@@ -101,6 +106,7 @@ class ReportModalFragment : BottomSheetDialogFragment() {
                 ReportTypes.REPORT_EVENT.code -> R.string.report_eventt
                 ReportTypes.REPORT_DEMAND.code -> R.string.action_report_demand
                 ReportTypes.REPORT_CONTRIB.code -> R.string.action_report_contrib
+                ReportTypes.REPORT_CONVERSATION.code -> R.string.discussion_report_conversation
                 else -> R.string.report_member
             }
         )
@@ -203,6 +209,11 @@ class ReportModalFragment : BottomSheetDialogFragment() {
                         binding.message.text.toString(),
                         selectedSignalsIdList, true
                     )
+                    ReportTypes.REPORT_CONVERSATION.code -> discussionsPresenter.sendReport(
+                        id,
+                        binding.message.text.toString(),
+                        selectedSignalsIdList
+                    )
                     else -> R.string.report_member
                 }
             }
@@ -222,6 +233,7 @@ class ReportModalFragment : BottomSheetDialogFragment() {
         groupPresenter.isGroupReported = MutableLiveData()
         eventPresenter.isEventReported = MutableLiveData()
         actionPresenter.isActionReported = MutableLiveData()
+        discussionsPresenter.isConversationReported = MutableLiveData()
     }
 
     private fun handleCloseButton() {

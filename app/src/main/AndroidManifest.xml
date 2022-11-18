@@ -46,6 +46,9 @@
         <activity
             android:name=".new_v8.home.pedago.PedagoDetailActivity"
             android:exported="false"/>
+        <activity
+            android:name=".new_v8.discussions.DetailConversationActivity"
+            android:exported="false"/>
 
         <activity
             android:name=".new_v8.actions.ActionLocationFilterActivity"

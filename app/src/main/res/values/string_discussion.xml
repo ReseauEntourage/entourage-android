@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="discussion_main_title">Messages</string>
+    <string name="discussion_settings_title">Paramètres de la conversation</string>
+    <string name="discussion_settings_signal">Signaler</string>
+    <string name="discussion_settings_signal_sub">Signalez cette conversation à l\'équipe Entourage.</string>
+    <string name="discussion_settings_profil">Voir le profil</string>
+    <string name="discussion_settings_members">Membres de la conversation</string>
+    <string name="discussion_settings_quit">Quitter la conversation</string>
+
+    <string name="discussion_settings_search">Rechercher un membre de la conversation</string>
+    <string name="discussion_settings_search_empty">Oups, aucun résultat ne correspond à votre recherche ! </string>
+    <string name="discussion_report_conversation">Signaler la conversation</string>
+
+    <string name="leave_conversation">Quitter la conversation</string>
+    <string name="leave_conversation_dialog_content">Souhaitez-vous quitter la conversation ?</string>
+
+    <string name="discussion_pop_new_message_title">Nouvelle conversation</string>
+    <string name="discussion_pop_new_message_subtitle">Vous n’avez pas encore échangé avec cet utilisateur. En cas de problème, vous pouvez signaler la conversation dans les paramètres.</string>
+</resources>

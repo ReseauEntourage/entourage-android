@@ -2,10 +2,14 @@ package social.entourage.android.new_v8
 
 import android.content.Context
 import android.content.Intent
+import androidx.core.os.bundleOf
 import androidx.fragment.app.FragmentManager
+import kotlinx.android.synthetic.main.new_contrib_item.view.*
 import social.entourage.android.api.model.guide.Poi
 import social.entourage.android.guide.poi.ReadPoiFragment
+import social.entourage.android.new_v8.actions.detail.ActionDetailActivity
 import social.entourage.android.new_v8.association.PartnerDetailActivity
+import social.entourage.android.new_v8.discussions.DetailConversationActivity
 import social.entourage.android.new_v8.models.ActionSummary
 import social.entourage.android.new_v8.models.HomeActionParams
 import social.entourage.android.new_v8.models.HomeType
@@ -34,13 +38,32 @@ class PushNotificationLinkManager {
     }
 
     private fun showContribution(context:Context,supportFragmentManager: FragmentManager, id: Int) {
-        //TODO à faire
+        context.startActivity(
+            Intent(context, ActionDetailActivity::class.java)
+                .putExtra(Const.ACTION_ID, id)
+                .putExtra(Const.IS_ACTION_DEMAND,false)
+        )
     }
     private fun showSolicitation(context:Context,supportFragmentManager: FragmentManager, id: Int) {
-        //TODO à faire
+        context.startActivity(
+            Intent(context, ActionDetailActivity::class.java)
+                .putExtra(Const.ACTION_ID, id)
+                .putExtra(Const.IS_ACTION_DEMAND,true)
+        )
     }
     private fun showConversation(context:Context,supportFragmentManager: FragmentManager, id: Int) {
-        //TODO à faire
+        context.startActivity(
+            Intent(context, DetailConversationActivity::class.java)
+                .putExtras(
+                    bundleOf(
+                        Const.ID to id,
+                        Const.SHOULD_OPEN_KEYBOARD to false,
+                        Const.IS_CONVERSATION_1TO1 to true,
+                        Const.IS_MEMBER to true,
+                        Const.IS_CONVERSATION to true
+                    )
+                )
+        )
     }
 
     private fun showUser(context:Context,supportFragmentManager: FragmentManager, id: Int) {

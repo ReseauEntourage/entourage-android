@@ -1,8 +1,7 @@
-package social.entourage.android.new_v8.groups.details.members
+package social.entourage.android.new_v8.discussions.members
 
 
 import android.content.Intent
-import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,20 +9,16 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
-import social.entourage.android.api.model.EntourageUser
 import social.entourage.android.databinding.NewGroupMemberItemBinding
-import social.entourage.android.new_v8.models.Action
+import social.entourage.android.new_v8.groups.details.members.OnItemShowListener
+import social.entourage.android.new_v8.models.GroupMember
 import social.entourage.android.new_v8.user.UserProfileActivity
 import social.entourage.android.new_v8.utils.Const
 
-interface OnItemShowListener {
-    fun onShowConversation(userId: Int)
-}
-
-class MembersListAdapter(
-    private var membersList: List<EntourageUser>,
+class MembersConversationListAdapter(
+    private var membersList: List<GroupMember>,
     private var onItemShowListener: OnItemShowListener
-) : RecyclerView.Adapter<MembersListAdapter.ViewHolder>() {
+) : RecyclerView.Adapter<MembersConversationListAdapter.ViewHolder>() {
 
 
     inner class ViewHolder(val binding: NewGroupMemberItemBinding) :
@@ -42,18 +37,11 @@ class MembersListAdapter(
         with(holder) {
             with(membersList[position]) {
 
-                val isMe = EntourageApplication.get().me()?.id == userId
+                val isMe = EntourageApplication.get().me()?.id == id
                 binding.contact.visibility = if (isMe) View.INVISIBLE else View.VISIBLE
-
                 binding.name.text = displayName
-                communityRoles?.let {
-                    if (it.contains(Const.AMBASSADOR)) binding.ambassador.visibility = View.VISIBLE
-                }
-                partner?.let {
-                    binding.partner.visibility = View.VISIBLE
-                    binding.partner.text = it.name
-                }
-                avatarURLAsString?.let { avatarURL ->
+
+                avatarUrl?.let { avatarURL ->
                     Glide.with(holder.itemView.context)
                         .load(avatarURL)
                         .placeholder(R.drawable.placeholder_user)
@@ -71,13 +59,14 @@ class MembersListAdapter(
                     binding.picture.context.startActivity(
                         Intent(binding.picture.context, UserProfileActivity::class.java).putExtra(
                             Const.USER_ID,
-                            this.userId
+                            this.id
                         )
                     )
                 }
-
                 binding.contact.setOnClickListener {
-                    onItemShowListener.onShowConversation(userId)
+                    id?.let {
+                        onItemShowListener.onShowConversation(it)
+                    }
                 }
             }
         }

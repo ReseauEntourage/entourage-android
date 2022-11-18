@@ -3,6 +3,7 @@ package social.entourage.android.new_v8
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import androidx.core.os.bundleOf
 import androidx.fragment.app.FragmentManager
 import androidx.navigation.NavArgument
 import androidx.navigation.fragment.findNavController
@@ -13,6 +14,7 @@ import social.entourage.android.guide.GDSMainActivity
 import social.entourage.android.guide.poi.ReadPoiFragment
 import social.entourage.android.new_v8.actions.create.CreateActionActivity
 import social.entourage.android.new_v8.actions.detail.ActionDetailActivity
+import social.entourage.android.new_v8.discussions.DetailConversationActivity
 import social.entourage.android.new_v8.events.create.CreateEventActivity
 import social.entourage.android.new_v8.groups.create.CreateGroupActivity
 import social.entourage.android.new_v8.groups.details.feed.FeedActivity
@@ -37,11 +39,20 @@ class Navigation {
         ) {
             when (homeType) {
                 HomeType.CONVERSATION -> when (action) {
-                    //TODO a faire
-                    ActionSummary.SHOW -> Utils.showToast(
-                        context,
-                        context.getString(R.string.not_implemented)
-                    )
+                    ActionSummary.SHOW -> {
+                        context.startActivity(
+                            Intent(context, DetailConversationActivity::class.java)
+                                .putExtras(
+                                    bundleOf(
+                                        Const.ID to params.id,
+                                        Const.SHOULD_OPEN_KEYBOARD to false,
+                                        Const.IS_CONVERSATION_1TO1 to true,
+                                        Const.IS_MEMBER to true,
+                                        Const.IS_CONVERSATION to true
+                                    )
+                                )
+                        )
+                    }
                     ActionSummary.INDEX -> {
                         val bottomNavigationView =
                             (context as Activity).findViewById<BottomNavigationView>(R.id.nav_view)

@@ -31,13 +31,16 @@ abstract class CommentActivity : AppCompatActivity() {
 
     var id = Const.DEFAULT_VALUE
     var postId = Const.DEFAULT_VALUE
-    private var postAuthorID = Const.DEFAULT_VALUE
-    private var isMember = false
-    private var name = ""
+    protected var postAuthorID = Const.DEFAULT_VALUE
+    protected var isMember = false
+    protected var titleName = ""
     var commentsList: MutableList<Post> = mutableListOf()
     private var shouldOpenKeyboard = false
     var messagesFailed: MutableList<Post?> = mutableListOf()
     var comment: Post? = null
+
+    protected var isOne2One = false
+    protected var isConversation = false
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,18 +53,27 @@ abstract class CommentActivity : AppCompatActivity() {
         postId = intent.getIntExtra(Const.POST_ID, Const.DEFAULT_VALUE)
         postAuthorID = intent.getIntExtra(Const.POST_AUTHOR_ID, Const.DEFAULT_VALUE)
         isMember = intent.getBooleanExtra(Const.IS_MEMBER, false)
-        name = intent.getStringExtra(Const.NAME).toString()
+        titleName = intent.getStringExtra(Const.NAME).toString()
+        isOne2One = intent.getBooleanExtra(Const.IS_CONVERSATION_1TO1, false)
+        isConversation = intent.getBooleanExtra(Const.IS_CONVERSATION, false)
         shouldOpenKeyboard = intent.getBooleanExtra(Const.SHOULD_OPEN_KEYBOARD, false)
         initializeComments()
         handleCommentAction()
         openEditTextKeyboard()
         handleBackButton()
         setSettingsIcon()
-        handleReportPost(postId)
+
+        if (isConversation) {
+            handleReportPost(id)
+        }
+        else {
+            handleReportPost(postId)
+        }
+
         handleSendButtonState()
     }
 
-    protected fun handleGetPostComments(allComments: MutableList<Post>?) {
+    protected open fun handleGetPostComments(allComments: MutableList<Post>?) {
         commentsList.clear()
         allComments?.let { commentsList.addAll(it) }
         binding.progressBar.visibility = View.GONE
@@ -69,7 +81,7 @@ abstract class CommentActivity : AppCompatActivity() {
         scrollAfterLayout()
     }
 
-    private fun scrollAfterLayout() {
+    protected fun scrollAfterLayout() {
         binding.comments.viewTreeObserver
             .addOnGlobalLayoutListener(
                 object : OnGlobalLayoutListener {
@@ -107,7 +119,7 @@ abstract class CommentActivity : AppCompatActivity() {
             binding.shouldBeMember.visibility = View.VISIBLE
             binding.shouldBeMember.text = String.format(
                 getString(R.string.join_group_to_comment),
-                name
+                titleName
             )
             binding.postComment.visibility = View.GONE
         }
@@ -117,7 +129,7 @@ abstract class CommentActivity : AppCompatActivity() {
         binding.comments.apply {
             layoutManager = LinearLayoutManager(context)
             val meId = EntourageApplication.get().me()?.id ?: postAuthorID
-            adapter = CommentsListAdapter(commentsList, meId, object : OnItemClickListener {
+            adapter = CommentsListAdapter(commentsList, meId,isOne2One,isConversation, object : OnItemClickListener {
                 override fun onItemClick(comment: Post) {
                     addComment()
                     commentsList.remove(comment)
@@ -174,6 +186,8 @@ abstract class CommentActivity : AppCompatActivity() {
     }
 
     private fun setSettingsIcon() {
+
+        binding.header.title = getString(R.string.comments)
         binding.header.iconSettings.isVisible = true
         binding.header.iconSettings.setImageResource(R.drawable.new_report_group)
     }
@@ -187,7 +201,7 @@ abstract class CommentActivity : AppCompatActivity() {
         )
     }
 
-    private fun handleReportPost(id: Int) {
+    protected open fun handleReportPost(id: Int) {
         binding.header.iconSettings.setOnClickListener {
             handleReport(id, ReportTypes.REPORT_POST)
         }

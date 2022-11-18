@@ -38,6 +38,7 @@ class ApiModule {
     val homeRequest: HomeRequest
     val eventsRequest: EventsRequest
     val actionsRequest : ActionsRequest
+    val discussionsRequest : DiscussionsRequest
 
     init {
         okHttpClient = providesOkHttpClient()
@@ -58,6 +59,7 @@ class ApiModule {
         homeRequest = providesSummaryRequest(restAdapter)
         eventsRequest = providesEventsRequest(restAdapter)
         actionsRequest = providesActionsRequest(restAdapter)
+        discussionsRequest = providesDiscussionsRequest(restAdapter)
     }
 
     fun providesOkHttpClient(): OkHttpClient {
@@ -164,5 +166,8 @@ class ApiModule {
     }
     fun providesActionsRequest(restAdapter: Retrofit): ActionsRequest {
         return restAdapter.create(ActionsRequest::class.java)
+    }
+    fun providesDiscussionsRequest(restAdapter: Retrofit): DiscussionsRequest {
+        return restAdapter.create(DiscussionsRequest::class.java)
     }
 }
