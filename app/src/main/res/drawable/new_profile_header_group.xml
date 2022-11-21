@@ -26,7 +26,7 @@
   <path
       android:pathData="M0,248.267C1.317,248.914 2.303,249.394 2.959,249.704C65.731,279.484 114.961,257.119 164.31,232.936C184.366,223.104 202.43,210.17 218.296,194.9C269.374,145.738 296.308,71.077 296.309,0.3C296.309,0.1 197.592,0 0.161,0L0,248.267Z"
       android:strokeWidth="1"
-      android:fillColor="#FF9C5D"
+      android:fillColor="#FFAE0C"
       android:fillType="evenOdd"
       android:strokeColor="#00000000"/>
 </vector>
