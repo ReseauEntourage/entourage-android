@@ -7,7 +7,7 @@
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/new_profile_header_group">
+        android:background="@drawable/new_profile_header_orange">
 
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/appBar"
