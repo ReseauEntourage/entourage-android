@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import social.entourage.android.R
 import social.entourage.android.api.MetaDataRepository
 import social.entourage.android.api.model.Image
 import social.entourage.android.databinding.NewFragmentCreateGroupChoosePhotoModalBinding
@@ -53,6 +54,8 @@ class ChoosePhotoModalFragment : BottomSheetDialogFragment() {
         initializeInterests()
         handleValidateButton()
         getImages()
+
+        binding.header.title = getString(R.string.select_photo)
 
         //Use to force refresh layout
         dialog?.setOnShowListener { dialog ->
