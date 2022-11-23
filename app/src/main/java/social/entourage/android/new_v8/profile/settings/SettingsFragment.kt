@@ -58,6 +58,9 @@ class SettingsFragment : Fragment() {
     }
 
     private fun addOnClickListeners() {
+        binding.notifications.layout.setOnClickListener {
+            SettingsNotificationsFragment.newInstance().show(parentFragmentManager,SettingsNotificationsFragment.TAG)
+        }
         binding.share.layout.setOnClickListener {
             shareApplication()
         }

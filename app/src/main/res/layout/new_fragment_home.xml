@@ -9,13 +9,12 @@
         android:background="@color/beige"
         android:orientation="vertical">
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/header"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="44dp"
             android:orientation="horizontal"
             android:paddingHorizontal="26dp"
-            android:paddingVertical="10dp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -25,8 +24,10 @@
                 android:id="@+id/logoEntourage"
                 android:layout_width="36dp"
                 android:layout_height="36dp"
-                android:layout_marginTop="3dp"
-                android:src="@drawable/ic_entourage_logo_orange" />
+                android:src="@drawable/ic_entourage_logo_orange"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/welcome_user"
@@ -34,16 +35,21 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
-                android:layout_weight="1"
                 android:maxLines="2"
                 android:paddingHorizontal="16dp"
-                android:paddingBottom="10dp"
+                app:layout_constraintBottom_toBottomOf="@+id/logoEntourage"
+                app:layout_constraintEnd_toStartOf="@+id/ui_layout_notif"
+                app:layout_constraintStart_toEndOf="@+id/logoEntourage"
                 tools:text="Bienvenue !" />
 
             <LinearLayout
+                android:id="@+id/linearLayout6"
                 android:layout_width="43dp"
                 android:layout_height="43dp"
-                android:gravity="center">
+                android:gravity="center"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
                 <ImageView
                     android:id="@+id/image_user"
@@ -53,7 +59,42 @@
                     android:elevation="3dp" />
             </LinearLayout>
 
-        </LinearLayout>
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/ui_layout_notif"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:background="@drawable/bg_partner_logo"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/linearLayout6"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/imageView39"
+                    android:layout_width="26dp"
+                    android:layout_height="24dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/new_notif_bell" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TextView
+                android:id="@+id/ui_tv_notif_count"
+                android:layout_width="17dp"
+                android:layout_height="17dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="28dp"
+                android:background="@drawable/carousel_bullet_filled"
+                android:fontFamily="@font/nunitosans_bold"
+                android:gravity="center_horizontal|center_vertical"
+                android:text="3"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toStartOf="@+id/linearLayout6"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
 
         <androidx.core.widget.NestedScrollView
@@ -72,8 +113,7 @@
                 android:layout_marginBottom="32dp"
                 android:orientation="vertical"
                 android:paddingHorizontal="26dp"
-                android:paddingTop="16dp
-"
+                android:paddingTop="16dp"
                 app:layout_constraintTop_toBottomOf="@id/header">
 
                 <TextView

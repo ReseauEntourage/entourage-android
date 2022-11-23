@@ -634,4 +634,9 @@
         <item name="android:textColor">@android:color/white</item>
     </style>
 
+    //Use to change switch color
+    <style name="Color1SwitchStyle">
+        <item name="colorControlActivated">@color/orange</item>
+    </style>
+
 </resources>

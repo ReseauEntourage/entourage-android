@@ -33,7 +33,7 @@ abstract class CommentActivity : AppCompatActivity() {
     var postId = Const.DEFAULT_VALUE
     protected var postAuthorID = Const.DEFAULT_VALUE
     protected var isMember = false
-    protected var titleName = ""
+    protected var titleName:String? = null
     var commentsList: MutableList<Post> = mutableListOf()
     private var shouldOpenKeyboard = false
     var messagesFailed: MutableList<Post?> = mutableListOf()
@@ -53,7 +53,7 @@ abstract class CommentActivity : AppCompatActivity() {
         postId = intent.getIntExtra(Const.POST_ID, Const.DEFAULT_VALUE)
         postAuthorID = intent.getIntExtra(Const.POST_AUTHOR_ID, Const.DEFAULT_VALUE)
         isMember = intent.getBooleanExtra(Const.IS_MEMBER, false)
-        titleName = intent.getStringExtra(Const.NAME).toString()
+        titleName = intent.getStringExtra(Const.NAME)
         isOne2One = intent.getBooleanExtra(Const.IS_CONVERSATION_1TO1, false)
         isConversation = intent.getBooleanExtra(Const.IS_CONVERSATION, false)
         shouldOpenKeyboard = intent.getBooleanExtra(Const.SHOULD_OPEN_KEYBOARD, false)

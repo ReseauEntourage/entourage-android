@@ -6,6 +6,7 @@ import android.view.View
 import androidx.core.view.isVisible
 import social.entourage.android.R
 import social.entourage.android.new_v8.comment.CommentActivity
+import social.entourage.android.new_v8.models.Conversation
 import social.entourage.android.new_v8.models.Post
 import social.entourage.android.new_v8.user.UserProfileActivity
 import social.entourage.android.new_v8.utils.Const
@@ -24,9 +25,10 @@ class DetailConversationActivity : CommentActivity() {
 
         hasToShowFirstMessage = intent.getBooleanExtra(Const.HAS_TO_SHOW_MESSAGE, false)
 
-        discussionsPresenter.getPostComments(id)
         discussionsPresenter.getAllComments.observe(this, ::handleGetPostComments)
         discussionsPresenter.commentPosted.observe(this, ::handleCommentPosted)
+
+        discussionsPresenter.getPostComments(id)
 
         binding.header.iconSettings.setImageDrawable(resources.getDrawable(R.drawable.new_settings))
         binding.header.title = titleName
@@ -40,6 +42,16 @@ class DetailConversationActivity : CommentActivity() {
             }
         }
         checkAndShowPopWarning()
+
+        if (titleName.isNullOrEmpty()) {
+            discussionsPresenter.detailConversation.observe(this, ::handleDetailConversation)
+            discussionsPresenter.getDetailConversation(id)
+        }
+    }
+
+    private fun handleDetailConversation(conversation: Conversation?) {
+        titleName = conversation?.title
+        binding.header.title = titleName
     }
 
     fun checkAndShowPopWarning() {

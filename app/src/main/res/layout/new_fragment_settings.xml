@@ -21,7 +21,6 @@
                 layout="@layout/new_profile_settings_item"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:visibility="gone"
                 app:color="@{@android:color/black}"
                 app:icon="@{@drawable/new_notification}"
                 app:label="@{@string/notifications}" />

@@ -117,13 +117,13 @@ class InstanceTypeNotif(val instanceName:String) {
     fun getInstanceTypeFromName() : InstanceType {
         when(instanceName) {
             "pois" -> return  InstanceType.POIS
-            "users" -> return  InstanceType.USERS
-            "neighborhoods" -> return  InstanceType.NEIGHBORHOODS
+            "users","user" -> return  InstanceType.USERS
+            "neighborhoods","neighborhood" -> return  InstanceType.NEIGHBORHOODS
             "resources" -> return  InstanceType.RESOURCES
-            "outings" -> return  InstanceType.OUTINGS
-            "contributions" -> return  InstanceType.CONTRIBUTIONS
-            "solicitations" -> return  InstanceType.SOLICITATIONS
-            "conversations" -> return  InstanceType.CONVERSATIONS
+            "outings","outing" -> return  InstanceType.OUTINGS
+            "contributions","contribution" -> return  InstanceType.CONTRIBUTIONS
+            "solicitations","solicitation" -> return  InstanceType.SOLICITATIONS
+            "conversations","conversation" -> return  InstanceType.CONVERSATIONS
             "partners" -> return  InstanceType.PARTNERS
             else -> return  InstanceType.NONE
         }

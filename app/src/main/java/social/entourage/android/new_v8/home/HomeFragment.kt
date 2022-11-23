@@ -22,6 +22,7 @@ import social.entourage.android.databinding.NewFragmentHomeBinding
 import social.entourage.android.guide.GDSMainActivity
 import social.entourage.android.new_v8.Navigation
 import social.entourage.android.new_v8.ViewPagerDefaultPageController
+import social.entourage.android.new_v8.home.notifications.NotificationsInAppActivity
 import social.entourage.android.new_v8.home.pedago.PedagoListActivity
 import social.entourage.android.new_v8.models.*
 import social.entourage.android.new_v8.profile.ProfileActivity
@@ -64,6 +65,8 @@ class HomeFragment : Fragment() {
 
         homePresenter.unreadMessages.observe(requireActivity(), ::updateUnreadCount)
         homePresenter.getUnreadCount()
+        homePresenter.notifsCount.observe(requireActivity(), ::updateNotifsCount)
+        homePresenter.getNotificationsCount()
     }
 
     override fun onResume() {
@@ -73,6 +76,17 @@ class HomeFragment : Fragment() {
         }
         else {
             isAlreadyLoadSummary = false
+        }
+        homePresenter.getNotificationsCount()
+    }
+
+    private fun updateNotifsCount(count:Int) {
+        if (count > 0) {
+            binding.uiTvNotifCount.visibility = View.VISIBLE
+            binding.uiTvNotifCount.text = "$count"
+        }
+        else {
+            binding.uiTvNotifCount.visibility = View.INVISIBLE
         }
     }
 
@@ -154,6 +168,14 @@ class HomeFragment : Fragment() {
         binding.imageUser.setOnClickListener {
             startActivity(
                 Intent(context, ProfileActivity::class.java)
+            )
+        }
+
+        binding.uiLayoutNotif.setOnClickListener {
+            startActivity(
+                Intent( requireContext(),
+                    NotificationsInAppActivity::class.java
+                )
             )
         }
     }
