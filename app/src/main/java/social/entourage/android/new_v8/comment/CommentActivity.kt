@@ -86,7 +86,7 @@ abstract class CommentActivity : AppCompatActivity() {
             .addOnGlobalLayoutListener(
                 object : OnGlobalLayoutListener {
                     override fun onGlobalLayout() {
-                        binding.comments.scrollToPositionSmooth(commentsList.size)
+                        binding.comments.scrollToPosition(commentsList.size - 1)
                         binding.comments.viewTreeObserver.removeOnGlobalLayoutListener(this)
                     }
                 })
