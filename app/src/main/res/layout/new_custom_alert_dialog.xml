@@ -54,11 +54,12 @@
             android:id="@+id/yes"
             style="@style/h2_white"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="48dp"
             android:layout_marginEnd="10dp"
             android:layout_marginBottom="10dp"
             android:background="@drawable/new_alert_dialog_button_yes"
             android:padding="10dp"
+            android:minWidth="65dp"
             android:textAllCaps="false"
 
             />
@@ -67,11 +68,12 @@
             android:id="@+id/no"
             style="@style/h2_white"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="48dp"
             android:layout_marginStart="10dp"
             android:layout_marginBottom="10dp"
             android:background="@drawable/new_alert_dialog_button_no"
             android:padding="10dp"
+            android:minWidth="65dp"
             android:text="@string/cancel"
             android:textAllCaps="false" />
 
