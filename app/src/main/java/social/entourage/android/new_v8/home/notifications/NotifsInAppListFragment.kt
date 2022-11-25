@@ -1,6 +1,7 @@
 package social.entourage.android.new_v8.home.notifications
 
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -72,6 +73,14 @@ class NotifsInAppListFragment : Fragment() {
 
         if (hasUnread != null) {
             binding.iconBell.setImageDrawable(resources.getDrawable(R.drawable.ic_new_notif_on))
+            val timer = object: CountDownTimer(2000, 1000) {
+                override fun onTick(millisUntilFinished: Long) {}
+
+                override fun onFinish() {
+                    binding.iconBell.setImageDrawable(resources.getDrawable(R.drawable.ic_new_notif_off))
+                }
+            }
+            timer.start()
         }
         else {
             binding.iconBell.setImageDrawable(resources.getDrawable(R.drawable.ic_new_notif_off))

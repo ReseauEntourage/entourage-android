@@ -82,11 +82,10 @@ class HomeFragment : Fragment() {
 
     private fun updateNotifsCount(count:Int) {
         if (count > 0) {
-            binding.uiTvNotifCount.visibility = View.VISIBLE
-            binding.uiTvNotifCount.text = "$count"
+            binding.uiBellNotif.setImageDrawable(context?.resources?.getDrawable(R.drawable.ic_new_notif_on))
         }
         else {
-            binding.uiTvNotifCount.visibility = View.INVISIBLE
+            binding.uiBellNotif.setImageDrawable(context?.resources?.getDrawable(R.drawable.ic_new_notif_off))
         }
     }
 

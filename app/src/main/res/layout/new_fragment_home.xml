@@ -69,30 +69,15 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <ImageView
-                    android:id="@+id/imageView39"
+                    android:id="@+id/ui_bell_notif"
                     android:layout_width="26dp"
                     android:layout_height="24dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/new_notif_bell" />
+                    app:srcCompat="@drawable/ic_new_notif_off" />
             </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <TextView
-                android:id="@+id/ui_tv_notif_count"
-                android:layout_width="17dp"
-                android:layout_height="17dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginEnd="28dp"
-                android:background="@drawable/carousel_bullet_filled"
-                android:fontFamily="@font/nunitosans_bold"
-                android:gravity="center_horizontal|center_vertical"
-                android:text="3"
-                android:textColor="@color/white"
-                android:textSize="12sp"
-                app:layout_constraintEnd_toStartOf="@+id/linearLayout6"
-                app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
