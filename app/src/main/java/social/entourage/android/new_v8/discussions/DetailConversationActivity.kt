@@ -10,6 +10,8 @@ import social.entourage.android.new_v8.models.Conversation
 import social.entourage.android.new_v8.models.Post
 import social.entourage.android.new_v8.user.UserProfileActivity
 import social.entourage.android.new_v8.utils.Const
+import java.util.*
+import kotlin.collections.ArrayList
 
 /**
  * Created by - on 15/11/2022.
@@ -90,7 +92,7 @@ class DetailConversationActivity : CommentActivity() {
             for (mappp in _allevents) {
                 val datePost = Post()
                 datePost.isDatePostOnly = true
-                datePost.datePostText = mappp.key
+                datePost.datePostText = mappp.key.capitalize(Locale.FRANCE)
                 newList.add(datePost)
                 for (_msg in mappp.value) {
                     newList.add(_msg)

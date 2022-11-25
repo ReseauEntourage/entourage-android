@@ -135,5 +135,6 @@
     <color name="bottom_sheet_background">#B5545454</color>
     <color name="orange_opacity_50">#ffcbab</color>
 
+    <color name="new_orange_bubble">#FFCDAE</color>
 
 </resources>

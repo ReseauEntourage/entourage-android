@@ -160,8 +160,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@drawable/new_bg_rounded_button_orange_beige_stroke"
-                android:hint="@string/discuss"
+                android:background="@drawable/new_bg_rounded_button_orange_beige_stroke_slim"
+                android:hint="@string/discussbis"
                 android:padding="13dp"
                 android:textColorHint="@color/orange" />
 

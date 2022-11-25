@@ -110,6 +110,11 @@ class CommentsListAdapter(
                     )
                 }
             }
+
+            if (isConversation) {
+                binding.author_name.setTextColor(binding.author_name.context.resources.getColor(R.color.light_orange))
+                binding.publication_date.setTextColor(binding.publication_date.context.resources.getColor(R.color.light_orange))
+            }
         }
     }
 
