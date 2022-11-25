@@ -43,20 +43,22 @@ class DiscussionsListAdapter(
                 conversation.user?.imageUrl?.let {
                     Glide.with(binding.image.context)
                         .load(it)
-                        .placeholder(R.drawable.ic_placeholder_action)
-                        .error(R.drawable.ic_placeholder_action)
+                        .error(R.drawable.placeholder_user)
                         .transform(CenterCrop(), CircleCrop())
                         .into(binding.image)
                 } ?: run {
                     Glide.with(binding.image.context)
-                        .load(R.drawable.ic_placeholder_action)
+                        .load(R.drawable.placeholder_user)
                         .transform(CenterCrop(), CircleCrop())
                         .into(binding.image)
                 }
             }
             else {
                 binding.image_picto.isVisible = true
-                binding.image.setImageResource(R.drawable.new_circle_fill_beige) //= binding.context.getDrawable(R.drawable.new_circle_fill_beige)
+                Glide.with(binding.image.context)
+                    .load(R.drawable.new_circle_fill_beige)
+                    .transform(CenterCrop(), CircleCrop())
+                    .into(binding.image)
                 binding.image_picto.setImageResource(conversation.getPictoTypeFromSection())
             }
 

@@ -51,13 +51,12 @@
             <LinearLayout
                 android:id="@+id/tab"
                 android:layout_width="match_parent"
-                android:layout_height="20dp"
+                android:layout_height="64dp"
                 android:layout_marginHorizontal="7dp"
                 android:background="@drawable/new_bg_profile"
                 android:gravity="center_horizontal"
                 android:orientation="vertical"
-                app:layout_constraintBottom_toBottomOf="parent">
-            </LinearLayout>
+                app:layout_constraintBottom_toBottomOf="parent" />
 
         </com.google.android.material.appbar.AppBarLayout>
 
@@ -65,21 +64,21 @@
             android:id="@+id/swipe_refresh"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginTop="-33dp"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-
                 android:orientation="vertical">
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recycler_view"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:clipToPadding="false"
                     android:layout_marginHorizontal="7dp"
                     android:background="@color/light_beige"
+                    android:clipToPadding="false"
                     android:paddingHorizontal="20dp"
                     android:visibility="visible"
                     app:layout_constraintBottom_toBottomOf="parent"

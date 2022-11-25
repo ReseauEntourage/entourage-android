@@ -96,7 +96,7 @@ class Conversation(
             ActionSection.equipment -> R.drawable.ic_action_section_equipment
             ActionSection.hygiene -> R.drawable.ic_action_section_hygiene
             ActionSection.services -> R.drawable.ic_action_section_services
-            else -> R.drawable.new_others
+            else -> R.drawable.ic_entourage_category_more
         }
     }
 }
