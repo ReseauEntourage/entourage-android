@@ -6,13 +6,14 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
 import social.entourage.android.BuildConfig
 import social.entourage.android.R
+import social.entourage.android.base.BaseSecuredActivity
 import social.entourage.android.new_v8.utils.Const
 import social.entourage.android.tools.view.WebViewFragment
 import social.entourage.android.user.AvatarUploadView
 import social.entourage.android.user.edit.photo.ChoosePhotoFragment
 
 
-class ProfileActivity : AppCompatActivity(), AvatarUploadView {
+class ProfileActivity : BaseSecuredActivity(), AvatarUploadView {
 
     val profilePresenter: ProfilePresenter by lazy { ProfilePresenter() }
 
@@ -40,22 +41,6 @@ class ProfileActivity : AppCompatActivity(), AvatarUploadView {
         } else {
             showErrorToast()
         }
-    }
-
-    fun showWebViewForLinkId(linkId: String, shareMessageRes: Int = 0) {
-        val link = getLink(linkId)
-        showWebView(link, shareMessageRes)
-    }
-
-    private fun showWebView(url: String, shareMessageRes: Int = 0) {
-        if (shareMessageRes != 0 || !WebViewFragment.launchURL(this, url, shareMessageRes)) {
-            WebViewFragment.newInstance(url, shareMessageRes,false)
-                .show(supportFragmentManager, WebViewFragment.TAG)
-        }
-    }
-
-    fun getLink(linkId: String): String {
-        return getString(R.string.redirect_link_no_token_format, BuildConfig.ENTOURAGE_URL, linkId)
     }
 
 

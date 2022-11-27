@@ -1,28 +1,15 @@
 package social.entourage.android.new_v8.profile.settings
 
-import android.content.ActivityNotFoundException
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.navigation.fragment.findNavController
-import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.fragment_about.*
 import kotlinx.android.synthetic.main.new_fragment_settings_notifs.*
-import social.entourage.android.Constants
-import social.entourage.android.R
-import social.entourage.android.databinding.NewFragmentHelpAboutBinding
 import social.entourage.android.databinding.NewFragmentSettingsNotifsBinding
 import social.entourage.android.new_v8.home.HomePresenter
 import social.entourage.android.new_v8.models.NotifInAppPermission
-import social.entourage.android.new_v8.profile.ProfileActivity
-import social.entourage.android.tools.log.AnalyticsEvents
-import social.entourage.android.tools.view.EntSnackbar
 
 class SettingsNotificationsFragment : BottomSheetDialogFragment() {
 
