@@ -11,10 +11,6 @@ class SettingsPresenter {
 
     var accountDeleted: MutableLiveData<Boolean> = MutableLiveData()
 
-    fun logOut() {
-        EntourageApplication.get().logOut()
-    }
-
     fun deleteAccount() {
         EntourageApplication.get().apiModule.userRequest.deleteUser()
             .enqueue(object : Callback<UserResponse> {

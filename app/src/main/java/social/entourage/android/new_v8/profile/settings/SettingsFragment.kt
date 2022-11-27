@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import social.entourage.android.BuildConfig
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
+import social.entourage.android.base.BaseSecuredActivity
 import social.entourage.android.databinding.NewFragmentSettingsBinding
 import social.entourage.android.new_v8.utils.Utils
 import social.entourage.android.onboarding.pre_onboarding.PreOnboardingStartActivity
@@ -95,13 +96,8 @@ class SettingsFragment : Fragment() {
         startActivity(shareIntent)
     }
 
-    private fun startPreOnboardingStartActivity() {
-        activity?.finish()
-    }
-
     private fun logout() {
-        settingsPresenter.logOut()
-        startPreOnboardingStartActivity()
+        (activity as? BaseSecuredActivity)?.logout()
     }
 
     private fun deleteAccount() {
@@ -113,14 +109,13 @@ class SettingsFragment : Fragment() {
 
     private fun handleResponse(isSuccess: Boolean) {
         if (isSuccess) {
-            settingsPresenter.logOut()
+            logout()
         } else {
             Toast.makeText(
                 requireContext(),
                 R.string.user_delete_account_failure,
                 Toast.LENGTH_SHORT
             ).show()
-
         }
     }
 }

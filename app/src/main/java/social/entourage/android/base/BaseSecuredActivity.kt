@@ -26,7 +26,7 @@ abstract class BaseSecuredActivity : BaseActivity() {
         }
     }
 
-    protected open fun logout() {
+    open fun logout() {
         authenticationController.logOutUser()
         EntourageApplication.get(applicationContext).removeAllPushNotifications()
         AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_LOGOUT)

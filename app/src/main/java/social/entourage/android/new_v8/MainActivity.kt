@@ -115,30 +115,6 @@ class MainActivity : BaseSecuredActivity() {
         bottomNavigationView.setupWithNavController(navController)
     }
 
-    public override fun logout() {
-        //remove user phone
-        val sharedPreferences = EntourageApplication.get().sharedPreferences
-        val editor = sharedPreferences.edit()
-        authenticationController.me?.let { me ->
-            (sharedPreferences.getStringSet(
-                EntourageApplication.KEY_TUTORIAL_DONE,
-                HashSet()
-            ) as HashSet<String?>?)?.let { loggedNumbers ->
-                loggedNumbers.remove(me.phone)
-                editor.putStringSet(EntourageApplication.KEY_TUTORIAL_DONE, loggedNumbers)
-            }
-        }
-        authenticationController.logOutUser()
-        //presenter.deleteApplicationInfo()
-        editor.remove(EntourageApplication.KEY_REGISTRATION_ID)
-        editor.remove(EntourageApplication.KEY_NOTIFICATIONS_ENABLED)
-        editor.remove(EntourageApplication.KEY_GEOLOCATION_ENABLED)
-        editor.remove(EntourageApplication.KEY_NO_MORE_DEMAND)
-        editor.putInt(EntourageApplication.KEY_NB_OF_LAUNCH, 0)
-        editor.apply()
-        super.logout()
-    }
-
     private fun addBadge(count : Int) {
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.nav_view)
         val badge: BadgeDrawable = bottomNavigationView.getOrCreateBadge(
