@@ -29,6 +29,8 @@ class SettingsDiscussionModalFragment : BottomSheetDialogFragment() {
     var userId:Int? = null
     var conversationId:Int? = null
     var isCreator = false
+    var username:String? = null
+    var imBlocker = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,6 +39,8 @@ class SettingsDiscussionModalFragment : BottomSheetDialogFragment() {
             isOneToOne = it.getBoolean(ARG_121, false)
             userId = it.getInt(ARG_USERID)
             conversationId = it.getInt(ARG_CONVID)
+            username = it.getString(ARG_NAME)
+            imBlocker = it.getBoolean(ARG_BLOCKED,false)
         }
     }
 
@@ -61,6 +65,7 @@ class SettingsDiscussionModalFragment : BottomSheetDialogFragment() {
         }
 
         discussionPresenter.hasUserLeftConversation.observe(this,::updateLeaveConversation)
+        discussionPresenter.hasBlockUser.observe(this,::showPopValidateBlockUser)
     }
 
     private fun updateLeaveConversation(hasLeft:Boolean) {
@@ -85,8 +90,13 @@ class SettingsDiscussionModalFragment : BottomSheetDialogFragment() {
         binding.header.title = getString(R.string.discussion_settings_title)
         if (isOneToOne) {
             binding.profile.label = getString(R.string.discussion_settings_profil) //discussion_settings_members
+
+            binding.layoutBlock.isVisible = !imBlocker
+            binding.block.text = getString(R.string.discussion_block_title)
+            binding.blockSub.text = String.format(getString(R.string.discussion_block_subtitle),username)
         }
         else {
+            binding.layoutBlock.isVisible = false
             binding.profile.label = getString(R.string.discussion_settings_members)
         }
         binding.report.text = getString(R.string.discussion_settings_signal)
@@ -141,19 +151,55 @@ class SettingsDiscussionModalFragment : BottomSheetDialogFragment() {
                 }
             }
         }
+
+        binding.layoutBlock.setOnClickListener {
+            val desc = String.format(getString(R.string.params_block_user_conv_pop_message,username))
+            Utils.showAlertDialogButtonClickedWithCrossClose(
+                requireContext(),
+                getString(R.string.params_block_user_conv_pop_title),
+                desc,
+                getString(R.string.params_block_user_conv_pop_bt_cancel),
+                getString(R.string.params_block_user_conv_pop_bt_quit), showCross = false, onNo = {}, onYes = {
+                    //TODO: la suite
+                    userId?.let {
+                        discussionPresenter.blockUser(it)
+                    }
+                }
+            )
+        }
     }
+
+
+    private fun showPopValidateBlockUser(isBlocked:Boolean) {
+        val title = String.format(getString(R.string.params_block_user_conv_pop_validate_title,username))
+        Utils.showAlertDialogButtonClicked(
+            requireContext(),
+            title,
+            getString(R.string.params_block_user_conv_pop_validate_subtitle),
+            getString(R.string.params_block_user_conv_pop_validate_bt),
+            {
+                (context as? DetailConversationActivity)?.updateDiscussion()
+                dismiss()
+            },null
+        )
+    }
+
 
     companion object {
         private val ARG_121 = "oneToOne"
         private val ARG_USERID = "userid"
         private val ARG_CONVID = "conversationid"
+        private val ARG_NAME = "username"
+        private val ARG_BLOCKED = "imBlocker"
         const val TAG = "SettingsDiscussionModalFragment"
-        fun newInstance(userId:Int?,conversationId:Int?,isOneToOne:Boolean): SettingsDiscussionModalFragment {
+        fun newInstance(userId:Int?,conversationId:Int?,isOneToOne:Boolean, username:String?,imBlocker:Boolean? = null): SettingsDiscussionModalFragment {
             val fragment = SettingsDiscussionModalFragment()
             val args = Bundle()
             args.putBoolean(ARG_121,isOneToOne)
             args.putInt(ARG_USERID,userId ?: 0)
             args.putInt(ARG_CONVID,conversationId ?: 0)
+            args.putString(ARG_NAME,username)
+            args.putBoolean(ARG_BLOCKED,imBlocker ?: false)
             fragment.arguments = args
             return fragment
         }

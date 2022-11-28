@@ -35,6 +35,15 @@
                 app:label="@{@string/help_about}" />
 
             <include
+                android:id="@+id/help_block"
+                layout="@layout/new_profile_settings_item"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:color="@{@android:color/black}"
+                app:icon="@{@drawable/new_block}"
+                app:label="@{@string/params_unblock_users_title}" />
+
+            <include
                 android:id="@+id/share"
                 layout="@layout/new_profile_settings_item"
                 android:layout_width="match_parent"

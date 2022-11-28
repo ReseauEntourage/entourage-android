@@ -20,7 +20,6 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
-import org.w3c.dom.Text
 import social.entourage.android.R
 import social.entourage.android.new_v8.events.list.SectionHeader
 import social.entourage.android.new_v8.models.EventUiModel
@@ -78,6 +77,7 @@ class Utils {
             content: String,
             buttonNOK: String,
             buttonOk:String,
+            showCross:Boolean = true,
             onNo: () -> (Unit) = {},
             onYes: (() -> Unit),
         ) {
@@ -86,7 +86,7 @@ class Utils {
             val builder = AlertDialog.Builder(context)
             builder.setView(customDialog)
             val alertDialog = builder.create()
-            customDialog.findViewById<ImageView>(R.id.ui_pop_close).isVisible = true
+            customDialog.findViewById<ImageView>(R.id.ui_pop_close).isVisible = showCross
             customDialog.findViewById<TextView>(R.id.title).text = title
             customDialog.findViewById<TextView>(R.id.content).text = content
 

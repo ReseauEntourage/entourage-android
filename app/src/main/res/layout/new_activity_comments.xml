@@ -177,5 +177,34 @@
                 android:src="@drawable/new_contact_white" />
 
         </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/post_blocked"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:background="@color/white"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingHorizontal="28dp"
+            android:paddingBottom="20dp"
+            android:visibility="gone"
+            android:weightSum="1"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <EditText
+                android:id="@+id/comment_blocked"
+                style="@style/left_courant_orange"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/new_bg_rounded_button_grey_beige_stroke_slim"
+                android:enabled="false"
+                android:hint="@string/discussbis"
+                android:padding="13dp"
+                android:textColorHint="@color/grey" />
+
+
+        </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

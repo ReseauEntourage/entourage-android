@@ -1,7 +1,6 @@
 package social.entourage.android.new_v8.events.details.feed
 
 import android.content.Intent
-import android.graphics.Rect
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater

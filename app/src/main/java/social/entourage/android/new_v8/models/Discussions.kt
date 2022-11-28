@@ -1,6 +1,7 @@
 package social.entourage.android.new_v8.models
 
 import com.google.gson.annotations.SerializedName
+import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.api.model.ChatMessage
 import social.entourage.android.api.model.Partner
@@ -38,6 +39,8 @@ class Conversation(
     val members: ArrayList<GroupMember>? = null,
     @SerializedName("creator")
     val isCreator: Boolean? = null,
+    @SerializedName("blockers")
+    var blockers: ArrayList<String>? = null
 ) {
     override fun toString(): String {
         return "Conversation(id=$id, user=$user)"
@@ -99,6 +102,22 @@ class Conversation(
             else -> R.drawable.ic_entourage_category_more
         }
     }
+
+    fun imBlocker() : Boolean {
+        val _return = blockers?.contains( "me" )
+
+        return _return ?: false
+    }
+
+    fun isTheBlocker() : Boolean {
+        val _return = blockers?.contains("participant")
+
+        return _return ?: false
+    }
+
+    fun hasBlocker() : Boolean {
+        return (blockers?.size ?: 0) > 0
+    }
 }
 
 class LastMessage (
@@ -122,3 +141,26 @@ class MemberConversation (
     @SerializedName("roles")
     var roles: ArrayList<String>? = null
 ){}
+
+
+//Block user
+class UserBlocked (
+    @SerializedName("blocked_user")
+    var blockedUser:BlockedUser,
+    @SerializedName("user")
+    var user:BlockedUser,
+){
+    var isChecked = false
+
+    fun imBlocker() : Boolean {
+        return user.id == EntourageApplication.get().me()?.id
+    }
+}
+class BlockedUser (
+    @SerializedName("id")
+    var id:Int,
+    @SerializedName("display_name")
+    var displayName:String?,
+    @SerializedName("avatar_url")
+    var avatarUrl:String?
+)

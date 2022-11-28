@@ -12,6 +12,7 @@ import social.entourage.android.new_v8.home.UnreadMessages
 import social.entourage.android.new_v8.models.Conversation
 import social.entourage.android.new_v8.models.GroupMember
 import social.entourage.android.new_v8.models.Post
+import social.entourage.android.new_v8.models.UserBlocked
 
 /**
  * Created by - on 15/11/2022.
@@ -35,6 +36,11 @@ class DiscussionsPresenter {
     var newConversation = MutableLiveData<Conversation?>()
 
     var getMembersSearch = MutableLiveData<MutableList<GroupMember>>()
+
+    var hasBlockUser = MutableLiveData<Boolean>()
+    var getBlockedUsers = MutableLiveData<MutableList<UserBlocked>?>()
+
+    var hasUserUnblock = MutableLiveData<Boolean>()
 
     fun getAllMessages(page: Int, per: Int) {
         isLoading = true
@@ -193,6 +199,53 @@ class DiscussionsPresenter {
 
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 hasUserLeftConversation.value = response.isSuccessful
+            }
+        })
+    }
+
+    //BLock user
+
+    fun blockUser(userId:Int) {
+        val userRequest = EntourageApplication.get().apiModule.discussionsRequest
+        val call = userRequest.blockUser(userId)
+        call.enqueue(object : Callback<UserBlockedWrapper> {
+            override fun onFailure(call: Call<UserBlockedWrapper>, t: Throwable) {
+                hasBlockUser.value = false
+            }
+
+            override fun onResponse(call: Call<UserBlockedWrapper>, response: Response<UserBlockedWrapper>) {
+                hasBlockUser.value = response.isSuccessful
+            }
+        })
+    }
+
+    fun getBlockedUsers() {
+        val userRequest = EntourageApplication.get().apiModule.discussionsRequest
+        val call = userRequest.getBlockedUsers()
+        call.enqueue(object : Callback<UsersBlockedWrapper> {
+            override fun onFailure(call: Call<UsersBlockedWrapper>, t: Throwable) {
+                getBlockedUsers.value = null
+            }
+
+            override fun onResponse(call: Call<UsersBlockedWrapper>, response: Response<UsersBlockedWrapper>) {
+                getBlockedUsers.value = response.body()?.blockedUsers
+            }
+        })
+    }
+
+    fun unblockUsers(usersId: ArrayList<Int>) {
+
+        val param = ArrayMap<String,Any>()
+        param["blocked_user_ids"] = usersId
+        val userRequest = EntourageApplication.get().apiModule.discussionsRequest
+        val call = userRequest.unblockUsers(param)
+        call.enqueue(object : Callback<ResponseBody> {
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                hasUserUnblock.value = false
+            }
+
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                hasUserUnblock.value = true
             }
         })
     }

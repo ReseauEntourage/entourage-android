@@ -84,6 +84,10 @@ class SettingsFragment : Fragment() {
         binding.helpAbout.layout.setOnClickListener {
             HelpAboutFragment.newInstance().show(parentFragmentManager, HelpAboutFragment.TAG)
         }
+
+        binding.helpBlock.layout.setOnClickListener {
+            UnblockUsersFragment.newInstance().show(parentFragmentManager,UnblockUsersFragment.TAG)
+        }
     }
 
 

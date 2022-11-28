@@ -4,6 +4,7 @@ import android.graphics.Typeface
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -87,6 +88,11 @@ class DiscussionsListAdapter(
                 binding.date.setTextColor(binding.context.resources.getColor(R.color.dark_grey_opacity_40))
                 binding.detail.setTextColor(binding.context.resources.getColor(R.color.dark_grey_opacity_40))
                 binding.detail.setTypeface(binding.detail.typeface,Typeface.NORMAL)
+            }
+
+            if (conversation.imBlocker()) {
+                binding.detail.text = binding.detail.resources.getText(R.string.message_user_blocked_by_me_list)
+                binding.detail.setTextColor(binding.detail.resources.getColor(R.color.red))
             }
         }
     }

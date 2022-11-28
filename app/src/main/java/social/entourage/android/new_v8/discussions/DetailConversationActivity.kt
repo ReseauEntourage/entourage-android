@@ -45,15 +45,28 @@ class DetailConversationActivity : CommentActivity() {
         }
         checkAndShowPopWarning()
 
-        if (titleName.isNullOrEmpty()) {
-            discussionsPresenter.detailConversation.observe(this, ::handleDetailConversation)
-            discussionsPresenter.getDetailConversation(id)
-        }
+        discussionsPresenter.detailConversation.observe(this, ::handleDetailConversation)
+        discussionsPresenter.getDetailConversation(id)
+
     }
 
     private fun handleDetailConversation(conversation: Conversation?) {
         titleName = conversation?.title
         binding.header.title = titleName
+
+        if (conversation?.hasBlocker() == true) {
+            binding.postBlocked.isVisible = true
+            val _name = titleName ?: ""
+            if (conversation.imBlocker()) {
+                binding.commentBlocked.hint = String.format(getString(R.string.message_user_blocked_by_me),_name)
+            }
+            else {
+                binding.commentBlocked.hint = String.format(getString(R.string.message_user_blocked_by_other),_name)
+            }
+        }
+        else {
+            binding.postBlocked.isVisible = false
+        }
     }
 
     fun checkAndShowPopWarning() {
@@ -80,7 +93,7 @@ class DetailConversationActivity : CommentActivity() {
 
     override fun handleReportPost(id: Int) {
         binding.header.iconSettings.setOnClickListener {
-            SettingsDiscussionModalFragment.newInstance(postAuthorID,id,isOne2One)
+            SettingsDiscussionModalFragment.newInstance(postAuthorID,id,isOne2One,titleName,discussionsPresenter.detailConversation.value?.imBlocker())
                 .show(supportFragmentManager, SettingsDiscussionModalFragment.TAG)
         }
     }
@@ -100,5 +113,9 @@ class DetailConversationActivity : CommentActivity() {
             }
         }
         return newList
+    }
+
+    fun updateDiscussion() {
+        discussionsPresenter.getDetailConversation(id)
     }
 }
