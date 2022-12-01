@@ -77,7 +77,9 @@ class NotifsInAppListFragment : Fragment() {
                 override fun onTick(millisUntilFinished: Long) {}
 
                 override fun onFinish() {
-                    binding.iconBell.setImageDrawable(resources.getDrawable(R.drawable.ic_new_notif_off))
+                    if(context != null) {
+                        binding.iconBell.setImageDrawable(resources.getDrawable(R.drawable.ic_new_notif_off))
+                    }
                 }
             }
             timer.start()
