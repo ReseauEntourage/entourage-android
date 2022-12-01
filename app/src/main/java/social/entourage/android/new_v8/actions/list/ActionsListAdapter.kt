@@ -1,7 +1,6 @@
 package social.entourage.android.new_v8.actions.list
 
 import android.content.Intent
-import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -63,11 +62,9 @@ class ActionsListAdapter(
             binding.distance.text = "À xx km de moi"
             binding.location.text = action.metadata?.displayAddress
             binding.date.text = action.dateFormattedString(binding.context)
-
             action.imageUrl?.let {
                 Glide.with(binding.image.context)
                     .load(it)
-                    .placeholder(R.drawable.ic_placeholder_action)
                     .error(R.drawable.ic_placeholder_action)
                     .apply(RequestOptions().override(90.px, 90.px))
                     .transform(CenterCrop(), RoundedCorners(20.px))
@@ -105,7 +102,12 @@ class ActionsListAdapter(
             action.author?.avatarURLAsString?.let { avatarURL ->
                 Glide.with(binding.demand_pict.context)
                     .load(avatarURL)
-                    .placeholder(R.drawable.placeholder_user)
+                    .error(R.drawable.placeholder_user)
+                    .circleCrop()
+                    .into(binding.demand_pict)
+            } ?: run {
+                Glide.with(binding.demand_pict.context)
+                    .load(R.drawable.placeholder_user)
                     .circleCrop()
                     .into(binding.demand_pict)
             }
