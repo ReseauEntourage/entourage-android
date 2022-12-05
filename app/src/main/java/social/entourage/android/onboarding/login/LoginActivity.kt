@@ -56,7 +56,7 @@ class LoginActivity : BaseActivity() {
             true
         }
 
-        ui_login_bt_back?.setOnClickListener {
+       icon_back?.setOnClickListener {
             goBack()
         }
 

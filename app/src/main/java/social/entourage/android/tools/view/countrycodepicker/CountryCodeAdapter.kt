@@ -39,8 +39,7 @@ internal class CountryCodeAdapter(private val mCountries: List<Country?>, privat
                 itemView.code_tv?.visibility = View.VISIBLE
                 itemView.country_name_tv?.text = itemView.context
                         .getString(R.string.country_name_and_code, country.name,
-                            country.iso.uppercase(Locale.getDefault())
-                        )
+                            country.flagTxt)
                 itemView.code_tv?.text = itemView.context.getString(R.string.phone_code, country.phoneCode)
                 if (mCountryCodePicker.typeFace != null) {
                     itemView.code_tv?.typeface = mCountryCodePicker.typeFace

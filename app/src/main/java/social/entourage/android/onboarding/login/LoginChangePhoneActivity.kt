@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AlertDialog
 import kotlinx.android.synthetic.main.activity_login_change_phone.*
+import kotlinx.android.synthetic.main.activity_login_change_phone.icon_back
 import social.entourage.android.R
 import social.entourage.android.api.OnboardingAPI
 import social.entourage.android.base.BaseActivity
@@ -20,7 +21,7 @@ class LoginChangePhoneActivity : BaseActivity() {
         ui_layout_change_phone_ok?.visibility = View.GONE
         ui_layout_waiting?.visibility = View.GONE
 
-        ui_login_bt_back?.setOnClickListener {
+        icon_back?.setOnClickListener {
             finish()
         }
 

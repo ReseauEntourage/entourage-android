@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <string name="phone_code" translatable="false">+%s</string>
-    <string name="country_name_and_code" translatable="false">%1$s (%2$s)</string>
+    <string name="country_name_and_code" translatable="false">%1$s %2$s</string>
     <string name="search_hint">chercher &#8230;</string>
     <string name="no_result_found">résulte pas trouvé</string>
     <string name="select_country">Sélectionner le pays</string>
@@ -66,6 +66,7 @@
     <string name="country_belgium_name">Belgique</string>
     <string name="country_belgium_code">be</string>
     <string name="country_belgium_number" translatable="false">32</string>
+    <string name="country_belgium_flag" translatable="false">🇧🇪</string>
 
     <string name="country_belize_name">Bélize</string>
     <string name="country_belize_code">bz</string>
@@ -234,6 +235,7 @@
     <string name="country_france_name">France</string>
     <string name="country_france_code">fr</string>
     <string name="country_france_number" translatable="false">33</string>
+    <string name="country_france_flag" translatable="false">🇫🇷</string>
 
     <string name="country_french_guyana_name">Guyane française</string>
     <string name="country_french_guyana_code">gf</string>
