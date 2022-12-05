@@ -100,8 +100,9 @@ class SettingsFragment : Fragment() {
         startActivity(shareIntent)
     }
 
+
     private fun logout() {
-        (activity as? BaseSecuredActivity)?.logout()
+        EntourageApplication.get().logOut()
     }
 
     private fun deleteAccount() {

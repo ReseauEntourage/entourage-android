@@ -302,11 +302,6 @@ class MainActivity_v7 : BaseSecuredActivity(),
         }
     }
 
-    public override fun logout() {
-        presenter.deleteApplicationInfo()
-        super.logout()
-    }
-
     fun checkIntentAction(action: String, extras: Bundle?) {
         //if (!isSafeToCommit()) return;
         val message =
@@ -401,15 +396,6 @@ class MainActivity_v7 : BaseSecuredActivity(),
     fun createEntourage() {
         showFeed()
         homeFragment?.displayEntourageDisclaimer()
-    }
-
-    // ----------------------------------
-    // PUSH NOTIFICATION HANDLING
-    // ----------------------------------
-    fun displayMessageOnCurrentEntourageInfoFragment(message: Message): Boolean {
-        val fragment =
-            supportFragmentManager.findFragmentByTag(FeedItemInformationFragment.TAG) as FeedItemInformationFragment?
-        return fragment != null && fragment.onPushNotificationChatMessageReceived(message)
     }
 
     // ----------------------------------

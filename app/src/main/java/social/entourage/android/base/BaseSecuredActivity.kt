@@ -7,7 +7,6 @@ import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.authentication.AuthenticationController
 import social.entourage.android.onboarding.pre_onboarding.PreOnboardingStartActivity
-import social.entourage.android.tools.log.AnalyticsEvents
 
 /**
  * Base Activity that only runs if the user is currently logged in
@@ -24,33 +23,6 @@ abstract class BaseSecuredActivity : BaseActivity() {
             startActivity(Intent(this, PreOnboardingStartActivity::class.java))
             finish()
         }
-    }
-
-    open fun logout() {
-        //remove user phone
-        val sharedPreferences = EntourageApplication.get().sharedPreferences
-        val editor = sharedPreferences.edit()
-        authenticationController.me?.let { me ->
-            (sharedPreferences.getStringSet(
-                EntourageApplication.KEY_TUTORIAL_DONE,
-                HashSet()
-            ) as HashSet<String?>?)?.let { loggedNumbers ->
-                loggedNumbers.remove(me.phone)
-                editor.putStringSet(EntourageApplication.KEY_TUTORIAL_DONE, loggedNumbers)
-            }
-        }
-        editor.remove(EntourageApplication.KEY_REGISTRATION_ID)
-        editor.remove(EntourageApplication.KEY_NOTIFICATIONS_ENABLED)
-        editor.remove(EntourageApplication.KEY_GEOLOCATION_ENABLED)
-        editor.remove(EntourageApplication.KEY_NO_MORE_DEMAND)
-        editor.putInt(EntourageApplication.KEY_NB_OF_LAUNCH, 0)
-        editor.apply()
-
-        authenticationController.logOutUser()
-        EntourageApplication.get(applicationContext).removeAllPushNotifications()
-        AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_LOGOUT)
-        startActivity(Intent(this, PreOnboardingStartActivity::class.java))
-        finish()
     }
 
     override fun getLink(linkId: String): String {

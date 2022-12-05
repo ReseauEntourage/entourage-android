@@ -192,8 +192,8 @@ class AuthenticationController() {
     }
 
     private fun saveCurrentUser() {
-        user?.let {
-            appSharedPref.putObject(PREF_KEY_USER, it)
+        user?.let { user->
+            appSharedPref.putObject(PREF_KEY_USER, user)
             appSharedPref.commit()
         }
     }

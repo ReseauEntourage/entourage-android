@@ -154,7 +154,7 @@ class MainPresenter(private val activity: MainActivity_v7) : AvatarUpdatePresent
 
             "logout" -> {
                 AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_PROFILE_LOGOUT)
-                activity.logout()
+                EntourageApplication.get().logOut()
             }
 
             "fb" -> {
