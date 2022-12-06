@@ -1,7 +1,7 @@
 package social.entourage.android.api.request
 
 import com.google.gson.annotations.SerializedName
-import com.squareup.okhttp.Response
+import okhttp3.Response
 import retrofit2.Call
 import retrofit2.http.*
 import social.entourage.android.new_v8.models.*

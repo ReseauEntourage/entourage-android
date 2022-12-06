@@ -86,6 +86,7 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
         actionsPresenter.getAction.observe(viewLifecycleOwner, ::handleResponseGetDetail)
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onAttach(activity: Activity) {
         super.onAttach(activity)
         try {
