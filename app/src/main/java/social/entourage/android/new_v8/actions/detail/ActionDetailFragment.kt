@@ -101,6 +101,7 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
         }
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onAttach(activity: Activity) {
         super.onAttach(activity)
         try {

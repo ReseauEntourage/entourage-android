@@ -94,14 +94,14 @@ class WebViewFragment : BaseDialogFragment() {
     private  fun setWebUrlRead() {
         EntourageApplication.get().apiModule.homeRequest
             .markRecoWebUrlRead(requestedUrl)
-            .enqueue(object : Callback<com.squareup.okhttp.Response> {
+            .enqueue(object : Callback<okhttp3.Response> {
                 override fun onResponse(
-                    call: Call<com.squareup.okhttp.Response>,
-                    response: Response<com.squareup.okhttp.Response>
+                    call: Call<okhttp3.Response>,
+                    response: Response<okhttp3.Response>
                 ) {
                 }
 
-                override fun onFailure(call: Call<com.squareup.okhttp.Response>, t: Throwable) {}
+                override fun onFailure(call: Call<okhttp3.Response>, t: Throwable) {}
             })
     }
     private fun showAnimation() {

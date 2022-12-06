@@ -2,13 +2,13 @@
 
 buildscript {
     ext {
-        kotlinVersion = '1.7.10'
+        kotlinVersion = '1.7.20'
         // Java versions
         sourceCompatibilityVersion = JavaVersion.VERSION_11
         targetCompatibilityVersion = JavaVersion.VERSION_11
         // SDK versions
         compileSdkVersion = 33
-        buildToolsVersion = "33.0.0"
+        buildToolsVersion = "33.0.1"
         minSdkVersion = 21 /*November 2014: Android 5.0, Lollipop*/
         targetSdkVersion = 33
     }
@@ -19,19 +19,18 @@ buildscript {
 
     dependencies {
         classpath 'com.android.tools.build:gradle:7.3.1'
-        classpath 'com.google.gms:google-services:4.3.13'
+        classpath 'com.google.gms:google-services:4.3.14'
         classpath 'com.google.firebase:firebase-plugins:2.0.0'
-        classpath 'com.google.firebase:firebase-crashlytics-gradle:2.9.1'
+        classpath 'com.google.firebase:firebase-crashlytics-gradle:2.9.2'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
         classpath "com.google.android.gms:oss-licenses-plugin:0.10.5"
-        classpath 'com.google.firebase:perf-plugin:1.4.1'  // Performance Monitoring plugin
-        classpath "androidx.navigation:navigation-safe-args-gradle-plugin:2.5.2"
+        classpath 'com.google.firebase:perf-plugin:1.4.2'  // Performance Monitoring plugin
+        classpath "androidx.navigation:navigation-safe-args-gradle-plugin:2.5.3"
     }
 }
 
 plugins {
-    id "com.github.ben-manes.versions" version "0.42.0"
-    id 'org.jetbrains.kotlin.android' version '1.7.10' apply false
+    id "com.github.ben-manes.versions" version "0.44.0"
     //gradlew dependencyUpdates -Drevision=release
     //https://github.com/ben-manes/gradle-versions-plugin/releases
 }
