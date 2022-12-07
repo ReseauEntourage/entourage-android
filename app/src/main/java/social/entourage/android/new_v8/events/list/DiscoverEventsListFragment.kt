@@ -46,14 +46,14 @@ class DiscoverEventsListFragment : Fragment() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         activityResultLauncher = registerForActivityResult(
-            ActivityResultContracts.StartActivityForResult(),
-            ActivityResultCallback<ActivityResult> { result ->
+            ActivityResultContracts.StartActivityForResult())
+            { result ->
                 val filters = result.data?.getSerializableExtra(EventFiltersActivity.FILTERS) as? EventActionLocationFilters
                 filters?.let {
                     this.currentFilters = filters
                     updateFilters()
                 }
-            })
+            }
     }
 
     override fun onCreateView(

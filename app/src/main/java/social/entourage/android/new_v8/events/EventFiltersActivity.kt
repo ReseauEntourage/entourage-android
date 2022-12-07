@@ -52,7 +52,7 @@ class EventFiltersActivity : AppCompatActivity() {
             ActivityResultContracts.RequestMultiplePermissions()
         ) { permissions ->
             if(permissions.entries.any {
-                    it.value == true
+                    it.value
                 })  {
                 EntBus.post(Events.OnLocationPermissionGranted(true))
                 startRequestLocation()

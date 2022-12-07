@@ -12,7 +12,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.app.ActivityCompat
 import androidx.core.content.FileProvider
 import androidx.core.content.PermissionChecker
 import androidx.lifecycle.MutableLiveData
@@ -29,13 +28,13 @@ import java.util.*
 
 private const val ARG_FIRSTNAME = "firstname"
 
-open class OnboardingPhotoFragment : BaseDialogFragment(), PhotoEditDelegate,
-    ActivityCompat.OnRequestPermissionsResultCallback {
+open class OnboardingPhotoFragment : BaseDialogFragment(), PhotoEditDelegate {
 
-    protected var pickedImageUri: Uri? = null
-    protected var pickedImageEditedUri: Uri? = null
-    protected var mCurrentPhotoPath: String? = null
-    protected var photoSource = 0
+    private val readMediaPermission: String = if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) Manifest.permission.READ_EXTERNAL_STORAGE else Manifest.permission.READ_MEDIA_IMAGES
+    private var pickedImageUri: Uri? = null
+    private var pickedImageEditedUri: Uri? = null
+    private var mCurrentPhotoPath: String? = null
+    private var photoSource = 0
 
     private var firstname: String? = null
 
@@ -49,22 +48,16 @@ open class OnboardingPhotoFragment : BaseDialogFragment(), PhotoEditDelegate,
 
     val getContent =
         registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
-            uri.let { urii ->
+            uri?.let { urii ->
                 photoSource = PICK_IMAGE_REQUEST
-                Timber.d("Return Image REQUEST uri ? $urii")
                 if (PermissionChecker.checkSelfPermission(
                         requireActivity(),
-                        Manifest.permission.READ_EXTERNAL_STORAGE
+                        readMediaPermission
                     ) != PermissionChecker.PERMISSION_GRANTED
                 ) {
                     pickedImageUri = urii
-                    Timber.d("Return Image REQUEST ici")
-                    requestPermissions(
-                        arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
-                        PICK_AND_CROP_IMAGE_PERMISSION_CODE
-                    )
+                    requestReadPicturePermissionLauncher.launch(readMediaPermission)
                 } else {
-                    Timber.d("Return Image REQUEST LA")
                     loadPickedImage(urii)
                 }
                 return@let
@@ -92,6 +85,40 @@ open class OnboardingPhotoFragment : BaseDialogFragment(), PhotoEditDelegate,
             mCurrentPhotoPath?.let { showNextStep(Uri.fromFile(File(it))) }
         }
     }
+
+    private val requestTakePicturePermissionLauncher =
+        registerForActivityResult(
+            ActivityResultContracts.RequestPermission()
+        ) { isGranted ->
+            if(isGranted) {
+                showTakePhotoActivity()
+            } else {
+                Toast.makeText(
+                    activity,
+                    R.string.user_photo_error_camera_permission,
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+        }
+
+    private val requestReadPicturePermissionLauncher =
+        registerForActivityResult(
+            ActivityResultContracts.RequestPermission()
+        ) { isGranted ->
+            if (isGranted) {
+                if (pickedImageUri != null) {
+                    loadPickedImage(pickedImageUri)
+                } else {
+                    showChoosePhotoActivity()
+                }
+            } else {
+                Toast.makeText(
+                    activity,
+                    R.string.user_photo_error_read_permission,
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+        }
 
     //**********//**********//**********
     // Lifecycle
@@ -135,13 +162,10 @@ open class OnboardingPhotoFragment : BaseDialogFragment(), PhotoEditDelegate,
             // Check if we have reading rights
             if (PermissionChecker.checkSelfPermission(
                     requireActivity(),
-                    Manifest.permission.READ_EXTERNAL_STORAGE
+                    readMediaPermission
                 ) != PermissionChecker.PERMISSION_GRANTED
             ) {
-                requestPermissions(
-                    arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
-                    PICK_AND_CROP_IMAGE_PERMISSION_CODE
-                )
+                requestReadPicturePermissionLauncher.launch(readMediaPermission)
             } else {
                 // Proceed to next step
                 loadPickedImage(pickedImageUri)
@@ -175,13 +199,10 @@ open class OnboardingPhotoFragment : BaseDialogFragment(), PhotoEditDelegate,
             // write permission is used to store the cropped image before upload
             if (PermissionChecker.checkSelfPermission(
                     requireActivity(),
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+                    readMediaPermission
                 ) != PermissionChecker.PERMISSION_GRANTED
             ) {
-                requestPermissions(
-                    arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
-                    PICK_AND_CROP_IMAGE_PERMISSION_CODE
-                )
+                requestReadPicturePermissionLauncher.launch(readMediaPermission)
             } else {
                 showChoosePhotoActivity()
             }
@@ -193,20 +214,9 @@ open class OnboardingPhotoFragment : BaseDialogFragment(), PhotoEditDelegate,
                     Manifest.permission.CAMERA
                 ) == PermissionChecker.PERMISSION_DENIED
             ) {
-                requestPermissions(arrayOf(Manifest.permission.CAMERA), CAMERA_PERMISSION_CODE)
+                requestTakePicturePermissionLauncher.launch(Manifest.permission.CAMERA)
             } else {
-                if (PermissionChecker.checkSelfPermission(
-                        requireActivity(),
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE
-                    ) == PermissionChecker.PERMISSION_DENIED
-                ) {
-                    requestPermissions(
-                        arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
-                        WRITE_STORAGE_PERMISSION_CODE
-                    )
-                } else {
-                    showTakePhotoActivity()
-                }
+                showTakePhotoActivity()
             }
         }
     }
@@ -277,67 +287,6 @@ open class OnboardingPhotoFragment : BaseDialogFragment(), PhotoEditDelegate,
     }
 
     //**********//**********//**********
-    // Returns methods
-    //**********//**********//**********
-
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<String?>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == CAMERA_PERMISSION_CODE) {
-            if (grantResults.isNotEmpty() && grantResults[0] == PermissionChecker.PERMISSION_GRANTED) {
-                if (PermissionChecker.checkSelfPermission(
-                        requireActivity(),
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE
-                    ) == PermissionChecker.PERMISSION_DENIED
-                ) {
-                    requestPermissions(
-                        arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
-                        WRITE_STORAGE_PERMISSION_CODE
-                    )
-                } else {
-                    showTakePhotoActivity()
-                }
-            } else {
-                Toast.makeText(
-                    activity,
-                    R.string.user_photo_error_camera_permission,
-                    Toast.LENGTH_LONG
-                ).show()
-            }
-            return
-        }
-        if (requestCode == PICK_AND_CROP_IMAGE_PERMISSION_CODE) {
-            if (grantResults.isNotEmpty() && grantResults[0] == PermissionChecker.PERMISSION_GRANTED) {
-                if (pickedImageUri != null) {
-                    loadPickedImage(pickedImageUri)
-                } else {
-                    showChoosePhotoActivity()
-                }
-            } else {
-                Toast.makeText(
-                    activity,
-                    R.string.user_photo_error_read_permission,
-                    Toast.LENGTH_LONG
-                ).show()
-            }
-        }
-        if (requestCode == WRITE_STORAGE_PERMISSION_CODE) {
-            if (grantResults.isNotEmpty() && grantResults[0] == PermissionChecker.PERMISSION_GRANTED) {
-                showTakePhotoActivity()
-            } else {
-                Toast.makeText(
-                    activity,
-                    R.string.user_photo_error_read_permission,
-                    Toast.LENGTH_LONG
-                ).show()
-            }
-        }
-    }
-
-    //**********//**********//**********
     // PhotoEditDelegate
     //**********//**********//**********
 
@@ -382,9 +331,6 @@ open class OnboardingPhotoFragment : BaseDialogFragment(), PhotoEditDelegate,
         const val TAG = "social.entourage.android.onboarding.OnboardingPhotoFragment"
         const val PICK_IMAGE_REQUEST = 1
         const val TAKE_PHOTO_REQUEST = 2
-        const val PICK_AND_CROP_IMAGE_PERMISSION_CODE = 3
-        const val WRITE_STORAGE_PERMISSION_CODE = 4
-        const val CAMERA_PERMISSION_CODE = 5
 
         const val KEY_PHOTO_PATH = "social.entourage.android.photo_path"
 

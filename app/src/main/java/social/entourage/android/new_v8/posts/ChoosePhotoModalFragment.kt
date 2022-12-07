@@ -36,9 +36,7 @@ class ChoosePhotoModalFragment : BottomSheetDialogFragment() {
     val binding: NewFragmentChoosePhotoModalBinding get() = _binding!!
 
     var photoFileUri: Uri? = null
-    var mCurrentPhotoPath: String? = null
-    private var photoFile: File? = null
-
+    private var mCurrentPhotoPath: String? = null
 
     val getContent =
         registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
@@ -190,54 +188,51 @@ class ChoosePhotoModalFragment : BottomSheetDialogFragment() {
         }
     }
 
-    private
-    val permReqLauncher =
-        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
-            val granted = permissions.entries.all {
-                it.value == true
-            }
+    private val permCameraLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
             if (granted) {
                 showTakePhotoActivity()
+            } else {
+                Toast.makeText(
+                    activity,
+                    R.string.user_photo_error_camera_permission,
+                    Toast.LENGTH_LONG
+                ).show()
             }
         }
 
-    private
-    val permReqChoosePhotoLauncher =
-        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
-            val granted = permissions.entries.all {
-                it.value == true
-            }
+    private val permReqChoosePhotoLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
             if (granted) {
                 showChoosePhotoActivity()
+            } else {
+                Toast.makeText(
+                    activity,
+                    R.string.user_photo_error_camera_permission,
+                    Toast.LENGTH_LONG
+                ).show()
             }
         }
 
-    private fun hasPermissions(
+    private fun hasPermission(
         context: Context,
-        permissions: Array<String>
+        permission: String
     ): Boolean =
-        permissions.all {
-            ActivityCompat.checkSelfPermission(
-                context,
-                it
-            ) == PackageManager.PERMISSION_GRANTED
-        }
+        ActivityCompat.checkSelfPermission(context, permission) == PackageManager.PERMISSION_GRANTED
 
     private fun takePhoto() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
             showTakePhotoActivity()
         }
         activity?.let {
-            if (hasPermissions(
+            if (hasPermission(
                     activity as Context,
-                    PERMISSIONS
+                    Manifest.permission.CAMERA
                 )
             ) {
                 showTakePhotoActivity()
             } else {
-                permReqLauncher.launch(
-                    PERMISSIONS
-                )
+                permCameraLauncher.launch(Manifest.permission.CAMERA)
             }
         }
     }
@@ -247,27 +242,25 @@ class ChoosePhotoModalFragment : BottomSheetDialogFragment() {
             showChoosePhotoActivity()
         }
         activity?.let {
-            if (hasPermissions(
+            if (hasPermission(
                     activity as Context,
-                    PERMISSIONS
+                    readMediaPermission
                 )
             ) {
                 showChoosePhotoActivity()
             } else {
-                permReqChoosePhotoLauncher.launch(
-                    PERMISSIONS
-                )
+                permReqChoosePhotoLauncher.launch(readMediaPermission)
             }
         }
     }
 
     companion object {
         const val TAG = "ChoosePhotoModalFragment"
-        var PERMISSIONS = arrayOf(
-            Manifest.permission.CAMERA,
-            Manifest.permission.READ_EXTERNAL_STORAGE,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE
-        )
+        val readMediaPermission =
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU)
+                Manifest.permission.READ_EXTERNAL_STORAGE
+            else
+                Manifest.permission.READ_MEDIA_IMAGES
 
         fun newInstance(): ChoosePhotoModalFragment {
             return ChoosePhotoModalFragment()
