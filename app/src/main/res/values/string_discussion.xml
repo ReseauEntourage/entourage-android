@@ -24,7 +24,7 @@
 
     //Pop Blockuser
     <string name="params_block_user_conv_pop_title">Bloquer l’utilisateur</string>
-    <string name="params_block_user_conv_pop_message">Souhaitez vous bloquer %s ?\nCet utilisateur ne pourra plus vous envoyer de message et la conversation sera supprimée. Vous pourrez déploquer l’utilisateur à tout moment depuis votre profil.</string>
+    <string name="params_block_user_conv_pop_message">Souhaitez vous bloquer %s ?\nCet utilisateur ne pourra plus vous envoyer de message. Vous pourrez débloquer l’utilisateur à tout moment depuis les paramètres de votre profil.</string>
     <string name="params_block_user_conv_pop_bt_quit">Bloquer</string>
     <string name="params_block_user_conv_pop_bt_cancel">Annuler</string>
 
@@ -36,9 +36,9 @@
      <string name="message_user_blocked_by_me">Vous avez bloqué %s . Vous ne pouvez plus lui envoyer de message.</string>
      <string name="message_user_blocked_by_other">Vous ne pouvez plus envoyer de message à %s . Cette conversation a été bloquée.</string>
 
-    <string name="params_unblock_users_title">Débloquer des contact</string>
+    <string name="params_unblock_users_title">Débloquer des contacts</string>
 
-    <string name="settingsUnblockUserInfo">Séléctionnez un ou plusieurs contact à débloquer.</string>
+    <string name="settingsUnblockUserInfo">Sélectionnez un ou plusieurs contacts à débloquer.</string>
     <string name="settingsUnblockBT">Débloquer</string>
     <string name="settingsUnblockUser_error">Veuillez choisir au moins un contact</string>
 

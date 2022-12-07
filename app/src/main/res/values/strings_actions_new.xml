@@ -29,7 +29,7 @@
     <string name="action_my_empty_subtitle">Vous pouvez créer une contribution ou une demande en cliquant sur le « + » de la page « Entraide »</string>
 
     <string name="action_cancel_title">L’annonce a été supprimée…</string>
-    <string name="action_cancel_subtitle">Vous pouvez voir d’autres annonces suceptibles de vous interesser ou créer une demande dans la partie « Entraide »</string>
+    <string name="action_cancel_subtitle">Vous pouvez voir d’autres annonces susceptibles de vous interesser ou créer une demande dans la partie « Entraide »</string>
 
     <string name="action_report_demand">Signaler la demande</string>
     <string name="action_report_contrib">Signaler la contribution</string>
