@@ -8,7 +8,7 @@ import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import kotlinx.android.synthetic.main.fragment_onboarding_place.*
+import kotlinx.android.synthetic.main.fragment_select_place.*
 import kotlinx.android.synthetic.main.layout_view_title.view.*
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R

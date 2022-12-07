@@ -44,6 +44,8 @@ class CountryCodePicker : RelativeLayout {
     private var mHideNameCode = false
     private var mShowFlag = true
     private var mShowFullName = false
+
+    var countryCodePickerListener:CountryCodePickerListener? = null
     /**
      * SelectionDialogSearch is the facility to search through the list of country while selecting.
      *
@@ -248,6 +250,7 @@ class CountryCodePicker : RelativeLayout {
             //as soon as country is selected, textView should be updated
             val newSelectedCountry = selectedCountry ?: CountryLightList.getByCode(context, preferredCountries, mDefaultCountryCode) ?: return
             mSelectedCountry = newSelectedCountry
+            countryCodePickerListener?.updatedCountry(newSelectedCountry)
             selected_country_tv?.text = if (!mHideNameCode) {
                 if (mShowFullName) {
                     if (!mHidePhoneCode) {
@@ -578,4 +581,8 @@ class CountryCodePicker : RelativeLayout {
         const val defaultContentColor = 0
         const val defaultBackgroundColor = Color.TRANSPARENT
     }
+}
+
+interface CountryCodePickerListener {
+    fun updatedCountry(country: Country)
 }

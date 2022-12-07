@@ -194,10 +194,13 @@ class OnboardingAPI {
         })
     }
 
-    fun updateUserGoal(goalString:String, listener:(isOK:Boolean, userResponse: UserResponse?) -> Unit) {
+    fun updateUserGoal(goalString:String, email:String?, listener:(isOK:Boolean, userResponse: UserResponse?) -> Unit) {
 
         val user = ArrayMap<String, Any>()
         user["goal"] = goalString
+        if (email?.isNotEmpty() == true){
+            user["email"] = email
+        }
 
         val request = ArrayMap<String, Any>()
         request["user"] = user

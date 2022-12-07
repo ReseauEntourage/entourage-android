@@ -1,4 +1,3 @@
-package social.entourage.android.onboarding
 
 import android.graphics.Bitmap
 import android.graphics.Color
@@ -17,9 +16,9 @@ import kotlinx.android.synthetic.main.fragment_onboarding_edit_photo.*
 import social.entourage.android.R
 import social.entourage.android.tools.Utils
 import social.entourage.android.tools.rotate
+import social.entourage.android.user.edit.photo.PhotoEditDelegate
 import timber.log.Timber
 import java.io.File
-import java.io.FileNotFoundException
 import java.io.IOException
 
 private const val PHOTO_PARAM = "social.entourage.android.photo_param"
@@ -171,11 +170,11 @@ class OnboardingEditPhotoFragment : DialogFragment() {
         const val TAG = "social.entourage.android.onboarding.OnboardingEditPhotoFragment"
 
         fun newInstance(photoUri: Uri?, photoSource: Int) =
-                OnboardingEditPhotoFragment().apply {
-                    arguments = Bundle().apply {
-                        putParcelable(PHOTO_PARAM, photoUri)
-                        putInt(PHOTO_SOURCE, photoSource)
-                    }
+            OnboardingEditPhotoFragment().apply {
+                arguments = Bundle().apply {
+                    putParcelable(PHOTO_PARAM, photoUri)
+                    putInt(PHOTO_SOURCE, photoSource)
                 }
+            }
     }
 }

@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/layout_main"
+    tools:context=".onboarding.onboard.OnboardingPhase2Fragment">
+
+
+    <TextView
+        android:id="@+id/ui_onboard_code_tv_phone_mod"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_marginStart="8dp"
+        android:gravity="center_vertical"
+        android:text="@string/mod_phone_code"
+        android:textColor="@color/accent"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@+id/ui_onboard_code_tv_phone"
+        app:layout_constraintStart_toEndOf="@+id/ui_onboard_code_tv_phone"
+        app:layout_constraintTop_toTopOf="@+id/ui_onboard_code_tv_phone" />
+
+    <TextView
+        android:id="@+id/ui_onboard_code_tv_phone"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:fontFamily="sans-serif-light"
+        android:text="0000000000"
+        android:textColor="@color/onboard_black_36"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/ui_onboard_code_tv_description"
+        app:layout_constraintTop_toBottomOf="@+id/ui_onboard_code_tv_description" />
+
+    <TextView
+        android:id="@+id/ui_onboard_code_tv_description"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:fontFamily="sans-serif-light"
+        android:text="@string/onboard_sms_sub"
+        android:textColor="@color/onboard_black_36"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/ui_onboard_code"
+        style="@style/input"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="32dp"
+        android:autofillHints="phoneNumber"
+        android:backgroundTint="@color/light_orange_opacity_50"
+        android:hint="@string/onboard_code_placeholder"
+        android:inputType="phone"
+        android:maxLines="1"
+        android:paddingTop="0dp"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="@+id/ui_onboard_code_tv_description"
+        app:layout_constraintStart_toStartOf="@+id/ui_onboard_code_tv_phone"
+        app:layout_constraintTop_toBottomOf="@+id/ui_onboard_code_tv_phone" />
+
+    <Button
+        android:id="@+id/ui_onboard_bt_help"
+        style="@style/TransparentButton"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/new_layout_button_round_transp_orange_60"
+        android:fontFamily="sans-serif-light"
+        android:paddingStart="16dp"
+        android:paddingTop="8dp"
+        android:paddingEnd="16dp"
+        android:paddingBottom="8dp"
+        android:text="@string/onboard_sms_help"
+        android:textColor="@color/accent"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/ui_onboard_bt_code_retry"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:layout_marginTop="32dp"
+        android:background="@drawable/new_layout_button_round_transp_orange_30"
+        android:fontFamily="@font/nunitosans_regular"
+        android:gravity="center_vertical"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:text="@string/onboard_sms_wait_retry_end"
+        android:textAllCaps="false"
+        android:textColor="@color/accent"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ui_onboard_code" />
+
+    <TextView
+        android:id="@+id/ui_onboard_code_retry"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:layout_marginTop="32dp"
+        android:fontFamily="@font/nunitosans_regular"
+        android:gravity="center_vertical"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:text="@string/onboard_sms_wait_retry_end"
+        android:textAllCaps="false"
+        android:textColor="@color/onboard_black_36"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ui_onboard_code" />
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,17 +1,16 @@
-package social.entourage.android.new_v8.events.create
+package social.entourage.android.onboarding.onboard
 
 import android.view.View
-import androidx.navigation.fragment.findNavController
 import kotlinx.android.synthetic.main.fragment_select_place.*
 import kotlinx.android.synthetic.main.layout_view_title.view.*
 import social.entourage.android.R
 import social.entourage.android.user.edit.place.UserActionPlaceFragment
-import timber.log.Timber
 
 
-class CreateEventActionZoneFragment : UserActionPlaceFragment() {
+class OnboardingAddPlaceFragment : UserActionPlaceFragment() {
 
-    // To be changed
+    var callback:OnboardingChoosePlaceCallback? = null
+
     override fun setupViews() {
         super.setupViews()
         ui_onboard_place_tv_title?.text = getString(R.string.profile_edit_zone_title)
@@ -23,18 +22,12 @@ class CreateEventActionZoneFragment : UserActionPlaceFragment() {
         }
         edit_place_title_layout?.title_close_button?.setOnClickListener {
             dismiss()
-            findNavController().popBackStack()
         }
     }
 
     private fun validate() {
-        with(CommunicationHandler.event) {
-            metadata?.streetAddress = userAddress?.displayAddress
-            latitude = userAddress?.latitude
-            longitude = userAddress?.longitude
-            metadata?.googlePlaceId = userAddress?.googlePlaceId ?: ""
-            metadata?.placeName = userAddress?.displayAddress ?: ""
-        }
-        findNavController().popBackStack()
+        callback?.updatePlace(userAddress)
+        dismiss()
     }
 }
+

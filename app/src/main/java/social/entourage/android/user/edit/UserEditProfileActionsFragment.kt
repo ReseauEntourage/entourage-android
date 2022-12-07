@@ -14,9 +14,9 @@ import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.api.OnboardingAPI
 import social.entourage.android.base.BaseDialogFragment
-import social.entourage.android.onboarding.UserTypeSelection
-import social.entourage.android.onboarding.asso.AssoActivities
-import social.entourage.android.onboarding.sdf_neighbour.SdfNeighbourActivities
+import social.entourage.android.onboarding.onboard.AssoActivities
+import social.entourage.android.onboarding.onboard.SdfNeighbourActivities
+import social.entourage.android.onboarding.onboard.UserTypeSelection
 import social.entourage.android.tools.disable
 import social.entourage.android.tools.enable
 import social.entourage.android.tools.log.AnalyticsEvents
@@ -302,7 +302,7 @@ class UserEditProfileActionsFragment : BaseDialogFragment() {
 
         AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ACTION_PROFILE_CHOOSE_PROFILE_SIGNUP)
 
-        OnboardingAPI.getInstance().updateUserGoal(_currentGoal) { isOK, userResponse ->
+        OnboardingAPI.getInstance().updateUserGoal(_currentGoal,null) { isOK, userResponse ->
             if (isOK && userResponse != null) {
                 val authenticationController = EntourageApplication.get().authenticationController
                 authenticationController.saveUser(userResponse.user)

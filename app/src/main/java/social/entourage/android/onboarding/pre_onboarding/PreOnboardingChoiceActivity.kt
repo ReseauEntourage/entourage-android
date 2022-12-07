@@ -7,7 +7,7 @@ import social.entourage.android.base.BaseActivity
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.R
 import social.entourage.android.onboarding.login.LoginActivity
-import social.entourage.android.onboarding.OnboardingMainActivity
+import social.entourage.android.onboarding.onboard.OnboardingStartActivity
 
 class PreOnboardingChoiceActivity : BaseActivity() {
 
@@ -25,7 +25,7 @@ class PreOnboardingChoiceActivity : BaseActivity() {
 
         ui_button_signup?.setOnClickListener {
             AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ACTION_START_SIGNUPSTART)
-            val intent = Intent(this, OnboardingMainActivity::class.java)
+            val intent = Intent(this, OnboardingStartActivity::class.java)
             //intent.putExtra("fromChoice","signup")
             startActivity(intent)
             finish()

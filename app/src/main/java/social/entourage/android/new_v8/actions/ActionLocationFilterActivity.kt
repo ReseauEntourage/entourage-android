@@ -22,7 +22,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.libraries.places.compat.AutocompleteFilter
 import com.google.android.libraries.places.compat.ui.PlaceAutocomplete
 import com.google.android.libraries.places.widget.AutocompleteActivity
-import kotlinx.android.synthetic.main.fragment_onboarding_place.*
+import kotlinx.android.synthetic.main.fragment_select_place.*
 import kotlinx.android.synthetic.main.new_activity_event_filters.view.*
 import kotlinx.android.synthetic.main.new_header.view.*
 import social.entourage.android.EntourageApplication

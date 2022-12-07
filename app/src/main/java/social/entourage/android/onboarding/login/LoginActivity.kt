@@ -108,16 +108,7 @@ class LoginActivity : BaseActivity() {
         val sharedPreferences = EntourageApplication.get().sharedPreferences
         sharedPreferences.edit().putBoolean(KEY_ONBOARDING_SHOW_POP_FIRSTLOGIN, true).apply()
 
-        if (authenticationController.me?.address == null) {
-            goLoginNext()
-        } else {
-            goRealMain()
-        }
-    }
-
-    fun goLoginNext() {
-        startActivity(Intent(this, LoginNextActivity::class.java))
-        finish()
+        goRealMain()
     }
 
     fun goRealMain() {

@@ -12,7 +12,6 @@ import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.R
 import social.entourage.android.databinding.FragmentOnboardingPhotoBinding
 import social.entourage.android.new_v8.profile.editProfile.EditProfileCallback
-import social.entourage.android.onboarding.OnboardingPhotoFragment
 
 class ChoosePhotoFragment : OnboardingPhotoFragment() {
 

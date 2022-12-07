@@ -20,7 +20,6 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import social.entourage.android.api.OnboardingAPI
 import social.entourage.android.onboarding.OnboardingMainActivity
-import social.entourage.android.onboarding.asso.OnboardingAssoSearchActivity
 import java.util.*
 
 @LargeTest

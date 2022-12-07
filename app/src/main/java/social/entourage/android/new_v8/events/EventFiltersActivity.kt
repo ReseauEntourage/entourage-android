@@ -22,7 +22,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.libraries.places.compat.AutocompleteFilter
 import com.google.android.libraries.places.compat.ui.PlaceAutocomplete
 import com.google.android.libraries.places.widget.AutocompleteActivity
-import kotlinx.android.synthetic.main.fragment_onboarding_place.*
+import kotlinx.android.synthetic.main.new_activity_event_filters.*
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.api.tape.Events
@@ -301,8 +301,8 @@ class EventFiltersActivity : AppCompatActivity() {
     }
 
     fun updateLocationText(lastLocation: Location?) {
-        ui_onboard_place_tv_location?.text = ""
-        ui_onboard_place_tv_location?.hint = getString(R.string.onboard_place_placeholder)
+        place_name?.text = ""
+        place_name?.hint = getString(R.string.onboard_place_placeholder)
         lastLocation?.let {
             this.let{ activity ->
                 try {

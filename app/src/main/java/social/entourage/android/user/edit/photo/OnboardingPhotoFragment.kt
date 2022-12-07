@@ -1,12 +1,10 @@
-package social.entourage.android.onboarding
+package social.entourage.android.user.edit.photo
 
 import android.Manifest
-import android.app.Activity
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.LayoutInflater
@@ -17,6 +15,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.content.FileProvider
 import androidx.core.content.PermissionChecker
+import androidx.lifecycle.MutableLiveData
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.fragment_onboarding_photo.*
 import social.entourage.android.R
@@ -403,4 +402,10 @@ open class OnboardingPhotoFragment : BaseDialogFragment(), PhotoEditDelegate,
 //**********//**********//**********
 interface PhotoEditDelegate {
     fun onPhotoEdited(photoURI: Uri?, photoSource: Int)
+}
+
+interface OnboardingCallback {
+    val errorMessage: MutableLiveData<String>
+    fun updateUserPhoto(imageUri: Uri?)
+    fun updateButtonNext(isValid: Boolean)
 }

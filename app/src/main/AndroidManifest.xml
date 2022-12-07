@@ -48,8 +48,14 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".new_v8.home.notifications.NotificationsInAppActivity"
-            android:exported="false">
-        </activity>
+            android:exported="false"/>
+        <activity
+            android:name=".onboarding.onboard.OnboardingStartActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".onboarding.onboard.OnboardingEndActivity"
+            android:exported="false"/>
         <activity
             android:name=".new_v8.home.pedago.PedagoDetailActivity"
             android:exported="false" />
@@ -134,7 +140,8 @@
             android:windowSoftInputMode="adjustPan" /> <!-- use for accessing Storage Android 10+ -->
         <activity
             android:name=".onboarding.login.LoginChangePhoneActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".guide.GDSMainActivity"
             android:screenOrientation="portrait" />
@@ -291,19 +298,13 @@
             android:name=".onboarding.pre_onboarding.PreOnboardingStartActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".onboarding.OnboardingMainActivity"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".onboarding.login.LoginActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize" />
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".onboarding.login.LoginNextActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" />
-        <activity
-            android:name=".onboarding.asso.OnboardingAssoSearchActivity"
-            android:screenOrientation="portrait" />
 
         <service
             android:name=".service.EntService"

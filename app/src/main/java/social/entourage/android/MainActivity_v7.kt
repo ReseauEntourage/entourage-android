@@ -28,7 +28,6 @@ import social.entourage.android.guide.GDSMainActivity
 import social.entourage.android.home.expert.HomeExpertFragment
 import social.entourage.android.message.push.PushNotificationManager
 import social.entourage.android.navigation.EntBottomNavigationView
-import social.entourage.android.onboarding.OnboardingPhotoFragment
 import social.entourage.android.service.EntService
 import social.entourage.android.tools.EntBus
 import social.entourage.android.tools.log.AnalyticsEvents
@@ -38,6 +37,7 @@ import social.entourage.android.tools.log.AnalyticsEvents.updateUserInfo
 import social.entourage.android.user.*
 import social.entourage.android.user.edit.UserEditFragment
 import social.entourage.android.user.edit.photo.PhotoChooseInterface
+import social.entourage.android.user.edit.photo.PhotoChooseSourceFragmentCompat.Companion.TAKE_PHOTO_REQUEST
 import social.entourage.android.user.edit.photo.PhotoEditFragment
 import social.entourage.android.user.edit.place.UserEditActionZoneFragment
 import timber.log.Timber
@@ -372,7 +372,7 @@ class MainActivity_v7 : BaseSecuredActivity(),
 
     override fun onPhotoChosen(photoURI: Uri?, photoSource: Int) {
         photoURI?.path?.let { path ->
-            if (photoSource == OnboardingPhotoFragment.TAKE_PHOTO_REQUEST) {
+            if (photoSource == TAKE_PHOTO_REQUEST) {
                 logEvent(AnalyticsEvents.EVENT_PHOTO_SUBMIT)
             }
             //Upload the photo to Amazon S3

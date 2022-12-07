@@ -3,7 +3,7 @@ package social.entourage.android.new_v8.actions.create
 import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
-import kotlinx.android.synthetic.main.fragment_onboarding_place.*
+import kotlinx.android.synthetic.main.fragment_select_place.*
 import kotlinx.android.synthetic.main.layout_view_title.view.*
 import social.entourage.android.R
 import social.entourage.android.user.edit.place.UserActionPlaceFragment

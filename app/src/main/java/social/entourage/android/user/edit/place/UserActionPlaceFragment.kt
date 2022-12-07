@@ -17,7 +17,7 @@ import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
 import com.google.android.libraries.places.compat.ui.PlaceAutocomplete
 import com.google.android.libraries.places.widget.AutocompleteActivity
-import kotlinx.android.synthetic.main.fragment_onboarding_place.*
+import kotlinx.android.synthetic.main.fragment_select_place.*
 import social.entourage.android.R
 import social.entourage.android.api.model.User
 import social.entourage.android.api.tape.Events
@@ -78,7 +78,7 @@ open class UserActionPlaceFragment : BaseDialogFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_onboarding_place, container, false)
+        return inflater.inflate(R.layout.fragment_select_place, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

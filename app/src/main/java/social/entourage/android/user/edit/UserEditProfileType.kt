@@ -10,7 +10,7 @@ import kotlinx.android.synthetic.main.fragment_user_edit_profile_type.*
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.R
 import social.entourage.android.base.BaseDialogFragment
-import social.entourage.android.onboarding.UserTypeSelection
+import social.entourage.android.onboarding.onboard.UserTypeSelection
 import social.entourage.android.tools.disable
 import social.entourage.android.tools.enable
 import timber.log.Timber
