@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
@@ -27,9 +28,12 @@ import social.entourage.android.api.MetaDataRepository
 import social.entourage.android.databinding.NewFragmentActionDetailBinding
 import social.entourage.android.new_v8.actions.ActionsPresenter
 import social.entourage.android.new_v8.actions.create.CreateActionActivity
+import social.entourage.android.new_v8.discussions.DetailConversationActivity
+import social.entourage.android.new_v8.discussions.DiscussionsPresenter
 import social.entourage.android.new_v8.groups.details.rules.GroupRulesActivity
 import social.entourage.android.new_v8.models.Action
 import social.entourage.android.new_v8.models.ActionSection
+import social.entourage.android.new_v8.models.Conversation
 import social.entourage.android.new_v8.user.UserProfileActivity
 import social.entourage.android.new_v8.utils.Const
 import social.entourage.android.new_v8.utils.Utils
@@ -43,6 +47,7 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
     private var mCallback:OnDetailActionReceive? = null
 
     private val actionsPresenter: ActionsPresenter by lazy { ActionsPresenter() }
+    private val discussionPresenter: DiscussionsPresenter by lazy { DiscussionsPresenter() }
 
     private var actionId:Int = 0
 
@@ -84,6 +89,8 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
 
         loadAction()
         actionsPresenter.getAction.observe(viewLifecycleOwner, ::handleResponseGetDetail)
+        //Use to show or create conversation 1 to 1
+        discussionPresenter.newConversation.observe(requireActivity(), ::handleGetConversation)
     }
 
     override fun onAttach(activity: Activity) {
@@ -110,6 +117,26 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
         } ?: kotlin.run {
             mCallback?.hideIconReport()
             showCancelView()
+        }
+    }
+
+    private fun handleGetConversation(conversation: Conversation?) {
+        conversation?.let {
+            context?.startActivity(
+                Intent(context, DetailConversationActivity::class.java)
+                    .putExtras(
+                        bundleOf(
+                            Const.ID to conversation.id,
+                            Const.POST_AUTHOR_ID to conversation.user?.id,
+                            Const.SHOULD_OPEN_KEYBOARD to false,
+                            Const.NAME to conversation.title,
+                            Const.IS_CONVERSATION_1TO1 to true,
+                            Const.IS_MEMBER to true,
+                            Const.IS_CONVERSATION to true,
+                            Const.HAS_TO_SHOW_MESSAGE to conversation.hasToShowFirstMessage()
+                        )
+                    )
+            )
         }
     }
 
@@ -167,12 +194,12 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
             )
         }
         binding.uiBtContact.setOnClickListener {
-            //contact 1to1
-            Utils.showToast(requireContext(), getString(R.string.not_implemented))
+            action?.author?.userID?.let { it -> discussionPresenter.createOrGetConversation(it) }
         }
 
         binding.uiBtBackEmpty.setOnClickListener {
             requireActivity().finish()
+
         }
     }
 
