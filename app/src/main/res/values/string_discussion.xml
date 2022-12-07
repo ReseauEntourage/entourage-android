@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="discussion_main_title">Messages</string>
+    <string name="discussion_main_title">Discussions</string>
     <string name="discussion_settings_title">Paramètres de la conversation</string>
     <string name="discussion_settings_signal">Signaler</string>
     <string name="discussion_settings_signal_sub">Signalez cette conversation à l\'équipe Entourage.</string>
