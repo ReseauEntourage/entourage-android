@@ -302,7 +302,7 @@ class UserEditProfileActionsFragment : BaseDialogFragment() {
 
         AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ACTION_PROFILE_CHOOSE_PROFILE_SIGNUP)
 
-        OnboardingAPI.getInstance().updateUserGoal(_currentGoal,null) { isOK, userResponse ->
+        OnboardingAPI.getInstance().updateUserGoal(_currentGoal,null,null) { isOK, userResponse ->
             if (isOK && userResponse != null) {
                 val authenticationController = EntourageApplication.get().authenticationController
                 authenticationController.saveUser(userResponse.user)

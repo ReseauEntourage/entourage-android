@@ -199,7 +199,7 @@ class OnboardingStartActivity : AppCompatActivity(), OnboardingStartCallback {
 
         val currentGoal = userType.getGoalString()
 
-        OnboardingAPI.getInstance().updateUserGoal(currentGoal,temporaryEmail) { isOK, userResponse ->
+        OnboardingAPI.getInstance().updateUserGoal(currentGoal,temporaryEmail,hasConsent) { isOK, userResponse ->
             if (isOK && userResponse != null) {
                 authenticationController.saveUser(userResponse.user)
             }
