@@ -47,6 +47,7 @@
 
     <string name="user_edit_profile_invalid_firstname">Le prénom doit comporter au moins 2 lettres.</string>
     <string name="user_edit_profile_invalid_lastname">Le nom doit comporter au moins 2 lettres.</string>
+    <string name="user_edit_profile_invalid_phone">Le numéro doit comporter 9 ou 10 chiffres.</string>
     <string name="user_edit_profile_invalid_email">L’adresse email est invalide.</string>
 
     <string name="user_delete_account_dialog">Voulez-vous vraiment supprimer votre compte ?</string>

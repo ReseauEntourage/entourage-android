@@ -38,7 +38,7 @@
     <string name="onboard_welcome_consent">Je souhaite recevoir des informations et des conseils de la part d’Entourage</string>
     <string name="onboard_welcome_info_mandatory">*Champs obligatoires. Vos informations resteront confidentielles et ne seront jamais communiquées à des tiers.</string>
 
-    <string name="onboard_welcome_title_phase2">Entrez le code reçu par sms</string>
+    <string name="onboard_welcome_title_phase2">Entrez le code reçu par SMS</string>
     <string name="onboard_sms_sub">Un SMS vient juste de vous être envoyé au :</string>
     <string name="onboard_sms_wait_retry">Pas de code ? Réessayez dans %s</string>
     <string name="onboard_sms_wait_retry_end">Renvoyer un code</string>
