@@ -14,6 +14,7 @@ import social.entourage.android.base.BaseSecuredActivity
 import social.entourage.android.databinding.NewFragmentSettingsBinding
 import social.entourage.android.new_v8.utils.Utils
 import social.entourage.android.onboarding.pre_onboarding.PreOnboardingStartActivity
+import social.entourage.android.tools.view.WebViewFragment
 
 class SettingsFragment : Fragment() {
 
@@ -56,6 +57,9 @@ class SettingsFragment : Fragment() {
                 )
             )
         }
+
+        binding.share.arrow.visibility = View.INVISIBLE
+        binding.suggest.arrow.visibility = View.INVISIBLE
     }
 
     private fun addOnClickListeners() {
@@ -87,6 +91,10 @@ class SettingsFragment : Fragment() {
 
         binding.helpBlock.layout.setOnClickListener {
             UnblockUsersFragment.newInstance().show(parentFragmentManager,UnblockUsersFragment.TAG)
+        }
+        binding.suggest.layout.setOnClickListener {
+            WebViewFragment.newInstance(getString(R.string.url_app_suggest), 0, true)
+                .show(parentFragmentManager, WebViewFragment.TAG)
         }
     }
 

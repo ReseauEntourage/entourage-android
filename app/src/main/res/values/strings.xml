@@ -127,6 +127,7 @@
     <string name="donation">Faire un don</string>
     <string name="faq">FAQ</string>
     <string name="share">Partager l’application</string>
+    <string name="suggest">Une suggestion sur l’application ?</string>
     <string name="feedback">Noter l’app sur les stores</string>
     <string name="cgu">Conditions générales d’utilisation</string>
     <string name="confidentiality">Politique de Confidentialité</string>
@@ -368,7 +369,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="discover_event_list_empty_state_title">Mince, aucun résultat ne correspond à votre recherche !</string>
     <string name="discover_event_list_empty_state_subtitle">Vous ne trouvez pas l\'événement de vos rêves ? N\'attendez plus pour le créer ou élargissez votre zone de recherche.</string>
     <string name="need_help">Besoin d\'aide sur l\'app</string>
-    <string name="solidarity_places_map">Guide de la solidarité</string>
+    <string name="solidarity_places_map">Carte des lieux solidaires</string>
     <string name="solidarity_places_map_sub">Accueils de jour, bagageries…</string>
     <string name="moderator_subtitle">Votre guide dans l’app</string>
     <string name="create_encounters">Comment rencontrer d\'autres membres ?</string>
