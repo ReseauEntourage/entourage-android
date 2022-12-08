@@ -36,8 +36,8 @@ import social.entourage.android.tools.log.AnalyticsEvents.onLocationPermissionGr
 import social.entourage.android.tools.log.AnalyticsEvents.updateUserInfo
 import social.entourage.android.user.*
 import social.entourage.android.user.edit.UserEditFragment
+import social.entourage.android.user.edit.photo.OnboardingPhotoFragment.Companion.TAKE_PHOTO_REQUEST
 import social.entourage.android.user.edit.photo.PhotoChooseInterface
-import social.entourage.android.user.edit.photo.PhotoChooseSourceFragmentCompat.Companion.TAKE_PHOTO_REQUEST
 import social.entourage.android.user.edit.photo.PhotoEditFragment
 import social.entourage.android.user.edit.place.UserEditActionZoneFragment
 import timber.log.Timber
