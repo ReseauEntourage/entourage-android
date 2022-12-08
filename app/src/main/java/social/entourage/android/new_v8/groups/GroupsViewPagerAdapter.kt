@@ -18,7 +18,7 @@ class GroupsViewPagerAdapter(fragmentManager: FragmentManager, lifecycle: Lifecy
     }
 
     override fun createFragment(position: Int): Fragment {
-        return if (position == 0) {
+        return if (position == MY_GROUPS_TAB) {
             MyGroupsListFragment()
         } else {
             DiscoverGroupsListFragment()

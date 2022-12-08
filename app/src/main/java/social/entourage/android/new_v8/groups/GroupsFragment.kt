@@ -22,8 +22,8 @@ import social.entourage.android.new_v8.home.UnreadMessages
 import social.entourage.android.tools.log.AnalyticsEvents
 import kotlin.math.abs
 
-const val DISCOVER_GROUPS_TAB = 1
-const val MY_GROUPS_TAB = 0
+const val DISCOVER_GROUPS_TAB = 0
+const val MY_GROUPS_TAB = 1
 
 class GroupsFragment : Fragment() {
     private var _binding: NewFragmentGroupsBinding? = null
@@ -55,9 +55,9 @@ class GroupsFragment : Fragment() {
         binding.viewPager.doOnPreDraw {
             binding.viewPager.setCurrentItem(
                 if (ViewPagerDefaultPageController.shouldSelectDiscoverGroups) DISCOVER_GROUPS_TAB else MY_GROUPS_TAB,
-                true
+                false
             )
-            ViewPagerDefaultPageController.shouldSelectDiscoverGroups = false
+            ViewPagerDefaultPageController.shouldSelectDiscoverGroups = true
         }
     }
 
@@ -68,15 +68,15 @@ class GroupsFragment : Fragment() {
 
         val tabLayout = binding.tabLayout
         val tabs = arrayOf(
+            requireContext().getString(R.string.discover_groups),
             requireContext().getString(R.string.my_groups),
-            requireContext().getString(R.string.discover_groups)
         )
         viewPager.registerOnPageChangeCallback(
             object : ViewPager2.OnPageChangeCallback() {
 
                 override fun onPageSelected(position: Int) {
                     AnalyticsEvents.logEvent(
-                        if (position == 0)
+                        if (position == MY_GROUPS_TAB)
                             AnalyticsEvents.ACTION_GROUP_MY_GROUP
                         else
                             AnalyticsEvents.ACTION_GROUP_DISCOVER

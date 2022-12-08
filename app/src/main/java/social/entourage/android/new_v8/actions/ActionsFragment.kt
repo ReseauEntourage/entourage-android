@@ -154,11 +154,11 @@ class ActionsFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        var isDiscover = false
+        var isDemand = false
         arguments?.let {
-            isDiscover = it.getBoolean(Const.IS_ACTION_DEMAND, false)
+            isDemand = it.getBoolean(Const.IS_ACTION_DEMAND, false)
         }
-        ViewPagerDefaultPageController.shouldSelectDiscoverEvents = isDiscover
+        ViewPagerDefaultPageController.shouldSelectActionDemand = isDemand
     }
 
     override fun onCreateView(
@@ -241,10 +241,10 @@ class ActionsFragment : Fragment() {
     private fun setPage() {
         binding.viewPager.doOnPreDraw {
             binding.viewPager.setCurrentItem(
-                if (ViewPagerDefaultPageController.shouldSelectDiscoverEvents) DEMANDS_TAB else CONTRIBUTIONS_TAB,
+                if (ViewPagerDefaultPageController.shouldSelectActionDemand) DEMANDS_TAB else CONTRIBUTIONS_TAB,
                 true
             )
-            ViewPagerDefaultPageController.shouldSelectDiscoverEvents = false
+            ViewPagerDefaultPageController.shouldSelectActionDemand = false
         }
     }
 

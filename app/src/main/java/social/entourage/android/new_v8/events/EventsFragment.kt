@@ -22,8 +22,8 @@ import social.entourage.android.new_v8.home.UnreadMessages
 import social.entourage.android.new_v8.utils.Const
 import kotlin.math.abs
 
-const val DISCOVER_EVENTS_TAB = 1
-const val MY_EVENTS_TAB = 0
+const val DISCOVER_EVENTS_TAB = 0
+const val MY_EVENTS_TAB = 1
 
 class EventsFragment : Fragment() {
     private var _binding: NewFragmentEventsBinding? = null
@@ -32,11 +32,11 @@ class EventsFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        var isDiscover = false
         arguments?.let {
-            isDiscover = it.getBoolean(Const.IS_OUTING_DISCOVER, false)
+            if (it.containsKey(Const.IS_OUTING_DISCOVER)) {
+                ViewPagerDefaultPageController.shouldSelectDiscoverEvents = it.getBoolean(Const.IS_OUTING_DISCOVER)
+            }
         }
-        ViewPagerDefaultPageController.shouldSelectDiscoverEvents = isDiscover
     }
 
     override fun onCreateView(
@@ -74,8 +74,8 @@ class EventsFragment : Fragment() {
 
         val tabLayout = binding.tabLayout
         val tabs = arrayOf(
-            requireContext().getString(R.string.my_events),
-            requireContext().getString(R.string.discover_groups)
+            requireContext().getString(R.string.discover_events),
+            requireContext().getString(R.string.my_events)
         )
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             tab.text = tabs[position]
@@ -86,9 +86,9 @@ class EventsFragment : Fragment() {
         binding.viewPager.doOnPreDraw {
             binding.viewPager.setCurrentItem(
                 if (ViewPagerDefaultPageController.shouldSelectDiscoverEvents) DISCOVER_EVENTS_TAB else MY_EVENTS_TAB,
-                true
+                false
             )
-            ViewPagerDefaultPageController.shouldSelectDiscoverEvents = false
+            ViewPagerDefaultPageController.shouldSelectDiscoverEvents = true
         }
     }
 

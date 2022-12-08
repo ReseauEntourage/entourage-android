@@ -209,8 +209,7 @@ class HomeFragment : Fragment() {
             }
             groupCard.root.setOnClickListener {
                 userSummary?.let {
-                    if (it.neighborhoodParticipationsCount == 0)
-                        ViewPagerDefaultPageController.shouldSelectDiscoverGroups = true
+                    ViewPagerDefaultPageController.shouldSelectDiscoverGroups = it.neighborhoodParticipationsCount == 0
                 }
                 val bottomNavigationView =
                     requireActivity().findViewById<BottomNavigationView>(R.id.nav_view)
@@ -219,8 +218,7 @@ class HomeFragment : Fragment() {
 
             eventCard.root.setOnClickListener {
                 userSummary?.let {
-                    if (it.outingParticipationsCount == 0)
-                        ViewPagerDefaultPageController.shouldSelectDiscoverEvents = true
+                    ViewPagerDefaultPageController.shouldSelectDiscoverEvents = it.outingParticipationsCount == 0
                 }
                 val bottomNavigationView =
                     requireActivity().findViewById<BottomNavigationView>(R.id.nav_view)

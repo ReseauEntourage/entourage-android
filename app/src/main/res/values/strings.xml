@@ -238,8 +238,8 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="title_groups">Groupes</string>
     <string name="title_events">Evénements</string>
     <string name="communities">Groupes</string>
-    <string name="discover_groups">Découvrir</string>
-    <string name="my_groups">Mes groupes</string>
+    <string name="discover_groups">Je découvre</string>
+    <string name="my_groups">Je participe</string>
     <string name="members_number">%s membres</string>
     <string name="member_number">%s membre</string>
     <string name="future_outgoing_events_number">%s événements prévus</string>
@@ -360,7 +360,8 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="face_to_face">En présentiel</string>
     <string name="online">En ligne</string>
     <string name="add_url">Ajouter une url</string>
-    <string name="my_events">Mes événements</string>
+    <string name="discover_events">Je découvre</string>
+    <string name="my_events">Je participe</string>
     <string name="canceled">- Annulé</string>
     <string name="event_list_empty_state_title">Vous n’avez pas encore rejoint d’événement</string>
     <string name="event_list_empty_state_subtitle">C\'est l\'occasion de découvrir ce qu\'il se passe près de chez vous, ou de créer un nouvel événement !</string>
