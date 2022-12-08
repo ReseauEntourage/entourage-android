@@ -112,39 +112,6 @@
                     android:text="@string/contributions_title"
                     tools:text="Vos contributions au réseau entourage :" />
 
-                <LinearLayout
-                    android:id="@+id/contribution_cards"
-                    android:layout_width="match_parent"
-                    android:layout_height="78dp"
-                    android:orientation="horizontal"
-                    android:weightSum="2">
-
-                    <include
-                        android:id="@+id/group_card"
-                        layout="@layout/new_home_small_card"
-                        android:layout_width="0dp"
-                        android:layout_height="78dp"
-                        android:layout_weight="1"
-                        app:emptyLabel="@{@string/contributions_group_empty}"
-                        app:icon="@{@drawable/new_icon_home_empty_groupes}"
-                        app:label="@{@string/contributions_group}" />
-
-                    <include
-                        android:id="@+id/event_card"
-                        layout="@layout/new_home_small_card"
-                        android:layout_width="0dp"
-                        android:layout_height="78dp"
-                        android:layout_marginLeft="8dp"
-                        android:layout_weight="1"
-                        app:emptyLabel="@{@string/contributions_event_empty}"
-                        app:icon="@{@drawable/new_icon_home_empty_event}"
-                        app:label="@{@string/contributions_event}" />
-                </LinearLayout>
-
-                <Space
-                    android:layout_width="match_parent"
-                    android:layout_height="12dp" />
-
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/meeting_card"
                     android:layout_width="match_parent"
@@ -227,6 +194,39 @@
                         app:srcCompat="@drawable/new_illu_empty_state_event" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="12dp" />
+
+                <LinearLayout
+                    android:id="@+id/contribution_cards"
+                    android:layout_width="match_parent"
+                    android:layout_height="78dp"
+                    android:orientation="horizontal"
+                    android:weightSum="2">
+
+                    <include
+                        android:id="@+id/group_card"
+                        layout="@layout/new_home_small_card"
+                        android:layout_width="0dp"
+                        android:layout_height="78dp"
+                        android:layout_weight="1"
+                        app:emptyLabel="@{@string/contributions_group_empty}"
+                        app:icon="@{@drawable/new_icon_home_empty_groupes}"
+                        app:label="@{@string/contributions_group}" />
+
+                    <include
+                        android:id="@+id/event_card"
+                        layout="@layout/new_home_small_card"
+                        android:layout_width="0dp"
+                        android:layout_height="78dp"
+                        android:layout_marginLeft="8dp"
+                        android:layout_weight="1"
+                        app:emptyLabel="@{@string/contributions_event_empty}"
+                        app:icon="@{@drawable/new_icon_home_empty_event}"
+                        app:label="@{@string/contributions_event}" />
+                </LinearLayout>
 
                 <TextView
                     android:id="@+id/help_title"
