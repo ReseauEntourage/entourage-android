@@ -12,7 +12,7 @@
     <string name="website_url">https://www.entourage.social</string>
     <string name="more_events_url">https://www.facebook.com/EntourageReseauCivique/events/</string>
 
-    <string name="contact_email">contact@entourage.social</string>
+    <string name="contact_email">app@entourage.social</string>
 
     <string name="redirect_link_format">%1$slinks/%2$s/redirect?token=%3$s</string>
     <string name="redirect_link_no_token_format">%1$slinks/%2$s/redirect</string>

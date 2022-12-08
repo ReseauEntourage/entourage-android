@@ -36,7 +36,7 @@
     <string name="onboard_welcome_placeholder_email">votreadresse@mail.com</string>
     <string name="onboard_welcome_placeholder_phone">0600000000</string>
     <string name="onboard_welcome_consent">Je souhaite recevoir des informations et des conseils de la part d’Entourage</string>
-    <string name="onboard_welcome_info_mandatory">*Champs obligatoire. Vos informations resteront confidentielles et ne seront jamais communiquées à des tiers.</string>
+    <string name="onboard_welcome_info_mandatory">*Champs obligatoires. Vos informations resteront confidentielles et ne seront jamais communiquées à des tiers.</string>
 
     <string name="onboard_welcome_title_phase2">Entrez le code reçu par sms</string>
     <string name="onboard_sms_sub">Un SMS vient juste de vous être envoyé au :</string>
@@ -57,7 +57,7 @@
     <string name="onboard_phase3_asso_title">Je suis une association</string>
 
     <string name="onboard_end_title">Bienvenue dans la Communauté Entourage </string>
-    <string name="onboard_end_subtitle">Félicitations, vous voilà membre de l’application Entourage !</string>
+    <string name="onboard_end_subtitle">Félicitations, vous voilà prêt à faire vivre la solidarité autour de vous.</string>
     <string name="onboard_end_bt">Commencer l’aventure humaine</string>
 
 
@@ -203,5 +203,5 @@
     <string name="input_names_sub">Cette fois, pourriez-vous me dire comment vous vous appelez ?</string>
     <string name="input_names_error">Veuillez remplir les 2 champs avec un minimum de %s caractères.</string>
 
-    <string name="onboard_sms_help">Besoin d’aide ?\nContacter l\'équipe Entourage.</string>
+    <string name="onboard_sms_help"><u>Besoin d’aide ?\nContacter l\'équipe Entourage.</u></string>
 </resources>
