@@ -66,6 +66,7 @@ class LoginChangePhoneActivity : BaseActivity() {
                 ui_layout_waiting?.visibility = View.GONE
                 if (resID==R.string.login_change_phone_send_ok) {
                     ui_layout_change_phone_ok?.visibility = View.VISIBLE
+                    ui_changeCode_bt_validate?.visibility = View.INVISIBLE
                 }
                 else {
                     showError(R.string.login_change_error_return, getString(resID), R.string.button_OK)

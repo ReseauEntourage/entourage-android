@@ -17,7 +17,7 @@
     <string name="pre_onboard_choice_description_title">Le réseau social, vraiment social.</string>
     <string name="pre_onboard_choice_login">J’ai déjà un compte</string>
     <string name="pre_onboard_choice_signup">Je m’inscris</string>
-    <string name="pre_onboard_choice_about">Qui est l’association Entourage ?</string>
+    <string name="pre_onboard_choice_about"><u>Qui est l’association Entourage ?</u></string>
 
     <!-- ONBOARDING -->
 
@@ -114,13 +114,13 @@
     <string name="login_phone_placeholder">Numéro de téléphone</string>
     <string name="login_placeholder_code">Saisir votre code</string>
     <string name="login_button_connect">Je me connecte</string>
-    <string name="login_button_resend_code">Redemander un code</string>
+    <string name="login_button_resend_code"><u>Redemander un code</u></string>
     <string name="login_label_country">Pays</string>
     <string name="login_label_phone">Téléphone</string>
     <string name="login_label_code">Code</string>
 
     <!-- Login Change Phone -->
-    <string name="login_change_phone">J’ai changé de numéro de téléphone</string>
+    <string name="login_change_phone"><u>J’ai changé de numéro de téléphone</u></string>
     <string name="login_change_phone_title">Nouveau numéro</string>
     <string name="login_change_phone_old_phone">Ancien numéro</string>
     <string name="login_change_phone_old_phone_placeholder">Ancien numéro</string>
