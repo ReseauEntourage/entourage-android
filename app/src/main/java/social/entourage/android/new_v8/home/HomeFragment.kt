@@ -259,7 +259,7 @@ class HomeFragment : Fragment() {
             }
 
             solidarityPlaces.root.title.text = getString(R.string.solidarity_places_map)
-            solidarityPlaces.root.description.visibility = View.GONE
+            solidarityPlaces.root.description.text = getString(R.string.solidarity_places_map_sub)
             Glide.with(requireContext())
                 .load(R.drawable.new_solidarity_map)
                 .into(solidarityPlaces.root.icon_card)

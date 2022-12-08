@@ -296,7 +296,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="join_group_to_comment"><![CDATA[* Pour commenter cette publication, rejoingnez le groupe « %s » !]]></string>
     <string name="report_sent">Votre demande a bien été envoyée. Elle sera traitée au plus vite par notre équipe.</string>
     <string name="welcome_user">Bienvenue %s !</string>
-    <string name="contributions_title">Mes actions au sein du réseau :</string>
+    <string name="contributions_title">Mes actions au sein du réseau</string>
     <string name="contributions_meeting">Belles rencontres Entourage</string>
     <string name="contributions_meeting_empty">Pas encore de rencontres Entourage</string>
     <string name="contributions_message">Messages envoyés</string>
@@ -315,7 +315,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="inspire">S\'inspirer</string>
     <string name="understand">Comprendre</string>
     <string name="all">Tout</string>
-    <string name="want_to_act">Je commence simplement :</string>
+    <string name="want_to_act">Je commence simplement</string>
     <string name="not_implemented">Not Implemented</string>
     <string name="pedagogical_content">Découvrir les astuces pour passer à l\'action</string>
     <string name="picture">Photo</string>
@@ -366,8 +366,9 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="event_list_empty_state_subtitle">C\'est l\'occasion de découvrir ce qu\'il se passe près de chez vous, ou de créer un nouvel événement !</string>
     <string name="discover_event_list_empty_state_title">Mince, aucun résultat ne correspond à votre recherche !</string>
     <string name="discover_event_list_empty_state_subtitle">Vous ne trouvez pas l\'événement de vos rêves ? N\'attendez plus pour le créer ou élargissez votre zone de recherche.</string>
-    <string name="need_help">Besoin d\'aide sur l\'app ?</string>
+    <string name="need_help">Besoin d\'aide sur l\'app</string>
     <string name="solidarity_places_map">Guide de la solidarité</string>
+    <string name="solidarity_places_map_sub">Accueils de jour, bagageries…</string>
     <string name="moderator_subtitle">Votre guide dans l’app</string>
     <string name="create_encounters">Comment rencontrer d\'autres membres ?</string>
     <string name="participate_to_events">Pour cela, rien de plus simple ! Participez à des événements et rejoignez des actions. "</string>
