@@ -45,4 +45,8 @@ class NotifInAppPermission(
     var chat_message: Boolean = false,
     @SerializedName("action")
     var action: Boolean = false,
-)
+) {
+    fun isAllChecked() : Boolean {
+        return neighborhood && outing && chat_message && action
+    }
+}

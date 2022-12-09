@@ -46,15 +46,34 @@ class SettingsNotificationsFragment : BottomSheetDialogFragment() {
             binding.uiSwitchNotifsEvents.isChecked = it.outing
             binding.uiSwitchNotifsGroups.isChecked = it.neighborhood
             binding.uiSwitchNotifsMessages.isChecked = it.chat_message
+
+            binding.uiSwitchNotifsAll.isChecked = it.isAllChecked()
         }
     }
 
     private fun populate() {
-        binding.uiSwitchNotifsAll.setOnCheckedChangeListener { compoundButton, b ->
-                binding.uiSwitchNotifsActions.isChecked = b
-                binding.uiSwitchNotifsEvents.isChecked = b
-                binding.uiSwitchNotifsGroups.isChecked = b
-                binding.uiSwitchNotifsMessages.isChecked = b
+        binding.uiSwitchNotifsAll.setOnClickListener {
+            val isOn = binding.uiSwitchNotifsAll.isChecked
+            binding.uiSwitchNotifsActions.isChecked = isOn
+            binding.uiSwitchNotifsEvents.isChecked = isOn
+            binding.uiSwitchNotifsGroups.isChecked = isOn
+            binding.uiSwitchNotifsMessages.isChecked = isOn
+        }
+
+        binding.uiSwitchNotifsActions.setOnCheckedChangeListener {  compoundButton, b ->
+            checkSwitchs()
+        }
+
+        binding.uiSwitchNotifsEvents.setOnCheckedChangeListener {  compoundButton, b ->
+            checkSwitchs()
+        }
+
+        binding.uiSwitchNotifsGroups.setOnCheckedChangeListener {  compoundButton, b ->
+            checkSwitchs()
+        }
+
+        binding.uiSwitchNotifsMessages.setOnCheckedChangeListener {  compoundButton, b ->
+            checkSwitchs()
         }
 
         binding.validate.button.setOnClickListener {
@@ -66,6 +85,14 @@ class SettingsNotificationsFragment : BottomSheetDialogFragment() {
             homePresenter.updateNotificationsPermissions()
             dismiss()
         }
+    }
+
+    private fun checkSwitchs() {
+        val isAllOn = binding.uiSwitchNotifsActions.isChecked &&
+                binding.uiSwitchNotifsEvents.isChecked &&
+                binding.uiSwitchNotifsGroups.isChecked &&
+                binding.uiSwitchNotifsMessages.isChecked
+        binding.uiSwitchNotifsAll.isChecked = isAllOn
     }
 
     private fun handleCloseButton() {
