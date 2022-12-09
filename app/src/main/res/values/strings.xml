@@ -278,7 +278,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="notify_me">Me notifier de</string>
     <string name="about_group">À propos du groupe</string>
     <string name="leave_group_dialog_content">Souhaitez-vous quitter le groupe ?</string>
-    <string name="discuss">Discuter…</string>
+    <string name="discuss">Commenter…</string>
     <string name="discussbis">Écrire un message…</string>
     <string name="no_comments">Pas de commentaires</string>
     <string name="posts_comment_number"><u>%s commentaires</u></string>
