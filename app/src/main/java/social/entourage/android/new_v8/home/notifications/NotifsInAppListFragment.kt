@@ -13,6 +13,7 @@ import social.entourage.android.databinding.NewFragmentNotifsInAppListBinding
 import social.entourage.android.new_v8.PushNotificationLinkManager
 import social.entourage.android.new_v8.home.HomePresenter
 import social.entourage.android.new_v8.models.NotifInApp
+import social.entourage.android.new_v8.utils.Const
 
 class NotifsInAppListFragment : Fragment() {
     val groupPerPage = 10
@@ -26,6 +27,8 @@ class NotifsInAppListFragment : Fragment() {
     private var page: Int = 0
     private var itemSelected = -1
 
+    private var hasToShowDot = false
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -36,6 +39,9 @@ class NotifsInAppListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val countNotif = arguments?.getInt(Const.NOTIF_COUNT)
+        hasToShowDot = (countNotif ?: 0) > 0
 
         handleBackButton()
         homePresenter.notificationsInApp.observe(
@@ -51,6 +57,7 @@ class NotifsInAppListFragment : Fragment() {
         loadNotifs()
 
         handleSwipeRefresh()
+        checkUnread()
     }
 
     private fun handleUpdateNotification(notif: NotifInApp?) {
@@ -58,20 +65,16 @@ class NotifsInAppListFragment : Fragment() {
             notifications[itemSelected] = notif
             itemSelected = -1
             binding.recyclerView.adapter?.notifyDataSetChanged()
-            checkUnread()
         }
     }
 
     private fun handleGetNotifications(notifs:MutableList<NotifInApp>?) {
         notifs?.let { notifications.addAll(it) }
-        checkUnread()
         binding.recyclerView.adapter?.notifyDataSetChanged()
     }
 
     private fun checkUnread() {
-        val hasUnread = notifications.firstOrNull { !it.isRead() }
-
-        if (hasUnread != null) {
+        if (hasToShowDot) {
             binding.iconBell.setImageDrawable(resources.getDrawable(R.drawable.ic_new_notif_on))
             val timer = object: CountDownTimer(2000, 1000) {
                 override fun onTick(millisUntilFinished: Long) {}

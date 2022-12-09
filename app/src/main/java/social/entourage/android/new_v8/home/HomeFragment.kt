@@ -171,11 +171,9 @@ class HomeFragment : Fragment() {
         }
 
         binding.uiLayoutNotif.setOnClickListener {
-            startActivity(
-                Intent( requireContext(),
-                    NotificationsInAppActivity::class.java
-                )
-            )
+            val intent = Intent(requireContext(),NotificationsInAppActivity::class.java)
+            intent.putExtra(Const.NOTIF_COUNT,homePresenter.notifsCount.value)
+            startActivity(intent)
         }
     }
 
