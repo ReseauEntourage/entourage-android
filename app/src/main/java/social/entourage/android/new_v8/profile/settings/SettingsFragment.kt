@@ -14,6 +14,7 @@ import social.entourage.android.base.BaseSecuredActivity
 import social.entourage.android.databinding.NewFragmentSettingsBinding
 import social.entourage.android.new_v8.utils.Utils
 import social.entourage.android.onboarding.pre_onboarding.PreOnboardingStartActivity
+import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.view.WebViewFragment
 
 class SettingsFragment : Fragment() {
@@ -36,6 +37,7 @@ class SettingsFragment : Fragment() {
         initializeView()
         addOnClickListeners()
         settingsPresenter.accountDeleted.observe(requireActivity(), ::handleResponse)
+        AnalyticsEvents.logEvent(AnalyticsEvents.Profile_view_param)
     }
 
 

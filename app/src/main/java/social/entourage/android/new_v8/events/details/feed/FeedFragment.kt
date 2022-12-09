@@ -86,6 +86,8 @@ class FeedFragment : Fragment() {
         handleSettingsButton()
         handleAboutButton()
         onFragmentResult()
+
+        AnalyticsEvents.logEvent(AnalyticsEvents.Event_detail_main)
     }
 
     private fun handleResponseGetEvent(getEvent: Events?) {
@@ -333,6 +335,7 @@ class FeedFragment : Fragment() {
 
     private fun handleSettingsButton() {
         binding.iconSettings.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Event_detail_action_param)
             SettingsModalFragment.newInstance(event)
                 .show(parentFragmentManager, SettingsModalFragment.TAG)
 
@@ -347,9 +350,6 @@ class FeedFragment : Fragment() {
 
     private fun handleAboutButton() {
         binding.more.setOnClickListener {
-            AnalyticsEvents.logEvent(
-                AnalyticsEvents.ACTION_GROUP_FEED_MORE_DESCRIPTION
-            )
             val eventUI = event.toEventUi(requireContext())
             val action =
                 FeedFragmentDirections.actionEventFeedToEventAbout(
@@ -365,6 +365,7 @@ class FeedFragment : Fragment() {
             if (!event.member) eventPresenter.participate(eventId)
         }
         binding.participate.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Event_detail_action_participate)
             if (!event.member) eventPresenter.participate(eventId)
         }
     }
@@ -402,6 +403,7 @@ class FeedFragment : Fragment() {
 
     private fun handleCreatePostButtonClick() {
         binding.createPost.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Event_detail_action_post)
             val intent = Intent(context, CreatePostEventActivity::class.java)
             intent.putExtra(Const.ID, eventId)
             startActivity(intent)

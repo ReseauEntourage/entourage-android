@@ -14,6 +14,7 @@ import social.entourage.android.new_v8.PushNotificationLinkManager
 import social.entourage.android.new_v8.home.HomePresenter
 import social.entourage.android.new_v8.models.NotifInApp
 import social.entourage.android.new_v8.utils.Const
+import social.entourage.android.tools.log.AnalyticsEvents
 
 class NotifsInAppListFragment : Fragment() {
     val groupPerPage = 10
@@ -57,6 +58,7 @@ class NotifsInAppListFragment : Fragment() {
         loadNotifs()
 
         handleSwipeRefresh()
+        AnalyticsEvents.logEvent(AnalyticsEvents.Home_view_notif)
         checkUnread()
     }
 

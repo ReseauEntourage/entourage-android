@@ -42,6 +42,7 @@ import social.entourage.android.new_v8.profile.myProfile.InterestsAdapter
 import social.entourage.android.new_v8.utils.Const
 import social.entourage.android.new_v8.utils.Utils
 import social.entourage.android.new_v8.utils.underline
+import social.entourage.android.tools.log.AnalyticsEvents
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -83,6 +84,8 @@ class AboutEventFragment : Fragment(), OnMapReadyCallback {
         eventPresenter.isUserParticipating.observe(requireActivity(), ::handleJoinResponse)
         eventPresenter.hasUserLeftEvent.observe(requireActivity(), ::handleJoinResponse)
         fragmentResult()
+
+        AnalyticsEvents.logEvent(AnalyticsEvents.Event_detail_full)
     }
 
     private fun setView() {

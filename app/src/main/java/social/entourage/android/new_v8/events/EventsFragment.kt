@@ -9,6 +9,7 @@ import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.appbar.AppBarLayout
+import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
@@ -20,6 +21,7 @@ import social.entourage.android.new_v8.events.list.EventsViewPagerAdapter
 import social.entourage.android.new_v8.home.CommunicationHandlerBadgeViewModel
 import social.entourage.android.new_v8.home.UnreadMessages
 import social.entourage.android.new_v8.utils.Const
+import social.entourage.android.tools.log.AnalyticsEvents
 import kotlin.math.abs
 
 const val DISCOVER_EVENTS_TAB = 0
@@ -90,6 +92,23 @@ class EventsFragment : Fragment() {
             )
             ViewPagerDefaultPageController.shouldSelectDiscoverEvents = true
         }
+
+        binding.tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                if (tab?.position == 0) {
+                    AnalyticsEvents.logEvent(AnalyticsEvents.Event_view_discover)
+                }
+                else {
+                    AnalyticsEvents.logEvent(AnalyticsEvents.Event_view_my)
+                }
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
+            }
+
+            override fun onTabReselected(tab: TabLayout.Tab?) {
+            }
+        })
     }
 
     private fun updateUnreadCount(unreadMessages: UnreadMessages?) {
@@ -110,6 +129,7 @@ class EventsFragment : Fragment() {
 
     private fun createEvent() {
         binding.createEvent.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Event_action_create)
             startActivity(
                 Intent(context, CreateEventActivity::class.java)
             )

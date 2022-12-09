@@ -18,6 +18,7 @@ import androidx.core.view.doOnPreDraw
 import androidx.core.widget.TextViewCompat
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.appbar.AppBarLayout
+import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
@@ -33,6 +34,7 @@ import social.entourage.android.new_v8.home.UnreadMessages
 import social.entourage.android.new_v8.models.ActionSectionFilters
 import social.entourage.android.new_v8.models.EventActionLocationFilters
 import social.entourage.android.new_v8.utils.Const
+import social.entourage.android.tools.log.AnalyticsEvents
 import uk.co.markormesher.android_fab.SpeedDialMenuAdapter
 import uk.co.markormesher.android_fab.SpeedDialMenuItem
 import kotlin.math.abs
@@ -204,10 +206,28 @@ class ActionsFragment : Fragment() {
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             tab.text = tabs[position]
         }.attach()
+
+        binding.tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                if (tab?.position == 0) {
+                    AnalyticsEvents.logEvent(AnalyticsEvents.Help_view_contrib)
+                }
+                else {
+                    AnalyticsEvents.logEvent(AnalyticsEvents.Help_view_demand)
+                }
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
+            }
+
+            override fun onTabReselected(tab: TabLayout.Tab?) {
+            }
+        })
     }
 
     private fun initializeViews() {
         binding.uiButtonMyActions.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Help_view_myactions)
             val intent = Intent(context, MyActionsListActivity::class.java)
             startActivity(intent)
         }
@@ -215,12 +235,14 @@ class ActionsFragment : Fragment() {
 
     private fun initializeFilters() {
         binding.uiLayoutLocationBt.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Help_action_location)
             val intent = Intent(context, ActionLocationFilterActivity::class.java)
             intent.putExtra(LOCATION_FILTERS,currentLocationFilters)
             activityResultLauncher?.launch(intent)
         }
 
         binding.uiLayoutCategoryBt.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Help_action_filters)
             val intent = Intent(context, ActionCategoriesFiltersActivity::class.java)
             intent.putExtra(CATEGORIES_FILTERS,currentCategoriesFilters)
             activityResultLauncher?.launch(intent)
@@ -268,7 +290,7 @@ class ActionsFragment : Fragment() {
         binding.createAction.setContentCoverColour(0xeeffffff.toInt())
         binding.createAction.speedDialMenuAdapter = speedDialMenuAdapter
         binding.createAction.setOnClickListener {
-            //  AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_GROUP_FEED_PLUS)
+            AnalyticsEvents.logEvent(AnalyticsEvents.Help_action_create)
         }
     }
 }

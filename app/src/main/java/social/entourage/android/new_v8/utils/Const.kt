@@ -58,5 +58,6 @@ object Const {
     const val IS_CONVERSATION = "isConversation"
     const val HAS_TO_SHOW_MESSAGE = "newConversation"
     const val IS_CREATOR = "isCreator"
+    const val NOTIF_COUNT = "notifCount"
 
 }

@@ -11,6 +11,7 @@ import kotlinx.android.synthetic.main.layout_code_picker.view.*
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent
 import social.entourage.android.R
 import social.entourage.android.tools.isValidEmail
+import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.view.countrycodepicker.Country
 import social.entourage.android.tools.view.countrycodepicker.CountryCodePickerListener
 
@@ -57,6 +58,7 @@ class OnboardingPhase1Fragment : Fragment() {
         callback?.updateButtonNext(checkAndValidateInput())
 
         setupViews()
+        AnalyticsEvents.logEvent(AnalyticsEvents.Onboard_name)
     }
 
     override fun onAttach(context: Context) {

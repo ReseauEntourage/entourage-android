@@ -18,6 +18,7 @@ import social.entourage.android.new_v8.groups.choosePhoto.ChoosePhotoModalFragme
 import social.entourage.android.new_v8.groups.choosePhoto.ImagesType
 import social.entourage.android.new_v8.utils.Const
 import social.entourage.android.new_v8.utils.px
+import social.entourage.android.tools.log.AnalyticsEvents
 
 class CreateActionStepOneFragment : Fragment() {
     private var _binding: NewFragmentCreateActionStepOneBinding? = null
@@ -48,6 +49,16 @@ class CreateActionStepOneFragment : Fragment() {
         binding.actionDescription.hint = getString(R.string.action_create_description_hint,
             if (viewModel.isDemand) getString(R.string.action_name_demand)
             else getString(R.string.action_name_contrib))
+
+
+        if (viewModel.actionEdited == null) {
+            if (viewModel.isDemand) {
+                AnalyticsEvents.logEvent(AnalyticsEvents.Help_create_demand_1)
+            }
+            else {
+                AnalyticsEvents.logEvent(AnalyticsEvents.Help_create_contrib_1)
+            }
+        }
     }
 
     private fun handleOnClickNext(onClick: Boolean) {

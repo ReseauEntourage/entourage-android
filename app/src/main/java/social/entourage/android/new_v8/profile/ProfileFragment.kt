@@ -16,6 +16,7 @@ import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.api.request.UserResponse
 import social.entourage.android.databinding.NewFragmentProfileBinding
+import social.entourage.android.tools.log.AnalyticsEvents
 
 
 class ProfileFragment : Fragment() {
@@ -55,6 +56,7 @@ class ProfileFragment : Fragment() {
 
     private fun initializeEditButton() {
         binding.editProfile.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Profile_action_modify)
             findNavController().navigate(R.id.action_profile_fragment_to_edit_profile_fragment)
         }
     }

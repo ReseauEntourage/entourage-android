@@ -10,6 +10,7 @@ import social.entourage.android.new_v8.models.Conversation
 import social.entourage.android.new_v8.models.Post
 import social.entourage.android.new_v8.user.UserProfileActivity
 import social.entourage.android.new_v8.utils.Const
+import social.entourage.android.tools.log.AnalyticsEvents
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -48,6 +49,11 @@ class DetailConversationActivity : CommentActivity() {
         discussionsPresenter.detailConversation.observe(this, ::handleDetailConversation)
         discussionsPresenter.getDetailConversation(id)
 
+    }
+
+    override fun onResume() {
+        super.onResume()
+        AnalyticsEvents.logEvent(AnalyticsEvents.Message_view_detail)
     }
 
     private fun handleDetailConversation(conversation: Conversation?) {
@@ -93,6 +99,7 @@ class DetailConversationActivity : CommentActivity() {
 
     override fun handleReportPost(id: Int) {
         binding.header.iconSettings.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Message_action_param)
             SettingsDiscussionModalFragment.newInstance(postAuthorID,id,isOne2One,titleName,discussionsPresenter.detailConversation.value?.imBlocker())
                 .show(supportFragmentManager, SettingsDiscussionModalFragment.TAG)
         }

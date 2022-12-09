@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.activity_intro_carousel.*
 import social.entourage.android.R
+import social.entourage.android.tools.log.AnalyticsEvents
 
 class PreOnboardingStartActivity : AppCompatActivity() {
 
@@ -111,15 +112,18 @@ class PreOnboardingStartActivity : AppCompatActivity() {
                 description = getString(R.string.intro_subtitle_1)
                 ui_logo?.visibility = View.VISIBLE
                 ui_button_previous.isVisible = false
+                AnalyticsEvents.logEvent(AnalyticsEvents.PreOnboard_car1)
             }
             1 -> {
                 title = getString(R.string.intro_title_2)
                 description = getString(R.string.intro_subtitle_2)
+                AnalyticsEvents.logEvent(AnalyticsEvents.PreOnboard_car2)
             }
             else -> {
                 title = getString(R.string.intro_title_3)
                 description = getString(R.string.intro_subtitle_3)
                 ui_button_connect?.visibility = View.INVISIBLE
+                AnalyticsEvents.logEvent(AnalyticsEvents.PreOnboard_car3)
             }
         }
         ui_tv_title?.text = title

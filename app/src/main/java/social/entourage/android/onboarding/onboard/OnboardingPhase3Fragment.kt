@@ -12,6 +12,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import kotlinx.android.synthetic.main.fragment_onboarding_phase3.*
 import social.entourage.android.R
 import social.entourage.android.api.model.User
+import social.entourage.android.tools.log.AnalyticsEvents
 
 private const val ARG_ENTOUR = "entour"
 private const val ARG_BEENTOUR = "beentour"
@@ -77,6 +78,7 @@ class OnboardingPhase3Fragment : Fragment() {
         }
 
         changeSelections()
+        AnalyticsEvents.logEvent(AnalyticsEvents.Onboard_profile)
     }
 
     override fun onAttach(context: Context) {

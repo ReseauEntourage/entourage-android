@@ -21,6 +21,7 @@ import social.entourage.android.new_v8.groups.choosePhoto.ChoosePhotoModalFragme
 import social.entourage.android.new_v8.groups.choosePhoto.ImagesType
 import social.entourage.android.new_v8.utils.Const
 import social.entourage.android.new_v8.utils.px
+import social.entourage.android.tools.log.AnalyticsEvents
 
 
 class CreateEventStepOneFragment : Fragment() {
@@ -47,6 +48,10 @@ class CreateEventStepOneFragment : Fragment() {
         handleChoosePhoto()
         onFragmentResult()
         handleNextButtonState()
+
+        if (CommunicationHandler.eventEdited == null) {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Event_create_1)
+        }
     }
 
     private fun handleChoosePhoto() {

@@ -15,8 +15,6 @@ class PreOnboardingChoiceActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_pre_onboarding_choice)
 
-        AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_VIEW_START_SIGNUPLOGIN)
-
         val isFromOnboarding = intent.getBooleanExtra("isFromOnboarding",false)
 
         if (isFromOnboarding) {
@@ -24,7 +22,7 @@ class PreOnboardingChoiceActivity : BaseActivity() {
         }
 
         ui_button_signup?.setOnClickListener {
-            AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ACTION_START_SIGNUPSTART)
+            AnalyticsEvents.logEvent(AnalyticsEvents.PreOnboard_action_signup)
             val intent = Intent(this, OnboardingStartActivity::class.java)
             //intent.putExtra("fromChoice","signup")
             startActivity(intent)
@@ -36,10 +34,12 @@ class PreOnboardingChoiceActivity : BaseActivity() {
         ui_button_about?.setOnClickListener {
             showWebView(getString(R.string.website_url))
         }
+
+        AnalyticsEvents.logEvent(AnalyticsEvents.PreOnboard_view_choice)
     }
 
     fun goLogin() {
-        AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ACTION_START_LOGINSTART)
+        AnalyticsEvents.logEvent(AnalyticsEvents.PreOnboard_action_signin)
         val intent = Intent(this, LoginActivity::class.java)
         startActivity(intent)
         finish()

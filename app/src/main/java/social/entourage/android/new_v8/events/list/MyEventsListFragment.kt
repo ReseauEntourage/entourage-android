@@ -13,6 +13,7 @@ import social.entourage.android.databinding.NewFragmentMyEventsListBinding
 import social.entourage.android.new_v8.events.EventsPresenter
 import social.entourage.android.new_v8.models.Events
 import social.entourage.android.new_v8.utils.Utils
+import social.entourage.android.tools.log.AnalyticsEvents
 
 class MyEventsListFragment : Fragment() {
     private var _binding: NewFragmentMyEventsListBinding? = null
@@ -43,6 +44,7 @@ class MyEventsListFragment : Fragment() {
         eventsPresenter.getAllMyEvents.observe(viewLifecycleOwner, ::handleResponseGetEvents)
         initializeEvents()
         handleSwipeRefresh()
+        AnalyticsEvents.logEvent(AnalyticsEvents.Event_view_my)
     }
 
     private fun handleResponseGetEvents(allEvents: MutableList<Events>?) {

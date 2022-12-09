@@ -18,6 +18,7 @@ import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_onboarding_phase2.*
 import social.entourage.android.R
 import social.entourage.android.tools.hideKeyboard
+import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.view.EntSnackbar
 import social.entourage.android.tools.view.countrycodepicker.Country
 
@@ -57,6 +58,7 @@ class OnboardingPhase2Fragment : Fragment() {
         setupViews()
 
         activateTimer()
+        AnalyticsEvents.logEvent(AnalyticsEvents.Onboard_code)
     }
 
     private fun activateTimer() {

@@ -11,6 +11,7 @@ import androidx.navigation.fragment.findNavController
 import social.entourage.android.R
 import social.entourage.android.databinding.NewFragmentCreateActionStepThreeBinding
 import social.entourage.android.new_v8.models.MetadataActionLocation
+import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.user.edit.place.UserEditActionZoneFragment
 
 
@@ -52,6 +53,15 @@ class CreateActionStepThreeFragment : Fragment(), UserEditActionZoneFragment.Fra
             viewModel.isButtonClickable.value = viewModel.metadata.value?.streetAddress?.isNotBlank()
         })
         binding.title.text = getString(R.string.action_create_location_title, if (viewModel.isDemand) getString(R.string.action_name_demand) else getString(R.string.action_name_contrib))
+
+        if (viewModel.actionEdited == null) {
+            if (viewModel.isDemand) {
+                AnalyticsEvents.logEvent(AnalyticsEvents.Help_create_demand_3)
+            }
+            else {
+                AnalyticsEvents.logEvent(AnalyticsEvents.Help_create_contrib_3)
+            }
+        }
     }
 
     private fun handleOnClickNext(onClick: Boolean) {

@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.badge.BadgeDrawable
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -23,6 +24,7 @@ import social.entourage.android.new_v8.home.CommunicationHandlerBadgeViewModel
 import social.entourage.android.new_v8.home.UnreadMessages
 import social.entourage.android.onboarding.pre_onboarding.PreOnboardingStartActivity
 import social.entourage.android.tools.log.AnalyticsEvents
+
 
 class MainActivity : BaseSecuredActivity() {
 
@@ -145,6 +147,31 @@ class MainActivity : BaseSecuredActivity() {
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.nav_view)
         bottomNavigationView.itemIconTintList = null
         bottomNavigationView.setupWithNavController(navController)
+
+        bottomNavigationView.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.navigation_home -> {
+                    AnalyticsEvents.logEvent(AnalyticsEvents.Action_Tabbar_home)
+                }
+                R.id.navigation_donations -> {
+                    AnalyticsEvents.logEvent(AnalyticsEvents.Action_Tabbar_help)
+                }
+                R.id.navigation_messages -> {
+                    AnalyticsEvents.logEvent(AnalyticsEvents.Action_Tabbar_messages)
+                }
+                R.id.navigation_groups -> {
+                    AnalyticsEvents.logEvent(AnalyticsEvents.Action_Tabbar_groups)
+                }
+                R.id.navigation_events -> {
+                    AnalyticsEvents.logEvent(AnalyticsEvents.Action_Tabbar_events)
+                }
+            }
+
+            val navController: NavController =
+            androidx.navigation.Navigation.findNavController(this, social.entourage.android.R.id.nav_host_fragment_new_activity_main)
+
+            NavigationUI.onNavDestinationSelected(item, navController)
+        }
     }
 
     private fun addBadge(count : Int) {

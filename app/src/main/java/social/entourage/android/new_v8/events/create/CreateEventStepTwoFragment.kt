@@ -13,6 +13,7 @@ import kotlinx.android.synthetic.main.new_time_picker_start_end.view.*
 import social.entourage.android.R
 import social.entourage.android.databinding.NewFragmentCreateEventStepTwoBinding
 import social.entourage.android.new_v8.utils.transformIntoDatePicker
+import social.entourage.android.tools.log.AnalyticsEvents
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -27,6 +28,9 @@ class CreateEventStepTwoFragment : Fragment() {
         setView()
         handleNextButtonState()
         setRecurrence()
+        if (CommunicationHandler.eventEdited == null) {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Event_create_2)
+        }
     }
 
     override fun onCreateView(

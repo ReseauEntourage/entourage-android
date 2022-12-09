@@ -13,6 +13,7 @@ import social.entourage.android.databinding.NewFragmentCreateEventStepFourBindin
 import social.entourage.android.new_v8.models.Interest
 import social.entourage.android.new_v8.profile.editProfile.InterestsListAdapter
 import social.entourage.android.new_v8.profile.editProfile.OnItemCheckListener
+import social.entourage.android.tools.log.AnalyticsEvents
 import timber.log.Timber
 
 class CreateEventStepFourFragment : Fragment() {
@@ -38,6 +39,10 @@ class CreateEventStepFourFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         MetaDataRepository.metaData.observe(requireActivity(), ::handleMetaData)
         initializeInterests()
+
+        if (CommunicationHandler.eventEdited == null) {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Event_create_4)
+        }
     }
 
     private fun handleMetaData(tags: Tags?) {

@@ -26,6 +26,7 @@ import social.entourage.android.new_v8.utils.Const
 import social.entourage.android.new_v8.utils.Utils
 import social.entourage.android.new_v8.utils.nextPage
 import social.entourage.android.new_v8.utils.previousPage
+import social.entourage.android.tools.log.AnalyticsEvents
 
 
 class CreateEventFragment : Fragment() {
@@ -205,6 +206,9 @@ class CreateEventFragment : Fragment() {
             Utils.showToast(requireContext(), getString(R.string.error_create_group))
         } else {
             eventPresenter.newEventCreated.value?.id?.let {
+                if (CommunicationHandler.eventEdited == null) {
+                    AnalyticsEvents.logEvent(AnalyticsEvents.Event_create_end)
+                }
                 val action =
                     CreateEventFragmentDirections.actionCreateEventFragmentToCreateEventSuccessFragment(
                         it

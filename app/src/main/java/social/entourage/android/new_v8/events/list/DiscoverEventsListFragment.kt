@@ -21,6 +21,7 @@ import social.entourage.android.new_v8.events.EventsPresenter
 import social.entourage.android.new_v8.models.EventActionLocationFilters
 import social.entourage.android.new_v8.models.Events
 import social.entourage.android.new_v8.utils.Utils
+import social.entourage.android.tools.log.AnalyticsEvents
 
 const val EVENTS_PER_PAGE = 10
 
@@ -73,6 +74,7 @@ class DiscoverEventsListFragment : Fragment() {
         eventsPresenter.getAllEvents.observe(viewLifecycleOwner, ::handleResponseGetEvents)
         initializeEvents()
         handleSwipeRefresh()
+        AnalyticsEvents.logEvent(AnalyticsEvents.Event_view_discover)
     }
 
     private fun handleResponseGetEvents(allEvents: MutableList<Events>?) {
@@ -103,6 +105,7 @@ class DiscoverEventsListFragment : Fragment() {
         }
 
         binding.uiLayoutLocationBt.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Event_action_filter)
             val intent = Intent(context, EventFiltersActivity::class.java)
             intent.putExtra(EventFiltersActivity.FILTERS,currentFilters)
             activityResultLauncher?.launch(intent)

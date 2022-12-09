@@ -8,6 +8,7 @@ import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.api.OnboardingAPI
 import social.entourage.android.new_v8.MainActivity
+import social.entourage.android.tools.log.AnalyticsEvents
 
 class OnboardingEndActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -17,6 +18,8 @@ class OnboardingEndActivity : AppCompatActivity() {
         ui_onboarding_bt_end?.setOnClickListener {
             goMain()
         }
+
+        AnalyticsEvents.logEvent(AnalyticsEvents.Onboard_end)
     }
 
     fun goMain() {

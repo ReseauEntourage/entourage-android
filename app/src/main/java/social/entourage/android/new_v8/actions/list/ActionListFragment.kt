@@ -16,6 +16,7 @@ import social.entourage.android.R
 import social.entourage.android.databinding.NewFragmentActionListBinding
 import social.entourage.android.new_v8.actions.*
 import social.entourage.android.new_v8.models.*
+import social.entourage.android.tools.log.AnalyticsEvents
 
 const val EVENTS_PER_PAGE = 10
 const val IS_CONTRIB = "isContrib"
@@ -61,6 +62,13 @@ class ActionListFragment : Fragment() {
         initializeEvents()
         handleSwipeRefresh()
         addParentFragmentListener()
+
+        if (isContrib) {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Help_view_contrib)
+        }
+        else {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Help_view_demand)
+        }
     }
 
     private fun addParentFragmentListener() {

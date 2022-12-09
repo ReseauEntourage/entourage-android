@@ -19,6 +19,7 @@ import social.entourage.android.api.model.Tags
 import social.entourage.android.api.model.User
 import social.entourage.android.databinding.NewFragmentMyProfileBinding
 import social.entourage.android.new_v8.profile.ProfileFragmentDirections
+import social.entourage.android.tools.log.AnalyticsEvents
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -47,6 +48,7 @@ class MyProfileFragment : Fragment() {
         initializeView()
         initializeInterests()
         initializeAssociationButton()
+        AnalyticsEvents.logEvent(AnalyticsEvents.Profile_view_profile)
     }
 
 

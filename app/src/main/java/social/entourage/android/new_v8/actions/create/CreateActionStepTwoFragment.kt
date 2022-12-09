@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import social.entourage.android.R
 import social.entourage.android.databinding.NewFragmentCreateGroupStepTwoBinding
 import social.entourage.android.new_v8.utils.Utils
+import social.entourage.android.tools.log.AnalyticsEvents
 
 
 class CreateActionStepTwoFragment : Fragment() {
@@ -32,6 +33,15 @@ class CreateActionStepTwoFragment : Fragment() {
         binding.layout.setTitle(getString(R.string.action_create_cat_choose_category,
             if (viewModel.isDemand) getString(R.string.action_name_demand)
             else getString(R.string.action_name_contrib)))
+
+        if (viewModel.actionEdited == null) {
+            if (viewModel.isDemand) {
+                AnalyticsEvents.logEvent(AnalyticsEvents.Help_create_demand_2)
+            }
+            else {
+                AnalyticsEvents.logEvent(AnalyticsEvents.Help_create_contrib_2)
+            }
+        }
     }
 
     override fun onCreateView(

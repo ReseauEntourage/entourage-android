@@ -20,6 +20,7 @@ import social.entourage.android.new_v8.models.Action
 import social.entourage.android.new_v8.utils.Utils
 import social.entourage.android.new_v8.utils.nextPage
 import social.entourage.android.new_v8.utils.previousPage
+import social.entourage.android.tools.log.AnalyticsEvents
 
 class CreateActionFragment : Fragment() {
 
@@ -86,6 +87,14 @@ class CreateActionFragment : Fragment() {
             Utils.showToast(requireContext(), getString(R.string.action_error_create_action, if (isDemand) getString(R.string.action_name_demand) else getString(R.string.action_name_contrib)))
         } else {
             actionPresenter.newActionCreated.value?.let {
+                if (actionEdited == null) {
+                    if (isDemand) {
+                        AnalyticsEvents.logEvent(AnalyticsEvents.Help_create_demand_end)
+                    }
+                    else {
+                        AnalyticsEvents.logEvent(AnalyticsEvents.Help_create_contrib_end)
+                    }
+                }
                 val action =
                     CreateActionFragmentDirections.actionCreateActionFragmentToCreateActionSuccessFragment(
                         it.id!!,it.title!!,it.isDemand()

@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import social.entourage.android.R
 import social.entourage.android.databinding.NewFragmentCreateEventStepThreeBinding
+import social.entourage.android.tools.log.AnalyticsEvents
 import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
@@ -40,6 +41,10 @@ class CreateEventStepThreeFragment : Fragment() {
             findNavController().navigate(R.id.action_create_event_fragment_to_edit_action_zone_fragment)
         }
         setView()
+
+        if (CommunicationHandler.eventEdited == null) {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Event_create_3)
+        }
     }
 
     private fun setViewMultiSelect() {

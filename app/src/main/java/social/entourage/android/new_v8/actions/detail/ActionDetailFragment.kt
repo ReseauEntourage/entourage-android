@@ -38,6 +38,7 @@ import social.entourage.android.new_v8.user.UserProfileActivity
 import social.entourage.android.new_v8.utils.Const
 import social.entourage.android.new_v8.utils.Utils
 import social.entourage.android.new_v8.utils.px
+import social.entourage.android.tools.log.AnalyticsEvents
 
 
 class ActionDetailFragment : Fragment(), OnMapReadyCallback {
@@ -91,6 +92,13 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
         actionsPresenter.getAction.observe(viewLifecycleOwner, ::handleResponseGetDetail)
         //Use to show or create conversation 1 to 1
         discussionPresenter.newConversation.observe(requireActivity(), ::handleGetConversation)
+
+        if (isDemand) {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Help_view_demand_detail)
+        }
+        else {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Help_view_contrib_detail)
+        }
     }
 
     override fun onAttach(activity: Activity) {
@@ -194,6 +202,13 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
             )
         }
         binding.uiBtContact.setOnClickListener {
+            if (isDemand) {
+                AnalyticsEvents.logEvent(AnalyticsEvents.Help_action_demand_contact)
+            }
+            else {
+                AnalyticsEvents.logEvent(AnalyticsEvents.Help_action_contrib_contact)
+            }
+
             action?.author?.userID?.let { it -> discussionPresenter.createOrGetConversation(it) }
         }
 

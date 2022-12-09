@@ -18,6 +18,7 @@ import social.entourage.android.new_v8.home.CommunicationHandlerBadgeViewModel
 import social.entourage.android.new_v8.home.UnreadMessages
 import social.entourage.android.new_v8.models.Conversation
 import social.entourage.android.new_v8.utils.Const
+import social.entourage.android.tools.log.AnalyticsEvents
 import kotlin.math.abs
 
 const val messagesPerPage = 25
@@ -55,6 +56,8 @@ class DiscussionsMainFragment : Fragment() {
         handleImageViewAnimation()
 
         discussionsPresenter.unreadMessages.observe(requireActivity(), ::updateUnreadCount)
+
+        AnalyticsEvents.logEvent(AnalyticsEvents.Message_view)
     }
 
     override fun onResume() {

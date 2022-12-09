@@ -29,6 +29,7 @@ import social.entourage.android.new_v8.profile.ProfileActivity
 import social.entourage.android.new_v8.user.UserProfileActivity
 import social.entourage.android.new_v8.utils.Const
 import social.entourage.android.new_v8.utils.Utils
+import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.view.CommunicationRecoWebUrlHandlerViewModel
 
 class HomeFragment : Fragment() {
@@ -78,6 +79,8 @@ class HomeFragment : Fragment() {
             isAlreadyLoadSummary = false
         }
         homePresenter.getNotificationsCount()
+
+        AnalyticsEvents.logEvent(AnalyticsEvents.Home_view_home)
     }
 
     private fun updateNotifsCount(count:Int) {
@@ -165,12 +168,14 @@ class HomeFragment : Fragment() {
 
     private fun handleProfileButton() {
         binding.imageUser.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Home_action_profile)
             startActivity(
                 Intent(context, ProfileActivity::class.java)
             )
         }
 
         binding.uiLayoutNotif.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Home_action_notif)
             val intent = Intent(requireContext(),NotificationsInAppActivity::class.java)
             intent.putExtra(Const.NOTIF_COUNT,homePresenter.notifsCount.value)
             startActivity(intent)
@@ -186,6 +191,7 @@ class HomeFragment : Fragment() {
         )
 
         binding.pedagogicalContent.root.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Home_action_pedago)
             startActivity(
                 Intent(
                     requireContext(),
@@ -198,6 +204,7 @@ class HomeFragment : Fragment() {
     private fun handleOnClickCounters() {
         with(binding) {
             meetingCard.setOnClickListener {
+                AnalyticsEvents.logEvent(AnalyticsEvents.Home_action_meetcount)
                 Utils.showAlertDialogWithoutActions(
                     requireContext(),
                     getString(R.string.create_encounters),
@@ -206,6 +213,7 @@ class HomeFragment : Fragment() {
                 )
             }
             groupCard.root.setOnClickListener {
+                AnalyticsEvents.logEvent(AnalyticsEvents.Home_action_groupcount)
                 userSummary?.let {
                     ViewPagerDefaultPageController.shouldSelectDiscoverGroups = it.neighborhoodParticipationsCount == 0
                 }
@@ -215,6 +223,7 @@ class HomeFragment : Fragment() {
             }
 
             eventCard.root.setOnClickListener {
+                AnalyticsEvents.logEvent(AnalyticsEvents.Home_action_eventcount)
                 userSummary?.let {
                     ViewPagerDefaultPageController.shouldSelectDiscoverEvents = it.outingParticipationsCount == 0
                 }
@@ -245,6 +254,7 @@ class HomeFragment : Fragment() {
 
             moderator.root.setOnClickListener {
                 userSummary?.moderator?.id?.let {
+                    AnalyticsEvents.logEvent(AnalyticsEvents.Home_action_moderator)
                     requireContext().startActivity(
                         Intent(context, UserProfileActivity::class.java).putExtra(
                             Const.USER_ID,
@@ -261,6 +271,7 @@ class HomeFragment : Fragment() {
                 .into(solidarityPlaces.root.icon_card)
 
             solidarityPlaces.root.setOnClickListener {
+                AnalyticsEvents.logEvent(AnalyticsEvents.Home_action_map)
                 val intent = Intent(requireContext(), GDSMainActivity::class.java)
                 requireActivity().startActivity(intent)
             }

@@ -15,6 +15,7 @@ import social.entourage.android.new_v8.groups.GroupPresenter
 import social.entourage.android.new_v8.groups.list.groupPerPage
 import social.entourage.android.new_v8.models.Group
 import social.entourage.android.new_v8.utils.Const
+import social.entourage.android.tools.log.AnalyticsEvents
 import timber.log.Timber
 
 
@@ -51,6 +52,10 @@ class CreateEventStepFiveFragment : Fragment() {
                 selectedGroupsIdList.add(it)
                 CommunicationHandler.event.neighborhoodIds.add(it)
             }
+        }
+
+        if (CommunicationHandler.eventEdited == null) {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Event_create_5)
         }
     }
 

@@ -12,6 +12,7 @@ import social.entourage.android.databinding.NewFragmentCreateActionCguBinding
 import social.entourage.android.new_v8.groups.details.rules.RulesListAdapter
 import social.entourage.android.new_v8.models.Action
 import social.entourage.android.new_v8.models.Rules
+import social.entourage.android.tools.log.AnalyticsEvents
 
 class CreateActionCGUFragment : Fragment() {
 
@@ -43,6 +44,15 @@ class CreateActionCGUFragment : Fragment() {
         setNextClickListener()
         initializeGroups()
         handleBackButton()
+
+        if (actionEdited == null) {
+            if (isDemand) {
+                AnalyticsEvents.logEvent(AnalyticsEvents.Help_create_demand_chart)
+            }
+            else {
+                AnalyticsEvents.logEvent(AnalyticsEvents.Help_create_contrib_chart)
+            }
+        }
     }
 
     private fun initializeGroups() {
