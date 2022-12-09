@@ -171,7 +171,6 @@ class ChoosePhotoModalFragment : BottomSheetDialogFragment() {
             AnalyticsEvents.logEvent(
                 AnalyticsEvents.ACTION_GROUP_FEED_NEW_POST_VALIDATE_PIC)
             binding.cropView.crop()
-            Timber.e(photoFileUri.toString())
             setFragmentResult(
                 Const.REQUEST_KEY_CHOOSE_PHOTO,
                 bundleOf(

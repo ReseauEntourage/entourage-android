@@ -83,7 +83,6 @@ class GroupPresenter {
                     call: Call<GroupWrapper>,
                     response: Response<GroupWrapper>
                 ) {
-                    Timber.e(response.body().toString())
                     if (response.isSuccessful) {
                         response.body()?.let { groupWrapper ->
                             getGroup.value = groupWrapper.group
@@ -279,7 +278,6 @@ class GroupPresenter {
                     call: Call<PrepareAddPostResponse>,
                     response: Response<PrepareAddPostResponse>
                 ) {
-                    Timber.e(response.body().toString())
                     if (response.isSuccessful) {
                         val presignedUrl = response.body()?.presignedUrl
                         val uploadKey = response.body()?.uploadKey

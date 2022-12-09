@@ -201,8 +201,6 @@ class EditProfileFragment : Fragment(), EditProfileCallback,
     }
 
     override fun updateUserPhoto(imageUri: Uri?) {
-        Timber.e("imageUri $imageUri")
-        Timber.e("path ${imageUri?.path}")
         imageUri?.path?.let { path ->
             Glide.with(this)
                 .load(path)

@@ -99,7 +99,6 @@ class CreateEventStepFourFragment : Fragment() {
                     interestsListAdapter.getOtherInterestCategory()
                         ?.let { if (it.isNotEmpty()) CommunicationHandler.event.otherInterest(it) }
                     CommunicationHandler.clickNext.removeObservers(viewLifecycleOwner)
-                    Timber.e("Event ${CommunicationHandler.event}")
 
                 }
             }

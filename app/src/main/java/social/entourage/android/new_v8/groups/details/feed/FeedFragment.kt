@@ -241,7 +241,6 @@ class FeedFragment : Fragment() {
             val res: Float =
                 abs(verticalOffset).toFloat() / appBarLayout.totalScrollRange
             binding.toolbarLayout.alpha = 1f - res
-            Timber.e(res.toString())
             binding.groupImageToolbar.alpha = res
             binding.groupNameToolbar.alpha = res
         })

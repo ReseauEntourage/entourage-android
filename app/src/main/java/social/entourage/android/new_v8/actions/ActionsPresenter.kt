@@ -163,7 +163,6 @@ class ActionsPresenter {
                     call: Call<DemandWrapper>,
                     response: Response<DemandWrapper>
                 ) {
-                    Timber.e(response.body().toString())
                     if (response.isSuccessful) {
                         response.body()?.let { actionWrapper ->
                             getAction.value = actionWrapper.action
@@ -187,7 +186,6 @@ class ActionsPresenter {
                     call: Call<ContribWrapper>,
                     response: Response<ContribWrapper>
                 ) {
-                    Timber.e(response.body().toString())
                     if (response.isSuccessful) {
                         response.body()?.let { actionWrapper ->
                             getAction.value = actionWrapper.action
@@ -219,7 +217,6 @@ class ActionsPresenter {
                     call: Call<PrepareAddPostResponse>,
                     response: Response<PrepareAddPostResponse>
                 ) {
-                    Timber.e(response.body().toString())
                     if (response.isSuccessful) {
                         val presignedUrl = response.body()?.presignedUrl
                         val uploadKey = response.body()?.uploadKey

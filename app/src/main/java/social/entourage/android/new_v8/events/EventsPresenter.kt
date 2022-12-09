@@ -144,7 +144,6 @@ class EventsPresenter {
                     call: Call<EventWrapper>,
                     response: Response<EventWrapper>
                 ) {
-                    Timber.e(response.body().toString())
                     if (response.isSuccessful) {
                         response.body()?.let { eventWrapper ->
                             getEvent.value = eventWrapper.event
@@ -284,7 +283,6 @@ class EventsPresenter {
                     call: Call<PrepareAddPostResponse>,
                     response: Response<PrepareAddPostResponse>
                 ) {
-                    Timber.e(response.body().toString())
                     if (response.isSuccessful) {
                         val presignedUrl = response.body()?.presignedUrl
                         val uploadKey = response.body()?.uploadKey
