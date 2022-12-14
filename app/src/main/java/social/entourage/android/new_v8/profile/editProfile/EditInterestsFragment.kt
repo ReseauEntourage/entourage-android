@@ -19,7 +19,6 @@ import social.entourage.android.new_v8.models.Interest
 
 class EditInterestsFragment : Fragment() {
 
-
     private var _binding: NewFragmentEditInterestsBinding? = null
     val binding: NewFragmentEditInterestsBinding get() = _binding!!
     private lateinit var user: User
@@ -56,7 +55,6 @@ class EditInterestsFragment : Fragment() {
         ).show()
     }
 
-
     private fun initializeInterests() {
         binding.recyclerView.apply {
             layoutManager = LinearLayoutManager(context)
@@ -72,9 +70,10 @@ class EditInterestsFragment : Fragment() {
         }
     }
 
-
     private fun setBackButton() {
-        binding.header.iconBack.setOnClickListener { findNavController().popBackStack() }
+        binding.header.iconBack.setOnClickListener {
+            findNavController().popBackStack()
+        }
     }
 
     private fun setValidateButton() {

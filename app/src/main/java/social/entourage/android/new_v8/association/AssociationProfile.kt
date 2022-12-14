@@ -140,7 +140,8 @@ class AssociationProfile : Fragment() {
                 return@setOnClickListener
             }
 
-            findNavController().popBackStack() }
+            findNavController().popBackStack()
+        }
     }
 
     private fun handleFollowButton() {

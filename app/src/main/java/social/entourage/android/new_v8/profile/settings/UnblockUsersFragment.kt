@@ -34,7 +34,6 @@ class UnblockUsersFragment : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setBackButton()
         initializeRv()
         handleCloseButton()
         setValidateButton()
@@ -99,10 +98,6 @@ class UnblockUsersFragment : BottomSheetDialogFragment() {
         }
     }
 
-    private fun setBackButton() {
-        binding.header.iconBack.setOnClickListener { findNavController().popBackStack() }
-    }
-
     private fun initializeRv() {
         binding.recyclerView.apply {
             layoutManager = LinearLayoutManager(context)
@@ -153,7 +148,7 @@ class UnblockUsersFragment : BottomSheetDialogFragment() {
     }
 
     private fun handleCloseButton() {
-        binding.header.iconBack.setOnClickListener {
+        binding.header.iconCross.setOnClickListener {
             dismiss()
         }
     }

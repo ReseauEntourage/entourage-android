@@ -33,7 +33,9 @@ class EditImageFragment : Fragment() {
     }
 
     private fun setBackButton() {
-        binding.header.iconBack.setOnClickListener { findNavController().popBackStack() }
+        binding.header.iconBack.setOnClickListener {
+            findNavController().popBackStack()
+        }
     }
 
     private fun updateUserView() {

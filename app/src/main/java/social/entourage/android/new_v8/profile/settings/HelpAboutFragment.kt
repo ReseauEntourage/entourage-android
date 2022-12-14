@@ -37,17 +37,12 @@ class HelpAboutFragment : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initializeView()
-        setBackButton()
         populate()
         handleCloseButton()
     }
 
     private fun initializeView() {
         binding.licence.divider.visibility = View.GONE
-    }
-
-    private fun setBackButton() {
-        binding.header.iconBack.setOnClickListener { findNavController().popBackStack() }
     }
 
     private fun populate() {
@@ -122,7 +117,6 @@ class HelpAboutFragment : BottomSheetDialogFragment() {
         launchActivity(donationIntent)
     }
 
-
     private fun onFAQClicked() {
         (activity as? ProfileActivity)?.showWebViewForLinkId(Constants.FAQ_LINK_ID)
     }
@@ -152,7 +146,7 @@ class HelpAboutFragment : BottomSheetDialogFragment() {
     }
 
     private fun handleCloseButton() {
-        binding.header.iconBack.setOnClickListener {
+        binding.header.iconCross.setOnClickListener {
             dismiss()
         }
     }

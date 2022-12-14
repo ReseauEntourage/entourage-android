@@ -39,7 +39,7 @@ class MainActivity : BaseSecuredActivity() {
 
         viewModel = ViewModelProvider(this)[CommunicationHandlerBadgeViewModel::class.java]
 
-        viewModel.badgeCount.observe(this,::handleupdateBadgeResponse)
+        viewModel.badgeCount.observe(this,::handleUpdateBadgeResponse)
 
         setContentView(R.layout.new_activity_main)
         initializeNavBar()
@@ -52,7 +52,7 @@ class MainActivity : BaseSecuredActivity() {
         }
     }
 
-    private fun handleupdateBadgeResponse(unreadMessages: UnreadMessages) {
+    private fun handleUpdateBadgeResponse(unreadMessages: UnreadMessages) {
         addBadge(unreadMessages.unreadCount ?: 0)
     }
 
@@ -70,7 +70,6 @@ class MainActivity : BaseSecuredActivity() {
     }
 
     fun logout() {
-
         //remove user phone
         val sharedPreferences = EntourageApplication.get().sharedPreferences
         val editor = sharedPreferences.edit()
@@ -96,10 +95,9 @@ class MainActivity : BaseSecuredActivity() {
         AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_LOGOUT)
         startActivity(Intent(this, PreOnboardingStartActivity::class.java))
         finish()
-
     }
 
-    fun checkIntentAction(action: String, extras: Bundle?) {
+    private fun checkIntentAction(action: String, extras: Bundle?) {
         val message = extras?.get(PushNotificationManager.PUSH_MESSAGE) as? Message
         message?.let {
             PushNotificationLinkManager().presentAction(this,supportFragmentManager,message.content?.extra?.instance,message.content?.extra?.instanceId)

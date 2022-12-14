@@ -80,7 +80,7 @@ class ChoosePhotoModalFragment : BottomSheetDialogFragment() {
         handleDeleteImage()
         handleTakePictureButton()
         handleImportPictureButton()
-        handleBackButton()
+        handleCloseButton()
         handleValidateButton()
     }
 
@@ -181,8 +181,8 @@ class ChoosePhotoModalFragment : BottomSheetDialogFragment() {
         }
     }
 
-    private fun handleBackButton() {
-        binding.header.iconBack.setOnClickListener {
+    private fun handleCloseButton() {
+        binding.header.iconCross.setOnClickListener {
             dismiss()
         }
     }

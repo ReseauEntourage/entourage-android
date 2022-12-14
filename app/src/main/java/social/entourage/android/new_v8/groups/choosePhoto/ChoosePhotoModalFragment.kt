@@ -94,7 +94,7 @@ class ChoosePhotoModalFragment : BottomSheetDialogFragment() {
         AnalyticsEvents.logEvent(
             AnalyticsEvents.ACTION_NEW_GROUP_STEP3_PIC_GALLERY_CLOSE
         )
-        binding.header.iconBack.setOnClickListener {
+        binding.header.iconCross.setOnClickListener {
             dismiss()
         }
     }

@@ -118,7 +118,7 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
     }
 
     private fun handleCloseButton() {
-        binding.header.iconBack.setOnClickListener {
+        binding.header.iconCross.setOnClickListener {
             dismiss()
         }
     }

@@ -286,13 +286,11 @@ class AboutEventFragment : Fragment(), OnMapReadyCallback {
         }
     }
 
-
     private fun handleBackButton() {
         binding.header.iconBack.setOnClickListener {
             findNavController().popBackStack()
         }
     }
-
 
     private fun handleJoinButton() {
         if (event?.admin == false)

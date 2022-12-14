@@ -237,7 +237,7 @@ class ReportModalFragment : BottomSheetDialogFragment() {
     }
 
     private fun handleCloseButton() {
-        binding.header.iconBack.setOnClickListener {
+        binding.header.iconCross.setOnClickListener {
             onClose()
             dismiss()
         }

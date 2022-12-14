@@ -30,7 +30,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
-            android:id="@+id/icon_back"
+            android:id="@+id/icon_cross"
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:layout_marginTop="20dp"

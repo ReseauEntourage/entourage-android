@@ -159,7 +159,12 @@ class EditProfileFragment : Fragment(), EditProfileCallback,
     }
 
     private fun setBackButton() {
-        binding.header.iconBack.setOnClickListener { if (fromHomePage) activity?.finish() else findNavController().popBackStack() }
+        binding.header.iconBack.setOnClickListener {
+            if (fromHomePage)
+                activity?.finish()
+            else
+                findNavController().popBackStack()
+        }
     }
 
     private fun updateUserView() {

@@ -28,16 +28,11 @@ class SettingsNotificationsFragment : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setBackButton()
         populate()
         handleCloseButton()
 
         homePresenter.notificationsPermission.observe(requireActivity(), ::updateSwitch)
         homePresenter.getNotificationsPermissions()
-    }
-
-    private fun setBackButton() {
-        binding.header.iconBack.setOnClickListener { findNavController().popBackStack() }
     }
 
     private fun updateSwitch(notifsPermissions: NotifInAppPermission?) {
@@ -96,7 +91,7 @@ class SettingsNotificationsFragment : BottomSheetDialogFragment() {
     }
 
     private fun handleCloseButton() {
-        binding.header.iconBack.setOnClickListener {
+        binding.header.iconCross.setOnClickListener {
             dismiss()
         }
     }
