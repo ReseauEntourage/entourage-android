@@ -139,7 +139,7 @@ class HelpAboutFragment : BottomSheetDialogFragment() {
 
     private fun launchActivity(intent: Intent) {
         try {
-            activity?.startActivity(intent)
+            startActivityForResult(intent, 0)
         } catch (ex: Exception) {
             Toast.makeText(activity, R.string.no_browser_error, Toast.LENGTH_SHORT).show()
         }

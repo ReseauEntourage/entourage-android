@@ -44,11 +44,11 @@ class CreateGroupSuccessFragment : Fragment() {
             AnalyticsEvents.logEvent(
                 AnalyticsEvents.ACTION_NEW_GROUP_CONFIRMATION_SKIP
             )
-            startActivity(
+            startActivityForResult(
                 Intent(requireContext(), FeedActivity::class.java).putExtra(
                     Const.GROUP_ID,
                     args.groupID
-                )
+                ), 0
             )
             requireActivity().finish()
             RefreshController.shouldRefreshFragment = true
@@ -63,7 +63,7 @@ class CreateGroupSuccessFragment : Fragment() {
             val intent = Intent(context, CreatePostGroupActivity::class.java)
             intent.putExtra(Const.GROUP_ID, args.groupID)
             intent.putExtra(Const.FROM_CREATE_GROUP, true)
-            startActivity(intent)
+            startActivityForResult(intent, 0)
             requireActivity().finish()
             RefreshController.shouldRefreshFragment = true
         }

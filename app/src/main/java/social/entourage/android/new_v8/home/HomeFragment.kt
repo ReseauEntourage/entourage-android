@@ -58,8 +58,8 @@ class HomeFragment : Fragment() {
         isAlreadyLoadSummary = true
         homePresenter.getSummary()
 
-        val _model = ViewModelProvider(requireActivity()).get(CommunicationRecoWebUrlHandlerViewModel::class.java)
-        _model.isValid.observe(requireActivity(), ::reloadDatasFromRecos)
+        val viewModel = ViewModelProvider(requireActivity()).get(CommunicationRecoWebUrlHandlerViewModel::class.java)
+        viewModel.isValid.observe(requireActivity(), ::reloadDatasFromRecos)
 
         updateView()
         handleProfileButton()
@@ -173,8 +173,8 @@ class HomeFragment : Fragment() {
     private fun handleProfileButton() {
         binding.imageUser.setOnClickListener {
             AnalyticsEvents.logEvent(AnalyticsEvents.Home_action_profile)
-            startActivity(
-                Intent(context, ProfileActivity::class.java)
+            startActivityForResult(
+                Intent(context, ProfileActivity::class.java), 0
             )
         }
 
@@ -182,7 +182,7 @@ class HomeFragment : Fragment() {
             AnalyticsEvents.logEvent(AnalyticsEvents.Home_action_notif)
             val intent = Intent(requireContext(),NotificationsInAppActivity::class.java)
             intent.putExtra(Const.NOTIF_COUNT,homePresenter.notifsCount.value)
-            startActivity(intent)
+            startActivityForResult(intent, 0)
         }
     }
 
@@ -196,11 +196,11 @@ class HomeFragment : Fragment() {
 
         binding.pedagogicalContent.root.setOnClickListener {
             AnalyticsEvents.logEvent(AnalyticsEvents.Home_action_pedago)
-            startActivity(
+            startActivityForResult(
                 Intent(
                     requireContext(),
                     PedagoListActivity::class.java
-                )
+                ), 0
             )
         }
     }
@@ -239,46 +239,44 @@ class HomeFragment : Fragment() {
     }
 
     private fun initializeHelpSection() {
-        with(binding) {
-            moderator.root.title.text = userSummary?.moderator?.displayName
-            moderator.root.description.text = getString(R.string.moderator_subtitle)
+        binding.moderator.root.title.text = userSummary?.moderator?.displayName
+        binding.moderator.root.description.text = getString(R.string.moderator_subtitle)
 
-            userSummary?.moderator?.imageURL?.let {
-                Glide.with(requireContext())
-                    .load(Uri.parse(it))
-                    .placeholder(R.drawable.placeholder_user)
-                    .error(R.drawable.placeholder_user)
-                    .circleCrop()
-                    .into(moderator.root.icon_card)
-            } ?: kotlin.run {
-                Glide.with(requireContext())
-                    .load(R.drawable.placeholder_user)
-                    .into(moderator.root.icon_card)
-            }
-
-            moderator.root.setOnClickListener {
-                userSummary?.moderator?.id?.let {
-                    AnalyticsEvents.logEvent(AnalyticsEvents.Home_action_moderator)
-                    requireContext().startActivity(
-                        Intent(context, UserProfileActivity::class.java).putExtra(
-                            Const.USER_ID,
-                            it
-                        )
-                    )
-                }
-            }
-
-            solidarityPlaces.root.title.text = getString(R.string.solidarity_places_map)
-            solidarityPlaces.root.description.text = getString(R.string.solidarity_places_map_sub)
+        userSummary?.moderator?.imageURL?.let {
             Glide.with(requireContext())
-                .load(R.drawable.new_solidarity_map)
-                .into(solidarityPlaces.root.icon_card)
+                .load(Uri.parse(it))
+                .placeholder(R.drawable.placeholder_user)
+                .error(R.drawable.placeholder_user)
+                .circleCrop()
+                .into(binding.moderator.root.icon_card)
+        } ?: kotlin.run {
+            Glide.with(requireContext())
+                .load(R.drawable.placeholder_user)
+                .into(binding.moderator.root.icon_card)
+        }
 
-            solidarityPlaces.root.setOnClickListener {
-                AnalyticsEvents.logEvent(AnalyticsEvents.Home_action_map)
-                val intent = Intent(requireContext(), GDSMainActivity::class.java)
-                requireActivity().startActivity(intent)
+        binding.moderator.root.setOnClickListener {
+            userSummary?.moderator?.id?.let {
+                AnalyticsEvents.logEvent(AnalyticsEvents.Home_action_moderator)
+                startActivityForResult(
+                    Intent(context, UserProfileActivity::class.java).putExtra(
+                        Const.USER_ID,
+                        it
+                    ), 0
+                )
             }
+        }
+
+        binding.solidarityPlaces.root.title.text = getString(R.string.solidarity_places_map)
+        binding.solidarityPlaces.root.description.text = getString(R.string.solidarity_places_map_sub)
+        Glide.with(requireContext())
+            .load(R.drawable.new_solidarity_map)
+            .into(binding.solidarityPlaces.root.icon_card)
+
+        binding.solidarityPlaces.root.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Home_action_map)
+            val intent = Intent(requireContext(), GDSMainActivity::class.java)
+            startActivityForResult(intent, 0)
         }
     }
 

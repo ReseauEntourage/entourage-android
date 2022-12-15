@@ -1,5 +1,6 @@
 package social.entourage.android.new_v8.events.list
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -83,15 +84,15 @@ class GroupEventsListAdapter(
         childPosition: Int,
         child: Events
     ) {
-        childViewHolder.binding.layout.setOnClickListener {
-            context.startActivity(
+        childViewHolder.binding.layout.setOnClickListener { view ->
+            (view.context as? Activity)?.startActivityForResult(
                 Intent(
-                    context,
+                    view.context,
                     FeedActivity::class.java
                 ).putExtra(
                     Const.EVENT_ID,
                     child.id
-                )
+                ), 0
             )
         }
         childViewHolder.binding.eventName.text = child.title
@@ -117,7 +118,7 @@ class GroupEventsListAdapter(
 
         child.metadata?.landscapeThumbnailUrl?.let {
             Glide.with(context)
-                .load(Uri.parse(child.metadata?.landscapeThumbnailUrl))
+                .load(Uri.parse(child.metadata.landscapeThumbnailUrl))
                 .placeholder(R.drawable.ic_event_placeholder)
                 .error(R.drawable.ic_event_placeholder)
                 .apply(RequestOptions().override(90.px, 90.px))

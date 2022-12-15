@@ -1,6 +1,7 @@
 package social.entourage.android.new_v8.groups.details.members
 
 
+import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.view.LayoutInflater
@@ -67,13 +68,12 @@ class MembersListAdapter(
                         .into(binding.picture)
                 }
 
-                binding.layout.setOnClickListener {
-                    binding.picture.context.startActivity(
-                        Intent(binding.picture.context, UserProfileActivity::class.java).putExtra(
+                binding.layout.setOnClickListener { view ->
+                    (view.context as? Activity)?.startActivityForResult(
+                        Intent(view.context, UserProfileActivity::class.java).putExtra(
                             Const.USER_ID,
                             this.userId
-                        )
-                    )
+                    ), 0)
                 }
 
                 binding.contact.setOnClickListener {

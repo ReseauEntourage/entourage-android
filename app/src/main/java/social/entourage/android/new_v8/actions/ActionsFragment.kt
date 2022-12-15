@@ -229,7 +229,7 @@ class ActionsFragment : Fragment() {
         binding.uiButtonMyActions.setOnClickListener {
             AnalyticsEvents.logEvent(AnalyticsEvents.Help_view_myactions)
             val intent = Intent(context, MyActionsListActivity::class.java)
-            startActivity(intent)
+            startActivityForResult(intent, 0)
         }
     }
 

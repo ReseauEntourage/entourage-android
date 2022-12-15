@@ -130,8 +130,9 @@ class EventsFragment : Fragment() {
     private fun createEvent() {
         binding.createEvent.setOnClickListener {
             AnalyticsEvents.logEvent(AnalyticsEvents.Event_action_create)
-            startActivity(
-                Intent(context, CreateEventActivity::class.java)
+            startActivityForResult(
+                Intent(context, CreateEventActivity::class.java),
+                0
             )
         }
     }

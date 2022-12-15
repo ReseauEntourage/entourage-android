@@ -118,9 +118,7 @@ class GroupsFragment : Fragment() {
             AnalyticsEvents.logEvent(
                 AnalyticsEvents.ACTION_GROUP_PLUS
             )
-            startActivity(
-                Intent(context, CreateGroupActivity::class.java)
-            )
+            startActivityForResult(Intent(context, CreateGroupActivity::class.java), 0)
         }
     }
 }

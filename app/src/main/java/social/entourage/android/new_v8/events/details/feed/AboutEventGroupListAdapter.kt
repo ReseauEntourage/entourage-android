@@ -30,9 +30,9 @@ class AboutEventGroupListAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.binding.root.setOnClickListener {
-            holder.binding.groupName.context.startActivity(
-                Intent(holder.binding.groupName.context, FeedActivity::class.java).putExtra(
+        holder.binding.root.setOnClickListener { view ->
+            view.context.startActivity(
+                Intent(view.context, FeedActivity::class.java).putExtra(
                     Const.GROUP_ID,
                     groupsList[position].id
                 )

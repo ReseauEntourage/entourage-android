@@ -133,6 +133,6 @@ class MyActionsListFragment : Fragment() {
             .putExtra(Const.IS_ACTION_MINE, action.isMine())
 
         isFromShowDetail = true
-        startActivity(intent)
+        startActivityForResult(intent, 0)
     }
 }

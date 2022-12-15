@@ -131,7 +131,7 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
 
     private fun handleGetConversation(conversation: Conversation?) {
         conversation?.let {
-            context?.startActivity(
+            startActivityForResult(
                 Intent(context, DetailConversationActivity::class.java)
                     .putExtras(
                         bundleOf(
@@ -144,7 +144,7 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
                             Const.IS_CONVERSATION to true,
                             Const.HAS_TO_SHOW_MESSAGE to conversation.hasToShowFirstMessage()
                         )
-                    )
+                    ), 0
             )
         }
     }
@@ -168,14 +168,14 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
         binding.uiLayoutCharte.setOnClickListener {
             val intent = Intent(context, GroupRulesActivity::class.java)
             intent.putExtra(Const.RULES_TYPE,Const.RULES_ACTION)
-            startActivity(intent)
+            startActivityForResult(intent, 0)
         }
 
         binding.layoutUser.setOnClickListener {
-            startActivity(Intent(context, UserProfileActivity::class.java).putExtra(
+            startActivityForResult(Intent(context, UserProfileActivity::class.java).putExtra(
                 Const.USER_ID,
                 action?.author?.userID
-            ))
+            ),0)
         }
 
         binding.uiBtModify.setOnClickListener {
@@ -348,6 +348,6 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
         val geoUri =
             String.format(getString(R.string.geoUri), action?.metadata?.displayAddress)
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(geoUri))
-        startActivity(intent)
+        startActivityForResult(intent, 0)
     }
 }

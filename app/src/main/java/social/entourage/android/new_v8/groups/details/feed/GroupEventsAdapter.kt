@@ -1,5 +1,6 @@
 package social.entourage.android.new_v8.groups.details.feed
 
+import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.view.LayoutInflater
@@ -35,37 +36,33 @@ class GroupEventsAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        with(holder) {
-            with(eventsList[position]) {
-                binding.name.text = title
-                binding.address.text = metadata?.placeName
-                metadata?.startsAt?.let {
-                    binding.date.text = SimpleDateFormat(
-                        holder.itemView.context.getString(R.string.event_date),
-                        Locale.FRANCE
-                    ).format(
-                        it
-                    )
-                }
-                this.metadata?.landscapeThumbnailUrl?.let {
-                    Glide.with(holder.itemView.context)
-                        .load(Uri.parse(it))
-                        .transform(CenterCrop(), GranularRoundedCorners(20F, 20F, 0F, 0F))
-                        .placeholder(R.drawable.placeholder_user)
-                        .into(holder.binding.image)
-                }
-                holder.binding.layout.setOnClickListener {
-                    holder.itemView.context.startActivity(
-                        Intent(
-                            holder.itemView.context,
-                            FeedActivity::class.java
-                        ).putExtra(
-                            Const.EVENT_ID,
-                            this.id
-                        )
-                    )
-                }
-            }
+        holder.binding.name.text = eventsList[position].title
+        holder.binding.address.text = eventsList[position].metadata?.placeName
+        eventsList[position].metadata?.startsAt?.let {
+            holder.binding.date.text = SimpleDateFormat(
+                holder.itemView.context.getString(R.string.event_date),
+                Locale.FRANCE
+            ).format(
+                it
+            )
+        }
+        eventsList[position].metadata?.landscapeThumbnailUrl?.let {
+            Glide.with(holder.itemView.context)
+                .load(Uri.parse(it))
+                .transform(CenterCrop(), GranularRoundedCorners(20F, 20F, 0F, 0F))
+                .placeholder(R.drawable.placeholder_user)
+                .into(holder.binding.image)
+        }
+        holder.binding.layout.setOnClickListener { view->
+            (view.context as? Activity)?.startActivityForResult(
+                Intent(
+                    view.context,
+                    FeedActivity::class.java
+                ).putExtra(
+                    Const.EVENT_ID,
+                    eventsList[position].id
+                ), 0
+            )
         }
     }
 

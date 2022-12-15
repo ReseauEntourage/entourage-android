@@ -1,5 +1,6 @@
 package social.entourage.android.new_v8.groups.details.feed
 
+import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.view.LayoutInflater
@@ -101,12 +102,12 @@ class CommentsListAdapter(
             }
             else {
                 binding.report.visibility = View.VISIBLE
-                binding.image.setOnClickListener {
-                    binding.image.context.startActivity(
-                        Intent(binding.image.context, UserProfileActivity::class.java).putExtra(
+                binding.image.setOnClickListener { view->
+                    (view.context as? Activity)?.startActivityForResult(
+                        Intent(view.context, UserProfileActivity::class.java).putExtra(
                             Const.USER_ID,
                             comment.user?.userId
-                        )
+                        ), 0
                     )
                 }
             }

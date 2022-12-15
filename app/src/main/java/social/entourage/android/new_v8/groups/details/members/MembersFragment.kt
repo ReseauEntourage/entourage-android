@@ -141,7 +141,7 @@ open class MembersFragment : Fragment() {
 
     private fun handleGetConversation(conversation: Conversation?) {
         conversation?.let {
-            context?.startActivity(
+            startActivityForResult(
                 Intent(context, DetailConversationActivity::class.java)
                     .putExtras(
                         bundleOf(
@@ -154,7 +154,7 @@ open class MembersFragment : Fragment() {
                             Const.IS_CONVERSATION to true,
                             Const.HAS_TO_SHOW_MESSAGE to conversation.hasToShowFirstMessage()
                         )
-                    )
+                    ), 0
             )
         }
     }

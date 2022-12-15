@@ -79,7 +79,7 @@ class GroupEventsListFragment : Fragment() {
         binding.createEvent.setOnClickListener {
             val intent = Intent(context, CreateEventActivity::class.java)
             intent.putExtra(Const.GROUP_ID, args.groupID)
-            startActivity(intent)
+            startActivityForResult(intent,0)
         }
     }
 }

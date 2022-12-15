@@ -311,7 +311,7 @@ class FeedFragment : Fragment() {
     }
 
     private fun openCommentPage(post: Post, shouldOpenKeyboard: Boolean) {
-        context?.startActivity(
+        startActivityForResult(
             Intent(context, EventCommentActivity::class.java)
                 .putExtras(
                     bundleOf(
@@ -322,7 +322,7 @@ class FeedFragment : Fragment() {
                         Const.IS_MEMBER to event.member,
                         Const.NAME to event.title
                     )
-                )
+                ), 0
         )
     }
 
@@ -406,7 +406,7 @@ class FeedFragment : Fragment() {
             AnalyticsEvents.logEvent(AnalyticsEvents.Event_detail_action_post)
             val intent = Intent(context, CreatePostEventActivity::class.java)
             intent.putExtra(Const.ID, eventId)
-            startActivity(intent)
+            startActivityForResult(intent, 0)
         }
     }
 

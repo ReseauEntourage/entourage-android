@@ -130,7 +130,7 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
             )
             val intent = Intent(context, GroupRulesActivity::class.java)
             intent.putExtra(Const.RULES_TYPE,Const.RULES_GROUP)
-            startActivity(intent)
+            startActivityForResult(intent, 0)
         }
     }
 
@@ -174,7 +174,7 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
             )
             val intent = Intent(context, EditGroupActivity::class.java)
             intent.putExtra(Const.GROUP_ID, group?.id)
-            startActivity(intent)
+            startActivityForResult(intent, 0)
             dismiss()
         }
     }

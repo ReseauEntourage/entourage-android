@@ -1,5 +1,6 @@
 package social.entourage.android.new_v8.comment
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -110,11 +111,11 @@ class PostAdapter(
     }
 
     private fun showUserDetail(context:Context,userId:Int?) {
-        context.startActivity(
+        (context as? Activity)?.startActivityForResult(
             Intent(context, UserProfileActivity::class.java).putExtra(
                 Const.USER_ID,
                 userId
-            )
+            ), 0
         )
     }
 

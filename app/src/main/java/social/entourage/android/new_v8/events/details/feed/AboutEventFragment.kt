@@ -268,7 +268,7 @@ class AboutEventFragment : Fragment(), OnMapReadyCallback {
         val geoUri =
             String.format(getString(R.string.geoUri), event?.metadata?.displayAddress)
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(geoUri))
-        startActivity(intent)
+        startActivityForResult(intent, 0)
     }
 
     private fun openLink() {
@@ -280,7 +280,7 @@ class AboutEventFragment : Fragment(), OnMapReadyCallback {
                 url?.let {
                     url = Utils.checkUrlWithHttps(it)
                     val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
-                    startActivity(browserIntent)
+                    startActivityForResult(browserIntent, 0)
                 }
             }
         }

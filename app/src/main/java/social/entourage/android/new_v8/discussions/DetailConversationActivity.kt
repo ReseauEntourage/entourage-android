@@ -38,10 +38,10 @@ class DetailConversationActivity : CommentActivity() {
 
         if (isOne2One) {
             binding.header.headerTitle.setOnClickListener {
-                startActivity(
+                startActivityForResult(
                     Intent(this, UserProfileActivity::class.java).putExtra(
                         Const.USER_ID, postAuthorID
-                    ))
+                    ), 0)
             }
         }
         checkAndShowPopWarning()

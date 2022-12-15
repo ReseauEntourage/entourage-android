@@ -87,7 +87,7 @@ class FeedFragment : Fragment() {
                     )
                     val intent = Intent(context, CreatePostGroupActivity::class.java)
                     intent.putExtra(Const.ID, groupId)
-                    startActivity(intent)
+                    startActivityForResult(intent, 0)
                 }
                 1 -> {
                     AnalyticsEvents.logEvent(
@@ -95,7 +95,7 @@ class FeedFragment : Fragment() {
                     )
                     val intent = Intent(context, CreateEventActivity::class.java)
                     intent.putExtra(Const.GROUP_ID, groupId)
-                    startActivity(intent)
+                    startActivityForResult(intent,0)
                 }
                 else -> {
                     AnalyticsEvents.logEvent(
@@ -332,7 +332,6 @@ class FeedFragment : Fragment() {
         }
     }
 
-
     private fun handleJoinResponse(hasJoined: Boolean) {
         group?.let {
             if (hasJoined) {
@@ -375,10 +374,8 @@ class FeedFragment : Fragment() {
         }
     }
 
-
     private fun openCommentPage(post: Post, shouldOpenKeyboard: Boolean) {
-
-        context?.startActivity(
+        startActivityForResult(
             Intent(context, GroupCommentActivity::class.java)
                 .putExtras(
                     bundleOf(
@@ -389,7 +386,7 @@ class FeedFragment : Fragment() {
                         Const.IS_MEMBER to group?.member,
                         Const.NAME to group?.name
                     )
-                )
+                ), 0
         )
     }
 

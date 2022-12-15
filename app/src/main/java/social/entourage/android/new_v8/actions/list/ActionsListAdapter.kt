@@ -1,5 +1,6 @@
 package social.entourage.android.new_v8.actions.list
 
+import android.app.Activity
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
@@ -49,12 +50,13 @@ class ActionsListAdapter(
         RecyclerView.ViewHolder(binding) {
         fun bind(action: Action) {
             binding.layout_contrib.setOnClickListener { view ->
-                view.context.startActivity(
+                (view.context as? Activity)?.startActivityForResult(
                     Intent(view.context, ActionDetailActivity::class.java)
                         .putExtra(Const.ACTION_ID, action.id)
                         .putExtra(Const.ACTION_TITLE,action.title)
                         .putExtra(Const.IS_ACTION_DEMAND,false)
-                        .putExtra(Const.IS_ACTION_MINE, action.isMine())
+                        .putExtra(Const.IS_ACTION_MINE, action.isMine()),
+                    0
                 )
             }
 
@@ -82,13 +84,14 @@ class ActionsListAdapter(
     inner class ViewHolderDemand(val binding: View) :
         RecyclerView.ViewHolder(binding) {
         fun bind(action: Action) {
-            binding.layout_demand.setOnClickListener {
-                binding.layout_demand.context.startActivity(
-                    Intent(binding.layout_demand.context, ActionDetailActivity::class.java)
+            binding.layout_demand.setOnClickListener { view->
+                (view.context as? Activity)?.startActivityForResult(
+                    Intent(view.context, ActionDetailActivity::class.java)
                         .putExtra(Const.ACTION_ID, action.id)
                         .putExtra(Const.ACTION_TITLE,action.title)
                         .putExtra(Const.IS_ACTION_DEMAND,true)
-                        .putExtra(Const.IS_ACTION_MINE, action.isMine())
+                        .putExtra(Const.IS_ACTION_MINE, action.isMine()),
+                    0
                 )
             }
 

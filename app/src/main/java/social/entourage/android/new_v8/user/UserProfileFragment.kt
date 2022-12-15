@@ -72,7 +72,7 @@ class UserProfileFragment : Fragment() {
 
     private fun handleGetConversation(conversation: Conversation?) {
         conversation?.let {
-            context?.startActivity(
+            startActivityForResult(
                 Intent(context, DetailConversationActivity::class.java)
                     .putExtras(
                         bundleOf(
@@ -85,7 +85,7 @@ class UserProfileFragment : Fragment() {
                             Const.IS_CONVERSATION to true,
                             Const.HAS_TO_SHOW_MESSAGE to conversation.hasToShowFirstMessage()
                         )
-                    )
+                    ), 0
             )
         }
     }

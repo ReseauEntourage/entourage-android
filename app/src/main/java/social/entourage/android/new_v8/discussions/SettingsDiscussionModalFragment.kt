@@ -122,10 +122,10 @@ class SettingsDiscussionModalFragment : BottomSheetDialogFragment() {
     private fun handleButtons() {
         binding.profile.layout.setOnClickListener {
             if (isOneToOne) {
-                startActivity(
+                startActivityForResult(
                     Intent(requireContext(), UserProfileActivity::class.java).putExtra(
                         Const.USER_ID, userId
-                    ))
+                    ), 0)
             }
             else {
                 MembersConversationFragment.newInstance(conversationId).show(childFragmentManager,"")

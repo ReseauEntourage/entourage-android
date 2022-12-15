@@ -34,11 +34,11 @@ class CreateEventSuccessFragment : Fragment() {
 
     private fun handleSeeEventButton() {
         binding.seeEvent.setOnClickListener {
-            startActivity(
+            startActivityForResult(
                 Intent(requireContext(), FeedActivity::class.java).putExtra(
                     Const.EVENT_ID,
                     args.eventID
-                )
+                ), 0
             )
             requireActivity().finish()
             RefreshController.shouldRefreshEventFragment = true

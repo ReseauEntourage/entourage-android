@@ -1,6 +1,7 @@
 package social.entourage.android.new_v8.discussions.members
 
 
+import android.app.Activity
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
@@ -55,17 +56,17 @@ class MembersConversationListAdapter(
                         .into(binding.picture)
                 }
 
-                binding.layout.setOnClickListener {
-                    binding.picture.context.startActivity(
-                        Intent(binding.picture.context, UserProfileActivity::class.java).putExtra(
+                binding.layout.setOnClickListener { view ->
+                    (view.context as? Activity)?.startActivityForResult(
+                        Intent(view.context, UserProfileActivity::class.java).putExtra(
                             Const.USER_ID,
                             this.id
-                        )
+                        ), 0
                     )
                 }
                 binding.contact.setOnClickListener {
-                    id?.let {
-                        onItemShowListener.onShowConversation(it)
+                    id?.let { id->
+                        onItemShowListener.onShowConversation(id)
                     }
                 }
             }

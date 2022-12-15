@@ -117,7 +117,7 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
         binding.rules.layout.setOnClickListener {
             val intent = Intent(context, GroupRulesActivity::class.java)
             intent.putExtra(Const.RULES_TYPE,Const.RULES_EVENT)
-            startActivity(intent)
+            startActivityForResult(intent, 0)
         }
     }
 
@@ -125,7 +125,7 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
         binding.edit.root.setOnClickListener {
             val intent = Intent(context, CreateEventActivity::class.java)
             intent.putExtra(Const.EVENT_UI, event)
-            startActivity(intent)
+            startActivityForResult(intent, 0)
             dismiss()
         }
     }
@@ -140,7 +140,7 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
                     Const.RECURRENCE to event?.recurrence
                 )
             )
-            startActivity(intent)
+            startActivityForResult(intent, 0)
             dismiss()
         }
     }

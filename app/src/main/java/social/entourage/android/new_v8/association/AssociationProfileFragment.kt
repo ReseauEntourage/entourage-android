@@ -17,13 +17,13 @@ import social.entourage.android.databinding.NewFragmentAssociationProfileBinding
 import social.entourage.android.new_v8.utils.Utils
 
 
-class AssociationProfile : Fragment() {
+class AssociationProfileFragment : Fragment() {
 
     private var _binding: NewFragmentAssociationProfileBinding? = null
     val binding: NewFragmentAssociationProfileBinding get() = _binding!!
     private val associationPresenter: AssociationPresenter by lazy { AssociationPresenter() }
     var partner: Partner? = null
-    private val args: AssociationProfileArgs by navArgs()
+    private val args: AssociationProfileFragmentArgs by navArgs()
     private var isFromNotifs = false
 
     override fun onCreateView(

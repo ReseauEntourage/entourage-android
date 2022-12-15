@@ -1,5 +1,6 @@
 package social.entourage.android.new_v8.groups.list
 
+import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.view.LayoutInflater
@@ -42,16 +43,14 @@ class GroupsListAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         with(holder) {
             with(groupsList[position]) {
-                binding.layout.setOnClickListener {
+                binding.layout.setOnClickListener {view ->
                     handleAnalytics()
-                    with(binding.layout.context) {
-                        startActivity(
-                            Intent(this, FeedActivity::class.java).putExtra(
-                                Const.GROUP_ID,
-                                groupsList[position].id
-                            )
-                        )
-                    }
+                    (view.context as? Activity)?.startActivityForResult(
+                        Intent(view.context, FeedActivity::class.java).putExtra(
+                            Const.GROUP_ID,
+                            groupsList[position].id
+                        ), 0
+                    )
                 }
                 binding.groupName.text = this.name
                 this.members?.size?.let {
