@@ -82,7 +82,6 @@ class ActionLocationFilterActivity : AppCompatActivity() {
         setupLocationChoice()
         initializeSeekBar()
         setupViews()
-        setBackButton()
     }
 
     override fun onDestroy() {
@@ -102,6 +101,10 @@ class ActionLocationFilterActivity : AppCompatActivity() {
 
         binding.layoutPlace.setOnClickListener {
             onPlaceSearch()
+        }
+        binding.header.iconBack.setOnClickListener {
+            setResult(Activity.RESULT_CANCELED)
+            finish()
         }
     }
 
@@ -212,13 +215,6 @@ class ActionLocationFilterActivity : AppCompatActivity() {
 
             override fun onStopTrackingTouch(seekBar: SeekBar?) {}
         })
-    }
-
-    private fun setBackButton() {
-        binding.header.iconBack.setOnClickListener {
-            setResult(Activity.RESULT_CANCELED)
-            finish()
-        }
     }
 
     //Google Place

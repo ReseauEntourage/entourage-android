@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -84,11 +85,14 @@ class HomeFragment : Fragment() {
     }
 
     private fun updateNotifsCount(count:Int) {
-        if (count > 0) {
-            binding.uiBellNotif.setImageDrawable(context?.resources?.getDrawable(R.drawable.ic_new_notif_on))
-        }
-        else {
-            binding.uiBellNotif.setImageDrawable(context?.resources?.getDrawable(R.drawable.ic_new_notif_off))
+        context?.resources?.let { resources->
+            binding.uiBellNotif.setImageDrawable(
+                ResourcesCompat.getDrawable(
+                    resources,
+                    if (count > 0) R.drawable.ic_new_notif_on else R.drawable.ic_new_notif_off,
+                    null
+                )
+            )
         }
     }
 
@@ -285,13 +289,15 @@ class HomeFragment : Fragment() {
                 object : OnItemClickListener {
                     override fun onItemClick(recommendation: HomeAction) {
                         if (recommendation.homeType != null && recommendation.action != null && recommendation.params != null) {
-                            Navigation.navigate(
+                            Navigation.getNavigateIntent(
                                 context,
                                 parentFragmentManager,
                                 recommendation.homeType!!,
                                 recommendation.action!!,
                                 recommendation.params!!
-                            )
+                            )?.let { intent ->
+                                startActivityForResult(intent, 0)
+                            }
                         }
                     }
                 })

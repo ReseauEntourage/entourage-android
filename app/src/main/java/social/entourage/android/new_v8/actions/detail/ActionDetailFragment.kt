@@ -188,7 +188,7 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
                 intent.putExtra(Const.IS_ACTION_DEMAND, false)
             }
             isFromEdit = true
-            startActivity(intent)
+            startActivityForResult(intent, 0)
         }
 
         binding.uiBtDelete.setOnClickListener {
@@ -210,7 +210,7 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
                 AnalyticsEvents.logEvent(AnalyticsEvents.Help_action_contrib_contact)
             }
 
-            action?.author?.userID?.let { it -> discussionPresenter.createOrGetConversation(it) }
+            action?.author?.userID?.let { user -> discussionPresenter.createOrGetConversation(user) }
         }
 
         binding.uiBtBackEmpty.setOnClickListener {

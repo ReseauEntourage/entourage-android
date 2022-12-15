@@ -48,9 +48,9 @@ class ActionsListAdapter(
     inner class ViewHolderContrib(val binding: View) :
         RecyclerView.ViewHolder(binding) {
         fun bind(action: Action) {
-            binding.layout_contrib.setOnClickListener {
-                binding.layout_contrib. context.startActivity(
-                    Intent(binding.layout_contrib.context, ActionDetailActivity::class.java)
+            binding.layout_contrib.setOnClickListener { view ->
+                view.context.startActivity(
+                    Intent(view.context, ActionDetailActivity::class.java)
                         .putExtra(Const.ACTION_ID, action.id)
                         .putExtra(Const.ACTION_TITLE,action.title)
                         .putExtra(Const.IS_ACTION_DEMAND,false)

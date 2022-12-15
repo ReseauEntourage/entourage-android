@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -43,6 +44,15 @@ class CreateActionFragment : Fragment() {
             viewModel.isDemand = isDemand
             viewModel.actionEdited = actionEdited
         }
+
+        requireActivity().onBackPressedDispatcher.addCallback(this,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                // Show your dialog and handle navigation
+                    onBackButton()
+                }
+            }
+        )
     }
 
     override fun onCreateView(
@@ -67,7 +77,10 @@ class CreateActionFragment : Fragment() {
         val currentItemPager = viewPager?.currentItem
         initializeViewPager(currentItemPager)
 
-        handleBackButton()
+
+        binding.iconBack.setOnClickListener {
+            onBackButton()
+        }
 
         if ((viewPager?.currentItem ?: 0) > 0) binding.previous.visibility = View.VISIBLE
 
@@ -215,19 +228,17 @@ class CreateActionFragment : Fragment() {
         actionPresenter.updateAction(viewModel.actionEdited, viewModel.action, isDemand,viewModel.imageURI,requireContext())
     }
 
-    private fun handleBackButton() {
-        binding.iconBack.setOnClickListener {
-            if (viewModel.canExitActionCreation)
+    private fun onBackButton() {
+        if (viewModel.canExitActionCreation)
+            requireActivity().finish()
+        else {
+            Utils.showAlertDialogButtonClicked(
+                requireContext(),
+                getString(R.string.back_create_action_title),
+                getString(R.string.back_create_action_content,if (isDemand) getString(R.string.action_name_demand) else getString(R.string.action_name_contrib)),
+                getString(R.string.exit), {}
+            ) {
                 requireActivity().finish()
-            else {
-                Utils.showAlertDialogButtonClicked(
-                    requireContext(),
-                    getString(R.string.back_create_action_title),
-                    getString(R.string.back_create_action_content,if (isDemand) getString(R.string.action_name_demand) else getString(R.string.action_name_contrib)),
-                    getString(R.string.exit), {}
-                ) {
-                    requireActivity().finish()
-                }
             }
         }
     }

@@ -87,12 +87,12 @@ class ActionsFragment : Fragment() {
                 0 -> {
                     val intent = Intent(context, CreateActionActivity::class.java)
                     intent.putExtra(Const.IS_ACTION_DEMAND, true)
-                    startActivity(intent)
+                    startActivityForResult(intent, 0)
                 }
                 1 -> {
                     val intent = Intent(context, CreateActionActivity::class.java)
                     intent.putExtra(Const.IS_ACTION_DEMAND, false)
-                    startActivity(intent)
+                    startActivityForResult(intent, 0)
                 }
             }
             return true

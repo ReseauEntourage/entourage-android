@@ -61,7 +61,7 @@ class CreateActionCGUFragment : Fragment() {
         val line3 = Rules(getString(R.string.action_CGU_3_title),getString(R.string.action_CGU_3))
         val line4 = Rules(getString(R.string.action_CGU_4_title),getString(R.string.action_CGU_4))
         val line5 = Rules(getString(R.string.action_CGU_5_title),getString(R.string.action_CGU_5))
-        var cgus = arrayListOf(line1,line2,line3,line4,line5)
+        val cgus = arrayListOf(line1,line2,line3,line4,line5)
 
         binding.recyclerView.apply {
             layoutManager = LinearLayoutManager(context)

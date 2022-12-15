@@ -31,12 +31,14 @@ class ActionCategoriesFiltersActivity : AppCompatActivity() {
 
         setupViews()
         initializeActionCat()
-        setBackButton()
     }
 
     private fun setupViews() {
         binding.validate.button.setOnClickListener {
             onSaveFilters()
+        }
+        binding.header.iconBack.setOnClickListener {
+            onCancel()
         }
     }
 
@@ -56,10 +58,8 @@ class ActionCategoriesFiltersActivity : AppCompatActivity() {
         finish()
     }
 
-    private fun setBackButton() {
-        binding.header.iconBack.setOnClickListener {
-            setResult(Activity.RESULT_CANCELED)
-            finish()
-        }
+    private fun onCancel() {
+        setResult(Activity.RESULT_CANCELED)
+        finish()
     }
 }

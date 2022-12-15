@@ -93,15 +93,14 @@ class WebViewFragment : BaseDialogFragment() {
     private val homePresenter: HomePresenter by lazy { HomePresenter() }
     private  fun setWebUrlRead() {
         EntourageApplication.get().apiModule.homeRequest
-            .markRecoWebUrlRead(requestedUrl)
-            .enqueue(object : Callback<okhttp3.Response> {
+            .markRecoWebUrlRead(requestedUrl).enqueue(object : Callback<okhttp3.ResponseBody> {
                 override fun onResponse(
-                    call: Call<okhttp3.Response>,
-                    response: Response<okhttp3.Response>
+                    call: Call<okhttp3.ResponseBody>,
+                    response: Response<okhttp3.ResponseBody>
                 ) {
                 }
 
-                override fun onFailure(call: Call<okhttp3.Response>, t: Throwable) {}
+                override fun onFailure(call: Call<okhttp3.ResponseBody>, t: Throwable) {}
             })
     }
     private fun showAnimation() {

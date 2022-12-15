@@ -2,15 +2,18 @@ package social.entourage.android.new_v8.actions.detail
 
 import android.os.Bundle
 import android.text.TextUtils
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.NavHostFragment
+import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.databinding.NewActivityActionDetailBinding
 import social.entourage.android.new_v8.report.ReportModalFragment
 import social.entourage.android.new_v8.report.ReportTypes
 import social.entourage.android.new_v8.utils.Const
+import timber.log.Timber
 
 //Use to hide report button when loading detail action if canceled
 interface OnDetailActionReceive {
@@ -50,15 +53,20 @@ class ActionDetailActivity : AppCompatActivity(), OnDetailActionReceive {
 
         navHostFragment.navController.setGraph(navGraph,bundle)
         setSettingsIcon(title)
-        handleBackButton()
-        handleReportPost(id,isDemand)
-    }
 
-
-    private fun handleBackButton() {
         binding.header.iconBack.setOnClickListener {
             finish()
         }
+
+        onBackPressedDispatcher.addCallback(this,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    finish()
+                }
+            }
+        )
+
+        handleReportPost(id,isDemand)
     }
 
     private fun setSettingsIcon(title:String?) {

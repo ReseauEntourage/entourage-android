@@ -1,7 +1,7 @@
 package social.entourage.android.api.request
 
 import com.google.gson.annotations.SerializedName
-import okhttp3.Response
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.*
 import social.entourage.android.new_v8.models.*
@@ -32,7 +32,7 @@ interface HomeRequest {
     fun setPedagogicalContentAsRead(@Path("id") groupId: Int): Call<Boolean>
 
     @GET("webviews/url")
-    fun markRecoWebUrlRead(@Query("url") url:String): Call<Response>
+    fun markRecoWebUrlRead(@Query("url") url:String): Call<ResponseBody>
 
     //Notifs in app
     @GET("inapp_notifications/count")
