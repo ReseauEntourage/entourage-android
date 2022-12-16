@@ -285,12 +285,20 @@ class LoginActivity : BaseActivity() {
      * Helpers
      ********************************/
 
-    fun showError(titleId: Int, message: String, buttonTextId: Int) {
-        AlertDialog.Builder(this)
+    private fun showError(titleId: Int, message: String, buttonTextId: Int) {
+        Utils.showAlertDialogButtonClicked(
+            this,
+            getString(titleId),
+            message,
+            getString(buttonTextId),
+            {},
+            null
+        )
+        /*AlertDialog.Builder(this)
             .setTitle(titleId)
             .setMessage(message)
             .setPositiveButton(buttonTextId) { dialog, which -> }
             .create()
-            .show()
+            .show()*/
     }
 }
