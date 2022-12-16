@@ -57,11 +57,11 @@ class MembersConversationListAdapter(
                 }
 
                 binding.layout.setOnClickListener { view ->
-                    (view.context as? Activity)?.startActivityForResult(
+                    view.context.startActivity(
                         Intent(view.context, UserProfileActivity::class.java).putExtra(
                             Const.USER_ID,
                             this.id
-                        ), 0
+                        )
                     )
                 }
                 binding.contact.setOnClickListener {
