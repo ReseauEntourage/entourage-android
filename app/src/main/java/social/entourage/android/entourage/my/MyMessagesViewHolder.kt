@@ -16,7 +16,7 @@ import social.entourage.android.R
 import social.entourage.android.api.model.BaseEntourage
 import social.entourage.android.api.tape.Events
 import social.entourage.android.tools.EntBus
-import social.entourage.android.tools.Utils
+import social.entourage.android.tools.UtilsV7
 import timber.log.Timber
 
 /**
@@ -72,7 +72,7 @@ class MyMessagesViewHolder(view: View) : RecyclerView.ViewHolder(view){
         itemView.action_card_last_message?.setTextColor(if (this.message.getUnreadMsgNb() == 0) ContextCompat.getColor(itemView.context, R.color.feeditem_card_details_normal) else ContextCompat.getColor(itemView.context, R.color.feeditem_card_details_bold))
 
         //last update date
-        itemView.action_card_last_update_date?.text = Utils.formatLastUpdateDate(this.message.updatedTime, itemView.context)
+        itemView.action_card_last_update_date?.text = UtilsV7.formatLastUpdateDate(this.message.updatedTime, itemView.context)
         itemView.action_card_last_update_date?.setTypeface(null, if (this.message.getUnreadMsgNb() == 0) Typeface.NORMAL else Typeface.BOLD)
         itemView.action_card_last_update_date?.setTextColor(if (this.message.getUnreadMsgNb() == 0) ContextCompat.getColor(itemView.context, R.color.feeditem_card_details_normal) else ContextCompat.getColor(itemView.context, R.color.feeditem_card_details_bold))
     }

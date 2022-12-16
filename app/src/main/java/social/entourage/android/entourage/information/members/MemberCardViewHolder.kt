@@ -10,12 +10,11 @@ import kotlinx.android.synthetic.main.layout_entourage_information_member_card.v
 import social.entourage.android.R
 import social.entourage.android.api.model.EntourageUser
 import social.entourage.android.api.model.TimestampedObject
-import social.entourage.android.api.tape.Events
 import social.entourage.android.api.tape.Events.OnUserViewRequestedEvent
 import social.entourage.android.base.BaseCardViewHolder
 import social.entourage.android.entourage.information.EntourageInformationFragment
 import social.entourage.android.tools.EntBus
-import social.entourage.android.tools.Utils
+import social.entourage.android.tools.UtilsV7
 import social.entourage.android.user.role.UserRoleView
 import social.entourage.android.user.role.UserRolesFactory
 
@@ -105,7 +104,7 @@ class MemberCardViewHolder(view: View) : BaseCardViewHolder(view) {
 
             val assoStr = partner?.name + " " + assoInfo
             val colorId = ContextCompat.getColor(itemView.context, R.color.accent)
-            val assoSpanner = Utils.formatTextWithBoldSpanAndColor(colorId,true,assoStr, assoInfo.toString())
+            val assoSpanner = UtilsV7.formatTextWithBoldSpanAndColor(colorId,true,assoStr, assoInfo.toString())
 
             itemView.ui_tv_bt_asso?.text = assoSpanner
             itemView.ui_tv_bt_asso?.setOnClickListener {

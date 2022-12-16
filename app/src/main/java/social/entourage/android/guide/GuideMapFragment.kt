@@ -36,7 +36,7 @@ import social.entourage.android.guide.poi.ReadPoiFragment.Companion.newInstance
 import social.entourage.android.service.EntService
 import social.entourage.android.tools.EntBus
 import social.entourage.android.tools.EntLinkMovementMethod
-import social.entourage.android.tools.Utils
+import social.entourage.android.tools.UtilsV7
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.view.EntSnackbar
 import social.entourage.android.user.partner.PartnerFragment
@@ -270,7 +270,7 @@ class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), PoiListFr
         val proposePOIUrl = (activity as? GDSMainActivity)?.getLink(Constants.PROPOSE_POI_ID) ?: ""
         hideInfoPopup()
         fragment_guide_empty_list_popup_text?.movementMethod = EntLinkMovementMethod
-        fragment_guide_empty_list_popup_text?.text = Utils.fromHtml(getString(R.string.map_poi_empty_popup, proposePOIUrl))
+        fragment_guide_empty_list_popup_text?.text = UtilsV7.fromHtml(getString(R.string.map_poi_empty_popup, proposePOIUrl))
     }
 
     private fun onEmptyListPopupClose() {

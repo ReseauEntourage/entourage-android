@@ -31,7 +31,7 @@ import kotlin.math.max
 /**
  * Created by mihaiionescu on 27/07/16.
  */
-object Utils {
+object UtilsV7 {
     fun checkPhoneNumberFormat(phoneNumber: String): String? {
         return checkPhoneNumberFormat(null, phoneNumber)
     }

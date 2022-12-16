@@ -20,7 +20,7 @@ import social.entourage.android.api.model.feed.FeedItem
 import social.entourage.android.api.tape.Events.*
 import social.entourage.android.base.BaseCardViewHolder
 import social.entourage.android.tools.EntBus
-import social.entourage.android.tools.Utils.formatLastUpdateDate
+import social.entourage.android.tools.UtilsV7.formatLastUpdateDate
 import social.entourage.android.tools.log.AnalyticsEvents
 import timber.log.Timber
 

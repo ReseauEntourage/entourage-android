@@ -16,7 +16,7 @@ import social.entourage.android.api.OnboardingAPI
 import social.entourage.android.api.model.User
 import social.entourage.android.authentication.AuthenticationController
 import social.entourage.android.onboarding.pre_onboarding.PreOnboardingChoiceActivity
-import social.entourage.android.tools.Utils
+import social.entourage.android.tools.UtilsV7
 import social.entourage.android.tools.disable
 import social.entourage.android.tools.enable
 import social.entourage.android.tools.view.CustomProgressDialog
@@ -109,7 +109,7 @@ class OnboardingStartActivity : AppCompatActivity(), OnboardingStartCallback {
     private fun sendPasscode() {
         alertDialog.show(R.string.onboard_waiting_dialog)
         val phoneNumber =
-            Utils.checkPhoneNumberFormat(temporaryCountrycode?.phoneCode, temporaryUser.phone ?: "") ?: run {
+            UtilsV7.checkPhoneNumberFormat(temporaryCountrycode?.phoneCode, temporaryUser.phone ?: "") ?: run {
                 showLoginFail(LOGIN_ERROR_INVALID_PHONE_FORMAT)
                 return
             }
@@ -395,7 +395,7 @@ class OnboardingStartActivity : AppCompatActivity(), OnboardingStartCallback {
 
         temporaryUser.phone = null
         if (phoneNumber != null) {
-            val phoneWithCode = Utils.checkPhoneNumberFormat(country?.phoneCode, phoneNumber)
+            val phoneWithCode = UtilsV7.checkPhoneNumberFormat(country?.phoneCode, phoneNumber)
             if (phoneWithCode != null) {
                 temporaryUser.phone = phoneWithCode
             }

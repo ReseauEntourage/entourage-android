@@ -11,7 +11,7 @@ import social.entourage.android.MainActivity_v7
 import social.entourage.android.R
 import social.entourage.android.base.BaseDialogFragment
 import social.entourage.android.tools.EntLinkMovementMethod
-import social.entourage.android.tools.Utils
+import social.entourage.android.tools.UtilsV7
 
 /**
  * Create Action Wizard Page 2 [BaseDialogFragment] subclass.
@@ -34,7 +34,7 @@ class CreateActionWizardPage2Fragment : BaseDialogFragment() {
         if (activity != null && getView() != null) {
             val mainActivity = activity as MainActivity_v7
             val text = getString(R.string.create_action_wizard_disclaimer, mainActivity.getLink(Constants.CHARTE_LINK_ID))
-            create_action_wizard_disclaimer?.text = Utils.fromHtml(text)
+            create_action_wizard_disclaimer?.text = UtilsV7.fromHtml(text)
             create_action_wizard_disclaimer?.movementMethod = EntLinkMovementMethod
         }
         title_close_button?.setOnClickListener { onCloseClicked()        }

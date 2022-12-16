@@ -21,7 +21,7 @@ import social.entourage.android.R
 import social.entourage.android.api.model.Invitation
 import social.entourage.android.api.model.MultipleInvitations
 import social.entourage.android.entourage.invite.InviteBaseFragment
-import social.entourage.android.tools.Utils.checkPhoneNumberFormat
+import social.entourage.android.tools.UtilsV7.checkPhoneNumberFormat
 import java.util.*
 
 /**

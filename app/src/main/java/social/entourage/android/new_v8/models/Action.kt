@@ -4,8 +4,7 @@ import com.google.gson.annotations.SerializedName
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.api.model.Partner
-import social.entourage.android.api.model.feed.FeedItemAuthor
-import social.entourage.android.tools.Utils
+import social.entourage.android.tools.UtilsV7
 import java.io.Serializable
 import java.text.SimpleDateFormat
 import java.util.*
@@ -82,7 +81,7 @@ data class Action(
 
     fun dateFormattedString(context: android.content.Context) : String {
         createdAt?.let {
-            return Utils.dateAsStringLitteralFromNow(it, context, R.string.action_date_list)
+            return UtilsV7.dateAsStringLitteralFromNow(it, context, R.string.action_date_list)
         } ?: return  "-"
     }
 
@@ -102,7 +101,7 @@ data class Action(
 
     fun createdDateString(context: android.content.Context) : String {
         createdAt?.let {
-            val _str = Utils.dateAsStringLitteralFromNow(it,context,null,false)
+            val _str = UtilsV7.dateAsStringLitteralFromNow(it,context,null,false)
             return context.getString(R.string.action_created_by, _str)
         } ?: return  context.getString(R.string.action_created_by_)
     }

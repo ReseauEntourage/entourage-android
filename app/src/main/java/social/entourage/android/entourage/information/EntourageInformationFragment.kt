@@ -40,7 +40,7 @@ import social.entourage.android.entourage.information.report.EntourageReportFrag
 import social.entourage.android.base.location.EntLocation
 import social.entourage.android.base.map.OnAddressClickListener
 import social.entourage.android.tools.EntBus
-import social.entourage.android.tools.Utils
+import social.entourage.android.tools.UtilsV7
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.view.EntSnackbar
 import social.entourage.android.user.UserFragment
@@ -280,7 +280,7 @@ class EntourageInformationFragment : FeedItemInformationFragment() {
         } else {
             // add marker
             AppCompatResources.getDrawable(requireContext(), entourage.getHeatmapResourceId())?.let {drawable ->
-                val icon = Utils.getBitmapDescriptorFromDrawable(drawable, BaseEntourage.getMarkerSize(requireContext()), BaseEntourage.getMarkerSize(requireContext()))
+                val icon = UtilsV7.getBitmapDescriptorFromDrawable(drawable, BaseEntourage.getMarkerSize(requireContext()), BaseEntourage.getMarkerSize(requireContext()))
                 val markerOptions = MarkerOptions()
                         .icon(icon)
                         .position(position)
@@ -578,7 +578,7 @@ class EntourageInformationFragment : FeedItemInformationFragment() {
             val assoStr = partner.name + " " + infoAbo
 
             val colorId = ContextCompat.getColor(requireContext(), R.color.accent)
-            val assoSpanner = Utils.formatTextWithBoldSpanAndColor(colorId,true,assoStr, infoAbo)
+            val assoSpanner = UtilsV7.formatTextWithBoldSpanAndColor(colorId,true,assoStr, infoAbo)
             ui_action_event_creator_bt_asso.text = assoSpanner
             ui_action_event_creator_bt_asso?.setOnClickListener {
                 partner.id.toInt().let { partnerId -> onShowDetailAssociation(partnerId)}

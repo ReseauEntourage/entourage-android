@@ -5,7 +5,7 @@ import kotlinx.android.synthetic.main.layout_entourage_information_date_separato
 import social.entourage.android.R
 import social.entourage.android.api.model.TimestampedObject
 import social.entourage.android.base.BaseCardViewHolder
-import social.entourage.android.tools.Utils
+import social.entourage.android.tools.UtilsV7
 
 /**
  * Created by mihaiionescu on 15/03/2017.
@@ -15,7 +15,7 @@ class DateSeparatorViewHolder(view: View) : BaseCardViewHolder(view) {
     }
 
     override fun populate(data: TimestampedObject) {
-        itemView.tic_date_separator_timestamp?.text = Utils.dateAsStringFromNow((data as DateSeparator).timestamp, itemView.context)
+        itemView.tic_date_separator_timestamp?.text = UtilsV7.dateAsStringFromNow((data as DateSeparator).timestamp, itemView.context)
     }
 
     companion object {

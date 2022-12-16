@@ -7,7 +7,7 @@ import com.google.android.gms.maps.model.MarkerOptions
 import social.entourage.android.R
 import social.entourage.android.api.model.BaseEntourage
 import social.entourage.android.api.model.guide.Poi
-import social.entourage.android.tools.Utils
+import social.entourage.android.tools.UtilsV7
 
 class PoiRenderer {
     // ----------------------------------
@@ -15,7 +15,7 @@ class PoiRenderer {
     // ----------------------------------
     fun getMarkerOptions(poi: Poi, context: Context): MarkerOptions? {
         val drawable = AppCompatResources.getDrawable(context, categoryForCategoryId(poi.categoryId).resourceId) ?: return null
-        val icon = Utils.getBitmapDescriptorFromDrawable(drawable, BaseEntourage.getMarkerSize(context), BaseEntourage.getMarkerSize(context))
+        val icon = UtilsV7.getBitmapDescriptorFromDrawable(drawable, BaseEntourage.getMarkerSize(context), BaseEntourage.getMarkerSize(context))
         return MarkerOptions()
                 .position(poi.position)
                 .title(poi.title)
