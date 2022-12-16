@@ -12,6 +12,7 @@ import social.entourage.android.R
 import social.entourage.android.api.OnboardingAPI
 import social.entourage.android.authentication.AuthenticationController
 import social.entourage.android.base.BaseActivity
+import social.entourage.android.new_v8.utils.Utils
 import social.entourage.android.onboarding.pre_onboarding.PreOnboardingChoiceActivity
 import social.entourage.android.tools.UtilsV7
 import social.entourage.android.tools.hideKeyboard
@@ -61,7 +62,21 @@ class LoginActivity : BaseActivity() {
         }
 
         ui_login_button_resend_code?.setOnClickListener {
-            checkAndResendCode()
+            if(ui_login_phone_et_phone?.text.toString().isNotEmpty()) {
+                Utils.showAlertDialogButtonClicked(
+                    this,
+                    getString(R.string.login_button_resend_code),
+                    String.format(
+                        getString(R.string.login_button_resend_code_text),
+                        ui_login_phone_et_phone?.text.toString()
+                    ),
+                    getString(R.string.login_button_resend_code_action)
+                ) {
+                    checkAndResendCode()
+                }
+            } else {
+                Toast.makeText(this, R.string.login_text_invalid_format, Toast.LENGTH_LONG).show()
+            }
         }
 
         ui_login_button_signup?.setOnClickListener {

@@ -115,6 +115,8 @@
     <string name="login_placeholder_code">Saisir votre code</string>
     <string name="login_button_connect">Je me connecte</string>
     <string name="login_button_resend_code"><u>Redemander un code</u></string>
+    <string name="login_button_resend_code_text">Voulez-vous demander un nouveau code pour votre numéro : %s</string>
+    <string name="login_button_resend_code_action">Demander</string>
     <string name="login_label_country">Pays</string>
     <string name="login_label_phone">Téléphone</string>
     <string name="login_label_code">Code</string>
