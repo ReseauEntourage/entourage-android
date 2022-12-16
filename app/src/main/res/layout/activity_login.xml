@@ -114,7 +114,7 @@
                     android:layout_width="0dp"
                     android:layout_height="40dp"
                     android:layout_marginTop="5dp"
-                    android:autofillHints="phoneNumber"
+                    android:autofillHints="password"
                     android:backgroundTint="@color/light_orange_opacity_50"
                     android:hint="@string/login_placeholder_code"
                     android:inputType="numberPassword"
