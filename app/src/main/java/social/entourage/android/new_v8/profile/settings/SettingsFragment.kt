@@ -1,5 +1,8 @@
 package social.entourage.android.new_v8.profile.settings
 
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,6 +10,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.google.android.material.snackbar.Snackbar
+import kotlinx.android.synthetic.main.layout_mainprofile.*
 import social.entourage.android.BuildConfig
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
@@ -15,6 +20,7 @@ import social.entourage.android.databinding.NewFragmentSettingsBinding
 import social.entourage.android.new_v8.utils.Utils
 import social.entourage.android.onboarding.pre_onboarding.PreOnboardingStartActivity
 import social.entourage.android.tools.log.AnalyticsEvents
+import social.entourage.android.tools.view.EntSnackbar
 import social.entourage.android.tools.view.WebViewFragment
 
 class SettingsFragment : Fragment() {
@@ -98,6 +104,12 @@ class SettingsFragment : Fragment() {
             WebViewFragment.newInstance(getString(R.string.url_app_suggest), 0, true)
                 .show(parentFragmentManager, WebViewFragment.TAG)
         }
+        binding.appVersion.setOnLongClickListener {
+            handleLongPress()
+        }
+        binding.appDebugInfo.setOnLongClickListener {
+            handleLongPress()
+        }
     }
 
 
@@ -133,4 +145,25 @@ class SettingsFragment : Fragment() {
             ).show()
         }
     }
+
+    private fun handleLongPress(): Boolean {
+        val clipboardManager =
+            EntourageApplication.get()
+                .getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+        val clipData = ClipData.newPlainText(
+            "FirebaseID",
+            EntourageApplication.get().sharedPreferences.getString(
+                EntourageApplication.KEY_REGISTRATION_ID,
+                null
+            )
+        )
+        clipboardManager.setPrimaryClip(clipData)
+        EntSnackbar.make(
+            binding.settingsCoordinatorLayout,
+            R.string.debug_info_clipboard,
+            Snackbar.LENGTH_SHORT
+        ).show()
+        return true
+    }
+
 }
