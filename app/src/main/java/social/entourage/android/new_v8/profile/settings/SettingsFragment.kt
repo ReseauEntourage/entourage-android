@@ -10,7 +10,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.android.synthetic.main.layout_mainprofile.*
 import social.entourage.android.BuildConfig
 import social.entourage.android.EntourageApplication
@@ -22,6 +24,7 @@ import social.entourage.android.onboarding.pre_onboarding.PreOnboardingStartActi
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.view.EntSnackbar
 import social.entourage.android.tools.view.WebViewFragment
+import timber.log.Timber
 
 class SettingsFragment : Fragment() {
 
@@ -147,22 +150,21 @@ class SettingsFragment : Fragment() {
     }
 
     private fun handleLongPress(): Boolean {
-        val clipboardManager =
-            EntourageApplication.get()
-                .getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-        val clipData = ClipData.newPlainText(
-            "FirebaseID",
-            EntourageApplication.get().sharedPreferences.getString(
-                EntourageApplication.KEY_REGISTRATION_ID,
-                null
+        FirebaseMessaging.getInstance().token.addOnSuccessListener { token ->
+            val clipboardManager =
+                EntourageApplication.get()
+                    .getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+            val clipData = ClipData.newPlainText(
+                "FirebaseID",
+                token
             )
-        )
-        clipboardManager.setPrimaryClip(clipData)
-        EntSnackbar.make(
-            binding.settingsCoordinatorLayout,
-            R.string.debug_info_clipboard,
-            Snackbar.LENGTH_SHORT
-        ).show()
+            clipboardManager.setPrimaryClip(clipData)
+            EntSnackbar.make(
+                binding.settingsCoordinatorLayout,
+                R.string.debug_info_clipboard,
+                Snackbar.LENGTH_SHORT
+            ).show()
+        }
         return true
     }
 
