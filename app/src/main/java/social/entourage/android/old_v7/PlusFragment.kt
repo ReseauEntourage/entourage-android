@@ -12,10 +12,9 @@ import social.entourage.android.Constants
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.api.model.User
-import social.entourage.android.old_v7.base.BackPressable
 import social.entourage.android.tools.log.AnalyticsEvents
 
-class PlusFragment : Fragment(), BackPressable {
+class PlusFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -90,7 +89,7 @@ class PlusFragment : Fragment(), BackPressable {
         mainActivity?.showWebViewForLinkId(Constants.GOOD_WAVES_ID)
     }
 
-    override fun onBackPressed(): Boolean {
+    fun onBackPressed(): Boolean {
         AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_PLUS_BACK)
         mainActivity?.showFeed()
         return true

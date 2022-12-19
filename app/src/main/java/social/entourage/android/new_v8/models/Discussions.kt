@@ -5,7 +5,7 @@ import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.api.model.ChatMessage
 import social.entourage.android.api.model.Partner
-import social.entourage.android.old_v7.tools.UtilsV7
+import social.entourage.android.new_v8.utils.Utils
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -48,7 +48,7 @@ class Conversation(
 
     fun dateFormattedString(context: android.content.Context) : String {
         lastMessage?.date?.let {
-            return UtilsV7.formatLastUpdateDate(it, context)
+            return Utils.formatLastUpdateDate(it, context)
         } ?: return  "-"
     }
 

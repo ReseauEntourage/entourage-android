@@ -13,8 +13,8 @@ import social.entourage.android.base.BaseActivity
 import social.entourage.android.R
 import social.entourage.android.api.model.Invitation
 import social.entourage.android.api.model.MultipleInvitations
+import social.entourage.android.new_v8.utils.Utils
 import social.entourage.android.old_v7.entourage.invite.InviteBaseFragment
-import social.entourage.android.old_v7.tools.UtilsV7.checkPhoneNumberFormat
 
 /**
  * A simple [InviteBaseFragment] subclass.
@@ -49,7 +49,7 @@ class InviteByPhoneNumberFragment  : InviteBaseFragment() {
     private fun onSendClicked() {
         // Check phone number
         invite_phone_number?.text?.toString()?.let {
-            checkPhoneNumberFormat(it)?.let { phoneNumber ->
+            Utils.checkPhoneNumberFormat(it)?.let { phoneNumber ->
                 // Disable the send button
                 title_action_button?.isEnabled = false
                 // Send the request to server

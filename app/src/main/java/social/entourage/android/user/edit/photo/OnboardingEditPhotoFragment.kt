@@ -14,7 +14,7 @@ import androidx.fragment.app.DialogFragment
 import com.takusemba.cropme.OnCropListener
 import kotlinx.android.synthetic.main.fragment_onboarding_edit_photo.*
 import social.entourage.android.R
-import social.entourage.android.old_v7.tools.UtilsV7
+import social.entourage.android.new_v8.utils.Utils
 import social.entourage.android.tools.rotate
 import timber.log.Timber
 import java.io.File
@@ -139,7 +139,7 @@ class OnboardingEditPhotoFragment : DialogFragment() {
         photoUri?.let { photoUri->
             try {
                 activity?.contentResolver?.let { contentResolver ->
-                    saveBitmap(UtilsV7.getBitmapFromUri(photoUri, contentResolver).rotate(currentAngle))
+                    saveBitmap(Utils.getBitmapFromUri(photoUri, contentResolver).rotate(currentAngle))
                 }
             } catch(e: IOException) {
                 Timber.e(e)
@@ -149,7 +149,7 @@ class OnboardingEditPhotoFragment : DialogFragment() {
 
     private fun saveBitmap(bitmap: Bitmap) {
         crop_view?.setBitmap(bitmap)
-        photoFile = UtilsV7.saveBitmapToFile(bitmap, photoFile)
+        photoFile = Utils.saveBitmapToFile(bitmap, photoFile)
     }
 
     private fun updateProfilePicture() {

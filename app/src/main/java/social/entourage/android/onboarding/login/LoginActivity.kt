@@ -13,8 +13,8 @@ import social.entourage.android.api.OnboardingAPI
 import social.entourage.android.authentication.AuthenticationController
 import social.entourage.android.base.BaseActivity
 import social.entourage.android.new_v8.utils.CustomAlertDialog
+import social.entourage.android.new_v8.utils.Utils
 import social.entourage.android.onboarding.pre_onboarding.PreOnboardingChoiceActivity
-import social.entourage.android.old_v7.tools.UtilsV7
 import social.entourage.android.tools.hideKeyboard
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.view.CustomProgressDialog
@@ -163,7 +163,7 @@ class LoginActivity : BaseActivity() {
             return
         }
 
-        val phoneWithCode = UtilsV7.checkPhoneNumberFormat(countryCode, phoneNumber)
+        val phoneWithCode = Utils.checkPhoneNumberFormat(countryCode, phoneNumber)
 
         if (phoneWithCode != null) {
             if (!isLoading) {
@@ -194,7 +194,7 @@ class LoginActivity : BaseActivity() {
             val message = String.format(getString(R.string.onboard_sms_pop_alert), timeOut)
             showError(R.string.attention_pop_title, message, R.string.close)
         } else {
-            val phoneWithCode = UtilsV7.checkPhoneNumberFormat(countryCode, phoneNumber)
+            val phoneWithCode = Utils.checkPhoneNumberFormat(countryCode, phoneNumber)
             if (phoneWithCode == null) {
                 showError(
                     R.string.attention_pop_title,

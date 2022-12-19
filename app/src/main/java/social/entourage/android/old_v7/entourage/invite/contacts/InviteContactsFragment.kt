@@ -20,8 +20,9 @@ import social.entourage.android.base.BaseActivity
 import social.entourage.android.R
 import social.entourage.android.api.model.Invitation
 import social.entourage.android.api.model.MultipleInvitations
+import social.entourage.android.new_v8.utils.Utils
 import social.entourage.android.old_v7.entourage.invite.InviteBaseFragment
-import social.entourage.android.old_v7.tools.UtilsV7.checkPhoneNumberFormat
+import social.entourage.android.old_v7.tools.UtilsV7
 import java.util.*
 
 /**
@@ -134,7 +135,7 @@ class InviteContactsFragment  : InviteBaseFragment(), LoaderManager.LoaderCallba
             for (i in 0 until contactList.count) {
                 if (contactList.isItemChecked(i)) {
                     mContactsAdapter?.getPhoneAt(i)?.let { phone ->
-                        checkPhoneNumberFormat(PhoneNumberUtils.stripSeparators(phone))?.let {
+                        Utils.checkPhoneNumberFormat(PhoneNumberUtils.stripSeparators(phone))?.let {
                             invitations.addPhoneNumber(it)
                         }
                     }

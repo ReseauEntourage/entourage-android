@@ -14,6 +14,7 @@ import social.entourage.android.api.model.TimestampedObject
 import social.entourage.android.api.model.feed.FeedItem
 import social.entourage.android.api.tape.Events.OnUserViewRequestedEvent
 import social.entourage.android.base.BaseCardViewHolder
+import social.entourage.android.new_v8.utils.Utils
 import social.entourage.android.old_v7.entourage.information.FeedItemInformationFragment
 import social.entourage.android.tools.EntBus
 import social.entourage.android.old_v7.tools.UtilsV7
@@ -147,7 +148,7 @@ class UserJoinCardViewHolder(view: View) : BaseCardViewHolder(view) {
         }
 
         val joinStatus = getJoinStatus(user.status ?: "")
-        itemView.tic_join_status?.setText(UtilsV7.fromHtml(itemView.context.getString(R.string.entourage_info_text_join_html, user.displayName, joinStatus)), TextView.BufferType.SPANNABLE)
+        itemView.tic_join_status?.setText(Utils.fromHtml(itemView.context.getString(R.string.entourage_info_text_join_html, user.displayName, joinStatus)), TextView.BufferType.SPANNABLE)
         when(user.status) {
             FeedItem.JOIN_STATUS_ACCEPTED, FeedItem.JOIN_STATUS_CANCELLED -> {
                 val joinMessage = user.message

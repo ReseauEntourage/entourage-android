@@ -19,8 +19,8 @@ import social.entourage.android.api.model.TimestampedObject
 import social.entourage.android.api.model.feed.FeedItem
 import social.entourage.android.api.tape.Events.*
 import social.entourage.android.base.BaseCardViewHolder
+import social.entourage.android.new_v8.utils.Utils
 import social.entourage.android.tools.EntBus
-import social.entourage.android.old_v7.tools.UtilsV7.formatLastUpdateDate
 import social.entourage.android.tools.log.AnalyticsEvents
 import timber.log.Timber
 
@@ -190,7 +190,7 @@ open class FeedItemViewHolder(itemView: View) : BaseCardViewHolder(itemView) {
         //last message
         itemView.action_card_last_message?.visibility = View.GONE
         //last update date
-        itemView.action_card_last_update_date?.text = formatLastUpdateDate(feedItem.updatedTime, itemView.context)
+        itemView.action_card_last_update_date?.text = Utils.formatLastUpdateDate(feedItem.updatedTime, itemView.context)
         itemView.action_card_last_update_date?.setTypeface(null, if (feedItem.getUnreadMsgNb() == 0) Typeface.NORMAL else Typeface.BOLD)
         itemView.action_card_last_update_date?.setTextColor(if (feedItem.getUnreadMsgNb() == 0) ContextCompat.getColor(itemView.context, R.color.feeditem_card_details_normal) else ContextCompat.getColor(itemView.context, R.color.feeditem_card_details_bold))
     }

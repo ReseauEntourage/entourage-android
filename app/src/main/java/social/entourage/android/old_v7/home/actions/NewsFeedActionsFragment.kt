@@ -20,7 +20,6 @@ import social.entourage.android.api.model.*
 import social.entourage.android.api.model.feed.FeedItem
 import social.entourage.android.api.model.feed.NewsfeedItem
 import social.entourage.android.api.tape.Events.*
-import social.entourage.android.old_v7.base.BackPressable
 import social.entourage.android.old_v7.base.map.filter.MapFilterFactory
 import social.entourage.android.old_v7.base.newsfeed.NewsfeedFragment
 import social.entourage.android.old_v7.base.newsfeed.NewsfeedTabItem
@@ -31,7 +30,7 @@ import social.entourage.android.service.EntourageServiceListener
 import social.entourage.android.tools.view.EntSnackbar
 import timber.log.Timber
 
-class NewsFeedActionsFragment : NewsfeedFragment(), EntourageServiceListener, BackPressable {
+class NewsFeedActionsFragment : NewsfeedFragment(), EntourageServiceListener {
 
     var isActionSelected = true
     private val connection = ServiceConnection()

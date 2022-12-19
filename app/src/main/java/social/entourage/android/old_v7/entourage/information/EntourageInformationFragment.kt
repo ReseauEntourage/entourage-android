@@ -39,6 +39,7 @@ import social.entourage.android.old_v7.entourage.EntourageCloseFragment
 import social.entourage.android.old_v7.entourage.information.report.EntourageReportFragment
 import social.entourage.android.base.location.EntLocation
 import social.entourage.android.base.map.OnAddressClickListener
+import social.entourage.android.new_v8.utils.Utils
 import social.entourage.android.tools.EntBus
 import social.entourage.android.old_v7.tools.UtilsV7
 import social.entourage.android.tools.log.AnalyticsEvents
@@ -281,7 +282,7 @@ class EntourageInformationFragment : FeedItemInformationFragment() {
         } else {
             // add marker
             AppCompatResources.getDrawable(requireContext(), entourage.getHeatmapResourceId())?.let {drawable ->
-                val icon = UtilsV7.getBitmapDescriptorFromDrawable(drawable, BaseEntourage.getMarkerSize(requireContext()), BaseEntourage.getMarkerSize(requireContext()))
+                val icon = Utils.getBitmapDescriptorFromDrawable(drawable, BaseEntourage.getMarkerSize(requireContext()), BaseEntourage.getMarkerSize(requireContext()))
                 val markerOptions = MarkerOptions()
                         .icon(icon)
                         .position(position)

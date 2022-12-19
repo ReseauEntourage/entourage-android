@@ -2,7 +2,7 @@ package social.entourage.android.new_v8.models
 
 import com.google.gson.annotations.SerializedName
 import social.entourage.android.R
-import social.entourage.android.old_v7.tools.UtilsV7
+import social.entourage.android.new_v8.utils.Utils
 import java.util.Date
 
 /**
@@ -31,7 +31,7 @@ class NotifInApp (
 
     fun dateFormattedString(context: android.content.Context) : String {
         createdAt?.let {
-            return UtilsV7.dateAsStringLitteralFromNow(it, context, R.string.action_date_list)
+            return Utils.dateAsStringLitteralFromNow(it, context, R.string.action_date_list)
         } ?: return  "-"
     }
 }

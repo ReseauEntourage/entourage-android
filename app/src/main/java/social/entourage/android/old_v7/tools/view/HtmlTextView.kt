@@ -6,6 +6,7 @@ import android.text.method.MovementMethod
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatTextView
 import social.entourage.android.R
+import social.entourage.android.new_v8.utils.Utils
 import social.entourage.android.old_v7.tools.UtilsV7
 
 class HtmlTextView : AppCompatTextView {
@@ -25,7 +26,7 @@ class HtmlTextView : AppCompatTextView {
         try {
             typedArray.getString(R.styleable.HtmlTextView_htmlText)?.let {
                 htmlString = it
-                setText(UtilsV7.fromHtml(it), BufferType.SPANNABLE)
+                setText(Utils.fromHtml(it), BufferType.SPANNABLE)
                 movementMethod = LinkMovementMethod.getInstance()
             } ?: run {
                 htmlString = null
@@ -45,7 +46,7 @@ class HtmlTextView : AppCompatTextView {
 
     fun setHtmlString(newHtmlString: String?, movementMethod: MovementMethod?) {
         this.htmlString = newHtmlString ?: ""
-        setText(UtilsV7.fromHtml(htmlString ?: ""), BufferType.SPANNABLE)
+        setText(Utils.fromHtml(htmlString ?: ""), BufferType.SPANNABLE)
         this.movementMethod = movementMethod
     }
 }

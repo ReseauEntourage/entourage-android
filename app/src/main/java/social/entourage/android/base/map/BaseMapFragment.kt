@@ -29,14 +29,13 @@ import social.entourage.android.api.tape.Events
 import social.entourage.android.base.location.EntLocation
 import social.entourage.android.base.location.LocationUpdateListener
 import social.entourage.android.base.location.LocationUtils
-import social.entourage.android.old_v7.base.BackPressable
 import social.entourage.android.base.BaseFragment
 import social.entourage.android.base.HeaderBaseAdapter
 import social.entourage.android.tools.EntBus
 import social.entourage.android.tools.log.AnalyticsEvents
 import timber.log.Timber
 
-abstract class BaseMapFragment(protected var layout: Int) : BaseFragment(), BackPressable,
+abstract class BaseMapFragment(protected var layout: Int) : BaseFragment(),
     LocationUpdateListener {
     protected lateinit var eventLongClick: String
     var isFollowing = true
@@ -48,8 +47,6 @@ abstract class BaseMapFragment(protected var layout: Int) : BaseFragment(), Back
 
     protected var originalMapLayoutHeight = 0
     private var toReturn: View? = null
-
-    override fun onBackPressed(): Boolean = false
 
     protected val requestPermissionLauncher =
         registerForActivityResult(
@@ -157,7 +154,6 @@ abstract class BaseMapFragment(protected var layout: Int) : BaseFragment(), Back
         super.onViewCreated(view, savedInstanceState)
         previousCameraLocation =
             EntLocation.cameraPositionToLocation(null, EntLocation.lastCameraPosition)
-        fragment_map_longclick?.setOnClickListener { hideLongClickView() }
     }
 
     // ----------------------------------
@@ -199,8 +195,6 @@ abstract class BaseMapFragment(protected var layout: Int) : BaseFragment(), Back
             fragment_map_longclick?.visibility = View.VISIBLE
         }
     }
-
-    private fun hideLongClickView() = onBackPressed()
 
     fun showAllowGeolocationDialog(source: Int) {
         activity?.let {

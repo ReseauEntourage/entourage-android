@@ -24,7 +24,6 @@ import social.entourage.android.api.model.feed.Announcement
 import social.entourage.android.api.model.feed.FeedItem
 import social.entourage.android.api.model.feed.NewsfeedItem
 import social.entourage.android.api.tape.Events
-import social.entourage.android.old_v7.base.BackPressable
 import social.entourage.android.base.BaseFragment
 import social.entourage.android.base.location.EntLocation
 import social.entourage.android.base.location.LocationUtils
@@ -54,7 +53,7 @@ import social.entourage.android.user.edit.photo.ChoosePhotoFragment
 import social.entourage.android.user.edit.place.UserEditActionZoneFragment
 import timber.log.Timber
 
-class HomeExpertFragment : BaseFragment(), BackPressable, ApiConnectionListener, UserEditActionZoneFragment.FragmentListener {
+class HomeExpertFragment : BaseFragment(), ApiConnectionListener, UserEditActionZoneFragment.FragmentListener {
     // ----------------------------------
     // ATTRIBUTES
     // ----------------------------------
@@ -91,7 +90,7 @@ class HomeExpertFragment : BaseFragment(), BackPressable, ApiConnectionListener,
         }
     }
 
-    override fun onBackPressed(): Boolean {
+    fun onBackPressed(): Boolean {
         if (childFragmentManager.fragments.size == 1) return false
         childFragmentManager.popBackStackImmediate()
         return true

@@ -17,7 +17,6 @@ import social.entourage.android.R
 import social.entourage.android.api.model.Message
 import social.entourage.android.api.model.PushNotificationContent
 import social.entourage.android.api.tape.Events.*
-import social.entourage.android.old_v7.base.BackPressable
 import social.entourage.android.base.BaseSecuredActivity
 import social.entourage.android.base.location.EntLocation.currentLocation
 import social.entourage.android.base.location.LocationUtils.isLocationPermissionGranted
@@ -162,17 +161,6 @@ class MainActivity_v7 : BaseSecuredActivity(),
         super.onNewIntent(intent)
         this.intent = intent
         storeIntent(intent)
-    }
-
-    @Deprecated("Deprecated in Java")
-    override fun onBackPressed() {
-        val currentFragment =
-            supportFragmentManager.findFragmentById(R.id.main_fragment) as? BackPressable
-        if (currentFragment?.onBackPressed() == true) {
-            //backAction is done in the fragment
-            return
-        }
-        finish()
     }
 
     override fun onStart() {

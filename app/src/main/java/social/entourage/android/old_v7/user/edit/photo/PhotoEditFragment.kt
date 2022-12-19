@@ -14,6 +14,7 @@ import com.takusemba.cropme.OnCropListener
 import kotlinx.android.synthetic.main.fragment_photo_edit.*
 import social.entourage.android.R
 import social.entourage.android.base.BaseDialogFragment
+import social.entourage.android.new_v8.utils.Utils
 import social.entourage.android.old_v7.tools.UtilsV7
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.rotate
@@ -131,7 +132,7 @@ class PhotoEditFragment : BaseDialogFragment() {
         currentAngle += ROTATE_DEGREES_STEP
         photoUri?.let { photoUri ->
             activity?.contentResolver?.let { contentResolver ->
-                saveBitmap(UtilsV7.getBitmapFromUri(photoUri, contentResolver).rotate(currentAngle))
+                saveBitmap(Utils.getBitmapFromUri(photoUri, contentResolver).rotate(currentAngle))
             }
         }
         AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_USER_ROTATE_PHOTO)
@@ -139,7 +140,7 @@ class PhotoEditFragment : BaseDialogFragment() {
 
     private fun saveBitmap(bitmap: Bitmap) {
         crop_view.setBitmap(bitmap)
-        photoFile = UtilsV7.saveBitmapToFile(bitmap, photoFile)
+        photoFile = Utils.saveBitmapToFile(bitmap, photoFile)
     }
 
     private fun updateProfilePicture() {

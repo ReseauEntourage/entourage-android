@@ -155,7 +155,7 @@ abstract class NewsfeedFragment : BaseMapFragment(R.layout.fragment_map), NewsFe
         super.onDestroy()
     }
 
-    override fun onBackPressed(): Boolean {
+    open fun onBackPressed(): Boolean {
         if (fragment_map_longclick?.visibility == View.VISIBLE) {
             fragment_map_longclick?.visibility = View.GONE
             return true
