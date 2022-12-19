@@ -21,7 +21,7 @@ import social.entourage.android.api.model.Message
 import social.entourage.android.api.model.PushNotificationContent
 import social.entourage.android.api.model.TimestampedObject
 import social.entourage.android.api.model.feed.FeedItem
-import social.entourage.android.new_v8.MainActivity
+import social.entourage.android.MainActivity
 import timber.log.Timber
 import java.util.*
 

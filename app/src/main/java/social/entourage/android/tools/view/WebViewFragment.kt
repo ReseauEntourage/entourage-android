@@ -163,7 +163,8 @@ class WebViewFragment : BaseDialogFragment() {
 
     override fun onDismiss(dialog: DialogInterface) {
         super.onDismiss(dialog)
-        val _model = ViewModelProvider(requireActivity()).get(CommunicationRecoWebUrlHandlerViewModel::class.java)
+        val _model = ViewModelProvider(requireActivity()).get(
+            CommunicationRecoWebUrlHandlerViewModel::class.java)
         _model.setValid()
     }
 

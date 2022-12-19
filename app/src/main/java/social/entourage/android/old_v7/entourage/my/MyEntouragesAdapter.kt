@@ -7,7 +7,7 @@ import social.entourage.android.base.BaseAdapter
 import social.entourage.android.base.ViewHolderFactory.ViewHolderType
 import social.entourage.android.old_v7.entourage.EntourageViewHolder
 import social.entourage.android.old_v7.entourage.my.invitations.InvitationListViewHolder
-import social.entourage.android.tools.LoaderCardViewHolder
+import social.entourage.android.old_v7.tools.LoaderCardViewHolder
 
 /**
  * Created by mihaiionescu on 09/08/16.

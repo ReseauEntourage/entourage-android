@@ -15,7 +15,8 @@ import retrofit2.Callback
 import retrofit2.Response
 import social.entourage.android.BuildConfig
 import social.entourage.android.EntourageApplication
-import social.entourage.android.MainActivity_v7
+import social.entourage.android.MainActivity
+import social.entourage.android.old_v7.MainActivity_v7
 import social.entourage.android.R
 import social.entourage.android.api.request.UserResponse
 import social.entourage.android.api.tape.Events
@@ -83,7 +84,7 @@ class MainProfileFragment : Fragment(R.layout.layout_mainprofile) {
         //drawer_header_user_name?.setOnClickListener { selectMenuProfile("user") }
         drawer_header_user_name?.setOnClickListener {
             startActivity(
-                Intent(context, social.entourage.android.new_v8.MainActivity::class.java)
+                Intent(context, MainActivity::class.java)
             )
         }        //add listener to modify profile text view
         action_edit_profile?.setOnClickListener { selectMenuProfile("editProfile") }

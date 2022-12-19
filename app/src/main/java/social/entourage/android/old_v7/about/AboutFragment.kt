@@ -14,6 +14,7 @@ import social.entourage.android.base.BaseDialogFragment
 import social.entourage.android.tools.view.EntSnackbar
 import kotlinx.android.synthetic.main.fragment_about.*
 import kotlinx.android.synthetic.main.layout_view_title.*
+import social.entourage.android.old_v7.MainActivity_v7
 import social.entourage.android.tools.log.AnalyticsEvents
 
 class AboutFragment : BaseDialogFragment() {
@@ -63,7 +64,7 @@ class AboutFragment : BaseDialogFragment() {
         try {
             startActivity(browserIntent)
         } catch (ex: ActivityNotFoundException) {
-            about_coordinator_layout?.let{EntSnackbar.make(it, R.string.no_browser_error, Snackbar.LENGTH_SHORT).show()}
+            about_coordinator_layout?.let{ EntSnackbar.make(it, R.string.no_browser_error, Snackbar.LENGTH_SHORT).show()}
         }
     }
 
@@ -104,7 +105,7 @@ class AboutFragment : BaseDialogFragment() {
         try {
             startActivity(browserIntent)
         } catch (ex: ActivityNotFoundException) {
-            about_coordinator_layout?.let {EntSnackbar.make(it, R.string.no_browser_error, Snackbar.LENGTH_SHORT).show()}
+            about_coordinator_layout?.let { EntSnackbar.make(it, R.string.no_browser_error, Snackbar.LENGTH_SHORT).show()}
         }
     }
 
@@ -117,7 +118,7 @@ class AboutFragment : BaseDialogFragment() {
         try {
             startActivity(intent)
         } catch (e: ActivityNotFoundException) {
-            about_coordinator_layout?.let {EntSnackbar.make(it, R.string.error_no_email, Snackbar.LENGTH_SHORT).show()}
+            about_coordinator_layout?.let { EntSnackbar.make(it, R.string.error_no_email, Snackbar.LENGTH_SHORT).show()}
         }
     }
 

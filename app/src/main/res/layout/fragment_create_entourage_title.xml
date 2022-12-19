@@ -7,7 +7,7 @@
               android:orientation="vertical"
               tools:context=".old_v7.entourage.create.CreateEntourageTitleFragment">
 
-    <social.entourage.android.tools.view.CustomTitleView
+    <social.entourage.android.old_v7.tools.view.CustomTitleView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:entourageTitle="@string/entourage_title_fragment_title"

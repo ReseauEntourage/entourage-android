@@ -10,7 +10,6 @@ import kotlinx.android.synthetic.main.fragment_plus.*
 import kotlinx.android.synthetic.main.layout_plus_overlay.*
 import social.entourage.android.Constants
 import social.entourage.android.EntourageApplication
-import social.entourage.android.MainActivity_v7
 import social.entourage.android.R
 import social.entourage.android.api.model.User
 import social.entourage.android.old_v7.base.BackPressable

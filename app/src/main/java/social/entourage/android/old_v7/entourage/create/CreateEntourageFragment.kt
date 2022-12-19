@@ -32,6 +32,7 @@ import social.entourage.android.old_v7.base.location.LocationFragment
 import social.entourage.android.entourage.category.EntourageCategory
 import social.entourage.android.old_v7.entourage.category.EntourageCategoryFragment
 import social.entourage.android.entourage.category.EntourageCategoryManager
+import social.entourage.android.old_v7.MainActivity_v7
 import social.entourage.android.old_v7.entourage.create.wizard.CreateActionWizardListener
 import social.entourage.android.old_v7.entourage.create.wizard.CreateActionWizardPage1Fragment
 import social.entourage.android.old_v7.entourage.create.wizard.CreateActionWizardPage2Fragment

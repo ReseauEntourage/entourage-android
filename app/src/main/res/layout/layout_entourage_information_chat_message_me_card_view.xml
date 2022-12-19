@@ -16,7 +16,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/bubble_discussion">
 
-        <social.entourage.android.tools.view.HtmlTextView
+        <social.entourage.android.old_v7.tools.view.HtmlTextView
             android:id="@+id/tic_chat_message"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

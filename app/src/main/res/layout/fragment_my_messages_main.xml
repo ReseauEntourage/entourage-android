@@ -166,7 +166,7 @@
 
         </LinearLayout>
 
-        <social.entourage.android.tools.view.HalfCircleView
+        <social.entourage.android.old_v7.tools.view.HalfCircleView
             android:layout_width="match_parent"
             android:layout_height="60dp" />
 

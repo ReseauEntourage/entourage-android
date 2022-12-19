@@ -26,6 +26,7 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import social.entourage.android.old_v7.MainActivity_v7
 import social.entourage.android.onboarding.login.LoginActivity
 import timber.log.Timber
 

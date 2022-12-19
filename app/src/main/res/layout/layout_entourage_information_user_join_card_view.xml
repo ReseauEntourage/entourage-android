@@ -43,7 +43,7 @@
                     android:scaleType="centerInside"
                     app:srcCompat="@drawable/ic_user_photo_small"/>
 
-                <social.entourage.android.tools.view.PartnerLogoImageView
+                <social.entourage.android.old_v7.tools.view.PartnerLogoImageView
                     android:id="@+id/tic_public_info_partner_logo"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
@@ -131,7 +131,7 @@
                 android:contentDescription="@string/empty_description"
                 app:srcCompat="@drawable/ic_user_photo_small"/>
 
-            <social.entourage.android.tools.view.PartnerLogoImageView
+            <social.entourage.android.old_v7.tools.view.PartnerLogoImageView
                 android:layout_width="36dp"
                 android:layout_height="36dp"
                 android:id="@+id/tic_partner_logo"

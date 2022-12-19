@@ -9,7 +9,7 @@ import android.view.ViewGroup
 import kotlinx.android.synthetic.main.fragment_guide_hub.*
 import social.entourage.android.Constants
 import social.entourage.android.EntourageApplication
-import social.entourage.android.MainActivity_v7
+import social.entourage.android.old_v7.MainActivity_v7
 import social.entourage.android.R
 import social.entourage.android.tools.log.AnalyticsEvents
 

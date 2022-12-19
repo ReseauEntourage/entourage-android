@@ -7,7 +7,7 @@
               tools:context="social.entourage.android.guide.filter.GuideFilterFragment">
 
 
-    <social.entourage.android.tools.view.CustomTitleView
+    <social.entourage.android.old_v7.tools.view.CustomTitleView
         android:id="@+id/entourageTitleView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -16,7 +16,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-    </social.entourage.android.tools.view.CustomTitleView>
+    </social.entourage.android.old_v7.tools.view.CustomTitleView>
 
     <Button
         android:id="@+id/ui_bt_cancel"

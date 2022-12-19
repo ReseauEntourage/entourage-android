@@ -4,7 +4,6 @@ import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import social.entourage.android.EntourageApplication
 import social.entourage.android.tools.log.AnalyticsEvents
-import social.entourage.android.tools.EntBus
 
 class EntourageFirebaseMessagingService : FirebaseMessagingService() {
     override fun onMessageReceived(remoteMessage: RemoteMessage) {

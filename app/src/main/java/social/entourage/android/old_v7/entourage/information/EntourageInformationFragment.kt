@@ -40,7 +40,7 @@ import social.entourage.android.old_v7.entourage.information.report.EntourageRep
 import social.entourage.android.base.location.EntLocation
 import social.entourage.android.base.map.OnAddressClickListener
 import social.entourage.android.tools.EntBus
-import social.entourage.android.tools.UtilsV7
+import social.entourage.android.old_v7.tools.UtilsV7
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.view.EntSnackbar
 import social.entourage.android.old_v7.user.UserFragment
@@ -95,7 +95,7 @@ class EntourageInformationFragment : FeedItemInformationFragment() {
             AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ENTOURAGE_VIEW_ASK_JOIN)
             it.requestToJoinEntourage(entourage)
             entourage_info_options?.visibility = View.GONE
-        } ?: run {entourage_information_coordinator_layout?.let {EntSnackbar.make(it,  R.string.entourage_join_request_message_error, Snackbar.LENGTH_SHORT).show()}}
+        } ?: run {entourage_information_coordinator_layout?.let { EntSnackbar.make(it,  R.string.entourage_join_request_message_error, Snackbar.LENGTH_SHORT).show()}}
     }
 
     override fun showInviteSource(isShareOnly:Boolean) {

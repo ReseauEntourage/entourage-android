@@ -24,6 +24,7 @@ import social.entourage.android.api.tape.Events.*
 import social.entourage.android.base.BaseDialogFragment
 import social.entourage.android.old_v7.base.BasePagination
 import social.entourage.android.base.BaseViewHolderListener
+import social.entourage.android.old_v7.MainActivity_v7
 import social.entourage.android.old_v7.entourage.my.MyEntouragesAdapter.LoaderCallback
 import social.entourage.android.old_v7.entourage.my.filter.MyEntouragesFilter
 import social.entourage.android.service.EntService
@@ -278,11 +279,11 @@ class MyEntouragesFragment  : BaseDialogFragment(), BaseViewHolderListener, Load
     }
 
     override fun onNetworkException() {
-        myentourages_layout?.let {EntSnackbar.make(it, R.string.network_error, Snackbar.LENGTH_LONG).show()}
+        myentourages_layout?.let { EntSnackbar.make(it, R.string.network_error, Snackbar.LENGTH_LONG).show()}
     }
 
     override fun onServerException(throwable: Throwable) {
-        myentourages_layout?.let {EntSnackbar.make(it, R.string.network_error, Snackbar.LENGTH_LONG).show() }
+        myentourages_layout?.let { EntSnackbar.make(it, R.string.network_error, Snackbar.LENGTH_LONG).show() }
     }
 
     override fun onTechnicalException(throwable: Throwable) {

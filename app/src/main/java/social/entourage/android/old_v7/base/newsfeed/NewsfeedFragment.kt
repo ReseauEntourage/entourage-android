@@ -44,6 +44,7 @@ import social.entourage.android.old_v7.base.map.MapClusterEntourageItem
 import social.entourage.android.old_v7.base.map.MapClusterItemRenderer
 import social.entourage.android.entourage.category.EntourageCategory
 import social.entourage.android.entourage.category.EntourageCategoryManager
+import social.entourage.android.old_v7.MainActivity_v7
 import social.entourage.android.old_v7.entourage.information.FeedItemInformationFragment
 import social.entourage.android.service.EntService
 import social.entourage.android.tools.EntBus
@@ -207,7 +208,7 @@ abstract class NewsfeedFragment : BaseMapFragment(R.layout.fragment_map), NewsFe
                 }
             }
         } else if (fragment_map_main_layout != null) {
-            fragment_map_main_layout?.let {EntSnackbar.make(it, R.string.entourage_join_request_error, Snackbar.LENGTH_SHORT).show()}
+            fragment_map_main_layout?.let { EntSnackbar.make(it, R.string.entourage_join_request_error, Snackbar.LENGTH_SHORT).show()}
         }
     }
 
@@ -300,7 +301,7 @@ abstract class NewsfeedFragment : BaseMapFragment(R.layout.fragment_map), NewsFe
                 try {
                     startActivity(browserIntent)
                 } catch (ex: ActivityNotFoundException) {
-                    fragment_map_main_layout?.let {EntSnackbar.make(it, R.string.no_browser_error, Snackbar.LENGTH_SHORT).show()}
+                    fragment_map_main_layout?.let { EntSnackbar.make(it, R.string.no_browser_error, Snackbar.LENGTH_SHORT).show()}
                 }
             }
             else -> {}

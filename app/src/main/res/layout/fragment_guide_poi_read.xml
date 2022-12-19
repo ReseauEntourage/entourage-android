@@ -7,13 +7,13 @@
     android:background="@color/background"
     tools:context=".guide.poi.ReadPoiFragment">
 
-    <social.entourage.android.tools.view.CustomTitleView
+    <social.entourage.android.old_v7.tools.view.CustomTitleView
         android:id="@+id/poi_read_toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:entourageTitle="@string/activity_read_poi_title">
 
-    </social.entourage.android.tools.view.CustomTitleView>
+    </social.entourage.android.old_v7.tools.view.CustomTitleView>
 
     <ScrollView
         android:layout_width="match_parent"

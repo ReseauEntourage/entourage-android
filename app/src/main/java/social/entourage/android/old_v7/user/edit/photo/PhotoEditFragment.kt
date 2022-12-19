@@ -14,7 +14,7 @@ import com.takusemba.cropme.OnCropListener
 import kotlinx.android.synthetic.main.fragment_photo_edit.*
 import social.entourage.android.R
 import social.entourage.android.base.BaseDialogFragment
-import social.entourage.android.tools.UtilsV7
+import social.entourage.android.old_v7.tools.UtilsV7
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.rotate
 import social.entourage.android.user.edit.photo.PhotoChooseInterface

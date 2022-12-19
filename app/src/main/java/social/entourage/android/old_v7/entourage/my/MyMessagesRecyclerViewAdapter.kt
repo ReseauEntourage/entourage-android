@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import social.entourage.android.R
 import social.entourage.android.api.model.BaseEntourage
-import social.entourage.android.tools.LoaderCardViewHolder
+import social.entourage.android.old_v7.tools.LoaderCardViewHolder
 import java.util.ArrayList
 
 /**

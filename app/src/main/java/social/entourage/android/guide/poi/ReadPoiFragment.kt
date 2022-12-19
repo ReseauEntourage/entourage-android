@@ -17,7 +17,7 @@ import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.R
 import social.entourage.android.api.model.guide.Poi
 import social.entourage.android.base.BaseDialogFragment
-import social.entourage.android.tools.ShareMessageFragment
+import social.entourage.android.tools.view.ShareMessageFragment
 import social.entourage.android.guide.filter.GuideFilterAdapter
 import social.entourage.android.guide.poi.PoiRenderer.CategoryType
 import social.entourage.android.guide.poi.ReadPoiPresenter.OnPhoneClickListener

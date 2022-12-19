@@ -6,7 +6,7 @@ import android.os.Handler
 import android.os.Looper
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import social.entourage.android.MainActivity_v7
+import social.entourage.android.old_v7.MainActivity_v7
 import social.entourage.android.R
 import social.entourage.android.api.model.Message
 import social.entourage.android.api.model.feed.FeedItem
@@ -14,7 +14,7 @@ import social.entourage.android.base.BaseSecuredActivity
 import social.entourage.android.message.push.PushNotificationManager
 import social.entourage.android.old_v7.user.UserFragment
 import social.entourage.android.tools.log.AnalyticsEvents
-import social.entourage.android.tools.view.HtmlTextView
+import social.entourage.android.old_v7.tools.view.HtmlTextView
 
 class EntourageJoinRequestReceivedActivity : BaseSecuredActivity() {
     private var message: Message? = null

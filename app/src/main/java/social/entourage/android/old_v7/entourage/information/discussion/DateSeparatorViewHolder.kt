@@ -5,7 +5,7 @@ import kotlinx.android.synthetic.main.layout_entourage_information_date_separato
 import social.entourage.android.R
 import social.entourage.android.api.model.TimestampedObject
 import social.entourage.android.base.BaseCardViewHolder
-import social.entourage.android.tools.UtilsV7
+import social.entourage.android.old_v7.tools.UtilsV7
 
 /**
  * Created by mihaiionescu on 15/03/2017.

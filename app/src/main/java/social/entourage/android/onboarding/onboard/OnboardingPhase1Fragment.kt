@@ -28,7 +28,7 @@ class OnboardingPhase1Fragment : Fragment() {
     private var phone:String? = null
     private var email:String? = null
     private var hasConsent = false
-    private var country:Country? = null
+    private var country: Country? = null
 
 
     private var callback:OnboardingStartCallback? = null
@@ -184,7 +184,7 @@ class OnboardingPhase1Fragment : Fragment() {
         const val minChars = 2
         const val minCharsPhone = 9
         @JvmStatic
-        fun newInstance(firstname: String?, lastname: String?, country: Country?,phone:String?,email:String?,hasConsent:Boolean ) =
+        fun newInstance(firstname: String?, lastname: String?, country: Country?, phone:String?, email:String?, hasConsent:Boolean ) =
             OnboardingPhase1Fragment().apply {
                 arguments = Bundle().apply {
                     putString(ARG_FIRST, firstname)

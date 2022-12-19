@@ -60,12 +60,13 @@ import social.entourage.android.old_v7.entourage.information.members.MembersAdap
 import social.entourage.android.old_v7.entourage.invite.InviteFriendsListener
 import social.entourage.android.old_v7.entourage.invite.contacts.InviteContactsFragment
 import social.entourage.android.guide.poi.ReadPoiFragment
+import social.entourage.android.old_v7.MainActivity_v7
 import social.entourage.android.old_v7.mainprofile.MyActionsFragment
 import social.entourage.android.service.EntService
 import social.entourage.android.service.EntourageServiceListener
 import social.entourage.android.tools.EntBus
-import social.entourage.android.tools.EntError
-import social.entourage.android.tools.ShareMessageFragment
+import social.entourage.android.old_v7.tools.EntError
+import social.entourage.android.tools.view.ShareMessageFragment
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.view.EntSnackbar
 import timber.log.Timber

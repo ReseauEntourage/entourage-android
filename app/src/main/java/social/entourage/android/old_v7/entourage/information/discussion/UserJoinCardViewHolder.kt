@@ -16,7 +16,7 @@ import social.entourage.android.api.tape.Events.OnUserViewRequestedEvent
 import social.entourage.android.base.BaseCardViewHolder
 import social.entourage.android.old_v7.entourage.information.FeedItemInformationFragment
 import social.entourage.android.tools.EntBus
-import social.entourage.android.tools.UtilsV7
+import social.entourage.android.old_v7.tools.UtilsV7
 import social.entourage.android.tools.log.AnalyticsEvents
 
 /**

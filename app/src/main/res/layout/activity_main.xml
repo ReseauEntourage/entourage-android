@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context=".MainActivity_v7"
+    tools:context=".old_v7.MainActivity_v7"
     android:background="@color/background_light">
 
     <include

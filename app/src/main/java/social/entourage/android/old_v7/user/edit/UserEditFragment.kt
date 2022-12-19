@@ -17,7 +17,7 @@ import com.bumptech.glide.Glide
 import com.squareup.otto.Subscribe
 import kotlinx.android.synthetic.main.fragment_user_edit.*
 import kotlinx.android.synthetic.main.layout_view_title.*
-import social.entourage.android.MainActivity_v7
+import social.entourage.android.old_v7.MainActivity_v7
 import social.entourage.android.R
 import social.entourage.android.api.model.BaseOrganization
 import social.entourage.android.api.model.User

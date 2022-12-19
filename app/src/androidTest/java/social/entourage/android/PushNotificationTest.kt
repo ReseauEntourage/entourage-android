@@ -16,6 +16,7 @@ import org.junit.runner.RunWith
 import social.entourage.android.api.model.Message
 import social.entourage.android.api.model.PushNotificationContent
 import social.entourage.android.message.push.PushNotificationManager
+import social.entourage.android.old_v7.MainActivity_v7
 
 @RunWith(AndroidJUnit4::class)
 class PushNotificationTest {

@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import kotlinx.android.synthetic.main.fragment_home_help_report.*
 import kotlinx.android.synthetic.main.layout_view_title.*
-import social.entourage.android.MainActivity_v7
+import social.entourage.android.old_v7.MainActivity_v7
 import social.entourage.android.R
 import social.entourage.android.base.BaseDialogFragment
 

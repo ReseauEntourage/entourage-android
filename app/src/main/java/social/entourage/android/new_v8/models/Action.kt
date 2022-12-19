@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.api.model.Partner
-import social.entourage.android.tools.UtilsV7
+import social.entourage.android.old_v7.tools.UtilsV7
 import java.io.Serializable
 import java.text.SimpleDateFormat
 import java.util.*

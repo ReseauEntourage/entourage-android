@@ -20,7 +20,7 @@ import social.entourage.android.old_v7.base.newsfeed.HeadlineAdapter
 import social.entourage.android.old_v7.home.HomeCard
 import social.entourage.android.old_v7.home.HomeCardType
 import social.entourage.android.old_v7.home.HomeViewHolderListener
-import social.entourage.android.tools.view.RecyclerViewItemDecorationWithSpacing
+import social.entourage.android.old_v7.tools.view.RecyclerViewItemDecorationWithSpacing
 
 /**
  * HomeFeedAdapter.

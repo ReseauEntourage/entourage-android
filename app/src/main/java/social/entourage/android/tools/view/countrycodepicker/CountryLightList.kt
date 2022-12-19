@@ -27,12 +27,16 @@ internal object CountryLightList {
             return countries
         }
         val newCountries = ArrayList<Country>()
-        newCountries.add(Country(context.getString(R.string.country_france_code),
+        newCountries.add(
+            Country(context.getString(R.string.country_france_code),
                 context.getString(R.string.country_france_number),
-                context.getString(R.string.country_france_name),context.getString(R.string.country_france_flag)))
-        newCountries.add(Country(context.getString(R.string.country_belgium_code),
+                context.getString(R.string.country_france_name),context.getString(R.string.country_france_flag))
+        )
+        newCountries.add(
+            Country(context.getString(R.string.country_belgium_code),
                 context.getString(R.string.country_belgium_number),
-                context.getString(R.string.country_belgium_name),context.getString(R.string.country_belgium_flag)))
+                context.getString(R.string.country_belgium_name),context.getString(R.string.country_belgium_flag))
+        )
         newCountries.sortWith { o1: Country, o2: Country -> o1.name.compareTo(o2.name) }
         countries = newCountries
         return newCountries
@@ -67,7 +71,7 @@ internal object CountryLightList {
                 return country
             }
         }
-        getAllCountries(context)?.forEach {country ->
+        getAllCountries(context)?.forEach { country ->
             if (country.phoneCode == code) {
                 return country
             }
@@ -101,7 +105,7 @@ internal object CountryLightList {
      * or returns null if no country matches given code.
      */
     fun getByNameCodeFromAllCountries(context: Context, nameCode: String?): Country? {
-        getAllCountries(context)?.forEach {country ->
+        getAllCountries(context)?.forEach { country ->
             if (country.iso.equals(nameCode, ignoreCase = true)) {
                 return country
             }

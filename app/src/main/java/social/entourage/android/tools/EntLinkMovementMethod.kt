@@ -6,7 +6,7 @@ import android.text.style.ClickableSpan
 import android.text.style.URLSpan
 import android.view.MotionEvent
 import android.widget.TextView
-import social.entourage.android.MainActivity_v7
+import social.entourage.android.old_v7.MainActivity_v7
 
 /**
  * Created by Mihai Ionescu on 11/04/2018.

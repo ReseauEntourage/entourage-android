@@ -7,7 +7,7 @@ import kotlinx.android.synthetic.main.activity_onboarding_end.*
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.api.OnboardingAPI
-import social.entourage.android.new_v8.MainActivity
+import social.entourage.android.MainActivity
 import social.entourage.android.tools.log.AnalyticsEvents
 
 class OnboardingEndActivity : AppCompatActivity() {

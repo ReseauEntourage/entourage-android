@@ -36,7 +36,7 @@ import social.entourage.android.guide.poi.ReadPoiFragment.Companion.newInstance
 import social.entourage.android.service.EntService
 import social.entourage.android.tools.EntBus
 import social.entourage.android.tools.EntLinkMovementMethod
-import social.entourage.android.tools.UtilsV7
+import social.entourage.android.old_v7.tools.UtilsV7
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.view.EntSnackbar
 import social.entourage.android.user.partner.PartnerFragment

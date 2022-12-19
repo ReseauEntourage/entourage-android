@@ -136,7 +136,7 @@
             android:exported="false"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".MainActivity_v7"
+            android:name=".old_v7.MainActivity_v7"
             android:exported="false"
             android:label="@string/title_activity_main"
             android:windowSoftInputMode="adjustPan" /> <!-- use for accessing Storage Android 10+ -->
@@ -156,7 +156,7 @@
             android:value="false" />
 
         <activity
-            android:name=".new_v8.MainActivity"
+            android:name=".MainActivity"
             android:exported="true"
             android:launchMode="singleInstance"
             android:screenOrientation="portrait">

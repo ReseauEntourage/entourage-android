@@ -58,7 +58,8 @@ class HomeFragment : Fragment() {
         isAlreadyLoadSummary = true
         homePresenter.getSummary()
 
-        val viewModel = ViewModelProvider(requireActivity()).get(CommunicationRecoWebUrlHandlerViewModel::class.java)
+        val viewModel = ViewModelProvider(requireActivity()).get(
+            CommunicationRecoWebUrlHandlerViewModel::class.java)
         viewModel.isValid.observe(requireActivity(), ::reloadDatasFromRecos)
 
         updateView()

@@ -13,7 +13,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationItemView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import me.leolin.shortcutbadger.ShortcutBadger
 import social.entourage.android.EntourageApplication
-import social.entourage.android.MainActivity_v7
+import social.entourage.android.old_v7.MainActivity_v7
 import social.entourage.android.R
 import social.entourage.android.configuration.Configuration
 import social.entourage.android.old_v7.home.expert.HomeExpertFragment

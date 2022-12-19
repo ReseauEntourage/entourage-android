@@ -288,7 +288,7 @@ open class EntServiceManager(
         if (isBetterLocationUpdated) {
             isBetterLocationUpdated = false
             if (shouldCenterMap) {
-                latLng?.let {EntBus.post(OnBetterLocationEvent(it))                 }
+                latLng?.let { EntBus.post(OnBetterLocationEvent(it))                 }
             }
         }
 

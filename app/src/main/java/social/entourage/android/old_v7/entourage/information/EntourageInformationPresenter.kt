@@ -6,7 +6,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import social.entourage.android.EntourageApplication
 import social.entourage.android.api.model.*
-import social.entourage.android.tools.EntError
+import social.entourage.android.old_v7.tools.EntError
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.api.model.feed.FeedItem
 import social.entourage.android.api.request.*

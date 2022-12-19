@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/white">
 
-    <social.entourage.android.tools.view.CustomTitleView
+    <social.entourage.android.old_v7.tools.view.CustomTitleView
         android:id="@+id/edit_place_title_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

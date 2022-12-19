@@ -11,7 +11,7 @@ import kotlinx.android.synthetic.main.layout_user_entourage_associations.view.*
 import social.entourage.android.R
 import social.entourage.android.api.model.BaseOrganization
 import social.entourage.android.api.model.User
-import social.entourage.android.tools.ItemClickSupport
+import social.entourage.android.old_v7.tools.ItemClickSupport
 import java.util.*
 
 /**

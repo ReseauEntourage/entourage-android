@@ -7,7 +7,7 @@ import com.google.android.gms.maps.model.MarkerOptions
 import social.entourage.android.R
 import social.entourage.android.api.model.BaseEntourage
 import social.entourage.android.api.model.guide.Poi
-import social.entourage.android.tools.UtilsV7
+import social.entourage.android.old_v7.tools.UtilsV7
 
 class PoiRenderer {
     // ----------------------------------

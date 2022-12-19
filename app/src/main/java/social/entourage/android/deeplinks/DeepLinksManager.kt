@@ -6,7 +6,7 @@ import android.os.Bundle
 import android.text.util.Linkify
 import android.widget.TextView
 import social.entourage.android.BuildConfig
-import social.entourage.android.MainActivity_v7
+import social.entourage.android.old_v7.MainActivity_v7
 import social.entourage.android.api.model.TimestampedObject
 import social.entourage.android.api.tape.Events.OnFeedItemInfoViewRequestedEvent
 import social.entourage.android.message.push.EntourageFirebaseMessagingService

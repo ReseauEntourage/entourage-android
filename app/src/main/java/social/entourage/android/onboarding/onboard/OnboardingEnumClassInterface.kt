@@ -38,7 +38,7 @@ enum class UserTypeSelection(val pos: Int) {
  * Interface
  */
 interface OnboardingStartCallback {
-    fun validateNames(firstname: String?, lastname: String?,country: Country?, phoneNumber: String?,email: String?,hasConsent:Boolean)
+    fun validateNames(firstname: String?, lastname: String?, country: Country?, phoneNumber: String?, email: String?, hasConsent:Boolean)
     fun validatePasscode(password: String?)
     fun updateUsertypeAndAddress(isEntour:Boolean, isBeEntour:Boolean, isAsso:Boolean,address:User.Address?)
     fun updateButtonNext(isValid: Boolean)

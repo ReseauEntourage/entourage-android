@@ -6,7 +6,7 @@
               android:orientation="vertical"
               tools:context="social.entourage.android.old_v7.entourage.create.wizard.CreateActionWizardPage1Fragment">
 
-    <social.entourage.android.tools.view.CustomTitleView
+    <social.entourage.android.old_v7.tools.view.CustomTitleView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/accent"
@@ -15,7 +15,7 @@
         app:entourageTitle="@string/create_action_wizard_p1_title"
         app:entourageTitleCloseDrawable="@drawable/ic_baseline_arrow_back_36">
 
-    </social.entourage.android.tools.view.CustomTitleView>
+    </social.entourage.android.old_v7.tools.view.CustomTitleView>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

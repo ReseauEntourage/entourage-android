@@ -43,6 +43,7 @@ import social.entourage.android.old_v7.home.HomeViewHolderListener
 import social.entourage.android.old_v7.home.PopInfoCreateEntourageFragment
 import social.entourage.android.old_v7.home.actions.NewsFeedActionsFragment
 import social.entourage.android.message.push.PushNotificationManager
+import social.entourage.android.old_v7.MainActivity_v7
 import social.entourage.android.old_v7.PlusFragment
 import social.entourage.android.onboarding.InputNamesFragment
 import social.entourage.android.service.EntService

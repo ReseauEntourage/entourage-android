@@ -9,7 +9,7 @@
 
     <!-- TODO: Update blank fragment layout -->
 
-    <social.entourage.android.tools.view.CustomTitleView
+    <social.entourage.android.old_v7.tools.view.CustomTitleView
         android:id="@+id/customTitleView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

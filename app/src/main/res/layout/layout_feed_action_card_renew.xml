@@ -90,7 +90,7 @@
             app:layout_constraintTop_toTopOf="@+id/ui_action_picto_location2"
             app:srcCompat="@drawable/ic_user_photo_small" />
 
-        <social.entourage.android.tools.view.PartnerLogoImageView
+        <social.entourage.android.old_v7.tools.view.PartnerLogoImageView
             android:id="@+id/action_card_partner_logo"
             android:layout_width="20dp"
             android:layout_height="20dp"
