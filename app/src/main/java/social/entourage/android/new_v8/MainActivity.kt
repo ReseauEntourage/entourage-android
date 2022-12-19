@@ -18,7 +18,7 @@ import social.entourage.android.api.MetaDataRepository
 import social.entourage.android.api.model.Message
 import social.entourage.android.base.BaseSecuredActivity
 import social.entourage.android.base.location.EntLocation
-import social.entourage.android.entourage.information.FeedItemInformationFragment
+import social.entourage.android.old_v7.entourage.information.FeedItemInformationFragment
 import social.entourage.android.message.push.PushNotificationManager
 import social.entourage.android.new_v8.home.CommunicationHandlerBadgeViewModel
 import social.entourage.android.new_v8.home.UnreadMessages

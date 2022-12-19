@@ -12,7 +12,7 @@ import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.layout_edit_partner.view.*
 import social.entourage.android.R
 import social.entourage.android.api.model.Partner
-import social.entourage.android.api.tape.Events.OnPartnerViewRequestedEvent
+import social.entourage.android.api.tape.Events
 import social.entourage.android.tools.EntBus
 
 /**
@@ -34,7 +34,7 @@ class UserEditPartnerAdapter : BaseAdapter() {
             }
             v.partner_logo?.setOnClickListener {
                 partner?.let {
-                    EntBus.post(OnPartnerViewRequestedEvent(it))
+                    EntBus.post(Events.OnPartnerViewRequestedEvent(it))
                 }
             }
         }
@@ -57,7 +57,8 @@ class UserEditPartnerAdapter : BaseAdapter() {
         val currentView: View
         val viewHolder: PartnerViewHolder
         if (view == null) {
-            currentView = LayoutInflater.from(viewGroup.context).inflate(R.layout.layout_edit_partner, viewGroup, false)
+            currentView = LayoutInflater.from(viewGroup.context)
+                .inflate(R.layout.layout_edit_partner, viewGroup, false)
             viewHolder = PartnerViewHolder(currentView, onCheckedChangeListener)
             currentView.tag = viewHolder
         } else {

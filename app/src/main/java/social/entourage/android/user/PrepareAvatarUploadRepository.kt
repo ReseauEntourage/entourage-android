@@ -6,7 +6,8 @@ import retrofit2.Callback
 import social.entourage.android.EntourageApplication
 import social.entourage.android.api.request.UserRequest
 
-class PrepareAvatarUploadRepository (private var callback: Callback?) : Callback<PrepareAvatarUploadRepository.Response> {
+class PrepareAvatarUploadRepository (private var callback: Callback?) :
+    Callback<PrepareAvatarUploadRepository.Response> {
     private val userRequest: UserRequest
         get() = EntourageApplication.get().apiModule.userRequest
 

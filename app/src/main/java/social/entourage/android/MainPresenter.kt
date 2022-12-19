@@ -12,8 +12,8 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import social.entourage.android.EntourageApplication.Companion.get
-import social.entourage.android.about.AboutFragment
-import social.entourage.android.about.carousel.CarouselFragment
+import social.entourage.android.old_v7.about.AboutFragment
+import social.entourage.android.old_v7.about.carousel.CarouselFragment
 import social.entourage.android.api.model.ApplicationInfo
 import social.entourage.android.api.request.ApplicationInfoRequest
 import social.entourage.android.api.request.ApplicationWrapper
@@ -23,10 +23,10 @@ import social.entourage.android.authentication.AuthenticationController
 import social.entourage.android.configuration.Configuration
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.user.AvatarUpdatePresenter
-import social.entourage.android.user.UserFragment
-import social.entourage.android.user.edit.UserEditFragment
+import social.entourage.android.old_v7.user.UserFragment
+import social.entourage.android.old_v7.user.edit.UserEditFragment
 import social.entourage.android.user.edit.photo.ChoosePhotoFragment
-import social.entourage.android.user.edit.photo.PhotoEditFragment
+import social.entourage.android.old_v7.user.edit.photo.PhotoEditFragment
 import timber.log.Timber
 
 /**

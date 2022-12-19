@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/background_light"
     style="@style/AppMaterial"
-    tools:context=".mainprofile.MyActionsFragment">
+    tools:context=".old_v7.mainprofile.MyActionsFragment">
 
     <social.entourage.android.tools.view.CustomTitleView
         android:id="@+id/customTitleView3"

@@ -13,13 +13,12 @@ import social.entourage.android.api.model.PushNotificationContent
 import social.entourage.android.api.model.TimestampedObject
 import social.entourage.android.api.model.User
 import social.entourage.android.api.model.feed.FeedItem
-import social.entourage.android.api.tape.Events
 import social.entourage.android.authentication.AuthenticationController
 import social.entourage.android.authentication.ComplexPreferences
 import social.entourage.android.base.BaseActivity
 import social.entourage.android.message.push.PushNotificationManager
-import social.entourage.android.navigation.EntBottomNavigationView
-import social.entourage.android.base.newsfeed.UserFeedItemListCache
+import social.entourage.android.old_v7.navigation.EntBottomNavigationView
+import social.entourage.android.old_v7.base.newsfeed.UserFeedItemListCache
 import social.entourage.android.onboarding.login.LoginActivity
 import social.entourage.android.tools.LibrariesSupport
 import timber.log.Timber

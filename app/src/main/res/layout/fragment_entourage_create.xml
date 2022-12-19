@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/background_light"
     android:windowSoftInputMode="adjustPan"
-    tools:context=".entourage.create.CreateEntourageFragment">
+    tools:context=".old_v7.entourage.create.CreateEntourageFragment">
 
     <social.entourage.android.tools.view.CustomTitleView
         android:id="@+id/create_entourage_fragment_title"

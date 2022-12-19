@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".home.PopInfoCreateEntourageFragment">
+    tools:context=".old_v7.home.PopInfoCreateEntourageFragment">
 
 
     <androidx.cardview.widget.CardView

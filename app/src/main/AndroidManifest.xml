@@ -279,9 +279,9 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".entourage.join.EntourageJoinRequestReceivedActivity"
+            android:name=".old_v7.entourage.join.EntourageJoinRequestReceivedActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".user.edit.photo.TakePhotoActivity" />
+        <activity android:name=".old_v7.user.edit.photo.TakePhotoActivity" />
         <activity
             android:name="com.google.android.gms.oss.licenses.OssLicensesMenuActivity"
             android:theme="@style/EntourageOSSLicenses.Theme" />

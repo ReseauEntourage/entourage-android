@@ -22,7 +22,6 @@ import social.entourage.android.guide.filter.GuideFilterAdapter
 import social.entourage.android.guide.poi.PoiRenderer.CategoryType
 import social.entourage.android.guide.poi.ReadPoiPresenter.OnPhoneClickListener
 import social.entourage.android.base.map.OnAddressClickListener
-import javax.inject.Inject
 
 /**
  * Activity showing the detail of a POI

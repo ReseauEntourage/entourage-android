@@ -28,10 +28,10 @@ import social.entourage.android.base.location.EntLocation.currentLocation
 import social.entourage.android.base.location.EntLocation.latLng
 import social.entourage.android.base.location.LocationListener
 import social.entourage.android.base.location.LocationProvider
-import social.entourage.android.base.map.filter.MapFilterFactory.mapFilter
-import social.entourage.android.base.newsfeed.NewsfeedPagination
-import social.entourage.android.base.newsfeed.NewsfeedTabItem
-import social.entourage.android.home.HomeCard
+import social.entourage.android.old_v7.base.map.filter.MapFilterFactory.mapFilter
+import social.entourage.android.old_v7.base.newsfeed.NewsfeedPagination
+import social.entourage.android.old_v7.base.newsfeed.NewsfeedTabItem
+import social.entourage.android.old_v7.home.HomeCard
 import social.entourage.android.tools.EntBus
 import timber.log.Timber
 import java.util.*
@@ -47,7 +47,8 @@ open class EntServiceManager(
         val authenticationController: AuthenticationController,
         val newsfeedRequest: NewsfeedRequest,
         private val entourageRequest: EntourageRequest,
-        val locationProvider: LocationProvider) {
+        val locationProvider: LocationProvider
+) {
 
 
     // ----------------------------------

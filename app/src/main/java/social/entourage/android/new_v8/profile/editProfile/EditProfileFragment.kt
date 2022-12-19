@@ -27,11 +27,10 @@ import social.entourage.android.user.AvatarUpdatePresenter
 import social.entourage.android.user.AvatarUploadPresenter
 import social.entourage.android.user.AvatarUploadRepository
 import social.entourage.android.user.AvatarUploadView
-import social.entourage.android.user.edit.UserEditPasswordFragment
+import social.entourage.android.old_v7.user.edit.UserEditPasswordFragment
 import social.entourage.android.user.edit.photo.ChoosePhotoFragment
 import social.entourage.android.user.edit.photo.PhotoChooseInterface
 import social.entourage.android.user.edit.place.UserEditActionZoneFragment
-import timber.log.Timber
 import java.io.File
 
 

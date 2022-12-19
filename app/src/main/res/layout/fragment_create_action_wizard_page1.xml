@@ -4,7 +4,7 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:orientation="vertical"
-              tools:context="social.entourage.android.entourage.create.wizard.CreateActionWizardPage1Fragment">
+              tools:context="social.entourage.android.old_v7.entourage.create.wizard.CreateActionWizardPage1Fragment">
 
     <social.entourage.android.tools.view.CustomTitleView
         android:layout_width="match_parent"

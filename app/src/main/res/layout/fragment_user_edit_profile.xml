@@ -2,7 +2,7 @@
              xmlns:tools="http://schemas.android.com/tools"
              android:layout_width="wrap_content"
              android:layout_height="wrap_content"
-             tools:context="social.entourage.android.user.edit.UserEditProfileFragment"
+             tools:context="social.entourage.android.old_v7.user.edit.UserEditProfileFragment"
               android:orientation="vertical"
               android:gravity="center_horizontal"
               android:padding="10dp">

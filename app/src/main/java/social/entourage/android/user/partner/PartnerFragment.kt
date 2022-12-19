@@ -91,12 +91,13 @@ class PartnerFragment : BaseDialogFragment() {
 
     fun updatePartnerFollow(isFollow:Boolean) {
         val params = ArrayMap<String, Any>()
-        val isFollowParam = ArrayMap<String,Any>()
+        val isFollowParam = ArrayMap<String, Any>()
         isFollowParam["partner_id"] = partner?.id.toString()
         isFollowParam["active"] = if (isFollow) "true" else "false"
         params["following"] = isFollowParam
 
-        EntourageApplication.get().apiModule.userRequest.updateUserPartner(params).enqueue(object : Callback<ResponseBody>{
+        EntourageApplication.get().apiModule.userRequest.updateUserPartner(params).enqueue(object :
+            Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 if (response.isSuccessful) {
                     partner?.let {
@@ -182,22 +183,22 @@ class PartnerFragment : BaseDialogFragment() {
 
         ui_button_asso_address?.setOnClickListener {
             partner?.address?.let {  address ->
-                openLink("geo:0,0?q=$address",Intent.ACTION_VIEW)
+                openLink("geo:0,0?q=$address", Intent.ACTION_VIEW)
             }
         }
         ui_button_asso_mail?.setOnClickListener {
             partner?.email?.let { email ->
-                openLink("mailto:$email",Intent.ACTION_SENDTO)
+                openLink("mailto:$email", Intent.ACTION_SENDTO)
             }
         }
         ui_button_asso_phone?.setOnClickListener {
             partner?.phone?.let { phone ->
-                openLink("tel:$phone",Intent.ACTION_DIAL)
+                openLink("tel:$phone", Intent.ACTION_DIAL)
             }
         }
         ui_button_asso_web?.setOnClickListener {
             partner?.websiteUrl?.let { url ->
-                openLink(url,Intent.ACTION_VIEW)
+                openLink(url, Intent.ACTION_VIEW)
             }
         }
 
@@ -234,12 +235,20 @@ class PartnerFragment : BaseDialogFragment() {
             if (it.isFollowing) {
                 ui_button_follow?.text = getString(R.string.buttonFollowOnPartner)
                 ui_button_follow?.setTextColor(resources.getColor(R.color.white))
-                ui_button_follow?.background = ResourcesCompat.getDrawable(resources, R.drawable.bg_button_rounded_pre_onboard_orange_plain, null)
+                ui_button_follow?.background = ResourcesCompat.getDrawable(
+                    resources,
+                    R.drawable.bg_button_rounded_pre_onboard_orange_plain,
+                    null
+                )
             }
             else {
                 ui_button_follow?.text = getString(R.string.buttonFollowOffPartner)
                 ui_button_follow?.setTextColor(resources.getColor(R.color.accent))
-                ui_button_follow?.background = ResourcesCompat.getDrawable(resources, R.drawable.bg_button_rounded_pre_onboard_orange_stroke, null)
+                ui_button_follow?.background = ResourcesCompat.getDrawable(
+                    resources,
+                    R.drawable.bg_button_rounded_pre_onboard_orange_stroke,
+                    null
+                )
             }
         }
     }

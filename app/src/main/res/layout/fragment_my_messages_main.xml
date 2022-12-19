@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".entourage.my.MyMessagesMainFragment">
+    tools:context=".old_v7.entourage.my.MyMessagesMainFragment">
 
 
     <com.google.android.material.tabs.TabLayout

@@ -8,7 +8,6 @@ import retrofit2.http.*
 import social.entourage.android.api.model.User
 import social.entourage.android.api.model.UserReportWrapper
 import social.entourage.android.new_v8.home.UnreadMessages
-import social.entourage.android.new_v8.models.Conversation
 import social.entourage.android.user.PrepareAvatarUploadRepository
 
 

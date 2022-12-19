@@ -24,7 +24,7 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import social.entourage.android.home.HomeCard
+import social.entourage.android.old_v7.home.HomeCard
 import social.entourage.android.onboarding.login.LoginActivity
 import social.entourage.android.tools.EntBus
 import java.io.IOException

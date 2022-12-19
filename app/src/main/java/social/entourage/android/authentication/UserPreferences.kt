@@ -1,7 +1,7 @@
 package social.entourage.android.authentication
 
 import com.google.gson.annotations.Expose
-import social.entourage.android.entourage.my.filter.MyEntouragesFilter
+import social.entourage.android.old_v7.entourage.my.filter.MyEntouragesFilter
 import social.entourage.android.base.map.filter.MapFilter
 import java.io.Serializable
 

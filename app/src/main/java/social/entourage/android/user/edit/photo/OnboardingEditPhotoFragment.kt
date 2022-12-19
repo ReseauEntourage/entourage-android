@@ -1,4 +1,4 @@
-
+package social.entourage.android.user.edit.photo
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.PorterDuff

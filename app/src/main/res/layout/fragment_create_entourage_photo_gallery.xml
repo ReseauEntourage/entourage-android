@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    tools:context=".entourage.create.CreateEntouragePhotoGalleryFragment">
+    tools:context=".old_v7.entourage.create.CreateEntouragePhotoGalleryFragment">
 
     <!-- TODO: Update blank fragment layout -->
 

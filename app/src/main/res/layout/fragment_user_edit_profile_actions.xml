@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/white"
-    tools:context="social.entourage.android.user.edit.UserEditProfileActionsFragment">
+    tools:context="social.entourage.android.old_v7.user.edit.UserEditProfileActionsFragment">
 
     <LinearLayout
         android:id="@+id/edit_place_title_layout"

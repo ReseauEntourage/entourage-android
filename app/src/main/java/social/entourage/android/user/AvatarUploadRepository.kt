@@ -6,7 +6,6 @@ import okhttp3.RequestBody.Companion.asRequestBody
 import social.entourage.android.EntourageApplication
 import java.io.File
 import java.io.IOException
-import javax.inject.Inject
 
 class AvatarUploadRepository : Callback {
     private val client: OkHttpClient

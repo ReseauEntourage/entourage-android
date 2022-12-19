@@ -4,14 +4,15 @@ import android.os.Handler
 import android.os.Looper
 import timber.log.Timber
 import java.io.File
-import javax.inject.Inject
 
 class AvatarUploadPresenter constructor(private val activity: AvatarUploadView,
-                                                avatarUploadRepository: AvatarUploadRepository,
-                                                presenter: AvatarUpdatePresenter) : PrepareAvatarUploadRepository.Callback, AvatarUploadRepository.Callback {
+                                        avatarUploadRepository: AvatarUploadRepository,
+                                        presenter: AvatarUpdatePresenter
+) : PrepareAvatarUploadRepository.Callback, AvatarUploadRepository.Callback {
     private val presenter: AvatarUpdatePresenter
     private val avatarUploadRepository: AvatarUploadRepository
-    private val prepareAvatarUploadRepository: PrepareAvatarUploadRepository = PrepareAvatarUploadRepository(this)
+    private val prepareAvatarUploadRepository: PrepareAvatarUploadRepository =
+        PrepareAvatarUploadRepository(this)
     private var file: File? = null
     private var avatarKey: String? = null
 

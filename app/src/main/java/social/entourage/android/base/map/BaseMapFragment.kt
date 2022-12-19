@@ -1,13 +1,9 @@
 package social.entourage.android.base.map
 
-import android.Manifest.permission
-import android.Manifest.permission.ACCESS_COARSE_LOCATION
-import android.Manifest.permission.ACCESS_FINE_LOCATION
-import android.annotation.SuppressLint
+import android.Manifest
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.graphics.Point
 import android.location.Location
 import android.os.Bundle
@@ -20,10 +16,8 @@ import android.widget.RelativeLayout
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AlertDialog
-import androidx.core.app.ActivityCompat
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.GoogleMap.OnGroundOverlayClickListener
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MapStyleOptions
@@ -31,13 +25,13 @@ import kotlinx.android.synthetic.main.fragment_map.*
 import kotlinx.android.synthetic.main.layout_map_longclick.*
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
-import social.entourage.android.api.tape.Events.OnLocationPermissionGranted
-import social.entourage.android.base.BackPressable
-import social.entourage.android.base.BaseFragment
-import social.entourage.android.base.HeaderBaseAdapter
+import social.entourage.android.api.tape.Events
 import social.entourage.android.base.location.EntLocation
 import social.entourage.android.base.location.LocationUpdateListener
-import social.entourage.android.base.location.LocationUtils.isLocationPermissionGranted
+import social.entourage.android.base.location.LocationUtils
+import social.entourage.android.old_v7.base.BackPressable
+import social.entourage.android.base.BaseFragment
+import social.entourage.android.base.HeaderBaseAdapter
 import social.entourage.android.tools.EntBus
 import social.entourage.android.tools.log.AnalyticsEvents
 import timber.log.Timber
@@ -64,7 +58,7 @@ abstract class BaseMapFragment(protected var layout: Int) : BaseFragment(), Back
             if(permissions.entries.any {
                 it.value == true
             }) {
-                EntBus.post(OnLocationPermissionGranted(true))
+                EntBus.post(Events.OnLocationPermissionGranted(true))
             }
         }
 
@@ -108,7 +102,7 @@ abstract class BaseMapFragment(protected var layout: Int) : BaseFragment(), Back
 
     protected fun onMapReady(
         googleMap: GoogleMap,
-        onGroundOverlayClickListener: OnGroundOverlayClickListener?
+        onGroundOverlayClickListener: GoogleMap.OnGroundOverlayClickListener?
     ) {
         map = googleMap
         //we forced the setting of the map anyway
@@ -117,7 +111,7 @@ abstract class BaseMapFragment(protected var layout: Int) : BaseFragment(), Back
             return
         }
 
-        val isLocationPermissionGranted = isLocationPermissionGranted()
+        val isLocationPermissionGranted = LocationUtils.isLocationPermissionGranted()
 
         googleMap.isMyLocationEnabled = isLocationPermissionGranted
 
@@ -230,10 +224,13 @@ abstract class BaseMapFragment(protected var layout: Int) : BaseFragment(), Back
                 .setPositiveButton(R.string.activate) { _: DialogInterface?, _: Int ->
                     AnalyticsEvents.logEvent(eventName)
                     try {
-                        if (isLocationPermissionGranted()
-                            || shouldShowRequestPermissionRationale(ACCESS_COARSE_LOCATION)
+                        if (LocationUtils.isLocationPermissionGranted()
+                            || shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_COARSE_LOCATION)
                         ) {
-                            requestPermissionLauncher.launch(arrayOf(ACCESS_COARSE_LOCATION, ACCESS_FINE_LOCATION))
+                            requestPermissionLauncher.launch(arrayOf(
+                                Manifest.permission.ACCESS_COARSE_LOCATION,
+                                Manifest.permission.ACCESS_FINE_LOCATION
+                            ))
                         } else {
                             // User selected "Never ask again", so show the settings page
                             startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
@@ -257,13 +254,13 @@ abstract class BaseMapFragment(protected var layout: Int) : BaseFragment(), Back
         }
     }*/
 
-    open fun onLocationPermissionGranted(event: OnLocationPermissionGranted) =
+    open fun onLocationPermissionGranted(event: Events.OnLocationPermissionGranted) =
         updateGeolocBanner(event.isPermissionGranted)
 
     protected open fun updateGeolocBanner(active: Boolean) {
-        adapter?.setGeolocStatusIcon(isLocationPermissionGranted())
+        adapter?.setGeolocStatusIcon(LocationUtils.isLocationPermissionGranted())
         try {
-            map?.isMyLocationEnabled = isLocationPermissionGranted()
+            map?.isMyLocationEnabled = LocationUtils.isLocationPermissionGranted()
         } catch (ex: SecurityException) {
             Timber.w(ex)
         } catch (ex: Exception) {
@@ -274,7 +271,7 @@ abstract class BaseMapFragment(protected var layout: Int) : BaseFragment(), Back
     protected fun onFollowGeolocation() {
         AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_FEED_RECENTERCLICK)
         // Check if geolocation is enabled
-        if (!isLocationPermissionGranted()) {
+        if (!LocationUtils.isLocationPermissionGranted()) {
             showAllowGeolocationDialog(GEOLOCATION_POPUP_RECENTER)
             return
         }

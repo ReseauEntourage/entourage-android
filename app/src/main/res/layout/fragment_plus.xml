@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="social.entourage.android.PlusFragment">
+    tools:context="social.entourage.android.old_v7.PlusFragment">
 
     <include
         android:id="@+id/fragment_plus_overlay"

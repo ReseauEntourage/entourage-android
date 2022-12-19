@@ -6,7 +6,7 @@
                 android:background="@drawable/user_about_edit_background"
                 android:paddingBottom="10dp"
                 android:paddingTop="10dp"
-                tools:context="social.entourage.android.user.edit.UserEditAboutFragment">
+                tools:context="social.entourage.android.old_v7.user.edit.UserEditAboutFragment">
 
     <RelativeLayout
         android:id="@+id/haxor"

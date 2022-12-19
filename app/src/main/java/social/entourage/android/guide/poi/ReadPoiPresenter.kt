@@ -13,7 +13,6 @@ import social.entourage.android.api.request.PoiDetailResponse
 import social.entourage.android.api.request.PoiRequest
 import social.entourage.android.base.map.OnAddressClickListener
 import timber.log.Timber
-import javax.inject.Inject
 
 /**
  * Presenter controlling the ReadPoiFragment

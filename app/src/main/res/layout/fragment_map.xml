@@ -130,7 +130,7 @@
 
         <view
             android:id="@+id/fragment_map_entourage_mini_cards"
-            class="social.entourage.android.entourage.minicards.EntourageMiniCardsView"
+            class="social.entourage.android.old_v7.entourage.minicards.EntourageMiniCardsView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_alignParentStart="true"

@@ -2,13 +2,10 @@ package social.entourage.android.new_v8.profile
 
 import android.os.Bundle
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
-import social.entourage.android.BuildConfig
 import social.entourage.android.R
 import social.entourage.android.base.BaseSecuredActivity
 import social.entourage.android.new_v8.utils.Const
-import social.entourage.android.tools.view.WebViewFragment
 import social.entourage.android.user.AvatarUploadView
 import social.entourage.android.user.edit.photo.ChoosePhotoFragment
 

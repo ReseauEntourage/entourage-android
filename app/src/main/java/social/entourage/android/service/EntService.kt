@@ -19,9 +19,9 @@ import social.entourage.android.api.request.EntourageRequest
 import social.entourage.android.api.request.NewsfeedRequest
 import social.entourage.android.authentication.AuthenticationController
 import social.entourage.android.base.location.LocationUpdateListener
-import social.entourage.android.base.newsfeed.NewsFeedListener
-import social.entourage.android.base.newsfeed.NewsfeedPagination
-import social.entourage.android.base.newsfeed.NewsfeedTabItem
+import social.entourage.android.old_v7.base.newsfeed.NewsFeedListener
+import social.entourage.android.old_v7.base.newsfeed.NewsfeedPagination
+import social.entourage.android.old_v7.base.newsfeed.NewsfeedTabItem
 import social.entourage.android.tools.log.CrashlyticsNewsFeedLogger
 import social.entourage.android.tools.log.LoggerNewsFeedLogger
 

@@ -100,7 +100,7 @@
                     android:layout_alignBottom="@+id/user_photo"
                     android:scaleType="fitCenter" />
 
-                <social.entourage.android.user.UserNameView
+                <social.entourage.android.old_v7.user.UserNameView
                     android:id="@+id/user_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -339,7 +339,7 @@
                 </LinearLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <social.entourage.android.user.UserAssociationsLayout
+            <social.entourage.android.old_v7.user.UserAssociationsLayout
                 android:id="@+id/user_profile_associations"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

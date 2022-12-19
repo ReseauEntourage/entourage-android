@@ -3,7 +3,7 @@
                 xmlns:tools="http://schemas.android.com/tools"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
-             tools:context="social.entourage.android.user.edit.UserEditFragment"
+             tools:context="social.entourage.android.old_v7.user.edit.UserEditFragment"
                 android:background="@color/background">
 
     <social.entourage.android.tools.view.CustomTitleView

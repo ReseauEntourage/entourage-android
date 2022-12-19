@@ -11,7 +11,7 @@ import social.entourage.android.api.model.TimestampedObject
 import social.entourage.android.api.tape.Events.OnFeedItemInfoViewRequestedEvent
 import social.entourage.android.message.push.EntourageFirebaseMessagingService
 import social.entourage.android.tools.EntBus
-import social.entourage.android.user.edit.UserEditFragment
+import social.entourage.android.old_v7.user.edit.UserEditFragment
 import java.util.*
 
 /**
@@ -108,7 +108,8 @@ object DeepLinksManager {
             }
         } else*/
         if (key == DeepLinksView.BADGE.view) {
-            val userEditFragment = activity.supportFragmentManager.findFragmentByTag(UserEditFragment.TAG) as UserEditFragment?
+            val userEditFragment = activity.supportFragmentManager.findFragmentByTag(
+                UserEditFragment.TAG) as UserEditFragment?
             if (userEditFragment != null) {
                 userEditFragment.onAddAssociationClicked()
             } else {

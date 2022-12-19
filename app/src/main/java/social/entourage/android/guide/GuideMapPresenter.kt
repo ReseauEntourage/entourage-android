@@ -17,7 +17,6 @@ import social.entourage.android.base.location.EntLocation
 import timber.log.Timber
 import java.net.UnknownHostException
 import java.util.*
-import javax.inject.Inject
 
 /**
  * Presenter controlling the GuideMapFragment

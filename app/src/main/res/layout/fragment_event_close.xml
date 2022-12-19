@@ -7,13 +7,13 @@
     android:orientation="vertical"
     android:paddingStart="20dp"
     android:paddingEnd="20dp"
-    tools:context=".entourage.EntourageCloseFragment">
+    tools:context=".old_v7.entourage.EntourageCloseFragment">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/bg_rounded_white_plain_eight"
-        tools:context=".entourage.EntourageCloseFragment">
+        tools:context=".old_v7.entourage.EntourageCloseFragment">
 
         <ImageButton
             android:id="@+id/entourage_close_close_button"
