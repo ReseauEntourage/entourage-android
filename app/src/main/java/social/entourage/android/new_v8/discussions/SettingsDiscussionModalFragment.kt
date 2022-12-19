@@ -15,8 +15,8 @@ import social.entourage.android.new_v8.models.Conversation
 import social.entourage.android.new_v8.report.ReportModalFragment
 import social.entourage.android.new_v8.report.ReportTypes
 import social.entourage.android.new_v8.user.UserProfileActivity
+import social.entourage.android.new_v8.utils.CustomAlertDialog
 import social.entourage.android.new_v8.utils.Const
-import social.entourage.android.new_v8.utils.Utils
 
 class SettingsDiscussionModalFragment : BottomSheetDialogFragment() {
 
@@ -140,7 +140,7 @@ class SettingsDiscussionModalFragment : BottomSheetDialogFragment() {
         }
 
         binding.quit.layout.setOnClickListener {
-            Utils.showAlertDialogButtonClicked(
+            CustomAlertDialog.showWithCancelFirst(
                 requireContext(),
                 getString(R.string.leave_conversation),
                 getString(R.string.leave_conversation_dialog_content),
@@ -154,7 +154,7 @@ class SettingsDiscussionModalFragment : BottomSheetDialogFragment() {
 
         binding.layoutBlock.setOnClickListener {
             val desc = String.format(getString(R.string.params_block_user_conv_pop_message,username))
-            Utils.showAlertDialogButtonClickedWithCrossClose(
+            CustomAlertDialog.showButtonClickedWithCrossClose(
                 requireContext(),
                 getString(R.string.params_block_user_conv_pop_title),
                 desc,
@@ -169,21 +169,18 @@ class SettingsDiscussionModalFragment : BottomSheetDialogFragment() {
         }
     }
 
-
     private fun showPopValidateBlockUser(isBlocked:Boolean) {
         val title = String.format(getString(R.string.params_block_user_conv_pop_validate_title,username))
-        Utils.showAlertDialogButtonClicked(
+        CustomAlertDialog.showOnlyOneButton(
             requireContext(),
             title,
             getString(R.string.params_block_user_conv_pop_validate_subtitle),
-            getString(R.string.params_block_user_conv_pop_validate_bt),
-            {
-                (context as? DetailConversationActivity)?.updateDiscussion()
-                dismiss()
-            },null
-        )
+            getString(R.string.params_block_user_conv_pop_validate_bt)
+        ) {
+            (context as? DetailConversationActivity)?.updateDiscussion()
+            dismiss()
+        }
     }
-
 
     companion object {
         private val ARG_121 = "oneToOne"

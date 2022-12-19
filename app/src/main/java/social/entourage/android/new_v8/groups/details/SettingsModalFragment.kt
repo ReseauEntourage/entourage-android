@@ -23,8 +23,8 @@ import social.entourage.android.new_v8.models.SettingUiModel
 import social.entourage.android.new_v8.profile.myProfile.InterestsAdapter
 import social.entourage.android.new_v8.report.ReportModalFragment
 import social.entourage.android.new_v8.report.ReportTypes
+import social.entourage.android.new_v8.utils.CustomAlertDialog
 import social.entourage.android.new_v8.utils.Const
-import social.entourage.android.new_v8.utils.Utils
 import social.entourage.android.tools.log.AnalyticsEvents
 
 class SettingsModalFragment : BottomSheetDialogFragment() {
@@ -195,7 +195,7 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
             AnalyticsEvents.logEvent(
                 AnalyticsEvents.ACTION_GROUP_OPTION_QUIT
             )
-            Utils.showAlertDialogButtonClicked(
+            CustomAlertDialog.showWithCancelFirst(
                 requireContext(),
                 getString(R.string.leave_group),
                 getString(R.string.leave_group_dialog_content),

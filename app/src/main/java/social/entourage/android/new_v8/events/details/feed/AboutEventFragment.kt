@@ -39,6 +39,7 @@ import social.entourage.android.new_v8.groups.details.members.MembersType
 import social.entourage.android.new_v8.models.EventUiModel
 import social.entourage.android.new_v8.models.Status
 import social.entourage.android.new_v8.profile.myProfile.InterestsAdapter
+import social.entourage.android.new_v8.utils.CustomAlertDialog
 import social.entourage.android.new_v8.utils.Const
 import social.entourage.android.new_v8.utils.Utils
 import social.entourage.android.new_v8.utils.underline
@@ -296,7 +297,7 @@ class AboutEventFragment : Fragment(), OnMapReadyCallback {
         if (event?.admin == false)
             binding.join.setOnClickListener {
                 if (event?.member == true) {
-                    Utils.showAlertDialogButtonClicked(
+                    CustomAlertDialog.showWithCancelFirst(
                         requireContext(),
                         getString(R.string.leave_event),
                         getString(R.string.leave_event_dialog_content),

@@ -14,7 +14,7 @@ import com.bumptech.glide.Glide
 import social.entourage.android.R
 import social.entourage.android.api.model.Partner
 import social.entourage.android.databinding.NewFragmentAssociationProfileBinding
-import social.entourage.android.new_v8.utils.Utils
+import social.entourage.android.new_v8.utils.CustomAlertDialog
 
 
 class AssociationProfileFragment : Fragment() {
@@ -147,7 +147,7 @@ class AssociationProfileFragment : Fragment() {
     private fun handleFollowButton() {
         binding.subscribe.button.setOnClickListener {
             partner?.let {
-                if (it.isFollowing) Utils.showAlertDialogButtonClicked(
+                if (it.isFollowing) CustomAlertDialog.showWithCancelFirst(
                     requireContext(),
                     getString(R.string.unsubscribe_title),
                     getString(R.string.unsubscribe_content),

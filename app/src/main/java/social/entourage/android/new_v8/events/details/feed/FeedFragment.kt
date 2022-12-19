@@ -37,10 +37,7 @@ import social.entourage.android.new_v8.groups.details.feed.GroupMembersPhotosAda
 import social.entourage.android.new_v8.groups.details.members.MembersType
 import social.entourage.android.new_v8.models.*
 import social.entourage.android.new_v8.profile.myProfile.InterestsAdapter
-import social.entourage.android.new_v8.utils.Const
-import social.entourage.android.new_v8.utils.Utils
-import social.entourage.android.new_v8.utils.px
-import social.entourage.android.new_v8.utils.underline
+import social.entourage.android.new_v8.utils.*
 import social.entourage.android.tools.log.AnalyticsEvents
 import java.text.SimpleDateFormat
 import java.util.*
@@ -393,11 +390,11 @@ class FeedFragment : Fragment() {
     }
 
     private fun showLimitPlacePopUp() {
-        Utils.showAlertDialogButtonClicked(
+        CustomAlertDialog.showOnlyOneButton(
             requireContext(),
             getString(R.string.event_limited_places_title),
             getString(R.string.event_limited_places_subtitle),
-            getString(R.string.button_OK), onYes = null
+            getString(R.string.button_OK)
         )
     }
 

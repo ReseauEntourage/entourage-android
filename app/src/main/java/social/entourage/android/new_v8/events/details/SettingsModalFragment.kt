@@ -1,6 +1,5 @@
 package social.entourage.android.new_v8.events.details
 
-import android.app.AlertDialog
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -11,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.RadioButton
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.collection.ArrayMap
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
@@ -36,8 +36,8 @@ import social.entourage.android.new_v8.models.Status
 import social.entourage.android.new_v8.profile.myProfile.InterestsAdapter
 import social.entourage.android.new_v8.report.ReportModalFragment
 import social.entourage.android.new_v8.report.ReportTypes
+import social.entourage.android.new_v8.utils.CustomAlertDialog
 import social.entourage.android.new_v8.utils.Const
-import social.entourage.android.new_v8.utils.Utils
 
 
 class SettingsModalFragment : BottomSheetDialogFragment() {
@@ -257,7 +257,7 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
     private fun handleCancelEvent() {
         binding.cancel.setOnClickListener {
             if (event?.recurrence == null) {
-                Utils.showAlertDialogButtonClickedInverse(
+                CustomAlertDialog.show(
                     requireContext(),
                     getString(R.string.cancel_event),
                     getString(R.string.event_cancel_subtitle_pop),
@@ -274,7 +274,7 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
 
     private fun handleLeaveEvent() {
         binding.leave.setOnClickListener {
-            Utils.showAlertDialogButtonClicked(
+            CustomAlertDialog.showWithCancelFirst(
                 requireContext(),
                 getString(R.string.leave_event),
                 getString(R.string.leave_event_dialog_content),

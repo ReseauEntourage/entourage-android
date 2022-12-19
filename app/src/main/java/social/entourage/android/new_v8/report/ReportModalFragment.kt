@@ -23,8 +23,8 @@ import social.entourage.android.new_v8.discussions.DiscussionsPresenter
 import social.entourage.android.new_v8.events.EventsPresenter
 import social.entourage.android.new_v8.groups.GroupPresenter
 import social.entourage.android.new_v8.user.UserPresenter
+import social.entourage.android.new_v8.utils.CustomAlertDialog
 import social.entourage.android.new_v8.utils.Const
-import social.entourage.android.new_v8.utils.Utils
 
 enum class ReportTypes(val code: Int) {
     REPORT_USER(0),
@@ -114,11 +114,11 @@ class ReportModalFragment : BottomSheetDialogFragment() {
     }
 
     private fun handleReportResponse(success: Boolean) {
-        if (success) Utils.showAlertDialogButtonClicked(
+        if (success) CustomAlertDialog.showOnlyOneButton(
             requireContext(),
             title,
             getString(R.string.report_sent),
-            getString(R.string.exit), onYes = null
+            getString(R.string.exit)
         )
         else showToast(getString(R.string.user_report_error_send_failed))
         dismiss()

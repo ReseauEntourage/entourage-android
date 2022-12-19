@@ -11,7 +11,7 @@ import social.entourage.android.R
 import social.entourage.android.api.OnboardingAPI
 import social.entourage.android.authentication.AuthenticationController
 import social.entourage.android.base.BaseActivity
-import social.entourage.android.new_v8.utils.Utils
+import social.entourage.android.new_v8.utils.CustomAlertDialog
 import social.entourage.android.onboarding.pre_onboarding.PreOnboardingChoiceActivity
 import social.entourage.android.tools.UtilsV7
 import social.entourage.android.tools.hideKeyboard
@@ -62,7 +62,7 @@ class LoginActivity : BaseActivity() {
 
         ui_login_button_resend_code?.setOnClickListener {
             if(ui_login_phone_et_phone?.text.toString().isNotEmpty()) {
-                Utils.showAlertDialogButtonClicked(
+                CustomAlertDialog.show(
                     this,
                     getString(R.string.login_button_resend_code),
                     String.format(
@@ -285,19 +285,12 @@ class LoginActivity : BaseActivity() {
      ********************************/
 
     private fun showError(titleId: Int, message: String, buttonTextId: Int) {
-        Utils.showAlertDialogButtonClicked(
+        CustomAlertDialog.showOnlyOneButton(
             this,
             getString(titleId),
             message,
             getString(buttonTextId),
-            {},
-            null
+            {}
         )
-        /*AlertDialog.Builder(this)
-            .setTitle(titleId)
-            .setMessage(message)
-            .setPositiveButton(buttonTextId) { dialog, which -> }
-            .create()
-            .show()*/
     }
 }

@@ -13,7 +13,6 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
-import com.bumptech.glide.load.resource.bitmap.CenterInside
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -35,8 +34,8 @@ import social.entourage.android.new_v8.models.Action
 import social.entourage.android.new_v8.models.ActionSection
 import social.entourage.android.new_v8.models.Conversation
 import social.entourage.android.new_v8.user.UserProfileActivity
+import social.entourage.android.new_v8.utils.CustomAlertDialog
 import social.entourage.android.new_v8.utils.Const
-import social.entourage.android.new_v8.utils.Utils
 import social.entourage.android.new_v8.utils.px
 import social.entourage.android.tools.log.AnalyticsEvents
 
@@ -194,7 +193,7 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
         binding.uiBtDelete.setOnClickListener {
             val _title = getString(R.string.action_cancel_pop_title, if (isDemand) getString(R.string.action_name_demand) else getString(R.string.action_name_contrib))
             val _subtitle = getString(R.string.action_cancel_pop_subtitle, if (isDemand) getString(R.string.action_name_demand) else getString(R.string.action_name_contrib))
-            Utils.showAlertDialogButtonClickedWithCrossClose(requireContext(),_title,_subtitle, getString(R.string.action_cancel_pop_bt_no), getString(R.string.action_cancel_pop_bt_yes), showCross = true, {
+            CustomAlertDialog.showButtonClickedWithCrossClose(requireContext(),_title,_subtitle, getString(R.string.action_cancel_pop_bt_no), getString(R.string.action_cancel_pop_bt_yes), showCross = true, {
                 showCancelActionMessage(false)
             },
                 {
@@ -225,7 +224,7 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
         val _optional = getString(R.string.optional)
         val _placeholder = getString(R.string.action_cancel_pop_comment_placeholder)
         val _btSend = getString(R.string.action_cancel_pop_bt_send)
-        Utils.showAlertDialogButtonEditText(requireContext(),_title,_comment,_optional , _placeholder,_btSend) { message ->
+        CustomAlertDialog.showButtonEditText(requireContext(),_title,_comment,_optional , _placeholder,_btSend) { message ->
             sendCancelAction(isOk,message)
         }
     }

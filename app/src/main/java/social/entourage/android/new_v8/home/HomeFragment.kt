@@ -28,8 +28,8 @@ import social.entourage.android.new_v8.home.pedago.PedagoListActivity
 import social.entourage.android.new_v8.models.*
 import social.entourage.android.new_v8.profile.ProfileActivity
 import social.entourage.android.new_v8.user.UserProfileActivity
+import social.entourage.android.new_v8.utils.CustomAlertDialog
 import social.entourage.android.new_v8.utils.Const
-import social.entourage.android.new_v8.utils.Utils
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.view.CommunicationRecoWebUrlHandlerViewModel
 
@@ -209,7 +209,7 @@ class HomeFragment : Fragment() {
         with(binding) {
             meetingCard.setOnClickListener {
                 AnalyticsEvents.logEvent(AnalyticsEvents.Home_action_meetcount)
-                Utils.showAlertDialogWithoutActions(
+                CustomAlertDialog.showWithoutActions(
                     requireContext(),
                     getString(R.string.create_encounters),
                     getString(R.string.participate_to_events),

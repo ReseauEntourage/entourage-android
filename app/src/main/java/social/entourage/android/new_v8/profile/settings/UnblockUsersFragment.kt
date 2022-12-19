@@ -6,14 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.view.isVisible
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import social.entourage.android.R
 import social.entourage.android.databinding.NewFragmentUnblockUsersBinding
 import social.entourage.android.new_v8.discussions.DiscussionsPresenter
 import social.entourage.android.new_v8.models.UserBlocked
-import social.entourage.android.new_v8.utils.Utils
+import social.entourage.android.new_v8.utils.CustomAlertDialog
 
 class UnblockUsersFragment : BottomSheetDialogFragment() {
 
@@ -63,14 +62,14 @@ class UnblockUsersFragment : BottomSheetDialogFragment() {
 
         val title = String.format(getString(R.string.params_unblock_user_pop_validate_title,username))
         val desc = if (count > 1) getString(R.string.params_unblock_users_pop_validate_subtitle) else getString(R.string.params_unblock_user_pop_validate_subtitle)
-        Utils.showAlertDialogButtonClicked(
+        CustomAlertDialog.showOnlyOneButton(
             requireContext(),
             title,
             desc,
             getString(R.string.params_unblock_user_pop_validate_bt),
             {
                 discussionsPresenter.getBlockedUsers()
-            },null
+            }
         )
     }
 
@@ -136,7 +135,7 @@ class UnblockUsersFragment : BottomSheetDialogFragment() {
 
         val desc = String.format(getString(R.string.params_unblock_user_pop_message,username))
         val title = if (userIds.size > 1) getString(R.string.params_unblock_users_pop_title) else getString(R.string.params_unblock_user_pop_title)
-        Utils.showAlertDialogButtonClickedWithCrossClose(
+        CustomAlertDialog.showButtonClickedWithCrossClose(
             requireContext(),
             title,
             desc,

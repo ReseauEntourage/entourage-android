@@ -15,6 +15,7 @@ import social.entourage.android.R
 import social.entourage.android.databinding.NewFragmentCreateGroupBinding
 import social.entourage.android.new_v8.groups.GroupPresenter
 import social.entourage.android.new_v8.models.Group
+import social.entourage.android.new_v8.utils.CustomAlertDialog
 import social.entourage.android.new_v8.utils.Utils
 import social.entourage.android.new_v8.utils.nextPage
 import social.entourage.android.new_v8.utils.previousPage
@@ -149,7 +150,7 @@ class CreateGroupFragment : Fragment() {
                 AnalyticsEvents.logEvent(
                     AnalyticsEvents.VIEW_NEW_GROUP_CANCEL_POP
                 )
-                Utils.showAlertDialogButtonClicked(
+                CustomAlertDialog.showWithCancelFirst(
                     requireContext(),
                     getString(R.string.back_create_group_title),
                     getString(R.string.back_create_group_content),

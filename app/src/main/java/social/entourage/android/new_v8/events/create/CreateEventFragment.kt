@@ -1,6 +1,5 @@
 package social.entourage.android.new_v8.events.create
 
-import android.app.AlertDialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -10,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.RadioButton
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -22,10 +22,7 @@ import social.entourage.android.new_v8.RefreshController
 import social.entourage.android.new_v8.events.EventsPresenter
 import social.entourage.android.new_v8.events.create.CommunicationHandler.canExitEventCreation
 import social.entourage.android.new_v8.models.Events
-import social.entourage.android.new_v8.utils.Const
-import social.entourage.android.new_v8.utils.Utils
-import social.entourage.android.new_v8.utils.nextPage
-import social.entourage.android.new_v8.utils.previousPage
+import social.entourage.android.new_v8.utils.*
 import social.entourage.android.tools.log.AnalyticsEvents
 
 
@@ -183,7 +180,7 @@ class CreateEventFragment : Fragment() {
             if (canExitEventCreation)
                 requireActivity().finish()
             else {
-                Utils.showAlertDialogButtonClicked(
+                CustomAlertDialog.showWithCancelFirst(
                     requireContext(),
                     getString(R.string.back_create_group_title),
                     getString(R.string.back_create_group_content),

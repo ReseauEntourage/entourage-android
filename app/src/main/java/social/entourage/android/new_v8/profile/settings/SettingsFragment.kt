@@ -16,7 +16,7 @@ import social.entourage.android.BuildConfig
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.databinding.NewFragmentSettingsBinding
-import social.entourage.android.new_v8.utils.Utils
+import social.entourage.android.new_v8.utils.CustomAlertDialog
 import social.entourage.android.onboarding.pre_onboarding.PreOnboardingStartActivity
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.view.EntSnackbar
@@ -77,7 +77,7 @@ class SettingsFragment : Fragment() {
             shareApplication()
         }
         binding.deleteAccount.layout.setOnClickListener {
-            Utils.showAlertDialogButtonClicked(
+            CustomAlertDialog.showWithCancelFirst(
                 requireContext(),
                 getString(R.string.delete_account_dialog_title),
                 getString(R.string.delete_account_dialog_content),
@@ -85,7 +85,7 @@ class SettingsFragment : Fragment() {
             ) { deleteAccount() }
         }
         binding.signOut.layout.setOnClickListener {
-            Utils.showAlertDialogButtonClicked(
+            CustomAlertDialog.showWithCancelFirst(
                 requireContext(),
                 getString(R.string.sign_out_dialog_title),
                 getString(R.string.sign_out_dialog_content),

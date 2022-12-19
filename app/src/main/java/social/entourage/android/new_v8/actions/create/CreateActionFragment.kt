@@ -18,6 +18,7 @@ import social.entourage.android.databinding.NewFragmentCreateActionBinding
 import social.entourage.android.new_v8.RefreshController
 import social.entourage.android.new_v8.actions.ActionsPresenter
 import social.entourage.android.new_v8.models.Action
+import social.entourage.android.new_v8.utils.CustomAlertDialog
 import social.entourage.android.new_v8.utils.Utils
 import social.entourage.android.new_v8.utils.nextPage
 import social.entourage.android.new_v8.utils.previousPage
@@ -232,7 +233,7 @@ class CreateActionFragment : Fragment() {
         if (viewModel.canExitActionCreation)
             requireActivity().finish()
         else {
-            Utils.showAlertDialogButtonClicked(
+            CustomAlertDialog.showWithCancelFirst(
                 requireContext(),
                 getString(R.string.back_create_action_title),
                 getString(R.string.back_create_action_content,if (isDemand) getString(R.string.action_name_demand) else getString(R.string.action_name_contrib)),

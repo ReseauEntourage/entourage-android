@@ -23,8 +23,8 @@ import social.entourage.android.new_v8.groups.details.SettingsModalFragment
 import social.entourage.android.new_v8.models.SettingUiModel
 import social.entourage.android.new_v8.groups.details.members.MembersType
 import social.entourage.android.new_v8.profile.myProfile.InterestsAdapter
+import social.entourage.android.new_v8.utils.CustomAlertDialog
 import social.entourage.android.new_v8.utils.Const
-import social.entourage.android.new_v8.utils.Utils
 import social.entourage.android.tools.log.AnalyticsEvents
 
 class AboutGroupFragment : Fragment() {
@@ -173,7 +173,7 @@ class AboutGroupFragment : Fragment() {
     private fun handleJoinButton() {
         binding.join.setOnClickListener {
             if (group?.member == true) {
-                Utils.showAlertDialogButtonClicked(
+                CustomAlertDialog.showWithCancelFirst(
                     requireContext(),
                     getString(R.string.leave_group),
                     getString(R.string.leave_group_dialog_content),
