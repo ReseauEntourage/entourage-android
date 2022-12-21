@@ -16,7 +16,6 @@ import social.entourage.android.api.model.Partner
 import social.entourage.android.databinding.NewFragmentAssociationProfileBinding
 import social.entourage.android.new_v8.utils.CustomAlertDialog
 
-
 class AssociationProfileFragment : Fragment() {
 
     private var _binding: NewFragmentAssociationProfileBinding? = null
@@ -101,7 +100,6 @@ class AssociationProfileFragment : Fragment() {
         }
         updateButtonFollow()
     }
-
 
     private fun updateButtonFollow() {
         partner?.let {

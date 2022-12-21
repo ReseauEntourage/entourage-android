@@ -137,7 +137,6 @@ class MyEntouragesFragment  : BaseDialogFragment(), BaseViewHolderListener, Load
 
     private fun refreshMyFeeds() {
         myentourages_swipeRefreshLayout?.isRefreshing = true
-        presenter.clear()
         // remove the current feed
         entouragesAdapter.removeAll()
         entouragesPagination.reset()

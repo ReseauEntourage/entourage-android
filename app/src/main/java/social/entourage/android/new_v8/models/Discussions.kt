@@ -142,7 +142,6 @@ class MemberConversation (
     var roles: ArrayList<String>? = null
 ){}
 
-
 //Block user
 class UserBlocked (
     @SerializedName("blocked_user")

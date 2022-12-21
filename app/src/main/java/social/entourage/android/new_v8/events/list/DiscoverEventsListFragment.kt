@@ -30,7 +30,6 @@ class DiscoverEventsListFragment : Fragment() {
     private var _binding: NewFragmentDiscoverEventsListBinding? = null
     val binding: NewFragmentDiscoverEventsListBinding get() = _binding!!
 
-
     private val eventsPresenter: EventsPresenter by lazy { EventsPresenter() }
     private var myId: Int? = null
     lateinit var eventsAdapter: GroupEventsListAdapter
@@ -139,7 +138,6 @@ class DiscoverEventsListFragment : Fragment() {
         }
     }
 
-
     private val recyclerViewOnScrollListener: RecyclerView.OnScrollListener =
         object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -147,7 +145,6 @@ class DiscoverEventsListFragment : Fragment() {
                 handlePagination(recyclerView)
             }
         }
-
 
     fun handlePagination(recyclerView: RecyclerView) {
         val layoutManager = recyclerView.layoutManager as LinearLayoutManager?

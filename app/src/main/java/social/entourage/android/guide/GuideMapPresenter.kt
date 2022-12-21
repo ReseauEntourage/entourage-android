@@ -28,7 +28,6 @@ class GuideMapPresenter (private val fragment: GuideMapFragment) {
     private val poiRequest: PoiRequest
         get() = EntourageApplication.get().apiModule.poiRequest
 
-
     private var previousEmptyListPopupLocation: Location? = null
     private var poisMap: MutableMap<String, Poi> = TreeMap()
 

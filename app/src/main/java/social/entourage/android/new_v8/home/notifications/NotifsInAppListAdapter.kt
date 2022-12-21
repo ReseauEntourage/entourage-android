@@ -11,7 +11,6 @@ import kotlinx.android.synthetic.main.new_notif_detail.view.title
 import social.entourage.android.R
 import social.entourage.android.new_v8.models.*
 
-
 interface OnItemClick {
     fun onItemClick(notif: NotifInApp, position:Int)
 }

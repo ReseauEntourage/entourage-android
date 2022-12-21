@@ -63,7 +63,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-
             <TextView
                 android:id="@+id/ui_action_event_creator_name"
                 android:layout_width="wrap_content"

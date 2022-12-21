@@ -5,7 +5,6 @@ import social.entourage.android.EntourageApplication
 import social.entourage.android.api.model.User
 import social.entourage.android.api.tape.Events.OnUserInfoUpdatedEvent
 import social.entourage.android.base.map.filter.MapFilter
-import social.entourage.android.old_v7.entourage.my.filter.MyEntouragesFilter
 import social.entourage.android.tools.EntBus
 
 /**
@@ -174,18 +173,6 @@ class AuthenticationController() {
     fun saveMapFilter() {
         saveUserPreferences()
     }
-
-    val myEntouragesFilter: MyEntouragesFilter?
-        get() {
-            if (user != null) {
-                return userPreferences.myEntouragesFilter
-                    ?: MyEntouragesFilter().also {
-                        userPreferences.myEntouragesFilter = it
-                        saveUserPreferences()
-                    }
-            }
-            return null
-        }
 
     fun saveMyEntouragesFilter() {
         saveUserPreferences()

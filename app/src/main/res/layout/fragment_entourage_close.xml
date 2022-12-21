@@ -5,7 +5,6 @@
     android:layout_height="match_parent"
     tools:context=".old_v7.entourage.EntourageCloseFragment">
 
-
     <LinearLayout
         android:id="@+id/ui_layout_pop_main"
         android:layout_width="match_parent"
@@ -72,7 +71,6 @@
             android:textColor="@color/action_type_outing"
             android:textSize="@dimen/entourage_font_medium" />
 
-
         <TextView
             android:id="@+id/textView51"
             android:layout_width="match_parent"
@@ -83,7 +81,6 @@
             android:text="@string/entourage_close_subtitle_new"
             android:textColor="@color/accent"
             android:textSize="@dimen/entourage_font_large" />
-
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/ui_bt_action_success"
@@ -237,7 +234,6 @@
             android:textColor="@color/action_type_outing"
             android:textSize="@dimen/entourage_font_medium" />
 
-
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/ui_bt_action_ask_comment_yes"
             android:layout_width="match_parent"
@@ -379,7 +375,6 @@
                 android:layout_marginBottom="20dp"
                 android:background="@color/accent" />
         </RelativeLayout>
-
 
         <EditText
             android:id="@+id/ui_et_add_comment"

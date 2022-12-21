@@ -7,7 +7,6 @@
     android:background="@color/background_light"
     tools:context=".guide.GDSSearchFragment">
 
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout14"
         android:layout_width="match_parent"

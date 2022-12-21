@@ -16,7 +16,6 @@ class GroupMembersPhotosAdapter(
     var membersList: List<GroupMember>,
 ) : RecyclerView.Adapter<GroupMembersPhotosAdapter.ViewHolder>() {
 
-
     inner class ViewHolder(val binding: NewPhotoItemSmallBinding) :
         RecyclerView.ViewHolder(binding.root)
 

@@ -105,8 +105,4 @@ class MyEntouragesPresenter(private val fragment: MyEntouragesFragment) {
         fragment.isRefreshingInvitations = false
     }
 
-    fun clear() {
-        EntourageApplication.get().clearFeedStorage()
-    }
-
 }

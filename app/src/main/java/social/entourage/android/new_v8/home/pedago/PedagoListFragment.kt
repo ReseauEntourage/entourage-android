@@ -28,7 +28,6 @@ class PedagoListFragment : Fragment() {
     private var selectedFilter: Category = Category.ALL
     private var selectedFilterPosition: Int = 0
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

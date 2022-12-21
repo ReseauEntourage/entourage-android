@@ -10,11 +10,9 @@ import social.entourage.android.new_v8.models.GroupEvent
 import social.entourage.android.new_v8.utils.Const
 import social.entourage.android.new_v8.utils.underline
 
-
 class AboutEventGroupListAdapter(
     var groupsList: List<GroupEvent>,
 ) : RecyclerView.Adapter<AboutEventGroupListAdapter.ViewHolder>() {
-
 
     inner class ViewHolder(val binding: NewAboutEventGroupItemBinding) :
         RecyclerView.ViewHolder(binding.root)

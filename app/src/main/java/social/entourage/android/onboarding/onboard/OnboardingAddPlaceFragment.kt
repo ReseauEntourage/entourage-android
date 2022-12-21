@@ -6,7 +6,6 @@ import kotlinx.android.synthetic.main.layout_view_title.view.*
 import social.entourage.android.R
 import social.entourage.android.user.edit.place.UserActionPlaceFragment
 
-
 class OnboardingAddPlaceFragment : UserActionPlaceFragment() {
 
     var callback:OnboardingChoosePlaceCallback? = null

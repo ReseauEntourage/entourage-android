@@ -48,7 +48,6 @@
                 android:text="@{title}"
                 tools:text="Date d'annif" />
 
-
             <TextView
                 android:id="@+id/content"
                 style="@style/h4"

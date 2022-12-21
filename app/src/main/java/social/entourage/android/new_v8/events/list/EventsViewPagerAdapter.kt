@@ -8,7 +8,6 @@ import social.entourage.android.new_v8.events.MY_EVENTS_TAB
 
 private const val NB_TABS = 2
 
-
 class EventsViewPagerAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycle) :
     FragmentStateAdapter(fragmentManager, lifecycle) {
 

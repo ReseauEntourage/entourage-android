@@ -161,6 +161,5 @@
                 app:drawable="@{@drawable/new_bg_rounded_inactive_button_light_orange}" />
         </LinearLayout>
 
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

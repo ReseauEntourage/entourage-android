@@ -62,5 +62,4 @@
     <string name="login_change_error_identical_number">Les deux numéros sont identiques.\nVeuillez vérifier le nouveau numéro.</string>
     <string name="login_change_error_generic">L’ancien numéro est inconnu ou supprimé.\nVeuillez vérifier les numéros.</string>
 
-
 </resources>

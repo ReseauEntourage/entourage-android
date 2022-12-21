@@ -18,7 +18,6 @@
     <string name="discussion_pop_new_message_title">Nouvelle conversation</string>
     <string name="discussion_pop_new_message_subtitle">Vous n’avez pas encore échangé avec cet utilisateur. En cas de problème, vous pouvez signaler la conversation dans les paramètres.</string>
 
-
     <string name="discussion_block_title">Bloquer</string>
     <string name="discussion_block_subtitle">%s ne pourra plus vous écrire.</string>
 
@@ -47,7 +46,6 @@
      <string name="params_unblock_user_pop_message">Souhaitez-vous débloquer %s ?\nVous pourrez à nouveau vous envoyer des messages.</string>
      <string name="params_unblock_user_pop_bt_unblock">Débloquer</string>
      <string name="params_unblock_user_pop_bt_cancel">Annuler</string>
-
 
     <string name="params_unblock_user_pop_validate_title">Débloquer %s</string>
     <string name="params_unblock_user_pop_validate_subtitle">Ce contact vient d\'être débloqué, vous pouvez à nouveau vous écrire.</string>

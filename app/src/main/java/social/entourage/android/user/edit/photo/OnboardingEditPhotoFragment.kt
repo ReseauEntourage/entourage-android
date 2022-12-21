@@ -23,7 +23,6 @@ import java.io.IOException
 private const val PHOTO_PARAM = "social.entourage.android.photo_param"
 private const val PHOTO_SOURCE = "social.entourage.android.photo_source"
 
-
 class OnboardingEditPhotoFragment : DialogFragment() {
     private val ROTATE_DEGREES_STEP = -90f
     private var currentAngle = 0f

@@ -29,7 +29,6 @@ import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
 
-
 class ChoosePhotoModalFragment : BottomSheetDialogFragment() {
 
     private var _binding: NewFragmentChoosePhotoModalBinding? = null
@@ -117,9 +116,6 @@ class ChoosePhotoModalFragment : BottomSheetDialogFragment() {
         }
     }
 
-
-
-
     @Throws(IOException::class)
     fun createImageFile(): Uri? {
         // Create an image file name
@@ -141,11 +137,9 @@ class ChoosePhotoModalFragment : BottomSheetDialogFragment() {
         )
     }
 
-
     private fun showChoosePhotoActivity() {
         getContent.launch("image/*")
     }
-
 
     private fun loadPickedImage(uri: Uri?) {
         uri?.let {

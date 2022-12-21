@@ -122,7 +122,6 @@ Nous sommes prêt pour les beaux jours ! :-)" />
                 android:text="@string/discuss"
                 tools:text="@string/discuss" />
 
-
             <ImageButton
                 android:layout_width="46dp"
                 android:layout_height="46dp"

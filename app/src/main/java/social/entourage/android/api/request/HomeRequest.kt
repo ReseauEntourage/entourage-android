@@ -6,7 +6,6 @@ import retrofit2.Call
 import retrofit2.http.*
 import social.entourage.android.new_v8.models.*
 
-
 class SummaryResponse(@field:SerializedName("user") val summary: Summary)
 class PedagogicResponse(@field:SerializedName("resources") val pedago: MutableList<Pedago>)
 class PedagogicSingleResponse(@field:SerializedName("resource") val pedago: Pedago)
@@ -15,8 +14,6 @@ class NotificationsCountResponse(@field:SerializedName("count") val count: Int)
 class NotificationPermissionsResponse(@field:SerializedName("notification_permissions") val notifsPermission: NotifInAppPermission)
 class NotificationsInAppResponse(@field:SerializedName("inapp_notifications") val notifs: MutableList<NotifInApp>)
 class NotificationInAppResponse(@field:SerializedName("inapp_notification") val notif: NotifInApp)
-
-
 
 interface HomeRequest {
     @GET("home/summary")
@@ -51,6 +48,5 @@ interface HomeRequest {
 
     @POST("notification_permissions")
     fun updateNotificationsPermissions(@Body perms:NotificationPermissionsResponse): Call<NotificationPermissionsResponse>
-
 
 }

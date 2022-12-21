@@ -18,7 +18,6 @@ import social.entourage.android.new_v8.utils.Const
 import social.entourage.android.tools.log.AnalyticsEvents
 import timber.log.Timber
 
-
 class CreateEventStepFiveFragment : Fragment() {
     private var _binding: NewFragmentCreateEventStepFiveBinding? = null
     val binding: NewFragmentCreateEventStepFiveBinding get() = _binding!!
@@ -28,7 +27,6 @@ class CreateEventStepFiveFragment : Fragment() {
     private var myId: Int? = null
     private var page: Int = 0
     private var groupID: Int? = null
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -58,7 +56,6 @@ class CreateEventStepFiveFragment : Fragment() {
             AnalyticsEvents.logEvent(AnalyticsEvents.Event_create_5)
         }
     }
-
 
     private fun handleResponseGetGroups(allGroups: MutableList<Group>?) {
         allGroups?.let { groupsList.addAll(it) }

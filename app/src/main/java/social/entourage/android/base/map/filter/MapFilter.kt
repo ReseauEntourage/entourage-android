@@ -74,7 +74,6 @@ class MapFilter : MapFilterInterface, Serializable {
         isShowAlls = true
         entourageTypeOuting = false
 
-
         setAllCategorySelected(true,true)
     }
 

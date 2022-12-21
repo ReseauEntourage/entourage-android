@@ -23,14 +23,11 @@ import social.entourage.android.new_v8.utils.Const
 import social.entourage.android.new_v8.utils.px
 import social.entourage.android.tools.log.AnalyticsEvents
 
-
 class CreateEventStepOneFragment : Fragment() {
-
 
     private var _binding: NewFragmentCreateEventStepOneBinding? = null
     val binding: NewFragmentCreateEventStepOneBinding get() = _binding!!
     private var selectedImage: Image? = null
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -91,7 +88,6 @@ class CreateEventStepOneFragment : Fragment() {
             }
         }
     }
-
 
     private fun handleOnClickNext(onClick: Boolean) {
         if (onClick) {

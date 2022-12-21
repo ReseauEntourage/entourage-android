@@ -30,7 +30,6 @@ class OnboardingPhase1Fragment : Fragment() {
     private var hasConsent = false
     private var country: Country? = null
 
-
     private var callback:OnboardingStartCallback? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {

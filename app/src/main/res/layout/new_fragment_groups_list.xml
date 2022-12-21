@@ -78,9 +78,7 @@
                         tools:listitem="@layout/new_group_item" />
                 </LinearLayout>
 
-
             </androidx.core.widget.NestedScrollView>
-
 
             <ProgressBar
                 android:id="@+id/progressBar"
@@ -89,7 +87,6 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="15dp" />
-
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/emptyStateLayout"
@@ -151,7 +148,6 @@
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/title" />
                 </LinearLayout>
-
 
                 <ImageView
                     android:id="@+id/arrow"

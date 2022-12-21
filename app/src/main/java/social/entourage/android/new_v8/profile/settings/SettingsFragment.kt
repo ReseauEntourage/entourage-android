@@ -28,7 +28,6 @@ class SettingsFragment : Fragment() {
     val binding: NewFragmentSettingsBinding get() = _binding!!
     private val settingsPresenter: SettingsPresenter by lazy { SettingsPresenter() }
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -44,7 +43,6 @@ class SettingsFragment : Fragment() {
         settingsPresenter.accountDeleted.observe(requireActivity(), ::handleResponse)
         AnalyticsEvents.logEvent(AnalyticsEvents.Profile_view_param)
     }
-
 
     private fun initializeView() {
         binding.deleteAccount.divider.visibility = View.GONE
@@ -111,7 +109,6 @@ class SettingsFragment : Fragment() {
         }
     }
 
-
     private fun shareApplication() {
         val intent = Intent(Intent.ACTION_SEND)
         val msgBody = getString(R.string.share_app)
@@ -120,7 +117,6 @@ class SettingsFragment : Fragment() {
         val shareIntent = Intent.createChooser(intent, null)
         startActivity(shareIntent)
     }
-
 
     private fun logout() {
         EntourageApplication.get().logOut()
@@ -131,7 +127,6 @@ class SettingsFragment : Fragment() {
         startActivity(Intent(activity, PreOnboardingStartActivity::class.java))
         activity?.finish()
     }
-
 
     private fun handleResponse(isSuccess: Boolean) {
         if (isSuccess) {

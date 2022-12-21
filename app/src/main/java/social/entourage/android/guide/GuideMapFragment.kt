@@ -179,7 +179,6 @@ class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), PoiListFr
         super.onLocationPermissionGranted(event)
     }
 
-
     private fun proposePOI() {
         // Close the overlays
         onBackPressed()

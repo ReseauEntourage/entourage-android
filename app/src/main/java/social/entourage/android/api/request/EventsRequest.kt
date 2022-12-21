@@ -9,18 +9,15 @@ import social.entourage.android.api.model.Image
 import social.entourage.android.new_v8.events.create.CreateEvent
 import social.entourage.android.new_v8.models.Events
 
-
 class EventsImagesResponse(@field:SerializedName("entourage_images") val eventImages: ArrayList<Image>)
 class EventsListWrapper(@field:SerializedName("outings") val allEvents: MutableList<Events>)
 
 class CreateEventWrapper(@field:SerializedName("outing") val event: CreateEvent)
 class EventWrapper(@field:SerializedName("outing") val event: Events)
 
-
 interface EventsRequest {
     @GET("entourage_images")
     fun getEventsImages(): Call<EventsImagesResponse>
-
 
     @GET("users/{user_id}/outings")
     fun getMyEvents(
@@ -81,13 +78,11 @@ interface EventsRequest {
         @Path("event_id") eventId: Int
     ): Call<PostListWrapper>
 
-
     @POST("outings/{event_id}/chat_messages/presigned_upload")
     fun prepareAddPost(
         @Path("event_id") eventId: Int,
         @Body params: RequestContent
     ): Call<PrepareAddPostResponse>
-
 
     @GET("outings/{event_id}/chat_messages/{post_id}/comments")
     fun getPostComments(

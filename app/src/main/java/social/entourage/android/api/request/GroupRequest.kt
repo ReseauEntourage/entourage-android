@@ -10,7 +10,6 @@ import social.entourage.android.api.model.Image
 import social.entourage.android.new_v8.models.Group
 import social.entourage.android.new_v8.models.Post
 
-
 class GroupImagesResponse(@field:SerializedName("neighborhood_images") val groupImages: ArrayList<Image>)
 class GroupWrapper(@field:SerializedName("neighborhood") val group: Group)
 class GroupsListWrapper(@field:SerializedName("neighborhoods") val allGroups: MutableList<Group>)
@@ -73,7 +72,6 @@ interface GroupRequest {
         @Path("user_id") userId: Int
     ): Call<GroupsListWrapper>
 
-
     @POST("neighborhoods/{neighborhood_id}/users")
     fun joinGroup(
         @Path("neighborhood_id") userId: Int
@@ -94,13 +92,11 @@ interface GroupRequest {
         @Path("neighborhood_id") groupId: Int
     ): Call<PostListWrapper>
 
-
     @POST("neighborhoods/{neighborhood_id}/chat_messages/presigned_upload")
     fun prepareAddPost(
         @Path("neighborhood_id") groupId: Int,
         @Body params: RequestContent
     ): Call<PrepareAddPostResponse>
-
 
     @POST("neighborhoods/{neighborhood_id}/chat_messages")
     fun addPost(
@@ -119,7 +115,6 @@ interface GroupRequest {
         @Path("group_id") groupId: Int,
         @Body reportWrapper: ReportWrapper
     ): Call<ResponseBody>
-
 
     @POST("neighborhoods/{group_id}/chat_messages/{post_id}/report")
     fun reportPost(

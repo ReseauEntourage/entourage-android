@@ -57,14 +57,12 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
 
-
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/layout_report"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginHorizontal="25dp"
                     android:paddingTop="20dp">
-
 
                     <ImageView
                         android:id="@+id/icon"
@@ -110,7 +108,6 @@
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintRight_toRightOf="parent" />
 
-
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -120,7 +117,6 @@
                     android:layout_marginHorizontal="25dp"
                     android:paddingTop="20dp"
                     android:visibility="gone">
-
 
                     <ImageView
                         android:id="@+id/iconBlock"
@@ -166,7 +162,6 @@
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintRight_toRightOf="parent" />
 
-
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <include
@@ -177,7 +172,6 @@
                     android:layout_marginHorizontal="25dp"
                     app:color="@{@color/orange}"
                     app:icon="@{@drawable/new_sign_out}" />
-
 
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>

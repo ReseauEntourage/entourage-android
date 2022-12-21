@@ -10,7 +10,6 @@
     android:id="@+id/onboard_names_mainlayout"
     tools:context="social.entourage.android.onboarding.OnboardingNamesFragment">
 
-
     <Button
         android:id="@+id/ui_bt_validate"
         style="@style/AccentButton.RoundedCorners"

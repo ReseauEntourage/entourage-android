@@ -21,7 +21,6 @@ class GroupEventsAdapter(
     var eventsList: List<Events>,
 ) : RecyclerView.Adapter<GroupEventsAdapter.ViewHolder>() {
 
-
     inner class ViewHolder(val binding: NewEventItemLayoutBinding) :
         RecyclerView.ViewHolder(binding.root)
 

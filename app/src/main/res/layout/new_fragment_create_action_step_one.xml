@@ -52,7 +52,6 @@
                     tools:layout_editor_absoluteX="22dp"
                     tools:text="content" />
 
-
                 <include
                     android:id="@+id/action_description_title"
                     layout="@layout/new_create_title_item"
@@ -149,7 +148,6 @@
 
                         </androidx.constraintlayout.widget.ConstraintLayout>
 
-
                         <ImageView
                             android:id="@+id/add_photo"
                             android:layout_width="match_parent"
@@ -184,7 +182,6 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/ui_layout_add_photo" />
-
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

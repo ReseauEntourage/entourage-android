@@ -36,7 +36,6 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="15dp" />
 
-
             <LinearLayout
                 android:id="@+id/emptyStateLayout"
                 android:layout_width="match_parent"

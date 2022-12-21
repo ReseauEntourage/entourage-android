@@ -4,7 +4,6 @@ import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 import java.util.*
 
-
 data class Metadata(
 
     @field:SerializedName("previous_at")

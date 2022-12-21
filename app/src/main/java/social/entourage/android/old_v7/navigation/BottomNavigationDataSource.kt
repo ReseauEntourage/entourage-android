@@ -31,7 +31,6 @@ class BottomNavigationDataSource {
     val profilTabIndex
         @IdRes get() = R.id.bottom_bar_profile
 
-
     private fun add(@IdRes menuId: Int, tag: String) {
         navigationFragmentTags.put(menuId, tag)
     }

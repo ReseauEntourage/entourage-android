@@ -59,7 +59,6 @@ abstract class BaseMapFragment(protected var layout: Int) : BaseFragment(),
             }
         }
 
-
     protected open fun initializeMap() {}
 
     fun centerMap(latLng: LatLng) {

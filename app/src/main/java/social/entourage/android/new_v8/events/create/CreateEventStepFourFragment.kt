@@ -26,7 +26,6 @@ class CreateEventStepFourFragment : Fragment() {
 
     private lateinit var interestsListAdapter: InterestsListAdapter
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -105,14 +104,12 @@ class CreateEventStepFourFragment : Fragment() {
         }
     }
 
-
     override fun onResume() {
         super.onResume()
         CommunicationHandler.resetValues()
         CommunicationHandler.clickNext.observe(viewLifecycleOwner, ::handleOnClickNext)
         CommunicationHandler.isButtonClickable.value = interestHaveBeenSelected()
     }
-
 
     fun interestHaveBeenSelected(): Boolean {
         return selectedInterestIdList.isNotEmpty()

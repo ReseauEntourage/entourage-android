@@ -41,7 +41,6 @@
             app:argType="social.entourage.android.new_v8.models.Action"/>
     </fragment>
 
-
     <fragment
         android:id="@+id/edit_action_place_fragment"
         android:name="social.entourage.android.new_v8.actions.create.CreateActionPlaceFragment">

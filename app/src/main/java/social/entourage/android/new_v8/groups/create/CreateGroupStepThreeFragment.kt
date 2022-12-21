@@ -22,7 +22,6 @@ import social.entourage.android.new_v8.utils.Const
 import social.entourage.android.new_v8.utils.px
 import social.entourage.android.tools.log.AnalyticsEvents
 
-
 class CreateGroupStepThreeFragment : Fragment() {
 
     private var _binding: NewFragmentCreateGroupStepThreeBinding? = null

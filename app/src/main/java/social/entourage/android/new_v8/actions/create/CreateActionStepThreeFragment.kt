@@ -14,7 +14,6 @@ import social.entourage.android.new_v8.models.MetadataActionLocation
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.user.edit.place.UserEditActionZoneFragment
 
-
 class CreateActionStepThreeFragment : Fragment(), UserEditActionZoneFragment.FragmentListener {
 
     private var _binding: NewFragmentCreateActionStepThreeBinding? = null

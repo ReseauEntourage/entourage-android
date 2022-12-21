@@ -66,9 +66,6 @@ open class UserEditFragment  : BaseDialogFragment(), FragmentListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         title_close_button?.setOnClickListener { onCloseButtonClicked() }
-        user_firstname_layout?.setOnClickListener { onEditFirstname() }
-        user_lastname_layout?.setOnClickListener { onEditFirstname() }
-        user_email_layout?.setOnClickListener { onEditEmail() }
         user_password_layout?.setOnClickListener { onEditPassword() }
         user_about_edit_button?.setOnClickListener { onEditAboutClicked() }
         user_delete_account_button?.setOnClickListener { onDeleteAccountClicked() }
@@ -197,14 +194,6 @@ open class UserEditFragment  : BaseDialogFragment(), FragmentListener {
         dismiss()
     }
 
-    private fun onEditFirstname() {
-        showEditProfile(UserEditProfileFragment.EDIT_NAME)
-    }
-
-    private fun onEditEmail() {
-        showEditProfile(UserEditProfileFragment.EDIT_EMAIL)
-    }
-
     private fun onEditPassword() {
         UserEditPasswordFragment().show(parentFragmentManager, UserEditPasswordFragment.TAG)
     }
@@ -280,11 +269,6 @@ open class UserEditFragment  : BaseDialogFragment(), FragmentListener {
     // ----------------------------------
     // Private methods
     // ----------------------------------
-    private fun showEditProfile(editType: Int) {
-        UserEditProfileFragment.newInstance(editType)
-            .show(parentFragmentManager, UserEditProfileFragment.TAG)
-    }
-
     private fun configureNotifications() {
         val areNotificationsEnabled = NotificationManagerCompat.from(requireContext()).areNotificationsEnabled()
         user_notifications_image?.setImageResource(if (areNotificationsEnabled) R.drawable.verified else R.drawable.not_verified)

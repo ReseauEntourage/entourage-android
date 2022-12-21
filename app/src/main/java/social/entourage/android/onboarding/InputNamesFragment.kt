@@ -15,7 +15,6 @@ import social.entourage.android.tools.hideKeyboard
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.view.CustomProgressDialog
 
-
 class InputNamesFragment : BaseDialogFragment() {
     private val minChars = 2
 

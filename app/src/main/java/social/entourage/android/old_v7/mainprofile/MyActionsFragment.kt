@@ -26,7 +26,6 @@ import social.entourage.android.tools.EntBus
 import social.entourage.android.tools.log.AnalyticsEvents
 import timber.log.Timber
 
-
 class MyActionsFragment : BaseDialogFragment() {
     private var adapter: MyActionsAdapter? = null
     private var arrayItems = ArrayList<BaseEntourage>()

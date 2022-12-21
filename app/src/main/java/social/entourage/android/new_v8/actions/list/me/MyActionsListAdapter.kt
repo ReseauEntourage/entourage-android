@@ -13,7 +13,6 @@ import social.entourage.android.R
 import social.entourage.android.new_v8.models.*
 import social.entourage.android.new_v8.utils.px
 
-
 interface OnItemClick {
     fun onItemClick(action: Action)
 }

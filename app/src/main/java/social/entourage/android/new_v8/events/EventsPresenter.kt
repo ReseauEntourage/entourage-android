@@ -114,7 +114,6 @@ class EventsPresenter {
             })
     }
 
-
     fun sendReport(
         id: Int,
         reason: String,
@@ -136,7 +135,6 @@ class EventsPresenter {
         })
     }
 
-
     fun getEvent(id: Int) {
         EntourageApplication.get().apiModule.eventsRequest.getEvent(id)
             .enqueue(object : Callback<EventWrapper> {
@@ -155,7 +153,6 @@ class EventsPresenter {
                 }
             })
     }
-
 
     fun participate(eventId: Int) {
         EntourageApplication.get().apiModule.eventsRequest.participate(eventId)
@@ -406,7 +403,6 @@ class EventsPresenter {
                 }
             })
     }
-
 
     fun updateEventSiblings(eventId: Int, eventEdited: CreateEvent) {
         EntourageApplication.get().apiModule.eventsRequest.updateEventSiblings(eventId, CreateEventWrapper(eventEdited))

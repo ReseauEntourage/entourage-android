@@ -17,8 +17,6 @@ import social.entourage.android.authentication.AuthenticationController
 import social.entourage.android.authentication.ComplexPreferences
 import social.entourage.android.base.BaseActivity
 import social.entourage.android.message.push.PushNotificationManager
-import social.entourage.android.old_v7.navigation.EntBottomNavigationView
-import social.entourage.android.old_v7.base.newsfeed.UserFeedItemListCache
 import social.entourage.android.onboarding.login.LoginActivity
 import social.entourage.android.tools.LibrariesSupport
 import timber.log.Timber
@@ -29,13 +27,11 @@ import java.util.*
  */
 class EntourageApplication : MultiDexApplication() {
     private val activities: ArrayList<BaseActivity> = ArrayList()
-    private lateinit var userFeedItemListCache: UserFeedItemListCache
     lateinit var sharedPreferences: SharedPreferences
     private lateinit var librariesSupport: LibrariesSupport
     lateinit var authenticationController: AuthenticationController
     lateinit var complexPreferences: ComplexPreferences
     lateinit var apiModule: ApiModule
-
 
     // ----------------------------------
     // LIFECYCLE
@@ -50,7 +46,6 @@ class EntourageApplication : MultiDexApplication() {
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true)
         librariesSupport = LibrariesSupport()
         librariesSupport.setupLibraries(this)
-        setupFeedItemsStorage()
         setupSharedPreferences()
     }
 
@@ -72,7 +67,6 @@ class EntourageApplication : MultiDexApplication() {
 
     fun onActivityDestroyed(activity: BaseActivity) {
         activities.remove(activity)
-        saveFeedItemsStorage()
     }
 
     private val loginActivity: LoginActivity?
@@ -82,7 +76,6 @@ class EntourageApplication : MultiDexApplication() {
             }
             return null
         }
-
 
     private val newMainActivity: MainActivity?
         get() {
@@ -133,28 +126,20 @@ class EntourageApplication : MultiDexApplication() {
 
     fun addPushNotification(message: Message) {
         PushNotificationManager.addPushNotification(message)
-        if (storeNewPushNotification(message, true) > 1) {
-            //feedItem badge was already set
-            return
-        }
-        EntBottomNavigationView.increaseBadgeCount()
+        //TODO EntBottomNavigationView.increaseBadgeCount()
     }
 
     fun removePushNotificationsForFeedItem(feedItem: FeedItem) {
         val count = PushNotificationManager.removePushNotificationsForFeedItem(feedItem)
         if (count > 0) {
-            updateStorageFeedItem(feedItem)
-            EntBottomNavigationView.decreaseBadgeCount()
+            //TODO EntBottomNavigationView.decreaseBadgeCount()
         }
     }
 
     fun removePushNotification(message: Message) {
         val count = PushNotificationManager.removePushNotification(message)
         if (count > 0) {
-            if (storeNewPushNotification(message, false) == 0) {
-                //feedItem badge was set to 0
-                EntBottomNavigationView.decreaseBadgeCount()
-            }
+            //TODO EntBottomNavigationView.decreaseBadgeCount()
         }
     }
 
@@ -177,51 +162,14 @@ class EntourageApplication : MultiDexApplication() {
         val count =
             PushNotificationManager.removePushNotification(feedId, feedType, userId, pushType)
         if (count > 0) {
-            EntBottomNavigationView.decreaseBadgeCount()
+            //TODO EntBottomNavigationView.decreaseBadgeCount()
         }
     }
 
     fun removeAllPushNotifications() {
         PushNotificationManager.removeAllPushNotifications()
         // reset the badge count
-        EntBottomNavigationView.resetBadgeCount()
-    }
-
-    fun updateBadgeCountForFeedItem(feedItem: FeedItem) {
-        updateStorageFeedItem(feedItem)
-    }
-
-    // ----------------------------------
-    // FeedItemsStorage
-    // ----------------------------------
-    private fun setupFeedItemsStorage() {
-        userFeedItemListCache = complexPreferences.getObject(
-            UserFeedItemListCache.KEY,
-            UserFeedItemListCache::class.java
-        )
-            ?: UserFeedItemListCache()
-    }
-
-    private fun saveFeedItemsStorage() {
-        complexPreferences.apply {
-            this.putObject(UserFeedItemListCache.KEY, userFeedItemListCache)
-            this.commit()
-        }
-    }
-
-    fun storeNewPushNotification(message: Message, isAdded: Boolean): Int {
-        val me = authenticationController.me ?: return -1
-        return userFeedItemListCache.saveFeedItemFromNotification(me.id, message, isAdded)
-    }
-
-    private fun updateStorageFeedItem(feedItem: FeedItem) {
-        val me = authenticationController.me ?: return
-        userFeedItemListCache.updateFeedItem(me.id, feedItem)
-    }
-
-    fun clearFeedStorage(): Boolean {
-        val me = authenticationController.me ?: return false
-        return userFeedItemListCache.clear(me.id)
+        //TODO EntBottomNavigationView.resetBadgeCount()
     }
 
     companion object {

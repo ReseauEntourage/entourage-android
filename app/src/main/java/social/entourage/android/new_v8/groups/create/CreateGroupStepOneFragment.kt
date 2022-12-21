@@ -17,9 +17,7 @@ import social.entourage.android.new_v8.utils.Const
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.user.edit.place.UserEditActionZoneFragment
 
-
 class CreateGroupStepOneFragment : Fragment(), UserEditActionZoneFragment.FragmentListener {
-
 
     private var _binding: NewFragmentCreateGroupStepOneBinding? = null
     val binding: NewFragmentCreateGroupStepOneBinding get() = _binding!!

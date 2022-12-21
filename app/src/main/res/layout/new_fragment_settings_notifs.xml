@@ -18,7 +18,6 @@
             app:layout_constraintTop_toTopOf="parent"
             app:title="@{@string/params_notifs_title}" />
 
-
         <ScrollView
             android:id="@+id/scrollView"
             android:layout_width="match_parent"

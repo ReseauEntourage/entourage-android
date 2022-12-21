@@ -39,7 +39,6 @@ import social.entourage.android.new_v8.report.ReportTypes
 import social.entourage.android.new_v8.utils.CustomAlertDialog
 import social.entourage.android.new_v8.utils.Const
 
-
 class SettingsModalFragment : BottomSheetDialogFragment() {
 
     private var _binding: NewFragmentSettingsModalBinding? = null
@@ -85,7 +84,6 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
         }
     }
 
-
     private fun setView() {
         with(binding) {
             notificationNewMessages.root.visibility = View.GONE
@@ -101,7 +99,6 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
             editRecurrence.label = getString(R.string.modify_recurrence)
         }
     }
-
 
     private fun getEventInformation() {
         event = arguments?.getSerializable(Const.EVENT_UI) as Events
@@ -208,7 +205,6 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
         binding.interests.adapter?.notifyDataSetChanged()
     }
 
-
     private fun handleReportEvent() {
         val reportGroupBottomDialogFragment =
             event?.id?.let {
@@ -221,7 +217,6 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
             reportGroupBottomDialogFragment?.show(parentFragmentManager, ReportModalFragment.TAG)
         }
     }
-
 
     private fun viewWithRole() {
         val eventWithNoRecurrence =

@@ -25,7 +25,6 @@
 
     </fragment>
 
-
     <fragment
         android:id="@+id/members"
         android:name="social.entourage.android.new_v8.groups.details.members.MembersFragment">
@@ -38,7 +37,6 @@
             android:name="type"
             app:argType="social.entourage.android.new_v8.groups.details.members.MembersType" />
     </fragment>
-
 
     <fragment
         android:id="@+id/event_about"

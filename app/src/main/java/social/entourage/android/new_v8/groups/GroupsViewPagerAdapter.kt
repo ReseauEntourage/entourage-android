@@ -9,7 +9,6 @@ import social.entourage.android.new_v8.groups.list.MyGroupsListFragment
 
 private const val NB_TABS = 2
 
-
 class GroupsViewPagerAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycle) :
     FragmentStateAdapter(fragmentManager, lifecycle) {
 

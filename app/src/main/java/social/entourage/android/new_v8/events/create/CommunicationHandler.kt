@@ -12,7 +12,6 @@ object CommunicationHandler {
     var event: CreateEvent = CreateEvent()
     var eventEdited: Events? = null
 
-
     fun resetValues() {
         isCondition.value = false
         isButtonClickable.value = false

@@ -10,13 +10,11 @@ import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.badge.BadgeDrawable
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.messaging.FirebaseMessaging
-import social.entourage.android.old_v7.MainActivity_v7
-import social.entourage.android.old_v7.MainPresenter
 import social.entourage.android.api.MetaDataRepository
 import social.entourage.android.api.model.Message
 import social.entourage.android.base.BaseSecuredActivity
 import social.entourage.android.base.location.EntLocation
-import social.entourage.android.old_v7.entourage.information.FeedItemInformationFragment
+import social.entourage.android.guide.GDSMainActivity
 import social.entourage.android.message.push.PushNotificationManager
 import social.entourage.android.new_v8.PushNotificationLinkManager
 import social.entourage.android.new_v8.home.CommunicationHandlerBadgeViewModel
@@ -24,14 +22,11 @@ import social.entourage.android.new_v8.home.UnreadMessages
 import social.entourage.android.onboarding.pre_onboarding.PreOnboardingStartActivity
 import social.entourage.android.tools.log.AnalyticsEvents
 
-
 class MainActivity : BaseSecuredActivity() {
-
     private lateinit var navController: NavController
-    private val presenter: MainPresenter = MainPresenter(MainActivity_v7())
+    private val presenter: MainPresenter = MainPresenter(this)
 
     private lateinit var viewModel: CommunicationHandlerBadgeViewModel
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -119,14 +114,15 @@ class MainActivity : BaseSecuredActivity() {
         }
     }
 
-
     // ----------------------------------
     // PUSH NOTIFICATION HANDLING
     // ----------------------------------
     fun displayMessageOnCurrentEntourageInfoFragment(message: Message): Boolean {
-        val fragment =
+        /*val fragment =
             supportFragmentManager.findFragmentByTag(FeedItemInformationFragment.TAG) as FeedItemInformationFragment?
-        return fragment != null && fragment.onPushNotificationChatMessageReceived(message)
+        return fragment != null && fragment.onPushNotificationChatMessageReceived(message)*/
+        //TODO handle notif directly if right fragment
+        return false
     }
 
     private fun initializeMetaData() {
@@ -184,5 +180,40 @@ class MainActivity : BaseSecuredActivity() {
         if (count == 0) {
             bottomNavigationView.removeBadge(R.id.navigation_messages)
         }
+    }
+
+    fun showProfile() {
+        presenter.handleMenuProfile("editProfile")
+    }
+
+    fun showFeed() {
+        //TODO bottomBar?.showFeed()
+    }
+
+    fun showGuide() {
+        //TODO bottomBar?.showGuide()
+    }
+
+    fun showEvents() {
+        //TODO infoFragment?.dismiss()
+        //TODO bottomBar?.showEvents()
+    }
+
+    fun showMyEntourages() {
+        //TODO bottomBar?.showMyEntourages()
+    }
+
+    fun showActionsTab() {
+        //TODO infoFragment?.dismiss()
+        //TODO bottomBar?.showActionsTab()
+    }
+
+    fun showTutorial(forced: Boolean) {
+        presenter.displayTutorial(forced)
+    }
+
+    fun showGuideMap() {
+        val intent = Intent(this, GDSMainActivity::class.java)
+        startActivity(intent)
     }
 }

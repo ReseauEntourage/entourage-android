@@ -19,13 +19,11 @@
         android:icon="@drawable/new_bottom_navigation_messages"
         android:title="@string/title_messages" />
 
-
     <item
         android:id="@+id/navigation_groups"
         android:contentDescription="@string/title_groups"
         android:icon="@drawable/new_bottom_navigation_groups"
         android:title="@string/title_groups" />
-
 
     <item
         android:id="@+id/navigation_events"

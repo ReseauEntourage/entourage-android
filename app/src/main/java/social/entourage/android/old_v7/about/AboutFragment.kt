@@ -34,7 +34,6 @@ class AboutFragment : BaseDialogFragment() {
     // ----------------------------------
     // ----------------------------------
     private fun populate() {
-        about_logo?.setOnLongClickListener { view: View -> handleLongPress(view) }
         title_close_button?.setOnClickListener { dismiss() }
         about_conditions_layout?.setOnClickListener { onTermsClicked() }
         about_oss_licenses?.setOnClickListener { onOSSLicensesClicked() }
@@ -51,13 +50,6 @@ class AboutFragment : BaseDialogFragment() {
     // ----------------------------------
     // BUTTON HANDLING
     // ----------------------------------
-    private fun handleLongPress(view: View): Boolean {
-        if (EntourageApplication.get().clearFeedStorage()) {
-            EntSnackbar.make(view, R.string.about_clearing_entourage_cache, Snackbar.LENGTH_SHORT).show()
-        }
-        return true
-    }
-
     private fun onTermsClicked() {
         AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ABOUT_CGU)
         val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.terms_url)))

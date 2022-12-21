@@ -6,11 +6,9 @@ import androidx.recyclerview.widget.RecyclerView
 import social.entourage.android.databinding.NewGroupsInterestsImageItemBinding
 import social.entourage.android.new_v8.models.Interest
 
-
 class GroupsInterestsListAdapter(
     var interestsList: List<String>,
 ) : RecyclerView.Adapter<GroupsInterestsListAdapter.ViewHolder>() {
-
 
     inner class ViewHolder(val binding: NewGroupsInterestsImageItemBinding) :
         RecyclerView.ViewHolder(binding.root)

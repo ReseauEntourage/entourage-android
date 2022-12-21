@@ -54,7 +54,6 @@ interface DiscussionsRequest {
         @Path("conversation_id") conversationId: Int
     ): Call<ResponseBody>
 
-
     //Block user
     @POST("user_blocked_users")
     fun blockUser(

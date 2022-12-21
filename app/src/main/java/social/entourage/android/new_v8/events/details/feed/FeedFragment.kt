@@ -43,7 +43,6 @@ import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.math.abs
 
-
 class FeedFragment : Fragment() {
 
     private var _binding: NewFragmentFeedEventBinding? = null
@@ -94,7 +93,6 @@ class FeedFragment : Fragment() {
         }
         handleImageViewAnimation()
     }
-
 
     private fun handleImageViewAnimation() {
         binding.appBar.addOnOffsetChangedListener { appBarLayout, verticalOffset ->
@@ -289,7 +287,6 @@ class FeedFragment : Fragment() {
         eventPresenter.getEventPosts(eventId)
     }
 
-
     private fun initializePosts() {
         binding.postsNewRecyclerview.apply {
             layoutManager = LinearLayoutManager(requireContext())
@@ -355,7 +352,6 @@ class FeedFragment : Fragment() {
             findNavController().navigate(action)
         }
     }
-
 
     private fun handleParticipateButton() {
         binding.join.setOnClickListener {

@@ -41,7 +41,6 @@
                     android:paddingHorizontal="@dimen/padding_horizontal"
                     android:paddingTop="@dimen/padding_top">
 
-
                     <TextView
                         android:id="@+id/title_search"
                         android:layout_width="match_parent"
@@ -193,7 +192,6 @@
                             app:layout_constraintTop_toBottomOf="@id/within"
                             tools:text="5km" />
 
-
                         <SeekBar
                             android:id="@+id/seekbar"
                             style="@style/Widget.AppCompat.ProgressBar.Horizontal"
@@ -259,7 +257,6 @@
                             android:layout_height="wrap_content"
                             android:text="@string/event_filter_error_place" />
                     </LinearLayout>
-
 
                 </LinearLayout>
             </ScrollView>

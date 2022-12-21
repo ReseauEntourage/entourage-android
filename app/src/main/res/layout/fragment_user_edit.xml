@@ -541,7 +541,6 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
-
                     <ImageView
                         android:id="@+id/ui_iv_action_type_mod"
                         android:layout_width="36dp"

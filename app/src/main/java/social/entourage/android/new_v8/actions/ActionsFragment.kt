@@ -39,7 +39,6 @@ import uk.co.markormesher.android_fab.SpeedDialMenuAdapter
 import uk.co.markormesher.android_fab.SpeedDialMenuItem
 import kotlin.math.abs
 
-
 const val CONTRIBUTIONS_TAB = 0
 const val DEMANDS_TAB = 1
 

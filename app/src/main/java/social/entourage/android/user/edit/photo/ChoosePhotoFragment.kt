@@ -77,7 +77,6 @@ class ChoosePhotoFragment : OnboardingPhotoFragment() {
         }
     }
 
-
     //**********//**********//**********
     // PhotoEditDelegate
     //**********//**********//**********

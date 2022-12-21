@@ -8,7 +8,6 @@ import androidx.appcompat.app.AlertDialog
 import social.entourage.android.R
 import timber.log.Timber
 
-
 /**
  * Created by Jr (MJ-DEVS) on 15/05/2020.
  */

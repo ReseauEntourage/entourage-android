@@ -50,7 +50,6 @@ class CreateActionStepOneFragment : Fragment() {
             if (viewModel.isDemand) getString(R.string.action_name_demand)
             else getString(R.string.action_name_contrib))
 
-
         if (viewModel.actionEdited == null) {
             if (viewModel.isDemand) {
                 AnalyticsEvents.logEvent(AnalyticsEvents.Help_create_demand_1)

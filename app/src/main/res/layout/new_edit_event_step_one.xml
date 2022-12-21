@@ -41,7 +41,6 @@
             app:layout_constraintTop_toBottomOf="@id/event_name_title"
             tools:text="content" />
 
-
         <include
             android:id="@+id/event_description_title"
             layout="@layout/new_create_title_item"
@@ -96,7 +95,6 @@
             app:mandatory="@{@string/mandatory}"
             app:title="@{@string/picture}" />
 
-
         <TextView
             android:id="@+id/event_photo_label"
             style="@style/left_legend"
@@ -147,7 +145,6 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-
             <ImageView
                 android:id="@+id/add_photo"
                 android:layout_width="match_parent"
@@ -159,7 +156,6 @@
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/event_photo_label" />
         </LinearLayout>
-
 
         <include
             android:id="@+id/error"

@@ -147,7 +147,6 @@ class PhotoEditFragment : BaseDialogFragment() {
         mListener?.onPhotoChosen(Uri.fromFile(photoFile), photoSource)
     }
 
-
     companion object {
         // ----------------------------------
         // CONSTANTS

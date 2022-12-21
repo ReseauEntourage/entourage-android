@@ -58,9 +58,7 @@ class AboutEventFragment : Fragment(), OnMapReadyCallback {
     private val eventPresenter: EventsPresenter by lazy { EventsPresenter() }
     private var mMap: MapView? = null
 
-
     private val args: AboutEventFragmentArgs by navArgs()
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -377,7 +375,6 @@ class AboutEventFragment : Fragment(), OnMapReadyCallback {
             }
         }
     }
-
 
     private fun initializeGroups() {
         binding.groups.text =

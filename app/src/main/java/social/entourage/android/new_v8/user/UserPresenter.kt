@@ -17,7 +17,6 @@ class UserPresenter {
     var isUserReported = MutableLiveData<Boolean>()
     var user = MutableLiveData<User>()
 
-
     fun getUser(userId: Int) {
         EntourageApplication.get().apiModule.userRequest.getUser(userId)
             .enqueue(object : Callback<UserResponse> {

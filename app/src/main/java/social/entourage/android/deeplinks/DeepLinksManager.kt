@@ -6,12 +6,11 @@ import android.os.Bundle
 import android.text.util.Linkify
 import android.widget.TextView
 import social.entourage.android.BuildConfig
-import social.entourage.android.old_v7.MainActivity_v7
+import social.entourage.android.MainActivity
 import social.entourage.android.api.model.TimestampedObject
 import social.entourage.android.api.tape.Events.OnFeedItemInfoViewRequestedEvent
 import social.entourage.android.message.push.EntourageFirebaseMessagingService
 import social.entourage.android.tools.EntBus
-import social.entourage.android.old_v7.user.edit.UserEditFragment
 import java.util.*
 
 /**
@@ -41,7 +40,7 @@ object DeepLinksManager {
      * Handles the current deep link, and sets it to null if successfully
      * @param activity
      */
-    fun handleCurrentDeepLink(activity: MainActivity_v7) {
+    fun handleCurrentDeepLink(activity: MainActivity) {
         intent?.let {
             currentUri = it.data
             it.data?.scheme?.let { scheme ->
@@ -60,7 +59,7 @@ object DeepLinksManager {
      * Handles deeplinks with format "entourage:// *"
      * @param activity
      */
-    private fun handleEntourageDeepLink(activity: MainActivity_v7) {
+    private fun handleEntourageDeepLink(activity: MainActivity) {
         val host = currentUri?.host
         if (host == null) {
             intent = null
@@ -73,7 +72,7 @@ object DeepLinksManager {
      * Handles the deeplinks with format "http(s)://"
      * @param activity
      */
-    private fun handleHttpDeepLink(activity: MainActivity_v7) {
+    private fun handleHttpDeepLink(activity: MainActivity) {
         currentUri?.let {
             val pathSegments: ArrayList<String> = ArrayList(it.pathSegments)
             if (pathSegments.size >= 2) {
@@ -98,7 +97,7 @@ object DeepLinksManager {
         intent = null
     }
 
-    private fun handleDeepLink(activity: MainActivity_v7, key: String, pathSegments: List<String>?) {
+    private fun handleDeepLink(activity: MainActivity, key: String, pathSegments: List<String>?) {
         /*if (key == DeepLinksView.FEED.view) {
             activity.showFeed()
             if (pathSegments != null && pathSegments.isNotEmpty()) {
@@ -108,13 +107,7 @@ object DeepLinksManager {
             }
         } else*/
         if (key == DeepLinksView.BADGE.view) {
-            val userEditFragment = activity.supportFragmentManager.findFragmentByTag(
-                UserEditFragment.TAG) as UserEditFragment?
-            if (userEditFragment != null) {
-                userEditFragment.onAddAssociationClicked()
-            } else {
-                activity.selectMenuProfileItem("editProfile")
-            }
+            activity.showProfile()
         } else if (key == DeepLinksView.WEBVIEW.view) {
             try {
                 currentUri?.getQueryParameter("url")?.let { urlToOpen ->
@@ -127,7 +120,7 @@ object DeepLinksManager {
             } catch (ignored: Exception) {
             }
         } else if (key == DeepLinksView.PROFILE.view) {
-            activity.selectMenuProfileItem("editProfile")
+            activity.showProfile()
         } else if (key == DeepLinksView.GUIDE.view) {
             activity.showGuide()
         } else if (key == DeepLinksView.EVENTS.view) {

@@ -29,7 +29,6 @@ class GroupsFragment : Fragment() {
     private var _binding: NewFragmentGroupsBinding? = null
     val binding: NewFragmentGroupsBinding get() = _binding!!
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

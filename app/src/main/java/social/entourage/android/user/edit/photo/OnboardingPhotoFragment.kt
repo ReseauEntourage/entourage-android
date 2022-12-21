@@ -44,7 +44,6 @@ open class OnboardingPhotoFragment : BaseDialogFragment(), PhotoEditDelegate {
 
     protected var isFromProfile = false
 
-
     // Create the File where the photo should go
     var photoFileUri: Uri? = null
 

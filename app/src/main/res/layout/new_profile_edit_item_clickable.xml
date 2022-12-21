@@ -51,7 +51,6 @@
                 android:text="@{title}"
                 tools:text="Title" />
 
-
             <TextView
                 android:id="@+id/content"
                 style="@style/input"
@@ -72,7 +71,6 @@
                 app:layout_constraintRight_toRightOf="parent" />
 
         </LinearLayout>
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -125,7 +125,6 @@ workflows:
 
             puts
 
-
             puts "Issue keys found:"
             puts issue_keys.inspect
             puts

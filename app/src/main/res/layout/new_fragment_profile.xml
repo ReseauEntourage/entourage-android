@@ -26,7 +26,6 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-
         <TextView
             android:id="@+id/name"
             style="@style/h2_white"
@@ -39,7 +38,6 @@
             app:layout_constraintRight_toLeftOf="@id/edit_profile"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="John" />
-
 
         <ImageView
             android:id="@+id/image_profile"

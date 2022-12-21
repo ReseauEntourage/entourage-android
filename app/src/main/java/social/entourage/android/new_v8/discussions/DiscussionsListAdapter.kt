@@ -14,7 +14,6 @@ import kotlinx.android.synthetic.main.new_conversation_home_item.view.*
 import social.entourage.android.R
 import social.entourage.android.new_v8.models.*
 
-
 interface OnItemClick {
     fun onItemClick(position: Int)
 }
@@ -62,7 +61,6 @@ class DiscussionsListAdapter(
                     .into(binding.image)
                 binding.image_picto.setImageResource(conversation.getPictoTypeFromSection())
             }
-
 
             binding.name.text = conversation.title
             if (conversation.getRolesWithPartnerFormated()?.isEmpty() == false) {

@@ -16,7 +16,6 @@ import social.entourage.android.new_v8.profile.editProfile.InterestsListAdapter
 import social.entourage.android.new_v8.profile.editProfile.OnItemCheckListener
 import social.entourage.android.tools.log.AnalyticsEvents
 
-
 class CreateGroupStepTwoFragment : Fragment() {
 
     private var _binding: NewFragmentCreateGroupStepTwoBinding? = null
@@ -27,7 +26,6 @@ class CreateGroupStepTwoFragment : Fragment() {
     private val viewModel: CommunicationHandlerViewModel by activityViewModels()
 
     private lateinit var interestsListAdapter: InterestsListAdapter
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -79,7 +77,6 @@ class CreateGroupStepTwoFragment : Fragment() {
         }
     }
 
-
     private fun handleOnClickNext(onClick: Boolean) {
         if (onClick) {
             when {
@@ -107,7 +104,6 @@ class CreateGroupStepTwoFragment : Fragment() {
         viewModel.clickNext.observe(viewLifecycleOwner, ::handleOnClickNext)
         viewModel.isButtonClickable.value = interestHaveBeenSelected()
     }
-
 
     fun interestHaveBeenSelected(): Boolean {
         return selectedInterestIdList.isNotEmpty()

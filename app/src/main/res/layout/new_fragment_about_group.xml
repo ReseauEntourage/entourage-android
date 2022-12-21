@@ -53,7 +53,6 @@
                             android:layout_height="wrap_content"
                             tools:text="Dansons ensemble" />
 
-
                         <LinearLayout
                             android:id="@+id/members"
                             android:layout_width="wrap_content"
@@ -86,7 +85,6 @@
                                 tools:text="132 membres. Paris 13." />
 
                         </LinearLayout>
-
 
                         <Button
                             android:id="@+id/join"

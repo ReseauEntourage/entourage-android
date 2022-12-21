@@ -120,7 +120,6 @@ open class UserActionPlaceFragment : BaseDialogFragment() {
         }
     }
 
-
     //**********//**********//**********
     // Methods
     //**********//**********//**********

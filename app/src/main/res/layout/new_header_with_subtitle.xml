@@ -20,7 +20,6 @@
         android:paddingHorizontal="@dimen/padding_horizontal"
         android:paddingTop="20dp">
 
-
         <ImageView
             android:id="@+id/icon_back"
             android:layout_width="40dp"
@@ -56,7 +55,6 @@
             app:layout_constraintLeft_toRightOf="@id/icon_back"
             app:layout_constraintTop_toBottomOf="@id/title"
             tools:text="Notifications" />
-
 
         <ImageView
             android:id="@+id/icon_settings"

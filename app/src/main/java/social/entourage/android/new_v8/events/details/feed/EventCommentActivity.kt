@@ -8,7 +8,6 @@ class EventCommentActivity : CommentActivity() {
 
     private val eventPresenter: EventsPresenter by lazy { EventsPresenter() }
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         eventPresenter.getPostComments(id, postId)

@@ -33,7 +33,6 @@
                 android:text="@string/group_params_cgu_title"
                 tools:text="@string/group_params_cgu_title" />
 
-
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_view"
                 android:layout_width="match_parent"
@@ -41,7 +40,6 @@
                 android:layout_marginHorizontal="35dp"
                 android:layout_marginTop="5dp"
                 tools:listitem="@layout/new_rules_item" />
-
 
         </LinearLayout>
 

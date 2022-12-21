@@ -14,7 +14,6 @@ import social.entourage.android.new_v8.groups.details.feed.FeedActivity
 import social.entourage.android.new_v8.utils.Const
 import social.entourage.android.tools.log.AnalyticsEvents
 
-
 class CreateGroupSuccessFragment : Fragment() {
 
     private var _binding: NewFragmentCreateGroupSuccessBinding? = null

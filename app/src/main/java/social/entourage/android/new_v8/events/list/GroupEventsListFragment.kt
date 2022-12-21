@@ -28,7 +28,6 @@ class GroupEventsListFragment : Fragment() {
 
     private val args: GroupEventsListFragmentArgs by navArgs()
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

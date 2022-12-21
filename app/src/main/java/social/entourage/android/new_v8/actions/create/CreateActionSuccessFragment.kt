@@ -13,7 +13,6 @@ import social.entourage.android.new_v8.RefreshController
 import social.entourage.android.new_v8.actions.detail.ActionDetailActivity
 import social.entourage.android.new_v8.utils.Const
 
-
 class CreateActionSuccessFragment : Fragment() {
 
     private var _binding: NewFragmentCreateActionSuccessBinding? = null

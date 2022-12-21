@@ -19,7 +19,6 @@ import social.entourage.android.new_v8.models.Group
 import social.entourage.android.new_v8.utils.Utils
 import social.entourage.android.tools.log.AnalyticsEvents
 
-
 const val groupPerPage = 10
 
 class DiscoverGroupsListFragment : Fragment() {
@@ -30,7 +29,6 @@ class DiscoverGroupsListFragment : Fragment() {
     private var groupsListSearch: MutableList<Group> = ArrayList()
     private val groupPresenter: GroupPresenter by lazy { GroupPresenter() }
     private var page: Int = 0
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -74,7 +72,6 @@ class DiscoverGroupsListFragment : Fragment() {
         binding.searchRecyclerView.adapter?.notifyDataSetChanged()
     }
 
-
     private fun updateView(isListEmpty: Boolean) {
         if (isListEmpty) {
             binding.emptyStateLayout.visibility = View.VISIBLE
@@ -101,7 +98,6 @@ class DiscoverGroupsListFragment : Fragment() {
             binding.searchRecyclerView.visibility = View.VISIBLE
         }
     }
-
 
     private fun initializeGroups() {
         binding.recyclerView.apply {
@@ -133,7 +129,6 @@ class DiscoverGroupsListFragment : Fragment() {
                 handlePagination(recyclerView)
             }
         }
-
 
     fun handlePagination(recyclerView: RecyclerView) {
         val layoutManager = recyclerView.layoutManager as LinearLayoutManager?

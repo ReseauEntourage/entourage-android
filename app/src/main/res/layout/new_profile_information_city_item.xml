@@ -48,14 +48,12 @@
                 android:text="@{title}"
                 tools:text="Date d'annif" />
 
-
             <TextView
                 android:id="@+id/content"
                 style="@style/h4"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 tools:text="04/12" />
-
 
             <LinearLayout
                 android:layout_width="wrap_content"

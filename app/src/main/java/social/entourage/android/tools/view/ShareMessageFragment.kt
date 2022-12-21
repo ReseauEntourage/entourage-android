@@ -117,7 +117,6 @@ class ShareMessageFragment : BaseDialogFragment() {
         const val ARG_UUID = "uuid"
         const val ARG_ISPOI = "isPoi"
 
-
         fun newInstance(uuid: String) =
                 ShareMessageFragment().apply {
                     arguments = Bundle().apply {

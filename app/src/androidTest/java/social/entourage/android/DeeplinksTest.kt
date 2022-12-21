@@ -24,7 +24,6 @@ import social.entourage.android.api.OnboardingAPI
 import social.entourage.android.deeplinks.DeepLinksManager
 import social.entourage.android.onboarding.login.LoginActivity
 
-
 @RunWith(AndroidJUnit4::class)
 open class DeepLinkingTest {
 
@@ -54,7 +53,6 @@ open class DeepLinkingTest {
             //We arent asked to choose app
         }
     }
-
 
     @Before
     fun setUp() {

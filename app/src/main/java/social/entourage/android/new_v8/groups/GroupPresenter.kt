@@ -183,7 +183,6 @@ class GroupPresenter {
             })
     }
 
-
     fun leaveGroup(groupId: Int) {
         EntourageApplication.get().apiModule.groupRequest.leaveGroup(groupId)
             .enqueue(object : Callback<EntourageUserResponse> {
@@ -257,7 +256,6 @@ class GroupPresenter {
             })
     }
 
-
     fun getGroupMembersSearch(searchTxt: String) {
         val listTmp: MutableList<EntourageUser> = mutableListOf()
         getMembers.value?.forEach {
@@ -296,7 +294,6 @@ class GroupPresenter {
                 }
             })
     }
-
 
     fun uploadFile(
         groupId: Int,
@@ -369,7 +366,6 @@ class GroupPresenter {
                 }
             })
     }
-
 
     fun sendReport(
         groupId: Int,

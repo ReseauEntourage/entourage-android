@@ -35,7 +35,6 @@
                 app:layout_constraintTop_toTopOf="@+id/ui_onboard_consent_check" />
 
 
-
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="100dp">

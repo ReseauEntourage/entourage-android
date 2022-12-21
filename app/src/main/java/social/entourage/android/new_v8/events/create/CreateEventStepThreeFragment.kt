@@ -18,11 +18,9 @@ import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
 
-
 class CreateEventStepThreeFragment : Fragment() {
     private var _binding: NewFragmentCreateEventStepThreeBinding? = null
     val binding: NewFragmentCreateEventStepThreeBinding get() = _binding!!
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -31,7 +29,6 @@ class CreateEventStepThreeFragment : Fragment() {
         _binding = NewFragmentCreateEventStepThreeBinding.inflate(inflater, container, false)
         return binding.root
     }
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -109,7 +106,6 @@ class CreateEventStepThreeFragment : Fragment() {
         }
     }
 
-
     override fun onResume() {
         super.onResume()
         CommunicationHandler.resetValues()
@@ -119,7 +115,6 @@ class CreateEventStepThreeFragment : Fragment() {
         if (CommunicationHandler.event.metadata?.streetAddress?.isNotEmpty() == true)
             binding.layout.location.setText(CommunicationHandler.event.metadata?.streetAddress)
     }
-
 
     override fun onDestroy() {
         super.onDestroy()
@@ -131,7 +126,6 @@ class CreateEventStepThreeFragment : Fragment() {
         handleEditTextChangedTextListener(binding.layout.location)
         handleEditTextChangedTextListener(binding.layout.eventLimitedPlaceCount)
     }
-
 
     private fun handleEditTextChangedTextListener(editText: EditText) {
         editText.addTextChangedListener(object : TextWatcher {
@@ -159,7 +153,6 @@ class CreateEventStepThreeFragment : Fragment() {
             binding.layout.eventLimitedPlaceCount.text.isNotEmpty() && binding.layout.eventLimitedPlaceCount.text.isNotBlank()
         } else true
     }
-
 
     private fun setView() {
         with(CommunicationHandler.eventEdited) {

@@ -25,13 +25,11 @@ import social.entourage.android.new_v8.models.Events
 import social.entourage.android.new_v8.utils.*
 import social.entourage.android.tools.log.AnalyticsEvents
 
-
 class CreateEventFragment : Fragment() {
 
     private var _binding: NewFragmentCreateEventBinding? = null
     val binding: NewFragmentCreateEventBinding get() = _binding!!
     private var event: Events? = null
-
 
     private lateinit var viewPager: ViewPager2
 
@@ -103,7 +101,6 @@ class CreateEventFragment : Fragment() {
             }
         })
     }
-
 
     private fun handleIsCondition(isCondition: Boolean) {
         if (isCondition) {
@@ -222,7 +219,6 @@ class CreateEventFragment : Fragment() {
         )
     }
 
-
     private fun setPreviousClickListener() {
         binding.previous.setOnClickListener {
             CommunicationHandler.resetValues()
@@ -240,7 +236,6 @@ class CreateEventFragment : Fragment() {
         )
         binding.next.background = background
     }
-
 
     override fun onDestroy() {
         super.onDestroy()

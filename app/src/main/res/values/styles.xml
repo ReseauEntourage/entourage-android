@@ -294,7 +294,6 @@
 
     <!--New-->
 
-
     <style name="profile_name">
         <item name="android:textSize">@dimen/profile_name</item>
         <item name="android:fontFamily">@font/nunitosans_semibold</item>
@@ -319,7 +318,6 @@
         <item name="android:textColor">@color/orange</item>
     </style>
 
-
     <style name="profile_interest">
         <item name="android:textSize">@dimen/profile_labels</item>
         <item name="android:fontFamily">@font/nunitosans_bold</item>
@@ -331,7 +329,6 @@
         <item name="android:fontFamily">@font/nunitosans_bold</item>
         <item name="android:textColor">@color/orange</item>
     </style>
-
 
     <style name="profile_subtitles">
         <item name="android:textSize">@dimen/profile_titles</item>
@@ -375,7 +372,6 @@
         <item name="android:textColor">@android:color/black</item>
     </style>
 
-
     <style name="mini_header_black">
         <item name="android:textSize">@dimen/mini_header_title</item>
         <item name="android:fontFamily">@font/quicksand_bold</item>
@@ -387,7 +383,6 @@
         <item name="android:textSize">@dimen/profile_titles</item>
         <item name="android:textColor">@color/new_light_grey</item>
     </style>
-
 
     <style name="settings_items">
         <item name="android:textSize">@dimen/settings_titles</item>
@@ -406,7 +401,6 @@
         <item name="android:textColor">@android:color/black</item>
     </style>
 
-
     <style name="left_h2_orange">
         <item name="android:textSize">@dimen/profile_description</item>
         <item name="android:fontFamily">@font/quicksand_bold</item>
@@ -419,13 +413,11 @@
         <item name="android:textColor">@android:color/white</item>
     </style>
 
-
     <style name="h2_white">
         <item name="android:textSize">@dimen/profile_description</item>
         <item name="android:fontFamily">@font/nunitosans_bold</item>
         <item name="android:textColor">@android:color/white</item>
     </style>
-
 
     <style name="h2_orange">
         <item name="android:textSize">@dimen/profile_description</item>
@@ -438,7 +430,6 @@
         <item name="android:fontFamily">@font/nunitosans_bold</item>
         <item name="android:textColor">@android:color/white</item>
     </style>
-
 
     <style name="unselected_filter">
         <item name="android:textSize">@dimen/profile_labels</item>
@@ -457,7 +448,6 @@
         <item name="android:fontFamily">@font/nunitosans_bold</item>
         <item name="android:textColor">@color/orange</item>
     </style>
-
 
     <style name="edit_image">
         <item name="android:textSize">@dimen/profile_titles</item>
@@ -608,7 +598,6 @@
         <item name="android:fontFamily">@font/nunitosans_extralight</item>
         <item name="android:textColor">@color/black</item>
     </style>
-
 
     <style name="read_item">
         <item name="android:textSize">@dimen/error_msg</item>

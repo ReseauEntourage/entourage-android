@@ -12,7 +12,6 @@ import social.entourage.android.databinding.NewFragmentCreateGroupStepTwoBinding
 import social.entourage.android.new_v8.utils.Utils
 import social.entourage.android.tools.log.AnalyticsEvents
 
-
 class CreateActionStepTwoFragment : Fragment() {
 
     private var _binding: NewFragmentCreateGroupStepTwoBinding? = null

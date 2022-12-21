@@ -77,7 +77,6 @@ class MyEventsListFragment : Fragment() {
         }
     }
 
-
     private fun handleSwipeRefresh() {
         binding.swipeRefresh.setOnRefreshListener {
             binding.progressBar.visibility = View.VISIBLE
@@ -97,7 +96,6 @@ class MyEventsListFragment : Fragment() {
                 handlePagination(recyclerView)
             }
         }
-
 
     fun handlePagination(recyclerView: RecyclerView) {
         val layoutManager = recyclerView.layoutManager as LinearLayoutManager?

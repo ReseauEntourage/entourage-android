@@ -22,7 +22,6 @@ class EditRecurrenceActivity : AppCompatActivity() {
     private val editedEvent: MutableMap<String, Any?> = mutableMapOf()
     private val eventPresenter: EventsPresenter by lazy { EventsPresenter() }
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(

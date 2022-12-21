@@ -1,6 +1,5 @@
 package social.entourage.android.new_v8.groups.details.rules
 
-
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -10,7 +9,6 @@ import social.entourage.android.new_v8.models.Rules
 class RulesListAdapter(
     var rulesList: List<Rules>
 ) : RecyclerView.Adapter<RulesListAdapter.ViewHolder>() {
-
 
     inner class ViewHolder(val binding: NewRulesItemBinding) :
         RecyclerView.ViewHolder(binding.root)

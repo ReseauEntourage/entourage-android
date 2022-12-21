@@ -99,7 +99,6 @@ object AnalyticsEvents {
     const val EVENT_PROFILE_FROM_MENU = "Open_Profile_From_Menu"
     const val EVENT_ABOUT_FAQ = "AppFAQClick"
 
-
     //FEED Events
     const val EVENT_FEED_USERPROFILE = "UserProfileClick"
     const val EVENT_FEED_ACTIVE_CLOSE_OVERLAY = "OpenActiveCloseOverlay"
@@ -434,7 +433,6 @@ object AnalyticsEvents {
      * Home
      */
 
-
 //Tab bar
     const val Action_Tabbar_home = "Action__Tab__Feeds"
     const val Action_Tabbar_help = "Action__Tab__Aid"
@@ -453,7 +451,6 @@ object AnalyticsEvents {
     const val Home_action_moderator = "Action__Home__Moderator"
     const val Home_action_map = "Action__Home__Map"
     const val Home_view_notif = "View__Notif"
-
 
 //Profile
     const val Profile_view_profile = "View__Profile"
@@ -513,7 +510,6 @@ object AnalyticsEvents {
     const val Event_detail_action_param = "Action__EventFeed__Param"
     const val Event_detail_action_post = "Action__EventFeed__NewPost"
 
-
 //PreOnboarding
     const val PreOnboard_car1 = "View__Start__Carrousel1"
     const val PreOnboard_car2 = "View__Start__Carrousel2"
@@ -528,7 +524,6 @@ object AnalyticsEvents {
     const val Onboard_code = "View__Onboarding__InputCode"
     const val Onboard_profile = "View__Onboarding__InputProfile"
     const val Onboard_end = "View__Onboarding__Confirmation"
-
 
     val TAG: String? = AnalyticsEvents::class.java.simpleName
 

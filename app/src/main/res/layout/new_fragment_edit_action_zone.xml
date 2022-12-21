@@ -62,7 +62,6 @@
                         android:src="@drawable/new_location"
                         tools:src="@drawable/new_location" />
 
-
                     <LinearLayout
                         android:id="@+id/layout_content"
                         android:layout_width="0dp"
@@ -90,7 +89,6 @@
                             app:layout_constraintTop_toBottomOf="@id/title" />
 
                     </LinearLayout>
-
 
                 </LinearLayout>
 

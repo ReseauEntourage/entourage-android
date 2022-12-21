@@ -144,7 +144,6 @@
                     app:layout_constraintStart_toStartOf="@+id/ui_title_2"
                     app:layout_constraintTop_toBottomOf="@+id/ui_title_2" />
 
-
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="0dp"
                     android:layout_height="160dp"
@@ -284,7 +283,6 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="0dp"
                     android:layout_height="160dp"
@@ -373,7 +371,6 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="@+id/ui_title_5"
                     app:layout_constraintTop_toBottomOf="@+id/ui_title_5" />
-
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="0dp"

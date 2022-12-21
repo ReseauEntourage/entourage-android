@@ -18,10 +18,8 @@ class ChooseGroupEventListAdapter(
     var onItemClick: OnItemCheckListener
 ) : RecyclerView.Adapter<ChooseGroupEventListAdapter.ViewHolder>() {
 
-
     inner class ViewHolder(val binding: View) :
         RecyclerView.ViewHolder(binding)
-
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater
@@ -29,7 +27,6 @@ class ChooseGroupEventListAdapter(
             .inflate(R.layout.new_choose_group_event_item, parent, false)
         return ViewHolder(view)
     }
-
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         with(holder) {

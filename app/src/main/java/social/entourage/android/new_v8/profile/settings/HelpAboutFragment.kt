@@ -24,7 +24,6 @@ class HelpAboutFragment : BottomSheetDialogFragment() {
     private var _binding: NewFragmentHelpAboutBinding? = null
     val binding: NewFragmentHelpAboutBinding get() = _binding!!
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -56,7 +55,6 @@ class HelpAboutFragment : BottomSheetDialogFragment() {
             ethic.layout.setOnClickListener { onEthicChartClicked() }
         }
     }
-
 
     // ----------------------------------
     // BUTTON HANDLING

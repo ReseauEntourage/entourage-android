@@ -134,9 +134,7 @@
 
                 </androidx.appcompat.widget.Toolbar>
 
-
             </com.google.android.material.appbar.CollapsingToolbarLayout>
-
 
         </com.google.android.material.appbar.AppBarLayout>
 
@@ -171,7 +169,6 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             tools:text="Dansons ensemble" />
-
 
                         <LinearLayout
                             android:id="@+id/members"
@@ -410,7 +407,6 @@ purus dui, aliquet cursus tellus a, dictum hen." />
                         android:layout_marginHorizontal="4dp"
                         android:visibility="gone"
                         tools:listitem="@layout/new_layout_post" />
-
 
                     <include
                         android:id="@+id/posts_old"

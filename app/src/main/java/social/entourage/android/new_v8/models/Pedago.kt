@@ -53,7 +53,6 @@ data class Pedago(
     @field:SerializedName("url")
     val url: String? = null
 
-
 ) {
     override fun toString(): String {
         return "Pedago(duration=$duration, isVideo=$isVideo, watched=$watched, imageUrl=$imageUrl, name=$name, description=$description, html=$html, id=$id, category=$category, url=$url)"

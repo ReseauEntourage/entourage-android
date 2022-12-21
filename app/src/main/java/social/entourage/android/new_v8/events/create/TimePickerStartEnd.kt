@@ -12,7 +12,6 @@ import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
 
-
 const val HOURS_START_END_INTERVAL = 3
 
 class TimePickerStartEnd @JvmOverloads constructor(

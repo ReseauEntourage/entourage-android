@@ -36,7 +36,6 @@ class AboutGroupFragment : Fragment() {
     private val args: AboutGroupFragmentArgs by navArgs()
     private val groupPresenter: GroupPresenter by lazy { GroupPresenter() }
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -111,7 +110,6 @@ class AboutGroupFragment : Fragment() {
             null
         )
     }
-
 
     private fun initializeMembersPhotos() {
         binding.recyclerView.apply {

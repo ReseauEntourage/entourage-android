@@ -175,7 +175,6 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView7" />
 
-
                 <EditText
                     android:id="@+id/ui_onboard_phone_et_phone"
                     style="@style/input"
@@ -361,7 +360,6 @@
                         app:layout_constraintTop_toTopOf="parent" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
-
 
         </LinearLayout>
     </ScrollView>

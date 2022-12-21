@@ -17,7 +17,6 @@ import social.entourage.android.tools.log.AnalyticsEvents
 import java.text.SimpleDateFormat
 import java.util.*
 
-
 class CreateEventStepTwoFragment : Fragment() {
     private var _binding: NewFragmentCreateEventStepTwoBinding? = null
     val binding: NewFragmentCreateEventStepTwoBinding get() = _binding!!
@@ -48,7 +47,6 @@ class CreateEventStepTwoFragment : Fragment() {
             minDate = Date()
         )
     }
-
 
     private fun handleNextButtonState() {
         handleEditTextChangedTextListener(binding.layout.eventDate)

@@ -217,7 +217,6 @@ class MainProfileFragment : Fragment(R.layout.layout_mainprofile) {
         return true
     }
 
-
     fun getUser() {
         val user = EntourageApplication.me(activity) ?: return
         val userRequest = EntourageApplication.get().apiModule.userRequest

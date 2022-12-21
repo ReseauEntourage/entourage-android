@@ -20,7 +20,6 @@ class RecommendationsListAdapter(
     var onItemClick: OnItemClickListener
 ) : RecyclerView.Adapter<RecommendationsListAdapter.ViewHolder>() {
 
-
     inner class ViewHolder(val binding: NewRecommendationItemBinding) :
         RecyclerView.ViewHolder(binding.root)
 

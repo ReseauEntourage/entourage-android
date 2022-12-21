@@ -6,7 +6,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".old_v7.entourage.my.MyMessagesMainFragment">
 
-
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/ui_mymessages_tab"
         android:layout_width="match_parent"

@@ -19,7 +19,6 @@ private const val ARG_BEENTOUR = "beentour"
 private const val ARG_ASSO = "asso"
 private const val ARG_ADDRESS = "address"
 
-
 class OnboardingPhase3Fragment : Fragment() {
 
     private var isEntour = false

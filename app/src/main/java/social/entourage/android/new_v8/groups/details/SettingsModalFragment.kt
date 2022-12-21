@@ -35,7 +35,6 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
     private var interestsList: ArrayList<String> = ArrayList()
     private val groupPresenter: GroupPresenter by lazy { GroupPresenter() }
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -95,7 +94,6 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
 //            binding.notifyDivider.visibility = View.VISIBLE
         }
     }
-
 
     private fun updateView() {
         MetaDataRepository.metaData.observe(requireActivity(), ::handleMetaData)
@@ -188,7 +186,6 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
             dismiss()
         }
     }
-
 
     private fun handleLeaveGroup() {
         binding.leave.setOnClickListener {

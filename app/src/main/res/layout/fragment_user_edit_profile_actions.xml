@@ -52,7 +52,6 @@
                 android:textSize="@dimen/entourage_font_large"
                 android:textStyle="bold" />
 
-
         </RelativeLayout>
 
         <View
@@ -61,7 +60,6 @@
             android:layout_height="0.5dp"
             android:background="@color/greyish"/>
     </LinearLayout>
-
 
     <TextView
         android:id="@+id/ui_onboard_type_tv_title"

@@ -20,7 +20,6 @@
             app:layout_constraintWidth_percent="0.2"
             tools:src="@drawable/new_edit_profile" />
 
-
         <TextView
             android:id="@+id/title"
             style="@style/h4"

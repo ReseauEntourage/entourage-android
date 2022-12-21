@@ -31,7 +31,6 @@ import social.entourage.android.new_v8.utils.Utils
 import social.entourage.android.tools.log.AnalyticsEvents
 import timber.log.Timber
 
-
 enum class MembersType(val code: Int) {
     GROUP(0),
     EVENT(1),
@@ -61,7 +60,6 @@ open class MembersFragment : Fragment() {
         )
         return binding.root
     }
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -174,7 +172,6 @@ open class MembersFragment : Fragment() {
         }
     }
 
-
     private fun updateViewSearch(isListEmpty: Boolean) {
         if (isListEmpty) {
             binding.emptyStateLayout.visibility = View.VISIBLE
@@ -200,7 +197,6 @@ open class MembersFragment : Fragment() {
         id = navArgs.id
         type = navArgs.type
     }
-
 
     private fun handleEnterButton() {
         binding.searchBar.setOnEditorActionListener { _, actionId, _ ->

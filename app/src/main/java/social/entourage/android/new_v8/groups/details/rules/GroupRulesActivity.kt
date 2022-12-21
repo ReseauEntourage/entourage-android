@@ -31,7 +31,6 @@ class GroupRulesActivity : AppCompatActivity() {
         handleBackButton()
     }
 
-
     private fun initializeGroups() {
         binding.recyclerView.apply {
             layoutManager = LinearLayoutManager(context)

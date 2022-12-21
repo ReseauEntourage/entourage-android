@@ -61,7 +61,6 @@
                     app:srcCompat="@drawable/arrow_grey"/>
             </LinearLayout>
 
-
             <View
                 style="@style/SeparatorAlpha"
                 android:layout_width="match_parent"

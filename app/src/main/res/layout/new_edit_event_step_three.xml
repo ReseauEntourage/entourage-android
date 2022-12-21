@@ -53,7 +53,6 @@
                 android:text="@string/online" />
         </RadioGroup>
 
-
         <include
             android:id="@+id/event_place_title"
             layout="@layout/new_create_title_item"
@@ -63,7 +62,6 @@
             app:layout_constraintTop_toBottomOf="@id/event_type"
             app:mandatory="@{@string/mandatory}"
             app:title="@{@string/add_location}" />
-
 
         <LinearLayout
             android:id="@+id/event_place"
@@ -168,7 +166,6 @@
             app:layout_constraintTop_toBottomOf="@id/event_limited_place"
             app:mandatory="@{@string/mandatory}"
             app:title="@{@string/event_available_places}" />
-
 
         <EditText
             android:id="@+id/event_limited_place_count"

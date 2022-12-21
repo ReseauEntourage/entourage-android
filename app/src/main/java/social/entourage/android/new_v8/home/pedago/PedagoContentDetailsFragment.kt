@@ -18,14 +18,12 @@ import social.entourage.android.new_v8.home.HomePresenter
 import social.entourage.android.new_v8.models.Pedago
 import java.lang.ref.WeakReference
 
-
 class PedagoContentDetailsFragment : Fragment() {
 
     private var _binding: NewFragmentPedagoContentDetailsBinding? = null
     val binding: NewFragmentPedagoContentDetailsBinding get() = _binding!!
 
     private val homePresenter: HomePresenter by lazy { HomePresenter() }
-
 
     private val args: PedagoContentDetailsFragmentArgs by navArgs()
 
@@ -90,7 +88,6 @@ class PedagoContentDetailsFragment : Fragment() {
 
         private var originalOrientation = 0
         private var originalSystemUiVisibility = 0
-
 
         override fun getDefaultVideoPoster(): Bitmap? {
             return activityRef.get()?.run {

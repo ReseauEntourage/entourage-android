@@ -97,7 +97,6 @@ class InterestsListAdapter(
         }
     }
 
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val layout = when (viewType) {
             InterestsTypes.TYPE_OTHER.code -> R.layout.new_profile_edit_interests_edittext_item
@@ -109,7 +108,6 @@ class InterestsListAdapter(
 
         return ViewHolder(view)
     }
-
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(interestsList[position])

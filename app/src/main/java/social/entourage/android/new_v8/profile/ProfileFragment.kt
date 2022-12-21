@@ -18,7 +18,6 @@ import social.entourage.android.api.request.UserResponse
 import social.entourage.android.databinding.NewFragmentProfileBinding
 import social.entourage.android.tools.log.AnalyticsEvents
 
-
 class ProfileFragment : Fragment() {
 
     private var _binding: NewFragmentProfileBinding? = null

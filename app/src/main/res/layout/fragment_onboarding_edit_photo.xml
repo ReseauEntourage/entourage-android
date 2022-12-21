@@ -9,7 +9,6 @@
     android:focusable="true"
     android:focusableInTouchMode="true">
 
-
     <TextView
         android:id="@+id/ui_edit_photo_tv_description"
         android:layout_width="0dp"

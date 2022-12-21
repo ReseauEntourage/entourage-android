@@ -8,7 +8,6 @@ import retrofit2.http.*
 import social.entourage.android.new_v8.models.Action
 import social.entourage.android.new_v8.models.ActionCancel
 
-
 class MyActionsListWrapper(@field:SerializedName("actions") val allActions: MutableList<Action>)
 class DemandsListWrapper(@field:SerializedName("solicitations") val allActions: MutableList<Action>)
 class ContribsListWrapper(@field:SerializedName("contributions") val allActions: MutableList<Action>)
@@ -18,7 +17,6 @@ class DemandWrapper(@field:SerializedName("solicitation") val action: Action)
 
 class ContribCancelWrapper(@field:SerializedName("contribution") val action: ActionCancel)
 class DemandCancelWrapper(@field:SerializedName("solicitation") val action: ActionCancel)
-
 
 interface ActionsRequest {
     @GET("contributions")

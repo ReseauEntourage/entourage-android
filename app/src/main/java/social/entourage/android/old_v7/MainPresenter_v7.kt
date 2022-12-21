@@ -36,7 +36,7 @@ import timber.log.Timber
 /**
  * Created by Mihai Ionescu on 27/04/2018.
  */
-class MainPresenter(private val activity: MainActivity_v7) : AvatarUpdatePresenter {
+class MainPresenter_v7(private val activity: MainActivity_v7) : AvatarUpdatePresenter {
     private val applicationInfoRequest: ApplicationInfoRequest
         get() = EntourageApplication.get().apiModule.applicationInfoRequest
     private val authenticationController: AuthenticationController

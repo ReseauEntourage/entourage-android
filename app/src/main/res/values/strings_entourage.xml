@@ -100,7 +100,6 @@
     <string name="entourage_join_request_ok_message_hint">Votre message…</string>
     <string name="entourage_join_request_rejected">Requête envoyée</string>
 
-
     <string name="entourage_info_text_open">Entourage actif</string>
     <string name="entourage_info_text_close">Action clôturée</string>
     <string name="outing_info_text_close">Événement supprimé</string>
@@ -226,7 +225,6 @@
 
     <string name="button_event_add_photo">Photo</string>
     <string name="event_add_photo_info">Illustrez votre prochain événement avec une photo proposée par Entourage :</string>
-
 
     <string name="infoPopCreateContrib">Félicitations !\nVotre contribution a bien été créée.</string>
     <string name="infoPopCreateAsk">Félicitations !\nVotre demande a bien été créée.</string>

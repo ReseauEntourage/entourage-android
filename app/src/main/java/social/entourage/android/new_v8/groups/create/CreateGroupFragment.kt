@@ -98,7 +98,6 @@ class CreateGroupFragment : Fragment() {
         )
     }
 
-
     private fun handleButtonState(isButtonActive: Boolean) {
         val background = ContextCompat.getDrawable(
             requireContext(),
@@ -138,7 +137,6 @@ class CreateGroupFragment : Fragment() {
         }
     }
 
-
     private fun handleBackButton() {
         binding.header.iconBack.setOnClickListener {
             AnalyticsEvents.logEvent(
@@ -170,7 +168,6 @@ class CreateGroupFragment : Fragment() {
 
         }
     }
-
 
     private fun handleValidate() {
         if (binding.viewPager.currentItem == NB_TABS - 1)

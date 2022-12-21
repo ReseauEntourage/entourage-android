@@ -20,7 +20,6 @@
         android:paddingHorizontal="@dimen/padding_horizontal"
         android:paddingTop="20dp">
 
-
         <ImageView
             android:id="@+id/icon_back"
             android:layout_width="40dp"

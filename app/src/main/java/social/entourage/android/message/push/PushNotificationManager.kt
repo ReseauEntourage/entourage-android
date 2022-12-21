@@ -181,7 +181,6 @@ object PushNotificationManager {
                         if (TimestampedObject.ENTOURAGE_CARD == feedType && content.isEntourageRelated) {
                             messageListChanged = true
                             if (message.isVisible) {
-                                application.storeNewPushNotification(message, false)
                                 count++
                             }
                             continue

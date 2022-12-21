@@ -139,4 +139,3 @@ fun Events.toEventUi(context: Context): EventUiModel {
     )
 }
 
-

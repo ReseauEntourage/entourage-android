@@ -26,7 +26,6 @@ import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
 
-
 class GroupEventsListAdapter(
     context: Context,
     var sectionItemList: List<SectionHeader?>?,
@@ -68,7 +67,6 @@ class GroupEventsListAdapter(
         )
         return ChildViewHolder(binding)
     }
-
 
     override fun onBindSectionViewHolder(
         sectionViewHolder: SectionViewHolder,

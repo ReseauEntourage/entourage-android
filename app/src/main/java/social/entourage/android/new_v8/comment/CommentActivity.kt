@@ -25,7 +25,6 @@ import social.entourage.android.new_v8.utils.focusAndShowKeyboard
 import social.entourage.android.new_v8.utils.scrollToPositionSmooth
 import java.util.*
 
-
 abstract class CommentActivity : AppCompatActivity() {
     lateinit var binding: NewActivityCommentsBinding
 
@@ -41,7 +40,6 @@ abstract class CommentActivity : AppCompatActivity() {
 
     protected var isOne2One = false
     protected var isConversation = false
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -142,7 +140,6 @@ abstract class CommentActivity : AppCompatActivity() {
         }
     }
 
-
     private fun handleCommentAction() {
         binding.comment.setOnClickListener {
             val message = binding.commentMessage.text.toString()
@@ -206,7 +203,6 @@ abstract class CommentActivity : AppCompatActivity() {
             handleReport(id, ReportTypes.REPORT_POST)
         }
     }
-
 
     private fun openEditTextKeyboard() {
         if (shouldOpenKeyboard) {

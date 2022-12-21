@@ -98,9 +98,7 @@
 
                 </androidx.appcompat.widget.Toolbar>
 
-
             </com.google.android.material.appbar.CollapsingToolbarLayout>
-
 
         </com.google.android.material.appbar.AppBarLayout>
 
@@ -135,7 +133,6 @@
                             android:layout_height="wrap_content"
                             tools:text="Dansons ensemble" />
 
-
                         <LinearLayout
                             android:id="@+id/members"
                             android:layout_width="wrap_content"
@@ -168,7 +165,6 @@
                                 tools:text="132 membres. Paris 13." />
 
                         </LinearLayout>
-
 
                         <LinearLayout
                             android:id="@+id/more"
@@ -250,7 +246,6 @@ purus dui, aliquet cursus tellus a, dictum hen." />
                             android:layout_height="wrap_content"
                             android:text="@string/group_event" />
 
-
                         <TextView
                             android:id="@+id/see_more_events"
                             style="@style/left_h2_orange"
@@ -330,7 +325,6 @@ purus dui, aliquet cursus tellus a, dictum hen." />
                         android:layout_marginStart="18dp"
                         android:layout_marginTop="15dp"
                         android:text="@string/posts" />
-
 
                     <LinearLayout
                         android:id="@+id/posts_layout_empty_state"
@@ -418,7 +412,6 @@ purus dui, aliquet cursus tellus a, dictum hen." />
                         android:layout_marginHorizontal="4dp"
                         android:visibility="gone"
                         tools:listitem="@layout/new_layout_post" />
-
 
                     <include
                         android:id="@+id/posts_old"

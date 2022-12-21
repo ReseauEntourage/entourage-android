@@ -37,7 +37,6 @@ import social.entourage.android.base.BaseDialogFragment
 import social.entourage.android.new_v8.home.HomePresenter
 import java.util.*
 
-
 class WebViewFragment : BaseDialogFragment() {
     // ----------------------------------
     // ATTRIBUTES
@@ -382,8 +381,6 @@ class WebViewFragment : BaseDialogFragment() {
         }
     }
 }
-
-
 
 class CommunicationRecoWebUrlHandlerViewModel : ViewModel() {
     val isValid:MutableLiveData<Boolean> = MutableLiveData()

@@ -38,7 +38,6 @@
                 android:paddingTop="12dp"
                 android:paddingBottom="28dp">
 
-
                 <LinearLayout
                     android:id="@+id/canceled"
                     android:layout_width="match_parent"
@@ -128,7 +127,6 @@
                     android:layout_marginTop="12dp"
                     app:icon="@{@drawable/new_time}" />
 
-
                 <include
                     android:id="@+id/places_limit"
                     layout="@layout/new_event_information_layout"
@@ -190,7 +188,6 @@
                         android:padding="10dp" />
 
                 </LinearLayout>
-
 
                 <TextView
                     android:id="@+id/to_know"

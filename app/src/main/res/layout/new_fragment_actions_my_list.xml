@@ -30,7 +30,6 @@
             android:layout_gravity="center"
             android:layout_marginTop="15dp" />
 
-
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/emptyStateLayout"
             android:layout_width="match_parent"
@@ -83,7 +82,6 @@
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/title" />
             </LinearLayout>
-
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

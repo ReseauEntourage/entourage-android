@@ -23,7 +23,6 @@ class EntourageDisclaimerFragment : BaseDialogFragment() {
     // Attributes
     // ----------------------------------
 
-
     private var mListener: OnFragmentInteractionListener? = null
 
     var groupType: String? = null

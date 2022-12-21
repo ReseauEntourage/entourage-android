@@ -55,7 +55,6 @@
                 android:text="@{title}"
                 tools:text="Title" />
 
-
             <EditText
                 android:id="@+id/content"
                 style="@style/input"
@@ -68,9 +67,7 @@
                 android:paddingTop="0dp"
                 tools:text="content" />
 
-
         </LinearLayout>
-
 
         <TextView
             android:id="@+id/counter"
@@ -81,7 +78,6 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/linearLayout"
             tools:text="Title" />
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

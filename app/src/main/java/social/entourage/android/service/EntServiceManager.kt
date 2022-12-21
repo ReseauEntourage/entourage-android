@@ -50,7 +50,6 @@ open class EntServiceManager(
         val locationProvider: LocationProvider
 ) {
 
-
     // ----------------------------------
     // ATTRIBUTES
     // ----------------------------------

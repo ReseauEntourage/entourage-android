@@ -23,7 +23,6 @@ import social.entourage.android.tools.log.AnalyticsEvents
 import java.text.SimpleDateFormat
 import java.util.*
 
-
 class MyProfileFragment : Fragment() {
     private var _binding: NewFragmentMyProfileBinding? = null
     val binding: NewFragmentMyProfileBinding get() = _binding!!
@@ -51,7 +50,6 @@ class MyProfileFragment : Fragment() {
         AnalyticsEvents.logEvent(AnalyticsEvents.Profile_view_profile)
     }
 
-
     private fun handleMetaData(tags: Tags?) {
         interestsList.clear()
         val userInterests = user.interests
@@ -60,7 +58,6 @@ class MyProfileFragment : Fragment() {
         }
         binding.interests.adapter?.notifyDataSetChanged()
     }
-
 
     private fun initializeInterests() {
         if (interestsList.isEmpty()) binding.interests.visibility = View.GONE

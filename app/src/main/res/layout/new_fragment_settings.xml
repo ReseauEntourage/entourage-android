@@ -84,7 +84,6 @@
                     app:icon="@{@drawable/new_delete}"
                     app:label="@{@string/delete_account}" />
 
-
                 <TextView
                     android:id="@+id/app_version"
                     style="@style/version_number"

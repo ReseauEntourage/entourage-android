@@ -1,6 +1,5 @@
 package social.entourage.android.new_v8.discussions.members
 
-
 import android.app.Activity
 import android.content.Intent
 import android.view.LayoutInflater
@@ -20,7 +19,6 @@ class MembersConversationListAdapter(
     private var membersList: List<GroupMember>,
     private var onItemShowListener: OnItemShowListener
 ) : RecyclerView.Adapter<MembersConversationListAdapter.ViewHolder>() {
-
 
     inner class ViewHolder(val binding: NewGroupMemberItemBinding) :
         RecyclerView.ViewHolder(binding.root)

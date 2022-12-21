@@ -20,7 +20,6 @@ class Image() : Parcelable {
     @SerializedName("landscape_url")
     var landscapeUrl: String? = null
 
-
     var isSelected: Boolean? = false
 
     constructor(parcel: Parcel) : this() {

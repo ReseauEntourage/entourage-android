@@ -31,7 +31,6 @@ interface OnItemClickListener {
     fun onCommentReport(commentId: Int?)
 }
 
-
 class CommentsListAdapter(
     var commentsList: List<Post>,
     var postAuthorId: Int,
@@ -131,7 +130,6 @@ class CommentsListAdapter(
 
         return ViewHolder(view)
     }
-
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(commentsList[position])

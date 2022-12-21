@@ -9,7 +9,6 @@ import social.entourage.android.new_v8.utils.Const
 import social.entourage.android.user.AvatarUploadView
 import social.entourage.android.user.edit.photo.ChoosePhotoFragment
 
-
 class ProfileActivity : BaseSecuredActivity(), AvatarUploadView {
 
     val profilePresenter: ProfilePresenter by lazy { ProfilePresenter() }
@@ -39,7 +38,6 @@ class ProfileActivity : BaseSecuredActivity(), AvatarUploadView {
             showErrorToast()
         }
     }
-
 
     override fun onUploadError() {
         showErrorToast()

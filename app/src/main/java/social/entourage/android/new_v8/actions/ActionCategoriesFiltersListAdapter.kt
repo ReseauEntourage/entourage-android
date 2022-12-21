@@ -8,7 +8,6 @@ import kotlinx.android.synthetic.main.new_action_category_item.view.*
 import social.entourage.android.R
 import social.entourage.android.new_v8.models.ActionSection
 
-
 class ActionCategoriesFiltersListAdapter(
     private var catfiltersList: List<ActionSection>
 ) : RecyclerView.Adapter<ActionCategoriesFiltersListAdapter.ViewHolder>() {

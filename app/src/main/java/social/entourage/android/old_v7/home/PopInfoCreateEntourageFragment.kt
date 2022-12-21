@@ -35,7 +35,6 @@ class PopInfoCreateEntourageFragment : BaseDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
         ui_bt_close_pop_creeate?.setOnClickListener {
             homeFragment?.closePopAndGo()
         }

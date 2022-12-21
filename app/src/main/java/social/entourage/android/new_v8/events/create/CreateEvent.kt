@@ -53,7 +53,6 @@ data class Metadata(
         return "Metadata(streetAddress=$streetAddress, startsAt=$startsAt, placeLimit=$placeLimit, displayAddress=$displayAddress, endsAt=$endsAt, googlePlaceId=$googlePlaceId)"
     }
 
-
 }
 
 data class CreateEvent(
@@ -94,7 +93,6 @@ data class CreateEvent(
     var recurrence: Int? = null,
 
     var displayAddress: String? = null,
-
 
     ) {
     fun title(value: String) = apply {

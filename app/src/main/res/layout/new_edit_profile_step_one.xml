@@ -42,7 +42,6 @@
             app:layout_constraintTop_toBottomOf="@id/group_name_title"
             tools:text="content" />
 
-
         <include
             android:id="@+id/group_description_title"
             layout="@layout/new_create_title_item"
@@ -88,7 +87,6 @@
             app:mandatory="@{@string/mandatory}"
             app:title="@{@string/add_location}" />
 
-
         <TextView
             android:id="@+id/subtitle"
             style="@style/left_legend"
@@ -99,7 +97,6 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@id/group_location_layout"
             tools:text="@string/add_location_subtitle" />
-
 
         <LinearLayout
             android:id="@+id/group_location"

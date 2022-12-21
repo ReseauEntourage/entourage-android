@@ -89,7 +89,6 @@ class EntBottomNavigationView : BottomNavigationView {
         return false
     }
 
-
     private fun loadFragment(supportFragmentManager: FragmentManager, menuId: Int) {
         try {
             val tag = navigationDataSource.getFragmentTagAtIndex(menuId)

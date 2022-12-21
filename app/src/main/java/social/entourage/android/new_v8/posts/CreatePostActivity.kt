@@ -23,7 +23,6 @@ import social.entourage.android.new_v8.utils.px
 import social.entourage.android.tools.log.AnalyticsEvents
 import java.io.File
 
-
 abstract class CreatePostActivity : AppCompatActivity() {
 
     lateinit var binding: NewActivityCreatePostBinding

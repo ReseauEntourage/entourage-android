@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".old_v7.home.PopInfoCreateEntourageFragment">
 
-
     <androidx.cardview.widget.CardView
         android:layout_width="0dp"
         android:layout_height="wrap_content"

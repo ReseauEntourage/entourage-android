@@ -19,7 +19,6 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-
             <ImageView
                 android:id="@+id/logoEntourage"
                 android:layout_width="36dp"
@@ -80,7 +79,6 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
@@ -278,7 +276,6 @@
                     android:id="@+id/recommendations"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
-
 
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>

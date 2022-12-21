@@ -26,7 +26,6 @@ class GroupsListAdapter(
     var from: FromScreen?
 ) : RecyclerView.Adapter<GroupsListAdapter.ViewHolder>() {
 
-
     inner class ViewHolder(val binding: NewGroupItemBinding) :
         RecyclerView.ViewHolder(binding.root)
 
@@ -109,7 +108,6 @@ class GroupsListAdapter(
         }
     }
 }
-
 
 enum class FromScreen {
     MY_GROUPS,

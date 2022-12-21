@@ -18,7 +18,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -74,7 +73,6 @@
                     android:textAlignment="center"
                     android:textColor="@color/accent"
                     android:textSize="@dimen/entourage_font_medium" />
-
 
                 <TextView
                     android:id="@+id/textView25"
@@ -604,7 +602,6 @@
                 </LinearLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -636,7 +633,6 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
-
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -670,7 +666,6 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/imageView27"
                         app:layout_constraintTop_toTopOf="parent" />
-
 
                     <ImageView
                         android:id="@+id/imageView27"

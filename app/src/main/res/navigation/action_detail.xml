@@ -15,7 +15,6 @@
 
     </fragment>
 
-
     <fragment
         android:id="@+id/action_detail"
         android:name="social.entourage.android.new_v8.actions.detail.ActionDetailFragment">

@@ -11,7 +11,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.app.NotificationManagerCompat
 import com.google.firebase.messaging.FirebaseMessaging
 import com.squareup.otto.Subscribe
-import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.v7_activity_main.*
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.api.model.Message
@@ -20,30 +20,27 @@ import social.entourage.android.api.tape.Events.*
 import social.entourage.android.base.BaseSecuredActivity
 import social.entourage.android.base.location.EntLocation.currentLocation
 import social.entourage.android.base.location.LocationUtils.isLocationPermissionGranted
-import social.entourage.android.deeplinks.DeepLinksManager.handleCurrentDeepLink
 import social.entourage.android.deeplinks.DeepLinksManager.storeIntent
+import social.entourage.android.message.push.PushNotificationManager
 import social.entourage.android.old_v7.entourage.EntourageDisclaimerFragment
 import social.entourage.android.old_v7.entourage.information.EntourageInformationFragment
 import social.entourage.android.old_v7.entourage.information.FeedItemInformationFragment
-import social.entourage.android.guide.GDSMainActivity
 import social.entourage.android.old_v7.home.expert.HomeExpertFragment
-import social.entourage.android.message.push.PushNotificationManager
 import social.entourage.android.old_v7.navigation.EntBottomNavigationView
-import social.entourage.android.user.AvatarUploadPresenter
-import social.entourage.android.user.AvatarUploadRepository
-import social.entourage.android.user.AvatarUploadView
 import social.entourage.android.old_v7.user.UserFragment
+import social.entourage.android.old_v7.user.edit.UserEditFragment
+import social.entourage.android.old_v7.user.edit.photo.PhotoEditFragment
 import social.entourage.android.service.EntService
 import social.entourage.android.tools.EntBus
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.log.AnalyticsEvents.logEvent
 import social.entourage.android.tools.log.AnalyticsEvents.onLocationPermissionGranted
 import social.entourage.android.tools.log.AnalyticsEvents.updateUserInfo
-import social.entourage.android.user.*
-import social.entourage.android.old_v7.user.edit.UserEditFragment
+import social.entourage.android.user.AvatarUploadPresenter
+import social.entourage.android.user.AvatarUploadRepository
+import social.entourage.android.user.AvatarUploadView
 import social.entourage.android.user.edit.photo.OnboardingPhotoFragment.Companion.TAKE_PHOTO_REQUEST
 import social.entourage.android.user.edit.photo.PhotoChooseInterface
-import social.entourage.android.old_v7.user.edit.photo.PhotoEditFragment
 import social.entourage.android.user.edit.place.UserEditActionZoneFragment
 import timber.log.Timber
 import java.io.File
@@ -57,7 +54,7 @@ class MainActivity_v7 : BaseSecuredActivity(),
     // ATTRIBUTES
     // ----------------------------------
 
-    private val presenter: MainPresenter = MainPresenter(this)
+    private val presenter: MainPresenter_v7 = MainPresenter_v7(this)
     private val avatarUploadPresenter: AvatarUploadPresenter
 
     init {
@@ -84,7 +81,7 @@ class MainActivity_v7 : BaseSecuredActivity(),
     // ----------------------------------
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.v7_activity_main)
         if (isFinishing) return
         ui_layout_tooltips?.visibility = View.GONE
         bottomBar?.configure(this)
@@ -234,16 +231,6 @@ class MainActivity_v7 : BaseSecuredActivity(),
         bottomBar?.showFeed()
     }
 
-    fun showGuide() {
-        bottomBar?.showGuide()
-    }
-
-    fun showGuideMap() {
-        val intent = Intent(this, GDSMainActivity::class.java)
-
-        startActivity(intent)
-    }
-
     fun showEvents() {
         infoFragment?.dismiss()
         bottomBar?.showEvents()
@@ -257,11 +244,6 @@ class MainActivity_v7 : BaseSecuredActivity(),
 
     fun showMyEntourages() {
         bottomBar?.showMyEntourages()
-    }
-
-    fun showActionsTab() {
-        infoFragment?.dismiss()
-        bottomBar?.showActionsTab()
     }
 
     fun showTutorial(forced: Boolean) {
@@ -309,7 +291,7 @@ class MainActivity_v7 : BaseSecuredActivity(),
             EntourageApplication.get().removePushNotification(message)
         } else {
             // Handle the deep link
-            handleCurrentDeepLink(this)
+            //TODO MainActivty: handleCurrentDeepLink(this)
         }
         intent = null
     }
@@ -376,7 +358,11 @@ class MainActivity_v7 : BaseSecuredActivity(),
     }
 
     override fun onUploadError() {
-        Toast.makeText(this@MainActivity_v7, R.string.user_photo_error_not_saved, Toast.LENGTH_SHORT)
+        Toast.makeText(
+            this@MainActivity_v7,
+            R.string.user_photo_error_not_saved,
+            Toast.LENGTH_SHORT
+        )
             .show()
         dismissProgressDialog()
         (supportFragmentManager.findFragmentByTag(PhotoEditFragment.TAG) as? PhotoEditFragment)?.onPhotoSent(

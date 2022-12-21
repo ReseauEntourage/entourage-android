@@ -63,7 +63,6 @@ abstract class FeedItem : TimestampedObject(), Serializable {
     @Expose(serialize = false, deserialize = false)
     protected var badgeCount = 0
 
-
     //CardInfo cache support
     @Expose(serialize = false, deserialize = false)
     @Transient

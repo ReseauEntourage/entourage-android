@@ -28,7 +28,6 @@ import social.entourage.android.api.tape.Events
 import social.entourage.android.entourage.category.EntourageCategoryManager
 import social.entourage.android.tools.EntBus
 
-
 /****
  * Announce VH
  */
@@ -39,7 +38,6 @@ class AnnounceVH(view: View) : RecyclerView.ViewHolder(view) {
         }
 
         itemView.ui_bg_trans_black?.visibility = View.INVISIBLE
-
 
         val announce = data as? Announcement
         announce?.let {

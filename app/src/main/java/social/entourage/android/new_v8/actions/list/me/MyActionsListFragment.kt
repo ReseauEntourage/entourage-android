@@ -17,7 +17,6 @@ import social.entourage.android.new_v8.actions.detail.ActionDetailActivity
 import social.entourage.android.new_v8.models.Action
 import social.entourage.android.new_v8.utils.Const
 
-
 class MyActionsListFragment : Fragment() {
     val EVENTS_PER_PAGE = 10
 

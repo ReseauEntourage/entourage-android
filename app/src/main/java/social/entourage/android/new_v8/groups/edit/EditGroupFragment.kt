@@ -71,7 +71,6 @@ class EditGroupFragment : Fragment() {
         requireActivity().finish()
     }
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -82,7 +81,6 @@ class EditGroupFragment : Fragment() {
         )
         return binding.root
     }
-
 
     private fun handleResponseGetGroup(getGroup: Group?) {
         getGroup?.let {
@@ -180,7 +178,6 @@ class EditGroupFragment : Fragment() {
             }, false)
         }
     }
-
 
     private fun handleMetaData(tags: Tags?) {
         interestsList.clear()

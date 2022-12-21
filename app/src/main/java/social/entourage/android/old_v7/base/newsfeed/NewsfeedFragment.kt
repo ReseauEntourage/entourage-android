@@ -542,7 +542,6 @@ abstract class NewsfeedFragment : BaseMapFragment(R.layout.fragment_map), NewsFe
         map?.cameraPosition?.let { EntLocation.lastCameraPosition = it}
     }
 
-
     private fun onMapReady(googleMap: GoogleMap) {
         super.onMapReady(googleMap,
                 presenter.onGroundOverlayClickListener
@@ -721,10 +720,6 @@ abstract class NewsfeedFragment : BaseMapFragment(R.layout.fragment_map), NewsFe
         if (newsfeedAdapter?.findCard(card) != null) {
             newsfeedAdapter?.updateCard(card)
         } else {
-            // set the badge count
-            if (card is FeedItem) {
-                EntourageApplication.get(context).updateBadgeCountForFeedItem(card)
-            }
             // add the card
             if (pagination.isRefreshing) {
                 newsfeedAdapter?.addCardInfoBeforeTimestamp(card)

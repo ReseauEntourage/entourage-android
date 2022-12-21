@@ -19,7 +19,6 @@ import social.entourage.android.tools.hideKeyboard
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.view.CustomProgressDialog
 
-
 class LoginActivity : BaseActivity() {
 
     lateinit var authenticationController: AuthenticationController

@@ -33,7 +33,6 @@ import social.entourage.android.user.edit.photo.PhotoChooseInterface
 import social.entourage.android.user.edit.place.UserEditActionZoneFragment
 import java.io.File
 
-
 class EditProfileFragment : Fragment(), EditProfileCallback,
     UserEditActionZoneFragment.FragmentListener {
 
@@ -48,7 +47,6 @@ class EditProfileFragment : Fragment(), EditProfileCallback,
     private val editProfilePresenter: EditProfilePresenter by lazy { EditProfilePresenter() }
 
     var fromHomePage = false
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -247,7 +245,6 @@ class EditProfileFragment : Fragment(), EditProfileCallback,
             editProfilePresenter.updateUser(editedUser)
         }
     }
-
 
     private fun checkError(): Boolean {
         val isLastnameCorrect = binding.lastname.content.text.trimEnd().length > 2

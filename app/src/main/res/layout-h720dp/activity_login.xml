@@ -18,7 +18,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-
             <ImageView
                 android:id="@+id/icon_back"
                 android:layout_width="40dp"
@@ -89,7 +88,6 @@
                     app:ccp_textSize="14sp"
                     app:layout_constraintStart_toEndOf="@+id/imageView40"
                     app:layout_constraintTop_toBottomOf="@+id/textView7" />
-
 
                 <EditText
                     android:id="@+id/ui_login_phone_et_phone"

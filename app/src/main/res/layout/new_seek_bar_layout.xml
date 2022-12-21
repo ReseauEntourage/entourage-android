@@ -27,7 +27,6 @@
         app:layout_constraintTop_toBottomOf="@id/within"
         tools:text="5km" />
 
-
     <SeekBar
         android:id="@+id/seekbar"
         style="@style/Widget.AppCompat.ProgressBar.Horizontal"

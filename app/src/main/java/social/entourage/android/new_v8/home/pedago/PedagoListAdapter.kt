@@ -63,7 +63,6 @@ class PedagoListAdapter(
         return ChildViewHolder(binding)
     }
 
-
     override fun onBindSectionViewHolder(
         sectionViewHolder: SectionViewHolder,
         sectionPosition: Int,

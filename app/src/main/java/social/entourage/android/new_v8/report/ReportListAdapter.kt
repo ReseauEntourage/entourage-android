@@ -17,7 +17,6 @@ class ReportListAdapter(
     var onItemClick: OnItemCheckListener
 ) : RecyclerView.Adapter<ReportListAdapter.ViewHolder>() {
 
-
     inner class ViewHolder(val binding: NewReportUserItemBinding) :
         RecyclerView.ViewHolder(binding.root)
 

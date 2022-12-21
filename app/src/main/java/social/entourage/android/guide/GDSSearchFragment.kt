@@ -27,7 +27,6 @@ import social.entourage.android.tools.showKeyboard
 import social.entourage.android.user.partner.PartnerFragment
 import timber.log.Timber
 
-
 class GDSSearchFragment : BaseDialogFragment(), PoiListFragment {
     private val MIN_CHARS_SEARCH = 3
     private var latitude: Double = 0.0

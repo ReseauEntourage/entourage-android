@@ -11,7 +11,6 @@ class UserProfileActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.new_activity_user_profile)
 
-
         val id = intent.getIntExtra(Const.USER_ID, Const.DEFAULT_VALUE)
         val bundle = Bundle().apply {
             putInt(Const.USER_ID, id)

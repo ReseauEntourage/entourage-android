@@ -4,7 +4,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -21,7 +20,6 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="@id/scrollView" />
-
 
         <ImageView
             android:id="@+id/icon_back"
@@ -56,7 +54,6 @@
                 android:orientation="vertical"
                 android:paddingHorizontal="30dp"
                 android:paddingTop="25dp">
-
 
                 <TextView
                     android:id="@+id/name"
@@ -159,7 +156,6 @@
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/birthday"
                     app:title="@{@string/phone}" />
-
 
                 <include
                     android:id="@+id/email"

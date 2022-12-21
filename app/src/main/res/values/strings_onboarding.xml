@@ -47,7 +47,6 @@
 
     <string name="onboard_welcome_title_phase3">Enchantés %s !</string>
 
-
     <string name="onboard_phase3_entour_desc">En plus de faire des rencontres humaines, comment souhaitez-vous contribuer au sein de la Communauté Entourage ? </string>
     <string name="onboard_phase3_entour_title">Entourer</string>
     <string name="onboard_phase3_entour_subtitle">Proposer de l’aide …</string>
@@ -62,13 +61,11 @@
 
 
 
-
     <string name="onboard_phone_title">Enchantés, %s.</string>
     <string name="onboard_phone_sub">Quel est votre numéro de téléphone ?</string>
     <string name="onboard_phone_info">Cette information restera confidentielle. Nous voulons juste vérifier que vous n’êtes pas un robot, mais un humain au grand coeur !</string>
     <string name="onboard_phone_placeholder_phone">Téléphone</string>
     <string name="onboard_sms_title">Entrez le code reçu par SMS</string>
-
 
     <string name="attention_pop_title">Attention</string>
     <string name="onboard_sms_pop_alert">Veuillez patienter encore %s sec avant de renouveler la demande.</string>
@@ -83,7 +80,6 @@
     <string name="onboard_type_choice1_title">Voisin solidaire</string>
     <string name="onboard_type_choice2_title">Personne isolée ou en précarité</string>
     <string name="onboard_type_choice3_title">Association ou service public</string>
-
 
     <string name="onboard_place_title">Quel est votre quartier ?</string>
     <string name="onboard_place_description">Vous pourrez répondre aux demandes de personnes en difficulté et d’associations de votre quartier, et vous pourrez vous-même proposer des dons de votre temps ou matériels.</string>
@@ -156,13 +152,11 @@
     <string name="onboard_neighbour_activity_choice_4">Faire des dons\nmatériels</string>
     <string name="onboard_neighbour_activity_choice_5">M’investir dans\nl’associatif</string>
 
-
     //Onboarding Place tunnel SDF / Voisins
     <string name="onboard_place_title2_sdf">Super !</string>
     <string name="onboard_place_description2_sdf">Souhaitez-vous ajouter un autre quartier ?</string>
     <string name="onboard_place_title2">Super !</string>
     <string name="onboard_place_description2">Vous venez de rejoindre des membres de votre quartier. Voulez-vous rajouter un autre quartier dans lequel agir ?</string>
-
 
     <string name="input_names_title">Heureux de vous revoir !</string>
     <string name="input_names_sub">Cette fois, pourriez-vous me dire comment vous vous appelez ?</string>

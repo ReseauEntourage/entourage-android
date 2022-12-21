@@ -23,7 +23,6 @@ class EntourageEvent : BaseEntourage, Serializable {
     constructor(category: String?,
                 title: String, description: String, location: LocationPoint) : super(GROUPTYPE_OUTING, GROUPTYPE_OUTING, category, title, description, location)
 
-
     override fun getFeedTypeLong(context: Context): String {
         metadata?.let{
             if(it.startDate != null && it.endDate != null) {

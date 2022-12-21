@@ -1,6 +1,5 @@
 package social.entourage.android.new_v8.home.pedago
 
-
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.appcompat.content.res.AppCompatResources
@@ -22,7 +21,6 @@ class FilterAdapter(
 
     private var selectedItemPos = selectedFilterPosition
     private var lastItemSelectedPos = selectedFilterPosition
-
 
     inner class ViewHolder(val binding: NewFilterItemLightBinding) :
         RecyclerView.ViewHolder(binding.root) {

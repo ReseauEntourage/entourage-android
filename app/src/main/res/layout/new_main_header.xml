@@ -22,7 +22,6 @@
         android:layout_height="wrap_content"
         android:paddingHorizontal="15dp">
 
-
         <ImageView
             android:id="@+id/icon_back"
             android:layout_width="40dp"

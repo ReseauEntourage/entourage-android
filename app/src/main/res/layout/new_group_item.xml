@@ -8,7 +8,6 @@
     android:orientation="vertical"
     android:paddingTop="15dp">
 
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -63,7 +62,6 @@
                     android:visibility="gone" />
             </LinearLayout>
 
-
             <TextView
                 android:id="@+id/members"
                 style="@style/left_legend_grey"
@@ -81,7 +79,6 @@
 
         </LinearLayout>
     </LinearLayout>
-
 
     <View
         android:id="@+id/divider"

@@ -22,7 +22,6 @@ import social.entourage.android.tools.EntBus
 import social.entourage.android.tools.log.AnalyticsEvents
 import timber.log.Timber
 
-
 open class FeedItemViewHolderRenew(itemView: View) : BaseCardViewHolder(itemView) {
 
     private lateinit var feedItem: FeedItem

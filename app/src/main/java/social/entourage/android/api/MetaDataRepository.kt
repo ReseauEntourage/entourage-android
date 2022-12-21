@@ -19,7 +19,6 @@ object MetaDataRepository {
     var groupImages: MutableLiveData<List<Image>> = MutableLiveData()
     var eventsImages: MutableLiveData<List<Image>> = MutableLiveData()
 
-
     fun getMetaData() {
         val metaDataRequest = EntourageApplication.get().apiModule.metaDataRequest
         metaDataRequest.getMetaData().enqueue(object : Callback<MetaDataResponse> {

@@ -25,7 +25,6 @@ import social.entourage.android.tools.view.countrycodepicker.Country
 private const val ARG_PHONE = "phone"
 private const val ARG_COUNTRY = "couuntry"
 
-
 class OnboardingPhase2Fragment : Fragment() {
     private val TIME_BEFORE_CALL = 60
     private var callback:OnboardingStartCallback? = null

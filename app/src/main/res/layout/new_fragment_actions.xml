@@ -248,7 +248,6 @@
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
             app:userInputEnabled="@{false}" />
 
-
         <uk.co.markormesher.android_fab.FloatingActionButton
             android:id="@+id/create_action"
             android:layout_width="match_parent"

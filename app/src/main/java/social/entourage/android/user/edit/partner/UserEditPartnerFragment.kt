@@ -25,7 +25,6 @@ import social.entourage.android.api.request.PartnerResponse
 import social.entourage.android.api.request.PartnerWrapper
 import social.entourage.android.api.request.PartnersResponse
 import social.entourage.android.base.BaseDialogFragment
-import social.entourage.android.old_v7.user.edit.UserEditFragment
 
 /**
  *
@@ -56,9 +55,7 @@ class UserEditPartnerFragment  : BaseDialogFragment() {
     }
 
     private fun configureView() {
-        (parentFragmentManager.findFragmentByTag(UserEditFragment.TAG) as UserEditFragment?)?.let { userEditFragment ->
-            user = userEditFragment.presenter.editedUser
-        } ?: run { user = EntourageApplication.me(activity) }
+        user = EntourageApplication.me(activity)
 
         // Configure the partners list
         user_edit_partner_listview?.adapter = adapter

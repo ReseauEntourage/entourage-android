@@ -19,7 +19,6 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:src="@drawable/new_edit_profile" />
 
-
         <TextView
             android:id="@+id/title"
             style="@style/left_courant_orange"

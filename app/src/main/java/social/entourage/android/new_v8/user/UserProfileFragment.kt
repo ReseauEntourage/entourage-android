@@ -33,7 +33,6 @@ import java.util.*
 
 class UserProfileFragment : Fragment() {
 
-
     private var _binding: NewFragmentUserProfileBinding? = null
     val binding: NewFragmentUserProfileBinding get() = _binding!!
     private val userPresenter: UserPresenter by lazy { UserPresenter() }
@@ -127,7 +126,6 @@ class UserProfileFragment : Fragment() {
         }
         binding.interests.adapter?.notifyDataSetChanged()
     }
-
 
     private fun updateView() {
         userPresenter.user.value?.let { user = it }

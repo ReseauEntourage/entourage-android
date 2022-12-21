@@ -28,7 +28,6 @@ import social.entourage.android.R
 import social.entourage.android.new_v8.events.list.SectionHeader
 import social.entourage.android.new_v8.models.EventUiModel
 import social.entourage.android.new_v8.models.Events
-import social.entourage.android.old_v7.tools.UtilsV7
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -40,7 +39,6 @@ import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
 import kotlin.math.max
-
 
 object Utils {
     fun showToast(context: Context, message: String) {
@@ -242,7 +240,7 @@ object Utils {
             return context.getString(R.string.date_yesterday)
         }
         // other date
-        val month = UtilsV7.getMonthAsString(lastUpdate[Calendar.MONTH], context)
+        val month = Utils.getMonthAsString(lastUpdate[Calendar.MONTH], context)
         return context.getString(R.string.date_format_short, lastUpdate[Calendar.DAY_OF_MONTH], month)
     }
 
@@ -299,5 +297,22 @@ object Utils {
             ".jpg",
             storageDir
         )
+    }
+    fun getMonthAsString(month: Int, context: Context): String {
+        return when (month) {
+            Calendar.JANUARY -> context.getString(R.string.date_month_1)
+            Calendar.FEBRUARY -> context.getString(R.string.date_month_2)
+            Calendar.MARCH -> context.getString(R.string.date_month_3)
+            Calendar.APRIL -> context.getString(R.string.date_month_4)
+            Calendar.MAY -> context.getString(R.string.date_month_5)
+            Calendar.JUNE -> context.getString(R.string.date_month_6)
+            Calendar.JULY -> context.getString(R.string.date_month_7)
+            Calendar.AUGUST -> context.getString(R.string.date_month_8)
+            Calendar.SEPTEMBER -> context.getString(R.string.date_month_9)
+            Calendar.OCTOBER -> context.getString(R.string.date_month_10)
+            Calendar.NOVEMBER -> context.getString(R.string.date_month_11)
+            Calendar.DECEMBER -> context.getString(R.string.date_month_12)
+            else -> ""
+        }
     }
 }

@@ -26,7 +26,6 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:title="@{@string/group_events_new}" />
 
-
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/events"
                 android:layout_width="match_parent"

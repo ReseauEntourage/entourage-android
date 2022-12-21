@@ -53,7 +53,6 @@ class ReportModalFragment : BottomSheetDialogFragment() {
     private var reportType: Int? = Const.DEFAULT_VALUE
     private var title: String = ""
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

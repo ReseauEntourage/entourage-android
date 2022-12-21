@@ -25,7 +25,6 @@ class PostAdapter(
     var onClick: (Post, Boolean) -> Unit
 ) : RecyclerView.Adapter<PostAdapter.ViewHolder>() {
 
-
     inner class ViewHolder(val binding: NewLayoutPostBinding) :
         RecyclerView.ViewHolder(binding.root)
 

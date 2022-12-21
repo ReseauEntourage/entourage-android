@@ -11,5 +11,4 @@
         android:name="isActionDemand"
         app:argType="boolean"/>
 
-
 </navigation>

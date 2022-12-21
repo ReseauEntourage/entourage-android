@@ -17,7 +17,6 @@
             app:layout_constraintTop_toTopOf="parent"
             app:title="@{@string/help_about}" />
 
-
         <ScrollView
             android:id="@+id/scrollView"
             android:layout_width="match_parent"
@@ -66,7 +65,6 @@
                     android:layout_height="wrap_content"
                     app:label="@{@string/feedback}" />
 
-
                 <include
                     android:id="@+id/cgu"
                     layout="@layout/new_about_item"
@@ -74,14 +72,12 @@
                     android:layout_height="wrap_content"
                     app:label="@{@string/cgu}" />
 
-
                 <include
                     android:id="@+id/confidentiality"
                     layout="@layout/new_about_item"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:label="@{@string/confidentiality}" />
-
 
                 <include
                     android:id="@+id/licence"

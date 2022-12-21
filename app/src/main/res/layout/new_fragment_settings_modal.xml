@@ -182,7 +182,6 @@
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-
                 <TextView
                     android:id="@+id/report"
                     style="@style/left_courant_bold_orange"

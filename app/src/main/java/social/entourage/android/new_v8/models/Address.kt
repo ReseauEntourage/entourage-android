@@ -3,7 +3,6 @@ package social.entourage.android.new_v8.models
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
-
 data class Address(
     @SerializedName("latitude")
     var latitude: Double = 0.0,

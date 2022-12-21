@@ -13,9 +13,7 @@ import social.entourage.android.databinding.NewFragmentMyGroupsListBinding
 import social.entourage.android.new_v8.groups.GroupPresenter
 import social.entourage.android.new_v8.models.Group
 
-
 class MyGroupsListFragment : Fragment() {
-
 
     private var _binding: NewFragmentMyGroupsListBinding? = null
     val binding: NewFragmentMyGroupsListBinding get() = _binding!!
@@ -49,7 +47,6 @@ class MyGroupsListFragment : Fragment() {
         updateView(groupsList.isEmpty())
         binding.recyclerView.adapter?.notifyDataSetChanged()
     }
-
 
     private fun updateView(isListEmpty: Boolean) {
         binding.emptyStateLayout.isVisible = isListEmpty

@@ -31,7 +31,6 @@ data class Action(
     @field:SerializedName("author")
     val author: AuthorAction? = null,
 
-
     @field:SerializedName("section")
     var sectionName: String? = null,
 
@@ -54,7 +53,6 @@ data class Action(
     @field:SerializedName("recipient_consent_obtained")
     var hasConsent: Boolean? = null
 
-
 ) : Serializable {
 
     fun title(value: String) = apply {
@@ -64,8 +62,6 @@ data class Action(
     fun description(value: String) = apply {
         description = value
     }
-
-
 
     fun isCancel() : Boolean {
         return status == "closed"
@@ -119,7 +115,6 @@ class AuthorAction (
     }
 
 }
-
 
 data class MetadataActionLocation (
     var streetAddress: String? = "",

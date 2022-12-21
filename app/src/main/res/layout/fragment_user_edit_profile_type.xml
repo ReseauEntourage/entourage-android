@@ -10,7 +10,6 @@ android:focusableInTouchMode="true"
 android:id="@+id/onboard_phone_mainlayout"
 tools:context="social.entourage.android.old_v7.user.edit.UserEditProfileType">
 
-
     <LinearLayout
         android:id="@+id/edit_place_title_layout"
         android:layout_width="match_parent"

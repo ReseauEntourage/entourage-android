@@ -74,10 +74,8 @@ class CreateActionFragment : Fragment() {
             binding.uiHeaderTitle.text = if (isDemand) getString(R.string.action_create_demand_title) else getString(R.string.action_create_contrib_title)
         }
 
-
         val currentItemPager = viewPager?.currentItem
         initializeViewPager(currentItemPager)
-
 
         binding.iconBack.setOnClickListener {
             onBackButton()

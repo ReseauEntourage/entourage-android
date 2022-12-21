@@ -15,7 +15,6 @@ import social.entourage.android.tools.disable
 import social.entourage.android.tools.enable
 import timber.log.Timber
 
-
 class UserEditProfileType : BaseDialogFragment(), ValidateActionsDelegate {
 
     private var userTypeSelected: UserTypeSelection = UserTypeSelection.NONE

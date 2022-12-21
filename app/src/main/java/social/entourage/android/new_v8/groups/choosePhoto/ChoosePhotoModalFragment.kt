@@ -35,7 +35,6 @@ class ChoosePhotoModalFragment : BottomSheetDialogFragment() {
     private lateinit var choosePhotoAdapter: ChoosePhotoAdapter
     private var imagesType: ImagesType? = null
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -133,7 +132,6 @@ class ChoosePhotoModalFragment : BottomSheetDialogFragment() {
             }
         }
     }
-
 
     companion object {
         const val TAG = "ChoosePhotoModalFragment"

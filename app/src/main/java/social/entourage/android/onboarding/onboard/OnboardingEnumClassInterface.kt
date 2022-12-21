@@ -46,8 +46,6 @@ interface OnboardingStartCallback {
     fun requestNewCode()
 }
 
-
-
 interface OnboardingChoosePlaceCallback {
     fun updatePlace(address: User.Address?)
 }
@@ -86,7 +84,6 @@ class AssoActivities : Serializable {
         return _array
     }
 }
-
 
 /********************************
  * Class SdfNeighbourActivities

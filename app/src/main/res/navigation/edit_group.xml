@@ -8,5 +8,4 @@
         android:id="@+id/edit_group_fragment"
         android:name="social.entourage.android.new_v8.groups.edit.EditGroupFragment" />
 
-
 </navigation>

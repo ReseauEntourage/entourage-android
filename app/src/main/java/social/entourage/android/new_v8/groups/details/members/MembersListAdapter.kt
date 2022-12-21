@@ -1,6 +1,5 @@
 package social.entourage.android.new_v8.groups.details.members
 
-
 import android.app.Activity
 import android.content.Intent
 import android.net.Uri
@@ -25,7 +24,6 @@ class MembersListAdapter(
     private var membersList: List<EntourageUser>,
     private var onItemShowListener: OnItemShowListener
 ) : RecyclerView.Adapter<MembersListAdapter.ViewHolder>() {
-
 
     inner class ViewHolder(val binding: NewGroupMemberItemBinding) :
         RecyclerView.ViewHolder(binding.root)

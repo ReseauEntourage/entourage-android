@@ -1,6 +1,5 @@
 package social.entourage.android
 
-
 import android.content.Context
 import android.view.WindowManager
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
@@ -31,7 +30,6 @@ import java.io.IOException
 import java.util.*
 import kotlin.random.Random
 
-
 @LargeTest
 @RunWith(AndroidJUnit4::class)
 class HomeExpertTest {
@@ -45,7 +43,6 @@ class HomeExpertTest {
     private var jsonResponse: String = ""
     private val login: String = "651234145"
     private val password: String = "108674"
-
 
     /****************************** Views ******************************/
 
@@ -86,7 +83,6 @@ class HomeExpertTest {
     private val closeButton = onView(allOf(withId(R.id.entourage_info_close), isDisplayed()))
     private val titleCloseButton = onView(allOf(withId(R.id.title_close_button), isDisplayed()))
 
-
     /****************************** Before each test ******************************/
 
     @Before
@@ -105,7 +101,6 @@ class HomeExpertTest {
 
         Thread.sleep(4000)
     }
-
 
     /****************************** HomeExpertFragment ******************************/
 
@@ -196,7 +191,6 @@ class HomeExpertTest {
         enableWifiAndData(true)
     }
 
-
     /****************************** GDSMainActivity ******************************/
 
     @Test
@@ -208,7 +202,6 @@ class HomeExpertTest {
         val gdsTitleTv = onView(allOf(withId(R.id.textView28), isDisplayed()))
         gdsTitleTv.check(matches(withText(R.string.gds_title)))
     }
-
 
     /****************************** PlusFragment ******************************/
 
@@ -244,7 +237,6 @@ class HomeExpertTest {
         askHelpTitleTv.check(matches(isDisplayed()))
     }
 
-
     /****************************** MyEntouragesFragment ******************************/
 
     @Test
@@ -268,7 +260,6 @@ class HomeExpertTest {
         val cancelButton = onView(allOf(withId(R.id.entourage_option_cancel), isDisplayed()))
         cancelButton.check(matches(withText(R.string.entourage_info_options_close)))
     }
-
 
     /****************************** MainProfileFragment ******************************/
 
@@ -328,7 +319,6 @@ class HomeExpertTest {
         preOnboardingTitleTv.check(matches(withText(R.string.pre_onboard_tutorial_title1)))
     }
 
-
     /****************************** UserFragment ******************************/
 
     @Test
@@ -351,7 +341,6 @@ class HomeExpertTest {
 
         clickTitleCloseButton()
     }
-
 
     /****************************** UserEditFragment ******************************/
 
@@ -419,7 +408,6 @@ class HomeExpertTest {
         saveButton.perform(click())
     }
 
-
     /****************************** UserEditProfileFragment ******************************/
 
     @Test
@@ -458,7 +446,6 @@ class HomeExpertTest {
         val emailTv = onView(allOf(withId(R.id.user_email), isDisplayed()))
         emailTv.check(matches(withText(randomEmail)))
     }
-
 
     /****************************** UserEditPasswordFragment ******************************/
 
@@ -514,7 +501,6 @@ class HomeExpertTest {
         savePasswordButton.perform(click())
     }
 
-
     /****************************** AboutFragment ******************************/
 
     @Test
@@ -559,7 +545,6 @@ class HomeExpertTest {
         titlePage1Tv.check(matches(isDisplayed()))
     }
 
-
     /****************************** UserEditAboutFragment ******************************/
 
     @Test
@@ -582,7 +567,6 @@ class HomeExpertTest {
         val aboutTv = onView(allOf(withId(R.id.user_about), isDisplayed()))
         aboutTv.check(matches(withText(randomText)))
     }
-
 
     /****************************** Bottom bar buttons ******************************/
 
@@ -625,7 +609,6 @@ class HomeExpertTest {
         val editProfileTv = onView(allOf(withId(R.id.action_edit_profile), isDisplayed()))
         editProfileTv.check(matches(withText(R.string.action_edit_profile_regular)))
     }
-
 
     /****************************** Utils ******************************/
 

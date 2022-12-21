@@ -8,5 +8,4 @@
         android:id="@+id/messages_fragment"
         android:name="social.entourage.android.new_v8.discussions.DiscussionsMainFragment" />
 
-
 </navigation>

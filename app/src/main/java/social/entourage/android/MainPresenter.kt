@@ -1,0 +1,264 @@
+package social.entourage.android
+
+import android.content.*
+import android.location.Location
+import android.net.Uri
+import android.widget.Button
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
+import androidx.collection.ArrayMap
+import okhttp3.ResponseBody
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import social.entourage.android.api.model.ApplicationInfo
+import social.entourage.android.api.request.ApplicationInfoRequest
+import social.entourage.android.api.request.ApplicationWrapper
+import social.entourage.android.api.request.UserRequest
+import social.entourage.android.api.request.UserResponse
+import social.entourage.android.authentication.AuthenticationController
+import social.entourage.android.configuration.Configuration
+import social.entourage.android.new_v8.user.UserProfileActivity
+import social.entourage.android.old_v7.user.edit.photo.PhotoEditFragment
+import social.entourage.android.onboarding.pre_onboarding.PreOnboardingStartActivity
+import social.entourage.android.tools.log.AnalyticsEvents
+import social.entourage.android.user.AvatarUpdatePresenter
+import social.entourage.android.user.edit.photo.ChoosePhotoFragment
+import timber.log.Timber
+
+/**
+ * Created by Mihai Ionescu on 27/04/2018.
+ */
+class MainPresenter(private val activity: MainActivity) : AvatarUpdatePresenter {
+    private val applicationInfoRequest: ApplicationInfoRequest
+        get() = EntourageApplication.get().apiModule.applicationInfoRequest
+    private val authenticationController: AuthenticationController
+        get() = EntourageApplication.get().authenticationController
+    private val userRequest: UserRequest
+        get() = EntourageApplication.get().apiModule.userRequest
+
+    // ----------------------------------
+    // ATTRIBUTES
+    // ----------------------------------
+    private var checkForUpdate = true
+
+    // ----------------------------------
+    // MENU HANDLING
+    // ----------------------------------
+    //Handle menu profile new version
+    fun handleMenuProfile(menuPosition: String) {
+        when (menuPosition) {
+            "editProfile" -> {
+                AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_PROFILE_MODPROFIL)
+                activity.startActivityForResult(Intent(activity, UserProfileActivity::class.java), 0)
+            }
+            else -> Toast.makeText(activity, R.string.error_not_yet_implemented, Toast.LENGTH_SHORT)
+                .show()
+        }
+    }
+
+    // ----------------------------------
+    // DISPLAY SCREENS METHODS
+    // ----------------------------------
+    private fun displayAppUpdateDialog() {
+        val builder = AlertDialog.Builder(activity)
+        val dialog = builder.setView(R.layout.layout_dialog_version_update)
+            .setCancelable(false)
+            .create()
+        dialog.show()
+        val updateButton = dialog.findViewById<Button>(R.id.update_dialog_button)
+        updateButton?.setOnClickListener {
+            try {
+                val uri = Uri.parse(activity.getString(R.string.market_url, activity.packageName))
+                activity.startActivity(Intent(Intent.ACTION_VIEW, uri))
+            } catch (e: Exception) {
+                Toast.makeText(
+                    activity,
+                    R.string.error_google_play_store_not_installed,
+                    Toast.LENGTH_SHORT
+                ).show()
+                dialog.cancel()
+            }
+        }
+    }
+
+    fun displayTutorial(forced: Boolean) {
+        if (!forced && !Configuration.showTutorial()) return
+        //Configuration.INSTANCE.showTutorial() is always false
+        try {
+            activity.startActivityForResult(Intent(activity, PreOnboardingStartActivity::class.java), 0)
+            activity.finish()
+        } catch (e: Exception) {
+            // This is just to see if we still get the Illegal state exception
+            Timber.e(e)
+        }
+    }
+
+    // ----------------------------------
+    // HELPER METHODS
+    // ----------------------------------
+    private var deviceID: String?
+        get() = EntourageApplication.get().sharedPreferences
+            .getString(EntourageApplication.KEY_REGISTRATION_ID, null)
+        private set(pushNotificationToken) {
+            val editor = EntourageApplication.get().sharedPreferences.edit()
+            editor.putString(EntourageApplication.KEY_REGISTRATION_ID, pushNotificationToken)
+            editor.apply()
+        }
+
+    // ----------------------------------
+    // API CALLS METHODS
+    // ----------------------------------
+    fun checkForUpdate() {
+        if (checkForUpdate) {
+            val call = applicationInfoRequest.checkForUpdate()
+            call.enqueue(object : Callback<ResponseBody> {
+                override fun onResponse(
+                    call: Call<ResponseBody>,
+                    response: Response<ResponseBody>
+                ) {
+                    if (response.code() == 426) {
+                        if (!BuildConfig.DEBUG) {
+                            displayAppUpdateDialog()
+                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                    Timber.w(t, "Error connecting to API")
+                }
+            })
+            checkForUpdate = false
+        }
+    }
+
+    fun updateUserLocation(location: Location?) {
+        val deviceId = deviceID ?: return
+        val user = ArrayMap<String, Any>()
+        if (location != null) {
+            user[KEY_DEVICE_LOCATION] = location
+        }
+        user[KEY_DEVICE_ID] = deviceId
+        user[KEY_DEVICE_TYPE] = ANDROID_DEVICE
+        val call = userRequest.updateUser(user)
+        call.enqueue(object : Callback<UserResponse> {
+            override fun onResponse(call: Call<UserResponse>, response: Response<UserResponse>) {
+                if (response.isSuccessful) {
+                    if (authenticationController.isAuthenticated) {
+                        response.body()?.user?.let { user -> authenticationController.saveUser(user) }
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<UserResponse>, t: Throwable) {
+                Timber.e(t)
+            }
+        })
+    }
+
+    override fun updateUserPhoto(amazonFile: String) {
+        val user = ArrayMap<String, Any>()
+        user["avatar_key"] = amazonFile
+        val request = ArrayMap<String, Any>()
+        request["user"] = user
+        val call = userRequest.updateUser(request)
+        call.enqueue(object : Callback<UserResponse> {
+            override fun onResponse(call: Call<UserResponse>, response: Response<UserResponse>) {
+                activity.dismissProgressDialog()
+                if (response.isSuccessful) {
+                    if (authenticationController.isAuthenticated) {
+                        response.body()
+                            ?.let { responseBody -> authenticationController.saveUser(responseBody.user) }
+                    }
+                    (activity.supportFragmentManager.findFragmentByTag(PhotoEditFragment.TAG) as PhotoEditFragment?)?.let { photoEditFragment ->
+                        if (photoEditFragment.onPhotoSent(true)) {
+                            val photoChooseSourceFragment =
+                                activity.supportFragmentManager.findFragmentByTag(
+                                    ChoosePhotoFragment.TAG
+                                ) as ChoosePhotoFragment?
+                            photoChooseSourceFragment?.dismiss()
+                        }
+                    }
+                } else {
+                    Toast.makeText(
+                        activity,
+                        R.string.user_photo_error_not_saved,
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    val photoEditFragment =
+                        activity.supportFragmentManager.findFragmentByTag(PhotoEditFragment.TAG) as PhotoEditFragment?
+                    photoEditFragment?.onPhotoSent(false)
+                    Timber.e(activity.getString(R.string.user_photo_error_not_saved))
+                }
+            }
+
+            override fun onFailure(call: Call<UserResponse>, t: Throwable) {
+                activity.dismissProgressDialog()
+                Timber.e(t)
+                Toast.makeText(activity, R.string.user_photo_error_not_saved, Toast.LENGTH_SHORT)
+                    .show()
+                val photoEditFragment =
+                    activity.supportFragmentManager.findFragmentByTag(PhotoEditFragment.TAG) as PhotoEditFragment?
+                photoEditFragment?.onPhotoSent(false)
+            }
+        })
+    }
+
+    fun deleteApplicationInfo() {
+        val previousDeviceID = deviceID
+        if (previousDeviceID.isNullOrBlank()) {
+            return
+        }
+        val applicationInfo = ApplicationInfo(previousDeviceID)
+        val call = applicationInfoRequest.deleteApplicationInfo(ApplicationWrapper(applicationInfo))
+        call.enqueue(object : Callback<ResponseBody> {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                if (response.isSuccessful) {
+                    Timber.d("deleting application info with success")
+                } else {
+                    Timber.e("deleting application info error")
+                }
+            }
+
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                Timber.e(t)
+            }
+        })
+        deviceID = null
+    }
+
+    fun updateApplicationInfo(pushNotificationToken: String) {
+        //delete old one if existing
+        if (pushNotificationToken != deviceID) {
+            deleteApplicationInfo()
+        }
+        //then add new one
+        deviceID = pushNotificationToken
+        val applicationInfo = ApplicationInfo(pushNotificationToken)
+        val applicationWrapper = ApplicationWrapper(applicationInfo)
+        applicationWrapper.setNotificationStatus(ApplicationInfo.NOTIF_PERMISSION_AUTHORIZED)
+        applicationInfoRequest.updateApplicationInfo(applicationWrapper)
+            .enqueue(object : Callback<ResponseBody> {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                if (!response.isSuccessful) {
+                    Timber.e("updating application info error")
+                }
+            }
+
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                Timber.e(t)
+            }
+        })
+    }
+
+    companion object {
+        private const val KEY_EMAIL = "email"
+        private const val KEY_SMS_COE = "sms_code"
+        private const val KEY_PHONE = "phone"
+        private const val KEY_DEVICE_ID = "device_id"
+        private const val KEY_DEVICE_TYPE = "device_type"
+        private const val KEY_DEVICE_LOCATION = "device_location"
+        private const val ANDROID_DEVICE = "android"
+    }
+
+}

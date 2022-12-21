@@ -10,7 +10,6 @@ import social.entourage.android.api.model.UserReportWrapper
 import social.entourage.android.new_v8.home.UnreadMessages
 import social.entourage.android.user.PrepareAvatarUploadRepository
 
-
 class UserResponse(val user: User)
 class UnreadCountWrapper(@field:SerializedName("user") val unreadMessages: UnreadMessages)
 

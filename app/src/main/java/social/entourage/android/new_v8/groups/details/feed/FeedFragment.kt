@@ -342,7 +342,6 @@ class FeedFragment : Fragment() {
         }
     }
 
-
     private fun initializeMembersPhotos() {
         binding.recyclerView.apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
