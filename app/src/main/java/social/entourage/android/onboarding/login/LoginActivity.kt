@@ -62,7 +62,7 @@ class LoginActivity : BaseActivity() {
 
         ui_login_button_resend_code?.setOnClickListener {
             if(ui_login_phone_et_phone?.text.toString().isNotEmpty()) {
-                CustomAlertDialog.show(
+                CustomAlertDialog.showWithCancelFirst(
                     this,
                     getString(R.string.login_button_resend_code),
                     String.format(
