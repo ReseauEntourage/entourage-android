@@ -24,9 +24,9 @@ import social.entourage.android.old_v7.base.map.filter.MapFilterFactory
 import social.entourage.android.old_v7.base.newsfeed.NewsfeedFragment
 import social.entourage.android.old_v7.base.newsfeed.NewsfeedTabItem
 import social.entourage.android.old_v7.entourage.FeedItemOptionsFragment
-import social.entourage.android.service.EntService
-import social.entourage.android.service.EntService.LocalBinder
-import social.entourage.android.service.EntourageServiceListener
+import social.entourage.android.old_v7.service.EntService_v7
+import social.entourage.android.old_v7.service.EntService_v7.LocalBinder
+import social.entourage.android.old_v7.service.EntourageServiceListener
 import social.entourage.android.tools.view.EntSnackbar
 import timber.log.Timber
 
@@ -308,7 +308,7 @@ class NewsFeedActionsFragment : NewsfeedFragment(), EntourageServiceListener {
                     return
                 }
                 try {
-                    val intent = Intent(it, EntService::class.java)
+                    val intent = Intent(it, EntService_v7::class.java)
                     it.startService(intent)
                     it.bindService(intent, this, Context.BIND_AUTO_CREATE)
                 } catch (e: IllegalStateException) {

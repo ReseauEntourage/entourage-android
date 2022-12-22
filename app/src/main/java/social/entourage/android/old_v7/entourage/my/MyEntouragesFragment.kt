@@ -27,8 +27,8 @@ import social.entourage.android.base.BaseViewHolderListener
 import social.entourage.android.old_v7.MainActivity_v7
 import social.entourage.android.old_v7.entourage.my.MyEntouragesAdapter.LoaderCallback
 import social.entourage.android.old_v7.entourage.my.filter.MyEntouragesFilter
-import social.entourage.android.service.EntService
-import social.entourage.android.service.EntService.LocalBinder
+import social.entourage.android.old_v7.service.EntService_v7
+import social.entourage.android.old_v7.service.EntService_v7.LocalBinder
 import social.entourage.android.tools.EntBus
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.view.EntSnackbar
@@ -304,7 +304,7 @@ class MyEntouragesFragment  : BaseDialogFragment(), BaseViewHolderListener, Load
     }
 
     private inner class ServiceConnection : android.content.ServiceConnection {
-        private var entService: EntService? = null
+        private var entService: EntService_v7? = null
         private var isBound = false
         override fun onServiceConnected(name: ComponentName, service: IBinder) {
             if (activity != null) {
@@ -328,7 +328,7 @@ class MyEntouragesFragment  : BaseDialogFragment(), BaseViewHolderListener, Load
         fun doBindService() {
             if (activity != null) {
                 try {
-                    val intent = Intent(activity, EntService::class.java)
+                    val intent = Intent(activity, EntService_v7::class.java)
                     requireActivity().startService(intent)
                     requireActivity().bindService(intent, this, Context.BIND_AUTO_CREATE)
                 } catch (e: IllegalStateException) {

@@ -2,6 +2,7 @@ package social.entourage.android
 
 import android.content.Intent
 import android.os.Bundle
+import androidx.core.app.NotificationManagerCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
@@ -43,7 +44,14 @@ class MainActivity : BaseSecuredActivity() {
             presenter.updateUserLocation(EntLocation.currentLocation)
             //initialize the push notifications
             initializePushNotifications()
+            updateAnalyticsInfo()
+            //TODO authenticationController.me?.unreadCount?.let { bottomBar?.updateBadgeCountForUser(it) }
         }
+    }
+
+    override fun onStart() {
+        presenter.checkForUpdate()
+        super.onStart()
     }
 
     private fun handleUpdateBadgeResponse(unreadMessages: UnreadMessages) {
@@ -52,7 +60,7 @@ class MainActivity : BaseSecuredActivity() {
 
     override fun onResume() {
         super.onResume()
-
+        //TODO bottomBar?.refreshBadgeCount()
         intent?.action?.let { action ->
             checkIntentAction(action, intent?.extras)
         }
@@ -61,6 +69,16 @@ class MainActivity : BaseSecuredActivity() {
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
         this.intent = intent
+    }
+
+    private fun updateAnalyticsInfo() {
+        authenticationController.me?.let { user ->
+            AnalyticsEvents.updateUserInfo(
+                user,
+                applicationContext,
+                NotificationManagerCompat.from(this).areNotificationsEnabled()
+            )
+        }
     }
 
     fun logout() {

@@ -46,7 +46,7 @@ import social.entourage.android.entourage.category.EntourageCategory
 import social.entourage.android.entourage.category.EntourageCategoryManager
 import social.entourage.android.old_v7.MainActivity_v7
 import social.entourage.android.old_v7.entourage.information.FeedItemInformationFragment
-import social.entourage.android.service.EntService
+import social.entourage.android.old_v7.service.EntService_v7
 import social.entourage.android.tools.EntBus
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.view.EntSnackbar
@@ -62,7 +62,7 @@ abstract class NewsfeedFragment : BaseMapFragment(R.layout.fragment_map), NewsFe
     private var onMapReadyCallback: OnMapReadyCallback? = null
     protected var longTapCoordinates: LatLng? = null
     private var previousEmptyListPopupLocation: Location? = null
-    protected var entService: EntService? = null
+    protected var entService: EntService_v7? = null
     protected var loaderStop: ProgressDialog? = null
     protected var markersMap: MutableMap<String, Any?> =  TreeMap()
     private var initialNewsfeedLoaded = false

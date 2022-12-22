@@ -19,17 +19,14 @@ import social.entourage.android.api.request.UserResponse
 import social.entourage.android.authentication.AuthenticationController
 import social.entourage.android.configuration.Configuration
 import social.entourage.android.new_v8.user.UserProfileActivity
-import social.entourage.android.old_v7.user.edit.photo.PhotoEditFragment
 import social.entourage.android.onboarding.pre_onboarding.PreOnboardingStartActivity
 import social.entourage.android.tools.log.AnalyticsEvents
-import social.entourage.android.user.AvatarUpdatePresenter
-import social.entourage.android.user.edit.photo.ChoosePhotoFragment
 import timber.log.Timber
 
 /**
  * Created by Mihai Ionescu on 27/04/2018.
  */
-class MainPresenter(private val activity: MainActivity) : AvatarUpdatePresenter {
+class MainPresenter(private val activity: MainActivity) {
     private val applicationInfoRequest: ApplicationInfoRequest
         get() = EntourageApplication.get().apiModule.applicationInfoRequest
     private val authenticationController: AuthenticationController
@@ -152,54 +149,6 @@ class MainPresenter(private val activity: MainActivity) : AvatarUpdatePresenter 
 
             override fun onFailure(call: Call<UserResponse>, t: Throwable) {
                 Timber.e(t)
-            }
-        })
-    }
-
-    override fun updateUserPhoto(amazonFile: String) {
-        val user = ArrayMap<String, Any>()
-        user["avatar_key"] = amazonFile
-        val request = ArrayMap<String, Any>()
-        request["user"] = user
-        val call = userRequest.updateUser(request)
-        call.enqueue(object : Callback<UserResponse> {
-            override fun onResponse(call: Call<UserResponse>, response: Response<UserResponse>) {
-                activity.dismissProgressDialog()
-                if (response.isSuccessful) {
-                    if (authenticationController.isAuthenticated) {
-                        response.body()
-                            ?.let { responseBody -> authenticationController.saveUser(responseBody.user) }
-                    }
-                    (activity.supportFragmentManager.findFragmentByTag(PhotoEditFragment.TAG) as PhotoEditFragment?)?.let { photoEditFragment ->
-                        if (photoEditFragment.onPhotoSent(true)) {
-                            val photoChooseSourceFragment =
-                                activity.supportFragmentManager.findFragmentByTag(
-                                    ChoosePhotoFragment.TAG
-                                ) as ChoosePhotoFragment?
-                            photoChooseSourceFragment?.dismiss()
-                        }
-                    }
-                } else {
-                    Toast.makeText(
-                        activity,
-                        R.string.user_photo_error_not_saved,
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    val photoEditFragment =
-                        activity.supportFragmentManager.findFragmentByTag(PhotoEditFragment.TAG) as PhotoEditFragment?
-                    photoEditFragment?.onPhotoSent(false)
-                    Timber.e(activity.getString(R.string.user_photo_error_not_saved))
-                }
-            }
-
-            override fun onFailure(call: Call<UserResponse>, t: Throwable) {
-                activity.dismissProgressDialog()
-                Timber.e(t)
-                Toast.makeText(activity, R.string.user_photo_error_not_saved, Toast.LENGTH_SHORT)
-                    .show()
-                val photoEditFragment =
-                    activity.supportFragmentManager.findFragmentByTag(PhotoEditFragment.TAG) as PhotoEditFragment?
-                photoEditFragment?.onPhotoSent(false)
             }
         })
     }

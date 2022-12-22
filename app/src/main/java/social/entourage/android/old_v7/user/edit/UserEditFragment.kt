@@ -25,6 +25,7 @@ import social.entourage.android.api.tape.Events.OnPartnerViewRequestedEvent
 import social.entourage.android.api.tape.Events.OnUserInfoUpdatedEvent
 import social.entourage.android.base.BaseActivity
 import social.entourage.android.base.BaseDialogFragment
+import social.entourage.android.new_v8.profile.editProfile.EditPasswordFragment
 import social.entourage.android.tools.EntBus
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.old_v7.user.UserOrganizationsAdapter
@@ -195,7 +196,7 @@ open class UserEditFragment  : BaseDialogFragment(), FragmentListener {
     }
 
     private fun onEditPassword() {
-        UserEditPasswordFragment().show(parentFragmentManager, UserEditPasswordFragment.TAG)
+        EditPasswordFragment().show(parentFragmentManager, EditPasswordFragment.TAG)
     }
 
     private fun onEditAboutClicked() {

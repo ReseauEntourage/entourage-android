@@ -30,7 +30,7 @@ import social.entourage.android.old_v7.navigation.EntBottomNavigationView
 import social.entourage.android.old_v7.user.UserFragment
 import social.entourage.android.old_v7.user.edit.UserEditFragment
 import social.entourage.android.old_v7.user.edit.photo.PhotoEditFragment
-import social.entourage.android.service.EntService
+import social.entourage.android.old_v7.service.EntService_v7
 import social.entourage.android.tools.EntBus
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.log.AnalyticsEvents.logEvent
@@ -39,7 +39,7 @@ import social.entourage.android.tools.log.AnalyticsEvents.updateUserInfo
 import social.entourage.android.user.AvatarUploadPresenter
 import social.entourage.android.user.AvatarUploadRepository
 import social.entourage.android.user.AvatarUploadView
-import social.entourage.android.user.edit.photo.OnboardingPhotoFragment.Companion.TAKE_PHOTO_REQUEST
+import social.entourage.android.user.edit.photo.OnboardingPhotoFragment
 import social.entourage.android.user.edit.photo.PhotoChooseInterface
 import social.entourage.android.user.edit.place.UserEditActionZoneFragment
 import timber.log.Timber
@@ -169,7 +169,7 @@ class MainActivity_v7 : BaseSecuredActivity(),
     override fun onResume() {
         super.onResume()
         if (intent?.action != null) {
-            if (intent.action == EntService.KEY_LOCATION_PROVIDER_DISABLED) {
+            if (intent.action == EntService_v7.KEY_LOCATION_PROVIDER_DISABLED) {
                 displayLocationProviderDisabledAlert()
             }
         } else {
@@ -348,7 +348,7 @@ class MainActivity_v7 : BaseSecuredActivity(),
 
     override fun onPhotoChosen(photoURI: Uri?, photoSource: Int) {
         photoURI?.path?.let { path ->
-            if (photoSource == TAKE_PHOTO_REQUEST) {
+            if (photoSource == OnboardingPhotoFragment.TAKE_PHOTO_REQUEST) {
                 logEvent(AnalyticsEvents.EVENT_PHOTO_SUBMIT)
             }
             //Upload the photo to Amazon S3

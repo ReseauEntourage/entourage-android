@@ -1,4 +1,4 @@
-package social.entourage.android.service
+package social.entourage.android.old_v7.service
 
 import social.entourage.android.api.model.feed.FeedItem
 import social.entourage.android.api.model.EntourageUser

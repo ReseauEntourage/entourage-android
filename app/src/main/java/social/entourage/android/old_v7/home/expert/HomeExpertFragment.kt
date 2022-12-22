@@ -45,7 +45,7 @@ import social.entourage.android.message.push.PushNotificationManager
 import social.entourage.android.old_v7.MainActivity_v7
 import social.entourage.android.old_v7.PlusFragment
 import social.entourage.android.onboarding.InputNamesFragment
-import social.entourage.android.service.EntService
+import social.entourage.android.old_v7.service.EntService_v7
 import social.entourage.android.tools.EntBus
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.view.EntSnackbar
@@ -58,7 +58,7 @@ class HomeExpertFragment : BaseFragment(), ApiConnectionListener, UserEditAction
     // ATTRIBUTES
     // ----------------------------------
     var presenter: HomeExpertPresenter
-    private var entService: EntService? = null
+    private var entService: EntService_v7? = null
 
     private var adapterHome: HomeFeedAdapter? = null
     //pagination
@@ -645,7 +645,7 @@ class HomeExpertFragment : BaseFragment(), ApiConnectionListener, UserEditAction
                 Timber.e("No activity for service")
                 return
             }
-            entService = (service as EntService.LocalBinder).service
+            entService = (service as EntService_v7.LocalBinder).service
             entService?.let {
                 it.registerApiListener(this@HomeExpertFragment)
                 it.updateHomefeed(pagination)
@@ -673,7 +673,7 @@ class HomeExpertFragment : BaseFragment(), ApiConnectionListener, UserEditAction
                     return
                 }
                 try {
-                    val intent = Intent(it, EntService::class.java)
+                    val intent = Intent(it, EntService_v7::class.java)
                     it.startService(intent)
                     it.bindService(intent, this, Context.BIND_AUTO_CREATE)
                 } catch (e: IllegalStateException) {

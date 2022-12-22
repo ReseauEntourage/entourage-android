@@ -62,8 +62,8 @@ import social.entourage.android.old_v7.entourage.invite.contacts.InviteContactsF
 import social.entourage.android.guide.poi.ReadPoiFragment
 import social.entourage.android.old_v7.MainActivity_v7
 import social.entourage.android.old_v7.mainprofile.MyActionsFragment
-import social.entourage.android.service.EntService
-import social.entourage.android.service.EntourageServiceListener
+import social.entourage.android.old_v7.service.EntService_v7
+import social.entourage.android.old_v7.service.EntourageServiceListener
 import social.entourage.android.tools.EntBus
 import social.entourage.android.old_v7.tools.EntError
 import social.entourage.android.tools.view.ShareMessageFragment
@@ -1585,11 +1585,11 @@ abstract class FeedItemInformationFragment : BaseDialogFragment(), EntourageServ
 
     protected inner class ServiceConnection : android.content.ServiceConnection {
         private var isBound = false
-        var boundService: EntService? = null
+        var boundService: EntService_v7? = null
 
         override fun onServiceConnected(name: ComponentName, service: IBinder) {
             if (activity != null) {
-                boundService = (service as EntService.LocalBinder).service
+                boundService = (service as EntService_v7.LocalBinder).service
                 boundService?.registerServiceListener(this@FeedItemInformationFragment)
                 isBound = true
             }
@@ -1607,7 +1607,7 @@ abstract class FeedItemInformationFragment : BaseDialogFragment(), EntourageServ
         fun doBindService() {
             if (activity != null) {
                 try {
-                    val intent = Intent(activity, EntService::class.java)
+                    val intent = Intent(activity, EntService_v7::class.java)
                     requireActivity().startService(intent)
                     requireActivity().bindService(intent, this, Context.BIND_AUTO_CREATE)
                 } catch (e: IllegalStateException) {
