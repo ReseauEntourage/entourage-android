@@ -6,7 +6,7 @@
     android:background="#F8F8F8"
     tools:context=".user.partner.PartnerFragment">
 
-    <social.entourage.android.old_v7.tools.view.CustomTitleView
+    <social.entourage.android.tools.view.CustomTitleView
         android:id="@+id/user_title_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

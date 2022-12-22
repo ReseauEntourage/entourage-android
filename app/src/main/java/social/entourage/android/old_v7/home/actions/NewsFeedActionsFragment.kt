@@ -11,7 +11,7 @@ import android.view.ViewGroup
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.snackbar.Snackbar
 import com.squareup.otto.Subscribe
-import kotlinx.android.synthetic.main.fragment_home_news.*
+import kotlinx.android.synthetic.main.v7_fragment_home_news.*
 import kotlinx.android.synthetic.main.fragment_map.fragment_map_filter_button
 import kotlinx.android.synthetic.main.fragment_map.fragment_map_main_layout
 import social.entourage.android.EntourageApplication
@@ -80,7 +80,7 @@ class NewsFeedActionsFragment : NewsfeedFragment(), EntourageServiceListener {
         }
 
         EntourageApplication.get().authenticationController.saveMapFilter()
-        return inflater.inflate(R.layout.fragment_home_news, container, false)
+        return inflater.inflate(R.layout.v7_fragment_home_news, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

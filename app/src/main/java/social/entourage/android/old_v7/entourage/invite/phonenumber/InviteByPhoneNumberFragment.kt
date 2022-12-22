@@ -7,7 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import kotlinx.android.synthetic.main.fragment_invite_by_phone_number.*
+import kotlinx.android.synthetic.main.v7_fragment_invite_by_phone_number.*
 import kotlinx.android.synthetic.main.layout_view_title.*
 import social.entourage.android.base.BaseActivity
 import social.entourage.android.R
@@ -29,7 +29,7 @@ class InviteByPhoneNumberFragment  : InviteBaseFragment() {
                               savedInstanceState: Bundle?): View? {
         super.onCreateView(inflater, container, savedInstanceState)
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_invite_by_phone_number, container, false)
+        return inflater.inflate(R.layout.v7_fragment_invite_by_phone_number, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

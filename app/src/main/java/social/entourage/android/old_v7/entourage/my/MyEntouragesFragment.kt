@@ -13,7 +13,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
 import com.squareup.otto.Subscribe
-import kotlinx.android.synthetic.main.fragment_my_entourages.*
+import kotlinx.android.synthetic.main.v7_fragment_my_entourages.*
 import social.entourage.android.*
 import social.entourage.android.api.ApiConnectionListener
 import social.entourage.android.api.model.*
@@ -72,7 +72,7 @@ class MyEntouragesFragment  : BaseDialogFragment(), BaseViewHolderListener, Load
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         super.onCreateView(inflater, container, savedInstanceState)
-        return inflater.inflate(R.layout.fragment_my_entourages, container, false)
+        return inflater.inflate(R.layout.v7_fragment_my_entourages, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

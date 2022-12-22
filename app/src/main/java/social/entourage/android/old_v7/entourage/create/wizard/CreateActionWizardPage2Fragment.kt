@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import kotlinx.android.synthetic.main.fragment_create_action_wizard_page2.*
+import kotlinx.android.synthetic.main.v7_fragment_create_action_wizard_page2.*
 import kotlinx.android.synthetic.main.layout_view_title.*
 import social.entourage.android.Constants
 import social.entourage.android.old_v7.MainActivity_v7
@@ -12,7 +12,6 @@ import social.entourage.android.R
 import social.entourage.android.base.BaseDialogFragment
 import social.entourage.android.new_v8.utils.Utils
 import social.entourage.android.tools.EntLinkMovementMethod
-import social.entourage.android.old_v7.tools.UtilsV7
 
 /**
  * Create Action Wizard Page 2 [BaseDialogFragment] subclass.
@@ -27,7 +26,7 @@ class CreateActionWizardPage2Fragment : BaseDialogFragment() {
                               savedInstanceState: Bundle?): View? {
         super.onCreateView(inflater, container, savedInstanceState)
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_create_action_wizard_page2, container, false)
+        return inflater.inflate(R.layout.v7_fragment_create_action_wizard_page2, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

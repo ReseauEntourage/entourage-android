@@ -40,7 +40,7 @@ class HeadlineAdapter(var homecard: HomeCard, val listener: HomeViewHolderListen
             val view = inflater.inflate(R.layout.layout_cell_headline_announce, parent, false)
             return AnnounceVH(view)
         }
-        val view = inflater.inflate(R.layout.layout_cell_headline_action, parent, false)
+        val view = inflater.inflate(R.layout.v7_layout_cell_headline_action, parent, false)
         return ActionVH(view)
     }
 

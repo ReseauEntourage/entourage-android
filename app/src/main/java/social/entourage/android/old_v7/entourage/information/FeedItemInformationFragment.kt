@@ -37,13 +37,13 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.fragment_entourage_information.*
-import kotlinx.android.synthetic.main.layout_entourage_information_top_buttons.*
+import kotlinx.android.synthetic.main.v7_fragment_entourage_information.*
+import kotlinx.android.synthetic.main.v7_layout_entourage_information_top_buttons.*
 import kotlinx.android.synthetic.main.layout_entourage_options.*
-import kotlinx.android.synthetic.main.layout_feed_action_card.*
+import kotlinx.android.synthetic.main.v7_layout_feed_action_card.*
 import kotlinx.android.synthetic.main.layout_invite_source.*
 import kotlinx.android.synthetic.main.layout_private_entourage_information.*
-import kotlinx.android.synthetic.main.layout_public_entourage_information.*
+import kotlinx.android.synthetic.main.v7_layout_public_entourage_information.*
 import org.joda.time.Days
 import org.joda.time.LocalDate
 import social.entourage.android.*
@@ -135,7 +135,7 @@ abstract class FeedItemInformationFragment : BaseDialogFragment(), EntourageServ
         savedInstanceState: Bundle?
     ): View? {
         super.onCreateView(inflater, container, savedInstanceState)
-        return inflater.inflate(R.layout.fragment_entourage_information, container, false)
+        return inflater.inflate(R.layout.v7_fragment_entourage_information, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

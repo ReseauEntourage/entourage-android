@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import kotlinx.android.synthetic.main.fragment_user_report.*
+import kotlinx.android.synthetic.main.v7_fragment_user_report.*
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
@@ -43,7 +43,7 @@ class UserReportFragment : BaseDialogFragment() {
     ): View? {
         super.onCreateView(inflater, container, savedInstanceState)
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_user_report, container, false)
+        return inflater.inflate(R.layout.v7_fragment_user_report, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

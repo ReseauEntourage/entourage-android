@@ -23,7 +23,7 @@ import com.google.android.gms.maps.model.*
 import com.google.android.libraries.places.compat.Place
 import com.google.android.libraries.places.compat.ui.PlaceSelectionListener
 import com.google.android.libraries.places.compat.ui.SupportPlaceAutocompleteFragment
-import kotlinx.android.synthetic.main.fragment_entourage_location.*
+import kotlinx.android.synthetic.main.v7_fragment_entourage_location.*
 import kotlinx.android.synthetic.main.layout_view_title.*
 import social.entourage.android.R
 import social.entourage.android.api.tape.Events.OnLocationPermissionGranted
@@ -100,7 +100,7 @@ class LocationFragment : BaseDialogFragment() {
     ): View? {
         super.onCreateView(inflater, container, savedInstanceState)
         // Inflate the layout for this fragment
-        val toReturn = inflater.inflate(R.layout.fragment_entourage_location, container, false)
+        val toReturn = inflater.inflate(R.layout.v7_fragment_entourage_location, container, false)
         toReturn?.viewTreeObserver?.addOnGlobalLayoutListener(object : OnGlobalLayoutListener {
             override fun onGlobalLayout() {
                 toReturn.let {

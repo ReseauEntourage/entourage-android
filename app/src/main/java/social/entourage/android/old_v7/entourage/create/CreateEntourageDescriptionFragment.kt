@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import kotlinx.android.synthetic.main.fragment_create_entourage_description.*
+import kotlinx.android.synthetic.main.v7_fragment_create_entourage_description.*
 import kotlinx.android.synthetic.main.layout_view_title.*
 import social.entourage.android.R
 import social.entourage.android.api.model.BaseEntourage
@@ -41,7 +41,7 @@ class CreateEntourageDescriptionFragment  : BaseDialogFragment() {
                               savedInstanceState: Bundle?): View? {
         super.onCreateView(inflater, container, savedInstanceState)
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_create_entourage_description, container, false)
+        return inflater.inflate(R.layout.v7_fragment_create_entourage_description, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

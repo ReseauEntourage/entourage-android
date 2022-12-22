@@ -6,7 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ExpandableListView
-import kotlinx.android.synthetic.main.fragment_entourage_category.*
+import kotlinx.android.synthetic.main.v7_fragment_entourage_category.*
 import kotlinx.android.synthetic.main.layout_view_title.*
 import social.entourage.android.Constants
 import social.entourage.android.old_v7.MainActivity_v7
@@ -35,7 +35,7 @@ class EntourageCategoryFragment : BaseDialogFragment() {
                               savedInstanceState: Bundle?): View? {
         super.onCreateView(inflater, container, savedInstanceState)
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_entourage_category, container, false)
+        return inflater.inflate(R.layout.v7_fragment_entourage_category, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

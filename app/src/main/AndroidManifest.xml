@@ -136,11 +136,6 @@
             android:exported="false"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".old_v7.MainActivity_v7"
-            android:exported="false"
-            android:label="@string/title_activity_main"
-            android:windowSoftInputMode="adjustPan" /> <!-- use for accessing Storage Android 10+ -->
-        <activity
             android:name=".onboarding.login.LoginChangePhoneActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
@@ -278,9 +273,6 @@
                     android:scheme="https" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".old_v7.entourage.join.EntourageJoinRequestReceivedActivity"
-            android:screenOrientation="portrait" />
         <activity
             android:name="com.google.android.gms.oss.licenses.OssLicensesMenuActivity"
             android:theme="@style/EntourageOSSLicenses.Theme" />

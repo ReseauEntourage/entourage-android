@@ -12,7 +12,7 @@ import com.google.android.material.snackbar.Snackbar
 import social.entourage.android.*
 import social.entourage.android.base.BaseDialogFragment
 import social.entourage.android.tools.view.EntSnackbar
-import kotlinx.android.synthetic.main.fragment_about.*
+import kotlinx.android.synthetic.main.v7_fragment_about.*
 import kotlinx.android.synthetic.main.layout_view_title.*
 import social.entourage.android.old_v7.MainActivity_v7
 import social.entourage.android.tools.log.AnalyticsEvents
@@ -23,7 +23,7 @@ class AboutFragment : BaseDialogFragment() {
     // ----------------------------------
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         super.onCreateView(inflater, container, savedInstanceState)
-        return inflater.inflate(R.layout.fragment_about, container, false)
+        return inflater.inflate(R.layout.v7_fragment_about, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

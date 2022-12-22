@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
 import com.squareup.otto.Subscribe
-import kotlinx.android.synthetic.main.layout_mainprofile.*
+import kotlinx.android.synthetic.main.v7_layout_mainprofile.*
 import kotlinx.android.synthetic.main.layout_mainprofile_appversion.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -27,7 +27,7 @@ import social.entourage.android.tools.view.EntSnackbar
 /**
  * Side menu fragment
  */
-class MainProfileFragment : Fragment(R.layout.layout_mainprofile) {
+class MainProfileFragment : Fragment(R.layout.v7_layout_mainprofile) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

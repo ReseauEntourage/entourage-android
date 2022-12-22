@@ -9,7 +9,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.res.ResourcesCompat
-import kotlinx.android.synthetic.main.fragment_user_edit_profile_actions.*
+import kotlinx.android.synthetic.main.v7_fragment_user_edit_profile_actions.*
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.api.OnboardingAPI
@@ -48,7 +48,7 @@ class UserEditProfileActionsFragment : BaseDialogFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_user_edit_profile_actions, container, false)
+        return inflater.inflate(R.layout.v7_fragment_user_edit_profile_actions, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

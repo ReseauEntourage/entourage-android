@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.res.ResourcesCompat
-import kotlinx.android.synthetic.main.fragment_user_edit_profile_type.*
+import kotlinx.android.synthetic.main.v7_fragment_user_edit_profile_type.*
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.R
 import social.entourage.android.base.BaseDialogFragment
@@ -21,7 +21,7 @@ class UserEditProfileType : BaseDialogFragment(), ValidateActionsDelegate {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_user_edit_profile_type, container, false)
+        return inflater.inflate(R.layout.v7_fragment_user_edit_profile_type, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

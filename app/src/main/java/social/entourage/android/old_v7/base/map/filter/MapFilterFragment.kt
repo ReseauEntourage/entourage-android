@@ -12,7 +12,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.widget.SwitchCompat
 import androidx.core.content.ContextCompat
-import kotlinx.android.synthetic.main.fragment_map_filter.*
+import kotlinx.android.synthetic.main.v7_fragment_map_filter.*
 import social.entourage.android.R
 import social.entourage.android.api.model.BaseEntourage
 import social.entourage.android.base.map.filter.MapFilter
@@ -31,7 +31,7 @@ class MapFilterFragment  : BaseMapFilterFragment() {
                               savedInstanceState: Bundle?): View? {
         super.onCreateView(inflater, container, savedInstanceState)
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_map_filter, container, false)
+        return inflater.inflate(R.layout.v7_fragment_map_filter, container, false)
     }
 
     override fun initializeView() {

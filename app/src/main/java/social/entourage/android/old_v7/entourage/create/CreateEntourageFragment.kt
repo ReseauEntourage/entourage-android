@@ -20,7 +20,7 @@ import com.google.android.libraries.places.compat.Place
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog
 import com.wdullaer.materialdatetimepicker.time.Timepoint
-import kotlinx.android.synthetic.main.fragment_entourage_create.*
+import kotlinx.android.synthetic.main.v7_fragment_entourage_create.*
 import kotlinx.android.synthetic.main.layout_view_title.*
 import social.entourage.android.*
 import social.entourage.android.api.model.BaseEntourage
@@ -81,7 +81,7 @@ class CreateEntourageFragment : BaseDialogFragment(),
                               savedInstanceState: Bundle?): View? {
         super.onCreateView(inflater, container, savedInstanceState)
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_entourage_create, container, false)
+        return inflater.inflate(R.layout.v7_fragment_entourage_create, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

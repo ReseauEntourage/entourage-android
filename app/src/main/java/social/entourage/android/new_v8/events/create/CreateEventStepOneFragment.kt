@@ -13,7 +13,6 @@ import androidx.fragment.app.setFragmentResultListener
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-import kotlinx.android.synthetic.main.webview_toolbar.*
 import social.entourage.android.R
 import social.entourage.android.api.model.Image
 import social.entourage.android.databinding.NewFragmentCreateEventStepOneBinding

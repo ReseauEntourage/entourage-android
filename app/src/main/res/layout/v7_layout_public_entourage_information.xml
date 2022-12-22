@@ -86,7 +86,7 @@
 
             <include
                 android:id="@+id/layout_detail_event_action_creator"
-                layout="@layout/layout_detail_event_action_creator"
+                layout="@layout/v7_layout_detail_event_action_creator"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 tools:visibility="visible" />
@@ -107,7 +107,7 @@
 
             <include
                 android:id="@+id/layout_public_entourage_header"
-                layout="@layout/layout_public_entourage_header"
+                layout="@layout/v7_layout_public_entourage_header"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 tools:visibility="gone" />

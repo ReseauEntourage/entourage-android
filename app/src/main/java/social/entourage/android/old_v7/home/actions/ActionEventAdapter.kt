@@ -48,7 +48,7 @@ class ActionEventAdapter(var homecard: HomeCard, val listener: HomeViewHolderLis
 
         if (viewType == TYPE_CELL) {
             if (homecard.type == HomeCardType.ACTIONS) {
-                val view = inflater.inflate(R.layout.layout_cell_action, parent, false)
+                val view = inflater.inflate(R.layout.v7_layout_cell_action, parent, false)
 
                 return ActionVH(view)
             }

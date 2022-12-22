@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import androidx.core.os.bundleOf
 import androidx.fragment.app.FragmentManager
-import kotlinx.android.synthetic.main.new_contrib_item.view.*
 import social.entourage.android.api.model.guide.Poi
 import social.entourage.android.guide.poi.ReadPoiFragment
 import social.entourage.android.new_v8.actions.detail.ActionDetailActivity

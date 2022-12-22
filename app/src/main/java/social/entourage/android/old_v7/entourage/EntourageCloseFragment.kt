@@ -20,9 +20,9 @@ import social.entourage.android.R
 import social.entourage.android.api.model.feed.FeedItem
 import social.entourage.android.api.tape.Events.OnFeedItemCloseRequestEvent
 import social.entourage.android.tools.EntBus
-import kotlinx.android.synthetic.main.fragment_entourage_close.*
-import kotlinx.android.synthetic.main.fragment_entourage_close.entourage_close_close_button
-import kotlinx.android.synthetic.main.fragment_event_close.*
+import kotlinx.android.synthetic.main.v7_fragment_entourage_close.*
+import kotlinx.android.synthetic.main.v7_fragment_entourage_close.entourage_close_close_button
+import kotlinx.android.synthetic.main.v7_fragment_event_close.*
 import social.entourage.android.api.model.EntourageEvent
 import social.entourage.android.tools.disable
 import social.entourage.android.tools.enable
@@ -60,7 +60,7 @@ class EntourageCloseFragment : DialogFragment() {
         // Inflate the layout for this fragment
         isAction = if(feedItem is EntourageEvent) false else true
 
-        val layoutId = if(!isAction) R.layout.fragment_event_close else R.layout.fragment_entourage_close
+        val layoutId = if(!isAction) R.layout.v7_fragment_event_close else R.layout.v7_fragment_entourage_close
 
         return inflater.inflate(layoutId, container, false)
     }

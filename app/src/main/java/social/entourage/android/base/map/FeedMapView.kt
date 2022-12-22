@@ -1,4 +1,4 @@
-package social.entourage.android.old_v7.base.map
+package social.entourage.android.base.map
 
 import android.content.Context
 import android.util.AttributeSet

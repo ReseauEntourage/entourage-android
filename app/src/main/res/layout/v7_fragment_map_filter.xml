@@ -6,7 +6,7 @@
               android:background="@color/white"
               tools:context=".old_v7.base.map.filter.MapFilterFragment">
 
-    <social.entourage.android.old_v7.tools.view.CustomTitleView
+    <social.entourage.android.tools.view.CustomTitleView
         android:id="@+id/entourageTitleView2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

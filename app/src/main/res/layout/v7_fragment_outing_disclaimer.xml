@@ -1,0 +1,195 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              tools:context=".old_v7.entourage.EntourageDisclaimerFragment"
+              android:background="@color/pale_grey"
+    >
+
+    <social.entourage.android.tools.view.CustomTitleView
+        android:id="@+id/entourage_disclaimer_title_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:entourageTitle="@string/entourage_disclaimer_title"
+        app:entourageTitleCloseDrawableTint="@color/accent"
+        app:entourageTitleCloseDrawable="@drawable/ic_close_black_24dp"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/entourage_disclaimer_bottom"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/entourage_disclaimer_title_layout"
+        android:background="@color/pale_grey">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="10dp"
+            android:paddingEnd="20dp"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:paddingStart="20dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:linksClickable="false"
+                android:paddingTop="20dp"
+                android:text="@string/entourage_disclaimer_text_chart1"
+                android:textSize="20sp"/>
+
+            <TextView
+                android:id="@+id/entourage_disclaimer_text_chart"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:linksClickable="false"
+                android:text="@string/entourage_disclaimer_text_chart2"
+                android:textColor="@color/accent"
+                android:textSize="20sp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="20dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:contentDescription="@string/empty_description"
+                    app:srcCompat="@drawable/ic_entourage_disclaimer_hand"/>
+
+                <TextView
+                    style="@style/EntourageDisclaimerSectionTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingEnd="5dp"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:paddingStart="5dp"
+                    android:text="@string/entourage_disclaimer_accord_title"/>
+            </LinearLayout>
+
+            <TextView
+                style="@style/EntourageDisclaimerSectionDetails"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="35dp"
+                android:layout_marginStart="35dp"
+                android:text="@string/outing_disclaimer_accord_details"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:contentDescription="@string/empty_description"
+                    android:scaleType="fitCenter"
+                    app:srcCompat="@drawable/password"/>
+
+                <TextView
+                    style="@style/EntourageDisclaimerSectionTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingEnd="5dp"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:paddingStart="5dp"
+                    android:text="@string/entourage_disclaimer_security_title"/>
+
+            </LinearLayout>
+
+            <TextView
+                style="@style/EntourageDisclaimerSectionDetails"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="35dp"
+                android:layout_marginStart="35dp"
+                android:layout_weight="1"
+                android:text="@string/outing_disclaimer_security_details"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:contentDescription="@string/empty_description"
+                    app:srcCompat="@drawable/ic_map_pin_grey"/>
+
+                <TextView
+                    style="@style/EntourageDisclaimerSectionTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingEnd="5dp"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:paddingStart="5dp"
+                    android:text="@string/outing_disclaimer_geolocation_title"/>
+
+            </LinearLayout>
+
+            <TextView
+                style="@style/EntourageDisclaimerSectionDetails"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="35dp"
+                android:layout_marginStart="35dp"
+                android:layout_weight="1"
+                android:text="@string/outing_disclaimer_geolocation_details"/>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/entourage_disclaimer_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:background="@color/accent"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/entourage_disclaimer_ok_button"
+            style="@style/WhiteButtonTransparent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackground"
+            android:paddingEnd="5dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:paddingStart="5dp"
+            android:text="@string/entourage_disclaimer_checkbox"/>
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/entourage_disclaimer_switch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="false"
+            android:paddingEnd="5dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:paddingStart="5dp"
+            android:switchMinWidth="0dp"
+            android:theme="@style/EntourageGreenSwitch"/>
+    </LinearLayout>
+
+</RelativeLayout>

@@ -8,7 +8,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.startActivity
 import androidx.fragment.app.findFragment
 import com.bumptech.glide.Glide
-import kotlinx.android.synthetic.main.layout_entourage_information_chat_message_others_card_view.view.*
+import kotlinx.android.synthetic.main.v7_layout_entourage_information_chat_message_others_card_view.view.*
 import social.entourage.android.R
 import social.entourage.android.api.model.ChatMessage
 import social.entourage.android.api.model.TimestampedObject
@@ -135,6 +135,6 @@ open class ChatMessageCardViewHolder(val view: View) : BaseCardViewHolder(view) 
 
     companion object {
         val layoutResource: Int
-            get() = R.layout.layout_entourage_information_chat_message_others_card_view
+            get() = R.layout.v7_layout_entourage_information_chat_message_others_card_view
     }
 }

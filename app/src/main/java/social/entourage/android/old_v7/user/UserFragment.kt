@@ -9,9 +9,9 @@ import android.widget.Toast
 import androidx.annotation.StringRes
 import com.bumptech.glide.Glide
 import com.squareup.otto.Subscribe
-import kotlinx.android.synthetic.main.fragment_user.*
-import kotlinx.android.synthetic.main.fragment_user.user_photo
-import kotlinx.android.synthetic.main.fragment_user_edit.*
+import kotlinx.android.synthetic.main.v7_fragment_user.*
+import kotlinx.android.synthetic.main.v7_fragment_user.user_photo
+import kotlinx.android.synthetic.main.v7_fragment_user_edit.*
 import kotlinx.android.synthetic.main.layout_view_title.*
 import social.entourage.android.R
 import social.entourage.android.api.model.EntourageConversation
@@ -46,7 +46,7 @@ class UserFragment : BaseDialogFragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         super.onCreateView(inflater, container, savedInstanceState)
         if (toReturn == null) {
-            toReturn = inflater.inflate(R.layout.fragment_user, container, false)
+            toReturn = inflater.inflate(R.layout.v7_fragment_user, container, false)
         }
         AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_PROFILE_FROM_MENU)
         return toReturn

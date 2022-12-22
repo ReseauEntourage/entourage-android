@@ -7,7 +7,7 @@
                 android:orientation="vertical"
                 android:background="@color/background_light">
 
-    <social.entourage.android.old_v7.tools.view.CustomTitleView
+    <social.entourage.android.tools.view.CustomTitleView
         android:id="@+id/invite_phone_navigation_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

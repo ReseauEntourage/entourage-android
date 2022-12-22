@@ -10,7 +10,6 @@ import android.view.WindowManager
 import android.widget.Toast
 import androidx.annotation.StringRes
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.fragment_user_edit.*
 import kotlinx.android.synthetic.main.fragment_user_edit_password.*
 import kotlinx.android.synthetic.main.layout_view_title.*
 import social.entourage.android.EntourageApplication
@@ -51,7 +50,7 @@ class EditPasswordFragment()  : BaseDialogFragment() {
     fun onSaveButton() {
         if (validatePassword()) {
             AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_SCREEN_09_4_SUBMIT)
-            presenter.saveNewPassword(this, user_new_password?.text.toString().trim { it <= ' ' } ?: "").also { user_edit_progressBar?.visibility = View.VISIBLE }
+            presenter.saveNewPassword(this, user_new_password?.text.toString().trim { it <= ' ' } ?: "")
         }
     }
 

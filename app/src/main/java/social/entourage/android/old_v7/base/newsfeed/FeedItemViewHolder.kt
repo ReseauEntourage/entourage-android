@@ -10,7 +10,7 @@ import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
-import kotlinx.android.synthetic.main.layout_feed_action_card.view.*
+import kotlinx.android.synthetic.main.v7_layout_feed_action_card.view.*
 import social.entourage.android.Constants
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
@@ -251,6 +251,6 @@ open class FeedItemViewHolder(itemView: View) : BaseCardViewHolder(itemView) {
 
     companion object {
         val layoutResource: Int
-            get() = R.layout.layout_feed_action_card
+            get() = R.layout.v7_layout_feed_action_card
     }
 }

@@ -11,11 +11,10 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import com.takusemba.cropme.OnCropListener
-import kotlinx.android.synthetic.main.fragment_photo_edit.*
+import kotlinx.android.synthetic.main.v7_fragment_photo_edit.*
 import social.entourage.android.R
 import social.entourage.android.base.BaseDialogFragment
 import social.entourage.android.new_v8.utils.Utils
-import social.entourage.android.old_v7.tools.UtilsV7
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.rotate
 import social.entourage.android.user.edit.photo.PhotoChooseInterface
@@ -65,7 +64,7 @@ class PhotoEditFragment : BaseDialogFragment() {
         super.onCreateView(inflater, container, savedInstanceState)
         AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_SCREEN_09_9)
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_photo_edit, container, false)
+        return inflater.inflate(R.layout.v7_fragment_photo_edit, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

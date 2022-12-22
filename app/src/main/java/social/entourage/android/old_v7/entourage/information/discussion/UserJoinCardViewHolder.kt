@@ -6,7 +6,7 @@ import android.view.View
 import android.widget.TextView
 import androidx.fragment.app.findFragment
 import com.bumptech.glide.Glide
-import kotlinx.android.synthetic.main.layout_entourage_information_user_join_card_view.view.*
+import kotlinx.android.synthetic.main.v7_layout_entourage_information_user_join_card_view.view.*
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.api.model.EntourageUser
@@ -17,7 +17,6 @@ import social.entourage.android.base.BaseCardViewHolder
 import social.entourage.android.new_v8.utils.Utils
 import social.entourage.android.old_v7.entourage.information.FeedItemInformationFragment
 import social.entourage.android.tools.EntBus
-import social.entourage.android.old_v7.tools.UtilsV7
 import social.entourage.android.tools.log.AnalyticsEvents
 
 /**
@@ -179,6 +178,6 @@ class UserJoinCardViewHolder(view: View) : BaseCardViewHolder(view) {
 
     companion object {
         val layoutResource: Int
-            get() = R.layout.layout_entourage_information_user_join_card_view
+            get() = R.layout.v7_layout_entourage_information_user_join_card_view
     }
 }

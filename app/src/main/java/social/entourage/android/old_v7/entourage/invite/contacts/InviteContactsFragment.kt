@@ -14,7 +14,7 @@ import android.widget.*
 import androidx.loader.app.LoaderManager
 import androidx.loader.content.CursorLoader
 import androidx.loader.content.Loader
-import kotlinx.android.synthetic.main.fragment_invite_contacts.*
+import kotlinx.android.synthetic.main.v7_fragment_invite_contacts.*
 import kotlinx.android.synthetic.main.layout_view_title.*
 import social.entourage.android.base.BaseActivity
 import social.entourage.android.R
@@ -22,7 +22,6 @@ import social.entourage.android.api.model.Invitation
 import social.entourage.android.api.model.MultipleInvitations
 import social.entourage.android.new_v8.utils.Utils
 import social.entourage.android.old_v7.entourage.invite.InviteBaseFragment
-import social.entourage.android.old_v7.tools.UtilsV7
 import java.util.*
 
 /**
@@ -60,7 +59,7 @@ class InviteContactsFragment  : InviteBaseFragment(), LoaderManager.LoaderCallba
                               savedInstanceState: Bundle?): View? {
         super.onCreateView(inflater, container, savedInstanceState)
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_invite_contacts, container, false)
+        return inflater.inflate(R.layout.v7_fragment_invite_contacts, container, false)
     }
 
     @Deprecated("Deprecated in Java")

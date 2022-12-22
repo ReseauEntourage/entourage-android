@@ -14,9 +14,9 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.*
 import com.google.android.material.snackbar.Snackbar
 import com.squareup.otto.Subscribe
-import kotlinx.android.synthetic.main.fragment_entourage_information.*
+import kotlinx.android.synthetic.main.v7_fragment_entourage_information.*
 import kotlinx.android.synthetic.main.layout_detail_action_description.*
-import kotlinx.android.synthetic.main.layout_detail_event_action_creator.*
+import kotlinx.android.synthetic.main.v7_layout_detail_event_action_creator.*
 import kotlinx.android.synthetic.main.layout_detail_event_action_date.*
 import kotlinx.android.synthetic.main.layout_detail_event_action_location.*
 import kotlinx.android.synthetic.main.layout_detail_event_action_private.*
@@ -27,7 +27,7 @@ import kotlinx.android.synthetic.main.layout_invite_source.*
 import kotlinx.android.synthetic.main.layout_invite_source.view.*
 import kotlinx.android.synthetic.main.layout_pop_info_private.*
 import kotlinx.android.synthetic.main.layout_private_entourage_information.*
-import kotlinx.android.synthetic.main.layout_public_entourage_information.*
+import kotlinx.android.synthetic.main.v7_layout_public_entourage_information.*
 import org.joda.time.LocalDate
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R

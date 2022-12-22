@@ -594,12 +594,7 @@ abstract class NewsfeedFragment : BaseMapFragment(R.layout.fragment_map), NewsFe
         map?.setOnMapClickListener {
             if (activity != null) {
                 AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_FEED_MAPCLICK)
-                if (isFullMapShown) {
-                    // Hide the minicards if visible
-                    if (fragment_map_entourage_mini_cards?.visibility == View.VISIBLE) {
-                        fragment_map_entourage_mini_cards?.visibility = View.INVISIBLE
-                    }
-                } else {
+                if (!isFullMapShown) {
                     toggleActionsList()
                 }
             }
@@ -779,7 +774,6 @@ abstract class NewsfeedFragment : BaseMapFragment(R.layout.fragment_map), NewsFe
         }
         isFullMapShown = false
         fragment_map_display_toggle?.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_map_white_24dp))
-        fragment_map_entourage_mini_cards?.visibility = View.INVISIBLE
         hideEmptyListPopup()
         val anim = ValueAnimator.ofInt(fragment_map_main_layout.measuredHeight, originalMapLayoutHeight)
         anim.addUpdateListener { valueAnimator: ValueAnimator -> onAnimationUpdate(valueAnimator) }
@@ -974,7 +968,7 @@ abstract class NewsfeedFragment : BaseMapFragment(R.layout.fragment_map), NewsFe
         }
         if (entourageArrayList.size == 0) return
         //show the minicards list
-        fragment_map_entourage_mini_cards?.setEntourages(entourageArrayList)
+        //fragment_map_entourage_mini_cards?.setEntourages(entourageArrayList)
         //zoom in the heatzone
         map?.animateCamera(CameraUpdateFactory.newCameraPosition(CameraPosition(location, ZOOM_HEATZONE, 0F, 0F)))
         saveCameraPosition()

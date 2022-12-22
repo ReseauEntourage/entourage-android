@@ -16,7 +16,7 @@ import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
 import kotlinx.android.synthetic.main.layout_cell_action_more.view.*
 import kotlinx.android.synthetic.main.layout_cell_event.view.*
-import kotlinx.android.synthetic.main.layout_cell_headline_action.view.*
+import kotlinx.android.synthetic.main.v7_layout_cell_headline_action.view.*
 import kotlinx.android.synthetic.main.layout_cell_headline_announce.view.*
 import social.entourage.android.Constants
 import social.entourage.android.R

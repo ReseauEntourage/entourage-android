@@ -6,7 +6,7 @@
               android:gravity="center_vertical"
               android:padding="20dp">
 
-    <social.entourage.android.old_v7.tools.view.HtmlTextView
+    <social.entourage.android.tools.view.HtmlTextView
         android:id="@+id/entourage_join_request_received_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

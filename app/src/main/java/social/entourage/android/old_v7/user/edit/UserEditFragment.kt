@@ -15,7 +15,7 @@ import androidx.core.app.NotificationManagerCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.squareup.otto.Subscribe
-import kotlinx.android.synthetic.main.fragment_user_edit.*
+import kotlinx.android.synthetic.main.v7_fragment_user_edit.*
 import kotlinx.android.synthetic.main.layout_view_title.*
 import social.entourage.android.old_v7.MainActivity_v7
 import social.entourage.android.R
@@ -61,7 +61,7 @@ open class UserEditFragment  : BaseDialogFragment(), FragmentListener {
                               savedInstanceState: Bundle?): View? {
         super.onCreateView(inflater, container, savedInstanceState)
         AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_SCREEN_09_2)
-        return inflater.inflate(R.layout.fragment_user_edit, container, false)
+        return inflater.inflate(R.layout.v7_fragment_user_edit, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

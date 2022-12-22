@@ -1,4 +1,4 @@
-package social.entourage.android.old_v7.tools.view
+package social.entourage.android.tools.view
 
 import android.content.Context
 import android.text.method.LinkMovementMethod
@@ -7,7 +7,6 @@ import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatTextView
 import social.entourage.android.R
 import social.entourage.android.new_v8.utils.Utils
-import social.entourage.android.old_v7.tools.UtilsV7
 
 class HtmlTextView : AppCompatTextView {
     private var htmlString: String? = null

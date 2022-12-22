@@ -1,4 +1,4 @@
-package social.entourage.android.old_v7.tools.view
+package social.entourage.android.tools.view
 
 import android.content.Context
 import android.util.AttributeSet

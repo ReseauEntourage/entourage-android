@@ -11,7 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import androidx.fragment.app.DialogFragment
-import kotlinx.android.synthetic.main.fragment_no_location_permission.*
+import kotlinx.android.synthetic.main.v7_fragment_no_location_permission.*
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.R
 
@@ -22,7 +22,7 @@ class NoLocationPermissionFragment : DialogFragment() {
                               savedInstanceState: Bundle?): View? {
         dialog?.window?.requestFeature(Window.FEATURE_NO_TITLE)
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_no_location_permission, container, false)
+        return inflater.inflate(R.layout.v7_fragment_no_location_permission, container, false)
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {

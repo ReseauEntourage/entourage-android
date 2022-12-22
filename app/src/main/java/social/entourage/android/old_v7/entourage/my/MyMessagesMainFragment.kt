@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.tabs.TabLayout
-import kotlinx.android.synthetic.main.fragment_my_messages_main.*
+import kotlinx.android.synthetic.main.v7_fragment_my_messages_main.*
 import social.entourage.android.Constants
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
@@ -29,7 +29,7 @@ class MyMessagesMainFragment : BaseDialogFragment(),
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_my_messages_main, container, false)
+        return inflater.inflate(R.layout.v7_fragment_my_messages_main, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

@@ -127,17 +127,6 @@
                 app:srcCompat="@drawable/ic_map_white_24dp" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <view
-            android:id="@+id/fragment_map_entourage_mini_cards"
-            class="social.entourage.android.old_v7.entourage.minicards.EntourageMiniCardsView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginBottom="10dp"
-            android:visibility="invisible"
-            tools:visibility="invisible" />
-
         <LinearLayout
             android:id="@+id/fragment_map_empty_list_popup"
             android:layout_width="match_parent"

@@ -8,7 +8,7 @@
     android:layout_alignParentEnd="true"
     android:layout_centerVertical="true"
     android:gravity="center_vertical"
-    tools:showIn="@layout/fragment_entourage_information">
+    tools:showIn="@layout/v7_fragment_entourage_information">
 
     <ImageButton
         android:id="@+id/entourage_info_description_button"

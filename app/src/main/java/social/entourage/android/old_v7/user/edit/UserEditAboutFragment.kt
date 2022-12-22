@@ -9,7 +9,7 @@ import android.view.*
 import android.widget.Toast
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.DialogFragment
-import kotlinx.android.synthetic.main.fragment_user_edit_about.*
+import kotlinx.android.synthetic.main.v7_fragment_user_edit_about.*
 import social.entourage.android.R
 import social.entourage.android.api.model.User
 import social.entourage.android.old_v7.user.UserFragment
@@ -34,7 +34,7 @@ class UserEditAboutFragment  : DialogFragment() {
             window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
             window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
         }
-        return inflater.inflate(R.layout.fragment_user_edit_about, container, false)
+        return inflater.inflate(R.layout.v7_fragment_user_edit_about, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

@@ -11,7 +11,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import kotlinx.android.synthetic.main.fragment_entourage_disclaimer.*
+import kotlinx.android.synthetic.main.v7_fragment_entourage_disclaimer.*
 import kotlinx.android.synthetic.main.layout_view_title.*
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.R
@@ -39,7 +39,7 @@ class EntourageDisclaimerFragment : BaseDialogFragment() {
         }
 
         return inflater.inflate(
-                if (BaseEntourage.GROUPTYPE_OUTING.equals(groupType, ignoreCase = true)) R.layout.fragment_outing_disclaimer else R.layout.fragment_entourage_disclaimer,
+                if (BaseEntourage.GROUPTYPE_OUTING.equals(groupType, ignoreCase = true)) R.layout.v7_fragment_outing_disclaimer else R.layout.v7_fragment_entourage_disclaimer,
                 container,
                 false)
     }

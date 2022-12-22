@@ -10,8 +10,8 @@ import androidx.viewpager.widget.ViewPager.OnPageChangeListener
 import social.entourage.android.R
 import social.entourage.android.base.BaseDialogFragment
 import java.util.*
-import kotlinx.android.synthetic.main.fragment_carousel.*
-import kotlinx.android.synthetic.main.fragment_carousel.view.*
+import kotlinx.android.synthetic.main.v7_fragment_carousel.*
+import kotlinx.android.synthetic.main.v7_fragment_carousel.view.*
 
 /**
  * Help carousel
@@ -29,7 +29,7 @@ class CarouselFragment  : BaseDialogFragment() {
                               savedInstanceState: Bundle?): View? {
         super.onCreateView(inflater, container, savedInstanceState)
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_carousel, container, false)
+        return inflater.inflate(R.layout.v7_fragment_carousel, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

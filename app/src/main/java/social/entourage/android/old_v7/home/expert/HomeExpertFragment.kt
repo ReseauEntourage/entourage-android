@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.snackbar.Snackbar
 import com.squareup.otto.Subscribe
-import kotlinx.android.synthetic.main.fragment_home_expert.*
+import kotlinx.android.synthetic.main.v7_fragment_home_expert.*
 import social.entourage.android.*
 import social.entourage.android.api.ApiConnectionListener
 import social.entourage.android.api.model.*
@@ -349,7 +349,7 @@ class HomeExpertFragment : BaseFragment(), ApiConnectionListener, UserEditAction
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_home_expert, container, false)
+        return inflater.inflate(R.layout.v7_fragment_home_expert, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

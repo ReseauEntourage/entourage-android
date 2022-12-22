@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import kotlinx.android.synthetic.main.fragment_pop_info_create_entourage.*
+import kotlinx.android.synthetic.main.v7_fragment_pop_info_create_entourage.*
 import social.entourage.android.R
 import social.entourage.android.base.BaseDialogFragment
 import social.entourage.android.old_v7.home.expert.HomeExpertFragment
@@ -29,7 +29,7 @@ class PopInfoCreateEntourageFragment : BaseDialogFragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_pop_info_create_entourage, container, false)
+        return inflater.inflate(R.layout.v7_fragment_pop_info_create_entourage, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

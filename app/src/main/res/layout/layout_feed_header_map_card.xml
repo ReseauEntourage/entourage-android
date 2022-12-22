@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="@dimen/newsfeed_map_height">
 
-    <social.entourage.android.old_v7.base.map.FeedMapView
+    <social.entourage.android.base.map.FeedMapView
         android:id="@+id/layout_feed_map_card_mapview"
         android:layout_width="match_parent"
         android:layout_height="0dp"

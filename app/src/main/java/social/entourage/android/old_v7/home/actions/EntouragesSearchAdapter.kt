@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import kotlinx.android.synthetic.main.layout_cell_entourage_search.view.*
+import kotlinx.android.synthetic.main.v7_layout_cell_entourage_search.view.*
 import social.entourage.android.Constants
 import social.entourage.android.R
 import social.entourage.android.api.model.BaseEntourage
@@ -41,7 +41,7 @@ class EntouragesSearchAdapter(var items: ArrayList<NewsfeedItem>, val listenerCl
         val layoutInflater = LayoutInflater.from(parent.context)
         return when(viewType) {
             TYPE_EMPTY -> VHEmpty(layoutInflater.inflate(R.layout.layout_search_poi_empty, parent, false))
-            else -> EntourageSearchVH(layoutInflater.inflate(R.layout.layout_cell_entourage_search, parent, false))
+            else -> EntourageSearchVH(layoutInflater.inflate(R.layout.v7_layout_cell_entourage_search, parent, false))
         }
     }
 

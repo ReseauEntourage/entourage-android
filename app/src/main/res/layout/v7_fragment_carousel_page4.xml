@@ -4,53 +4,61 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:orientation="vertical"
-              tools:context=".old_v7.about.carousel.pages.CarouselPage3Fragment">
+              tools:context=".old_v7.about.carousel.pages.CarouselPage4Fragment">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="0dp"
         android:layout_weight="1"
-        android:background="@drawable/carousel_p3_top"
-        android:gravity="bottom"
-        android:orientation="vertical">
+        android:background="@color/accent"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:paddingEnd="10dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingStart="10dp">
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="6dp"
-            android:layout_marginBottom="-2dp"
             android:contentDescription="@string/empty_description"
-            app:srcCompat="@drawable/carousel_p3_group" />
+            app:srcCompat="@drawable/carousel_p4_group"/>
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="2"
-        android:orientation="vertical"
-        android:paddingEnd="@dimen/carousel_padding"
-        android:paddingLeft="@dimen/carousel_padding"
-        android:paddingRight="@dimen/carousel_padding"
-        android:paddingStart="@dimen/carousel_padding"
-        android:paddingTop="@dimen/carousel_padding">
+        android:orientation="vertical">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginEnd="@dimen/carousel_padding"
+            android:layout_marginLeft="@dimen/carousel_padding"
+            android:layout_marginRight="@dimen/carousel_padding"
+            android:layout_marginStart="@dimen/carousel_padding"
+            android:layout_marginTop="20dp"
             android:gravity="center"
-            android:text="@string/carousel_p3_title"
+            android:text="@string/carousel_p4_title"
             android:textColor="@color/greyish_brown"
             android:textSize="@dimen/carousel_title"
             android:textStyle="bold"/>
 
-        <social.entourage.android.old_v7.tools.view.HtmlTextView
+        <social.entourage.android.tools.view.HtmlTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginEnd="@dimen/carousel_padding"
+            android:layout_marginLeft="@dimen/carousel_padding"
+            android:layout_marginRight="@dimen/carousel_padding"
+            android:layout_marginStart="@dimen/carousel_padding"
             android:layout_marginTop="20dp"
             android:gravity="center"
             android:textColor="@color/greyish_brown"
             android:textSize="@dimen/carousel_content"
-            app:htmlText="@string/carousel_p3_content" />
+            app:htmlText="@string/carousel_p4_content"/>
 
         <ImageView
             android:layout_width="60dp"
@@ -58,9 +66,8 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="14dp"
             android:contentDescription="@string/empty_description"
-            app:tint="@color/accent"
-            app:srcCompat="@drawable/ic_account_circle_outline_white_24dp" />
-
+            app:srcCompat="@drawable/ic_add_circle_white_24dp"
+            app:tint="@color/accent"/>
     </LinearLayout>
 
 </LinearLayout>

@@ -11,7 +11,6 @@ import android.widget.Toast
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.fragment_about.*
 import social.entourage.android.Constants
 import social.entourage.android.R
 import social.entourage.android.databinding.NewFragmentHelpAboutBinding
@@ -64,13 +63,11 @@ class HelpAboutFragment : BottomSheetDialogFragment() {
         try {
             startActivity(browserIntent)
         } catch (ex: ActivityNotFoundException) {
-            about_coordinator_layout?.let {
-                EntSnackbar.make(
-                    it,
-                    R.string.no_browser_error,
-                    Snackbar.LENGTH_SHORT
-                ).show()
-            }
+            EntSnackbar.make(
+                binding.aboutCoordinatorLayout,
+                R.string.no_browser_error,
+                Snackbar.LENGTH_SHORT
+            ).show()
         }
     }
 
