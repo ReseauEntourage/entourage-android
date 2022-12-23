@@ -2,13 +2,13 @@ package social.entourage.android.onboarding.onboard
 
 import android.content.Context
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.fragment_onboarding_phase3.*
 import social.entourage.android.R
 import social.entourage.android.api.model.User

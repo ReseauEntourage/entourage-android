@@ -4,7 +4,6 @@ import android.graphics.Typeface
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -12,7 +11,7 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import kotlinx.android.synthetic.main.new_conversation_home_item.view.*
 import social.entourage.android.R
-import social.entourage.android.new_v8.models.*
+import social.entourage.android.new_v8.models.Conversation
 
 interface OnItemClick {
     fun onItemClick(position: Int)

@@ -1,10 +1,9 @@
 package social.entourage.android.base.map.filter
 
 import social.entourage.android.api.model.BaseEntourage
-import social.entourage.android.entourage.category.EntourageCategoryManager
 import social.entourage.android.entourage.category.EntourageCategory
+import social.entourage.android.entourage.category.EntourageCategoryManager
 import java.io.Serializable
-import java.util.ArrayList
 
 /**
  * Created by mihaiionescu on 17/05/16.
@@ -74,7 +73,7 @@ class MapFilter : MapFilterInterface, Serializable {
         isShowAlls = true
         entourageTypeOuting = false
 
-        setAllCategorySelected(true,true)
+        setAllCategorySelected(contribActive = true, demandActive = true)
     }
 
     fun setAllCategorySelected(contribActive:Boolean,demandActive:Boolean) {

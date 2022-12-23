@@ -15,7 +15,8 @@ import kotlinx.android.synthetic.main.new_demand_item.view.*
 import social.entourage.android.R
 import social.entourage.android.api.MetaDataRepository
 import social.entourage.android.new_v8.actions.detail.ActionDetailActivity
-import social.entourage.android.new_v8.models.*
+import social.entourage.android.new_v8.models.Action
+import social.entourage.android.new_v8.models.ActionSection
 import social.entourage.android.new_v8.utils.Const
 import social.entourage.android.new_v8.utils.px
 

@@ -10,7 +10,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import kotlinx.android.synthetic.main.new_my_action_item.view.*
 import social.entourage.android.R
-import social.entourage.android.new_v8.models.*
+import social.entourage.android.new_v8.models.Action
 import social.entourage.android.new_v8.utils.px
 
 interface OnItemClick {

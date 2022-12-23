@@ -14,9 +14,6 @@ import androidx.navigation.fragment.findNavController
 import social.entourage.android.R
 import social.entourage.android.databinding.NewFragmentCreateEventStepThreeBinding
 import social.entourage.android.tools.log.AnalyticsEvents
-import timber.log.Timber
-import java.text.SimpleDateFormat
-import java.util.*
 
 class CreateEventStepThreeFragment : Fragment() {
     private var _binding: NewFragmentCreateEventStepThreeBinding? = null

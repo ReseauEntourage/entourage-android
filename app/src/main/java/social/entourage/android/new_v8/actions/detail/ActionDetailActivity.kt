@@ -7,13 +7,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.NavHostFragment
-import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.databinding.NewActivityActionDetailBinding
 import social.entourage.android.new_v8.report.ReportModalFragment
 import social.entourage.android.new_v8.report.ReportTypes
 import social.entourage.android.new_v8.utils.Const
-import timber.log.Timber
 
 //Use to hide report button when loading detail action if canceled
 interface OnDetailActionReceive {

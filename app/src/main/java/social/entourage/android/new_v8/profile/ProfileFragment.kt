@@ -1,6 +1,5 @@
 package social.entourage.android.new_v8.profile
 
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View

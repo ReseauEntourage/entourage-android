@@ -7,9 +7,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import kotlinx.android.synthetic.main.new_notif_detail.view.*
-import kotlinx.android.synthetic.main.new_notif_detail.view.title
 import social.entourage.android.R
-import social.entourage.android.new_v8.models.*
+import social.entourage.android.new_v8.models.NotifInApp
 
 interface OnItemClick {
     fun onItemClick(notif: NotifInApp, position:Int)

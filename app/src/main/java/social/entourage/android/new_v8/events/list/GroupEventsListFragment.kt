@@ -10,7 +10,6 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
-import kotlinx.android.synthetic.main.new_fragment_events.view.*
 import social.entourage.android.databinding.NewFragmentGroupEventsListBinding
 import social.entourage.android.new_v8.events.create.CreateEventActivity
 import social.entourage.android.new_v8.groups.GroupPresenter

@@ -1,7 +1,7 @@
 package social.entourage.android.new_v8.home.notifications
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.add
 import androidx.fragment.app.commit
 import social.entourage.android.R

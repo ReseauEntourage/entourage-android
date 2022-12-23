@@ -21,7 +21,6 @@ import kotlinx.android.synthetic.main.fragment_onboarding_photo.*
 import social.entourage.android.R
 import social.entourage.android.base.BaseDialogFragment
 import social.entourage.android.tools.log.AnalyticsEvents
-import social.entourage.android.user.edit.photo.OnboardingEditPhotoFragment
 import timber.log.Timber
 import java.io.File
 import java.io.IOException

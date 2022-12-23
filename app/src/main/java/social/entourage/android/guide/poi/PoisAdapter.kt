@@ -4,8 +4,8 @@ import social.entourage.android.R
 import social.entourage.android.api.model.TimestampedObject
 import social.entourage.android.base.HeaderBaseAdapter
 import social.entourage.android.base.ViewHolderFactory.ViewHolderType
-import social.entourage.android.guide.poi.PoiViewHolder.Companion.layoutResource
 import social.entourage.android.base.map.MapViewHolder
+import social.entourage.android.guide.poi.PoiViewHolder.Companion.layoutResource
 
 /**
  * Point of interest adapter

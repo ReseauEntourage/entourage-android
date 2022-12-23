@@ -233,7 +233,7 @@ class MembersConversationFragment : BaseDialogFragment() {
     }
 
     companion object {
-        private val ARG_CONVID = "conversationid"
+        private const val ARG_CONVID = "conversationid"
         const val TAG = "MembersConversationFragment"
         fun newInstance(conversationId:Int?): MembersConversationFragment {
             val fragment = MembersConversationFragment()

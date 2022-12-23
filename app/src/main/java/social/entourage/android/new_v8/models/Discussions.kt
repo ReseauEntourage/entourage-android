@@ -7,7 +7,6 @@ import social.entourage.android.api.model.ChatMessage
 import social.entourage.android.api.model.Partner
 import social.entourage.android.new_v8.utils.Utils
 import java.util.*
-import kotlin.collections.ArrayList
 
 /**
  * Created by - on 15/11/2022.

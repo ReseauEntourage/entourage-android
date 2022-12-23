@@ -1,6 +1,6 @@
 package social.entourage.android
 
-import android.content.*
+import android.content.Intent
 import android.location.Location
 import android.net.Uri
 import android.widget.Button

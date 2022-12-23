@@ -66,11 +66,10 @@ class UnblockUsersFragment : BottomSheetDialogFragment() {
             requireContext(),
             title,
             desc,
-            getString(R.string.params_unblock_user_pop_validate_bt),
-            {
-                discussionsPresenter.getBlockedUsers()
-            }
-        )
+            getString(R.string.params_unblock_user_pop_validate_bt)
+        ) {
+            discussionsPresenter.getBlockedUsers()
+        }
     }
 
     private fun handleResponseBlocked(blockedUsers:MutableList<UserBlocked>?) {

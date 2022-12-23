@@ -6,7 +6,6 @@ import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.api.model.BaseEntourage
 import java.util.*
-import kotlin.collections.HashMap
 
 /**
  * Created by Mihai Ionescu on 20/09/2017.

@@ -5,14 +5,11 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import social.entourage.android.EntourageApplication
-import social.entourage.android.R
 import social.entourage.android.api.model.Image
 import social.entourage.android.api.model.Tags
 import social.entourage.android.api.request.EventsImagesResponse
 import social.entourage.android.api.request.GroupImagesResponse
 import social.entourage.android.api.request.MetaDataResponse
-import social.entourage.android.new_v8.models.ActionSection
-import timber.log.Timber
 
 object MetaDataRepository {
     var metaData: MutableLiveData<Tags> = MutableLiveData()

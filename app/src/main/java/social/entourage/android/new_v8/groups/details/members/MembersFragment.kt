@@ -19,17 +19,14 @@ import com.google.android.material.textfield.TextInputLayout
 import social.entourage.android.R
 import social.entourage.android.api.model.EntourageUser
 import social.entourage.android.databinding.NewFragmentMembersBinding
-import social.entourage.android.new_v8.actions.list.me.OnItemClick
 import social.entourage.android.new_v8.discussions.DetailConversationActivity
 import social.entourage.android.new_v8.discussions.DiscussionsPresenter
 import social.entourage.android.new_v8.events.EventsPresenter
 import social.entourage.android.new_v8.groups.GroupPresenter
-import social.entourage.android.new_v8.models.Action
 import social.entourage.android.new_v8.models.Conversation
 import social.entourage.android.new_v8.utils.Const
 import social.entourage.android.new_v8.utils.Utils
 import social.entourage.android.tools.log.AnalyticsEvents
-import timber.log.Timber
 
 enum class MembersType(val code: Int) {
     GROUP(0),

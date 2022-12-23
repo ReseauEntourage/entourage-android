@@ -43,10 +43,10 @@ class CreateActionStepThreeFragment : Fragment(), UserEditActionZoneFragment.Fra
         viewModel.metadata.observe(viewLifecycleOwner, Observer { _meta ->
             _meta?.let {
                 if (it.streetAddress?.isEmpty() == true) {
-                    binding.location.setText("")
+                    binding.location.text = ""
                 }
                 else {
-                    binding.location.setText(it.streetAddress)
+                    binding.location.text = it.streetAddress
                 }
             }
             viewModel.isButtonClickable.value = viewModel.metadata.value?.streetAddress?.isNotBlank()
@@ -122,7 +122,7 @@ class CreateActionStepThreeFragment : Fragment(), UserEditActionZoneFragment.Fra
 
     private fun setupViewWithEdit() {
         viewModel.actionEdited?.let {
-            binding.location.setText(it.metadata?.displayAddress)
+            binding.location.text = it.metadata?.displayAddress
             viewModel.isButtonClickable.value = true
         } ?: kotlin.run { viewModel.isButtonClickable.value = viewModel.metadata.value?.streetAddress?.isNotBlank() }
     }

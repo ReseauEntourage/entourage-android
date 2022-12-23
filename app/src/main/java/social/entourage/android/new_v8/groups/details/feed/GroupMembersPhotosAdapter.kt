@@ -1,16 +1,13 @@
 package social.entourage.android.new_v8.groups.details.feed
 
-import android.net.Uri
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
 import social.entourage.android.R
 import social.entourage.android.databinding.NewPhotoItemSmallBinding
 import social.entourage.android.new_v8.models.GroupMember
 import social.entourage.android.new_v8.utils.Const.LIMIT_PHOTOS_MEMBERS
-import social.entourage.android.new_v8.utils.px
 
 class GroupMembersPhotosAdapter(
     var membersList: List<GroupMember>,

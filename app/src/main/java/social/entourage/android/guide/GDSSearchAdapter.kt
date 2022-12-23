@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.RecyclerView
 import social.entourage.android.R
 import social.entourage.android.api.model.guide.Poi
 import social.entourage.android.guide.poi.PoiViewHolder
-import java.util.ArrayList
 
 /**
  * Created by Jr (MJ-DEVS) on 24/11/2020.

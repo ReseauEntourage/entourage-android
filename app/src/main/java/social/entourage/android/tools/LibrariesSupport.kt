@@ -46,7 +46,7 @@ class LibrariesSupport {
     }
 
     private fun setupFacebookSDK() {
-        FacebookSdk.setAdvertiserIDCollectionEnabled(true);
+        FacebookSdk.setAdvertiserIDCollectionEnabled(true)
         if (BuildConfig.DEBUG) {
             Timber.d("Facebook version %s", FacebookSdk.getSdkVersion())
             FacebookSdk.setIsDebugEnabled(true)

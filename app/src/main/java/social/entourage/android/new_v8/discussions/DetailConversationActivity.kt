@@ -12,7 +12,6 @@ import social.entourage.android.new_v8.user.UserProfileActivity
 import social.entourage.android.new_v8.utils.Const
 import social.entourage.android.tools.log.AnalyticsEvents
 import java.util.*
-import kotlin.collections.ArrayList
 
 /**
  * Created by - on 15/11/2022.

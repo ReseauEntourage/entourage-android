@@ -6,7 +6,6 @@ import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.*
 import social.entourage.android.new_v8.models.Conversation
-import social.entourage.android.new_v8.models.Post
 import social.entourage.android.new_v8.models.UserBlocked
 
 /**

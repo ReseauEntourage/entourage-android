@@ -61,7 +61,7 @@ class CreateActionStepTwoFragment : Fragment() {
                 }
                 viewModel.sectionsList.value?.forEach { it.isSelected = false }
                 viewModel.sectionsList.value?.get(position)?.isSelected = true
-                sectionsListAdapter?.notifyDataSetChanged()
+                sectionsListAdapter.notifyDataSetChanged()
                 viewModel.sectionsList.postValue(viewModel.sectionsList.value)
             }
         } )

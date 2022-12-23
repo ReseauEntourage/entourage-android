@@ -8,9 +8,9 @@ import androidx.fragment.app.findFragment
 import kotlinx.android.synthetic.main.layout_poi_card.view.*
 import social.entourage.android.Constants
 import social.entourage.android.R
+import social.entourage.android.api.model.LocationPoint
 import social.entourage.android.api.model.TimestampedObject
 import social.entourage.android.api.model.guide.Poi
-import social.entourage.android.api.model.LocationPoint
 import social.entourage.android.base.BaseCardViewHolder
 import social.entourage.android.tools.log.AnalyticsEvents
 import timber.log.Timber

@@ -4,14 +4,12 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AlertDialog
 import kotlinx.android.synthetic.main.activity_login_change_phone.*
-import kotlinx.android.synthetic.main.activity_login_change_phone.icon_back
 import social.entourage.android.R
 import social.entourage.android.api.OnboardingAPI
 import social.entourage.android.base.BaseActivity
 import social.entourage.android.tools.hideKeyboard
 import social.entourage.android.tools.isValidEmail
 import timber.log.Timber
-import java.lang.Exception
 
 class LoginChangePhoneActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -1,5 +1,7 @@
 package social.entourage.android.message.push
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
@@ -8,22 +10,19 @@ import android.graphics.Color
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import androidx.preference.PreferenceManager
 import androidx.core.app.NotificationCompat
-import android.app.NotificationChannel
-import android.app.NotificationManager
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.res.ResourcesCompat
+import androidx.preference.PreferenceManager
 import com.google.firebase.messaging.RemoteMessage
 import social.entourage.android.EntourageApplication
+import social.entourage.android.MainActivity
 import social.entourage.android.R
 import social.entourage.android.api.model.Message
 import social.entourage.android.api.model.PushNotificationContent
 import social.entourage.android.api.model.TimestampedObject
 import social.entourage.android.api.model.feed.FeedItem
-import social.entourage.android.MainActivity
 import timber.log.Timber
-import java.util.*
 
 /**
  * Singleton that handles the push notifications

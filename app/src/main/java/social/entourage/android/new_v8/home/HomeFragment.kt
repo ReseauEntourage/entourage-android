@@ -25,11 +25,12 @@ import social.entourage.android.new_v8.Navigation
 import social.entourage.android.new_v8.ViewPagerDefaultPageController
 import social.entourage.android.new_v8.home.notifications.NotificationsInAppActivity
 import social.entourage.android.new_v8.home.pedago.PedagoListActivity
-import social.entourage.android.new_v8.models.*
+import social.entourage.android.new_v8.models.HomeAction
+import social.entourage.android.new_v8.models.Summary
 import social.entourage.android.new_v8.profile.ProfileActivity
 import social.entourage.android.new_v8.user.UserProfileActivity
-import social.entourage.android.new_v8.utils.CustomAlertDialog
 import social.entourage.android.new_v8.utils.Const
+import social.entourage.android.new_v8.utils.CustomAlertDialog
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.view.CommunicationRecoWebUrlHandlerViewModel
 

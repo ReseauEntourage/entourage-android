@@ -23,7 +23,6 @@ import social.entourage.android.R
 import social.entourage.android.databinding.NewFragmentChoosePhotoModalBinding
 import social.entourage.android.new_v8.utils.Const
 import social.entourage.android.tools.log.AnalyticsEvents
-import timber.log.Timber
 import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat

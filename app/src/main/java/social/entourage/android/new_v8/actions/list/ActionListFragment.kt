@@ -15,7 +15,9 @@ import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.databinding.NewFragmentActionListBinding
 import social.entourage.android.new_v8.actions.*
-import social.entourage.android.new_v8.models.*
+import social.entourage.android.new_v8.models.Action
+import social.entourage.android.new_v8.models.ActionSectionFilters
+import social.entourage.android.new_v8.models.EventActionLocationFilters
 import social.entourage.android.tools.log.AnalyticsEvents
 
 const val EVENTS_PER_PAGE = 10

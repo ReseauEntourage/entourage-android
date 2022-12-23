@@ -1,8 +1,6 @@
 package social.entourage.android.new_v8.profile.editProfile
 
-import android.widget.Toast
 import androidx.collection.ArrayMap
-import androidx.core.content.SharedPreferencesCompat.EditorCompat
 import androidx.lifecycle.MutableLiveData
 import retrofit2.Call
 import retrofit2.Callback

@@ -34,7 +34,6 @@ import retrofit2.Response
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.base.BaseDialogFragment
-import social.entourage.android.new_v8.home.HomePresenter
 import java.util.*
 
 class WebViewFragment : BaseDialogFragment() {
@@ -86,10 +85,6 @@ class WebViewFragment : BaseDialogFragment() {
         hideAnimation()
     }
 
-    // ----------------------------------
-    // Private methods
-    // ----------------------------------
-    private val homePresenter: HomePresenter by lazy { HomePresenter() }
     private  fun setWebUrlRead() {
         EntourageApplication.get().apiModule.homeRequest
             .markRecoWebUrlRead(requestedUrl).enqueue(object : Callback<okhttp3.ResponseBody> {

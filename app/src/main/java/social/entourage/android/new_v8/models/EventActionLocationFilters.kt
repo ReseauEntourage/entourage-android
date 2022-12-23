@@ -7,14 +7,14 @@ import social.entourage.android.R
 /**
  * Created by Me on 22/09/2022.
  */
-class EventActionLocationFilters: java.io.Serializable {
+class EventActionLocationFilters() : java.io.Serializable {
     private var radius_distance:Int? = null
     private var address:Address? = null
     private var shortname:String? = null
 
     private var selectedType:EventFilterType = EventFilterType.PROFILE
 
-    constructor() {
+    init {
         setCurrentProfileFilters()
     }
 

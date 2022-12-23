@@ -14,7 +14,6 @@ import social.entourage.android.new_v8.models.Interest
 import social.entourage.android.new_v8.profile.editProfile.InterestsListAdapter
 import social.entourage.android.new_v8.profile.editProfile.OnItemCheckListener
 import social.entourage.android.tools.log.AnalyticsEvents
-import timber.log.Timber
 
 class CreateEventStepFourFragment : Fragment() {
 

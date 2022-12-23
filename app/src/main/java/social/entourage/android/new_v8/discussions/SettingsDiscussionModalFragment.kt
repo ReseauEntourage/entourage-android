@@ -15,8 +15,8 @@ import social.entourage.android.new_v8.models.Conversation
 import social.entourage.android.new_v8.report.ReportModalFragment
 import social.entourage.android.new_v8.report.ReportTypes
 import social.entourage.android.new_v8.user.UserProfileActivity
-import social.entourage.android.new_v8.utils.CustomAlertDialog
 import social.entourage.android.new_v8.utils.Const
+import social.entourage.android.new_v8.utils.CustomAlertDialog
 
 class SettingsDiscussionModalFragment : BottomSheetDialogFragment() {
 
@@ -183,11 +183,11 @@ class SettingsDiscussionModalFragment : BottomSheetDialogFragment() {
     }
 
     companion object {
-        private val ARG_121 = "oneToOne"
-        private val ARG_USERID = "userid"
-        private val ARG_CONVID = "conversationid"
-        private val ARG_NAME = "username"
-        private val ARG_BLOCKED = "imBlocker"
+        private const val ARG_121 = "oneToOne"
+        private const val ARG_USERID = "userid"
+        private const val ARG_CONVID = "conversationid"
+        private const val ARG_NAME = "username"
+        private const val ARG_BLOCKED = "imBlocker"
         const val TAG = "SettingsDiscussionModalFragment"
         fun newInstance(userId:Int?,conversationId:Int?,isOneToOne:Boolean, username:String?,imBlocker:Boolean? = null): SettingsDiscussionModalFragment {
             val fragment = SettingsDiscussionModalFragment()

@@ -7,9 +7,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
+import kotlinx.android.synthetic.main.new_item_blocker_user.view.*
 import social.entourage.android.R
 import social.entourage.android.new_v8.models.UserBlocked
-import kotlinx.android.synthetic.main.new_item_blocker_user.view.*
 
 interface OnItemCheckListener {
     fun onItemCheck(position: Int)

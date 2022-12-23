@@ -1,13 +1,13 @@
 package social.entourage.android.onboarding.onboard
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_onboarding_end.*
 import social.entourage.android.EntourageApplication
+import social.entourage.android.MainActivity
 import social.entourage.android.R
 import social.entourage.android.api.OnboardingAPI
-import social.entourage.android.MainActivity
 import social.entourage.android.tools.log.AnalyticsEvents
 
 class OnboardingEndActivity : AppCompatActivity() {

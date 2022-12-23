@@ -1,7 +1,7 @@
 package social.entourage.android.new_v8.actions.create
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
 import social.entourage.android.R
 import social.entourage.android.new_v8.models.Action

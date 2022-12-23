@@ -16,7 +16,6 @@ import social.entourage.android.new_v8.groups.list.groupPerPage
 import social.entourage.android.new_v8.models.Group
 import social.entourage.android.new_v8.utils.Const
 import social.entourage.android.tools.log.AnalyticsEvents
-import timber.log.Timber
 
 class CreateEventStepFiveFragment : Fragment() {
     private var _binding: NewFragmentCreateEventStepFiveBinding? = null
@@ -144,11 +143,11 @@ class CreateEventStepFiveFragment : Fragment() {
     private fun handleOnClickNext(onClick: Boolean) {
         if (onClick) {
             if (binding.layout.shareInGroups.isChecked) {
-                CommunicationHandler.event?.neighborhoodIds?.clear()
-                CommunicationHandler.event?.neighborhoodIds?.addAll(selectedGroupsIdList)
+                CommunicationHandler.event.neighborhoodIds?.clear()
+                CommunicationHandler.event.neighborhoodIds?.addAll(selectedGroupsIdList)
             }
             else {
-                CommunicationHandler.event?.neighborhoodIds?.clear()
+                CommunicationHandler.event.neighborhoodIds?.clear()
             }
 
             if (binding.layout.shareInGroups.isChecked && selectedGroupsIdList.isEmpty()) {

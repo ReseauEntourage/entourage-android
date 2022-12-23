@@ -8,20 +8,21 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.Button
+import android.widget.ImageView
+import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import kotlinx.android.synthetic.main.fragment_guide_poi_read.*
-import kotlinx.android.synthetic.main.fragment_guide_poi_read.guide_filter_list
 import kotlinx.android.synthetic.main.layout_view_title.*
-import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.R
 import social.entourage.android.api.model.guide.Poi
 import social.entourage.android.base.BaseDialogFragment
-import social.entourage.android.tools.view.ShareMessageFragment
+import social.entourage.android.base.map.OnAddressClickListener
 import social.entourage.android.guide.filter.GuideFilterAdapter
 import social.entourage.android.guide.poi.PoiRenderer.CategoryType
 import social.entourage.android.guide.poi.ReadPoiPresenter.OnPhoneClickListener
-import social.entourage.android.base.map.OnAddressClickListener
+import social.entourage.android.tools.log.AnalyticsEvents
+import social.entourage.android.tools.view.ShareMessageFragment
 
 /**
  * Activity showing the detail of a POI

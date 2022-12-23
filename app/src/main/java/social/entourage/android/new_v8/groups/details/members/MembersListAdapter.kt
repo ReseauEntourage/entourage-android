@@ -2,7 +2,6 @@ package social.entourage.android.new_v8.groups.details.members
 
 import android.app.Activity
 import android.content.Intent
-import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,7 +11,6 @@ import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.api.model.EntourageUser
 import social.entourage.android.databinding.NewGroupMemberItemBinding
-import social.entourage.android.new_v8.models.Action
 import social.entourage.android.new_v8.user.UserProfileActivity
 import social.entourage.android.new_v8.utils.Const
 

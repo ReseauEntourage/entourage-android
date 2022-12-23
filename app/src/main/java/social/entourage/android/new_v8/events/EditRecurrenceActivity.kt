@@ -4,7 +4,6 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.collection.ArrayMap
 import androidx.databinding.DataBindingUtil
-import kotlinx.android.synthetic.main.new_rules_item.*
 import social.entourage.android.R
 import social.entourage.android.databinding.NewActivityEditRecurrenceBinding
 import social.entourage.android.new_v8.RefreshController

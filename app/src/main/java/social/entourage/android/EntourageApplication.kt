@@ -20,7 +20,6 @@ import social.entourage.android.message.push.PushNotificationManager
 import social.entourage.android.onboarding.login.LoginActivity
 import social.entourage.android.tools.LibrariesSupport
 import timber.log.Timber
-import java.util.*
 
 /**
  * Application setup for Analytics, JodaTime and Dagger

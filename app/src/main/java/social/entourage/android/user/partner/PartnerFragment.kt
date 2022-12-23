@@ -1,6 +1,5 @@
 package social.entourage.android.user.partner
 
-import androidx.appcompat.app.AlertDialog
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.net.Uri
@@ -8,6 +7,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.collection.ArrayMap
 import androidx.core.content.res.ResourcesCompat
 import com.bumptech.glide.Glide

@@ -6,8 +6,7 @@ import android.content.Intent
 import android.net.Uri
 import android.view.View
 import timber.log.Timber
-
-import java.util.Locale
+import java.util.*
 
 class OnAddressClickListener(private val context: Context, private val address: String, val isFromDetail:Boolean = false) : View.OnClickListener {
 

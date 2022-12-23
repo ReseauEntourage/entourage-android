@@ -2,7 +2,6 @@ package social.entourage.android.api.model
 
 import android.content.Context
 import com.google.gson.Gson
-import social.entourage.android.R
 import java.io.Serializable
 
 class Message(var author: String, var msgObject: String?, content: String, pushNotificationId: Int, pushNotificationTag: String?) : Serializable {

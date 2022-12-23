@@ -26,11 +26,11 @@ import kotlinx.android.synthetic.main.layout_map_longclick.*
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.api.tape.Events
+import social.entourage.android.base.BaseFragment
+import social.entourage.android.base.HeaderBaseAdapter
 import social.entourage.android.base.location.EntLocation
 import social.entourage.android.base.location.LocationUpdateListener
 import social.entourage.android.base.location.LocationUtils
-import social.entourage.android.base.BaseFragment
-import social.entourage.android.base.HeaderBaseAdapter
 import social.entourage.android.tools.EntBus
 import social.entourage.android.tools.log.AnalyticsEvents
 import timber.log.Timber

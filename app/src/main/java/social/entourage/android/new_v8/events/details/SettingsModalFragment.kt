@@ -36,8 +36,8 @@ import social.entourage.android.new_v8.models.Status
 import social.entourage.android.new_v8.profile.myProfile.InterestsAdapter
 import social.entourage.android.new_v8.report.ReportModalFragment
 import social.entourage.android.new_v8.report.ReportTypes
-import social.entourage.android.new_v8.utils.CustomAlertDialog
 import social.entourage.android.new_v8.utils.Const
+import social.entourage.android.new_v8.utils.CustomAlertDialog
 
 class SettingsModalFragment : BottomSheetDialogFragment() {
 

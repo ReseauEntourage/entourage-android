@@ -289,8 +289,7 @@ class LoginActivity : BaseActivity() {
             this,
             getString(titleId),
             message,
-            getString(buttonTextId),
-            {}
-        )
+            getString(buttonTextId)
+        ) {}
     }
 }

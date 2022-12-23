@@ -1,12 +1,12 @@
 package social.entourage.android.onboarding.onboard
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
 import kotlinx.android.synthetic.main.activity_onboarding_start.*
@@ -22,7 +22,6 @@ import social.entourage.android.tools.enable
 import social.entourage.android.tools.view.CustomProgressDialog
 import social.entourage.android.tools.view.countrycodepicker.Country
 import timber.log.Timber
-import java.util.HashSet
 
 class OnboardingStartActivity : AppCompatActivity(), OnboardingStartCallback {
     private val LOGIN_ERROR_UNAUTHORIZED = -1

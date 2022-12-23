@@ -34,8 +34,8 @@ import social.entourage.android.new_v8.models.Action
 import social.entourage.android.new_v8.models.ActionSection
 import social.entourage.android.new_v8.models.Conversation
 import social.entourage.android.new_v8.user.UserProfileActivity
-import social.entourage.android.new_v8.utils.CustomAlertDialog
 import social.entourage.android.new_v8.utils.Const
+import social.entourage.android.new_v8.utils.CustomAlertDialog
 import social.entourage.android.new_v8.utils.px
 import social.entourage.android.tools.log.AnalyticsEvents
 
@@ -242,9 +242,9 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
                 binding.layoutFullCancel.isVisible = false
                 binding.uiImagePlaceholder.isVisible = false
 
-                action?.imageUrl?.let {
+                action?.imageUrl?.let { url ->
                     Glide.with(binding.uiImageContrib.context)
-                        .load(it)
+                        .load(url)
                         .error(R.drawable.ic_placeholder_action)
                         .transform(CenterCrop(), RoundedCorners(14.px))
                         .into(binding.uiImageContrib)

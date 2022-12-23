@@ -1,7 +1,6 @@
 package social.entourage.android.new_v8.models
 
 import com.google.gson.annotations.SerializedName
-import social.entourage.android.R
 import social.entourage.android.api.model.EntourageUser
 import java.text.SimpleDateFormat
 import java.util.*

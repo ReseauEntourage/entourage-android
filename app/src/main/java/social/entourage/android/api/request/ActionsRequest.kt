@@ -1,6 +1,5 @@
 package social.entourage.android.api.request
 
-import androidx.collection.ArrayMap
 import com.google.gson.annotations.SerializedName
 import okhttp3.ResponseBody
 import retrofit2.Call

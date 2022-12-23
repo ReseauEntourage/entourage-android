@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
@@ -22,7 +21,6 @@ import social.entourage.android.new_v8.models.Events
 import social.entourage.android.new_v8.models.Status
 import social.entourage.android.new_v8.utils.Const
 import social.entourage.android.new_v8.utils.px
-import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
 

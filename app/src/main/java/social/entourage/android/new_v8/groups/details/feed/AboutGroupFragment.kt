@@ -20,11 +20,11 @@ import social.entourage.android.api.model.Tags
 import social.entourage.android.databinding.NewFragmentAboutGroupBinding
 import social.entourage.android.new_v8.groups.GroupPresenter
 import social.entourage.android.new_v8.groups.details.SettingsModalFragment
-import social.entourage.android.new_v8.models.SettingUiModel
 import social.entourage.android.new_v8.groups.details.members.MembersType
+import social.entourage.android.new_v8.models.SettingUiModel
 import social.entourage.android.new_v8.profile.myProfile.InterestsAdapter
-import social.entourage.android.new_v8.utils.CustomAlertDialog
 import social.entourage.android.new_v8.utils.Const
+import social.entourage.android.new_v8.utils.CustomAlertDialog
 import social.entourage.android.tools.log.AnalyticsEvents
 
 class AboutGroupFragment : Fragment() {

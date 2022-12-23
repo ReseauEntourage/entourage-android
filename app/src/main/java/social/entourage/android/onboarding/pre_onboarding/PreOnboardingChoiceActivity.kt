@@ -3,11 +3,11 @@ package social.entourage.android.onboarding.pre_onboarding
 import android.content.Intent
 import android.os.Bundle
 import kotlinx.android.synthetic.main.activity_pre_onboarding_choice.*
-import social.entourage.android.base.BaseActivity
-import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.R
+import social.entourage.android.base.BaseActivity
 import social.entourage.android.onboarding.login.LoginActivity
 import social.entourage.android.onboarding.onboard.OnboardingStartActivity
+import social.entourage.android.tools.log.AnalyticsEvents
 
 class PreOnboardingChoiceActivity : BaseActivity() {
 
