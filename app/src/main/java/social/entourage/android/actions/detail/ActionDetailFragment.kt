@@ -50,7 +50,6 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
 
     private var actionId:Int = 0
 
-    private var mMap: MapView? = null
     private var mGoogleMap:GoogleMap? = null
 
     var action: Action? = null
@@ -74,9 +73,9 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
     ): View {
         _binding = NewFragmentActionDetailBinding.inflate(inflater,container,false)
 
-        mMap = binding.uiMapview
-        mMap?.onCreate(savedInstanceState)
-        mMap?.getMapAsync(this)
+        //mMap = binding.uiMapview
+        binding.uiMapview.onCreate(savedInstanceState)
+        binding.uiMapview.getMapAsync(this)
         return binding.root
     }
 
@@ -295,7 +294,7 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
     //Google map
     override fun onResume() {
         super.onResume()
-        mMap?.onResume()
+        binding.uiMapview.onResume()
         if (isFromEdit) {
             isFromEdit = false
             loadAction()
@@ -304,31 +303,32 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
 
     override fun onPause() {
         super.onPause()
-        mMap?.onPause()
+        binding.uiMapview.onPause()
     }
 
     override fun onStart() {
         super.onStart()
-        mMap?.onStart()
+        binding.uiMapview.onStart()
     }
 
     override fun onStop() {
         super.onStop()
-        mMap?.onStop()
+        binding.uiMapview.onStop()
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        mMap?.onDestroy()
+        binding.uiMapview.onDestroy()
     }
 
     override fun onLowMemory() {
         super.onLowMemory()
-        mMap?.onLowMemory()
+        binding.uiMapview.onLowMemory()
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
         this.mGoogleMap = googleMap
+        googleMap.uiSettings.isZoomGesturesEnabled = false
         updateMarker()
     }
 
@@ -342,12 +342,5 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
         val cameraPosition = CameraPosition.Builder()
             .target(LatLng(latitude, longitude)).zoom(15f).build()
         mGoogleMap?.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
-    }
-
-    private fun openMap() {
-        val geoUri =
-            String.format(getString(R.string.geoUri), action?.metadata?.displayAddress)
-        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(geoUri))
-        startActivityForResult(intent, 0)
     }
 }

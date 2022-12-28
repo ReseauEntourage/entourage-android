@@ -22,7 +22,6 @@ import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
@@ -56,7 +55,6 @@ class AboutEventFragment : Fragment(), OnMapReadyCallback {
     var event: EventUiModel? = null
     private var interestsList: ArrayList<String> = ArrayList()
     private val eventPresenter: EventsPresenter by lazy { EventsPresenter() }
-    private var mMap: MapView? = null
 
     private val args: AboutEventFragmentArgs by navArgs()
 
@@ -65,9 +63,9 @@ class AboutEventFragment : Fragment(), OnMapReadyCallback {
         savedInstanceState: Bundle?
     ): View {
         _binding = NewFragmentAboutEventBinding.inflate(inflater, container, false)
-        mMap = binding.mapView
-        mMap?.onCreate(savedInstanceState)
-        mMap?.getMapAsync(this)
+        //mMap = binding.mapView
+        binding.mapView.onCreate(savedInstanceState)
+        binding.mapView.getMapAsync(this)
         return binding.root
     }
 
@@ -408,32 +406,32 @@ class AboutEventFragment : Fragment(), OnMapReadyCallback {
 
     override fun onResume() {
         super.onResume()
-        mMap?.onResume()
+        binding.mapView.onResume()
     }
 
     override fun onPause() {
         super.onPause()
-        mMap?.onPause()
+        binding.mapView.onPause()
     }
 
     override fun onStart() {
         super.onStart()
-        mMap?.onStart()
+        binding.mapView.onStart()
     }
 
     override fun onStop() {
         super.onStop()
-        mMap?.onStop()
+        binding.mapView.onStop()
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        mMap?.onDestroy()
+        binding.mapView.onDestroy()
     }
 
     override fun onLowMemory() {
         super.onLowMemory()
-        mMap?.onLowMemory()
+        binding.mapView.onLowMemory()
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
