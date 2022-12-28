@@ -1,0 +1,127 @@
+package social.entourage.android.profile.editProfile
+
+import android.text.Editable
+import android.text.TextWatcher
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.new_profile_edit_interest_item.view.checkBox
+import kotlinx.android.synthetic.main.new_profile_edit_interest_item.view.icon
+import kotlinx.android.synthetic.main.new_profile_edit_interest_item.view.layout
+import kotlinx.android.synthetic.main.new_profile_edit_interest_item.view.title
+import kotlinx.android.synthetic.main.new_profile_edit_interests_edittext_item.view.*
+import social.entourage.android.R
+import social.entourage.android.api.model.Interest
+
+interface OnItemCheckListener {
+    fun onItemCheck(item: Interest)
+    fun onItemUncheck(item: Interest)
+}
+
+enum class InterestsTypes(val label: String, val code: Int) {
+    TYPE_OTHER("other", 0),
+    TYPE_INTEREST("interest", 1),
+}
+
+class InterestsListAdapter(
+    var interestsList: List<Interest>,
+    var onItemClick: OnItemCheckListener,
+    var isOtherInterestEnabled: Boolean
+) : RecyclerView.Adapter<InterestsListAdapter.ViewHolder>() {
+
+    private var otherInterest: String? = null
+
+    fun getOtherInterestCategory(): String? {
+        return otherInterest
+    }
+
+    inner class ViewHolder(val binding: View) :
+        RecyclerView.ViewHolder(binding) {
+        fun bind(interest: Interest) {
+            if (interest.isSelected) binding.title.setTypeface(
+                binding.title.typeface,
+                android.graphics.Typeface.BOLD
+            )
+            binding.title.text = interest.title
+            binding.checkBox.isChecked = interest.isSelected
+            binding.icon.setImageResource(interest.icon)
+            binding.layout.setOnClickListener {
+                if (interest.isSelected) {
+                    onItemClick.onItemUncheck(interest)
+                    binding.title.typeface =
+                        android.graphics.Typeface.create(
+                            binding.title.typeface,
+                            android.graphics.Typeface.NORMAL
+                        )
+                    if (interest.id == InterestsTypes.TYPE_OTHER.label && isOtherInterestEnabled) {
+                        binding.category_name.visibility = View.GONE
+                        binding.category_name_label.visibility = View.GONE
+                    }
+                } else {
+                    onItemClick.onItemCheck(interest)
+                    binding.title.setTypeface(
+                        binding.title.typeface,
+                        android.graphics.Typeface.BOLD
+                    )
+                    if (interest.id == InterestsTypes.TYPE_OTHER.label && isOtherInterestEnabled) {
+                        binding.category_name.visibility = View.VISIBLE
+                        binding.category_name_label.visibility = View.VISIBLE
+                        binding.category_name.addTextChangedListener(object : TextWatcher {
+                            override fun beforeTextChanged(
+                                s: CharSequence,
+                                start: Int,
+                                count: Int,
+                                after: Int
+                            ) {
+
+                            }
+
+                            override fun onTextChanged(
+                                s: CharSequence,
+                                start: Int,
+                                before: Int,
+                                count: Int
+                            ) {
+                                otherInterest = s.toString()
+                            }
+
+                            override fun afterTextChanged(s: Editable) {
+                            }
+                        })
+                    }
+                }
+                interest.isSelected = !(interest.isSelected)
+                binding.checkBox.isChecked = !binding.checkBox.isChecked
+            }
+        }
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val layout = when (viewType) {
+            InterestsTypes.TYPE_OTHER.code -> R.layout.new_profile_edit_interests_edittext_item
+            else -> R.layout.new_profile_edit_interest_item
+        }
+        val view = LayoutInflater
+            .from(parent.context)
+            .inflate(layout, parent, false)
+
+        return ViewHolder(view)
+    }
+
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        holder.bind(interestsList[position])
+    }
+
+    override fun getItemCount(): Int {
+        return interestsList.size
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        return when (interestsList[position].id) {
+            InterestsTypes.TYPE_OTHER.label -> InterestsTypes.TYPE_OTHER.code
+            else -> InterestsTypes.TYPE_INTEREST.code
+        }
+    }
+
+}

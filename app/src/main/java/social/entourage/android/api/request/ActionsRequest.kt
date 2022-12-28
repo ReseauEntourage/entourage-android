@@ -4,8 +4,8 @@ import com.google.gson.annotations.SerializedName
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.*
-import social.entourage.android.new_v8.models.Action
-import social.entourage.android.new_v8.models.ActionCancel
+import social.entourage.android.api.model.Action
+import social.entourage.android.api.model.ActionCancel
 
 class MyActionsListWrapper(@field:SerializedName("actions") val allActions: MutableList<Action>)
 class DemandsListWrapper(@field:SerializedName("solicitations") val allActions: MutableList<Action>)

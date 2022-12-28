@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/pedagogical_list_fragment"
-        android:name="social.entourage.android.new_v8.home.pedago.PedagoListFragment">
+        android:name="social.entourage.android.home.pedago.PedagoListFragment">
         <action
             android:id="@+id/action_pedagogical_list_fragment_to_pedagogical_details_fragment"
             app:destination="@id/pedagogical_details_fragment" />
@@ -14,7 +14,7 @@
 
     <fragment
         android:id="@+id/pedagogical_details_fragment"
-        android:name="social.entourage.android.new_v8.home.pedago.PedagoContentDetailsFragment">
+        android:name="social.entourage.android.home.pedago.PedagoContentDetailsFragment">
         <argument
             android:name="htmlContent"
             app:argType="string" />

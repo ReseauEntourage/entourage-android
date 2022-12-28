@@ -12,7 +12,7 @@ import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.api.OnboardingAPI
 import social.entourage.android.api.model.User
-import social.entourage.android.new_v8.groups.create.CommunicationHandlerViewModel
+import social.entourage.android.groups.create.CommunicationHandlerViewModel
 import social.entourage.android.tools.log.AnalyticsEvents
 import java.io.IOException
 

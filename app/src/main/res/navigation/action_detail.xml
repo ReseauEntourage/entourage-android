@@ -5,7 +5,7 @@
     app:startDestination="@+id/action_my_list">
     <fragment
         android:id="@+id/action_my_list"
-        android:name="social.entourage.android.new_v8.actions.list.me.MyActionsListFragment">
+        android:name="social.entourage.android.actions.list.me.MyActionsListFragment">
 
         <action
             android:id="@+id/action_my_list_to_detail_action"
@@ -17,7 +17,7 @@
 
     <fragment
         android:id="@+id/action_detail"
-        android:name="social.entourage.android.new_v8.actions.detail.ActionDetailFragment">
+        android:name="social.entourage.android.actions.detail.ActionDetailFragment">
         <argument
             android:name="actionID"
             app:argType="integer" />

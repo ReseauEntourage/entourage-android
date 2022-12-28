@@ -7,7 +7,6 @@ import androidx.annotation.StringRes
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import social.entourage.android.R
-import social.entourage.android.api.model.LastMessage
 import social.entourage.android.api.model.LocationPoint
 import social.entourage.android.api.model.TimestampedObject
 import java.io.IOException
@@ -52,7 +51,7 @@ abstract class FeedItem : TimestampedObject(), Serializable {
 
     @Expose(serialize = false)
     @SerializedName("last_message")
-    var lastMessage: LastMessage? = null
+    var lastMessage: FeedLastMessage? = null
         protected set
 
     @Expose(serialize = false)
@@ -103,7 +102,7 @@ abstract class FeedItem : TimestampedObject(), Serializable {
 
     fun setLastMessage(text: String, author: String) {
         if (lastMessage == null) {
-            lastMessage = LastMessage()
+            lastMessage = FeedLastMessage()
         }
         lastMessage?.setMessage(text, author)
     }

@@ -14,7 +14,7 @@ import androidx.fragment.app.DialogFragment
 import com.takusemba.cropme.OnCropListener
 import kotlinx.android.synthetic.main.fragment_onboarding_edit_photo.*
 import social.entourage.android.R
-import social.entourage.android.new_v8.utils.Utils
+import social.entourage.android.tools.utils.Utils
 import social.entourage.android.tools.rotate
 import timber.log.Timber
 import java.io.File

@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/group_feed"
-        android:name="social.entourage.android.new_v8.groups.details.feed.FeedFragment">
+        android:name="social.entourage.android.groups.details.feed.FeedFragment">
         <argument
             android:name="groupID"
             app:argType="integer" />
@@ -31,10 +31,10 @@
 
     <fragment
         android:id="@+id/group_about"
-        android:name="social.entourage.android.new_v8.groups.details.feed.AboutGroupFragment">
+        android:name="social.entourage.android.groups.details.feed.AboutGroupFragment">
         <argument
             android:name="group"
-            app:argType="social.entourage.android.new_v8.models.SettingUiModel" />
+            app:argType="social.entourage.android.api.model.SettingUiModel" />
         <action
             android:id="@+id/action_group_about_to_group_members"
             app:destination="@id/group_members"
@@ -44,19 +44,19 @@
 
     <fragment
         android:id="@+id/group_members"
-        android:name="social.entourage.android.new_v8.groups.details.members.MembersFragment">
+        android:name="social.entourage.android.groups.details.members.MembersFragment">
         <argument
             android:name="id"
             app:argType="integer" />
 
         <argument
             android:name="type"
-            app:argType="social.entourage.android.new_v8.groups.details.members.MembersType" />
+            app:argType="social.entourage.android.groups.details.members.MembersType" />
     </fragment>
 
     <fragment
         android:id="@+id/group_events"
-        android:name="social.entourage.android.new_v8.events.list.GroupEventsListFragment">
+        android:name="social.entourage.android.events.list.GroupEventsListFragment">
         <argument
             android:name="groupID"
             app:argType="integer" />

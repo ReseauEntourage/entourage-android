@@ -5,7 +5,7 @@
     app:startDestination="@+id/event_feed">
     <fragment
         android:id="@+id/event_feed"
-        android:name="social.entourage.android.new_v8.events.details.feed.FeedFragment">
+        android:name="social.entourage.android.events.details.feed.FeedFragment">
 
         <argument
             android:name="eventID"
@@ -27,7 +27,7 @@
 
     <fragment
         android:id="@+id/members"
-        android:name="social.entourage.android.new_v8.groups.details.members.MembersFragment">
+        android:name="social.entourage.android.groups.details.members.MembersFragment">
 
         <argument
             android:name="id"
@@ -35,15 +35,15 @@
 
         <argument
             android:name="type"
-            app:argType="social.entourage.android.new_v8.groups.details.members.MembersType" />
+            app:argType="social.entourage.android.groups.details.members.MembersType" />
     </fragment>
 
     <fragment
         android:id="@+id/event_about"
-        android:name="social.entourage.android.new_v8.events.details.feed.AboutEventFragment">
+        android:name="social.entourage.android.events.details.feed.AboutEventFragment">
         <argument
             android:name="group"
-            app:argType="social.entourage.android.new_v8.models.EventUiModel" />
+            app:argType="social.entourage.android.api.model.EventUiModel" />
         <action
             android:id="@+id/action_event_about_to_event_members"
             app:destination="@id/members"

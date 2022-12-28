@@ -8,7 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/new_profile_header"
-        tools:context="social.entourage.android.new_v8.profile.ProfileFragment">
+        tools:context="social.entourage.android.profile.ProfileFragment">
 
         <ImageView
             android:id="@+id/image_association"

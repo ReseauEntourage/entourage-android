@@ -9,7 +9,7 @@
         android:layout_height="match_parent"
         android:background="@drawable/new_profile_header_orange"
         android:orientation="vertical"
-        tools:context="social.entourage.android.new_v8.profile.ProfileFragment">
+        tools:context="social.entourage.android.profile.ProfileFragment">
 
         <include
             android:id="@+id/header"

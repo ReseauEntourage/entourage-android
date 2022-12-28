@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/events_fragment"
-        android:name="social.entourage.android.new_v8.events.EventsFragment" />
+        android:name="social.entourage.android.events.EventsFragment" />
 
     <argument
         android:name="isDiscover"

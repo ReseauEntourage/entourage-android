@@ -42,7 +42,7 @@
             app:layout_constraintTop_toBottomOf="@id/event_date_title"
             tools:text="content" />
 
-        <social.entourage.android.new_v8.events.create.TimePickerStartEnd
+        <social.entourage.android.events.create.TimePickerStartEnd
             android:id="@+id/event_time"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

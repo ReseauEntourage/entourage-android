@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/create_action_cgu_fragment"
-        android:name="social.entourage.android.new_v8.actions.create.CreateActionCGUFragment">
+        android:name="social.entourage.android.actions.create.CreateActionCGUFragment">
         <action
             android:id="@+id/action_create_action_cgu_fragment_to_create_action_fragment"
             app:destination="@id/create_action_fragment" />
@@ -17,12 +17,12 @@
             app:nullable="true"
             android:defaultValue="@null"
             android:name="actionObj"
-            app:argType="social.entourage.android.new_v8.models.Action"/>
+            app:argType="social.entourage.android.api.model.Action"/>
     </fragment>
 
     <fragment
         android:id="@+id/create_action_fragment"
-        android:name="social.entourage.android.new_v8.actions.create.CreateActionFragment">
+        android:name="social.entourage.android.actions.create.CreateActionFragment">
         <action
             android:id="@+id/action_create_action_fragment_to_create_action_success_fragment"
             app:destination="@id/create_action_success_fragment" />
@@ -38,12 +38,12 @@
             app:nullable="true"
             android:defaultValue="@null"
             android:name="actionObj"
-            app:argType="social.entourage.android.new_v8.models.Action"/>
+            app:argType="social.entourage.android.api.model.Action"/>
     </fragment>
 
     <fragment
         android:id="@+id/edit_action_place_fragment"
-        android:name="social.entourage.android.new_v8.actions.create.CreateActionPlaceFragment">
+        android:name="social.entourage.android.actions.create.CreateActionPlaceFragment">
         <argument
             android:name="setGroupLocation"
             app:argType="boolean" />
@@ -51,7 +51,7 @@
 
     <fragment
         android:id="@+id/create_action_success_fragment"
-        android:name="social.entourage.android.new_v8.actions.create.CreateActionSuccessFragment">
+        android:name="social.entourage.android.actions.create.CreateActionSuccessFragment">
         <argument
             android:name="successActionId"
             app:argType="integer" />

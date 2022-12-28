@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/actions_fragment"
-        android:name="social.entourage.android.new_v8.actions.ActionsFragment" />
+        android:name="social.entourage.android.actions.ActionsFragment" />
     <argument
         android:name="isActionDemand"
         app:argType="boolean"/>

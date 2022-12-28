@@ -4,7 +4,11 @@ import com.google.gson.annotations.SerializedName
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.*
-import social.entourage.android.new_v8.models.*
+import social.entourage.android.api.model.NotifInApp
+import social.entourage.android.api.model.NotifInAppPermission
+import social.entourage.android.api.model.Pedago
+import social.entourage.android.api.model.Summary
+import social.entourage.android.api.model.*
 
 class SummaryResponse(@field:SerializedName("user") val summary: Summary)
 class PedagogicResponse(@field:SerializedName("resources") val pedago: MutableList<Pedago>)

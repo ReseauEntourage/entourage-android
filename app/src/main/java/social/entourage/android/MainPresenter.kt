@@ -18,7 +18,7 @@ import social.entourage.android.api.request.UserRequest
 import social.entourage.android.api.request.UserResponse
 import social.entourage.android.authentication.AuthenticationController
 import social.entourage.android.configuration.Configuration
-import social.entourage.android.new_v8.user.UserProfileActivity
+import social.entourage.android.user.UserProfileActivity
 import social.entourage.android.onboarding.pre_onboarding.PreOnboardingStartActivity
 import social.entourage.android.tools.log.AnalyticsEvents
 import timber.log.Timber

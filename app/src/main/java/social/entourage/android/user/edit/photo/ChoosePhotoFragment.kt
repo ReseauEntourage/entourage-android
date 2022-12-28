@@ -10,7 +10,7 @@ import com.bumptech.glide.Glide
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.databinding.FragmentOnboardingPhotoBinding
-import social.entourage.android.new_v8.profile.editProfile.EditProfileCallback
+import social.entourage.android.profile.editProfile.EditProfileCallback
 import social.entourage.android.tools.log.AnalyticsEvents
 
 class ChoosePhotoFragment : OnboardingPhotoFragment() {

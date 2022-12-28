@@ -6,8 +6,8 @@ import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.*
 import social.entourage.android.api.model.Image
-import social.entourage.android.new_v8.events.create.CreateEvent
-import social.entourage.android.new_v8.models.Events
+import social.entourage.android.events.create.CreateEvent
+import social.entourage.android.api.model.Events
 
 class EventsImagesResponse(@field:SerializedName("entourage_images") val eventImages: ArrayList<Image>)
 class EventsListWrapper(@field:SerializedName("outings") val allEvents: MutableList<Events>)

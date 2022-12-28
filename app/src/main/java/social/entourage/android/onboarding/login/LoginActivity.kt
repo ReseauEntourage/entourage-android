@@ -12,8 +12,8 @@ import social.entourage.android.R
 import social.entourage.android.api.OnboardingAPI
 import social.entourage.android.authentication.AuthenticationController
 import social.entourage.android.base.BaseActivity
-import social.entourage.android.new_v8.utils.CustomAlertDialog
-import social.entourage.android.new_v8.utils.Utils
+import social.entourage.android.tools.utils.CustomAlertDialog
+import social.entourage.android.tools.utils.Utils
 import social.entourage.android.onboarding.pre_onboarding.PreOnboardingChoiceActivity
 import social.entourage.android.tools.hideKeyboard
 import social.entourage.android.tools.log.AnalyticsEvents

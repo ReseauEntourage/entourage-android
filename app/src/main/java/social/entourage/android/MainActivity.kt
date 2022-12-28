@@ -17,9 +17,9 @@ import social.entourage.android.base.BaseSecuredActivity
 import social.entourage.android.base.location.EntLocation
 import social.entourage.android.guide.GDSMainActivity
 import social.entourage.android.message.push.PushNotificationManager
-import social.entourage.android.new_v8.PushNotificationLinkManager
-import social.entourage.android.new_v8.home.CommunicationHandlerBadgeViewModel
-import social.entourage.android.new_v8.home.UnreadMessages
+import social.entourage.android.home.CommunicationHandlerBadgeViewModel
+import social.entourage.android.home.UnreadMessages
+import social.entourage.android.message.push.PushNotificationLinkManager
 import social.entourage.android.onboarding.pre_onboarding.PreOnboardingStartActivity
 import social.entourage.android.tools.log.AnalyticsEvents
 

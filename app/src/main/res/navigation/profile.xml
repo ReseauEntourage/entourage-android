@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/profile_fragment"
-        android:name="social.entourage.android.new_v8.profile.ProfileFragment">
+        android:name="social.entourage.android.profile.ProfileFragment">
         <action
             android:id="@+id/action_profile_fragment_to_help_about_fragment"
             app:destination="@id/help_about_fragment"
@@ -26,15 +26,15 @@
 
     <fragment
         android:id="@+id/help_about_fragment"
-        android:name="social.entourage.android.new_v8.profile.settings.HelpAboutFragment" />
+        android:name="social.entourage.android.profile.settings.HelpAboutFragment" />
 
     <fragment
         android:id="@+id/settings_fragment"
-        android:name="social.entourage.android.new_v8.profile.settings.SettingsFragment" />
+        android:name="social.entourage.android.profile.settings.SettingsFragment" />
 
     <fragment
         android:id="@+id/edit_profile_fragment"
-        android:name="social.entourage.android.new_v8.profile.editProfile.EditProfileFragment">
+        android:name="social.entourage.android.profile.editProfile.EditProfileFragment">
         <action
             android:id="@+id/action_edit_profile_fragment_to_edit_profile_interest_fragment"
             app:destination="@id/edit_profile_interest_fragment"
@@ -54,7 +54,7 @@
 
     <fragment
         android:id="@+id/edit_profile_interest_fragment"
-        android:name="social.entourage.android.new_v8.profile.editProfile.EditInterestsFragment" />
+        android:name="social.entourage.android.profile.editProfile.EditInterestsFragment" />
 
     <fragment
         android:id="@+id/edit_profile_image_fragment"
@@ -70,7 +70,7 @@
 
     <fragment
         android:id="@+id/association_fragment"
-        android:name="social.entourage.android.new_v8.association.AssociationProfileFragment">
+        android:name="social.entourage.android.profile.association.AssociationProfileFragment">
         <argument
             android:name="partner_id"
             app:argType="integer" />

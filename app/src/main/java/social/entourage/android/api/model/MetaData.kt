@@ -2,18 +2,53 @@ package social.entourage.android.api.model
 
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable
+import java.util.*
 
-class MetaData : Serializable {
-    @SerializedName("id")
-    var id: String? = null
+data class EventMetadata(
 
-    @SerializedName("name")
-    var name: String? = null
+    @field:SerializedName("previous_at")
+    val previousAt: Date? = null,
 
-    @SerializedName("subname")
-    var subname: String? = null
+    @field:SerializedName("place_name")
+    val placeName: String? = null,
 
-    override fun toString(): String {
-        return "Interests(id=$id, name=$name, subname=$subname)"
-    }
-}
+    @field:SerializedName("street_address")
+    val streetAddress: String? = null,
+
+    @field:SerializedName("starts_at")
+    val startsAt: Date? = null,
+
+    @field:SerializedName("place_limit")
+    val placeLimit: Int? = null,
+
+    @field:SerializedName("landscape_thumbnail_url")
+    val landscapeThumbnailUrl: String? = null,
+
+    @field:SerializedName("portrait_thumbnail_url")
+    val portraitThumbnailUrl: String? = null,
+
+    @field:SerializedName("display_address")
+    val displayAddress: String? = null,
+
+    @field:SerializedName("ends_at")
+    val endsAt: Date? = null,
+
+    @field:SerializedName("google_place_id")
+    val googlePlaceId: String? = null,
+
+    @field:SerializedName("portrait_url")
+    val portraitUrl: String? = null,
+
+    @field:SerializedName("landscape_url")
+    val landscapeUrl: String? = null
+) : Serializable
+
+data class ActionMetadata(
+
+    @field:SerializedName("city")
+    val city: String? = null,
+
+    @field:SerializedName("display_address")
+    val displayAddress: String? = null,
+
+) : Serializable

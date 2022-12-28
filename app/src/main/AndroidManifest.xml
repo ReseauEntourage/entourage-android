@@ -49,7 +49,7 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".new_v8.home.notifications.NotificationsInAppActivity"
+            android:name=".home.notifications.NotificationsInAppActivity"
             android:exported="false"/>
         <activity
             android:name=".onboarding.onboard.OnboardingStartActivity"
@@ -59,80 +59,80 @@
             android:name=".onboarding.onboard.OnboardingEndActivity"
             android:exported="false"/>
         <activity
-            android:name=".new_v8.home.pedago.PedagoDetailActivity"
+            android:name=".home.pedago.PedagoDetailActivity"
             android:exported="false" />
         <activity
-            android:name=".new_v8.discussions.DetailConversationActivity"
+            android:name=".discussions.DetailConversationActivity"
             android:exported="false" />
         <activity
-            android:name=".new_v8.actions.ActionLocationFilterActivity"
+            android:name=".actions.ActionLocationFilterActivity"
             android:exported="false" />
         <activity
-            android:name=".new_v8.actions.ActionCategoriesFiltersActivity"
+            android:name=".actions.ActionCategoriesFiltersActivity"
             android:exported="false" />
         <activity
-            android:name=".new_v8.actions.create.CreateActionActivity"
+            android:name=".actions.create.CreateActionActivity"
             android:exported="false" />
         <activity
-            android:name=".new_v8.actions.list.me.MyActionsListActivity"
+            android:name=".actions.list.me.MyActionsListActivity"
             android:exported="false" />
         <activity
-            android:name=".new_v8.actions.detail.ActionDetailActivity"
+            android:name=".actions.detail.ActionDetailActivity"
             android:exported="false" />
         <activity
-            android:name=".new_v8.association.PartnerDetailActivity"
+            android:name=".user.partner.PartnerDetailActivity"
             android:exported="false" />
         <activity
-            android:name=".new_v8.events.EventFiltersActivity"
+            android:name=".events.EventFiltersActivity"
             android:exported="false" />
         <activity
-            android:name=".new_v8.events.EditRecurrenceActivity"
+            android:name=".events.EditRecurrenceActivity"
             android:exported="false" />
         <activity
-            android:name=".new_v8.events.details.feed.CreatePostEventActivity"
+            android:name=".events.details.feed.CreatePostEventActivity"
             android:exported="false" />
         <activity
-            android:name=".new_v8.events.details.feed.EventCommentActivity"
+            android:name=".events.details.feed.EventCommentActivity"
             android:exported="false" />
         <activity
-            android:name=".new_v8.groups.details.feed.GroupCommentActivity"
+            android:name=".groups.details.feed.GroupCommentActivity"
             android:exported="false" />
         <activity
-            android:name=".new_v8.events.details.feed.FeedActivity"
+            android:name=".events.details.feed.FeedActivity"
             android:exported="false" />
         <activity
-            android:name=".new_v8.events.create.CreateEventActivity"
+            android:name=".events.create.CreateEventActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".new_v8.user.UserProfileActivity"
+            android:name=".user.UserProfileActivity"
             android:exported="false" />
         <activity
-            android:name=".new_v8.home.pedago.PedagoListActivity"
+            android:name=".home.pedago.PedagoListActivity"
             android:exported="false" />
         <activity
-            android:name=".new_v8.comment.CommentActivity"
+            android:name=".comment.CommentActivity"
             android:exported="false" />
         <activity
-            android:name=".new_v8.groups.details.rules.GroupRulesActivity"
+            android:name=".groups.details.rules.GroupRulesActivity"
             android:exported="false" />
         <activity
-            android:name=".new_v8.groups.details.feed.FeedActivity"
+            android:name=".groups.details.feed.FeedActivity"
             android:exported="false" />
         <activity
-            android:name=".new_v8.groups.edit.EditGroupActivity"
+            android:name=".groups.edit.EditGroupActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".new_v8.groups.create.CreateGroupActivity"
+            android:name=".groups.create.CreateGroupActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name="social.entourage.android.new_v8.posts.CreatePostActivity"
+            android:name="social.entourage.android.posts.CreatePostActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".new_v8.groups.details.feed.CreatePostGroupActivity"
+            android:name=".groups.details.feed.CreatePostGroupActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustPan" />
         <activity
@@ -282,7 +282,7 @@
         <activity android:name=".involvement.ShareActivity" />
         <activity android:name=".involvement.RateActivity" />
         <activity
-            android:name=".new_v8.profile.ProfileActivity"
+            android:name=".profile.ProfileActivity"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".onboarding.pre_onboarding.PreOnboardingChoiceActivity"
