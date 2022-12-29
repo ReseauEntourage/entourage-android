@@ -21,10 +21,8 @@ import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.api.model.Partner
 import social.entourage.android.api.request.PartnerResponse
-import social.entourage.android.api.tape.Events
 import social.entourage.android.base.BaseDialogFragment
 import social.entourage.android.deeplinks.DeepLinksManager
-import social.entourage.android.tools.EntBus
 import timber.log.Timber
 
 class PartnerFragment : BaseDialogFragment() {
@@ -60,11 +58,6 @@ class PartnerFragment : BaseDialogFragment() {
         else {
             configureViews()
         }
-    }
-
-    override fun onStop() {
-        super.onStop()
-        EntBus.post(Events.OnRefreshEntourageInformation())
     }
 
     fun getPartnerInfos() {

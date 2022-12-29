@@ -13,7 +13,6 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.Marker
 import com.google.android.material.snackbar.Snackbar
-import com.squareup.otto.Subscribe
 import kotlinx.android.synthetic.main.fragment_guide_map.*
 import kotlinx.android.synthetic.main.layout_guide_longclick.*
 import social.entourage.android.Constants
@@ -21,7 +20,6 @@ import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.api.ApiConnectionListener
 import social.entourage.android.api.model.guide.Poi
-import social.entourage.android.api.tape.Events.OnLocationPermissionGranted
 import social.entourage.android.base.HeaderBaseAdapter
 import social.entourage.android.base.location.EntLocation
 import social.entourage.android.base.location.LocationUtils.isLocationPermissionGranted
@@ -35,7 +33,6 @@ import social.entourage.android.guide.poi.ReadPoiFragment
 import social.entourage.android.guide.poi.ReadPoiFragment.Companion.newInstance
 import social.entourage.android.tools.utils.Utils
 import social.entourage.android.service.EntService
-import social.entourage.android.tools.EntBus
 import social.entourage.android.tools.EntLinkMovementMethod
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.view.EntSnackbar
@@ -75,18 +72,12 @@ class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), PoiListFr
         connection.doBindService()
         presenter.start()
         showInfoPopup()
-        EntBus.register(this)
     }
 
     override fun onResume() {
         super.onResume()
         val isLocationGranted = isLocationPermissionGranted()
-        EntBus.post(OnLocationPermissionGranted(isLocationGranted))
-    }
-
-    override fun onStop() {
-        super.onStop()
-        EntBus.unregister(this)
+        onLocationPermissionGranted(isLocationGranted)
     }
 
     override fun onDestroy() {
@@ -172,11 +163,6 @@ class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), PoiListFr
         if (onMapReadyCallback == null) {
             onMapReadyCallback = OnMapReadyCallback { googleMap: GoogleMap -> this.onMapReady(googleMap) }
         }
-    }
-
-    @Subscribe
-    override fun onLocationPermissionGranted(event: OnLocationPermissionGranted) {
-        super.onLocationPermissionGranted(event)
     }
 
     private fun proposePOI() {

@@ -80,7 +80,6 @@ class EntService : Service() {
     // ----------------------------------
     private fun stopService() {
         entServiceManager.stopLocationService()
-        entServiceManager.unregisterFromBus()
         stopSelf()
     }
 

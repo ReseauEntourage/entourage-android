@@ -27,7 +27,7 @@ import kotlinx.android.synthetic.main.new_activity_event_filters.view.*
 import kotlinx.android.synthetic.main.new_header.view.*
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
-import social.entourage.android.api.tape.Events
+import social.entourage.android.RefreshController
 import social.entourage.android.base.location.LocationProvider
 import social.entourage.android.base.location.LocationUtils
 import social.entourage.android.databinding.NewActivityActionLocationFiltersBinding
@@ -35,7 +35,6 @@ import social.entourage.android.events.list.DiscoverEventsListFragment
 import social.entourage.android.api.model.Address
 import social.entourage.android.api.model.EventActionLocationFilters
 import social.entourage.android.api.model.EventFilterType
-import social.entourage.android.tools.EntBus
 import timber.log.Timber
 import java.io.IOException
 import java.util.*
@@ -56,7 +55,7 @@ class ActionLocationFilterActivity : AppCompatActivity() {
             if(permissions.entries.any {
                     it.value == true
                 })  {
-                EntBus.post(Events.OnLocationPermissionGranted(true))
+                RefreshController.shouldRefreshLocationPermission = true
                 startRequestLocation()
             }
         }

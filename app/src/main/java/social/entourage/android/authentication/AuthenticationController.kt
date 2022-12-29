@@ -2,10 +2,9 @@ package social.entourage.android.authentication
 
 import com.google.gson.reflect.TypeToken
 import social.entourage.android.EntourageApplication
+import social.entourage.android.RefreshController
 import social.entourage.android.api.model.User
-import social.entourage.android.api.tape.Events.OnUserInfoUpdatedEvent
 import social.entourage.android.base.map.filter.MapFilter
-import social.entourage.android.tools.EntBus
 
 /**
  * Controller that managed the authenticated user and persist it on the phone
@@ -45,7 +44,7 @@ class AuthenticationController() {
         user = updatedUser
         saveCurrentUser()
         if (shouldLoadUserPreferences) loadUserPreferences()
-        EntBus.post(OnUserInfoUpdatedEvent(updatedUser))
+        RefreshController.shouldRefreshUser = true
     }
 
     fun saveUserPhoneAndCode(phone: String?, smsCode: String?) {

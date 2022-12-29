@@ -19,12 +19,11 @@ import com.google.android.libraries.places.compat.ui.PlaceAutocomplete
 import com.google.android.libraries.places.widget.AutocompleteActivity
 import kotlinx.android.synthetic.main.fragment_select_place.*
 import social.entourage.android.R
+import social.entourage.android.RefreshController
 import social.entourage.android.api.model.User
-import social.entourage.android.api.tape.Events
 import social.entourage.android.base.BaseDialogFragment
 import social.entourage.android.base.location.LocationProvider
 import social.entourage.android.base.location.LocationUtils
-import social.entourage.android.tools.EntBus
 import timber.log.Timber
 import java.io.IOException
 import java.util.*
@@ -54,7 +53,7 @@ open class UserActionPlaceFragment : BaseDialogFragment() {
             if(permissions.entries.any {
                     it.value == true
                 })  {
-                    EntBus.post(Events.OnLocationPermissionGranted(true))
+                    RefreshController.shouldRefreshLocationPermission = true
                     startRequestLocation()
             }
         }

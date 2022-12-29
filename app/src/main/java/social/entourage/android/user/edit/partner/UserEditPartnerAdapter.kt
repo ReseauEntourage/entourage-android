@@ -12,8 +12,6 @@ import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.layout_edit_partner.view.*
 import social.entourage.android.R
 import social.entourage.android.api.model.Partner
-import social.entourage.android.api.tape.Events
-import social.entourage.android.tools.EntBus
 
 /**
  * Created by mihaiionescu on 16/01/2017.
@@ -30,11 +28,6 @@ class UserEditPartnerAdapter : BaseAdapter() {
                         it.isChecked = !it.isChecked
                         checkboxListener.onCheckedChanged(it, it.isChecked)
                     }
-                }
-            }
-            v.partner_logo?.setOnClickListener {
-                partner?.let {
-                    EntBus.post(Events.OnPartnerViewRequestedEvent(it))
                 }
             }
         }

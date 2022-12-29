@@ -25,7 +25,6 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import social.entourage.android.old_v7.home.HomeCard
 import social.entourage.android.onboarding.login.LoginActivity
-import social.entourage.android.tools.EntBus
 import java.io.IOException
 import java.util.*
 import kotlin.random.Random

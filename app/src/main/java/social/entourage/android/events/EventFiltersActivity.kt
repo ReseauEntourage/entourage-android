@@ -25,7 +25,7 @@ import com.google.android.libraries.places.widget.AutocompleteActivity
 import kotlinx.android.synthetic.main.new_activity_event_filters.*
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
-import social.entourage.android.api.tape.Events
+import social.entourage.android.RefreshController
 import social.entourage.android.base.location.LocationProvider
 import social.entourage.android.base.location.LocationUtils
 import social.entourage.android.databinding.NewActivityEventFiltersBinding
@@ -33,7 +33,6 @@ import social.entourage.android.events.list.DiscoverEventsListFragment
 import social.entourage.android.api.model.Address
 import social.entourage.android.api.model.EventActionLocationFilters
 import social.entourage.android.api.model.EventFilterType
-import social.entourage.android.tools.EntBus
 import timber.log.Timber
 import java.io.IOException
 import java.util.*
@@ -54,7 +53,7 @@ class EventFiltersActivity : AppCompatActivity() {
             if(permissions.entries.any {
                     it.value
                 })  {
-                EntBus.post(Events.OnLocationPermissionGranted(true))
+                RefreshController.shouldRefreshLocationPermission = true
                 startRequestLocation()
             }
         }

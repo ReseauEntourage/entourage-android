@@ -25,13 +25,12 @@ import kotlinx.android.synthetic.main.fragment_map.*
 import kotlinx.android.synthetic.main.layout_map_longclick.*
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
-import social.entourage.android.api.tape.Events
+import social.entourage.android.RefreshController
 import social.entourage.android.base.BaseFragment
 import social.entourage.android.base.HeaderBaseAdapter
 import social.entourage.android.base.location.EntLocation
 import social.entourage.android.base.location.LocationUpdateListener
 import social.entourage.android.base.location.LocationUtils
-import social.entourage.android.tools.EntBus
 import social.entourage.android.tools.log.AnalyticsEvents
 import timber.log.Timber
 
@@ -55,7 +54,8 @@ abstract class BaseMapFragment(protected var layout: Int) : BaseFragment(),
             if(permissions.entries.any {
                 it.value == true
             }) {
-                EntBus.post(Events.OnLocationPermissionGranted(true))
+                RefreshController.shouldRefreshLocationPermission = true
+                onLocationPermissionGranted(true)
             }
         }
 
@@ -247,8 +247,8 @@ abstract class BaseMapFragment(protected var layout: Int) : BaseFragment(),
         }
     }*/
 
-    open fun onLocationPermissionGranted(event: Events.OnLocationPermissionGranted) =
-        updateGeolocBanner(event.isPermissionGranted)
+    open fun onLocationPermissionGranted(isPermissionGranted: Boolean) =
+        updateGeolocBanner(isPermissionGranted)
 
     protected open fun updateGeolocBanner(active: Boolean) {
         adapter?.setGeolocStatusIcon(LocationUtils.isLocationPermissionGranted())
