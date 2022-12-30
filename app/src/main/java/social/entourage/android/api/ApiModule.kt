@@ -27,12 +27,8 @@ class ApiModule {
     val poiRequest: PoiRequest
     val userRequest: UserRequest
     val entourageRequest: EntourageRequest
-    val newsfeedRequest: NewsfeedRequest
-    val invitationRequest: InvitationRequest
     val partnerRequest: PartnerRequest
     val sharingRequest: SharingRequest
-    val photoGalleryRequest: PhotoGalleryRequest
-    val conversationsRequest: ConversationsRequest
     val metaDataRequest: MetaDataRequest
     val groupRequest: GroupRequest
     val homeRequest: HomeRequest
@@ -48,12 +44,8 @@ class ApiModule {
         poiRequest = providesPoiRequest(restAdapter)
         userRequest = providesUserRequest(restAdapter)
         entourageRequest = providesEntourageRequest(restAdapter)
-        newsfeedRequest = providesNewsfeedRequest(restAdapter)
-        invitationRequest = providesInvitationRequest(restAdapter)
         partnerRequest = providesPartnerRequest(restAdapter)
         sharingRequest = providesSharingRequest(restAdapter)
-        photoGalleryRequest = providesPhotoGalleryRequest(restAdapter)
-        conversationsRequest = providesConversationsRequest(restAdapter)
         metaDataRequest = providesMetaDataRequest(restAdapter)
         groupRequest = providesGroupRequest(restAdapter)
         homeRequest = providesSummaryRequest(restAdapter)
@@ -121,16 +113,8 @@ class ApiModule {
         return restAdapter.create(EntourageRequest::class.java)
     }
 
-    fun providesNewsfeedRequest(restAdapter: Retrofit): NewsfeedRequest {
-        return restAdapter.create(NewsfeedRequest::class.java)
-    }
-
     fun providesPoiRequest(restAdapter: Retrofit): PoiRequest {
         return restAdapter.create(PoiRequest::class.java)
-    }
-
-    fun providesInvitationRequest(restAdapter: Retrofit): InvitationRequest {
-        return restAdapter.create(InvitationRequest::class.java)
     }
 
     fun providesPartnerRequest(restAdapter: Retrofit): PartnerRequest {
@@ -139,14 +123,6 @@ class ApiModule {
 
     fun providesSharingRequest(restAdapter: Retrofit): SharingRequest {
         return restAdapter.create(SharingRequest::class.java)
-    }
-
-    fun providesPhotoGalleryRequest(restAdapter: Retrofit): PhotoGalleryRequest {
-        return restAdapter.create(PhotoGalleryRequest::class.java)
-    }
-
-    fun providesConversationsRequest(restAdapter: Retrofit): ConversationsRequest {
-        return restAdapter.create(ConversationsRequest::class.java)
     }
 
     fun providesMetaDataRequest(restAdapter: Retrofit): MetaDataRequest {
