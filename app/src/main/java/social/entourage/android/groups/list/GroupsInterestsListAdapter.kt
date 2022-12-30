@@ -3,8 +3,8 @@ package social.entourage.android.groups.list
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import social.entourage.android.databinding.NewGroupsInterestsImageItemBinding
 import social.entourage.android.api.model.Interest
+import social.entourage.android.databinding.NewGroupsInterestsImageItemBinding
 
 class GroupsInterestsListAdapter(
     var interestsList: List<String>,

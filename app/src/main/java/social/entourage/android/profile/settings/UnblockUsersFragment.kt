@@ -11,7 +11,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import social.entourage.android.R
 import social.entourage.android.databinding.NewFragmentUnblockUsersBinding
 import social.entourage.android.discussions.DiscussionsPresenter
-import social.entourage.android.api.model.UserBlocked
+import social.entourage.android.api.model.UserBlockedUser
 import social.entourage.android.tools.utils.CustomAlertDialog
 
 class UnblockUsersFragment : BottomSheetDialogFragment() {
@@ -21,7 +21,7 @@ class UnblockUsersFragment : BottomSheetDialogFragment() {
 
     private val discussionsPresenter: DiscussionsPresenter by lazy { DiscussionsPresenter() }
 
-    private var blockedUsers: MutableList<UserBlocked> = mutableListOf()
+    private var blockedUsers: MutableList<UserBlockedUser> = mutableListOf()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -72,7 +72,7 @@ class UnblockUsersFragment : BottomSheetDialogFragment() {
         }
     }
 
-    private fun handleResponseBlocked(blockedUsers:MutableList<UserBlocked>?) {
+    private fun handleResponseBlocked(blockedUsers:MutableList<UserBlockedUser>?) {
         this.blockedUsers.clear()
         blockedUsers?.let {
             this.blockedUsers.clear()

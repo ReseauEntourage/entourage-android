@@ -4,7 +4,7 @@ import android.content.Context
 import com.google.gson.annotations.SerializedName
 import social.entourage.android.EntourageApplication
 import social.entourage.android.api.model.feed.FeedItemAuthor
-import social.entourage.android.api.model.EventMetadata
+import social.entourage.android.events.EventModel
 import java.io.Serializable
 import java.util.*
 
@@ -116,8 +116,8 @@ data class Events(
     var neighborhoods: MutableList<GroupEvent>? = mutableListOf(),
 ) : Serializable
 
-fun Events.toEventUi(context: Context): EventUiModel {
-    return EventUiModel(
+fun Events.toEventUi(context: Context): EventModel {
+    return EventModel(
         this.id,
         this.title,
         this.membersCount,

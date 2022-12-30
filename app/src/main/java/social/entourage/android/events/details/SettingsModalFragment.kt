@@ -23,7 +23,6 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.api.MetaDataRepository
-import social.entourage.android.api.model.Tags
 import social.entourage.android.databinding.NewFragmentSettingsModalBinding
 import social.entourage.android.RefreshController
 import social.entourage.android.events.EventsPresenter
@@ -32,6 +31,7 @@ import social.entourage.android.events.create.Recurrence
 import social.entourage.android.groups.details.rules.GroupRulesActivity
 import social.entourage.android.api.model.Events
 import social.entourage.android.api.model.Status
+import social.entourage.android.api.model.Tags
 import social.entourage.android.profile.myProfile.InterestsAdapter
 import social.entourage.android.report.ReportModalFragment
 import social.entourage.android.report.ReportTypes
@@ -326,7 +326,7 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
     }
 
     companion object {
-        const val TAG = "SettingsModalFragment"
+        const val TAG = "GroupDetailsFragment"
         fun newInstance(event: Events): SettingsModalFragment {
             val fragment = SettingsModalFragment()
             val args = Bundle()

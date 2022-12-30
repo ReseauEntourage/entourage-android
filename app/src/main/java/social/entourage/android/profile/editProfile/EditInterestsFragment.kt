@@ -12,10 +12,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.api.MetaDataRepository
+import social.entourage.android.api.model.Interest
 import social.entourage.android.api.model.Tags
 import social.entourage.android.api.model.User
 import social.entourage.android.databinding.NewFragmentEditInterestsBinding
-import social.entourage.android.api.model.Interest
 
 class EditInterestsFragment : Fragment() {
 

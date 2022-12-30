@@ -28,10 +28,10 @@ import social.entourage.android.ViewPagerDefaultPageController
 import social.entourage.android.actions.create.CreateActionActivity
 import social.entourage.android.actions.list.ActionsViewPagerAdapter
 import social.entourage.android.actions.list.me.MyActionsListActivity
+import social.entourage.android.api.model.ActionSectionFilters
 import social.entourage.android.groups.details.feed.rotationDegree
 import social.entourage.android.home.CommunicationHandlerBadgeViewModel
 import social.entourage.android.home.UnreadMessages
-import social.entourage.android.api.model.ActionSectionFilters
 import social.entourage.android.api.model.EventActionLocationFilters
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.log.AnalyticsEvents

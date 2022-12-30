@@ -14,12 +14,12 @@ import com.google.android.flexbox.JustifyContent
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import social.entourage.android.R
 import social.entourage.android.api.MetaDataRepository
+import social.entourage.android.groups.GroupModel
 import social.entourage.android.api.model.Tags
 import social.entourage.android.databinding.NewFragmentSettingsModalBinding
 import social.entourage.android.groups.GroupPresenter
 import social.entourage.android.groups.details.rules.GroupRulesActivity
 import social.entourage.android.groups.edit.EditGroupActivity
-import social.entourage.android.api.model.SettingUiModel
 import social.entourage.android.profile.myProfile.InterestsAdapter
 import social.entourage.android.report.ReportModalFragment
 import social.entourage.android.report.ReportTypes
@@ -27,11 +27,11 @@ import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.CustomAlertDialog
 import social.entourage.android.tools.log.AnalyticsEvents
 
-class SettingsModalFragment : BottomSheetDialogFragment() {
+class GroupDetailsFragment : BottomSheetDialogFragment() {
 
     private var _binding: NewFragmentSettingsModalBinding? = null
     val binding: NewFragmentSettingsModalBinding get() = _binding!!
-    private var group: SettingUiModel? = null
+    private var group: GroupModel? = null
     private var interestsList: ArrayList<String> = ArrayList()
     private val groupPresenter: GroupPresenter by lazy { GroupPresenter() }
 
@@ -222,9 +222,9 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
     }
 
     companion object {
-        const val TAG = "SettingsModalFragment"
-        fun newInstance(group: SettingUiModel): SettingsModalFragment {
-            val fragment = SettingsModalFragment()
+        const val TAG = "GroupDetailsFragment"
+        fun newInstance(group: GroupModel): GroupDetailsFragment {
+            val fragment = GroupDetailsFragment()
             val args = Bundle()
             args.putParcelable(Const.GROUP_UI, group)
             fragment.arguments = args

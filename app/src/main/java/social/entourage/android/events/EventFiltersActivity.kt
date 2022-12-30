@@ -26,11 +26,11 @@ import kotlinx.android.synthetic.main.new_activity_event_filters.*
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.RefreshController
+import social.entourage.android.api.model.Address
 import social.entourage.android.base.location.LocationProvider
 import social.entourage.android.base.location.LocationUtils
 import social.entourage.android.databinding.NewActivityEventFiltersBinding
 import social.entourage.android.events.list.DiscoverEventsListFragment
-import social.entourage.android.api.model.Address
 import social.entourage.android.api.model.EventActionLocationFilters
 import social.entourage.android.api.model.EventFilterType
 import timber.log.Timber

@@ -11,9 +11,9 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import social.entourage.android.EntourageApplication
-import social.entourage.android.api.model.EntourageUser
 import social.entourage.android.api.request.*
 import social.entourage.android.RefreshController
+import social.entourage.android.api.model.EntourageUser
 import social.entourage.android.events.create.CreateEvent
 import social.entourage.android.events.list.EVENTS_PER_PAGE
 import social.entourage.android.home.UnreadMessages

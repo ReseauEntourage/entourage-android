@@ -3,8 +3,8 @@ package social.entourage.android.groups.details.rules
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import social.entourage.android.databinding.NewRulesItemBinding
 import social.entourage.android.api.model.Rules
+import social.entourage.android.databinding.NewRulesItemBinding
 
 class RulesListAdapter(
     var rulesList: List<Rules>

@@ -34,7 +34,7 @@
         android:name="social.entourage.android.groups.details.feed.AboutGroupFragment">
         <argument
             android:name="group"
-            app:argType="social.entourage.android.api.model.SettingUiModel" />
+            app:argType="social.entourage.android.groups.GroupModel" />
         <action
             android:id="@+id/action_group_about_to_group_members"
             app:destination="@id/group_members"

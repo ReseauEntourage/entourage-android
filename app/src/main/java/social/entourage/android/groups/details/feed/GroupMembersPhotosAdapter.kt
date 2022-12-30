@@ -5,8 +5,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import social.entourage.android.R
-import social.entourage.android.databinding.NewPhotoItemSmallBinding
 import social.entourage.android.api.model.GroupMember
+import social.entourage.android.databinding.NewPhotoItemSmallBinding
 import social.entourage.android.tools.utils.Const.LIMIT_PHOTOS_MEMBERS
 
 class GroupMembersPhotosAdapter(

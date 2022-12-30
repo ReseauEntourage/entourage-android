@@ -25,16 +25,16 @@ import kotlinx.android.synthetic.main.new_fragment_feed.view.*
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.api.MetaDataRepository
+import social.entourage.android.api.model.Group
+import social.entourage.android.api.model.Post
+import social.entourage.android.groups.GroupModel
 import social.entourage.android.api.model.Tags
 import social.entourage.android.databinding.NewFragmentFeedBinding
 import social.entourage.android.comment.PostAdapter
 import social.entourage.android.events.create.CreateEventActivity
 import social.entourage.android.groups.GroupPresenter
-import social.entourage.android.groups.details.SettingsModalFragment
+import social.entourage.android.groups.details.GroupDetailsFragment
 import social.entourage.android.groups.details.members.MembersType
-import social.entourage.android.api.model.Group
-import social.entourage.android.api.model.Post
-import social.entourage.android.api.model.SettingUiModel
 import social.entourage.android.profile.myProfile.InterestsAdapter
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.log.AnalyticsEvents
@@ -52,7 +52,7 @@ class FeedFragment : Fragment() {
     private var interestsList: ArrayList<String> = ArrayList()
     private var groupId = -1
     private var group: Group? = null
-    private lateinit var groupUI: SettingUiModel
+    private lateinit var groupUI: GroupModel
     private var myId: Int? = null
     private val args: FeedFragmentArgs by navArgs()
 
@@ -423,7 +423,7 @@ class FeedFragment : Fragment() {
 
             group?.let {
                 with(it) {
-                    groupUI = SettingUiModel(
+                    groupUI = GroupModel(
                         groupId, name,
                         members_count,
                         address?.displayAddress,
@@ -436,8 +436,8 @@ class FeedFragment : Fragment() {
                 }
             }
 
-            SettingsModalFragment.newInstance(groupUI)
-                .show(parentFragmentManager, SettingsModalFragment.TAG)
+            GroupDetailsFragment.newInstance(groupUI)
+                .show(parentFragmentManager, GroupDetailsFragment.TAG)
         }
     }
 
@@ -472,7 +472,7 @@ class FeedFragment : Fragment() {
                 AnalyticsEvents.ACTION_GROUP_FEED_MORE_DESCRIPTION
             )
             group?.let {
-                groupUI = SettingUiModel(
+                groupUI = GroupModel(
                     groupId,
                     it.name,
                     it.members_count,

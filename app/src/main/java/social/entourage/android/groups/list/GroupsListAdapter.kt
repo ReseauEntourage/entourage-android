@@ -12,9 +12,9 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import social.entourage.android.R
+import social.entourage.android.api.model.Group
 import social.entourage.android.databinding.NewGroupItemBinding
 import social.entourage.android.groups.details.feed.FeedActivity
-import social.entourage.android.api.model.Group
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.px
 import social.entourage.android.tools.log.AnalyticsEvents

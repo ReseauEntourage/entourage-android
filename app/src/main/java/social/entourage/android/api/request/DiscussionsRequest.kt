@@ -6,7 +6,7 @@ import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.*
 import social.entourage.android.api.model.Conversation
-import social.entourage.android.api.model.UserBlocked
+import social.entourage.android.api.model.UserBlockedUser
 
 /**
  * Created by - on 15/11/2022.
@@ -14,8 +14,8 @@ import social.entourage.android.api.model.UserBlocked
 
 class DiscussionsListWrapper(@field:SerializedName("conversations") val allConversations: MutableList<Conversation>)
 class DiscussionDetailWrapper(@field:SerializedName("conversation") val conversation: Conversation)
-class UserBlockedWrapper(@field:SerializedName("user_blocked_user") val blockedUser: UserBlocked)
-class UsersBlockedWrapper(@field:SerializedName("user_blocked_users") val blockedUsers: MutableList<UserBlocked>)
+class UserBlockedWrapper(@field:SerializedName("user_blocked_user") val blockedUser: UserBlockedUser)
+class UsersBlockedWrapper(@field:SerializedName("user_blocked_users") val blockedUsers: MutableList<UserBlockedUser>)
 
 interface DiscussionsRequest {
     @GET("conversations")

@@ -6,8 +6,8 @@ import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.*
 import social.entourage.android.api.model.EntourageUser
-import social.entourage.android.api.model.Image
 import social.entourage.android.api.model.Group
+import social.entourage.android.api.model.Image
 import social.entourage.android.api.model.Post
 
 class GroupImagesResponse(@field:SerializedName("neighborhood_images") val groupImages: ArrayList<Image>)

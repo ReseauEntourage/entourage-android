@@ -7,9 +7,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import social.entourage.android.R
-import social.entourage.android.databinding.NewActivityActionCatFiltersBinding
 import social.entourage.android.api.model.ActionSection
 import social.entourage.android.api.model.ActionSectionFilters
+import social.entourage.android.databinding.NewActivityActionCatFiltersBinding
 
 class ActionCategoriesFiltersActivity : AppCompatActivity() {
 

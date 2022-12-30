@@ -9,9 +9,9 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import social.entourage.android.EntourageApplication
+import social.entourage.android.api.model.Group
 import social.entourage.android.databinding.NewFragmentMyGroupsListBinding
 import social.entourage.android.groups.GroupPresenter
-import social.entourage.android.api.model.Group
 
 class MyGroupsListFragment : Fragment() {
 

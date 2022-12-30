@@ -12,9 +12,9 @@ import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import social.entourage.android.R
+import social.entourage.android.api.model.Group
 import social.entourage.android.databinding.NewFragmentCreateGroupBinding
 import social.entourage.android.groups.GroupPresenter
-import social.entourage.android.api.model.Group
 import social.entourage.android.tools.utils.CustomAlertDialog
 import social.entourage.android.tools.utils.Utils
 import social.entourage.android.tools.utils.nextPage

@@ -25,7 +25,7 @@ class OnboardingPhase3Fragment : Fragment() {
     private var isBeEntour = false
     private var isAsso = false
 
-    private var address:User.Address? = null
+    private var address: User.Address? = null
     private var callback:OnboardingStartCallback? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -8,9 +8,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
+import social.entourage.android.api.model.GroupMember
 import social.entourage.android.databinding.NewGroupMemberItemBinding
 import social.entourage.android.groups.details.members.OnItemShowListener
-import social.entourage.android.api.model.GroupMember
 import social.entourage.android.user.UserProfileActivity
 import social.entourage.android.tools.utils.Const
 

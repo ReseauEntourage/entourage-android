@@ -10,10 +10,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
+import social.entourage.android.api.model.Group
 import social.entourage.android.databinding.NewFragmentCreateEventStepFiveBinding
 import social.entourage.android.groups.GroupPresenter
 import social.entourage.android.groups.list.groupPerPage
-import social.entourage.android.api.model.Group
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.log.AnalyticsEvents
 

@@ -17,15 +17,14 @@ import com.google.android.flexbox.JustifyContent
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.api.MetaDataRepository
-import social.entourage.android.api.model.User
 import social.entourage.android.databinding.NewFragmentUserProfileBinding
 import social.entourage.android.discussions.DetailConversationActivity
 import social.entourage.android.discussions.DiscussionsPresenter
 import social.entourage.android.api.model.Conversation
+import social.entourage.android.api.model.User
 import social.entourage.android.profile.myProfile.InterestsAdapter
 import social.entourage.android.report.ReportModalFragment
 import social.entourage.android.report.ReportTypes
-import social.entourage.android.user.UserProfileFragmentArgs
 import social.entourage.android.tools.utils.Const
 import java.text.SimpleDateFormat
 import java.util.*

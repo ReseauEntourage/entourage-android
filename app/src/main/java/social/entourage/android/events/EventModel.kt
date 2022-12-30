@@ -1,12 +1,12 @@
-package social.entourage.android.api.model
+package social.entourage.android.events
 
 import android.os.Parcel
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
-import social.entourage.android.api.model.EventMetadata
+import social.entourage.android.api.model.*
 import java.util.*
 
-class EventUiModel(
+class EventModel(
     @SerializedName("id")
     var id: Int?,
 
@@ -69,12 +69,12 @@ class EventUiModel(
         return 0
     }
 
-    companion object CREATOR : Parcelable.Creator<EventUiModel> {
-        override fun createFromParcel(parcel: Parcel): EventUiModel {
-            return EventUiModel(parcel)
+    companion object CREATOR : Parcelable.Creator<EventModel> {
+        override fun createFromParcel(parcel: Parcel): EventModel {
+            return EventModel(parcel)
         }
 
-        override fun newArray(size: Int): Array<EventUiModel?> {
+        override fun newArray(size: Int): Array<EventModel?> {
             return arrayOfNulls(size)
         }
     }

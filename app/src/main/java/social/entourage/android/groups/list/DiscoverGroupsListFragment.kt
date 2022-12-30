@@ -13,9 +13,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.textfield.TextInputLayout.END_ICON_CUSTOM
 import com.google.android.material.textfield.TextInputLayout.END_ICON_NONE
 import social.entourage.android.R
+import social.entourage.android.api.model.Group
 import social.entourage.android.databinding.NewFragmentGroupsListBinding
 import social.entourage.android.groups.GroupPresenter
-import social.entourage.android.api.model.Group
 import social.entourage.android.tools.utils.Utils
 import social.entourage.android.tools.log.AnalyticsEvents
 

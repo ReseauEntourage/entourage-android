@@ -6,8 +6,8 @@ import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import social.entourage.android.R
-import social.entourage.android.databinding.NewActivityGroupRulesBinding
 import social.entourage.android.api.model.Rules
+import social.entourage.android.databinding.NewActivityGroupRulesBinding
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.log.AnalyticsEvents
 

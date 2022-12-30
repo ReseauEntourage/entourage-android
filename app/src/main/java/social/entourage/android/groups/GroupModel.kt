@@ -1,10 +1,12 @@
-package social.entourage.android.api.model
+package social.entourage.android.groups
 
 import android.os.Parcel
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import social.entourage.android.api.model.GroupMember
+import social.entourage.android.api.model.Status
 
-data class SettingUiModel(
+data class GroupModel(
     @SerializedName("id")
     var id: Int? = null,
     @SerializedName("name")
@@ -43,12 +45,12 @@ data class SettingUiModel(
         return 0
     }
 
-    companion object CREATOR : Parcelable.Creator<SettingUiModel> {
-        override fun createFromParcel(parcel: Parcel): SettingUiModel {
-            return SettingUiModel(parcel)
+    companion object CREATOR : Parcelable.Creator<GroupModel> {
+        override fun createFromParcel(parcel: Parcel): GroupModel {
+            return GroupModel(parcel)
         }
 
-        override fun newArray(size: Int): Array<SettingUiModel?> {
+        override fun newArray(size: Int): Array<GroupModel?> {
             return arrayOfNulls(size)
         }
     }

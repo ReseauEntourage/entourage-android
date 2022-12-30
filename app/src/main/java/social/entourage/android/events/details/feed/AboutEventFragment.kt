@@ -28,15 +28,15 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import social.entourage.android.R
 import social.entourage.android.api.MetaDataRepository
-import social.entourage.android.api.model.Tags
+import social.entourage.android.events.EventModel
 import social.entourage.android.databinding.NewFragmentAboutEventBinding
 import social.entourage.android.events.EventsPresenter
 import social.entourage.android.events.create.Recurrence
 import social.entourage.android.events.details.feed.AboutEventFragmentDirections.actionEventAboutToEventMembers
 import social.entourage.android.groups.details.feed.GroupMembersPhotosAdapter
 import social.entourage.android.groups.details.members.MembersType
-import social.entourage.android.api.model.EventUiModel
 import social.entourage.android.api.model.Status
+import social.entourage.android.api.model.Tags
 import social.entourage.android.profile.myProfile.InterestsAdapter
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.CustomAlertDialog
@@ -52,7 +52,7 @@ class AboutEventFragment : Fragment(), OnMapReadyCallback {
 
     private var _binding: NewFragmentAboutEventBinding? = null
     val binding: NewFragmentAboutEventBinding get() = _binding!!
-    var event: EventUiModel? = null
+    var event: EventModel? = null
     private var interestsList: ArrayList<String> = ArrayList()
     private val eventPresenter: EventsPresenter by lazy { EventsPresenter() }
 

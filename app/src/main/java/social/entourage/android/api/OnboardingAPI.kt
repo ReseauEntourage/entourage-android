@@ -35,7 +35,7 @@ class OnboardingAPI {
     /**********************
      * Create user
      */
-    fun createUser(tempUser: User,listener:(isOK:Boolean,error:String?) -> Unit) {
+    fun createUser(tempUser: User, listener:(isOK:Boolean, error:String?) -> Unit) {
 
         val user: MutableMap<String, String> = ArrayMap()
         user["phone"] = tempUser.phone ?: ""
@@ -353,7 +353,7 @@ class OnboardingAPI {
     /**********************
      * Onboarding Asso
      */
-    fun updateAssoInfos(asso:Partner?, listener:(isOK:Boolean, response:ResponseBody?) -> Unit) {
+    fun updateAssoInfos(asso: Partner?, listener:(isOK:Boolean, response:ResponseBody?) -> Unit) {
 
         if (asso == null) {
             listener(false,null)

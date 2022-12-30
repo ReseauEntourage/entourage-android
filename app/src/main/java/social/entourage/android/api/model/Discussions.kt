@@ -140,11 +140,11 @@ class MemberConversation (
 ){}
 
 //Block user
-class UserBlocked (
+class UserBlockedUser (
     @SerializedName("blocked_user")
-    var blockedUser: BlockedUser,
+    var blockedUser: BlockUserDetails,
     @SerializedName("user")
-    var user: BlockedUser,
+    var user: BlockUserDetails,
 ){
     var isChecked = false
 
@@ -152,7 +152,8 @@ class UserBlocked (
         return user.id == EntourageApplication.get().me()?.id
     }
 }
-class BlockedUser (
+
+class BlockUserDetails (
     @SerializedName("id")
     var id:Int,
     @SerializedName("display_name")

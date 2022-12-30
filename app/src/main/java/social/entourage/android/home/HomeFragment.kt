@@ -18,7 +18,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.new_home_card.view.*
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
-import social.entourage.android.api.model.User
 import social.entourage.android.databinding.NewFragmentHomeBinding
 import social.entourage.android.guide.GDSMainActivity
 import social.entourage.android.Navigation
@@ -27,6 +26,7 @@ import social.entourage.android.home.notifications.NotificationsInAppActivity
 import social.entourage.android.home.pedago.PedagoListActivity
 import social.entourage.android.api.model.HomeAction
 import social.entourage.android.api.model.Summary
+import social.entourage.android.api.model.User
 import social.entourage.android.profile.ProfileActivity
 import social.entourage.android.user.UserProfileActivity
 import social.entourage.android.tools.utils.Const

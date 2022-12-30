@@ -12,7 +12,7 @@ import social.entourage.android.home.UnreadMessages
 import social.entourage.android.api.model.Conversation
 import social.entourage.android.api.model.GroupMember
 import social.entourage.android.api.model.Post
-import social.entourage.android.api.model.UserBlocked
+import social.entourage.android.api.model.UserBlockedUser
 
 /**
  * Created by - on 15/11/2022.
@@ -38,7 +38,7 @@ class DiscussionsPresenter {
     var getMembersSearch = MutableLiveData<MutableList<GroupMember>>()
 
     var hasBlockUser = MutableLiveData<Boolean>()
-    var getBlockedUsers = MutableLiveData<MutableList<UserBlocked>?>()
+    var getBlockedUsers = MutableLiveData<MutableList<UserBlockedUser>?>()
 
     var hasUserUnblock = MutableLiveData<Boolean>()
 

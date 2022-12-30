@@ -13,10 +13,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.api.model.EntourageUser
+import social.entourage.android.api.model.Post
 import social.entourage.android.databinding.NewActivityCommentsBinding
 import social.entourage.android.groups.details.feed.CommentsListAdapter
 import social.entourage.android.groups.details.feed.OnItemClickListener
-import social.entourage.android.api.model.Post
 import social.entourage.android.report.ReportModalFragment
 import social.entourage.android.report.ReportTypes
 import social.entourage.android.tools.utils.Const

@@ -25,8 +25,8 @@ import android.widget.Toast
 import com.google.android.gms.maps.model.BitmapDescriptor
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import social.entourage.android.R
+import social.entourage.android.events.EventModel
 import social.entourage.android.events.list.SectionHeader
-import social.entourage.android.api.model.EventUiModel
 import social.entourage.android.api.model.Events
 import java.io.File
 import java.io.FileOutputStream
@@ -128,7 +128,7 @@ object Utils {
         } ?: sections
     }
 
-    fun showAddToCalendarPopUp(context: Context, event: EventUiModel) {
+    fun showAddToCalendarPopUp(context: Context, event: EventModel) {
         CustomAlertDialog.show(
             context,
             context.getString(R.string.event_add_to_calendar_title),

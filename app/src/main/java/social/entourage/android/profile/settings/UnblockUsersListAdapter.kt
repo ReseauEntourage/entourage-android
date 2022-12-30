@@ -9,22 +9,22 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import kotlinx.android.synthetic.main.new_item_blocker_user.view.*
 import social.entourage.android.R
-import social.entourage.android.api.model.UserBlocked
+import social.entourage.android.api.model.UserBlockedUser
 
 interface OnItemCheckListener {
     fun onItemCheck(position: Int)
 }
 
 class UnblockUsersListAdapter(
-    var interestsList: List<UserBlocked>,
+    var blockUsersList: List<UserBlockedUser>,
     var onItemClick: OnItemCheckListener,
 ) : RecyclerView.Adapter<UnblockUsersListAdapter.ViewHolder>() {
 
     inner class ViewHolder(val binding: View) :
         RecyclerView.ViewHolder(binding) {
-        fun bind(userBlocked: UserBlocked, position: Int) {
+        fun bind(userBlockedUser: UserBlockedUser, position: Int) {
 
-            if (userBlocked.isChecked) {
+            if (userBlockedUser.isChecked) {
                 binding.title.setTypeface(
                     null,
                     android.graphics.Typeface.BOLD)
@@ -35,10 +35,10 @@ class UnblockUsersListAdapter(
                     android.graphics.Typeface.NORMAL)
             }
 
-            binding.title.text = userBlocked.blockedUser.displayName
-            binding.checkBox.isChecked =  userBlocked.isChecked
+            binding.title.text = userBlockedUser.blockedUser.displayName
+            binding.checkBox.isChecked =  userBlockedUser.isChecked
 
-            userBlocked.blockedUser.avatarUrl?.let {
+            userBlockedUser.blockedUser.avatarUrl?.let {
                 Glide.with(binding.icon.context)
                     .load(it)
                     .error(R.drawable.placeholder_user)
@@ -81,10 +81,10 @@ class UnblockUsersListAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(interestsList[position],position)
+        holder.bind(blockUsersList[position],position)
     }
 
     override fun getItemCount(): Int {
-        return interestsList.size
+        return blockUsersList.size
     }
 }

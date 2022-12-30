@@ -15,10 +15,10 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import social.entourage.android.R
 import social.entourage.android.api.MetaDataRepository
-import social.entourage.android.api.model.TagMetaData
-import social.entourage.android.api.model.Tags
 import social.entourage.android.databinding.NewFragmentReportBinding
 import social.entourage.android.actions.ActionsPresenter
+import social.entourage.android.api.model.TagMetaData
+import social.entourage.android.api.model.Tags
 import social.entourage.android.discussions.DiscussionsPresenter
 import social.entourage.android.events.EventsPresenter
 import social.entourage.android.groups.GroupPresenter

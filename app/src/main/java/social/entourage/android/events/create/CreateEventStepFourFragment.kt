@@ -8,9 +8,9 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import social.entourage.android.R
 import social.entourage.android.api.MetaDataRepository
+import social.entourage.android.api.model.Interest
 import social.entourage.android.api.model.Tags
 import social.entourage.android.databinding.NewFragmentCreateEventStepFourBinding
-import social.entourage.android.api.model.Interest
 import social.entourage.android.profile.editProfile.InterestsListAdapter
 import social.entourage.android.profile.editProfile.OnItemCheckListener
 import social.entourage.android.tools.log.AnalyticsEvents

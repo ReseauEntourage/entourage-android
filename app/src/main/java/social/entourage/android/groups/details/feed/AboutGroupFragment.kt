@@ -16,12 +16,12 @@ import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
 import social.entourage.android.R
 import social.entourage.android.api.MetaDataRepository
+import social.entourage.android.groups.GroupModel
 import social.entourage.android.api.model.Tags
 import social.entourage.android.databinding.NewFragmentAboutGroupBinding
 import social.entourage.android.groups.GroupPresenter
-import social.entourage.android.groups.details.SettingsModalFragment
+import social.entourage.android.groups.details.GroupDetailsFragment
 import social.entourage.android.groups.details.members.MembersType
-import social.entourage.android.api.model.SettingUiModel
 import social.entourage.android.profile.myProfile.InterestsAdapter
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.CustomAlertDialog
@@ -31,7 +31,7 @@ class AboutGroupFragment : Fragment() {
 
     private var _binding: NewFragmentAboutGroupBinding? = null
     val binding: NewFragmentAboutGroupBinding get() = _binding!!
-    var group: SettingUiModel? = null
+    var group: GroupModel? = null
     private var interestsList: ArrayList<String> = ArrayList()
     private val args: AboutGroupFragmentArgs by navArgs()
     private val groupPresenter: GroupPresenter by lazy { GroupPresenter() }
@@ -121,8 +121,8 @@ class AboutGroupFragment : Fragment() {
     private fun handleSettingsButton() {
         binding.header.iconSettings.setOnClickListener {
             group?.let { group ->
-                SettingsModalFragment.newInstance(group)
-                    .show(parentFragmentManager, SettingsModalFragment.TAG)
+                GroupDetailsFragment.newInstance(group)
+                    .show(parentFragmentManager, GroupDetailsFragment.TAG)
             }
         }
     }
