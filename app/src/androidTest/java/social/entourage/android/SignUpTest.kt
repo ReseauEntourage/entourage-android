@@ -1,24 +1,15 @@
 package social.entourage.android
 
-import androidx.recyclerview.widget.RecyclerView
-import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.*
-import androidx.test.espresso.assertion.ViewAssertions.doesNotExist
-import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.contrib.RecyclerViewActions
-import androidx.test.espresso.intent.Intents
-import androidx.test.espresso.intent.matcher.IntentMatchers
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
 import androidx.test.platform.app.InstrumentationRegistry
-import org.hamcrest.Matchers.allOf
 import org.junit.Rule
-import org.junit.Test
 import org.junit.runner.RunWith
 import social.entourage.android.api.OnboardingAPI
-import social.entourage.android.onboarding.OnboardingMainActivity
+import social.entourage.android.onboarding.onboard.OnboardingStartActivity
 import java.util.*
 
 @LargeTest
@@ -27,14 +18,14 @@ class SignUpTest {
 
     @Rule
     @JvmField
-    var activityRule = ActivityScenarioRule(OnboardingMainActivity::class.java)
+    var activityRule = ActivityScenarioRule(OnboardingStartActivity::class.java)
 
     private val login = "0651234145"
     private val password = "108674"
 
     /****************************** Views ******************************/
 
-    private val firstNameEt = onView(
+    /*private val firstNameEt = onView(
             allOf(withId(R.id.ui_onboard_names_et_firstname),
                     withParent(withId(R.id.onboard_names_mainlayout)),
                     isDisplayed()))
@@ -91,11 +82,11 @@ class SignUpTest {
 
     private val nextButton = onView(
             allOf(withId(R.id.ui_bt_next),
-                    isDisplayed()))
+                    isDisplayed()))*/
 
     /****************************** OnboardingNamesFragment ******************************/
-
-    @Test
+    //TODO
+    /*@Test
     fun validFirstNameAndLastNameTest() {
         fillValidNames()
 
@@ -105,9 +96,9 @@ class SignUpTest {
         //Check that OnboardingNamesFragment is not displayed
         firstNameEt.check(doesNotExist())
         lastNameEt.check(doesNotExist())
-    }
-
-    @Test
+    }*/
+    //TODO
+    /*@Test
     fun emptyFirstNameAndLastNameTest() {
         firstNameEt.perform(typeText(""), closeSoftKeyboard())
         lastNameEt.perform(typeText(""), closeSoftKeyboard())
@@ -119,9 +110,9 @@ class SignUpTest {
 
         //Check that OnboardingPhoneFragment is not displayed
         askPhoneNumberTv.check(doesNotExist())
-    }
-
-    @Test
+    }*/
+    //TODO
+    /*@Test
     fun emptyFirstNameTest() {
         firstNameEt.perform(typeText(""), closeSoftKeyboard())
         lastNameEt.perform(typeText("Dupont"), closeSoftKeyboard())
@@ -133,9 +124,9 @@ class SignUpTest {
 
         //Check that OnboardingPhoneFragment is not displayed
         askPhoneNumberTv.check(doesNotExist())
-    }
-
-    @Test
+    }*/
+    //TODO
+    /*@Test
     fun emptyLastNameTest() {
         firstNameEt.perform(typeText("Jean"), closeSoftKeyboard())
         lastNameEt.perform(typeText(""), closeSoftKeyboard())
@@ -147,7 +138,7 @@ class SignUpTest {
 
         //Check that OnboardingPhoneFragment is not displayed
         askPhoneNumberTv.check(doesNotExist())
-    }
+    }*/
 
     /****************************** OnboardingPhoneFragment ******************************/
 
@@ -163,8 +154,8 @@ class SignUpTest {
 //        //Check that toast shows given message
 //        onView(withText(R.string.login_smscode_sent)).inRoot(ToastMatcher()).check(matches(isDisplayed()))
 //    }
-
-    @Test
+    //TODO
+    /*@Test
     fun emptyPhoneNumberTest() {
         fillValidNames()
 
@@ -177,9 +168,9 @@ class SignUpTest {
         //Check that OnboardingPasscodeFragment is not displayed
         val inputCodeTitleTv = onView(allOf(withId(R.id.ui_onboard_code_tv_title), isDisplayed()))
         inputCodeTitleTv.check(doesNotExist())
-    }
-
-    @Test
+    }*/
+    //TODO
+    /*@Test
     fun invalidPhoneNumberTest() {
         fillValidNames()
 
@@ -188,9 +179,9 @@ class SignUpTest {
 
         //Check that error shows given message
         onView(withText(R.string.login_text_invalid_format)).check(matches(isDisplayed()))
-    }
-
-    @Test
+    }*/
+    //TODO
+    /*@Test
     fun alreadyUsedPhoneNumberTest() {
         fillValidNames()
 
@@ -200,9 +191,9 @@ class SignUpTest {
         //Check that dialog shows given message
         Thread.sleep(5000) //Wait for API response
         onView(withText(R.string.login_already_registered_go_back)).check(matches(isDisplayed()))
-    }
-
-    @Test
+    }*/
+    //TODO
+    /*@Test
     fun phoneNumberFailureNoInternetConnection() {
         //Disable wifi and data
         enableWifiAndData(false)
@@ -217,11 +208,11 @@ class SignUpTest {
 
         //Enable wifi and data
         enableWifiAndData(true)
-    }
+    }*/
 
     /****************************** OnboardingPasscodeFragment ******************************/
-
-    @Test
+    //TODO
+    /*@Test
     fun validPasscodeTest() {
         fillValidNames()
 
@@ -240,27 +231,27 @@ class SignUpTest {
                         withParent(withId(R.id.onboard_phone_mainlayout)),
                         isDisplayed()))
         typeSubTitleTv.check(matches(withText(R.string.onboard_type_sub)))
-    }
+    }*/
 
     /****************************** OnboardingTypeFragment ******************************/
-
-    @Test
+    //TODO
+    /*@Test
     fun neighbourTypeTest() {
         clickTypeButton(R.id.ui_onboard_type_layout_neighbour)
 
         //Check that OnboardingPlaceFragment is displayed
         placeTitleTv.check(matches(withText(R.string.onboard_place_title)))
-    }
-
-    @Test
+    }*/
+    //TODO
+    /*@Test
     fun aloneTypeTest() {
         clickTypeButton(R.id.ui_onboard_type_layout_alone)
 
         //Check that OnboardingPlaceFragment is displayed
         placeTitleTv.check(matches(withText(R.string.onboard_place_title_sdf)))
-    }
-
-    @Test
+    }*/
+    //TODO
+    /*@Test
     fun assosTypeTest() {
         clickTypeButton(R.id.ui_onboard_type_layout_assos)
 
@@ -270,11 +261,11 @@ class SignUpTest {
                     withParent(withId(R.id.onboard_phone_mainlayout)),
                     isDisplayed()))
         assoTitleTv.check(matches(withText(R.string.onboard_asso_start_title)))
-    }
+    }*/
 
     /****************************** OnboardingPlaceFragment ******************************/
-
-    @Test
+    //TODO
+    /*@Test
     fun neighbourPlaceTest() {
         clickTypeButton(R.id.ui_onboard_type_layout_neighbour)
 
@@ -282,9 +273,9 @@ class SignUpTest {
 
         //Check that LoginEmailFragment is displayed
         emailSubtitleTv.check(matches(withText(R.string.login_email_description)))
-    }
-
-    @Test
+    }*/
+    //TODO
+    /*@Test
     fun alonePlaceTest() {
         clickTypeButton(R.id.ui_onboard_type_layout_alone)
 
@@ -292,9 +283,9 @@ class SignUpTest {
 
         //Check that LoginEmailFragment is displayed
         emailSubtitleTv.check(matches(withText(R.string.login_email_description)))
-    }
-
-    @Test
+    }*/
+    //TODO
+    /*@Test
     fun neighbourEmptyPlaceTest() {
         clickTypeButton(R.id.ui_onboard_type_layout_neighbour)
 
@@ -302,9 +293,9 @@ class SignUpTest {
 
         //Check that OnboardingPlaceFragment is still displayed
         placeTitleTv.check(matches(withText(R.string.onboard_place_title)))
-    }
-
-    @Test
+    }*/
+    //TODO
+    /*@Test
     fun aloneEmptyPlaceTest() {
         clickTypeButton(R.id.ui_onboard_type_layout_alone)
 
@@ -312,11 +303,11 @@ class SignUpTest {
 
         //Check that OnboardingPlaceFragment is still displayed
         placeTitleTv.check(matches(withText(R.string.onboard_place_title_sdf)))
-    }
+    }*/
 
     /****************************** LoginEmailFragment ******************************/
-
-    @Test
+    //TODO
+    /*@Test
     fun neighbourValidMailTest() {
         clickTypeButton(R.id.ui_onboard_type_layout_neighbour)
 
@@ -331,18 +322,18 @@ class SignUpTest {
 
         //Check that OnboardingMainActivity is displayed
         feedButtonBottomBar.check(matches(isDisplayed()))
-    }
-
-    @Test
+    }*/
+    //TODO
+    /*@Test
     fun neighbourInvalidMailTest() {
         clickTypeButton(R.id.ui_onboard_type_layout_neighbour)
 
         pickLocation("paris")
 
         testInvalidEmail()
-    }
-
-    @Test
+    }*/
+    //TODO
+    /*@Test
     fun neighbourEmptyMailTest() {
         clickTypeButton(R.id.ui_onboard_type_layout_neighbour)
 
@@ -352,9 +343,9 @@ class SignUpTest {
 
         //Check that LoginEmailFragment is still displayed
         emailSubtitleTv.check(matches(withText(R.string.login_email_description)))
-    }
-
-    @Test
+    }*/
+    //TODO
+    /*@Test
     fun aloneValidMailTest() {
         clickTypeButton(R.id.ui_onboard_type_layout_alone)
 
@@ -369,18 +360,18 @@ class SignUpTest {
 
         //Check that OnboardingMainActivity is displayed
         feedButtonBottomBar.check(matches(isDisplayed()))
-    }
-
-    @Test
+    }*/
+    //TODO
+    /*@Test
     fun aloneInvalidMailTest() {
         clickTypeButton(R.id.ui_onboard_type_layout_alone)
 
         pickLocation("toulouse")
 
         testInvalidEmail()
-    }
-
-    @Test
+    }*/
+    //TODO
+    /*@Test
     fun aloneEmptyMailTest() {
         clickTypeButton(R.id.ui_onboard_type_layout_alone)
 
@@ -390,11 +381,11 @@ class SignUpTest {
 
         //Check that LoginEmailFragment is still displayed
         emailSubtitleTv.check(matches(withText(R.string.login_email_description)))
-    }
+    }*/
 
     /****************************** OnboardingAssoStartFragment ******************************/
-
-    @Test
+    //TODO
+    /*@Test
     fun assoTunnelTest() {
         clickTypeButton(R.id.ui_onboard_type_layout_assos)
 
@@ -411,11 +402,11 @@ class SignUpTest {
 
         //Check that OnboardingAssoFillFragment is displayed
         assoFillTitleTv.check(matches(withText(R.string.onboard_asso_fill_title)))
-    }
+    }*/
 
     /****************************** OnboardingAssoFillFragment ******************************/
-
-    @Test
+    //TODO
+    /*@Test
     fun searchAssoNameTest() {
         goToAssoInfo()
 
@@ -428,9 +419,9 @@ class SignUpTest {
         //Check that OnboardingAssoSearchActivity is displayed
         Intents.intended(IntentMatchers.hasComponent(OnboardingAssoSearchActivity::class.java.name))
         Intents.release()
-    }
-
-    @Test
+    }*/
+    //TODO
+    /*@Test
     fun fillAssoInfoTest() {
         goToAssoInfo()
 
@@ -442,9 +433,9 @@ class SignUpTest {
 
         //Check that OnboardingAssoActivitiesFragment is displayed
         activitiesSubtitleTv.check(matches(withText(R.string.onboard_asso_activity_description)))
-    }
-
-    @Test
+    }*/
+    //TODO
+    /*@Test
     fun missingAssoNameTest() {
         goToAssoInfo()
 
@@ -455,9 +446,9 @@ class SignUpTest {
 
         //Check that OnboardingAssoFillFragment is still displayed
         assoFillTitleTv.check(matches(withText(R.string.onboard_asso_fill_title)))
-    }
-
-    @Test
+    }*/
+    //TODO
+    /*@Test
     fun missingPostalCodeTest() {
         goToAssoInfo()
 
@@ -468,9 +459,9 @@ class SignUpTest {
 
         //Check that error message is displayed
         onView(withText(R.string.onboard_asso_fill_error)).check(matches(isDisplayed()))
-    }
-
-    @Test
+    }*/
+    //TODO
+    /*@Test
     fun missingFunctionTest() {
         goToAssoInfo()
 
@@ -481,11 +472,11 @@ class SignUpTest {
 
         //Check that error message is displayed
         onView(withText(R.string.onboard_asso_fill_error)).check(matches(isDisplayed()))
-    }
+    }*/
 
     /****************************** OnboardingAssoActivitiesFragment ******************************/
-
-    @Test
+    //TODO
+    /*@Test
     fun pick4AssoActivitiesTest() {
         goToAssoActivities()
 
@@ -498,9 +489,9 @@ class SignUpTest {
 
         //Check that OnboardingEmailPwdFragment is Displayed
         assoEmailSubtitleTv.check(matches(withText(R.string.onboard_email_pwd_description)))
-    }
-
-    @Test
+    }*/
+    //TODO
+    /*@Test
     fun pick3AssoActivitiesTest() {
         goToAssoActivities()
 
@@ -512,9 +503,9 @@ class SignUpTest {
 
         //Check that OnboardingEmailPwdFragment is Displayed
         assoEmailSubtitleTv.check(matches(withText(R.string.onboard_email_pwd_description)))
-    }
-
-    @Test
+    }*/
+    //TODO
+    /*@Test
     fun pick2AssoActivitiesTest() {
         goToAssoActivities()
 
@@ -525,9 +516,9 @@ class SignUpTest {
 
         //Check that OnboardingEmailPwdFragment is Displayed
         assoEmailSubtitleTv.check(matches(withText(R.string.onboard_email_pwd_description)))
-    }
-
-    @Test
+    }*/
+    //TODO
+    /*@Test
     fun pick1AssoActivityTest() {
         goToAssoActivities()
 
@@ -537,9 +528,9 @@ class SignUpTest {
 
         //Check that OnboardingEmailPwdFragment is Displayed
         assoEmailSubtitleTv.check(matches(withText(R.string.onboard_email_pwd_description)))
-    }
-
-    @Test
+    }*/
+    //TODO
+    /*@Test
     fun pickNoAssoActivitiesTest() {
         goToAssoActivities()
 
@@ -547,11 +538,11 @@ class SignUpTest {
 
         //Check that error message is displayed
         onView(withText(R.string.onboard_asso_activity_error)).check(matches(isDisplayed()))
-    }
+    }*/
 
     /****************************** OnboardingEmailPwdFragment ******************************/
-
-    @Test
+    //TODO
+    /*@Test
     fun assoValidMailTest() {
         goToAssoEmail()
 
@@ -561,9 +552,10 @@ class SignUpTest {
 
         //Check that OnboardingMainActivity is displayed
         feedButtonBottomBar.check(matches(isDisplayed()))
-    }
+    }*/
 
-    @Test
+    //TODO
+    /*@Test
     fun assoInvalidMailTest() {
         goToAssoEmail()
 
@@ -573,9 +565,10 @@ class SignUpTest {
 
         //Check that OnboardingEmailPwdFragment is still Displayed
         assoEmailSubtitleTv.check(matches(withText(R.string.onboard_email_pwd_description)))
-    }
+    }*/
 
-    @Test
+    //TODO
+    /*@Test
     fun assoEmptyMailTest() {
         goToAssoEmail()
 
@@ -583,11 +576,11 @@ class SignUpTest {
 
         //Check that OnboardingEmailPwdFragment is still Displayed
         assoEmailSubtitleTv.check(matches(withText(R.string.onboard_email_pwd_description)))
-    }
+    }*/
 
     /****************************** Utils ******************************/
 
-    private fun clickNextButton() {
+    /*private fun clickNextButton() {
         nextButton.perform(click())
         Thread.sleep(1000)
     }
@@ -621,7 +614,7 @@ class SignUpTest {
         Thread.sleep(1000)
 
         clickNextButton()
-    }
+    }*/
 
     private fun login(phoneNumber: String, codePwd: String) {
         val authenticationController = EntourageApplication.get().authenticationController
@@ -642,7 +635,7 @@ class SignUpTest {
         }
     }
 
-    private fun pickLocation(locationInput: String) {
+    /*private fun pickLocation(locationInput: String) {
         val locationTv = onView(allOf(withId(R.id.ui_onboard_place_tv_location), isDisplayed()))
         locationTv.perform(click())
 
@@ -669,9 +662,9 @@ class SignUpTest {
 
         //Check that LoginEmailFragment is still displayed
         emailSubtitleTv.check(matches(withText(R.string.login_email_description)))
-    }
+    }*/
 
-    private fun goToAssoInfo() {
+    /*private fun goToAssoInfo() {
         clickTypeButton(R.id.ui_onboard_type_layout_assos)
 
         clickNextButton()
@@ -727,9 +720,9 @@ class SignUpTest {
         fillFunction()
 
         clickNextButton()
-    }
+    }*/
 
-    private fun clickAssoActivity1() {
+    /*private fun clickAssoActivity1() {
         val assoActivity1Layout = onView(
                 allOf(withId(R.id.ui_onboard_asso_activities_layout_choice1),
                         isDisplayed()))
@@ -755,9 +748,9 @@ class SignUpTest {
                 allOf(withId(R.id.ui_onboard_asso_activities_layout_choice4),
                         isDisplayed()))
         assoActivity4Layout.perform(click())
-    }
+    }*/
 
-    private fun goToAssoEmail() {
+    /*private fun goToAssoEmail() {
         goToAssoActivities()
 
         clickAssoActivity1()
@@ -766,7 +759,7 @@ class SignUpTest {
         clickAssoActivity4()
 
         clickNextButton()
-    }
+    }*/
 
     private fun enableWifiAndData(enable: Boolean) {
         val parameter = if (enable) "enable" else "disable"

@@ -204,7 +204,8 @@ dependencies {
     //implementation firebaseDependencies.values()
     implementation "com.google.firebase:firebase-analytics-ktx"
     implementation "com.google.firebase:firebase-messaging-ktx"
-    implementation "com.google.firebase:firebase-inappmessaging-display-ktx"
+    //TODO: fix this inappmessaging lib that is blocking tests to run
+    releaseImplementation "com.google.firebase:firebase-inappmessaging-display-ktx"
     implementation "com.google.firebase:firebase-crashlytics-ktx"
     implementation "com.google.firebase:firebase-config-ktx"
     releaseImplementation "com.google.firebase:firebase-perf-ktx"

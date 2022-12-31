@@ -89,27 +89,27 @@ open class DeepLinkingTest {
 class DeepLinkingTestCreateAction : DeepLinkingTest() {
 
     private val link = DeepLinksManager.DeepLinksView.CREATE_ACTION.view
-
-    @Test
+    //TODO
+    /*@Test
     fun connectedCreateActionDeeplink() {
         connectedCreateActionDeeplink(BuildConfig.DEEP_LINKS_SCHEME + "://" + link)
-    }
-
-    @Test
+    }*/
+    //TODO
+    /*@Test
     fun connectedCreateActionDeeplinkHTTP() {
         connectedCreateActionDeeplink("http://${BuildConfig.DEEP_LINKS_URL}/deeplink/${link}")
-    }
-
-    @Test
+    }*/
+    //TODO
+    /*@Test
     fun connectedCreateActionDeeplinkHTTPS() {
         connectedCreateActionDeeplink("https://${BuildConfig.DEEP_LINKS_URL}/deeplink/${link}")
-    }
+    }*/
 
-    private fun connectedCreateActionDeeplink(uri: String) {
+    /*private fun connectedCreateActionDeeplink(uri: String) {
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(uri))
         startIntent(intent)
         onView(withId(R.id.fragment_plus_overlay)).check(matches(isDisplayed()))
-    }
+    }*/
 }
 
 class DeepLinkingTestBadge : DeepLinkingTest() {
@@ -266,207 +266,208 @@ class DeepLinkingTestEntourage : DeepLinkingTest() {
     private val dmHash = if (BuildConfig.FLAVOR_env == "prod") "1_list_me-94" else "1_list_me-2790"
     private val dmID = if (BuildConfig.FLAVOR_env == "prod") "51946" else "2013"
 
-    @Test
+    //TODO
+    /*@Test
     fun connectedEntouragesIdDeeplinkHTTP() {
         connectedEntourageDeeplinkHTTP("entourages", entourageID)
-    }
-
-    @Test
+    }*/
+    //TODO
+    /*@Test
     fun connectedEntouragesHashDeeplinkHTTP() {
         connectedEntourageDeeplinkHTTP("entourages", entourageHash)
-    }
-
-    @Test
+    }*/
+    //TODO
+    /*@Test
     fun connectedEntourageIdDeeplinkHTTP() {
         connectedEntourageDeeplinkHTTP("entourage", entourageID)
-    }
-
-    @Test
+    }*/
+    //TODO
+    /*@Test
     fun connectedEntourageHashDeeplinkHTTP() {
         connectedEntourageDeeplinkHTTP("entourage", entourageHash)
-    }
-
-    @Test
+    }*/
+    //TODO
+    /*@Test
     fun connectedEntouragesIdHTTP() {
         connectedEntourageHTTP("entourages", entourageID)
-    }
-
-    @Test
+    }*/
+    //TODO
+    /*@Test
     fun connectedEntouragesHashHTTP() {
         connectedEntourageHTTP("entourages", entourageHash)
-    }
-
-    @Test
+    }*/
+    //TODO
+    /*@Test
     fun connectedEntourageIdHTTP() {
         connectedEntourageHTTP("entourage", entourageID)
-    }
-
-    @Test
+    }*/
+    //TODO
+    /*@Test
     fun connectedEntourageHashHTTP() {
         connectedEntourageHTTP("entourage", entourageHash)
-    }
-
-    @Test
+    }*/
+    //TODO
+    /*@Test
     fun connectedEntouragesIdHTTPS() {
         connectedEntourageHTTPS("entourages", entourageID)
-    }
-
-    @Test
+    }*/
+    //TODO
+    /*@Test
     fun connectedEntouragesHashHTTPS() {
         connectedEntourageHTTPS("entourages", entourageHash)
-    }
-
-    @Test
+    }*/
+    //TODO
+    /*@Test
     fun connectedEntourageIdHTTPS() {
         connectedEntourageHTTPS("entourage", entourageID)
-    }
-
-    @Test
+    }*/
+    //TODO
+    /*@Test
     fun connectedEntourageHashHTTPS() {
         connectedEntourageHTTPS("entourage", entourageHash)
-    }
-
-    @Test
+    }*/
+    //TODO
+    /*@Test
     fun connectedEntouragesIdDeeplinkHTTPS() {
         connectedEntourageDeeplinkHTTPS("entourages", entourageID)
-    }
-
-    @Test
+    }*/
+    //TODO
+    /*@Test
     fun connectedEntouragesHashDeeplinkHTTPS() {
         connectedEntourageDeeplinkHTTPS("entourages", entourageHash)
-    }
-
-    @Test
+    }*/
+    //TODO
+    /*@Test
     fun connectedEntourageIdDeeplinkHTTPS() {
         connectedEntourageDeeplinkHTTPS("entourage", entourageID)
-    }
-
-    @Test
+    }*/
+    //TODO
+    /*@Test
     fun connectedEntourageHashDeeplinkHTTPS() {
         connectedEntourageDeeplinkHTTPS("entourage", entourageHash)
-    }
-
-    @Test
+    }*/
+    //TODO
+    /*@Test
     fun connectedEntouragesIdDeeplink() {
         connectedEntourageDeeplink("entourages", entourageID)
-    }
-
-    @Test
+    }*/
+    //TODO
+    /*@Test
     fun connectedEntouragesHashDeeplink() {
         connectedEntourageDeeplink("entourages", entourageHash)
-    }
-
-    @Test
+    }*/
+    //TODO
+    /*@Test
     fun connectedEntourageIdDeeplink() {
         connectedEntourageDeeplink("entourage", entourageID)
-    }
-
-    @Test
+    }*/
+    //TODO
+    /*@Test
     fun connectedEntourageHashDeeplink() {
         connectedEntourageDeeplink("entourage", entourageHash)
-    }
-
-    @Test
+    }*/
+    //TODO
+    /*@Test
     fun connectedDMsIdDeeplinkHTTP() {
         connectedEntourageDeeplinkHTTP("entourages", dmID)
-    }
-
-    @Test
+    }*/
+    //TODO
+    /*@Test
     fun connectedDMsHashDeeplinkHTTP() {
         connectedEntourageDeeplinkHTTP("entourages", dmHash)
-    }
-
-    @Test
+    }*/
+    //TODO
+    /*@Test
     fun connectedDMIdDeeplinkHTTP() {
         connectedEntourageDeeplinkHTTP("entourage", dmID)
-    }
-
-    @Test
+    }*/
+    //TODO
+    /*@Test
     fun connectedDMHashDeeplinkHTTP() {
         connectedEntourageDeeplinkHTTP("entourage", dmHash)
-    }
-
-    @Test
+    }*/
+    //TODO
+    /*@Test
     fun connectedDMsIdHTTP() {
         connectedEntourageHTTP("entourages", dmID)
-    }
-
-    @Test
+    }*/
+    //TODO
+    /*@Test
     fun connectedDMsHashHTTP() {
         connectedEntourageHTTP("entourages", dmHash)
-    }
-
-    @Test
+    }*/
+    //TODO
+    /*@Test
     fun connectedDMIdHTTP() {
         connectedEntourageHTTP("entourage", dmID)
-    }
-
-    @Test
+    }*/
+    //TODO
+    /*@Test
     fun connectedDMHashHTTP() {
         connectedEntourageHTTP("entourage", dmHash)
-    }
-
-    @Test
+    }*/
+    //TODO
+    /*@Test
     fun connectedDMsIdHTTPS() {
         connectedEntourageHTTPS("entourages", dmID)
-    }
-
-    @Test
+    }*/
+    //TODO
+    /*@Test
     fun connectedDMsHashHTTPS() {
         connectedEntourageHTTPS("entourages", dmHash)
-    }
-
-    @Test
+    }*/
+    //TODO
+    /*@Test
     fun connectedDMIdHTTPS() {
         connectedEntourageHTTPS("entourage", dmID)
-    }
-
-    @Test
+    }*/
+    //TODO
+    /*@Test
     fun connectedDMHashHTTPS() {
         connectedEntourageHTTPS("entourage", dmHash)
-    }
-
-    @Test
+    }*/
+    //TODO
+    /*@Test
     fun connectedDMsIdDeeplinkHTTPS() {
         connectedEntourageDeeplinkHTTPS("entourages", dmID)
-    }
-
-    @Test
+    }*/
+    //TODO
+    /*@Test
     fun connectedDMsHashDeeplinkHTTPS() {
         connectedEntourageDeeplinkHTTPS("entourages", dmHash)
-    }
-
-    @Test
+    }*/
+    //TODO
+    /*@Test
     fun connectedDMIdDeeplinkHTTPS() {
         connectedEntourageDeeplinkHTTPS("entourage", dmID)
-    }
-
-    @Test
+    }*/
+    //TODO
+    /*@Test
     fun connectedDMHashDeeplinkHTTPS() {
         connectedEntourageDeeplinkHTTPS("entourage", dmHash)
-    }
-
-    @Test
+    }*/
+    //TODO
+    /*@Test
     fun connectedDMsIdDeeplink() {
         connectedEntourageDeeplink("entourages", dmID)
-    }
-
-    @Test
+    }*/
+    //TODO
+    /*@Test
     fun connectedDMsHashDeeplink() {
         connectedEntourageDeeplink("entourages", dmHash)
-    }
-
-    @Test
+    }*/
+    //TODO
+    /*@Test
     fun connectedDMIdDeeplink() {
         connectedEntourageDeeplink("entourage", dmID)
-    }
-
-    @Test
+    }*/
+    //TODO
+    /*@Test
     fun connectedDMHashDeeplink() {
         connectedEntourageDeeplink("entourage", dmHash)
-    }
+    }*/
 
-    private fun connectedEntourageDeeplink(key: String, id: String) {
+    /*private fun connectedEntourageDeeplink(key: String, id: String) {
         connectedEntourageDeeplink(BuildConfig.DEEP_LINKS_SCHEME + "://" + key + "/" + id)
     }
 
@@ -491,56 +492,56 @@ class DeepLinkingTestEntourage : DeepLinkingTest() {
         startIntent(intent)
         Thread.sleep(1000) // We must wait for view to appear (when we run all tests at once)
         onView(withId(R.id.entourage_info_title_layout)).check(matches(isDisplayed()))
-    }
+    }*/
 }
 
 class DeepLinkingTestMessages : DeepLinkingTest() {
-
-    @Test
+    //TODO
+    /*@Test
     fun connectedMessagesDeeplink() {
         connectedMessagesDeeplink(BuildConfig.DEEP_LINKS_SCHEME + "://messages")
-    }
-
-    @Test
+    }*/
+    //TODO
+    /*@Test
     fun connectedMessagesDeeplinkHTTP() {
         connectedMessagesDeeplink("http://" + BuildConfig.DEEP_LINKS_URL + "/deeplink/messages")
-    }
-
-    @Test
+    }*/
+    //TODO
+    /*@Test
     fun connectedMessagesDeeplinkHTTPS() {
         connectedMessagesDeeplink("https://" + BuildConfig.DEEP_LINKS_URL + "/deeplink/messages")
-    }
+    }*/
 
-    private fun connectedMessagesDeeplink(uri: String) {
+    /*private fun connectedMessagesDeeplink(uri: String) {
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(uri))
         startIntent(intent)
         onView(withId(R.id.myentourages_tab)).check(matches(isDisplayed()))
-    }
+    }*/
 }
 
 class DeepLinkingTestTutorial : DeepLinkingTest() {
     private val link = DeepLinksManager.DeepLinksView.TUTORIAL.view
-
-    @Test
+    //TODO
+    /*@Test
     fun connectedTutorialDeeplink() {
         connectedTutorialDeeplink(BuildConfig.DEEP_LINKS_SCHEME + "://" + link)
-    }
-
-    @Test
+    }*/
+    //TODO
+    /*@Test
     fun connectedTutorialDeeplinkHTTP() {
         connectedTutorialDeeplink("http://${BuildConfig.DEEP_LINKS_URL}/deeplink/${link}")
-    }
-
-    @Test
+    }*/
+    //TODO
+    /*@Test
     fun connectedTutorialDeeplinkHTTPS() {
         connectedTutorialDeeplink("https://${BuildConfig.DEEP_LINKS_URL}/deeplink/${link}")
-    }
+    }*/
 
-    private fun connectedTutorialDeeplink(uri: String) {
+    /*private fun connectedTutorialDeeplink(uri: String) {
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(uri))
         startIntent(intent)
         onView(withId(R.id.carousel_indicator_layout)).check(matches(isDisplayed()))
-    }
+    }*/
 
 }
 

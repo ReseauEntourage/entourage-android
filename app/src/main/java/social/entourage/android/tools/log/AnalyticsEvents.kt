@@ -528,7 +528,7 @@ object AnalyticsEvents {
     val TAG: String? = AnalyticsEvents::class.java.simpleName
 
     fun logEvent(event: String) {
-        Timber.d("***** FireB Log event : ${event} -- fb:${get().firebase}")
+        //Timber.d("***** FireB Log event : ${event} -- fb:${get().firebase}")
         get().firebase.logEvent(event, null)
     }
 
