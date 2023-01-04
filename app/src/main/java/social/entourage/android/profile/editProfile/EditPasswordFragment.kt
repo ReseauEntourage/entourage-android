@@ -10,25 +10,25 @@ import android.view.WindowManager
 import android.widget.Toast
 import androidx.annotation.StringRes
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.fragment_user_edit_password.*
-import kotlinx.android.synthetic.main.layout_view_title.*
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.base.BaseDialogFragment
+import social.entourage.android.databinding.FragmentUserEditPasswordBinding
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.view.EntSnackbar
 
-//TODO use v8 design and code
 class EditPasswordFragment()  : BaseDialogFragment() {
+    private var _binding: FragmentUserEditPasswordBinding? = null
+    val binding: FragmentUserEditPasswordBinding get() = _binding!!
 
     private val presenter: EditProfilePresenter by lazy { EditProfilePresenter() }
     // ----------------------------------
     // LIFECYCLE
     // ----------------------------------
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-        super.onCreateView(inflater, container, savedInstanceState)
-        return inflater.inflate(R.layout.fragment_user_edit_password, container, false)
+                              savedInstanceState: Bundle?): View {
+        _binding = FragmentUserEditPasswordBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onResume() {
@@ -49,13 +49,13 @@ class EditPasswordFragment()  : BaseDialogFragment() {
 
     fun onSaveButton() {
         if (validatePassword()) {
-            AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_SCREEN_09_4_SUBMIT)
-            presenter.saveNewPassword(this, user_new_password?.text.toString().trim { it <= ' ' } ?: "")
+            AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_PROFILE_EDITPWD)
+            presenter.saveNewPassword(this, binding.userNewPassword.text.toString().trim { it <= ' ' } ?: "")
         }
     }
 
     fun onSaveNewPassword() {
-        Toast.makeText(context, getString(R.string.user_text_update_ok), Toast.LENGTH_SHORT).show()
+        Toast.makeText(context, getString(R.string.user_edit_password_changed), Toast.LENGTH_SHORT).show()
         dismiss()
     }
 
@@ -68,21 +68,21 @@ class EditPasswordFragment()  : BaseDialogFragment() {
     // PRIVATE METHODS
     // ----------------------------------
     private fun configureView() {
-        user_old_password?.typeface = Typeface.DEFAULT
-        user_old_password?.transformationMethod = PasswordTransformationMethod()
-        user_new_password?.typeface = Typeface.DEFAULT
-        user_new_password?.transformationMethod = PasswordTransformationMethod()
-        user_confirm_password?.typeface = Typeface.DEFAULT
-        user_confirm_password?.transformationMethod = PasswordTransformationMethod()
-        user_old_password?.requestFocus()
-        title_close_button.setOnClickListener { onCloseButton() }
-        user_edit_password_save_button.setOnClickListener { onSaveButton() }
+        binding.userOldPassword.typeface = Typeface.DEFAULT
+        binding.userOldPassword.transformationMethod = PasswordTransformationMethod()
+        binding.userNewPassword.typeface = Typeface.DEFAULT
+        binding.userNewPassword.transformationMethod = PasswordTransformationMethod()
+        binding.userConfirmPassword.typeface = Typeface.DEFAULT
+        binding.userConfirmPassword.transformationMethod = PasswordTransformationMethod()
+        binding.userOldPassword.requestFocus()
+        binding.iconBack.setOnClickListener { onCloseButton() }
+        binding.buttonValidate.setOnClickListener { onSaveButton() }
     }
 
     private fun validatePassword(): Boolean {
-        val oldPassword = user_old_password?.text.toString().trim { it <= ' ' }
-        val newPassword = user_new_password?.text.toString().trim { it <= ' ' }
-        val confirmPassword = user_confirm_password?.text.toString().trim { it <= ' ' }
+        val oldPassword = binding.userOldPassword.text.toString().trim { it <= ' ' }
+        val newPassword = binding.userNewPassword.text.toString().trim { it <= ' ' }
+        val confirmPassword =  binding.userConfirmPassword.text.toString().trim { it <= ' ' }
         val userPassword = EntourageApplication.get().authenticationController.me?.smsCode ?: ""
         return when {
             oldPassword != userPassword -> {

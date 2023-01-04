@@ -18,6 +18,7 @@ import social.entourage.android.R
 import social.entourage.android.databinding.NewFragmentSettingsBinding
 import social.entourage.android.tools.utils.CustomAlertDialog
 import social.entourage.android.onboarding.pre_onboarding.PreOnboardingStartActivity
+import social.entourage.android.profile.editProfile.EditPasswordFragment
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.view.EntSnackbar
 import social.entourage.android.tools.view.WebViewFragment
@@ -65,6 +66,7 @@ class SettingsFragment : Fragment() {
 
         binding.share.arrow.visibility = View.INVISIBLE
         binding.suggest.arrow.visibility = View.INVISIBLE
+
     }
 
     private fun addOnClickListeners() {
@@ -107,6 +109,10 @@ class SettingsFragment : Fragment() {
         }
         binding.appDebugInfo.setOnLongClickListener {
             handleLongPress()
+        }
+
+        binding.changePwd.setOnClickListener {
+            EditPasswordFragment().show(parentFragmentManager, EditPasswordFragment.TAG)
         }
     }
 

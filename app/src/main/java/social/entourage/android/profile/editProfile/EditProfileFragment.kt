@@ -18,7 +18,6 @@ import com.bumptech.glide.Glide
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.databinding.NewFragmentEditProfileBinding
-import social.entourage.android.profile.editProfile.EditProfileFragmentDirections
 import social.entourage.android.profile.ProfileActivity
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.transformIntoDatePicker
@@ -67,7 +66,6 @@ class EditProfileFragment : Fragment(), EditProfileCallback,
         onEditInterests()
         onEditImage()
         onEditActionZone()
-        onEditPhone()
         initializeDescriptionCounter()
         fromHomePage = activity?.intent?.extras?.getBoolean(Const.GO_TO_EDIT_PROFILE) == true
         setBackButton()
@@ -131,17 +129,6 @@ class EditProfileFragment : Fragment(), EditProfileCallback,
 
             override fun afterTextChanged(s: Editable) {}
         })
-    }
-
-    private fun onEditPhone() {
-        binding.phone.layout.setOnLongClickListener {
-            editPassword()
-            true
-        }
-    }
-
-    private fun editPassword() {
-        EditPasswordFragment().show(parentFragmentManager, EditPasswordFragment.TAG)
     }
 
     private fun onEditInterests() {

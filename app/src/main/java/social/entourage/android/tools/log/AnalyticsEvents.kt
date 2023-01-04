@@ -274,7 +274,7 @@ object AnalyticsEvents {
     const val VIEW_PLUS_SCREEN = "View__Plus__Screen"
 
     const val VIEW_ADD_USERNAME_SUBMIT = "Action__Add__UsernameSubmit"
-
+    const val ACTION_PROFILE_EDITPWD = "Action__Profile__ChangePWD"
     /******
      * New home feed Expert
      */
