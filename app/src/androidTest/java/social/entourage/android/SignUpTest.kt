@@ -1,12 +1,18 @@
 package social.entourage.android
 
+import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.*
+import androidx.test.espresso.assertion.ViewAssertions.doesNotExist
+import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
 import androidx.test.platform.app.InstrumentationRegistry
+import kotlinx.android.synthetic.main.activity_onboarding_start.*
+import org.hamcrest.Matchers.allOf
 import org.junit.Rule
+import org.junit.Test
 import org.junit.runner.RunWith
 import social.entourage.android.api.OnboardingAPI
 import social.entourage.android.onboarding.onboard.OnboardingStartActivity
@@ -25,22 +31,19 @@ class SignUpTest {
 
     /****************************** Views ******************************/
 
-    /*private val firstNameEt = onView(
+    private val firstNameEt = onView(
             allOf(withId(R.id.ui_onboard_names_et_firstname),
-                    withParent(withId(R.id.onboard_names_mainlayout)),
                     isDisplayed()))
 
     private val lastNameEt = onView(
             allOf(withId(R.id.ui_onboard_names_et_lastname),
-                    withParent(withId(R.id.onboard_names_mainlayout)),
                     isDisplayed()))
 
-    private val askPhoneNumberTv = onView(
-            allOf(withId(R.id.ui_onboard_phone_tv_description),
-                    withParent(withId(R.id.onboard_phone_mainlayout)),
+    private val askCodeTv = onView(
+            allOf(withId(R.id.ui_onboard_code_tv_description),
                     isDisplayed()))
 
-    private val phoneNumberEt = onView(
+    /*private val phoneNumberEt = onView(
             allOf(withId(R.id.ui_onboard_phone_et_phone),
                     withParent(withId(R.id.onboard_phone_mainlayout)),
                     isDisplayed()))
@@ -78,25 +81,24 @@ class SignUpTest {
     private val feedButtonBottomBar = onView(
             allOf(withId(R.id.bottom_bar_newsfeed),
                 withContentDescription(R.string.action_map),
-                isDisplayed()))
+                isDisplayed()))*/
 
     private val nextButton = onView(
-            allOf(withId(R.id.ui_bt_next),
-                    isDisplayed()))*/
+            allOf(withId(R.id.ui_onboarding_bt_next),
+                    isDisplayed()))
 
     /****************************** OnboardingNamesFragment ******************************/
-    //TODO
-    /*@Test
+    @Test
     fun validFirstNameAndLastNameTest() {
         fillValidNames()
 
         //Check that OnboardingPhoneFragment is displayed
-        askPhoneNumberTv.check(matches(withText(R.string.onboard_phone_sub)))
+        askCodeTv.check(matches(withText(R.string.onboard_phone_sub)))
 
         //Check that OnboardingNamesFragment is not displayed
         firstNameEt.check(doesNotExist())
         lastNameEt.check(doesNotExist())
-    }*/
+    }
     //TODO
     /*@Test
     fun emptyFirstNameAndLastNameTest() {
@@ -109,7 +111,7 @@ class SignUpTest {
         lastNameEt.check(matches(isDisplayed()))
 
         //Check that OnboardingPhoneFragment is not displayed
-        askPhoneNumberTv.check(doesNotExist())
+        askCodeTv.check(doesNotExist())
     }*/
     //TODO
     /*@Test
@@ -123,7 +125,7 @@ class SignUpTest {
         lastNameEt.check(matches(isDisplayed()))
 
         //Check that OnboardingPhoneFragment is not displayed
-        askPhoneNumberTv.check(doesNotExist())
+        askCodeTv.check(doesNotExist())
     }*/
     //TODO
     /*@Test
@@ -137,7 +139,7 @@ class SignUpTest {
         lastNameEt.check(matches(isDisplayed()))
 
         //Check that OnboardingPhoneFragment is not displayed
-        askPhoneNumberTv.check(doesNotExist())
+        askCodeTv.check(doesNotExist())
     }*/
 
     /****************************** OnboardingPhoneFragment ******************************/
@@ -580,7 +582,7 @@ class SignUpTest {
 
     /****************************** Utils ******************************/
 
-    /*private fun clickNextButton() {
+    private fun clickNextButton() {
         nextButton.perform(click())
         Thread.sleep(1000)
     }
@@ -591,7 +593,7 @@ class SignUpTest {
         clickNextButton()
     }
 
-    private fun goNextStep() {
+    /*private fun goNextStep() {
         activityRule.scenario.onActivity { activity ->
             activity.goNextStep()
         }

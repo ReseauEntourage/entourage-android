@@ -1,16 +1,26 @@
 package social.entourage.android
 
+import android.app.Application
 import android.content.Intent
+import android.os.Bundle
+import androidx.test.core.app.ApplicationProvider.getApplicationContext
+import androidx.test.espresso.Espresso
+import androidx.test.espresso.assertion.ViewAssertions
+import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.rule.ActivityTestRule
 import org.junit.Before
 import org.junit.Rule
+import org.junit.Test
 import org.junit.runner.RunWith
+import social.entourage.android.api.model.Message
+import social.entourage.android.api.model.PushNotificationContent
+import social.entourage.android.message.push.PushNotificationManager
 
 @RunWith(AndroidJUnit4::class)
 class PushNotificationTest {
 
-    private val isAppStarted = true
+    private val isAppStarted = false
 
     @Rule
     @JvmField
@@ -28,10 +38,10 @@ class PushNotificationTest {
             activityTestRule.activity.startActivity(intent)
         }
     }
-    //TODO
-    /*@Test
+
+    @Test
     fun testNotifMessageIntent() {
-        val intent = Intent(getApplicationContext<Application>(), MainActivity_v7::class.java)
+        val intent = Intent(getApplicationContext<Application>(), MainActivity::class.java)
         intent.action = PushNotificationContent.TYPE_NEW_CHAT_MESSAGE
         val args = Bundle()
         val myobject = "title"
@@ -45,6 +55,6 @@ class PushNotificationTest {
         args.putSerializable(PushNotificationManager.PUSH_MESSAGE, message)
         intent.putExtras(args)
         startIntent(intent)
-        Espresso.onView(ViewMatchers.withId(R.id.entourage_info_comment)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-    }*/
+        Espresso.onView(ViewMatchers.withId(R.id.fragment_map_new_entourages_button)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+    }
 }
