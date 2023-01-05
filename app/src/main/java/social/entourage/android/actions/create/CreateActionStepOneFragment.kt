@@ -17,10 +17,10 @@ import social.entourage.android.databinding.NewFragmentCreateActionStepOneBindin
 import social.entourage.android.groups.choosePhoto.ChooseGalleryPhotoModalFragment
 import social.entourage.android.groups.choosePhoto.ImagesType
 import social.entourage.android.posts.ChoosePhotoModalFragment
-//import social.entourage.android.posts.ChooseGalleryPhotoModalFragment
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.px
 import social.entourage.android.tools.log.AnalyticsEvents
+import timber.log.Timber
 
 class CreateActionStepOneFragment : Fragment() {
     private var _binding: NewFragmentCreateActionStepOneBinding? = null
@@ -146,7 +146,6 @@ class CreateActionStepOneFragment : Fragment() {
         else {
             getResult()
             binding.uiLayoutAddPhoto.visibility = View.VISIBLE
-            val choosePhotoModalFragment = ChooseGalleryPhotoModalFragment.newInstance(ImagesType.EVENTS)
             binding.addPhotoLayout.setOnClickListener {
                 choosePhoto()
             }

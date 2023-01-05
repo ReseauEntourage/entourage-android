@@ -231,31 +231,31 @@ dependencies {
     implementation "com.github.bumptech.glide:glide:4.14.2"
     implementation "me.leolin:ShortcutBadger:1.1.22@aar"
     implementation "net.yslibrary.keyboardvisibilityevent:keyboardvisibilityevent:3.0.0-RC3"
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.14.2'
 
     //entourageImplementation facebookDependencies.values()
-    implementation "com.facebook.android:facebook-android-sdk:15.1.0"
-    implementation "com.facebook.android:facebook-core:15.1.0"
+    implementation "com.facebook.android:facebook-android-sdk:15.2.0"
+    implementation "com.facebook.android:facebook-core:15.2.0"
     compileOnly "org.glassfish:javax.annotation:10.0-b28"
 
     //androidTestImplementation testDependencies.values()
-    androidTestImplementation "androidx.test.espresso:espresso-core:3.5.0"
-    androidTestImplementation "androidx.test.espresso:espresso-contrib:3.5.0"
-    androidTestImplementation "androidx.test.espresso:espresso-accessibility:3.5.0"
-    androidTestImplementation "androidx.test.espresso:espresso-web:3.5.0"
-    androidTestImplementation "androidx.test.espresso.idling:idling-concurrent:3.5.0"
-    androidTestImplementation "androidx.test.espresso:espresso-idling-resource:3.5.0"
-    androidTestImplementation "androidx.test.espresso:espresso-intents:3.5.0"
+    androidTestImplementation "androidx.test.espresso:espresso-core:3.5.1"
+    androidTestImplementation "androidx.test.espresso:espresso-contrib:3.5.1"
+    androidTestImplementation "androidx.test.espresso:espresso-accessibility:3.5.1"
+    androidTestImplementation "androidx.test.espresso:espresso-web:3.5.1"
+    androidTestImplementation "androidx.test.espresso.idling:idling-concurrent:3.5.1"
+    androidTestImplementation "androidx.test.espresso:espresso-idling-resource:3.5.1"
+    androidTestImplementation "androidx.test.espresso:espresso-intents:3.5.1"
     androidTestImplementation "androidx.test.uiautomator:uiautomator:2.2.0"
     androidTestImplementation "com.jakewharton.espresso:okhttp3-idling-resource:1.0.0"
     //,exclude: [group: "com.squareup.okhttp3"                    ]
-    androidTestImplementation "androidx.test.ext:junit:1.1.4"
-    androidTestImplementation "androidx.test:runner:1.5.1"
+    androidTestImplementation "androidx.test.ext:junit:1.1.5"
+    androidTestImplementation "androidx.test:runner:1.5.2"
     androidTestImplementation "androidx.test:rules:1.5.0"
     implementation 'com.google.android.flexbox:flexbox:3.0.0'
     // Kotlin
     implementation "androidx.navigation:navigation-fragment-ktx:2.5.3"
     implementation "androidx.navigation:navigation-ui-ktx:2.5.3"
-    implementation "com.github.bumptech.glide:glide:4.14.2"
     implementation 'uk.co.markormesher:android-fab:2.5.0'
     implementation 'com.github.IntruderShanky:Sectioned-RecyclerView:2.1.1'
 

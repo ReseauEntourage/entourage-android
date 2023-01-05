@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.BaseAdapter
 import android.widget.CompoundButton
+import androidx.core.content.res.ResourcesCompat
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.layout_edit_partner.view.*
 import social.entourage.android.R
@@ -76,11 +77,9 @@ class UserEditPartnerAdapter : BaseAdapter() {
                             .into(it)
                 }
             } ?: run  {
-                currentView.partner_logo?.let {
-                    Glide.with(it.context)
-                            .load(R.drawable.partner_placeholder)
-                            .into(it)
-                }
+                currentView.partner_logo?.setImageDrawable(
+                    ResourcesCompat.getDrawable(currentView.resources, R.drawable.partner_placeholder, null)
+                )
             }
 
             // set the tag to null so that oncheckedchangelistener exits when populating the view

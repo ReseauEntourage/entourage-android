@@ -252,9 +252,9 @@ class HomeFragment : Fragment() {
                 .circleCrop()
                 .into(binding.moderator.root.icon_card)
         } ?: kotlin.run {
-            Glide.with(requireContext())
-                .load(R.drawable.placeholder_user)
-                .into(binding.moderator.root.icon_card)
+            binding.moderator.root.icon_card.setImageDrawable(
+                ResourcesCompat.getDrawable(resources, R.drawable.placeholder_user, null)
+            )
         }
 
         binding.moderator.root.setOnClickListener {
@@ -271,9 +271,9 @@ class HomeFragment : Fragment() {
 
         binding.solidarityPlaces.root.title.text = getString(R.string.solidarity_places_map)
         binding.solidarityPlaces.root.description.text = getString(R.string.solidarity_places_map_sub)
-        Glide.with(requireContext())
-            .load(R.drawable.new_solidarity_map)
-            .into(binding.solidarityPlaces.root.icon_card)
+        binding.solidarityPlaces.root.icon_card.setImageDrawable(
+            ResourcesCompat.getDrawable(resources,R.drawable.new_solidarity_map, null)
+        )
 
         binding.solidarityPlaces.root.setOnClickListener {
             AnalyticsEvents.logEvent(AnalyticsEvents.Home_action_map)
