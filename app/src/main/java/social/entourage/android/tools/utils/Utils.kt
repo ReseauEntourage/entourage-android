@@ -100,22 +100,21 @@ object Utils {
         allEvents: MutableList<Events>?,
         sections: MutableList<SectionHeader>
     ): MutableList<SectionHeader> {
-        val map = allEvents?.groupBy {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        var newSections: MutableList<SectionHeader>? = null
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val map = allEvents?.groupBy {
                 YearMonth.from(
                     ZonedDateTime.ofInstant(
                         it.metadata?.startsAt?.toInstant(),
                         ZoneId.systemDefault()
                     )
                 )
-            } else {
-                TODO("VERSION.SDK_INT < O")
             }
-        }
-        val newSections = map?.map {
-            SectionHeader(it.value, it.key.format(DateTimeFormatter.ofPattern("LLLL yyyy")))
-        }?.toMutableList()
 
+            newSections = map?.map {
+                SectionHeader(it.value, it.key.format(DateTimeFormatter.ofPattern("LLLL yyyy")))
+            }?.toMutableList()
+        }
         return newSections?.let {
             val allSections = sections + newSections
             val sectionsWithoutDuplicates =
