@@ -17,6 +17,9 @@ import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
@@ -38,6 +41,7 @@ import social.entourage.android.groups.details.members.MembersType
 import social.entourage.android.profile.myProfile.InterestsAdapter
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.log.AnalyticsEvents
+import social.entourage.android.tools.utils.px
 import uk.co.markormesher.android_fab.SpeedDialMenuAdapter
 import uk.co.markormesher.android_fab.SpeedDialMenuItem
 import kotlin.math.abs
@@ -279,12 +283,19 @@ class FeedFragment : Fragment() {
             }
             binding.seeMoreEvents.isVisible = group?.futureEvents?.isNotEmpty() == true
             binding.arrowEvents.isVisible = group?.futureEvents?.isNotEmpty() == true
-            /*
-        Glide.with(requireActivity())
-            .load(Uri.parse(group.imageUrl))
-            .centerCrop()
-            .into(groupImage)
-         */
+
+            Glide.with(requireActivity())
+                .load(group?.imageUrl)
+                .error(R.drawable.new_group_illu)
+                .centerCrop()
+                .into(groupImage)
+
+            Glide.with(requireActivity())
+                .load(group?.imageUrl)
+                .error(R.drawable.new_group_illu)
+                .transform(CenterCrop(), RoundedCorners(8.px))
+                .into(groupImageToolbar)
+
         }
 
         updateButtonJoin()
