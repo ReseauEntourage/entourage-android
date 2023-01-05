@@ -1,5 +1,6 @@
 package social.entourage.android.message.push
 
+import android.annotation.SuppressLint
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -220,6 +221,7 @@ object PushNotificationManager {
      * @param message the message received
      * @param context the context
      */
+    @SuppressLint("MissingPermission")
     private fun displayPushNotification(message: Message, context: Context) {
         val messageList: List<Message>? = pushNotifications[message.hash]
         val count = messageList?.size ?: 0
@@ -252,6 +254,7 @@ object PushNotificationManager {
         NotificationManagerCompat.from(context).notify(message.pushNotificationTag, message.pushNotificationId, notification)
     }
 
+    @SuppressLint("MissingPermission")
     fun displayFCMPushNotification(fcmCTA:String, fcmTitle: String?, fcmBody: String?, context: Context) {
         val channelId = context.getString(R.string.app_name)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
