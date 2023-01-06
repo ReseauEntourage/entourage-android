@@ -82,6 +82,46 @@ class EntourageUser : TimestampedObject(), Serializable {
         return clone
     }
 
+    fun getCommunityRoleWithPartnerFormated() : String? {
+        communityRoles?.let {
+            var roleStr = ""
+
+            if (isAdmin()) {
+                roleStr = "Admin"
+            }
+
+            for (role in it) {
+                if(roleStr.isNotEmpty()) {
+                    roleStr = "$roleStr • $role"
+                }
+                else {
+                    roleStr = role
+                }
+
+                break
+            }
+            partner?.name?.let {
+                if (roleStr.isNotEmpty()) {
+                    roleStr = "$roleStr • $it"
+                }
+                else {
+                    roleStr = it
+                }
+            }
+            return roleStr
+        }
+
+
+        return null
+    }
+
+    fun isAdmin() : Boolean {
+        if (groupRole == "creator") {
+            return true
+        }
+        return false
+    }
+
     companion object {
         private const val serialVersionUID = 6896833312363434601L
         private const val HASH_STRING_HEAD = "EntourageUser-"

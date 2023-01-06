@@ -33,6 +33,8 @@ class MembersConversationFragment : BaseDialogFragment() {
     private var id: Int? = Const.DEFAULT_VALUE
     private val discussionsPresenter: DiscussionsPresenter by lazy { DiscussionsPresenter() }
 
+    private var userCreatorId:Int? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -80,10 +82,12 @@ class MembersConversationFragment : BaseDialogFragment() {
     private fun handleResponseGetMembers(conversation: Conversation?) {
         membersList.clear()
         conversation?.members?.let { membersList.addAll(it) }
+        userCreatorId = conversation?.author?.id
         binding.progressBar.visibility = View.GONE
 
         updateView(membersList.isEmpty())
-        binding.recyclerView.adapter?.notifyDataSetChanged()
+
+        (binding.recyclerView.adapter as? MembersConversationListAdapter)?.updateCreatorId(userCreatorId)
     }
 
     private fun handleResponseGetMembersSearch(allMembersSearch: MutableList<GroupMember>?) {
@@ -127,7 +131,7 @@ class MembersConversationFragment : BaseDialogFragment() {
 
         binding.recyclerView.apply {
             layoutManager = LinearLayoutManager(context)
-            adapter = MembersConversationListAdapter(membersList, object : OnItemShowListener {
+            adapter = MembersConversationListAdapter(membersList, userCreatorId, object : OnItemShowListener {
                 override fun onShowConversation(userId: Int) {
                     discussionsPresenter.createOrGetConversation(userId)
                 }
@@ -142,7 +146,7 @@ class MembersConversationFragment : BaseDialogFragment() {
             ?.let { itemDecorator.setDrawable(it) }
         binding.searchRecyclerView.apply {
             layoutManager = LinearLayoutManager(context)
-            adapter = MembersConversationListAdapter(membersListSearch, object : OnItemShowListener {
+            adapter = MembersConversationListAdapter(membersListSearch,userCreatorId, object : OnItemShowListener {
                 override fun onShowConversation(userId: Int) {
                     discussionsPresenter.createOrGetConversation(userId)
                 }

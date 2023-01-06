@@ -16,8 +16,15 @@ import social.entourage.android.tools.utils.Const
 
 class MembersConversationListAdapter(
     private var membersList: List<GroupMember>,
+    private var userCreatorId:Int?,
     private var onItemShowListener: OnItemShowListener
 ) : RecyclerView.Adapter<MembersConversationListAdapter.ViewHolder>() {
+
+    fun updateCreatorId(userCreatorId:Int?) {
+        this.userCreatorId = userCreatorId
+        notifyDataSetChanged()
+    }
+
 
     inner class ViewHolder(val binding: NewGroupMemberItemBinding) :
         RecyclerView.ViewHolder(binding.root)
@@ -38,6 +45,15 @@ class MembersConversationListAdapter(
                 val isMe = EntourageApplication.get().me()?.id == id
                 binding.contact.visibility = if (isMe) View.INVISIBLE else View.VISIBLE
                 binding.name.text = displayName
+
+                if (this.id == userCreatorId) {
+                    binding.ambassador.text = "Admin"
+                    binding.ambassador.visibility = View.VISIBLE
+                }
+                else {
+                    binding.ambassador.visibility = View.GONE
+                }
+
 
                 avatarUrl?.let { avatarURL ->
                     Glide.with(holder.itemView.context)

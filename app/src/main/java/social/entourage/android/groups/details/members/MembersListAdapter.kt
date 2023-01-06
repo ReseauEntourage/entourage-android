@@ -43,13 +43,17 @@ class MembersListAdapter(
                 binding.contact.visibility = if (isMe) View.INVISIBLE else View.VISIBLE
 
                 binding.name.text = displayName
-                communityRoles?.let {
-                    if (it.contains(Const.AMBASSADOR)) binding.ambassador.visibility = View.VISIBLE
+
+                val roles = getCommunityRoleWithPartnerFormated()
+
+                if (roles != null) {
+                    binding.ambassador.visibility = View.VISIBLE
+                    binding.ambassador.text = roles
                 }
-                partner?.let {
-                    binding.partner.visibility = View.VISIBLE
-                    binding.partner.text = it.name
+                else {
+                    binding.ambassador.visibility = View.GONE
                 }
+
                 avatarURLAsString?.let { avatarURL ->
                     Glide.with(holder.itemView.context)
                         .load(avatarURL)

@@ -37,7 +37,9 @@ class Conversation(
     @SerializedName("creator")
     val isCreator: Boolean? = null,
     @SerializedName("blockers")
-    var blockers: ArrayList<String>? = null
+    var blockers: ArrayList<String>? = null,
+    @SerializedName("author")
+    var author: ConversationAuthor? = null
 ) {
     override fun toString(): String {
         return "Conversation(id=$id, user=$user)"
@@ -160,4 +162,11 @@ class BlockUserDetails (
     var displayName:String?,
     @SerializedName("avatar_url")
     var avatarUrl:String?
+)
+
+class ConversationAuthor (
+    @SerializedName("id")
+    var id:Int,
+    @SerializedName("display_name")
+    var username:String?
 )
