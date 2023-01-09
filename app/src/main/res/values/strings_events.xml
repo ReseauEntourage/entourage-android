@@ -11,4 +11,7 @@
     <string name="event_filter_gps">Autour de ma position actuelle</string>
     <string name="event_filter_error_place">Veuillez sélectionnez une adresse</string>
     <string name="search_filter">Rechercher :</string>
+
+    <string name="event_location_title">Localisez votre événement</string>
+    <string name="event_location_detail">L’adresse sera ajoutée à la description détaillée de votre événement.</string>
 </resources>
