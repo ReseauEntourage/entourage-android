@@ -487,7 +487,7 @@ class FeedFragment : Fragment() {
                     groupId,
                     it.name,
                     it.members_count,
-                    it.displayAddress,
+                    it.address?.displayAddress,
                     it.interests,
                     it.description,
                     it.members,
