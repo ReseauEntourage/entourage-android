@@ -23,6 +23,7 @@ class CreateEventActionZoneFragment : UserActionPlaceFragment() {
             dismiss()
             findNavController().popBackStack()
         }
+        edit_place_title_layout?.title_text?.text = ""
     }
 
     private fun validate() {
