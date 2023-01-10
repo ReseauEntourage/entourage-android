@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
@@ -95,12 +96,19 @@ class MyProfileFragment : Fragment() {
                 if (it.isNotEmpty()) {
                     birthday.root.visibility = View.VISIBLE
                     birthday.content.text = it
+                }else {
+                    birthday.root.visibility = View.VISIBLE
+                    birthday.content.hint = "01-03"
                 }
+
             }
             user.email?.let {
                 if (it.isNotEmpty()) {
                     email.root.visibility = View.VISIBLE
                     email.content.text = it
+                }else {
+                    email.root.visibility = View.VISIBLE
+                    email.content.hint = "email@gmail.com"
                 }
             }
             user.address?.displayAddress?.let {
@@ -115,6 +123,7 @@ class MyProfileFragment : Fragment() {
             user.stats?.let {
                 contribution.content.text = it.neighborhoodsCount.toString()
                 events.content.text = it.outingsCount.toString()
+
             }
             user.roles?.let {
                 if (it.contains("ambassador")) ambassador.visibility = View.VISIBLE

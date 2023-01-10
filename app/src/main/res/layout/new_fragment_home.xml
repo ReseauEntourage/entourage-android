@@ -236,18 +236,24 @@
                     android:paddingBottom="8dp"
                     android:text="@string/need_help"
                     tools:text="@string/need_help" />
-
+                <include
+                    android:id="@+id/pedagogical_content"
+                    layout="@layout/new_recommendation_item"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="8dp" />
                 <include
                     android:id="@+id/solidarity_places"
                     layout="@layout/new_home_card"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="match_parent" />
 
                 <include
                     android:id="@+id/moderator"
                     layout="@layout/new_home_card"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_marginTop="4dp" />
 
                 <Space
@@ -264,17 +270,11 @@
                     android:text="@string/want_to_act"
                     tools:text="@string/want_to_act" />
 
-                <include
-                    android:id="@+id/pedagogical_content"
-                    layout="@layout/new_recommendation_item"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:layout_marginBottom="8dp" />
+
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recommendations"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
             </LinearLayout>

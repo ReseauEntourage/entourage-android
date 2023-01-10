@@ -2,6 +2,7 @@ package social.entourage.android.discussions
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,6 +20,7 @@ import social.entourage.android.home.UnreadMessages
 import social.entourage.android.api.model.Conversation
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.log.AnalyticsEvents
+import timber.log.Timber
 import kotlin.math.abs
 
 const val messagesPerPage = 25
@@ -62,19 +64,20 @@ class DiscussionsMainFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
+        reloadFromStart()
         if (RefreshController.shouldRefreshFragment) {
             RefreshController.shouldRefreshFragment = false
             isFromRefresh = true
-            reloadFromStart()
         }
         discussionsPresenter.getUnreadCount()
     }
 
     private fun handleResponseGetDiscussions(allGroups: MutableList<Conversation>?) {
-        allGroups?.let { messagesList.addAll(it) }
+        allGroups?.let {
+            messagesList.clear()
+            messagesList.addAll(it) }
         binding.progressBar.visibility = View.GONE
         binding.recyclerView.adapter?.notifyDataSetChanged()
-
         if (isFromRefresh) {
             isFromRefresh = false
             binding.recyclerView.scrollToPosition(0)

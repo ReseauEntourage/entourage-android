@@ -191,10 +191,10 @@ class HomeFragment : Fragment() {
     private fun handlePedagogicalContentButton() {
         binding.pedagogicalContent.title.text = getString(R.string.pedagogical_content)
         binding.pedagogicalContent.root.elevation = 0F
-        binding.pedagogicalContent.root.background = AppCompatResources.getDrawable(
-            requireContext(),
-            R.drawable.new_bg_rounded_shadow_orange_opacity_50
-        )
+//        binding.pedagogicalContent.root.background = AppCompatResources.getDrawable(
+//            requireContext(),
+//            R.drawable.new_bg_rounded_shadow_orange_opacity_50
+//        )
 
         binding.pedagogicalContent.root.setOnClickListener {
             AnalyticsEvents.logEvent(AnalyticsEvents.Home_action_pedago)
