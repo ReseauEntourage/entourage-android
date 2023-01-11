@@ -143,12 +143,7 @@ class GroupEventsListAdapter(
             childViewHolder.binding.eventName.setTextColor(context.getColor(R.color.grey))
             childViewHolder.binding.blackLayout.visibility = View.VISIBLE
         }
-
-/*
-        childViewHolder.binding.divider.isVisible =
-            sectionItemList?.get(sectionPosition)?.childList?.size?.minus(1) != childPosition
-
- */
+        
     }
 
     init {
