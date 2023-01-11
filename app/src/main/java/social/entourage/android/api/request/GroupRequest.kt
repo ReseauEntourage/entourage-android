@@ -127,4 +127,11 @@ interface GroupRequest {
     fun getGroupEvents(
         @Path("neighborhood_id") groupId: Int,
     ): Call<EventsListWrapper>
+
+
+    @GET("neighborhoods/{neighborhood_id}/chat_messages/{post_id}")
+    fun getPostDetail(
+        @Path("neighborhood_id") groupId: Int,
+        @Path("post_id") postId: Int,
+    ): Call<PostWrapper>
 }

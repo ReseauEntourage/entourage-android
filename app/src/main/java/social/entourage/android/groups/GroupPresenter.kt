@@ -43,6 +43,7 @@ class GroupPresenter {
     var isGroupReported = MutableLiveData<Boolean>()
     var isPostReported = MutableLiveData<Boolean>()
     var getAllEvents = MutableLiveData<MutableList<Events>>()
+    var getCurrentParentPost = MutableLiveData<Post>()
 
     var isLoading: Boolean = false
     var isLastPage: Boolean = false
@@ -447,6 +448,23 @@ class GroupPresenter {
 
                 override fun onFailure(call: Call<UnreadCountWrapper>, t: Throwable) {
                     unreadMessages.value = null
+                }
+            })
+    }
+
+    fun getCurrentParentPost(eventId: Int, postId: Int) {
+        EntourageApplication.get().apiModule.groupRequest.getPostDetail(eventId,postId)
+            .enqueue(object : Callback<PostWrapper> {
+                override fun onResponse(
+                    call: Call<PostWrapper>,
+                    response: Response<PostWrapper>
+                ) {
+                    response.body()?.let { post ->
+                        getCurrentParentPost.value = post.post
+                    }
+                }
+
+                override fun onFailure(call: Call<PostWrapper>, t: Throwable) {
                 }
             })
     }

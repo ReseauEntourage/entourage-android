@@ -40,6 +40,7 @@ abstract class CommentActivity : AppCompatActivity() {
 
     protected var isOne2One = false
     protected var isConversation = false
+    var currentParentPost:Post? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -104,7 +105,7 @@ abstract class CommentActivity : AppCompatActivity() {
     fun updateView(emptyState: Boolean) {
         if (emptyState) {
             binding.emptyState.visibility = View.VISIBLE
-            binding.comments.visibility = View.GONE
+            binding.comments.visibility = if (currentParentPost != null) View.VISIBLE else View.GONE
         } else {
             binding.emptyState.visibility = View.GONE
             binding.comments.visibility = View.VISIBLE
@@ -127,7 +128,7 @@ abstract class CommentActivity : AppCompatActivity() {
         binding.comments.apply {
             layoutManager = LinearLayoutManager(context)
             val meId = EntourageApplication.get().me()?.id ?: postAuthorID
-            adapter = CommentsListAdapter(commentsList, meId,isOne2One,isConversation, object : OnItemClickListener {
+            adapter = CommentsListAdapter(commentsList, meId,isOne2One,isConversation,currentParentPost, object : OnItemClickListener {
                 override fun onItemClick(comment: Post) {
                     addComment()
                     commentsList.remove(comment)

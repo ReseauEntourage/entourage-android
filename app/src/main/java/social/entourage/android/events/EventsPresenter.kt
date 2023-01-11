@@ -35,6 +35,7 @@ class EventsPresenter {
     var getMembers = MutableLiveData<MutableList<EntourageUser>>()
     var getMembersSearch = MutableLiveData<MutableList<EntourageUser>>()
     var getAllPosts = MutableLiveData<MutableList<Post>>()
+    var getCurrentParentPost = MutableLiveData<Post>()
 
     var hasUserLeftEvent = MutableLiveData<Boolean>()
     var eventCanceled = MutableLiveData<Boolean>()
@@ -348,6 +349,24 @@ class EventsPresenter {
                 addPost(eventId, chatMessage)
             }
         })
+    }
+
+
+    fun getCurrentParentPost(eventId: Int, postId: Int) {
+        EntourageApplication.get().apiModule.eventsRequest.getPostDetail(eventId,postId)
+            .enqueue(object : Callback<PostWrapper> {
+                override fun onResponse(
+                    call: Call<PostWrapper>,
+                    response: Response<PostWrapper>
+                ) {
+                    response.body()?.let { post ->
+                        getCurrentParentPost.value = post.post
+                    }
+                }
+
+                override fun onFailure(call: Call<PostWrapper>, t: Throwable) {
+                }
+            })
     }
 
     fun getPostComments(eventId: Int, postId: Int) {

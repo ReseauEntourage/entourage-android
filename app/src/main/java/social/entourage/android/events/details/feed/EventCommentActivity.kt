@@ -1,8 +1,11 @@
 package social.entourage.android.events.details.feed
 
 import android.os.Bundle
+import android.view.View
+import social.entourage.android.api.model.Post
 import social.entourage.android.comment.CommentActivity
 import social.entourage.android.events.EventsPresenter
+import social.entourage.android.groups.details.feed.CommentsListAdapter
 
 class EventCommentActivity : CommentActivity() {
 
@@ -10,12 +13,38 @@ class EventCommentActivity : CommentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        eventPresenter.getPostComments(id, postId)
+
         eventPresenter.getAllComments.observe(this, ::handleGetPostComments)
         eventPresenter.commentPosted.observe(this, ::handleCommentPosted)
+        eventPresenter.getCurrentParentPost.observe(this, ::handleParentPost)
+        eventPresenter.getPostComments(id, postId)
     }
 
     override fun addComment() {
         eventPresenter.addComment(id, comment)
+    }
+
+    private fun handleParentPost(currentPost: Post?) {
+        this.currentParentPost = currentPost
+        binding.progressBar.visibility = View.GONE
+        (binding.comments.adapter as? CommentsListAdapter)?.updateDatas(this.currentParentPost)
+        scrollAfterLayout()
+
+        updateView(commentsList.size == 0)
+    }
+
+    override fun handleGetPostComments(allComments: MutableList<Post>?) {
+        commentsList.clear()
+        allComments?.let { commentsList.addAll(it) }
+
+        allComments?.isEmpty()?.let { updateView(it) }
+
+        if (currentParentPost == null) {
+            eventPresenter.getCurrentParentPost(id,postId)
+            return
+        }
+
+        binding.progressBar.visibility = View.GONE
+        scrollAfterLayout()
     }
 }

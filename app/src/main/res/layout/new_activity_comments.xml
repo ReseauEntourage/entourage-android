@@ -90,44 +90,49 @@
                 android:paddingTop="21dp"
                 android:paddingBottom="70dp" />
 
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/empty_state"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginBottom="80dp"
+            android:background="@color/white"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
             <LinearLayout
-                android:id="@+id/empty_state"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center_vertical"
-                android:layout_marginBottom="70dp"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:visibility="gone">
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="bottom">
 
-                <LinearLayout
+                <ImageView
+                    android:id="@+id/emptyStateLeft"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="bottom">
+                    android:layout_marginRight="13dp"
+                    android:src="@drawable/new_empty_state_comments_left" />
 
-                    <ImageView
-                        android:id="@+id/emptyStateLeft"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="13dp"
-                        android:src="@drawable/new_empty_state_comments_left" />
-
-                    <ImageView
-                        android:id="@+id/emptyStateRight"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="23dp"
-                        android:src="@drawable/new_empty_state_comments_right" />
-                </LinearLayout>
-
-                <TextView
-                    style="@style/left_courant_bold_black"
+                <ImageView
+                    android:id="@+id/emptyStateRight"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="26dp"
-                    android:text="@string/empty_state_comments" />
-
+                    android:layout_marginBottom="23dp"
+                    android:src="@drawable/new_empty_state_comments_right" />
             </LinearLayout>
+
+            <TextView
+                style="@style/left_courant_bold_black"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="26dp"
+                android:text="@string/empty_state_comments" />
+
         </LinearLayout>
 
         <TextView

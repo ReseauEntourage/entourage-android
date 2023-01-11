@@ -107,4 +107,10 @@ interface EventsRequest {
         @Path("event_id") eventId: Int,
         @Body event: CreateEventWrapper
     ): Call<EventWrapper>
+
+    @GET("outings/{event_id}/chat_messages/{post_id}")
+    fun getPostDetail(
+        @Path("event_id") eventId: Int,
+        @Path("post_id") postId: Int,
+    ): Call<PostWrapper>
 }

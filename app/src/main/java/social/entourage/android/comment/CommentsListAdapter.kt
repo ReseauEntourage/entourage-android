@@ -1,5 +1,6 @@
 package social.entourage.android.groups.details.feed
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.view.LayoutInflater
@@ -7,7 +8,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
+import kotlinx.android.synthetic.main.new_comment_detail_post_top.view.*
 import kotlinx.android.synthetic.main.new_comment_item_date.view.*
 import kotlinx.android.synthetic.main.new_comment_item_left.view.*
 import social.entourage.android.EntourageApplication
@@ -23,6 +27,7 @@ enum class CommentsTypes(val code: Int) {
     TYPE_LEFT(0),
     TYPE_RIGHT(1),
     TYPE_DATE(2),
+    TYPE_DETAIL(3)
 }
 
 interface OnItemClickListener {
@@ -35,12 +40,55 @@ class CommentsListAdapter(
     var postAuthorId: Int,
     var isOne2One:Boolean,
     var isConversation:Boolean,
-    var onItemClick: OnItemClickListener
+    var currentParentPost:Post?,
+    var onItemClick: OnItemClickListener,
 ) : RecyclerView.Adapter<CommentsListAdapter.ViewHolder>() {
 
     inner class ViewHolder(val binding: View) :
         RecyclerView.ViewHolder(binding) {
-        fun bind(comment: Post) {
+        @SuppressLint("SetTextI18n")
+        fun bind(comment: Post, isDetailPost: Boolean) {
+
+            if (isDetailPost) {
+                //TODO: parse Detail post
+                binding.comment_post.text = comment.content
+
+                comment.createdTime?.let {
+                    binding.publication_date_post.text = "le ${SimpleDateFormat("dd.mm.yyyy",
+                        Locale.FRANCE
+                    ).format(it)}"
+                }
+
+                comment.imageUrl?.let { avatarURL ->
+                    binding.photo_post.visibility = View.VISIBLE
+                    Glide.with( binding.photo_post.context)
+                        .load(avatarURL)
+                        .transform(CenterCrop(), RoundedCorners(Const.ROUNDED_CORNERS_IMAGES.px))
+                        .placeholder(R.drawable.new_group_illu)
+                        .error(R.drawable.new_group_illu)
+                        .into(binding.photo_post)
+                } ?: run {
+                    binding.photo_post.visibility = View.GONE
+                }
+
+                binding.author_name_post.text = comment.user?.displayName ?: "-"
+
+                comment.user?.avatarURLAsString?.let { avatarURL ->
+                    Glide.with(binding.image_post.context)
+                        .load(avatarURL)
+                        .placeholder(R.drawable.placeholder_user)
+                        .error(R.drawable.placeholder_user)
+                        .circleCrop()
+                        .into(binding.image_post)
+                } ?: run {
+                    Glide.with(binding.image_post.context)
+                        .load(R.drawable.placeholder_user)
+                        .circleCrop()
+                        .into(binding.image_post)
+                }
+
+                return
+            }
 
             if (comment.isDatePostOnly) {
                 binding.publication_day.text = comment.datePostText
@@ -60,10 +108,10 @@ class CommentsListAdapter(
                     ).format(it)
                 }
                 else {
-                    binding.publication_date.text = SimpleDateFormat(
+                    binding.publication_date.text = "le ${SimpleDateFormat(
                         binding.context.getString(R.string.comments_date),
                         Locale.FRANCE
-                    ).format(it)
+                    ).format(it)}"
                 }
 
             } ?: run {
@@ -117,8 +165,14 @@ class CommentsListAdapter(
         }
     }
 
+    fun updateDatas(currentParentPost: Post?) {
+        this.currentParentPost = currentParentPost
+        notifyDataSetChanged()
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val layout = when (viewType) {
+            CommentsTypes.TYPE_DETAIL.code -> R.layout.new_comment_detail_post_top
             CommentsTypes.TYPE_LEFT.code -> R.layout.new_comment_item_left
             CommentsTypes.TYPE_RIGHT.code -> R.layout.new_comment_item_right
             else -> R.layout.new_comment_item_date
@@ -131,18 +185,32 @@ class CommentsListAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(commentsList[position])
+        if (position == 0 && hasCurrentPost()) {
+            holder.bind(currentParentPost!!, true)
+            return
+        }
+        val realPos = if(hasCurrentPost()) position - 1 else position
+        holder.bind(commentsList[realPos], false)
+    }
+
+    private fun hasCurrentPost() : Boolean {
+        return currentParentPost != null
     }
 
     override fun getItemCount(): Int {
-        return commentsList.size
+        val addOne = if (hasCurrentPost()) 1 else 0
+        return commentsList.size + addOne
     }
 
     override fun getItemViewType(position: Int): Int {
 
-        if (commentsList[position].isDatePostOnly) return CommentsTypes.TYPE_DATE.code
+        if (position == 0 && hasCurrentPost()) return CommentsTypes.TYPE_DETAIL.code
 
-        return if (commentsList[position].user?.id?.toInt() == postAuthorId) {
+        val realPos = if(hasCurrentPost()) position - 1 else position
+
+        if (commentsList[realPos].isDatePostOnly) return CommentsTypes.TYPE_DATE.code
+
+        return if (commentsList[realPos].user?.id?.toInt() == postAuthorId) {
             CommentsTypes.TYPE_RIGHT.code
         } else CommentsTypes.TYPE_LEFT.code
     }
