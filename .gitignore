@@ -53,3 +53,6 @@ app/.classpath
 *.aab
 .bitrise.secrets.yml
 .run
+
+#DS STORE
+.DS_Store
