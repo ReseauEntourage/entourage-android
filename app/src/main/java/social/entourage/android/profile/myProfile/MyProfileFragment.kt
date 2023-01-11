@@ -2,6 +2,7 @@ package social.entourage.android.profile.myProfile
 
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -25,7 +26,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class MyProfileFragment : Fragment() {
-    private var _binding: NewFragmentMyProfileBinding? = null
+    private lateinit var _binding: NewFragmentMyProfileBinding
     val binding: NewFragmentMyProfileBinding get() = _binding!!
     private lateinit var user: User
 
@@ -98,9 +99,12 @@ class MyProfileFragment : Fragment() {
                     birthday.content.text = it
                 }else {
                     birthday.root.visibility = View.VISIBLE
-                    birthday.content.hint = "01-03"
+                    birthday.content.hint = getString(R.string.placeholder_birthday_my_profile)
                 }
-
+            }
+            if (user.birthday == null){
+                birthday.root.visibility = View.VISIBLE
+                birthday.content.hint = getString(R.string.placeholder_birthday_my_profile)
             }
             user.email?.let {
                 if (it.isNotEmpty()) {
@@ -108,8 +112,12 @@ class MyProfileFragment : Fragment() {
                     email.content.text = it
                 }else {
                     email.root.visibility = View.VISIBLE
-                    email.content.hint = "email@gmail.com"
+                    email.content.hint = getString(R.string.placeholder_email_my_profile)
                 }
+            }
+            if (user.birthday == null){
+                email.root.visibility = View.VISIBLE
+                email.content.hint = getString(R.string.placeholder_email_my_profile)
             }
             user.address?.displayAddress?.let {
                 if (it.isNotEmpty()) {
@@ -121,8 +129,9 @@ class MyProfileFragment : Fragment() {
                 city.within.text = String.format(getString(R.string.progress_km), it)
             }
             user.stats?.let {
-                contribution.content.text = it.neighborhoodsCount.toString()
-                events.content.text = it.outingsCount.toString()
+                _binding.contribContent.text = it.neighborhoodsCount.toString()
+                _binding.eventContent.text = it.outingsCount.toString()
+
 
             }
             user.roles?.let {

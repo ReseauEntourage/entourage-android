@@ -302,10 +302,10 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="contributions_message">Messages envoyés</string>
     <string name="contributions_message_empty">Pas encore de messages envoyés</string>
     <string name="contributions_event">Événements\n</string>
-    <string name="contribution_event">Événement</string>
+    <string name="contribution_event">Événement\n</string>
     <string name="contributions_event_empty">Participez à votre premier événement</string>
-    <string name="contributions_group">Groupes de voisins</string>
-    <string name="contribution_group">Groupe de voisins</string>
+    <string name="contributions_group">Groupes de\n voisins</string>
+    <string name="contribution_group">Groupe de voisins\n</string>
     <string name="contributions_group_empty">N\'attendez plus pour rejoindre un groupe de voisins !</string>
     <string name="zero">0</string>
     <string name="all_pedago_content">Tout le contenu pédagogique</string>
@@ -371,8 +371,8 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="solidarity_places_map">Carte des lieux solidaires</string>
     <string name="solidarity_places_map_sub">Accueils de jour, bagageries…</string>
     <string name="moderator_subtitle">Votre guide dans l’app</string>
-    <string name="create_encounters">Comment rencontrer d\'autres membres ?</string>
-    <string name="participate_to_events">Pour cela, rien de plus simple ! Participez à des événements et rejoignez des actions. "</string>
+    <string name="create_encounters">Pour créer une belle rencontre, rien de plus simple !</string>
+    <string name="participate_to_events">Votre compteur augmente à chaque participation à un événement et à chaque nouvelle contribution ou demande réalisée.</string>
     <string name="event_date_formatter_to_date">dd/MM/yyyy HH\'h\'mm</string>
     <string name="event_date_formatter_to_string">yyyy-MM-dd HH:mm:ss Z</string>
     <string name="places_numbers">%s places</string>

@@ -12,7 +12,9 @@ import android.widget.ImageButton
 import android.widget.TextView
 import androidx.core.content.res.ResourcesCompat
 import social.entourage.android.R
+import social.entourage.android.api.model.Events
 import timber.log.Timber
+import java.util.*
 
 /**
  * Created by Jr (MJ-DEVS) on 04/05/2020.
@@ -85,4 +87,16 @@ fun TextView.enable() {
 fun Bitmap.rotate(degrees: Float): Bitmap {
     val matrix = Matrix().apply { postRotate(degrees) }
     return Bitmap.createBitmap(this, 0, 0, width, height, matrix, true)
+}
+
+fun Events.calculateIfEventPassed():Boolean{
+
+    val today = Date()
+    val startDate = this.metadata?.startsAt
+    if (startDate != null) {
+        if (startDate.before(today)) {
+            return true
+        }
+    }
+    return false
 }

@@ -42,4 +42,9 @@
     <string name="myContrib">Mes dons</string>
     <string name="myActionEmptyAsk">Actuellement vous n\'avez pas de demandes publiées sur l\'application ;)</string>
     <string name="myActionEmptyContrib">Actuellement vous n\'avez pas de dons publiés sur l\'application ;)</string>
+    <string name="placeholder_birthday_my_profile">01–03</string>
+    <string name="placeholder_email_my_profile">email@gmail.com</string>
+
+
+
 </resources>

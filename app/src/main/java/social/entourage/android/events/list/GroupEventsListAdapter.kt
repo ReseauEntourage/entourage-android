@@ -4,7 +4,9 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
@@ -19,6 +21,7 @@ import social.entourage.android.databinding.NewEventsListHeaderBinding
 import social.entourage.android.events.details.feed.FeedActivity
 import social.entourage.android.api.model.Events
 import social.entourage.android.api.model.Status
+import social.entourage.android.tools.calculateIfEventPassed
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.px
 import java.text.SimpleDateFormat
@@ -80,6 +83,7 @@ class GroupEventsListAdapter(
         childPosition: Int,
         child: Events
     ) {
+
         childViewHolder.binding.layout.setOnClickListener { view ->
             (view.context as? Activity)?.startActivityForResult(
                 Intent(
@@ -135,6 +139,11 @@ class GroupEventsListAdapter(
         childViewHolder.binding.ivCanceled.isVisible = child.status == Status.CLOSED
         childViewHolder.binding.eventName.setTextColor(context.getColor(if (child.status == Status.CLOSED) R.color.grey else R.color.black))
 
+        if(child.calculateIfEventPassed()){
+            childViewHolder.binding.eventName.setTextColor(context.getColor(R.color.grey))
+            childViewHolder.binding.blackLayout.visibility = View.VISIBLE
+        }
+
 /*
         childViewHolder.binding.divider.isVisible =
             sectionItemList?.get(sectionPosition)?.childList?.size?.minus(1) != childPosition
@@ -146,4 +155,6 @@ class GroupEventsListAdapter(
         this.context = context
     }
 }
+
+
 

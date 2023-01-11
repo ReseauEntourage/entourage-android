@@ -121,7 +121,7 @@ class DiscoverEventsListFragment : Fragment() {
     private fun loadEvents() {
         binding.swipeRefresh.isRefreshing = false
         page++
-        eventsPresenter.getAllEvents(page, EVENTS_PER_PAGE, currentFilters.travel_distance(),currentFilters.latitude(),currentFilters.longitude())
+        eventsPresenter.getAllEvents(page, EVENTS_PER_PAGE, currentFilters.travel_distance(),currentFilters.latitude(),currentFilters.longitude(),"future")
     }
 
     private fun handleSwipeRefresh() {

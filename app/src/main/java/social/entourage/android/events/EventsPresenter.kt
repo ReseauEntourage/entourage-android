@@ -1,5 +1,6 @@
 package social.entourage.android.events
 
+import android.util.Log
 import androidx.collection.ArrayMap
 import androidx.lifecycle.MutableLiveData
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -69,8 +70,8 @@ class EventsPresenter {
             })
     }
 
-    fun getAllEvents(page: Int, per: Int,distance:Int?,latitude:Double?,longitude:Double?) {
-        EntourageApplication.get().apiModule.eventsRequest.getAllEvents(page, per,distance,latitude,longitude)
+    fun getAllEvents(page: Int, per: Int,distance:Int?,latitude:Double?,longitude:Double?,period:String) {
+        EntourageApplication.get().apiModule.eventsRequest.getAllEvents(page, per,distance,latitude,longitude,period)
             .enqueue(object : Callback<EventsListWrapper> {
                 override fun onResponse(
                     call: Call<EventsListWrapper>,

@@ -33,6 +33,7 @@ interface EventsRequest {
         @Query("travel_distance") travelDistance: Int?,
         @Query("latitude") latitude: Double?,
         @Query("longitude") longitude: Double?,
+        @Query("period") period:String
     ): Call<EventsListWrapper>
 
     @POST("outings")
