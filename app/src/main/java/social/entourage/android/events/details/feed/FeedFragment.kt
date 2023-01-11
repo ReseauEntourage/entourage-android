@@ -3,6 +3,7 @@ package social.entourage.android.events.details.feed
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -36,6 +37,7 @@ import social.entourage.android.events.details.SettingsModalFragment
 import social.entourage.android.groups.details.feed.GroupMembersPhotosAdapter
 import social.entourage.android.groups.details.members.MembersType
 import social.entourage.android.profile.myProfile.InterestsAdapter
+import social.entourage.android.tools.calculateIfEventPassed
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.utils.*
 import java.text.SimpleDateFormat
@@ -268,6 +270,7 @@ class FeedFragment : Fragment() {
         handleCreatePostButtonClick()
         openGoogleMaps()
         initializePosts()
+
     }
 
     private fun handleBackButton() {
@@ -339,7 +342,9 @@ class FeedFragment : Fragment() {
         super.onResume()
         if (RefreshController.shouldRefreshEventFragment) eventPresenter.getEvent(eventId)
         loadPosts()
+
     }
+
 
     private fun handleAboutButton() {
         binding.more.setOnClickListener {
@@ -360,6 +365,7 @@ class FeedFragment : Fragment() {
             AnalyticsEvents.logEvent(AnalyticsEvents.Event_detail_action_participate)
             if (!event.member) eventPresenter.participate(eventId)
         }
+
     }
 
     private fun handleMembersButton() {
@@ -474,6 +480,9 @@ class FeedFragment : Fragment() {
             rightDrawable,
             null
         )
+        if(event.calculateIfEventPassed()){
+            binding.join.visibility = View.GONE
+        }
     }
 
     private fun onFragmentResult() {

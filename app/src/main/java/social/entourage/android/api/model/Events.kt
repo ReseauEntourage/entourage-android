@@ -73,6 +73,9 @@ data class Events(
     @field:SerializedName("location")
     val location: Address? = null,
 
+    @field:SerializedName("distance")
+    val distance: Double? = null,
+
     @field:SerializedName("id")
     val id: Int? = null,
 
@@ -135,6 +138,7 @@ fun Events.toEventUi(context: Context): EventModel {
         this.recurrence,
         this.neighborhoods,
         this.location,
+        this.distance,
         this.status,
         this.metadata?.previousAt
     )

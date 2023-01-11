@@ -39,6 +39,7 @@ class EventModel(
     val recurrence: Int? = null,
     var neighborhoods: MutableList<GroupEvent>? = mutableListOf(),
     val location: Address? = null,
+    val distance: Double? = null,
     val status: Status? = null,
     val previousAt: Date? = null,
 

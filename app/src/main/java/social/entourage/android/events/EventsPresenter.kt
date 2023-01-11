@@ -59,6 +59,7 @@ class EventsPresenter {
                     call: Call<EventsListWrapper>,
                     response: Response<EventsListWrapper>
                 ) {
+
                     response.body()?.let { allEventsWrapper ->
                         if (allEventsWrapper.allEvents.size < EVENTS_PER_PAGE) isLastPage = true
                         getAllMyEvents.value = allEventsWrapper.allEvents

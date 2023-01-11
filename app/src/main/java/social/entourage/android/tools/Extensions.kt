@@ -92,7 +92,7 @@ fun Bitmap.rotate(degrees: Float): Bitmap {
 fun Events.calculateIfEventPassed():Boolean{
 
     val today = Date()
-    val startDate = this.metadata?.startsAt
+    val startDate = this.metadata?.endsAt
     if (startDate != null) {
         if (startDate.before(today)) {
             return true
