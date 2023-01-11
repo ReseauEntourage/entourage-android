@@ -72,7 +72,7 @@
         android:id="@+id/frameLayout"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/accent"
+        android:background="@color/light_orange_opacity_50"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">

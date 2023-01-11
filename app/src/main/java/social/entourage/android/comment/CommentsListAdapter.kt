@@ -54,7 +54,7 @@ class CommentsListAdapter(
                 binding.comment_post.text = comment.content
 
                 comment.createdTime?.let {
-                    binding.publication_date_post.text = "le ${SimpleDateFormat("dd.mm.yyyy",
+                    binding.publication_date_post.text = "le ${SimpleDateFormat("dd.MM.yyyy",
                         Locale.FRANCE
                     ).format(it)}"
                 }
