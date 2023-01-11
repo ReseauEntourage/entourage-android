@@ -32,6 +32,7 @@ class CreateGroupStepTwoFragment : Fragment() {
         viewModel.resetValues()
         MetaDataRepository.metaData.observe(requireActivity(), ::handleMetaData)
         initializeInterests()
+        binding.layout.error.root.visibility = View.GONE
     }
 
     override fun onCreateView(

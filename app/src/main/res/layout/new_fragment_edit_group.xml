@@ -46,6 +46,7 @@
                 <include
                     android:id="@+id/stepTwo"
                     layout="@layout/new_edit_profile_step_two"
+                    app:title="@{@string/choose_categories_group}"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_marginTop="40dp"
