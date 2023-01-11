@@ -17,6 +17,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import social.entourage.android.R
 import social.entourage.android.databinding.NewActivityCreatePostBinding
 import social.entourage.android.groups.details.feed.FeedActivity
+import social.entourage.android.base.ChoosePhotoModalFragment
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.Utils
 import social.entourage.android.tools.utils.px

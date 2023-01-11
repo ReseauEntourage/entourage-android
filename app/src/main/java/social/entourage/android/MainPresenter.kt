@@ -2,10 +2,7 @@ package social.entourage.android
 
 import android.content.Intent
 import android.location.Location
-import android.net.Uri
-import android.widget.Button
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.collection.ArrayMap
 import okhttp3.ResponseBody
 import retrofit2.Call
@@ -57,28 +54,6 @@ class MainPresenter(private val activity: MainActivity) {
     // ----------------------------------
     // DISPLAY SCREENS METHODS
     // ----------------------------------
-    private fun displayAppUpdateDialog() {
-        val builder = AlertDialog.Builder(activity)
-        val dialog = builder.setView(R.layout.layout_dialog_version_update)
-            .setCancelable(false)
-            .create()
-        dialog.show()
-        val updateButton = dialog.findViewById<Button>(R.id.update_dialog_button)
-        updateButton?.setOnClickListener {
-            try {
-                val uri = Uri.parse(activity.getString(R.string.market_url, activity.packageName))
-                activity.startActivity(Intent(Intent.ACTION_VIEW, uri))
-            } catch (e: Exception) {
-                Toast.makeText(
-                    activity,
-                    R.string.error_google_play_store_not_installed,
-                    Toast.LENGTH_SHORT
-                ).show()
-                dialog.cancel()
-            }
-        }
-    }
-
     fun displayTutorial(forced: Boolean) {
         if (!forced && !Configuration.showTutorial()) return
         //Configuration.INSTANCE.showTutorial() is always false
@@ -106,7 +81,7 @@ class MainPresenter(private val activity: MainActivity) {
     // ----------------------------------
     // API CALLS METHODS
     // ----------------------------------
-    fun checkForUpdate() {
+    fun checkForUpdate(mainActivity: MainActivity) {
         if (checkForUpdate) {
             val call = applicationInfoRequest.checkForUpdate()
             call.enqueue(object : Callback<ResponseBody> {
@@ -116,7 +91,7 @@ class MainPresenter(private val activity: MainActivity) {
                 ) {
                     if (response.code() == 426) {
                         if (!BuildConfig.DEBUG) {
-                            displayAppUpdateDialog()
+                            mainActivity.displayAppUpdateDialog()
                         }
                     }
                 }

@@ -15,12 +15,10 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import social.entourage.android.R
 import social.entourage.android.databinding.NewFragmentCreateActionStepOneBinding
 import social.entourage.android.groups.choosePhoto.ChooseGalleryPhotoModalFragment
-import social.entourage.android.groups.choosePhoto.ImagesType
-import social.entourage.android.posts.ChoosePhotoModalFragment
+import social.entourage.android.base.ChoosePhotoModalFragment
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.px
 import social.entourage.android.tools.log.AnalyticsEvents
-import timber.log.Timber
 
 class CreateActionStepOneFragment : Fragment() {
     private var _binding: NewFragmentCreateActionStepOneBinding? = null

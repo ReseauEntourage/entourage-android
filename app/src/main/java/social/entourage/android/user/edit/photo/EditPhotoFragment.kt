@@ -15,11 +15,11 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.FileProvider
 import androidx.core.content.PermissionChecker
-import androidx.lifecycle.MutableLiveData
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.fragment_onboarding_photo.*
 import social.entourage.android.R
 import social.entourage.android.base.BaseDialogFragment
+import social.entourage.android.onboarding.onboard.OnboardingEditPhotoFragment
 import social.entourage.android.tools.log.AnalyticsEvents
 import timber.log.Timber
 import java.io.File
@@ -27,21 +27,16 @@ import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
 
-private const val ARG_FIRSTNAME = "firstname"
-
-open class OnboardingPhotoFragment : BaseDialogFragment(), PhotoEditDelegate {
-
+open class EditPhotoFragment : BaseDialogFragment(), PhotoEditInterface {
     private val readMediaPermission: String = if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) Manifest.permission.READ_EXTERNAL_STORAGE else Manifest.permission.READ_MEDIA_IMAGES
     private var pickedImageUri: Uri? = null
-    private var pickedImageEditedUri: Uri? = null
+    protected var pickedImageEditedUri: Uri? = null
     private var mCurrentPhotoPath: String? = null
     private var photoSource = 0
 
-    private var firstname: String? = null
-
-    private var callback: OnboardingCallback? = null
-
-    protected var isFromProfile = false
+    protected var analyticsEventView: String? = null
+    protected var analyticsEventActionGallery: String? = null
+    protected var analyticsEventActionPhoto: String? = null
 
     // Create the File where the photo should go
     var photoFileUri: Uri? = null
@@ -124,13 +119,6 @@ open class OnboardingPhotoFragment : BaseDialogFragment(), PhotoEditDelegate {
     // Lifecycle
     //**********//**********//**********
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            firstname = it.getString(ARG_FIRSTNAME)
-        }
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -141,13 +129,7 @@ open class OnboardingPhotoFragment : BaseDialogFragment(), PhotoEditDelegate {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        callback?.updateButtonNext(false)
-
-        if (isFromProfile) {
-            AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_VIEW_PROFILE_CHOOSE_PHOTO)
-        } else {
-            AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_VIEW_ONBOARDING_CHOOSE_PHOTO)
-        }
+        analyticsEventView?.let { AnalyticsEvents.logEvent(it)}
 
         setupViews()
 
@@ -177,16 +159,6 @@ open class OnboardingPhotoFragment : BaseDialogFragment(), PhotoEditDelegate {
         super.onSaveInstanceState(outState)
         // Save the photo path
         outState.putString(KEY_PHOTO_PATH, mCurrentPhotoPath)
-    }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        callback = (activity as? OnboardingCallback)
-    }
-
-    override fun onDetach() {
-        super.onDetach()
-        callback = null
     }
 
     //**********//**********//**********
@@ -222,20 +194,12 @@ open class OnboardingPhotoFragment : BaseDialogFragment(), PhotoEditDelegate {
     }
 
     open fun showChoosePhotoActivity() {
-        if (isFromProfile) {
-            AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ACTION_PROFILE_UPLOAD_PHOTO)
-        } else {
-            AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ACTION_ONBOARDING_UPLOAD_PHOTO)
-        }
-        getContent.launch("image/*")
+        analyticsEventActionGallery?.let {AnalyticsEvents.logEvent(it)}
+        getContent.launch("image/jpeg")
     }
 
     open fun showTakePhotoActivity() {
-        if (isFromProfile) {
-            AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ACTION_PROFILE_TAKE_PHOTO)
-        } else {
-            AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ACTION_ONBOARDING_TAKE_PHOTO)
-        }
+        analyticsEventActionPhoto?.let{AnalyticsEvents.logEvent(it)}
 
         // Ensure that there's a camera activity to handle the intent
         try {
@@ -287,7 +251,7 @@ open class OnboardingPhotoFragment : BaseDialogFragment(), PhotoEditDelegate {
     }
 
     //**********//**********//**********
-    // PhotoEditDelegate
+    // PhotoEditInterface
     //**********//**********//**********
 
     override fun onPhotoEdited(photoURI: Uri?, photoSource: Int) {
@@ -307,8 +271,6 @@ open class OnboardingPhotoFragment : BaseDialogFragment(), PhotoEditDelegate {
                     .into(it)
             }
         }
-
-        callback?.updateUserPhoto(pickedImageEditedUri)
     }
 
     //**********//**********//**********
@@ -320,6 +282,7 @@ open class OnboardingPhotoFragment : BaseDialogFragment(), PhotoEditDelegate {
         pickedImageUri = null
     }
 
+
     //**********//**********//**********
     // Companion
     //**********//**********//**********
@@ -328,30 +291,9 @@ open class OnboardingPhotoFragment : BaseDialogFragment(), PhotoEditDelegate {
         // ----------------------------------
         // CONSTANTS
         // ----------------------------------
-        const val TAG = "social.entourage.android.onboarding.OnboardingPhotoFragment"
         const val PICK_IMAGE_REQUEST = 1
         const val TAKE_PHOTO_REQUEST = 2
 
         const val KEY_PHOTO_PATH = "social.entourage.android.photo_path"
-
-        fun newInstance(firstName: String) =
-            OnboardingPhotoFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_FIRSTNAME, firstName)
-                }
-            }
     }
-}
-
-//**********//**********//**********
-// Interface
-//**********//**********//**********
-interface PhotoEditDelegate {
-    fun onPhotoEdited(photoURI: Uri?, photoSource: Int)
-}
-
-interface OnboardingCallback {
-    val errorMessage: MutableLiveData<String>
-    fun updateUserPhoto(imageUri: Uri?)
-    fun updateButtonNext(isValid: Boolean)
 }

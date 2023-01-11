@@ -13,7 +13,7 @@ import social.entourage.android.databinding.FragmentOnboardingPhotoBinding
 import social.entourage.android.profile.editProfile.EditProfileCallback
 import social.entourage.android.tools.log.AnalyticsEvents
 
-class ChoosePhotoFragment : OnboardingPhotoFragment() {
+class ChooseProfilePhotoFragment : EditPhotoFragment() {
 
     private var mListener: PhotoChooseInterface? = null
     private var _binding: FragmentOnboardingPhotoBinding? = null
@@ -34,7 +34,6 @@ class ChoosePhotoFragment : OnboardingPhotoFragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        isFromProfile = true
         super.onViewCreated(view, savedInstanceState)
         if (context is PhotoChooseInterface) {
             mListener = requireContext() as PhotoChooseInterface
@@ -77,7 +76,7 @@ class ChoosePhotoFragment : OnboardingPhotoFragment() {
     }
 
     //**********//**********//**********
-    // PhotoEditDelegate
+    // PhotoEditInterface
     //**********//**********//**********
 
     override fun onPhotoEdited(photoURI: Uri?, photoSource: Int) {
@@ -88,13 +87,17 @@ class ChoosePhotoFragment : OnboardingPhotoFragment() {
         dismissAllowingStateLoss()
     }
 
+    init {
+        analyticsEventView = AnalyticsEvents.EVENT_VIEW_PROFILE_CHOOSE_PHOTO
+        analyticsEventActionGallery = AnalyticsEvents.EVENT_ACTION_PROFILE_UPLOAD_PHOTO
+        analyticsEventActionPhoto = AnalyticsEvents.EVENT_ACTION_PROFILE_TAKE_PHOTO
+    }
+
     //**********//**********//**********
     // Companion
     //**********//**********//**********
 
     companion object {
-        const val TAG = "social.entourage.android.user.edit.photo.UserChoosePhotoFragment"
-
-        fun newInstance() = ChoosePhotoFragment()
+        const val TAG = "social.entourage.android.user.edit.photo.ChooseProfilePhotoFragment"
     }
 }

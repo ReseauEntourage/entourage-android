@@ -1,7 +1,11 @@
 package social.entourage.android
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.widget.Button
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.core.app.NotificationManagerCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
@@ -50,8 +54,30 @@ class MainActivity : BaseSecuredActivity() {
     }
 
     override fun onStart() {
-        presenter.checkForUpdate()
+        presenter.checkForUpdate(this)
         super.onStart()
+    }
+
+    fun displayAppUpdateDialog() {
+        val builder = AlertDialog.Builder(this)
+        val dialog = builder.setView(R.layout.layout_dialog_version_update)
+            .setCancelable(false)
+            .create()
+        dialog.show()
+        val updateButton = dialog.findViewById<Button>(R.id.update_dialog_button)
+        updateButton?.setOnClickListener {
+            try {
+                val uri = Uri.parse(getString(R.string.market_url, packageName))
+                startActivity(Intent(Intent.ACTION_VIEW, uri))
+            } catch (e: Exception) {
+                Toast.makeText(
+                    this,
+                    R.string.error_google_play_store_not_installed,
+                    Toast.LENGTH_SHORT
+                ).show()
+                dialog.cancel()
+            }
+        }
     }
 
     private fun handleUpdateBadgeResponse(unreadMessages: UnreadMessages) {

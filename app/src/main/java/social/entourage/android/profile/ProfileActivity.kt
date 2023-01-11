@@ -7,7 +7,7 @@ import social.entourage.android.R
 import social.entourage.android.base.BaseSecuredActivity
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.user.AvatarUploadView
-import social.entourage.android.user.edit.photo.ChoosePhotoFragment
+import social.entourage.android.user.edit.photo.ChooseProfilePhotoFragment
 
 class ProfileActivity : BaseSecuredActivity(), AvatarUploadView {
 
@@ -31,8 +31,8 @@ class ProfileActivity : BaseSecuredActivity(), AvatarUploadView {
         if (isSuccess) {
             val photoChooseSourceFragment =
                 supportFragmentManager.findFragmentByTag(
-                    ChoosePhotoFragment.TAG
-                ) as ChoosePhotoFragment?
+                    ChooseProfilePhotoFragment.TAG
+                ) as ChooseProfilePhotoFragment?
             photoChooseSourceFragment?.dismiss()
         } else {
             showErrorToast()

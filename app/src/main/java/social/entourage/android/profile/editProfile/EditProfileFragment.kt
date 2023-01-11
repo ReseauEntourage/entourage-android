@@ -27,7 +27,7 @@ import social.entourage.android.user.AvatarUpdatePresenter
 import social.entourage.android.user.AvatarUploadPresenter
 import social.entourage.android.user.AvatarUploadRepository
 import social.entourage.android.user.AvatarUploadView
-import social.entourage.android.user.edit.photo.ChoosePhotoFragment
+import social.entourage.android.user.edit.photo.ChooseProfilePhotoFragment
 import social.entourage.android.user.edit.photo.PhotoChooseInterface
 import social.entourage.android.user.edit.place.UserEditActionZoneFragment
 import java.io.File
@@ -139,9 +139,9 @@ class EditProfileFragment : Fragment(), EditProfileCallback,
 
     private fun onEditImage() {
         binding.editImage.setOnClickListener {
-            val photoFragment = ChoosePhotoFragment.newInstance()
+            val photoFragment = ChooseProfilePhotoFragment()
             photoFragment.editProfileCallback = this
-            photoFragment.show(parentFragmentManager, ChoosePhotoFragment.TAG)
+            photoFragment.show(parentFragmentManager, ChooseProfilePhotoFragment.TAG)
         }
     }
 

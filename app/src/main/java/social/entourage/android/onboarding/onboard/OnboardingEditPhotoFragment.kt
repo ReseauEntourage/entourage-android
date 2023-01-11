@@ -1,4 +1,5 @@
-package social.entourage.android.user.edit.photo
+package social.entourage.android.onboarding.onboard
+
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.PorterDuff
@@ -16,18 +17,16 @@ import kotlinx.android.synthetic.main.fragment_onboarding_edit_photo.*
 import social.entourage.android.R
 import social.entourage.android.tools.utils.Utils
 import social.entourage.android.tools.rotate
+import social.entourage.android.user.edit.photo.PhotoEditInterface
 import timber.log.Timber
 import java.io.File
 import java.io.IOException
-
-private const val PHOTO_PARAM = "social.entourage.android.photo_param"
-private const val PHOTO_SOURCE = "social.entourage.android.photo_source"
 
 class OnboardingEditPhotoFragment : DialogFragment() {
     private val ROTATE_DEGREES_STEP = -90f
     private var currentAngle = 0f
 
-    private var mListener: PhotoEditDelegate? = null
+    private var mListener: PhotoEditInterface? = null
     private var photoUri: Uri? = null
     private var photoSource = 0
     private var photoFile: File? = null
@@ -129,7 +128,11 @@ class OnboardingEditPhotoFragment : DialogFragment() {
         ui_edit_photo_validate?.setOnClickListener {
             ui_edit_photo_validate?.isEnabled = false
             ui_photo_edit_progressBar?.visibility = View.VISIBLE
-            crop_view?.crop()
+            try {
+                crop_view?.crop()
+            } catch(e: Exception) {
+                Timber.e(e)
+            }
         }
     }
 
@@ -156,7 +159,7 @@ class OnboardingEditPhotoFragment : DialogFragment() {
         dismissAllowingStateLoss()
     }
 
-    fun setCallback(callback: PhotoEditDelegate) {
+    fun setCallback(callback: PhotoEditInterface) {
         mListener = callback
     }
 
@@ -166,6 +169,8 @@ class OnboardingEditPhotoFragment : DialogFragment() {
 
     companion object {
         const val TAG = "social.entourage.android.onboarding.OnboardingEditPhotoFragment"
+        private const val PHOTO_PARAM = "social.entourage.android.photo_param"
+        private const val PHOTO_SOURCE = "social.entourage.android.photo_source"
 
         fun newInstance(photoUri: Uri?, photoSource: Int) =
             OnboardingEditPhotoFragment().apply {

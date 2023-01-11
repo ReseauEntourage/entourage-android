@@ -348,7 +348,7 @@ class HomeExpertTest {
         clickProfileButton()
         editProfileButton.perform(click())
 
-        //Test go to ChoosePhotoFragment
+        //Test go to ChooseProfilePhotoFragment
         val editProfilePictureButton = onView(allOf(withId(R.id.user_photo_button), isDisplayed()))
         editProfilePictureButton.perform(click())
         val takePhotoButton = onView(allOf(withId(R.id.take_picture), isDisplayed()))

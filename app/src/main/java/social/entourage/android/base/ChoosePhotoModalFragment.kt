@@ -1,4 +1,4 @@
-package social.entourage.android.posts
+package social.entourage.android.base
 
 import android.Manifest
 import android.content.ActivityNotFoundException
@@ -23,6 +23,7 @@ import social.entourage.android.R
 import social.entourage.android.databinding.NewFragmentChoosePhotoModalBinding
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.log.AnalyticsEvents
+import timber.log.Timber
 import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
@@ -163,7 +164,11 @@ class ChoosePhotoModalFragment : BottomSheetDialogFragment() {
         binding.validatePicture.root.setOnClickListener {
             AnalyticsEvents.logEvent(
                 AnalyticsEvents.ACTION_GROUP_FEED_NEW_POST_VALIDATE_PIC)
-            binding.cropView.crop()
+            try {
+                binding.cropView.crop()
+            } catch(e: Exception) {
+                Timber.e(e)
+            }
             setFragmentResult(
                 Const.REQUEST_KEY_CHOOSE_PHOTO,
                 bundleOf(
@@ -232,16 +237,17 @@ class ChoosePhotoModalFragment : BottomSheetDialogFragment() {
     private fun pickPhoto() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
             showChoosePhotoActivity()
-        }
-        activity?.let {
-            if (hasPermission(
-                    activity as Context,
-                    readMediaPermission
-                )
-            ) {
-                showChoosePhotoActivity()
-            } else {
-                permReqChoosePhotoLauncher.launch(readMediaPermission)
+        } else {
+            activity?.let {
+                if (hasPermission(
+                        activity as Context,
+                        readMediaPermission
+                    )
+                ) {
+                    showChoosePhotoActivity()
+                } else {
+                    permReqChoosePhotoLauncher.launch(readMediaPermission)
+                }
             }
         }
     }
