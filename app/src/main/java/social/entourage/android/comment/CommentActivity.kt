@@ -23,6 +23,7 @@ import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.Utils
 import social.entourage.android.tools.utils.focusAndShowKeyboard
 import social.entourage.android.tools.utils.scrollToPositionSmooth
+import social.entourage.android.tools.view.WebViewFragment
 import java.util.*
 
 abstract class CommentActivity : AppCompatActivity() {
@@ -136,6 +137,18 @@ abstract class CommentActivity : AppCompatActivity() {
 
                 override fun onCommentReport(commentId: Int?) {
                     commentId?.let { handleReport(it, ReportTypes.REPORT_COMMENT) }
+                }
+
+                override fun onShowWeb(url: String) {
+                    var urlNew = url
+                    if (url.contains("http:")) {
+                        urlNew = url.replace("http","https")
+                    }
+                    if (!url.contains("http:") && !url.contains("https:")) {
+                        urlNew = "https://$url"
+                    }
+                    WebViewFragment.newInstance(urlNew, 0, true)
+                        .show(supportFragmentManager, WebViewFragment.TAG)
                 }
             })
         }

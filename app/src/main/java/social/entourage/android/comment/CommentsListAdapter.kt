@@ -11,6 +11,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
+import io.github.armcha.autolink.MODE_URL
 import kotlinx.android.synthetic.main.new_comment_detail_post_top.view.*
 import kotlinx.android.synthetic.main.new_comment_item_date.view.*
 import kotlinx.android.synthetic.main.new_comment_item_left.view.*
@@ -33,6 +34,7 @@ enum class CommentsTypes(val code: Int) {
 interface OnItemClickListener {
     fun onItemClick(comment: Post)
     fun onCommentReport(commentId: Int?)
+    fun onShowWeb(url:String)
 }
 
 class CommentsListAdapter(
@@ -93,6 +95,14 @@ class CommentsListAdapter(
             if (comment.isDatePostOnly) {
                 binding.publication_day.text = comment.datePostText
                 return
+            }
+
+            binding.comment.addAutoLinkMode(
+                MODE_URL
+            )
+
+            binding.comment.onAutoLinkClick { item ->
+                onItemClick.onShowWeb(item.originalText)
             }
 
             binding.comment.text = comment.content
