@@ -41,6 +41,7 @@ abstract class CommentActivity : AppCompatActivity() {
 
     protected var isOne2One = false
     protected var isConversation = false
+    protected var isFromNotif = false
     var currentParentPost:Post? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,6 +56,7 @@ abstract class CommentActivity : AppCompatActivity() {
         isMember = intent.getBooleanExtra(Const.IS_MEMBER, false)
         titleName = intent.getStringExtra(Const.NAME)
         isOne2One = intent.getBooleanExtra(Const.IS_CONVERSATION_1TO1, false)
+        isFromNotif = intent.getBooleanExtra(Const.IS_FROM_NOTIF, false)
         isConversation = intent.getBooleanExtra(Const.IS_CONVERSATION, false)
         shouldOpenKeyboard = intent.getBooleanExtra(Const.SHOULD_OPEN_KEYBOARD, false)
         initializeComments()
@@ -112,7 +114,7 @@ abstract class CommentActivity : AppCompatActivity() {
             binding.comments.visibility = View.VISIBLE
             binding.comments.adapter?.notifyDataSetChanged()
         }
-        if(postId != Const.DEFAULT_VALUE){
+        if (isFromNotif){
             isMember = true
         }
         if (isMember) {
