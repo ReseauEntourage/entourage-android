@@ -50,7 +50,9 @@ class ActionDetailActivity : AppCompatActivity(), OnDetailActionReceive {
         navGraph.setStartDestination(R.id.action_detail)
 
         navHostFragment.navController.setGraph(navGraph,bundle)
-        setSettingsIcon(title)
+
+        val _title = if (isDemand) getString(R.string.action_name_Demand) else getString(R.string.action_name_Contrib)
+        setSettingsIcon(_title)
 
         binding.header.iconBack.setOnClickListener {
             finish()

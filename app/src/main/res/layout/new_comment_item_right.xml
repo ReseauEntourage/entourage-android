@@ -18,7 +18,7 @@
         app:layout_constraintEnd_toStartOf="@id/comment"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
+    <io.github.armcha.autolink.AutoLinkTextView
         android:id="@+id/comment"
         style="@style/left_courant_black"
         android:layout_width="0dp"

@@ -16,7 +16,7 @@
         app:layout_constraintTop_toTopOf="@+id/comment"
         tools:src="@drawable/new_illu_header_group" />
 
-    <TextView
+    <io.github.armcha.autolink.AutoLinkTextView
         android:id="@+id/comment"
         style="@style/left_courant_black"
         android:layout_width="0dp"

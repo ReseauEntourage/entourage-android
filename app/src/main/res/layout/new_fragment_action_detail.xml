@@ -35,10 +35,20 @@
                         android:layout_marginRight="28dp"
                         android:orientation="vertical">
 
+                        <TextView
+                            android:id="@+id/ui_title_main"
+                            style="@style/left_courant_bold_black"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="16dp"
+                            android:layout_marginBottom="8dp"
+                            android:text="Title Main" />
+
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:id="@+id/layout_top_cancel"
                             android:layout_width="match_parent"
                             android:layout_height="30dp"
+                            android:layout_marginTop="16dp"
                             android:background="@drawable/bg_button_rounded_pre_onboard_orange_plain"
                             android:backgroundTint="@color/light_orange">
 

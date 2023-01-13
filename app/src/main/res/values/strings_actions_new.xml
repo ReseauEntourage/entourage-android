@@ -63,6 +63,8 @@
 
     <string name="action_name_demand">demande</string>
     <string name="action_name_contrib">contribution</string>
+    <string name="action_name_Demand">Demande</string>
+    <string name="action_name_Contrib">Contribution</string>
 
     <!-- pop back create-->
     <string name="back_create_action_title">Attention</string>

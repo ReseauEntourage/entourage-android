@@ -118,7 +118,8 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
             if (it.isCancel()) {
                 mCallback?.hideIconReport()
             }
-            mCallback?.updateTitle(action.title)
+            val _title = if (isDemand) getString(R.string.action_name_Demand) else getString(R.string.action_name_Contrib)
+            mCallback?.updateTitle(_title)
         } ?: kotlin.run {
             mCallback?.hideIconReport()
             showCancelView()
@@ -233,6 +234,7 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
 
     private fun updateViews() {
         action?.let {
+            binding.uiTitleMain.text = it.title
             if (it.isCancel()) {
                 showCancelView()
             }
