@@ -409,7 +409,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="event_limited_places_title">Évènement à places limitées</string>
     <string name="event_limited_places_subtitle">Attention, cet événement est à places limitées, votre inscription n’est pas garantie. L’administrateur de l’évènement reviendra vers vous pour vous confirmer la réservation de votre place.</string>
     <string name="event_add_to_calendar_title">Votre inscription est prise en compte ! </string>
-    <string name="event_add_to_calendar_subtitle">Voulez-vous ajouter cet énévement à votre agenda personnel ?</string>
+    <string name="event_add_to_calendar_subtitle">Voulez-vous ajouter cet événement à votre agenda personnel ?</string>
     <string name="add">Ajouter</string>
     <string name="add_oui">Oui</string>
     <string name="event_places">Nombre de places</string>

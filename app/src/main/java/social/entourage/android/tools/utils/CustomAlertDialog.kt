@@ -112,6 +112,12 @@ object CustomAlertDialog {
         val alertDialog = builder.create()
         customDialog.findViewById<TextView>(R.id.title).text = title
         customDialog.findViewById<TextView>(R.id.content).text = content
+        with(customDialog.findViewById<TextView>(R.id.no)) {
+            text = noAction
+            setOnClickListener {
+                alertDialog.dismiss()
+            }
+        }
         with(customDialog.findViewById<TextView>(R.id.yes)) {
             text = action
             setOnClickListener {
@@ -119,12 +125,7 @@ object CustomAlertDialog {
                 alertDialog.dismiss()
             }
         }
-        with(customDialog.findViewById<TextView>(R.id.no)) {
-            text = noAction
-            setOnClickListener {
-                alertDialog.dismiss()
-            }
-        }
+
 
         alertDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         alertDialog.show()

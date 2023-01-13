@@ -112,6 +112,9 @@ abstract class CommentActivity : AppCompatActivity() {
             binding.comments.visibility = View.VISIBLE
             binding.comments.adapter?.notifyDataSetChanged()
         }
+        if(postId != Const.DEFAULT_VALUE){
+            isMember = true
+        }
         if (isMember) {
             binding.shouldBeMember.visibility = View.GONE
             binding.postComment.visibility = View.VISIBLE
