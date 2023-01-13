@@ -33,9 +33,13 @@ class OnboardingEndActivity : AppCompatActivity() {
                 }
                 val sharedPreferences = EntourageApplication.get().sharedPreferences
                 sharedPreferences.edit()
-                    .putBoolean(EntourageApplication.KEY_IS_FROM_ONBOARDING, true).apply()
+                    .putBoolean(EntourageApplication.KEY_IS_FROM_ONBOARDING, true)
+                    .apply()
                 sharedPreferences.edit()
                     .putBoolean(EntourageApplication.KEY_ONBOARDING_SHOW_POP_FIRSTLOGIN, false)
+                    .apply()
+                sharedPreferences.edit()
+                    .putBoolean(EntourageApplication.KEY_MIGRATION_V7_OK,true)
                     .apply()
                 startActivity(Intent(this, MainActivity::class.java))
                 finish()
