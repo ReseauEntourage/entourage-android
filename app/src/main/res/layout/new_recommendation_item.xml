@@ -30,7 +30,7 @@
 
     <TextView
         android:id="@+id/title"
-        style="@style/left_courant_bold_black"
+        style="@style/left_courant_black"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"

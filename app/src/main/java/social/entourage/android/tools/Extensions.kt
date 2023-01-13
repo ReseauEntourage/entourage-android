@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Matrix
 import android.graphics.PorterDuff
+import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
@@ -12,9 +13,12 @@ import android.widget.ImageButton
 import android.widget.TextView
 import androidx.core.content.res.ResourcesCompat
 import social.entourage.android.R
+import social.entourage.android.api.model.Action
 import social.entourage.android.api.model.Events
+import social.entourage.android.events.EventModel
 import timber.log.Timber
 import java.util.*
+import kotlin.math.roundToInt
 
 /**
  * Created by Jr (MJ-DEVS) on 04/05/2020.
@@ -90,13 +94,53 @@ fun Bitmap.rotate(degrees: Float): Bitmap {
 }
 
 fun Events.calculateIfEventPassed():Boolean{
-
     val today = Date()
+    val yesterday = Date(today.time - 86400000)
     val startDate = this.metadata?.endsAt
     if (startDate != null) {
-        if (startDate.before(today)) {
+        if (startDate.before(yesterday)) {
             return true
         }
     }
     return false
+}
+
+fun EventModel.displayDistance(context:Context):String{
+    val distance = this.distance
+    if (distance != null) {
+        if (distance > 0){
+            val formattedString = context.getString(R.string.at_km_from_me, distance.roundToInt())
+            return formattedString
+        }else{
+            val distInMeter = distance * 1000
+            if (distInMeter > 100){
+                val formattedString = context.getString(R.string.at_meter_from_me, distInMeter.roundToInt())
+                return formattedString
+            }else{
+                val formattedString = context.getString(R.string.inf_hundred_meter)
+                return formattedString
+            }
+        }
+    }
+    return ""
+}
+
+fun Action.displayDistance(context:Context):String{
+        val distance = this.distance
+        if (distance != null) {
+            if (distance > 1){
+                val formattedString = context.getString(R.string.at_km_from_me, distance.roundToInt())
+                return formattedString
+            }else{
+                val distInMeter:Double = distance * 1000
+                if (distInMeter > 100){
+                    val formattedString = context.getString(R.string.at_meter_from_me, distInMeter.roundToInt())
+                    return formattedString
+                }else{
+                    val formattedString = context.getString(R.string.inf_hundred_meter)
+                    return formattedString
+                }
+            }
+        }
+    return ""
 }

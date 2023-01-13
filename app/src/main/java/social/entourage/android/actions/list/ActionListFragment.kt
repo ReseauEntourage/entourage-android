@@ -57,7 +57,7 @@ class ActionListFragment : Fragment() {
 
         myId = EntourageApplication.me(activity)?.id
         actionAdapter =
-            ActionsListAdapter(allActions,myId, isContrib)
+            ActionsListAdapter(allActions,myId, isContrib, requireContext())
         initializeEmptyState()
         loadActions()
         actionsPresenter.getAllActions.observe(viewLifecycleOwner, ::handleResponseGetDemands)

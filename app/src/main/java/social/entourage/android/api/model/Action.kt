@@ -37,6 +37,9 @@ data class Action(
     @field:SerializedName("location")
     var location: Address? = null,
 
+    @field:SerializedName("distance")
+    var distance: Double? = null,
+
     @field:SerializedName("metadata")
     var metadata: ActionMetadata? = null,
 

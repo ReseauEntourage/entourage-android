@@ -81,6 +81,12 @@ class ChoosePhotoModalFragment : BottomSheetDialogFragment() {
         handleImportPictureButton()
         handleCloseButton()
         handleValidateButton()
+        setStyle()
+    }
+
+    fun setStyle(){
+        setStyle(STYLE_NORMAL, R.style.CustomBottomSheetDialogTheme)
+        setCancelable(false)
     }
 
     private fun handleImportPictureButton() {

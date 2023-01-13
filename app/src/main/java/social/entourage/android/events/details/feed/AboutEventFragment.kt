@@ -38,11 +38,9 @@ import social.entourage.android.groups.details.members.MembersType
 import social.entourage.android.api.model.Status
 import social.entourage.android.api.model.Tags
 import social.entourage.android.profile.myProfile.InterestsAdapter
-import social.entourage.android.tools.utils.Const
-import social.entourage.android.tools.utils.CustomAlertDialog
-import social.entourage.android.tools.utils.Utils
-import social.entourage.android.tools.utils.underline
+import social.entourage.android.tools.displayDistance
 import social.entourage.android.tools.log.AnalyticsEvents
+import social.entourage.android.tools.utils.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -99,9 +97,11 @@ class AboutEventFragment : Fragment(), OnMapReadyCallback {
             )
 
             (if (event?.online == true) event?.eventUrl else event?.metadata?.displayAddress)?.let {
-                binding.location.content.underline(
-                    it
-                )
+                event?.let { it1 ->
+                    binding.location.content.underlineWithDistanceUnder(
+                        it, it1.displayDistance(requireContext()),requireContext()
+                    )
+                }
             }
             binding.placesLimit.root.isVisible = event?.metadata?.placeLimit != null
             binding.placesLimit.content.text =

@@ -97,6 +97,39 @@ object CustomAlertDialog {
         alertDialog.show()
     }
 
+    fun showWithNoDefined(
+        context: Context,
+        title: String,
+        content: String,
+        action: String,
+        noAction:String,
+        onYes: () -> (Unit) = {},
+    ) {
+        val layoutInflater = LayoutInflater.from(context)
+        val customDialog: View = layoutInflater.inflate(R.layout.new_custom_alert_dialog, null)
+        val builder = AlertDialog.Builder(context)
+        builder.setView(customDialog)
+        val alertDialog = builder.create()
+        customDialog.findViewById<TextView>(R.id.title).text = title
+        customDialog.findViewById<TextView>(R.id.content).text = content
+        with(customDialog.findViewById<TextView>(R.id.yes)) {
+            text = action
+            setOnClickListener {
+                onYes()
+                alertDialog.dismiss()
+            }
+        }
+        with(customDialog.findViewById<TextView>(R.id.no)) {
+            text = noAction
+            setOnClickListener {
+                alertDialog.dismiss()
+            }
+        }
+
+        alertDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        alertDialog.show()
+    }
+
     fun showButtonClickedWithCrossClose(
         context: Context,
         title: String,

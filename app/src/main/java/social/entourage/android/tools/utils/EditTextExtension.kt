@@ -4,11 +4,16 @@ import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Context
 import android.text.SpannableString
+import android.text.Spanned
+import android.text.style.ForegroundColorSpan
+import android.text.style.StyleSpan
+import android.text.style.TextAppearanceSpan
 import android.text.style.UnderlineSpan
 import android.view.ViewTreeObserver
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.TextView
+import social.entourage.android.R
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -113,3 +118,16 @@ fun TextView.underline(text: String) {
     setText(spannableString)
 }
 
+fun TextView.underlineWithDistanceUnder(textLocation: String, textDistance:String,context: Context) {
+    val spannableString = SpannableString("$textLocation\n$textDistance")
+
+// souligner le premier texte
+    spannableString.setSpan(UnderlineSpan(), 0, textLocation.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+
+    val start = textLocation.length + 1 // +1 pour le retour à la ligne
+    val end = start + textDistance.length
+    val style = TextAppearanceSpan(context, R.style.center_legend_grey)
+    spannableString.setSpan(style, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+
+    setText(spannableString)
+}

@@ -31,6 +31,7 @@ import social.entourage.android.groups.details.rules.GroupRulesActivity
 import social.entourage.android.api.model.Action
 import social.entourage.android.api.model.ActionSection
 import social.entourage.android.api.model.Conversation
+import social.entourage.android.tools.displayDistance
 import social.entourage.android.user.UserProfileActivity
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.CustomAlertDialog
@@ -258,7 +259,8 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
                 binding.uiActionDescription.text = action?.description
 
                 val _addr = action?.metadata?.displayAddress ?: "-"
-                binding.uiLocation.text = getString(R.string.atKm,_addr,"xxx")
+                val _addr_and_dist = _addr + " " + action?.displayDistance(requireContext())
+                binding.uiLocation.text = _addr_and_dist
 
                 action?.author?.avatarURLAsString?.let { avatarURL ->
                     Glide.with(binding.uiUserIv.context)

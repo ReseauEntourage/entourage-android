@@ -128,11 +128,12 @@ object Utils {
     }
 
     fun showAddToCalendarPopUp(context: Context, event: EventModel) {
-        CustomAlertDialog.show(
+        CustomAlertDialog.showWithNoDefined(
             context,
             context.getString(R.string.event_add_to_calendar_title),
             context.getString(R.string.event_add_to_calendar_subtitle),
-            context.getString(R.string.add),
+            context.getString(R.string.add_oui),
+            context.getString(R.string.no)
         ) {
             val startMillis: Long = Calendar.getInstance().run {
                 time = event.metadata?.startsAt ?: time

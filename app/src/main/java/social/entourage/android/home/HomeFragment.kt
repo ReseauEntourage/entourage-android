@@ -190,6 +190,7 @@ class HomeFragment : Fragment() {
 
     private fun handlePedagogicalContentButton() {
         binding.pedagogicalContent.title.text = getString(R.string.pedagogical_content)
+        binding.pedagogicalContent.title.setTextAppearance(context, R.style.left_courant_bold_black)
         binding.pedagogicalContent.root.elevation = 0F
 //        binding.pedagogicalContent.root.background = AppCompatResources.getDrawable(
 //            requireContext(),

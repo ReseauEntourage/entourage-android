@@ -628,4 +628,8 @@
         <item name="colorControlActivated">@color/orange</item>
     </style>
 
+    <style name="CustomBottomSheetDialogTheme" parent="Theme.Design.BottomSheetDialog">
+        <item name="android:layout_height">match_parent</item>
+    </style>
+
 </resources>

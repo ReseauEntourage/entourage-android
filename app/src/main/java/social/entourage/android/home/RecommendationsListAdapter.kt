@@ -43,6 +43,7 @@ class RecommendationsListAdapter(
                     .transform(RoundedCorners(5.px))
                     .into(binding.image)
                 binding.title.text = this.name
+
                 binding.root.setOnClickListener {
                     onItemClick.onItemClick(this)
                 }

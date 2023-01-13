@@ -1,6 +1,7 @@
 package social.entourage.android.actions.list
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
@@ -17,13 +18,15 @@ import social.entourage.android.api.MetaDataRepository
 import social.entourage.android.actions.detail.ActionDetailActivity
 import social.entourage.android.api.model.Action
 import social.entourage.android.api.model.ActionSection
+import social.entourage.android.tools.displayDistance
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.px
 
 class ActionsListAdapter(
     var groupsList: List<Action>,
     var userId: Int?,
-    private val isContrib:Boolean
+    private val isContrib:Boolean,
+    var context: Context
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     val TYPE_CONTRIB = 0
     val TYPE_DEMAND = 1
@@ -62,7 +65,12 @@ class ActionsListAdapter(
             }
 
             binding.name.text = action.title
-            binding.distance.text = "À xx km de moi"
+            if(action.distance != null){
+                binding.distance.text = action.displayDistance(context)
+
+            }else{
+                binding.distance.text = "À xx km de moi"
+            }
             binding.location.text = action.metadata?.displayAddress
             binding.date.text = action.dateFormattedString(binding.context)
             action.imageUrl?.let {
