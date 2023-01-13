@@ -11,6 +11,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.activity_intro_carousel.*
+import social.entourage.android.EntourageApplication
+import social.entourage.android.MainActivity
 import social.entourage.android.R
 import social.entourage.android.tools.log.AnalyticsEvents
 
@@ -37,8 +39,7 @@ class PreOnboardingStartActivity : AppCompatActivity() {
 
     private fun setupViews() {
         ui_button_connect?.setOnClickListener {
-            startActivity(Intent(this, PreOnboardingChoiceActivity::class.java))
-            finish()
+           goNext()
         }
 
         ui_button_next?.setOnClickListener {
@@ -48,8 +49,7 @@ class PreOnboardingStartActivity : AppCompatActivity() {
                 updateViewAndDots()
                 return@setOnClickListener
             }
-            startActivity(Intent(this, PreOnboardingChoiceActivity::class.java))
-            finish()
+            goNext()
         }
 
         ui_button_previous?.setOnClickListener {
@@ -60,6 +60,19 @@ class PreOnboardingStartActivity : AppCompatActivity() {
 
         }
         ui_button_previous?.isVisible = false
+    }
+
+    private fun goNext() {
+
+        if (EntourageApplication.get().authenticationController.isAuthenticated) {
+            EntourageApplication.get().sharedPreferences.edit().putBoolean(EntourageApplication.KEY_MIGRATION_V7_OK,true).apply()
+            startActivity(Intent(this, MainActivity::class.java))
+            finish()
+            return
+        }
+
+        startActivity(Intent(this, PreOnboardingChoiceActivity::class.java))
+        finish()
     }
 
     private fun setupRecyclerView() {

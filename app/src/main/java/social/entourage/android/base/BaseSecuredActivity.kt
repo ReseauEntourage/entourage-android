@@ -17,7 +17,11 @@ abstract class BaseSecuredActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        if (authenticationController.isAuthenticated && authenticationController.isTutorialDone()) {
+
+        val isMigrationAfterV7 = EntourageApplication.get().sharedPreferences.getBoolean(
+            EntourageApplication.KEY_MIGRATION_V7_OK, false)
+
+        if (authenticationController.isAuthenticated && isMigrationAfterV7) {
             entApp?.finishLoginActivity()
         } else {
             startActivity(Intent(this, PreOnboardingStartActivity::class.java))
