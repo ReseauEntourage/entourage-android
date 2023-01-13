@@ -71,7 +71,7 @@ class PushNotificationContent : Serializable {
 
         @SerializedName("instance")
         var instance:String? = null
-        @SerializedName("id")
+        @SerializedName("instance_id")
         var instanceId:Int? = null
         @SerializedName("post_id")
         var postId:Int? = null
