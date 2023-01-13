@@ -142,6 +142,9 @@ class GroupEventsListAdapter(
         if(child.calculateIfEventPassed()){
             childViewHolder.binding.eventName.setTextColor(context.getColor(R.color.grey))
             childViewHolder.binding.blackLayout.visibility = View.VISIBLE
+        }else{
+            childViewHolder.binding.eventName.setTextColor(context.getColor(R.color.black))
+            childViewHolder.binding.blackLayout.visibility = View.GONE
         }
 
     }
