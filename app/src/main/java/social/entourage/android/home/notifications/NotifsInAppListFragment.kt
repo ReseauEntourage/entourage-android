@@ -2,6 +2,7 @@ package social.entourage.android.home.notifications
 
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -149,7 +150,7 @@ class NotifsInAppListFragment : Fragment() {
                 override fun onItemClick(notif: NotifInApp, position:Int) {
                     val instance = notif.instanceString
                     val instanceId = notif.instanceId
-
+                    val postId:Int? = notif.postId
                     if (notif.completedAt == null) {
                         itemSelected = position
                         notif.id?.let { homePresenter.markReadNotification(notif.id) }
@@ -157,7 +158,7 @@ class NotifsInAppListFragment : Fragment() {
                     else {
                         itemSelected = -1
                     }
-                    PushNotificationLinkManager().presentAction(requireContext(),parentFragmentManager,instance,instanceId)
+                    PushNotificationLinkManager().presentAction(requireContext(),parentFragmentManager,instance,instanceId,postId)
                 }
             })
         }

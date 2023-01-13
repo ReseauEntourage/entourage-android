@@ -73,6 +73,8 @@ class PushNotificationContent : Serializable {
         var instance:String? = null
         @SerializedName("id")
         var instanceId:Int? = null
+        @SerializedName("post_id")
+        var postId:Int? = null
 
         companion object {
             private const val serialVersionUID = 9200479161789347105L

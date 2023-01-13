@@ -2,6 +2,7 @@ package social.entourage.android.message.push
 
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import androidx.core.os.bundleOf
 import androidx.fragment.app.FragmentManager
 import social.entourage.android.Navigation
@@ -20,7 +21,7 @@ import social.entourage.android.tools.utils.Const
  */
 class PushNotificationLinkManager {
 
-    fun presentAction(context:Context,supportFragmentManager: FragmentManager, instance:String?,id:Int?) {
+    fun presentAction(context:Context,supportFragmentManager: FragmentManager, instance:String?,id:Int?, postId:Int?) {
         if (instance == null || id == null) return
 
         when(InstanceTypeNotif(instance).getInstanceTypeFromName()) {
@@ -34,8 +35,22 @@ class PushNotificationLinkManager {
             InstanceType.CONVERSATIONS -> showConversation(context,supportFragmentManager,id)
             InstanceType.PARTNERS -> showPartner(context,id)
             InstanceType.NONE -> return
+
+            else -> {
+                if(InstanceTypeNotif(instance).getInstanceTypeFromName() == InstanceType.OUTINGS_POST){
+                    if (postId != null) {
+                        showEventPost(context,supportFragmentManager,id,postId)
+                    }
+                }else if(InstanceTypeNotif(instance).getInstanceTypeFromName() == InstanceType.NEIGHBORHOODS_POST){
+                    if (postId != null) {
+                        showGroupPost(context,supportFragmentManager,id,postId)
+                    }
+                }
+            }
         }
     }
+            /*InstanceType.NEIGHBORHOODS_POST -> showEventPost(context,supportFragmentManager, postId)
+            InstanceType.OUTINGS_POST -> showGroupPost(context,supportFragmentManager, postId)*/
 
     private fun showContribution(context:Context,supportFragmentManager: FragmentManager, id: Int) {
         context.startActivity(
@@ -111,16 +126,39 @@ class PushNotificationLinkManager {
             HomeType.RESOURCE,
             ActionSummary.SHOW, params)
     }
+
+    private fun showEventPost(context:Context,supportFragmentManager: FragmentManager, instanceId: Int , postID:Int) {
+        val params = HomeActionParams()
+        params.id = instanceId
+        params.postId = postID
+        Navigation.navigate(context,supportFragmentManager,
+            HomeType.OUTING_POST,
+            ActionSummary.SHOW, params)
+    }
+
+    private fun showGroupPost(context:Context,supportFragmentManager: FragmentManager, instanceId: Int , postID:Int) {
+
+        val params = HomeActionParams()
+        params.id = instanceId
+        params.postId = postID
+        Navigation.navigate(context,supportFragmentManager,
+            HomeType.NEIGHBORHOOD_POST,
+            ActionSummary.SHOW, params)
+    }
 }
 
 class InstanceTypeNotif(val instanceName:String) {
+
+
     fun getInstanceTypeFromName() : InstanceType {
         when(instanceName) {
             "pois" -> return  InstanceType.POIS
             "users","user" -> return  InstanceType.USERS
             "neighborhoods","neighborhood" -> return  InstanceType.NEIGHBORHOODS
+            "neighborhood_post" -> return  InstanceType.NEIGHBORHOODS_POST
             "resources" -> return  InstanceType.RESOURCES
             "outings","outing" -> return  InstanceType.OUTINGS
+            "outing_post" -> return  InstanceType.OUTINGS_POST
             "contributions","contribution" -> return  InstanceType.CONTRIBUTIONS
             "solicitations","solicitation" -> return  InstanceType.SOLICITATIONS
             "conversations","conversation" -> return  InstanceType.CONVERSATIONS
@@ -134,8 +172,10 @@ enum class InstanceType {
     POIS,
     USERS,
     NEIGHBORHOODS,
+    NEIGHBORHOODS_POST,
     RESOURCES,
     OUTINGS,
+    OUTINGS_POST,
     CONTRIBUTIONS,
     SOLICITATIONS,
     CONVERSATIONS,

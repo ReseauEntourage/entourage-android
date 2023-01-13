@@ -9,12 +9,12 @@ import java.util.*
  * Created by Me on 23/11/2022.
  */
 class NotifInApp (
-    //id devient route id
     @SerializedName("id")
     val id: Int? = null,
     @SerializedName("instance_id")
     val instanceId: Int? = null,
-    //Instance devient route
+    @SerializedName("post_id")
+    val postId: Int? = null,
     @SerializedName("instance")
     val instanceString: String? = null,
     @SerializedName("content")

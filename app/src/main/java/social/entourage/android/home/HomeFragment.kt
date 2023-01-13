@@ -7,6 +7,7 @@ import android.os.CountDownTimer
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
@@ -192,11 +193,7 @@ class HomeFragment : Fragment() {
         binding.pedagogicalContent.title.text = getString(R.string.pedagogical_content)
         binding.pedagogicalContent.title.setTextAppearance(context, R.style.left_courant_bold_black)
         binding.pedagogicalContent.root.elevation = 0F
-//        binding.pedagogicalContent.root.background = AppCompatResources.getDrawable(
-//            requireContext(),
-//            R.drawable.new_bg_rounded_shadow_orange_opacity_50
-//        )
-
+        binding.pedagogicalContent.image.scaleType = ImageView.ScaleType.CENTER_CROP
         binding.pedagogicalContent.root.setOnClickListener {
             AnalyticsEvents.logEvent(AnalyticsEvents.Home_action_pedago)
             startActivityForResult(

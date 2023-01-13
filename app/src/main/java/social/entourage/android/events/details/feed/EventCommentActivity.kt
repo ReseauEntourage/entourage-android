@@ -1,6 +1,7 @@
 package social.entourage.android.events.details.feed
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import social.entourage.android.api.model.Post
 import social.entourage.android.comment.CommentActivity
@@ -13,7 +14,6 @@ class EventCommentActivity : CommentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         eventPresenter.getAllComments.observe(this, ::handleGetPostComments)
         eventPresenter.commentPosted.observe(this, ::handleCommentPosted)
         eventPresenter.getCurrentParentPost.observe(this, ::handleParentPost)

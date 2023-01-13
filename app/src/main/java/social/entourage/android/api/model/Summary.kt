@@ -61,6 +61,10 @@ class HomeActionParams : Serializable {
 
     @SerializedName("url")
     var url: String? = null
+
+    @SerializedName("post_id")
+    var postId: Int? = null
+
 }
 
 class HomeModerator : Serializable {
@@ -82,6 +86,9 @@ enum class HomeType {
     @SerializedName("neighborhood")
     NEIGHBORHOOD,
 
+    @SerializedName("neighborhood_post")
+    NEIGHBORHOOD_POST,
+
     @SerializedName("profile")
     PROFILE,
 
@@ -90,6 +97,9 @@ enum class HomeType {
 
     @SerializedName("user")
     USER,
+
+    @SerializedName("outing_post")
+    OUTING_POST,
 
     @SerializedName("outing")
     OUTING,

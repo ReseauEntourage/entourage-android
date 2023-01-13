@@ -138,7 +138,7 @@ class MainActivity : BaseSecuredActivity() {
     private fun checkIntentAction(action: String, extras: Bundle?) {
         val message = extras?.get(PushNotificationManager.PUSH_MESSAGE) as? Message
         message?.let {
-            PushNotificationLinkManager().presentAction(this,supportFragmentManager,message.content?.extra?.instance,message.content?.extra?.instanceId)
+            PushNotificationLinkManager().presentAction(this,supportFragmentManager,message.content?.extra?.instance,message.content?.extra?.instanceId, message.content?.extra?.postId)
         }
 
         intent = null

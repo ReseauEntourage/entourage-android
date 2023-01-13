@@ -3,11 +3,14 @@ package social.entourage.android
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import androidx.core.os.bundleOf
 import androidx.fragment.app.FragmentManager
 import androidx.navigation.NavArgument
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import social.entourage.android.actions.ActionLocationFilterActivity
+import social.entourage.android.actions.LOCATION_FILTERS
 import social.entourage.android.api.model.guide.Poi
 import social.entourage.android.guide.GDSMainActivity
 import social.entourage.android.guide.poi.ReadPoiFragment
@@ -21,6 +24,8 @@ import social.entourage.android.home.pedago.PedagoDetailActivity
 import social.entourage.android.api.model.ActionSummary
 import social.entourage.android.api.model.HomeActionParams
 import social.entourage.android.api.model.HomeType
+import social.entourage.android.events.details.feed.EventCommentActivity
+import social.entourage.android.groups.details.feed.GroupCommentActivity
 import social.entourage.android.profile.ProfileActivity
 import social.entourage.android.user.UserProfileActivity
 import social.entourage.android.tools.utils.Const
@@ -203,6 +208,19 @@ object Navigation {
                     context,
                     context.getString(R.string.not_implemented)
                 )
+            }
+            HomeType.NEIGHBORHOOD_POST -> {
+                val intent = Intent(context, GroupCommentActivity::class.java)
+                intent.putExtra(Const.ID, params.id)
+                intent.putExtra(Const.POST_ID, params.postId)
+                return intent
+            }
+
+            HomeType.OUTING_POST -> {
+                val intent = Intent(context, EventCommentActivity::class.java)
+                intent.putExtra(Const.ID, params.id)
+                intent.putExtra(Const.POST_ID, params.postId)
+                return intent
             }
         }
         return null
