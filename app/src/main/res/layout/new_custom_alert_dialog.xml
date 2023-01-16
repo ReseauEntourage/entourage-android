@@ -48,9 +48,8 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/content">
-
         <Button
-            android:id="@+id/yes"
+            android:id="@+id/no"
             style="@style/h2_white"
             android:layout_width="wrap_content"
             android:layout_height="48dp"
@@ -59,22 +58,23 @@
             android:background="@drawable/new_alert_dialog_button_yes"
             android:padding="10dp"
             android:minWidth="65dp"
-            android:textAllCaps="false"
-
-            />
-
+            android:text="@string/cancel"
+            android:textAllCaps="false" />
         <Button
-            android:id="@+id/no"
+            android:id="@+id/yes"
             style="@style/h2_white"
             android:layout_width="wrap_content"
             android:layout_height="48dp"
             android:layout_marginStart="10dp"
-            android:layout_marginBottom="10dp"
             android:background="@drawable/new_alert_dialog_button_no"
+
+            android:layout_marginBottom="10dp"
             android:padding="10dp"
             android:minWidth="65dp"
-            android:text="@string/cancel"
-            android:textAllCaps="false" />
+            android:textAllCaps="false"
+            />
+
+
 
     </LinearLayout>
 

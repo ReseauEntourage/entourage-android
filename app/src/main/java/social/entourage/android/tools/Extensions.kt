@@ -107,6 +107,9 @@ fun Events.calculateIfEventPassed():Boolean{
 
 fun EventModel.displayDistance(context:Context):String{
     val distance = this.distance
+    if(this.online == true){
+        return ""
+    }
     if (distance != null) {
         if (distance > 0){
             val formattedString = context.getString(R.string.at_km_from_me, distance.roundToInt())

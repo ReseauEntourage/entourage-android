@@ -119,15 +119,20 @@ fun TextView.underline(text: String) {
 }
 
 fun TextView.underlineWithDistanceUnder(textLocation: String, textDistance:String,context: Context) {
-    val spannableString = SpannableString("$textLocation\n$textDistance")
+    if (textDistance != ""){
+        val spannableString = SpannableString("$textLocation\n$textDistance")
+        spannableString.setSpan(UnderlineSpan(), 0, textLocation.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
 
-// souligner le premier texte
-    spannableString.setSpan(UnderlineSpan(), 0, textLocation.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        val start = textLocation.length + 1 // +1 pour le retour à la ligne
+        val end = start + textDistance.length
+        val style = TextAppearanceSpan(context, R.style.center_legend_grey)
+        spannableString.setSpan(style, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        setText(spannableString)
+    }else{
+        val spannableString = SpannableString("$textLocation")
+        spannableString.setSpan(UnderlineSpan(), 0, textLocation.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        val start = textLocation.length + 1 // +1 pour le retour à la ligne
+        setText(spannableString)
+    }
 
-    val start = textLocation.length + 1 // +1 pour le retour à la ligne
-    val end = start + textDistance.length
-    val style = TextAppearanceSpan(context, R.style.center_legend_grey)
-    spannableString.setSpan(style, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-
-    setText(spannableString)
 }

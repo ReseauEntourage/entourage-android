@@ -37,6 +37,8 @@ import social.entourage.android.events.details.SettingsModalFragment
 import social.entourage.android.groups.details.feed.GroupMembersPhotosAdapter
 import social.entourage.android.groups.details.members.MembersType
 import social.entourage.android.profile.myProfile.InterestsAdapter
+import social.entourage.android.report.ReportModalFragment
+import social.entourage.android.report.ReportTypes
 import social.entourage.android.tools.calculateIfEventPassed
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.utils.*
@@ -294,14 +296,18 @@ class FeedFragment : Fragment() {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = PostAdapter(
                 newPostsList,
-                ::openCommentPage
+                ::openCommentPage,
+                ::openReportFragment
+
+
             )
         }
         binding.postsOldRecyclerview.apply {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = PostAdapter(
                 oldPostsList,
-                ::openCommentPage
+                ::openCommentPage,
+                ::openReportFragment
             )
         }
     }
@@ -320,6 +326,18 @@ class FeedFragment : Fragment() {
                     )
                 ), 0
         )
+    }
+
+    private fun openReportFragment() {
+        val reportGroupBottomDialogFragment =
+            event?.id?.let {
+                ReportModalFragment.newInstance(
+                    it,
+                    Const.DEFAULT_VALUE, ReportTypes.REPORT_EVENT
+                )
+            }
+        reportGroupBottomDialogFragment?.show(parentFragmentManager, ReportModalFragment.TAG)
+
     }
 
     private fun fragmentResult() {

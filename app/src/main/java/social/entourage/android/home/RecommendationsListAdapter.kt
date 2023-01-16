@@ -1,5 +1,6 @@
 package social.entourage.android.home
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -43,7 +44,6 @@ class RecommendationsListAdapter(
                     .transform(RoundedCorners(5.px))
                     .into(binding.image)
                 binding.title.text = this.name
-
                 binding.root.setOnClickListener {
                     onItemClick.onItemClick(this)
                 }

@@ -4,6 +4,7 @@ import android.content.Intent
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -98,11 +99,13 @@ class AboutEventFragment : Fragment(), OnMapReadyCallback {
 
             (if (event?.online == true) event?.eventUrl else event?.metadata?.displayAddress)?.let {
                 event?.let { it1 ->
+
                     binding.location.content.underlineWithDistanceUnder(
                         it, it1.displayDistance(requireContext()),requireContext()
                     )
                 }
             }
+
             binding.placesLimit.root.isVisible = event?.metadata?.placeLimit != null
             binding.placesLimit.content.text =
                 String.format(getString(R.string.limited_places), event?.metadata?.placeLimit)

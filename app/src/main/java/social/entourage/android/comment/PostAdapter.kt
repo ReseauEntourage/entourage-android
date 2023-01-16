@@ -21,7 +21,8 @@ import java.util.*
 
 class PostAdapter(
     var postsList: List<Post>,
-    var onClick: (Post, Boolean) -> Unit
+    var onClick: (Post, Boolean) -> Unit,
+    var onReport: () -> Unit
 ) : RecyclerView.Adapter<PostAdapter.ViewHolder>() {
 
     inner class ViewHolder(val binding: NewLayoutPostBinding) :
@@ -103,6 +104,10 @@ class PostAdapter(
 
                 binding.image.setOnClickListener {
                     showUserDetail(binding.image.context,this.user?.userId)
+                }
+
+                binding.btnReportPost.setOnClickListener {
+                    onReport()
                 }
             }
         }

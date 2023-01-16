@@ -3,6 +3,7 @@ package social.entourage.android.groups.details.feed
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -39,6 +40,8 @@ import social.entourage.android.groups.GroupPresenter
 import social.entourage.android.groups.details.GroupDetailsFragment
 import social.entourage.android.groups.details.members.MembersType
 import social.entourage.android.profile.myProfile.InterestsAdapter
+import social.entourage.android.report.ReportModalFragment
+import social.entourage.android.report.ReportTypes
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.utils.px
@@ -371,14 +374,16 @@ class FeedFragment : Fragment() {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = PostAdapter(
                 newPostsList,
-                ::openCommentPage
+                ::openCommentPage,
+                ::openReportFragment
             )
         }
         binding.postsOldRecyclerview.apply {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = PostAdapter(
                 oldPostsList,
-                ::openCommentPage
+                ::openCommentPage,
+                ::openReportFragment
             )
         }
     }
@@ -397,6 +402,17 @@ class FeedFragment : Fragment() {
                     )
                 ), 0
         )
+    }
+    private fun openReportFragment() {
+        val reportGroupBottomDialogFragment =
+            group?.id?.let {
+                ReportModalFragment.newInstance(
+                    it,
+                    Const.DEFAULT_VALUE, ReportTypes.REPORT_GROUP
+                )
+            }
+        reportGroupBottomDialogFragment?.show(parentFragmentManager, ReportModalFragment.TAG)
+
     }
 
     private fun initializeInterests() {

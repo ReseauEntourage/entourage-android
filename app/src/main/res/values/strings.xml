@@ -435,5 +435,6 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="home_congrat_title_single">Bravo ! Vous avez réalisé %d nouvelle action !</string>
     <string name="home_congrat_title_plural">Bravo ! Vous avez réalisé %d nouvelles actions !</string>
     <string name="home_congrat_title_next">Super, il y a du nouveau sur l\'accueil !</string>
+    <string name="three_point">…</string>
 
 </resources>
