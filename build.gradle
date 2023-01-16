@@ -2,7 +2,7 @@
 
 buildscript {
     ext {
-        kotlinVersion = '1.7.20'
+        kotlinVersion = '1.7.21'
         // Java versions
         sourceCompatibilityVersion = JavaVersion.VERSION_11
         targetCompatibilityVersion = JavaVersion.VERSION_11

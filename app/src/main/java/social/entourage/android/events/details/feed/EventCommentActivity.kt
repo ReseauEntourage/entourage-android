@@ -1,13 +1,11 @@
 package social.entourage.android.events.details.feed
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import social.entourage.android.api.model.Post
 import social.entourage.android.comment.CommentActivity
 import social.entourage.android.events.EventsPresenter
-import social.entourage.android.groups.details.feed.CommentsListAdapter
-import social.entourage.android.report.ReportTypes
+import social.entourage.android.comment.CommentsListAdapter
 
 class EventCommentActivity : CommentActivity() {
 

@@ -68,6 +68,7 @@ class OnboardingStartActivity : AppCompatActivity(), OnboardingStartCallback {
         setupViews()
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
         if (currentFragmentPosition >= numberOfSteps) return
 

@@ -1,4 +1,4 @@
-package social.entourage.android.groups.details.feed
+package social.entourage.android.comment
 
 import android.annotation.SuppressLint
 import android.app.Activity

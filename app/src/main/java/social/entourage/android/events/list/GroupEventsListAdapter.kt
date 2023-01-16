@@ -7,6 +7,7 @@ import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -136,13 +137,24 @@ class GroupEventsListAdapter(
 
         childViewHolder.binding.canceled.isVisible = child.status == Status.CLOSED
         childViewHolder.binding.ivCanceled.isVisible = child.status == Status.CLOSED
-        childViewHolder.binding.eventName.setTextColor(context.getColor(if (child.status == Status.CLOSED) R.color.grey else R.color.black))
+        childViewHolder.binding.eventName.setTextColor(
+            ContextCompat.getColor(
+            context,
+            if (child.status == Status.CLOSED) R.color.grey else R.color.black)
+        )
+
 
         if(child.calculateIfEventPassed()){
-            childViewHolder.binding.eventName.setTextColor(context.getColor(R.color.grey))
+            childViewHolder.binding.eventName.setTextColor(ContextCompat.getColor(
+                context,
+                R.color.grey)
+            )
             childViewHolder.binding.blackLayout.visibility = View.VISIBLE
         }else{
-            childViewHolder.binding.eventName.setTextColor(context.getColor(R.color.black))
+            childViewHolder.binding.eventName.setTextColor(ContextCompat.getColor(
+                context,
+                R.color.black)
+            )
             childViewHolder.binding.blackLayout.visibility = View.GONE
         }
 
