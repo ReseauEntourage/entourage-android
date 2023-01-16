@@ -44,6 +44,7 @@ abstract class CommentActivity : AppCompatActivity() {
     protected var isOne2One = false
     protected var isConversation = false
     protected var isFromNotif = false
+    protected var isEventComment = false
     var currentParentPost:Post? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -143,6 +144,7 @@ abstract class CommentActivity : AppCompatActivity() {
                 }
                 override fun onCommentReport(commentId: Int?, isForEvent: Boolean) {
                     if(isForEvent){
+                        isEventComment = true
                         commentId?.let { handleReport(it, ReportTypes.REPORT_POST_EVENT) }
                     }else{
                         commentId?.let { handleReport(it, ReportTypes.REPORT_COMMENT) }
@@ -217,6 +219,7 @@ abstract class CommentActivity : AppCompatActivity() {
     protected fun handleReport(id: Int, type: ReportTypes) {
         val reportGroupBottomDialogFragment =
             ReportModalFragment.newInstance(id, this.id, type)
+        reportGroupBottomDialogFragment.setEventComment()
         reportGroupBottomDialogFragment.show(
             supportFragmentManager,
             ReportModalFragment.TAG

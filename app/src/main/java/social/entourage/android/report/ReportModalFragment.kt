@@ -54,6 +54,8 @@ class ReportModalFragment : BottomSheetDialogFragment() {
     private var groupId: Int? = Const.DEFAULT_VALUE
     private var reportType: Int? = Const.DEFAULT_VALUE
     private var title: String = ""
+    private var isEventComment = false
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -98,6 +100,10 @@ class ReportModalFragment : BottomSheetDialogFragment() {
         onClose()
     }
 
+    fun setEventComment(){
+        isEventComment = true
+    }
+
     private fun setView() {
         title = getString(
             when (reportType) {
@@ -109,11 +115,15 @@ class ReportModalFragment : BottomSheetDialogFragment() {
                 ReportTypes.REPORT_DEMAND.code -> R.string.action_report_demand
                 ReportTypes.REPORT_CONTRIB.code -> R.string.action_report_contrib
                 ReportTypes.REPORT_CONVERSATION.code -> R.string.discussion_report_conversation
-                ReportTypes.REPORT_POST_EVENT.code -> R.string.report_comment
+                ReportTypes.REPORT_POST_EVENT.code -> R.string.report_post
                 else -> R.string.report_member
             }
         )
+        if(isEventComment){
+            title = getString(R.string.report_comment)
+        }
         binding.header.title = title
+
     }
 
     private fun handleReportResponse(success: Boolean) {
