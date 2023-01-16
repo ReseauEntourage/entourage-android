@@ -141,8 +141,13 @@ abstract class CommentActivity : AppCompatActivity() {
                     addComment()
                     commentsList.remove(comment)
                 }
-                override fun onCommentReport(commentId: Int?) {
-                    commentId?.let { handleReport(it, ReportTypes.REPORT_COMMENT) }
+                override fun onCommentReport(commentId: Int?, isForEvent: Boolean) {
+                    if(isForEvent){
+                        commentId?.let { handleReport(it, ReportTypes.REPORT_POST_EVENT) }
+                    }else{
+                        commentId?.let { handleReport(it, ReportTypes.REPORT_COMMENT) }
+
+                    }
                 }
 
                 override fun onShowWeb(url: String) {
@@ -209,7 +214,7 @@ abstract class CommentActivity : AppCompatActivity() {
         binding.header.iconSettings.setImageResource(R.drawable.new_report_group)
     }
 
-    private fun handleReport(id: Int, type: ReportTypes) {
+    protected fun handleReport(id: Int, type: ReportTypes) {
         val reportGroupBottomDialogFragment =
             ReportModalFragment.newInstance(id, this.id, type)
         reportGroupBottomDialogFragment.show(

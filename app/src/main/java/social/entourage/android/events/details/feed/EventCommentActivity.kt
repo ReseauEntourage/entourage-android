@@ -7,6 +7,7 @@ import social.entourage.android.api.model.Post
 import social.entourage.android.comment.CommentActivity
 import social.entourage.android.events.EventsPresenter
 import social.entourage.android.groups.details.feed.CommentsListAdapter
+import social.entourage.android.report.ReportTypes
 
 class EventCommentActivity : CommentActivity() {
 
@@ -18,10 +19,18 @@ class EventCommentActivity : CommentActivity() {
         eventPresenter.commentPosted.observe(this, ::handleCommentPosted)
         eventPresenter.getCurrentParentPost.observe(this, ::handleParentPost)
         eventPresenter.getPostComments(id, postId)
+        setAdapterForEvent()
     }
 
     override fun addComment() {
         eventPresenter.addComment(id, comment)
+    }
+
+    private fun setAdapterForEvent(){
+        if(binding.comments.adapter is CommentsListAdapter){
+            var _adapter = binding.comments.adapter as? CommentsListAdapter
+            _adapter!!.setForEvent()
+        }
     }
 
     private fun handleParentPost(currentPost: Post?) {
@@ -46,4 +55,5 @@ class EventCommentActivity : CommentActivity() {
         binding.progressBar.visibility = View.GONE
         scrollAfterLayout()
     }
+
 }

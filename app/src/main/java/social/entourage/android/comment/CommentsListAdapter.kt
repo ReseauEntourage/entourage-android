@@ -3,6 +3,7 @@ package social.entourage.android.groups.details.feed
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -33,7 +34,7 @@ enum class CommentsTypes(val code: Int) {
 
 interface OnItemClickListener {
     fun onItemClick(comment: Post)
-    fun onCommentReport(commentId: Int?)
+    fun onCommentReport(commentId: Int?, isForEvent:Boolean)
     fun onShowWeb(url:String)
 }
 
@@ -45,6 +46,12 @@ class CommentsListAdapter(
     var currentParentPost:Post?,
     var onItemClick: OnItemClickListener,
 ) : RecyclerView.Adapter<CommentsListAdapter.ViewHolder>() {
+
+    var isForEvent:Boolean = false
+
+    fun setForEvent(){
+        isForEvent = true
+    }
 
     inner class ViewHolder(val binding: View) :
         RecyclerView.ViewHolder(binding) {
@@ -107,7 +114,7 @@ class CommentsListAdapter(
 
             binding.comment.text = comment.content
             binding.report.setOnClickListener {
-                onItemClick.onCommentReport(comment.id)
+                onItemClick.onCommentReport(comment.id, isForEvent)
             }
             comment.createdTime?.let {
                 binding.information_layout.visibility = View.VISIBLE

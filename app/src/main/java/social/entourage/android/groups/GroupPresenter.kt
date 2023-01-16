@@ -428,9 +428,7 @@ class GroupPresenter {
                     response.body()?.let { allEventsWrapper ->
                         getAllEvents.value = allEventsWrapper.allEvents
                     }
-
                 }
-
                 override fun onFailure(call: Call<EventsListWrapper>, t: Throwable) {
                 }
             })

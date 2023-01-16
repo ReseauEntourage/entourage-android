@@ -116,6 +116,7 @@ class ReportModalFragment : BottomSheetDialogFragment() {
     }
 
     private fun handleReportResponse(success: Boolean) {
+
         if (success) CustomAlertDialog.showOnlyOneButton(
             requireContext(),
             title,
@@ -189,7 +190,6 @@ class ReportModalFragment : BottomSheetDialogFragment() {
                         selectedSignalsIdList
                     )
                     ReportTypes.REPORT_POST.code, ReportTypes.REPORT_COMMENT.code -> groupId?.let { it ->
-                        Log.wtf("wtf" , "haha")
                         groupPresenter.sendReportPost(
                             it,
                             id,
