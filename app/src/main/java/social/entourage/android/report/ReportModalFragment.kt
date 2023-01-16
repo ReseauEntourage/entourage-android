@@ -2,6 +2,7 @@ package social.entourage.android.report
 
 import android.content.DialogInterface
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -34,7 +35,8 @@ enum class ReportTypes(val code: Int) {
     REPORT_EVENT(4),
     REPORT_CONTRIB(5),
     REPORT_DEMAND(6),
-    REPORT_CONVERSATION(7)
+    REPORT_CONVERSATION(7),
+    REPORT_POST_EVENT(8)
 }
 
 class ReportModalFragment : BottomSheetDialogFragment() {
@@ -70,6 +72,7 @@ class ReportModalFragment : BottomSheetDialogFragment() {
         groupPresenter.isGroupReported.observe(requireActivity(), ::handleReportResponse)
         groupPresenter.isPostReported.observe(requireActivity(), ::handleReportResponse)
         eventPresenter.isEventReported.observe(requireActivity(), ::handleReportResponse)
+        eventPresenter.isEventPostReported.observe(requireActivity(), ::handleReportResponse)
         actionPresenter.isActionReported.observe(requireActivity(), ::handleReportResponse)
         discussionsPresenter.isConversationReported.observe(requireActivity(), ::handleReportResponse)
 
@@ -117,7 +120,7 @@ class ReportModalFragment : BottomSheetDialogFragment() {
             requireContext(),
             title,
             getString(R.string.report_sent),
-            getString(R.string.exit)
+            getString(R.string.button_OK)
         )
         else showToast(getString(R.string.user_report_error_send_failed))
         dismiss()
@@ -186,6 +189,7 @@ class ReportModalFragment : BottomSheetDialogFragment() {
                         selectedSignalsIdList
                     )
                     ReportTypes.REPORT_POST.code, ReportTypes.REPORT_COMMENT.code -> groupId?.let { it ->
+                        Log.wtf("wtf" , "haha")
                         groupPresenter.sendReportPost(
                             it,
                             id,
@@ -193,6 +197,15 @@ class ReportModalFragment : BottomSheetDialogFragment() {
                             selectedSignalsIdList
                         )
                     }
+                    ReportTypes.REPORT_POST_EVENT.code-> groupId?.let { it ->
+                        eventPresenter.sendPostReport(
+                            it,
+                            id,
+                            binding.message.text.toString(),
+                            selectedSignalsIdList
+                        )
+                    }
+
                     ReportTypes.REPORT_EVENT.code -> eventPresenter.sendReport(
                         id,
                         binding.message.text.toString(),

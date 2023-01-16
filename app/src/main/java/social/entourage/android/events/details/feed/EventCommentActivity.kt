@@ -29,7 +29,6 @@ class EventCommentActivity : CommentActivity() {
         binding.progressBar.visibility = View.GONE
         (binding.comments.adapter as? CommentsListAdapter)?.updateDatas(this.currentParentPost)
         scrollAfterLayout()
-
         updateView(commentsList.size == 0)
     }
 

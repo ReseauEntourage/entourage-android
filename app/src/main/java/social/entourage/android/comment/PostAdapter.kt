@@ -3,6 +3,7 @@ package social.entourage.android.comment
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,7 +23,7 @@ import java.util.*
 class PostAdapter(
     var postsList: List<Post>,
     var onClick: (Post, Boolean) -> Unit,
-    var onReport: () -> Unit
+    var onReport: (Int) -> Unit
 ) : RecyclerView.Adapter<PostAdapter.ViewHolder>() {
 
     inner class ViewHolder(val binding: NewLayoutPostBinding) :
@@ -107,7 +108,7 @@ class PostAdapter(
                 }
 
                 binding.btnReportPost.setOnClickListener {
-                    onReport()
+                    postsList[position].id?.let { it1 -> onReport(it1) }
                 }
             }
         }

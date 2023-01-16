@@ -1,5 +1,6 @@
 package social.entourage.android.groups
 
+import android.util.Log
 import androidx.collection.ArrayMap
 import androidx.lifecycle.MutableLiveData
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -397,6 +398,7 @@ class GroupPresenter {
         reason: String,
         selectedSignalsIdList: MutableList<String>
     ) {
+
         EntourageApplication.get().apiModule.groupRequest.reportPost(
             groupId,
             postId,

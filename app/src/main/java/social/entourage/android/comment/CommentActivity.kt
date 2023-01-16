@@ -3,6 +3,7 @@ package social.entourage.android.comment
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.view.ViewTreeObserver.OnGlobalLayoutListener
 import androidx.appcompat.app.AppCompatActivity
@@ -15,6 +16,7 @@ import social.entourage.android.R
 import social.entourage.android.api.model.EntourageUser
 import social.entourage.android.api.model.Post
 import social.entourage.android.databinding.NewActivityCommentsBinding
+import social.entourage.android.events.details.feed.EventCommentActivity
 import social.entourage.android.groups.details.feed.CommentsListAdapter
 import social.entourage.android.groups.details.feed.OnItemClickListener
 import social.entourage.android.report.ReportModalFragment
@@ -139,7 +141,6 @@ abstract class CommentActivity : AppCompatActivity() {
                     addComment()
                     commentsList.remove(comment)
                 }
-
                 override fun onCommentReport(commentId: Int?) {
                     commentId?.let { handleReport(it, ReportTypes.REPORT_COMMENT) }
                 }

@@ -29,6 +29,7 @@ class EventsPresenter {
     var getAllEvents = MutableLiveData<MutableList<Events>>()
     var getEvent = MutableLiveData<Events>()
     var isEventReported = MutableLiveData<Boolean>()
+    var isEventPostReported = MutableLiveData<Boolean>()
     var getAllComments = MutableLiveData<MutableList<Post>>()
     var newEventCreated = MutableLiveData<Events?>()
     var isEventCreated = MutableLiveData<Boolean>()
@@ -134,6 +135,27 @@ class EventsPresenter {
 
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 isEventReported.value = response.isSuccessful
+            }
+        })
+    }
+
+    fun sendPostReport(
+        id: Int,
+        postId: Int,
+        reason: String,
+        selectedSignalsIdList: MutableList<String>
+    ) {
+        val userRequest = EntourageApplication.get().apiModule.eventsRequest
+        val call = userRequest.reportEventPost(
+            id, postId, ReportWrapper(Report(reason, selectedSignalsIdList))
+        )
+        call.enqueue(object : Callback<ResponseBody> {
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                isEventPostReported.value = false
+            }
+
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                isEventPostReported.value = response.isSuccessful
             }
         })
     }

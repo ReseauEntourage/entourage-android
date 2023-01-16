@@ -249,6 +249,7 @@ class FeedFragment : Fragment() {
             binding.toolbarLayout.alpha = 1f - res
             binding.groupImageToolbar.alpha = res
             binding.groupNameToolbar.alpha = res
+
         })
     }
 
@@ -295,10 +296,10 @@ class FeedFragment : Fragment() {
 
             Glide.with(requireActivity())
                 .load(group?.imageUrl)
-                .error(R.drawable.new_group_illu)
+                //.placeholder(R.drawable.new_group_illu)
+                //.error(R.drawable.new_group_illu)
                 .transform(CenterCrop(), RoundedCorners(8.px))
                 .into(groupImageToolbar)
-
         }
 
         updateButtonJoin()
@@ -403,12 +404,12 @@ class FeedFragment : Fragment() {
                 ), 0
         )
     }
-    private fun openReportFragment() {
+    private fun openReportFragment(postId:Int) {
         val reportGroupBottomDialogFragment =
             group?.id?.let {
                 ReportModalFragment.newInstance(
-                    it,
-                    Const.DEFAULT_VALUE, ReportTypes.REPORT_GROUP
+                    postId,
+                    it, ReportTypes.REPORT_POST
                 )
             }
         reportGroupBottomDialogFragment?.show(parentFragmentManager, ReportModalFragment.TAG)

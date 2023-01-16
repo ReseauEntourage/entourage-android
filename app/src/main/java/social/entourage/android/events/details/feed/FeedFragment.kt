@@ -328,12 +328,12 @@ class FeedFragment : Fragment() {
         )
     }
 
-    private fun openReportFragment() {
+    private fun openReportFragment(postId:Int) {
         val reportGroupBottomDialogFragment =
             event?.id?.let {
                 ReportModalFragment.newInstance(
-                    it,
-                    Const.DEFAULT_VALUE, ReportTypes.REPORT_EVENT
+                    postId,
+                    it, ReportTypes.REPORT_POST_EVENT
                 )
             }
         reportGroupBottomDialogFragment?.show(parentFragmentManager, ReportModalFragment.TAG)

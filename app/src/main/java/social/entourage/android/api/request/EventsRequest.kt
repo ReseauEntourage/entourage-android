@@ -45,6 +45,13 @@ interface EventsRequest {
         @Body reportWrapper: ReportWrapper
     ): Call<ResponseBody>
 
+    @POST("outings/{event_id}/chat_messages/{post_id}/report")
+    fun reportEventPost(
+        @Path("event_id") groupId: Int,
+        @Path("post_id") postId: Int,
+        @Body reportWrapper: ReportWrapper
+    ): Call<ResponseBody>
+
     @GET("outings/{id}")
     fun getEvent(@Path("id") eventId: Int): Call<EventWrapper>
 
