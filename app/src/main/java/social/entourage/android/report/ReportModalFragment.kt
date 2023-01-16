@@ -109,6 +109,7 @@ class ReportModalFragment : BottomSheetDialogFragment() {
                 ReportTypes.REPORT_DEMAND.code -> R.string.action_report_demand
                 ReportTypes.REPORT_CONTRIB.code -> R.string.action_report_contrib
                 ReportTypes.REPORT_CONVERSATION.code -> R.string.discussion_report_conversation
+                ReportTypes.REPORT_POST_EVENT.code -> R.string.report_comment
                 else -> R.string.report_member
             }
         )
