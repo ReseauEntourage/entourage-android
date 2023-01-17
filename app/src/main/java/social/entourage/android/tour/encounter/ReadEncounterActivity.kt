@@ -77,7 +77,7 @@ class ReadEncounterActivity : BaseActivity() {
 
         override fun doInBackground(vararg params: Encounter?): Encounter? {
             try {
-                val geoCoder = Geocoder(activityReference.get(), Locale.getDefault())
+                val geoCoder = Geocoder(activityReference.get()!!, Locale.getDefault())
                 val encounter = params[0] ?: return null
                 val addresses = geoCoder.getFromLocation(encounter.latitude, encounter.longitude, 1)
                 if (addresses != null && addresses.size > 0) {

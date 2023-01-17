@@ -356,8 +356,8 @@ class TourServiceManager(
         }
         pointsNeededForNextRequest--
         tour?.addCoordinate(LocationPoint(location.latitude, location.longitude))
-        if (previousLocation != null) {
-            tour?.updateDistance(location.distanceTo(previousLocation))
+        previousLocation?.let {
+            tour?.updateDistance(location.distanceTo(it))
         }
         previousLocation = location
         if (isWebServiceUpdateNeeded) {

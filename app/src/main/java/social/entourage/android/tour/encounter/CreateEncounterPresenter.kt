@@ -72,6 +72,7 @@ class CreateEncounterPresenter
        when (operationType) {
             OperationType.ENCOUNTER_ADD -> activity?.onCreateEncounterFinished(null, encounter)
             OperationType.ENCOUNTER_UPDATE -> activity?.onUpdatingEncounterFinished(null, encounter)
+           else -> {}
         }
     }
 
@@ -79,6 +80,7 @@ class CreateEncounterPresenter
         when (operationType) {
             OperationType.ENCOUNTER_ADD -> activity?.onCreateEncounterFinished("error", null)
             OperationType.ENCOUNTER_UPDATE -> activity?.onUpdatingEncounterFinished("error", null)
+            else -> {}
         }
     }
 

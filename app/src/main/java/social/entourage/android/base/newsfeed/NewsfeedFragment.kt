@@ -324,6 +324,7 @@ abstract class NewsfeedFragment : BaseMapFragment(R.layout.fragment_map), NewsFe
                     fragment_map_main_layout?.let {EntSnackbar.make(it, R.string.no_browser_error, Snackbar.LENGTH_SHORT).show()}
                 }
             }
+            else -> {}
         }
     }
 
@@ -594,7 +595,8 @@ abstract class NewsfeedFragment : BaseMapFragment(R.layout.fragment_map), NewsFe
             val currentLocation = EntLocation.currentLocation
             val newLocation = EntLocation.cameraPositionToLocation(null, cameraPosition)
             val newZoom = cameraPosition.zoom
-            if (entService != null && (newZoom / previousCameraZoom >= ZOOM_REDRAW_LIMIT || newLocation.distanceTo(previousCameraLocation) >= REDRAW_LIMIT)) {
+            val distance: Float  = previousCameraLocation?.let {newLocation.distanceTo(it) } ?: 0.0f
+            if (entService != null && (newZoom / previousCameraZoom >= ZOOM_REDRAW_LIMIT || distance >= REDRAW_LIMIT)) {
                 if (previousCameraZoom != newZoom) {
                     if (previousCameraZoom > newZoom) {
                         AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_MAP_ZOOM_IN)

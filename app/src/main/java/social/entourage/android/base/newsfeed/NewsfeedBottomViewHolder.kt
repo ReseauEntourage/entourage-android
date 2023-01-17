@@ -59,6 +59,9 @@ class NewsfeedBottomViewHolder(view: View) : BaseCardViewHolder(view) {
                     itemView.newsfeed_tab_tours_content?.visibility = View.GONE
                     itemView.newsfeed_tab_events_content?.visibility = if(contentType!= CONTENT_TYPE_NO_MORE_ITEMS) View.VISIBLE else View.GONE
                 }
+                else -> {
+
+                }
             }
         }
     }

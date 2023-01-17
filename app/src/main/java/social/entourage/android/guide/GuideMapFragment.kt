@@ -234,7 +234,8 @@ open class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), ApiC
             map?.cameraPosition?.let {position ->
                 val newLocation = EntLocation.cameraPositionToLocation(null, position)
                 val newZoom = position.zoom
-                if (newZoom / previousCameraZoom >= ZOOM_REDRAW_LIMIT || newLocation.distanceTo(previousCameraLocation) >= REDRAW_LIMIT) {
+                val distance = previousCameraLocation?.let {newLocation.distanceTo(it) } ?: 0.0f
+                if (newZoom / previousCameraZoom >= ZOOM_REDRAW_LIMIT || distance >= REDRAW_LIMIT) {
                     previousCameraZoom = newZoom
                     previousCameraLocation = newLocation
                     presenter.updatePoisNearby(map)

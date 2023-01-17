@@ -214,7 +214,7 @@ class CreateEncounterActivity : BaseSecuredActivity(), LocationFragment.OnFragme
 
         override fun doInBackground(vararg params: LatLng?): String? {
             try {
-                val geoCoder = Geocoder(activityReference.get(), Locale.getDefault())
+                val geoCoder = Geocoder(activityReference.get()!!, Locale.getDefault())
                 val location = params[0] ?: return null
                 val addresses = geoCoder.getFromLocation(location.latitude, location.longitude, 1)
                 if (addresses != null && addresses.size > 0) {

@@ -558,20 +558,22 @@ open class BaseCreateEntourageFragment
 
     private inner class GeocoderTask : AsyncTask<LatLng?, Void?, String>() {
         override fun doInBackground(vararg params: LatLng?): String? {
-            try {
-                params[0]?.let { location ->
-                    val geoCoder = Geocoder(activity, Locale.getDefault())
-                    geoCoder.getFromLocation(location.latitude, location.longitude, 1)?.let { addresses ->
-                        if (addresses.size > 0) {
-                            if (addresses[0].maxAddressLineIndex >= 0) {
-                                return addresses[0].getAddressLine(0)
+            activity?.let {activity ->
+                try {
+                    params[0]?.let { location ->
+                        val geoCoder = Geocoder(activity, Locale.getDefault())
+                        geoCoder.getFromLocation(location.latitude, location.longitude, 1)?.let { addresses ->
+                            if (addresses.size > 0) {
+                                if (addresses[0].maxAddressLineIndex >= 0) {
+                                    return addresses[0].getAddressLine(0)
+                                }
                             }
                         }
                     }
+                } catch (ignored: IOException) {
+                } catch (ignored: NullPointerException) {
+                } catch (ignored: IllegalStateException) {
                 }
-            } catch (ignored: IOException) {
-            } catch (ignored: NullPointerException) {
-            } catch (ignored: IllegalStateException) {
             }
             return ""
         }
