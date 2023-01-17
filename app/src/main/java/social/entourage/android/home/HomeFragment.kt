@@ -76,12 +76,7 @@ class HomeFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        if (!isAlreadyLoadSummary) {
-            reloadDatasFromRecos(true)
-        }
-        else {
-            isAlreadyLoadSummary = false
-        }
+        reloadDatasFromRecos(true)
         homePresenter.getNotificationsCount()
 
         AnalyticsEvents.logEvent(AnalyticsEvents.Home_view_home)
@@ -108,10 +103,15 @@ class HomeFragment : Fragment() {
     }
 
     private fun reloadDatasFromRecos(isOk:Boolean) {
-        homePresenter.getSummary()
+        if (!isAlreadyLoadSummary) {
+            isAlreadyLoadSummary = true
+            homePresenter.getSummary()
+        }
+
     }
 
     private fun updateContributionsView(summary: Summary) {
+        isAlreadyLoadSummary = false
         userSummary = summary
         with(binding) {
             summary.meetingsCount?.let {
