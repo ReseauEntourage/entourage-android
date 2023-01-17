@@ -1,10 +1,12 @@
 package social.entourage.android
 
+import android.Manifest
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.widget.Button
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.NotificationManagerCompat
 import androidx.lifecycle.ViewModelProvider
@@ -144,17 +146,44 @@ class MainActivity : BaseSecuredActivity() {
         intent = null
     }
 
+    private val requestNotificationPermissionLauncher =
+        registerForActivityResult(
+            ActivityResultContracts.RequestPermission()
+        ) { isGranted ->
+            EntourageApplication.get().sharedPreferences.edit()
+                .putBoolean(EntourageApplication.KEY_NOTIFICATIONS_ENABLED, isGranted)
+                .apply()
+            initializePushNotifications()
+        }
+
     private fun initializePushNotifications() {
-        val notificationsEnabled = EntourageApplication.get().sharedPreferences.getBoolean(
-            EntourageApplication.KEY_NOTIFICATIONS_ENABLED,
-            true
-        )
-        if (notificationsEnabled) {
-            FirebaseMessaging.getInstance().token.addOnSuccessListener { token ->
-                presenter.updateApplicationInfo(token)
-            }
+        val sharedPref = EntourageApplication.get().sharedPreferences
+        if(!sharedPref.contains(EntourageApplication.KEY_NOTIFICATIONS_ENABLED)) {
+            //while processing we assume Permission is not granted
+            sharedPref.edit()
+                .putBoolean(EntourageApplication.KEY_NOTIFICATIONS_ENABLED, false)
+                .apply()
+            requestNotificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
         } else {
-            presenter.deleteApplicationInfo()
+            var notificationsEnabled = sharedPref.getBoolean(
+                EntourageApplication.KEY_NOTIFICATIONS_ENABLED,
+                true
+            )
+            val areNotificationEnabled = NotificationManagerCompat.from(this).areNotificationsEnabled()
+            if(notificationsEnabled!=areNotificationEnabled) {
+                notificationsEnabled = areNotificationEnabled
+                sharedPref.edit()
+                    .putBoolean(EntourageApplication.KEY_NOTIFICATIONS_ENABLED, areNotificationEnabled)
+                    .apply()
+            }
+            if (notificationsEnabled) {
+                FirebaseMessaging.getInstance().token.addOnSuccessListener { token ->
+                    presenter.updateApplicationInfo(token)
+                }
+            } else {
+                presenter.deleteApplicationInfo()
+                requestNotificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+            }
         }
     }
 

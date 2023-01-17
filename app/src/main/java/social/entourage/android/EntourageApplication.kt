@@ -177,7 +177,7 @@ class EntourageApplication : MultiDexApplication() {
         // ----------------------------------
         const val KEY_TUTORIAL_DONE = "social.entourage.android.KEY_TUTORIAL_DONE"
         const val KEY_REGISTRATION_ID = "ENTOURAGE_REGISTRATION_ID"
-        const val KEY_NOTIFICATIONS_ENABLED = "ENTOURAGE_NOTIFICATION_ENABLED"
+        const val KEY_NOTIFICATIONS_ENABLED = "ENTOURAGE_NOTIFICATION_ENABLED_V8"
         const val KEY_GEOLOCATION_ENABLED = "ENTOURAGE_GEOLOCATION_ENABLED"
         const val KEY_MIGRATION_V7_OK = "ENTOURAGE_MIGRATION_V7_OK"
 
