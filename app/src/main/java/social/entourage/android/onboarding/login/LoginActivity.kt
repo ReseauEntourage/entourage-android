@@ -3,6 +3,7 @@ package social.entourage.android.onboarding.login
 import android.content.Intent
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.util.Log
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_login.*
 import social.entourage.android.EntourageApplication

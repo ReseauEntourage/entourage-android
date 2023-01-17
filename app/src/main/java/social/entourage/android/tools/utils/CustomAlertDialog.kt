@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
@@ -55,6 +56,7 @@ object CustomAlertDialog {
         val builder = AlertDialog.Builder(context)
         builder.setView(customDialog)
         val alertDialog = builder.create()
+
         customDialog.findViewById<TextView>(R.id.title).text = title
         customDialog.findViewById<TextView>(R.id.content).text = content
         customDialog.findViewById<Button>(R.id.yes).visibility = View.GONE
@@ -62,6 +64,12 @@ object CustomAlertDialog {
             text = action
             setOnClickListener {
                 onAction()
+                alertDialog.dismiss()
+            }
+        }
+        with(customDialog.findViewById<ImageButton>(R.id.btn_cross)) {
+            visibility = View.VISIBLE
+            setOnClickListener {
                 alertDialog.dismiss()
             }
         }

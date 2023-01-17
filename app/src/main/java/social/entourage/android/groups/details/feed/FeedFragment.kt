@@ -44,6 +44,7 @@ import social.entourage.android.report.ReportModalFragment
 import social.entourage.android.report.ReportTypes
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.log.AnalyticsEvents
+import social.entourage.android.tools.utils.CustomAlertDialog
 import social.entourage.android.tools.utils.px
 import uk.co.markormesher.android_fab.SpeedDialMenuAdapter
 import uk.co.markormesher.android_fab.SpeedDialMenuItem
@@ -65,7 +66,6 @@ class FeedFragment : Fragment() {
 
     private val speedDialMenuAdapter = object : SpeedDialMenuAdapter() {
         override fun getCount(): Int = 2
-
         override fun getMenuItem(context: Context, position: Int): SpeedDialMenuItem =
             when (position) {
                 0 -> SpeedDialMenuItem(
@@ -85,15 +85,12 @@ class FeedFragment : Fragment() {
                 )
             }
 
+
+
         override fun onMenuItemClick(position: Int): Boolean {
             when (position) {
                 0 -> {
-                    AnalyticsEvents.logEvent(
-                        AnalyticsEvents.ACTION_GROUP_FEED_NEW_POST
-                    )
-                    val intent = Intent(context, CreatePostGroupActivity::class.java)
-                    intent.putExtra(Const.ID, groupId)
-                    startActivityForResult(intent, 0)
+                    createAPost()
                 }
                 1 -> {
                     AnalyticsEvents.logEvent(
@@ -253,6 +250,15 @@ class FeedFragment : Fragment() {
         })
     }
 
+    private fun createAPost(){
+        AnalyticsEvents.logEvent(
+            AnalyticsEvents.ACTION_GROUP_FEED_NEW_POST
+        )
+        val intent = Intent(context, CreatePostGroupActivity::class.java)
+        intent.putExtra(Const.ID, groupId)
+        startActivityForResult(intent, 0)
+    }
+
     private fun updateView() {
         MetaDataRepository.metaData.observe(requireActivity(), ::handleMetaData)
         with(binding) {
@@ -352,7 +358,22 @@ class FeedFragment : Fragment() {
                 group?.member = !it.member
                 updateButtonJoin()
                 handleCreatePostButton()
+                showWelcomeMessage()
             }
+        }
+    }
+
+    private fun showWelcomeMessage(){
+        var message = getString(R.string.welcome_message_placeholder)
+        var title = String.format(getString(R.string.welcome_message_title), group?.name)
+        if (group?.welcomeMessage?.isNotBlank() == true) message = group?.welcomeMessage.toString()
+
+        CustomAlertDialog.showOnlyOneButton(
+            requireContext(),
+            title,
+            message,
+            getString(R.string.welcome_message_btn_title)){
+                this.createAPost()
         }
     }
 
