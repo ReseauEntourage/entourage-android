@@ -124,11 +124,16 @@ class ChoosePhotoModalFragment : BottomSheetDialogFragment() {
     }
 
     private fun saveBitmap(bitmap: Bitmap) {
-        binding.cropView.setBitmap(bitmap)
-        val photoFile = photoFileUri?.let {
-            Utils.saveBitmapToFileWithUrl(bitmap,
-                it, requireContext())
+        try {
+            binding.cropView.setBitmap(bitmap)
+            val photoFile = photoFileUri?.let {
+                Utils.saveBitmapToFileWithUrl(bitmap,
+                    it, requireContext())
+            }
+        }catch (e: Exception){
+            
         }
+
 
     }
 
