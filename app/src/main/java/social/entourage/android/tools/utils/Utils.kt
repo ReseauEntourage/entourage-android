@@ -285,6 +285,15 @@ object Utils {
         return photoFile
     }
 
+    fun saveBitmapToFileWithUrl(bitmap: Bitmap, uri: Uri , context: Context): File {
+        val resolver = context.contentResolver
+        val photoFile = createImageFile()
+        val outputStream = resolver.openOutputStream(uri)
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
+        outputStream?.close()
+        return photoFile
+    }
+
     @Throws(IOException::class)
     private fun createImageFile(): File {
         // Create an image file name

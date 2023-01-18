@@ -5,10 +5,12 @@ import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,10 +21,13 @@ import androidx.core.content.FileProvider
 import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.takusemba.cropme.OnCropListener
+import kotlinx.android.synthetic.main.fragment_onboarding_edit_photo.*
 import social.entourage.android.R
 import social.entourage.android.databinding.NewFragmentChoosePhotoModalBinding
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.log.AnalyticsEvents
+import social.entourage.android.tools.utils.Utils
 import timber.log.Timber
 import java.io.File
 import java.io.IOException
@@ -82,12 +87,51 @@ class ChoosePhotoModalFragment : BottomSheetDialogFragment() {
         handleCloseButton()
         handleValidateButton()
         setStyle()
+        setCropView()
     }
 
     fun setStyle(){
         setStyle(STYLE_NORMAL, R.style.CustomBottomSheetDialogTheme)
         setCancelable(false)
     }
+
+    fun setCropView(){
+        binding.cropView.addOnCropListener(object : OnCropListener {
+            override fun onSuccess(bitmap: Bitmap) {
+                try {
+                    saveBitmap(bitmap)
+                    setFragmentResult(
+                        Const.REQUEST_KEY_CHOOSE_PHOTO,
+                        bundleOf(
+                            Const.CHOOSE_PHOTO to photoFileUri
+                        )
+                    )
+                    dismiss()
+                } catch (e: IOException) {
+                    Toast.makeText(activity, R.string.user_photo_error_not_saved, Toast.LENGTH_SHORT).show()
+                }
+            }
+            override fun onFailure(e: Exception) {
+                try {
+                    Toast.makeText(activity, R.string.user_photo_error_no_photo, Toast.LENGTH_SHORT).show()
+                    ui_photo_edit_progressBar?.visibility = View.GONE
+                    ui_edit_photo_validate?.isEnabled = true
+                } catch (e2: IOException) {
+                    Timber.w(e2)
+                }
+            }
+        })
+    }
+
+    private fun saveBitmap(bitmap: Bitmap) {
+        binding.cropView.setBitmap(bitmap)
+        val photoFile = photoFileUri?.let {
+            Utils.saveBitmapToFileWithUrl(bitmap,
+                it, requireContext())
+        }
+
+    }
+
 
     private fun handleImportPictureButton() {
         binding.importPicture.root.setOnClickListener {
@@ -175,15 +219,10 @@ class ChoosePhotoModalFragment : BottomSheetDialogFragment() {
             } catch(e: Exception) {
                 Timber.e(e)
             }
-            setFragmentResult(
-                Const.REQUEST_KEY_CHOOSE_PHOTO,
-                bundleOf(
-                    Const.CHOOSE_PHOTO to photoFileUri
-                )
-            )
-            dismiss()
+
         }
     }
+
 
     private fun handleCloseButton() {
         binding.header.iconCross.setOnClickListener {
@@ -257,6 +296,7 @@ class ChoosePhotoModalFragment : BottomSheetDialogFragment() {
             }
         }
     }
+
 
     companion object {
         const val TAG = "ChooseGalleryPhotoModalFragment"
