@@ -76,9 +76,7 @@ class OnboardingAPI {
         loginService.login(LoginWrapper(phoneNumber, smsCode))
                 .enqueue(object : Callback<LoginResponse> {
             override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
-                Log.wtf("wtf", "eho response")
                 if (response.isSuccessful) {
-                    Log.wtf("wtf", "eho success")
                     response.body()?.user?.let {
                         authenticationController.saveUser(it)
                         authenticationController.saveUserPhoneAndCode(phoneNumber, smsCode)
@@ -87,15 +85,12 @@ class OnboardingAPI {
                     listener(true,response.body(),null)
                 } else {
                     val errorString = response.errorBody()?.string()
-                    Log.wtf("wtf", "eho error " + errorString)
                     listener(false,null,errorString)
                 }
             }
 
             override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
                 listener(false,null,null)
-                Log.wtf("wtf", "eho faliure " + t.message)
-                Log.wtf("wtf", "eho faliure " + t.localizedMessage)
             }
         })
     }

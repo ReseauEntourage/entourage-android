@@ -15,7 +15,6 @@ class PreOnboardingChoiceActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_pre_onboarding_choice)
-        Log.wtf("wtf", "jsuis là")
         val isFromOnboarding = intent.getBooleanExtra("isFromOnboarding",false)
 
         if (isFromOnboarding) {
