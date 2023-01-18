@@ -2,6 +2,7 @@ package social.entourage.android.onboarding.pre_onboarding
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import kotlinx.android.synthetic.main.activity_pre_onboarding_choice.*
 import social.entourage.android.R
 import social.entourage.android.base.BaseActivity
@@ -14,7 +15,7 @@ class PreOnboardingChoiceActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_pre_onboarding_choice)
-
+        Log.wtf("wtf", "jsuis là")
         val isFromOnboarding = intent.getBooleanExtra("isFromOnboarding",false)
 
         if (isFromOnboarding) {

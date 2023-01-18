@@ -15,6 +15,8 @@ import social.entourage.android.api.model.feed.NewsfeedItem
 import social.entourage.android.api.model.feed.NewsfeedItem.NewsfeedItemJsonAdapter
 import social.entourage.android.api.request.*
 import social.entourage.android.authentication.AuthenticationInterceptor
+import social.entourage.android.tools.utils.Const
+import java.util.concurrent.TimeUnit
 
 /**
  * Module related to Application
@@ -57,6 +59,9 @@ class ApiModule {
     fun providesOkHttpClient(): OkHttpClient {
         val builder = OkHttpClient.Builder()
         builder.addInterceptor(AuthenticationInterceptor)
+            .readTimeout(Const.READ_CONNECT_WRITE_TIMEOUT, TimeUnit.SECONDS)
+            .connectTimeout(Const.READ_CONNECT_WRITE_TIMEOUT, TimeUnit.SECONDS)
+            .writeTimeout(Const.READ_CONNECT_WRITE_TIMEOUT, TimeUnit.SECONDS)
         if (BuildConfig.DEBUG) {
             val loggingInterceptor = HttpLoggingInterceptor()
             loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
