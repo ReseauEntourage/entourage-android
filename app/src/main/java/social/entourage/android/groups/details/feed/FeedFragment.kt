@@ -367,7 +367,6 @@ class FeedFragment : Fragment() {
         var message = getString(R.string.welcome_message_placeholder)
         var title = getString(R.string.welcome_message_title)
         if (group?.welcomeMessage?.isNotBlank() == true) message = group?.welcomeMessage.toString()
-
         CustomAlertDialog.showOnlyOneButton(
             requireContext(),
             title,

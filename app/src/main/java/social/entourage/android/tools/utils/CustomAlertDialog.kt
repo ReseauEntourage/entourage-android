@@ -3,6 +3,7 @@ package social.entourage.android.tools.utils
 import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.Button
@@ -57,11 +58,19 @@ object CustomAlertDialog {
         builder.setView(customDialog)
         val alertDialog = builder.create()
 
-        customDialog.findViewById<TextView>(R.id.title).text = title
+        with(customDialog.findViewById<TextView>(R.id.title)){
+            text = title
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                setTextColor(context.getColor(R.color.light_orange))
+            }
+        }
         customDialog.findViewById<TextView>(R.id.content).text = content
         customDialog.findViewById<Button>(R.id.yes).visibility = View.GONE
         with(customDialog.findViewById<TextView>(R.id.no)) {
             text = action
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                setTextColor(context.getColor(R.color.orange))
+            }
             setOnClickListener {
                 onAction()
                 alertDialog.dismiss()
