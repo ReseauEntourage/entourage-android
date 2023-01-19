@@ -92,7 +92,7 @@ class LoginActivity : BaseActivity() {
             startActivity(intent)
         }
 
-        val text = "En cliquant sur <b>Je me connecte</b>, vous acceptez les <a href='https://www.entourage.social/cgu/'>Conditions Générales d'Utilisation</a> et <a href='https://www.entourage.social/politique-de-confidentialite/'>Politique de Confidentialité</a> d'Entourage."
+        val text = "En cliquant sur <b>Je me connecte</b>, vous acceptez les <a href='https://www.entourage.social/cgu/'>Conditions Générales d'Utilisation</a> et la <a href='https://www.entourage.social/politique-de-confidentialite/'>Politique de Confidentialité</a> d'Entourage."
         tv_condition_generales.text = Html.fromHtml(text)
         tv_condition_generales.movementMethod = LinkMovementMethod.getInstance()
     }
