@@ -16,7 +16,8 @@
             android:paddingHorizontal="15dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/onboard_login_mainlayout">
 
             <ImageView
                 android:id="@+id/icon_back"
@@ -212,9 +213,28 @@
             android:paddingEnd="16dp"
             android:text="@string/login_button_connect"
             android:textAllCaps="false"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/onboard_login_mainlayout"
+            app:layout_constraintBottom_toTopOf="@+id/tv_condition_generales"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tv_condition_generales"
+            android:textSize="10sp"
+            android:textColor="@color/grey"
+            android:fontFamily="@font/nunitosans_regular"
+            android:textAlignment="center"
+            app:layout_constraintTop_toBottomOf="@+id/ui_login_button_signup"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"/>
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>>
 </layout>

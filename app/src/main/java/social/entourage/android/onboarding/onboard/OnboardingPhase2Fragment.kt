@@ -7,7 +7,9 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.text.Editable
+import android.text.Html
 import android.text.TextWatcher
+import android.text.method.LinkMovementMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,7 +17,9 @@ import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.fragment_onboarding_phase2.*
+import kotlinx.android.synthetic.main.fragment_onboarding_phase2.tv_condition_generales
 import social.entourage.android.R
 import social.entourage.android.tools.hideKeyboard
 import social.entourage.android.tools.log.AnalyticsEvents
@@ -155,6 +159,9 @@ class OnboardingPhase2Fragment : Fragment() {
         ui_onboard_code_tv_phone_mod?.setOnClickListener {
             callback?.goPreviousManually()
         }
+        val text = "En cliquant sur Je me connecte, vous acceptez les <a href='https://www.entourage.social/cgu/'>Conditions Générales d'Utilisation</a> et <a href='https://www.entourage.social/politique-de-confidentialite/'>Politique de Confidentialité</a> d'Entourage."
+        tv_condition_generales.text = Html.fromHtml(text)
+        tv_condition_generales.movementMethod = LinkMovementMethod.getInstance()
 
         addTextwatcher()
     }

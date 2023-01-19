@@ -3,7 +3,10 @@ package social.entourage.android.onboarding.login
 import android.content.Intent
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.text.Html
+import android.text.method.LinkMovementMethod
 import android.util.Log
+import android.widget.TextView
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_login.*
 import social.entourage.android.EntourageApplication
@@ -35,6 +38,7 @@ class LoginActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         authenticationController = EntourageApplication.get().authenticationController
         setContentView(R.layout.activity_login)
 
@@ -87,6 +91,10 @@ class LoginActivity : BaseActivity() {
             val intent = Intent(this, LoginChangePhoneActivity::class.java)
             startActivity(intent)
         }
+
+        val text = "En cliquant sur Je me connecte, vous acceptez les <a href='https://www.entourage.social/cgu/'>Conditions Générales d'Utilisation</a> et <a href='https://www.entourage.social/politique-de-confidentialite/'>Politique de Confidentialité</a> d'Entourage."
+        tv_condition_generales.text = Html.fromHtml(text)
+        tv_condition_generales.movementMethod = LinkMovementMethod.getInstance()
     }
 
     /********************************
@@ -264,6 +272,8 @@ class LoginActivity : BaseActivity() {
             }
         }
     }
+
+
 
     fun resendCode(phone: String) {
         AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ACTION_LOGIN_SMS)
