@@ -285,13 +285,12 @@ object Utils {
         return photoFile
     }
 
-    fun saveBitmapToFileWithUrl(bitmap: Bitmap, uri: Uri , context: Context): File {
+    fun saveBitmapToFileWithUrl(bitmap: Bitmap, uri: Uri , context: Context){
         val resolver = context.contentResolver
         val photoFile = createImageFile()
         val outputStream = resolver.openOutputStream(uri)
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
         outputStream?.close()
-        return photoFile
     }
 
     @Throws(IOException::class)

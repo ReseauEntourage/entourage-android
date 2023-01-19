@@ -40,6 +40,8 @@ class ChoosePhotoModalFragment : BottomSheetDialogFragment() {
     val binding: NewFragmentChoosePhotoModalBinding get() = _binding!!
 
     var photoFileUri: Uri? = null
+    var pickingPhoto:Boolean = false
+    var takingPhoto:Boolean = false
     private var mCurrentPhotoPath: String? = null
 
     val getContent =
@@ -124,14 +126,31 @@ class ChoosePhotoModalFragment : BottomSheetDialogFragment() {
     }
 
     private fun saveBitmap(bitmap: Bitmap) {
+/*        if(pickingPhoto){
+            binding.cropView.setBitmap(bitmap)
+            photoFileUri?.let {
+                Utils.saveBitmapToFileWithUrl(bitmap,
+                    it, requireContext())
+            }
+            Log.wtf("wtf", "coucou")
+
+        }else if(takingPhoto){
+            binding.cropView.setBitmap(bitmap)
+            photoFileUri?.let {
+                Utils.saveBitmapToFileWithUrl(bitmap,
+                    it, requireContext())
+            }
+        }*/
+
         try {
             binding.cropView.setBitmap(bitmap)
-            val photoFile = photoFileUri?.let {
+            photoFileUri?.let {
                 Utils.saveBitmapToFileWithUrl(bitmap,
                     it, requireContext())
             }
         }catch (e: Exception){
-            
+            Timber.w(e)
+
         }
 
 
@@ -141,12 +160,16 @@ class ChoosePhotoModalFragment : BottomSheetDialogFragment() {
     private fun handleImportPictureButton() {
         binding.importPicture.root.setOnClickListener {
             pickPhoto()
+            this.pickingPhoto = true
+            this.takingPhoto = false
         }
     }
 
     private fun handleTakePictureButton() {
         binding.takePicture.root.setOnClickListener {
             takePhoto()
+            this.takingPhoto = true
+            this.pickingPhoto = false
         }
     }
 
@@ -221,6 +244,13 @@ class ChoosePhotoModalFragment : BottomSheetDialogFragment() {
                 AnalyticsEvents.ACTION_GROUP_FEED_NEW_POST_VALIDATE_PIC)
             try {
                 binding.cropView.crop()
+//                setFragmentResult(
+//                    Const.REQUEST_KEY_CHOOSE_PHOTO,
+//                    bundleOf(
+//                        Const.CHOOSE_PHOTO to photoFileUri
+//                    )
+//                )
+//                dismiss()
             } catch(e: Exception) {
                 Timber.e(e)
             }
