@@ -160,7 +160,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom"
                     android:layout_marginTop="20dp"
-                    android:layout_marginBottom="20dp">
+                    android:layout_marginBottom="0dp">
 
                     <ImageView
                         android:layout_width="wrap_content"
@@ -173,7 +173,29 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/report_user"
-                        tools:text="Signaler l'utilisateur" />
+                        tools:text="@string/report_user" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/block_user"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="20dp">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:src="@drawable/new_block" />
+
+                    <TextView
+                        style="@style/report"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/params_block_user_conv_pop_title"
+                        tools:text="@string/params_block_user_conv_pop_title" />
                 </LinearLayout>
 
             </LinearLayout>

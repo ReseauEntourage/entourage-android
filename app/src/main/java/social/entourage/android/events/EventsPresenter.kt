@@ -1,6 +1,5 @@
 package social.entourage.android.events
 
-import android.util.Log
 import androidx.collection.ArrayMap
 import androidx.lifecycle.MutableLiveData
 import okhttp3.MediaType.Companion.toMediaTypeOrNull

@@ -2,7 +2,6 @@ package social.entourage.android.onboarding.pre_onboarding
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import kotlinx.android.synthetic.main.activity_pre_onboarding_choice.*
 import social.entourage.android.R
 import social.entourage.android.base.BaseActivity

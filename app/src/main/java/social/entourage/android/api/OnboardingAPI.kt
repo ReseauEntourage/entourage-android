@@ -1,7 +1,6 @@
 package social.entourage.android.api
 
 import android.annotation.SuppressLint
-import android.util.Log
 import androidx.collection.ArrayMap
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody.Companion.asRequestBody

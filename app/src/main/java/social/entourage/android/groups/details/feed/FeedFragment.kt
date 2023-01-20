@@ -3,7 +3,6 @@ package social.entourage.android.groups.details.feed
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -307,10 +306,6 @@ class FeedFragment : Fragment() {
                 .transform(CenterCrop(), RoundedCorners(8.px))
                 .into(groupImageToolbar)
         }
-
-        Log.wtf("wtf", "group image size " + binding.groupImage.width + " " + binding.groupImage.height)
-        Log.wtf("wtf", "group tool image size " + binding.groupImageToolbar.width + " " + binding.groupImageToolbar.height)
-
 
         updateButtonJoin()
         initializePosts()

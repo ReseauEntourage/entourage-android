@@ -2,7 +2,6 @@ package social.entourage.android.message.push
 
 import android.content.Context
 import android.content.Intent
-import android.util.Log
 import androidx.core.os.bundleOf
 import androidx.fragment.app.FragmentManager
 import social.entourage.android.Navigation
