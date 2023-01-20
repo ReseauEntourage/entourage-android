@@ -56,9 +56,9 @@ class AuthenticationController() {
     }
 
     fun logOutUser() {
-        saveCurrentUser()
         user = null
         userPreferences = UserPreferences()
+        saveCurrentUser()
     }
 
     val isAuthenticated: Boolean
@@ -178,10 +178,8 @@ class AuthenticationController() {
     }
 
     private fun saveCurrentUser() {
-        user?.let { user->
-            appSharedPref.putObject(PREF_KEY_USER, user)
-            appSharedPref.commit()
-        }
+        appSharedPref.putObject(PREF_KEY_USER, user)
+        appSharedPref.commit()
     }
 
     var isIgnoringActionZone
