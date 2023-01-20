@@ -149,6 +149,7 @@ class UserProfileFragment : Fragment() {
         if (isMe) {
             binding.message.root.visibility = View.GONE
             binding.report.visibility = View.GONE
+            binding.blockUser.visibility = View.GONE
             binding.information.text = getString(R.string.my_activity)
         }
 
