@@ -116,9 +116,9 @@ class GroupEventsListAdapter(
                 participantsCount
             )
 
-        child.metadata?.landscapeThumbnailUrl?.let {
+        child.metadata?.landscapeUrl?.let {
             Glide.with(context)
-                .load(Uri.parse(child.metadata.landscapeThumbnailUrl))
+                .load(Uri.parse(child.metadata.landscapeUrl))
                 .placeholder(R.drawable.ic_event_placeholder)
                 .error(R.drawable.ic_event_placeholder)
                 .apply(RequestOptions().override(90.px, 90.px))
