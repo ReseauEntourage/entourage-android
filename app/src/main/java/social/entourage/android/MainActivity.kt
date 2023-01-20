@@ -26,7 +26,6 @@ import social.entourage.android.message.push.PushNotificationManager
 import social.entourage.android.home.CommunicationHandlerBadgeViewModel
 import social.entourage.android.home.UnreadMessages
 import social.entourage.android.message.push.PushNotificationLinkManager
-import social.entourage.android.onboarding.pre_onboarding.PreOnboardingStartActivity
 import social.entourage.android.tools.log.AnalyticsEvents
 
 class MainActivity : BaseSecuredActivity() {
@@ -109,34 +108,6 @@ class MainActivity : BaseSecuredActivity() {
         }
     }
 
-    fun logout() {
-        //remove user phone
-        val sharedPreferences = EntourageApplication.get().sharedPreferences
-        val editor = sharedPreferences.edit()
-        authenticationController.me?.let { me ->
-            (sharedPreferences.getStringSet(
-                EntourageApplication.KEY_TUTORIAL_DONE,
-                HashSet()
-            ) as HashSet<String?>?)?.let { loggedNumbers ->
-                loggedNumbers.remove(me.phone)
-                editor.putStringSet(EntourageApplication.KEY_TUTORIAL_DONE, loggedNumbers)
-            }
-        }
-        presenter.deleteApplicationInfo()
-        editor.remove(EntourageApplication.KEY_REGISTRATION_ID)
-        editor.remove(EntourageApplication.KEY_NOTIFICATIONS_ENABLED)
-        editor.remove(EntourageApplication.KEY_GEOLOCATION_ENABLED)
-        editor.remove(EntourageApplication.KEY_NO_MORE_DEMAND)
-        editor.putInt(EntourageApplication.KEY_NB_OF_LAUNCH, 0)
-        editor.apply()
-
-        authenticationController.logOutUser()
-        EntourageApplication.get(applicationContext).removeAllPushNotifications()
-        AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_LOGOUT)
-        startActivity(Intent(this, PreOnboardingStartActivity::class.java))
-        finish()
-    }
-
     private fun checkIntentAction(action: String, extras: Bundle?) {
         val message = extras?.get(PushNotificationManager.PUSH_MESSAGE) as? Message
         message?.let {
@@ -181,7 +152,7 @@ class MainActivity : BaseSecuredActivity() {
                     presenter.updateApplicationInfo(token)
                 }
             } else {
-                presenter.deleteApplicationInfo()
+                presenter.deleteApplicationInfo(){}
                 requestNotificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
             }
         }
@@ -288,5 +259,9 @@ class MainActivity : BaseSecuredActivity() {
     fun showGuideMap() {
         val intent = Intent(this, GDSMainActivity::class.java)
         startActivity(intent)
+    }
+
+    fun deleteApplicationInfo(listener:() -> Unit) {
+        presenter.deleteApplicationInfo(listener)
     }
 }
