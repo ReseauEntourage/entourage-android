@@ -131,7 +131,6 @@ class ChoosePhotoModalFragment : BottomSheetDialogFragment() {
                 Utils.saveBitmapToFileWithUrl(bitmap,
                     it, requireContext())
             }
-            Log.wtf("wtf", "coucou")
 
         }else if(takingPhoto){
             binding.cropView.setBitmap(bitmap)

@@ -187,6 +187,7 @@ class ReportModalFragment : BottomSheetDialogFragment() {
             setupViewStep1()
         }
         binding.send.setOnClickListener {
+
             reportedId?.let { id ->
                 when (reportType) {
                     ReportTypes.REPORT_USER.code -> userPresenter.sendReport(

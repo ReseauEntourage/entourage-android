@@ -18,6 +18,7 @@ class EventCommentActivity : CommentActivity() {
         eventPresenter.getCurrentParentPost.observe(this, ::handleParentPost)
         eventPresenter.getPostComments(id, postId)
         setAdapterForEvent()
+        super.setIsEventTrue()
     }
 
     override fun addComment() {

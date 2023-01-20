@@ -287,7 +287,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="event_date">"dd/MM/yyyy"</string>
     <string name="event_date_time">"dd MMMM yyyy à HH'h'mm"</string>
     <string name="post_date">"dd.MM.yyyy"</string>
-    <string name="comments">Commentaires</string>
+    <string name="comments_title">Commentaires</string>
     <string name="comments_date">dd.MM.yy à HH:mm</string>
     <string name="write_your_message">Écrire votre message</string>
     <string name="share_post">Partager</string>
