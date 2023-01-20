@@ -308,6 +308,10 @@ class FeedFragment : Fragment() {
                 .into(groupImageToolbar)
         }
 
+        Log.wtf("wtf", "group image size " + binding.groupImage.width + " " + binding.groupImage.height)
+        Log.wtf("wtf", "group tool image size " + binding.groupImageToolbar.width + " " + binding.groupImageToolbar.height)
+
+
         updateButtonJoin()
         initializePosts()
         handleCreatePostButton()
