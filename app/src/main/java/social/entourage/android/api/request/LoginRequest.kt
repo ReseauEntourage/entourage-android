@@ -6,7 +6,6 @@ import retrofit2.http.Body
 import retrofit2.http.POST
 import social.entourage.android.api.model.User
 
-
 class LoginResponse(val user: User)
 
 class LoginWrapper(@field:SerializedName("phone") var phone: String, @field:SerializedName("sms_code") var smsCode: String)

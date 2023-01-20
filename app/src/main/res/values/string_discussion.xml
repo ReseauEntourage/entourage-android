@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="discussion_main_title">Discussions</string>
+    <string name="discussion_settings_title">Paramètres de la conversation</string>
+    <string name="discussion_settings_signal">Signaler</string>
+    <string name="discussion_settings_signal_sub">Signalez cette conversation à l\'équipe Entourage.</string>
+    <string name="discussion_settings_profil">Voir le profil</string>
+    <string name="discussion_settings_members">Membres de la conversation</string>
+    <string name="discussion_settings_quit">Quitter la conversation</string>
+
+    <string name="discussion_settings_search">Rechercher un membre de la conversation</string>
+    <string name="discussion_settings_search_empty">Oups, aucun résultat ne correspond à votre recherche ! </string>
+    <string name="discussion_report_conversation">Signaler la conversation</string>
+
+    <string name="leave_conversation">Quitter la conversation</string>
+    <string name="leave_conversation_dialog_content">Souhaitez-vous quitter la conversation ?</string>
+
+    <string name="discussion_pop_new_message_title">Nouvelle conversation</string>
+    <string name="discussion_pop_new_message_subtitle">Vous n’avez pas encore échangé avec cet utilisateur. En cas de problème, vous pouvez signaler la conversation dans les paramètres.</string>
+
+    <string name="discussion_block_title">Bloquer</string>
+    <string name="discussion_block_subtitle">%s ne pourra plus vous écrire.</string>
+
+    //Pop Blockuser
+    <string name="params_block_user_conv_pop_title">Bloquer l’utilisateur</string>
+    <string name="params_block_user_conv_pop_message">Souhaitez vous bloquer %s ?\nCet utilisateur ne pourra plus vous envoyer de message. Vous pourrez débloquer l’utilisateur à tout moment depuis les paramètres de votre profil.</string>
+    <string name="params_block_user_conv_pop_bt_quit">Bloquer</string>
+    <string name="params_block_user_conv_pop_bt_cancel">Annuler</string>
+
+    <string name="params_block_user_conv_pop_validate_title">Bloquer %s</string>
+    <string name="params_block_user_conv_pop_validate_subtitle">Ce contact a bien été bloqué.</string>
+    <string name="params_block_user_conv_pop_validate_bt">Ok</string>
+
+    <string name="message_user_blocked_by_me_list">Vous avez bloqué ce contact</string>
+     <string name="message_user_blocked_by_me">Vous avez bloqué %s . Vous ne pouvez plus lui envoyer de message.</string>
+     <string name="message_user_blocked_by_other">Vous ne pouvez plus envoyer de message à %s . Cette conversation a été bloquée.</string>
+
+    <string name="params_unblock_users_title">Débloquer des contacts</string>
+
+    <string name="settingsUnblockUserInfo">Sélectionnez un ou plusieurs contacts à débloquer.</string>
+    <string name="settingsUnblockBT">Débloquer</string>
+    <string name="settingsUnblockUser_error">Veuillez choisir au moins un contact</string>
+
+     <string name="params_unblock_user_pop_title">Débloquer le contact</string>
+     <string name="params_unblock_users_pop_title">Débloquer les contacts</string>
+     <string name="params_unblock_user_pop_message">Souhaitez-vous débloquer %s ?\nVous pourrez à nouveau vous envoyer des messages.</string>
+     <string name="params_unblock_user_pop_bt_unblock">Débloquer</string>
+     <string name="params_unblock_user_pop_bt_cancel">Annuler</string>
+
+    <string name="params_unblock_user_pop_validate_title">Débloquer %s</string>
+    <string name="params_unblock_user_pop_validate_subtitle">Ce contact vient d\'être débloqué, vous pouvez à nouveau vous écrire.</string>
+    <string name="params_unblock_users_pop_validate_subtitle">Ces contacts viennent d\'être débloqués, vous pouvez à nouveau vous écrire.</string>
+    <string name="params_unblock_user_pop_validate_bt">Ok</string>
+
+    <string name="param_empty_blocked_user">Vous n\'avez bloqué aucun contact.</string>
+
+</resources>

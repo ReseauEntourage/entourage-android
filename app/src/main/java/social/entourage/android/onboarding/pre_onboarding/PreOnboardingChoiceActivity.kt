@@ -2,21 +2,19 @@ package social.entourage.android.onboarding.pre_onboarding
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import kotlinx.android.synthetic.main.activity_pre_onboarding_choice.*
-import social.entourage.android.base.BaseActivity
-import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.R
+import social.entourage.android.base.BaseActivity
 import social.entourage.android.onboarding.login.LoginActivity
-import social.entourage.android.onboarding.OnboardingMainActivity
+import social.entourage.android.onboarding.onboard.OnboardingStartActivity
+import social.entourage.android.tools.log.AnalyticsEvents
 
 class PreOnboardingChoiceActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_pre_onboarding_choice)
-
-        AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_VIEW_START_SIGNUPLOGIN)
-
         val isFromOnboarding = intent.getBooleanExtra("isFromOnboarding",false)
 
         if (isFromOnboarding) {
@@ -24,8 +22,8 @@ class PreOnboardingChoiceActivity : BaseActivity() {
         }
 
         ui_button_signup?.setOnClickListener {
-            AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ACTION_START_SIGNUPSTART)
-            val intent = Intent(this, OnboardingMainActivity::class.java)
+            AnalyticsEvents.logEvent(AnalyticsEvents.PreOnboard_action_signup)
+            val intent = Intent(this, OnboardingStartActivity::class.java)
             //intent.putExtra("fromChoice","signup")
             startActivity(intent)
             finish()
@@ -36,10 +34,12 @@ class PreOnboardingChoiceActivity : BaseActivity() {
         ui_button_about?.setOnClickListener {
             showWebView(getString(R.string.website_url))
         }
+
+        AnalyticsEvents.logEvent(AnalyticsEvents.PreOnboard_view_choice)
     }
 
     fun goLogin() {
-        AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ACTION_START_LOGINSTART)
+        AnalyticsEvents.logEvent(AnalyticsEvents.PreOnboard_action_signin)
         val intent = Intent(this, LoginActivity::class.java)
         startActivity(intent)
         finish()

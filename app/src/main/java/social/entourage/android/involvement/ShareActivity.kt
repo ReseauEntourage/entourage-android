@@ -2,9 +2,9 @@ package social.entourage.android.involvement
 
 import android.content.Intent
 import android.os.Bundle
+import social.entourage.android.R
 import social.entourage.android.base.BaseActivity
 import social.entourage.android.tools.log.AnalyticsEvents
-import social.entourage.android.R
 
 class ShareActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

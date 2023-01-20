@@ -1,29 +1,47 @@
 package social.entourage.android.user.edit.place
 
+import android.location.Geocoder
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
-import kotlinx.android.synthetic.main.fragment_onboarding_place.*
+import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
+import kotlinx.android.synthetic.main.fragment_select_place.*
 import kotlinx.android.synthetic.main.layout_view_title.view.*
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.api.OnboardingAPI
 import social.entourage.android.api.model.User
+import social.entourage.android.groups.create.CommunicationHandlerViewModel
 import social.entourage.android.tools.log.AnalyticsEvents
+import java.io.IOException
 
 class UserEditActionZoneFragment : UserActionPlaceFragment() {
     private var mListener: FragmentListener? = null
 
+    private val viewModel: CommunicationHandlerViewModel by activityViewModels()
+
+    private var setGroupLocation = false
+
     //**********//**********//**********
     // Lifecycle
     //**********//**********//**********
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        arguments?.let {
+            setGroupLocation = it.getBoolean("setGroupLocation")
+        }
+
+        //mFusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
+    }
+
     override fun setupViews() {
         super.setupViews()
 
         if (isSecondaryAddress) {
             AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_VIEW_PROFILE_ACTION_ZONE2)
-        }
-        else {
+        } else {
             AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_VIEW_PROFILE_ACTION_ZONE)
         }
 
@@ -36,6 +54,7 @@ class UserEditActionZoneFragment : UserActionPlaceFragment() {
         }
         edit_place_title_layout?.title_close_button?.setOnClickListener {
             dismiss()
+            findNavController().popBackStack()
         }
     }
 
@@ -43,8 +62,7 @@ class UserEditActionZoneFragment : UserActionPlaceFragment() {
         super.onCurrentLocationClicked()
         if (isSecondaryAddress) {
             AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ACTION_PROFILE_SETACTION_ZONE2_GEOLOC)
-        }
-        else {
+        } else {
             AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ACTION_PROFILE_SETACTION_ZONE_GEOLOC)
         }
     }
@@ -53,8 +71,7 @@ class UserEditActionZoneFragment : UserActionPlaceFragment() {
         super.onSearchCalled()
         if (isSecondaryAddress) {
             AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ACTION_PROFILE_SETACTION_ZONE2_SEARCH)
-        }
-        else {
+        } else {
             AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ACTION_PROFILE_SETACTION_ZONE_SEARCH)
         }
     }
@@ -68,30 +85,72 @@ class UserEditActionZoneFragment : UserActionPlaceFragment() {
     //**********//**********//**********
 
     private fun sendNetwork() {
-        userAddress?.let {userAddress ->
-            AnalyticsEvents.logEvent(
-                    if (isSecondaryAddress) AnalyticsEvents.EVENT_ACTION_PROFILE_ACTION_ZONE2_SUBMIT
-                    else AnalyticsEvents.EVENT_ACTION_PROFILE_ACTION_ZONE_SUBMIT
-            )
-            OnboardingAPI.getInstance().updateAddress(userAddress,isSecondaryAddress) { isOK, userResponse ->
-                if (isOK) {
-                    userResponse?.user?.let {newUser ->
-                        val authenticationController = EntourageApplication.get().components.authenticationController
-                        authenticationController.me?.phone?.let { phone ->
-                            newUser.phone = phone
-                            authenticationController.saveUser(newUser)
+        if (setGroupLocation) {
+            try {
+                val geocoder = Geocoder(requireContext())
+                userAddress?.displayAddress?.let { userDisplayAddress->
+                    geocoder.getFromLocationName(userDisplayAddress, 1)?.let { addresses ->
+                        if (addresses.size > 0) {
+                            with(viewModel.group) {
+                                latitude = addresses.first().latitude
+                                longitude = addresses.first().longitude
+                                displayAddress = userDisplayAddress.toString()
+                            }
                             mListener?.onUserEditActionZoneFragmentAddressSaved()
-                            dismissAllowingStateLoss()
+                            findNavController().popBackStack()
                         }
                     }
-                    activity?.let {Toast.makeText(it, R.string.user_action_zone_send_ok, Toast.LENGTH_LONG).show()}
-                } else {
-                    activity?.let {Toast.makeText(it, R.string.user_action_zone_send_failed, Toast.LENGTH_LONG).show()}
-                    mListener?.onUserEditActionZoneFragmentIgnore()
+                }
+            } catch(e: IOException) {
+                activity?.let {
+                    Toast.makeText(
+                        it,
+                        R.string.user_action_zone_send_failed,
+                        Toast.LENGTH_LONG
+                    ).show()
                 }
             }
-        } ?: run {
-            mListener?.onUserEditActionZoneFragmentIgnore()
+        } else {
+            userAddress?.let { userAddress ->
+                AnalyticsEvents.logEvent(
+                    if (isSecondaryAddress) AnalyticsEvents.EVENT_ACTION_PROFILE_ACTION_ZONE2_SUBMIT
+                    else AnalyticsEvents.EVENT_ACTION_PROFILE_ACTION_ZONE_SUBMIT
+                )
+                OnboardingAPI.getInstance()
+                    .updateAddress(userAddress, isSecondaryAddress) { isOK, userResponse ->
+                        if (isOK) {
+                            userResponse?.user?.let { newUser ->
+                                val authenticationController =
+                                    EntourageApplication.get().authenticationController
+                                authenticationController.me?.phone?.let { phone ->
+                                    newUser.phone = phone
+                                    authenticationController.saveUser(newUser)
+                                    mListener?.onUserEditActionZoneFragmentAddressSaved()
+                                    findNavController().popBackStack()
+                                    dismissAllowingStateLoss()
+                                }
+                            }
+                            activity?.let {
+                                Toast.makeText(
+                                    it,
+                                    R.string.user_action_zone_send_ok,
+                                    Toast.LENGTH_LONG
+                                ).show()
+                            }
+                        } else {
+                            activity?.let {
+                                Toast.makeText(
+                                    it,
+                                    R.string.user_action_zone_send_failed,
+                                    Toast.LENGTH_LONG
+                                ).show()
+                            }
+                            mListener?.onUserEditActionZoneFragmentIgnore()
+                        }
+                    }
+            } ?: run {
+                mListener?.onUserEditActionZoneFragmentIgnore()
+            }
         }
     }
 
@@ -108,12 +167,12 @@ class UserEditActionZoneFragment : UserActionPlaceFragment() {
     companion object {
         val TAG: String? = UserEditActionZoneFragment::class.java.simpleName
 
-        fun newInstance(googlePlaceAddress: User.Address?,isSecondary:Boolean) =
-                UserEditActionZoneFragment().apply {
-                    arguments = Bundle().apply {
-                        putSerializable(ARG_PLACE, googlePlaceAddress)
-                        putBoolean(ARG_2ND,isSecondary)
-                    }
+        fun newInstance(googlePlaceAddress: User.Address?, isSecondary: Boolean) =
+            UserEditActionZoneFragment().apply {
+                arguments = Bundle().apply {
+                    putSerializable(ARG_PLACE, googlePlaceAddress)
+                    putBoolean(ARG_2ND, isSecondary)
                 }
+            }
     }
 }

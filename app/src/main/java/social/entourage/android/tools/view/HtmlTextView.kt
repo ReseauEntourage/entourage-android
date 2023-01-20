@@ -6,7 +6,7 @@ import android.text.method.MovementMethod
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatTextView
 import social.entourage.android.R
-import social.entourage.android.tools.Utils
+import social.entourage.android.tools.utils.Utils
 
 class HtmlTextView : AppCompatTextView {
     private var htmlString: String? = null

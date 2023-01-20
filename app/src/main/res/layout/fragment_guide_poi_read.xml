@@ -597,7 +597,6 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-
     <RelativeLayout
         android:id="@+id/ui_layout_share"
         android:layout_width="match_parent"

@@ -5,7 +5,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.maps.OnMapReadyCallback
 import social.entourage.android.api.model.TimestampedObject
-import social.entourage.android.base.location.LocationUtils.isLocationEnabled
 import social.entourage.android.base.location.LocationUtils.isLocationPermissionGranted
 import social.entourage.android.base.map.MapViewHolder
 
@@ -53,7 +52,7 @@ open class HeaderBaseAdapter : BaseAdapter() {
             mapViewHolder = cardViewHolder
             onMapReadyCallback?.let {cardViewHolder.setMapReadyCallback(it)}
             cardViewHolder.setFollowButtonOnClickListener(onFollowButtonClickListener)
-            cardViewHolder.setGeolocStatusIcon(isLocationEnabled() && isLocationPermissionGranted())
+            cardViewHolder.setGeolocStatusIcon(isLocationPermissionGranted())
         }
         return cardViewHolder
     }

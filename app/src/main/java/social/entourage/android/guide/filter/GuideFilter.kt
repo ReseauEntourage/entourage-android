@@ -65,7 +65,6 @@ class GuideFilter private constructor() : Serializable {
             return filters
         }
 
-
     fun getFiltersSelected() : String {
         var filtersString = ""
         for (catType in CategoryType.values()) {

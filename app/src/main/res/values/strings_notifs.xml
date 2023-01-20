@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="params_notifs_title">Gestion des notifications</string>
+    <string name="param_notifs_switch_notifs">Notifications</string>
+    <string name="param_notifs_switch_messages">Notifications message</string>
+    <string name="param_notifs_switch_groups">Notifications groupe</string>
+    <string name="param_notifs_switch_events">Notifications évènement</string>
+    <string name="param_notifs_switch_actions">Notifications dons &amp; service</string>
+    <string name="param_notifs_validate">Appliquer les modifications</string>
+</resources>

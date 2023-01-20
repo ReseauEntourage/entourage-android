@@ -12,12 +12,6 @@ app:
   - GRADLEW_PATH: ./gradlew
     opts:
       is_expand: false
-  - GRADLE_TASK_TEST: 'testPreprodDebugUnitTest '
-    opts:
-      is_expand: false
-  - GRADLE_TASK_LINT: 'lintEntourageProdRelease '
-    opts:
-      is_expand: false
   - JAVA_OPTS: -Xms512m -Xmx2048m
     opts:
       is_expand: false
@@ -26,8 +20,6 @@ app:
       is_expand: false
 trigger_map:
 - push_branch: develop
-  workflow: dev_entourage
-- push_branch: '*EN-*'
   workflow: dev_entourage
 workflows:
   dev_entourage:
@@ -73,17 +65,6 @@ workflows:
         - api_token: $SLACK__BOT_API_TOKEN
         - channel: '#androiddev'
     - cache-push: {}
-  linter_entourage:
-    before_run:
-    - prepare_workflow
-    steps:
-    - gradle-runner:
-        inputs:
-        - apk_file_include_filter: ""
-        - app_file_include_filter: '*.apk'
-        - gradle_task: assembleDebug
-        - gradle_options: --stacktrace
-    - android-lint@0: {}
   prepare_workflow:
     steps:
     - script@1:
@@ -91,7 +72,7 @@ workflows:
         - content: "#!/usr/bin/env bash\n# fail if any commands fails\nset -e\n# debug log\nset -x\n\n# switching to JAVA 11\nsudo update-alternatives --set javac /usr/lib/jvm/java-11-openjdk-amd64/bin/javac\nsudo update-alternatives --set java /usr/lib/jvm/java-11-openjdk-amd64/bin/java\n   \nexport JAVA_HOME='/usr/lib/jvm/java-11-openjdk-amd64'\nenvman add --key JAVA_HOME --value '/usr/lib/jvm/java-11-openjdk-amd64'"
     - activate-ssh-key:
         run_if: '{{getenv "SSH_RSA_PRIVATE_KEY" | ne ""}}'
-    - git-clone: {}
+    - git-clone@6: {}
     - ruby-script:
         inputs:
         - ruby_content: |-
@@ -122,7 +103,6 @@ workflows:
             issue_keys.uniq!
 
             puts
-
 
             puts "Issue keys found:"
             puts issue_keys.inspect
@@ -195,36 +175,3 @@ workflows:
     - git-tag:
         inputs:
         - tag: Version_$BITRISE_BUILD_NUMBER
-  testui_emulator_entourage:
-    before_run:
-    - prepare_workflow
-    steps:
-    - avd-manager@1: {}
-    - wait-for-android-emulator@1: {}
-    - gradle-runner:
-        inputs:
-        - apk_file_include_filter: ""
-        - app_file_include_filter: '*.apk'
-        - gradle_options: --stacktrace
-        - gradle_task: connectedAndroidTest
-  testui_virtualdevice_entourage:
-    before_run:
-    - prepare_workflow
-    envs:
-    - GRADLE_TASK: assembleDebug
-      opts:
-        is_expand: false
-    - GRADLE_TEST_TASK: assembleAndroidTest
-      opts:
-        is_expand: false
-    steps:
-    - gradle-runner:
-        inputs:
-        - gradle_task: $GRADLE_TASK $GRADLE_TEST_TASK
-    - android-build-for-ui-testing:
-        inputs:
-        - variant: entourageStagingDebug
-        - module: app
-    - virtual-device-testing-for-android:
-        inputs:
-        - test_type: instrumentation

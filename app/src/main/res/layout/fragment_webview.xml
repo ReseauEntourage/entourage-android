@@ -18,18 +18,10 @@
         android:layout_height="match_parent"
         android:visibility="visible">
 
-        <include
-            android:id="@+id/webview_invisible_toolbar"
-            layout="@layout/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="invisible"/>
-
         <LinearLayout
             android:id="@+id/webview_navigation_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/webview_invisible_toolbar"
             android:background="@drawable/webview_navigation_background"
             android:orientation="vertical">
 

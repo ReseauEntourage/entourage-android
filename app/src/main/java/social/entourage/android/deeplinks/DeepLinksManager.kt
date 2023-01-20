@@ -7,11 +7,7 @@ import android.text.util.Linkify
 import android.widget.TextView
 import social.entourage.android.BuildConfig
 import social.entourage.android.MainActivity
-import social.entourage.android.api.model.TimestampedObject
-import social.entourage.android.api.tape.Events.OnFeedItemInfoViewRequestedEvent
 import social.entourage.android.message.push.EntourageFirebaseMessagingService
-import social.entourage.android.tools.EntBus
-import social.entourage.android.user.edit.UserEditFragment
 import java.util.*
 
 /**
@@ -79,12 +75,7 @@ object DeepLinksManager {
             if (pathSegments.size >= 2) {
                 val requestedView = pathSegments[0]
                 val key = pathSegments[1]
-                if (requestedView.equals(DeepLinksView.ENTOURAGES.view, ignoreCase = true)
-                        || requestedView.equals(DeepLinksView.ENTOURAGE.view, ignoreCase = true )
-                                || requestedView.equals(DeepLinksView.APPLINK_ACTION.view,true)) {
-                    //path like /entourage/UUID...
-                    EntBus.post(OnFeedItemInfoViewRequestedEvent(TimestampedObject.ENTOURAGE_CARD, "", key))
-                } else if (requestedView.equals(DeepLinksView.DEEPLINK.view, ignoreCase = true)) {
+                if (requestedView.equals(DeepLinksView.DEEPLINK.view, ignoreCase = true)) {
                     //path like /deeplink/key/...
                     //Remove the requested view and the key from path segments
                     pathSegments.removeAt(0)
@@ -108,12 +99,7 @@ object DeepLinksManager {
             }
         } else*/
         if (key == DeepLinksView.BADGE.view) {
-            val userEditFragment = activity.supportFragmentManager.findFragmentByTag(UserEditFragment.TAG) as UserEditFragment?
-            if (userEditFragment != null) {
-                userEditFragment.onAddAssociationClicked()
-            } else {
-                activity.selectMenuProfileItem("editProfile")
-            }
+            activity.showProfile()
         } else if (key == DeepLinksView.WEBVIEW.view) {
             try {
                 currentUri?.getQueryParameter("url")?.let { urlToOpen ->
@@ -126,7 +112,7 @@ object DeepLinksManager {
             } catch (ignored: Exception) {
             }
         } else if (key == DeepLinksView.PROFILE.view) {
-            activity.selectMenuProfileItem("editProfile")
+            activity.showProfile()
         } else if (key == DeepLinksView.GUIDE.view) {
             activity.showGuide()
         } else if (key == DeepLinksView.EVENTS.view) {
@@ -135,9 +121,9 @@ object DeepLinksManager {
             activity.showMyEntourages()
         } else if (key == DeepLinksView.CREATE_ACTION.view) {
             activity.showActionsTab()
-        } else if (key == DeepLinksView.ENTOURAGE.view || key == DeepLinksView.ENTOURAGES.view) {
+        } else if (key == DeepLinksView.ENTOURAGE.view || key == DeepLinksView.ENTOURAGES.view || key == DeepLinksView.APPLINK_ACTION.view) {
             if (pathSegments != null && pathSegments.isNotEmpty()) {
-                EntBus.post(OnFeedItemInfoViewRequestedEvent(TimestampedObject.ENTOURAGE_CARD, "", pathSegments[0]))
+                //TODO EntBus.post(OnFeedItemInfoViewRequestedEvent(TimestampedObject.ENTOURAGE_CARD, "", pathSegments[0]))
             }
             //TODO check if it is working ??
         } else if (key == DeepLinksView.TUTORIAL.view) {

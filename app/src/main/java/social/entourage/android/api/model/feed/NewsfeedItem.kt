@@ -2,7 +2,6 @@ package social.entourage.android.api.model.feed
 
 import com.google.gson.*
 import social.entourage.android.api.model.BaseEntourage
-import social.entourage.android.api.model.tour.Tour
 import timber.log.Timber
 import java.lang.reflect.Type
 
@@ -21,14 +20,7 @@ class NewsfeedItem {
     // ----------------------------------
     val id: Long
         get() {
-            if (data != null) {
-                if (data is Tour) {
-                    return (data as Tour).id
-                } else if (data is BaseEntourage) {
-                    return (data as BaseEntourage).id
-                }
-            }
-            return 0
+            return (data as? BaseEntourage)?.id ?: 0
         }
 
     class NewsfeedItemJsonAdapter : JsonDeserializer<NewsfeedItem> {
@@ -70,8 +62,6 @@ class NewsfeedItem {
 
         fun getClassFromString(type: String, groupType:String?, actionGroupType: String?): Class<*>? {
             return when (type) {
-                Tour.NEWSFEED_TYPE ->
-                    Tour::class.java
                 BaseEntourage.NEWSFEED_TYPE ->
                     BaseEntourage.getClassFromString(groupType, actionGroupType)
                 Announcement.NEWSFEED_TYPE ->

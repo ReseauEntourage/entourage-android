@@ -44,6 +44,8 @@ class CountryCodePicker : RelativeLayout {
     private var mHideNameCode = false
     private var mShowFlag = true
     private var mShowFullName = false
+
+    var countryCodePickerListener: CountryCodePickerListener? = null
     /**
      * SelectionDialogSearch is the facility to search through the list of country while selecting.
      *
@@ -228,8 +230,7 @@ class CountryCodePicker : RelativeLayout {
         } catch (e: Exception) {
             Timber.e(e)
             if (isInEditMode) {
-                selected_country_tv?.text = context.getString(R.string.phone_code,
-                        context.getString(R.string.country_france_number))
+                selected_country_tv?.text = context.getString(R.string.country_france_flag)
             } else {
                 selected_country_tv?.text = e.message
             }
@@ -247,8 +248,13 @@ class CountryCodePicker : RelativeLayout {
         get() = mSelectedCountry
         set(selectedCountry) {
             //as soon as country is selected, textView should be updated
-            val newSelectedCountry = selectedCountry ?: CountryList.getByCode(context, preferredCountries, mDefaultCountryCode) ?: return
+            val newSelectedCountry = selectedCountry ?: CountryLightList.getByCode(
+                context,
+                preferredCountries,
+                mDefaultCountryCode
+            ) ?: return
             mSelectedCountry = newSelectedCountry
+            countryCodePickerListener?.updatedCountry(newSelectedCountry)
             selected_country_tv?.text = if (!mHideNameCode) {
                 if (mShowFullName) {
                     if (!mHidePhoneCode) {
@@ -266,7 +272,7 @@ class CountryCodePicker : RelativeLayout {
                     }
                 }
             } else {
-                context.getString(R.string.phone_code, newSelectedCountry.phoneCode)
+                newSelectedCountry.flagTxt
             }
         }
 
@@ -280,8 +286,10 @@ class CountryCodePicker : RelativeLayout {
             val localCountryList: MutableList<Country> = ArrayList()
             mCountryPreference?.let {
                 for (nameCode in it.split(",".toRegex()).toTypedArray()) {
-                    val country: Country? = CountryList.getByNameCodeFromCustomCountries(context, customCountries,
-                            nameCode)
+                    val country: Country? = CountryLightList.getByNameCodeFromCustomCountries(
+                        context, customCountries,
+                        nameCode
+                    )
                     if (country != null) {
                         if (!isAlreadyInList(country, localCountryList)) { //to avoid duplicate entry of country
                             localCountryList.add(country)
@@ -307,7 +315,8 @@ class CountryCodePicker : RelativeLayout {
             val localCountryList: MutableList<Country> = ArrayList()
             customMasterCountries?.let {
                 for (nameCode in it.split(",".toRegex()).toTypedArray()) {
-                    val country: Country? = CountryList.getByNameCodeFromAllCountries(context, nameCode)
+                    val country: Country? =
+                        CountryLightList.getByNameCodeFromAllCountries(context, nameCode)
                     if (country != null) {
                         if (!isAlreadyInList(country, localCountryList)) { //to avoid duplicate entry of country
                             localCountryList.add(country)
@@ -334,7 +343,7 @@ class CountryCodePicker : RelativeLayout {
         return if (!customCountries.isNullOrEmpty()) {
             customCountries
         } else {
-            CountryList.getAllCountries(context)
+            CountryLightList.getAllCountries(context)
         }
     }
 
@@ -366,7 +375,10 @@ class CountryCodePicker : RelativeLayout {
      * if you want to set JP +81(Japan) as default country, mDefaultCountryCode =  "JP" or "jp"
      */
     private fun setDefaultCountryUsingNameCode(countryIso: String?) {
-        val defaultCountry: Country = CountryList.getByNameCodeFromAllCountries(context, countryIso) ?: return
+        val defaultCountry: Country = CountryLightList.getByNameCodeFromAllCountries(
+            context,
+            countryIso
+        ) ?: return
         //if correct country is found, set the country
         mDefaultCountryNameCode = defaultCountry.iso
         setDefaultCountry(defaultCountry)
@@ -561,7 +573,7 @@ class CountryCodePicker : RelativeLayout {
             if (mSetCountryByTimeZone) {
                 val tz = TimeZone.getDefault()
                 Timber.d("tz.getID() = %s", tz.id)
-                CountryList.getCountryIsoByTimeZone(context, tz.id)?.let {countryIsos ->
+                CountryLightList.getCountryIsoByTimeZone(context, tz.id)?.let { countryIsos ->
                     setDefaultCountryUsingNameCode(countryIsos[0])
                     selectedCountry = defaultCountry
                 } ?: run  {
@@ -579,4 +591,8 @@ class CountryCodePicker : RelativeLayout {
         const val defaultContentColor = 0
         const val defaultBackgroundColor = Color.TRANSPARENT
     }
+}
+
+interface CountryCodePickerListener {
+    fun updatedCountry(country: Country)
 }

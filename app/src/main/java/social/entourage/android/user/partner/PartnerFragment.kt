@@ -1,6 +1,5 @@
 package social.entourage.android.user.partner
 
-import android.app.AlertDialog
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.net.Uri
@@ -8,6 +7,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.collection.ArrayMap
 import androidx.core.content.res.ResourcesCompat
 import com.bumptech.glide.Glide
@@ -21,10 +21,8 @@ import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.api.model.Partner
 import social.entourage.android.api.request.PartnerResponse
-import social.entourage.android.api.tape.Events
 import social.entourage.android.base.BaseDialogFragment
 import social.entourage.android.deeplinks.DeepLinksManager
-import social.entourage.android.tools.EntBus
 import timber.log.Timber
 
 class PartnerFragment : BaseDialogFragment() {
@@ -62,14 +60,9 @@ class PartnerFragment : BaseDialogFragment() {
         }
     }
 
-    override fun onStop() {
-        super.onStop()
-        EntBus.post(Events.OnRefreshEntourageInformation())
-    }
-
     fun getPartnerInfos() {
         partnerId?.let { partnerId ->
-            EntourageApplication.get().components.userRequest
+            EntourageApplication.get().apiModule.userRequest
                     .getPartnerDetail(partnerId)
                     .enqueue(object : Callback<PartnerResponse> {
                         override fun onResponse(call: Call<PartnerResponse>, response: Response<PartnerResponse>) {
@@ -91,12 +84,13 @@ class PartnerFragment : BaseDialogFragment() {
 
     fun updatePartnerFollow(isFollow:Boolean) {
         val params = ArrayMap<String, Any>()
-        val isFollowParam = ArrayMap<String,Any>()
+        val isFollowParam = ArrayMap<String, Any>()
         isFollowParam["partner_id"] = partner?.id.toString()
         isFollowParam["active"] = if (isFollow) "true" else "false"
         params["following"] = isFollowParam
 
-        EntourageApplication.get().components.userRequest.updateUserPartner(params).enqueue(object : Callback<ResponseBody>{
+        EntourageApplication.get().apiModule.userRequest.updateUserPartner(params).enqueue(object :
+            Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 if (response.isSuccessful) {
                     partner?.let {
@@ -182,22 +176,22 @@ class PartnerFragment : BaseDialogFragment() {
 
         ui_button_asso_address?.setOnClickListener {
             partner?.address?.let {  address ->
-                openLink("geo:0,0?q=$address",Intent.ACTION_VIEW)
+                openLink("geo:0,0?q=$address", Intent.ACTION_VIEW)
             }
         }
         ui_button_asso_mail?.setOnClickListener {
             partner?.email?.let { email ->
-                openLink("mailto:$email",Intent.ACTION_SENDTO)
+                openLink("mailto:$email", Intent.ACTION_SENDTO)
             }
         }
         ui_button_asso_phone?.setOnClickListener {
             partner?.phone?.let { phone ->
-                openLink("tel:$phone",Intent.ACTION_DIAL)
+                openLink("tel:$phone", Intent.ACTION_DIAL)
             }
         }
         ui_button_asso_web?.setOnClickListener {
             partner?.websiteUrl?.let { url ->
-                openLink(url,Intent.ACTION_VIEW)
+                openLink(url, Intent.ACTION_VIEW)
             }
         }
 
@@ -234,12 +228,20 @@ class PartnerFragment : BaseDialogFragment() {
             if (it.isFollowing) {
                 ui_button_follow?.text = getString(R.string.buttonFollowOnPartner)
                 ui_button_follow?.setTextColor(resources.getColor(R.color.white))
-                ui_button_follow?.background = ResourcesCompat.getDrawable(resources, R.drawable.bg_button_rounded_pre_onboard_orange_plain, null)
+                ui_button_follow?.background = ResourcesCompat.getDrawable(
+                    resources,
+                    R.drawable.bg_button_rounded_pre_onboard_orange_plain,
+                    null
+                )
             }
             else {
                 ui_button_follow?.text = getString(R.string.buttonFollowOffPartner)
                 ui_button_follow?.setTextColor(resources.getColor(R.color.accent))
-                ui_button_follow?.background = ResourcesCompat.getDrawable(resources, R.drawable.bg_button_rounded_pre_onboard_orange_stroke, null)
+                ui_button_follow?.background = ResourcesCompat.getDrawable(
+                    resources,
+                    R.drawable.bg_button_rounded_pre_onboard_orange_stroke,
+                    null
+                )
             }
         }
     }

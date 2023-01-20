@@ -7,26 +7,26 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import social.entourage.android.Constants
+import social.entourage.android.EntourageApplication
 import social.entourage.android.api.model.guide.Poi
 import social.entourage.android.api.request.PoiRequest
 import social.entourage.android.api.request.PoiResponse
 import social.entourage.android.authentication.AuthenticationController
-import social.entourage.android.guide.filter.GuideFilter
 import social.entourage.android.base.location.EntLocation
+import social.entourage.android.guide.filter.GuideFilter
 import timber.log.Timber
 import java.net.UnknownHostException
 import java.util.*
-import javax.inject.Inject
 
 /**
  * Presenter controlling the GuideMapFragment
  * @see GuideMapFragment
  */
-class GuideMapPresenter @Inject constructor(
-        private val fragment: GuideMapFragment,
-        private val authenticationController: AuthenticationController,
-        private val poiRequest: PoiRequest) {
-
+class GuideMapPresenter (private val fragment: GuideMapFragment) {
+    private val authenticationController: AuthenticationController
+        get() = EntourageApplication.get().authenticationController
+    private val poiRequest: PoiRequest
+        get() = EntourageApplication.get().apiModule.poiRequest
 
     private var previousEmptyListPopupLocation: Location? = null
     private var poisMap: MutableMap<String, Poi> = TreeMap()

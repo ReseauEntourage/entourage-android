@@ -24,7 +24,6 @@ import social.entourage.android.api.OnboardingAPI
 import social.entourage.android.deeplinks.DeepLinksManager
 import social.entourage.android.onboarding.login.LoginActivity
 
-
 @RunWith(AndroidJUnit4::class)
 open class DeepLinkingTest {
 
@@ -55,7 +54,6 @@ open class DeepLinkingTest {
         }
     }
 
-
     @Before
     fun setUp() {
         device = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation())
@@ -68,14 +66,13 @@ open class DeepLinkingTest {
     }
 
     private fun login(phoneNumber: String, codePwd: String) {
-        val authenticationController = EntourageApplication.get().components.authenticationController
+        val authenticationController = EntourageApplication.get().authenticationController
         OnboardingAPI.getInstance().login(phoneNumber, codePwd) { isOK, loginResponse, _ ->
             if (isOK) {
                 loginResponse?.let {
                     authenticationController.saveUser(loginResponse.user)
                 }
                 authenticationController.saveUserPhoneAndCode(phoneNumber, codePwd)
-                authenticationController.saveUserToursOnly(false)
 
                 //set the tutorial as done
                 val sharedPreferences = EntourageApplication.get().sharedPreferences

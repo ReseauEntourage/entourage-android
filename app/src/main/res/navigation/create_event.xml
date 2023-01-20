@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/create_event"
+    app:startDestination="@id/create_event_fragment">
+    <fragment
+        android:id="@+id/create_event_fragment"
+        android:name="social.entourage.android.events.create.CreateEventFragment">
+        <action
+            android:id="@+id/action_create_event_fragment_to_edit_action_zone_fragment"
+            app:destination="@id/edit_action_zone_fragment" />
+        <action
+            android:id="@+id/action_create_event_fragment_to_create_event_success_fragment"
+            app:destination="@id/create_event_success_fragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/edit_action_zone_fragment"
+        android:name="social.entourage.android.events.create.CreateEventActionZoneFragment" />
+
+    <fragment
+        android:id="@+id/create_event_success_fragment"
+        android:name="social.entourage.android.events.create.CreateEventSuccessFragment">
+        <argument
+            android:name="eventID"
+            app:argType="integer" />
+    </fragment>
+
+</navigation>

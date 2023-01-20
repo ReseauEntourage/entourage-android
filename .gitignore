@@ -17,7 +17,6 @@ com_crashlytics_export_strings.xml
 crashlytics.properties
 crashlytics-build.properties
 
-
 # Built application files
 *.apk
 *.ap_
@@ -54,3 +53,6 @@ app/.classpath
 *.aab
 .bitrise.secrets.yml
 .run
+
+#DS STORE
+.DS_Store

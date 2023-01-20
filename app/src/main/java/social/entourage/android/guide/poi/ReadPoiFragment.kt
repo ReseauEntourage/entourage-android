@@ -8,23 +8,21 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.Button
+import android.widget.ImageView
+import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import kotlinx.android.synthetic.main.fragment_guide_poi_read.*
-import kotlinx.android.synthetic.main.fragment_guide_poi_read.guide_filter_list
 import kotlinx.android.synthetic.main.layout_view_title.*
-import social.entourage.android.EntourageApplication
-import social.entourage.android.EntourageComponent
-import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.R
 import social.entourage.android.api.model.guide.Poi
 import social.entourage.android.base.BaseDialogFragment
-import social.entourage.android.tools.ShareMessageFragment
+import social.entourage.android.base.map.OnAddressClickListener
 import social.entourage.android.guide.filter.GuideFilterAdapter
 import social.entourage.android.guide.poi.PoiRenderer.CategoryType
 import social.entourage.android.guide.poi.ReadPoiPresenter.OnPhoneClickListener
-import social.entourage.android.base.map.OnAddressClickListener
-import javax.inject.Inject
+import social.entourage.android.tools.log.AnalyticsEvents
+import social.entourage.android.tools.view.ShareMessageFragment
 
 /**
  * Activity showing the detail of a POI
@@ -35,7 +33,11 @@ class ReadPoiFragment : BaseDialogFragment() {
     // ----------------------------------
     private lateinit var poi: Poi
     private var filtersSelectedFromMap:String? = null
-    @Inject lateinit var presenter: ReadPoiPresenter
+    var presenter: ReadPoiPresenter
+
+    init {
+        presenter = ReadPoiPresenter(this)
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         super.onCreateView(inflater, container, savedInstanceState)
@@ -47,7 +49,6 @@ class ReadPoiFragment : BaseDialogFragment() {
         super.onViewCreated(view, savedInstanceState)
         poi = arguments?.getSerializable(BUNDLE_KEY_POI) as Poi
         filtersSelectedFromMap = arguments?.getString(BUNDLE_KEY_SEARCH,"")
-        setupComponent(EntourageApplication.get(activity).components)
 
         //Actually WS return id and not uuid for entourage poi
         presenter.getPoiDetail(poi.uuid)
@@ -105,18 +106,8 @@ class ReadPoiFragment : BaseDialogFragment() {
         }
     }
 
-    private fun setupComponent(entourageComponent: EntourageComponent?) {
-        entourageComponent?.let {
-            DaggerReadPoiComponent.builder()
-                    .entourageComponent(entourageComponent)
-                    .readPoiModule(ReadPoiModule(this,entourageComponent.poiRequest))
-                    .build()
-                    .inject(this)
-        } ?: kotlin.run { dismiss() }
-    }
-
     fun noData() {
-        dismiss()
+        dismissAllowingStateLoss()
     }
 
     fun onDisplayedPoi(poi: Poi, onAddressClickListener: OnAddressClickListener?, onPhoneClickListener: OnPhoneClickListener?) {

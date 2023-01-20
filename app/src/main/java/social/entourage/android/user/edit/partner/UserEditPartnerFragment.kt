@@ -8,24 +8,23 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
-import android.widget.*
-import android.widget.TextView.OnEditorActionListener
+import android.widget.AdapterView
+import android.widget.TextView
+import android.widget.Toast
 import kotlinx.android.synthetic.main.fragment_user_edit_partner.*
 import kotlinx.android.synthetic.main.layout_view_title.*
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import social.entourage.android.EntourageApplication.Companion.get
-import social.entourage.android.EntourageApplication.Companion.me
+import social.entourage.android.EntourageApplication
 import social.entourage.android.R
+import social.entourage.android.api.model.Partner
+import social.entourage.android.api.model.User
 import social.entourage.android.api.request.PartnerResponse
 import social.entourage.android.api.request.PartnerWrapper
 import social.entourage.android.api.request.PartnersResponse
-import social.entourage.android.api.model.Partner
-import social.entourage.android.api.model.User
 import social.entourage.android.base.BaseDialogFragment
-import social.entourage.android.user.edit.UserEditFragment
 
 /**
  *
@@ -56,15 +55,13 @@ class UserEditPartnerFragment  : BaseDialogFragment() {
     }
 
     private fun configureView() {
-        (parentFragmentManager.findFragmentByTag(UserEditFragment.TAG) as UserEditFragment?)?.let {userEditFragment ->
-            user = userEditFragment.presenter.editedUser
-        } ?: run { user = me(activity)}
+        user = EntourageApplication.me(activity)
 
         // Configure the partners list
         user_edit_partner_listview?.adapter = adapter
 
         // Initialize the search field
-        user_edit_partner_search?.setOnEditorActionListener(OnEditorActionListener { v, actionId, event ->
+        user_edit_partner_search?.setOnEditorActionListener(TextView.OnEditorActionListener { v, actionId, event ->
             var hideKeyboard = false
             if (event == null) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
@@ -75,8 +72,10 @@ class UserEditPartnerFragment  : BaseDialogFragment() {
             }
             if (hideKeyboard) {
                 // hide virtual keyboard
-                (activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?)?.hideSoftInputFromWindow(v.windowToken,
-                        InputMethodManager.RESULT_UNCHANGED_SHOWN)
+                (activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?)?.hideSoftInputFromWindow(
+                    v.windowToken,
+                    InputMethodManager.RESULT_UNCHANGED_SHOWN
+                )
                 return@OnEditorActionListener true
             }
             false
@@ -110,7 +109,8 @@ class UserEditPartnerFragment  : BaseDialogFragment() {
     // Network
     // ----------------------------------
     private fun getAllPartners() {
-        get(context).components.partnerRequest.allPartners.enqueue(object : Callback<PartnersResponse> {
+        EntourageApplication.get(context).apiModule.partnerRequest.allPartners.enqueue(object :
+            Callback<PartnersResponse> {
             override fun onResponse(call: Call<PartnersResponse>, response: Response<PartnersResponse>) {
                 if (response.isSuccessful) {
                     response.body()?.partners?.let { partnerList ->
@@ -132,12 +132,14 @@ class UserEditPartnerFragment  : BaseDialogFragment() {
     private fun addPartner(partner: Partner) {
         val userID = user?.id ?: return
         user_edit_partner_progressBar?.visibility = View.VISIBLE
-        get(context).components.userRequest.addPartner(userID, PartnerWrapper(partner))
+        EntourageApplication.get(context).apiModule.userRequest.addPartner(userID,
+            PartnerWrapper(partner)
+        )
                 .enqueue(object : Callback<PartnerResponse> {
             override fun onResponse(call: Call<PartnerResponse>, response: Response<PartnerResponse>) {
                 user_edit_partner_progressBar?.visibility = View.GONE
                 if (response.isSuccessful) {
-                    val authenticationController = get(context).components.authenticationController
+                    val authenticationController = EntourageApplication.get(context).authenticationController
                     authenticationController.me?.let { me ->
                         response.body()?.partner?.let {
                             me.partner = it
@@ -161,7 +163,7 @@ class UserEditPartnerFragment  : BaseDialogFragment() {
     private fun removePartner(oldPartner: Partner, currentPartner: Partner?) {
         user_edit_partner_progressBar?.visibility = View.VISIBLE
         val userId = user?.id ?: return
-        get(context).components.userRequest.removePartnerFromUser(userId, oldPartner.id)
+        EntourageApplication.get(context).apiModule.userRequest.removePartnerFromUser(userId, oldPartner.id)
                 .enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 user_edit_partner_progressBar?.visibility = View.GONE
@@ -169,9 +171,9 @@ class UserEditPartnerFragment  : BaseDialogFragment() {
                     currentPartner?.let {
                         addPartner(currentPartner)
                     } ?: run {
-                        get(context).components.authenticationController.me?.let { me ->
+                        EntourageApplication.get(context).authenticationController.me?.let { me ->
                             me.partner = null
-                            get(context).components.authenticationController.saveUser(me)
+                            EntourageApplication.get(context).authenticationController.saveUser(me)
                         }
                         Toast.makeText(activity, R.string.partner_remove_ok, Toast.LENGTH_SHORT).show()
                         dismiss()

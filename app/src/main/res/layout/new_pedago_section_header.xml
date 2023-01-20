@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="12dp"
+    android:layout_weight="1"
+    android:background="@drawable/new_bg_header_pedagogical"
+    android:elevation="4dp"
+    android:outlineAmbientShadowColor="@color/orange"
+    android:outlineSpotShadowColor="@color/orange"
+    android:paddingTop="30dp"
+    android:paddingBottom="4dp">
+
+    <TextView
+        android:id="@+id/section_name"
+        style="@style/left_courant_bold_black"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="32dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Comprendre" />
+</LinearLayout>
+

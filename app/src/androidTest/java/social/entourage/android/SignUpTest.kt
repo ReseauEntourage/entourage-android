@@ -1,6 +1,5 @@
 package social.entourage.android
 
-
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.*
@@ -20,7 +19,6 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import social.entourage.android.api.OnboardingAPI
 import social.entourage.android.onboarding.OnboardingMainActivity
-import social.entourage.android.onboarding.asso.OnboardingAssoSearchActivity
 import java.util.*
 
 @LargeTest
@@ -33,7 +31,6 @@ class SignUpTest {
 
     private val login = "0651234145"
     private val password = "108674"
-
 
     /****************************** Views ******************************/
 
@@ -96,7 +93,6 @@ class SignUpTest {
             allOf(withId(R.id.ui_bt_next),
                     isDisplayed()))
 
-
     /****************************** OnboardingNamesFragment ******************************/
 
     @Test
@@ -152,7 +148,6 @@ class SignUpTest {
         //Check that OnboardingPhoneFragment is not displayed
         askPhoneNumberTv.check(doesNotExist())
     }
-
 
     /****************************** OnboardingPhoneFragment ******************************/
 
@@ -224,7 +219,6 @@ class SignUpTest {
         enableWifiAndData(true)
     }
 
-
     /****************************** OnboardingPasscodeFragment ******************************/
 
     @Test
@@ -247,7 +241,6 @@ class SignUpTest {
                         isDisplayed()))
         typeSubTitleTv.check(matches(withText(R.string.onboard_type_sub)))
     }
-
 
     /****************************** OnboardingTypeFragment ******************************/
 
@@ -278,7 +271,6 @@ class SignUpTest {
                     isDisplayed()))
         assoTitleTv.check(matches(withText(R.string.onboard_asso_start_title)))
     }
-
 
     /****************************** OnboardingPlaceFragment ******************************/
 
@@ -321,7 +313,6 @@ class SignUpTest {
         //Check that OnboardingPlaceFragment is still displayed
         placeTitleTv.check(matches(withText(R.string.onboard_place_title_sdf)))
     }
-
 
     /****************************** LoginEmailFragment ******************************/
 
@@ -401,7 +392,6 @@ class SignUpTest {
         emailSubtitleTv.check(matches(withText(R.string.login_email_description)))
     }
 
-
     /****************************** OnboardingAssoStartFragment ******************************/
 
     @Test
@@ -422,7 +412,6 @@ class SignUpTest {
         //Check that OnboardingAssoFillFragment is displayed
         assoFillTitleTv.check(matches(withText(R.string.onboard_asso_fill_title)))
     }
-
 
     /****************************** OnboardingAssoFillFragment ******************************/
 
@@ -494,7 +483,6 @@ class SignUpTest {
         onView(withText(R.string.onboard_asso_fill_error)).check(matches(isDisplayed()))
     }
 
-
     /****************************** OnboardingAssoActivitiesFragment ******************************/
 
     @Test
@@ -561,7 +549,6 @@ class SignUpTest {
         onView(withText(R.string.onboard_asso_activity_error)).check(matches(isDisplayed()))
     }
 
-
     /****************************** OnboardingEmailPwdFragment ******************************/
 
     @Test
@@ -597,7 +584,6 @@ class SignUpTest {
         //Check that OnboardingEmailPwdFragment is still Displayed
         assoEmailSubtitleTv.check(matches(withText(R.string.onboard_email_pwd_description)))
     }
-
 
     /****************************** Utils ******************************/
 
@@ -638,14 +624,13 @@ class SignUpTest {
     }
 
     private fun login(phoneNumber: String, codePwd: String) {
-        val authenticationController = EntourageApplication.get().components.authenticationController
+        val authenticationController = EntourageApplication.get().authenticationController
         OnboardingAPI.getInstance().login(phoneNumber, codePwd) { isOK, loginResponse, _ ->
             if (isOK) {
                 loginResponse?.let {
                     authenticationController.saveUser(loginResponse.user)
                 }
                 authenticationController.saveUserPhoneAndCode(phoneNumber, codePwd)
-                authenticationController.saveUserToursOnly(false)
 
                 //set the tutorial as done
                 val sharedPreferences = EntourageApplication.get().sharedPreferences

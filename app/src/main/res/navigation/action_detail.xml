@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/action_details"
+    app:startDestination="@+id/action_my_list">
+    <fragment
+        android:id="@+id/action_my_list"
+        android:name="social.entourage.android.actions.list.me.MyActionsListFragment">
+
+        <action
+            android:id="@+id/action_my_list_to_detail_action"
+            app:destination="@id/action_detail"
+            app:enterAnim="@anim/slide_in_from_right"
+            app:popExitAnim="@anim/slide_out_to_right" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/action_detail"
+        android:name="social.entourage.android.actions.detail.ActionDetailFragment">
+        <argument
+            android:name="actionID"
+            app:argType="integer" />
+        <argument
+            android:name="isActionDemand"
+            app:argType="boolean"/>
+        <argument
+            android:name="isActionMine"
+            app:argType="boolean"/>
+    </fragment>
+
+</navigation>

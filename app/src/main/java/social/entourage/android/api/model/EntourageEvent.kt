@@ -23,7 +23,6 @@ class EntourageEvent : BaseEntourage, Serializable {
     constructor(category: String?,
                 title: String, description: String, location: LocationPoint) : super(GROUPTYPE_OUTING, GROUPTYPE_OUTING, category, title, description, location)
 
-
     override fun getFeedTypeLong(context: Context): String {
         metadata?.let{
             if(it.startDate != null && it.endDate != null) {
@@ -70,10 +69,6 @@ class EntourageEvent : BaseEntourage, Serializable {
 
     override fun getClosingLoaderMessage(): Int {
         return R.string.loader_title_outing_finish
-    }
-
-    override fun getClosedToastMessage(): Int {
-        return R.string.outing_info_text_close
     }
 
     override fun isEvent() : Boolean {

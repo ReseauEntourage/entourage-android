@@ -8,7 +8,6 @@ import kotlinx.android.synthetic.main.layout_filter_item.view.*
 import social.entourage.android.R
 import social.entourage.android.guide.filter.GuideFilter.Companion.instance
 import social.entourage.android.guide.poi.PoiRenderer.CategoryType
-import java.util.*
 
 /**
  * Created by mihaiionescu on 28/03/2017.

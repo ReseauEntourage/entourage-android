@@ -4,15 +4,14 @@ import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.net.Uri
 import android.view.View
+import androidx.fragment.app.findFragment
 import kotlinx.android.synthetic.main.layout_poi_card.view.*
 import social.entourage.android.Constants
 import social.entourage.android.R
+import social.entourage.android.api.model.LocationPoint
 import social.entourage.android.api.model.TimestampedObject
 import social.entourage.android.api.model.guide.Poi
-import social.entourage.android.api.model.LocationPoint
-import social.entourage.android.api.tape.PoiRequestEvents.OnPoiViewRequestedEvent
 import social.entourage.android.base.BaseCardViewHolder
-import social.entourage.android.tools.EntBus
 import social.entourage.android.tools.log.AnalyticsEvents
 import timber.log.Timber
 
@@ -26,8 +25,8 @@ class PoiViewHolder(itemView: View) : BaseCardViewHolder(itemView) {
     var showCallButton: Boolean = true
 
     override fun bindFields() {
-        itemView.setOnClickListener {
-            poi?.let { EntBus.post(OnPoiViewRequestedEvent(it))}
+        itemView.setOnClickListener { view ->
+            poi?.let { poi -> (view.findFragment() as? PoiListFragment)?.showPoiDetails(poi, true) }
         }
         itemView.poi_card_call_button?.setOnClickListener {
             poi?.phone?.let {phone ->

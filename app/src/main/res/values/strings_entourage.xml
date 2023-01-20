@@ -89,6 +89,16 @@
     <string name="entourage_join_request_received_nomsg">%1$s souhaite rejoindre votre action.</string>
     <string name="entourage_join_request_received_message_html"><![CDATA[<font color=\"#F55F24\">%1$s </font>souhaite rejoindre votre groupe]]></string>
     <string name="entourage_join_request_received_message_short">veut rejoindre votre groupe.</string>
+    <!-- Join Request -->
+    <string name="entourage_join_request_success">Demande acceptée</string>
+    <string name="entourage_join_request_error">Erreur d\'envoi de la requête</string>
+    <string name="entourage_join_request_message_sent">Message envoyé</string>
+    <string name="entourage_join_request_message_error">Erreur d\'envoi du message</string>
+    <string name="entourage_join_request_ok_title">Votre demande est transmise</string>
+    <string name="entourage_join_request_ok_description_entourage">Merci pour votre chaleur humaine !\nVous pouvez envoyer un message aux participants, qui apparaîtra dans la conversation de groupe.</string>
+    <string name="entourage_join_request_ok_description_outing">@string/entourage_join_request_ok_description_entourage</string>
+    <string name="entourage_join_request_ok_message_hint">Votre message…</string>
+    <string name="entourage_join_request_rejected">Requête envoyée</string>
 
     <string name="entourage_info_text_open">Entourage actif</string>
     <string name="entourage_info_text_close">Action clôturée</string>
@@ -139,15 +149,7 @@
     <string name="myentourages_filter_types_title">Types d’entourage</string>
     <string name="myentourages_filter_demand">Demandes</string>
     <string name="myentourages_filter_contribution">Contributions</string>
-    <string name="myentourages_filter_tours">Maraudes</string>
     
-    <!-- Create entourage dialog while tour is ongoing -->
-    <string name="entourage_tour_ongoing_title">@string/tour_info_text_ongoing</string>
-    <string name="entourage_tour_ongoing_description">Souhaitez-vous créer une rencontre avec une personne de la rue, ou créer une action visible de tous?</string>
-    <string name="entourage_tour_ongoing_proceed">Rencontre</string>
-    <string name="entourage_tour_ongoing_demande">Demande</string>
-    <string name="entourage_tour_ongoing_contrib">Contribution</string>
-
     <!-- Close Entourage Popup -->
     <string name="entourage_close_success_button">Mon action a réussi</string>
     <string name="entourage_close_failed_button">Mon action n\'a pas abouti</string>
@@ -223,7 +225,6 @@
 
     <string name="button_event_add_photo">Photo</string>
     <string name="event_add_photo_info">Illustrez votre prochain événement avec une photo proposée par Entourage :</string>
-
 
     <string name="infoPopCreateContrib">Félicitations !\nVotre contribution a bien été créée.</string>
     <string name="infoPopCreateAsk">Félicitations !\nVotre demande a bien été créée.</string>

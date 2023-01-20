@@ -7,10 +7,8 @@ import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import social.entourage.android.BuildConfig
 import social.entourage.android.EntourageApplication
-import social.entourage.android.EntourageComponent
 import social.entourage.android.R
 import social.entourage.android.tools.view.WebViewFragment
-
 
 /**
  * Base activity which set up a scoped graph and inject it
@@ -53,7 +51,6 @@ abstract class BaseActivity : AppCompatActivity() {
         }
     }
 
-    protected open fun setupComponent(entourageComponent: EntourageComponent?) {}
     protected fun showKeyboard(view: View) {
         view.requestFocus()
         val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager?
@@ -68,7 +65,8 @@ abstract class BaseActivity : AppCompatActivity() {
 
     fun showWebView(url: String, shareMessageRes: Int = 0) {
         if(shareMessageRes!=0 || !WebViewFragment.launchURL(this, url, shareMessageRes)) {
-            WebViewFragment.newInstance(url, shareMessageRes).show(supportFragmentManager, WebViewFragment.TAG)
+            WebViewFragment.newInstance(url, shareMessageRes, false)
+                .show(supportFragmentManager, WebViewFragment.TAG)
         }
     }
 

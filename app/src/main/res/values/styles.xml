@@ -10,6 +10,7 @@
         <item name="colorError">@color/my_app_error_color</item-->
         <!-- New MaterialComponents attributes. -->
         <item name="colorPrimaryVariant">@color/light_grey</item>
+        <item name="bottomSheetDialogTheme">@style/AppBottomSheetDialogTheme</item>
         <item name="colorSecondaryVariant">@color/light_grey</item>
         <item name="colorSurface">@color/primary</item>
         <item name="colorOnPrimary">@color/primary</item>
@@ -18,14 +19,22 @@
         <item name="colorOnError">@color/entourage_error</item>
         <item name="colorOnSurface">@color/primary_dark</item>
         <item name="scrimBackground">@color/mtrl_scrim_color</item>
-        <item name="textAppearanceHeadline1">@style/TextAppearance.MaterialComponents.Headline1</item>
-        <item name="textAppearanceHeadline2">@style/TextAppearance.MaterialComponents.Headline2</item>
-        <item name="textAppearanceHeadline3">@style/TextAppearance.MaterialComponents.Headline3</item>
-        <item name="textAppearanceHeadline4">@style/TextAppearance.MaterialComponents.Headline4</item>
-        <item name="textAppearanceHeadline5">@style/TextAppearance.MaterialComponents.Headline5</item>
-        <item name="textAppearanceHeadline6">@style/TextAppearance.MaterialComponents.Headline6</item>
-        <item name="textAppearanceSubtitle1">@style/TextAppearance.MaterialComponents.Subtitle1</item>
-        <item name="textAppearanceSubtitle2">@style/TextAppearance.MaterialComponents.Subtitle2</item>
+        <item name="textAppearanceHeadline1">@style/TextAppearance.MaterialComponents.Headline1
+        </item>
+        <item name="textAppearanceHeadline2">@style/TextAppearance.MaterialComponents.Headline2
+        </item>
+        <item name="textAppearanceHeadline3">@style/TextAppearance.MaterialComponents.Headline3
+        </item>
+        <item name="textAppearanceHeadline4">@style/TextAppearance.MaterialComponents.Headline4
+        </item>
+        <item name="textAppearanceHeadline5">@style/TextAppearance.MaterialComponents.Headline5
+        </item>
+        <item name="textAppearanceHeadline6">@style/TextAppearance.MaterialComponents.Headline6
+        </item>
+        <item name="textAppearanceSubtitle1">@style/TextAppearance.MaterialComponents.Subtitle1
+        </item>
+        <item name="textAppearanceSubtitle2">@style/TextAppearance.MaterialComponents.Subtitle2
+        </item>
         <item name="textAppearanceBody1">@style/TextAppearance.MaterialComponents.Body1</item>
         <item name="textAppearanceBody2">@style/TextAppearance.MaterialComponents.Body2</item>
         <item name="textAppearanceCaption">@style/TextAppearance.MaterialComponents.Caption</item>
@@ -161,12 +170,6 @@
         <item name="android:layout_marginBottom">10dp</item>
     </style>
 
-    <!-- Style for ongoing tour marker -->
-    <style name="OngoingTourMarker">
-        <item name="android:textColor">@color/greyish_brown</item>
-        <item name="android:textSize">@dimen/entourage_font_small</item>
-    </style>
-
     <!-- User profile textviews -->
     <style name="UserProfileTextViewStyle" parent="android:Widget.TextView">
         <item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
@@ -197,6 +200,7 @@
         <item name="android:textSize">20sp</item>
         <item name="android:textColor">@color/greyish_brown</item>
     </style>
+
     <style name="EntourageDisclaimerSectionDetails" parent="android:Widget.TextView">
         <item name="android:textSize">@dimen/entourage_font_large</item>
         <item name="android:textColor">@color/greyish_brown</item>
@@ -287,4 +291,345 @@
         <item name="colorPrimaryDark">@color/primary_dark</item>
         <item name="colorAccent">@color/accent</item>
     </style>
+
+    <!--New-->
+
+    <style name="profile_name">
+        <item name="android:textSize">@dimen/profile_name</item>
+        <item name="android:fontFamily">@font/nunitosans_semibold</item>
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+
+    <style name="association_name">
+        <item name="android:textSize">@dimen/profile_labels</item>
+        <item name="android:fontFamily">@font/nunitosans_regular</item>
+        <item name="android:textColor">@color/orange</item>
+    </style>
+
+    <style name="profile_description">
+        <item name="android:textSize">@dimen/profile_description</item>
+        <item name="android:fontFamily">@font/nunitosans_italic</item>
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+
+    <style name="profile_information_title">
+        <item name="android:textSize">@dimen/profile_labels</item>
+        <item name="android:fontFamily">@font/nunitosans_regular</item>
+        <item name="android:textColor">@color/orange</item>
+    </style>
+
+    <style name="profile_interest">
+        <item name="android:textSize">@dimen/profile_labels</item>
+        <item name="android:fontFamily">@font/nunitosans_bold</item>
+        <item name="android:textColor">@color/orange</item>
+    </style>
+
+    <style name="orange_button">
+        <item name="android:textSize">@dimen/profile_description</item>
+        <item name="android:fontFamily">@font/nunitosans_bold</item>
+        <item name="android:textColor">@color/orange</item>
+    </style>
+
+    <style name="profile_subtitles">
+        <item name="android:textSize">@dimen/profile_titles</item>
+        <item name="android:fontFamily">@font/nunitosans_light</item>
+        <item name="android:textColor">@color/orange</item>
+    </style>
+
+    <style name="profile_activity_statistics">
+        <item name="android:textSize">@dimen/profile_activity_statistics</item>
+        <item name="android:fontFamily">@font/quicksand_bold</item>
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+
+    <style name="input">
+        <item name="android:textSize">@dimen/profile_labels</item>
+        <item name="android:fontFamily">@font/nunitosans_regular</item>
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+
+    <style name="h4">
+        <item name="android:textSize">@dimen/profile_description</item>
+        <item name="android:fontFamily">@font/nunitosans_regular</item>
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+
+    <style name="h1">
+        <item name="android:textSize">@dimen/header_title</item>
+        <item name="android:fontFamily">@font/quicksand_bold</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <style name="h1_collapsed">
+        <item name="android:textSize">@dimen/button_create_group</item>
+        <item name="android:fontFamily">@font/quicksand_bold</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <style name="h1_black">
+        <item name="android:textSize">@dimen/header_title</item>
+        <item name="android:fontFamily">@font/quicksand_bold</item>
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+
+    <style name="mini_header_black">
+        <item name="android:textSize">@dimen/mini_header_title</item>
+        <item name="android:fontFamily">@font/quicksand_bold</item>
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+
+    <style name="tab_text" parent="@android:style/TextAppearance.Widget.TabWidget">
+        <item name="android:fontFamily">@font/nunitosans_bold</item>
+        <item name="android:textSize">@dimen/profile_titles</item>
+        <item name="android:textColor">@color/new_light_grey</item>
+    </style>
+
+    <style name="settings_items">
+        <item name="android:textSize">@dimen/settings_titles</item>
+        <item name="android:fontFamily">@font/nunitosans_bold</item>
+    </style>
+
+    <style name="h2">
+        <item name="android:textSize">@dimen/profile_description</item>
+        <item name="android:fontFamily">@font/nunitosans_bold</item>
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+
+    <style name="left_h2">
+        <item name="android:textSize">@dimen/profile_description</item>
+        <item name="android:fontFamily">@font/quicksand_bold</item>
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+
+    <style name="left_h2_orange">
+        <item name="android:textSize">@dimen/profile_description</item>
+        <item name="android:fontFamily">@font/quicksand_bold</item>
+        <item name="android:textColor">@color/orange</item>
+    </style>
+
+    <style name="button_create_group">
+        <item name="android:textSize">@dimen/button_create_group</item>
+        <item name="android:fontFamily">@font/nunitosans_regular</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <style name="h2_white">
+        <item name="android:textSize">@dimen/profile_description</item>
+        <item name="android:fontFamily">@font/nunitosans_bold</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <style name="h2_orange">
+        <item name="android:textSize">@dimen/profile_description</item>
+        <item name="android:fontFamily">@font/nunitosans_bold</item>
+        <item name="android:textColor">@color/orange</item>
+    </style>
+
+    <style name="selected_filter">
+        <item name="android:textSize">@dimen/profile_labels</item>
+        <item name="android:fontFamily">@font/nunitosans_bold</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <style name="unselected_filter">
+        <item name="android:textSize">@dimen/profile_labels</item>
+        <item name="android:fontFamily">@font/nunitosans_bold</item>
+        <item name="android:textColor">@color/orange</item>
+    </style>
+
+    <style name="MySeekBar" parent="Widget.AppCompat.SeekBar">
+        <item name="android:progressBackgroundTint">#f4511e</item>
+        <item name="android:progressTint">#388e3c</item>
+        <item name="android:colorControlActivated">#c51162</item>
+    </style>
+
+    <style name="h2_seek_bar_progression">
+        <item name="android:textSize">@dimen/profile_labels</item>
+        <item name="android:fontFamily">@font/nunitosans_bold</item>
+        <item name="android:textColor">@color/orange</item>
+    </style>
+
+    <style name="edit_image">
+        <item name="android:textSize">@dimen/profile_titles</item>
+        <item name="android:fontFamily">@font/nunitosans_regular</item>
+        <item name="android:textColor">@color/orange</item>
+    </style>
+
+    <style name="header_create_group">
+        <item name="android:textSize">@dimen/header_title</item>
+        <item name="android:fontFamily">@font/nunitosans_bold</item>
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+
+    <style name="header_create_group_orange">
+        <item name="android:textSize">@dimen/header_title</item>
+        <item name="android:fontFamily">@font/nunitosans_bold</item>
+        <item name="android:textColor">@color/light_orange</item>
+    </style>
+
+    <style name="error_msg">
+        <item name="android:textSize">@dimen/error_msg</item>
+        <item name="android:fontFamily">@font/nunitosans_italic</item>
+        <item name="android:textColor">@color/red</item>
+    </style>
+
+    <style name="report">
+        <item name="android:textSize">@dimen/profile_description</item>
+        <item name="android:fontFamily">@font/nunitosans_bold</item>
+        <item name="android:textColor">@color/light_orange</item>
+    </style>
+
+    <style name="left_legend">
+        <item name="android:textSize">@dimen/profile_labels</item>
+        <item name="android:fontFamily">@font/nunitosans_light</item>
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+
+    <style name="left_legend_grey">
+        <item name="android:textSize">@dimen/profile_labels</item>
+        <item name="android:fontFamily">@font/nunitosans_light</item>
+        <item name="android:textColor">@color/grey</item>
+    </style>
+
+    <style name="center_legend_grey">
+        <item name="android:textSize">@dimen/contributions_empty_label</item>
+        <item name="android:fontFamily">@font/nunitosans_light</item>
+        <item name="android:textColor">@color/grey</item>
+    </style>
+
+    <style name="left_courant_light_orange">
+        <item name="android:textSize">@dimen/profile_description</item>
+        <item name="android:fontFamily">@font/nunitosans_regular</item>
+        <item name="android:textColor">@color/light_orange</item>
+    </style>
+
+    <style name="left_courant_orange">
+        <item name="android:textSize">@dimen/profile_description</item>
+        <item name="android:fontFamily">@font/nunitosans_regular</item>
+        <item name="android:textColor">@color/orange</item>
+    </style>
+
+    <style name="group_member_subtitle">
+        <item name="android:textSize">@dimen/group_member_subtitle</item>
+        <item name="android:fontFamily">@font/nunitosans_regular</item>
+        <item name="android:textColor">@color/light_orange</item>
+    </style>
+
+    <style name="group_member_subtitle_black">
+        <item name="android:textSize">@dimen/group_member_subtitle</item>
+        <item name="android:fontFamily">@font/nunitosans_regular</item>
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+
+    <style name="left_courant_bold_orange">
+        <item name="android:textSize">@dimen/profile_description</item>
+        <item name="android:fontFamily">@font/quicksand_bold</item>
+        <item name="android:textColor">@color/orange</item>
+    </style>
+
+    <style name="left_courant_black">
+        <item name="android:textSize">@dimen/profile_description</item>
+        <item name="android:fontFamily">@font/nunitosans_regular</item>
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+
+    <style name="left_courant_bold_black">
+        <item name="android:textSize">@dimen/profile_description</item>
+        <item name="android:fontFamily">@font/quicksand_bold</item>
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+
+    <style name="left_large_bold_black">
+        <item name="android:textSize">@dimen/contributions_value</item>
+        <item name="android:fontFamily">@font/nunitosans_bold</item>
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+
+    <style name="version_number">
+        <item name="android:textSize">@dimen/version_number</item>
+        <item name="android:fontFamily">@font/nunitosans_light</item>
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+
+    <style name="AppBottomSheetDialogTheme" parent="Theme.MaterialComponents.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/CustomBottomSheetStyle</item>
+    </style>
+
+    <style name="notifications_items">
+        <item name="android:textSize">@dimen/profile_description</item>
+        <item name="android:fontFamily">@font/nunitosans_regular</item>
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+
+    <style name="CustomBottomSheetStyle" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@drawable/new_bg_bottomsheet</item>
+    </style>
+
+    <style name="FullScreenDialog" parent="Theme.AppCompat.Light.Dialog">
+        <item name="android:backgroundDimEnabled">false</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:padding">0dp</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowBackground">@color/bottom_sheet_background</item>
+        <item name="android:windowCloseOnTouchOutside">false</item>
+        <item name="android:windowAnimationStyle">@style/MyDialogAnimation</item>
+        <item name="android:popupAnimationStyle">@style/MyDialogAnimation</item>
+    </style>
+
+    <style name="MyDialogAnimation">
+        <item name="android:windowEnterAnimation">@anim/bottom_up</item>
+        <item name="android:windowExitAnimation">@anim/bottom_down</item>
+    </style>
+
+    <style name="ColorSwitchStyle">
+        <item name="thumbTint">@color/white</item>
+        <item name="android:shadowColor">@color/transparent</item>
+        <item name="trackTint">@color/new_track_selector</item>
+    </style>
+
+    <style name="left_default">
+        <item name="android:textSize">@dimen/profile_labels</item>
+        <item name="android:fontFamily">@font/nunitosans_light</item>
+        <item name="android:textColor">@color/new_light_grey</item>
+    </style>
+
+    <style name="left_date">
+        <item name="android:textSize">@dimen/version_number</item>
+        <item name="android:fontFamily">@font/nunitosans_extralight</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="read_item">
+        <item name="android:textSize">@dimen/error_msg</item>
+        <item name="android:fontFamily">@font/nunitosans_regular</item>
+        <item name="android:textColor">@color/orange</item>
+    </style>
+
+    <style name="watched_pedagogical">
+        <item name="android:textSize">@dimen/group_member_subtitle</item>
+        <item name="android:fontFamily">@font/nunitosans_regular</item>
+        <item name="android:textColor">@color/orange</item>
+    </style>
+
+    <style name="left_courant_bold_light_orange">
+        <item name="android:textSize">@dimen/profile_description</item>
+        <item name="android:fontFamily">@font/quicksand_bold</item>
+        <item name="android:textColor">@color/light_orange</item>
+    </style>
+
+    <style name="left_courant_bold_white">
+        <item name="android:textSize">@dimen/profile_description</item>
+        <item name="android:fontFamily">@font/quicksand_bold</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    //Use to change switch color
+    <style name="Color1SwitchStyle">
+        <item name="colorControlActivated">@color/orange</item>
+    </style>
+
+    <style name="CustomBottomSheetDialogTheme" parent="Theme.Design.BottomSheetDialog">
+        <item name="android:layout_height">match_parent</item>
+    </style>
+
 </resources>

@@ -7,7 +7,6 @@ import androidx.annotation.StringRes
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import social.entourage.android.R
-import social.entourage.android.api.model.LastMessage
 import social.entourage.android.api.model.LocationPoint
 import social.entourage.android.api.model.TimestampedObject
 import java.io.IOException
@@ -52,7 +51,7 @@ abstract class FeedItem : TimestampedObject(), Serializable {
 
     @Expose(serialize = false)
     @SerializedName("last_message")
-    var lastMessage: LastMessage? = null
+    var lastMessage: FeedLastMessage? = null
         protected set
 
     @Expose(serialize = false)
@@ -62,7 +61,6 @@ abstract class FeedItem : TimestampedObject(), Serializable {
     //number of notifs received that should be added to number of unread messages
     @Expose(serialize = false, deserialize = false)
     protected var badgeCount = 0
-
 
     //CardInfo cache support
     @Expose(serialize = false, deserialize = false)
@@ -104,7 +102,7 @@ abstract class FeedItem : TimestampedObject(), Serializable {
 
     fun setLastMessage(text: String, author: String) {
         if (lastMessage == null) {
-            lastMessage = LastMessage()
+            lastMessage = FeedLastMessage()
         }
         lastMessage?.setMessage(text, author)
     }
@@ -113,8 +111,6 @@ abstract class FeedItem : TimestampedObject(), Serializable {
 
     open fun isOpen(): Boolean { return STATUS_OPEN == status}
 
-    //TODO only for tours ???
-    open fun isOngoing(): Boolean { return false}
     fun isSuspended(): Boolean { return STATUS_SUSPENDED == status}
     //end TODO
 
@@ -147,7 +143,7 @@ abstract class FeedItem : TimestampedObject(), Serializable {
 
     @StringRes
     open fun getClosedCTAText():  Int {
-        return R.string.tour_cell_button_freezed
+        return R.string.entourage_cell_button_freezed
     }
 
     @ColorRes
@@ -159,7 +155,7 @@ abstract class FeedItem : TimestampedObject(), Serializable {
     open fun getClosingLoaderMessage(): Int {return R.string.entourage_info_text_close}
 
     @StringRes
-    open fun getClosedToastMessage(): Int {return if (isClosed()) R.string.tour_freezed else R.string.tour_stopped}
+    fun getClosedToastMessage(): Int {return R.string.entourage_info_text_close}
 
     @StringRes
     open fun getInviteSourceDescription():Int {

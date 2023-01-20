@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/light_beige">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <include
+                android:id="@+id/header"
+                layout="@layout/new_header"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toTopOf="@id/scrollView"
+                app:layout_constraintTop_toTopOf="parent"
+                app:title="@{@string/edit_profile}" />
+
+            <ScrollView
+                android:id="@+id/scrollView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/header">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="@dimen/padding_horizontal"
+                    android:paddingTop="@dimen/padding_top">
+
+                    <ImageView
+                        android:id="@+id/image_profile"
+                        android:layout_width="110dp"
+                        android:layout_height="110dp"
+                        android:layout_marginTop="20dp" />
+
+                    <TextView
+                        android:id="@+id/edit_image"
+                        style="@style/edit_image"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:text="@string/modify_image" />
+
+                    <include
+                        android:id="@+id/firstname"
+                        layout="@layout/new_profile_edit_item"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:hint="@{@string/firstname}"
+                        app:icon="@{@drawable/new_description}"
+                        app:title="@{@string/firstname}" />
+
+                    <include
+                        android:id="@+id/lastname"
+                        layout="@layout/new_profile_edit_item"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:hint="@{@string/lastname}"
+                        app:icon="@{@drawable/new_description}"
+                        app:title="@{@string/lastname}" />
+
+                    <include
+                        android:id="@+id/description"
+                        layout="@layout/new_lined_edit_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:icon="@{@drawable/new_description}"
+                        app:title="@{@string/description}" />
+
+                    <include
+                        android:id="@+id/birthday"
+                        layout="@layout/new_profile_edit_item"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:hint="@{@string/date_format_profile_fr}"
+                        app:icon="@{@drawable/new_birth}"
+                        app:title="@{@string/birthday}" />
+
+                    <include
+                        android:id="@+id/phone"
+                        layout="@layout/new_profile_edit_item_clickable"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:icon="@{@drawable/new_phone}"
+                        app:title="@{@string/phone}" />
+
+                    <include
+                        android:id="@+id/email"
+                        layout="@layout/new_profile_edit_item"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:hint="@{@string/email}"
+                        app:icon="@{@drawable/new_mail}"
+                        app:title="@{@string/email}" />
+
+                    <include
+                        android:id="@+id/city_action"
+                        layout="@layout/new_profile_edit_item_clickable"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:icon="@{@drawable/new_location}"
+                        app:title="@{@string/city_action_zone}" />
+
+                    <include
+                        android:id="@+id/seek_bar_layout"
+                        layout="@layout/new_seek_bar_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                    <View
+                        android:id="@+id/divider"
+                        android:layout_width="match_parent"
+                        android:layout_height="1px"
+                        android:layout_marginTop="35dp"
+                        android:background="@color/light_orange"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent" />
+
+                    <include
+                        android:id="@+id/interests"
+                        layout="@layout/new_profile_settings_item"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="70dp"
+                        app:color="@{@android:color/black}"
+                        app:icon="@{@drawable/new_description}"
+                        app:label="@{@string/my_interests}" />
+
+                </LinearLayout>
+            </ScrollView>
+        </LinearLayout>
+
+        <include
+            android:id="@+id/validate"
+            layout="@layout/new_rounded_button_white"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="65dp"
+            android:layout_marginBottom="20dp"
+            app:content="@{@string/apply_modifications}"
+            app:drawable="@{@drawable/new_rounded_button_orange}"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/groups_feed"
+    app:startDestination="@+id/group_feed">
+
+    <fragment
+        android:id="@+id/group_feed"
+        android:name="social.entourage.android.groups.details.feed.FeedFragment">
+        <argument
+            android:name="groupID"
+            app:argType="integer" />
+        <action
+            android:id="@+id/action_group_feed_to_group_members"
+            app:destination="@id/group_members"
+            app:enterAnim="@anim/slide_in_from_right"
+            app:popExitAnim="@anim/slide_out_to_right" />
+        <action
+            android:id="@+id/action_group_feed_to_group_about"
+            app:destination="@id/group_about"
+            app:enterAnim="@anim/slide_in_from_right"
+            app:popExitAnim="@anim/slide_out_to_right" />
+
+        <action
+            android:id="@+id/action_group_feed_to_group_events_list"
+            app:destination="@id/group_events"
+            app:enterAnim="@anim/slide_in_from_right"
+            app:popExitAnim="@anim/slide_out_to_right" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/group_about"
+        android:name="social.entourage.android.groups.details.feed.AboutGroupFragment">
+        <argument
+            android:name="group"
+            app:argType="social.entourage.android.groups.GroupModel" />
+        <action
+            android:id="@+id/action_group_about_to_group_members"
+            app:destination="@id/group_members"
+            app:enterAnim="@anim/slide_in_from_right"
+            app:popExitAnim="@anim/slide_out_to_right" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/group_members"
+        android:name="social.entourage.android.groups.details.members.MembersFragment">
+        <argument
+            android:name="id"
+            app:argType="integer" />
+
+        <argument
+            android:name="type"
+            app:argType="social.entourage.android.groups.details.members.MembersType" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/group_events"
+        android:name="social.entourage.android.events.list.GroupEventsListFragment">
+        <argument
+            android:name="groupID"
+            app:argType="integer" />
+
+        <argument
+            android:name="groupName"
+            app:argType="string" />
+
+        <argument
+            android:name="groupMember"
+            app:argType="boolean" />
+    </fragment>
+
+</navigation>

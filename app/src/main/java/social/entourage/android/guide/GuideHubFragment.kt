@@ -2,17 +2,16 @@ package social.entourage.android.guide
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.fragment_guide_hub.*
 import social.entourage.android.Constants
 import social.entourage.android.EntourageApplication
 import social.entourage.android.MainActivity
 import social.entourage.android.R
 import social.entourage.android.tools.log.AnalyticsEvents
-
 
 class GuideHubFragment : Fragment() {
 

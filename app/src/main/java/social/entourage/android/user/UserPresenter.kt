@@ -1,100 +1,60 @@
 package social.entourage.android.user
 
+import androidx.lifecycle.MutableLiveData
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import social.entourage.android.api.model.EntourageConversation
-import social.entourage.android.api.request.EntourageRequest
-import social.entourage.android.api.request.EntourageResponse
-import social.entourage.android.api.request.UserRequest
-import social.entourage.android.api.request.UserResponse
+import social.entourage.android.EntourageApplication
 import social.entourage.android.api.model.User
-import social.entourage.android.api.model.User.UserConversation
-import social.entourage.android.authentication.AuthenticationController
-import javax.inject.Inject
+import social.entourage.android.api.model.UserReport
+import social.entourage.android.api.model.UserReportWrapper
+import social.entourage.android.api.request.UserResponse
 
-/**
- * Presenter controlling the UserFragment
- * @see UserFragment
- */
-class UserPresenter @Inject constructor(
-        private val fragment: UserFragment?,
-        private val userRequest: UserRequest,
-        private val entourageRequest: EntourageRequest,
-        private val authenticationController: AuthenticationController) {
+class UserPresenter {
 
-    // ----------------------------------
-    // PUBLIC METHODS
-    // ----------------------------------
-    val authenticatedUser: User?
-        get() = authenticationController.me
+    var isGetUserSuccess = MutableLiveData<Boolean>()
+    var isUserReported = MutableLiveData<Boolean>()
+    var user = MutableLiveData<User>()
 
     fun getUser(userId: Int) {
-        userRequest.getUser(userId).enqueue(object : Callback<UserResponse> {
-            override fun onResponse(call: Call<UserResponse>, response: Response<UserResponse>) {
-                if (response.isSuccessful) {
-                    response.body()?.user?.let {fragment?.onUserReceived(it)}
-                } else {
-                    fragment?.onUserReceivedError()
+        EntourageApplication.get().apiModule.userRequest.getUser(userId)
+            .enqueue(object : Callback<UserResponse> {
+                override fun onResponse(
+                    call: Call<UserResponse>,
+                    response: Response<UserResponse>
+                ) {
+                    if (response.isSuccessful) {
+                        response.body()?.user?.let { user.value = it }
+                        isGetUserSuccess.value = true
+                    } else {
+                        isGetUserSuccess.value = false
+                    }
                 }
-            }
 
-            override fun onFailure(call: Call<UserResponse>, t: Throwable) {
-                fragment?.onUserReceivedError()
-            }
-        })
+                override fun onFailure(call: Call<UserResponse>, t: Throwable) {
+                    isGetUserSuccess.value = false
+                }
+            })
     }
 
-    /*val isUserToursOnly: Boolean
-        get() = authenticationController.isUserToursOnly
-
-    fun saveUserToursOnly(choice: Boolean) {
-        authenticationController.saveUserToursOnly(choice)
-    }*/
-
-    fun updateUser(user: User) {
-        userRequest.updateUser(user.arrayMapForUpdate).enqueue(object : Callback<UserResponse> {
-            override fun onResponse(call: Call<UserResponse>, response: Response<UserResponse>) {
-                if (response.isSuccessful) {
-                    //update the logged user
-                    response.body()?.user?.let {
-                        authenticationController.saveUser(it)
-                        authenticationController.saveUserPhoneAndCode(user.phone, user.smsCode)
-                        //inform the fragment
-                        fragment?.onUserUpdated(it)
-                    }
-                } else {
-                    fragment?.onUserUpdatedError()
-                }
+    fun sendReport(
+        entourageId: Int,
+        reason: String,
+        selectedSignalsIdList: MutableList<String>
+    ) {
+        val userRequest = EntourageApplication.get().apiModule.userRequest
+        val call = userRequest.reportUser(
+            entourageId, UserReportWrapper(UserReport(reason, selectedSignalsIdList))
+        )
+        call.enqueue(object : Callback<ResponseBody> {
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                isUserReported.value = false
             }
 
-            override fun onFailure(call: Call<UserResponse>, t: Throwable) {
-                fragment?.onUserUpdatedError()
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                isUserReported.value = response.isSuccessful
             }
         })
-    }
-
-    fun getConversation(conversation: UserConversation) {
-        conversation.uuid?.let { uuid->
-            entourageRequest.retrieveEntourageById(uuid, 0, 0)
-                .enqueue(object : Callback<EntourageResponse> {
-            override fun onResponse(call: Call<EntourageResponse>, response: Response<EntourageResponse>) {
-                if (response.isSuccessful) {
-                    //show the entourage information
-                    (response.body()?.entourage as? EntourageConversation)?.let {
-                        fragment?.onConversationFound(it)
-                    }
-                } else {
-                    fragment?.onConversationNotFound()
-                }
-            }
-
-            override fun onFailure(call: Call<EntourageResponse>, t: Throwable) {
-                fragment?.onConversationNotFound()
-            }
-        })
-    } ?: run {
-            fragment?.onConversationNotFound()
-        }
     }
 }

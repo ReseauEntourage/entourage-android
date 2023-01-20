@@ -38,15 +38,18 @@
     <string name="user_edit_action_zone_button_no_address">Définir ma zone</string>
     <string name="user_edit_delete_account_button">Supprimer mon compte</string>
 
+    <string name="user_edit_profile_change_pwd">Changer de mot de passe</string>
     <string name="user_edit_password_old_password_label">Ancien code d’accès</string>
     <string name="user_edit_password_new_password_label">Nouveau code d’accès</string>
     <string name="user_edit_password_confirm_password_label">Confirmer le code</string>
     <string name="user_edit_password_invalid_current_password">Mot de passe invalide</string>
     <string name="user_edit_password_new_password_too_short">Le nouveau mot de passe est trop court.</string>
     <string name="user_edit_password_not_match">Les mots de passe ne coïncident pas.</string>
+    <string name="user_edit_password_changed">Mise à jour du mot de passe</string>
 
     <string name="user_edit_profile_invalid_firstname">Le prénom doit comporter au moins 2 lettres.</string>
     <string name="user_edit_profile_invalid_lastname">Le nom doit comporter au moins 2 lettres.</string>
+    <string name="user_edit_profile_invalid_phone">Le numéro doit comporter 9 ou 10 chiffres.</string>
     <string name="user_edit_profile_invalid_email">L’adresse email est invalide.</string>
 
     <string name="user_delete_account_dialog">Voulez-vous vraiment supprimer votre compte ?</string>
@@ -99,7 +102,7 @@
     <!-- Edit profile -->
     //Profile mod action zone / type
     <string name="profile_edit_zone_title">Où souhaitez-vous agir ?</string>
-    <string name="profile_edit_zone_description">Entourage est un réseau local !\nDécouvrez les initiatives solidaires de votre quartier et tissez des liens avec vos voisins</string>
+    <string name="profile_edit_zone_description">Entourage est un réseau social !\nDécouvrez les initiatives solidaires de votre quartier et tissez des liens avec vos voisins</string>
     <string name="profile_action_not_selected">"Mode d'action non sélectionné</string>
     <string name="profile_title_action_mode">Mon mode d’action</string>
     <string name="profile_activities">Activité(s) : %s</string>

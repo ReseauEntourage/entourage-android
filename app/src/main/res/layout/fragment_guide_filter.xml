@@ -6,7 +6,6 @@
               android:background="@color/pale_grey"
               tools:context="social.entourage.android.guide.filter.GuideFilterFragment">
 
-
     <social.entourage.android.tools.view.CustomTitleView
         android:id="@+id/entourageTitleView"
         android:layout_width="match_parent"

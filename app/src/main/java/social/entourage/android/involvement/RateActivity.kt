@@ -4,9 +4,9 @@ import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import social.entourage.android.R
 import social.entourage.android.base.BaseActivity
 import social.entourage.android.tools.log.AnalyticsEvents
-import social.entourage.android.R
 
 class RateActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

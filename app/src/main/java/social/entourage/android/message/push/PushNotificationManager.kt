@@ -1,5 +1,8 @@
 package social.entourage.android.message.push
 
+import android.annotation.SuppressLint
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
@@ -8,12 +11,10 @@ import android.graphics.Color
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import androidx.preference.PreferenceManager
 import androidx.core.app.NotificationCompat
-import android.app.NotificationChannel
-import android.app.NotificationManager
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.res.ResourcesCompat
+import androidx.preference.PreferenceManager
 import com.google.firebase.messaging.RemoteMessage
 import social.entourage.android.EntourageApplication
 import social.entourage.android.MainActivity
@@ -23,7 +24,6 @@ import social.entourage.android.api.model.PushNotificationContent
 import social.entourage.android.api.model.TimestampedObject
 import social.entourage.android.api.model.feed.FeedItem
 import timber.log.Timber
-import java.util.*
 
 /**
  * Singleton that handles the push notifications
@@ -56,18 +56,9 @@ object PushNotificationManager {
     fun handlePushNotification(message: Message, context: Context) {
         val content = message.content ?: return
         val application = EntourageApplication.get()
-        if (PushNotificationContent.TYPE_JOIN_REQUEST_CANCELED == content.type) {
-            // Remove the related join request push notification
-            if (content.isTourRelated) {
-                application.removePushNotification(content.joinableId, TimestampedObject.TOUR_CARD, content.userId, PushNotificationContent.TYPE_NEW_JOIN_REQUEST)
-            } else if (content.isEntourageRelated) {
-                application.removePushNotification(content.joinableId, TimestampedObject.ENTOURAGE_CARD, content.userId, PushNotificationContent.TYPE_NEW_JOIN_REQUEST)
-            }
-        } else {
-            application.addPushNotification(message)
-            // Display all notifications except the join_request_canceled
-            displayPushNotification(message, context)
-        }
+        application.addPushNotification(message)
+        // Display all notifications except the join_request_canceled
+        displayPushNotification(message, context)
     }
 
     /**
@@ -99,8 +90,7 @@ object PushNotificationManager {
                 for(message in messageList) {
                     val content = message.content
                     if (content != null && content.joinableId == feedItemId) {
-                        if((TimestampedObject.TOUR_CARD == feedType && content.isTourRelated)
-                                || (TimestampedObject.ENTOURAGE_CARD == feedType && content.isEntourageRelated)){
+                        if((TimestampedObject.ENTOURAGE_CARD == feedType && content.isEntourageRelated)){
                             nbNotifsFound++
                             messageListChanged = true
                             if (PushNotificationContent.TYPE_NEW_JOIN_REQUEST == content.type) {
@@ -188,11 +178,9 @@ object PushNotificationManager {
                 for (message in oldMessageList) {
                     val content = message.content
                     if (content != null && content.joinableId == feedId && content.type == pushType) {
-                        if (TimestampedObject.TOUR_CARD == feedType && content.isTourRelated
-                                || TimestampedObject.ENTOURAGE_CARD == feedType && content.isEntourageRelated) {
+                        if (TimestampedObject.ENTOURAGE_CARD == feedType && content.isEntourageRelated) {
                             messageListChanged = true
                             if (message.isVisible) {
-                                application.storeNewPushNotification(message, false)
                                 count++
                             }
                             continue
@@ -233,6 +221,7 @@ object PushNotificationManager {
      * @param message the message received
      * @param context the context
      */
+    @SuppressLint("MissingPermission")
     private fun displayPushNotification(message: Message, context: Context) {
         val messageList: List<Message>? = pushNotifications[message.hash]
         val count = messageList?.size ?: 0
@@ -265,6 +254,7 @@ object PushNotificationManager {
         NotificationManagerCompat.from(context).notify(message.pushNotificationTag, message.pushNotificationId, notification)
     }
 
+    @SuppressLint("MissingPermission")
     fun displayFCMPushNotification(fcmCTA:String, fcmTitle: String?, fcmBody: String?, context: Context) {
         val channelId = context.getString(R.string.app_name)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {

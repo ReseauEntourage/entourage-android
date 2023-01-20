@@ -4,7 +4,6 @@ import com.google.gson.annotations.SerializedName
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.*
-import social.entourage.android.api.model.ShareMessage
 import social.entourage.android.api.model.*
 import social.entourage.android.api.model.BaseEntourage.EntourageJoinInfo
 import social.entourage.android.api.model.EntourageReport.EntourageReportWrapper

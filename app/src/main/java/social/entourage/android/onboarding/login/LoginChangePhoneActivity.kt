@@ -10,7 +10,6 @@ import social.entourage.android.base.BaseActivity
 import social.entourage.android.tools.hideKeyboard
 import social.entourage.android.tools.isValidEmail
 import timber.log.Timber
-import java.lang.Exception
 
 class LoginChangePhoneActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -20,7 +19,7 @@ class LoginChangePhoneActivity : BaseActivity() {
         ui_layout_change_phone_ok?.visibility = View.GONE
         ui_layout_waiting?.visibility = View.GONE
 
-        ui_login_bt_back?.setOnClickListener {
+        icon_back?.setOnClickListener {
             finish()
         }
 
@@ -65,6 +64,7 @@ class LoginChangePhoneActivity : BaseActivity() {
                 ui_layout_waiting?.visibility = View.GONE
                 if (resID==R.string.login_change_phone_send_ok) {
                     ui_layout_change_phone_ok?.visibility = View.VISIBLE
+                    ui_changeCode_bt_validate?.visibility = View.INVISIBLE
                 }
                 else {
                     showError(R.string.login_change_error_return, getString(resID), R.string.button_OK)

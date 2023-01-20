@@ -2,24 +2,21 @@ package social.entourage.android.authentication
 
 import com.google.gson.reflect.TypeToken
 import social.entourage.android.EntourageApplication
+import social.entourage.android.RefreshController
 import social.entourage.android.api.model.User
-import social.entourage.android.api.model.tour.Tour
-import social.entourage.android.api.tape.Events.OnUserInfoUpdatedEvent
-import social.entourage.android.entourage.my.filter.MyEntouragesFilter
 import social.entourage.android.base.map.filter.MapFilter
-import social.entourage.android.tools.EntBus
-import java.util.*
-import kotlin.collections.HashMap
 
 /**
  * Controller that managed the authenticated user and persist it on the phone
  */
-class AuthenticationController(private val appSharedPref: ComplexPreferences) {
+class AuthenticationController() {
     private var user: User? = null
     private var userPreferences: UserPreferences = UserPreferences()
     private var userPreferencesHashMap: MutableMap<Int, UserPreferences?> = HashMap()
+    private val appSharedPref: ComplexPreferences
+        get() = EntourageApplication.get().complexPreferences
 
-    fun init(): AuthenticationController {
+    init {
         user = appSharedPref.getObject(PREF_KEY_USER, User::class.java)
         if (user?.token == null) {
             user = null
@@ -29,8 +26,6 @@ class AuthenticationController(private val appSharedPref: ComplexPreferences) {
 
         //To reset show pop up empty POI on GDS
         userPreferences.isShowNoPOIsPopup = true
-
-        return this
     }
 
     val me: User?
@@ -49,27 +44,13 @@ class AuthenticationController(private val appSharedPref: ComplexPreferences) {
         user = updatedUser
         saveCurrentUser()
         if (shouldLoadUserPreferences) loadUserPreferences()
-        EntBus.post(OnUserInfoUpdatedEvent(updatedUser))
+        RefreshController.shouldRefreshUser = true
     }
 
     fun saveUserPhoneAndCode(phone: String?, smsCode: String?) {
         user?.let { user ->
             user.phone = phone
             user.smsCode = smsCode
-            saveCurrentUser()
-        }
-    }
-
-    fun incrementUserToursCount() {
-        user?.let { user ->
-            user.incrementTours()
-            saveCurrentUser()
-        }
-    }
-
-    fun incrementUserEncountersCount() {
-        user?.let { user ->
-            user.incrementEncouters()
             saveCurrentUser()
         }
     }
@@ -86,7 +67,10 @@ class AuthenticationController(private val appSharedPref: ComplexPreferences) {
     fun isTutorialDone(): Boolean {
         user?.let { user ->
             val sharedPreferences = EntourageApplication.get().sharedPreferences
-            val loggedNumbers = sharedPreferences.getStringSet(EntourageApplication.KEY_TUTORIAL_DONE, HashSet()) as HashSet<String>?
+            val loggedNumbers = sharedPreferences.getStringSet(
+                EntourageApplication.KEY_TUTORIAL_DONE,
+                HashSet()
+            ) as HashSet<String>?
             return loggedNumbers?.contains(user.phone) ?: false
         }
         return false
@@ -94,7 +78,11 @@ class AuthenticationController(private val appSharedPref: ComplexPreferences) {
 
     private fun loadUserPreferences() {
         val type = object : TypeToken<Map<Int?, UserPreferences?>?>() {}.type
-        userPreferencesHashMap = (appSharedPref.getObjectFromType<MutableMap<Int, UserPreferences?>>(PREF_KEY_USER_PREFERENCES, type) ?: HashMap()).toMutableMap()
+        userPreferencesHashMap =
+            (appSharedPref.getObjectFromType<MutableMap<Int, UserPreferences?>>(
+                PREF_KEY_USER_PREFERENCES,
+                type
+            ) ?: HashMap()).toMutableMap()
 
         // since we save the user preferences for all the users
         // we just need to check for an existing user preferences to see if it's a new user or not
@@ -103,7 +91,10 @@ class AuthenticationController(private val appSharedPref: ComplexPreferences) {
         } ?: UserPreferences()
         // Check if we have an old version of saving the map filter with hashmap
         val typeMapFilterHashMap = object : TypeToken<Map<Int?, MapFilter?>?>() {}.type
-        appSharedPref.getObjectFromType<Map<Int, MapFilter>>(PREF_KEY_MAP_FILTER_HASHMAP, typeMapFilterHashMap)?.let { mapFilterHashMap ->
+        appSharedPref.getObjectFromType<Map<Int, MapFilter>>(
+            PREF_KEY_MAP_FILTER_HASHMAP,
+            typeMapFilterHashMap
+        )?.let { mapFilterHashMap ->
             // save it to user preferences
             user?.let { user ->
                 userPreferences.mapFilter = mapFilterHashMap[user.id]
@@ -126,22 +117,10 @@ class AuthenticationController(private val appSharedPref: ComplexPreferences) {
 
     ///////////////////////////////
     // userPreferences
-    fun saveUserToursOnly(choice: Boolean) {
-        userPreferences.isUserToursOnly = choice
-        saveUserPreferences()
-    }
-
     var entourageDisclaimerShown: Boolean
         get() = userPreferences.isEntourageDisclaimerShown
         set(isEntourageDisclaimerShown) {
             userPreferences.isEntourageDisclaimerShown = isEntourageDisclaimerShown
-            saveUserPreferences()
-        }
-
-    var encounterDisclaimerShown: Boolean
-        get() = userPreferences.isEncounterDisclaimerShown
-        set(isEncounterDisclaimerShown) {
-            userPreferences.isEncounterDisclaimerShown = isEncounterDisclaimerShown
             saveUserPreferences()
         }
 
@@ -158,9 +137,6 @@ class AuthenticationController(private val appSharedPref: ComplexPreferences) {
             userPreferences.isEditActionZoneShown = isEditActionZoneShown
             saveUserPreferences()
         }
-
-    val isUserToursOnly: Boolean
-        get() = userPreferences.isUserToursOnly
 
     var isShowNoEntouragesPopup: Boolean
         get() = userPreferences.isShowNoEntouragesPopup
@@ -183,13 +159,6 @@ class AuthenticationController(private val appSharedPref: ComplexPreferences) {
             saveUserPreferences()
         }
 
-    var isShowEncounterDisclaimer: Boolean
-        get() = userPreferences.isShowEncounterDisclaimer
-        set(showEncounterDisclaimer) {
-            userPreferences.isShowEncounterDisclaimer = showEncounterDisclaimer
-            saveUserPreferences()
-        }
-
     val mapFilter: MapFilter
         get() {
             return userPreferences.mapFilter ?: MapFilter().apply {
@@ -204,35 +173,13 @@ class AuthenticationController(private val appSharedPref: ComplexPreferences) {
         saveUserPreferences()
     }
 
-    val myEntouragesFilter: MyEntouragesFilter?
-        get() {
-            if (user != null) {
-                return userPreferences.myEntouragesFilter
-                        ?: MyEntouragesFilter().also {
-                            userPreferences.myEntouragesFilter = it
-                            saveUserPreferences()
-                        }
-            }
-            return null
-        }
-
     fun saveMyEntouragesFilter() {
         saveUserPreferences()
     }
 
-    val savedTour: Tour?
-        get() = userPreferences.ongoingTour
-
-    fun saveTour(tour: Tour?) {
-        if (user != null) {
-            userPreferences.ongoingTour = tour
-            saveUserPreferences()
-        }
-    }
-
     private fun saveCurrentUser() {
-        user?.let {
-            appSharedPref.putObject(PREF_KEY_USER, it)
+        user?.let { user->
+            appSharedPref.putObject(PREF_KEY_USER, user)
             appSharedPref.commit()
         }
     }

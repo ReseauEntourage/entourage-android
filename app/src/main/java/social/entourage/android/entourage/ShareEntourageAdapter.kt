@@ -29,9 +29,6 @@ class ShareEntourageAdapter(val context: Context, private val myDataset: ArrayLi
 
             itemView.ui_tv_title?.text = sharingEntourage.title
 
-            var imageUrl:String? = null
-            var bitDraw: Drawable?
-
             if (sharingEntourage.isSelected) {
                 val img = AppCompatResources.getDrawable(context,R.drawable.contact_selected)
                 itemView.ui_iv_select.setImageDrawable(img)
@@ -43,17 +40,12 @@ class ShareEntourageAdapter(val context: Context, private val myDataset: ArrayLi
                 itemView.ui_tv_title.setTypeface(null, Typeface.NORMAL)
             }
 
-            bitDraw = getIcn(sharingEntourage.entourage_type,sharingEntourage.category)
-
-            if (sharingEntourage.category == null && sharingEntourage.group_type == BaseEntourage.GROUPTYPE_OUTING) {
-                bitDraw = AppCompatResources.getDrawable(context,R.drawable.ic_event_accent_24dp)
-            }
-            if (sharingEntourage.group_type == "conversation") {
-                imageUrl = sharingEntourage.author?.avatarUrl
-            }
-
             itemView.ui_iv_avatar?.let {iconView ->
                 Glide.with(iconView.context).clear(iconView)
+                val imageUrl:String? = if (sharingEntourage.group_type == "conversation") {
+                    sharingEntourage.author?.avatarUrl
+                } else null
+
                 if (imageUrl != null) {
                     iconView.setImageDrawable(null)
                     Glide.with(iconView.context)
@@ -62,9 +54,12 @@ class ShareEntourageAdapter(val context: Context, private val myDataset: ArrayLi
                             .circleCrop()
                             .into(iconView)
                 } else {
-                    Glide.with(iconView.context)
-                            .load(bitDraw)
-                            .into(iconView)
+                    val bitDraw: Drawable? = if (sharingEntourage.category == null && sharingEntourage.group_type == BaseEntourage.GROUPTYPE_OUTING) {
+                        AppCompatResources.getDrawable(context,R.drawable.ic_event_accent_24dp)
+                    } else {
+                        getIcn(sharingEntourage.entourage_type,sharingEntourage.category)
+                    }
+                    iconView.setImageDrawable(bitDraw)
                 }
             }
 

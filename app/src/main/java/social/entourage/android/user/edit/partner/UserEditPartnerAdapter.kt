@@ -8,12 +8,11 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.BaseAdapter
 import android.widget.CompoundButton
+import androidx.core.content.res.ResourcesCompat
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.layout_edit_partner.view.*
 import social.entourage.android.R
 import social.entourage.android.api.model.Partner
-import social.entourage.android.api.tape.Events.OnPartnerViewRequestedEvent
-import social.entourage.android.tools.EntBus
 
 /**
  * Created by mihaiionescu on 16/01/2017.
@@ -30,11 +29,6 @@ class UserEditPartnerAdapter : BaseAdapter() {
                         it.isChecked = !it.isChecked
                         checkboxListener.onCheckedChanged(it, it.isChecked)
                     }
-                }
-            }
-            v.partner_logo?.setOnClickListener {
-                partner?.let {
-                    EntBus.post(OnPartnerViewRequestedEvent(it))
                 }
             }
         }
@@ -57,7 +51,8 @@ class UserEditPartnerAdapter : BaseAdapter() {
         val currentView: View
         val viewHolder: PartnerViewHolder
         if (view == null) {
-            currentView = LayoutInflater.from(viewGroup.context).inflate(R.layout.layout_edit_partner, viewGroup, false)
+            currentView = LayoutInflater.from(viewGroup.context)
+                .inflate(R.layout.layout_edit_partner, viewGroup, false)
             viewHolder = PartnerViewHolder(currentView, onCheckedChangeListener)
             currentView.tag = viewHolder
         } else {
@@ -82,11 +77,9 @@ class UserEditPartnerAdapter : BaseAdapter() {
                             .into(it)
                 }
             } ?: run  {
-                currentView.partner_logo?.let {
-                    Glide.with(it.context)
-                            .load(R.drawable.partner_placeholder)
-                            .into(it)
-                }
+                currentView.partner_logo?.setImageDrawable(
+                    ResourcesCompat.getDrawable(currentView.resources, R.drawable.partner_placeholder, null)
+                )
             }
 
             // set the tag to null so that oncheckedchangelistener exits when populating the view

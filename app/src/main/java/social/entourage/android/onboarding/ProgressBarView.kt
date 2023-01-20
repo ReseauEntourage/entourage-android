@@ -16,7 +16,6 @@ class ProgressCellarView: View {
     private var bitmap: Bitmap? = null
     private var paint: Paint? = null
 
-
     constructor(context: Context?) : super(context) {
         init(null,0)
     }
@@ -26,7 +25,6 @@ class ProgressCellarView: View {
     constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
         init(attrs,defStyleAttr)
     }
-
 
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)

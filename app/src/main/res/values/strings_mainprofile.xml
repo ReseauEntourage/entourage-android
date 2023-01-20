@@ -19,7 +19,6 @@
     <string name="contribCreated">dons\npubliés</string>
     <string name="askCreated">demandes\n publiées</string>
 
-
     <string name="menu_info_social">Pour vivre <b>encore plus de solidarité</b> suivez Entourage sur vos réseaux !</string>
 
     <string name="menu_info_first_title">👋 FAIRE LE PREMIER PAS</string>
@@ -43,4 +42,9 @@
     <string name="myContrib">Mes dons</string>
     <string name="myActionEmptyAsk">Actuellement vous n\'avez pas de demandes publiées sur l\'application ;)</string>
     <string name="myActionEmptyContrib">Actuellement vous n\'avez pas de dons publiés sur l\'application ;)</string>
+    <string name="placeholder_birthday_my_profile">01–03</string>
+    <string name="placeholder_email_my_profile">email@gmail.com</string>
+
+
+
 </resources>

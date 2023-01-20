@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="actions_title">Entraide</string>
+    <string name="actions_tab_contribs">Contributions</string>
+    <string name="actions_tab_demands">Demandes</string>
+
+    <string name="action_date_list">Le %s</string>
+    <string name="action_date_list_formatter">"dd MMMM yyyy"</string>
+    <string name="action_date_month_year_formatter">"MM/YYYY"</string>
+
+    <string name="action_bt_my_actions">Mes annonces</string>
+
+    <string name="action_contrib_empty_state_title">Aucune contribution ne correspond à votre recherche</string>
+    <string name="action_contrib_empty_state_desc">Vous pouvez élargir votre champ de recherche ou créer une contribution</string>
+
+    <string name="action_demand_empty_state_title">Aucune demande ne correspond à votre recherche</string>
+    <string name="action_demand_empty_state_desc">Vous pouvez élargir votre champ de recherche ou créer une demande</string>
+
+    <string name="action_bt_cat_filters">Catégories</string>
+    <string name="action_cat_filters_title">Filtrer par catégories</string>
+    <string name="action_location_filter_title">Filtrer par localisation</string>
+
+    <string name="action_menu_create_demand">Créer une demande</string>
+    <string name="action_menu_create_contrib">Créer une contribution</string>
+
+    <string name="action_my_actions">Mes annonces</string>
+
+    <string name="action_my_empty_title">Vous n’avez publié aucune annonce</string>
+    <string name="action_my_empty_subtitle">Vous pouvez créer une contribution ou une demande en cliquant sur le « + » de la page « Entraide »</string>
+
+    <string name="action_cancel_title">L’annonce a été supprimée…</string>
+    <string name="action_cancel_subtitle">Vous pouvez voir d’autres annonces susceptibles de vous interesser ou créer une demande dans la partie « Entraide »</string>
+
+    <string name="action_report_demand">Signaler la demande</string>
+    <string name="action_report_contrib">Signaler la contribution</string>
+
+    <string name="action_title_section_author">Crée le par</string>
+    <string name="action_canceled">Annonce supprimée</string>
+    <string name="action_show_charte"><u>Charte éthique</u></string>
+
+    <string name="action_detail_bt_cancel">Supprimer</string>
+    <string name="action_detail_bt_modify">Modifier</string>
+    <string name="action_detail_bt_contact">Contacter</string>
+    <string name="action_detail_bt_back">Retour sur la page annonces</string>
+
+    <string name="action_member_since">Membre depuis %s</string>
+    <string name="action_created_at_by">"Créé le %s par</string>
+    <string name="action_created_by">"Créé %s par</string>
+    <string name="action_created_by_">"Créé par</string>
+
+    <string name="atKm">%s, à %s km de moi</string>
+    <string name="AtKm">À %s km de moi</string>
+
+    <!-- Action create -->
+    <string name="action_create_demand_title">Nouvelle demande</string>
+    <string name="action_create_contrib_title">Nouvelle contribution</string>
+    <string name="action_create_title">Titre de l\'action</string>
+    <string name="action_create_subtitle">Donnez un nom court et explicite à votre %s</string>
+    <string name="action_create_title_hint">Nommez votre %s</string>
+    <string name="action_create_description">Description</string>
+    <string name="action_create_description_hint">Décrivez en détail la %s que vous proposez</string>
+    <string name="action_create_add_photo">Photo</string>
+
+    <string name="action_name_demand">demande</string>
+    <string name="action_name_contrib">contribution</string>
+    <string name="action_name_Demand">Demande</string>
+    <string name="action_name_Contrib">Contribution</string>
+
+    <!-- pop back create-->
+    <string name="back_create_action_title">Attention</string>
+    <string name="back_create_action_content">Si vous quittez le formulaire de création d’une %s, toutes les informations saisies seront perdues.</string>
+
+    <string name="action_crete_cat_about">Vous cherchez à proposer une %s qui ne rentre pas dans l\'une de ces catégories ? Il semble qu\'elle n\'ait pas sa place sur le réseau,</string>
+    <string name="action_create_cat_about_more0">mais vous pouvez toujours</string>
+    <string name="action_create_cat_about_more1"><u> en savoir plus par ici.</u></string>
+
+    <string name="action_create_cat_choose_category">Sélectionnez la catégorie qui décrit le mieux votre %s.</string>
+    <string name="action_create_location_title">Localisez votre %s</string>
+    <string name="action_create_location_subtitle">Votre position précise ne sera pas partagée, vous pouvez mettre une autre localisation que la zone d’action de votre profil.</string>
+
+    <string name="action_create_success_title">Votre %s\nà bien été créée !</string>
+    <string name="action_create_success_subtitle">Félicitations, vous venez de créer une nouvelle %s. Pour la rendre plus visible parlez-en sur vos groupes !</string>
+    <string name="action_create_end_finish_bt">Terminer</string>
+    <string name="action_error_create_action">Erreur lors de la création de la %s</string>
+    <string name="action_error_edit_action">Erreur lors de la modification de la %s</string>
+    <string name="action_updated">La modification a bien été prise en compte</string>
+
+    <!-- pop cancel action -->
+    <string name="action_cancel_pop_bt_yes">Oui</string>
+    <string name="action_cancel_pop_bt_no">Non</string>
+    <string name="action_cancel_pop_bt_send">Envoyer</string>
+    <string name="action_cancel_pop_title">Supprimer la %s</string>
+    <string name="action_cancel_pop_subtitle">Votre %s a-t-elle aboutie ?</string>
+    <string name="action_cancel_pop_comment">Dites nous en plus sur votre expérience</string>
+    <string name="action_cancel_pop_comment_placeholder">Racontez nous votre expérience !</string>
+
+    <string name="action_edit_demand_title">Modifier la demande</string>
+    <string name="action_edit_contrib_title">Modifier la contribution</string>
+</resources>

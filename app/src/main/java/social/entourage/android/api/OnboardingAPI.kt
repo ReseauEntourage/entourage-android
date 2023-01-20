@@ -1,6 +1,7 @@
 package social.entourage.android.api
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.collection.ArrayMap
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody.Companion.asRequestBody
@@ -24,18 +25,18 @@ import kotlin.collections.set
  */
 class OnboardingAPI {
 
-    private val authenticationController:AuthenticationController = EntourageApplication.get().components.authenticationController
+    private val authenticationController:AuthenticationController = EntourageApplication.get().authenticationController
 
     private val onboardingService : UserRequest
-        get() =  EntourageApplication.get().components.userRequest //service ?: retrofit!!.create(UserRequest::class.java)
+        get() =  EntourageApplication.get().apiModule.userRequest //service ?: retrofit!!.create(UserRequest::class.java)
 
     private val loginService : LoginRequest
-        get() = EntourageApplication.get().components.loginRequest //retrofit!!.create(LoginRequest::class.java)
+        get() = EntourageApplication.get().apiModule.loginRequest //retrofit!!.create(LoginRequest::class.java)
 
     /**********************
      * Create user
      */
-    fun createUser(tempUser: User,listener:(isOK:Boolean,error:String?) -> Unit) {
+    fun createUser(tempUser: User, listener:(isOK:Boolean, error:String?) -> Unit) {
 
         val user: MutableMap<String, String> = ArrayMap()
         user["phone"] = tempUser.phone ?: ""
@@ -79,7 +80,6 @@ class OnboardingAPI {
                     response.body()?.user?.let {
                         authenticationController.saveUser(it)
                         authenticationController.saveUserPhoneAndCode(phoneNumber, smsCode)
-                        authenticationController.saveUserToursOnly(false)
                     }
 
                     listener(true,response.body(),null)
@@ -195,10 +195,17 @@ class OnboardingAPI {
         })
     }
 
-    fun updateUserGoal(goalString:String, listener:(isOK:Boolean, userResponse: UserResponse?) -> Unit) {
+    fun updateUserGoal(goalString:String, email:String?, hasConsent:Boolean?, listener:(isOK:Boolean, userResponse: UserResponse?) -> Unit) {
 
         val user = ArrayMap<String, Any>()
         user["goal"] = goalString
+        if (hasConsent != null) {
+            user["newsletter_subscription"] = hasConsent
+        }
+
+        if (email?.isNotEmpty() == true){
+            user["email"] = email
+        }
 
         val request = ArrayMap<String, Any>()
         request["user"] = user
@@ -293,7 +300,7 @@ class OnboardingAPI {
                 .put(requestBody)
                 .build()
 
-        EntourageApplication.get().components.okHttpClient.newCall(request).enqueue(object : okhttp3.Callback {
+        EntourageApplication.get().apiModule.okHttpClient.newCall(request).enqueue(object : okhttp3.Callback {
             override fun onFailure(call: okhttp3.Call, e: IOException) {
                 listener(false)
             }
@@ -347,7 +354,7 @@ class OnboardingAPI {
     /**********************
      * Onboarding Asso
      */
-    fun updateAssoInfos(asso:Partner?, listener:(isOK:Boolean, response:ResponseBody?) -> Unit) {
+    fun updateAssoInfos(asso: Partner?, listener:(isOK:Boolean, response:ResponseBody?) -> Unit) {
 
         if (asso == null) {
             listener(false,null)
@@ -408,7 +415,7 @@ class OnboardingAPI {
     }
 
     fun getAssociationsList(listener:(arrayAssociations:ArrayList<Partner>?) -> Unit) {
-        val request = EntourageApplication.get().components.partnerRequest
+        val request = EntourageApplication.get().apiModule.partnerRequest
         request.allPartners.enqueue(object : Callback<PartnersResponse> {
             override fun onResponse(call: Call<PartnersResponse>, response: Response<PartnersResponse>) {
                 if (response.isSuccessful) {

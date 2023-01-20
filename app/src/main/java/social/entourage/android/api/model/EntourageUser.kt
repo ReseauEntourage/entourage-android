@@ -56,14 +56,13 @@ class EntourageUser : TimestampedObject(), Serializable {
     }
 
     override val type: Int
-        get() = if (isDisplayedAsMember) FEED_MEMBER_CARD else TOUR_USER_JOIN
+        get() = if (isDisplayedAsMember) FEED_MEMBER_CARD else USER_JOIN
 
     override val id: Long
         get() = userId.toLong()
 
     override fun equals(other: Any?): Boolean {
         return if (other == null || other.javaClass != this.javaClass) false else userId == (other as EntourageUser).userId
-        //return (this.userId == ((TourUser)o).userId) && (this.status.equals(((TourUser)o).status));
     }
 
     fun clone(): EntourageUser {
@@ -83,8 +82,48 @@ class EntourageUser : TimestampedObject(), Serializable {
         return clone
     }
 
+    fun getCommunityRoleWithPartnerFormated() : String? {
+        communityRoles?.let {
+            var roleStr = ""
+
+            if (isAdmin()) {
+                roleStr = "Admin"
+            }
+
+            for (role in it) {
+                if(roleStr.isNotEmpty()) {
+                    roleStr = "$roleStr • $role"
+                }
+                else {
+                    roleStr = role
+                }
+
+                break
+            }
+            partner?.name?.let {
+                if (roleStr.isNotEmpty()) {
+                    roleStr = "$roleStr • $it"
+                }
+                else {
+                    roleStr = it
+                }
+            }
+            return roleStr
+        }
+
+
+        return null
+    }
+
+    fun isAdmin() : Boolean {
+        if (groupRole == "creator") {
+            return true
+        }
+        return false
+    }
+
     companion object {
         private const val serialVersionUID = 6896833312363434601L
-        private const val HASH_STRING_HEAD = "TourUser-"
+        private const val HASH_STRING_HEAD = "EntourageUser-"
     }
 }

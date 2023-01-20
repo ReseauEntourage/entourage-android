@@ -31,6 +31,7 @@ open class BaseDialogFragment : DialogFragment() {
         (activity as? MainActivity)?.let {handleCurrentDeepLink(it) }
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         if (dialog == null) {
             //TODO should we use setShowsDialog(false) here

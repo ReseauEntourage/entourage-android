@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/event_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="17dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/start_time_title"
+                style="@style/left_h2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="5dp"
+                android:text="@string/start_time"
+                tools:text="Title" />
+
+            <EditText
+                android:id="@+id/start_time"
+                style="@style/input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="-4dp"
+                android:layout_marginTop="5dp"
+                android:backgroundTint="@color/light_orange_opacity_50"
+                android:drawableRight="@drawable/new_event_time"
+                android:focusable="false"
+                android:hint="@string/time_hint"
+                android:maxLength="400"
+                android:maxLines="4"
+                android:paddingTop="0dp"
+                app:layout_constraintTop_toBottomOf="@id/event_description_title"
+                tools:text="content" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/end_time_title"
+                style="@style/left_h2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="5dp"
+                android:text="@string/end_time"
+                tools:text="Title" />
+
+            <EditText
+                android:id="@+id/end_time"
+                style="@style/input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="-4dp"
+                android:layout_marginTop="5dp"
+                android:backgroundTint="@color/light_orange_opacity_50"
+                android:drawableRight="@drawable/new_event_time"
+                android:focusable="false"
+                android:hint="@string/time_hint"
+                android:maxLength="400"
+                android:maxLines="4"
+                android:paddingTop="0dp"
+                app:layout_constraintTop_toBottomOf="@id/event_description_title"
+                tools:text="content" />
+        </LinearLayout>
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,6 +1,5 @@
 package social.entourage.android
 
-
 import android.content.Context
 import android.view.WindowManager
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
@@ -24,13 +23,11 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import social.entourage.android.home.HomeCard
+import social.entourage.android.old_v7.home.HomeCard
 import social.entourage.android.onboarding.login.LoginActivity
-import social.entourage.android.tools.EntBus
 import java.io.IOException
 import java.util.*
 import kotlin.random.Random
-
 
 @LargeTest
 @RunWith(AndroidJUnit4::class)
@@ -45,7 +42,6 @@ class HomeExpertTest {
     private var jsonResponse: String = ""
     private val login: String = "651234145"
     private val password: String = "108674"
-
 
     /****************************** Views ******************************/
 
@@ -86,7 +82,6 @@ class HomeExpertTest {
     private val closeButton = onView(allOf(withId(R.id.entourage_info_close), isDisplayed()))
     private val titleCloseButton = onView(allOf(withId(R.id.title_close_button), isDisplayed()))
 
-
     /****************************** Before each test ******************************/
 
     @Before
@@ -94,7 +89,7 @@ class HomeExpertTest {
         //Logout
         activityRule.scenario.onActivity { activity ->
             context = activity
-            EntourageApplication[activity].components.authenticationController.logOutUser()
+            EntourageApplication[activity].authenticationController.logOutUser()
             jsonResponse = getJsonDataFromAsset(activity, "home_response_success.json") ?: ""
         }
 
@@ -105,7 +100,6 @@ class HomeExpertTest {
 
         Thread.sleep(4000)
     }
-
 
     /****************************** HomeExpertFragment ******************************/
 
@@ -121,7 +115,7 @@ class HomeExpertTest {
         //Click on an Action item type demand
         headlineRv.perform(actionOnItemAtPosition<ViewHolder>(0, click()))
         val joinButton = onView(allOf(withId(R.id.entourage_info_request_join_button), isDisplayed()))
-        joinButton.check(matches(withText(context.getString(R.string.tour_info_request_join_button_entourage)
+        joinButton.check(matches(withText(context.getString(R.string.entourage_info_request_join_button_entourage)
             .uppercase(Locale.getDefault()))))
 
         clickCloseButton()
@@ -135,7 +129,7 @@ class HomeExpertTest {
 
         //Click on an Action item type outing
         headlineRv.perform(actionOnItemAtPosition<ViewHolder>(2, click()))
-        joinButton.check(matches(withText(context.getString(R.string.tour_info_request_join_button_event)
+        joinButton.check(matches(withText(context.getString(R.string.entourage_info_request_join_button_event)
             .uppercase(Locale.getDefault()))))
 
         clickCloseButton()
@@ -157,7 +151,7 @@ class HomeExpertTest {
 
         val eventsRv = onView(allOf(withId(R.id.ui_recyclerview_event), isDisplayed()))
         eventsRv.perform(actionOnItemAtPosition<ViewHolder>(0, click()))
-        joinButton.check(matches(withText(context.getString(R.string.tour_info_request_join_button_event)
+        joinButton.check(matches(withText(context.getString(R.string.entourage_info_request_join_button_event)
             .uppercase(Locale.getDefault()))))
 
         clickCloseButton()
@@ -172,7 +166,7 @@ class HomeExpertTest {
 
         val actionsRv = onView(allOf(withId(R.id.ui_recyclerview_action), isDisplayed()))
         actionsRv.perform(actionOnItemAtPosition<ViewHolder>(0, click()))
-        joinButton.check(matches(withText(context.getString(R.string.tour_info_request_join_button_entourage)
+        joinButton.check(matches(withText(context.getString(R.string.entourage_info_request_join_button_entourage)
             .uppercase(Locale.getDefault()))))
 
         clickCloseButton()
@@ -196,7 +190,6 @@ class HomeExpertTest {
         enableWifiAndData(true)
     }
 
-
     /****************************** GDSMainActivity ******************************/
 
     @Test
@@ -208,7 +201,6 @@ class HomeExpertTest {
         val gdsTitleTv = onView(allOf(withId(R.id.textView28), isDisplayed()))
         gdsTitleTv.check(matches(withText(R.string.gds_title)))
     }
-
 
     /****************************** PlusFragment ******************************/
 
@@ -244,7 +236,6 @@ class HomeExpertTest {
         askHelpTitleTv.check(matches(isDisplayed()))
     }
 
-
     /****************************** MyEntouragesFragment ******************************/
 
     @Test
@@ -266,9 +257,8 @@ class HomeExpertTest {
         //Test go to FeedItemOptionsFragment
         showOptionsButton.perform(click())
         val cancelButton = onView(allOf(withId(R.id.entourage_option_cancel), isDisplayed()))
-        cancelButton.check(matches(withText(R.string.tour_info_options_close)))
+        cancelButton.check(matches(withText(R.string.entourage_info_options_close)))
     }
-
 
     /****************************** MainProfileFragment ******************************/
 
@@ -328,7 +318,6 @@ class HomeExpertTest {
         preOnboardingTitleTv.check(matches(withText(R.string.pre_onboard_tutorial_title1)))
     }
 
-
     /****************************** UserFragment ******************************/
 
     @Test
@@ -352,7 +341,6 @@ class HomeExpertTest {
         clickTitleCloseButton()
     }
 
-
     /****************************** UserEditFragment ******************************/
 
     @Test
@@ -360,10 +348,10 @@ class HomeExpertTest {
         clickProfileButton()
         editProfileButton.perform(click())
 
-        //Test go to ChoosePhotoFragment
+        //Test go to ChooseProfilePhotoFragment
         val editProfilePictureButton = onView(allOf(withId(R.id.user_photo_button), isDisplayed()))
         editProfilePictureButton.perform(click())
-        val takePhotoButton = onView(allOf(withId(R.id.ui_bt_take), isDisplayed()))
+        val takePhotoButton = onView(allOf(withId(R.id.take_picture), isDisplayed()))
         takePhotoButton.check(matches(withText(R.string.onboard_photo_bt_take_photo)))
 
         clickTitleCloseButton()
@@ -419,7 +407,6 @@ class HomeExpertTest {
         saveButton.perform(click())
     }
 
-
     /****************************** UserEditProfileFragment ******************************/
 
     @Test
@@ -458,7 +445,6 @@ class HomeExpertTest {
         val emailTv = onView(allOf(withId(R.id.user_email), isDisplayed()))
         emailTv.check(matches(withText(randomEmail)))
     }
-
 
     /****************************** UserEditPasswordFragment ******************************/
 
@@ -514,7 +500,6 @@ class HomeExpertTest {
         savePasswordButton.perform(click())
     }
 
-
     /****************************** AboutFragment ******************************/
 
     @Test
@@ -559,7 +544,6 @@ class HomeExpertTest {
         titlePage1Tv.check(matches(isDisplayed()))
     }
 
-
     /****************************** UserEditAboutFragment ******************************/
 
     @Test
@@ -582,7 +566,6 @@ class HomeExpertTest {
         val aboutTv = onView(allOf(withId(R.id.user_about), isDisplayed()))
         aboutTv.check(matches(withText(randomText)))
     }
-
 
     /****************************** Bottom bar buttons ******************************/
 
@@ -625,7 +608,6 @@ class HomeExpertTest {
         val editProfileTv = onView(allOf(withId(R.id.action_edit_profile), isDisplayed()))
         editProfileTv.check(matches(withText(R.string.action_edit_profile_regular)))
     }
-
 
     /****************************** Utils ******************************/
 

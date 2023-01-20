@@ -2,42 +2,71 @@
 <resources>
     <string name="pre_onboard_button_connect">Me connecter</string>
     <string name="pre_onboard_button_next">Suivant</string>
-    <string name="pre_onboard_tutorial_title1">Bienvenue\nsur Entourage</string>
-    <string name="pre_onboard_tutorial_title1_colored">Entourage</string>
-    <string name="pre_onboard_tutorial_description1">Quand on est en précarité, le plus dur est la solitude. Rejoignez une communauté d’entraide et de partage au coeur de votre quartier.</string>
 
-    <string name="pre_onboard_tutorial_title2">Entraidez-vous et créez du lien !</string>
-    <string name="pre_onboard_tutorial_title2_colored">créez du lien</string>
-    <string name="pre_onboard_tutorial_description2">Proposez ou demandez de l’aide et rencontrez-vous entre voisins, avec et sans domicile, d’un même quartier.</string>
+    <!-- Carousel -->
+    <string name="bt_previous">Précédent</string>
+    <string name="bt_pass">Passer</string>
 
-    <string name="pre_onboard_tutorial_title3">Participez à des événements solidaires</string>
-    <string name="pre_onboard_tutorial_title3_colored">événements solidaires</string>
+    <string name="intro_title_1">Le réseau social, vraiment social.</string>
+    <string name="intro_subtitle_1">Notre mission : mobiliser et outiller les citoyens pour entourer les plus exclus.</string>
+    <string name="intro_title_2">Sur l\'app Entourage :</string>
+    <string name="intro_subtitle_2">Rencontrez les voisins qui vous ressemblent lors d\'événements et échangez autour d\'actions de solidarité.</string>
+    <string name="intro_title_3">Entourage avec vous !</string>
+    <string name="intro_subtitle_3">Les équipes d\'ambassadeurs, de bénévoles et de modérateurs d\'Entourage vous accompagnent et vous orientent au quotidien.</string>
 
-    <string name="pre_onboard_tutorial_title4">Entourage\nvous guide</string>
-    <string name="pre_onboard_tutorial_title4_colored">Entourage</string>
-    <string name="pre_onboard_tutorial_description4">L’équipe d’accompagnement et ses ambassadeurs sont là pour vous aider ! Orientation, ateliers, informations : trouvez des réponses au sein du réseau.</string>
-
-    <string name="pre_onboard_choice_description_title">Le réseau de ceux qui n’ont pas de réseau</string>
+    <string name="pre_onboard_choice_description_title">Le réseau social, vraiment social.</string>
     <string name="pre_onboard_choice_login">J’ai déjà un compte</string>
     <string name="pre_onboard_choice_signup">Je m’inscris</string>
-    <string name="pre_onboard_choice_about">Qui est l’association Entourage ?</string>
+    <string name="pre_onboard_choice_about"><u>Qui est l’association Entourage ?</u></string>
 
     <!-- ONBOARDING -->
 
     <string name="onboard_button_pass">Passer</string>
-    <string name="onboard_welcome_title">Bienvenue !</string>
     <string name="onboard_welcome_sub">Tout d\'abord…\nComment vous appelez-vous ?</string>
-    <string name="onboard_welcome_info">Seule la première lettre sera visible par les autres membres.</string>
+
+    <string name="onboard_welcome_title">Bienvenue !</string>
+    <string name="onboard_welcome_info">Seule la première lettre sera visible</string>
     <string name="onboard_welcome_placeholder_firstname">Votre prénom</string>
     <string name="onboard_welcome_placeholder_lastname">Votre nom</string>
+    <string name="onboard_welcome_title_firstname">Prénom*</string>
+    <string name="onboard_welcome_title_lastname">Nom*</string>
+    <string name="onboard_welcome_title_country">Pays*</string>
+    <string name="onboard_welcome_title_phone">Téléphone*</string>
+    <string name="onboard_welcome_title_email">E-mail</string>
+    <string name="onboard_welcome_placeholder_email">votreadresse@mail.com</string>
+    <string name="onboard_welcome_placeholder_phone">0600000000</string>
+    <string name="onboard_welcome_consent">Je souhaite recevoir des informations et des conseils de la part d’Entourage</string>
+    <string name="onboard_welcome_info_mandatory">*Champs obligatoires. Vos informations resteront confidentielles et ne seront jamais communiquées à des tiers.</string>
+
+    <string name="onboard_welcome_title_phase2">Entrez le code reçu par SMS</string>
+    <string name="onboard_sms_sub">Un SMS vient juste de vous être envoyé au :</string>
+    <string name="onboard_sms_wait_retry">Pas de code ? Réessayez dans %s</string>
+    <string name="onboard_sms_wait_retry_end">Renvoyer un code</string>
+    <string name="mod_phone_code">- Modifier</string>
+    <string name="onboard_code_placeholder">00000000</string>
+
+    <string name="onboard_welcome_title_phase3">Enchantés %s !</string>
+
+    <string name="onboard_phase3_entour_desc">En plus de faire des rencontres humaines, comment souhaitez-vous contribuer au sein de la Communauté Entourage ? </string>
+    <string name="onboard_phase3_entour_title">Entourer</string>
+    <string name="onboard_phase3_entour_subtitle">Proposer de l’aide …</string>
+    <string name="onboard_phase3_be_entour_title">Être entouré</string>
+    <string name="onboard_phase3_be_entour_subtitle">Demander de l’aide, trouver les structures sociales autour de moi …</string>
+    <string name="onboard_phase3_place_title">Quel est votre quartier ?</string>
+    <string name="onboard_phase3_asso_title">Je suis une association</string>
+
+    <string name="onboard_end_title">Bienvenue dans la Communauté Entourage </string>
+    <string name="onboard_end_subtitle">Félicitations, vous voilà prêt à faire vivre la solidarité autour de vous.</string>
+    <string name="onboard_end_bt">Commencer l’aventure humaine</string>
+
+
+
     <string name="onboard_phone_title">Enchantés, %s.</string>
     <string name="onboard_phone_sub">Quel est votre numéro de téléphone ?</string>
     <string name="onboard_phone_info">Cette information restera confidentielle. Nous voulons juste vérifier que vous n’êtes pas un robot, mais un humain au grand coeur !</string>
     <string name="onboard_phone_placeholder_phone">Téléphone</string>
     <string name="onboard_sms_title">Entrez le code reçu par SMS</string>
-    <string name="onboard_sms_sub">Un SMS vient juste de vous être envoyé au :</string>
-    <string name="onboard_sms_wait_retry">Pas de code ? Réessayez dans %s</string>
-    <string name="onboard_sms_wait_retry_end">Renvoyer un code</string>
+
     <string name="attention_pop_title">Attention</string>
     <string name="onboard_sms_pop_alert">Veuillez patienter encore %s sec avant de renouveler la demande.</string>
     <string name="onboard_sms_no_pwd">Veuillez remplir le password</string>
@@ -51,7 +80,6 @@
     <string name="onboard_type_choice1_title">Voisin solidaire</string>
     <string name="onboard_type_choice2_title">Personne isolée ou en précarité</string>
     <string name="onboard_type_choice3_title">Association ou service public</string>
-
 
     <string name="onboard_place_title">Quel est votre quartier ?</string>
     <string name="onboard_place_description">Vous pourrez répondre aux demandes de personnes en difficulté et d’associations de votre quartier, et vous pourrez vous-même proposer des dons de votre temps ou matériels.</string>
@@ -74,41 +102,7 @@
     <string name="take_photo_title">Ajouter une photo ?</string>
     <string name="take_photo_description">Avec une photo, c’est tout de suite plus sympa.\nMontrez-nous votre sourire le plus chaleureux.</string>
 
-
-    <string name="error_login_phone_length">Le numéro de téléphone doit faire au minimum %s chiffres</string>
-    <string name="error_login_code_lenght">Le code doit faire 6 chiffres</string>
-    <string name="login_title">Connectez-vous pour continuer</string>
-    <string name="login_phone_placeholder">Numéro de téléphone</string>
-    <string name="login_placeholder_code">Saisir votre code</string>
-    <string name="login_button_connect">Je me connecte</string>
-    <string name="login_button_resend_code">Redemander un code</string>
-    <string name="login_label_country">Pays</string>
-    <string name="login_label_phone">Téléphone</string>
-    <string name="login_label_code">Code</string>
-
-    <!-- Login Change Phone -->
-    <string name="login_change_phone">J’ai changé de numéro de téléphone</string>
-    <string name="login_change_phone_title">Changement de numéro\nde téléphone</string>
-    <string name="login_change_phone_old_phone">Ancien numéro</string>
-    <string name="login_change_phone_old_phone_placeholder">Ancien numéro</string>
-    <string name="login_change_phone_new_phone">Nouveau numéro</string>
-    <string name="login_change_phone_new_phone_placeholder">Nouveau numéro</string>
-    <string name="login_change_phone_email">Email (optionnel)</string>
-    <string name="login_change_phone_email_placeholder">Email</string>
-    <string name="login_change_phone_bt_validate">Envoyer</string>
-    <string name="login_change_phone_send_ok">Votre demande a bien été envoyée.\n\n\nLe support Entourage vous informera lorsque le changement de numéro sera réalisé.</string>
-    <string name="login_change_phone_bt_return">Retour</string>
-
-    <string name="login_change_warning_title">Attention</string>
-    <string name="login_change_error_phone">Veuillez verifier vos numéros de téléphone</string>
-    <string name="login_change_error_mail">Veuillez vérifier votre adresse Email</string>
-
-    <string name="login_change_error_return">Erreur</string>
-    <string name="login_change_error_number_not_found">L’ancien numéro est inconnu.\nVeuillez vérifier.</string>
-    <string name="login_change_error_number_deleted">L’ancien numéro a été supprimé.\nVeuillez vérifier.</string>
-    <string name="login_change_error_number_blocked">L’ancien numéro a été bloqué.\nVeuillez vérifier.</string>
-    <string name="login_change_error_identical_number">Les deux numéros sont identiques.\nVeuillez vérifier le nouveau numéro.</string>
-    <string name="login_change_error_generic">L’ancien numéro est inconnu ou supprimé.\nVeuillez vérifier les numéros.</string>
+    //Login
 
     <!-- Onboarding Asso -->
 
@@ -158,17 +152,15 @@
     <string name="onboard_neighbour_activity_choice_4">Faire des dons\nmatériels</string>
     <string name="onboard_neighbour_activity_choice_5">M’investir dans\nl’associatif</string>
 
-
     //Onboarding Place tunnel SDF / Voisins
     <string name="onboard_place_title2_sdf">Super !</string>
     <string name="onboard_place_description2_sdf">Souhaitez-vous ajouter un autre quartier ?</string>
     <string name="onboard_place_title2">Super !</string>
     <string name="onboard_place_description2">Vous venez de rejoindre des membres de votre quartier. Voulez-vous rajouter un autre quartier dans lequel agir ?</string>
-    <string name="mod_phone_code">- Modifier</string>
 
     <string name="input_names_title">Heureux de vous revoir !</string>
     <string name="input_names_sub">Cette fois, pourriez-vous me dire comment vous vous appelez ?</string>
     <string name="input_names_error">Veuillez remplir les 2 champs avec un minimum de %s caractères.</string>
 
-    <string name="onboard_sms_help">Besoin d’aide ?\nContacter l\'équipe Entourage.</string>
+    <string name="onboard_sms_help"><u>Besoin d’aide ?\nContacter l\'équipe Entourage.</u></string>
 </resources>

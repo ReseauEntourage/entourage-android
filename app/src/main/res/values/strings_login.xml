@@ -25,4 +25,41 @@
 
     <string name="login_smscode_sent">SMS envoyé</string>
 
+    <string name="error_login_phone_length">Le numéro de téléphone doit faire au minimum %s chiffres</string>
+    <string name="error_login_code_lenght">Le code doit faire 6 chiffres</string>
+    <string name="login_title">Connexion</string>
+    <string name="login_phone_placeholder">Numéro de téléphone</string>
+    <string name="login_placeholder_code">Saisir votre code</string>
+    <string name="login_button_connect">Je me connecte</string>
+    <string name="login_button_resend_code"><u>Redemander un code</u></string>
+    <string name="login_button_resend_code_text">Voulez-vous demander un nouveau code pour votre numéro de téléphone : %s ?</string>
+    <string name="login_button_resend_code_action">Demander</string>
+    <string name="login_label_country">Pays</string>
+    <string name="login_label_phone">Téléphone</string>
+    <string name="login_label_code">Code</string>
+
+    <!-- Login Change Phone -->
+    <string name="login_change_phone"><u>J’ai changé de numéro de téléphone</u></string>
+    <string name="login_change_phone_title">Nouveau numéro</string>
+    <string name="login_change_phone_old_phone">Ancien numéro</string>
+    <string name="login_change_phone_old_phone_placeholder">Ancien numéro</string>
+    <string name="login_change_phone_new_phone">Nouveau numéro</string>
+    <string name="login_change_phone_new_phone_placeholder">Nouveau numéro</string>
+    <string name="login_change_phone_email">Email (optionnel)</string>
+    <string name="login_change_phone_email_placeholder">Email</string>
+    <string name="login_change_phone_bt_validate">Envoyer</string>
+    <string name="login_change_phone_send_ok">Votre demande a bien été envoyée.\n\n\nLe support Entourage vous informera lorsque le changement de numéro sera réalisé.</string>
+    <string name="login_change_phone_bt_return">Retour</string>
+
+    <string name="login_change_warning_title">Attention</string>
+    <string name="login_change_error_phone">Veuillez verifier vos numéros de téléphone</string>
+    <string name="login_change_error_mail">Veuillez vérifier votre adresse Email</string>
+
+    <string name="login_change_error_return">Erreur</string>
+    <string name="login_change_error_number_not_found">L’ancien numéro est inconnu.\nVeuillez vérifier.</string>
+    <string name="login_change_error_number_deleted">L’ancien numéro a été supprimé.\nVeuillez vérifier.</string>
+    <string name="login_change_error_number_blocked">L’ancien numéro a été bloqué.\nVeuillez vérifier.</string>
+    <string name="login_change_error_identical_number">Les deux numéros sont identiques.\nVeuillez vérifier le nouveau numéro.</string>
+    <string name="login_change_error_generic">L’ancien numéro est inconnu ou supprimé.\nVeuillez vérifier les numéros.</string>
+
 </resources>

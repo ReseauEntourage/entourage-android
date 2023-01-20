@@ -26,6 +26,7 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import social.entourage.android.old_v7.MainActivity_v7
 import social.entourage.android.onboarding.login.LoginActivity
 import timber.log.Timber
 
@@ -41,7 +42,7 @@ class LoginTest {
     fun setUp() {
         checkNoUserIsLoggedIn()
         activityRule.scenario.onActivity { activity ->
-            val client = EntourageApplication[activity].components.okHttpClient
+            val client = EntourageApplication[activity].apiModule.okHttpClient
             resource = OkHttp3IdlingResource.create("OkHttp", client)
             IdlingRegistry.getInstance().register(resource)
             afM = activity.getSystemService(AutofillManager::class.java)
@@ -52,7 +53,7 @@ class LoginTest {
     private fun checkNoUserIsLoggedIn() {
         try {
             activityRule.scenario.onActivity { activity ->
-                EntourageApplication[activity].components.authenticationController.logOutUser()
+                EntourageApplication[activity].authenticationController.logOutUser()
             }
         } catch (e: RuntimeException) {
             e.printStackTrace()
@@ -165,7 +166,7 @@ class LoginTest {
     }
 
     private fun checkLoginSuccessful() {
-        Intents.intended(IntentMatchers.hasComponent(MainActivity::class.java.name))
+        Intents.intended(IntentMatchers.hasComponent(MainActivity_v7::class.java.name))
     }
 
     private fun checkLoginFailure() {

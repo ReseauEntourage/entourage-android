@@ -4,7 +4,6 @@ import social.entourage.android.api.model.BaseEntourage
 import social.entourage.android.entourage.category.EntourageCategory
 import social.entourage.android.entourage.category.EntourageCategoryManager
 import java.io.Serializable
-import java.util.*
 
 /**
  * Created by mihaiionescu on 17/05/16.
@@ -74,12 +73,12 @@ class MapFilter : MapFilterInterface, Serializable {
         isShowAlls = true
         entourageTypeOuting = false
 
-
-        setAllCategorySelected(true,true)
+        setAllCategorySelected(contribActive = true, demandActive = true)
     }
 
     fun setAllCategorySelected(contribActive:Boolean,demandActive:Boolean) {
-        val entourageCategoryList = EntourageCategoryManager.getEntourageCategoriesForGroup(BaseEntourage.GROUPTYPE_ACTION_CONTRIBUTION)
+        val entourageCategoryList =
+            EntourageCategoryManager.getEntourageCategoriesForGroup(BaseEntourage.GROUPTYPE_ACTION_CONTRIBUTION)
 
         for (entourageCategory in entourageCategoryList) {
             entourageCategory.key?.let {
@@ -87,7 +86,8 @@ class MapFilter : MapFilterInterface, Serializable {
             }
         }
 
-        val entourageCategoryList2 = EntourageCategoryManager.getEntourageCategoriesForGroup(BaseEntourage.GROUPTYPE_ACTION_DEMAND)
+        val entourageCategoryList2 =
+            EntourageCategoryManager.getEntourageCategoriesForGroup(BaseEntourage.GROUPTYPE_ACTION_DEMAND)
 
         for (entourageCategory in entourageCategoryList2) {
             entourageCategory.key?.let {
@@ -101,7 +101,7 @@ class MapFilter : MapFilterInterface, Serializable {
     // ----------------------------------
     fun isCategoryChecked(actionGroupType: EntourageCategory): Boolean {
         return when(actionGroupType.groupType) {
-            BaseEntourage.GROUPTYPE_ACTION_DEMAND-> {
+            BaseEntourage.GROUPTYPE_ACTION_DEMAND -> {
                 entourageTypeDemand && entourageCategories.contains(actionGroupType.key)
             }
             BaseEntourage.GROUPTYPE_ACTION_CONTRIBUTION -> {

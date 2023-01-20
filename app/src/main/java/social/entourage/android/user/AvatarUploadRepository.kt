@@ -3,11 +3,13 @@ package social.entourage.android.user
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody.Companion.asRequestBody
+import social.entourage.android.EntourageApplication
 import java.io.File
 import java.io.IOException
-import javax.inject.Inject
 
-class AvatarUploadRepository @Inject constructor(private val client: OkHttpClient) : Callback {
+class AvatarUploadRepository : Callback {
+    private val client: OkHttpClient
+        get() = EntourageApplication.get().apiModule.okHttpClient
     private var callback: Callback? = null
     fun setCallback(callback: Callback) {
         this.callback = callback

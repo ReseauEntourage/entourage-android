@@ -2,7 +2,7 @@ package social.entourage.android.tools.view.countrycodepicker
 
 import java.util.*
 
-class Country(var iso: String, var phoneCode: String, var name: String) {
+class Country(var iso: String, var phoneCode: String, var name: String, var flagTxt:String? = null) : java.io.Serializable {
 
     /**
      * If country have query word in name or name code or phone code, this will return true.

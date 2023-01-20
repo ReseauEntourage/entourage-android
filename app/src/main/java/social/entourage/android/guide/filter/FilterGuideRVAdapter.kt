@@ -127,7 +127,6 @@ class FilterGuideRVAdapter(val context: Context, private var myDataset: ArrayLis
             val _addTxt1 = if(isVolunteerSelected)  isOnTxt else ""
             itemView.filter_item_text_volunteer.text = context.getString(R.string.guide_filter_volunteer) + _addTxt1
 
-
             if (isDonatedSelected && !isAllActive) {
                 itemView.filter_item_text_donate.setTypeface(null, Typeface.BOLD)
             }

@@ -3,7 +3,6 @@ package social.entourage.android.base
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import java.util.*
 
 /**
  * Created by mihaiionescu on 02/03/16.

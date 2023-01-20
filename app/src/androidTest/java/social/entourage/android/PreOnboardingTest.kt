@@ -1,6 +1,5 @@
 package social.entourage.android
 
-
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -26,7 +25,6 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import social.entourage.android.onboarding.pre_onboarding.PreOnboardingStartActivity
-
 
 @LargeTest
 @RunWith(AndroidJUnit4::class)
@@ -68,7 +66,7 @@ class PreOnboardingTest {
     private fun checkNoUserIsLoggedIn() {
         try {
             activityRule.scenario.onActivity { activity ->
-                EntourageApplication[activity].components.authenticationController.logOutUser()
+                EntourageApplication[activity].authenticationController.logOutUser()
             }
         } catch (e: RuntimeException) {
             e.printStackTrace()

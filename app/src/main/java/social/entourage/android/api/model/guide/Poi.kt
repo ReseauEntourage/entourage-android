@@ -5,7 +5,6 @@ import com.google.gson.annotations.SerializedName
 import social.entourage.android.api.model.TimestampedObject
 import java.io.Serializable
 import java.util.*
-import kotlin.collections.ArrayList
 
 class Poi : TimestampedObject(), Serializable {
     // ----------------------------------

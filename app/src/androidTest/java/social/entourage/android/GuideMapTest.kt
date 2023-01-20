@@ -1,6 +1,5 @@
 package social.entourage.android
 
-
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.assertion.ViewAssertions.matches
@@ -31,7 +30,7 @@ class GuideMapTest {
     fun setUp() {
         //Logout
         activityRule.scenario.onActivity { activity ->
-            EntourageApplication[activity].components.authenticationController.logOutUser()
+            EntourageApplication[activity].authenticationController.logOutUser()
         }
 
         //Login
