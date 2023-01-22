@@ -96,7 +96,7 @@ class HomeFragment : Fragment() {
 
     private fun updateUnreadCount(unreadMessages: UnreadMessages?) {
         val count:Int = unreadMessages?.unreadCount ?: 0
-       EntourageApplication.get().getMainActivity()?.let {
+       EntourageApplication.get().mainActivity?.let {
            val viewModel = ViewModelProvider(it)[CommunicationHandlerBadgeViewModel::class.java]
            viewModel.badgeCount.postValue(UnreadMessages(count))
         }

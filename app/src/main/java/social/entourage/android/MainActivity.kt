@@ -36,14 +36,13 @@ class MainActivity : BaseSecuredActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.new_activity_main)
 
         viewModel = ViewModelProvider(this)[CommunicationHandlerBadgeViewModel::class.java]
 
         viewModel.badgeCount.observe(this,::handleUpdateBadgeResponse)
 
-        setContentView(R.layout.new_activity_main)
         initializeNavBar()
-        initializeMetaData()
         if (authenticationController.isAuthenticated) {
             //refresh the user info from the server
             presenter.updateUserLocation(EntLocation.currentLocation)
@@ -87,6 +86,7 @@ class MainActivity : BaseSecuredActivity() {
 
     override fun onResume() {
         super.onResume()
+        initializeMetaData()
         //TODO bottomBar?.refreshBadgeCount()
         intent?.action?.let { action ->
             checkIntentAction(action, intent?.extras)

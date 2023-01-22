@@ -73,15 +73,15 @@ class EntourageApplication : MultiDexApplication() {
 
     private val loginActivity: LoginActivity?
         get() {
-            activities.filterIsInstance<LoginActivity>().forEach {
+            activities.filterIsInstance<LoginActivity>().any {
                 return it
             }
             return null
         }
 
-    private val newMainActivity: MainActivity?
+    val mainActivity: MainActivity?
         get() {
-            activities.filterIsInstance<MainActivity>().forEach {
+            activities.filterIsInstance<MainActivity>().any() {
                 return it
             }
             return null
@@ -95,7 +95,7 @@ class EntourageApplication : MultiDexApplication() {
     fun logOut() {
         authenticationController.me?.let { me ->
             //remove user phone
-            newMainActivity?.deleteApplicationInfo(){
+            mainActivity?.deleteApplicationInfo(){
                 val sharedPreferences = sharedPreferences
                 val editor = sharedPreferences.edit()
                 authenticationController.logOutUser()
@@ -112,18 +112,14 @@ class EntourageApplication : MultiDexApplication() {
 
                 removeAllPushNotifications()
                 AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_LOGOUT)
-                newMainActivity?.let {
-                    startActivity(Intent(this, PreOnboardingStartActivity::class.java))
+                mainActivity?.let {
+                    startActivity(Intent(this, PreOnboardingStartActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
                     it.finish()
                 }
             }
         } ?: run {
-            Timber.e("not needed to logout")
+            Timber.d("not needed to logout")
         }
-    }
-
-    fun getMainActivity() : MainActivity? {
-        return newMainActivity
     }
 
     // ----------------------------------
@@ -138,7 +134,7 @@ class EntourageApplication : MultiDexApplication() {
             .post {
                 when (content.type) {
                     PushNotificationContent.TYPE_NEW_CHAT_MESSAGE -> {
-                        if (newMainActivity?.displayMessageOnCurrentEntourageInfoFragment(message) == true) {
+                        if (mainActivity?.displayMessageOnCurrentEntourageInfoFragment(message) == true) {
                             //already displayed
                             removePushNotification(content, content.type)
                         }
