@@ -46,7 +46,7 @@ class HomeExpertTest {
     private val oldPasswordEditText = onView(allOf(withId(R.id.user_old_password), isDisplayed()))
     private val newPasswordEditText = onView(allOf(withId(R.id.user_new_password), isDisplayed()))
     private val confirmPasswordEditText = onView(allOf(withId(R.id.user_confirm_password), isDisplayed()))
-    private val savePasswordButton = onView(allOf(withId(R.id.user_edit_password_save_button), isDisplayed()))
+    private val savePasswordButton = onView(allOf(withId(R.id.button_validate), isDisplayed()))
 
     /*private val bottomBarFeedButton = onView(
             allOf(withId(R.id.bottom_bar_newsfeed),

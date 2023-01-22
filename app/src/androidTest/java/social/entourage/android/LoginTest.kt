@@ -83,7 +83,7 @@ class LoginTest {
     }
 
     @Test
-    fun loginOKwithoutCountryCode() {
+    fun loginOKWithoutCountryCode() {
         Intents.init()
         checkFirstConnectionScreen()
 
