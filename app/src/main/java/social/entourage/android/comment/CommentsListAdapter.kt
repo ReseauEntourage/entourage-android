@@ -52,6 +52,8 @@ class CommentsListAdapter(
         isForEvent = true
     }
 
+
+
     inner class ViewHolder(val binding: View) :
         RecyclerView.ViewHolder(binding) {
         @SuppressLint("SetTextI18n")

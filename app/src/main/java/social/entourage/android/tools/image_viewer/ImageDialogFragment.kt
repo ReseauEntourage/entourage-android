@@ -46,7 +46,6 @@ class ImageDialogFragment(private var imageUrl:String) : DialogFragment(){
             val imageWidth = options.outWidth
             val imageHeight = options.outHeight
             //setView(imageUrl,imageWidth,imageHeight)
-            Log.wtf("wtf" , "wtf url " + " width " + imageWidth + " height " + imageHeight)
         }
     }
 

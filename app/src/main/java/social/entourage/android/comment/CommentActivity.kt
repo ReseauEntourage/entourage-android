@@ -242,6 +242,7 @@ abstract class CommentActivity : AppCompatActivity() {
 
     private fun openEditTextKeyboard() {
         if (shouldOpenKeyboard) {
+            binding.commentMessage.setTextColor(getColor(R.color.black))
             binding.commentMessage.focusAndShowKeyboard()
         }
     }

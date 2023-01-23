@@ -2,6 +2,7 @@ package social.entourage.android.discussions
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.core.view.isVisible
 import social.entourage.android.R
@@ -47,7 +48,6 @@ class DetailConversationActivity : CommentActivity() {
 
         discussionsPresenter.detailConversation.observe(this, ::handleDetailConversation)
         discussionsPresenter.getDetailConversation(id)
-
     }
 
     override fun onResume() {

@@ -168,7 +168,8 @@
                 android:background="@drawable/new_bg_rounded_button_orange_beige_stroke_slim"
                 android:hint="@string/discussbis"
                 android:padding="13dp"
-                android:textColorHint="@color/orange" />
+                android:textColorHint="@color/orange"
+                android:textColor="@color/black"/>
 
             <ImageButton
                 android:id="@+id/comment"
@@ -206,7 +207,7 @@
                 android:enabled="false"
                 android:hint="@string/discussbis"
                 android:padding="13dp"
-                android:textColorHint="@color/grey" />
+                android:textColorHint="@color/grey"/>
 
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
