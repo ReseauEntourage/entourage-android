@@ -147,7 +147,7 @@ class NotifsInAppListFragment : Fragment() {
             layoutManager = LinearLayoutManager(context)
             adapter = NotifsInAppListAdapter(notifications, object : OnItemClick {
                 override fun onItemClick(notif: NotifInApp, position:Int) {
-                    val instance = notif.instanceString
+                    val instance = notif.instanceType
                     val instanceId = notif.instanceId
                     val postId:Int? = notif.postId
                     if (notif.completedAt == null) {
@@ -157,7 +157,7 @@ class NotifsInAppListFragment : Fragment() {
                     else {
                         itemSelected = -1
                     }
-                    PushNotificationLinkManager().presentAction(requireContext(),parentFragmentManager,instance,instanceId,postId)
+                    if(instance != null && instanceId != null) PushNotificationLinkManager.presentAction(requireContext(),parentFragmentManager,instance,instanceId,postId)
                 }
             })
         }

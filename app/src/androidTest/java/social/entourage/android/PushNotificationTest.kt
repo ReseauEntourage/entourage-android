@@ -45,7 +45,16 @@ class PushNotificationTest {
         intent.action = PushNotificationContent.TYPE_NEW_CHAT_MESSAGE
         val args = Bundle()
         val myobject = "title"
-        val content = "{\"extra\":{\"joinable_id\":$entourageID,\"joinable_type\":\"Entourage\",\"group_type\":\"action\",\"type\":\"NEW_CHAT_MESSAGE\"},\"message\":\"Notif vers entourage de test\"}"
+        val content = "{" +
+                    "\"extra\":{" +
+                        "\"joinable_id\":$entourageID," +
+                        "\"joinable_type\":\"Entourage\"," +
+                        "\"group_type\":\"action\"," +
+                        "\"instance\":\"NEW_CHAT_MESSAGE\"," +
+                        "\"instance_id\":0" +
+                    "}," +
+                    "\"message\":\"Notif vers entourage de test\"" +
+                "}"
         val message = Message("testeur Entourage", myobject, content,  0, null)
         //
         PushNotificationManager.displayFCMPushNotification(BuildConfig.DEEP_LINKS_SCHEME + "://profile","InApp vers Profil", "Doit ouvrir le profil", getApplicationContext<Application>())

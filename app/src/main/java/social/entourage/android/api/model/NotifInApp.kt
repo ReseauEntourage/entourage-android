@@ -17,7 +17,7 @@ class NotifInApp (
     @SerializedName("post_id")
     val postId: Int? = null,
     @SerializedName("instance")
-    val instanceString: String? = null,
+    val instanceType: String? = null,
     @SerializedName("content")
     val content: String? = null,
     @SerializedName("created_at")

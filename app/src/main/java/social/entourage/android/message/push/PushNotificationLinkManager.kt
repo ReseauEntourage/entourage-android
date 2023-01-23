@@ -19,12 +19,10 @@ import social.entourage.android.tools.utils.Const
 /**
  * Created by Me on 26/09/2022.
  */
-class PushNotificationLinkManager {
+object PushNotificationLinkManager {
 
-    fun presentAction(context:Context,supportFragmentManager: FragmentManager, instance:String?,id:Int?, postId:Int?) {
-        if (instance == null || id == null) return
-
-        when(InstanceTypeNotif(instance).getInstanceTypeFromName()) {
+    fun presentAction(context:Context,supportFragmentManager: FragmentManager, instance:String, id:Int, postId:Int?) {
+        when(getInstanceTypeFromName(instance)) {
             InstanceType.POIS -> showPoi(supportFragmentManager,id)
             InstanceType.USERS -> showUser(context,supportFragmentManager,id)
             InstanceType.NEIGHBORHOODS -> showNeighborhood(context,supportFragmentManager,id)
@@ -37,11 +35,11 @@ class PushNotificationLinkManager {
             InstanceType.NONE -> return
 
             else -> {
-                if(InstanceTypeNotif(instance).getInstanceTypeFromName() == InstanceType.OUTINGS_POST){
+                if(getInstanceTypeFromName(instance) == InstanceType.OUTING_POSTS){
                     if (postId != null) {
                         showEventPost(context,supportFragmentManager,id,postId)
                     }
-                }else if(InstanceTypeNotif(instance).getInstanceTypeFromName() == InstanceType.NEIGHBORHOODS_POST){
+                } else if(getInstanceTypeFromName(instance) == InstanceType.NEIGHBORHOODS_POSTS){
                     if (postId != null) {
                         showGroupPost(context,supportFragmentManager,id,postId)
                     }
@@ -165,40 +163,36 @@ class PushNotificationLinkManager {
             HomeType.NEIGHBORHOOD_POST,
             ActionSummary.SHOW, params)
     }
-}
 
-class InstanceTypeNotif(val instanceName:String) {
+    enum class InstanceType {
+        POIS,
+        USERS,
+        NEIGHBORHOODS,
+        NEIGHBORHOODS_POSTS,
+        RESOURCES,
+        OUTINGS,
+        OUTING_POSTS,
+        CONTRIBUTIONS,
+        SOLICITATIONS,
+        CONVERSATIONS,
+        PARTNERS,
+        NONE
+    }
 
-
-    fun getInstanceTypeFromName() : InstanceType {
-        when(instanceName) {
-            "pois" -> return  InstanceType.POIS
-            "users","user" -> return  InstanceType.USERS
-            "neighborhoods","neighborhood" -> return  InstanceType.NEIGHBORHOODS
-            "neighborhood_post" -> return  InstanceType.NEIGHBORHOODS_POST
-            "resources" -> return  InstanceType.RESOURCES
-            "outings","outing" -> return  InstanceType.OUTINGS
-            "outing_post" -> return  InstanceType.OUTINGS_POST
-            "contributions","contribution" -> return  InstanceType.CONTRIBUTIONS
-            "solicitations","solicitation" -> return  InstanceType.SOLICITATIONS
-            "conversations","conversation" -> return  InstanceType.CONVERSATIONS
-            "partners" -> return  InstanceType.PARTNERS
-            else -> return  InstanceType.NONE
+    fun getInstanceTypeFromName(instanceName:String) : InstanceType {
+        return when (instanceName) {
+            "pois" -> InstanceType.POIS
+            "users", "user" -> InstanceType.USERS
+            "neighborhoods", "neighborhood" -> InstanceType.NEIGHBORHOODS
+            "neighborhood_post" -> InstanceType.NEIGHBORHOODS_POSTS
+            "resources" -> InstanceType.RESOURCES
+            "outings", "outing" -> InstanceType.OUTINGS
+            "outing_post" -> InstanceType.OUTING_POSTS
+            "contributions", "contribution" -> InstanceType.CONTRIBUTIONS
+            "solicitations", "solicitation" -> InstanceType.SOLICITATIONS
+            "conversations", "conversation" -> InstanceType.CONVERSATIONS
+            "partners" -> InstanceType.PARTNERS
+            else -> InstanceType.NONE
         }
     }
-}
-
-enum class InstanceType {
-    POIS,
-    USERS,
-    NEIGHBORHOODS,
-    NEIGHBORHOODS_POST,
-    RESOURCES,
-    OUTINGS,
-    OUTINGS_POST,
-    CONTRIBUTIONS,
-    SOLICITATIONS,
-    CONVERSATIONS,
-    PARTNERS,
-    NONE
 }
