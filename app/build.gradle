@@ -261,6 +261,10 @@ dependencies {
 
     implementation 'com.airbnb.android:lottie:5.2.0'
     implementation 'com.github.armcha:AutoLinkTextViewV2:3.0.0'
+
+    //photoview to click and zoom
+    implementation 'com.github.chrisbanes:PhotoView:2.3.0'
+
 }
 
 apply plugin: "com.google.gms.google-services"
