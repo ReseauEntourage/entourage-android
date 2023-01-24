@@ -1,5 +1,6 @@
 package social.entourage.android.api.model
 
+import android.util.Log
 import com.google.gson.annotations.SerializedName
 import social.entourage.android.R
 import social.entourage.android.tools.utils.Utils
@@ -33,6 +34,7 @@ class NotifInApp (
 
     fun dateFormattedString(context: android.content.Context) : String {
         createdAt?.let {
+            Log.wtf("wtf", "created at " + it)
             return Utils.dateAsStringLitteralFromNow(it, context, R.string.action_date_list)
         } ?: return  "-"
     }
