@@ -1,8 +1,10 @@
 package social.entourage.android.events.details.feed
 
 import android.content.Intent
+import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -39,6 +41,8 @@ import social.entourage.android.profile.myProfile.InterestsAdapter
 import social.entourage.android.report.ReportModalFragment
 import social.entourage.android.report.ReportTypes
 import social.entourage.android.tools.calculateIfEventPassed
+import social.entourage.android.tools.image_viewer.ImageDialogActivity
+import social.entourage.android.tools.image_viewer.ImageDialogFragment
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.utils.*
 import java.text.SimpleDateFormat
@@ -296,7 +300,8 @@ class FeedFragment : Fragment() {
             adapter = PostAdapter(
                 newPostsList,
                 ::openCommentPage,
-                ::openReportFragment
+                ::openReportFragment,
+                ::openImageFragment
 
 
             )
@@ -306,7 +311,8 @@ class FeedFragment : Fragment() {
             adapter = PostAdapter(
                 oldPostsList,
                 ::openCommentPage,
-                ::openReportFragment
+                ::openReportFragment,
+                ::openImageFragment
             )
         }
     }
@@ -337,6 +343,12 @@ class FeedFragment : Fragment() {
             }
         reportGroupBottomDialogFragment?.show(parentFragmentManager, ReportModalFragment.TAG)
 
+    }
+
+    private fun openImageFragment(imageUrl:String) {
+        val intent = Intent(requireContext(), ImageDialogActivity::class.java)
+        intent.putExtra("image_url", imageUrl)
+        startActivity(intent)
     }
 
     private fun fragmentResult() {

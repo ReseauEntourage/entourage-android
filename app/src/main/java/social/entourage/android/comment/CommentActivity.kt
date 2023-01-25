@@ -22,6 +22,7 @@ import social.entourage.android.tools.utils.Utils
 import social.entourage.android.tools.utils.focusAndShowKeyboard
 import social.entourage.android.tools.utils.scrollToPositionSmooth
 import social.entourage.android.tools.view.WebViewFragment
+import timber.log.Timber
 import java.util.*
 
 abstract class CommentActivity : AppCompatActivity() {
@@ -36,11 +37,11 @@ abstract class CommentActivity : AppCompatActivity() {
     private var shouldOpenKeyboard = false
     var messagesFailed: MutableList<Post?> = mutableListOf()
     var comment: Post? = null
+    var isEvent = false
 
     protected var isOne2One = false
     protected var isConversation = false
     protected var isFromNotif = false
-    protected var isEventComment = false
     var currentParentPost:Post? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -72,6 +73,13 @@ abstract class CommentActivity : AppCompatActivity() {
         }
 
         handleSendButtonState()
+    }
+
+    fun setIsEventTrue(){
+        this.isEvent = true
+    }
+    fun setIsEventFalse(){
+        this.isEvent = false
     }
 
     protected open fun handleGetPostComments(allComments: MutableList<Post>?) {
@@ -140,10 +148,9 @@ abstract class CommentActivity : AppCompatActivity() {
                 }
                 override fun onCommentReport(commentId: Int?, isForEvent: Boolean) {
                     if(isForEvent){
-                        isEventComment = true
-                        commentId?.let { handleReport(it, ReportTypes.REPORT_POST_EVENT) }
+                        commentId?.let { handleReport(it, ReportTypes.REPORT_POST_EVENT, true) }
                     }else{
-                        commentId?.let { handleReport(it, ReportTypes.REPORT_COMMENT) }
+                        commentId?.let { handleReport(it, ReportTypes.REPORT_COMMENT , true) }
 
                     }
                 }
@@ -206,16 +213,17 @@ abstract class CommentActivity : AppCompatActivity() {
     }
 
     private fun setSettingsIcon() {
-
-        binding.header.title = getString(R.string.comments)
+        binding.header.title = getString(R.string.comments_title)
         binding.header.iconSettings.isVisible = true
         binding.header.iconSettings.setImageResource(R.drawable.new_report_group)
     }
 
-    protected fun handleReport(id: Int, type: ReportTypes) {
+    protected fun handleReport(id: Int, type: ReportTypes, isEventComment :Boolean) {
         val reportGroupBottomDialogFragment =
             ReportModalFragment.newInstance(id, this.id, type)
-        reportGroupBottomDialogFragment.setEventComment()
+        if(isEventComment){
+            reportGroupBottomDialogFragment.setEventComment()
+        }
         reportGroupBottomDialogFragment.show(
             supportFragmentManager,
             ReportModalFragment.TAG
@@ -224,12 +232,17 @@ abstract class CommentActivity : AppCompatActivity() {
 
     protected open fun handleReportPost(id: Int) {
         binding.header.iconSettings.setOnClickListener {
-            handleReport(id, ReportTypes.REPORT_POST)
+            if(isEvent){
+                handleReport(id, ReportTypes.REPORT_POST_EVENT, false)
+            }else{
+                handleReport(id, ReportTypes.REPORT_POST, false)
+            }
         }
     }
 
     private fun openEditTextKeyboard() {
         if (shouldOpenKeyboard) {
+            binding.commentMessage.setTextColor(getColor(R.color.black))
             binding.commentMessage.focusAndShowKeyboard()
         }
     }

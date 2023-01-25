@@ -18,6 +18,7 @@ class GroupCommentActivity : CommentActivity() {
         groupPresenter.commentPosted.observe(this, ::handleCommentPosted)
         groupPresenter.getCurrentParentPost.observe(this, ::handleParentPost)
         groupPresenter.getPostComments(id, postId)
+        super.setIsEventFalse()
     }
 
     override fun addComment() {

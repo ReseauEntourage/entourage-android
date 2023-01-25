@@ -3,9 +3,11 @@ package social.entourage.android.comment
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.graphics.drawable.toBitmap
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
@@ -22,8 +24,9 @@ import java.util.*
 class PostAdapter(
     var postsList: List<Post>,
     var onClick: (Post, Boolean) -> Unit,
-    var onReport: (Int) -> Unit
-) : RecyclerView.Adapter<PostAdapter.ViewHolder>() {
+    var onReport: (Int) -> Unit,
+    var onClickImage: (imageUrl:String) -> Unit,
+    ) : RecyclerView.Adapter<PostAdapter.ViewHolder>() {
 
     inner class ViewHolder(val binding: NewLayoutPostBinding) :
         RecyclerView.ViewHolder(binding.root)
@@ -80,9 +83,13 @@ class PostAdapter(
                         .placeholder(R.drawable.new_group_illu)
                         .error(R.drawable.new_group_illu)
                         .into(binding.photoPost)
+                    binding.photoPost.setOnClickListener {
+                        onClickImage(imageUrl)
+                    }
                 } ?: run {
                     binding.photoPost.visibility = View.GONE
                 }
+
 
                 this.user?.avatarURLAsString?.let { avatarURL ->
                     Glide.with(holder.itemView.context)

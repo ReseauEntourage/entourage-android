@@ -102,6 +102,9 @@
             android:name=".events.details.feed.FeedActivity"
             android:exported="false" />
         <activity
+            android:name=".tools.image_viewer.ImageDialogActivity"
+            android:exported="false" />
+        <activity
             android:name=".events.create.CreateEventActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustPan" />

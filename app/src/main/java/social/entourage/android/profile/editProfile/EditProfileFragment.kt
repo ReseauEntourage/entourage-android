@@ -81,6 +81,7 @@ class EditProfileFragment : Fragment(), EditProfileCallback,
 
     private fun handleUpdateResponse(success: Boolean) {
         if (success) findNavController().popBackStack()
+        //TODO CHECK THIS CRASH REPORTED CRASHLITICS
     }
 
     private fun setProgressThumb(progress: Int) {

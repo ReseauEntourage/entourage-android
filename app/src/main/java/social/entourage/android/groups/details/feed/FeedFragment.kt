@@ -2,7 +2,9 @@ package social.entourage.android.groups.details.feed
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -30,24 +32,27 @@ import social.entourage.android.R
 import social.entourage.android.api.MetaDataRepository
 import social.entourage.android.api.model.Group
 import social.entourage.android.api.model.Post
-import social.entourage.android.groups.GroupModel
 import social.entourage.android.api.model.Tags
-import social.entourage.android.databinding.NewFragmentFeedBinding
 import social.entourage.android.comment.PostAdapter
+import social.entourage.android.databinding.NewFragmentFeedBinding
 import social.entourage.android.events.create.CreateEventActivity
+import social.entourage.android.groups.GroupModel
 import social.entourage.android.groups.GroupPresenter
 import social.entourage.android.groups.details.GroupDetailsFragment
 import social.entourage.android.groups.details.members.MembersType
 import social.entourage.android.profile.myProfile.InterestsAdapter
 import social.entourage.android.report.ReportModalFragment
 import social.entourage.android.report.ReportTypes
-import social.entourage.android.tools.utils.Const
+import social.entourage.android.tools.image_viewer.ImageDialogActivity
+import social.entourage.android.tools.image_viewer.ImageDialogFragment
 import social.entourage.android.tools.log.AnalyticsEvents
+import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.CustomAlertDialog
 import social.entourage.android.tools.utils.px
 import uk.co.markormesher.android_fab.SpeedDialMenuAdapter
 import uk.co.markormesher.android_fab.SpeedDialMenuItem
 import kotlin.math.abs
+
 
 const val rotationDegree = 135F
 
@@ -163,7 +168,7 @@ class FeedFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         _binding = NewFragmentFeedBinding.inflate(inflater, container, false)
         AnalyticsEvents.logEvent(
@@ -395,7 +400,8 @@ class FeedFragment : Fragment() {
             adapter = PostAdapter(
                 newPostsList,
                 ::openCommentPage,
-                ::openReportFragment
+                ::openReportFragment,
+                ::openImageFragment
             )
         }
         binding.postsOldRecyclerview.apply {
@@ -403,7 +409,8 @@ class FeedFragment : Fragment() {
             adapter = PostAdapter(
                 oldPostsList,
                 ::openCommentPage,
-                ::openReportFragment
+                ::openReportFragment,
+                ::openImageFragment
             )
         }
     }
@@ -432,6 +439,14 @@ class FeedFragment : Fragment() {
                 )
             }
         reportGroupBottomDialogFragment?.show(parentFragmentManager, ReportModalFragment.TAG)
+
+    }
+
+    private fun openImageFragment(imageUrl:String) {
+        val intent = Intent(requireContext(), ImageDialogActivity::class.java)
+        intent.putExtra("image_url", imageUrl)
+        startActivity(intent)
+
 
     }
 
