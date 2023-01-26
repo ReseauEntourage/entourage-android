@@ -45,6 +45,7 @@ import social.entourage.android.tools.image_viewer.ImageDialogActivity
 import social.entourage.android.tools.image_viewer.ImageDialogFragment
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.utils.*
+import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.math.abs
@@ -88,14 +89,18 @@ class FeedFragment : Fragment() {
         handleSettingsButton()
         handleAboutButton()
         onFragmentResult()
-
         AnalyticsEvents.logEvent(AnalyticsEvents.Event_detail_main)
     }
 
+    fun translateY(){
+        binding.scrollView.scrollBy(0,-40)
+        Timber.wtf("hein ? ")
+    }
     private fun handleResponseGetEvent(getEvent: Events?) {
         getEvent?.let {
             event = it
             updateView()
+            translateY()
         }
         handleImageViewAnimation()
     }

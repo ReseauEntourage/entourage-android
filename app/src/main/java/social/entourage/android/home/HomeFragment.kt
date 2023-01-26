@@ -34,6 +34,7 @@ import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.CustomAlertDialog
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.view.CommunicationRecoWebUrlHandlerViewModel
+import timber.log.Timber
 
 class HomeFragment : Fragment() {
     private var _binding: NewFragmentHomeBinding? = null
@@ -71,14 +72,13 @@ class HomeFragment : Fragment() {
         homePresenter.unreadMessages.observe(requireActivity(), ::updateUnreadCount)
         homePresenter.getUnreadCount()
         homePresenter.notifsCount.observe(requireActivity(), ::updateNotifsCount)
-        homePresenter.getNotificationsCount()
     }
 
     override fun onResume() {
         super.onResume()
+        Timber.wtf("wtf")
         reloadDatasFromRecos(true)
         homePresenter.getNotificationsCount()
-
         AnalyticsEvents.logEvent(AnalyticsEvents.Home_view_home)
     }
 

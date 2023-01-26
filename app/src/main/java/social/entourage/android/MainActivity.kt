@@ -17,6 +17,10 @@ import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.badge.BadgeDrawable
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.messaging.FirebaseMessaging
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import social.entourage.android.api.MetaDataRepository
 import social.entourage.android.api.model.Message
 import social.entourage.android.base.BaseSecuredActivity
@@ -27,6 +31,7 @@ import social.entourage.android.home.CommunicationHandlerBadgeViewModel
 import social.entourage.android.home.UnreadMessages
 import social.entourage.android.message.push.PushNotificationLinkManager
 import social.entourage.android.tools.log.AnalyticsEvents
+import timber.log.Timber
 
 class MainActivity : BaseSecuredActivity() {
     private lateinit var navController: NavController
@@ -121,10 +126,8 @@ class MainActivity : BaseSecuredActivity() {
         registerForActivityResult(
             ActivityResultContracts.RequestPermission()
         ) { isGranted ->
-            EntourageApplication.get().sharedPreferences.edit()
-                .putBoolean(EntourageApplication.KEY_NOTIFICATIONS_ENABLED, isGranted)
-                .apply()
-            initializePushNotifications()
+
+            //initializePushNotifications()
         }
 
     private fun initializePushNotifications() {
@@ -152,8 +155,7 @@ class MainActivity : BaseSecuredActivity() {
                     presenter.updateApplicationInfo(token)
                 }
             } else {
-                presenter.deleteApplicationInfo(){}
-                requestNotificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+
             }
         }
     }

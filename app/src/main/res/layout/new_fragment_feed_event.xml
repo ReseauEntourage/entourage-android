@@ -7,6 +7,7 @@
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:id="@+id/coordinator_layout"
         android:background="@color/beige">
 
         <ImageView
@@ -85,7 +86,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="154dp"
                 android:animateLayoutChanges="true"
-                android:elevation="1dp"
+                android:elevation="0dp"
                 android:fitsSystemWindows="true"
                 app:collapsedTitleTextAppearance="@style/h1_collapsed"
                 app:expandedTitleTextAppearance="@style/h1"
@@ -156,6 +157,7 @@
 
                     <LinearLayout
                         android:id="@+id/layout"
+                        android:elevation="3dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="4dp"
