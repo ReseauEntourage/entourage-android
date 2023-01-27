@@ -120,5 +120,6 @@ interface EventsRequest {
     fun getPostDetail(
         @Path("event_id") eventId: Int,
         @Path("post_id") postId: Int,
+        @Query("image_size") size:String,
     ): Call<PostWrapper>
 }

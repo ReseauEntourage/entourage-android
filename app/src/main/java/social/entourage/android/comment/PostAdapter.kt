@@ -18,6 +18,7 @@ import social.entourage.android.databinding.NewLayoutPostBinding
 import social.entourage.android.user.UserProfileActivity
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.px
+import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -25,7 +26,7 @@ class PostAdapter(
     var postsList: List<Post>,
     var onClick: (Post, Boolean) -> Unit,
     var onReport: (Int) -> Unit,
-    var onClickImage: (imageUrl:String) -> Unit,
+    var onClickImage: (imageUrl:String, postId:Int) -> Unit,
     ) : RecyclerView.Adapter<PostAdapter.ViewHolder>() {
 
     inner class ViewHolder(val binding: NewLayoutPostBinding) :
@@ -84,7 +85,7 @@ class PostAdapter(
                         .error(R.drawable.new_group_illu)
                         .into(binding.photoPost)
                     binding.photoPost.setOnClickListener {
-                        onClickImage(imageUrl)
+                        this.id?.let { it1 -> onClickImage(imageUrl, it1) }
                     }
                 } ?: run {
                     binding.photoPost.visibility = View.GONE

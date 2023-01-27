@@ -16,7 +16,6 @@ class EventCommentActivity : CommentActivity() {
         eventPresenter.getAllComments.observe(this, ::handleGetPostComments)
         eventPresenter.commentPosted.observe(this, ::handleCommentPosted)
         eventPresenter.getCurrentParentPost.observe(this, ::handleParentPost)
-        eventPresenter.getPostComments(id, postId)
         setAdapterForEvent()
         super.setIsEventTrue()
     }

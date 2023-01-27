@@ -76,7 +76,6 @@ class HomeFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        Timber.wtf("wtf")
         reloadDatasFromRecos(true)
         homePresenter.getNotificationsCount()
         AnalyticsEvents.logEvent(AnalyticsEvents.Home_view_home)

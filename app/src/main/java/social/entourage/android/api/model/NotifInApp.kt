@@ -34,7 +34,6 @@ class NotifInApp (
 
     fun dateFormattedString(context: android.content.Context) : String {
         createdAt?.let {
-            Log.wtf("wtf", "created at " + it)
             return Utils.dateAsStringLitteralFromNow(it, context, R.string.action_date_list)
         } ?: return  "-"
     }

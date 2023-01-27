@@ -181,7 +181,7 @@ object Utils {
             weeks > 0 -> String.format(context.getString(R.string.duration_weeks),weeks)
             days > 0 -> String.format(context.getString(R.string.duration_days),days)
             hours > 0 -> String.format(context.getString(R.string.duration_hours),hours)
-            minutes > 0 -> String.format(context.getString(R.string.duration_month),minutes)
+            minutes > 0 -> String.format(context.getString(R.string.duration_minutes),minutes)
             else -> context.getString(R.string.duration_secondes)
         }
     }

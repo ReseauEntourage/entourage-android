@@ -442,9 +442,10 @@ class FeedFragment : Fragment() {
 
     }
 
-    private fun openImageFragment(imageUrl:String) {
+    private fun openImageFragment(imageUrl:String, postId: Int) {
         val intent = Intent(requireContext(), ImageDialogActivity::class.java)
-        intent.putExtra("image_url", imageUrl)
+        intent.putExtra("postId", postId)
+        intent.putExtra("groupId", this.group?.id)
         startActivity(intent)
 
 

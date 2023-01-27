@@ -453,7 +453,7 @@ class GroupPresenter {
     }
 
     fun getCurrentParentPost(eventId: Int, postId: Int) {
-        EntourageApplication.get().apiModule.groupRequest.getPostDetail(eventId,postId)
+        EntourageApplication.get().apiModule.groupRequest.getPostDetail(eventId,postId,"high")
             .enqueue(object : Callback<PostWrapper> {
                 override fun onResponse(
                     call: Call<PostWrapper>,
