@@ -92,15 +92,11 @@ class FeedFragment : Fragment() {
         AnalyticsEvents.logEvent(AnalyticsEvents.Event_detail_main)
     }
 
-    fun translateY(){
-        binding.scrollView.scrollBy(0,-40)
-        Timber.wtf("hein ? ")
-    }
+
     private fun handleResponseGetEvent(getEvent: Events?) {
         getEvent?.let {
             event = it
             updateView()
-            translateY()
         }
         handleImageViewAnimation()
     }
