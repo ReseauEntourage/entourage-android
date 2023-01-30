@@ -28,7 +28,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:maxLines="3"
+            android:maxLines="2"
             app:layout_constraintEnd_toStartOf="@+id/next_icon"
             app:layout_constraintStart_toEndOf="@+id/image_card"
             app:layout_constraintTop_toTopOf="parent"
