@@ -61,6 +61,7 @@ class FeedFragment : Fragment() {
     private lateinit var event: Events
     private var myId: Int? = null
     private val args: FeedFragmentArgs by navArgs()
+    private var shouldShowPopUp = true
 
     private var newPostsList: MutableList<Post> = mutableListOf()
     private var oldPostsList: MutableList<Post> = mutableListOf()
@@ -361,11 +362,13 @@ class FeedFragment : Fragment() {
     }
 
     private fun handleSettingsButton() {
-        binding.iconSettings.setOnClickListener {
-            AnalyticsEvents.logEvent(AnalyticsEvents.Event_detail_action_param)
-            SettingsModalFragment.newInstance(event)
-                .show(parentFragmentManager, SettingsModalFragment.TAG)
+        if(isAdded){
+            binding.iconSettings.setOnClickListener {
+                AnalyticsEvents.logEvent(AnalyticsEvents.Event_detail_action_param)
+                SettingsModalFragment.newInstance(event)
+                    .show(parentFragmentManager, SettingsModalFragment.TAG)
 
+            }
         }
     }
 
@@ -416,7 +419,10 @@ class FeedFragment : Fragment() {
             if (event.metadata?.placeLimit != null) {
                 showLimitPlacePopUp()
             } else {
-                Utils.showAddToCalendarPopUp(requireContext(), event.toEventUi(requireContext()))
+                if (shouldShowPopUp){
+                    Utils.showAddToCalendarPopUp(requireContext(), event.toEventUi(requireContext()))
+                }
+                shouldShowPopUp = false
             }
         }
     }
