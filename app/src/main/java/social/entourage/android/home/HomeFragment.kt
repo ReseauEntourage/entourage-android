@@ -68,7 +68,6 @@ class HomeFragment : Fragment() {
         updateView()
         handleProfileButton()
         handlePedagogicalContentButton()
-
         homePresenter.unreadMessages.observe(requireActivity(), ::updateUnreadCount)
         homePresenter.getUnreadCount()
         homePresenter.notifsCount.observe(requireActivity(), ::updateNotifsCount)
@@ -187,12 +186,12 @@ class HomeFragment : Fragment() {
             startActivityForResult(intent, 0)
         }
     }
-
     private fun handlePedagogicalContentButton() {
         binding.pedagogicalContent.title.text = getString(R.string.pedagogical_content)
         binding.pedagogicalContent.title.setTextAppearance(context, R.style.left_courant_bold_black)
-        binding.pedagogicalContent.root.elevation = 0F
-        binding.pedagogicalContent.image.scaleType = ImageView.ScaleType.CENTER_CROP
+        val dim = 120
+        binding.pedagogicalContent.image.layoutParams.width = dim
+        binding.pedagogicalContent.image.layoutParams.height = dim
         binding.pedagogicalContent.root.setOnClickListener {
             AnalyticsEvents.logEvent(AnalyticsEvents.Home_action_pedago)
             startActivityForResult(
