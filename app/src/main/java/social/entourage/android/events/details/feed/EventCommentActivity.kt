@@ -6,6 +6,7 @@ import social.entourage.android.api.model.Post
 import social.entourage.android.comment.CommentActivity
 import social.entourage.android.events.EventsPresenter
 import social.entourage.android.comment.CommentsListAdapter
+import timber.log.Timber
 
 class EventCommentActivity : CommentActivity() {
 
@@ -16,6 +17,7 @@ class EventCommentActivity : CommentActivity() {
         eventPresenter.getAllComments.observe(this, ::handleGetPostComments)
         eventPresenter.commentPosted.observe(this, ::handleCommentPosted)
         eventPresenter.getCurrentParentPost.observe(this, ::handleParentPost)
+        eventPresenter.getPostComments(id, postId)
         setAdapterForEvent()
         super.setIsEventTrue()
     }

@@ -14,6 +14,7 @@ import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.api.model.EntourageUser
 import social.entourage.android.api.model.Post
+import social.entourage.android.base.BaseActivity
 import social.entourage.android.databinding.NewActivityCommentsBinding
 import social.entourage.android.report.ReportModalFragment
 import social.entourage.android.report.ReportTypes
@@ -25,7 +26,7 @@ import social.entourage.android.tools.view.WebViewFragment
 import timber.log.Timber
 import java.util.*
 
-abstract class CommentActivity : AppCompatActivity() {
+abstract class CommentActivity : BaseActivity() {
     lateinit var binding: NewActivityCommentsBinding
 
     var id = Const.DEFAULT_VALUE

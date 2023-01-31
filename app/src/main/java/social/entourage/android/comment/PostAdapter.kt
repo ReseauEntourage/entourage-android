@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
+import android.text.method.LinkMovementMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,6 +16,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import social.entourage.android.R
 import social.entourage.android.api.model.Post
 import social.entourage.android.databinding.NewLayoutPostBinding
+import social.entourage.android.tools.setHyperlinkClickable
 import social.entourage.android.user.UserProfileActivity
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.px
@@ -55,6 +57,8 @@ class PostAdapter(
                 content?.let {
                     binding.postMessage.visibility = View.VISIBLE
                     binding.postMessage.text = it
+                    binding.postMessage.setHyperlinkClickable()
+
                 } ?: run {
                     binding.postMessage.visibility = View.GONE
                 }

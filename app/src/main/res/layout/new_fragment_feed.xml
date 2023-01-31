@@ -167,6 +167,16 @@
                                 android:layout_height="wrap_content"
                                 tools:text="132 membres. Paris 13." />
 
+                            <uk.co.markormesher.android_fab.FloatingActionButton
+                                android:id="@+id/create_post"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="end|bottom"
+                                app:buttonBackgroundColour="@color/orange"
+                                app:buttonIcon="@drawable/new_fab_plus"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintRight_toRightOf="parent" />
+
                         </LinearLayout>
 
                         <LinearLayout
@@ -437,14 +447,5 @@ purus dui, aliquet cursus tellus a, dictum hen." />
             </androidx.core.widget.NestedScrollView>
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-        <uk.co.markormesher.android_fab.FloatingActionButton
-            android:id="@+id/create_post"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end|bottom"
-            app:buttonBackgroundColour="@color/orange"
-            app:buttonIcon="@drawable/new_fab_plus"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintRight_toRightOf="parent" />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

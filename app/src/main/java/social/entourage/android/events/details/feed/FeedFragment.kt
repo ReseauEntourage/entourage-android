@@ -44,6 +44,7 @@ import social.entourage.android.tools.calculateIfEventPassed
 import social.entourage.android.tools.image_viewer.ImageDialogActivity
 import social.entourage.android.tools.image_viewer.ImageDialogFragment
 import social.entourage.android.tools.log.AnalyticsEvents
+import social.entourage.android.tools.setHyperlinkClickable
 import social.entourage.android.tools.utils.*
 import timber.log.Timber
 import java.text.SimpleDateFormat
@@ -213,6 +214,7 @@ class FeedFragment : Fragment() {
                 participate.visibility = View.GONE
                 toKnow.visibility = View.GONE
                 eventDescription.visibility = View.GONE
+
             } else {
                 join.visibility = View.VISIBLE
                 participate.visibility = View.VISIBLE
