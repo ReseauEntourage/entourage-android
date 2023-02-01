@@ -239,7 +239,6 @@ class HomeFragment : Fragment() {
     private fun initializeHelpSection() {
         binding.moderator.root.title.text = userSummary?.moderator?.displayName
         binding.moderator.root.description.text = getString(R.string.moderator_subtitle)
-
         userSummary?.moderator?.imageURL?.let {
             Glide.with(requireContext())
                 .load(Uri.parse(it))
