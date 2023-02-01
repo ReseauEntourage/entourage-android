@@ -24,6 +24,7 @@ import social.entourage.android.api.model.Status
 import social.entourage.android.tools.calculateIfEventPassed
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.px
+import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -96,6 +97,7 @@ class GroupEventsListAdapter(
             )
         }
         childViewHolder.binding.eventName.text = child.title
+        Timber.wtf("wtf " + child.metadata)
         child.metadata?.startsAt?.let {
             childViewHolder.binding.date.text = SimpleDateFormat(
                 childViewHolder.itemView.context.getString(R.string.event_date_time),
