@@ -159,7 +159,7 @@ Découvrez les initiatives de votre quartier et tissez des liens avec vos voisin
     <string name="take_picture">Prendre une photo</string>
     <string name="import_picture">Importer depuis la galerie</string>
     <string name="description_counter">%s /200</string>
-    <string name="events_description_counter">%s /400</string>
+    <string name="events_description_counter">%s /900</string>
     <string name="apply_modifications">Appliquer les modifications</string>
     <string name="edit_interests">Modifier mes centres d’interêts</string>
     <string name="follow">S\'abonner</string>
