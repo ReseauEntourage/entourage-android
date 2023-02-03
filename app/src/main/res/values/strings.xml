@@ -320,7 +320,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="all">Tout</string>
     <string name="want_to_act">Je commence simplement</string>
     <string name="not_implemented">Not Implemented</string>
-    <string name="pedagogical_content">Tout savoir pour passer à l\'action</string>
+    <string name="pedagogical_content">Tout savoir pour passer\n à l\'action</string>
     <string name="picture">Photo</string>
     <string name="image_mandatory">La photo est obligatoire</string>
     <string name="show_more_lined"><u>Voir plus</u></string>

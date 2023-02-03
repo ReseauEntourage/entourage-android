@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.text.method.LinkMovementMethod
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -58,6 +59,7 @@ class PostAdapter(
                     binding.postMessage.visibility = View.VISIBLE
                     binding.postMessage.text = it
                     binding.postMessage.setHyperlinkClickable()
+
 
                 } ?: run {
                     binding.postMessage.visibility = View.GONE

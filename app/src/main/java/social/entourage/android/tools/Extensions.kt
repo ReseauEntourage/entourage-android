@@ -4,6 +4,9 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Matrix
 import android.graphics.PorterDuff
+import android.text.SpannableString
+import android.text.Spanned
+import android.text.style.URLSpan
 import android.util.Patterns
 import android.view.View
 import android.view.inputmethod.InputMethodManager
@@ -30,8 +33,11 @@ fun TextView.setHyperlinkClickable() {
     val pattern = Patterns.WEB_URL
     val matcher = pattern.matcher(this.text)
     if (matcher.find()) {
-        this.movementMethod = EntLinkMovementMethod
         val url = matcher.group()
+        val spannableString = SpannableString(text)
+        spannableString.setSpan(URLSpan(url), matcher.start(), matcher.end(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        this.setText(spannableString, TextView.BufferType.SPANNABLE)
+        this.movementMethod = EntLinkMovementMethod
         this.setOnClickListener {
             (this.context as? BaseActivity)?.showWebView(url)
         }

@@ -47,7 +47,7 @@
             style="@style/left_courant_black"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:maxLines="2"
+            android:maxLines="1"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/title"
             app:layout_constraintStart_toStartOf="@+id/title"

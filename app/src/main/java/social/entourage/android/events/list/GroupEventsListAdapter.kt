@@ -97,7 +97,6 @@ class GroupEventsListAdapter(
             )
         }
         childViewHolder.binding.eventName.text = child.title
-        Timber.wtf("wtf " + child.metadata)
         child.metadata?.startsAt?.let {
             childViewHolder.binding.date.text = SimpleDateFormat(
                 childViewHolder.itemView.context.getString(R.string.event_date_time),

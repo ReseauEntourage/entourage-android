@@ -131,6 +131,7 @@ class MainPresenter(private val activity: MainActivity) {
     fun deleteApplicationInfo(listener:() -> Unit) {
         val previousDeviceID = deviceID
         if (previousDeviceID.isNullOrBlank()) {
+            listener()
             return
         }
         val applicationInfo = ApplicationInfo(previousDeviceID)
@@ -157,6 +158,7 @@ class MainPresenter(private val activity: MainActivity) {
             deleteApplicationInfo {}
         }
         //then add new one
+        Timber.wtf("wtf eho gone here " + pushNotificationToken)
         deviceID = pushNotificationToken
         val applicationInfo = ApplicationInfo(pushNotificationToken)
         val applicationWrapper = ApplicationWrapper(applicationInfo)
@@ -165,7 +167,12 @@ class MainPresenter(private val activity: MainActivity) {
             .enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 if (!response.isSuccessful) {
+                    Timber.wtf("eho")
                     Timber.e("updating application info error")
+                }
+                else{
+                    Timber.e("updating success")
+                    Timber.wtf("eho")
                 }
             }
 
