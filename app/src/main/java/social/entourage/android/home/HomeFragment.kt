@@ -190,6 +190,7 @@ class HomeFragment : Fragment() {
         binding.pedagogicalContent.title.text = getString(R.string.pedagogical_content)
         binding.pedagogicalContent.title.setTextAppearance(context, R.style.left_courant_bold_black)
         val dim = 120
+        binding.pedagogicalContent.image.background = resources.getDrawable(R.drawable.home_rounded_white)
         binding.pedagogicalContent.image.layoutParams.width = dim
         binding.pedagogicalContent.image.layoutParams.height = dim
         binding.pedagogicalContent.root.setOnClickListener {
