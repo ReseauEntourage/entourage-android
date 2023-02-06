@@ -49,6 +49,7 @@ import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.CustomAlertDialog
 import social.entourage.android.tools.utils.px
+import timber.log.Timber
 import uk.co.markormesher.android_fab.SpeedDialMenuAdapter
 import uk.co.markormesher.android_fab.SpeedDialMenuItem
 import kotlin.math.abs
@@ -298,6 +299,8 @@ class FeedFragment : Fragment() {
             binding.seeMoreEvents.isVisible = group?.futureEvents?.isNotEmpty() == true
             binding.arrowEvents.isVisible = group?.futureEvents?.isNotEmpty() == true
 
+            Timber.wtf("wtf " + group?.imageUrl)
+
             Glide.with(requireActivity())
                 .load(group?.imageUrl)
                 .error(R.drawable.new_group_illu)
@@ -306,8 +309,8 @@ class FeedFragment : Fragment() {
 
             Glide.with(requireActivity())
                 .load(group?.imageUrl)
-                //.placeholder(R.drawable.new_group_illu)
-                //.error(R.drawable.new_group_illu)
+                .placeholder(R.drawable.new_group_illu)
+                .error(R.drawable.new_group_illu)
                 .transform(CenterCrop(), RoundedCorners(8.px))
                 .into(groupImageToolbar)
         }
