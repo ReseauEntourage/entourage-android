@@ -1,7 +1,9 @@
 package social.entourage.android.home
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
@@ -10,6 +12,7 @@ import social.entourage.android.R
 import social.entourage.android.databinding.NewRecommendationItemBinding
 import social.entourage.android.api.model.HomeAction
 import social.entourage.android.tools.utils.px
+import timber.log.Timber
 
 interface OnItemClickListener {
     fun onItemClick(recommendation: HomeAction)
@@ -17,7 +20,7 @@ interface OnItemClickListener {
 
 class RecommendationsListAdapter(
     var recommendationsList: List<HomeAction>,
-    var onItemClick: OnItemClickListener
+    var onItemClick: OnItemClickListener, var context: Context
 ) : RecyclerView.Adapter<RecommendationsListAdapter.ViewHolder>() {
 
     inner class ViewHolder(val binding: NewRecommendationItemBinding) :
@@ -34,14 +37,14 @@ class RecommendationsListAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        context = this.context
         with(holder) {
             with(recommendationsList[position]) {
                 Glide.with(holder.itemView.context)
                     .load(this.imageURL)
-                    .apply(RequestOptions().override(77.px, 46.px))
                     .placeholder(R.drawable.new_illu_empty_state_event)
-                    .transform(RoundedCorners(5.px))
                     .into(binding.image)
+
                 binding.title.text = this.name
                 binding.root.setOnClickListener {
                     onItemClick.onItemClick(this)

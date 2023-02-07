@@ -96,6 +96,7 @@ class EventsPresenter {
                     call: Call<EventWrapper>,
                     response: Response<EventWrapper>
                 ) {
+
                     if (response.isSuccessful) {
                         response.body()?.let {
                             isEventCreated.value = true

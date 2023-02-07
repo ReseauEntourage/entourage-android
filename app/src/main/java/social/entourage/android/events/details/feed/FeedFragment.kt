@@ -307,7 +307,6 @@ class FeedFragment : Fragment() {
                 ::openReportFragment,
                 ::openImageFragment
 
-
             )
         }
         binding.postsOldRecyclerview.apply {

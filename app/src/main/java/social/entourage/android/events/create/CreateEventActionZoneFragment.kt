@@ -2,10 +2,12 @@ package social.entourage.android.events.create
 
 import android.view.View
 import androidx.navigation.fragment.findNavController
+import com.google.gson.Gson
 import kotlinx.android.synthetic.main.fragment_select_place.*
 import kotlinx.android.synthetic.main.layout_view_title.view.*
 import social.entourage.android.R
 import social.entourage.android.user.edit.place.UserActionPlaceFragment
+import timber.log.Timber
 
 class CreateEventActionZoneFragment : UserActionPlaceFragment() {
 
@@ -33,6 +35,8 @@ class CreateEventActionZoneFragment : UserActionPlaceFragment() {
             longitude = userAddress?.longitude
             metadata?.googlePlaceId = userAddress?.googlePlaceId ?: ""
             metadata?.placeName = userAddress?.displayAddress ?: ""
+            Timber.wtf("wtf " +  Gson().toJson(metadata))
+
         }
         findNavController().popBackStack()
     }

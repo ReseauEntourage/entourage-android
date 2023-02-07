@@ -51,7 +51,7 @@ class PushNotificationLinkManager {
     }
 
     fun setPlaceHolder(instance:String?):Int {
-        if (instance == null ) return 0
+        if (instance == null ) return R.drawable.ic_new_placeholder_notif
 
         when(InstanceTypeNotif(instance).getInstanceTypeFromName()) {
             InstanceType.POIS -> return R.drawable.ic_new_placeholder_notif
@@ -63,10 +63,11 @@ class PushNotificationLinkManager {
             InstanceType.SOLICITATIONS -> return R.drawable.placeholder_user
             InstanceType.CONVERSATIONS -> return R.drawable.placeholder_user
             InstanceType.PARTNERS -> return R.drawable.ic_new_placeholder_notif
-            InstanceType.NONE -> return 0
+            InstanceType.NONE -> R.drawable.ic_new_placeholder_notif
             InstanceType.NEIGHBORHOODS_POST -> return R.drawable.placeholder_user
             InstanceType.OUTINGS_POST -> return R.drawable.placeholder_user
         }
+        return R.drawable.ic_new_placeholder_notif
     }
             /*InstanceType.NEIGHBORHOODS_POST -> showEventPost(context,supportFragmentManager, postId)
             InstanceType.OUTINGS_POST -> showGroupPost(context,supportFragmentManager, postId)*/
