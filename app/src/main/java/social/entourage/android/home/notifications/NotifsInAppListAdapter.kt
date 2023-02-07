@@ -10,7 +10,9 @@ import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import kotlinx.android.synthetic.main.new_notif_detail.view.*
 import social.entourage.android.R
 import social.entourage.android.api.model.NotifInApp
+import social.entourage.android.message.push.PushNotificationLinkManager
 import social.entourage.android.tools.utils.Utils
+import timber.log.Timber
 
 interface OnItemClick {
     fun onItemClick(notif: NotifInApp, position:Int)
@@ -34,6 +36,8 @@ class NotifsInAppListAdapter(
         RecyclerView.ViewHolder(binding) {
         fun bind(notif: NotifInApp, position:Int) {
 
+            Timber.wtf("wtf " + notif.instanceString )
+
             binding.card.setOnClickListener {
                 onItemClickListener.onItemClick(notif,position)
             }
@@ -43,12 +47,12 @@ class NotifsInAppListAdapter(
             notif.imageUrl?.let {
                 Glide.with(binding.image_card.context)
                     .load(it)
-                    .error(R.drawable.ic_new_placeholder_notif)
+                    .error(PushNotificationLinkManager().setPlaceHolder(notif.instanceString))
                     .transform(CircleCrop())
                     .into(binding.image_card)
             } ?: run {
                 Glide.with(binding.image_card.context)
-                    .load(R.drawable.ic_new_placeholder_notif)
+                    .load(PushNotificationLinkManager().setPlaceHolder(notif.instanceString))
                     .transform(CircleCrop())
                     .into(binding.image_card)
             }

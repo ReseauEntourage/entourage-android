@@ -5,6 +5,7 @@ import android.content.Intent
 import androidx.core.os.bundleOf
 import androidx.fragment.app.FragmentManager
 import social.entourage.android.Navigation
+import social.entourage.android.R
 import social.entourage.android.api.model.guide.Poi
 import social.entourage.android.guide.poi.ReadPoiFragment
 import social.entourage.android.actions.detail.ActionDetailActivity
@@ -46,6 +47,25 @@ class PushNotificationLinkManager {
                     }
                 }
             }
+        }
+    }
+
+    fun setPlaceHolder(instance:String?):Int {
+        if (instance == null ) return 0
+
+        when(InstanceTypeNotif(instance).getInstanceTypeFromName()) {
+            InstanceType.POIS -> return R.drawable.ic_new_placeholder_notif
+            InstanceType.USERS -> return R.drawable.placeholder_user
+            InstanceType.NEIGHBORHOODS -> return R.drawable.placeholder_user
+            InstanceType.RESOURCES -> return R.drawable.ic_new_placeholder_notif
+            InstanceType.OUTINGS -> return R.drawable.ic_new_placeholder_notif
+            InstanceType.CONTRIBUTIONS -> return R.drawable.placeholder_user
+            InstanceType.SOLICITATIONS -> return R.drawable.placeholder_user
+            InstanceType.CONVERSATIONS -> return R.drawable.placeholder_user
+            InstanceType.PARTNERS -> return R.drawable.ic_new_placeholder_notif
+            InstanceType.NONE -> return 0
+            InstanceType.NEIGHBORHOODS_POST -> return R.drawable.placeholder_user
+            InstanceType.OUTINGS_POST -> return R.drawable.placeholder_user
         }
     }
             /*InstanceType.NEIGHBORHOODS_POST -> showEventPost(context,supportFragmentManager, postId)
