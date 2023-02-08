@@ -151,12 +151,14 @@ class GroupEventsListAdapter(
                 R.color.grey)
             )
             childViewHolder.binding.blackLayout.visibility = View.VISIBLE
+            Timber.wtf("wtf" + "hey grey")
         }else{
             childViewHolder.binding.eventName.setTextColor(ContextCompat.getColor(
                 context,
                 R.color.black)
             )
             childViewHolder.binding.blackLayout.visibility = View.GONE
+            Timber.wtf("wtf" + "hey visible")
         }
 
     }
