@@ -20,6 +20,7 @@ import social.entourage.android.home.UnreadMessages
 import social.entourage.android.api.model.Events
 import social.entourage.android.api.model.Group
 import social.entourage.android.api.model.Post
+import social.entourage.android.groups.details.feed.CreatePostGroupActivity
 import timber.log.Timber
 import java.io.File
 import java.io.IOException
@@ -330,9 +331,14 @@ class GroupPresenter {
     }
 
     fun addPost(groupId: Int, params: ArrayMap<String, Any>) {
+        var id = groupId
+        if (id == -1 && CreatePostGroupActivity.idGroupForPost != null){
+            id = CreatePostGroupActivity.idGroupForPost!!
+
+        }
         if (isSendingCreatePost) return
         isSendingCreatePost = true
-        EntourageApplication.get().apiModule.groupRequest.addPost(groupId, params)
+        EntourageApplication.get().apiModule.groupRequest.addPost(id, params)
             .enqueue(object : Callback<PostWrapper> {
                 override fun onResponse(
                     call: Call<PostWrapper>,
@@ -344,6 +350,7 @@ class GroupPresenter {
                 override fun onFailure(call: Call<PostWrapper>, t: Throwable) {
                     hasPost.value = false
                     isSendingCreatePost = false
+                    CreatePostGroupActivity.idGroupForPost = null
                 }
             })
     }

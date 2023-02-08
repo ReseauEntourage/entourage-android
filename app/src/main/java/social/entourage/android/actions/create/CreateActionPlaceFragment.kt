@@ -35,7 +35,9 @@ class CreateActionPlaceFragment : UserActionPlaceFragment() {
             this?.latitude = userAddress?.latitude
             this?.longitude = userAddress?.longitude
             this?.googlePlaceId = userAddress?.googlePlaceId ?: ""
-            this?.placeName = userAddress?.displayAddress ?: ""
+            //TODO check if palcename had a utility on back before removing it
+            //this?.placeName = userAddress?.displayAddress ?: ""
+            this?.placeName = ""
         }
         findNavController().popBackStack()
     }

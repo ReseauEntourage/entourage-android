@@ -18,10 +18,12 @@ import social.entourage.android.R
 import social.entourage.android.databinding.NewActivityCreatePostBinding
 import social.entourage.android.groups.details.feed.FeedActivity
 import social.entourage.android.base.ChoosePhotoModalFragment
+import social.entourage.android.groups.details.feed.CreatePostGroupActivity
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.Utils
 import social.entourage.android.tools.utils.px
 import social.entourage.android.tools.log.AnalyticsEvents
+import timber.log.Timber
 import java.io.File
 
 abstract class CreatePostActivity : AppCompatActivity() {
@@ -52,15 +54,21 @@ abstract class CreatePostActivity : AppCompatActivity() {
     }
 
     protected fun handlePost(hasPost: Boolean) {
+
         if (hasPost) {
             if (shouldClose) {
+                var id = groupId
+                if(id == -1 && CreatePostGroupActivity.idGroupForPost != null){
+                    id = CreatePostGroupActivity.idGroupForPost!!
+                }
                 startActivity(
                     Intent(this, FeedActivity::class.java).putExtra(
                         Const.GROUP_ID,
-                        groupId
+                        id
                     )
                 )
             }
+            CreatePostGroupActivity.idGroupForPost = null
             finish()
         }
     }
@@ -133,11 +141,13 @@ abstract class CreatePostActivity : AppCompatActivity() {
                 val request = ArrayMap<String, Any>()
                 request["chat_message"] = messageChat
                 addPostWithoutImage(request)
+
             }
             if (imageURI != null) {
                 imageURI?.let { it1 ->
                     val file = Utils.getFile(this, it1)
                     addPostWithImage(file)
+
                 }
             }
         }

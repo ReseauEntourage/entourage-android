@@ -34,8 +34,9 @@ class CreateEventActionZoneFragment : UserActionPlaceFragment() {
             latitude = userAddress?.latitude
             longitude = userAddress?.longitude
             metadata?.googlePlaceId = userAddress?.googlePlaceId ?: ""
-            metadata?.placeName = userAddress?.displayAddress ?: ""
-            Timber.wtf("wtf " +  Gson().toJson(metadata))
+            //TODO check if palcename had a utility on back before removing it
+            //metadata?.placeName = userAddress?.displayAddress ?: ""
+            metadata?.placeName = ""
 
         }
         findNavController().popBackStack()

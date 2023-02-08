@@ -36,7 +36,6 @@ class NotifsInAppListAdapter(
         RecyclerView.ViewHolder(binding) {
         fun bind(notif: NotifInApp, position:Int) {
 
-            Timber.wtf("wtf " + notif.instanceString )
 
             binding.card.setOnClickListener {
                 onItemClickListener.onItemClick(notif,position)

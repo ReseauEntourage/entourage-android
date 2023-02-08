@@ -58,7 +58,7 @@ class PushNotificationLinkManager {
             InstanceType.USERS -> return R.drawable.placeholder_user
             InstanceType.NEIGHBORHOODS -> return R.drawable.placeholder_user
             InstanceType.RESOURCES -> return R.drawable.ic_new_placeholder_notif
-            InstanceType.OUTINGS -> return R.drawable.ic_new_placeholder_notif
+            InstanceType.OUTINGS -> return R.drawable.placeholder_user
             InstanceType.CONTRIBUTIONS -> return R.drawable.placeholder_user
             InstanceType.SOLICITATIONS -> return R.drawable.placeholder_user
             InstanceType.CONVERSATIONS -> return R.drawable.placeholder_user
