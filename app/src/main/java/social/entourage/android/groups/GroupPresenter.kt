@@ -1,8 +1,10 @@
 package social.entourage.android.groups
 
+import android.content.Context
 import android.util.Log
 import androidx.collection.ArrayMap
 import androidx.lifecycle.MutableLiveData
+import com.google.gson.Gson
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -12,6 +14,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import social.entourage.android.EntourageApplication
+import social.entourage.android.R
 import social.entourage.android.api.request.*
 import social.entourage.android.RefreshController
 import social.entourage.android.api.model.EntourageUser
@@ -53,6 +56,8 @@ class GroupPresenter {
     var isSendingCreatePost = false
 
     var unreadMessages = MutableLiveData<UnreadMessages?>()
+    var errorMessageGenerated:String = ""
+    var errorMessageRecovered:String = ""
 
     fun createGroup(group: Group) {
         EntourageApplication.get().apiModule.groupRequest.createGroup(GroupWrapper(group))
@@ -424,6 +429,8 @@ class GroupPresenter {
             }
         })
     }
+
+
 
     fun getGroupEvents(groupId: Int) {
         EntourageApplication.get().apiModule.groupRequest.getGroupEvents(groupId)

@@ -126,7 +126,6 @@ class ReportModalFragment : BottomSheetDialogFragment() {
     }
 
     private fun handleReportResponse(success: Boolean) {
-
         if (success) CustomAlertDialog.showOnlyOneButton(
             requireContext(),
             title,

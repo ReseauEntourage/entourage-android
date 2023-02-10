@@ -2,6 +2,7 @@ package social.entourage.android.events
 
 import androidx.collection.ArrayMap
 import androidx.lifecycle.MutableLiveData
+import com.google.gson.Gson
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.OkHttpClient
 import okhttp3.Request

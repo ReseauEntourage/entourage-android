@@ -7,6 +7,7 @@ import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.authentication.AuthenticationController
 import social.entourage.android.onboarding.pre_onboarding.PreOnboardingStartActivity
+import timber.log.Timber
 
 /**
  * Base Activity that only runs if the user is currently logged in
@@ -20,7 +21,6 @@ abstract class BaseSecuredActivity : BaseActivity() {
 
         val isMigrationAfterV7 = EntourageApplication.get().sharedPreferences.getBoolean(
             EntourageApplication.KEY_MIGRATION_V7_OK, false)
-
         if (authenticationController.isAuthenticated && isMigrationAfterV7) {
             entApp?.finishLoginActivity()
         } else {

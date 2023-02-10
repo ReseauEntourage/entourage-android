@@ -22,6 +22,7 @@ import social.entourage.android.profile.editProfile.EditPasswordFragment
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.view.EntSnackbar
 import social.entourage.android.tools.view.WebViewFragment
+import timber.log.Timber
 
 class SettingsFragment : Fragment() {
 
