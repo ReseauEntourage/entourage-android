@@ -45,7 +45,7 @@ class RecommendationsListAdapter(
                     .placeholder(R.drawable.new_illu_empty_state_event)
                     .into(binding.image)
                 if(imageURL != null ){
-                    binding.image.background = context.getDrawable(R.drawable.home_rounded_white)
+                    binding.image.background = context.resources.getDrawable(R.drawable.home_rounded_white)
                 }
                 binding.title.text = this.name
                 binding.root.setOnClickListener {
