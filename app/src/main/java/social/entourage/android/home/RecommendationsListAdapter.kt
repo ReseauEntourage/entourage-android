@@ -40,10 +40,13 @@ class RecommendationsListAdapter(
         context = this.context
         with(holder) {
             with(recommendationsList[position]) {
+
                 Glide.with(holder.itemView.context)
                     .load(this.imageURL)
                     .placeholder(R.drawable.new_illu_empty_state_event)
+                    .transform(RoundedCorners(10))
                     .into(binding.image)
+
                 if(imageURL != null ){
                     binding.image.background = context.resources.getDrawable(R.drawable.home_rounded_white)
                 }
