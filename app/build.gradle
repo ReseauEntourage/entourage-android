@@ -183,7 +183,8 @@ dependencies {
     //implementation androidSupportDependencies.values()
 
     implementation "androidx.annotation:annotation:1.5.0"
-    implementation "androidx.appcompat:appcompat:1.7.0-alpha02"
+    //TODO check why alpha02 needs kotlin 1.8
+    implementation "androidx.appcompat:appcompat:1.7.0-alpha01"
     implementation "androidx.browser:browser:1.5.0"
     implementation "androidx.cardview:cardview:1.0.0"
     implementation "androidx.coordinatorlayout:coordinatorlayout:1.2.0"
