@@ -1,4 +1,4 @@
-package social.entourage.android.message.push
+package social.entourage.android.notifications
 
 import android.content.Context
 import android.content.Intent
@@ -19,7 +19,7 @@ import social.entourage.android.tools.utils.Const
 /**
  * Created by Me on 26/09/2022.
  */
-object PushNotificationLinkManager {
+object NotificationActionManager {
 
     fun presentAction(context:Context,supportFragmentManager: FragmentManager, instance:String, id:Int, postId:Int?) {
         when(getInstanceTypeFromName(instance)) {

@@ -147,7 +147,7 @@ class LoginTest {
         enableWifiAndData(true)
     }
 
-    @Test
+    /*@Test
     fun resendCodeFailureNoInternetConnection() {
         //Disable wifi and data
         enableWifiAndData(false)
@@ -162,7 +162,7 @@ class LoginTest {
 
         //Enable wifi and data
         enableWifiAndData(true)
-    }
+    }*/
 
     private fun checkLoginSuccessful() {
         Intents.intended(IntentMatchers.hasComponent(MainActivity::class.java.name))

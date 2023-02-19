@@ -1,10 +1,10 @@
-package social.entourage.android.api.model
+package social.entourage.android.api.model.notification
 
 import android.content.Context
 import com.google.gson.Gson
 import java.io.Serializable
 
-class Message(var author: String, var msgObject: String?, content: String, pushNotificationId: Int, pushNotificationTag: String?) : Serializable {
+class PushNotificationMessage(var author: String, var msgObject: String?, content: String, pushNotificationId: Int, pushNotificationTag: String?) : Serializable {
     // ----------------------------------
     // GETTERS & SETTERS
     // ----------------------------------

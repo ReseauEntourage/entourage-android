@@ -13,9 +13,9 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import social.entourage.android.api.model.Message
-import social.entourage.android.api.model.PushNotificationContent
-import social.entourage.android.message.push.PushNotificationManager
+import social.entourage.android.api.model.notification.PushNotificationMessage
+import social.entourage.android.api.model.notification.PushNotificationContent
+import social.entourage.android.notifications.PushNotificationManager
 
 @RunWith(AndroidJUnit4::class)
 class PushNotificationTest {
@@ -55,13 +55,13 @@ class PushNotificationTest {
                     "}," +
                     "\"message\":\"Notif vers entourage de test\"" +
                 "}"
-        val message = Message("testeur Entourage", myobject, content,  0, null)
+        val pushNotificationMessage = PushNotificationMessage("testeur Entourage", myobject, content,  0, null)
         //
         PushNotificationManager.displayFCMPushNotification(BuildConfig.DEEP_LINKS_SCHEME + "://profile","InApp vers Profil", "Doit ouvrir le profil", getApplicationContext<Application>())
         //
-        PushNotificationManager.handlePushNotification(message, getApplicationContext<Application>())
+        PushNotificationManager.handlePushNotification(pushNotificationMessage, getApplicationContext<Application>())
         //
-        args.putSerializable(PushNotificationManager.PUSH_MESSAGE, message)
+        args.putSerializable(PushNotificationManager.PUSH_MESSAGE, pushNotificationMessage)
         intent.putExtras(args)
         startIntent(intent)
         Espresso.onView(ViewMatchers.withId(R.id.fragment_map_new_entourages_button)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))

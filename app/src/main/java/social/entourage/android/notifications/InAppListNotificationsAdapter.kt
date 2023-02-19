@@ -1,4 +1,4 @@
-package social.entourage.android.home.notifications
+package social.entourage.android.notifications
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -9,17 +9,17 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import kotlinx.android.synthetic.main.new_notif_detail.view.*
 import social.entourage.android.R
-import social.entourage.android.api.model.NotifInApp
+import social.entourage.android.api.model.InAppNotification
 import social.entourage.android.message.push.PushNotificationLinkManager
 import social.entourage.android.tools.utils.Utils
 import timber.log.Timber
 
 interface OnItemClick {
-    fun onItemClick(notif: NotifInApp, position:Int)
+    fun onItemClick(notif: InAppNotification, position:Int)
 }
 
-class NotifsInAppListAdapter(
-    var notifs: List<NotifInApp>,
+class InAppListNotificationsAdapter(
+    var notifs: List<InAppNotification>,
     private var onItemClickListener: OnItemClick
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -34,7 +34,7 @@ class NotifsInAppListAdapter(
 
     inner class ViewHolder(val binding: View, var context:Context) :
         RecyclerView.ViewHolder(binding) {
-        fun bind(notif: NotifInApp, position:Int) {
+        fun bind(notif: InAppNotification, position:Int) {
 
 
             binding.card.setOnClickListener {

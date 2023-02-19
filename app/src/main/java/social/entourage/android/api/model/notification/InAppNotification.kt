@@ -9,7 +9,7 @@ import java.util.*
 /**
  * Created by Me on 23/11/2022.
  */
-class NotifInApp (
+class InAppNotification (
     @SerializedName("id")
     val id: Int? = null,
     @SerializedName("instance_id")
@@ -39,17 +39,3 @@ class NotifInApp (
     }
 }
 
-class NotifInAppPermission(
-    @SerializedName("neighborhood")
-    var neighborhood: Boolean = false,
-    @SerializedName("outing")
-    var outing: Boolean = false,
-    @SerializedName("chat_message")
-    var chat_message: Boolean = false,
-    @SerializedName("action")
-    var action: Boolean = false,
-) {
-    fun isAllChecked() : Boolean {
-        return neighborhood && outing && chat_message && action
-    }
-}

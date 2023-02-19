@@ -6,8 +6,8 @@ import retrofit2.Callback
 import retrofit2.Response
 import social.entourage.android.EntourageApplication
 import social.entourage.android.api.request.*
-import social.entourage.android.api.model.NotifInApp
-import social.entourage.android.api.model.NotifInAppPermission
+import social.entourage.android.api.model.InAppNotification
+import social.entourage.android.api.model.InAppNotificationPermission
 import social.entourage.android.api.model.Pedago
 import social.entourage.android.api.model.Summary
 
@@ -20,10 +20,10 @@ class HomePresenter {
     var unreadMessages = MutableLiveData<UnreadMessages?>()
 
     var notifsCount = MutableLiveData<Int>()
-    var notificationsPermission = MutableLiveData<NotifInAppPermission?>()
+    var notificationsPermission = MutableLiveData<InAppNotificationPermission?>()
 
-    var notificationsInApp = MutableLiveData<MutableList<NotifInApp>?>()
-    var notificationInApp = MutableLiveData<NotifInApp?>()
+    var notificationsInApp = MutableLiveData<MutableList<InAppNotification>?>()
+    var notificationInApp = MutableLiveData<InAppNotification?>()
 
     var isLoading: Boolean = false
     var isLastPage: Boolean = false

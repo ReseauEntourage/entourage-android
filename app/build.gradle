@@ -95,7 +95,7 @@ android {
                 ]
                 staging = [
                         serverURL        : "https://api-preprod.entourage.social/api/v1/",
-                        deepLinksHostName: "entourage-landingpages-preprod.herokuapp.com",
+                        deepLinksHostName: "preprod.entourage.social",
                         deepLinksScheme  : "entourage-staging",
                         appLinksHostName : "entourage-webapp-preprod.herokuapp.com"
                 ]
@@ -183,8 +183,8 @@ dependencies {
     //implementation androidSupportDependencies.values()
 
     implementation "androidx.annotation:annotation:1.5.0"
-    implementation "androidx.appcompat:appcompat:1.7.0-alpha01"
-    implementation "androidx.browser:browser:1.4.0"
+    implementation "androidx.appcompat:appcompat:1.7.0-alpha02"
+    implementation "androidx.browser:browser:1.5.0"
     implementation "androidx.cardview:cardview:1.0.0"
     implementation "androidx.coordinatorlayout:coordinatorlayout:1.2.0"
     implementation "androidx.constraintlayout:constraintlayout:2.1.4"
@@ -228,7 +228,7 @@ dependencies {
     implementation "com.github.clans:fab:1.6.4"
     implementation "com.github.takusemba:cropme:2.0.8"
     implementation "com.google.maps.android:maps-utils-ktx:3.4.0"
-    implementation "com.google.android.material:material:1.7.0"
+    implementation "com.google.android.material:material:1.8.0"
     implementation "com.github.bumptech.glide:glide:4.14.2"
     implementation "me.leolin:ShortcutBadger:1.1.22@aar"
     implementation "net.yslibrary.keyboardvisibilityevent:keyboardvisibilityevent:3.0.0-RC3"

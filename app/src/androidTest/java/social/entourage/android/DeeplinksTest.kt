@@ -90,26 +90,26 @@ class DeepLinkingTestCreateAction : DeepLinkingTest() {
 
     private val link = DeepLinksManager.DeepLinksView.CREATE_ACTION.view
     //TODO
-    /*@Test
+    @Test
     fun connectedCreateActionDeeplink() {
         connectedCreateActionDeeplink(BuildConfig.DEEP_LINKS_SCHEME + "://" + link)
-    }*/
+    }
     //TODO
-    /*@Test
+    @Test
     fun connectedCreateActionDeeplinkHTTP() {
         connectedCreateActionDeeplink("http://${BuildConfig.DEEP_LINKS_URL}/deeplink/${link}")
-    }*/
+    }
     //TODO
-    /*@Test
+    @Test
     fun connectedCreateActionDeeplinkHTTPS() {
         connectedCreateActionDeeplink("https://${BuildConfig.DEEP_LINKS_URL}/deeplink/${link}")
-    }*/
+    }
 
-    /*private fun connectedCreateActionDeeplink(uri: String) {
+    private fun connectedCreateActionDeeplink(uri: String) {
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(uri))
         startIntent(intent)
         onView(withId(R.id.fragment_plus_overlay)).check(matches(isDisplayed()))
-    }*/
+    }
 }
 
 class DeepLinkingTestBadge : DeepLinkingTest() {

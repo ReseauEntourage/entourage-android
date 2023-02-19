@@ -10,7 +10,7 @@ import androidx.annotation.StyleRes
 import androidx.fragment.app.DialogFragment
 import social.entourage.android.MainActivity
 import social.entourage.android.R
-import social.entourage.android.deeplinks.DeepLinksManager.handleCurrentDeepLink
+import social.entourage.android.deeplinks.DeepLinksManager
 
 /**
  * Base DialogFragment with no title and full screen
@@ -28,7 +28,7 @@ open class BaseDialogFragment : DialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        (activity as? MainActivity)?.let {handleCurrentDeepLink(it) }
+        (activity as? MainActivity)?.let {DeepLinksManager.handleCurrentDeepLink(it) }
     }
 
     @Deprecated("Deprecated in Java")

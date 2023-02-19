@@ -22,14 +22,14 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import social.entourage.android.api.MetaDataRepository
-import social.entourage.android.api.model.Message
+import social.entourage.android.api.model.notification.PushNotificationMessage
 import social.entourage.android.base.BaseSecuredActivity
 import social.entourage.android.base.location.EntLocation
 import social.entourage.android.guide.GDSMainActivity
-import social.entourage.android.message.push.PushNotificationManager
+import social.entourage.android.notifications.PushNotificationManager
 import social.entourage.android.home.CommunicationHandlerBadgeViewModel
 import social.entourage.android.home.UnreadMessages
-import social.entourage.android.message.push.PushNotificationLinkManager
+import social.entourage.android.notifications.NotificationActionManager
 import social.entourage.android.tools.log.AnalyticsEvents
 import timber.log.Timber
 
@@ -114,11 +114,11 @@ class MainActivity : BaseSecuredActivity() {
     }
 
     private fun checkIntentAction(action: String, extras: Bundle?) {
-        val message = extras?.get(PushNotificationManager.PUSH_MESSAGE) as? Message
-        message?.content?.extra?.let { extra ->
+        val pushNotificationMessage = extras?.get(PushNotificationManager.PUSH_MESSAGE) as? PushNotificationMessage
+        pushNotificationMessage?.content?.extra?.let { extra ->
             extra.instance?.let { instance ->
                 extra.instanceId?.let { id ->
-                    PushNotificationLinkManager.presentAction(this, supportFragmentManager, instance, id, extra.postId)
+                    NotificationActionManager.presentAction(this, supportFragmentManager, instance, id, extra.postId)
                 }
             }
         }
@@ -167,10 +167,10 @@ class MainActivity : BaseSecuredActivity() {
     // ----------------------------------
     // PUSH NOTIFICATION HANDLING
     // ----------------------------------
-    fun displayMessageOnCurrentEntourageInfoFragment(message: Message): Boolean {
+    fun displayMessageOnCurrentEntourageInfoFragment(pushNotificationMessage: PushNotificationMessage): Boolean {
         /*val fragment =
             supportFragmentManager.findFragmentByTag(FeedItemInformationFragment.TAG) as FeedItemInformationFragment?
-        return fragment != null && fragment.onPushNotificationChatMessageReceived(message)*/
+        return fragment != null && fragment.onPushNotificationChatMessageReceived(pushNotificationMessage)*/
         //TODO handle notif directly if right fragment
         return false
     }
