@@ -10,7 +10,6 @@ import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import kotlinx.android.synthetic.main.new_notif_detail.view.*
 import social.entourage.android.R
 import social.entourage.android.api.model.InAppNotification
-import social.entourage.android.message.push.PushNotificationLinkManager
 import social.entourage.android.tools.utils.Utils
 import timber.log.Timber
 
@@ -46,12 +45,12 @@ class InAppListNotificationsAdapter(
             notif.imageUrl?.let {
                 Glide.with(binding.image_card.context)
                     .load(it)
-                    .error(PushNotificationLinkManager().setPlaceHolder(notif.instanceString))
+                    .error(NotificationActionManager.setPlaceHolder(notif.instanceType))
                     .transform(CircleCrop())
                     .into(binding.image_card)
             } ?: run {
                 Glide.with(binding.image_card.context)
-                    .load(PushNotificationLinkManager().setPlaceHolder(notif.instanceString))
+                    .load(NotificationActionManager.setPlaceHolder(notif.instanceType))
                     .transform(CircleCrop())
                     .into(binding.image_card)
             }
