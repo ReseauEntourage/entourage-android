@@ -26,6 +26,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class PostAdapter(
+    var context:Context,
     var postsList: List<Post>,
     var onClick: (Post, Boolean) -> Unit,
     var onReport: (Int) -> Unit,
@@ -110,6 +111,27 @@ class PostAdapter(
                         .load(R.drawable.placeholder_user)
                         .circleCrop()
                         .into(binding.image)
+                }
+
+                binding.tvAmbassador.visibility = View.VISIBLE
+                var tagsString = ""
+                if (this.user?.isAdmin() == true){
+                    tagsString = tagsString + context.getString(R.string.admin) + " •"
+                }else if(this.user?.isAmbassador() == true){
+                    tagsString = tagsString + context.getString(R.string.ambassador) + " •"
+                }else if(this.user?.partner != null ){
+                    tagsString = tagsString + this.user?.partner!!.name
+
+                }
+                Timber.wtf("wtf " + tagsString)
+                if(tagsString.isEmpty()){
+                    binding.tvAmbassador.visibility = View.GONE
+                }else{
+                    binding.tvAmbassador.visibility = View.VISIBLE
+                    if(tagsString.last().toString() == "•"){
+                        tagsString = tagsString.removeSuffix("•")
+                    }
+                    binding.tvAmbassador.text = tagsString
                 }
 
                 binding.name.setOnClickListener {

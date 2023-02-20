@@ -142,6 +142,14 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp" />
 
+                <include
+                    android:id="@+id/organizer"
+                    layout="@layout/new_event_information_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp" />
+
+
                 <androidx.cardview.widget.CardView
                     android:id="@+id/cv_mapView"
                     android:layout_width="match_parent"

@@ -4,6 +4,7 @@ import android.os.Parcel
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 import social.entourage.android.api.model.*
+import social.entourage.android.api.model.feed.FeedItemAuthor
 import java.util.*
 
 class EventModel(
@@ -12,6 +13,8 @@ class EventModel(
 
     @SerializedName("name")
     var name: String? = null,
+    @SerializedName("author")
+    var author: FeedItemAuthor? = null,
 
     @SerializedName("members_count")
     var members_count: Int? = null,
@@ -47,6 +50,7 @@ class EventModel(
     constructor(parcel: Parcel) : this(
         parcel.readValue(Int::class.java.classLoader) as Int,
         parcel.readString(),
+        TODO("author"),
         parcel.readValue(Int::class.java.classLoader) as? Int,
         parcel.readString(),
         TODO("interests"),
