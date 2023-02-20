@@ -50,7 +50,7 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".home.notifications.NotificationsInAppActivity"
+            android:name=".notifications.InAppNotificationsActivity"
             android:exported="false"/>
         <activity
             android:name=".onboarding.onboard.OnboardingStartActivity"
@@ -303,7 +303,7 @@
             android:name=".service.EntService"
             android:exported="false" />
         <service
-            android:name=".message.push.EntourageFirebaseMessagingService"
+            android:name=".notifications.EntourageFirebaseMessagingService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />

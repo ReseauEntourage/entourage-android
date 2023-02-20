@@ -1,4 +1,4 @@
-package social.entourage.android.api.model
+package social.entourage.android.api.model.notification
 
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable
@@ -71,8 +71,10 @@ class PushNotificationContent : Serializable {
 
         @SerializedName("instance")
         var instance:String? = null
+
         @SerializedName("instance_id")
         var instanceId:Int? = null
+
         @SerializedName("post_id")
         var postId:Int? = null
 

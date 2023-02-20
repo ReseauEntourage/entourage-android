@@ -1,4 +1,4 @@
-package social.entourage.android.home.notifications
+package social.entourage.android.notifications
 
 import android.os.Bundle
 import android.os.CountDownTimer
@@ -11,19 +11,18 @@ import androidx.recyclerview.widget.RecyclerView
 import social.entourage.android.R
 import social.entourage.android.databinding.NewFragmentNotifsInAppListBinding
 import social.entourage.android.home.HomePresenter
-import social.entourage.android.api.model.NotifInApp
-import social.entourage.android.message.push.PushNotificationLinkManager
+import social.entourage.android.api.model.InAppNotification
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.log.AnalyticsEvents
 
-class NotifsInAppListFragment : Fragment() {
+class InAppNotificationListFragment : Fragment() {
     val groupPerPage = 10
     private var _binding: NewFragmentNotifsInAppListBinding? = null
     val binding: NewFragmentNotifsInAppListBinding get() = _binding!!
 
     private val homePresenter: HomePresenter by lazy { HomePresenter() }
 
-    var notifications = ArrayList<NotifInApp>()
+    var notifications = ArrayList<InAppNotification>()
 
     private var page: Int = 0
     private var itemSelected = -1
@@ -62,7 +61,7 @@ class NotifsInAppListFragment : Fragment() {
         checkUnread()
     }
 
-    private fun handleUpdateNotification(notif: NotifInApp?) {
+    private fun handleUpdateNotification(notif: InAppNotification?) {
         if (itemSelected != -1 && itemSelected < notifications.size && notif != null) {
             notifications[itemSelected] = notif
             itemSelected = -1
@@ -70,7 +69,7 @@ class NotifsInAppListFragment : Fragment() {
         }
     }
 
-    private fun handleGetNotifications(notifs:MutableList<NotifInApp>?) {
+    private fun handleGetNotifications(notifs:MutableList<InAppNotification>?) {
         notifs?.let { notifications.addAll(it) }
         binding.recyclerView.adapter?.notifyDataSetChanged()
     }
@@ -145,9 +144,9 @@ class NotifsInAppListFragment : Fragment() {
             // Pagination
             addOnScrollListener(recyclerViewOnScrollListener)
             layoutManager = LinearLayoutManager(context)
-            adapter = NotifsInAppListAdapter(notifications, object : OnItemClick {
-                override fun onItemClick(notif: NotifInApp, position:Int) {
-                    val instance = notif.instanceString
+            adapter = InAppListNotificationsAdapter(notifications, object : OnItemClick {
+                override fun onItemClick(notif: InAppNotification, position:Int) {
+                    val instance = notif.instanceType
                     val instanceId = notif.instanceId
                     val postId:Int? = notif.postId
                     if (notif.completedAt == null) {
@@ -157,7 +156,7 @@ class NotifsInAppListFragment : Fragment() {
                     else {
                         itemSelected = -1
                     }
-                    PushNotificationLinkManager().presentAction(requireContext(),parentFragmentManager,instance,instanceId,postId)
+                    if(instance != null && instanceId != null) NotificationActionManager.presentAction(requireContext(),parentFragmentManager,instance,instanceId,postId)
                 }
             })
         }

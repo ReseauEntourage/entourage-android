@@ -9,15 +9,15 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.multidex.MultiDexApplication
 import com.google.firebase.analytics.FirebaseAnalytics
 import social.entourage.android.api.ApiModule
-import social.entourage.android.api.model.Message
-import social.entourage.android.api.model.PushNotificationContent
+import social.entourage.android.api.model.notification.PushNotificationMessage
+import social.entourage.android.api.model.notification.PushNotificationContent
 import social.entourage.android.api.model.TimestampedObject
 import social.entourage.android.api.model.User
 import social.entourage.android.api.model.feed.FeedItem
 import social.entourage.android.authentication.AuthenticationController
 import social.entourage.android.authentication.ComplexPreferences
 import social.entourage.android.base.BaseActivity
-import social.entourage.android.message.push.PushNotificationManager
+import social.entourage.android.notifications.PushNotificationManager
 import social.entourage.android.onboarding.login.LoginActivity
 import social.entourage.android.onboarding.pre_onboarding.PreOnboardingStartActivity
 import social.entourage.android.tools.LibrariesSupport
@@ -125,8 +125,8 @@ class EntourageApplication : MultiDexApplication() {
     // ----------------------------------
     // Push notifications and badge handling
     // ----------------------------------
-    fun onPushNotificationReceived(message: Message) {
-        val content = message.content ?: return
+    fun onPushNotificationReceived(pushNotificationMessage: PushNotificationMessage) {
+        val content = pushNotificationMessage.content ?: return
         if (content.joinableId == 0L) {
             return
         }
@@ -134,7 +134,7 @@ class EntourageApplication : MultiDexApplication() {
             .post {
                 when (content.type) {
                     PushNotificationContent.TYPE_NEW_CHAT_MESSAGE -> {
-                        if (mainActivity?.displayMessageOnCurrentEntourageInfoFragment(message) == true) {
+                        if (mainActivity?.displayMessageOnCurrentEntourageInfoFragment(pushNotificationMessage) == true) {
                             //already displayed
                             removePushNotification(content, content.type)
                         }
@@ -148,20 +148,19 @@ class EntourageApplication : MultiDexApplication() {
             }
     }
 
-    fun addPushNotification(message: Message) {
-        PushNotificationManager.addPushNotification(message)
+    fun addPushNotification(pushNotificationMessage: PushNotificationMessage) {
         //TODO EntBottomNavigationView.increaseBadgeCount()
     }
 
-    fun removePushNotificationsForFeedItem(feedItem: FeedItem) {
+    /*fun removePushNotificationsForFeedItem(feedItem: FeedItem) {
         val count = PushNotificationManager.removePushNotificationsForFeedItem(feedItem)
         if (count > 0) {
             //TODO EntBottomNavigationView.decreaseBadgeCount()
         }
-    }
+    }*/
 
-    fun removePushNotification(message: Message) {
-        val count = PushNotificationManager.removePushNotification(message)
+    fun removePushNotification(pushNotificationMessage: PushNotificationMessage) {
+        val count = PushNotificationManager.removePushNotification(pushNotificationMessage)
         if (count > 0) {
             //TODO EntBottomNavigationView.decreaseBadgeCount()
         }

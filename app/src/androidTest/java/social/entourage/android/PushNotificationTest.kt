@@ -13,17 +13,18 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import social.entourage.android.message.push.PushNotificationManager
-import social.entourage.android.old_v7.MainActivity_v7
+import social.entourage.android.api.model.notification.PushNotificationMessage
+import social.entourage.android.api.model.notification.PushNotificationContent
+import social.entourage.android.notifications.PushNotificationManager
 
 @RunWith(AndroidJUnit4::class)
 class PushNotificationTest {
 
-    private val isAppStarted = true
+    private val isAppStarted = false
 
     @Rule
     @JvmField
-    val activityTestRule = ActivityTestRule(MainActivity_v7::class.java, isAppStarted, isAppStarted)
+    val activityTestRule = ActivityTestRule(MainActivity::class.java, isAppStarted, isAppStarted)
     private val entourageID = if(BuildConfig.FLAVOR_env=="prod") "46569" else "2300"
 
     @Before
@@ -40,20 +41,29 @@ class PushNotificationTest {
 
     @Test
     fun testNotifMessageIntent() {
-        val intent = Intent(getApplicationContext<Application>(), MainActivity_v7::class.java)
+        val intent = Intent(getApplicationContext<Application>(), MainActivity::class.java)
         intent.action = PushNotificationContent.TYPE_NEW_CHAT_MESSAGE
         val args = Bundle()
         val myobject = "title"
-        val content = "{\"extra\":{\"joinable_id\":$entourageID,\"joinable_type\":\"Entourage\",\"group_type\":\"action\",\"type\":\"NEW_CHAT_MESSAGE\"},\"message\":\"Notif vers entourage de test\"}"
-        val message = Message("testeur Entourage", myobject, content,  0, null)
+        val content = "{" +
+                    "\"extra\":{" +
+                        "\"joinable_id\":$entourageID," +
+                        "\"joinable_type\":\"Entourage\"," +
+                        "\"group_type\":\"action\"," +
+                        "\"instance\":\"NEW_CHAT_MESSAGE\"," +
+                        "\"instance_id\":0" +
+                    "}," +
+                    "\"message\":\"Notif vers entourage de test\"" +
+                "}"
+        val pushNotificationMessage = PushNotificationMessage("testeur Entourage", myobject, content,  0, null)
         //
         PushNotificationManager.displayFCMPushNotification(BuildConfig.DEEP_LINKS_SCHEME + "://profile","InApp vers Profil", "Doit ouvrir le profil", getApplicationContext<Application>())
         //
-        PushNotificationManager.handlePushNotification(message, getApplicationContext<Application>())
+        PushNotificationManager.handlePushNotification(pushNotificationMessage, getApplicationContext<Application>())
         //
-        args.putSerializable(PushNotificationManager.PUSH_MESSAGE, message)
+        args.putSerializable(PushNotificationManager.PUSH_MESSAGE, pushNotificationMessage)
         intent.putExtras(args)
         startIntent(intent)
-        Espresso.onView(ViewMatchers.withId(R.id.entourage_info_comment)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+        Espresso.onView(ViewMatchers.withId(R.id.fragment_map_new_entourages_button)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
     }
 }

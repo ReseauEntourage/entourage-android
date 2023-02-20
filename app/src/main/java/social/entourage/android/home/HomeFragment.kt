@@ -8,7 +8,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -23,7 +22,7 @@ import social.entourage.android.databinding.NewFragmentHomeBinding
 import social.entourage.android.guide.GDSMainActivity
 import social.entourage.android.Navigation
 import social.entourage.android.ViewPagerDefaultPageController
-import social.entourage.android.home.notifications.NotificationsInAppActivity
+import social.entourage.android.notifications.InAppNotificationsActivity
 import social.entourage.android.home.pedago.PedagoListActivity
 import social.entourage.android.api.model.HomeAction
 import social.entourage.android.api.model.Summary
@@ -181,7 +180,7 @@ class HomeFragment : Fragment() {
 
         binding.uiLayoutNotif.setOnClickListener {
             AnalyticsEvents.logEvent(AnalyticsEvents.Home_action_notif)
-            val intent = Intent(requireContext(),NotificationsInAppActivity::class.java)
+            val intent = Intent(requireContext(), InAppNotificationsActivity::class.java)
             intent.putExtra(Const.NOTIF_COUNT,homePresenter.notifsCount.value)
             startActivityForResult(intent, 0)
         }

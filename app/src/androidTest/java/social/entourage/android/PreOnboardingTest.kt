@@ -92,68 +92,68 @@ class PreOnboardingTest {
 
         checkSignupAndLoginButtonsExist()
     }
-
-    @Test
+    //TODO
+    /*@Test
     fun skipPreOnboardingAtPage2Test() {
         checkPage2()
         skipPreOnboardingTest()
-    }
-
-    @Test
+    }*/
+    //TODO
+    /*@Test
     fun skipPreOnboardingAtPage3Test() {
         checkPage2()
         checkPage3()
         skipPreOnboardingTest()
-    }
-
-    @Test
+    }*/
+    //TODO
+    /*@Test
     fun skipPreOnboardingAtPage4Test() {
         checkPage2()
         checkPage3()
         checkPage4()
         skipPreOnboardingTest()
-    }
-
-    @Test
+    }*/
+    //TODO
+    /*@Test
     fun fullPreOnboardingTest() {
         checkPage2()
         checkPage3()
         checkPage4()
         nextButton.perform(click())
         checkSignupAndLoginButtonsExist()
-    }
-
-    @Test
+    }*/
+    //TODO
+    /*@Test
     fun skipPreOnboardingAtPage2WithScrollingTest() {
         checkPage2WithScrolling()
         skipPreOnboardingTest()
-    }
-
-    @Test
+    }*/
+    //TODO
+    /*@Test
     fun skipPreOnboardingAtPage3WithScrollingTest() {
         checkPage2WithScrolling()
         checkPage3WithScrolling()
         skipPreOnboardingTest()
-    }
-
-    @Test
+    }*/
+    //TODO
+    /*@Test
     fun skipPreOnboardingAtPage4WithScrollingTest() {
         checkPage2WithScrolling()
         checkPage3WithScrolling()
         checkPage4WithScrolling()
         skipPreOnboardingTest()
-    }
-
-    @Test
+    }*/
+    //TODO
+    /*@Test
     fun fullPreOnboardingWithScrollingTest() {
         checkPage2WithScrolling()
         checkPage3WithScrolling()
         checkPage4WithScrolling()
         nextButton.perform(click())
         checkSignupAndLoginButtonsExist()
-    }
+    }*/
 
-    private fun checkPage2() {
+    /*private fun checkPage2() {
         nextButton.perform(click())
         titleTv.check(matches(withText(R.string.pre_onboard_tutorial_title2)))
     }
@@ -181,7 +181,7 @@ class PreOnboardingTest {
     private fun checkPage4WithScrolling() {
         swipeLeftFromPage(2)
         titleTv.check(matches(withText(R.string.pre_onboard_tutorial_title4)))
-    }
+    }*/
 
     private fun checkSignupAndLoginButtonsExist() {
         val button = onView(

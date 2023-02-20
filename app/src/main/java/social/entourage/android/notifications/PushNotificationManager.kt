@@ -1,4 +1,4 @@
-package social.entourage.android.message.push
+package social.entourage.android.notifications
 
 import android.annotation.SuppressLint
 import android.app.NotificationChannel
@@ -19,8 +19,8 @@ import com.google.firebase.messaging.RemoteMessage
 import social.entourage.android.EntourageApplication
 import social.entourage.android.MainActivity
 import social.entourage.android.R
-import social.entourage.android.api.model.Message
-import social.entourage.android.api.model.PushNotificationContent
+import social.entourage.android.api.model.notification.PushNotificationMessage
+import social.entourage.android.api.model.notification.PushNotificationContent
 import social.entourage.android.api.model.TimestampedObject
 import social.entourage.android.api.model.feed.FeedItem
 import timber.log.Timber
@@ -44,32 +44,34 @@ object PushNotificationManager {
     // ----------------------------------
     // ATTRIBUTES
     // ----------------------------------
-    private var pushNotifications = HashMap<String, MutableList<Message>>()
+    private var pushNotifications = HashMap<String, MutableList<PushNotificationMessage>>()
     // ------------------------------------
     // INTERNAL PUSH NOTIFICATIONS HANDLING
     // ------------------------------------
     /**
      * Handle a push notification received from the server
-     * @param message The message that we use to build the push notification
+     * @param pushNotificationMessage The pushNotificationMessage that we use to build the push notification
      * @param context The context into which to add the push notification
      */
-    fun handlePushNotification(message: Message, context: Context) {
-        val content = message.content ?: return
-        val application = EntourageApplication.get()
-        application.addPushNotification(message)
-        // Display all notifications except the join_request_canceled
-        displayPushNotification(message, context)
+    fun handlePushNotification(pushNotificationMessage: PushNotificationMessage, context: Context) {
+        if(pushNotificationMessage.content!= null) {
+            addPushNotification(pushNotificationMessage)
+            EntourageApplication.get().addPushNotification(pushNotificationMessage)
+            // Display all notifications except the join_request_canceled
+            displayPushNotification(pushNotificationMessage, context)
+        }
+        EntourageApplication.get().onPushNotificationReceived(pushNotificationMessage)
     }
 
     /**
-     * Adds a message to our internal list, creating the group if necessary
-     * @param message the message to add
+     * Adds a pushNotificationMessage to our internal list, creating the group if necessary
+     * @param pushNotificationMessage the pushNotificationMessage to add
      */
     @Synchronized
-    fun addPushNotification(message: Message) {
-        val messageList = pushNotifications[message.hash] ?: ArrayList()
-        messageList.add(message)
-        pushNotifications[message.hash] = messageList
+    fun addPushNotification(pushNotificationMessage: PushNotificationMessage) {
+        val messageList = pushNotifications[pushNotificationMessage.hash] ?: ArrayList()
+        messageList.add(pushNotificationMessage)
+        pushNotifications[pushNotificationMessage.hash] = messageList
     }
 
     /**
@@ -77,16 +79,16 @@ object PushNotificationManager {
      * @param feedItem the feed item from which to remove the notifications
      * @return the number of push notifications that were removed
      */
-    @Synchronized
+    /*@Synchronized
     fun removePushNotificationsForFeedItem(feedItem: FeedItem): Int {
         val feedItemId = feedItem.id
         val feedType = feedItem.type
         var nbNotifsFound = 0
-        val newPushNotifications =  HashMap<String, MutableList<Message>>()
+        val newPushNotifications =  HashMap<String, MutableList<PushNotificationMessage>>()
         for(key in pushNotifications.keys) {
-            pushNotifications[key]?.let {messageList->
+            pushNotifications[key]?.let { messageList->
                 var messageListChanged = false
-                val newMessageList = ArrayList<Message>()
+                val newPushNotificationMessageList = ArrayList<PushNotificationMessage>()
                 for(message in messageList) {
                     val content = message.content
                     if (content != null && content.joinableId == feedItemId) {
@@ -101,19 +103,19 @@ object PushNotificationManager {
                             }
                         }
                     }
-                    newMessageList.add(message)
+                    newPushNotificationMessageList.add(message)
                 }
                 if (!messageListChanged
-                        ||updateNotificationGroup(key, newMessageList)
-                        ||newMessageList.isNotEmpty()) {
+                        || updateNotificationGroup(key, newPushNotificationMessageList)
+                        ||newPushNotificationMessageList.isNotEmpty()) {
                     // list not empty we keep it
-                    newPushNotifications[key] = newMessageList
+                    newPushNotifications[key] = newPushNotificationMessageList
                 }
             }
         }
         pushNotifications = newPushNotifications
         return nbNotifsFound
-    }
+    }*/
 
     /**
      * Removes a notification from our internal list
@@ -121,20 +123,20 @@ object PushNotificationManager {
      * @return the number of push notifications that were removed
      */
     @Synchronized
-    fun removePushNotification(msg: Message): Int {
+    fun removePushNotification(msg: PushNotificationMessage): Int {
         var nbMsgFound = 0
-        val newPushNotifications = HashMap<String, MutableList<Message>>()
+        val newPushNotifications = HashMap<String, MutableList<PushNotificationMessage>>()
         for (key in pushNotifications.keys) {
             pushNotifications[key]?.let { messageList ->
-                val newMessageList = ArrayList<Message>()
+                val newPushNotificationMessageList = ArrayList<PushNotificationMessage>()
                 for (message in messageList) {
                     if (message.hash == msg.hash) {
                         nbMsgFound++
                         continue
                     }
-                    newMessageList.add(message)
+                    newPushNotificationMessageList.add(message)
                 }
-                if (newMessageList.isNotEmpty()) newPushNotifications[key] = newMessageList
+                if (newPushNotificationMessageList.isNotEmpty()) newPushNotifications[key] = newPushNotificationMessageList
             }
         }
         pushNotifications = newPushNotifications
@@ -148,10 +150,10 @@ object PushNotificationManager {
      * @param pushType the required type
      * @return the number of push notifications that were removed
      */
-    @Synchronized
+    /*@Synchronized
     fun removePushNotification(feedItem: FeedItem, userId: Int, pushType: String): Int {
         return removePushNotification(feedItem.id, feedItem.type, userId, pushType)
-    }
+    }*/
 
     /**
      * Removes notifications from a feed that matches the required type (see [PushNotificationContent])
@@ -167,13 +169,12 @@ object PushNotificationManager {
         if (pushType == null) {
             return 0
         }
-        val application = EntourageApplication.get()
         var count = 0
         // search for a push notification that matches our parameters
-        val newPushNotifications = HashMap<String, MutableList<Message>>()
+        val newPushNotifications = HashMap<String, MutableList<PushNotificationMessage>>()
         for(key in pushNotifications.keys) {
             pushNotifications[key]?.let { oldMessageList ->
-                val newMessageList = ArrayList<Message>()
+                val newPushNotificationMessageList = ArrayList<PushNotificationMessage>()
                 var messageListChanged = false
                 for (message in oldMessageList) {
                     val content = message.content
@@ -186,12 +187,12 @@ object PushNotificationManager {
                             continue
                         }
                     }
-                    newMessageList.add(message)
+                    newPushNotificationMessageList.add(message)
                 }
                 if (!messageListChanged
-                        ||updateNotificationGroup(key, newMessageList)
-                        ||newMessageList.isNotEmpty()) {
-                    newPushNotifications[key] = newMessageList
+                        || updateNotificationGroup(key, newPushNotificationMessageList)
+                        ||newPushNotificationMessageList.isNotEmpty()) {
+                    newPushNotifications[key] = newPushNotificationMessageList
                 }
             }
         }
@@ -218,15 +219,15 @@ object PushNotificationManager {
     // ----------------------------------
     /**
      * Creates and displays a OS notification, using tag and id
-     * @param message the message received
+     * @param pushNotificationMessage the pushNotificationMessage received
      * @param context the context
      */
     @SuppressLint("MissingPermission")
-    private fun displayPushNotification(message: Message, context: Context) {
-        val messageList: List<Message>? = pushNotifications[message.hash]
-        val count = messageList?.size ?: 0
+    private fun displayPushNotification(pushNotificationMessage: PushNotificationMessage, context: Context) {
+        val pushNotificationMessageList: List<PushNotificationMessage>? = pushNotifications[pushNotificationMessage.hash]
+        val count = pushNotificationMessageList?.size ?: 0
         if(count>0) {
-            messageList?.first()?.let {message.pushNotificationId = it.pushNotificationId}
+            pushNotificationMessageList?.first()?.let {pushNotificationMessage.pushNotificationId = it.pushNotificationId}
         }
 
         val channelId = context.getString(R.string.app_name)
@@ -241,17 +242,17 @@ object PushNotificationManager {
         }
         val builder = NotificationCompat.Builder(context, channelId)
                 .setSmallIcon(R.drawable.ic_entourage_logo_one_color)
-                .setContentIntent(createMessagePendingIntent(message, context))
+                .setContentIntent(createMessagePendingIntent(pushNotificationMessage, context))
                 .setLargeIcon(BitmapFactory.decodeResource(context.resources, R.drawable.ic_entourage_logo_two_colors))
-                .setContentTitle(message.getContentTitleForCount(count, context))
-                .setContentText(message.getContentTextForCount(count, context))
+                .setContentTitle(pushNotificationMessage.getContentTitleForCount(count, context))
+                .setContentText(pushNotificationMessage.getContentTextForCount(count, context))
                 .setColor(ResourcesCompat.getColor(context.resources,R.color.accent,null))
 
         val notification = builder.build()
         notification.defaults = NotificationCompat.DEFAULT_LIGHTS
         notification.flags = NotificationCompat.FLAG_AUTO_CANCEL or NotificationCompat.FLAG_SHOW_LIGHTS
-        Timber.d("TAG = %s , ID = %d", message.pushNotificationTag, message.pushNotificationId)
-        NotificationManagerCompat.from(context).notify(message.pushNotificationTag, message.pushNotificationId, notification)
+        Timber.d("TAG = %s , ID = %d", pushNotificationMessage.pushNotificationTag, pushNotificationMessage.pushNotificationId)
+        NotificationManagerCompat.from(context).notify(pushNotificationMessage.pushNotificationTag, pushNotificationMessage.pushNotificationId, notification)
     }
 
     @SuppressLint("MissingPermission")
@@ -284,13 +285,13 @@ object PushNotificationManager {
     /**
      * Updates a group of notifications. If the group is empty, it removes the notification
      * @param key the key of the group
-     * @param messageList the message list
+     * @param pushNotificationMessageList the message list
      * @return true if the group was updated, false if it was removed
      */
-    private fun updateNotificationGroup(key: String, messageList: List<Message>): Boolean {
+    private fun updateNotificationGroup(key: String, pushNotificationMessageList: List<PushNotificationMessage>): Boolean {
         // get the visible messages count
         var isGroupEmpty = true
-        for (message in messageList) {
+        for (message in pushNotificationMessageList) {
             if (message.isVisible) {
                 isGroupEmpty = false
                 break
@@ -300,7 +301,7 @@ object PushNotificationManager {
             // no more messages, cancel the notification
             var notificationTag: String? = null
             val notificationId: Int
-            val separator = key.indexOf(Message.HASH_SEPARATOR)
+            val separator = key.indexOf(PushNotificationMessage.HASH_SEPARATOR)
             if (separator > 0) {
                 notificationTag = key.substring(0, separator)
                 notificationId = key.substring(separator + 1).toInt()
@@ -310,25 +311,25 @@ object PushNotificationManager {
             NotificationManagerCompat.from(EntourageApplication.get()).cancel(notificationTag, notificationId)
             return false
         } else {
-            displayPushNotification(messageList.last(), EntourageApplication.get())
+            displayPushNotification(pushNotificationMessageList.last(), EntourageApplication.get())
         }
         return true
     }
 
     /**
      * Creates the pending intent to be used when creating the OS notification
-     * @param message the message
+     * @param pushNotificationMessage the pushNotificationMessage
      * @param context the content
      * @return the [PendingIntent]
      */
-    private fun createMessagePendingIntent(message: Message, context: Context): PendingIntent {
+    private fun createMessagePendingIntent(pushNotificationMessage: PushNotificationMessage, context: Context): PendingIntent {
         val args = Bundle()
-        args.putSerializable(PUSH_MESSAGE, message)
-        val messageType: String = message.content?.type ?:""
+        args.putSerializable(PUSH_MESSAGE, pushNotificationMessage)
+        val messageType: String = pushNotificationMessage.content?.type ?:""
         val messageIntent = Intent(context, MainActivity::class.java)
         when (messageType) {
             PushNotificationContent.TYPE_NEW_JOIN_REQUEST ->                 // because of the grouping, we need an intent that is specific for each entourage
-                messageIntent.data = Uri.parse("entourage-notif://" + message.pushNotificationTag)
+                messageIntent.data = Uri.parse("entourage-notif://" + pushNotificationMessage.pushNotificationTag)
             PushNotificationContent.TYPE_NEW_CHAT_MESSAGE,
             PushNotificationContent.TYPE_JOIN_REQUEST_ACCEPTED,
             PushNotificationContent.TYPE_ENTOURAGE_INVITATION,
@@ -338,51 +339,35 @@ object PushNotificationManager {
         }
         messageIntent.action = messageType
         messageIntent.putExtras(args)
-        return PendingIntent.getActivity(context, message.pushNotificationId, messageIntent, PendingIntent.FLAG_IMMUTABLE)
+        return PendingIntent.getActivity(context, pushNotificationMessage.pushNotificationId, messageIntent, PendingIntent.FLAG_IMMUTABLE)
     }
 
     // ----------------------------------
     // STATIC METHODS
     // ----------------------------------
     /**
-     * Creates a [Message] from the remoteMessage received from the firebase messaging server
+     * Creates a [PushNotificationMessage] from the remoteMessage received from the firebase messaging server
      * @param remoteMessage remoteMessage from FirebaseMessaging
      * @return the message
      */
-    fun getMessageFromRemoteMessage(remoteMessage: RemoteMessage, context: Context): Message? {
+    fun getPushNotificationMessageFromRemoteMessage(remoteMessage: RemoteMessage, context: Context): PushNotificationMessage? {
         val msg = remoteMessage.data
         //first checking if content json is present (not here for firebase notification
         val content = msg[KEY_CONTENT] ?: return null
         val sender = msg[KEY_SENDER] ?: return null
-        val message = Message(sender, msg[KEY_OBJECT], content, 0, null)
-        message.pushNotificationId = getNotificationId(context, message)
-        message.pushNotificationTag = message.content?.notificationTag ?: ""
-        return message
+        val pushNotificationMessage = PushNotificationMessage(sender, msg[KEY_OBJECT], content, 0, null)
+        pushNotificationMessage.pushNotificationId = getNotificationId(context)
+        pushNotificationMessage.pushNotificationTag = pushNotificationMessage.content?.notificationTag ?: ""
+        return pushNotificationMessage
     }
 
     /**
-     * Creates a [Message] from the Intent received from the server
-     * @param intent the intent with the json from the server
+     * Returns a unique notification id for the pushNotificationMessage.<br></br>
      * @param context the context
-     * @return the message
-     */
-    fun getMessageFromIntent(intent: Intent, context: Context): Message? {
-        val args = intent.extras ?: return null
-        val content = args.getString(KEY_CONTENT) ?: return null
-        val sender = args.getString(KEY_SENDER) ?: return null
-        val message = Message(sender, args.getString(KEY_OBJECT), content, 0, null)
-        message.pushNotificationId = getNotificationId(context, message)
-        message.pushNotificationTag = message.content?.notificationTag
-        return message
-    }
-
-    /**
-     * Returns a unique notification id for the message.<br></br>
-     * @param context the context
-     * @param message the message
+     * @param pushNotificationMessage the pushNotificationMessage
      * @return the notification id
      */
-    private fun getNotificationId(context: Context, message: Message): Int {
+    private fun getNotificationId(context: Context): Int {
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
         var id = sharedPreferences.getInt(PREFERENCE_LAST_NOTIFICATION_ID, MIN_NOTIFICATION_ID - 1) + 1
         if (id == Int.MAX_VALUE) {
