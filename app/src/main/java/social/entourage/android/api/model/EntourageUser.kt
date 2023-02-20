@@ -3,6 +3,7 @@ package social.entourage.android.api.model
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import social.entourage.android.api.model.feed.FeedItem
+import timber.log.Timber
 import java.io.Serializable
 import java.util.*
 
@@ -83,6 +84,8 @@ class EntourageUser : TimestampedObject(), Serializable {
     }
 
     fun getCommunityRoleWithPartnerFormated() : String? {
+        Timber.wtf("wtf " +  communityRoles)
+        Timber.wtf("wtf " +  groupRole)
         communityRoles?.let {
             var roleStr = ""
 
@@ -117,6 +120,13 @@ class EntourageUser : TimestampedObject(), Serializable {
 
     fun isAdmin() : Boolean {
         if (groupRole == "creator") {
+            return true
+        }
+        return false
+    }
+
+    fun isAmbassador() : Boolean {
+        if (groupRole == "ambassador") {
             return true
         }
         return false

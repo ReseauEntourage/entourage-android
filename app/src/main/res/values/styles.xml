@@ -598,6 +598,11 @@
         <item name="android:fontFamily">@font/nunitosans_extralight</item>
         <item name="android:textColor">@color/black</item>
     </style>
+    <style name="left_date_orange">
+        <item name="android:textSize">@dimen/version_number</item>
+        <item name="android:fontFamily">@font/nunitosans_extralight</item>
+        <item name="android:textColor">@color/orange</item>
+    </style>
 
     <style name="read_item">
         <item name="android:textSize">@dimen/error_msg</item>

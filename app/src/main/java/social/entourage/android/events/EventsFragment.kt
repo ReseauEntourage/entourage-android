@@ -24,8 +24,8 @@ import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.log.AnalyticsEvents
 import kotlin.math.abs
 
-const val DISCOVER_EVENTS_TAB = 0
-const val MY_EVENTS_TAB = 1
+const val MY_EVENTS_TAB = 0
+const val DISCOVER_EVENTS_TAB = 1
 
 class EventsFragment : Fragment() {
     private var _binding: NewFragmentEventsBinding? = null
@@ -76,8 +76,8 @@ class EventsFragment : Fragment() {
 
         val tabLayout = binding.tabLayout
         val tabs = arrayOf(
+            requireContext().getString(R.string.my_events),
             requireContext().getString(R.string.discover_events),
-            requireContext().getString(R.string.my_events)
         )
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             tab.text = tabs[position]

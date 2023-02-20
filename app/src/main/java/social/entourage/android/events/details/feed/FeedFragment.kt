@@ -235,6 +235,9 @@ class FeedFragment : Fragment() {
                     it
                 )
             }
+            event.author.let {
+                binding.organizer.content.text = String.format(getString(R.string.event_organisez_by), it?.userName)
+            }
             event.metadata?.landscapeUrl?.let {
                 Glide.with(requireActivity())
                     .load(it)
@@ -302,6 +305,7 @@ class FeedFragment : Fragment() {
         binding.postsNewRecyclerview.apply {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = PostAdapter(
+                requireContext(),
                 newPostsList,
                 ::openCommentPage,
                 ::openReportFragment,
@@ -312,6 +316,7 @@ class FeedFragment : Fragment() {
         binding.postsOldRecyclerview.apply {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = PostAdapter(
+                requireContext(),
                 oldPostsList,
                 ::openCommentPage,
                 ::openReportFragment,
