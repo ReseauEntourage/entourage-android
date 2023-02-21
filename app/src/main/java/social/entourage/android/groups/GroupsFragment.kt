@@ -56,7 +56,7 @@ class GroupsFragment : Fragment() {
                 if (ViewPagerDefaultPageController.shouldSelectDiscoverGroups) DISCOVER_GROUPS_TAB else MY_GROUPS_TAB,
                 false
             )
-            ViewPagerDefaultPageController.shouldSelectDiscoverGroups = true
+            ViewPagerDefaultPageController.shouldSelectDiscoverGroups = false
         }
     }
 

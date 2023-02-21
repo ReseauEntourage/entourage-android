@@ -90,7 +90,7 @@ class EventsFragment : Fragment() {
                 if (ViewPagerDefaultPageController.shouldSelectDiscoverEvents) DISCOVER_EVENTS_TAB else MY_EVENTS_TAB,
                 false
             )
-            ViewPagerDefaultPageController.shouldSelectDiscoverEvents = true
+            ViewPagerDefaultPageController.shouldSelectDiscoverEvents = false
         }
 
         binding.tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {

@@ -3,6 +3,11 @@
     <string name="discussion_main_title">Discussions</string>
     <string name="discussion_settings_title">Paramètres de la conversation</string>
     <string name="discussion_settings_signal">Signaler</string>
+    <string name="discussion_choose_signal">Signaler cette publication à l\'équipe Entourage</string>
+    <string name="discussion_choose_supress">Supprimer ma publication</string>
+    <string name="title_param_post">Paramètres de la publication</string>
+    <string name="discussion_ask_supress">Souhaitez vous supprimer cette publication ?</string>
+    <string name="discussion_button_supress">Supprimer</string>
     <string name="discussion_settings_signal_sub">Signalez cette conversation à l\'équipe Entourage.</string>
     <string name="discussion_settings_profil">Voir le profil</string>
     <string name="discussion_settings_members">Membres de la conversation</string>

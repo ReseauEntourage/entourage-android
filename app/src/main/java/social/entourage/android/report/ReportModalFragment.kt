@@ -1,5 +1,8 @@
 package social.entourage.android.report
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
+import android.animation.ObjectAnimator
 import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -79,7 +82,7 @@ class ReportModalFragment : BottomSheetDialogFragment() {
 
         setupViewStep1()
         handleCloseButton()
-        setView()
+        setStartView()
 
         //Use to force refresh layout
         dialog?.setOnShowListener { dialog ->
@@ -94,6 +97,44 @@ class ReportModalFragment : BottomSheetDialogFragment() {
         }
     }
 
+
+    fun setAfterChoose(){
+        val animSignal= ObjectAnimator.ofFloat(binding.layoutChooseSignal, "alpha", 1.0f,0.0F)
+        val animSupress = ObjectAnimator.ofFloat(binding.layoutChooseSuppress, "alpha", 1.0f,0.0F)
+        animSignal.duration = 100
+        animSupress.duration = 100
+        animSignal.addListener(object : AnimatorListenerAdapter() {
+            override fun onAnimationEnd(animation: Animator, isReverse: Boolean) {
+                binding.layoutChooseSignal.visibility = View.GONE
+
+            }
+        })
+        animSupress.addListener(object : AnimatorListenerAdapter() {
+            override fun onAnimationEnd(animation: Animator, isReverse: Boolean) {
+                binding.layoutChooseSuppress.visibility = View.GONE
+                val view = binding.root
+                val behavior = BottomSheetBehavior.from(view.parent as View)
+                val peekheight = view.height
+                behavior.peekHeight = peekheight
+            }
+        })
+        animSignal.start()
+        animSupress.start()
+    }
+    fun setStartView(){
+        binding.header.title = getString(R.string.title_param_post)
+        binding.layoutChooseSuppress.setOnClickListener {
+            setAfterChoose()
+            onClose()
+            dismiss()
+
+        }
+        binding.layoutChooseSignal.setOnClickListener {
+            setAfterChoose()
+            setView()
+        }
+    }
+
     override fun onCancel(dialog: DialogInterface) {
         super.onCancel(dialog)
         onClose()
@@ -104,6 +145,8 @@ class ReportModalFragment : BottomSheetDialogFragment() {
     }
 
     private fun setView() {
+        binding.next.visibility = View.VISIBLE
+        binding.secondLayoutSignal.visibility = View.VISIBLE
         title = getString(
             when (reportType) {
                 ReportTypes.REPORT_USER.code -> R.string.report_member
