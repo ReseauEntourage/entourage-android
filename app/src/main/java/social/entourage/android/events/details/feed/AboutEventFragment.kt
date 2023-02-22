@@ -191,6 +191,10 @@ class AboutEventFragment : Fragment(), OnMapReadyCallback {
         event?.author.let {
             binding.organizer.icon = AppCompatResources.getDrawable(requireContext(),R.drawable.ic_event_header_organiser)
             binding.organizer.content.text = String.format(getString(R.string.event_organisez_by), it?.userName)
+            it?.partner.let {
+                binding.tvAssociation.text = String.format(getString(R.string.event_organisez_asso),it?.name)
+                binding.tvAssociation.visibility = View.VISIBLE
+            }
         }
 
         updateButtonJoin()

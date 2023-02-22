@@ -20,6 +20,7 @@ import social.entourage.android.groups.create.CreateGroupActivity
 import social.entourage.android.home.CommunicationHandlerBadgeViewModel
 import social.entourage.android.home.UnreadMessages
 import social.entourage.android.tools.log.AnalyticsEvents
+import timber.log.Timber
 import kotlin.math.abs
 
 const val MY_GROUPS_TAB = 0
@@ -28,6 +29,8 @@ const val DISCOVER_GROUPS_TAB = 1
 class GroupsFragment : Fragment() {
     private var _binding: NewFragmentGroupsBinding? = null
     val binding: NewFragmentGroupsBinding get() = _binding!!
+    private lateinit var presenter: GroupPresenter
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -40,15 +43,24 @@ class GroupsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        presenter = ViewModelProvider(requireActivity()).get(GroupPresenter::class.java)
         createGroup()
         initializeTab()
         handleImageViewAnimation()
         setPage()
 
-        val presenter = GroupPresenter()
-        presenter.unreadMessages.observe(requireActivity(), ::updateUnreadCount)
+        presenter.isPageHaveToChange.observe(requireActivity(),::handlePageChange)
+        presenter.unreadMessages.observe(viewLifecycleOwner, ::updateUnreadCount)
         presenter.getUnreadCount()
     }
+
+    private fun handlePageChange(isChanged:Boolean){
+        Timber.wtf("wtf")
+        ViewPagerDefaultPageController.shouldSelectDiscoverGroups = true
+        setPage()
+    }
+
+
 
     private fun setPage() {
         binding.viewPager.doOnPreDraw {

@@ -6,12 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import social.entourage.android.EntourageApplication
 import social.entourage.android.api.model.Group
 import social.entourage.android.databinding.NewFragmentMyGroupsListBinding
 import social.entourage.android.groups.GroupPresenter
+import timber.log.Timber
 
 class MyGroupsListFragment : Fragment() {
 
@@ -20,7 +22,7 @@ class MyGroupsListFragment : Fragment() {
     private var page: Int = 0
 
     private var groupsList: MutableList<Group> = ArrayList()
-    private val groupPresenter: GroupPresenter by lazy { GroupPresenter() }
+    private lateinit var groupPresenter: GroupPresenter
     private var myId: Int? = null
 
     override fun onCreateView(
@@ -33,15 +35,23 @@ class MyGroupsListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        groupPresenter = ViewModelProvider(requireActivity()).get(GroupPresenter::class.java)
         myId = EntourageApplication.me(activity)?.id
         loadGroups()
         groupPresenter.getAllMyGroups.observe(viewLifecycleOwner, ::handleResponseGetGroups)
+        setDiscoverButton()
         initializeGroups()
         handleSwipeRefresh()
     }
 
+    private fun setDiscoverButton(){
+        binding.discover.button.setOnClickListener {
+            groupPresenter.onDiscoverButtonChanged()
+        }
+    }
+
     private fun handleResponseGetGroups(allGroups: MutableList<Group>?) {
-        //groupsList.clear()
+        groupsList.clear()
         allGroups?.let { groupsList.addAll(it) }
         binding.progressBar.visibility = View.GONE
         updateView(groupsList.isEmpty())

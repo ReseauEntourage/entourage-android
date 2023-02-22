@@ -239,7 +239,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="title_events">Evénements</string>
     <string name="communities">Groupes</string>
     <string name="discover_groups">Je découvre</string>
-    <string name="my_groups">Je participe</string>
+    <string name="my_groups">Mes groupes</string>
     <string name="members_number">%s membres</string>
     <string name="member_number">%s membre</string>
     <string name="future_outgoing_events_number">%s événements prévus</string>
@@ -366,10 +366,12 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="discover_events">Je découvre</string>
     <string name="my_events">Je participe</string>
     <string name="canceled">- Annulé</string>
+    <string name="title_btn_discover_event">Découvrir les évènements</string>
+    <string name="title_button_create_event">Créer un évènement</string>
     <string name="event_list_empty_state_title">Vous n’avez pas encore rejoint d’événement</string>
     <string name="event_list_empty_state_subtitle">C\'est l\'occasion de découvrir ce qu\'il se passe près de chez vous, ou de créer un nouvel événement !</string>
     <string name="discover_event_list_empty_state_title">Mince, aucun résultat ne correspond à votre recherche !</string>
-    <string name="discover_event_list_empty_state_subtitle">Vous ne trouvez pas l\'événement de vos rêves ? N\'attendez plus pour le créer ou élargissez votre zone de recherche.</string>
+    <string name="discover_event_list_empty_state_subtitle">Aucun évènement autour de vous. N\'hésitez pas à en créer un ! </string>
     <string name="need_help">Besoin d\'aide</string>
     <string name="solidarity_places_map">Carte des lieux solidaires</string>
     <string name="solidarity_places_map_sub">Accueils de jour, bagageries…</string>

@@ -95,6 +95,25 @@
                         android:text="@string/event_list_empty_state_subtitle"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/title" />
+                    <Button
+                        android:id="@+id/btn_discover_event"
+                        style="@style/h2_orange"
+                        android:layout_width="wrap_content"
+                        android:layout_height="48dp"
+                        android:paddingHorizontal="8dp"
+                        android:paddingVertical="4dp"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginBottom="16dp"
+                        android:layout_marginStart="32dp"
+                        android:background="@drawable/new_bg_rounded_button_light_orange"
+                        android:drawablePadding="10dp"
+                        android:text="@string/title_btn_discover_event"
+                        android:textAllCaps="false"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/layout"
+                        android:visibility="visible"/>
                 </LinearLayout>
 
                 <ImageView

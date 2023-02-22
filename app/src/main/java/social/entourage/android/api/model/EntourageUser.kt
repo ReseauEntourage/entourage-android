@@ -84,8 +84,6 @@ class EntourageUser : TimestampedObject(), Serializable {
     }
 
     fun getCommunityRoleWithPartnerFormated() : String? {
-        Timber.wtf("wtf " +  communityRoles)
-        Timber.wtf("wtf " +  groupRole)
         communityRoles?.let {
             var roleStr = ""
 

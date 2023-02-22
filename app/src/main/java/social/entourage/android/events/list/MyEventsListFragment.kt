@@ -6,12 +6,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import social.entourage.android.EntourageApplication
 import social.entourage.android.databinding.NewFragmentMyEventsListBinding
 import social.entourage.android.events.EventsPresenter
 import social.entourage.android.api.model.Events
+import social.entourage.android.groups.GroupPresenter
 import social.entourage.android.tools.utils.Utils
 import social.entourage.android.tools.log.AnalyticsEvents
 
@@ -19,7 +22,7 @@ class MyEventsListFragment : Fragment() {
     private var _binding: NewFragmentMyEventsListBinding? = null
     val binding: NewFragmentMyEventsListBinding get() = _binding!!
 
-    private val eventsPresenter: EventsPresenter by lazy { EventsPresenter() }
+    private lateinit var eventsPresenter: EventsPresenter
     private var myId: Int? = null
 
     lateinit var eventsAdapter: GroupEventsListAdapter
@@ -37,14 +40,22 @@ class MyEventsListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        eventsPresenter = ViewModelProvider(requireActivity()).get(EventsPresenter::class.java)
         myId = EntourageApplication.me(activity)?.id
         eventsAdapter =
             GroupEventsListAdapter(requireContext(), sections, myId)
         loadEvents()
-        eventsPresenter.getAllMyEvents.observe(viewLifecycleOwner, ::handleResponseGetEvents)
+        eventsPresenter.getAllMyEvents.observe(requireActivity(), ::handleResponseGetEvents)
         initializeEvents()
+        initializeDiscoverEventButton()
         handleSwipeRefresh()
         AnalyticsEvents.logEvent(AnalyticsEvents.Event_view_my)
+    }
+
+    private fun initializeDiscoverEventButton(){
+        binding.btnDiscoverEvent.setOnClickListener {
+            eventsPresenter.changePage()
+        }
     }
 
     private fun handleResponseGetEvents(allEvents: MutableList<Events>?) {

@@ -123,7 +123,6 @@ class PostAdapter(
                     tagsString = tagsString + this.user?.partner!!.name
 
                 }
-                Timber.wtf("wtf " + tagsString)
                 if(tagsString.isEmpty()){
                     binding.tvAmbassador.visibility = View.GONE
                 }else{

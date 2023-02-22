@@ -5,6 +5,7 @@
     <string name="discussion_settings_signal">Signaler</string>
     <string name="discussion_choose_signal">Signaler cette publication à l\'équipe Entourage</string>
     <string name="discussion_choose_supress">Supprimer ma publication</string>
+    <string name="discussion_supress_the_post">Supprimer la publication</string>
     <string name="title_param_post">Paramètres de la publication</string>
     <string name="discussion_ask_supress">Souhaitez vous supprimer cette publication ?</string>
     <string name="discussion_button_supress">Supprimer</string>

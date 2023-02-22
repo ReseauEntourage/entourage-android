@@ -28,6 +28,7 @@ import social.entourage.android.groups.GroupPresenter
 import social.entourage.android.user.UserPresenter
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.CustomAlertDialog
+import timber.log.Timber
 
 enum class ReportTypes(val code: Int) {
     REPORT_USER(0),
@@ -127,6 +128,17 @@ class ReportModalFragment : BottomSheetDialogFragment() {
             setAfterChoose()
             onClose()
             dismiss()
+            CustomAlertDialog.showWithCancelFirst(
+                requireContext(),
+                getString(R.string.discussion_supress_the_post),
+                getString(R.string.discussion_ask_supress),
+                getString(R.string.discussion_button_supress)
+                ,{
+                    //ON CANCEL DO NOTHING YET
+                },{
+                    //ONYES
+
+                })
 
         }
         binding.layoutChooseSignal.setOnClickListener {
