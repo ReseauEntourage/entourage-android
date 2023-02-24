@@ -48,6 +48,7 @@ class GroupPresenter: ViewModel() {
     var commentPosted = MutableLiveData<Post?>()
     var isGroupReported = MutableLiveData<Boolean>()
     var isPostReported = MutableLiveData<Boolean>()
+    var isPostDeleted = MutableLiveData<Boolean>()
     var getAllEvents = MutableLiveData<MutableList<Events>>()
     var getCurrentParentPost = MutableLiveData<Post>()
 
@@ -434,6 +435,31 @@ class GroupPresenter: ViewModel() {
                 response: Response<ResponseBody>
             ) {
                 isPostReported.value = response.isSuccessful
+            }
+        })
+    }
+
+    fun deletedGroupPost(
+        groupId: Int,
+        postId: Int,
+    ) {
+
+        EntourageApplication.get().apiModule.groupRequest.deletePost(
+            groupId,
+            postId
+        ).enqueue(object :
+            Callback<ResponseBody> {
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                Timber.wtf("wtf failed")
+            }
+
+            override fun onResponse(
+                call: Call<ResponseBody>,
+                response: Response<ResponseBody>
+            ) {
+                Timber.wtf("wtf success ? " + response.code())
+                Timber.wtf("wtf success ? " + response.message())
+                isPostDeleted.value = response.isSuccessful
             }
         })
     }

@@ -5,6 +5,7 @@ import android.animation.AnimatorListenerAdapter
 import android.animation.ObjectAnimator
 import android.content.DialogInterface
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -42,6 +43,7 @@ enum class ReportTypes(val code: Int) {
     REPORT_POST_EVENT(8)
 }
 
+
 class ReportModalFragment : BottomSheetDialogFragment() {
 
     private var signalList: MutableList<TagMetaData> = ArrayList()
@@ -76,10 +78,13 @@ class ReportModalFragment : BottomSheetDialogFragment() {
         userPresenter.isUserReported.observe(requireActivity(), ::handleReportResponse)
         groupPresenter.isGroupReported.observe(requireActivity(), ::handleReportResponse)
         groupPresenter.isPostReported.observe(requireActivity(), ::handleReportResponse)
-        eventPresenter.isEventReported.observe(requireActivity(), ::handleReportResponse)
+        groupPresenter.isPostDeleted.observe(requireActivity(), ::handleDeletedResponse)
+        eventPresenter.isEventReported.observe(requireActivity(), ::handleDeletedResponse)
+        eventPresenter.isEventDeleted.observe(requireActivity(), ::handleDeletedResponse)
         eventPresenter.isEventPostReported.observe(requireActivity(), ::handleReportResponse)
         actionPresenter.isActionReported.observe(requireActivity(), ::handleReportResponse)
         discussionsPresenter.isConversationReported.observe(requireActivity(), ::handleReportResponse)
+        discussionsPresenter.isConversationDeleted.observe(requireActivity(), ::handleDeletedResponse)
 
         setupViewStep1()
         handleCloseButton()
@@ -123,6 +128,7 @@ class ReportModalFragment : BottomSheetDialogFragment() {
         animSupress.start()
     }
     fun setStartView(){
+        Timber.wtf("wtf " + reportType)
         binding.header.title = getString(R.string.title_param_post)
         binding.layoutChooseSuppress.setOnClickListener {
             setAfterChoose()
@@ -136,7 +142,7 @@ class ReportModalFragment : BottomSheetDialogFragment() {
                 ,{
                     //ON CANCEL DO NOTHING YET
                 },{
-                    //ONYES
+                    deleteMessage()
 
                 })
 
@@ -188,6 +194,15 @@ class ReportModalFragment : BottomSheetDialogFragment() {
             getString(R.string.button_OK)
         )
         else showToast(getString(R.string.user_report_error_send_failed))
+        dismiss()
+    }
+
+    private fun handleDeletedResponse(success: Boolean) {
+        if (success){
+            showToast(getString(R.string.delete_success_send))
+        }else{
+            showToast(getString(R.string.delete_error_send_failed))
+        }
         dismiss()
     }
 
@@ -298,6 +313,32 @@ class ReportModalFragment : BottomSheetDialogFragment() {
         binding.divider.visibility = View.GONE
         binding.recyclerView.visibility = View.GONE
         binding.next.visibility = View.GONE
+    }
+
+    fun deleteMessage(){
+        reportedId?.let { id ->
+            when (reportType) {
+                ReportTypes.REPORT_POST.code, ReportTypes.REPORT_COMMENT.code -> groupId?.let { it ->
+                    groupPresenter.deletedGroupPost(
+                        it,
+                        id
+                    )
+                }
+                ReportTypes.REPORT_POST_EVENT.code-> groupId?.let { it ->
+                    eventPresenter.deletedEventPost(
+                        it,
+                        id
+                    )
+                }
+
+                ReportTypes.REPORT_CONVERSATION.code -> discussionsPresenter.sendReport(
+                    id,
+                    binding.message.text.toString(),
+                    selectedSignalsIdList
+                )
+                else -> R.string.report_member
+            }
+        }
     }
 
     private fun showToast(message: String) {

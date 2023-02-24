@@ -116,11 +116,19 @@ interface GroupRequest {
         @Body reportWrapper: ReportWrapper
     ): Call<ResponseBody>
 
+
+
     @POST("neighborhoods/{group_id}/chat_messages/{post_id}/report")
     fun reportPost(
         @Path("group_id") groupId: Int,
         @Path("post_id") postId: Int,
         @Body reportWrapper: ReportWrapper
+    ): Call<ResponseBody>
+
+    @DELETE("neighborhoods/{group_id}/chat_messages/{post_id}")
+    fun deletePost(
+        @Path("group_id") groupId: Int,
+        @Path("post_id") postId: Int
     ): Call<ResponseBody>
 
     @GET("neighborhoods/{neighborhood_id}/outings")

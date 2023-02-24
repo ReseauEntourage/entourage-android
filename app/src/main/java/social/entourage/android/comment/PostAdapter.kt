@@ -61,7 +61,6 @@ class PostAdapter(
                     binding.postMessage.text = it
                     binding.postMessage.setHyperlinkClickable()
 
-
                 } ?: run {
                     binding.postMessage.visibility = View.GONE
                 }
@@ -143,6 +142,10 @@ class PostAdapter(
 
                 binding.btnReportPost.setOnClickListener {
                     postsList[position].id?.let { it1 -> onReport(it1) }
+                }
+                if(status == "deleted"){
+                    binding.postMessage.text = context.getText(R.string.deleted)
+                    binding.postMessage.visibility = View.VISIBLE
                 }
             }
         }

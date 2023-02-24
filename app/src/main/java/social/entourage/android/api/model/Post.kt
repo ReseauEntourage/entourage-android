@@ -23,6 +23,9 @@ class Post(
     val commentsCount: Int? = null,
     @SerializedName("image_url")
     val imageUrl: String? = null,
+    @SerializedName("status")
+    val status: String? = null,
+
     @SerializedName("read")
     val read: Boolean? = null,
     val idInternal: UUID? = null,

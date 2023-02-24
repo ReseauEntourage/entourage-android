@@ -24,6 +24,7 @@ class DiscussionsPresenter {
     var isLastPage: Boolean = false
 
     var isConversationReported = MutableLiveData<Boolean>()
+    var isConversationDeleted = MutableLiveData<Boolean>()
     var hasUserLeftConversation = MutableLiveData<Boolean>()
 
     var getAllComments = MutableLiveData<MutableList<Post>?>()

@@ -30,6 +30,7 @@ class EventsPresenter: ViewModel() {
     var getAllEvents = MutableLiveData<MutableList<Events>>()
     var getEvent = MutableLiveData<Events>()
     var isEventReported = MutableLiveData<Boolean>()
+    var isEventDeleted = MutableLiveData<Boolean>()
     var isEventPostReported = MutableLiveData<Boolean>()
     var getAllComments = MutableLiveData<MutableList<Post>>()
     var newEventCreated = MutableLiveData<Events?>()
@@ -172,6 +173,23 @@ class EventsPresenter: ViewModel() {
 
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 isEventPostReported.value = response.isSuccessful
+            }
+        })
+    }
+
+    fun deletedEventPost(
+        id: Int,
+        postId: Int) {
+        val userRequest = EntourageApplication.get().apiModule.eventsRequest
+        val call = userRequest.deleteEventPost(
+            id, postId)
+        call.enqueue(object : Callback<ResponseBody> {
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                isEventDeleted.value = false
+            }
+
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                isEventDeleted.value = response.isSuccessful
             }
         })
     }
