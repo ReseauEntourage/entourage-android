@@ -11,12 +11,15 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import social.entourage.android.EntourageApplication
+import social.entourage.android.R
+import social.entourage.android.api.model.EventActionLocationFilters
 import social.entourage.android.databinding.NewFragmentMyEventsListBinding
 import social.entourage.android.events.EventsPresenter
 import social.entourage.android.api.model.Events
 import social.entourage.android.groups.GroupPresenter
 import social.entourage.android.tools.utils.Utils
 import social.entourage.android.tools.log.AnalyticsEvents
+import timber.log.Timber
 
 class MyEventsListFragment : Fragment() {
     private var _binding: NewFragmentMyEventsListBinding? = null
@@ -27,6 +30,7 @@ class MyEventsListFragment : Fragment() {
 
     lateinit var eventsAdapter: GroupEventsListAdapter
     private var page: Int = 0
+    private var currentFilters = EventActionLocationFilters()
 
     private var sections: MutableList<SectionHeader> = mutableListOf()
 
@@ -46,15 +50,24 @@ class MyEventsListFragment : Fragment() {
             GroupEventsListAdapter(requireContext(), sections, myId)
         loadEvents()
         eventsPresenter.getAllMyEvents.observe(requireActivity(), ::handleResponseGetEvents)
+        eventsPresenter.getAllEvents.observe(requireActivity(), ::handleDiscoverEvent)
         initializeEvents()
         initializeDiscoverEventButton()
         handleSwipeRefresh()
         AnalyticsEvents.logEvent(AnalyticsEvents.Event_view_my)
     }
 
+
+
     private fun initializeDiscoverEventButton(){
         binding.btnDiscoverEvent.setOnClickListener {
             eventsPresenter.changePage()
+        }
+    }
+
+    private fun initializeNoEventCreateButton(){
+        binding.btnDiscoverEvent.setOnClickListener {
+            eventsPresenter.launchCreateEvent()
         }
     }
 
@@ -64,10 +77,25 @@ class MyEventsListFragment : Fragment() {
         updateView(sections.isEmpty())
         eventsAdapter.notifyDataChanged(sections)
     }
+    private fun handleDiscoverEvent(allEvents: MutableList<Events>?) {
+        if(isAdded){
+            binding.progressBar.visibility = View.GONE
+            if(allEvents?.isEmpty() == true){
+                binding.btnDiscoverEvent.setText(getString(R.string.create_event))
+                initializeNoEventCreateButton()
+            }else{
+                binding.btnDiscoverEvent.setText(getString(R.string.discover_events))
+                initializeDiscoverEventButton()
+            }
+        }
+
+    }
 
     private fun updateView(isListEmpty: Boolean) {
         binding.emptyStateLayout.isVisible = isListEmpty
         binding.recyclerView.isVisible = !isListEmpty
+        currentFilters.resetToDefault()
+        eventsPresenter.getAllEvents(page, EVENTS_PER_PAGE, currentFilters.travel_distance(),currentFilters.latitude(),currentFilters.longitude(),"")
     }
 
     private fun initializeEvents() {

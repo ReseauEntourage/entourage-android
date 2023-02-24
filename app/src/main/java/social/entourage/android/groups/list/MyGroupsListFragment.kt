@@ -51,7 +51,6 @@ class MyGroupsListFragment : Fragment() {
     }
 
     private fun handleResponseGetGroups(allGroups: MutableList<Group>?) {
-        groupsList.clear()
         allGroups?.let { groupsList.addAll(it) }
         binding.progressBar.visibility = View.GONE
         updateView(groupsList.isEmpty())

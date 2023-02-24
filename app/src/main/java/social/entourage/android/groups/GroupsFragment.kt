@@ -55,7 +55,6 @@ class GroupsFragment : Fragment() {
     }
 
     private fun handlePageChange(isChanged:Boolean){
-        Timber.wtf("wtf")
         ViewPagerDefaultPageController.shouldSelectDiscoverGroups = true
         setPage()
     }

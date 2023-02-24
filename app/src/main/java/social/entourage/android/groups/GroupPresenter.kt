@@ -450,15 +450,12 @@ class GroupPresenter: ViewModel() {
         ).enqueue(object :
             Callback<ResponseBody> {
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                Timber.wtf("wtf failed")
             }
 
             override fun onResponse(
                 call: Call<ResponseBody>,
                 response: Response<ResponseBody>
             ) {
-                Timber.wtf("wtf success ? " + response.code())
-                Timber.wtf("wtf success ? " + response.message())
                 isPostDeleted.value = response.isSuccessful
             }
         })

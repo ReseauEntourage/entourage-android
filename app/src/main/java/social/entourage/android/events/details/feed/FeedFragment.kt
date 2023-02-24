@@ -238,8 +238,10 @@ class FeedFragment : Fragment() {
             event.author.let {
                 binding.organizer.content.text = String.format(getString(R.string.event_organisez_by), it?.userName)
                 it?.partner.let {
-                    binding.tvAssociation.text = String.format(getString(R.string.event_organisez_asso),it?.name)
-                    binding.tvAssociation.visibility = View.VISIBLE
+                    if(!it?.name.isNullOrEmpty()){
+                        binding.tvAssociation.text = String.format(getString(R.string.event_organisez_asso),it?.name)
+                        binding.tvAssociation.visibility = View.VISIBLE
+                    }
                 }
             }
             event.metadata?.landscapeUrl?.let {

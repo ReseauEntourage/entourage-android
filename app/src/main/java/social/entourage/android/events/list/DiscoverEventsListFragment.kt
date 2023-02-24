@@ -65,7 +65,6 @@ class DiscoverEventsListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initializeNoEventCreateButton()
         eventsPresenter = ViewModelProvider(requireActivity()).get(EventsPresenter::class.java)
         myId = EntourageApplication.me(activity)?.id
         eventsAdapter =
@@ -96,11 +95,7 @@ class DiscoverEventsListFragment : Fragment() {
         binding.recyclerView.isVisible = !isListEmpty
     }
 
-    private fun initializeNoEventCreateButton(){
-        binding.btnCreateEvent.setOnClickListener {
-            eventsPresenter.launchCreateEvent()
-        }
-    }
+
 
     private fun initializeEvents() {
         binding.recyclerView.apply {

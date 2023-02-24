@@ -78,7 +78,6 @@ class EventsFragment : Fragment() {
     }
 
     private fun handleLaunchCreateEvent(haveToLaunchCreateEvent:Boolean){
-        Timber.wtf("wtf")
         AnalyticsEvents.logEvent(AnalyticsEvents.Event_action_create)
         startActivityForResult(
             Intent(context, CreateEventActivity::class.java),
