@@ -48,16 +48,17 @@ class MyEventsListFragment : Fragment() {
         myId = EntourageApplication.me(activity)?.id
         eventsAdapter =
             GroupEventsListAdapter(requireContext(), sections, myId)
-        loadEvents()
         eventsPresenter.getAllMyEvents.observe(requireActivity(), ::handleResponseGetEvents)
         eventsPresenter.getAllEvents.observe(requireActivity(), ::handleDiscoverEvent)
         initializeEvents()
-        initializeDiscoverEventButton()
         handleSwipeRefresh()
         AnalyticsEvents.logEvent(AnalyticsEvents.Event_view_my)
     }
 
-
+    override fun onResume() {
+        super.onResume()
+        loadEvents()
+    }
 
     private fun initializeDiscoverEventButton(){
         binding.btnDiscoverEvent.setOnClickListener {
@@ -72,6 +73,7 @@ class MyEventsListFragment : Fragment() {
     }
 
     private fun handleResponseGetEvents(allEvents: MutableList<Events>?) {
+        sections.clear()
         sections = Utils.getSectionHeaders(allEvents, sections)
         binding.progressBar.visibility = View.GONE
         updateView(sections.isEmpty())
