@@ -3,7 +3,6 @@ package social.entourage.android.groups.details.feed
 import android.app.Activity
 import android.content.Intent
 import android.net.Uri
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -46,7 +45,7 @@ class GroupEventsAdapter(
                 it
             )
         }
-        eventsList[position].metadata?.landscapeThumbnailUrl?.let {
+        eventsList[position].metadata?.landscapeUrl?.let {
             Glide.with(holder.itemView.context)
                 .load(Uri.parse(it))
                 .transform(CenterCrop(), GranularRoundedCorners(20F, 20F, 0F, 0F))

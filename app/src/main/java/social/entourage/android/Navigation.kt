@@ -3,7 +3,6 @@ package social.entourage.android
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.util.Log
 import androidx.core.os.bundleOf
 import androidx.fragment.app.FragmentManager
 import androidx.navigation.NavArgument

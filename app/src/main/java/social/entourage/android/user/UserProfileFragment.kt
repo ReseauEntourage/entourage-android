@@ -26,6 +26,7 @@ import social.entourage.android.profile.myProfile.InterestsAdapter
 import social.entourage.android.report.ReportModalFragment
 import social.entourage.android.report.ReportTypes
 import social.entourage.android.tools.utils.Const
+import social.entourage.android.tools.utils.CustomAlertDialog
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -95,14 +96,29 @@ class UserProfileFragment : Fragment() {
     }
 
     private fun onReportUser() {
-        val reportUserBottomDialogFragment =
-            ReportModalFragment.newInstance(
-                args.userId,
-                Const.DEFAULT_VALUE,
-                ReportTypes.REPORT_USER
-            )
         binding.report.setOnClickListener {
+            val reportUserBottomDialogFragment =
+                ReportModalFragment.newInstance(
+                    args.userId,
+                    Const.DEFAULT_VALUE,
+                    ReportTypes.REPORT_USER
+                )
             reportUserBottomDialogFragment.show(parentFragmentManager, ReportModalFragment.TAG)
+        }
+        binding.blockUser.setOnClickListener {
+            val desc = String.format(getString(R.string.params_block_user_conv_pop_message,userPresenter.user.value?.displayName ?: args.userId))
+            CustomAlertDialog.showButtonClickedWithCrossClose(
+                requireContext(),
+                getString(R.string.params_block_user_conv_pop_title),
+                desc,
+                getString(R.string.params_block_user_conv_pop_bt_cancel),
+                getString(R.string.params_block_user_conv_pop_bt_quit), showCross = false, onNo = {}, onYes = {
+                    //TODO: la suite
+                    args.userId.let {
+                        discussionPresenter.blockUser(it)
+                    }
+                }
+            )
         }
     }
 
@@ -133,6 +149,7 @@ class UserProfileFragment : Fragment() {
         if (isMe) {
             binding.message.root.visibility = View.GONE
             binding.report.visibility = View.GONE
+            binding.blockUser.visibility = View.GONE
             binding.information.text = getString(R.string.my_activity)
         }
 
