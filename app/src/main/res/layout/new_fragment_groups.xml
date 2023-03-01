@@ -27,13 +27,14 @@
 
                 <ImageView
                     android:id="@+id/img"
-                    android:layout_width="wrap_content"
-                    android:layout_height="80dp"
+                    android:layout_width="100dp"
+                    android:layout_height="60dp"
                     android:layout_gravity="end"
+                    android:scaleType="fitXY"
                     android:layout_marginTop="15dp"
                     android:layout_marginEnd="32dp"
                     android:fitsSystemWindows="true"
-                    android:src="@drawable/new_illu_header_group" />
+                    android:src="@drawable/new_illu_empty_state_event" />
 
                 <androidx.appcompat.widget.Toolbar
                     android:id="@+id/toolbar"

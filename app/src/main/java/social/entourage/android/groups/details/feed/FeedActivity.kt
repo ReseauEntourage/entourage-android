@@ -4,10 +4,11 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
 import social.entourage.android.R
+import social.entourage.android.base.BaseActivity
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.Const.DEFAULT_VALUE
 
-class FeedActivity : AppCompatActivity() {
+class FeedActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_feed)

@@ -133,5 +133,6 @@ interface GroupRequest {
     fun getPostDetail(
         @Path("neighborhood_id") groupId: Int,
         @Path("post_id") postId: Int,
+        @Query("image_size") size:String,
     ): Call<PostWrapper>
 }

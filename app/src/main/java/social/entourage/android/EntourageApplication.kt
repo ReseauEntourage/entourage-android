@@ -1,6 +1,7 @@
 package social.entourage.android
 
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Handler
 import android.os.Looper
@@ -18,7 +19,9 @@ import social.entourage.android.authentication.ComplexPreferences
 import social.entourage.android.base.BaseActivity
 import social.entourage.android.message.push.PushNotificationManager
 import social.entourage.android.onboarding.login.LoginActivity
+import social.entourage.android.onboarding.pre_onboarding.PreOnboardingStartActivity
 import social.entourage.android.tools.LibrariesSupport
+import social.entourage.android.tools.log.AnalyticsEvents
 import timber.log.Timber
 
 /**
@@ -70,15 +73,15 @@ class EntourageApplication : MultiDexApplication() {
 
     private val loginActivity: LoginActivity?
         get() {
-            activities.filterIsInstance<LoginActivity>().forEach {
+            activities.filterIsInstance<LoginActivity>().any {
                 return it
             }
             return null
         }
 
-    private val newMainActivity: MainActivity?
+    val mainActivity: MainActivity?
         get() {
-            activities.filterIsInstance<MainActivity>().forEach {
+            activities.filterIsInstance<MainActivity>().any() {
                 return it
             }
             return null
@@ -90,11 +93,33 @@ class EntourageApplication : MultiDexApplication() {
     }
 
     fun logOut() {
-        newMainActivity?.logout()
-    }
+        authenticationController.me?.let { me ->
+            //remove user phone
+            mainActivity?.deleteApplicationInfo(){
+                val sharedPreferences = sharedPreferences
+                val editor = sharedPreferences.edit()
+                authenticationController.logOutUser()
+                (sharedPreferences.getStringSet(KEY_TUTORIAL_DONE,HashSet()) as HashSet<String?>?)?.let { loggedNumbers ->
+                    loggedNumbers.remove(me.phone)
+                    editor.putStringSet(KEY_TUTORIAL_DONE, loggedNumbers)
+                }
+                editor.remove(KEY_REGISTRATION_ID)
+                editor.remove(KEY_NOTIFICATIONS_ENABLED)
+                editor.remove(KEY_GEOLOCATION_ENABLED)
+                editor.remove(KEY_NO_MORE_DEMAND)
+                editor.putInt(KEY_NB_OF_LAUNCH, 0)
+                editor.apply()
 
-    fun getMainActivity() : MainActivity? {
-        return newMainActivity
+                removeAllPushNotifications()
+                AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_LOGOUT)
+                mainActivity?.let {
+                    startActivity(Intent(this, PreOnboardingStartActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
+                    it.finish()
+                }
+            }
+        } ?: run {
+            Timber.d("not needed to logout")
+        }
     }
 
     // ----------------------------------
@@ -109,7 +134,7 @@ class EntourageApplication : MultiDexApplication() {
             .post {
                 when (content.type) {
                     PushNotificationContent.TYPE_NEW_CHAT_MESSAGE -> {
-                        if (newMainActivity?.displayMessageOnCurrentEntourageInfoFragment(message) == true) {
+                        if (mainActivity?.displayMessageOnCurrentEntourageInfoFragment(message) == true) {
                             //already displayed
                             removePushNotification(content, content.type)
                         }

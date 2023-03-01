@@ -17,6 +17,10 @@ import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.badge.BadgeDrawable
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.messaging.FirebaseMessaging
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import social.entourage.android.api.MetaDataRepository
 import social.entourage.android.api.model.Message
 import social.entourage.android.base.BaseSecuredActivity
@@ -26,8 +30,8 @@ import social.entourage.android.message.push.PushNotificationManager
 import social.entourage.android.home.CommunicationHandlerBadgeViewModel
 import social.entourage.android.home.UnreadMessages
 import social.entourage.android.message.push.PushNotificationLinkManager
-import social.entourage.android.onboarding.pre_onboarding.PreOnboardingStartActivity
 import social.entourage.android.tools.log.AnalyticsEvents
+import timber.log.Timber
 
 class MainActivity : BaseSecuredActivity() {
     private lateinit var navController: NavController
@@ -37,14 +41,13 @@ class MainActivity : BaseSecuredActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.new_activity_main)
 
         viewModel = ViewModelProvider(this)[CommunicationHandlerBadgeViewModel::class.java]
 
         viewModel.badgeCount.observe(this,::handleUpdateBadgeResponse)
 
-        setContentView(R.layout.new_activity_main)
         initializeNavBar()
-        initializeMetaData()
         if (authenticationController.isAuthenticated) {
             //refresh the user info from the server
             presenter.updateUserLocation(EntLocation.currentLocation)
@@ -88,6 +91,7 @@ class MainActivity : BaseSecuredActivity() {
 
     override fun onResume() {
         super.onResume()
+        initializeMetaData()
         //TODO bottomBar?.refreshBadgeCount()
         intent?.action?.let { action ->
             checkIntentAction(action, intent?.extras)
@@ -109,34 +113,6 @@ class MainActivity : BaseSecuredActivity() {
         }
     }
 
-    fun logout() {
-        //remove user phone
-        val sharedPreferences = EntourageApplication.get().sharedPreferences
-        val editor = sharedPreferences.edit()
-        authenticationController.me?.let { me ->
-            (sharedPreferences.getStringSet(
-                EntourageApplication.KEY_TUTORIAL_DONE,
-                HashSet()
-            ) as HashSet<String?>?)?.let { loggedNumbers ->
-                loggedNumbers.remove(me.phone)
-                editor.putStringSet(EntourageApplication.KEY_TUTORIAL_DONE, loggedNumbers)
-            }
-        }
-        presenter.deleteApplicationInfo()
-        editor.remove(EntourageApplication.KEY_REGISTRATION_ID)
-        editor.remove(EntourageApplication.KEY_NOTIFICATIONS_ENABLED)
-        editor.remove(EntourageApplication.KEY_GEOLOCATION_ENABLED)
-        editor.remove(EntourageApplication.KEY_NO_MORE_DEMAND)
-        editor.putInt(EntourageApplication.KEY_NB_OF_LAUNCH, 0)
-        editor.apply()
-
-        authenticationController.logOutUser()
-        EntourageApplication.get(applicationContext).removeAllPushNotifications()
-        AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_LOGOUT)
-        startActivity(Intent(this, PreOnboardingStartActivity::class.java))
-        finish()
-    }
-
     private fun checkIntentAction(action: String, extras: Bundle?) {
         val message = extras?.get(PushNotificationManager.PUSH_MESSAGE) as? Message
         message?.let {
@@ -150,10 +126,8 @@ class MainActivity : BaseSecuredActivity() {
         registerForActivityResult(
             ActivityResultContracts.RequestPermission()
         ) { isGranted ->
-            EntourageApplication.get().sharedPreferences.edit()
-                .putBoolean(EntourageApplication.KEY_NOTIFICATIONS_ENABLED, isGranted)
-                .apply()
-            initializePushNotifications()
+
+            //initializePushNotifications()
         }
 
     private fun initializePushNotifications() {
@@ -181,8 +155,7 @@ class MainActivity : BaseSecuredActivity() {
                     presenter.updateApplicationInfo(token)
                 }
             } else {
-                presenter.deleteApplicationInfo()
-                requestNotificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+
             }
         }
     }
@@ -288,5 +261,9 @@ class MainActivity : BaseSecuredActivity() {
     fun showGuideMap() {
         val intent = Intent(this, GDSMainActivity::class.java)
         startActivity(intent)
+    }
+
+    fun deleteApplicationInfo(listener:() -> Unit) {
+        presenter.deleteApplicationInfo(listener)
     }
 }

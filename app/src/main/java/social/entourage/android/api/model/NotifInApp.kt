@@ -1,5 +1,6 @@
 package social.entourage.android.api.model
 
+import android.util.Log
 import com.google.gson.annotations.SerializedName
 import social.entourage.android.R
 import social.entourage.android.tools.utils.Utils

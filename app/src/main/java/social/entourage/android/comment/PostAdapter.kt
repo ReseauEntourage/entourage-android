@@ -3,9 +3,13 @@ package social.entourage.android.comment
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
+import android.text.method.LinkMovementMethod
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.graphics.drawable.toBitmap
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
@@ -13,17 +17,20 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import social.entourage.android.R
 import social.entourage.android.api.model.Post
 import social.entourage.android.databinding.NewLayoutPostBinding
+import social.entourage.android.tools.setHyperlinkClickable
 import social.entourage.android.user.UserProfileActivity
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.px
+import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
 
 class PostAdapter(
     var postsList: List<Post>,
     var onClick: (Post, Boolean) -> Unit,
-    var onReport: (Int) -> Unit
-) : RecyclerView.Adapter<PostAdapter.ViewHolder>() {
+    var onReport: (Int) -> Unit,
+    var onClickImage: (imageUrl:String, postId:Int) -> Unit,
+    ) : RecyclerView.Adapter<PostAdapter.ViewHolder>() {
 
     inner class ViewHolder(val binding: NewLayoutPostBinding) :
         RecyclerView.ViewHolder(binding.root)
@@ -51,6 +58,9 @@ class PostAdapter(
                 content?.let {
                     binding.postMessage.visibility = View.VISIBLE
                     binding.postMessage.text = it
+                    binding.postMessage.setHyperlinkClickable()
+
+
                 } ?: run {
                     binding.postMessage.visibility = View.GONE
                 }
@@ -80,9 +90,13 @@ class PostAdapter(
                         .placeholder(R.drawable.new_group_illu)
                         .error(R.drawable.new_group_illu)
                         .into(binding.photoPost)
+                    binding.photoPost.setOnClickListener {
+                        this.id?.let { it1 -> onClickImage(imageUrl, it1) }
+                    }
                 } ?: run {
                     binding.photoPost.visibility = View.GONE
                 }
+
 
                 this.user?.avatarURLAsString?.let { avatarURL ->
                     Glide.with(holder.itemView.context)

@@ -1,4 +1,4 @@
-package social.entourage.android.groups.details.feed
+package social.entourage.android.comment
 
 import android.annotation.SuppressLint
 import android.app.Activity
@@ -18,6 +18,7 @@ import kotlinx.android.synthetic.main.new_comment_item_left.view.*
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.api.model.Post
+import social.entourage.android.tools.setHyperlinkClickable
 import social.entourage.android.user.UserProfileActivity
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.px
@@ -52,6 +53,8 @@ class CommentsListAdapter(
         isForEvent = true
     }
 
+
+
     inner class ViewHolder(val binding: View) :
         RecyclerView.ViewHolder(binding) {
         @SuppressLint("SetTextI18n")
@@ -60,7 +63,7 @@ class CommentsListAdapter(
             if (isDetailPost) {
                 //TODO: parse Detail post
                 binding.comment_post.text = comment.content
-
+                binding.comment_post.setHyperlinkClickable()
                 comment.createdTime?.let {
                     binding.publication_date_post.text = "le ${SimpleDateFormat("dd.MM.yyyy",
                         Locale.FRANCE
@@ -109,6 +112,7 @@ class CommentsListAdapter(
 
             binding.comment.onAutoLinkClick { item ->
                 onItemClick.onShowWeb(item.originalText)
+
             }
 
             binding.comment.text = comment.content

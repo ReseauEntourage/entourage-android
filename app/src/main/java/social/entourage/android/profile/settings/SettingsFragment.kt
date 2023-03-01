@@ -127,6 +127,7 @@ class SettingsFragment : Fragment() {
 
     private fun logout() {
         EntourageApplication.get().logOut()
+        activity?.finish()
     }
 
     private fun deleteAccount() {

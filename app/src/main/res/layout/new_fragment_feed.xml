@@ -45,7 +45,7 @@
 
                 <androidx.appcompat.widget.Toolbar
                     android:layout_width="0dp"
-                    android:layout_height="50dp"
+                    android:layout_height="70dp"
                     android:background="@color/transparent"
                     app:layout_collapseMode="pin"
                     app:layout_scrollFlags="scroll|enterAlways"
@@ -108,6 +108,7 @@
             android:id="@+id/swipe_refresh"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginTop="0dp"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
             <androidx.core.widget.NestedScrollView
@@ -165,6 +166,8 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 tools:text="132 membres. Paris 13." />
+
+
 
                         </LinearLayout>
 
@@ -432,10 +435,10 @@ purus dui, aliquet cursus tellus a, dictum hen." />
                         android:visibility="gone"
                         tools:listitem="@layout/new_layout_post" />
 
+
                 </LinearLayout>
             </androidx.core.widget.NestedScrollView>
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-
         <uk.co.markormesher.android_fab.FloatingActionButton
             android:id="@+id/create_post"
             android:layout_width="wrap_content"

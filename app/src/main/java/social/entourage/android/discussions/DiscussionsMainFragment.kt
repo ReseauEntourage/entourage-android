@@ -47,6 +47,7 @@ class DiscussionsMainFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.progressBar.visibility = View.VISIBLE
 
         initializeRV()
         handleSwipeRefresh()
@@ -85,7 +86,7 @@ class DiscussionsMainFragment : Fragment() {
 
     private fun updateUnreadCount(unreadMessages: UnreadMessages?) {
         val count:Int = unreadMessages?.unreadCount ?: 0
-        EntourageApplication.get().getMainActivity()?.let {
+        EntourageApplication.get().mainActivity?.let {
             val viewModel = ViewModelProvider(it)[CommunicationHandlerBadgeViewModel::class.java]
             viewModel.badgeCount.postValue(UnreadMessages(count))
         }
@@ -136,6 +137,7 @@ class DiscussionsMainFragment : Fragment() {
 
     private fun handleSwipeRefresh() {
         binding.swipeRefresh.setOnRefreshListener {
+            binding.progressBar.visibility = View.VISIBLE
             reloadFromStart()
         }
     }
@@ -143,7 +145,6 @@ class DiscussionsMainFragment : Fragment() {
     private fun reloadFromStart() {
         messagesList.clear()
         binding.recyclerView.adapter?.notifyDataSetChanged()
-        binding.progressBar.visibility = View.VISIBLE
         discussionsPresenter.getAllMessages.value?.clear()
         discussionsPresenter.isLastPage = false
         page = 0

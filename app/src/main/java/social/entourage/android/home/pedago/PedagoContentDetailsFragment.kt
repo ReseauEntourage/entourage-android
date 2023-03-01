@@ -67,14 +67,16 @@ class PedagoContentDetailsFragment : Fragment() {
     }
 
     private fun setView() {
-        with(binding.content) {
-            webViewClient = WebViewClient()
-            webChromeClient = WebChrome(requireActivity())
-            setBackgroundColor(Color.TRANSPARENT)
-            settings.javaScriptEnabled = true
-            loadDataWithBaseURL(
-                null, htmlContent, "text/html", "utf-8", null
-            )
+        if (isAdded) {
+            with(binding.content) {
+                webViewClient = WebViewClient()
+                webChromeClient = WebChrome(requireActivity())
+                setBackgroundColor(Color.TRANSPARENT)
+                settings.javaScriptEnabled = true
+                loadDataWithBaseURL(
+                    null, htmlContent, "text/html", "utf-8", null
+                )
+            }
         }
     }
 

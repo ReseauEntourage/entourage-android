@@ -11,7 +11,7 @@ android {
     ext {
         // App versions
         versionMajor = 8
-        versionMinor = 0
+        versionMinor = 1
         versionPatch = "git rev-list HEAD --count".execute().text.trim().toInteger()
         versionBranchName = "git rev-parse --abbrev-ref HEAD".execute().text.trim()
         versionCodeInt = (versionMajor * 100 + versionMinor) * 10000 + versionPatch % 10000
@@ -231,7 +231,7 @@ dependencies {
     implementation "com.github.bumptech.glide:glide:4.14.2"
     implementation "me.leolin:ShortcutBadger:1.1.22@aar"
     implementation "net.yslibrary.keyboardvisibilityevent:keyboardvisibilityevent:3.0.0-RC3"
-    annotationProcessor 'com.github.bumptech.glide:compiler:4.14.2'
+    kapt 'com.github.bumptech.glide:compiler:4.14.2'
 
     //entourageImplementation facebookDependencies.values()
     implementation "com.facebook.android:facebook-android-sdk:15.2.0"
@@ -261,6 +261,10 @@ dependencies {
 
     implementation 'com.airbnb.android:lottie:5.2.0'
     implementation 'com.github.armcha:AutoLinkTextViewV2:3.0.0'
+
+    //photoview to click and zoom
+    implementation 'com.github.chrisbanes:PhotoView:2.3.0'
+
 }
 
 apply plugin: "com.google.gms.google-services"

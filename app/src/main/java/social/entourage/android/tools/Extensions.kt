@@ -4,6 +4,10 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Matrix
 import android.graphics.PorterDuff
+import android.text.SpannableString
+import android.text.Spanned
+import android.text.style.URLSpan
+import android.util.Patterns
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
@@ -11,9 +15,11 @@ import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.core.content.res.ResourcesCompat
+import social.entourage.android.MainActivity
 import social.entourage.android.R
 import social.entourage.android.api.model.Action
 import social.entourage.android.api.model.Events
+import social.entourage.android.base.BaseActivity
 import social.entourage.android.events.EventModel
 import timber.log.Timber
 import java.util.*
@@ -22,6 +28,22 @@ import kotlin.math.roundToInt
 /**
  * Created by Jr (MJ-DEVS) on 04/05/2020.
  */
+
+fun TextView.setHyperlinkClickable() {
+    val pattern = Patterns.WEB_URL
+    val matcher = pattern.matcher(this.text)
+    if (matcher.find()) {
+        val url = matcher.group()
+        val spannableString = SpannableString(text)
+        spannableString.setSpan(URLSpan(url), matcher.start(), matcher.end(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        this.setText(spannableString, TextView.BufferType.SPANNABLE)
+        this.movementMethod = EntLinkMovementMethod
+        this.setOnClickListener {
+            (this.context as? BaseActivity)?.showWebView(url)
+        }
+    }
+}
+
 
 fun ImageButton.disable() {
     Timber.d("Call disable")

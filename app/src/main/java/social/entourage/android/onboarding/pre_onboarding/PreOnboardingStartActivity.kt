@@ -15,6 +15,7 @@ import social.entourage.android.EntourageApplication
 import social.entourage.android.MainActivity
 import social.entourage.android.R
 import social.entourage.android.tools.log.AnalyticsEvents
+import timber.log.Timber
 
 class PreOnboardingStartActivity : AppCompatActivity() {
 

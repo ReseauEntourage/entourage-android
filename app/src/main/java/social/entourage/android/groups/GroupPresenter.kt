@@ -1,5 +1,6 @@
 package social.entourage.android.groups
 
+import android.util.Log
 import androidx.collection.ArrayMap
 import androidx.lifecycle.MutableLiveData
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -452,7 +453,7 @@ class GroupPresenter {
     }
 
     fun getCurrentParentPost(eventId: Int, postId: Int) {
-        EntourageApplication.get().apiModule.groupRequest.getPostDetail(eventId,postId)
+        EntourageApplication.get().apiModule.groupRequest.getPostDetail(eventId,postId,"high")
             .enqueue(object : Callback<PostWrapper> {
                 override fun onResponse(
                     call: Call<PostWrapper>,

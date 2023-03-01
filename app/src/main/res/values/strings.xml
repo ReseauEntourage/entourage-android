@@ -159,7 +159,7 @@ Découvrez les initiatives de votre quartier et tissez des liens avec vos voisin
     <string name="take_picture">Prendre une photo</string>
     <string name="import_picture">Importer depuis la galerie</string>
     <string name="description_counter">%s /200</string>
-    <string name="events_description_counter">%s /400</string>
+    <string name="events_description_counter">%s /900</string>
     <string name="apply_modifications">Appliquer les modifications</string>
     <string name="edit_interests">Modifier mes centres d’interêts</string>
     <string name="follow">S\'abonner</string>
@@ -287,7 +287,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="event_date">"dd/MM/yyyy"</string>
     <string name="event_date_time">"dd MMMM yyyy à HH'h'mm"</string>
     <string name="post_date">"dd.MM.yyyy"</string>
-    <string name="comments">Commentaires</string>
+    <string name="comments_title">Commentaires</string>
     <string name="comments_date">dd.MM.yy à HH:mm</string>
     <string name="write_your_message">Écrire votre message</string>
     <string name="share_post">Partager</string>
@@ -320,7 +320,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="all">Tout</string>
     <string name="want_to_act">Je commence simplement</string>
     <string name="not_implemented">Not Implemented</string>
-    <string name="pedagogical_content">Tout savoir pour passer à l\'action</string>
+    <string name="pedagogical_content">Tout savoir pour passer\n à l\'action</string>
     <string name="picture">Photo</string>
     <string name="image_mandatory">La photo est obligatoire</string>
     <string name="show_more_lined"><u>Voir plus</u></string>

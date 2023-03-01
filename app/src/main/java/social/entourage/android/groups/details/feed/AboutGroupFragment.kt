@@ -26,6 +26,7 @@ import social.entourage.android.profile.myProfile.InterestsAdapter
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.CustomAlertDialog
 import social.entourage.android.tools.log.AnalyticsEvents
+import social.entourage.android.tools.setHyperlinkClickable
 
 class AboutGroupFragment : Fragment() {
 
@@ -72,6 +73,7 @@ class AboutGroupFragment : Fragment() {
             )
             initializeMembersPhotos()
             groupDescription.text = group?.description
+            groupDescription.setHyperlinkClickable()
             initializeInterests()
             /*
             Glide.with(requireActivity())

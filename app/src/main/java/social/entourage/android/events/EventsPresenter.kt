@@ -376,7 +376,7 @@ class EventsPresenter {
 
 
     fun getCurrentParentPost(eventId: Int, postId: Int) {
-        EntourageApplication.get().apiModule.eventsRequest.getPostDetail(eventId,postId)
+        EntourageApplication.get().apiModule.eventsRequest.getPostDetail(eventId,postId, "high")
             .enqueue(object : Callback<PostWrapper> {
                 override fun onResponse(
                     call: Call<PostWrapper>,

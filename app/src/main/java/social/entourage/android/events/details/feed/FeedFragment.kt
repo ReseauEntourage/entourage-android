@@ -1,8 +1,10 @@
 package social.entourage.android.events.details.feed
 
 import android.content.Intent
+import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -39,8 +41,12 @@ import social.entourage.android.profile.myProfile.InterestsAdapter
 import social.entourage.android.report.ReportModalFragment
 import social.entourage.android.report.ReportTypes
 import social.entourage.android.tools.calculateIfEventPassed
+import social.entourage.android.tools.image_viewer.ImageDialogActivity
+import social.entourage.android.tools.image_viewer.ImageDialogFragment
 import social.entourage.android.tools.log.AnalyticsEvents
+import social.entourage.android.tools.setHyperlinkClickable
 import social.entourage.android.tools.utils.*
+import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.math.abs
@@ -56,6 +62,7 @@ class FeedFragment : Fragment() {
     private lateinit var event: Events
     private var myId: Int? = null
     private val args: FeedFragmentArgs by navArgs()
+    private var shouldShowPopUp = true
 
     private var newPostsList: MutableList<Post> = mutableListOf()
     private var oldPostsList: MutableList<Post> = mutableListOf()
@@ -84,9 +91,9 @@ class FeedFragment : Fragment() {
         handleSettingsButton()
         handleAboutButton()
         onFragmentResult()
-
         AnalyticsEvents.logEvent(AnalyticsEvents.Event_detail_main)
     }
+
 
     private fun handleResponseGetEvent(getEvent: Events?) {
         getEvent?.let {
@@ -207,6 +214,7 @@ class FeedFragment : Fragment() {
                 participate.visibility = View.GONE
                 toKnow.visibility = View.GONE
                 eventDescription.visibility = View.GONE
+
             } else {
                 join.visibility = View.VISIBLE
                 participate.visibility = View.VISIBLE
@@ -296,7 +304,8 @@ class FeedFragment : Fragment() {
             adapter = PostAdapter(
                 newPostsList,
                 ::openCommentPage,
-                ::openReportFragment
+                ::openReportFragment,
+                ::openImageFragment
 
 
             )
@@ -306,7 +315,8 @@ class FeedFragment : Fragment() {
             adapter = PostAdapter(
                 oldPostsList,
                 ::openCommentPage,
-                ::openReportFragment
+                ::openReportFragment,
+                ::openImageFragment
             )
         }
     }
@@ -339,6 +349,13 @@ class FeedFragment : Fragment() {
 
     }
 
+    private fun openImageFragment(imageUrl:String, postId: Int) {
+        val intent = Intent(requireContext(), ImageDialogActivity::class.java)
+        intent.putExtra("postId", postId)
+        intent.putExtra("eventId", this.event.id)
+        startActivity(intent)
+    }
+
     private fun fragmentResult() {
         setFragmentResultListener(Const.REQUEST_KEY_SHOULD_REFRESH) { _, bundle ->
             val shouldRefresh = bundle.getBoolean(Const.SHOULD_REFRESH)
@@ -347,11 +364,13 @@ class FeedFragment : Fragment() {
     }
 
     private fun handleSettingsButton() {
-        binding.iconSettings.setOnClickListener {
-            AnalyticsEvents.logEvent(AnalyticsEvents.Event_detail_action_param)
-            SettingsModalFragment.newInstance(event)
-                .show(parentFragmentManager, SettingsModalFragment.TAG)
+        if(isAdded){
+            binding.iconSettings.setOnClickListener {
+                AnalyticsEvents.logEvent(AnalyticsEvents.Event_detail_action_param)
+                SettingsModalFragment.newInstance(event)
+                    .show(parentFragmentManager, SettingsModalFragment.TAG)
 
+            }
         }
     }
 
@@ -402,7 +421,10 @@ class FeedFragment : Fragment() {
             if (event.metadata?.placeLimit != null) {
                 showLimitPlacePopUp()
             } else {
-                Utils.showAddToCalendarPopUp(requireContext(), event.toEventUi(requireContext()))
+                if (shouldShowPopUp){
+                    Utils.showAddToCalendarPopUp(requireContext(), event.toEventUi(requireContext()))
+                }
+                shouldShowPopUp = false
             }
         }
     }

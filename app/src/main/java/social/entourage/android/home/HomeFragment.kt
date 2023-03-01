@@ -34,6 +34,7 @@ import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.CustomAlertDialog
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.view.CommunicationRecoWebUrlHandlerViewModel
+import timber.log.Timber
 
 class HomeFragment : Fragment() {
     private var _binding: NewFragmentHomeBinding? = null
@@ -67,18 +68,15 @@ class HomeFragment : Fragment() {
         updateView()
         handleProfileButton()
         handlePedagogicalContentButton()
-
         homePresenter.unreadMessages.observe(requireActivity(), ::updateUnreadCount)
         homePresenter.getUnreadCount()
         homePresenter.notifsCount.observe(requireActivity(), ::updateNotifsCount)
-        homePresenter.getNotificationsCount()
     }
 
     override fun onResume() {
         super.onResume()
         reloadDatasFromRecos(true)
         homePresenter.getNotificationsCount()
-
         AnalyticsEvents.logEvent(AnalyticsEvents.Home_view_home)
     }
 
@@ -96,7 +94,7 @@ class HomeFragment : Fragment() {
 
     private fun updateUnreadCount(unreadMessages: UnreadMessages?) {
         val count:Int = unreadMessages?.unreadCount ?: 0
-       EntourageApplication.get().getMainActivity()?.let {
+       EntourageApplication.get().mainActivity?.let {
            val viewModel = ViewModelProvider(it)[CommunicationHandlerBadgeViewModel::class.java]
            viewModel.badgeCount.postValue(UnreadMessages(count))
         }
@@ -188,12 +186,13 @@ class HomeFragment : Fragment() {
             startActivityForResult(intent, 0)
         }
     }
-
     private fun handlePedagogicalContentButton() {
         binding.pedagogicalContent.title.text = getString(R.string.pedagogical_content)
         binding.pedagogicalContent.title.setTextAppearance(context, R.style.left_courant_bold_black)
-        binding.pedagogicalContent.root.elevation = 0F
-        binding.pedagogicalContent.image.scaleType = ImageView.ScaleType.CENTER_CROP
+        val dim = 120
+        binding.pedagogicalContent.image.background = resources.getDrawable(R.drawable.home_rounded_white)
+        binding.pedagogicalContent.image.layoutParams.width = dim
+        binding.pedagogicalContent.image.layoutParams.height = dim
         binding.pedagogicalContent.root.setOnClickListener {
             AnalyticsEvents.logEvent(AnalyticsEvents.Home_action_pedago)
             startActivityForResult(
@@ -241,7 +240,6 @@ class HomeFragment : Fragment() {
     private fun initializeHelpSection() {
         binding.moderator.root.title.text = userSummary?.moderator?.displayName
         binding.moderator.root.description.text = getString(R.string.moderator_subtitle)
-
         userSummary?.moderator?.imageURL?.let {
             Glide.with(requireContext())
                 .load(Uri.parse(it))

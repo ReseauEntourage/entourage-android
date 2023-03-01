@@ -25,4 +25,14 @@
     <string name="birthday_date_format">dd-MM</string>
     <string name="events_date">dd/MM/yyyy</string>
     <string name="events_time">HH\'h\'mm</string>
+    <string name="duration_month">%s mois</string>
+    <string name="duration_weeks">%s sem</string>
+    <string name="duration_days">%s j</string>
+    <string name="duration_hours">%s h</string>
+    <string name="duration_minutes">%s min</string>
+    <string name="duration_secondes">à l\'instant</string>
+
+
+
+
 </resources>

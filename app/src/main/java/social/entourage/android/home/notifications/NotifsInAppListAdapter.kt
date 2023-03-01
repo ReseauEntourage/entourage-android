@@ -1,5 +1,6 @@
 package social.entourage.android.home.notifications
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +10,7 @@ import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import kotlinx.android.synthetic.main.new_notif_detail.view.*
 import social.entourage.android.R
 import social.entourage.android.api.model.NotifInApp
+import social.entourage.android.tools.utils.Utils
 
 interface OnItemClick {
     fun onItemClick(notif: NotifInApp, position:Int)
@@ -19,14 +21,16 @@ class NotifsInAppListAdapter(
     private var onItemClickListener: OnItemClick
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+
         val view = LayoutInflater
             .from(parent.context)
             .inflate(R.layout.new_notif_detail, parent, false)
-        return ViewHolder(view)
+        return ViewHolder(view, parent.context)
     }
 
-    inner class ViewHolder(val binding: View) :
+    inner class ViewHolder(val binding: View, var context:Context) :
         RecyclerView.ViewHolder(binding) {
         fun bind(notif: NotifInApp, position:Int) {
 
@@ -34,7 +38,7 @@ class NotifsInAppListAdapter(
                 onItemClickListener.onItemClick(notif,position)
             }
             binding.title.text = notif.content
-            binding.date.text = notif.dateFormattedString(binding.context)
+            binding.date.text = notif.createdAt?.let { Utils.dateAsDurationFromNow(it,context) }
 
             notif.imageUrl?.let {
                 Glide.with(binding.image_card.context)

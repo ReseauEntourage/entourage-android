@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import social.entourage.android.api.model.Post
 import social.entourage.android.comment.CommentActivity
+import social.entourage.android.comment.CommentsListAdapter
 import social.entourage.android.groups.GroupPresenter
 
 class GroupCommentActivity : CommentActivity() {
@@ -17,6 +18,7 @@ class GroupCommentActivity : CommentActivity() {
         groupPresenter.commentPosted.observe(this, ::handleCommentPosted)
         groupPresenter.getCurrentParentPost.observe(this, ::handleParentPost)
         groupPresenter.getPostComments(id, postId)
+        super.setIsEventFalse()
     }
 
     override fun addComment() {

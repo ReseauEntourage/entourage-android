@@ -1,5 +1,4 @@
 <resources>
-    <string name="action_logout">Déconnexion</string>
     <string name="action_about">Aide &amp; à propos</string>
     <string name="action_edit_profile_regular">Modifier mon profil</string>
     <string name="action_charter_unsigned">Signer la Charte éthique</string>

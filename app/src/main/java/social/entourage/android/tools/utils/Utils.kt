@@ -165,6 +165,29 @@ object Utils {
             Const.HTTP + url
         else url
     }
+
+
+    fun dateAsDurationFromNow(date:Date, context: Context) : String{
+        val now = Calendar.getInstance()
+        val duration = now.timeInMillis - date.time
+        val minutes = duration / (1000 * 60)
+        val hours = minutes / 60
+        val days = hours / 24
+        val weeks = days/7
+        val months = weeks/4
+
+        return when {
+            months > 0 -> String.format(context.getString(R.string.duration_month),months)
+            weeks > 0 -> String.format(context.getString(R.string.duration_weeks),weeks)
+            days > 0 -> String.format(context.getString(R.string.duration_days),days)
+            hours > 0 -> String.format(context.getString(R.string.duration_hours),hours)
+            minutes > 0 -> String.format(context.getString(R.string.duration_minutes),minutes)
+            else -> context.getString(R.string.duration_secondes)
+        }
+    }
+
+
+
     fun dateAsStringLitteralFromNow(date: Date, context: Context, format:Int?,caps:Boolean = true): String {
         val lastUpdate = Calendar.getInstance()
         lastUpdate.time = date
