@@ -193,6 +193,7 @@ class HomeFragment : Fragment() {
         binding.pedagogicalContent.image.background = resources.getDrawable(R.drawable.home_rounded_white)
         binding.pedagogicalContent.image.layoutParams.width = dim
         binding.pedagogicalContent.image.layoutParams.height = dim
+        binding.pedagogicalContent.image.scaleType = ImageView.ScaleType.FIT_CENTER
         binding.pedagogicalContent.root.setOnClickListener {
             AnalyticsEvents.logEvent(AnalyticsEvents.Home_action_pedago)
             startActivityForResult(
@@ -296,7 +297,7 @@ class HomeFragment : Fragment() {
                             }
                         }
                     }
-                })
+                }, context)
         }
     }
 

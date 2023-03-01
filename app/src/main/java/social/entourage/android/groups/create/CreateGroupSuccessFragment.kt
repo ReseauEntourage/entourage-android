@@ -13,6 +13,7 @@ import social.entourage.android.groups.details.feed.CreatePostGroupActivity
 import social.entourage.android.groups.details.feed.FeedActivity
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.log.AnalyticsEvents
+import timber.log.Timber
 
 class CreateGroupSuccessFragment : Fragment() {
 

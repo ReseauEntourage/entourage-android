@@ -299,7 +299,6 @@ class FeedFragment : Fragment() {
             binding.seeMoreEvents.isVisible = group?.futureEvents?.isNotEmpty() == true
             binding.arrowEvents.isVisible = group?.futureEvents?.isNotEmpty() == true
 
-            Timber.wtf("wtf " + group?.imageUrl)
 
             Glide.with(requireActivity())
                 .load(group?.imageUrl)

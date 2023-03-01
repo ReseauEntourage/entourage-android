@@ -84,7 +84,6 @@ class GroupEventsListAdapter(
         childPosition: Int,
         child: Events
     ) {
-
         childViewHolder.binding.layout.setOnClickListener { view ->
             (view.context as? Activity)?.startActivityForResult(
                 Intent(
@@ -135,7 +134,6 @@ class GroupEventsListAdapter(
 
         childViewHolder.binding.star.isVisible = child.author?.userID == userId
         childViewHolder.binding.admin.isVisible = child.author?.userID == userId
-
         childViewHolder.binding.canceled.isVisible = child.status == Status.CLOSED
         childViewHolder.binding.ivCanceled.isVisible = child.status == Status.CLOSED
         childViewHolder.binding.eventName.setTextColor(

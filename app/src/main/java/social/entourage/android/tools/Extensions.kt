@@ -116,10 +116,10 @@ fun Bitmap.rotate(degrees: Float): Bitmap {
 
 fun Events.calculateIfEventPassed():Boolean{
     val today = Date()
-    val yesterday = Date(today.time - 86400000)
-    val startDate = this.metadata?.endsAt
-    if (startDate != null) {
-        if (startDate.before(yesterday)) {
+    val yesterday = Date(today.time)
+    val endDate = this.metadata?.endsAt
+    if (endDate != null) {
+        if (endDate.before(yesterday)) {
             return true
         }
     }

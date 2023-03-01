@@ -15,11 +15,13 @@ import social.entourage.android.R
 import social.entourage.android.api.model.Group
 import social.entourage.android.databinding.NewFragmentCreateGroupBinding
 import social.entourage.android.groups.GroupPresenter
+import social.entourage.android.groups.details.feed.CreatePostGroupActivity
 import social.entourage.android.tools.utils.CustomAlertDialog
 import social.entourage.android.tools.utils.Utils
 import social.entourage.android.tools.utils.nextPage
 import social.entourage.android.tools.utils.previousPage
 import social.entourage.android.tools.log.AnalyticsEvents
+import timber.log.Timber
 
 class CreateGroupFragment : Fragment() {
 
@@ -53,6 +55,7 @@ class CreateGroupFragment : Fragment() {
             Utils.showToast(requireContext(), getString(R.string.error_create_group))
         } else {
             groupPresenter.newGroupCreated.value?.id?.let {
+                CreatePostGroupActivity.idGroupForPost = it
                 val action =
                     CreateGroupFragmentDirections.actionCreateGroupFragmentToCreateGroupSuccessFragment(
                         it

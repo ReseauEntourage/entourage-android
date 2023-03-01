@@ -28,6 +28,7 @@ import social.entourage.android.R
 import social.entourage.android.events.EventModel
 import social.entourage.android.events.list.SectionHeader
 import social.entourage.android.api.model.Events
+import timber.log.Timber
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -102,6 +103,9 @@ object Utils {
     ): MutableList<SectionHeader> {
         var newSections: MutableList<SectionHeader>? = null
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            if (allEvents != null) {
+                allEvents.sortBy { it.metadata?.startsAt }
+            }
             val map = allEvents?.groupBy {
                 YearMonth.from(
                     ZonedDateTime.ofInstant(
