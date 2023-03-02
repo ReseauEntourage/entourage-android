@@ -130,7 +130,6 @@ interface GroupRequest {
         @Path("group_id") groupId: Int,
         @Path("post_id") postId: Int
     ): Call<ResponseBody>
-
     @GET("neighborhoods/{neighborhood_id}/outings")
     fun getGroupEvents(
         @Path("neighborhood_id") groupId: Int,

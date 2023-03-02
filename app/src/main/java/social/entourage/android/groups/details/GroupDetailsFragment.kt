@@ -231,4 +231,5 @@ class GroupDetailsFragment : BottomSheetDialogFragment() {
             return fragment
         }
     }
+
 }

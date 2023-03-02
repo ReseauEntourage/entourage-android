@@ -23,6 +23,5 @@ class FeedActivity : BaseActivity() {
             R.navigation.groups_feed,
             bundle
         )
-
     }
 }

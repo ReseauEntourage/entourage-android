@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.os.bundleOf
@@ -16,6 +17,7 @@ import androidx.core.view.isVisible
 import androidx.core.widget.TextViewCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -27,6 +29,8 @@ import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
 import com.google.android.material.appbar.AppBarLayout
 import kotlinx.android.synthetic.main.new_fragment_feed.view.*
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.api.MetaDataRepository
@@ -57,7 +61,7 @@ import kotlin.math.abs
 
 const val rotationDegree = 135F
 
-class FeedFragment : Fragment() {
+class FeedFragment : Fragment(),CallbackReportFragment{
 
     private var _binding: NewFragmentFeedBinding? = null
     val binding: NewFragmentFeedBinding get() = _binding!!
@@ -140,6 +144,8 @@ class FeedFragment : Fragment() {
         groupPresenter.getGroup.observe(viewLifecycleOwner, ::handleResponseGetGroup)
         groupPresenter.getAllPosts.observe(viewLifecycleOwner, ::handleResponseGetGroupPosts)
         groupPresenter.hasUserJoinedGroup.observe(viewLifecycleOwner, ::handleJoinResponse)
+        groupPresenter.isPostDeleted.observe(requireActivity(), ::handleDeletedResponse)
+
         handleFollowButton()
         handleBackButton()
         handleSettingsButton()
@@ -227,6 +233,19 @@ class FeedFragment : Fragment() {
         getGroup?.let {
             group = it
             updateView()
+        }
+    }
+    private fun showToast(message: String) {
+        Toast.makeText(activity, message, Toast.LENGTH_SHORT).show()
+    }
+
+    private fun handleDeletedResponse(success: Boolean) {
+        if(isAdded){
+            if (success){
+                showToast(getString(R.string.delete_success_send))
+            }else{
+                showToast(getString(R.string.delete_error_send_failed))
+            }
         }
     }
 
@@ -442,9 +461,13 @@ class FeedFragment : Fragment() {
                     it, ReportTypes.REPORT_POST
                 )
             }
+        if (reportGroupBottomDialogFragment != null) {
+            reportGroupBottomDialogFragment.setCallback(this)
+        }
         reportGroupBottomDialogFragment?.show(parentFragmentManager, ReportModalFragment.TAG)
 
     }
+
 
     private fun openImageFragment(imageUrl:String, postId: Int) {
         val intent = Intent(requireContext(), ImageDialogActivity::class.java)
@@ -577,4 +600,16 @@ class FeedFragment : Fragment() {
             if (shouldRefresh) groupPresenter.getGroup(groupId)
         }
     }
+
+    override fun onSuppressPost() {
+        lifecycleScope.launch {
+            delay(500)
+            loadPosts()
+            updateView()
+        }
+    }
+}
+
+ interface CallbackReportFragment{
+    fun onSuppressPost()
 }

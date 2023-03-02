@@ -68,7 +68,8 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/layout_choose_suppress"
                 android:layout_marginTop="20dp"
-                android:paddingHorizontal="@dimen/padding_horizontal">
+                android:paddingHorizontal="@dimen/padding_horizontal"
+                android:visibility="gone">
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"

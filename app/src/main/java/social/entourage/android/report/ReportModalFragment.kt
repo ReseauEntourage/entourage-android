@@ -26,6 +26,7 @@ import social.entourage.android.api.model.Tags
 import social.entourage.android.discussions.DiscussionsPresenter
 import social.entourage.android.events.EventsPresenter
 import social.entourage.android.groups.GroupPresenter
+import social.entourage.android.groups.details.feed.CallbackReportFragment
 import social.entourage.android.user.UserPresenter
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.CustomAlertDialog
@@ -60,6 +61,7 @@ class ReportModalFragment : BottomSheetDialogFragment() {
     private var reportType: Int? = Const.DEFAULT_VALUE
     private var title: String = ""
     private var isEventComment = false
+    private var callback: CallbackReportFragment? = null
 
 
     override fun onCreateView(
@@ -78,9 +80,7 @@ class ReportModalFragment : BottomSheetDialogFragment() {
         userPresenter.isUserReported.observe(requireActivity(), ::handleReportResponse)
         groupPresenter.isGroupReported.observe(requireActivity(), ::handleReportResponse)
         groupPresenter.isPostReported.observe(requireActivity(), ::handleReportResponse)
-        groupPresenter.isPostDeleted.observe(requireActivity(), ::handleDeletedResponse)
-        eventPresenter.isEventReported.observe(requireActivity(), ::handleDeletedResponse)
-        eventPresenter.isEventDeleted.observe(requireActivity(), ::handleDeletedResponse)
+        eventPresenter.isEventReported.observe(requireActivity(), ::handleReportResponse)
         eventPresenter.isEventPostReported.observe(requireActivity(), ::handleReportResponse)
         actionPresenter.isActionReported.observe(requireActivity(), ::handleReportResponse)
         discussionsPresenter.isConversationReported.observe(requireActivity(), ::handleReportResponse)
@@ -89,6 +89,7 @@ class ReportModalFragment : BottomSheetDialogFragment() {
         setupViewStep1()
         handleCloseButton()
         setStartView()
+        setIsMine()
 
         //Use to force refresh layout
         dialog?.setOnShowListener { dialog ->
@@ -103,7 +104,13 @@ class ReportModalFragment : BottomSheetDialogFragment() {
         }
     }
 
+    fun setIsMine(){
+        binding.layoutChooseSuppress.visibility = View.VISIBLE
+    }
 
+    fun setCallback(callback:CallbackReportFragment){
+        this.callback = callback
+    }
     fun setAfterChoose(){
         val animSignal= ObjectAnimator.ofFloat(binding.layoutChooseSignal, "alpha", 1.0f,0.0F)
         val animSupress = ObjectAnimator.ofFloat(binding.layoutChooseSuppress, "alpha", 1.0f,0.0F)
@@ -128,12 +135,10 @@ class ReportModalFragment : BottomSheetDialogFragment() {
         animSupress.start()
     }
     fun setStartView(){
-        Timber.wtf("wtf " + reportType)
         binding.header.title = getString(R.string.title_param_post)
         binding.layoutChooseSuppress.setOnClickListener {
             setAfterChoose()
-            onClose()
-            dismiss()
+
             CustomAlertDialog.showWithCancelFirst(
                 requireContext(),
                 getString(R.string.discussion_supress_the_post),
@@ -144,6 +149,9 @@ class ReportModalFragment : BottomSheetDialogFragment() {
                 },{
                     deleteMessage()
 
+                    callback?.onSuppressPost()
+                    onClose()
+                    dismiss()
                 })
 
         }
@@ -198,10 +206,12 @@ class ReportModalFragment : BottomSheetDialogFragment() {
     }
 
     private fun handleDeletedResponse(success: Boolean) {
-        if (success){
-            showToast(getString(R.string.delete_success_send))
-        }else{
-            showToast(getString(R.string.delete_error_send_failed))
+        if(isAdded){
+            if (success){
+                showToast(getString(R.string.delete_success_send))
+            }else{
+                showToast(getString(R.string.delete_error_send_failed))
+            }
         }
         dismiss()
     }
