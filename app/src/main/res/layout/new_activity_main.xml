@@ -38,6 +38,8 @@
         android:elevation="@dimen/entourage_padding_10"
         app:itemBackground="@drawable/bottom_navigation_tab_background"
         app:itemTextColor="@color/bottom_nav_color_text"
+        app:itemTextAppearanceActive="@style/BottomNavigation.ActiveItemTextAppearance"
+        app:itemTextAppearanceInactive="@style/BottomNavigation.Inactive"
         app:labelVisibilityMode="labeled"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"

@@ -188,6 +188,9 @@ class MainActivity : BaseSecuredActivity() {
         navController = navHostFragment.navController
 
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.nav_view)
+
+
+
         bottomNavigationView.itemIconTintList = null
         bottomNavigationView.setupWithNavController(navController)
 

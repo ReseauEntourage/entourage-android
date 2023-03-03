@@ -637,6 +637,14 @@
         <item name="android:layout_height">match_parent</item>
     </style>
 
+    <style name="BottomNavigation.ActiveItemTextAppearance" parent="TextAppearance.AppCompat">
+        <item name="android:textStyle">normal</item>
+        <item name="android:fontFamily">@font/nunitosans_regular</item>
+    </style>
 
+    <style name="BottomNavigation.Inactive" parent="TextAppearance.AppCompat">
+        <item name="android:textStyle">normal</item>
+        <item name="android:fontFamily">@font/nunitosans_regular</item>
+    </style>
 
 </resources>
