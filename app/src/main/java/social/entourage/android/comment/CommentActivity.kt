@@ -220,8 +220,9 @@ abstract class CommentActivity : BaseActivity() {
     }
 
     protected fun handleReport(id: Int, type: ReportTypes, isEventComment :Boolean) {
+        val meId = EntourageApplication.get().me()?.id
         val reportGroupBottomDialogFragment =
-            ReportModalFragment.newInstance(id, this.id, type)
+            ReportModalFragment.newInstance(id, this.id, type, postAuthorID == meId )
         if(isEventComment){
             reportGroupBottomDialogFragment.setEventComment()
         }

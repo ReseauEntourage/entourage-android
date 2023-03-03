@@ -48,6 +48,10 @@ object AnalyticsEvents {
     //----------------------------//
     //----------------------------//
     // PROFILE EDIT - START
+    //SUPRESS POST
+    const val POST_SUPPRESSED = "View__DeletePostPop"
+    const val SUPPRESS_CLICK = "Clic__DeletePostPop__Delete"
+
     //-------
     //------PHOTO
     const val EVENT_VIEW_PROFILE_CHOOSE_PHOTO = "View__Profile__ChoosePhoto"

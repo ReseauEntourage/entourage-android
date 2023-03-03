@@ -27,6 +27,7 @@ import social.entourage.android.discussions.DiscussionsPresenter
 import social.entourage.android.events.EventsPresenter
 import social.entourage.android.groups.GroupPresenter
 import social.entourage.android.groups.details.feed.CallbackReportFragment
+import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.user.UserPresenter
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.CustomAlertDialog
@@ -62,6 +63,7 @@ class ReportModalFragment : BottomSheetDialogFragment() {
     private var title: String = ""
     private var isEventComment = false
     private var callback: CallbackReportFragment? = null
+    private var isFromMe: Boolean? = false
 
 
     override fun onCreateView(
@@ -89,7 +91,7 @@ class ReportModalFragment : BottomSheetDialogFragment() {
         setupViewStep1()
         handleCloseButton()
         setStartView()
-        setIsMine()
+
 
         //Use to force refresh layout
         dialog?.setOnShowListener { dialog ->
@@ -104,9 +106,6 @@ class ReportModalFragment : BottomSheetDialogFragment() {
         }
     }
 
-    fun setIsMine(){
-        binding.layoutChooseSuppress.visibility = View.VISIBLE
-    }
 
     fun setCallback(callback:CallbackReportFragment){
         this.callback = callback
@@ -135,10 +134,16 @@ class ReportModalFragment : BottomSheetDialogFragment() {
         animSupress.start()
     }
     fun setStartView(){
+        getIsFromMe()
+        if(isFromMe == false){
+            binding.layoutChooseSuppress.visibility = View.GONE
+        }else{
+            binding.layoutChooseSuppress.visibility = View.VISIBLE
+        }
         binding.header.title = getString(R.string.title_param_post)
         binding.layoutChooseSuppress.setOnClickListener {
             setAfterChoose()
-
+            AnalyticsEvents.logEvent(AnalyticsEvents.SUPPRESS_CLICK)
             CustomAlertDialog.showWithCancelFirst(
                 requireContext(),
                 getString(R.string.discussion_supress_the_post),
@@ -147,8 +152,8 @@ class ReportModalFragment : BottomSheetDialogFragment() {
                 ,{
                     //ON CANCEL DO NOTHING YET
                 },{
+                    AnalyticsEvents.logEvent(AnalyticsEvents.POST_SUPPRESSED)
                     deleteMessage()
-
                     callback?.onSuppressPost()
                     onClose()
                     dismiss()
@@ -159,6 +164,7 @@ class ReportModalFragment : BottomSheetDialogFragment() {
             setAfterChoose()
             setView()
         }
+
     }
 
     override fun onCancel(dialog: DialogInterface) {
@@ -226,6 +232,10 @@ class ReportModalFragment : BottomSheetDialogFragment() {
         reportedId = arguments?.getInt(Const.REPORTED_ID)
         groupId = arguments?.getInt(Const.GROUP_ID)
         reportType = arguments?.getInt(Const.REPORT_TYPE)
+    }
+    fun getIsFromMe(){
+        isFromMe = arguments?.getBoolean(Const.IS_FROM_ME)
+        Timber.wtf("wtf " + isFromMe)
     }
 
     private fun initializeInterests() {
@@ -373,11 +383,13 @@ class ReportModalFragment : BottomSheetDialogFragment() {
 
     companion object {
         const val TAG = "ReportModalFragment"
-        fun newInstance(id: Int, groupId: Int, reportType: ReportTypes): ReportModalFragment {
+        fun newInstance(id: Int, groupId: Int, reportType: ReportTypes , isFromMe:Boolean): ReportModalFragment {
             val fragment = ReportModalFragment()
             val args = Bundle()
             args.putInt(Const.REPORTED_ID, id)
             args.putInt(Const.GROUP_ID, groupId)
+            args.putBoolean(Const.IS_FROM_ME, isFromMe)
+            args.putInt(Const.REPORT_TYPE, reportType.code)
             args.putInt(Const.REPORT_TYPE, reportType.code)
             fragment.arguments = args
             return fragment

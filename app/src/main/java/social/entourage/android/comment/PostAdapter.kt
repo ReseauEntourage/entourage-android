@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.google.gson.Gson
 import social.entourage.android.R
 import social.entourage.android.api.model.Post
 import social.entourage.android.databinding.NewLayoutPostBinding
@@ -29,7 +30,7 @@ class PostAdapter(
     var context:Context,
     var postsList: List<Post>,
     var onClick: (Post, Boolean) -> Unit,
-    var onReport: (Int) -> Unit,
+    var onReport: (Int,Int) -> Unit,
     var onClickImage: (imageUrl:String, postId:Int) -> Unit,
     ) : RecyclerView.Adapter<PostAdapter.ViewHolder>() {
 
@@ -141,7 +142,10 @@ class PostAdapter(
                 }
 
                 binding.btnReportPost.setOnClickListener {
-                    postsList[position].id?.let { it1 -> onReport(it1) }
+                    val userId = postsList[position].user?.id?.toInt()
+                    if (userId != null){
+                        postsList[position].id?.let { it1 -> onReport(it1,userId) }
+                    }
                 }
                 if(status == "deleted"){
                     binding.postMessage.text = context.getText(R.string.deleted)

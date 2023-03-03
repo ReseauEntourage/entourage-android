@@ -369,12 +369,13 @@ class FeedFragment : Fragment(), CallbackReportFragment {
         )
     }
 
-    private fun openReportFragment(postId:Int) {
+    private fun openReportFragment(postId:Int, userId:Int) {
         val reportGroupBottomDialogFragment =
             event?.id?.let {
+                val meId = EntourageApplication.get().me()?.id
                 ReportModalFragment.newInstance(
                     postId,
-                    it, ReportTypes.REPORT_POST_EVENT
+                    it, ReportTypes.REPORT_POST_EVENT, meId == userId
                 )
             }
         if (reportGroupBottomDialogFragment != null) {

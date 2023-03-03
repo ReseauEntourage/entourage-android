@@ -210,7 +210,7 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
                 ReportModalFragment.newInstance(
                     it,
                     Const.DEFAULT_VALUE, ReportTypes.REPORT_EVENT
-                )
+                ,false)
             }
         binding.report.setOnClickListener {
             reportGroupBottomDialogFragment?.show(parentFragmentManager, ReportModalFragment.TAG)
