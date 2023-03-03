@@ -193,6 +193,7 @@ Découvrez les initiatives de votre quartier et tissez des liens avec vos voisin
     <string name="why_reporting">Dites-nous la raison de votre signalement</string>
     <string name="new_next">Suivant</string>
     <string name="back">Retour</string>
+    <string name="cancel_event_continue">Continuer</string>
     <string name="previous">Précedent</string>
     <string name="add_location_subtitle">Entourage ne communique pas cette adresse aux utilisateurs.</string>
     <string name="new_group">Nouveau groupe</string>
@@ -373,7 +374,8 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="event_list_empty_state_title">Vous n’avez pas encore rejoint d’événement</string>
     <string name="event_list_empty_state_subtitle">C\'est l\'occasion de découvrir ce qu\'il se passe près de chez vous, ou de créer un nouvel événement !</string>
     <string name="discover_event_list_empty_state_title">Mince, aucun résultat ne correspond à votre recherche !</string>
-    <string name="discover_event_list_empty_state_subtitle">Aucun événement autour de vous. N\'hésitez pas à en créer un ! </string>
+    <string name="discover_event_list_empty_state_subtitle">Si aucun événement ne se trouve près de chez vous, vous pouvez élargir votre zone de recherche</string>
+    <string name="event_list_empty_state_no_discover">Aucun événement autour de vous. N\'hésitez pas à en créer un ! </string>
     <string name="need_help">Besoin d\'aide</string>
     <string name="solidarity_places_map">Carte des lieux solidaires</string>
     <string name="solidarity_places_map_sub">Accueils de jour, bagageries…</string>
@@ -435,7 +437,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="edit_event">Editer l\'événement</string>
     <string name="event_edit_recurrent_event">Modifier un évènement récurrent</string>
     <string name="error_event_end_time">L\'heure de fin ne peut pas dépasser minuit</string>
-    <string name="deleted">Supprimé par l\'utilisateur</string>
+    <string name="deleted">Cette publication a été supprimée.</string>
 
     <!-- Home pop congrat -->
 

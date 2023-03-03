@@ -286,11 +286,13 @@ class EventsPresenter: ViewModel() {
                     call: Call<EventWrapper>,
                     response: Response<EventWrapper>
                 ) {
+                    Timber.wtf("wtf response " + response.code() )
                     eventCanceled.value =
                         response.isSuccessful && response.body()?.event != null
                 }
 
                 override fun onFailure(call: Call<EventWrapper>, t: Throwable) {
+                    Timber.wtf("wtf error " )
                 }
             })
     }

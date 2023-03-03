@@ -7,7 +7,7 @@
     android:layout_marginVertical="8dp"
     android:background="@drawable/new_bg_rounded_beige"
     android:elevation="1dp"
-    android:padding="28dp">
+    android:padding="18dp">
 
     <LinearLayout
         android:layout_width="match_parent"

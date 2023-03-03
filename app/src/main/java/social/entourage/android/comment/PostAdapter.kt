@@ -149,7 +149,16 @@ class PostAdapter(
                 }
                 if(status == "deleted"){
                     binding.postMessage.text = context.getText(R.string.deleted)
+                    binding.postMessage.setTextColor(context.getColor(R.color.new_light_grey))
                     binding.postMessage.visibility = View.VISIBLE
+                    binding.postComment.visibility = View.GONE
+                    binding.btnReportPost.visibility = View.GONE
+                }else{
+                    binding.postMessage.text = content
+                    binding.postMessage.setTextColor(context.getColor(R.color.black))
+                    binding.postMessage.visibility = View.VISIBLE
+                    binding.postComment.visibility = View.VISIBLE
+                    binding.btnReportPost.visibility = View.VISIBLE
                 }
             }
         }

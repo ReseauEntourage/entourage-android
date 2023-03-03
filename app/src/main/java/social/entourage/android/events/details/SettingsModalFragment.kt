@@ -255,7 +255,7 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
                     requireContext(),
                     getString(R.string.cancel_event),
                     getString(R.string.event_cancel_subtitle_pop),
-                    getString(R.string.back)
+                    getString(R.string.cancel_event_continue)
                 ) {
                     cancelEventWithoutRecurrence()
                 }

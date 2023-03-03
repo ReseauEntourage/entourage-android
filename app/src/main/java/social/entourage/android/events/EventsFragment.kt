@@ -78,11 +78,13 @@ class EventsFragment : Fragment() {
     }
 
     private fun handleLaunchCreateEvent(haveToLaunchCreateEvent:Boolean){
-        AnalyticsEvents.logEvent(AnalyticsEvents.Event_action_create)
-        startActivityForResult(
-            Intent(context, CreateEventActivity::class.java),
-            0
-        )
+        if(haveToLaunchCreateEvent){
+            AnalyticsEvents.logEvent(AnalyticsEvents.Event_action_create)
+            startActivityForResult(
+                Intent(context, CreateEventActivity::class.java),
+                0
+            )
+        }
     }
     private fun initializeTab() {
         val viewPager = binding.viewPager

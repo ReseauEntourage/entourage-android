@@ -1,5 +1,6 @@
 package social.entourage.android.events.list
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -16,6 +17,7 @@ import social.entourage.android.api.model.EventActionLocationFilters
 import social.entourage.android.databinding.NewFragmentMyEventsListBinding
 import social.entourage.android.events.EventsPresenter
 import social.entourage.android.api.model.Events
+import social.entourage.android.events.create.CreateEventActivity
 import social.entourage.android.groups.GroupPresenter
 import social.entourage.android.tools.utils.Utils
 import social.entourage.android.tools.log.AnalyticsEvents
@@ -44,6 +46,7 @@ class MyEventsListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.btnDiscoverEvent.visibility = View.GONE
         eventsPresenter = ViewModelProvider(requireActivity()).get(EventsPresenter::class.java)
         myId = EntourageApplication.me(activity)?.id
         eventsAdapter =
@@ -57,6 +60,7 @@ class MyEventsListFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
+        page = 0
         loadEvents()
     }
 
@@ -68,7 +72,11 @@ class MyEventsListFragment : Fragment() {
 
     private fun initializeNoEventCreateButton(){
         binding.btnDiscoverEvent.setOnClickListener {
-            eventsPresenter.launchCreateEvent()
+            AnalyticsEvents.logEvent(AnalyticsEvents.Event_action_create)
+            startActivityForResult(
+                Intent(requireContext(), CreateEventActivity::class.java),
+                0
+            )
         }
     }
 
@@ -84,15 +92,16 @@ class MyEventsListFragment : Fragment() {
             binding.progressBar.visibility = View.GONE
             if(allEvents?.isEmpty() == true){
                 binding.btnDiscoverEvent.setText(getString(R.string.create_event))
+                binding.subtitle.setText(getString(R.string.event_list_empty_state_no_discover))
                 initializeNoEventCreateButton()
             }else{
                 binding.btnDiscoverEvent.setText(getString(R.string.discover_events))
+                binding.subtitle.setText(getString(R.string.event_list_empty_state_subtitle))
                 initializeDiscoverEventButton()
             }
+            binding.btnDiscoverEvent.visibility = View.VISIBLE
         }
-
     }
-
     private fun updateView(isListEmpty: Boolean) {
         binding.emptyStateLayout.isVisible = isListEmpty
         binding.recyclerView.isVisible = !isListEmpty
