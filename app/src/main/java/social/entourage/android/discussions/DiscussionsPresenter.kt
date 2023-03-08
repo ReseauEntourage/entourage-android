@@ -2,6 +2,7 @@ package social.entourage.android.discussions
 
 import androidx.collection.ArrayMap
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
@@ -13,11 +14,12 @@ import social.entourage.android.api.model.Conversation
 import social.entourage.android.api.model.GroupMember
 import social.entourage.android.api.model.Post
 import social.entourage.android.api.model.UserBlockedUser
+import timber.log.Timber
 
 /**
  * Created by - on 15/11/2022.
  */
-class DiscussionsPresenter {
+class DiscussionsPresenter:ViewModel() {
 
     var getAllMessages = MutableLiveData<MutableList<Conversation>>()
     var isLoading: Boolean = false
@@ -26,6 +28,7 @@ class DiscussionsPresenter {
     var isConversationReported = MutableLiveData<Boolean>()
     var isConversationDeleted = MutableLiveData<Boolean>()
     var hasUserLeftConversation = MutableLiveData<Boolean>()
+    var isMessageDeleted = MutableLiveData<Boolean>()
 
     var getAllComments = MutableLiveData<MutableList<Post>?>()
     var commentPosted = MutableLiveData<Post?>()
@@ -142,6 +145,27 @@ class DiscussionsPresenter {
                     newConversation.value = null
                 }
             })
+    }
+
+    fun deleteMessage(
+        discussionId: Int,
+        messageId: Int,
+    ) {
+        EntourageApplication.get().apiModule.discussionsRequest.deleteMessage(
+            discussionId,
+            messageId
+        ).enqueue(object :
+            Callback<ResponseBody> {
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+            }
+
+            override fun onResponse(
+                call: Call<ResponseBody>,
+                response: Response<ResponseBody>
+            ) {
+                isMessageDeleted.value = response.isSuccessful
+            }
+        })
     }
 
     fun getUnreadCount() {

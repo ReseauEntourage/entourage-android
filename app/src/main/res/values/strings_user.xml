@@ -89,7 +89,7 @@
     <string name="user_report_error_reason_empty">Ajoutez un message</string>
     <string name="user_report_error_send_failed">L\'envoi du message a échoué, veuillez réessayer</string>
     <string name="delete_error_send_failed">La suppression a échouée, veuillez réessayer</string>
-    <string name="delete_success_send">Vous avez supprimé cette publication</string>
+    <string name="delete_success_send">Suppression effectuée</string>
     <string name="user_report_error_forbidden_group">Vous ne faites pas encore partie de ce groupe</string>
 
     <!-- Action zone -->

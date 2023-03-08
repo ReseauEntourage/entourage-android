@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.core.view.isVisible
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.launch
 import social.entourage.android.R
 import social.entourage.android.comment.CommentActivity
 import social.entourage.android.api.model.Conversation
@@ -12,6 +14,7 @@ import social.entourage.android.api.model.Post
 import social.entourage.android.user.UserProfileActivity
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.log.AnalyticsEvents
+import timber.log.Timber
 import java.util.*
 
 /**
@@ -19,7 +22,6 @@ import java.util.*
  */
 class DetailConversationActivity : CommentActivity() {
 
-    private val discussionsPresenter: DiscussionsPresenter by lazy { DiscussionsPresenter() }
 
     private var hasToShowFirstMessage = false
 
@@ -28,14 +30,13 @@ class DetailConversationActivity : CommentActivity() {
 
         hasToShowFirstMessage = intent.getBooleanExtra(Const.HAS_TO_SHOW_MESSAGE, false)
 
-        discussionsPresenter.getAllComments.observe(this, ::handleGetPostComments)
-        discussionsPresenter.commentPosted.observe(this, ::handleCommentPosted)
+        viewModel.getAllComments.observe(this, ::handleGetPostComments)
+        viewModel.commentPosted.observe(this, ::handleCommentPosted)
 
-        discussionsPresenter.getPostComments(id)
+        viewModel.getPostComments(id)
 
         binding.header.iconSettings.setImageDrawable(resources.getDrawable(R.drawable.new_settings))
         binding.header.title = titleName
-
         if (isOne2One) {
             binding.header.headerTitle.setOnClickListener {
                 startActivityForResult(
@@ -46,13 +47,19 @@ class DetailConversationActivity : CommentActivity() {
         }
         checkAndShowPopWarning()
 
-        discussionsPresenter.detailConversation.observe(this, ::handleDetailConversation)
-        discussionsPresenter.getDetailConversation(id)
+        viewModel.detailConversation.observe(this, ::handleDetailConversation)
+        viewModel.getDetailConversation(id)
     }
 
     override fun onResume() {
         super.onResume()
         AnalyticsEvents.logEvent(AnalyticsEvents.Message_view_detail)
+    }
+
+    override fun reloadView() {
+        lifecycleScope.launch {
+            recreate()
+        }
     }
 
     private fun handleDetailConversation(conversation: Conversation?) {
@@ -84,7 +91,7 @@ class DetailConversationActivity : CommentActivity() {
     }
 
     override fun addComment() {
-        discussionsPresenter.addComment(id, comment)
+        viewModel.addComment(id, comment)
     }
 
     override fun handleGetPostComments(allComments: MutableList<Post>?) {
@@ -104,7 +111,7 @@ class DetailConversationActivity : CommentActivity() {
                 id,
                 isOne2One,
                 titleName,
-                discussionsPresenter.detailConversation.value?.imBlocker()
+                viewModel.detailConversation.value?.imBlocker()
             )
                 .show(supportFragmentManager, SettingsDiscussionModalFragment.TAG)
         }
@@ -128,6 +135,6 @@ class DetailConversationActivity : CommentActivity() {
     }
 
     fun updateDiscussion() {
-        discussionsPresenter.getDetailConversation(id)
+        viewModel.getDetailConversation(id)
     }
 }

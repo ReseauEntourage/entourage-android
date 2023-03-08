@@ -2,6 +2,8 @@ package social.entourage.android.events.details.feed
 
 import android.os.Bundle
 import android.view.View
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.launch
 import social.entourage.android.api.model.Post
 import social.entourage.android.comment.CommentActivity
 import social.entourage.android.events.EventsPresenter
@@ -24,6 +26,12 @@ class EventCommentActivity : CommentActivity() {
 
     override fun addComment() {
         eventPresenter.addComment(id, comment)
+    }
+
+    override fun reloadView() {
+        lifecycleScope.launch {
+            recreate()
+        }
     }
 
     private fun setAdapterForEvent(){

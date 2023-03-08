@@ -137,7 +137,7 @@ class SettingsDiscussionModalFragment : BottomSheetDialogFragment() {
             conversationId?.let {
                 val meId = EntourageApplication.get().me()?.id
                 val reportGroupBottomDialogFragment = ReportModalFragment.newInstance(it,
-                    Const.DEFAULT_VALUE, ReportTypes.REPORT_CONVERSATION, meId == userId)
+                    Const.DEFAULT_VALUE, ReportTypes.REPORT_CONVERSATION, meId == userId,false,false)
                 reportGroupBottomDialogFragment.show(parentFragmentManager, ReportModalFragment.TAG)
             }
         }

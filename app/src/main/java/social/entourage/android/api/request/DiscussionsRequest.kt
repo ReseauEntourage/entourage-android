@@ -53,6 +53,12 @@ interface DiscussionsRequest {
         @Path("conversation_id") conversationId: Int
     ): Call<ResponseBody>
 
+    @DELETE("conversations/{conversation_id}/chat_messages/{chat_message_id}")
+    fun deleteMessage(
+        @Path("conversation_id") conversationId: Int,
+        @Path("chat_message_id") chatMessageId: Int
+    ): Call<ResponseBody>
+
     //Block user
     @POST("user_blocked_users")
     fun blockUser(

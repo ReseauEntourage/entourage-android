@@ -461,7 +461,7 @@ class FeedFragment : Fragment(),CallbackReportFragment{
                 ReportModalFragment.newInstance(
                     postId,
                     it, ReportTypes.REPORT_POST,isFrome
-                )
+                ,false,false)
             }
         if (reportGroupBottomDialogFragment != null) {
             reportGroupBottomDialogFragment.setCallback(this)

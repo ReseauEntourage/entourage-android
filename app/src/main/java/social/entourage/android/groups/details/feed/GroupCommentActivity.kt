@@ -2,10 +2,13 @@ package social.entourage.android.groups.details.feed
 
 import android.os.Bundle
 import android.view.View
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.launch
 import social.entourage.android.api.model.Post
 import social.entourage.android.comment.CommentActivity
 import social.entourage.android.comment.CommentsListAdapter
 import social.entourage.android.groups.GroupPresenter
+import timber.log.Timber
 
 class GroupCommentActivity : CommentActivity() {
 
@@ -23,6 +26,12 @@ class GroupCommentActivity : CommentActivity() {
 
     override fun addComment() {
         groupPresenter.addComment(id, comment)
+    }
+
+    override fun reloadView() {
+        lifecycleScope.launch {
+            recreate()
+        }
     }
 
     private fun handleParentPost(currentPost: Post?) {
