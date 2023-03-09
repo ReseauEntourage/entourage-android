@@ -141,7 +141,11 @@ class CommentsListAdapter(
                 grayDrawable.setBounds(8, 0, scaledDrawable.width - 8, scaledDrawable.height)
                 binding.comment.setCompoundDrawablesWithIntrinsicBounds(grayDrawable, null, null, null)
                 binding.comment.compoundDrawablePadding = 16
-                binding.comment.text = context.getString(R.string.deleted_message)
+                if(isOne2One){
+                    binding.comment.text = context.getString(R.string.deleted_message)
+                }else{
+                    binding.comment.text = context.getString(R.string.deleted_comment)
+                }
                 binding.comment.background = context.getDrawable(R.drawable.new_comment_background_grey)
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     binding.comment.setTextColor(context.getColor(R.color.text_dark))
@@ -200,7 +204,7 @@ class CommentsListAdapter(
             }
 
             if (isMe || isConversation) {
-                binding.report.visibility = View.VISIBLE
+                binding.report.visibility = View.GONE
             }
             else {
                 binding.report.visibility = View.VISIBLE
