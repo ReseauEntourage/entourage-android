@@ -149,7 +149,7 @@ class PostAdapter(
                 }
                 if(status == "deleted"){
                     binding.postMessage.text = context.getText(R.string.deleted_publi)
-                    binding.postMessage.setTextColor(context.getColor(R.color.new_light_grey))
+                    binding.postMessage.setTextColor(context.getColor(R.color.deleted_grey))
                     binding.postMessage.visibility = View.VISIBLE
                     binding.postComment.visibility = View.GONE
                     binding.btnReportPost.visibility = View.GONE
