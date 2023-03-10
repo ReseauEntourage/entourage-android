@@ -224,6 +224,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="pass">Passer</string>
     <string name="create_post">Créer une publication</string>
     <string name="create_event">Créer un événement sur le groupe</string>
+    <string name="create_event_if_no_event">Créer un événement</string>
     <string name="group_success_title">Votre groupe \nest en ligne !</string>
     <string name="group_success_subtitle">Félicitations, vous venez de créer un nouveau groupe. Pour le rendre plus actif, créez la première publication.</string>
     <string name="select_photo">Sélectionner une photo</string>
@@ -239,7 +240,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="title_groups">Groupes</string>
     <string name="title_events">Evénements</string>
     <string name="communities">Groupes</string>
-    <string name="discover_groups">Je découvre</string>
+    <string name="discover_groups">Découvrir les événements</string>
     <string name="my_groups">Mes groupes</string>
     <string name="members_number">%s membres</string>
     <string name="member_number">%s membre</string>

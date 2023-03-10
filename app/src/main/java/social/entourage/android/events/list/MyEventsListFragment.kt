@@ -91,11 +91,11 @@ class MyEventsListFragment : Fragment() {
         if(isAdded){
             binding.progressBar.visibility = View.GONE
             if(allEvents?.isEmpty() == true){
-                binding.btnDiscoverEvent.setText(getString(R.string.create_event))
+                binding.btnDiscoverEvent.setText(getString(R.string.create_event_if_no_event))
                 binding.subtitle.setText(getString(R.string.event_list_empty_state_no_discover))
                 initializeNoEventCreateButton()
             }else{
-                binding.btnDiscoverEvent.setText(getString(R.string.discover_events))
+                binding.btnDiscoverEvent.setText(getString(R.string.title_btn_discover_event))
                 binding.subtitle.setText(getString(R.string.event_list_empty_state_subtitle))
                 initializeDiscoverEventButton()
             }
