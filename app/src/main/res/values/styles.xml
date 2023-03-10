@@ -639,12 +639,14 @@
 
     <style name="BottomNavigation.ActiveItemTextAppearance" parent="TextAppearance.AppCompat">
         <item name="android:textStyle">normal</item>
-        <item name="android:fontFamily">@font/nunitosans_regular</item>
+        <item name="android:fontFamily">@font/nunitosans_light</item>
+        <item name="android:textSize">13sp</item>
     </style>
 
     <style name="BottomNavigation.Inactive" parent="TextAppearance.AppCompat">
         <item name="android:textStyle">normal</item>
-        <item name="android:fontFamily">@font/nunitosans_regular</item>
+        <item name="android:fontFamily">@font/nunitosans_light</item>
+        <item name="android:textSize">13sp</item>
     </style>
 
 </resources>
