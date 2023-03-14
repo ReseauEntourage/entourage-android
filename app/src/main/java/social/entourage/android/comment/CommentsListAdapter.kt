@@ -117,14 +117,17 @@ class CommentsListAdapter(
                 return
             }
 
-            binding.comment.addAutoLinkMode(
-                MODE_URL
-            )
+            if(binding.comment.text != null){
+                binding.comment.addAutoLinkMode(
+                    MODE_URL
+                )
+                binding.comment.onAutoLinkClick { item ->
+                    onItemClick.onShowWeb(item.originalText)
 
-            binding.comment.onAutoLinkClick { item ->
-                onItemClick.onShowWeb(item.originalText)
-
+                }
             }
+
+
             val isMe = comment.user?.userId == EntourageApplication.get().me()?.id
 
             if(comment.status == "deleted"){
@@ -209,12 +212,14 @@ class CommentsListAdapter(
             else {
                 binding.report.visibility = View.VISIBLE
                 binding.image.setOnClickListener { view->
-                    (view.context as? Activity)?.startActivityForResult(
-                        Intent(view.context, UserProfileActivity::class.java).putExtra(
-                            Const.USER_ID,
-                            comment.user?.userId
-                        ), 0
-                    )
+                    if(comment.user != null){
+                        (view.context as? Activity)?.startActivityForResult(
+                            Intent(view.context, UserProfileActivity::class.java).putExtra(
+                                Const.USER_ID,
+                                comment.user?.userId
+                            ), 0
+                        )
+                    }
                 }
             }
 
