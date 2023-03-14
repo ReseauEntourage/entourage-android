@@ -140,7 +140,9 @@ class CommentsListAdapter(
                 vectorDrawable.setBounds(8, 0, canvas.width - 8, canvas.height)
                 vectorDrawable.draw(canvas)
                 val grayDrawable = vectorDrawable.mutate()
-                grayDrawable.setColorFilter(context.getColor(R.color.text_dark), PorterDuff.Mode.SRC_IN)
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    grayDrawable.setColorFilter(context.getColor(R.color.text_dark), PorterDuff.Mode.SRC_IN)
+                }
                 grayDrawable.setBounds(8, 0, scaledDrawable.width - 8, scaledDrawable.height)
                 binding.comment.setCompoundDrawablesWithIntrinsicBounds(grayDrawable, null, null, null)
                 binding.comment.compoundDrawablePadding = 16
@@ -164,6 +166,12 @@ class CommentsListAdapter(
             binding.report.setOnClickListener {
                 onItemClick.onCommentReport(comment.id, isForEvent, isMe)
             }
+            //here
+            binding.comment.setOnLongClickListener {
+                onItemClick.onCommentReport(comment.id, isForEvent, isMe)
+                return@setOnLongClickListener true
+            }
+
             comment.createdTime?.let {
                 binding.information_layout.visibility = View.VISIBLE
                 binding.error.visibility = View.GONE
