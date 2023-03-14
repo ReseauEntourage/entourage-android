@@ -215,7 +215,7 @@ class CommentsListAdapter(
             }
 
             if (isMe || isConversation) {
-                binding.report.visibility = View.GONE
+                binding.report.visibility = View.VISIBLE
             }
             else {
                 binding.report.visibility = View.VISIBLE
