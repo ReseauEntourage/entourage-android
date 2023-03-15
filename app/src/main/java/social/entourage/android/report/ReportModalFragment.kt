@@ -182,11 +182,16 @@ class ReportModalFragment : BottomSheetDialogFragment() {
             binding.layoutChooseSignal.visibility = View.GONE
             binding.next.visibility = View.GONE
         }
-
+        var logEventTitleView = AnalyticsEvents.POST_SUPPRESSED
+        var logEventTitleClick = AnalyticsEvents.SUPPRESS_CLICK
         binding.header.title = getString(R.string.title_param_post)
         if(isFromConv == true){
             binding.header.title = getString(R.string.title_param_comment)
+            logEventTitleView = AnalyticsEvents.Delete_comm
+            logEventTitleClick = AnalyticsEvents.Click_delete_comm
             if(isOneToOne == true){
+                logEventTitleView = AnalyticsEvents.Delete_mess
+                logEventTitleClick = AnalyticsEvents.Click_delete_mess
                 binding.header.title = getString(R.string.title_param_message)
             }
         }
@@ -198,9 +203,8 @@ class ReportModalFragment : BottomSheetDialogFragment() {
             }
         }
         binding.layoutChooseSuppress.setOnClickListener {
-            AnalyticsEvents.logEvent(AnalyticsEvents.SUPPRESS_CLICK)
+            AnalyticsEvents.logEvent(logEventTitleView)
             if(this.isFromConv == true){
-
                 var title = ""
                 var message = ""
                 var btnTitle = ""
@@ -222,7 +226,7 @@ class ReportModalFragment : BottomSheetDialogFragment() {
                     ,{
                         //ON CANCEL DO NOTHING YET
                     },{
-                        AnalyticsEvents.logEvent(AnalyticsEvents.POST_SUPPRESSED)
+                        AnalyticsEvents.logEvent(logEventTitleClick)
                         deleteMessage()
                         callback?.onSuppressPost()
                         onClose()
@@ -237,7 +241,7 @@ class ReportModalFragment : BottomSheetDialogFragment() {
                     ,{
                         //ON CANCEL DO NOTHING YET
                     },{
-                        AnalyticsEvents.logEvent(AnalyticsEvents.POST_SUPPRESSED)
+                        AnalyticsEvents.logEvent(logEventTitleClick)
                         deleteMessage()
                         callback?.onSuppressPost()
                         onClose()

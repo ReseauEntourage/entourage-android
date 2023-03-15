@@ -15,6 +15,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
 import social.entourage.android.R
+import social.entourage.android.tools.log.AnalyticsEvents
 
 object CustomAlertDialog {
     fun showWithCancelFirst(
@@ -114,6 +115,7 @@ object CustomAlertDialog {
                 background = context.getDrawable(R.drawable.new_alert_button_yes_transparent)
             }
             setOnClickListener {
+                AnalyticsEvents.logEvent(AnalyticsEvents.I_present_click_i_post)
                 onAction()
                 alertDialog.dismiss()
             }
@@ -121,10 +123,12 @@ object CustomAlertDialog {
         with(customDialog.findViewById<ImageButton>(R.id.btn_cross)) {
             visibility = View.VISIBLE
             setOnClickListener {
+                AnalyticsEvents.logEvent(AnalyticsEvents.i_present_close_pop)
                 alertDialog.dismiss()
             }
         }
         alertDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        AnalyticsEvents.logEvent(AnalyticsEvents.I_present_view_pop)
         alertDialog.show()
     }
 
