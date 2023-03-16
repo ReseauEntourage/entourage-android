@@ -77,6 +77,13 @@ class OnboardingEditPhotoFragment : DialogFragment() {
         mListener = null
     }
 
+    fun cropToSquare(bitmap: Bitmap): Bitmap {
+        val size = Math.min(bitmap.width, bitmap.height)
+        val x = (bitmap.width - size) / 2
+        val y = (bitmap.height - size) / 2
+        return Bitmap.createBitmap(bitmap, x, y, size, size)
+    }
+
     //**********//**********//**********
     // Methods
     //**********//**********//**********
@@ -99,7 +106,8 @@ class OnboardingEditPhotoFragment : DialogFragment() {
             override fun onSuccess(bitmap: Bitmap) {
                 ui_photo_edit_progressBar?.visibility = View.GONE
                 try {
-                    saveBitmap(bitmap)
+                    val squareBitmap = cropToSquare(bitmap)
+                    saveBitmap(squareBitmap)
                     updateProfilePicture()
                 } catch (e: IOException) {
                     Toast.makeText(activity, R.string.user_photo_error_not_saved, Toast.LENGTH_SHORT).show()
