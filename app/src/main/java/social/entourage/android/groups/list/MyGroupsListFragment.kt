@@ -35,12 +35,12 @@ class MyGroupsListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        initializeGroups()
         groupPresenter = ViewModelProvider(requireActivity()).get(GroupPresenter::class.java)
         myId = EntourageApplication.me(activity)?.id
-        loadGroups()
         groupPresenter.getAllMyGroups.observe(viewLifecycleOwner, ::handleResponseGetGroups)
         setDiscoverButton()
-        initializeGroups()
         handleSwipeRefresh()
     }
 
@@ -48,6 +48,13 @@ class MyGroupsListFragment : Fragment() {
         binding.discover.button.setOnClickListener {
             groupPresenter.onDiscoverButtonChanged()
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        page = 0
+        groupsList.clear()
+        loadGroups()
     }
 
     private fun handleResponseGetGroups(allGroups: MutableList<Group>?) {
@@ -72,6 +79,7 @@ class MyGroupsListFragment : Fragment() {
     }
 
     private fun loadGroups() {
+
         binding.swipeRefresh.isRefreshing = false
         page++
         myId?.let { groupPresenter.getMyGroups(page, groupPerPage, it) } ?: run {
