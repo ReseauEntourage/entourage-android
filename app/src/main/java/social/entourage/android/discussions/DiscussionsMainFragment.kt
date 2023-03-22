@@ -74,7 +74,6 @@ class DiscussionsMainFragment : Fragment() {
 
     private fun handleResponseGetDiscussions(allGroups: MutableList<Conversation>?) {
         allGroups?.let {
-            messagesList.clear()
             messagesList.addAll(it) }
         binding.progressBar.visibility = View.GONE
         binding.recyclerView.adapter?.notifyDataSetChanged()
