@@ -2,6 +2,7 @@ package social.entourage.android.tools.utils
 
 object Const {
     const val REPORTED_ID = "reported_id"
+    const val IS_FROM_ME = "is_from_me"
     const val GROUP_NAME_MIN_LENGTH = 2
     const val GROUP_DESCRIPTION_MIN_LENGTH = 1
     const val DEFAULT_VALUE = -1
@@ -26,6 +27,8 @@ object Const {
     const val GROUP_NAME = "group_name"
     const val FROM_CREATE_GROUP = "from_create_group"
     const val REPORT_TYPE = "report_type"
+    const val IS_FROM_CONV = "is_from_conv"
+    const val IS_ONE_TO_ONE = "is_one_to_one"
     const val USER_ID = "user_id"
     const val GO_TO_EDIT_PROFILE = "go_to_edit_profile"
     const val IMAGES_TYPE = "imagesType"

@@ -1,4 +1,4 @@
-package social.entourage.android.message.push
+package social.entourage.android.notifications
 
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
@@ -23,13 +23,18 @@ class EntourageFirebaseMessagingService : FirebaseMessagingService() {
     }
 
     private fun handleFCM(cta: String, fcmMessageNotif: RemoteMessage.Notification) {
-        PushNotificationManager.displayFCMPushNotification(cta, fcmMessageNotif.title, fcmMessageNotif.body, this)
+        PushNotificationManager.displayFCMPushNotification(
+            cta,
+            fcmMessageNotif.title,
+            fcmMessageNotif.body,
+            this
+        )
     }
 
     private fun handleNow(remoteMessage: RemoteMessage) {
-        val message = PushNotificationManager.getMessageFromRemoteMessage(remoteMessage, this) ?: return
-        PushNotificationManager.handlePushNotification(message, this)
-        EntourageApplication.get().onPushNotificationReceived(message)
+        PushNotificationManager.getPushNotificationMessageFromRemoteMessage(remoteMessage, this)?.let { message ->
+            PushNotificationManager.handlePushNotification(message, this)
+        }
     }
 
     companion object {

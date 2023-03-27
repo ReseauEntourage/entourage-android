@@ -10,6 +10,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import social.entourage.android.EntourageApplication
@@ -28,7 +29,7 @@ class DiscoverEventsListFragment : Fragment() {
     private var _binding: NewFragmentDiscoverEventsListBinding? = null
     val binding: NewFragmentDiscoverEventsListBinding get() = _binding!!
 
-    private val eventsPresenter: EventsPresenter by lazy { EventsPresenter() }
+    private lateinit var eventsPresenter: EventsPresenter
     private var myId: Int? = null
     lateinit var eventsAdapter: GroupEventsListAdapter
     private var page: Int = 0
@@ -64,6 +65,7 @@ class DiscoverEventsListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        eventsPresenter = ViewModelProvider(requireActivity()).get(EventsPresenter::class.java)
         myId = EntourageApplication.me(activity)?.id
         eventsAdapter =
             GroupEventsListAdapter(requireContext(), sections, myId)
@@ -92,6 +94,8 @@ class DiscoverEventsListFragment : Fragment() {
         binding.emptyStateLayout.isVisible = isListEmpty
         binding.recyclerView.isVisible = !isListEmpty
     }
+
+
 
     private fun initializeEvents() {
         binding.recyclerView.apply {

@@ -22,14 +22,14 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import social.entourage.android.api.MetaDataRepository
-import social.entourage.android.api.model.Message
+import social.entourage.android.api.model.notification.PushNotificationMessage
 import social.entourage.android.base.BaseSecuredActivity
 import social.entourage.android.base.location.EntLocation
 import social.entourage.android.guide.GDSMainActivity
-import social.entourage.android.message.push.PushNotificationManager
+import social.entourage.android.notifications.PushNotificationManager
 import social.entourage.android.home.CommunicationHandlerBadgeViewModel
 import social.entourage.android.home.UnreadMessages
-import social.entourage.android.message.push.PushNotificationLinkManager
+import social.entourage.android.notifications.NotificationActionManager
 import social.entourage.android.tools.log.AnalyticsEvents
 import timber.log.Timber
 
@@ -114,9 +114,13 @@ class MainActivity : BaseSecuredActivity() {
     }
 
     private fun checkIntentAction(action: String, extras: Bundle?) {
-        val message = extras?.get(PushNotificationManager.PUSH_MESSAGE) as? Message
-        message?.let {
-            PushNotificationLinkManager().presentAction(this,supportFragmentManager,message.content?.extra?.instance,message.content?.extra?.instanceId, message.content?.extra?.postId)
+        val pushNotificationMessage = extras?.get(PushNotificationManager.PUSH_MESSAGE) as? PushNotificationMessage
+        pushNotificationMessage?.content?.extra?.let { extra ->
+            extra.instance?.let { instance ->
+                extra.instanceId?.let { id ->
+                    NotificationActionManager.presentAction(this, supportFragmentManager, instance, id, extra.postId)
+                }
+            }
         }
 
         intent = null
@@ -163,10 +167,10 @@ class MainActivity : BaseSecuredActivity() {
     // ----------------------------------
     // PUSH NOTIFICATION HANDLING
     // ----------------------------------
-    fun displayMessageOnCurrentEntourageInfoFragment(message: Message): Boolean {
+    fun displayMessageOnCurrentEntourageInfoFragment(pushNotificationMessage: PushNotificationMessage): Boolean {
         /*val fragment =
             supportFragmentManager.findFragmentByTag(FeedItemInformationFragment.TAG) as FeedItemInformationFragment?
-        return fragment != null && fragment.onPushNotificationChatMessageReceived(message)*/
+        return fragment != null && fragment.onPushNotificationChatMessageReceived(pushNotificationMessage)*/
         //TODO handle notif directly if right fragment
         return false
     }
@@ -184,6 +188,9 @@ class MainActivity : BaseSecuredActivity() {
         navController = navHostFragment.navController
 
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.nav_view)
+
+
+
         bottomNavigationView.itemIconTintList = null
         bottomNavigationView.setupWithNavController(navController)
 

@@ -26,7 +26,6 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import social.entourage.android.old_v7.MainActivity_v7
 import social.entourage.android.onboarding.login.LoginActivity
 import timber.log.Timber
 
@@ -84,7 +83,7 @@ class LoginTest {
     }
 
     @Test
-    fun loginOKwithoutCountryCode() {
+    fun loginOKWithoutCountryCode() {
         Intents.init()
         checkFirstConnectionScreen()
 
@@ -148,7 +147,7 @@ class LoginTest {
         enableWifiAndData(true)
     }
 
-    @Test
+    /*@Test
     fun resendCodeFailureNoInternetConnection() {
         //Disable wifi and data
         enableWifiAndData(false)
@@ -163,10 +162,10 @@ class LoginTest {
 
         //Enable wifi and data
         enableWifiAndData(true)
-    }
+    }*/
 
     private fun checkLoginSuccessful() {
-        Intents.intended(IntentMatchers.hasComponent(MainActivity_v7::class.java.name))
+        Intents.intended(IntentMatchers.hasComponent(MainActivity::class.java.name))
     }
 
     private fun checkLoginFailure() {

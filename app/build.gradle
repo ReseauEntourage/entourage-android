@@ -11,7 +11,7 @@ android {
     ext {
         // App versions
         versionMajor = 8
-        versionMinor = 2
+        versionMinor = 3
         versionPatch = "git rev-list HEAD --count".execute().text.trim().toInteger()
         versionBranchName = "git rev-parse --abbrev-ref HEAD".execute().text.trim()
         versionCodeInt = (versionMajor * 100 + versionMinor) * 10000 + versionPatch % 10000
@@ -95,7 +95,7 @@ android {
                 ]
                 staging = [
                         serverURL        : "https://api-preprod.entourage.social/api/v1/",
-                        deepLinksHostName: "entourage-landingpages-preprod.herokuapp.com",
+                        deepLinksHostName: "preprod.entourage.social",
                         deepLinksScheme  : "entourage-staging",
                         appLinksHostName : "entourage-webapp-preprod.herokuapp.com"
                 ]
@@ -183,8 +183,9 @@ dependencies {
     //implementation androidSupportDependencies.values()
 
     implementation "androidx.annotation:annotation:1.5.0"
+    //TODO check why alpha02 needs kotlin 1.8
     implementation "androidx.appcompat:appcompat:1.7.0-alpha01"
-    implementation "androidx.browser:browser:1.4.0"
+    implementation "androidx.browser:browser:1.5.0"
     implementation "androidx.cardview:cardview:1.0.0"
     implementation "androidx.coordinatorlayout:coordinatorlayout:1.2.0"
     implementation "androidx.constraintlayout:constraintlayout:2.1.4"
@@ -194,17 +195,17 @@ dependencies {
     implementation "androidx.preference:preference-ktx:1.2.0"
 
     //implementation devDependencies.values()
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
     implementation "net.danlew:android.joda:2.12.1"
     implementation "com.squareup:tape:1.2.3"
     implementation "com.jakewharton.timber:timber:5.0.1"
 
     //https://firebase.google.com/support/release-notes/android
-    implementation platform('com.google.firebase:firebase-bom:31.1.1')
+    implementation platform('com.google.firebase:firebase-bom:31.2.2')
     //implementation firebaseDependencies.values()
     implementation "com.google.firebase:firebase-analytics-ktx"
     implementation "com.google.firebase:firebase-messaging-ktx"
-    implementation "com.google.firebase:firebase-inappmessaging-display-ktx"
+    //TODO: fix this inappmessaging lib that is blocking tests to run
+    releaseImplementation "com.google.firebase:firebase-inappmessaging-display-ktx"
     implementation "com.google.firebase:firebase-crashlytics-ktx"
     implementation "com.google.firebase:firebase-config-ktx"
     releaseImplementation "com.google.firebase:firebase-perf-ktx"
@@ -227,7 +228,7 @@ dependencies {
     implementation "com.github.clans:fab:1.6.4"
     implementation "com.github.takusemba:cropme:2.0.8"
     implementation "com.google.maps.android:maps-utils-ktx:3.4.0"
-    implementation "com.google.android.material:material:1.7.0"
+    implementation "com.google.android.material:material:1.8.0"
     implementation "com.github.bumptech.glide:glide:4.14.2"
     implementation "me.leolin:ShortcutBadger:1.1.22@aar"
     implementation "net.yslibrary.keyboardvisibilityevent:keyboardvisibilityevent:3.0.0-RC3"
@@ -247,11 +248,13 @@ dependencies {
     androidTestImplementation "androidx.test.espresso:espresso-idling-resource:3.5.1"
     androidTestImplementation "androidx.test.espresso:espresso-intents:3.5.1"
     androidTestImplementation "androidx.test.uiautomator:uiautomator:2.2.0"
+
     androidTestImplementation "com.jakewharton.espresso:okhttp3-idling-resource:1.0.0"
     //,exclude: [group: "com.squareup.okhttp3"                    ]
     androidTestImplementation "androidx.test.ext:junit:1.1.5"
     androidTestImplementation "androidx.test:runner:1.5.2"
     androidTestImplementation "androidx.test:rules:1.5.0"
+
     implementation 'com.google.android.flexbox:flexbox:3.0.0'
     // Kotlin
     implementation "androidx.navigation:navigation-fragment-ktx:2.5.3"

@@ -123,6 +123,7 @@ fun Events.toEventUi(context: Context): EventModel {
     return EventModel(
         this.id,
         this.title,
+        this.author,
         this.membersCount,
         this.displayAddress,
         this.interests,

@@ -2,11 +2,21 @@ package social.entourage.android.comment
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
+import android.graphics.*
+import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.VectorDrawable
+import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.DrawableCompat
 import androidx.recyclerview.widget.RecyclerView
+import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
@@ -34,11 +44,12 @@ enum class CommentsTypes(val code: Int) {
 
 interface OnItemClickListener {
     fun onItemClick(comment: Post)
-    fun onCommentReport(commentId: Int?, isForEvent:Boolean)
+    fun onCommentReport(commentId: Int?, isForEvent:Boolean, isMe:Boolean)
     fun onShowWeb(url:String)
 }
 
 class CommentsListAdapter(
+    var context: Context,
     var commentsList: List<Post>,
     var postAuthorId: Int,
     var isOne2One:Boolean,
@@ -106,19 +117,61 @@ class CommentsListAdapter(
                 return
             }
 
-            binding.comment.addAutoLinkMode(
-                MODE_URL
-            )
+            if(binding.comment.text != null){
+                binding.comment.addAutoLinkMode(
+                    MODE_URL
+                )
+                binding.comment.onAutoLinkClick { item ->
+                    onItemClick.onShowWeb(item.originalText)
 
-            binding.comment.onAutoLinkClick { item ->
-                onItemClick.onShowWeb(item.originalText)
-
+                }
             }
 
-            binding.comment.text = comment.content
+
+            val isMe = comment.user?.userId == EntourageApplication.get().me()?.id
+
+            if(comment.status == "deleted"){
+                val drawable = ContextCompat.getDrawable(context, R.drawable.ic_comment_deleted)
+                val vectorDrawable = DrawableCompat.wrap(drawable!!) as VectorDrawable
+                val width = 30
+                val height = (width * vectorDrawable.intrinsicHeight) / vectorDrawable.intrinsicWidth
+                val scaledDrawable = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
+                val canvas = Canvas(scaledDrawable)
+                vectorDrawable.setBounds(8, 0, canvas.width - 8, canvas.height)
+                vectorDrawable.draw(canvas)
+                val grayDrawable = vectorDrawable.mutate()
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    grayDrawable.setColorFilter(context.getColor(R.color.text_dark), PorterDuff.Mode.SRC_IN)
+                }
+                grayDrawable.setBounds(8, 0, scaledDrawable.width - 8, scaledDrawable.height)
+                binding.comment.setCompoundDrawablesWithIntrinsicBounds(grayDrawable, null, null, null)
+                binding.comment.compoundDrawablePadding = 16
+                if(isOne2One){
+                    binding.comment.text = context.getString(R.string.deleted_message)
+                }else{
+                    binding.comment.text = context.getString(R.string.deleted_comment)
+                }
+                binding.comment.background = context.getDrawable(R.drawable.new_comment_background_grey)
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    binding.comment.setTextColor(context.getColor(R.color.text_dark))
+                }
+            }else{
+                binding.comment.text = comment.content
+                binding.comment.background = context.getDrawable(R.drawable.new_comment_background_beige)
+                binding.comment.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null)
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    binding.comment.setTextColor(context.getColor(R.color.black))
+                }
+            }
             binding.report.setOnClickListener {
-                onItemClick.onCommentReport(comment.id, isForEvent)
+                onItemClick.onCommentReport(comment.id, isForEvent, isMe)
             }
+            //here
+            binding.comment.setOnLongClickListener {
+                onItemClick.onCommentReport(comment.id, isForEvent, isMe)
+                return@setOnLongClickListener true
+            }
+
             comment.createdTime?.let {
                 binding.information_layout.visibility = View.VISIBLE
                 binding.error.visibility = View.GONE
@@ -141,8 +194,6 @@ class CommentsListAdapter(
                     onItemClick.onItemClick(comment)
                 }
             }
-
-            val isMe = comment.user?.userId == EntourageApplication.get().me()?.id
 
             comment.user?.let {
                 binding.author_name.text = if (isOne2One || isMe) "" else comment.user?.displayName
@@ -169,12 +220,14 @@ class CommentsListAdapter(
             else {
                 binding.report.visibility = View.VISIBLE
                 binding.image.setOnClickListener { view->
-                    (view.context as? Activity)?.startActivityForResult(
-                        Intent(view.context, UserProfileActivity::class.java).putExtra(
-                            Const.USER_ID,
-                            comment.user?.userId
-                        ), 0
-                    )
+                    if(comment.user != null){
+                        (view.context as? Activity)?.startActivityForResult(
+                            Intent(view.context, UserProfileActivity::class.java).putExtra(
+                                Const.USER_ID,
+                                comment.user?.userId
+                            ), 0
+                        )
+                    }
                 }
             }
 

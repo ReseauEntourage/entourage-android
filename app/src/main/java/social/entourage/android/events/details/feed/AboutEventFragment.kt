@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.getColor
+import androidx.core.content.ContextCompat.getDrawable
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -42,6 +43,7 @@ import social.entourage.android.tools.displayDistance
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.setHyperlinkClickable
 import social.entourage.android.tools.utils.*
+import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -185,6 +187,20 @@ class AboutEventFragment : Fragment(), OnMapReadyCallback {
             if (event?.status == Status.CLOSED)
                 handleEventCanceled()
         }
+
+        event?.author.let {
+            binding.organizer.icon = AppCompatResources.getDrawable(requireContext(),R.drawable.ic_event_header_organiser)
+            binding.organizer.content.text = String.format(getString(R.string.event_organisez_by), it?.userName)
+
+            it?.partner.let {
+                if(!it?.name.isNullOrEmpty()){
+                    binding.tvAssociation.text = String.format(getString(R.string.event_organisez_asso),it?.name)
+                    binding.tvAssociation.visibility = View.VISIBLE
+                }
+
+            }
+        }
+
         updateButtonJoin()
     }
 

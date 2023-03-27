@@ -4,10 +4,12 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.getColor
@@ -16,6 +18,7 @@ import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -26,6 +29,9 @@ import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
 import kotlinx.android.synthetic.main.new_fragment_feed.view.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.api.MetaDataRepository
@@ -35,6 +41,7 @@ import social.entourage.android.api.model.*
 import social.entourage.android.comment.PostAdapter
 import social.entourage.android.events.EventsPresenter
 import social.entourage.android.events.details.SettingsModalFragment
+import social.entourage.android.groups.details.feed.CallbackReportFragment
 import social.entourage.android.groups.details.feed.GroupMembersPhotosAdapter
 import social.entourage.android.groups.details.members.MembersType
 import social.entourage.android.profile.myProfile.InterestsAdapter
@@ -51,7 +58,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.math.abs
 
-class FeedFragment : Fragment() {
+class FeedFragment : Fragment(), CallbackReportFragment {
 
     private var _binding: NewFragmentFeedEventBinding? = null
     val binding: NewFragmentFeedEventBinding get() = _binding!!
@@ -81,6 +88,7 @@ class FeedFragment : Fragment() {
         myId = EntourageApplication.me(activity)?.id
         eventPresenter.getEvent(eventId)
         eventPresenter.getEvent.observe(viewLifecycleOwner, ::handleResponseGetEvent)
+        eventPresenter.isEventReported.observe(requireActivity(), ::handleDeletedResponse)
         eventPresenter.isUserParticipating.observe(viewLifecycleOwner, ::handleParticipateResponse)
         eventPresenter.getAllPosts.observe(viewLifecycleOwner, ::handleResponseGetEventPosts)
         handleSwipeRefresh()
@@ -235,6 +243,15 @@ class FeedFragment : Fragment() {
                     it
                 )
             }
+            event.author.let {
+                binding.organizer.content.text = String.format(getString(R.string.event_organisez_by), it?.userName)
+                it?.partner.let {
+                    if(!it?.name.isNullOrEmpty()){
+                        binding.tvAssociation.text = String.format(getString(R.string.event_organisez_asso),it?.name)
+                        binding.tvAssociation.visibility = View.VISIBLE
+                    }
+                }
+            }
             event.metadata?.landscapeUrl?.let {
                 Glide.with(requireActivity())
                     .load(it)
@@ -294,6 +311,20 @@ class FeedFragment : Fragment() {
         }
     }
 
+    private fun showToast(message: String) {
+        Toast.makeText(activity, message, Toast.LENGTH_SHORT).show()
+    }
+
+    private fun handleDeletedResponse(success: Boolean) {
+        if(isAdded){
+            if (success){
+                showToast(getString(R.string.delete_success_send))
+            }else{
+                showToast(getString(R.string.delete_error_send_failed))
+            }
+        }
+    }
+
     private fun loadPosts() {
         eventPresenter.getEventPosts(eventId)
     }
@@ -302,6 +333,7 @@ class FeedFragment : Fragment() {
         binding.postsNewRecyclerview.apply {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = PostAdapter(
+                requireContext(),
                 newPostsList,
                 ::openCommentPage,
                 ::openReportFragment,
@@ -312,6 +344,7 @@ class FeedFragment : Fragment() {
         binding.postsOldRecyclerview.apply {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = PostAdapter(
+                requireContext(),
                 oldPostsList,
                 ::openCommentPage,
                 ::openReportFragment,
@@ -336,14 +369,18 @@ class FeedFragment : Fragment() {
         )
     }
 
-    private fun openReportFragment(postId:Int) {
+    private fun openReportFragment(postId:Int, userId:Int) {
         val reportGroupBottomDialogFragment =
             event?.id?.let {
+                val meId = EntourageApplication.get().me()?.id
                 ReportModalFragment.newInstance(
                     postId,
-                    it, ReportTypes.REPORT_POST_EVENT
-                )
+                    it, ReportTypes.REPORT_POST_EVENT, meId == userId
+                ,false,false)
             }
+        if (reportGroupBottomDialogFragment != null) {
+            reportGroupBottomDialogFragment.setCallback(this)
+        }
         reportGroupBottomDialogFragment?.show(parentFragmentManager, ReportModalFragment.TAG)
 
     }
@@ -526,6 +563,13 @@ class FeedFragment : Fragment() {
     private fun onFragmentResult() {
         setFragmentResultListener(Const.REQUEST_KEY_SHOULD_REFRESH) { _, bundle ->
             if (bundle.getBoolean(Const.SHOULD_REFRESH)) eventPresenter.getEvent(eventId)
+        }
+    }
+
+    override fun onSuppressPost() {
+        lifecycleScope.launch {
+            delay(500)
+            loadPosts()
         }
     }
 }

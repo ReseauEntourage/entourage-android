@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.databinding.NewFragmentSettingsDiscussionModalBinding
 import social.entourage.android.RefreshController
@@ -134,8 +135,9 @@ class SettingsDiscussionModalFragment : BottomSheetDialogFragment() {
 
         binding.layoutReport.setOnClickListener {
             conversationId?.let {
+                val meId = EntourageApplication.get().me()?.id
                 val reportGroupBottomDialogFragment = ReportModalFragment.newInstance(it,
-                    Const.DEFAULT_VALUE, ReportTypes.REPORT_CONVERSATION)
+                    Const.DEFAULT_VALUE, ReportTypes.REPORT_CONVERSATION, meId == userId,false,false)
                 reportGroupBottomDialogFragment.show(parentFragmentManager, ReportModalFragment.TAG)
             }
         }

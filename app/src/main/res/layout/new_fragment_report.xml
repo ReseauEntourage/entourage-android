@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:gravity="center">
 
         <LinearLayout
@@ -14,7 +13,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
-
             <include
                 android:id="@+id/header"
                 layout="@layout/new_header_bottom_sheet"
@@ -23,66 +21,149 @@
                 app:layout_constraintBottom_toTopOf="@id/title"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/title"
-                style="@style/h4"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:id="@+id/layout_choose_signal"
+                android:paddingHorizontal="@dimen/padding_horizontal"
+                android:paddingTop="8dp">
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:id="@+id/iv_choose_signal"
+                    android:src="@drawable/ic_signal_post"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/title_signal_post"
+                    app:layout_constraintStart_toEndOf="@+id/iv_choose_signal"
+                    android:layout_marginStart="8dp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:text="@string/discussion_settings_signal"
+                    android:fontFamily="@font/nunitosans_bold"
+                    android:textColor="@color/orange"
+                    android:textSize="15sp"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tv_choose_signal"
+                    app:layout_constraintStart_toEndOf="@+id/iv_choose_signal"
+                    app:layout_constraintTop_toBottomOf="@+id/title_signal_post"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:textSize="12sp"
+                    android:fontFamily="@font/nunitosans_light"
+                    android:textColor="@color/grey"
+                    android:text="@string/discussion_choose_signal"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/layout_choose_suppress"
                 android:layout_marginTop="20dp"
                 android:paddingHorizontal="@dimen/padding_horizontal"
-                android:text="@string/why_reporting"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/header" />
-
-            <TextView
-                android:id="@+id/mandatory"
-                style="@style/left_legend"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
-                android:paddingHorizontal="@dimen/padding_horizontal"
-                android:text="@string/mandatory"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/title" />
-
-            <View
-                android:id="@+id/divider"
+                android:visibility="gone">
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:id="@+id/iv_choose_suppress"
+                    android:src="@drawable/ic_suppress_post"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/title_supress_post"
+                    app:layout_constraintStart_toEndOf="@+id/iv_choose_suppress"
+                    android:layout_marginStart="8dp"
+                    android:textSize="15sp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:text="@string/discussion_choose_supress"
+                    android:fontFamily="@font/nunitosans_bold"
+                    android:textColor="@color/orange"
+                    />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="1px"
-                android:layout_marginTop="10dp"
-                android:background="@color/light_orange"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/mandatory" />
+                android:layout_height="match_parent"
+                android:id="@+id/second_layout_signal"
+                android:orientation="vertical"
+                android:visibility="gone">
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recycler_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:clipToPadding="false"
-                android:paddingBottom="0dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/divider"
-                tools:itemCount="5"
-                tools:listitem="@layout/new_report_user_item" />
 
-            <EditText
-                android:id="@+id/message"
-                style="@style/input"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/padding_horizontal"
-                android:layout_marginTop="5dp"
-                android:backgroundTint="@color/light_orange_opacity_50"
-                android:paddingTop="0dp"
-                android:visibility="gone"
-                app:layout_constraintHorizontal_weight="0.8"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/divider"
-                tools:text="content" />
+                <TextView
+                    android:id="@+id/title"
+                    style="@style/h4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:paddingHorizontal="@dimen/padding_horizontal"
+                    android:text="@string/why_reporting"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/header" />
+
+                <TextView
+                    android:id="@+id/mandatory"
+                    style="@style/left_legend"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp"
+                    android:paddingHorizontal="@dimen/padding_horizontal"
+                    android:text="@string/mandatory"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/title" />
+
+                <View
+                    android:id="@+id/divider"
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/light_orange"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/mandatory" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clipToPadding="false"
+                    android:paddingBottom="0dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/divider"
+                    tools:itemCount="5"
+                    tools:listitem="@layout/new_report_user_item" />
+
+                <EditText
+                    android:id="@+id/message"
+                    style="@style/input"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/padding_horizontal"
+                    android:layout_marginTop="5dp"
+                    android:backgroundTint="@color/light_orange_opacity_50"
+                    android:paddingTop="0dp"
+                    android:visibility="gone"
+                    app:layout_constraintHorizontal_weight="0.8"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/divider"
+                    tools:text="content" />
+
+            </LinearLayout>
+
+
         </LinearLayout>
 
         <Button
@@ -99,7 +180,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/layout" />
+            android:visibility="gone"/>
 
         <Button
             android:id="@+id/back"
@@ -116,7 +197,7 @@
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/layout" />
+             />
 
         <Button
             android:id="@+id/send"
@@ -133,7 +214,7 @@
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/layout" />
+            />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

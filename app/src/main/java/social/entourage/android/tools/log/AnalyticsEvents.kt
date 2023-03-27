@@ -3,6 +3,7 @@ package social.entourage.android.tools.log
 import android.app.ActivityManager
 import android.content.Context
 import android.os.Build
+import androidx.core.app.NotificationManagerCompat
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import social.entourage.android.EntourageApplication
 import social.entourage.android.EntourageApplication.Companion.get
@@ -47,6 +48,10 @@ object AnalyticsEvents {
     //----------------------------//
     //----------------------------//
     // PROFILE EDIT - START
+    //SUPRESS POST
+    const val POST_SUPPRESSED = "View__DeletePostPop"
+    const val SUPPRESS_CLICK = "Clic__DeletePostPop__Delete"
+
     //-------
     //------PHOTO
     const val EVENT_VIEW_PROFILE_CHOOSE_PHOTO = "View__Profile__ChoosePhoto"
@@ -528,7 +533,7 @@ object AnalyticsEvents {
     val TAG: String? = AnalyticsEvents::class.java.simpleName
 
     fun logEvent(event: String) {
-        Timber.d("***** FireB Log event : ${event} -- fb:${get().firebase}")
+        //Timber.d("***** FireB Log event : ${event} -- fb:${get().firebase}")
         get().firebase.logEvent(event, null)
     }
 
@@ -562,7 +567,7 @@ object AnalyticsEvents {
         val geolocStatus = if (isLocationPermissionGranted()) "YES" else "NO"
         mFirebaseAnalytics.setUserProperty("EntourageGeolocEnable", geolocStatus)
 
-        val notificationsEnabled = get().sharedPreferences.getBoolean(EntourageApplication.KEY_NOTIFICATIONS_ENABLED, true)
+        val notificationsEnabled = NotificationManagerCompat.from(context).areNotificationsEnabled()
         mFirebaseAnalytics.setUserProperty("EntourageNotifEnable", if (notificationsEnabled && areNotificationsEnabled) "YES" else "NO")
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {

@@ -8,7 +8,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.android.synthetic.main.new_fragment_settings_notifs.*
 import social.entourage.android.databinding.NewFragmentSettingsNotifsBinding
 import social.entourage.android.home.HomePresenter
-import social.entourage.android.api.model.NotifInAppPermission
+import social.entourage.android.api.model.InAppNotificationPermission
 
 class SettingsNotificationsFragment : BottomSheetDialogFragment() {
 
@@ -34,7 +34,7 @@ class SettingsNotificationsFragment : BottomSheetDialogFragment() {
         homePresenter.getNotificationsPermissions()
     }
 
-    private fun updateSwitch(notifsPermissions: NotifInAppPermission?) {
+    private fun updateSwitch(notifsPermissions: InAppNotificationPermission?) {
         notifsPermissions?.let {
             binding.uiSwitchNotifsActions.isChecked = it.action
             binding.uiSwitchNotifsEvents.isChecked = it.outing

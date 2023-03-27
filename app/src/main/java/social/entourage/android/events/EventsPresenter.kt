@@ -2,6 +2,7 @@ package social.entourage.android.events
 
 import androidx.collection.ArrayMap
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import com.google.gson.Gson
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.OkHttpClient
@@ -24,11 +25,12 @@ import timber.log.Timber
 import java.io.File
 import java.io.IOException
 
-class EventsPresenter {
+class EventsPresenter: ViewModel() {
     var getAllMyEvents = MutableLiveData<MutableList<Events>>()
     var getAllEvents = MutableLiveData<MutableList<Events>>()
     var getEvent = MutableLiveData<Events>()
     var isEventReported = MutableLiveData<Boolean>()
+    var isEventDeleted = MutableLiveData<Boolean>()
     var isEventPostReported = MutableLiveData<Boolean>()
     var getAllComments = MutableLiveData<MutableList<Post>>()
     var newEventCreated = MutableLiveData<Events?>()
@@ -45,6 +47,10 @@ class EventsPresenter {
     var isEventUpdated = MutableLiveData<Boolean>()
     var hasPost = MutableLiveData<Boolean>()
     var commentPosted = MutableLiveData<Post?>()
+    var haveToChangePage = MutableLiveData<Boolean>()
+    var haveToCreateEvent = MutableLiveData<Boolean>()
+    var haveChanged = false
+    var havelaunchedCreation = false
 
     var isLoading: Boolean = false
     var isLastPage: Boolean = false
@@ -52,6 +58,16 @@ class EventsPresenter {
     var isSendingCreatePost = false
 
     var unreadMessages = MutableLiveData<UnreadMessages?>()
+
+    fun changePage(){
+        haveChanged = ! haveChanged
+        haveToChangePage.postValue(haveChanged)
+    }
+
+    fun launchCreateEvent(){
+        havelaunchedCreation = !havelaunchedCreation
+        haveToCreateEvent.postValue(havelaunchedCreation)
+    }
 
     fun getMyEvents(userId: Int, page: Int, per: Int) {
         EntourageApplication.get().apiModule.eventsRequest.getMyEvents(userId, page, per)
@@ -157,6 +173,23 @@ class EventsPresenter {
 
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 isEventPostReported.value = response.isSuccessful
+            }
+        })
+    }
+
+    fun deletedEventPost(
+        id: Int,
+        postId: Int) {
+        val userRequest = EntourageApplication.get().apiModule.eventsRequest
+        val call = userRequest.deleteEventPost(
+            id, postId)
+        call.enqueue(object : Callback<ResponseBody> {
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                isEventDeleted.value = false
+            }
+
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                isEventDeleted.value = response.isSuccessful
             }
         })
     }

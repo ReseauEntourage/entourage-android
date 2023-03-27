@@ -22,14 +22,16 @@ import social.entourage.android.home.CommunicationHandlerBadgeViewModel
 import social.entourage.android.home.UnreadMessages
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.log.AnalyticsEvents
+import timber.log.Timber
 import kotlin.math.abs
 
-const val DISCOVER_EVENTS_TAB = 0
-const val MY_EVENTS_TAB = 1
+const val MY_EVENTS_TAB = 0
+const val DISCOVER_EVENTS_TAB = 1
 
 class EventsFragment : Fragment() {
     private var _binding: NewFragmentEventsBinding? = null
     val binding: NewFragmentEventsBinding get() = _binding!!
+    private lateinit var eventsPresenter: EventsPresenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,14 +53,15 @@ class EventsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        eventsPresenter = ViewModelProvider(requireActivity()).get(EventsPresenter::class.java)
         createEvent()
         initializeTab()
         handleImageViewAnimation()
         setPage()
-
-        val presenter = EventsPresenter()
-        presenter.unreadMessages.observe(requireActivity(), ::updateUnreadCount)
-        presenter.getUnreadCount()
+        eventsPresenter.unreadMessages.observe(requireActivity(), ::updateUnreadCount)
+        eventsPresenter.haveToChangePage.observe(requireActivity(),::handlePageChange)
+        eventsPresenter.haveToCreateEvent.observe(requireActivity(),::handleLaunchCreateEvent)
+        eventsPresenter.getUnreadCount()
     }
 
     override fun onResume() {
@@ -69,6 +72,20 @@ class EventsFragment : Fragment() {
         }
     }
 
+    private fun handlePageChange(haveChange:Boolean){
+        ViewPagerDefaultPageController.shouldSelectDiscoverEvents = true
+        setPage()
+    }
+
+    private fun handleLaunchCreateEvent(haveToLaunchCreateEvent:Boolean){
+        if(haveToLaunchCreateEvent){
+            AnalyticsEvents.logEvent(AnalyticsEvents.Event_action_create)
+            startActivityForResult(
+                Intent(context, CreateEventActivity::class.java),
+                0
+            )
+        }
+    }
     private fun initializeTab() {
         val viewPager = binding.viewPager
         val adapter = EventsViewPagerAdapter(childFragmentManager, lifecycle)
@@ -76,8 +93,8 @@ class EventsFragment : Fragment() {
 
         val tabLayout = binding.tabLayout
         val tabs = arrayOf(
+            requireContext().getString(R.string.my_events),
             requireContext().getString(R.string.discover_events),
-            requireContext().getString(R.string.my_events)
         )
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             tab.text = tabs[position]
@@ -90,7 +107,7 @@ class EventsFragment : Fragment() {
                 if (ViewPagerDefaultPageController.shouldSelectDiscoverEvents) DISCOVER_EVENTS_TAB else MY_EVENTS_TAB,
                 false
             )
-            ViewPagerDefaultPageController.shouldSelectDiscoverEvents = true
+            ViewPagerDefaultPageController.shouldSelectDiscoverEvents = false
         }
 
         binding.tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {

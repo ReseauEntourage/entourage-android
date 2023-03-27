@@ -1,5 +1,6 @@
 package social.entourage.android.comment
 
+import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -9,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
@@ -16,8 +18,10 @@ import social.entourage.android.api.model.EntourageUser
 import social.entourage.android.api.model.Post
 import social.entourage.android.base.BaseActivity
 import social.entourage.android.databinding.NewActivityCommentsBinding
+import social.entourage.android.discussions.DiscussionsPresenter
 import social.entourage.android.report.ReportModalFragment
 import social.entourage.android.report.ReportTypes
+import social.entourage.android.report.onDissmissFragment
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.Utils
 import social.entourage.android.tools.utils.focusAndShowKeyboard
@@ -26,7 +30,7 @@ import social.entourage.android.tools.view.WebViewFragment
 import timber.log.Timber
 import java.util.*
 
-abstract class CommentActivity : BaseActivity() {
+abstract class CommentActivity : BaseActivity(), onDissmissFragment {
     lateinit var binding: NewActivityCommentsBinding
 
     var id = Const.DEFAULT_VALUE
@@ -39,6 +43,8 @@ abstract class CommentActivity : BaseActivity() {
     var messagesFailed: MutableList<Post?> = mutableListOf()
     var comment: Post? = null
     var isEvent = false
+    lateinit var viewModel: DiscussionsPresenter
+
 
     protected var isOne2One = false
     protected var isConversation = false
@@ -51,6 +57,7 @@ abstract class CommentActivity : BaseActivity() {
             this,
             R.layout.new_activity_comments
         )
+        viewModel = ViewModelProvider(this).get(DiscussionsPresenter::class.java)
         id = intent.getIntExtra(Const.ID, Const.DEFAULT_VALUE)
         postId = intent.getIntExtra(Const.POST_ID, Const.DEFAULT_VALUE)
         postAuthorID = intent.getIntExtra(Const.POST_AUTHOR_ID, Const.DEFAULT_VALUE)
@@ -60,12 +67,12 @@ abstract class CommentActivity : BaseActivity() {
         isFromNotif = intent.getBooleanExtra(Const.IS_FROM_NOTIF, false)
         isConversation = intent.getBooleanExtra(Const.IS_CONVERSATION, false)
         shouldOpenKeyboard = intent.getBooleanExtra(Const.SHOULD_OPEN_KEYBOARD, false)
+        viewModel.isMessageDeleted.observe(this,::handleMessageDeleted)
         initializeComments()
         handleCommentAction()
         openEditTextKeyboard()
         handleBackButton()
         setSettingsIcon()
-
         if (isConversation) {
             handleReportPost(id)
         }
@@ -100,6 +107,11 @@ abstract class CommentActivity : BaseActivity() {
                         binding.comments.viewTreeObserver.removeOnGlobalLayoutListener(this)
                     }
                 })
+    }
+
+    private fun handleMessageDeleted(isMessageDeleted:Boolean){
+        if(isMessageDeleted){
+        }
     }
 
     protected fun handleCommentPosted(post: Post?) {
@@ -142,16 +154,16 @@ abstract class CommentActivity : BaseActivity() {
         binding.comments.apply {
             layoutManager = LinearLayoutManager(context)
             val meId = EntourageApplication.get().me()?.id ?: postAuthorID
-            adapter = CommentsListAdapter(commentsList, meId,isOne2One,isConversation,currentParentPost, object : OnItemClickListener {
+            adapter = CommentsListAdapter(context, commentsList, meId,isOne2One,isConversation,currentParentPost, object : OnItemClickListener {
                 override fun onItemClick(comment: Post) {
                     addComment()
                     commentsList.remove(comment)
                 }
-                override fun onCommentReport(commentId: Int?, isForEvent: Boolean) {
+                override fun onCommentReport(commentId: Int?, isForEvent: Boolean, isMe:Boolean) {
                     if(isForEvent){
-                        commentId?.let { handleReport(it, ReportTypes.REPORT_POST_EVENT, true) }
+                        commentId?.let { handleReport(it, ReportTypes.REPORT_POST_EVENT, true, isMe) }
                     }else{
-                        commentId?.let { handleReport(it, ReportTypes.REPORT_COMMENT , true) }
+                        commentId?.let { handleReport(it, ReportTypes.REPORT_COMMENT , true, isMe) }
 
                     }
                 }
@@ -219,12 +231,14 @@ abstract class CommentActivity : BaseActivity() {
         binding.header.iconSettings.setImageResource(R.drawable.new_report_group)
     }
 
-    protected fun handleReport(id: Int, type: ReportTypes, isEventComment :Boolean) {
+    protected fun handleReport(id: Int, type: ReportTypes, isEventComment :Boolean, isMe:Boolean) {
+        Timber.wtf("wtf isOneToOne " + isOne2One)
         val reportGroupBottomDialogFragment =
-            ReportModalFragment.newInstance(id, this.id, type)
+            ReportModalFragment.newInstance(id, this.id, type, isMe ,true, this.isOne2One)
         if(isEventComment){
             reportGroupBottomDialogFragment.setEventComment()
         }
+        reportGroupBottomDialogFragment.setDismissCallback(this)
         reportGroupBottomDialogFragment.show(
             supportFragmentManager,
             ReportModalFragment.TAG
@@ -234,16 +248,18 @@ abstract class CommentActivity : BaseActivity() {
     protected open fun handleReportPost(id: Int) {
         binding.header.iconSettings.setOnClickListener {
             if(isEvent){
-                handleReport(id, ReportTypes.REPORT_POST_EVENT, false)
+                handleReport(id, ReportTypes.REPORT_POST_EVENT, false, false/*checkIsME*/)
             }else{
-                handleReport(id, ReportTypes.REPORT_POST, false)
+                handleReport(id, ReportTypes.REPORT_POST, false, false/*checkIsME*/)
             }
         }
     }
 
     private fun openEditTextKeyboard() {
         if (shouldOpenKeyboard) {
-            binding.commentMessage.setTextColor(getColor(R.color.black))
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                binding.commentMessage.setTextColor(getColor(R.color.black))
+            }
             binding.commentMessage.focusAndShowKeyboard()
         }
     }

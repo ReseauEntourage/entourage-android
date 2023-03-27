@@ -80,7 +80,7 @@ class ActionDetailActivity : AppCompatActivity(), OnDetailActionReceive {
 
     private fun handleReport(id: Int, type: ReportTypes) {
         val reportGroupBottomDialogFragment =
-            ReportModalFragment.newInstance(id, id, type)
+            ReportModalFragment.newInstance(id, id, type,isActionMine,false, false)
         reportGroupBottomDialogFragment.show(
             supportFragmentManager,
             ReportModalFragment.TAG

@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.google.gson.Gson
 import social.entourage.android.R
 import social.entourage.android.api.model.Post
 import social.entourage.android.databinding.NewLayoutPostBinding
@@ -26,9 +27,10 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class PostAdapter(
+    var context:Context,
     var postsList: List<Post>,
     var onClick: (Post, Boolean) -> Unit,
-    var onReport: (Int) -> Unit,
+    var onReport: (Int,Int) -> Unit,
     var onClickImage: (imageUrl:String, postId:Int) -> Unit,
     ) : RecyclerView.Adapter<PostAdapter.ViewHolder>() {
 
@@ -59,7 +61,6 @@ class PostAdapter(
                     binding.postMessage.visibility = View.VISIBLE
                     binding.postMessage.text = it
                     binding.postMessage.setHyperlinkClickable()
-
 
                 } ?: run {
                     binding.postMessage.visibility = View.GONE
@@ -112,6 +113,26 @@ class PostAdapter(
                         .into(binding.image)
                 }
 
+                binding.tvAmbassador.visibility = View.VISIBLE
+                var tagsString = ""
+                if (this.user?.isAdmin() == true){
+                    tagsString = tagsString + context.getString(R.string.admin) + " •"
+                }else if(this.user?.isAmbassador() == true){
+                    tagsString = tagsString + context.getString(R.string.ambassador) + " •"
+                }else if(this.user?.partner != null ){
+                    tagsString = tagsString + this.user?.partner!!.name
+
+                }
+                if(tagsString.isEmpty()){
+                    binding.tvAmbassador.visibility = View.GONE
+                }else{
+                    binding.tvAmbassador.visibility = View.VISIBLE
+                    if(tagsString.last().toString() == "•"){
+                        tagsString = tagsString.removeSuffix("•")
+                    }
+                    binding.tvAmbassador.text = tagsString
+                }
+
                 binding.name.setOnClickListener {
                     showUserDetail(binding.name.context,this.user?.userId)
                 }
@@ -121,7 +142,23 @@ class PostAdapter(
                 }
 
                 binding.btnReportPost.setOnClickListener {
-                    postsList[position].id?.let { it1 -> onReport(it1) }
+                    val userId = postsList[position].user?.id?.toInt()
+                    if (userId != null){
+                        postsList[position].id?.let { it1 -> onReport(it1,userId) }
+                    }
+                }
+                if(status == "deleted"){
+                    binding.postMessage.text = context.getText(R.string.deleted_publi)
+                    binding.postMessage.setTextColor(context.getColor(R.color.deleted_grey))
+                    binding.postMessage.visibility = View.VISIBLE
+                    binding.postComment.visibility = View.GONE
+                    binding.btnReportPost.visibility = View.GONE
+                }else{
+                    binding.postMessage.text = content
+                    binding.postMessage.setTextColor(context.getColor(R.color.black))
+                    binding.postMessage.visibility = View.VISIBLE
+                    binding.postComment.visibility = View.VISIBLE
+                    binding.btnReportPost.visibility = View.VISIBLE
                 }
             }
         }

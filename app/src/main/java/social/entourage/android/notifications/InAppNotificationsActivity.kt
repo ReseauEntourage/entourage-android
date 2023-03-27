@@ -1,4 +1,4 @@
-package social.entourage.android.home.notifications
+package social.entourage.android.notifications
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -7,7 +7,7 @@ import androidx.fragment.app.commit
 import social.entourage.android.R
 import social.entourage.android.tools.utils.Const
 
-class NotificationsInAppActivity : AppCompatActivity(R.layout.activity_notifications_in_app) {
+class InAppNotificationsActivity : AppCompatActivity(R.layout.activity_notifications_in_app) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -18,7 +18,7 @@ class NotificationsInAppActivity : AppCompatActivity(R.layout.activity_notificat
         if (savedInstanceState == null) {
             supportFragmentManager.commit {
                 setReorderingAllowed(true)
-                add<NotifsInAppListFragment>(R.id.fragment_container_view,null,bundle)
+                add<InAppNotificationListFragment>(R.id.fragment_container_view,null,bundle)
             }
         }
     }

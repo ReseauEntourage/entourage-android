@@ -102,7 +102,7 @@ class UserProfileFragment : Fragment() {
                     args.userId,
                     Const.DEFAULT_VALUE,
                     ReportTypes.REPORT_USER
-                )
+                ,false,false, false)
             reportUserBottomDialogFragment.show(parentFragmentManager, ReportModalFragment.TAG)
         }
         binding.blockUser.setOnClickListener {

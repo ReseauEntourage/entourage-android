@@ -239,6 +239,25 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="12dp"
                             app:icon="@{@drawable/new_location}" />
+                        <include
+                            android:id="@+id/organizer"
+                            layout="@layout/new_event_information_layout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            app:icon="@{@drawable/ic_event_header_organiser}" />
+
+                        <TextView
+                            android:id="@+id/tv_association"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingHorizontal="8dp"
+                            android:paddingVertical="4dp"
+                            android:layout_marginStart="20dp"
+                            android:textSize="15sp"
+                            android:textColor="@color/orange"
+                            android:fontFamily="@font/nunitosans_regular"
+                            android:visibility="gone"/>
 
                         <include
                             android:id="@+id/places_limit"

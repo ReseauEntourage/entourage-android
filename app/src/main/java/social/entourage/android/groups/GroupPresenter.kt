@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.Log
 import androidx.collection.ArrayMap
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import com.google.gson.Gson
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.OkHttpClient
@@ -28,7 +29,7 @@ import timber.log.Timber
 import java.io.File
 import java.io.IOException
 
-class GroupPresenter {
+class GroupPresenter: ViewModel() {
 
     var isGroupCreated = MutableLiveData<Boolean>()
     var getGroup = MutableLiveData<Group>()
@@ -47,11 +48,14 @@ class GroupPresenter {
     var commentPosted = MutableLiveData<Post?>()
     var isGroupReported = MutableLiveData<Boolean>()
     var isPostReported = MutableLiveData<Boolean>()
+    var isPostDeleted = MutableLiveData<Boolean>()
     var getAllEvents = MutableLiveData<MutableList<Events>>()
     var getCurrentParentPost = MutableLiveData<Post>()
 
+    var isPageHaveToChange = MutableLiveData<Boolean>()
     var isLoading: Boolean = false
     var isLastPage: Boolean = false
+    var isChangingPage: Boolean = false
 
     var isSendingCreatePost = false
 
@@ -82,6 +86,11 @@ class GroupPresenter {
                     isGroupCreated.value = false
                 }
             })
+    }
+
+    fun onDiscoverButtonChanged(){
+        isChangingPage = !isChangingPage
+        this.isPageHaveToChange.postValue(isChangingPage)
     }
 
     fun getGroup(id: Int) {
@@ -426,6 +435,28 @@ class GroupPresenter {
                 response: Response<ResponseBody>
             ) {
                 isPostReported.value = response.isSuccessful
+            }
+        })
+    }
+
+    fun deletedGroupPost(
+        groupId: Int,
+        postId: Int,
+    ) {
+
+        EntourageApplication.get().apiModule.groupRequest.deletePost(
+            groupId,
+            postId
+        ).enqueue(object :
+            Callback<ResponseBody> {
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+            }
+
+            override fun onResponse(
+                call: Call<ResponseBody>,
+                response: Response<ResponseBody>
+            ) {
+                isPostDeleted.value = response.isSuccessful
             }
         })
     }

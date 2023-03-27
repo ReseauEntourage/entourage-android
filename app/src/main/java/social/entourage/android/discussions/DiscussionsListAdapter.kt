@@ -12,6 +12,7 @@ import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import kotlinx.android.synthetic.main.new_conversation_home_item.view.*
 import social.entourage.android.R
 import social.entourage.android.api.model.Conversation
+import timber.log.Timber
 
 interface OnItemClick {
     fun onItemClick(position: Int)
@@ -36,7 +37,6 @@ class DiscussionsListAdapter(
             binding.layout.setOnClickListener {
                 onItemClickListener.onItemClick(position)
             }
-
             if (conversation.isOneToOne()) {
                 binding.image_picto.isVisible = false
                 conversation.user?.imageUrl?.let {

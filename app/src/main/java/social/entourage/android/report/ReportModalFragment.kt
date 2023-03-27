@@ -1,7 +1,13 @@
 package social.entourage.android.report
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
+import android.animation.ObjectAnimator
 import android.content.DialogInterface
+import android.os.Build
 import android.os.Bundle
+import android.util.DisplayMetrics
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,9 +28,12 @@ import social.entourage.android.api.model.Tags
 import social.entourage.android.discussions.DiscussionsPresenter
 import social.entourage.android.events.EventsPresenter
 import social.entourage.android.groups.GroupPresenter
+import social.entourage.android.groups.details.feed.CallbackReportFragment
+import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.user.UserPresenter
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.CustomAlertDialog
+import timber.log.Timber
 
 enum class ReportTypes(val code: Int) {
     REPORT_USER(0),
@@ -37,6 +46,7 @@ enum class ReportTypes(val code: Int) {
     REPORT_CONVERSATION(7),
     REPORT_POST_EVENT(8)
 }
+
 
 class ReportModalFragment : BottomSheetDialogFragment() {
 
@@ -54,6 +64,11 @@ class ReportModalFragment : BottomSheetDialogFragment() {
     private var reportType: Int? = Const.DEFAULT_VALUE
     private var title: String = ""
     private var isEventComment = false
+    private var callback: CallbackReportFragment? = null
+    private var isFromMe: Boolean? = false
+    private var isFromConv: Boolean? = false
+    private var isOneToOne: Boolean? = false
+    private var dismissCallback:onDissmissFragment? = null
 
 
     override fun onCreateView(
@@ -76,22 +91,165 @@ class ReportModalFragment : BottomSheetDialogFragment() {
         eventPresenter.isEventPostReported.observe(requireActivity(), ::handleReportResponse)
         actionPresenter.isActionReported.observe(requireActivity(), ::handleReportResponse)
         discussionsPresenter.isConversationReported.observe(requireActivity(), ::handleReportResponse)
+        discussionsPresenter.isConversationDeleted.observe(requireActivity(), ::handleDeletedResponse)
+        discussionsPresenter.isMessageDeleted.observe(requireActivity(),::handleDeletedResponse)
 
         setupViewStep1()
         handleCloseButton()
-        setView()
+        setStartView()
+
 
         //Use to force refresh layout
-        dialog?.setOnShowListener { dialog ->
-            val d = dialog as BottomSheetDialog
-            val bottomSheet =
-                d.findViewById<View>(social.entourage.android.R.id.design_bottom_sheet) as FrameLayout?
-            val coordinatorLayout = bottomSheet!!.parent as CoordinatorLayout
-            val bottomSheetBehavior: BottomSheetBehavior<*> =
-                BottomSheetBehavior.from(bottomSheet)
-            bottomSheetBehavior.peekHeight = bottomSheet.height
-            coordinatorLayout.parent.requestLayout()
+        setPeekHeight(0.7)
+    }
+
+    fun setDismissCallback(callback:onDissmissFragment){
+        this.dismissCallback = callback
+    }
+
+
+    private fun getWindowHeight(): Int {
+        val displayMetrics = DisplayMetrics()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            val display = requireActivity().display
+            display?.getRealMetrics(displayMetrics)
+        } else {
+            @Suppress("DEPRECATION")
+            val display = requireActivity().windowManager.defaultDisplay
+            @Suppress("DEPRECATION")
+            display.getMetrics(displayMetrics)
         }
+        return displayMetrics.heightPixels
+    }
+
+    private fun setPeekHeight(ratio:Double){
+        dialog?.setOnShowListener {
+            val bottomSheetDialog = dialog as BottomSheetDialog
+            val bottomSheet = bottomSheetDialog.findViewById<View>(com.google.android.material.R.id.design_bottom_sheet)
+            if (bottomSheet != null) {
+                val behavior = BottomSheetBehavior.from(bottomSheet)
+                val layoutParams = bottomSheet.layoutParams
+                val windowHeight = getWindowHeight()
+                if (layoutParams != null) {
+                    layoutParams.height = (windowHeight * ratio).toInt()
+                }
+                behavior.peekHeight = (windowHeight * ratio).toInt()
+                bottomSheet.layoutParams = layoutParams
+                val coordinatorLayout = bottomSheet.parent as CoordinatorLayout
+                coordinatorLayout.parent.requestLayout()
+            }
+        }
+    }
+
+    fun setCallback(callback:CallbackReportFragment){
+        this.callback = callback
+    }
+    fun setAfterChoose(){
+        val animSignal= ObjectAnimator.ofFloat(binding.layoutChooseSignal, "alpha", 1.0f,0.0F)
+        val animSupress = ObjectAnimator.ofFloat(binding.layoutChooseSuppress, "alpha", 1.0f,0.0F)
+        animSignal.duration = 100
+        animSupress.duration = 100
+        animSignal.addListener(object : AnimatorListenerAdapter() {
+            override fun onAnimationEnd(animation: Animator, isReverse: Boolean) {
+                binding.layoutChooseSignal.visibility = View.GONE
+                binding.next.visibility = View.VISIBLE
+
+            }
+        })
+        animSupress.addListener(object : AnimatorListenerAdapter() {
+            override fun onAnimationEnd(animation: Animator, isReverse: Boolean) {
+                binding.layoutChooseSuppress.visibility = View.GONE
+                val view = binding.root
+                val behavior = BottomSheetBehavior.from(view.parent as View)
+                val peekheight = view.height
+                behavior.peekHeight = peekheight
+                setPeekHeight(0.7)
+            }
+        })
+        animSignal.start()
+        animSupress.start()
+    }
+    fun setStartView(){
+        getIsFromMe()
+        getIsFromConv()
+        getIsOneToOne()
+        if(isFromMe == false){
+            binding.layoutChooseSuppress.visibility = View.GONE
+            binding.layoutChooseSignal.visibility = View.VISIBLE
+            binding.next.visibility = View.GONE
+        }else{
+            binding.layoutChooseSuppress.visibility = View.VISIBLE
+            binding.layoutChooseSignal.visibility = View.GONE
+            binding.next.visibility = View.GONE
+        }
+
+        binding.header.title = getString(R.string.title_param_post)
+        if(isFromConv == true){
+            binding.header.title = getString(R.string.title_param_comment)
+            if(isOneToOne == true){
+                binding.header.title = getString(R.string.title_param_message)
+            }
+        }
+        if(this.isFromConv == true){
+            if(isOneToOne == true){
+                binding.titleSupressPost.text = getString(R.string.discussion_choose_supress_message)
+            }else{
+                binding.titleSupressPost.text = getString(R.string.discussion_choose_supress_commentary)
+            }
+        }
+        binding.layoutChooseSuppress.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.SUPPRESS_CLICK)
+            if(this.isFromConv == true){
+
+                var title = ""
+                var message = ""
+                var btnTitle = ""
+                if(isOneToOne == true){
+                    title = getString(R.string.discussion_supress_the_message)
+                    message = getString(R.string.discussion_ask_supress_message)
+                    btnTitle = getString(R.string.discussion_button_supress)
+                }else{
+                    title = getString(R.string.discussion_supress_the_comment)
+                    message = getString(R.string.discussion_ask_supress_comment)
+                    btnTitle = getString(R.string.discussion_button_supress)
+                }
+
+                CustomAlertDialog.showWithCancelFirst(
+                    requireContext(),
+                    title,
+                    message,
+                    btnTitle
+                    ,{
+                        //ON CANCEL DO NOTHING YET
+                    },{
+                        AnalyticsEvents.logEvent(AnalyticsEvents.POST_SUPPRESSED)
+                        deleteMessage()
+                        callback?.onSuppressPost()
+                        onClose()
+                        dismiss()
+                    })
+            }else{
+                CustomAlertDialog.showWithCancelFirst(
+                    requireContext(),
+                    getString(R.string.discussion_supress_the_post),
+                    getString(R.string.discussion_ask_supress),
+                    getString(R.string.discussion_button_supress)
+                    ,{
+                        //ON CANCEL DO NOTHING YET
+                    },{
+                        AnalyticsEvents.logEvent(AnalyticsEvents.POST_SUPPRESSED)
+                        deleteMessage()
+                        callback?.onSuppressPost()
+                        onClose()
+                        dismiss()
+                    })
+            }
+        }
+        binding.layoutChooseSignal.setOnClickListener {
+            setAfterChoose()
+            setView()
+        }
+
     }
 
     override fun onCancel(dialog: DialogInterface) {
@@ -104,6 +262,8 @@ class ReportModalFragment : BottomSheetDialogFragment() {
     }
 
     private fun setView() {
+        binding.next.visibility = View.VISIBLE
+        binding.secondLayoutSignal.visibility = View.VISIBLE
         title = getString(
             when (reportType) {
                 ReportTypes.REPORT_USER.code -> R.string.report_member
@@ -136,6 +296,17 @@ class ReportModalFragment : BottomSheetDialogFragment() {
         dismiss()
     }
 
+    private fun handleDeletedResponse(success: Boolean) {
+        if(isAdded){
+            if (success){
+                showToast(getString(R.string.delete_success_send))
+            }else{
+                showToast(getString(R.string.delete_error_send_failed))
+            }
+        }
+        dismiss()
+    }
+
     private fun handleMetaData(tags: Tags?) {
         signalList.clear()
         tags?.signals?.let { signalList.addAll(it) }
@@ -146,6 +317,17 @@ class ReportModalFragment : BottomSheetDialogFragment() {
         reportedId = arguments?.getInt(Const.REPORTED_ID)
         groupId = arguments?.getInt(Const.GROUP_ID)
         reportType = arguments?.getInt(Const.REPORT_TYPE)
+    }
+    fun getIsFromMe(){
+        isFromMe = arguments?.getBoolean(Const.IS_FROM_ME)
+    }
+    fun getIsFromConv(){
+        isFromConv = arguments?.getBoolean(Const.IS_FROM_CONV)
+
+    }
+    fun getIsOneToOne(){
+        isOneToOne = arguments?.getBoolean(Const.IS_ONE_TO_ONE)
+
     }
 
     private fun initializeInterests() {
@@ -245,6 +427,23 @@ class ReportModalFragment : BottomSheetDialogFragment() {
         binding.next.visibility = View.GONE
     }
 
+    fun deleteMessage(){
+        reportedId?.let { id ->
+            when (reportType) {
+                ReportTypes.REPORT_POST.code -> groupId?.let { it ->
+                    groupPresenter.deletedGroupPost(it, id)
+                }
+                ReportTypes.REPORT_COMMENT.code -> groupId?.let { it ->
+                    discussionsPresenter.deleteMessage(it, id)
+                }
+                ReportTypes.REPORT_POST_EVENT.code -> groupId?.let { it ->
+                    eventPresenter.deletedEventPost(it, id)
+                }
+                else -> R.string.report_member
+            }
+        }
+    }
+
     private fun showToast(message: String) {
         Toast.makeText(activity, message, Toast.LENGTH_SHORT).show()
     }
@@ -256,6 +455,7 @@ class ReportModalFragment : BottomSheetDialogFragment() {
         eventPresenter.isEventReported = MutableLiveData()
         actionPresenter.isActionReported = MutableLiveData()
         discussionsPresenter.isConversationReported = MutableLiveData()
+        dismissCallback?.reloadView()
     }
 
     private fun handleCloseButton() {
@@ -267,14 +467,22 @@ class ReportModalFragment : BottomSheetDialogFragment() {
 
     companion object {
         const val TAG = "ReportModalFragment"
-        fun newInstance(id: Int, groupId: Int, reportType: ReportTypes): ReportModalFragment {
+        fun newInstance(id: Int, groupId: Int, reportType: ReportTypes , isFromMe:Boolean, isConv:Boolean, isOneToOne:Boolean): ReportModalFragment {
             val fragment = ReportModalFragment()
             val args = Bundle()
             args.putInt(Const.REPORTED_ID, id)
             args.putInt(Const.GROUP_ID, groupId)
+            args.putBoolean(Const.IS_FROM_ME, isFromMe)
             args.putInt(Const.REPORT_TYPE, reportType.code)
+            args.putInt(Const.REPORT_TYPE, reportType.code)
+            args.putBoolean(Const.IS_FROM_CONV, isConv)
+            args.putBoolean(Const.IS_ONE_TO_ONE, isOneToOne)
             fragment.arguments = args
             return fragment
         }
     }
+}
+
+interface onDissmissFragment{
+    fun reloadView()
 }
