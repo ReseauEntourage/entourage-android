@@ -131,9 +131,10 @@ class CommentsListAdapter(
             val isMe = comment.user?.userId == EntourageApplication.get().me()?.id
 
             if(comment.status == "deleted"){
+
                 val drawable = ContextCompat.getDrawable(context, R.drawable.ic_comment_deleted)
                 val vectorDrawable = DrawableCompat.wrap(drawable!!) as VectorDrawable
-                val width = 30
+                val width = 15
                 val height = (width * vectorDrawable.intrinsicHeight) / vectorDrawable.intrinsicWidth
                 val scaledDrawable = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
                 val canvas = Canvas(scaledDrawable)

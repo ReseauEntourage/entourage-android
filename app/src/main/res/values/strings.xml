@@ -439,7 +439,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="event_edit_recurrent_event">Modifier un évènement récurrent</string>
     <string name="error_event_end_time">L\'heure de fin ne peut pas dépasser minuit</string>
     <string name="deleted_publi">Cette publication a été supprimée.</string>
-    <string name="deleted_message">Ce message a été supprimé</string>
+    <string name="deleted_message">Ce message a été supprimé de la conversation</string>
     <string name="deleted_comment">Ce commentaire a été supprimé</string>
     <string name="deleted__my_message">Vous avez supprimé ce message</string>
 
