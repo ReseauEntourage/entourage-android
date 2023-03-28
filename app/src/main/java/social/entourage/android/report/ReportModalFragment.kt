@@ -228,6 +228,7 @@ class ReportModalFragment : BottomSheetDialogFragment() {
                     },{
                         AnalyticsEvents.logEvent(logEventTitleClick)
                         deleteMessage()
+                        dismissCallback?.reloadView()
                         callback?.onSuppressPost()
                         onClose()
                         dismiss()
@@ -243,6 +244,7 @@ class ReportModalFragment : BottomSheetDialogFragment() {
                     },{
                         AnalyticsEvents.logEvent(logEventTitleClick)
                         deleteMessage()
+                        dismissCallback?.reloadView()
                         callback?.onSuppressPost()
                         onClose()
                         dismiss()
@@ -459,7 +461,6 @@ class ReportModalFragment : BottomSheetDialogFragment() {
         eventPresenter.isEventReported = MutableLiveData()
         actionPresenter.isActionReported = MutableLiveData()
         discussionsPresenter.isConversationReported = MutableLiveData()
-        dismissCallback?.reloadView()
     }
 
     private fun handleCloseButton() {

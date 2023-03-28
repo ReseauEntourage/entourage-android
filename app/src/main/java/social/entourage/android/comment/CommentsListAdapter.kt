@@ -157,7 +157,11 @@ class CommentsListAdapter(
                 }
             }else{
                 binding.comment.text = comment.content
-                binding.comment.background = context.getDrawable(R.drawable.new_comment_background_beige)
+                if(isMe){
+                    binding.comment.background = context.getDrawable(R.drawable.new_comment_background_orange)
+                }else{
+                    binding.comment.background = context.getDrawable(R.drawable.new_comment_background_beige)
+                }
                 binding.comment.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null)
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     binding.comment.setTextColor(context.getColor(R.color.black))
@@ -167,9 +171,11 @@ class CommentsListAdapter(
                 onItemClick.onCommentReport(comment.id, isForEvent, isMe)
             }
             //here
-            binding.comment.setOnLongClickListener {
-                onItemClick.onCommentReport(comment.id, isForEvent, isMe)
-                return@setOnLongClickListener true
+            if(isMe && comment.status != "deleted" ){
+                binding.comment.setOnLongClickListener {
+                    onItemClick.onCommentReport(comment.id, isForEvent, isMe)
+                    return@setOnLongClickListener true
+                }
             }
 
             comment.createdTime?.let {
@@ -215,7 +221,7 @@ class CommentsListAdapter(
             }
 
             if (isMe || isConversation) {
-                binding.report.visibility = View.VISIBLE
+                binding.report.visibility = View.GONE
             }
             else {
                 binding.report.visibility = View.VISIBLE
