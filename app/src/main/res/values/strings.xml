@@ -298,7 +298,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="new_publications">Nouvelles publications</string>
     <string name="empty_state_comments">Pas encore de commentaires</string>
     <string name="retry_comment">Erreur de publication, réessayez</string>
-    <string name="join_group_to_comment"><![CDATA[* Pour commenter cette publication, rejoingnez le groupe « %s » !]]></string>
+    <string name="join_group_to_comment"><![CDATA[* Pour commenter cette publication, rejoignez le groupe « %s » !]]></string>
     <string name="report_sent">Votre demande a bien été envoyée. Elle sera traitée au plus vite par notre équipe.</string>
     <string name="post_deleted">Votre publication a été supprimée !.</string>
     <string name="message_deleted">Votre message a été supprimé !.</string>
