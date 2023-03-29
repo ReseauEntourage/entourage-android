@@ -57,6 +57,9 @@ class GroupEventsListAdapter(
         )
         return SectionViewHolder(binding)
     }
+    fun resetList(){
+
+    }
 
     override fun onCreateChildViewHolder(
         childViewGroup: ViewGroup,

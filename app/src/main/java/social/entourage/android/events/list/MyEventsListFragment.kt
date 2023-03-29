@@ -60,6 +60,11 @@ class MyEventsListFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
+        binding.progressBar.visibility = View.VISIBLE
+        sections.clear()
+        eventsAdapter.notifyDataChanged(sections)
+        eventsPresenter.getAllEvents.value?.clear()
+        eventsPresenter.isLastPage = false
         page = 0
         loadEvents()
     }
@@ -79,9 +84,16 @@ class MyEventsListFragment : Fragment() {
             )
         }
     }
-
-    private fun handleResponseGetEvents(allEvents: MutableList<Events>?) {
+    override fun onStop() {
+        super.onStop()
+        binding.progressBar.visibility = View.VISIBLE
         sections.clear()
+        eventsAdapter.notifyDataChanged(sections)
+        eventsPresenter.getAllEvents.value?.clear()
+        eventsPresenter.isLastPage = false
+        page = 0
+    }
+    private fun handleResponseGetEvents(allEvents: MutableList<Events>?) {
         sections = Utils.getSectionHeaders(allEvents, sections)
         binding.progressBar.visibility = View.GONE
         updateView(sections.isEmpty())
@@ -119,6 +131,7 @@ class MyEventsListFragment : Fragment() {
     }
 
     private fun loadEvents() {
+        Timber.wtf("hello here")
         binding.swipeRefresh.isRefreshing = false
         page++
         myId?.let { eventsPresenter.getMyEvents(it, page, EVENTS_PER_PAGE) } ?: run {
@@ -148,6 +161,7 @@ class MyEventsListFragment : Fragment() {
         }
 
     fun handlePagination(recyclerView: RecyclerView) {
+        Timber.wtf("wtf hello")
         val layoutManager = recyclerView.layoutManager as LinearLayoutManager?
         layoutManager?.let {
             val visibleItemCount: Int = layoutManager.childCount

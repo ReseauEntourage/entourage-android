@@ -32,6 +32,8 @@
     <color name="background_login_light">#FFFFFF</color>
     <color name="background_login_grey">#F7F7F7</color>
     <color name="text_dark">#4f4f4f</color>
+    <color name="grey_deleted_icon">#91908F</color>
+    <color name="grey_deleted_cell">#E8E5E3</color>
 
     <!-- Profile -->
     <color name="profile_name">@color/greyish_brown</color>

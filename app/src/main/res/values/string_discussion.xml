@@ -13,9 +13,9 @@
     <string name="title_param_post">Paramètres de la publication</string>
     <string name="title_param_message">Paramètres d\'un message</string>
     <string name="title_param_comment">Paramètres d\'un commentaire</string>
-    <string name="discussion_ask_supress">Souhaitez vous supprimer cette publication ?</string>
-    <string name="discussion_ask_supress_message">Souhaitez vous supprimer ce message de la conversation ?</string>
-    <string name="discussion_ask_supress_comment">Souhaitez vous supprimer ce commentaire ?</string>
+    <string name="discussion_ask_supress">Souhaitez-vous supprimer cette publication ?</string>
+    <string name="discussion_ask_supress_message">Souhaitez-vous supprimer ce message de la conversation ?</string>
+    <string name="discussion_ask_supress_comment">Souhaitez-vous supprimer ce commentaire ?</string>
     <string name="discussion_button_supress">Supprimer</string>
     <string name="discussion_settings_signal_sub">Signalez cette conversation à l\'équipe Entourage.</string>
     <string name="discussion_settings_profil">Voir le profil</string>
@@ -37,7 +37,7 @@
 
     //Pop Blockuser
     <string name="params_block_user_conv_pop_title">Bloquer l’utilisateur</string>
-    <string name="params_block_user_conv_pop_message">Souhaitez vous bloquer %s ?\nCet utilisateur ne pourra plus vous envoyer de message. Vous pourrez débloquer l’utilisateur à tout moment depuis les paramètres de votre profil.</string>
+    <string name="params_block_user_conv_pop_message">Souhaitez-vous bloquer %s ?\nCet utilisateur ne pourra plus vous envoyer de message. Vous pourrez débloquer l’utilisateur à tout moment depuis les paramètres de votre profil.</string>
     <string name="params_block_user_conv_pop_bt_quit">Bloquer</string>
     <string name="params_block_user_conv_pop_bt_cancel">Annuler</string>
 
