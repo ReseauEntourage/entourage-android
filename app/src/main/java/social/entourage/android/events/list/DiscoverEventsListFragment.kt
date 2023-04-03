@@ -63,6 +63,8 @@ class DiscoverEventsListFragment : Fragment() {
         return binding.root
     }
 
+
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         eventsPresenter = ViewModelProvider(requireActivity()).get(EventsPresenter::class.java)
@@ -74,6 +76,27 @@ class DiscoverEventsListFragment : Fragment() {
         initializeEvents()
         handleSwipeRefresh()
         AnalyticsEvents.logEvent(AnalyticsEvents.Event_view_discover)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        binding.progressBar.visibility = View.VISIBLE
+        sections.clear()
+        eventsAdapter.notifyDataChanged(sections)
+        eventsPresenter.getAllEvents.value?.clear()
+        eventsPresenter.isLastPage = false
+        page = 0
+        loadEvents()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        binding.progressBar.visibility = View.VISIBLE
+        sections.clear()
+        eventsAdapter.notifyDataChanged(sections)
+        eventsPresenter.getAllEvents.value?.clear()
+        eventsPresenter.isLastPage = false
+        page = 0
     }
 
     private fun handleResponseGetEvents(allEvents: MutableList<Events>?) {

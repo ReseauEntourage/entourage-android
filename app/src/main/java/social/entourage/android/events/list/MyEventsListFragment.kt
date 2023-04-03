@@ -131,7 +131,6 @@ class MyEventsListFragment : Fragment() {
     }
 
     private fun loadEvents() {
-        Timber.wtf("hello here")
         binding.swipeRefresh.isRefreshing = false
         page++
         myId?.let { eventsPresenter.getMyEvents(it, page, EVENTS_PER_PAGE) } ?: run {
