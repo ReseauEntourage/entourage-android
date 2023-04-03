@@ -103,9 +103,8 @@ object Utils {
     ): MutableList<SectionHeader> {
         var newSections: MutableList<SectionHeader>? = null
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            if (allEvents != null) {
-                allEvents.sortBy { it.metadata?.startsAt }
-            }
+            allEvents?.sortBy { it.metadata?.startsAt }
+
             val map = allEvents?.groupBy {
                 YearMonth.from(
                     ZonedDateTime.ofInstant(
@@ -116,21 +115,23 @@ object Utils {
             }
 
             newSections = map?.map {
-                SectionHeader(it.value, it.key.format(DateTimeFormatter.ofPattern("LLLL yyyy")))
+                val sortedEvents = it.value.sortedBy { event -> event.metadata?.startsAt }
+                SectionHeader(sortedEvents, it.key.format(DateTimeFormatter.ofPattern("LLLL yyyy")))
             }?.toMutableList()
         }
+
         return newSections?.let {
             val allSections = sections + newSections
             val sectionsWithoutDuplicates =
                 allSections.groupBy { header -> header.sectionText }.map { mapGrouped ->
                     val events = mapGrouped.value.map { it.childList }.flatten()
+                        .sortedBy { event -> event.metadata?.startsAt }
                     SectionHeader(events, mapGrouped.key)
                 }.toMutableList()
 
             sectionsWithoutDuplicates
         } ?: sections
     }
-
     fun showAddToCalendarPopUp(context: Context, event: EventModel) {
         CustomAlertDialog.showWithNoDefined(
             context,

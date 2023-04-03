@@ -93,12 +93,14 @@ class MyEventsListFragment : Fragment() {
         eventsPresenter.isLastPage = false
         page = 0
     }
+
     private fun handleResponseGetEvents(allEvents: MutableList<Events>?) {
         sections = Utils.getSectionHeaders(allEvents, sections)
         binding.progressBar.visibility = View.GONE
         updateView(sections.isEmpty())
         eventsAdapter.notifyDataChanged(sections)
     }
+
     private fun handleDiscoverEvent(allEvents: MutableList<Events>?) {
         if(isAdded){
             binding.progressBar.visibility = View.GONE
@@ -160,7 +162,6 @@ class MyEventsListFragment : Fragment() {
         }
 
     fun handlePagination(recyclerView: RecyclerView) {
-        Timber.wtf("wtf hello")
         val layoutManager = recyclerView.layoutManager as LinearLayoutManager?
         layoutManager?.let {
             val visibleItemCount: Int = layoutManager.childCount

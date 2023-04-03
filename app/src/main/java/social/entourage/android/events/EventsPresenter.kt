@@ -99,11 +99,11 @@ class EventsPresenter: ViewModel() {
                     call: Call<EventsListWrapper>,
                     response: Response<EventsListWrapper>
                 ) {
-                    Timber.wtf("wtf " + page )
-                    Timber.wtf("wtf " + per )
+
                     response.body()?.let { allEventsWrapper ->
                         if (allEventsWrapper.allEvents.size < EVENTS_PER_PAGE) isLastPage = true
                         getAllEvents.value = allEventsWrapper.allEvents
+
                     }
                 }
 
