@@ -1,6 +1,7 @@
 package social.entourage.android.home.pedago
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +13,7 @@ import social.entourage.android.home.HomePresenter
 import social.entourage.android.api.model.Category
 import social.entourage.android.api.model.Pedago
 import social.entourage.android.tools.log.AnalyticsEvents
+import timber.log.Timber
 
 class PedagoListFragment : Fragment() {
 
@@ -86,13 +88,14 @@ class PedagoListFragment : Fragment() {
         clearFilter()
         when (filter) {
             Category.ALL -> {
+                Timber.wtf("wtf")
+                AnalyticsEvents.logEvent(AnalyticsEvents.Pedago_View_all_tag)
                 sections.add(
                     SectionHeader(
                         childListUnderstand,
                         getString(Category.UNDERSTAND.id)
                     )
                 )
-                AnalyticsEvents.logEvent(AnalyticsEvents.Pedago_View_all_tag)
                 sections.add(SectionHeader(childListAct, getString(Category.ACT.id)))
                 sections.add(
                     SectionHeader(
