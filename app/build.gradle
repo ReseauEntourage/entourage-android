@@ -105,11 +105,13 @@ android {
 
     buildTypes {
         release {
+            resValue "string", "app_host", "entourage-webapp-preprod.herokuapp.com"
             productFlavors.entourage.signingConfig signingConfigs.googleplay
             debuggable false
         }
 
         debug {
+            resValue "string", "app_host", "entourage-webapp-preprod.herokuapp.com"
             signingConfig signingConfigs.debug
             applicationIdSuffix '.debug'
             firebaseCrashlytics {

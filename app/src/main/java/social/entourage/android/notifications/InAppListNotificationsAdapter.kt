@@ -51,8 +51,8 @@ class InAppListNotificationsAdapter(
                 titleText = context.getString(R.string.notif_contrib_title)
             }else if(notif.instanceType == "solicitations" || notif.instanceType == "solicitation"){
                 titleText = context.getString(R.string.notif_solicitation_title)
-            }else if(true){
-                //HERE CHANGE ADD TITLE NOTIF TO titleText
+            }else if(!notif.title.isNullOrEmpty()){
+                titleText = notif.title
             }
 
             val builder = SpannableStringBuilder()
