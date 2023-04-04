@@ -52,6 +52,7 @@ class HelpAboutFragment : BottomSheetDialogFragment() {
             donation.layout.setOnClickListener { onDonate() }
             ambassadorProgram.layout.setOnClickListener { onAmbassadorClicked() }
             ethic.layout.setOnClickListener { onEthicChartClicked() }
+            partner.layout.setOnClickListener { onPartnerClicked() }
         }
     }
 
@@ -127,6 +128,12 @@ class HelpAboutFragment : BottomSheetDialogFragment() {
 
     private fun onEthicChartClicked() {
         val chartUrl = activity?.getString(R.string.disclaimer_link_public)
+        val chartIntent = Intent(Intent.ACTION_VIEW, Uri.parse(chartUrl))
+        launchActivity(chartIntent)
+    }
+
+    private fun onPartnerClicked() {
+        val chartUrl = activity?.getString(R.string.url_app_partner)
         val chartIntent = Intent(Intent.ACTION_VIEW, Uri.parse(chartUrl))
         launchActivity(chartIntent)
     }

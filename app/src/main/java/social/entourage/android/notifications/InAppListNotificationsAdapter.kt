@@ -1,6 +1,10 @@
 package social.entourage.android.notifications
 
 import android.content.Context
+import android.graphics.Typeface
+import android.text.Spannable
+import android.text.SpannableStringBuilder
+import android.text.style.StyleSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -39,7 +43,31 @@ class InAppListNotificationsAdapter(
             binding.card.setOnClickListener {
                 onItemClickListener.onItemClick(notif,position)
             }
-            binding.title.text = notif.content
+
+            //HERE CHANGE NOTIF TITLE
+
+            var titleText = ""
+            if(notif.instanceType == "contributions" || notif.instanceType == "contribution" ){
+                titleText = context.getString(R.string.notif_contrib_title)
+            }else if(notif.instanceType == "solicitations" || notif.instanceType == "solicitation"){
+                titleText = context.getString(R.string.notif_solicitation_title)
+            }else if(true){
+                //HERE CHANGE ADD TITLE NOTIF TO titleText
+            }
+
+            val builder = SpannableStringBuilder()
+
+            // Ajoute le texte de titre en gras
+            val boldSpan = StyleSpan(Typeface.BOLD)
+            builder.append(titleText)
+            builder.setSpan(boldSpan, 0, titleText.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+            // Ajoute une ligne vide
+            builder.append(" ")
+            // Ajoute le texte de contenu en normal
+            builder.append(notif.content)
+            // Affiche le texte dans le TextView
+            binding.title.text = builder
+            //binding.title.text = notif.content
             binding.date.text = notif.createdAt?.let { Utils.dateAsDurationFromNow(it,context) }
 
             notif.imageUrl?.let {
