@@ -8,6 +8,6 @@
     <string name="param_notifs_switch_actions">Notifications dons &amp; service</string>
     <string name="param_notifs_validate">Appliquer les modifications</string>
     <string name="notif_contrib_title"> Un voisin propose une nouvelle entraide. Peut-être que cela pourrait vous intéresser ?</string>
-    <string name="notif_solicitation_title">Pour une demande : Un voisin recherche un équipement. Peut-être que vous pourriez l’aider ?</string>
+    <string name="notif_solicitation_title">Un voisin recherche un équipement. Peut-être que vous pourriez l’aider ?</string>
 
 </resources>

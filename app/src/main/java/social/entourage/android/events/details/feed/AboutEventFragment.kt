@@ -339,41 +339,43 @@ class AboutEventFragment : Fragment(), OnMapReadyCallback {
     }
 
     private fun updateButtonJoin() {
-        lateinit var label: String
-        val textColor: Int
-        val background: Drawable?
-        val rightDrawable: Drawable?
+        if(isAdded){
+            lateinit var label: String
+            val textColor: Int
+            val background: Drawable?
+            val rightDrawable: Drawable?
 
-        if (event?.member == true) {
-            label = getString(R.string.participating)
-            textColor = ContextCompat.getColor(requireContext(), R.color.orange)
-            background = ResourcesCompat.getDrawable(
-                resources,
-                R.drawable.new_bg_rounded_button_orange_stroke,
-                null
-            )
-            rightDrawable = ResourcesCompat.getDrawable(resources, R.drawable.new_check, null)
-        } else {
-            label = getString(R.string.participate)
-            textColor = ContextCompat.getColor(requireContext(), R.color.white)
-            background = ResourcesCompat.getDrawable(
-                resources,
-                R.drawable.new_bg_rounded_button_orange_fill,
-                null
-            )
-            rightDrawable =
-                ResourcesCompat.getDrawable(resources, R.drawable.new_plus_white, null)
-        }
-        with(binding) {
-            join.text = label
-            join.setTextColor(textColor)
-            join.background = background
-            join.setCompoundDrawablesWithIntrinsicBounds(
-                null,
-                null,
-                rightDrawable,
-                null
-            )
+            if (event?.member == true) {
+                label = getString(R.string.participating)
+                textColor = ContextCompat.getColor(requireContext(), R.color.orange)
+                background = ResourcesCompat.getDrawable(
+                    resources,
+                    R.drawable.new_bg_rounded_button_orange_stroke,
+                    null
+                )
+                rightDrawable = ResourcesCompat.getDrawable(resources, R.drawable.new_check, null)
+            } else {
+                label = getString(R.string.participate)
+                textColor = ContextCompat.getColor(requireContext(), R.color.white)
+                background = ResourcesCompat.getDrawable(
+                    resources,
+                    R.drawable.new_bg_rounded_button_orange_fill,
+                    null
+                )
+                rightDrawable =
+                    ResourcesCompat.getDrawable(resources, R.drawable.new_plus_white, null)
+            }
+            with(binding) {
+                join.text = label
+                join.setTextColor(textColor)
+                join.background = background
+                join.setCompoundDrawablesWithIntrinsicBounds(
+                    null,
+                    null,
+                    rightDrawable,
+                    null
+                )
+            }
         }
     }
 
