@@ -26,7 +26,8 @@
                 android:src="@drawable/ic_entourage_logo_orange"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                android:visibility="gone"/>
 
             <TextView
                 android:id="@+id/welcome_user"
@@ -35,10 +36,11 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
                 android:maxLines="2"
-                android:paddingHorizontal="16dp"
-                app:layout_constraintBottom_toBottomOf="@+id/logoEntourage"
+                android:paddingHorizontal="12dp"
+                app:layout_constraintBottom_toBottomOf="@+id/linearLayout6"
+                app:layout_constraintTop_toTopOf="@+id/linearLayout6"
                 app:layout_constraintEnd_toStartOf="@+id/ui_layout_notif"
-                app:layout_constraintStart_toEndOf="@+id/logoEntourage"
+                app:layout_constraintStart_toEndOf="@+id/linearLayout6"
                 tools:text="Bienvenue !" />
 
             <LinearLayout
@@ -47,8 +49,8 @@
                 android:layout_height="43dp"
                 android:gravity="center"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" >
 
                 <ImageView
                     android:id="@+id/image_user"
@@ -64,7 +66,7 @@
                 android:layout_height="36dp"
                 android:background="@drawable/bg_partner_logo"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/linearLayout6"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <ImageView

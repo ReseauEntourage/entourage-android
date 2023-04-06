@@ -47,10 +47,13 @@ class InAppListNotificationsAdapter(
             //HERE CHANGE NOTIF TITLE
 
             var titleText = ""
+            var contentText = notif.content
             if(notif.instanceType == "contributions" || notif.instanceType == "contribution" ){
                 titleText = context.getString(R.string.notif_contrib_title)
+                contentText = notif.title
             }else if(notif.instanceType == "solicitations" || notif.instanceType == "solicitation"){
                 titleText = context.getString(R.string.notif_solicitation_title)
+                contentText = notif.title
             }else if(!notif.title.isNullOrEmpty()){
                 titleText = notif.title
             }
@@ -64,7 +67,7 @@ class InAppListNotificationsAdapter(
             // Ajoute une ligne vide
             builder.append(" ")
             // Ajoute le texte de contenu en normal
-            builder.append(notif.content)
+            builder.append(contentText)
             // Affiche le texte dans le TextView
             binding.title.text = builder
             //binding.title.text = notif.content
