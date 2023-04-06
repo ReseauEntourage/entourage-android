@@ -29,6 +29,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:maxLines="3"
+            android:ellipsize="end"
             app:layout_constraintEnd_toStartOf="@+id/next_icon"
             app:layout_constraintStart_toEndOf="@+id/image_card"
             app:layout_constraintTop_toTopOf="parent"
