@@ -10,6 +10,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.NotificationManagerCompat
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
@@ -25,6 +26,7 @@ import social.entourage.android.api.MetaDataRepository
 import social.entourage.android.api.model.notification.PushNotificationMessage
 import social.entourage.android.base.BaseSecuredActivity
 import social.entourage.android.base.location.EntLocation
+import social.entourage.android.deeplinks.UniversalLinkManager
 import social.entourage.android.guide.GDSMainActivity
 import social.entourage.android.notifications.PushNotificationManager
 import social.entourage.android.home.CommunicationHandlerBadgeViewModel
@@ -59,11 +61,35 @@ class MainActivity : BaseSecuredActivity() {
             updateAnalyticsInfo()
             //TODO authenticationController.me?.unreadCount?.let { bottomBar?.updateBadgeCountForUser(it) }
         }
+
+        //UniversalLinkHandler
+        lifecycleScope.launch(Dispatchers.Main) {
+            handleUniversalLinkFromMain()
+        }
     }
 
     override fun onStart() {
         presenter.checkForUpdate(this)
         super.onStart()
+    }
+
+    suspend fun handleUniversalLinkFromMain(){
+
+        val uri = intent?.data
+        if (uri != null) {
+            UniversalLinkManager.handleUniversalLink(this, uri)
+        }
+        //UniversalLinkManager.handleUniversalLink(this , Uri.parse(EntourageLink.HOME.link))
+        //UniversalLinkManager.handleUniversalLink(this , Uri.parse(EntourageLink.GROUP.link))
+        //UniversalLinkManager.handleUniversalLink(this , Uri.parse(EntourageLink.OUTING.link))
+        //UniversalLinkManager.handleUniversalLink(this , Uri.parse(EntourageLink.OUTINGS_LIST.link))
+        //UniversalLinkManager.handleUniversalLink(this , Uri.parse(EntourageLink.MESSAGE.link))
+        //UniversalLinkManager.handleUniversalLink(this , Uri.parse(EntourageLink.NEW_CONTRIBUTION.link))
+        //UniversalLinkManager.handleUniversalLink(this , Uri.parse(EntourageLink.NEW_SOLICITATION.link))
+        //UniversalLinkManager.handleUniversalLink(this , Uri.parse(EntourageLink.CONTRIBUTIONS_LIST.link))
+        //UniversalLinkManager.handleUniversalLink(this , Uri.parse(EntourageLink.SOLICITATIONS_LIST.link))
+        //UniversalLinkManager.handleUniversalLink(this , Uri.parse(EntourageLink.CONTRIBUTION_DETAIL.link))
+        //UniversalLinkManager.handleUniversalLink(this , Uri.parse(EntourageLink.SOLICITATION_DETAIL.link))
     }
 
     fun displayAppUpdateDialog() {
@@ -218,7 +244,6 @@ class MainActivity : BaseSecuredActivity() {
 
             val navController: NavController =
             androidx.navigation.Navigation.findNavController(this, social.entourage.android.R.id.nav_host_fragment_new_activity_main)
-
             NavigationUI.onNavDestinationSelected(item, navController)
         }
     }
@@ -276,4 +301,19 @@ class MainActivity : BaseSecuredActivity() {
     fun deleteApplicationInfo(listener:() -> Unit) {
         presenter.deleteApplicationInfo(listener)
     }
+}
+
+
+enum class EntourageLink(val link: String) {
+    HOME("https://app.entourage.social"),
+    GROUP("https://app.entourage.social/groups/bb8c3e77aa95"),
+    OUTING("https://app.entourage.social/outings/ebJUCN-woYgM"),
+    OUTINGS_LIST("https://app.entourage.social/outings"),
+    MESSAGE("https://app.entourage.social/messages/er2BVAa5Vb4U"),
+    NEW_CONTRIBUTION("https://app.entourage.social/contributions/new"),
+    NEW_SOLICITATION("https://app.entourage.social/solicitations/new"),
+    CONTRIBUTIONS_LIST("https://app.entourage.social/contributions"),
+    SOLICITATIONS_LIST("https://app.entourage.social/solicitations"),
+    CONTRIBUTION_DETAIL("https://app.entourage.social/contributions/er2BVAa5Vb4U"),
+    SOLICITATION_DETAIL("https://app.entourage.social/solicitations/eibewY3GW-ek")
 }
