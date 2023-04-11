@@ -62,10 +62,7 @@ class ProfileFragment : Fragment() {
                     it.isEnabled = true
 
                 }catch(e:Exception){
-                    it.isEnabled = false
-                    val action = ProfileFragmentDirections.actionProfileFragmentToEditProfileFragment()
-                    findNavController().navigate(action)
-                    it.isEnabled = true
+                    
                 }
             }
         }
