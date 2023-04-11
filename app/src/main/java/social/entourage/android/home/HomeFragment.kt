@@ -97,7 +97,6 @@ class HomeFragment : Fragment() {
 */
 
     private fun updateNotifsCount(count: Int) {
-        Timber.wtf("wtf " + count)
         context?.resources?.let { resources ->
             val bgColor = if (count > 0) {
                 ResourcesCompat.getColor(resources, R.color.orange, null)

@@ -74,7 +74,6 @@ class MainActivity : BaseSecuredActivity() {
     }
 
     suspend fun handleUniversalLinkFromMain(){
-        Timber.wtf("wtf " + intent?.data)
         val uri = intent?.data
         if (uri != null) {
             UniversalLinkManager.handleUniversalLink(this, uri)
@@ -249,8 +248,7 @@ class MainActivity : BaseSecuredActivity() {
                     AnalyticsEvents.logEvent(AnalyticsEvents.Action_Tabbar_events)
                 }
             }
-            Timber.wtf("wtf " + item)
-            Timber.wtf("wtf " + item.itemId)
+
             val navController: NavController =
             androidx.navigation.Navigation.findNavController(this, social.entourage.android.R.id.nav_host_fragment_new_activity_main)
             NavigationUI.onNavDestinationSelected(item, navController)
