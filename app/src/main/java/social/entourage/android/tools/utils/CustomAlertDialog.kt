@@ -16,6 +16,7 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
 import social.entourage.android.R
 import social.entourage.android.tools.log.AnalyticsEvents
+import timber.log.Timber
 
 object CustomAlertDialog {
     fun showWithCancelFirst(

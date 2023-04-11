@@ -57,7 +57,9 @@ object AnalyticsEvents {
     const val Delete_comm = "View__DeleteCommPop"
     const val Click_delete_mess = "Clic_DeleteMessagePop_Delete"
     const val Delete_mess = "View__DeleteMessagePop"
-
+    //Action_Group_Pop_Ipost
+    //View_Group_Pop
+    //Action_Group_Pop_Iclose
     //Group Present Pop
     const val I_present_view_pop = "View__Group__Pop"
     const val I_present_click_i_post = "Action__Group__Pop_Ipost"

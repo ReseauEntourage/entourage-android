@@ -201,7 +201,7 @@ class EventsPresenter: ViewModel() {
     }
 
     fun getEvent(id: Int) {
-        EntourageApplication.get().apiModule.eventsRequest.getEvent(id)
+        EntourageApplication.get().apiModule.eventsRequest.getEvent(id.toString())
             .enqueue(object : Callback<EventWrapper> {
                 override fun onResponse(
                     call: Call<EventWrapper>,

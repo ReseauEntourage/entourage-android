@@ -75,6 +75,7 @@ class InAppNotificationListFragment : Fragment() {
     }
 
     private fun checkUnread() {
+
         if (hasToShowDot) {
             binding.iconBell.setImageDrawable(resources.getDrawable(R.drawable.ic_new_notif_on))
             val timer = object: CountDownTimer(2000, 1000) {

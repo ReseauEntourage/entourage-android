@@ -18,6 +18,9 @@ import social.entourage.android.tools.utils.Const
 import timber.log.Timber
 
 object UniversalLinkManager {
+    /*private const val prodURL = "https://www.entourage.social"
+    private const val stagingURL = "https://www.entourage.social"*/
+
     private const val prodURL = "app.entourage.social"
     private const val stagingURL = "entourage-webapp-preprod.herokuapp.com"
 
@@ -78,13 +81,8 @@ object UniversalLinkManager {
                             ), 0
                         )
                     } else {
-                        val navController: NavController =
-                            androidx.navigation.Navigation.findNavController((context as MainActivity), social.entourage.android.R.id.nav_host_fragment_new_activity_main)
-                        // Naviguer vers le EventsFragment avec l'argument isDiscover à true
-                        val bundle = Bundle().apply {
-                            putBoolean("isDiscover", true)
-                        }
-                        navController.navigate(R.id.events_fragment, bundle)
+                        (context as? MainActivity)?.goEvent()
+
                     }
                 }
                 pathSegments.contains("neighborhoods") || pathSegments.contains("groups") -> {
@@ -99,8 +97,8 @@ object UniversalLinkManager {
                     }
                 }
                 pathSegments.contains("conversations") || pathSegments.contains("messages") -> {
-                    val conversationId = uri.getQueryParameter("conversation_id") ?: "AAAAA"
-                    //HereCOnversationList
+                    (context as? MainActivity)?.goConv()
+
                 }
                 pathSegments.contains("solicitations") -> {
                     if (pathSegments.contains("new")) {
