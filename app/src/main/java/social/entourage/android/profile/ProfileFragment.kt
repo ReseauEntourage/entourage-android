@@ -62,7 +62,7 @@ class ProfileFragment : Fragment() {
                     it.isEnabled = true
 
                 }catch(e:Exception){
-                    
+
                 }
             }
         }
