@@ -105,13 +105,11 @@ android {
 
     buildTypes {
         release {
-            resValue "string", "app_host", "app.entourage.social"
             productFlavors.entourage.signingConfig signingConfigs.googleplay
             debuggable false
         }
 
         debug {
-            resValue "string", "app_host", "app.entourage.social"
             signingConfig signingConfigs.debug
             applicationIdSuffix '.debug'
             firebaseCrashlytics {

@@ -168,8 +168,8 @@
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="https" android:host="app.entourage.social" />
-                <data android:scheme="https" android:host="app.entourage.social" android:pathPattern="/groups/.*" />
+                <data android:scheme="https" android:host="preprod.entourage.social" />
+                <data android:scheme="https" android:host="preprod.entourage.social" android:pathPattern="/groups/.*" />
                 <data android:scheme="https" android:host="app.entourage.social" android:pathPattern="/outings/.*" />
                 <data android:scheme="https" android:host="app.entourage.social" android:pathPattern="/outings" />
                 <data android:scheme="https" android:host="app.entourage.social" android:pathPattern="/messages/.*" />

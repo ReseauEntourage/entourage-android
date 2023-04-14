@@ -64,4 +64,6 @@ object Const {
     const val IS_CREATOR = "isCreator"
     const val NOTIF_COUNT = "notifCount"
 
+    const val APPLINK_RESSOURCE_ID = "applinkRessourceId"
+
 }

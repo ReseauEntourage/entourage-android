@@ -11,20 +11,25 @@ import social.entourage.android.EntourageApplication
 import social.entourage.android.MainActivity
 import social.entourage.android.R
 import social.entourage.android.actions.create.CreateActionActivity
+import social.entourage.android.actions.detail.ActionDetailActivity
+import social.entourage.android.api.model.Action
+import social.entourage.android.api.model.Events
+import social.entourage.android.api.model.Group
 import social.entourage.android.discussions.DetailConversationActivity
 import social.entourage.android.groups.details.feed.FeedActivity
 import social.entourage.android.home.pedago.PedagoListActivity
 import social.entourage.android.tools.utils.Const
 import timber.log.Timber
 
-object UniversalLinkManager {
+class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback {
     /*private const val prodURL = "https://www.entourage.social"
     private const val stagingURL = "https://www.entourage.social"*/
 
-    private const val prodURL = "app.entourage.social"
-    private const val stagingURL = "entourage-webapp-preprod.herokuapp.com"
+    private val prodURL = "app.entourage.social"
+    private val stagingURL = "entourage-webapp-preprod.herokuapp.com"
+    val presenter:UniversalLinkPresenter = UniversalLinkPresenter(this)
 
-    fun handleUniversalLink(context: Context, uri: Uri) {
+    fun handleUniversalLink(uri: Uri) {
         val pathSegments = uri.pathSegments
 
         uri.queryParameterNames.forEach { name ->
@@ -71,15 +76,8 @@ object UniversalLinkManager {
                 pathSegments.contains("outings") -> {
                     if (pathSegments.size > 2) {
                         val outingId = pathSegments[2]
-                        (context as? Activity)?.startActivityForResult(
-                            Intent(
-                                context,
-                                social.entourage.android.events.details.feed.FeedActivity::class.java
-                            ).putExtra(
-                                Const.EVENT_ID,
-                                outingId
-                            ), 0
-                        )
+                        presenter.getEvent(outingId)
+
                     } else {
                         (context as? MainActivity)?.goEvent()
 
@@ -88,12 +86,7 @@ object UniversalLinkManager {
                 pathSegments.contains("neighborhoods") || pathSegments.contains("groups") -> {
                     if (pathSegments.size > 2) {
                         val neighborhoodId = pathSegments[2]
-                        (context as? Activity)?.startActivityForResult(
-                            Intent(context, FeedActivity::class.java).putExtra(
-                                Const.GROUP_ID,
-                                neighborhoodId
-                                ), 0
-                        )
+                        presenter.getGroup(neighborhoodId)
                     }
                 }
                 pathSegments.contains("conversations") || pathSegments.contains("messages") -> {
@@ -108,7 +101,9 @@ object UniversalLinkManager {
                     } else {
                         if (pathSegments.size > 2) {
                             val soliciationId = pathSegments[2]
-                            //HERE GO SOLICITTION
+                            presenter.getDetailAction(soliciationId,true)
+                        }else{
+                            (context as? MainActivity)?.goContrib()
                         }
                     }
                 }
@@ -119,14 +114,17 @@ object UniversalLinkManager {
                         (context as MainActivity).startActivityForResult(intent, 0)
                     } else {
                         if (pathSegments.size > 2) {
-                            val soliciationId = pathSegments[2]
-                           // GO CONTRIB
+                            val contribId = pathSegments[2]
+                            presenter.getDetailAction(contribId,false)
+                        }else{
+                            (context as? MainActivity)?.goDemand()
                         }
                     }
                 }
+
                 pathSegments.contains("resources") -> {
                     if (pathSegments.size > 2) {
-                        val soliciationId = pathSegments[2]
+                        val resourcesId = pathSegments[2]
                         (context as MainActivity).startActivityForResult(
                             Intent(
                                 context,
@@ -138,4 +136,39 @@ object UniversalLinkManager {
                 }
             }
         }
+
+    override fun onRetrievedEvent(event: Events) {
+        (context as? Activity)?.startActivityForResult(
+            Intent(
+                context,
+                social.entourage.android.events.details.feed.FeedActivity::class.java
+            ).putExtra(
+                Const.EVENT_ID,
+                event.id
+            ), 0
+        )
     }
+
+    override fun onRetrievedGroup(group: Group) {
+        (context as? Activity)?.startActivityForResult(
+            Intent(context, FeedActivity::class.java).putExtra(
+                Const.GROUP_ID,
+                group.id
+            ), 0
+        )
+    }
+
+    override fun onRetrievedAction(action: Action,isContrib:Boolean) {
+        if(isContrib){
+            Intent(context, ActionDetailActivity::class.java)
+                .putExtra(Const.ACTION_ID, action.id)
+                .putExtra(Const.IS_ACTION_DEMAND, false)
+                .putExtra(Const.IS_ACTION_MINE, false)
+        }else{
+            Intent(context, ActionDetailActivity::class.java)
+                .putExtra(Const.ACTION_ID, action.id)
+                .putExtra(Const.IS_ACTION_DEMAND, true)
+                .putExtra(Const.IS_ACTION_MINE, false)
+        }
+    }
+}

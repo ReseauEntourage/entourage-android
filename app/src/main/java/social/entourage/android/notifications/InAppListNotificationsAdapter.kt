@@ -47,7 +47,12 @@ class InAppListNotificationsAdapter(
             //HERE CHANGE NOTIF TITLE
 
             var titleText = ""
-            var contentText = "\"${notif.content}\""
+            var contentText = ""
+            if(notif.instanceType == "solicitation" || notif.instanceType == "contribution"){
+                contentText = "\"${notif.content}\""
+            }else if (!notif.content.isNullOrEmpty()) {
+                contentText = notif.content
+            }
            if(!notif.title.isNullOrEmpty()){
                 titleText = notif.title
             }

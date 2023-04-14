@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.NotificationManagerCompat
+import androidx.core.os.bundleOf
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
@@ -40,7 +41,7 @@ class MainActivity : BaseSecuredActivity() {
     private val presenter: MainPresenter = MainPresenter(this)
 
     private lateinit var viewModel: CommunicationHandlerBadgeViewModel
-
+    private val universalLinkManager = UniversalLinkManager(this)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.new_activity_main)
@@ -49,6 +50,7 @@ class MainActivity : BaseSecuredActivity() {
 
 
         viewModel = ViewModelProvider(this)[CommunicationHandlerBadgeViewModel::class.java]
+
 
         viewModel.badgeCount.observe(this,::handleUpdateBadgeResponse)
 
@@ -76,19 +78,19 @@ class MainActivity : BaseSecuredActivity() {
     suspend fun handleUniversalLinkFromMain(){
         val uri = intent?.data
         if (uri != null) {
-            UniversalLinkManager.handleUniversalLink(this, uri)
+            universalLinkManager.handleUniversalLink(uri)
         }
-        //UniversalLinkManager.handleUniversalLink(this , Uri.parse(EntourageLink.HOME.link))
-        //UniversalLinkManager.handleUniversalLink(this , Uri.parse(EntourageLink.GROUP.link))
-        //UniversalLinkManager.handleUniversalLink(this , Uri.parse(EntourageLink.OUTING.link))
-        //UniversalLinkManager.handleUniversalLink(this , Uri.parse(EntourageLink.OUTINGS_LIST.link))
-        //UniversalLinkManager.handleUniversalLink(this , Uri.parse(EntourageLink.MESSAGE.link))
-        //UniversalLinkManager.handleUniversalLink(this , Uri.parse(EntourageLink.NEW_CONTRIBUTION.link))
-        //UniversalLinkManager.handleUniversalLink(this , Uri.parse(EntourageLink.NEW_SOLICITATION.link))
-        //UniversalLinkManager.handleUniversalLink(this , Uri.parse(EntourageLink.CONTRIBUTIONS_LIST.link))
-        //UniversalLinkManager.handleUniversalLink(this , Uri.parse(EntourageLink.SOLICITATIONS_LIST.link))
-        //UniversalLinkManager.handleUniversalLink(this , Uri.parse(EntourageLink.CONTRIBUTION_DETAIL.link))
-        //UniversalLinkManager.handleUniversalLink(this , Uri.parse(EntourageLink.SOLICITATION_DETAIL.link))
+        //UniversalLinkManager.handleUniversalLink(Uri.parse(EntourageLink.HOME.link))
+        //UniversalLinkManager.handleUniversalLink(Uri.parse(EntourageLink.GROUP.link))
+        //UniversalLinkManager.handleUniversalLink(Uri.parse(EntourageLink.OUTING.link))
+        //UniversalLinkManager.handleUniversalLink(Uri.parse(EntourageLink.OUTINGS_LIST.link))
+        //UniversalLinkManager.handleUniversalLink(Uri.parse(EntourageLink.MESSAGE.link))
+        //UniversalLinkManager.handleUniversalLink(Uri.parse(EntourageLink.NEW_CONTRIBUTION.link))
+        //UniversalLinkManager.handleUniversalLink(Uri.parse(EntourageLink.NEW_SOLICITATION.link))
+        //UniversalLinkManager.handleUniversalLink(Uri.parse(EntourageLink.CONTRIBUTIONS_LIST.link))
+        //UniversalLinkManager.handleUniversalLink(Uri.parse(EntourageLink.SOLICITATIONS_LIST.link))
+        //UniversalLinkManager.handleUniversalLink(Uri.parse(EntourageLink.CONTRIBUTION_DETAIL.link))
+        //UniversalLinkManager.handleUniversalLink(Uri.parse(EntourageLink.SOLICITATION_DETAIL.link))
     }
 
     fun displayAppUpdateDialog() {
@@ -215,6 +217,15 @@ class MainActivity : BaseSecuredActivity() {
 
     fun goConv(){
         navController.navigate(R.id.navigation_messages)
+    }
+    fun goContrib(){
+        val bundle = bundleOf("isActionDemand" to false) // Mettez ici la valeur souhaitée pour "isActionDemand"
+        navController.navigate(R.id.navigation_donations, bundle)
+
+    }
+    fun goDemand(){
+        val bundle = bundleOf("isActionDemand" to true) // Mettez ici la valeur souhaitée pour "isActionDemand"
+        navController.navigate(R.id.navigation_donations, bundle)
     }
 
     private fun initializeNavBar() {

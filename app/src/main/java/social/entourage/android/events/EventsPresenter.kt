@@ -219,6 +219,7 @@ class EventsPresenter: ViewModel() {
             })
     }
 
+
     fun participate(eventId: Int) {
         EntourageApplication.get().apiModule.eventsRequest.participate(eventId)
             .enqueue(object : Callback<EntourageUserResponse> {
