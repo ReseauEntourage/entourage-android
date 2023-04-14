@@ -168,17 +168,17 @@
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="https" android:host="preprod.entourage.social" />
-                <data android:scheme="https" android:host="preprod.entourage.social" android:pathPattern="/app/groups/.*" />
-                <data android:scheme="https" android:host="preprod.entourage.social" android:pathPattern="/app/outings/.*" />
-                <data android:scheme="https" android:host="preprod.entourage.social" android:pathPattern="/app/outings" />
-                <data android:scheme="https" android:host="preprod.entourage.social" android:pathPattern="/app/messages/.*" />
-                <data android:scheme="https" android:host="preprod.entourage.social" android:pathPattern="/app/contributions/new" />
-                <data android:scheme="https" android:host="preprod.entourage.social" android:pathPattern="/app/solicitations/new" />
-                <data android:scheme="https" android:host="preprod.entourage.social" android:pathPattern="/app/contributions" />
-                <data android:scheme="https" android:host="preprod.entourage.social" android:pathPattern="/app/solicitations" />
-                <data android:scheme="https" android:host="preprod.entourage.social" android:pathPattern="/app/contributions/.*" />
-                <data android:scheme="https" android:host="preprod.entourage.social" android:pathPattern="/app/solicitations/.*" />
+                <data android:scheme="https" android:host="${deepLinksHostName}" />
+                <data android:scheme="https" android:host="${deepLinksHostName}" android:pathPattern="/app/groups/.*" />
+                <data android:scheme="https" android:host="${deepLinksHostName}" android:pathPattern="/app/outings/.*" />
+                <data android:scheme="https" android:host="${deepLinksHostName}" android:pathPattern="/app/outings" />
+                <data android:scheme="https" android:host="${deepLinksHostName}" android:pathPattern="/app/messages/.*" />
+                <data android:scheme="https" android:host="${deepLinksHostName}" android:pathPattern="/app/contributions/new" />
+                <data android:scheme="https" android:host="${deepLinksHostName}" android:pathPattern="/app/solicitations/new" />
+                <data android:scheme="https" android:host="${deepLinksHostName}" android:pathPattern="/app/contributions" />
+                <data android:scheme="https" android:host="${deepLinksHostName}" android:pathPattern="/app/solicitations" />
+                <data android:scheme="https" android:host="${deepLinksHostName}" android:pathPattern="/app/contributions/.*" />
+                <data android:scheme="https" android:host="${deepLinksHostName}" android:pathPattern="/app/solicitations/.*" />
             </intent-filter>
         </activity>
 

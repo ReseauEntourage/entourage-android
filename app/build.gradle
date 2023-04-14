@@ -98,6 +98,16 @@ android {
                         deepLinksScheme  : "entourage-staging",
                 ]
             }
+            String currentFlavor = getCurrentFlavor()
+            if (currentFlavor == "prod") {
+                manifestPlaceholders = [
+                        deepLinksHostName: ext.prod.deepLinksHostName,
+                ]
+            } else if (currentFlavor == "staging") {
+                manifestPlaceholders = [
+                        deepLinksHostName: ext.staging.deepLinksHostName,
+                ]
+            }
         }
     }
 
@@ -267,5 +277,17 @@ dependencies {
     implementation 'com.github.chrisbanes:PhotoView:2.3.0'
 
 }
+def getCurrentFlavor() {
+    Gradle gradle = getGradle()
+    String tskReqStr = gradle.getStartParameter().getTaskRequests().toString()
 
+    if (tskReqStr.contains("prod")) {
+        return "prod"
+    } else if (tskReqStr.contains("staging")) {
+        return "staging"
+    } else {
+        println "Could not find the current flavor."
+        return ""
+    }
+}
 apply plugin: "com.google.gms.google-services"

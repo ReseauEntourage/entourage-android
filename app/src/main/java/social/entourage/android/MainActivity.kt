@@ -46,6 +46,7 @@ class MainActivity : BaseSecuredActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.new_activity_main)
 
+        Timber.wtf("MainActivity Deep Links Host Name: ${BuildConfig.DEEP_LINKS_URL}")
 
 
 
@@ -80,17 +81,17 @@ class MainActivity : BaseSecuredActivity() {
         if (uri != null) {
             universalLinkManager.handleUniversalLink(uri)
         }
-        //UniversalLinkManager.handleUniversalLink(Uri.parse(EntourageLink.HOME.link))
-        //UniversalLinkManager.handleUniversalLink(Uri.parse(EntourageLink.GROUP.link))
-        //UniversalLinkManager.handleUniversalLink(Uri.parse(EntourageLink.OUTING.link))
-        //UniversalLinkManager.handleUniversalLink(Uri.parse(EntourageLink.OUTINGS_LIST.link))
-        //UniversalLinkManager.handleUniversalLink(Uri.parse(EntourageLink.MESSAGE.link))
-        //UniversalLinkManager.handleUniversalLink(Uri.parse(EntourageLink.NEW_CONTRIBUTION.link))
-        //UniversalLinkManager.handleUniversalLink(Uri.parse(EntourageLink.NEW_SOLICITATION.link))
-        //UniversalLinkManager.handleUniversalLink(Uri.parse(EntourageLink.CONTRIBUTIONS_LIST.link))
-        //UniversalLinkManager.handleUniversalLink(Uri.parse(EntourageLink.SOLICITATIONS_LIST.link))
-        //UniversalLinkManager.handleUniversalLink(Uri.parse(EntourageLink.CONTRIBUTION_DETAIL.link))
-        //UniversalLinkManager.handleUniversalLink(Uri.parse(EntourageLink.SOLICITATION_DETAIL.link))
+        //universalLinkManager.handleUniversalLink(Uri.parse(EntourageLink.HOME.link))
+        universalLinkManager.handleUniversalLink(Uri.parse(EntourageLink.GROUP.link))
+        //universalLinkManager.handleUniversalLink(Uri.parse(EntourageLink.OUTING.link))
+        //universalLinkManager.handleUniversalLink(Uri.parse(EntourageLink.OUTINGS_LIST.link))
+        //universalLinkManager.handleUniversalLink(Uri.parse(EntourageLink.MESSAGE.link))
+        //universalLinkManager.handleUniversalLink(Uri.parse(EntourageLink.NEW_CONTRIBUTION.link))
+        //universalLinkManager.handleUniversalLink(Uri.parse(EntourageLink.NEW_SOLICITATION.link))
+        //universalLinkManager.handleUniversalLink(Uri.parse(EntourageLink.CONTRIBUTIONS_LIST.link))
+        //universalLinkManager.handleUniversalLink(Uri.parse(EntourageLink.SOLICITATIONS_LIST.link))
+        //universalLinkManager.handleUniversalLink(Uri.parse(EntourageLink.CONTRIBUTION_DETAIL.link))
+        //universalLinkManager.handleUniversalLink(Uri.parse(EntourageLink.SOLICITATION_DETAIL.link))
     }
 
     fun displayAppUpdateDialog() {
@@ -323,15 +324,15 @@ class MainActivity : BaseSecuredActivity() {
 
 
 enum class EntourageLink(val link: String) {
-    HOME("https://app.entourage.social"),
-    GROUP("https://app.entourage.social/groups/bb8c3e77aa95"),
-    OUTING("https://app.entourage.social/outings/ebJUCN-woYgM"),
-    OUTINGS_LIST("https://app.entourage.social/outings"),
-    MESSAGE("https://app.entourage.social/messages/er2BVAa5Vb4U"),
-    NEW_CONTRIBUTION("https://app.entourage.social/contributions/new"),
-    NEW_SOLICITATION("https://app.entourage.social/solicitations/new"),
-    CONTRIBUTIONS_LIST("https://app.entourage.social/contributions"),
-    SOLICITATIONS_LIST("https://app.entourage.social/solicitations"),
-    CONTRIBUTION_DETAIL("https://app.entourage.social/contributions/er2BVAa5Vb4U"),
-    SOLICITATION_DETAIL("https://app.entourage.social/solicitations/eibewY3GW-ek")
+    HOME("https://preprod.entourage.social/app"),
+    GROUP("https://preprod.entourage.social/app/groups/bb8c3e77aa95"),
+    OUTING("https://preprod.entourage.social/app/outings/ebJUCN-woYgM"),
+    OUTINGS_LIST("https://preprod.entourage.social/app/outings"),
+    MESSAGE("https://preprod.entourage.social/app/messages/er2BVAa5Vb4U"),
+    NEW_CONTRIBUTION("https://preprod.entourage.social/app/contributions/new"),
+    NEW_SOLICITATION("https://preprod.entourage.social/app/solicitations/new"),
+    CONTRIBUTIONS_LIST("https://preprod.entourage.social/app/contributions"),
+    SOLICITATIONS_LIST("https://preprod.entourage.social/app/solicitations"),
+    CONTRIBUTION_DETAIL("https://preprod.entourage.social/app/contributions/er2BVAa5Vb4U"),
+    SOLICITATION_DETAIL("https://preprod.entourage.social/app/solicitations/eibewY3GW-ek")
 }
