@@ -25,8 +25,8 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
     /*private const val prodURL = "https://www.entourage.social"
     private const val stagingURL = "https://www.entourage.social"*/
 
-    private val prodURL = "app.entourage.social"
-    private val stagingURL = "entourage-webapp-preprod.herokuapp.com"
+    private val prodURL = "www.entourage.social"
+    private val stagingURL = "preprod.entourage.social"
     val presenter:UniversalLinkPresenter = UniversalLinkPresenter(this)
 
     fun handleUniversalLink(uri: Uri) {

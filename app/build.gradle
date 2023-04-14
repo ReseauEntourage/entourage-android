@@ -91,13 +91,11 @@ android {
                         serverURL        : "https://api.entourage.social/api/v1/",
                         deepLinksHostName: "www.entourage.social",
                         deepLinksScheme  : "entourage",
-                        appLinksHostName : "app.entourage.social"
                 ]
                 staging = [
                         serverURL        : "https://api-preprod.entourage.social/api/v1/",
                         deepLinksHostName: "preprod.entourage.social",
                         deepLinksScheme  : "entourage-staging",
-                        appLinksHostName : "entourage-webapp-preprod.herokuapp.com"
                 ]
             }
         }

@@ -57,8 +57,8 @@ object NotificationActionManager {
             InstanceType.NEIGHBORHOODS -> return R.drawable.placeholder_user
             InstanceType.RESOURCES -> return R.drawable.ic_new_placeholder_notif
             InstanceType.OUTINGS -> return R.drawable.placeholder_user
-            InstanceType.CONTRIBUTIONS -> return R.drawable.placeholder_user
-            InstanceType.SOLICITATIONS -> return R.drawable.placeholder_user
+            InstanceType.CONTRIBUTIONS -> return R.drawable.ic_new_placeholder_notif
+            InstanceType.SOLICITATIONS -> return R.drawable.ic_new_placeholder_notif
             InstanceType.CONVERSATIONS -> return R.drawable.placeholder_user
             InstanceType.PARTNERS -> return R.drawable.ic_new_placeholder_notif
             InstanceType.NONE -> R.drawable.ic_new_placeholder_notif
