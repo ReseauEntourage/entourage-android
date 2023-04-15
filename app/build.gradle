@@ -57,6 +57,9 @@ android {
         buildConfigField 'String', 'ENTOURAGE_URL', '"https://api.entourage.social/api/v1/"'
         buildConfigField 'String', 'TEST_ACCOUNT_LOGIN', TEST_ACCOUNT_LOGIN
         buildConfigField 'String', 'TEST_ACCOUNT_PWD', TEST_ACCOUNT_PWD
+        manifestPlaceholders = [
+                deepLinksHostName: "https://api.entourage.social/api/v1/"
+        ]
     }
 
     signingConfigs {
@@ -81,7 +84,6 @@ android {
         staging {
             dimension 'env'
             applicationIdSuffix '.preprod'
-
         }
         entourage {
             dimension 'app'
@@ -96,16 +98,6 @@ android {
                         serverURL        : "https://api-preprod.entourage.social/api/v1/",
                         deepLinksHostName: "preprod.entourage.social",
                         deepLinksScheme  : "entourage-staging",
-                ]
-            }
-            String currentFlavor = getCurrentFlavor()
-            if (currentFlavor == "prod") {
-                manifestPlaceholders = [
-                        deepLinksHostName: ext.prod.deepLinksHostName,
-                ]
-            } else if (currentFlavor == "staging") {
-                manifestPlaceholders = [
-                        deepLinksHostName: ext.staging.deepLinksHostName,
                 ]
             }
         }
@@ -156,11 +148,9 @@ android {
         variant.buildConfigField "String", "ENTOURAGE_URL", "\"${app[environment.name]['serverURL']}\""
         variant.buildConfigField "String", "DEEP_LINKS_SCHEME", "\"${app[environment.name]['deepLinksScheme']}\""
         variant.buildConfigField "String", "DEEP_LINKS_URL", "\"${app[environment.name]['deepLinksHostName']}\""
-        variant.buildConfigField "String", "APP_LINKS_URL", "\"${app[environment.name]['appLinksHostName']}\""
 
         variant.mergedFlavor.manifestPlaceholders = [
                 deepLinksHostName       : "${app[environment.name]['deepLinksHostName']}",
-                appLinksHostName        : "${app[environment.name]['appLinksHostName']}",
                 deepLinksEntourageScheme: "${app[environment.name]['deepLinksScheme']}"
         ]
 
