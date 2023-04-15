@@ -58,7 +58,8 @@ android {
         buildConfigField 'String', 'TEST_ACCOUNT_LOGIN', TEST_ACCOUNT_LOGIN
         buildConfigField 'String', 'TEST_ACCOUNT_PWD', TEST_ACCOUNT_PWD
         manifestPlaceholders = [
-                deepLinksHostName: "https://api.entourage.social/api/v1/"
+                deepLinksHostName: "https://api.entourage.social/api/v1/",
+                deepLinksScheme  : "entourage",
         ]
     }
 
@@ -151,7 +152,7 @@ android {
 
         variant.mergedFlavor.manifestPlaceholders = [
                 deepLinksHostName       : "${app[environment.name]['deepLinksHostName']}",
-                deepLinksEntourageScheme: "${app[environment.name]['deepLinksScheme']}"
+                deepLinksScheme: "${app[environment.name]['deepLinksScheme']}"
         ]
 
         // The defaultConfig values above are fixed, so your incremental builds don't

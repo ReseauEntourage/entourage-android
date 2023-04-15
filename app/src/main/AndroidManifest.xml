@@ -168,11 +168,24 @@
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="https" android:host="${deepLinksHostName}" android:pathPattern="/app/.*" />
-                <data android:scheme="https" android:host="${deepLinksHostName}" android:pathPattern="/deeplink/.*" />
-                <data android:scheme="https" android:host="${deepLinksHostName}" android:pathPattern="/entourages/.*" />
+                <data android:scheme="https" android:host="${deepLinksHostName}" android:pathPrefix="/app/" />
+                <data android:scheme="https" android:host="${deepLinksHostName}" android:pathPrefix="/deeplink/" />
+                <data android:scheme="https" android:host="${deepLinksHostName}" android:pathPrefix="/entourages/" />
             </intent-filter>
-        </activity>
+            <intent-filter android:autoVerify="true" tools:targetApi="m">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="http" android:host="${deepLinksHostName}" android:pathPrefix="/app/" />
+                <data android:scheme="http" android:host="${deepLinksHostName}" android:pathPrefix="/deeplink/" />
+                <data android:scheme="http" android:host="${deepLinksHostName}" android:pathPrefix="/entourages/" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="${deepLinksScheme}" />
+            </intent-filter>        </activity>
 
         <activity
             android:name="com.google.android.gms.oss.licenses.OssLicensesMenuActivity"
