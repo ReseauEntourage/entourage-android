@@ -47,8 +47,6 @@ class MainActivity : BaseSecuredActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.new_activity_main)
 
-
-
         viewModel = ViewModelProvider(this)[CommunicationHandlerBadgeViewModel::class.java]
 
 
