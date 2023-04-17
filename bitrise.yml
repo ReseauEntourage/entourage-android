@@ -3,7 +3,7 @@ default_step_lib_source: https://github.com/bitrise-io/bitrise-steplib.git
 project_type: ""
 app:
   envs:
-  - GRADLE_BUILD_FILE_PATH: build.gradle
+  - GRADLE_BUILD_FILE_PATH: build.gradle.kts
     opts:
       is_expand: false
   - GRADLE_TASK: assembleRelease
