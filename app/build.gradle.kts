@@ -188,11 +188,13 @@ android {
 }
 
 dependencies {
+    //TODO check why core-ktx:1.10  needs kotlin 1.8
     implementation("androidx.core:core-ktx:1.9.0")
     implementation(platform("com.squareup.okhttp3:okhttp-bom:4.10.0"))
 
     //implementation androidSupportDependencies.values()
 
+    //TODO check why annotation:1.6 needs kotlin 1.8
     implementation("androidx.annotation:annotation:1.5.0")
     //TODO check why alpha02 needs kotlin 1.8
     implementation("androidx.appcompat:appcompat:1.7.0-alpha01")
@@ -202,7 +204,7 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("androidx.fragment:fragment-ktx:1.5.6")
     implementation("androidx.multidex:multidex:2.0.1")
-    implementation("androidx.recyclerview:recyclerview:1.2.1")
+    implementation("androidx.recyclerview:recyclerview:1.3.0")
     implementation("androidx.preference:preference-ktx:1.2.0")
 
     //implementation devDependencies.values()
