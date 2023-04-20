@@ -82,7 +82,7 @@ class MainActivity : BaseSecuredActivity() {
             universalLinkManager.handleUniversalLink(uri)
         }
         //universalLinkManager.handleUniversalLink(Uri.parse(EntourageLink.HOME.link))
-        universalLinkManager.handleUniversalLink(Uri.parse(EntourageLink.GROUP.link))
+        //universalLinkManager.handleUniversalLink(Uri.parse(EntourageLink.GROUP.link))
         //universalLinkManager.handleUniversalLink(Uri.parse(EntourageLink.OUTING.link))
         //universalLinkManager.handleUniversalLink(Uri.parse(EntourageLink.OUTINGS_LIST.link))
         //universalLinkManager.handleUniversalLink(Uri.parse(EntourageLink.MESSAGE.link))

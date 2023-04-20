@@ -81,7 +81,6 @@ android {
         staging {
             dimension 'env'
             applicationIdSuffix '.preprod'
-
         }
         entourage {
             dimension 'app'
@@ -98,16 +97,25 @@ android {
                         deepLinksScheme  : "entourage-staging",
                 ]
             }
-            String currentFlavor = getCurrentFlavor()
-            if (currentFlavor == "prod") {
-                manifestPlaceholders = [
-                        deepLinksHostName: ext.prod.deepLinksHostName,
-                ]
-            } else if (currentFlavor == "staging") {
-                manifestPlaceholders = [
-                        deepLinksHostName: ext.staging.deepLinksHostName,
-                ]
-            }
+        }
+    }
+
+    android.applicationVariants.all { variant ->
+        def currentFlavor = variant.flavorName
+        def flavorConfig = variant.productFlavors.get(0).ext
+
+        if (currentFlavor.contains("prod")) {
+            variant.buildConfigField 'String', 'SERVER_URL', "\"${flavorConfig.prod.serverURL}\""
+            variant.manifestPlaceholders = [
+                    deepLinksHostName: flavorConfig.prod.deepLinksHostName,
+                    deepLinksScheme  : flavorConfig.prod.deepLinksScheme,
+            ]
+        } else if (currentFlavor.contains("staging")) {
+            variant.buildConfigField 'String', 'SERVER_URL', "\"${flavorConfig.staging.serverURL}\""
+            variant.manifestPlaceholders = [
+                    deepLinksHostName: flavorConfig.staging.deepLinksHostName,
+                    deepLinksScheme  : flavorConfig.staging.deepLinksScheme,
+            ]
         }
     }
 
