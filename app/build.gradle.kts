@@ -130,7 +130,7 @@ android {
 
     buildTypes {
         release {
-            signingConfig = signingConfigs.get("googleplay")
+            signingConfig = signingConfigs.getAt("googleplay")
             isDebuggable = false
         }
 
@@ -164,19 +164,12 @@ android {
         }
     }
 
-    applicationVariants.all { variant ->
-        // The defaultConfig values above are fixed, so your incremental builds don"t
-        // need to rebuild the manifest (and therefore the whole APK, slowing build times).
-        // But for release builds, it"s okay. So the following script iterates through
-        // all the known variants, finds those that are "release" build types, and
-        // changes those properties to something dynamic.
-        if (variant.buildType.name == "release") {
-            variant.outputs.forEach { output ->
-                (output as com.android.build.gradle.internal.api.ApkVariantOutputImpl).versionCodeOverride = versionCodeInt
-                output.versionNameOverride = versionNameProd
-            }
+    androidComponents.onVariants { variant ->
+        variant.outputs.all { output ->
+            output.versionCode.set(versionCodeInt)
+            output.versionName.set(versionNameProd)
+            return@all true
         }
-        return@all true
     }
 
     useLibrary("android.test.runner")
