@@ -81,17 +81,7 @@ class MainActivity : BaseSecuredActivity() {
         if (uri != null) {
             universalLinkManager.handleUniversalLink(uri)
         }
-        //universalLinkManager.handleUniversalLink(Uri.parse(EntourageLink.HOME.link))
-        //universalLinkManager.handleUniversalLink(Uri.parse(EntourageLink.GROUP.link))
-        //universalLinkManager.handleUniversalLink(Uri.parse(EntourageLink.OUTING.link))
-        //universalLinkManager.handleUniversalLink(Uri.parse(EntourageLink.OUTINGS_LIST.link))
-        //universalLinkManager.handleUniversalLink(Uri.parse(EntourageLink.MESSAGE.link))
-        //universalLinkManager.handleUniversalLink(Uri.parse(EntourageLink.NEW_CONTRIBUTION.link))
-        //universalLinkManager.handleUniversalLink(Uri.parse(EntourageLink.NEW_SOLICITATION.link))
-        //universalLinkManager.handleUniversalLink(Uri.parse(EntourageLink.CONTRIBUTIONS_LIST.link))
-        //universalLinkManager.handleUniversalLink(Uri.parse(EntourageLink.SOLICITATIONS_LIST.link))
-        //universalLinkManager.handleUniversalLink(Uri.parse(EntourageLink.CONTRIBUTION_DETAIL.link))
-        //universalLinkManager.handleUniversalLink(Uri.parse(EntourageLink.SOLICITATION_DETAIL.link))
+
     }
 
     fun displayAppUpdateDialog() {
@@ -220,12 +210,12 @@ class MainActivity : BaseSecuredActivity() {
         navController.navigate(R.id.navigation_messages)
     }
     fun goContrib(){
-        val bundle = bundleOf("isActionDemand" to false) // Mettez ici la valeur souhaitée pour "isActionDemand"
+        val bundle = bundleOf("isActionDemand" to true) // Mettez ici la valeur souhaitée pour "isActionDemand"
         navController.navigate(R.id.navigation_donations, bundle)
 
     }
     fun goDemand(){
-        val bundle = bundleOf("isActionDemand" to true) // Mettez ici la valeur souhaitée pour "isActionDemand"
+        val bundle = bundleOf("isActionDemand" to false) // Mettez ici la valeur souhaitée pour "isActionDemand"
         navController.navigate(R.id.navigation_donations, bundle)
     }
 

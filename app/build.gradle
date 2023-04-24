@@ -208,6 +208,7 @@ dependencies {
     implementation "com.google.firebase:firebase-crashlytics-ktx"
     implementation "com.google.firebase:firebase-config-ktx"
     releaseImplementation "com.google.firebase:firebase-perf-ktx"
+    implementation 'com.github.mmin18:realtimeblurview:1.2.1'
 
     //implementation gmsDependencies.values()
     implementation "com.google.android.gms:play-services-maps:18.1.0"
@@ -267,18 +268,5 @@ dependencies {
     //photoview to click and zoom
     implementation 'com.github.chrisbanes:PhotoView:2.3.0'
 
-}
-def getCurrentFlavor() {
-    Gradle gradle = getGradle()
-    String tskReqStr = gradle.getStartParameter().getTaskRequests().toString()
-
-    if (tskReqStr.contains("prod")) {
-        return "prod"
-    } else if (tskReqStr.contains("staging")) {
-        return "staging"
-    } else {
-        println "Could not find the current flavor."
-        return ""
-    }
 }
 apply plugin: "com.google.gms.google-services"

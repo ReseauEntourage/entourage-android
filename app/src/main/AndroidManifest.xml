@@ -192,6 +192,10 @@
             android:name="com.google.android.gms.oss.licenses.OssLicensesMenuActivity"
             android:theme="@style/EntourageOSSLicenses.Theme" />
         <activity
+            android:name=".fab_comportement.FabActivity"
+            android:theme="@style/AppTheme.FabActivity"
+            android:exported="false" />
+        <activity
             android:name="com.google.android.gms.oss.licenses.OssLicensesActivity"
             android:theme="@style/EntourageOSSLicenses.Theme" />
         <activity android:name=".involvement.ShareActivity" />

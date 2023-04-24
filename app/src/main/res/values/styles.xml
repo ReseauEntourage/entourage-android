@@ -217,6 +217,13 @@
         <item name="android:colorForeground">#221f1f</item>
     </style>
 
+    <style name="AppTheme.FabActivity" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowEnterAnimation">@anim/slide_in_up</item>
+        <item name="android:windowExitAnimation">@anim/slide_out_down</item>
+    </style>
+
     <style name="EntourageOSSLicenses.Theme" parent="Theme.AppCompat.Light">
         <item name="actionBarTheme">@style/EntourageOSSLicenses.ActionBarTheme</item>
     </style>

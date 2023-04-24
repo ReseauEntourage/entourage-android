@@ -160,15 +160,19 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
 
     override fun onRetrievedAction(action: Action,isContrib:Boolean) {
         if(isContrib){
-            Intent(context, ActionDetailActivity::class.java)
+            val intent = Intent(context, ActionDetailActivity::class.java)
                 .putExtra(Const.ACTION_ID, action.id)
-                .putExtra(Const.IS_ACTION_DEMAND, false)
-                .putExtra(Const.IS_ACTION_MINE, false)
+                .putExtra(Const.ACTION_TITLE,action.title)
+                .putExtra(Const.IS_ACTION_DEMAND,false)
+                .putExtra(Const.IS_ACTION_MINE, action.isMine())
+            (context as MainActivity).startActivity(intent)
         }else{
-            Intent(context, ActionDetailActivity::class.java)
+            val intent = Intent(context, ActionDetailActivity::class.java)
                 .putExtra(Const.ACTION_ID, action.id)
-                .putExtra(Const.IS_ACTION_DEMAND, true)
-                .putExtra(Const.IS_ACTION_MINE, false)
+                .putExtra(Const.ACTION_TITLE,action.title)
+                .putExtra(Const.IS_ACTION_DEMAND,false)
+                .putExtra(Const.IS_ACTION_MINE, action.isMine())
+            (context as MainActivity).startActivity(intent)
         }
     }
 }

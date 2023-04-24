@@ -28,6 +28,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
+import com.google.gson.Gson
 import kotlinx.android.synthetic.main.new_fragment_feed.view.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay

@@ -11,6 +11,7 @@ import social.entourage.android.api.request.ContribWrapper
 import social.entourage.android.api.request.DemandWrapper
 import social.entourage.android.api.request.EventWrapper
 import social.entourage.android.api.request.GroupWrapper
+import timber.log.Timber
 
 class UniversalLinkPresenter(val callback:UniversalLinksPresenterCallback) {
 
@@ -88,6 +89,7 @@ class UniversalLinkPresenter(val callback:UniversalLinksPresenterCallback) {
                     call: Call<ContribWrapper>,
                     response: Response<ContribWrapper>
                 ) {
+                    Timber.wtf("wtf " + response.body())
                     if (response.isSuccessful) {
                         response.body()?.let { actionWrapper ->
                             callback.onRetrievedAction(actionWrapper.action,true)
@@ -96,6 +98,7 @@ class UniversalLinkPresenter(val callback:UniversalLinksPresenterCallback) {
                 }
 
                 override fun onFailure(call: Call<ContribWrapper>, t: Throwable) {
+                    Timber.wtf("wtf failure")
 
                 }
             })
