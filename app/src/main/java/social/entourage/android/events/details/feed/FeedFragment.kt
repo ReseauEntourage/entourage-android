@@ -440,13 +440,13 @@ class FeedFragment : Fragment(), CallbackReportFragment {
 
     fun handleResponseGetMembers(allMembers: MutableList<EntourageUser>?) {
         if (allMembers != null) {
-            Timber.wtf("wtf " +allMembers?.size)
             for(member in allMembers){
-                Timber.wtf("wtf member " + member.displayName + " " + member.id)
-                Timber.wtf("wtf author " + event.author?.userID)
                 if(member.id.toInt() == event.author?.userID){
-                    if(member.isAmbassador()){
-                                binding.tvAssociation.text = getString(R.string.event_organisez_entourage)
+                    Timber.wtf("wtf true" + Gson().toJson(member))
+                    if(member.communityRoles?.contains("Modérateur") == true){
+                        Timber.wtf("wtf ambassador")
+                        binding.tvAssociation.text = getString(R.string.event_organisez_entourage)
+                        binding.tvAssociation.visibility = View.VISIBLE
                     }
                 }
             }
