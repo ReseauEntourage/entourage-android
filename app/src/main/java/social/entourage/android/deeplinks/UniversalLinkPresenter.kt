@@ -89,7 +89,6 @@ class UniversalLinkPresenter(val callback:UniversalLinksPresenterCallback) {
                     call: Call<ContribWrapper>,
                     response: Response<ContribWrapper>
                 ) {
-                    Timber.wtf("wtf " + response.body())
                     if (response.isSuccessful) {
                         response.body()?.let { actionWrapper ->
                             callback.onRetrievedAction(actionWrapper.action,true)

@@ -66,7 +66,6 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
             isMine = it.getBoolean(Const.IS_ACTION_MINE)
         }
         if (com.google.android.gms.maps.MapsInitializer.initialize(requireContext()) == 0) {
-            Timber.wtf("wtf mp init failed" )
         }
 
     }

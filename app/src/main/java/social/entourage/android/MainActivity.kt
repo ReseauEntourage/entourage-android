@@ -47,7 +47,6 @@ class MainActivity : BaseSecuredActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.new_activity_main)
 
-        Timber.wtf("MainActivity Deep Links Host Name: ${BuildConfig.DEEP_LINKS_URL}")
 
 
         viewModel = ViewModelProvider(this)[CommunicationHandlerBadgeViewModel::class.java]
