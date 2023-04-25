@@ -23,6 +23,7 @@ import social.entourage.android.api.model.Conversation
 import social.entourage.android.api.model.GroupMember
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.Utils
+import timber.log.Timber
 
 class MembersConversationFragment : BaseDialogFragment() {
 
@@ -73,7 +74,6 @@ class MembersConversationFragment : BaseDialogFragment() {
             viewLifecycleOwner,
             ::handleResponseGetMembersSearch
         )
-
         id?.let {
             discussionsPresenter.getDetailConversation(it)
         }

@@ -96,7 +96,6 @@ class DiscussionsPresenter:ViewModel() {
                     response: Response<DiscussionDetailWrapper>
                 ) {
                     response.body()?.let { discussionWrapper ->
-                        Timber.wtf("wtf " + call.toString())
                         detailConversation.value = discussionWrapper.conversation
                     }
                 }

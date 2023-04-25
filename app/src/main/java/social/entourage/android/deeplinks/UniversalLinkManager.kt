@@ -31,6 +31,7 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
 
     fun handleUniversalLink(uri: Uri) {
         val pathSegments = uri.pathSegments
+        Timber.wtf("wtf")
 
         uri.queryParameterNames.forEach { name ->
             val value = uri.getQueryParameter(name)

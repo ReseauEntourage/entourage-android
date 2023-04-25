@@ -72,6 +72,8 @@ class EventsFragment : Fragment() {
         }
     }
 
+
+
     private fun handlePageChange(haveChange:Boolean){
         ViewPagerDefaultPageController.shouldSelectDiscoverEvents = true
         setPage()

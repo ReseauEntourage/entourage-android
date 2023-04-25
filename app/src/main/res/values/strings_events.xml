@@ -6,6 +6,7 @@
     <string name="event_filter_position_placeholder">Ma position</string>
     <string name="event_organisez_by">Organisé par %s</string>
     <string name="event_organisez_asso">Événement %s</string>
+    <string name="event_organisez_entourage">Événement Entourage</string>
 
     <string name="event_filter_title">Événements - Filtres de recherche</string>
     <string name="event_filter_profile">À l\'adresse renseignée dans mon profil</string>

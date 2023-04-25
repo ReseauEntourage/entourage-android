@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
@@ -49,7 +50,6 @@ class MainActivity : BaseSecuredActivity() {
         Timber.wtf("MainActivity Deep Links Host Name: ${BuildConfig.DEEP_LINKS_URL}")
 
 
-
         viewModel = ViewModelProvider(this)[CommunicationHandlerBadgeViewModel::class.java]
 
 
@@ -65,19 +65,18 @@ class MainActivity : BaseSecuredActivity() {
             //TODO authenticationController.me?.unreadCount?.let { bottomBar?.updateBadgeCountForUser(it) }
         }
 
-        //UniversalLinkHandler
-        lifecycleScope.launch(Dispatchers.Main) {
-            handleUniversalLinkFromMain()
-        }
+        handleUniversalLinkFromMain(this.intent)
     }
+
 
     override fun onStart() {
         presenter.checkForUpdate(this)
         super.onStart()
     }
 
-    suspend fun handleUniversalLinkFromMain(){
-        val uri = intent?.data
+    fun handleUniversalLinkFromMain(intent: Intent){
+        val uri = intent.data
+        //Log.wtf("wtf", "wtf " + intent)
         if (uri != null) {
             universalLinkManager.handleUniversalLink(uri)
         }
@@ -122,6 +121,7 @@ class MainActivity : BaseSecuredActivity() {
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
         this.intent = intent
+        handleUniversalLinkFromMain(intent)
     }
 
     private fun updateAnalyticsInfo() {

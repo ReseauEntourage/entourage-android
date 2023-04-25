@@ -92,6 +92,7 @@ class FeedFragment : Fragment(), CallbackReportFragment {
         eventPresenter.isEventReported.observe(requireActivity(), ::handleDeletedResponse)
         eventPresenter.isUserParticipating.observe(viewLifecycleOwner, ::handleParticipateResponse)
         eventPresenter.getAllPosts.observe(viewLifecycleOwner, ::handleResponseGetEventPosts)
+        eventPresenter.getMembers.observe(viewLifecycleOwner, ::handleResponseGetMembers)
         handleSwipeRefresh()
         handleMembersButton()
         fragmentResult()
@@ -185,6 +186,7 @@ class FeedFragment : Fragment(), CallbackReportFragment {
     }
 
     private fun updateView() {
+
         MetaDataRepository.metaData.observe(requireActivity(), ::handleMetaData)
         with(binding) {
             eventName.text = event.title
@@ -297,7 +299,7 @@ class FeedFragment : Fragment(), CallbackReportFragment {
         handleCreatePostButtonClick()
         openGoogleMaps()
         initializePosts()
-
+        getPrincipalMember()
     }
 
     private fun handleBackButton() {
@@ -427,6 +429,27 @@ class FeedFragment : Fragment(), CallbackReportFragment {
                     eventUI
                 )
             findNavController().navigate(action)
+        }
+    }
+
+
+    fun getPrincipalMember(){
+        eventPresenter.getEventMembers(eventId)
+
+    }
+
+    fun handleResponseGetMembers(allMembers: MutableList<EntourageUser>?) {
+        if (allMembers != null) {
+            Timber.wtf("wtf " +allMembers?.size)
+            for(member in allMembers){
+                Timber.wtf("wtf member " + member.displayName + " " + member.id)
+                Timber.wtf("wtf author " + event.author?.userID)
+                if(member.id.toInt() == event.author?.userID){
+                    if(member.isAmbassador()){
+                                binding.tvAssociation.text = getString(R.string.event_organisez_entourage)
+                    }
+                }
+            }
         }
     }
 
