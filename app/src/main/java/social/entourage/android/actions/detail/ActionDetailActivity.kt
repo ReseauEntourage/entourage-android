@@ -65,13 +65,13 @@ class ActionDetailActivity : AppCompatActivity(), OnDetailActionReceive {
                 }
             }
         )
+        handleShareButton()
 
-        handleReportPost(id,isDemand)
     }
 
     private fun setSettingsIcon(title:String?) {
-        binding.header.iconSettings.isVisible = !isActionMine
-        binding.header.iconSettings.setImageResource(R.drawable.new_report_group)
+        binding.header.iconSettings.isVisible = true
+        binding.header.iconSettings.setImageResource(R.drawable.share_icon)
 
         binding.header.headerTitle.maxLines = 2
         binding.header.headerTitle.ellipsize = TextUtils.TruncateAt.END
@@ -86,13 +86,20 @@ class ActionDetailActivity : AppCompatActivity(), OnDetailActionReceive {
             ReportModalFragment.TAG
         )
     }
-
     private fun handleReportPost(id: Int, isDemand:Boolean) {
         binding.header.iconSettings.setOnClickListener {
             val _type = if (isDemand) ReportTypes.REPORT_DEMAND else ReportTypes.REPORT_CONTRIB
             handleReport(id, _type)
         }
     }
+
+    private fun handleShareButton(){
+        binding.header.iconSettings.setOnClickListener {
+            //HERE SHARE
+        }
+    }
+
+
 
     override fun hideIconReport() {
         binding.header.iconSettings.isVisible = false

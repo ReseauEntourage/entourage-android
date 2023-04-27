@@ -31,6 +31,8 @@ import social.entourage.android.groups.details.rules.GroupRulesActivity
 import social.entourage.android.api.model.Action
 import social.entourage.android.api.model.ActionSection
 import social.entourage.android.api.model.Conversation
+import social.entourage.android.report.ReportModalFragment
+import social.entourage.android.report.ReportTypes
 import social.entourage.android.tools.displayDistance
 import social.entourage.android.user.UserProfileActivity
 import social.entourage.android.tools.utils.Const
@@ -70,6 +72,8 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
 
     }
 
+
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -88,7 +92,7 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
 
         initializeViews()
         setupButtons()
-
+        handleReportPost(id,isDemand)
         loadAction()
         actionsPresenter.getAction.observe(viewLifecycleOwner, ::handleResponseGetDetail)
         //Use to show or create conversation 1 to 1
@@ -113,6 +117,21 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
 
     private fun loadAction() {
         actionsPresenter.getDetailAction(actionId,isDemand)
+    }
+
+    private fun handleReport(id: Int, type: ReportTypes) {
+        val reportGroupBottomDialogFragment =
+            ReportModalFragment.newInstance(id, id, type,isMine,false, false)
+        reportGroupBottomDialogFragment.show(
+            requireActivity().supportFragmentManager,
+            ReportModalFragment.TAG
+        )
+    }
+    private fun handleReportPost(id: Int, isDemand:Boolean) {
+        binding.titleSignal.setOnClickListener {
+            val _type = if (isDemand) ReportTypes.REPORT_DEMAND else ReportTypes.REPORT_CONTRIB
+            handleReport(id, _type)
+        }
     }
 
     private fun handleResponseGetDetail(action: Action?) {
