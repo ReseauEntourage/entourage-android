@@ -5,6 +5,8 @@ import com.google.gson.annotations.SerializedName
 data class Group(
     @SerializedName("id")
     var id: Int? = null,
+    @field:SerializedName("uuid_v2")
+    var uuid_v2: String? = null,
     @SerializedName("name")
     var name: String? = null,
     @SerializedName("description")

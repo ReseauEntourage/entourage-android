@@ -362,6 +362,13 @@ object AnalyticsEvents {
 
     //NEW_V8
 
+    //SHARE EVENT
+    const val CONTRIB_SHARED= "Action__Contrib__Share"
+    const val SOLICITATION_SHARED = "Action__Demand__Share"
+    const val EVENT_SHARED = "Action_EventFeed_Share"
+    const val EVENT_OPTION_SHARED = "Action_EventOption_Share"
+
+
     //GROUPES
 
     const val VIEW_GROUP_SHOW = "View__Group__MyGroups"

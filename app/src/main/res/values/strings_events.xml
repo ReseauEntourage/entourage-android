@@ -17,4 +17,5 @@
 
     <string name="event_location_title">Localisez votre événement</string>
     <string name="event_location_detail">L’adresse sera ajoutée à la description détaillée de votre événement.</string>
+    <string name="event_btn_share_title">Partager</string>
 </resources>

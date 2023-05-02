@@ -16,6 +16,9 @@ data class Action(
     @field:SerializedName("uuid")
     var uuid: String? = null,
 
+    @field:SerializedName("uuid_v2")
+    var uuid_v2: String? = null,
+
     @field:SerializedName("status")
     private var status: String? = null,
 

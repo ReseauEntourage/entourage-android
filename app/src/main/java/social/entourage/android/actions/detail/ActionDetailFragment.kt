@@ -10,6 +10,7 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
@@ -47,7 +48,7 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
 
     private var mCallback:OnDetailActionReceive? = null
 
-    private val actionsPresenter: ActionsPresenter by lazy { ActionsPresenter() }
+    private lateinit var actionsPresenter: ActionsPresenter
     private val discussionPresenter: DiscussionsPresenter by lazy { DiscussionsPresenter() }
 
     private var actionId:Int = 0
@@ -61,6 +62,8 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        actionsPresenter = ViewModelProvider(requireActivity()).get(ActionsPresenter::class.java)
+
 
         arguments?.let {
             actionId = it.getInt(Const.ACTION_ID)

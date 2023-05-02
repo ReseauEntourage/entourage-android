@@ -164,6 +164,14 @@
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
+                <include
+                    android:id="@+id/share"
+                    layout="@layout/new_profile_settings_item"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="25dp"
+                    app:color="@{@android:color/black}"
+                    app:icon="@{@drawable/new_share}" />
 
                 <include
                     android:id="@+id/rules"

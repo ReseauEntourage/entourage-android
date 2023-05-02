@@ -47,6 +47,9 @@ data class Pedago(
     @field:SerializedName("id")
     val id: Int? = null,
 
+    @field:SerializedName("uuid_v2")
+    var uuid_v2: String? = null,
+
     @field:SerializedName("category")
     val category: Category? = null,
 
