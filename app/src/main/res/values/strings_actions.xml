@@ -99,8 +99,8 @@
     <string name="at_km_from_me">à %d km de moi</string>
     <string name="at_meter_from_me">à %d m de moi </string>
     <string name="inf_hundred_meter">à moins de 100m de moi</string>
-    <string name="share_title_contrib"> Cette contribution pourrait vous intéresser : </string>
-    <string name="share_title_demande"> Cette demande pourrait vous intéresser : </string>
-    <string name="share_title_event"> Cet événement Entourage pourrait vous intéresser</string>
+    <string name="share_title_contrib"> Cette contribution pourrait vous intéresser.</string>
+    <string name="share_title_demande"> Cette demande pourrait vous intéresser.</string>
+    <string name="share_title_event"> Cet événement Entourage pourrait vous intéresser.</string>
 
 </resources>
