@@ -46,9 +46,6 @@ class MainActivity : BaseSecuredActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.new_activity_main)
-
-
-
         viewModel = ViewModelProvider(this)[CommunicationHandlerBadgeViewModel::class.java]
 
 
@@ -75,7 +72,6 @@ class MainActivity : BaseSecuredActivity() {
 
     fun handleUniversalLinkFromMain(intent: Intent){
         val uri = intent.data
-        //Log.wtf("wtf", "wtf " + intent)
         if (uri != null) {
             universalLinkManager.handleUniversalLink(uri)
         }
@@ -203,6 +199,7 @@ class MainActivity : BaseSecuredActivity() {
 
     fun goEvent(){
         navController.navigate(R.id.navigation_events)
+
     }
 
     fun goConv(){
@@ -235,6 +232,8 @@ class MainActivity : BaseSecuredActivity() {
             when (item.itemId) {
                 R.id.navigation_home -> {
                     AnalyticsEvents.logEvent(AnalyticsEvents.Action_Tabbar_home)
+                    navController.navigate(R.id.navigation_home)
+
                 }
                 R.id.navigation_donations -> {
                     AnalyticsEvents.logEvent(AnalyticsEvents.Action_Tabbar_help)

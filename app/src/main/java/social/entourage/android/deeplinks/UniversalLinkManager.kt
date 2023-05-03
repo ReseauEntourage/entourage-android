@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import androidx.core.os.bundleOf
 import androidx.navigation.NavController
 import social.entourage.android.EntourageApplication
@@ -36,7 +37,6 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
             val value = uri.getQueryParameter(name)
             Timber.wtf("eho $name: $value")
         }
-
         if (uri.host == stagingURL || uri.host == prodURL) {
             when {
                 pathSegments.contains("outings") && pathSegments.contains("chat_messages") -> {
@@ -161,6 +161,7 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
     override fun onRetrievedAction(action: Action,isContrib:Boolean) {
         if(isContrib){
             val intent = Intent(context, ActionDetailActivity::class.java)
+                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 .putExtra(Const.ACTION_ID, action.id)
                 .putExtra(Const.ACTION_TITLE,action.title)
                 .putExtra(Const.IS_ACTION_DEMAND,false)
@@ -168,9 +169,10 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
             (context as MainActivity).startActivity(intent)
         }else{
             val intent = Intent(context, ActionDetailActivity::class.java)
+                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 .putExtra(Const.ACTION_ID, action.id)
                 .putExtra(Const.ACTION_TITLE,action.title)
-                .putExtra(Const.IS_ACTION_DEMAND,false)
+                .putExtra(Const.IS_ACTION_DEMAND,true)
                 .putExtra(Const.IS_ACTION_MINE, action.isMine())
             (context as MainActivity).startActivity(intent)
         }

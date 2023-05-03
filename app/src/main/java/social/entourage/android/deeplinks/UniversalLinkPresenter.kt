@@ -1,5 +1,6 @@
 package social.entourage.android.deeplinks
 
+import android.util.Log
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -97,7 +98,6 @@ class UniversalLinkPresenter(val callback:UniversalLinksPresenterCallback) {
                 }
 
                 override fun onFailure(call: Call<ContribWrapper>, t: Throwable) {
-                    Timber.wtf("wtf failure")
 
                 }
             })

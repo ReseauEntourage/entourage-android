@@ -4,6 +4,7 @@ import android.content.Intent
 import android.content.res.ColorStateList
 import android.os.Bundle
 import android.text.TextUtils
+import android.util.Log
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -11,6 +12,7 @@ import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
+import com.google.gson.Gson
 import social.entourage.android.BuildConfig
 import social.entourage.android.R
 import social.entourage.android.actions.ActionsPresenter
@@ -83,6 +85,7 @@ class ActionDetailActivity : AppCompatActivity(), OnDetailActionReceive {
 
     }
 
+
     private fun handleResponseGetDetail(action: Action?) {
         if(action != null){
             shareContent = action.title + "\n\n" + createDeepURL(action)
@@ -93,10 +96,10 @@ class ActionDetailActivity : AppCompatActivity(), OnDetailActionReceive {
         val deepLinksHostName = BuildConfig.DEEP_LINKS_URL
         var actionPath = ""
         if(action.isDemand()){
-            actionPath = "/contributions/"
+            actionPath = "solicitations/"
             shareTitle = getString(R.string.share_title_demande)
         }else{
-            actionPath = "/solicitations/"
+            actionPath = "contributions/"
             shareTitle = getString(R.string.share_title_contrib)
 
         }
