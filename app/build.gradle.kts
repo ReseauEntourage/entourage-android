@@ -61,6 +61,10 @@ android {
     val TEST_ACCOUNT_PWD = if(System.getenv("TEST_ACCOUNT_PWD")!=null) "\"" + System.getenv("TEST_ACCOUNT_PWD") + "\"" else "\"\""
 
     defaultConfig {
+        manifestPlaceholders += mapOf(
+            "deepLinksHostName" to deepLinksURLProd,
+            "deepLinksScheme" to deepLinksSchemeProd
+        )
         applicationId = "social.entourage.android"
         resourceConfigurations += listOf("en", "fr")
 
@@ -83,10 +87,6 @@ android {
         buildConfigField("String", "ENTOURAGE_URL", "\"${entourageURLProd}\"")
         buildConfigField("String", "TEST_ACCOUNT_LOGIN", TEST_ACCOUNT_LOGIN)
         buildConfigField("String", "TEST_ACCOUNT_PWD", TEST_ACCOUNT_PWD)
-        manifestPlaceholders += mapOf(
-                "deepLinksHostName" to deepLinksURLProd,
-                "deepLinksScheme" to deepLinksSchemeProd
-        )
     }
 
     signingConfigs {
@@ -112,15 +112,15 @@ android {
             buildConfigField("String", "DEEP_LINKS_URL", "\"${deepLinksURLProd}\"")
         }
         create("staging") {
+            manifestPlaceholders += mapOf(
+                "deepLinksHostName" to deepLinksURLStaging,
+                "deepLinksScheme" to deepLinksSchemeStaging
+            )
             dimension = "env"
             applicationIdSuffix = ".preprod"
             buildConfigField("String", "ENTOURAGE_URL", "\"${entourageURLStaging}\"")
             buildConfigField("String", "DEEP_LINKS_SCHEME", "\"${deepLinksSchemeStaging}\"")
             buildConfigField("String", "DEEP_LINKS_URL", "\"${deepLinksURLStaging}\"")
-            manifestPlaceholders += mapOf(
-                "deepLinksHostName" to deepLinksURLStaging,
-                "deepLinksScheme" to deepLinksSchemeStaging
-            )
         }
          create("entourage") {
             dimension = "app"
