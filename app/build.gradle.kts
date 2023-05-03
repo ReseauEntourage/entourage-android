@@ -267,6 +267,7 @@ dependencies {
     implementation("androidx.navigation:navigation-ui-ktx:2.5.3")
     implementation("uk.co.markormesher:android-fab:2.5.0")
     implementation("com.github.IntruderShanky:Sectioned-RecyclerView:2.1.1")
+    implementation("com.github.mmin18:realtimeblurview:1.2.1")
 
     implementation("com.airbnb.android:lottie:5.2.0")
     implementation("com.github.armcha:AutoLinkTextViewV2:3.0.0")
