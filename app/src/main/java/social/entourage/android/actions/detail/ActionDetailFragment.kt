@@ -3,6 +3,7 @@ package social.entourage.android.actions.detail
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -72,6 +73,7 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
         }
         if (com.google.android.gms.maps.MapsInitializer.initialize(requireContext()) == 0) {
         }
+        Log.wtf("wtf" , "wtf action id from activity " + actionId)
 
     }
 
@@ -124,7 +126,7 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
 
     private fun handleReport(id: Int, type: ReportTypes) {
         val reportGroupBottomDialogFragment =
-            ReportModalFragment.newInstance(id, id, type,isMine,false, false)
+            ReportModalFragment.newInstance(actionId, id, type,isMine,false, false)
         reportGroupBottomDialogFragment.show(
             requireActivity().supportFragmentManager,
             ReportModalFragment.TAG

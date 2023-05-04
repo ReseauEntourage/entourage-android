@@ -47,6 +47,7 @@ class ActionDetailActivity : AppCompatActivity(), OnDetailActionReceive {
         )
 
         val id = intent.getIntExtra(Const.ACTION_ID, 0)
+        Log.wtf("wtf" , "wtf action id from activity " + id)
         val title = intent.getStringExtra(Const.ACTION_TITLE)
         val isDemand = intent.getBooleanExtra(Const.IS_ACTION_DEMAND,false)
         isActionMine = intent.getBooleanExtra(Const.IS_ACTION_MINE,false)

@@ -237,6 +237,7 @@ class FeedFragment : Fragment(), CallbackReportFragment {
                 eventDescription.visibility = View.VISIBLE
                 eventDescription.text = event.description
                 more.visibility = View.GONE
+
                 initializeInterests()
             }
 
@@ -434,12 +435,21 @@ class FeedFragment : Fragment(), CallbackReportFragment {
                 )
             findNavController().navigate(action)
         }
-        binding.more.btn_share.setOnClickListener {
+        binding.btnShare.setOnClickListener {
             AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_SHARED)
             val shareTitle = getString(R.string.share_title_event)
             val shareIntent = Intent(Intent.ACTION_SEND).apply {
                 type = "text/plain"
-                putExtra(Intent.EXTRA_TEXT, shareTitle + "\n" + createShareUrl())
+                putExtra(Intent.EXTRA_TEXT, shareTitle + "\n" + event.title + ": " + "\n" + createShareUrl())
+            }
+            startActivity(Intent.createChooser(shareIntent, "Partager l'URL via"))
+        }
+        binding.bigBtnShare.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_SHARED)
+            val shareTitle = getString(R.string.share_title_event)
+            val shareIntent = Intent(Intent.ACTION_SEND).apply {
+                type = "text/plain"
+                putExtra(Intent.EXTRA_TEXT, shareTitle + "\n" + event.title + ": " + "\n" + createShareUrl())
             }
             startActivity(Intent.createChooser(shareIntent, "Partager l'URL via"))
         }

@@ -453,4 +453,11 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="home_congrat_title_next">Super, il y a du nouveau sur l\'accueil !</string>
     <string name="three_point">…</string>
 
+    <!-- Home ERROR DEEPLINKS -->
+    <string name="error_get_event">Cet évéement n\'existe plus.</string>
+    <string name="error_get_group">Ce groupe de voisin n\'existe plus.</string>
+    <string name="error_get_action">Cette action n\'existe plus.</string>
+    <string name="error_get_discussion">Cette discussion n\'existe plus.</string>
+
+
 </resources>

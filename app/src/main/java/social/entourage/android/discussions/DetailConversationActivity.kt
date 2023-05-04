@@ -35,6 +35,7 @@ class DetailConversationActivity : CommentActivity() {
 
         viewModel.getPostComments(id)
 
+
         binding.header.iconSettings.setImageDrawable(resources.getDrawable(R.drawable.new_settings))
         binding.header.title = titleName
         if (isOne2One) {

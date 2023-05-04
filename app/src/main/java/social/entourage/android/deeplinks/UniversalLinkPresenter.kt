@@ -6,12 +6,10 @@ import retrofit2.Callback
 import retrofit2.Response
 import social.entourage.android.EntourageApplication
 import social.entourage.android.api.model.Action
+import social.entourage.android.api.model.Conversation
 import social.entourage.android.api.model.Events
 import social.entourage.android.api.model.Group
-import social.entourage.android.api.request.ContribWrapper
-import social.entourage.android.api.request.DemandWrapper
-import social.entourage.android.api.request.EventWrapper
-import social.entourage.android.api.request.GroupWrapper
+import social.entourage.android.api.request.*
 import timber.log.Timber
 
 class UniversalLinkPresenter(val callback:UniversalLinksPresenterCallback) {
@@ -28,6 +26,9 @@ class UniversalLinkPresenter(val callback:UniversalLinksPresenterCallback) {
                         response.body()?.let { eventWrapper ->
                             callback.onRetrievedEvent(eventWrapper.event)
                         }
+                    }
+                    if(response.code() >= 400){
+                        callback.onErrorRetrievedEvent()
                     }
                 }
 
@@ -47,6 +48,9 @@ class UniversalLinkPresenter(val callback:UniversalLinksPresenterCallback) {
                         response.body()?.let { groupWrapper ->
                             callback.onRetrievedGroup(groupWrapper.group)
                         }
+                    }
+                    if(response.code() >= 400){
+                        callback.onErrorRetrievedGroup()
                     }
                 }
 
@@ -75,6 +79,9 @@ class UniversalLinkPresenter(val callback:UniversalLinksPresenterCallback) {
                         response.body()?.let { actionWrapper ->
                             callback.onRetrievedAction(actionWrapper.action,false)
                         }
+                        if(response.code() >= 400){
+                            callback.onErrorRetrievedAction()
+                        }
                     }
                 }
                 override fun onFailure(call: Call<DemandWrapper>, t: Throwable) {
@@ -95,6 +102,9 @@ class UniversalLinkPresenter(val callback:UniversalLinksPresenterCallback) {
                             callback.onRetrievedAction(actionWrapper.action,true)
                         }
                     }
+                    if(response.code() >= 400){
+                        callback.onErrorRetrievedAction()
+                    }
                 }
 
                 override fun onFailure(call: Call<ContribWrapper>, t: Throwable) {
@@ -102,11 +112,36 @@ class UniversalLinkPresenter(val callback:UniversalLinksPresenterCallback) {
                 }
             })
     }
+    fun getDetailConversation(conversationId: String) {
+        EntourageApplication.get().apiModule.appLinksRequest.getDiscussionFromHash(conversationId)
+            .enqueue(object : Callback<DiscussionDetailWrapper> {
+                override fun onResponse(
+                    call: Call<DiscussionDetailWrapper>,
+                    response: Response<DiscussionDetailWrapper>
+                ) {
+                    response.body()?.let { discussionWrapper ->
+                        callback.onRetrievedDiscussion(discussionWrapper.conversation)
+                    }
+                    if(response.code() >= 400){
+                        callback.onErrorRetrievedDiscussion()
+                    }
+                }
 
+                override fun onFailure(call: Call<DiscussionDetailWrapper>, t: Throwable) {
+                    Log.wtf("wtf" , "wtf " + t.message)
+                }
+            })
+    }
 }
 
 interface UniversalLinksPresenterCallback{
     fun onRetrievedEvent(event: Events)
     fun onRetrievedGroup(group:Group)
     fun onRetrievedAction(action:Action, isContrib:Boolean)
+    fun onRetrievedDiscussion(discussion: Conversation)
+
+    fun onErrorRetrievedDiscussion()
+    fun onErrorRetrievedGroup()
+    fun onErrorRetrievedEvent()
+    fun onErrorRetrievedAction()
 }
