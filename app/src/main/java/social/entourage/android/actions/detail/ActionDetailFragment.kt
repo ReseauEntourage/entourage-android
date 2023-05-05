@@ -64,8 +64,6 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         actionsPresenter = ViewModelProvider(requireActivity()).get(ActionsPresenter::class.java)
-
-
         arguments?.let {
             actionId = it.getInt(Const.ACTION_ID)
             isDemand = it.getBoolean(Const.IS_ACTION_DEMAND)
@@ -141,6 +139,9 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
 
     private fun handleResponseGetDetail(action: Action?) {
         this.action = action
+        if(action!!.isMine()){
+            binding.titleSignal.visibility = View.GONE
+        }
         updateViews()
 
         action?.let {

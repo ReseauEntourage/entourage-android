@@ -4,6 +4,7 @@
     <string name="discussion_settings_title">Paramètres de la conversation</string>
     <string name="discussion_settings_signal">Signaler</string>
     <string name="discussion_choose_signal">Signaler cette publication à l\'équipe Entourage</string>
+    <string name="discussion_entraide_signal">Signaler cette entraide à l\'équipe Entourage</string>
     <string name="discussion_choose_supress">Supprimer ma publication</string>
     <string name="discussion_choose_supress_message">Supprimer le message</string>
     <string name="discussion_choose_supress_commentary">Supprimer le commentaire</string>

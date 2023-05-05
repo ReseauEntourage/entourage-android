@@ -2,6 +2,7 @@
 <resources>
 
     <string name="entourage_info_discussion">DISCUSSION</string>
+    <string name="action_title_header_signal_problem">Signaler un problème</string>
     <string name="entourage_info_text_join_rejected">\u0020 rejeté</string>
     <string name="entourage_info_text_join_cancelled_entourage">a annulé sa demande de rejoindre le groupe</string>
     <string name="entourage_info_text_join_quited_entourage">a quitté le groupe</string>
