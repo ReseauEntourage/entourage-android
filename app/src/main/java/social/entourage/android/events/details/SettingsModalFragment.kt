@@ -107,7 +107,7 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
         AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_OPTION_SHARED)
         binding.share.layout.setOnClickListener {
             if(event != null){
-                val shareTitle = getString(R.string.share_title_event) + "\n" + event!!.title
+                val shareTitle = getString(R.string.share_title_event)
                 val shareIntent = Intent(Intent.ACTION_SEND).apply {
                     type = "text/plain"
                     putExtra(Intent.EXTRA_TEXT, shareTitle + "\n" + event!!.title + ": " + "\n" + createShareUrl())
