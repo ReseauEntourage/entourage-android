@@ -239,6 +239,7 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
                 ,false,false, false)
             }
         binding.report.setOnClickListener {
+            AnalyticsEvents.logEvent("Action_EventOption_Report")
             reportGroupBottomDialogFragment?.show(parentFragmentManager, ReportModalFragment.TAG)
         }
     }

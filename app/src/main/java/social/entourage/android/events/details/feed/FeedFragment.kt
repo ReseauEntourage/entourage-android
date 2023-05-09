@@ -378,6 +378,7 @@ class FeedFragment : Fragment(), CallbackReportFragment {
     }
 
     private fun openReportFragment(postId:Int, userId:Int) {
+
         val reportGroupBottomDialogFragment =
             event?.id?.let {
                 val meId = EntourageApplication.get().me()?.id

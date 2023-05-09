@@ -299,6 +299,9 @@ class ReportModalFragment : BottomSheetDialogFragment() {
     }
 
     private fun handleReportResponse(success: Boolean) {
+        if(success){
+            AnalyticsEvents.logEvent("Action_EventOption_ReportConfirmation")
+        }
         if (success) CustomAlertDialog.showOnlyOneButton(
             requireContext(),
             title,
