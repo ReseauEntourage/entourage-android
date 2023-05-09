@@ -14,8 +14,13 @@ class InAppNotification (
     val id: Int? = null,
     @SerializedName("instance_id")
     val instanceId: Int? = null,
-    @SerializedName("post_id")
-    val postId: Int? = null,
+    @SerializedName("welcome")
+    val welcome: Boolean? = false,
+    //value = h1, j2, j8, j11
+    @SerializedName("stage")
+    val stage: String? = null,
+    @SerializedName("url")
+    val url: String? = null,
     @SerializedName("instance")
     val instanceType: String? = null,
     @SerializedName("title")

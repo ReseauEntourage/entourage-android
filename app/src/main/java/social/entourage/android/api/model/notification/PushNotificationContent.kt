@@ -78,6 +78,16 @@ class PushNotificationContent : Serializable {
         @SerializedName("post_id")
         var postId:Int? = null
 
+        @SerializedName("welcome")
+        val welcome: Boolean? = false
+        //value = h1, j2, j8, j11
+
+        @SerializedName("stage")
+        val stage: String? = null
+
+        @SerializedName("url")
+        val url: String? = null
+
         companion object {
             private const val serialVersionUID = 9200479161789347105L
             const val JOINABLE_TYPE_ENTOURAGE = "Entourage"
