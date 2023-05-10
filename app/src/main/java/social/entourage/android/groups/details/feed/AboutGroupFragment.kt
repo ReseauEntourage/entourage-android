@@ -64,6 +64,8 @@ class AboutGroupFragment : Fragment() {
     private fun setView() {
         MetaDataRepository.metaData.observe(requireActivity(), ::handleMetaData)
         binding.header.iconSettings.visibility = View.VISIBLE
+        binding.header.cardIconSetting.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.transparent))
+        binding.header.iconSettings.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.transparent))
         with(binding) {
             groupName.text = group?.name
             groupMembersNumberLocation.text = String.format(
