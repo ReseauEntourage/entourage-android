@@ -123,6 +123,12 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
     }
 
     private fun handleReport(id: Int, type: ReportTypes) {
+        if(type == ReportTypes.REPORT_CONTRIB){
+            AnalyticsEvents.logEvent("Action__Contrib__Report")
+        }else{
+            AnalyticsEvents.logEvent("Action__Demand__Report")
+        }
+
         val reportGroupBottomDialogFragment =
             ReportModalFragment.newInstance(actionId, id, type,isMine,false, false)
         reportGroupBottomDialogFragment.show(
