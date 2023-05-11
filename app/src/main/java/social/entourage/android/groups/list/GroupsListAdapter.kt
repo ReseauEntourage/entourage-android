@@ -40,63 +40,63 @@ class GroupsListAdapter(
     }
 
     fun updateGroupsList(newGroupsList: List<Group>) {
-        this.groupsList = newGroupsList
+        this.groupsList = newGroupsList.toList() // Crée une copie de la liste
         notifyDataSetChanged()
     }
 
 
     //SOMETHING TO FIX HERE
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        if (groupsList != null && groupsList.size > 0 && position < groupsList.size){
-            with(holder) {
-                with(groupsList[position]) {
-                    binding.layout.setOnClickListener {view ->
-                        handleAnalytics()
-                        (view.context as? Activity)?.startActivityForResult(
-                            Intent(view.context, FeedActivity::class.java).putExtra(
-                                Const.GROUP_ID,
-                                groupsList[position].id
-                            ), 0
-                        )
-                    }
-                    binding.groupName.text = this.name
-                    this.members?.size?.let {
-                        binding.members.text = String.format(
-                            holder.itemView.context.getString(if (it > 1) R.string.members_number else R.string.member_number),
-                            it
-                        )
-                    }
-                    binding.futureOutgoingEvents.text = String.format(
-                        holder.itemView.context.getString(R.string.future_outgoing_events_number),
-                        this.futureOutingsCount
+        val group = groupsList.getOrNull(position) ?: return
+        with(holder) {
+            with(group) {
+                binding.layout.setOnClickListener {view ->
+                    handleAnalytics()
+                    (view.context as? Activity)?.startActivityForResult(
+                        Intent(view.context, FeedActivity::class.java).putExtra(
+                            Const.GROUP_ID,
+                            groupsList[position].id
+                        ), 0
                     )
-                    this.imageUrl?.let {
-                        Glide.with(binding.image.context)
-                            .load(Uri.parse(it))
-                            .apply(RequestOptions().override(90.px, 90.px))
-                            .placeholder(R.drawable.new_placeholder_group)
-                            .error(R.drawable.new_placeholder_group)
-                            .transform(CenterCrop(), RoundedCorners(20.px))
-                            .into(binding.image)
-                    } ?: run {
-                        Glide.with(binding.image.context)
-                            .load(R.drawable.new_placeholder_group)
-                            .apply(RequestOptions().override(90.px, 90.px))
-                            .transform(CenterCrop(), RoundedCorners(20.px))
-                            .into(binding.image)
-                    }
+                }
+                binding.groupName.text = this.name
+                this.members?.size?.let {
+                    binding.members.text = String.format(
+                        holder.itemView.context.getString(if (it > 1) R.string.members_number else R.string.member_number),
+                        it
+                    )
+                }
+                binding.futureOutgoingEvents.text = String.format(
+                    holder.itemView.context.getString(R.string.future_outgoing_events_number),
+                    this.futureOutingsCount
+                )
+                this.imageUrl?.let {
+                    Glide.with(binding.image.context)
+                        .load(Uri.parse(it))
+                        .apply(RequestOptions().override(90.px, 90.px))
+                        .placeholder(R.drawable.new_placeholder_group)
+                        .error(R.drawable.new_placeholder_group)
+                        .transform(CenterCrop(), RoundedCorners(20.px))
+                        .into(binding.image)
+                } ?: run {
+                    Glide.with(binding.image.context)
+                        .load(R.drawable.new_placeholder_group)
+                        .apply(RequestOptions().override(90.px, 90.px))
+                        .transform(CenterCrop(), RoundedCorners(20.px))
+                        .into(binding.image)
+                }
 
-                    if (userId == groupsList[position].admin?.id) {
-                        binding.admin.visibility = View.VISIBLE
-                        binding.star.visibility = View.VISIBLE
-                    } else {
-                        binding.admin.visibility = View.GONE
-                        binding.star.visibility = View.GONE
-                    }
+                if (userId == group.admin?.id) {
+                    binding.admin.visibility = View.VISIBLE
+                    binding.star.visibility = View.VISIBLE
+                } else {
+                    binding.admin.visibility = View.GONE
+                    binding.star.visibility = View.GONE
                 }
             }
         }
     }
+
 
     override fun getItemCount(): Int {
         return groupsList.size

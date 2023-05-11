@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.textfield.TextInputLayout.END_ICON_CUSTOM
@@ -27,11 +28,12 @@ class DiscoverGroupsListFragment : Fragment() {
     val binding: NewFragmentGroupsListBinding get() = _binding!!
     private var groupsList: MutableList<Group> = ArrayList()
     private var groupsListSearch: MutableList<Group> = ArrayList()
-    private val groupPresenter: GroupPresenter by lazy { GroupPresenter() }
+    private lateinit var groupPresenter: GroupPresenter
     private var page: Int = 0
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        groupPresenter = ViewModelProvider(requireActivity()).get(GroupPresenter::class.java)
         loadGroups()
         groupPresenter.getAllGroups.observe(viewLifecycleOwner, ::handleResponseGetGroups)
         groupPresenter.getGroupsSearch.observe(viewLifecycleOwner, ::handleResponseGetGroupsSearch)
@@ -61,7 +63,7 @@ class DiscoverGroupsListFragment : Fragment() {
         allGroups?.let { groupsList.addAll(it) }
         binding.progressBar.visibility = View.GONE
         allGroups?.isEmpty()?.let { updateView(it) }
-        binding.recyclerView.adapter?.notifyDataSetChanged()
+        (binding.recyclerView.adapter as? GroupsListAdapter)?.updateGroupsList(groupsList)
     }
 
     private fun handleResponseGetGroupsSearch(allGroupsSearch: MutableList<Group>?) {
@@ -69,7 +71,8 @@ class DiscoverGroupsListFragment : Fragment() {
         allGroupsSearch?.let { groupsListSearch.addAll(it) }
         binding.progressBar.visibility = View.GONE
         allGroupsSearch?.isEmpty()?.let { updateViewSearch(it) }
-        binding.searchRecyclerView.adapter?.notifyDataSetChanged()
+        (binding.searchRecyclerView.adapter as? GroupsListAdapter)?.updateGroupsList(groupsList)
+
     }
 
     private fun updateView(isListEmpty: Boolean) {
@@ -105,6 +108,8 @@ class DiscoverGroupsListFragment : Fragment() {
             addOnScrollListener(recyclerViewOnScrollListener)
             layoutManager = LinearLayoutManager(context)
             adapter = GroupsListAdapter(groupsList, null, FromScreen.DISCOVER)
+            (adapter as? GroupsListAdapter)?.updateGroupsList(groupsList)
+
         }
     }
 
@@ -113,6 +118,7 @@ class DiscoverGroupsListFragment : Fragment() {
             // Pagination
             layoutManager = LinearLayoutManager(context)
             adapter = GroupsListAdapter(groupsListSearch, null, FromScreen.DISCOVER_SEARCH)
+            (adapter as? GroupsListAdapter)?.updateGroupsList(groupsList)
         }
     }
 

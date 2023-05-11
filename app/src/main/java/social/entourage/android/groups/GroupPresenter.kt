@@ -513,4 +513,9 @@ class GroupPresenter: ViewModel() {
                 }
             })
     }
+    
+    override fun onCleared() {
+        super.onCleared()
+        // Insérez ici le code de nettoyage
+    }
 }

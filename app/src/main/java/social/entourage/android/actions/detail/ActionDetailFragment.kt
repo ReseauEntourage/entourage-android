@@ -71,7 +71,6 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
         }
         if (com.google.android.gms.maps.MapsInitializer.initialize(requireContext()) == 0) {
         }
-        Log.wtf("wtf" , "wtf action id from activity " + actionId)
 
     }
 
