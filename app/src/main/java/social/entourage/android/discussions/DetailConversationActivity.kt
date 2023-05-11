@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.launch
@@ -37,6 +38,8 @@ class DetailConversationActivity : CommentActivity() {
 
 
         binding.header.iconSettings.setImageDrawable(resources.getDrawable(R.drawable.new_settings))
+        binding.header.cardIconSetting.setBackgroundColor(ContextCompat.getColor(this, R.color.transparent))
+        binding.header.iconSettings.setBackgroundColor(ContextCompat.getColor(this, R.color.transparent))
         binding.header.title = titleName
         if (isOne2One) {
             binding.header.headerTitle.setOnClickListener {
