@@ -366,6 +366,7 @@ object AnalyticsEvents {
     const val CONTRIB_SHARED= "Action__Contrib__Share"
     const val SOLICITATION_SHARED = "Action__Demand__Share"
     const val EVENT_SHARED = "Action_EventFeed_Share"
+    const val GROUP_SHARED = "Action__GroupFeed__Share"
     const val EVENT_OPTION_SHARED = "Action_EventOption_Share"
 
 
@@ -462,6 +463,10 @@ object AnalyticsEvents {
     const val ACTION_GROUP_OPTION_NOTIF_EVENT = "Action__GroupOption__Notif_Event"
     const val ACTION_GROUP_OPTION_NOTIF_MESSAGE = "Action__GroupOption__Notif_Message"
     const val ACTION_GROUP_OPTION_NOTIF_MEMBER = "Action__GroupOption__Notif_Member"
+
+    const val ACTION_GROUP_SHARE = "Action_GroupFeed_Share"
+    const val ACTION_GROUPOPTION_SHARE = "Action_GroupOption_Share"
+    const val ACTION_GROUP_REPORT = "Action_GroupOption_Report_Confirmation"
 
     /***
      * Home

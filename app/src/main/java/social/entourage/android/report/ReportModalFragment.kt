@@ -306,8 +306,9 @@ class ReportModalFragment : BottomSheetDialogFragment() {
                 AnalyticsEvents.logEvent("Action__Contrib__Report_Confirmation")
             }else if(reportType == ReportTypes.REPORT_DEMAND.code){
                 AnalyticsEvents.logEvent("Action__Demand__Report_Confirmation")
+            }else if (reportType == ReportTypes.REPORT_GROUP.code){
+                AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_GROUP_REPORT)
             }
-
         }
         if (success) CustomAlertDialog.showOnlyOneButton(
             requireContext(),

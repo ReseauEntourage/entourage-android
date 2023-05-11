@@ -280,6 +280,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="notification_new_messages">Les nouveaux messages</string>
     <string name="notification_new_members">L\'arrivée de nouveaux membres</string>
     <string name="group_notification_all">Toute l\'activité du groupe</string>
+    <string name="group_share">Partager le groupe</string>
     <string name="notify_me">Me notifier de</string>
     <string name="about_group">À propos du groupe</string>
     <string name="leave_group_dialog_content">Souhaitez-vous quitter le groupe ?</string>

@@ -103,5 +103,6 @@
     <string name="share_title_contrib"> Cette contribution pourrait vous intéresser.</string>
     <string name="share_title_demande"> Cette demande pourrait vous intéresser.</string>
     <string name="share_title_event"> Cet événement Entourage pourrait vous intéresser.</string>
+    <string name="share_title_group">Ce groupe de voisins Entourage pourrait vous intéresser.</string>
 
 </resources>

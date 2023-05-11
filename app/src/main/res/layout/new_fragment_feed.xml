@@ -171,9 +171,9 @@
 
                         </LinearLayout>
 
-                        <LinearLayout
+                        <androidx.constraintlayout.widget.ConstraintLayout
                             android:id="@+id/more"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="15dp"
                             android:orientation="horizontal"
@@ -183,24 +183,78 @@
                                 style="@style/h2_orange"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:id="@+id/tv_know_more"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintBottom_toBottomOf="parent"
                                 android:text="@string/more" />
 
                             <ImageView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                app:layout_constraintStart_toEndOf="@+id/tv_know_more"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintBottom_toBottomOf="parent"
                                 android:src="@drawable/new_arrow_orange" />
-                        </LinearLayout>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="40dp"
+                                android:id="@+id/btn_share"
+                                android:gravity="center"
+                                android:paddingTop="8dp"
+                                android:paddingBottom="8dp"
+                                android:paddingStart="16dp"
+                                android:paddingEnd="16dp"
+                                android:fontFamily="@font/nunitosans_bold"
+                                app:layout_constraintTop_toTopOf="@+id/tv_know_more"
+                                app:layout_constraintBottom_toBottomOf="@+id/tv_know_more"
+                                android:text="@string/event_btn_share_title"
+                                android:textColor="@color/orange"
+                                android:background="@drawable/btn_shape_light_orange"
+                                android:drawableEnd="@drawable/share_icon"
+                                android:drawablePadding="16dp"
+                                android:drawableTint="@color/orange"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+                            <Button
+                                android:id="@+id/join"
+                                style="@style/h2_white"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                android:layout_marginTop="15dp"
+                                android:drawablePadding="10dp"
+                                android:padding="10dp"
+                                android:textAllCaps="false"
+                                android:visibility="visible" />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="0dp"
+                                android:id="@+id/big_btn_share"
+                                android:gravity="center"
+                                android:paddingTop="8dp"
+                                android:paddingBottom="8dp"
+                                android:paddingStart="16dp"
+                                android:paddingEnd="16dp"
+                                android:fontFamily="@font/nunitosans_bold"
+                                app:layout_constraintTop_toTopOf="@+id/join"
+                                app:layout_constraintBottom_toBottomOf="@+id/join"
+                                android:text="@string/event_btn_share_title"
+                                android:textColor="@color/orange"
+                                android:background="@drawable/btn_share_more_radius_bckgrnd"
+                                android:drawableEnd="@drawable/share_icon"
+                                android:drawablePadding="16dp"
+                                android:drawableTint="@color/orange"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
 
-                        <Button
-                            android:id="@+id/join"
-                            style="@style/h2_white"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="15dp"
-                            android:drawablePadding="10dp"
-                            android:padding="10dp"
-                            android:textAllCaps="false"
-                            android:visibility="gone" />
 
                         <TextView
                             android:id="@+id/to_know"
