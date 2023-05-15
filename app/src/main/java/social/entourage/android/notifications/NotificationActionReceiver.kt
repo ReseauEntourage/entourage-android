@@ -10,10 +10,8 @@ class NotificationActionReceiver : BroadcastReceiver() {
         when (intent.action) {
             ACTION_CLICKED -> {
                 // Gérer l'action de clic sur la notification
-                Log.wtf("wtf", "wtf gone on click ")
             }
             ACTION_DISMISSED -> {
-                Log.wtf("wtf" , " wtf gone on swiped")
                 // Gérer l'action de swipe pour supprimer la notification
             }
         }

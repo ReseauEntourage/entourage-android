@@ -231,7 +231,6 @@ object PushNotificationManager {
         if(count>0) {
             pushNotificationMessageList?.first()?.let {pushNotificationMessage.pushNotificationId = it.pushNotificationId}
         }
-        Log.wtf("wtf", "wtf clicked notif ")
 
         val clickedIntent = Intent(context, NotificationActionReceiver::class.java).apply {
             action = NotificationActionReceiver.ACTION_CLICKED
@@ -349,7 +348,6 @@ object PushNotificationManager {
         args.putSerializable(PUSH_MESSAGE, pushNotificationMessage)
         val messageType: String = pushNotificationMessage.content?.type ?:""
         val messageIntent = Intent(context, MainActivity::class.java)
-        Log.wtf("wtf", "hey hey j'ai cliqué sur cette notif : " + Gson().toJson(pushNotificationMessage))
         when (messageType) {
             PushNotificationContent.TYPE_NEW_JOIN_REQUEST ->                 // because of the grouping, we need an intent that is specific for each entourage
                 messageIntent.data = Uri.parse("entourage-notif://" + pushNotificationMessage.pushNotificationTag)
