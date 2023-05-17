@@ -465,8 +465,8 @@ object AnalyticsEvents {
     const val ACTION_GROUP_OPTION_NOTIF_MEMBER = "Action__GroupOption__Notif_Member"
 
     const val ACTION_GROUP_SHARE = "Action_GroupFeed_Share"
-    const val ACTION_GROUPOPTION_SHARE = "Action_GroupOption_Share"
-    const val ACTION_GROUP_REPORT = "Action_GroupOption_Report_Confirmation"
+    const val ACTION_GROUPOPTION_SHARE = "Action__GroupOption__Share"
+    const val ACTION_GROUP_REPORT = "Action__GroupOption__Report_Confirmation"
 
     /***
      * Home
