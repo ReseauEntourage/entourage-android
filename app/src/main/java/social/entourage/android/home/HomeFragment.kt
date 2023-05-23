@@ -195,10 +195,10 @@ class HomeFragment : Fragment() {
                 user?.displayName
             )
             // HERE UNCOMMENT TO GO NOTIF
-//            welcomeUser.setOnClickListener {
-//                val intent = Intent(requireContext(), WelcomeOneActivity::class.java)
-//                startActivity(intent)
-//            }
+            welcomeUser.setOnClickListener {
+                val intent = Intent(requireContext(), WelcomeOneActivity::class.java)
+                startActivity(intent)
+            }
         }
     }
 

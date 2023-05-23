@@ -101,6 +101,7 @@
     <color name="black">#000000</color>
     <color name="white">#ffffff</color>
     <color name="white_88">#ccffffff</color>
+    <color name="gris_tres_tres_fonce">#282523</color>
 
     <!-- Pre Onboard -->
     <color name="pre_onboard_orange">@color/accent</color>

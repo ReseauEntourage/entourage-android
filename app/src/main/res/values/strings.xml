@@ -461,7 +461,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="error_get_discussion">Cette discussion n\'existe plus.</string>
 
     <!-- WELCOME PAGES -->
-    <string name="welcome_one_title">Bienvenue sur le réseau \nsocial <b>vraiment</b> social</string>
+    <string name="welcome_one_title">Bienvenue sur le réseau \nsocial vraiment social</string>
     <string name="welcome_one_content">Pour beaucoup, la rue est un lieu de passage.\npour certains, c\'est un quotidien.\nAlors pour commencer, rencontrez celles et\nceux qui la vivent tous les jours.</string>
     <string name="welcome_one_sensib">Retrouvez nos contenus de sensibilisation <u><font color="#F55F24">ici</font></u></string>
 

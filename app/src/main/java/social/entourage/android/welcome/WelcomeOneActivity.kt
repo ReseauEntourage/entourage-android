@@ -1,10 +1,20 @@
 package social.entourage.android.welcome
 
 import android.app.Activity
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
+import android.graphics.Typeface
+import android.os.Build
 import android.os.Bundle
+import android.text.Html
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.TextPaint
+import android.text.style.MetricAffectingSpan
+import android.text.style.RelativeSizeSpan
+import android.text.style.TypefaceSpan
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
@@ -15,6 +25,9 @@ import social.entourage.android.base.BaseActivity
 import social.entourage.android.databinding.ActivityLayoutWelcomeOneBinding
 import social.entourage.android.home.pedago.PedagoContentDetailsFragment
 import android.webkit.WebView
+import social.entourage.android.R
+import social.entourage.android.home.pedago.PedagoListActivity
+import social.entourage.android.tools.log.AnalyticsEvents
 import java.lang.ref.WeakReference
 
 class WelcomeOneActivity:BaseActivity(), OnVideoLoaCallback {
@@ -32,10 +45,57 @@ class WelcomeOneActivity:BaseActivity(), OnVideoLoaCallback {
         setVideo(videoLink)
         handleCloseButton()
         binding.wvContent.webViewClient = CustomWebViewClient(this)
+        setTitle()
+        onLinkClickedGoPedago()
+        AnalyticsEvents.logEvent("View_WelcomeOfferHelp_Day1")
+
         setContentView(binding.root)
     }
 
+    fun setTitle(){
+        val text = getString(R.string.welcome_one_title)
+        val spannable = SpannableString(text)
+        val wordToChangeFont = "vraiment"
+        val start = text.indexOf(wordToChangeFont)
+        val end = start + wordToChangeFont.length
 
+        if (start != -1) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                val typeface = resources.getFont(R.font.quicksand_bold)
+                val typefaceSpan = TypefaceSpan(typeface)
+                spannable.setSpan(typefaceSpan, start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+            } else {
+                val typefaceSpan = object : MetricAffectingSpan() {
+                    private val typeface = Typeface.createFromAsset(assets, "quicksand_bold.ttf")
+
+                    override fun updateMeasureState(textPaint: TextPaint) {
+                        textPaint.typeface = typeface
+                    }
+
+                    override fun updateDrawState(tp: TextPaint) {
+                        tp.typeface = typeface
+                    }
+                }
+                spannable.setSpan(typefaceSpan, start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+            }
+            binding.titleWelcomeOne.text = spannable
+        } else {
+            // Le mot "vraiment" n'est pas trouvé dans le texte, vous pourriez afficher un message d'erreur ici.
+        }
+    }
+
+    fun onLinkClickedGoPedago(){
+        AnalyticsEvents.logEvent("Action_WelcomeOfferHelp_Day1")
+        binding.tvEndLine.setOnClickListener {
+            finish()
+            startActivityForResult(
+                Intent(
+                    applicationContext,
+                    PedagoListActivity::class.java
+                ), 0
+            )
+        }
+    }
 
     fun formatYoutubeUrl(url: String): String {
         return url.replace("watch?v=", "embed/")
