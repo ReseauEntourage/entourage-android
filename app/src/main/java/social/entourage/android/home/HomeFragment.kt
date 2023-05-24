@@ -135,44 +135,46 @@ class HomeFragment : Fragment() {
     }
 
     private fun updateContributionsView(summary: Summary) {
-        isAlreadyLoadSummary = false
-        userSummary = summary
-        with(binding) {
-            summary.meetingsCount?.let {
-                meetingLabel.text =
-                    if (it <= 0) getString(R.string.contributions_meeting_empty) else getString(R.string.contributions_meeting)
-                meetingValue.text = it.toString()
-                heartIcon.isVisible = it > 0
-                heartIconEmpty.isVisible = it <= 0
-            }
+        if(isAdded){
+            isAlreadyLoadSummary = false
+            userSummary = summary
+            with(binding) {
+                summary.meetingsCount?.let {
+                    meetingLabel.text =
+                        if (it <= 0) getString(R.string.contributions_meeting_empty) else getString(R.string.contributions_meeting)
+                    meetingValue.text = it.toString()
+                    heartIcon.isVisible = it > 0
+                    heartIconEmpty.isVisible = it <= 0
+                }
 
-            summary.outingParticipationsCount?.let {
-                eventCard.value.text = it.toString()
-                eventCard.isEmpty.isVisible = it <= 0
-                eventCard.isNotEmpty.isVisible = it > 0
-                eventCard.label.text = if (it < 2) getString(R.string.contribution_event) else getString(R.string.contributions_event)
-            }
+                summary.outingParticipationsCount?.let {
+                    eventCard.value.text = it.toString()
+                    eventCard.isEmpty.isVisible = it <= 0
+                    eventCard.isNotEmpty.isVisible = it > 0
+                    eventCard.label.text = if (it < 2) getString(R.string.contribution_event) else getString(R.string.contributions_event)
+                }
 
-            summary.neighborhoodParticipationsCount?.let {
-                groupCard.value.text = it.toString()
-                groupCard.isEmpty.isVisible = it <= 0
-                groupCard.isNotEmpty.isVisible = it > 0
-                groupCard.label.text = if (it < 2) getString(R.string.contribution_group) else getString(R.string.contributions_group)
-            }
-        }
-        summary.recommendations?.let { setRecommendationsList(it) }
-        initializeHelpSection()
-        handleOnClickCounters()
-
-        if ((homePresenter.summary.value?.congratulations?.count() ?: 0) > 0 ) {
-            val timer = object: CountDownTimer(2000, 1000) {
-                override fun onTick(millisUntilFinished: Long) {}
-
-                override fun onFinish() {
-                    showCongratDialog()
+                summary.neighborhoodParticipationsCount?.let {
+                    groupCard.value.text = it.toString()
+                    groupCard.isEmpty.isVisible = it <= 0
+                    groupCard.isNotEmpty.isVisible = it > 0
+                    groupCard.label.text = if (it < 2) getString(R.string.contribution_group) else getString(R.string.contributions_group)
                 }
             }
-            timer.start()
+            summary.recommendations?.let { setRecommendationsList(it) }
+            initializeHelpSection()
+            handleOnClickCounters()
+
+            if ((homePresenter.summary.value?.congratulations?.count() ?: 0) > 0 ) {
+                val timer = object: CountDownTimer(2000, 1000) {
+                    override fun onTick(millisUntilFinished: Long) {}
+
+                    override fun onFinish() {
+                        showCongratDialog()
+                    }
+                }
+                timer.start()
+            }
         }
     }
 
