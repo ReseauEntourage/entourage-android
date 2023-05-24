@@ -5,8 +5,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/beige">
 
-
-
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -47,7 +45,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/title_welcome_one"
                 app:layout_constraintStart_toStartOf="parent"
@@ -75,11 +73,11 @@
 
             <TextView
                 android:id="@+id/content_welcome_one"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="30dp"
-                android:layout_marginEnd="20dp"
+                android:layout_marginEnd="15dp"
                 android:paddingEnd="10dp"
                 android:paddingStart="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -125,7 +123,7 @@
 
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/tv_endLine"
                 app:layout_constraintStart_toStartOf="parent"
