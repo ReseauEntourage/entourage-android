@@ -46,7 +46,6 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -62,6 +61,17 @@
                 android:textColor="@color/black"
                 android:text="@string/welcome_one_title"
                 android:textSize="24sp"/>
+
+
+            <ImageView
+                android:layout_width="17dp"
+                android:layout_height="20dp"
+                android:src="@drawable/ic_party"
+                app:layout_constraintTop_toTopOf="@+id/title_welcome_one"
+                app:layout_constraintStart_toStartOf="@+id/title_welcome_one"
+                android:layout_marginStart="-10dp"
+                android:layout_marginTop="-10dp"
+                />
 
             <TextView
                 android:id="@+id/content_welcome_one"
