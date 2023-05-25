@@ -462,7 +462,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
 
     <!-- WELCOME PAGES -->
     <string name="welcome_one_title">Bienvenue sur le réseau \nsocial, vraiment social</string>
-    <string name="welcome_one_content">Pour beaucoup, la rue est un lieu de passage.\nPour certains, c\'est un quotidien.\nAlors pour commencer, rencontrez celles \net ceux qui la vivent tous les jours.</string>
+    <string name="welcome_one_content">Pour beaucoup, la rue est un lieu de passage.\nPour certains, c\'est un quotidien.\nAlors pour commencer, rencontrez celles et ceux qui la vivent tous les jours.</string>
     <string name="welcome_one_sensib">Retrouvez nos contenus de sensibilisation <u><font color="#F55F24">ici</font></u></string>
     <string name="welcome_two_title">C\'est le moment de se lancer !</string>
     <string name="welcome_two_text_one">Un réseau social, c\'est mieux à plusieurs !\nPrésentez-vous auprès de votre groupe %s</string>
