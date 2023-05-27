@@ -60,7 +60,7 @@ class ChooseGalleryPhotoModalFragment : BottomSheetDialogFragment() {
         dialog?.setOnShowListener { dialog ->
             val d = dialog as BottomSheetDialog
             val bottomSheet =
-                d.findViewById<View>(social.entourage.android.R.id.design_bottom_sheet) as FrameLayout?
+                d.findViewById<View>(uk.co.markormesher.android_fab.fab.R.id.design_bottom_sheet) as FrameLayout?
             val coordinatorLayout = bottomSheet!!.parent as CoordinatorLayout
             val bottomSheetBehavior: BottomSheetBehavior<*> =
                 BottomSheetBehavior.from(bottomSheet)

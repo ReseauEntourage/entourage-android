@@ -221,7 +221,7 @@ dependencies {
     implementation("com.google.android.gms:play-services-location:21.0.1") //v19 needs refactoring
     implementation("com.google.android.libraries.places:places-compat:2.6.0")
     //https://developers.google.com/android/guides/opensource
-    implementation("com.google.android.gms:play-services-oss-licenses:17.0.0")
+    implementation("com.google.android.gms:play-services-oss-licenses:17.0.1")
 
     //implementation networkDependencies.values()
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
