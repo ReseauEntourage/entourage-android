@@ -52,6 +52,9 @@ data class Events(
     @field:SerializedName("uuid")
     val uuid: String? = null,
 
+    @field:SerializedName("uuid_v2")
+    var uuid_v2: String? = null,
+
     @field:SerializedName("event_url")
     val eventUrl: String? = null,
 

@@ -20,6 +20,7 @@ import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import social.entourage.android.BuildConfig
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.api.MetaDataRepository
@@ -35,6 +36,7 @@ import social.entourage.android.api.model.Tags
 import social.entourage.android.profile.myProfile.InterestsAdapter
 import social.entourage.android.report.ReportModalFragment
 import social.entourage.android.report.ReportTypes
+import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.CustomAlertDialog
 
@@ -66,6 +68,7 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
         handleReportEvent()
         handleCancelEvent()
         handleLeaveEvent()
+        handleShareButton()
         handleEditRecurrenceEvent()
         eventPresenter.eventCanceled.observe(viewLifecycleOwner, ::hasEventBeenCanceled)
         eventPresenter.isEventUpdated.observe(viewLifecycleOwner, ::hasEventBeenCanceled)
@@ -92,11 +95,34 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
             notificationNewMembers.label = getString(R.string.notification_new_members)
             edit.label = getString(R.string.edit_event_information)
             rules.label = getString(R.string.rules_event)
+            share.label = getString(R.string.share_event_settings)
             report.text = getString(R.string.report_event)
             cancel.text = getString(R.string.cancel_event)
             leave.text = getString(R.string.leave_event)
             editRecurrence.label = getString(R.string.modify_recurrence)
         }
+    }
+
+    private fun handleShareButton(){
+        AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_OPTION_SHARED)
+        binding.share.layout.setOnClickListener {
+            if(event != null){
+                val shareTitle = getString(R.string.share_title_event)
+                val shareIntent = Intent(Intent.ACTION_SEND).apply {
+                    type = "text/plain"
+                    putExtra(Intent.EXTRA_TEXT, shareTitle + "\n" + event!!.title + ": " + "\n" + createShareUrl())
+                }
+                startActivity(Intent.createChooser(shareIntent, "Partager l'URL via"))
+            }
+        }
+    }
+
+    private fun createShareUrl():String{
+        if(event != null){
+            val deepLinksHostName = BuildConfig.DEEP_LINKS_URL
+            return "https://" + deepLinksHostName + "/app/outings/" + event!!.uuid_v2
+        }
+        return ""
     }
 
     private fun getEventInformation() {
@@ -213,6 +239,7 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
                 ,false,false, false)
             }
         binding.report.setOnClickListener {
+            AnalyticsEvents.logEvent("Action_EventOption_Report")
             reportGroupBottomDialogFragment?.show(parentFragmentManager, ReportModalFragment.TAG)
         }
     }

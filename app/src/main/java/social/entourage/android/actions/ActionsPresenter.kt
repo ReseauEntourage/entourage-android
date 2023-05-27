@@ -3,6 +3,7 @@ package social.entourage.android.actions
 import android.content.Context
 import android.net.Uri
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -21,7 +22,7 @@ import timber.log.Timber
 import java.io.File
 import java.io.IOException
 
-class ActionsPresenter {
+class ActionsPresenter : ViewModel() {
 
     val EVENTS_PER_PAGE = 10
 

@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import androidx.core.os.bundleOf
 import androidx.navigation.NavController
 import social.entourage.android.EntourageApplication
@@ -13,6 +14,7 @@ import social.entourage.android.R
 import social.entourage.android.actions.create.CreateActionActivity
 import social.entourage.android.actions.detail.ActionDetailActivity
 import social.entourage.android.api.model.Action
+import social.entourage.android.api.model.Conversation
 import social.entourage.android.api.model.Events
 import social.entourage.android.api.model.Group
 import social.entourage.android.discussions.DetailConversationActivity
@@ -36,9 +38,11 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
             val value = uri.getQueryParameter(name)
             Timber.wtf("eho $name: $value")
         }
-
         if (uri.host == stagingURL || uri.host == prodURL) {
             when {
+                pathSegments.contains("app") && pathSegments.size == 1 -> {
+                    (context as? MainActivity)?.goHome()
+                }
                 pathSegments.contains("outings") && pathSegments.contains("chat_messages") -> {
                     if (pathSegments.size > 3) {
                         val eventId = pathSegments[2]
@@ -90,8 +94,12 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
                     }
                 }
                 pathSegments.contains("conversations") || pathSegments.contains("messages") -> {
-                    (context as? MainActivity)?.goConv()
-
+                    if(pathSegments.size > 2){
+                        val convId = pathSegments[2]
+                        presenter.getDetailConversation(convId)
+                    }else{
+                        (context as? MainActivity)?.goConv()
+                    }
                 }
                 pathSegments.contains("solicitations") -> {
                     if (pathSegments.contains("new")) {
@@ -161,6 +169,7 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
     override fun onRetrievedAction(action: Action,isContrib:Boolean) {
         if(isContrib){
             val intent = Intent(context, ActionDetailActivity::class.java)
+                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 .putExtra(Const.ACTION_ID, action.id)
                 .putExtra(Const.ACTION_TITLE,action.title)
                 .putExtra(Const.IS_ACTION_DEMAND,false)
@@ -168,11 +177,46 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
             (context as MainActivity).startActivity(intent)
         }else{
             val intent = Intent(context, ActionDetailActivity::class.java)
+                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 .putExtra(Const.ACTION_ID, action.id)
                 .putExtra(Const.ACTION_TITLE,action.title)
-                .putExtra(Const.IS_ACTION_DEMAND,false)
+                .putExtra(Const.IS_ACTION_DEMAND,true)
                 .putExtra(Const.IS_ACTION_MINE, action.isMine())
             (context as MainActivity).startActivity(intent)
         }
+    }
+
+    override fun onRetrievedDiscussion(discussion: Conversation) {
+        (context as MainActivity).startActivityForResult(
+            Intent(context, DetailConversationActivity::class.java)
+                .putExtras(
+                    bundleOf(
+                        Const.ID to discussion.id,
+                        Const.POST_AUTHOR_ID to discussion.user?.id,
+                        Const.SHOULD_OPEN_KEYBOARD to false,
+                        Const.NAME to discussion.title,
+                        Const.IS_CONVERSATION_1TO1 to true,
+                        Const.IS_MEMBER to true,
+                        Const.IS_CONVERSATION to true,
+                        Const.HAS_TO_SHOW_MESSAGE to discussion.hasToShowFirstMessage()
+                    )
+                ), 0
+        )
+    }
+
+    override fun onErrorRetrievedDiscussion() {
+        (context as MainActivity).DisplayErrorFromAppLinks(3)
+    }
+
+    override fun onErrorRetrievedGroup() {
+        (context as MainActivity).DisplayErrorFromAppLinks(1)
+    }
+
+    override fun onErrorRetrievedEvent() {
+        (context as MainActivity).DisplayErrorFromAppLinks(0)
+    }
+
+    override fun onErrorRetrievedAction() {
+        (context as MainActivity).DisplayErrorFromAppLinks(2)
     }
 }

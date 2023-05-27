@@ -7,6 +7,7 @@ import android.text.TextWatcher
 import android.view.View
 import android.view.ViewTreeObserver.OnGlobalLayoutListener
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
@@ -230,6 +231,8 @@ abstract class CommentActivity : BaseActivity(), onDissmissFragment {
         binding.header.title = getString(R.string.comments_title)
         binding.header.iconSettings.isVisible = true
         binding.header.iconSettings.setImageResource(R.drawable.new_report_group)
+        binding.header.cardIconSetting.setBackgroundColor(ContextCompat.getColor(this, R.color.transparent))
+        binding.header.iconSettings.setBackgroundColor(ContextCompat.getColor(this, R.color.transparent))
     }
 
     protected fun handleReport(id: Int, type: ReportTypes, isEventComment :Boolean, isMe:Boolean) {

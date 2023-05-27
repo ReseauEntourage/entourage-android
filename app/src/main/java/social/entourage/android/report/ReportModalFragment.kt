@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import kotlinx.android.synthetic.main.new_comment_item_left.*
 import social.entourage.android.R
 import social.entourage.android.api.MetaDataRepository
 import social.entourage.android.databinding.NewFragmentReportBinding
@@ -145,6 +146,7 @@ class ReportModalFragment : BottomSheetDialogFragment() {
         this.callback = callback
     }
     fun setAfterChoose(){
+
         val animSignal= ObjectAnimator.ofFloat(binding.layoutChooseSignal, "alpha", 1.0f,0.0F)
         val animSupress = ObjectAnimator.ofFloat(binding.layoutChooseSuppress, "alpha", 1.0f,0.0F)
         animSignal.duration = 100
@@ -153,7 +155,6 @@ class ReportModalFragment : BottomSheetDialogFragment() {
             override fun onAnimationEnd(animation: Animator, isReverse: Boolean) {
                 binding.layoutChooseSignal.visibility = View.GONE
                 binding.next.visibility = View.VISIBLE
-
             }
         })
         animSupress.addListener(object : AnimatorListenerAdapter() {
@@ -185,6 +186,10 @@ class ReportModalFragment : BottomSheetDialogFragment() {
         var logEventTitleView = AnalyticsEvents.POST_SUPPRESSED
         var logEventTitleClick = AnalyticsEvents.SUPPRESS_CLICK
         binding.header.title = getString(R.string.title_param_post)
+        if(reportType == ReportTypes.REPORT_DEMAND.code || reportType == ReportTypes.REPORT_CONTRIB.code){
+            binding.header.title = getString(R.string.action_title_header_signal_problem)
+        }
+
         if(isFromConv == true){
             binding.header.title = getString(R.string.title_param_comment)
             logEventTitleView = AnalyticsEvents.Delete_comm
@@ -251,6 +256,9 @@ class ReportModalFragment : BottomSheetDialogFragment() {
                     })
             }
         }
+        if(reportType == ReportTypes.REPORT_DEMAND.code || reportType == ReportTypes.REPORT_CONTRIB.code){
+            binding.tvChooseSignal.text = getString(R.string.discussion_entraide_signal)
+        }
         binding.layoutChooseSignal.setOnClickListener {
             setAfterChoose()
             setView()
@@ -288,10 +296,19 @@ class ReportModalFragment : BottomSheetDialogFragment() {
             title = getString(R.string.report_comment)
         }
         binding.header.title = title
-
     }
 
     private fun handleReportResponse(success: Boolean) {
+        if(success){
+            if(reportType == ReportTypes.REPORT_EVENT.code){
+                AnalyticsEvents.logEvent("Action_EventOption_ReportConfirmation")
+            }else if(reportType == ReportTypes.REPORT_CONTRIB.code){
+                AnalyticsEvents.logEvent("Action__Contrib__Report_Confirmation")
+            }else if(reportType == ReportTypes.REPORT_DEMAND.code){
+                AnalyticsEvents.logEvent("Action__Demand__Report_Confirmation")
+            }
+
+        }
         if (success) CustomAlertDialog.showOnlyOneButton(
             requireContext(),
             title,

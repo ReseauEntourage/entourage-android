@@ -37,6 +37,7 @@
     <string name="action_title_section_author">Crée le par</string>
     <string name="action_canceled">Annonce supprimée</string>
     <string name="action_show_charte"><u>Charte éthique</u></string>
+    <string name="signal_a_problem"><u>Signaler un problème</u></string>
 
     <string name="action_detail_bt_cancel">Supprimer</string>
     <string name="action_detail_bt_modify">Modifier</string>

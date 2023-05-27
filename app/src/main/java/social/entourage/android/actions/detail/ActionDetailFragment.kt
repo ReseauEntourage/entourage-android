@@ -3,6 +3,7 @@ package social.entourage.android.actions.detail
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +11,7 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
@@ -31,6 +33,8 @@ import social.entourage.android.groups.details.rules.GroupRulesActivity
 import social.entourage.android.api.model.Action
 import social.entourage.android.api.model.ActionSection
 import social.entourage.android.api.model.Conversation
+import social.entourage.android.report.ReportModalFragment
+import social.entourage.android.report.ReportTypes
 import social.entourage.android.tools.displayDistance
 import social.entourage.android.user.UserProfileActivity
 import social.entourage.android.tools.utils.Const
@@ -45,7 +49,7 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
 
     private var mCallback:OnDetailActionReceive? = null
 
-    private val actionsPresenter: ActionsPresenter by lazy { ActionsPresenter() }
+    private lateinit var actionsPresenter: ActionsPresenter
     private val discussionPresenter: DiscussionsPresenter by lazy { DiscussionsPresenter() }
 
     private var actionId:Int = 0
@@ -59,7 +63,7 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        actionsPresenter = ViewModelProvider(requireActivity()).get(ActionsPresenter::class.java)
         arguments?.let {
             actionId = it.getInt(Const.ACTION_ID)
             isDemand = it.getBoolean(Const.IS_ACTION_DEMAND)
@@ -67,8 +71,11 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
         }
         if (com.google.android.gms.maps.MapsInitializer.initialize(requireContext()) == 0) {
         }
+        Log.wtf("wtf" , "wtf action id from activity " + actionId)
 
     }
+
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -88,7 +95,7 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
 
         initializeViews()
         setupButtons()
-
+        handleReportPost(id,isDemand)
         loadAction()
         actionsPresenter.getAction.observe(viewLifecycleOwner, ::handleResponseGetDetail)
         //Use to show or create conversation 1 to 1
@@ -115,8 +122,32 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
         actionsPresenter.getDetailAction(actionId,isDemand)
     }
 
+    private fun handleReport(id: Int, type: ReportTypes) {
+        if(type == ReportTypes.REPORT_CONTRIB){
+            AnalyticsEvents.logEvent("Action__Contrib__Report")
+        }else{
+            AnalyticsEvents.logEvent("Action__Demand__Report")
+        }
+
+        val reportGroupBottomDialogFragment =
+            ReportModalFragment.newInstance(actionId, id, type,isMine,false, false)
+        reportGroupBottomDialogFragment.show(
+            requireActivity().supportFragmentManager,
+            ReportModalFragment.TAG
+        )
+    }
+    private fun handleReportPost(id: Int, isDemand:Boolean) {
+        binding.titleSignal.setOnClickListener {
+            val _type = if (isDemand) ReportTypes.REPORT_DEMAND else ReportTypes.REPORT_CONTRIB
+            handleReport(id, _type)
+        }
+    }
+
     private fun handleResponseGetDetail(action: Action?) {
         this.action = action
+        if(action!!.isMine()){
+            binding.titleSignal.visibility = View.GONE
+        }
         updateViews()
 
         action?.let {

@@ -46,9 +46,6 @@ class MainActivity : BaseSecuredActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.new_activity_main)
-
-
-
         viewModel = ViewModelProvider(this)[CommunicationHandlerBadgeViewModel::class.java]
 
 
@@ -75,7 +72,6 @@ class MainActivity : BaseSecuredActivity() {
 
     fun handleUniversalLinkFromMain(intent: Intent){
         val uri = intent.data
-        //Log.wtf("wtf", "wtf " + intent)
         if (uri != null) {
             universalLinkManager.handleUniversalLink(uri)
         }
@@ -201,8 +197,36 @@ class MainActivity : BaseSecuredActivity() {
         if (MetaDataRepository.eventsImages.value == null) MetaDataRepository.getEventsImages()
     }
 
+    fun DisplayErrorFromAppLinks(errorNumber:Int){
+        //0 : EVENT
+        //1 : GROUP
+        //2 : ACTION
+        //3 : DISCUSSION
+        if(errorNumber == 0){
+            Toast.makeText(this, getString(R.string.error_get_event), Toast.LENGTH_LONG).show()
+        }
+        if(errorNumber == 1){
+            Toast.makeText(this, getString(R.string.error_get_group), Toast.LENGTH_LONG).show()
+
+        }
+        if(errorNumber == 2){
+            Toast.makeText(this, getString(R.string.error_get_action), Toast.LENGTH_LONG).show()
+
+        }
+        if(errorNumber == 3){
+            Toast.makeText(this, getString(R.string.error_get_discussion), Toast.LENGTH_LONG).show()
+
+        }
+    }
+
+    fun goHome(){
+        navController.navigate(R.id.navigation_home)
+
+    }
+
     fun goEvent(){
         navController.navigate(R.id.navigation_events)
+
     }
 
     fun goConv(){
@@ -235,6 +259,8 @@ class MainActivity : BaseSecuredActivity() {
             when (item.itemId) {
                 R.id.navigation_home -> {
                     AnalyticsEvents.logEvent(AnalyticsEvents.Action_Tabbar_home)
+                    navController.navigate(R.id.navigation_home)
+
                 }
                 R.id.navigation_donations -> {
                     AnalyticsEvents.logEvent(AnalyticsEvents.Action_Tabbar_help)

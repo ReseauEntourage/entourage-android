@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
+import android.os.Build
 import android.text.method.LinkMovementMethod
 import android.util.Log
 import android.view.LayoutInflater
@@ -149,13 +150,17 @@ class PostAdapter(
                 }
                 if(status == "deleted"){
                     binding.postMessage.text = context.getText(R.string.deleted_publi)
-                    binding.postMessage.setTextColor(context.getColor(R.color.deleted_grey))
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        binding.postMessage.setTextColor(context.getColor(R.color.deleted_grey))
+                    }
                     binding.postMessage.visibility = View.VISIBLE
                     binding.postComment.visibility = View.GONE
                     binding.btnReportPost.visibility = View.GONE
                 }else{
                     binding.postMessage.text = content
-                    binding.postMessage.setTextColor(context.getColor(R.color.black))
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        binding.postMessage.setTextColor(context.getColor(R.color.black))
+                    }
                     binding.postMessage.visibility = View.VISIBLE
                     binding.postComment.visibility = View.VISIBLE
                     binding.btnReportPost.visibility = View.VISIBLE

@@ -30,9 +30,13 @@ import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.new_fragment_feed.view.*
+import kotlinx.android.synthetic.main.new_fragment_feed.view.arrow
+import kotlinx.android.synthetic.main.new_fragment_feed.view.subtitle
+import kotlinx.android.synthetic.main.new_fragment_feed_event.view.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import social.entourage.android.BuildConfig
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.api.MetaDataRepository
@@ -233,6 +237,7 @@ class FeedFragment : Fragment(), CallbackReportFragment {
                 eventDescription.visibility = View.VISIBLE
                 eventDescription.text = event.description
                 more.visibility = View.GONE
+
                 initializeInterests()
             }
 
@@ -373,6 +378,7 @@ class FeedFragment : Fragment(), CallbackReportFragment {
     }
 
     private fun openReportFragment(postId:Int, userId:Int) {
+
         val reportGroupBottomDialogFragment =
             event?.id?.let {
                 val meId = EntourageApplication.get().me()?.id
@@ -422,7 +428,7 @@ class FeedFragment : Fragment(), CallbackReportFragment {
 
 
     private fun handleAboutButton() {
-        binding.more.setOnClickListener {
+        binding.more.tv_more.setOnClickListener {
             val eventUI = event.toEventUi(requireContext())
             val action =
                 FeedFragmentDirections.actionEventFeedToEventAbout(
@@ -430,7 +436,31 @@ class FeedFragment : Fragment(), CallbackReportFragment {
                 )
             findNavController().navigate(action)
         }
+        binding.btnShare.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_SHARED)
+            val shareTitle = getString(R.string.share_title_event)
+            val shareIntent = Intent(Intent.ACTION_SEND).apply {
+                type = "text/plain"
+                putExtra(Intent.EXTRA_TEXT, shareTitle + "\n" + event.title + ": " + "\n" + createShareUrl())
+            }
+            startActivity(Intent.createChooser(shareIntent, "Partager l'URL via"))
+        }
+        binding.bigBtnShare.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_SHARED)
+            val shareTitle = getString(R.string.share_title_event)
+            val shareIntent = Intent(Intent.ACTION_SEND).apply {
+                type = "text/plain"
+                putExtra(Intent.EXTRA_TEXT, shareTitle + "\n" + event.title + ": " + "\n" + createShareUrl())
+            }
+            startActivity(Intent.createChooser(shareIntent, "Partager l'URL via"))
+        }
     }
+
+    private fun createShareUrl():String{
+        val deepLinksHostName = BuildConfig.DEEP_LINKS_URL
+        return "https://" + deepLinksHostName + "/app/outings/" + event.uuid_v2
+    }
+
 
 
     fun getPrincipalMember(){

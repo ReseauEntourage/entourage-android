@@ -348,6 +348,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="event_success_subtitle">Félicitations, vous venez de créer un nouvel événement.\nPour le rendre plus actif, \nparlez-en sur vos groupes !</string>
     <string name="see_event">Voir mon événement</string>
     <string name="share_event">Partager l\'événement dans vos groupes</string>
+    <string name="share_event_settings">Partager l\'événement</string>
     <string name="share_event_label">Vous ne pouvez partager l’évènement seulement aux groupes dont vous êtes membre. Votre événement sera alors visible dans le(s) groupe(s) sélectionné(s) et tous les membres d\'un groupe pourront y participer.</string>
     <string name="dont_share">Ne partager dans aucun groupe</string>
     <string name="share_in_groups">Partager dans un ou plusieurs groupes</string>
@@ -451,5 +452,12 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="home_congrat_title_plural">Bravo ! Vous avez réalisé %d nouvelles actions !</string>
     <string name="home_congrat_title_next">Super, il y a du nouveau sur l\'accueil !</string>
     <string name="three_point">…</string>
+
+    <!-- Home ERROR DEEPLINKS -->
+    <string name="error_get_event">Cet évéement n\'existe plus.</string>
+    <string name="error_get_group">Ce groupe de voisin n\'existe plus.</string>
+    <string name="error_get_action">Cette action n\'existe plus.</string>
+    <string name="error_get_discussion">Cette discussion n\'existe plus.</string>
+
 
 </resources>
