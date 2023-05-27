@@ -201,7 +201,7 @@ class EventsPresenter: ViewModel() {
     }
 
     fun getEvent(id: Int) {
-        EntourageApplication.get().apiModule.eventsRequest.getEvent(id)
+        EntourageApplication.get().apiModule.eventsRequest.getEvent(id.toString())
             .enqueue(object : Callback<EventWrapper> {
                 override fun onResponse(
                     call: Call<EventWrapper>,
@@ -218,6 +218,7 @@ class EventsPresenter: ViewModel() {
                 }
             })
     }
+
 
     fun participate(eventId: Int) {
         EntourageApplication.get().apiModule.eventsRequest.participate(eventId)

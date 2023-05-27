@@ -76,6 +76,7 @@ open class MembersFragment : Fragment() {
     }
 
     private fun getMembers() {
+
         if (type == MembersType.GROUP) {
             id?.let {
                 groupPresenter.getGroupMembers(it)

@@ -37,6 +37,7 @@ import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.CustomAlertDialog
 import social.entourage.android.tools.utils.px
 import social.entourage.android.tools.log.AnalyticsEvents
+import timber.log.Timber
 
 class ActionDetailFragment : Fragment(), OnMapReadyCallback {
     private var _binding: NewFragmentActionDetailBinding? = null
@@ -64,6 +65,9 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
             isDemand = it.getBoolean(Const.IS_ACTION_DEMAND)
             isMine = it.getBoolean(Const.IS_ACTION_MINE)
         }
+        if (com.google.android.gms.maps.MapsInitializer.initialize(requireContext()) == 0) {
+        }
+
     }
 
     override fun onCreateView(
@@ -73,6 +77,7 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
         _binding = NewFragmentActionDetailBinding.inflate(inflater,container,false)
 
         //mMap = binding.uiMapview
+        Timber.wtf("wtf " + savedInstanceState)
         binding.uiMapview.onCreate(savedInstanceState)
         binding.uiMapview.getMapAsync(this)
         return binding.root

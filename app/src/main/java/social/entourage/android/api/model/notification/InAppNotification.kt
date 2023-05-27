@@ -18,6 +18,8 @@ class InAppNotification (
     val postId: Int? = null,
     @SerializedName("instance")
     val instanceType: String? = null,
+    @SerializedName("title")
+    val title: String? = null,
     @SerializedName("content")
     val content: String? = null,
     @SerializedName("created_at")

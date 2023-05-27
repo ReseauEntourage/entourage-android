@@ -88,7 +88,6 @@ class PedagoListFragment : Fragment() {
         clearFilter()
         when (filter) {
             Category.ALL -> {
-                Timber.wtf("wtf")
                 AnalyticsEvents.logEvent(AnalyticsEvents.Pedago_View_all_tag)
                 sections.add(
                     SectionHeader(

@@ -28,6 +28,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
+import com.google.gson.Gson
 import kotlinx.android.synthetic.main.new_fragment_feed.view.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
@@ -91,6 +92,7 @@ class FeedFragment : Fragment(), CallbackReportFragment {
         eventPresenter.isEventReported.observe(requireActivity(), ::handleDeletedResponse)
         eventPresenter.isUserParticipating.observe(viewLifecycleOwner, ::handleParticipateResponse)
         eventPresenter.getAllPosts.observe(viewLifecycleOwner, ::handleResponseGetEventPosts)
+        eventPresenter.getMembers.observe(viewLifecycleOwner, ::handleResponseGetMembers)
         handleSwipeRefresh()
         handleMembersButton()
         fragmentResult()
@@ -184,6 +186,7 @@ class FeedFragment : Fragment(), CallbackReportFragment {
     }
 
     private fun updateView() {
+
         MetaDataRepository.metaData.observe(requireActivity(), ::handleMetaData)
         with(binding) {
             eventName.text = event.title
@@ -296,7 +299,7 @@ class FeedFragment : Fragment(), CallbackReportFragment {
         handleCreatePostButtonClick()
         openGoogleMaps()
         initializePosts()
-
+        getPrincipalMember()
     }
 
     private fun handleBackButton() {
@@ -426,6 +429,27 @@ class FeedFragment : Fragment(), CallbackReportFragment {
                     eventUI
                 )
             findNavController().navigate(action)
+        }
+    }
+
+
+    fun getPrincipalMember(){
+        eventPresenter.getEventMembers(eventId)
+
+    }
+
+    fun handleResponseGetMembers(allMembers: MutableList<EntourageUser>?) {
+        if (allMembers != null) {
+            for(member in allMembers){
+                if(member.id.toInt() == event.author?.userID){
+                    Timber.wtf("wtf true" + Gson().toJson(member))
+                    if(member.communityRoles?.contains("Équipe Entourage") == true || member.communityRoles?.contains("Ambassadeur") == true){
+                        Timber.wtf("wtf ambassador")
+                        binding.tvAssociation.text = getString(R.string.event_organisez_entourage)
+                        binding.tvAssociation.visibility = View.VISIBLE
+                    }
+                }
+            }
         }
     }
 

@@ -59,7 +59,7 @@ interface EventsRequest {
     ): Call<ResponseBody>
 
     @GET("outings/{id}")
-    fun getEvent(@Path("id") eventId: Int): Call<EventWrapper>
+    fun getEvent(@Path("id") eventId: String): Call<EventWrapper>
 
     @POST("outings/{event_id}/users")
     fun participate(

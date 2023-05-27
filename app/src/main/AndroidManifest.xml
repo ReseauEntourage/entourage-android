@@ -51,14 +51,14 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".notifications.InAppNotificationsActivity"
-            android:exported="false"/>
+            android:exported="false" />
         <activity
             android:name=".onboarding.onboard.OnboardingStartActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".onboarding.onboard.OnboardingEndActivity"
-            android:exported="false"/>
+            android:exported="false" />
         <activity
             android:name=".home.pedago.PedagoDetailActivity"
             android:exported="false" />
@@ -154,6 +154,7 @@
             android:name="google_analytics_adid_collection_enabled"
             android:value="false" />
 
+
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -164,122 +165,36 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-            <intent-filter>
+            <intent-filter android:autoVerify="true" tools:targetApi="m">
                 <action android:name="android.intent.action.VIEW" />
-
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-
-                <data
-                    android:host="${deepLinksHostName}"
-                    android:pathPrefix="/entourages/"
-                    android:scheme="https" />
+                <data android:scheme="https" android:host="${deepLinksHostName}" android:pathPrefix="/app/" />
+                <data android:scheme="https" android:host="${deepLinksHostName}" android:pathPrefix="/deeplink/" />
+                <data android:scheme="https" android:host="${deepLinksHostName}" android:pathPrefix="/entourages/" />
+            </intent-filter>
+            <intent-filter android:autoVerify="true" tools:targetApi="m">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="http" android:host="${deepLinksHostName}" android:pathPrefix="/app/" />
+                <data android:scheme="http" android:host="${deepLinksHostName}" android:pathPrefix="/deeplink/" />
+                <data android:scheme="http" android:host="${deepLinksHostName}" android:pathPrefix="/entourages/" />
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
-
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="${deepLinksScheme}" />
+            </intent-filter>        </activity>
 
-                <data
-                    android:host="${deepLinksHostName}"
-                    android:pathPrefix="/entourages/"
-                    android:scheme="http" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data
-                    android:host="${deepLinksHostName}"
-                    android:pathPrefix="/deeplink/"
-                    android:scheme="https" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data
-                    android:host="${deepLinksHostName}"
-                    android:pathPrefix="/deeplink/"
-                    android:scheme="http" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data android:scheme="${deepLinksEntourageScheme}" />
-            </intent-filter>
-
-            <meta-data
-                android:name="android.app.shortcuts"
-                android:resource="@xml/shortcuts" />
-
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data
-                    android:host="${deepLinksHostName}"
-                    android:pathPrefix="/webview"
-                    android:scheme="https" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data
-                    android:host="${deepLinksHostName}"
-                    android:pathPrefix="/entourage/"
-                    android:scheme="https" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data
-                    android:host="${deepLinksHostName}"
-                    android:pathPrefix="/entourage/"
-                    android:scheme="http" />
-            </intent-filter>
-            <intent-filter android:autoVerify="true">
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data
-                    android:host="${appLinksHostName}"
-                    android:pathPrefix="/actions/"
-                    android:scheme="https" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data
-                    android:host="${appLinksHostName}"
-                    android:pathPrefix="/entourage/"
-                    android:scheme="https" />
-            </intent-filter>
-        </activity>
         <activity
             android:name="com.google.android.gms.oss.licenses.OssLicensesMenuActivity"
             android:theme="@style/EntourageOSSLicenses.Theme" />
+        <activity
+            android:name=".fab_comportement.FabActivity"
+            android:theme="@style/AppTheme.FabActivity"
+            android:exported="false" />
         <activity
             android:name="com.google.android.gms.oss.licenses.OssLicensesActivity"
             android:theme="@style/EntourageOSSLicenses.Theme" />

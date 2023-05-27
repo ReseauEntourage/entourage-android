@@ -218,8 +218,8 @@ class ActionLocationFilterActivity : AppCompatActivity() {
 
     //Google Place
     fun onPlaceSearch() {
-        val filter: AutocompleteFilter = AutocompleteFilter.Builder().setCountry("FR").build()
-        val intent = PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_OVERLAY).setFilter(filter)
+        //val filter: AutocompleteFilter = AutocompleteFilter.Builder().setCountry("FR").build()
+        val intent = PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_OVERLAY)
             .build(this)
         resultLauncher.launch(intent)
     }

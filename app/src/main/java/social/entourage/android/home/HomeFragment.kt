@@ -1,9 +1,11 @@
 package social.entourage.android.home
 
 import android.content.Intent
+import android.graphics.drawable.GradientDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -79,12 +81,36 @@ class HomeFragment : Fragment() {
         AnalyticsEvents.logEvent(AnalyticsEvents.Home_view_home)
     }
 
-    private fun updateNotifsCount(count:Int) {
+    /*    private fun updateNotifsCount(count:Int) {
         context?.resources?.let { resources->
+
+
             binding.uiBellNotif.setImageDrawable(
                 ResourcesCompat.getDrawable(
                     resources,
-                    if (count > 0) R.drawable.ic_new_notif_on else R.drawable.ic_new_notif_off,
+                    if (count > 0) R.drawable.ic_new_notif_on else R.drawable,
+                    null
+                )
+            )
+        }
+    }
+*/
+
+    private fun updateNotifsCount(count: Int) {
+        context?.resources?.let { resources ->
+            val bgColor = if (count > 0) {
+                ResourcesCompat.getColor(resources, R.color.orange, null)
+            } else {
+                ResourcesCompat.getColor(resources, R.color.partner_logo_background, null)
+            }
+
+            val shapeDrawable = binding.uiLayoutNotif.background as? GradientDrawable
+            shapeDrawable?.setColor(bgColor)
+
+            binding.uiBellNotif.setImageDrawable(
+                ResourcesCompat.getDrawable(
+                    resources,
+                    if (count > 0) R.drawable.ic_white_notif_on else R.drawable.ic_new_notif_off,
                     null
                 )
             )

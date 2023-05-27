@@ -378,8 +378,7 @@ class WebViewFragment : BaseDialogFragment() {
                 return true
             }catch (e:Exception){
                 //HERE Find true context
-                Timber.wtf("eho error" + e.message)
-                Timber.wtf("eho error" + context)
+
 
                 return true
             }

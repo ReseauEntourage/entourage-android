@@ -4,12 +4,15 @@ import android.Manifest
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.NotificationManagerCompat
+import androidx.core.os.bundleOf
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
@@ -25,6 +28,7 @@ import social.entourage.android.api.MetaDataRepository
 import social.entourage.android.api.model.notification.PushNotificationMessage
 import social.entourage.android.base.BaseSecuredActivity
 import social.entourage.android.base.location.EntLocation
+import social.entourage.android.deeplinks.UniversalLinkManager
 import social.entourage.android.guide.GDSMainActivity
 import social.entourage.android.notifications.PushNotificationManager
 import social.entourage.android.home.CommunicationHandlerBadgeViewModel
@@ -38,12 +42,15 @@ class MainActivity : BaseSecuredActivity() {
     private val presenter: MainPresenter = MainPresenter(this)
 
     private lateinit var viewModel: CommunicationHandlerBadgeViewModel
-
+    private val universalLinkManager = UniversalLinkManager(this)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.new_activity_main)
 
+
+
         viewModel = ViewModelProvider(this)[CommunicationHandlerBadgeViewModel::class.java]
+
 
         viewModel.badgeCount.observe(this,::handleUpdateBadgeResponse)
 
@@ -56,11 +63,23 @@ class MainActivity : BaseSecuredActivity() {
             updateAnalyticsInfo()
             //TODO authenticationController.me?.unreadCount?.let { bottomBar?.updateBadgeCountForUser(it) }
         }
+
+        handleUniversalLinkFromMain(this.intent)
     }
+
 
     override fun onStart() {
         presenter.checkForUpdate(this)
         super.onStart()
+    }
+
+    fun handleUniversalLinkFromMain(intent: Intent){
+        val uri = intent.data
+        //Log.wtf("wtf", "wtf " + intent)
+        if (uri != null) {
+            universalLinkManager.handleUniversalLink(uri)
+        }
+
     }
 
     fun displayAppUpdateDialog() {
@@ -101,6 +120,7 @@ class MainActivity : BaseSecuredActivity() {
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
         this.intent = intent
+        handleUniversalLinkFromMain(intent)
     }
 
     private fun updateAnalyticsInfo() {
@@ -181,6 +201,23 @@ class MainActivity : BaseSecuredActivity() {
         if (MetaDataRepository.eventsImages.value == null) MetaDataRepository.getEventsImages()
     }
 
+    fun goEvent(){
+        navController.navigate(R.id.navigation_events)
+    }
+
+    fun goConv(){
+        navController.navigate(R.id.navigation_messages)
+    }
+    fun goContrib(){
+        val bundle = bundleOf("isActionDemand" to true) // Mettez ici la valeur souhaitée pour "isActionDemand"
+        navController.navigate(R.id.navigation_donations, bundle)
+
+    }
+    fun goDemand(){
+        val bundle = bundleOf("isActionDemand" to false) // Mettez ici la valeur souhaitée pour "isActionDemand"
+        navController.navigate(R.id.navigation_donations, bundle)
+    }
+
     private fun initializeNavBar() {
         val navHostFragment = supportFragmentManager.findFragmentById(
             R.id.nav_host_fragment_new_activity_main
@@ -215,7 +252,6 @@ class MainActivity : BaseSecuredActivity() {
 
             val navController: NavController =
             androidx.navigation.Navigation.findNavController(this, social.entourage.android.R.id.nav_host_fragment_new_activity_main)
-
             NavigationUI.onNavDestinationSelected(item, navController)
         }
     }
@@ -273,4 +309,19 @@ class MainActivity : BaseSecuredActivity() {
     fun deleteApplicationInfo(listener:() -> Unit) {
         presenter.deleteApplicationInfo(listener)
     }
+}
+
+
+enum class EntourageLink(val link: String) {
+    HOME("https://preprod.entourage.social/app"),
+    GROUP("https://preprod.entourage.social/app/groups/bb8c3e77aa95"),
+    OUTING("https://preprod.entourage.social/app/outings/ebJUCN-woYgM"),
+    OUTINGS_LIST("https://preprod.entourage.social/app/outings"),
+    MESSAGE("https://preprod.entourage.social/app/messages/er2BVAa5Vb4U"),
+    NEW_CONTRIBUTION("https://preprod.entourage.social/app/contributions/new"),
+    NEW_SOLICITATION("https://preprod.entourage.social/app/solicitations/new"),
+    CONTRIBUTIONS_LIST("https://preprod.entourage.social/app/contributions"),
+    SOLICITATIONS_LIST("https://preprod.entourage.social/app/solicitations"),
+    CONTRIBUTION_DETAIL("https://preprod.entourage.social/app/contributions/er2BVAa5Vb4U"),
+    SOLICITATION_DETAIL("https://preprod.entourage.social/app/solicitations/eibewY3GW-ek")
 }

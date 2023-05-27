@@ -11,7 +11,7 @@ android {
     ext {
         // App versions
         versionMajor = 8
-        versionMinor = 4
+        versionMinor = 5
         versionPatch = "git rev-list HEAD --count".execute().text.trim().toInteger()
         versionBranchName = "git rev-parse --abbrev-ref HEAD".execute().text.trim()
         versionCodeInt = (versionMajor * 100 + versionMinor) * 10000 + versionPatch % 10000
@@ -57,6 +57,10 @@ android {
         buildConfigField 'String', 'ENTOURAGE_URL', '"https://api.entourage.social/api/v1/"'
         buildConfigField 'String', 'TEST_ACCOUNT_LOGIN', TEST_ACCOUNT_LOGIN
         buildConfigField 'String', 'TEST_ACCOUNT_PWD', TEST_ACCOUNT_PWD
+        manifestPlaceholders = [
+                deepLinksHostName: "https://api.entourage.social/api/v1/",
+                deepLinksScheme  : "entourage",
+        ]
     }
 
     signingConfigs {
@@ -81,7 +85,6 @@ android {
         staging {
             dimension 'env'
             applicationIdSuffix '.preprod'
-
         }
         entourage {
             dimension 'app'
@@ -91,13 +94,11 @@ android {
                         serverURL        : "https://api.entourage.social/api/v1/",
                         deepLinksHostName: "www.entourage.social",
                         deepLinksScheme  : "entourage",
-                        appLinksHostName : "app.entourage.social"
                 ]
                 staging = [
                         serverURL        : "https://api-preprod.entourage.social/api/v1/",
                         deepLinksHostName: "preprod.entourage.social",
                         deepLinksScheme  : "entourage-staging",
-                        appLinksHostName : "entourage-webapp-preprod.herokuapp.com"
                 ]
             }
         }
@@ -148,12 +149,10 @@ android {
         variant.buildConfigField "String", "ENTOURAGE_URL", "\"${app[environment.name]['serverURL']}\""
         variant.buildConfigField "String", "DEEP_LINKS_SCHEME", "\"${app[environment.name]['deepLinksScheme']}\""
         variant.buildConfigField "String", "DEEP_LINKS_URL", "\"${app[environment.name]['deepLinksHostName']}\""
-        variant.buildConfigField "String", "APP_LINKS_URL", "\"${app[environment.name]['appLinksHostName']}\""
 
         variant.mergedFlavor.manifestPlaceholders = [
                 deepLinksHostName       : "${app[environment.name]['deepLinksHostName']}",
-                appLinksHostName        : "${app[environment.name]['appLinksHostName']}",
-                deepLinksEntourageScheme: "${app[environment.name]['deepLinksScheme']}"
+                deepLinksScheme: "${app[environment.name]['deepLinksScheme']}"
         ]
 
         // The defaultConfig values above are fixed, so your incremental builds don't
@@ -209,6 +208,7 @@ dependencies {
     implementation "com.google.firebase:firebase-crashlytics-ktx"
     implementation "com.google.firebase:firebase-config-ktx"
     releaseImplementation "com.google.firebase:firebase-perf-ktx"
+    implementation 'com.github.mmin18:realtimeblurview:1.2.1'
 
     //implementation gmsDependencies.values()
     implementation "com.google.android.gms:play-services-maps:18.1.0"
@@ -269,5 +269,4 @@ dependencies {
     implementation 'com.github.chrisbanes:PhotoView:2.3.0'
 
 }
-
 apply plugin: "com.google.gms.google-services"

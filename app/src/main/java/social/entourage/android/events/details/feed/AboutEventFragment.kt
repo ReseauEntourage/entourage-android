@@ -27,8 +27,10 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.gson.Gson
 import social.entourage.android.R
 import social.entourage.android.api.MetaDataRepository
+import social.entourage.android.api.model.EntourageUser
 import social.entourage.android.events.EventModel
 import social.entourage.android.databinding.NewFragmentAboutEventBinding
 import social.entourage.android.events.EventsPresenter
@@ -81,6 +83,7 @@ class AboutEventFragment : Fragment(), OnMapReadyCallback {
         handleBackButton()
         eventPresenter.isUserParticipating.observe(requireActivity(), ::handleJoinResponse)
         eventPresenter.hasUserLeftEvent.observe(requireActivity(), ::handleJoinResponse)
+        eventPresenter.getMembers.observe(viewLifecycleOwner, ::handleResponseGetMembers)
         fragmentResult()
 
         AnalyticsEvents.logEvent(AnalyticsEvents.Event_detail_full)
@@ -200,8 +203,32 @@ class AboutEventFragment : Fragment(), OnMapReadyCallback {
 
             }
         }
-
+        getPrincipalMember()
         updateButtonJoin()
+    }
+
+
+    fun getPrincipalMember(){
+        if(event != null) {
+            if(event?.id != null ){
+                eventPresenter.getEventMembers(event!!.id!!)
+            }
+        }
+    }
+
+    fun handleResponseGetMembers(allMembers: MutableList<EntourageUser>?) {
+        if (allMembers != null) {
+            for(member in allMembers){
+                if(member.id.toInt() == event?.author?.userID){
+                    Timber.wtf("wtf true" + Gson().toJson(member))
+                    if(member.communityRoles?.contains("Équipe Entourage") == true || member.communityRoles?.contains("Ambassadeur") == true){
+                        Timber.wtf("wtf ambassador")
+                        binding.tvAssociation.text = getString(R.string.event_organisez_entourage)
+                        binding.tvAssociation.visibility = View.VISIBLE
+                    }
+                }
+            }
+        }
     }
 
     private fun handleEventCanceled() {
@@ -339,41 +366,43 @@ class AboutEventFragment : Fragment(), OnMapReadyCallback {
     }
 
     private fun updateButtonJoin() {
-        lateinit var label: String
-        val textColor: Int
-        val background: Drawable?
-        val rightDrawable: Drawable?
+        if(isAdded){
+            lateinit var label: String
+            val textColor: Int
+            val background: Drawable?
+            val rightDrawable: Drawable?
 
-        if (event?.member == true) {
-            label = getString(R.string.participating)
-            textColor = ContextCompat.getColor(requireContext(), R.color.orange)
-            background = ResourcesCompat.getDrawable(
-                resources,
-                R.drawable.new_bg_rounded_button_orange_stroke,
-                null
-            )
-            rightDrawable = ResourcesCompat.getDrawable(resources, R.drawable.new_check, null)
-        } else {
-            label = getString(R.string.participate)
-            textColor = ContextCompat.getColor(requireContext(), R.color.white)
-            background = ResourcesCompat.getDrawable(
-                resources,
-                R.drawable.new_bg_rounded_button_orange_fill,
-                null
-            )
-            rightDrawable =
-                ResourcesCompat.getDrawable(resources, R.drawable.new_plus_white, null)
-        }
-        with(binding) {
-            join.text = label
-            join.setTextColor(textColor)
-            join.background = background
-            join.setCompoundDrawablesWithIntrinsicBounds(
-                null,
-                null,
-                rightDrawable,
-                null
-            )
+            if (event?.member == true) {
+                label = getString(R.string.participating)
+                textColor = ContextCompat.getColor(requireContext(), R.color.orange)
+                background = ResourcesCompat.getDrawable(
+                    resources,
+                    R.drawable.new_bg_rounded_button_orange_stroke,
+                    null
+                )
+                rightDrawable = ResourcesCompat.getDrawable(resources, R.drawable.new_check, null)
+            } else {
+                label = getString(R.string.participate)
+                textColor = ContextCompat.getColor(requireContext(), R.color.white)
+                background = ResourcesCompat.getDrawable(
+                    resources,
+                    R.drawable.new_bg_rounded_button_orange_fill,
+                    null
+                )
+                rightDrawable =
+                    ResourcesCompat.getDrawable(resources, R.drawable.new_plus_white, null)
+            }
+            with(binding) {
+                join.text = label
+                join.setTextColor(textColor)
+                join.background = background
+                join.setCompoundDrawablesWithIntrinsicBounds(
+                    null,
+                    null,
+                    rightDrawable,
+                    null
+                )
+            }
         }
     }
 
