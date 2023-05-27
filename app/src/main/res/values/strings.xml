@@ -280,6 +280,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="notification_new_messages">Les nouveaux messages</string>
     <string name="notification_new_members">L\'arrivée de nouveaux membres</string>
     <string name="group_notification_all">Toute l\'activité du groupe</string>
+    <string name="group_share">Partager le groupe</string>
     <string name="notify_me">Me notifier de</string>
     <string name="about_group">À propos du groupe</string>
     <string name="leave_group_dialog_content">Souhaitez-vous quitter le groupe ?</string>
@@ -458,6 +459,12 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="error_get_group">Ce groupe de voisin n\'existe plus.</string>
     <string name="error_get_action">Cette action n\'existe plus.</string>
     <string name="error_get_discussion">Cette discussion n\'existe plus.</string>
+
+    <!-- WELCOME PAGES -->
+    <string name="welcome_one_title">Bienvenue sur le réseau \nsocial <b>vraiment</b> social</string>
+    <string name="welcome_one_content">Pour beaucoup, la rue est un lieu de passage.\npour certains, c\'est un quotidien.\nAlors pour commencer, rencontrez celles et\nceux qui la vivent tous les jours.</string>
+    <string name="welcome_one_sensib">Retrouvez nos contenus de sensibilisation <u><font color="#F55F24">ici</font></u></string>
+
 
 
 </resources>

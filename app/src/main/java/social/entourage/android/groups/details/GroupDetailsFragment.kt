@@ -12,6 +12,7 @@ import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import social.entourage.android.BuildConfig
 import social.entourage.android.R
 import social.entourage.android.api.MetaDataRepository
 import social.entourage.android.groups.GroupModel
@@ -46,6 +47,14 @@ class GroupDetailsFragment : BottomSheetDialogFragment() {
         return binding.root
     }
 
+    /*AnalyticsEvents.logEvent(AnalyticsEvents.GROUP_SHARED)
+            val shareTitle = getString(R.string.share_title_group)
+            val shareIntent = Intent(Intent.ACTION_SEND).apply {
+                type = "text/plain"
+                putExtra(Intent.EXTRA_TEXT, shareTitle + "\n" + group?.name + ": " + "\n" + createShareUrl())
+            }
+            startActivity(Intent.createChooser(shareIntent, "Partager l'URL via"))*/
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         getGroupInformation()
@@ -63,6 +72,7 @@ class GroupDetailsFragment : BottomSheetDialogFragment() {
     private fun setView() {
         binding.header.title = getString(R.string.group_settings)
         binding.notificationAll.label = getString(R.string.group_notification_all)
+        binding.share.label = getString(R.string.group_share)
         binding.notificationNewEvent.label = getString(R.string.notification_new_event)
         binding.notificationNewMessages.label = getString(R.string.notification_new_messages)
         binding.notificationNewMembers.label = getString(R.string.notification_new_members)
@@ -75,7 +85,28 @@ class GroupDetailsFragment : BottomSheetDialogFragment() {
         }
 
         binding.leave.text = getString(R.string.leave_group)
+        handleShareButton()
     }
+
+    private fun createShareUrl():String{
+        val deepLinksHostName = BuildConfig.DEEP_LINKS_URL
+        return "https://" + deepLinksHostName + "/app/neighborhoods/" + group?.uuid_v2
+    }
+
+    private fun handleShareButton(){
+        binding.share.layout.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_GROUP_SHARE)
+            val shareTitle = getString(R.string.share_title_group)
+            val shareIntent = Intent(Intent.ACTION_SEND).apply {
+                type = "text/plain"
+                putExtra(Intent.EXTRA_TEXT, shareTitle + "\n" + group?.name + ": " + "\n" + createShareUrl())
+            }
+            startActivity(Intent.createChooser(shareIntent, "Partager l'URL via"))
+        }
+    }
+
+
+
 
     private fun viewWithRole() {
         if (group?.admin == true) {

@@ -61,7 +61,7 @@ class MyGroupsListFragment : Fragment() {
         allGroups?.let { groupsList.addAll(it) }
         binding.progressBar.visibility = View.GONE
         updateView(groupsList.isEmpty())
-        binding.recyclerView.adapter?.notifyDataSetChanged()
+        (binding.recyclerView.adapter as? GroupsListAdapter)?.updateGroupsList(groupsList)
     }
 
     private fun updateView(isListEmpty: Boolean) {
@@ -75,6 +75,7 @@ class MyGroupsListFragment : Fragment() {
             addOnScrollListener(recyclerViewOnScrollListener)
             layoutManager = LinearLayoutManager(context)
             adapter = GroupsListAdapter(groupsList, myId, FromScreen.MY_GROUPS)
+            (adapter as? GroupsListAdapter)?.updateGroupsList(groupsList)
         }
     }
 

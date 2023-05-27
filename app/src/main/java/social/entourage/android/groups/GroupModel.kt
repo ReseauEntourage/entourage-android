@@ -11,6 +11,8 @@ data class GroupModel(
     var id: Int? = null,
     @SerializedName("name")
     var name: String? = null,
+    @SerializedName("uuid_v2")
+    var uuid_v2: String? = null,
     @SerializedName("members_count")
     var members_count: Int? = null,
     @SerializedName("address")
@@ -30,11 +32,13 @@ data class GroupModel(
     constructor(parcel: Parcel) : this(
         parcel.readValue(Int::class.java.classLoader) as? Int,
         parcel.readString(),
+        parcel.readString(),
         parcel.readValue(Int::class.java.classLoader) as? Int
     )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeValue(id)
+        parcel.writeValue(uuid_v2)
         parcel.writeString(name)
         parcel.writeValue(members_count)
         parcel.writeString(description)

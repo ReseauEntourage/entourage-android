@@ -31,6 +31,7 @@ import com.google.android.material.appbar.AppBarLayout
 import kotlinx.android.synthetic.main.new_fragment_feed.view.*
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import social.entourage.android.BuildConfig
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.api.MetaDataRepository
@@ -454,6 +455,7 @@ class FeedFragment : Fragment(),CallbackReportFragment{
         )
     }
     private fun openReportFragment(postId:Int,userId:Int) {
+
         val meId = EntourageApplication.get().me()?.id
         val isFrome = meId == userId
         val reportGroupBottomDialogFragment =
@@ -516,7 +518,7 @@ class FeedFragment : Fragment(),CallbackReportFragment{
             group?.let {
                 with(it) {
                     groupUI = GroupModel(
-                        groupId, name,
+                        groupId, name, uuid_v2,
                         members_count,
                         address?.displayAddress,
                         interests,
@@ -527,7 +529,6 @@ class FeedFragment : Fragment(),CallbackReportFragment{
                     )
                 }
             }
-
             GroupDetailsFragment.newInstance(groupUI)
                 .show(parentFragmentManager, GroupDetailsFragment.TAG)
         }
@@ -558,6 +559,10 @@ class FeedFragment : Fragment(),CallbackReportFragment{
         }
     }
 
+    private fun createShareUrl():String{
+        val deepLinksHostName = BuildConfig.DEEP_LINKS_URL
+        return "https://" + deepLinksHostName + "/app/neighborhoods/" + group?.uuid_v2
+    }
     private fun handleAboutButton() {
         binding.more.setOnClickListener {
             AnalyticsEvents.logEvent(
@@ -567,6 +572,7 @@ class FeedFragment : Fragment(),CallbackReportFragment{
                 groupUI = GroupModel(
                     groupId,
                     it.name,
+                    it.uuid_v2,
                     it.members_count,
                     it.address?.displayAddress,
                     it.interests,
@@ -578,6 +584,24 @@ class FeedFragment : Fragment(),CallbackReportFragment{
             }
             val action = FeedFragmentDirections.actionGroupFeedToGroupAbout(groupUI)
             findNavController().navigate(action)
+        }
+        binding.btnShare.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_GROUPOPTION_SHARE)
+            val shareTitle = getString(R.string.share_title_group)
+            val shareIntent = Intent(Intent.ACTION_SEND).apply {
+                type = "text/plain"
+                putExtra(Intent.EXTRA_TEXT, shareTitle + "\n" + group?.name + ": " + "\n" + createShareUrl())
+            }
+            startActivity(Intent.createChooser(shareIntent, "Partager l'URL via"))
+        }
+        binding.bigBtnShare.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_GROUPOPTION_SHARE)
+            val shareTitle = getString(R.string.share_title_group)
+            val shareIntent = Intent(Intent.ACTION_SEND).apply {
+                type = "text/plain"
+                putExtra(Intent.EXTRA_TEXT, shareTitle + "\n" + group?.name + ": " + "\n" + createShareUrl())
+            }
+            startActivity(Intent.createChooser(shareIntent, "Partager l'URL via"))
         }
     }
 

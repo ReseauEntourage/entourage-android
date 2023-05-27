@@ -1,5 +1,6 @@
 package social.entourage.android.notifications
 
+import android.util.Log
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import social.entourage.android.EntourageApplication

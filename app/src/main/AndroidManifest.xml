@@ -48,6 +48,8 @@
         android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher"
         android:theme="@style/AppTheme">
+        <receiver android:name=".notifications.NotificationActionReceiver" />
+
         <activity
             android:name=".notifications.InAppNotificationsActivity"
             android:exported="false" />
@@ -57,6 +59,18 @@
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".onboarding.onboard.OnboardingEndActivity"
+            android:exported="false" />
+        <activity
+            android:name=".welcome.WelcomeOneActivity"
+            android:exported="false" />
+        <activity
+            android:name=".welcome.WelcomeTwoActivity"
+            android:exported="false" />
+        <activity
+            android:name=".welcome.WelcomeThreeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".welcome.WelcomeFourActivity"
             android:exported="false" />
         <activity
             android:name=".home.pedago.PedagoDetailActivity"

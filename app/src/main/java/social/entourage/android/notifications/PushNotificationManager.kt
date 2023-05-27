@@ -11,11 +11,13 @@ import android.graphics.Color
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.preference.PreferenceManager
 import com.google.firebase.messaging.RemoteMessage
+import com.google.gson.Gson
 import social.entourage.android.EntourageApplication
 import social.entourage.android.MainActivity
 import social.entourage.android.R
@@ -230,8 +232,26 @@ object PushNotificationManager {
             pushNotificationMessageList?.first()?.let {pushNotificationMessage.pushNotificationId = it.pushNotificationId}
         }
 
+        val clickedIntent = Intent(context, NotificationActionReceiver::class.java).apply {
+            action = NotificationActionReceiver.ACTION_CLICKED
+        }
+
+        val dismissedIntent = Intent(context, NotificationActionReceiver::class.java).apply {
+            action = NotificationActionReceiver.ACTION_DISMISSED
+        }
+
+        val requestCode = pushNotificationMessage.pushNotificationId
+        val clickedPendingIntent = PendingIntent.getBroadcast(
+            context, requestCode, clickedIntent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
+
+        val dismissedPendingIntent = PendingIntent.getBroadcast(
+            context, requestCode, dismissedIntent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
+
         val channelId = context.getString(R.string.app_name)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+
             val notificationChannel = NotificationChannel(channelId, channelId, NotificationManager.IMPORTANCE_DEFAULT)
 
             // Configure the notification channel.
@@ -247,6 +267,7 @@ object PushNotificationManager {
                 .setContentTitle(pushNotificationMessage.getContentTitleForCount(count, context))
                 .setContentText(pushNotificationMessage.getContentTextForCount(count, context))
                 .setColor(ResourcesCompat.getColor(context.resources,R.color.accent,null))
+                .setDeleteIntent(dismissedPendingIntent) // Ajoutez le PendingIntent pour l'action de suppression
 
         val notification = builder.build()
         notification.defaults = NotificationCompat.DEFAULT_LIGHTS

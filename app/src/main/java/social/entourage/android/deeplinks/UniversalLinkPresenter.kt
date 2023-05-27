@@ -128,7 +128,6 @@ class UniversalLinkPresenter(val callback:UniversalLinksPresenterCallback) {
                 }
 
                 override fun onFailure(call: Call<DiscussionDetailWrapper>, t: Throwable) {
-                    Log.wtf("wtf" , "wtf " + t.message)
                 }
             })
     }
