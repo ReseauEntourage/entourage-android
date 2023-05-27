@@ -191,8 +191,8 @@ class CreateActionStepOneFragment : Fragment() {
     }
 
     override fun onDestroy() {
-        super.onDestroy()
         binding.error.root.visibility = View.GONE
+        super.onDestroy()
     }
 
     private fun setupViewWithEdit() {
