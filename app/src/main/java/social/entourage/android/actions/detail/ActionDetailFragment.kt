@@ -144,7 +144,7 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
 
     private fun handleResponseGetDetail(action: Action?) {
         this.action = action
-        if(action!!.isMine()){
+        if(action?.isMine()==true){
             binding.titleSignal.visibility = View.GONE
         }
         updateViews()
