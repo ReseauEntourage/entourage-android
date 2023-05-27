@@ -27,15 +27,15 @@ class AboutEventGroupListAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.binding.root.setOnClickListener { view ->
-            view.context.startActivity(
-                Intent(view.context, FeedActivity::class.java).putExtra(
-                    Const.GROUP_ID,
-                    groupsList[position].id
-                )
-            )
+        if (position >= 0 && position < groupsList.size) {
+            holder.binding.root.setOnClickListener { view ->
+                val intent = Intent(view.context, FeedActivity::class.java)
+                intent.putExtra(Const.GROUP_ID, groupsList[position].id)
+                view.context.startActivity(intent)
+            }
+
+            groupsList[position].name?.let { holder.binding.groupName.underline(it) }
         }
-        groupsList[position].name?.let { holder.binding.groupName.underline(it) }
     }
 
     override fun getItemCount(): Int {

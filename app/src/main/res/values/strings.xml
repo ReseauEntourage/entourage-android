@@ -298,7 +298,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="new_publications">Nouvelles publications</string>
     <string name="empty_state_comments">Pas encore de commentaires</string>
     <string name="retry_comment">Erreur de publication, réessayez</string>
-    <string name="join_group_to_comment"><![CDATA[* Pour commenter cette publication, rejoingnez le groupe « %s » !]]></string>
+    <string name="join_group_to_comment"><![CDATA[* Pour commenter cette publication, rejoignez le groupe « %s » !]]></string>
     <string name="report_sent">Votre demande a bien été envoyée. Elle sera traitée au plus vite par notre équipe.</string>
     <string name="post_deleted">Votre publication a été supprimée !.</string>
     <string name="message_deleted">Votre message a été supprimé !.</string>
@@ -439,9 +439,9 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="event_edit_recurrent_event">Modifier un évènement récurrent</string>
     <string name="error_event_end_time">L\'heure de fin ne peut pas dépasser minuit</string>
     <string name="deleted_publi">Cette publication a été supprimée.</string>
-    <string name="deleted_message">Ce message a été supprimé</string>
-    <string name="deleted_comment">Ce commentaire a été supprimé</string>
-    <string name="deleted__my_message">Vous avez supprimé ce message</string>
+    <string name="deleted_message">Ce message a été supprimé.</string>
+    <string name="deleted_comment">Ce commentaire a été supprimé.</string>
+    <string name="deleted__my_message">Vous avez supprimé ce message.</string>
 
     <!-- Home pop congrat -->
 

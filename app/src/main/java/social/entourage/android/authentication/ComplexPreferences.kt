@@ -25,7 +25,7 @@ class ComplexPreferences constructor(context: Context, namePreferences: String, 
         try {
             return GSON.fromJson(gson, a)
         } catch (e: Exception) {
-            throw IllegalArgumentException("Object storage with key $key is instanceof other class")
+            return null
         }
     }
 
@@ -34,7 +34,7 @@ class ComplexPreferences constructor(context: Context, namePreferences: String, 
         try {
             return GSON.fromJson<T>(gson, t)
         } catch (e: Exception) {
-            throw IllegalArgumentException("Object storage with key " + key + " is instanceof other class: " + e.localizedMessage)
+            return null
         }
     }
 

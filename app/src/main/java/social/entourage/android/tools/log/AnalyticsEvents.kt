@@ -51,6 +51,26 @@ object AnalyticsEvents {
     //SUPRESS POST
     const val POST_SUPPRESSED = "View__DeletePostPop"
     const val SUPPRESS_CLICK = "Clic__DeletePostPop__Delete"
+    //Suppress post
+
+    const val Click_delete_comm = "Clic__DeleteCommPop__Delete"
+    const val Delete_comm = "View__DeleteCommPop"
+    const val Click_delete_mess = "Clic_DeleteMessagePop_Delete"
+    const val Delete_mess = "View__DeleteMessagePop"
+
+    //Group Present Pop
+    const val I_present_view_pop = "View__Group__Pop"
+    const val I_present_click_i_post = "Action__Group__Pop_Ipost"
+    const val i_present_close_pop = "Action__Group__Pop_Iclose"
+
+    //PedagoList
+    const val Pedago_View = "View__PedagoList"
+    const val Pedago_View_all_tag = "Action__PedagoAllTag"
+    const val Pedago_View_understand_tag = "Action__PedagoUnderstandTag"
+    const val Pedago_View_act_tag = "Action__PedagoActTag"
+    const val Pedago_View_inspire_tag = "Action__PedagoInspireTag"
+    const val Pedago_View_card = "Action__PedagoCard"
+
 
     //-------
     //------PHOTO

@@ -139,7 +139,7 @@ class ChoosePhotoModalFragment : BottomSheetDialogFragment() {
                     it, requireContext())
             }
         }*/
-
+        //photoCropedFileUri
         try {
             binding.cropView.setBitmap(bitmap)
             photoFileUri?.let {
@@ -224,6 +224,7 @@ class ChoosePhotoModalFragment : BottomSheetDialogFragment() {
             binding.addPhoto.visibility = View.GONE
             binding.deletePhotoLayout.visibility = View.VISIBLE
             binding.cropView.setUri(it)
+            photoFileUri = it
         }
     }
 
@@ -242,13 +243,6 @@ class ChoosePhotoModalFragment : BottomSheetDialogFragment() {
                 AnalyticsEvents.ACTION_GROUP_FEED_NEW_POST_VALIDATE_PIC)
             try {
                 binding.cropView.crop()
-//                setFragmentResult(
-//                    Const.REQUEST_KEY_CHOOSE_PHOTO,
-//                    bundleOf(
-//                        Const.CHOOSE_PHOTO to photoFileUri
-//                    )
-//                )
-//                dismiss()
             } catch(e: Exception) {
                 Timber.e(e)
             }

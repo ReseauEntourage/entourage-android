@@ -33,7 +33,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintWidth_max="wrap"
-        app:layout_constraintWidth_percent="0.7"
+        app:layout_constraintWidth_percent="0.85"
         tools:text="m:mm:mm:mm:mm:mm:mm:mm:mm:mm:mm:mm:mm:mm:mm:mm:mm:mm:mm:mm:mm:mm:mm:mm:mm:mm:mm:mm:mm:m" />
 
     <LinearLayout

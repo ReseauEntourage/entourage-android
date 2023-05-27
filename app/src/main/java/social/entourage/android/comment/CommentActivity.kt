@@ -39,11 +39,12 @@ abstract class CommentActivity : BaseActivity(), onDissmissFragment {
     protected var isMember = false
     protected var titleName:String? = null
     var commentsList: MutableList<Post> = mutableListOf()
-    private var shouldOpenKeyboard = false
+    var shouldOpenKeyboard = false
     var messagesFailed: MutableList<Post?> = mutableListOf()
     var comment: Post? = null
     var isEvent = false
     lateinit var viewModel: DiscussionsPresenter
+    var haveReloadFromDelete = false
 
 
     protected var isOne2One = false
@@ -232,7 +233,6 @@ abstract class CommentActivity : BaseActivity(), onDissmissFragment {
     }
 
     protected fun handleReport(id: Int, type: ReportTypes, isEventComment :Boolean, isMe:Boolean) {
-        Timber.wtf("wtf isOneToOne " + isOne2One)
         val reportGroupBottomDialogFragment =
             ReportModalFragment.newInstance(id, this.id, type, isMe ,true, this.isOne2One)
         if(isEventComment){

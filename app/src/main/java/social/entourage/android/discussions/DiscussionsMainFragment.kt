@@ -53,8 +53,6 @@ class DiscussionsMainFragment : Fragment() {
         handleSwipeRefresh()
         discussionsPresenter.getAllMessages.observe(viewLifecycleOwner, ::handleResponseGetDiscussions)
 
-        loadMessages()
-
         handleImageViewAnimation()
 
         discussionsPresenter.unreadMessages.observe(requireActivity(), ::updateUnreadCount)
@@ -72,9 +70,14 @@ class DiscussionsMainFragment : Fragment() {
         discussionsPresenter.getUnreadCount()
     }
 
+    override fun onStop() {
+        super.onStop()
+        messagesList.clear()
+        page = 0
+    }
+
     private fun handleResponseGetDiscussions(allGroups: MutableList<Conversation>?) {
         allGroups?.let {
-            messagesList.clear()
             messagesList.addAll(it) }
         binding.progressBar.visibility = View.GONE
         binding.recyclerView.adapter?.notifyDataSetChanged()
@@ -144,10 +147,10 @@ class DiscussionsMainFragment : Fragment() {
 
     private fun reloadFromStart() {
         messagesList.clear()
+        page = 0
         binding.recyclerView.adapter?.notifyDataSetChanged()
         discussionsPresenter.getAllMessages.value?.clear()
         discussionsPresenter.isLastPage = false
-        page = 0
         loadMessages()
     }
 

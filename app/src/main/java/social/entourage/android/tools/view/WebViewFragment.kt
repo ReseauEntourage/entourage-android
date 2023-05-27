@@ -34,6 +34,8 @@ import retrofit2.Response
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.base.BaseDialogFragment
+import timber.log.Timber
+import java.lang.reflect.Executable
 import java.util.*
 
 class WebViewFragment : BaseDialogFragment() {
@@ -369,10 +371,19 @@ class WebViewFragment : BaseDialogFragment() {
                     .setDefaultColorSchemeParams(schemeParams)
                     .setShareState(SHARE_STATE_ON)
                     .build()
-            customIntent.intent.putExtra(Intent.EXTRA_REFERRER, Uri.parse("android-app://" + context.packageName))
 
-            customIntent.launchUrl(context, Uri.parse(url))
-            return true
+            try {
+                customIntent.intent.putExtra(Intent.EXTRA_REFERRER, Uri.parse("android-app://" + context.packageName))
+                customIntent.launchUrl(context, Uri.parse(url))
+                return true
+            }catch (e:Exception){
+                //HERE Find true context
+                Timber.wtf("eho error" + e.message)
+                Timber.wtf("eho error" + context)
+
+                return true
+            }
+
         }
     }
 }

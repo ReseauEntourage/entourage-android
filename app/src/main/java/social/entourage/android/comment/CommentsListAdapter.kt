@@ -131,9 +131,10 @@ class CommentsListAdapter(
             val isMe = comment.user?.userId == EntourageApplication.get().me()?.id
 
             if(comment.status == "deleted"){
+
                 val drawable = ContextCompat.getDrawable(context, R.drawable.ic_comment_deleted)
                 val vectorDrawable = DrawableCompat.wrap(drawable!!) as VectorDrawable
-                val width = 30
+                val width = 12
                 val height = (width * vectorDrawable.intrinsicHeight) / vectorDrawable.intrinsicWidth
                 val scaledDrawable = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
                 val canvas = Canvas(scaledDrawable)
@@ -141,7 +142,7 @@ class CommentsListAdapter(
                 vectorDrawable.draw(canvas)
                 val grayDrawable = vectorDrawable.mutate()
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    grayDrawable.setColorFilter(context.getColor(R.color.text_dark), PorterDuff.Mode.SRC_IN)
+                    grayDrawable.setColorFilter(context.getColor(R.color.grey_deleted_icon), PorterDuff.Mode.SRC_IN)
                 }
                 grayDrawable.setBounds(8, 0, scaledDrawable.width - 8, scaledDrawable.height)
                 binding.comment.setCompoundDrawablesWithIntrinsicBounds(grayDrawable, null, null, null)
@@ -153,11 +154,15 @@ class CommentsListAdapter(
                 }
                 binding.comment.background = context.getDrawable(R.drawable.new_comment_background_grey)
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    binding.comment.setTextColor(context.getColor(R.color.text_dark))
+                    binding.comment.setTextColor(context.getColor(R.color.grey_deleted_icon))
                 }
             }else{
                 binding.comment.text = comment.content
-                binding.comment.background = context.getDrawable(R.drawable.new_comment_background_beige)
+                if(isMe){
+                    binding.comment.background = context.getDrawable(R.drawable.new_comment_background_orange)
+                }else{
+                    binding.comment.background = context.getDrawable(R.drawable.new_comment_background_beige)
+                }
                 binding.comment.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null)
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     binding.comment.setTextColor(context.getColor(R.color.black))
@@ -167,9 +172,11 @@ class CommentsListAdapter(
                 onItemClick.onCommentReport(comment.id, isForEvent, isMe)
             }
             //here
-            binding.comment.setOnLongClickListener {
-                onItemClick.onCommentReport(comment.id, isForEvent, isMe)
-                return@setOnLongClickListener true
+            if(isMe && comment.status != "deleted" ){
+                binding.comment.setOnLongClickListener {
+                    onItemClick.onCommentReport(comment.id, isForEvent, isMe)
+                    return@setOnLongClickListener true
+                }
             }
 
             comment.createdTime?.let {

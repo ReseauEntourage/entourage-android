@@ -60,6 +60,11 @@ class MyEventsListFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
+        binding.progressBar.visibility = View.VISIBLE
+        sections.clear()
+        eventsAdapter.notifyDataChanged(sections)
+        eventsPresenter.getAllEvents.value?.clear()
+        eventsPresenter.isLastPage = false
         page = 0
         loadEvents()
     }
@@ -79,14 +84,23 @@ class MyEventsListFragment : Fragment() {
             )
         }
     }
+    override fun onStop() {
+        super.onStop()
+        binding.progressBar.visibility = View.VISIBLE
+        sections.clear()
+        eventsAdapter.notifyDataChanged(sections)
+        eventsPresenter.getAllEvents.value?.clear()
+        eventsPresenter.isLastPage = false
+        page = 0
+    }
 
     private fun handleResponseGetEvents(allEvents: MutableList<Events>?) {
-        sections.clear()
         sections = Utils.getSectionHeaders(allEvents, sections)
         binding.progressBar.visibility = View.GONE
         updateView(sections.isEmpty())
         eventsAdapter.notifyDataChanged(sections)
     }
+
     private fun handleDiscoverEvent(allEvents: MutableList<Events>?) {
         if(isAdded){
             binding.progressBar.visibility = View.GONE

@@ -69,6 +69,10 @@ class EventsPresenter: ViewModel() {
         haveToCreateEvent.postValue(havelaunchedCreation)
     }
 
+    fun resetAllEvent(){
+        this.getAllMyEvents.value?.clear()
+    }
+
     fun getMyEvents(userId: Int, page: Int, per: Int) {
         EntourageApplication.get().apiModule.eventsRequest.getMyEvents(userId, page, per)
             .enqueue(object : Callback<EventsListWrapper> {
@@ -95,9 +99,11 @@ class EventsPresenter: ViewModel() {
                     call: Call<EventsListWrapper>,
                     response: Response<EventsListWrapper>
                 ) {
+
                     response.body()?.let { allEventsWrapper ->
                         if (allEventsWrapper.allEvents.size < EVENTS_PER_PAGE) isLastPage = true
                         getAllEvents.value = allEventsWrapper.allEvents
+
                     }
                 }
 

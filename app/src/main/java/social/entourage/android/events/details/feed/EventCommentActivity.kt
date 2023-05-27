@@ -30,6 +30,7 @@ class EventCommentActivity : CommentActivity() {
 
     override fun reloadView() {
         lifecycleScope.launch {
+            shouldOpenKeyboard = false
             recreate()
         }
     }

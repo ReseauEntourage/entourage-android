@@ -15,6 +15,7 @@ import social.entourage.android.R
 import social.entourage.android.databinding.NewPedagoContentItemBinding
 import social.entourage.android.databinding.NewPedagoSectionHeaderBinding
 import social.entourage.android.api.model.Pedago
+import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.utils.px
 
 interface OnItemClick {
@@ -80,6 +81,7 @@ class PedagoListAdapter(
         childViewHolder.binding.title.text = child.name
         childViewHolder.binding.read.isVisible = child.watched == true
         childViewHolder.binding.root.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Pedago_View_card)
             onItemClickListener.onItemClick(child)
         }
 

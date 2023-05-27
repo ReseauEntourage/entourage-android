@@ -53,9 +53,21 @@ class ProfileFragment : Fragment() {
     }
 
     private fun initializeEditButton() {
-        binding.editProfile.setOnClickListener {
-            AnalyticsEvents.logEvent(AnalyticsEvents.Profile_action_modify)
-            findNavController().navigate(R.id.action_profile_fragment_to_edit_profile_fragment)
+        if(isAdded && view != null){
+            binding.editProfile.setOnClickListener {
+                try {
+                    it.isEnabled = false
+                    AnalyticsEvents.logEvent(AnalyticsEvents.Profile_action_modify)
+                    findNavController().navigate(R.id.action_profile_fragment_to_edit_profile_fragment)
+                    it.isEnabled = true
+
+                }catch(e:Exception){
+                    it.isEnabled = false
+                    val action = ProfileFragmentDirections.actionProfileFragmentToEditProfileFragment()
+                    findNavController().navigate(action)
+                    it.isEnabled = true
+                }
+            }
         }
     }
 

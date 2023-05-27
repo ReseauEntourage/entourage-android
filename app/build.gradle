@@ -11,7 +11,7 @@ android {
     ext {
         // App versions
         versionMajor = 8
-        versionMinor = 3
+        versionMinor = 4
         versionPatch = "git rev-list HEAD --count".execute().text.trim().toInteger()
         versionBranchName = "git rev-parse --abbrev-ref HEAD".execute().text.trim()
         versionCodeInt = (versionMajor * 100 + versionMinor) * 10000 + versionPatch % 10000

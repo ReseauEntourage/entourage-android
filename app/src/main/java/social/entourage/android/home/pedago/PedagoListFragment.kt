@@ -1,6 +1,7 @@
 package social.entourage.android.home.pedago
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +12,8 @@ import social.entourage.android.databinding.NewFragmentPedagoListBinding
 import social.entourage.android.home.HomePresenter
 import social.entourage.android.api.model.Category
 import social.entourage.android.api.model.Pedago
+import social.entourage.android.tools.log.AnalyticsEvents
+import timber.log.Timber
 
 class PedagoListFragment : Fragment() {
 
@@ -38,6 +41,7 @@ class PedagoListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        AnalyticsEvents.logEvent(AnalyticsEvents.Pedago_View)
         pedagoAdapter = PedagoListAdapter(requireContext(), sections, object : OnItemClick {
             override fun onItemClick(pedagogicalContent: Pedago) {
                 if (pedagogicalContent.html != null && pedagogicalContent.id != null) {
@@ -84,6 +88,8 @@ class PedagoListFragment : Fragment() {
         clearFilter()
         when (filter) {
             Category.ALL -> {
+                Timber.wtf("wtf")
+                AnalyticsEvents.logEvent(AnalyticsEvents.Pedago_View_all_tag)
                 sections.add(
                     SectionHeader(
                         childListUnderstand,
@@ -99,9 +105,11 @@ class PedagoListFragment : Fragment() {
                 )
             }
             Category.ACT -> {
+                AnalyticsEvents.logEvent(AnalyticsEvents.Pedago_View_act_tag)
                 sections.add(SectionHeader(childListAct, getString(Category.ACT.id)))
             }
             Category.UNDERSTAND -> {
+                AnalyticsEvents.logEvent(AnalyticsEvents.Pedago_View_understand_tag)
                 sections.add(
                     SectionHeader(
                         childListUnderstand,
@@ -110,6 +118,7 @@ class PedagoListFragment : Fragment() {
                 )
             }
             Category.INSPIRE -> {
+                AnalyticsEvents.logEvent(AnalyticsEvents.Pedago_View_inspire_tag)
                 sections.add(
                     SectionHeader(
                         childListInspire,
