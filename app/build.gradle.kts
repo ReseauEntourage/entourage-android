@@ -190,12 +190,12 @@ dependencies {
     //TODO check why annotation:1.6 needs kotlin 1.8
     implementation("androidx.annotation:annotation:1.5.0")
     //TODO check why alpha02 needs kotlin 1.8
-    implementation("androidx.appcompat:appcompat:1.7.0-alpha01")
+    implementation("androidx.appcompat:appcompat:1.7.0-alpha02")
     implementation("androidx.browser:browser:1.5.0")
     implementation("androidx.cardview:cardview:1.0.0")
     implementation("androidx.coordinatorlayout:coordinatorlayout:1.2.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
-    implementation("androidx.fragment:fragment-ktx:1.5.6")
+    implementation("androidx.fragment:fragment-ktx:1.5.7")
     implementation("androidx.multidex:multidex:2.0.1")
     implementation("androidx.recyclerview:recyclerview:1.3.0")
     implementation("androidx.preference:preference-ktx:1.2.0")
