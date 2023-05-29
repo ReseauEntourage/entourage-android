@@ -190,7 +190,7 @@ dependencies {
     //TODO check why annotation:1.6 needs kotlin 1.8
     implementation("androidx.annotation:annotation:1.5.0")
     //TODO check why alpha02 needs kotlin 1.8
-    implementation("androidx.appcompat:appcompat:1.7.0-alpha02")
+    implementation("androidx.appcompat:appcompat:1.7.0-alpha01")
     implementation("androidx.browser:browser:1.5.0")
     implementation("androidx.cardview:cardview:1.0.0")
     implementation("androidx.coordinatorlayout:coordinatorlayout:1.2.0")
@@ -206,7 +206,7 @@ dependencies {
     implementation("com.jakewharton.timber:timber:5.0.1")
 
     //https://firebase.google.com/support/release-notes/android
-    implementation(platform("com.google.firebase:firebase-bom:31.5.0"))
+    implementation(platform("com.google.firebase:firebase-bom:32.1.0"))
     //implementation firebaseDependencies.values()
     implementation("com.google.firebase:firebase-analytics-ktx")
     implementation("com.google.firebase:firebase-messaging-ktx")
