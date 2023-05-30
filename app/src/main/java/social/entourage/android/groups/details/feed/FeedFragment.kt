@@ -2,9 +2,7 @@ package social.entourage.android.groups.details.feed
 
 import android.content.Context
 import android.content.Intent
-import android.graphics.Bitmap
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -28,7 +26,9 @@ import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
 import com.google.android.material.appbar.AppBarLayout
-import kotlinx.android.synthetic.main.new_fragment_feed.view.*
+import kotlinx.android.synthetic.main.new_fragment_feed.view.arrow
+import kotlinx.android.synthetic.main.new_fragment_feed.view.empty_state_events_subtitle
+import kotlinx.android.synthetic.main.new_fragment_feed.view.subtitle
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import social.entourage.android.BuildConfig
@@ -49,12 +49,10 @@ import social.entourage.android.profile.myProfile.InterestsAdapter
 import social.entourage.android.report.ReportModalFragment
 import social.entourage.android.report.ReportTypes
 import social.entourage.android.tools.image_viewer.ImageDialogActivity
-import social.entourage.android.tools.image_viewer.ImageDialogFragment
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.CustomAlertDialog
 import social.entourage.android.tools.utils.px
-import timber.log.Timber
 import uk.co.markormesher.android_fab.SpeedDialMenuAdapter
 import uk.co.markormesher.android_fab.SpeedDialMenuItem
 import kotlin.math.abs
@@ -465,9 +463,7 @@ class FeedFragment : Fragment(),CallbackReportFragment{
                     it, ReportTypes.REPORT_POST,isFrome
                 ,false,false)
             }
-        if (reportGroupBottomDialogFragment != null) {
-            reportGroupBottomDialogFragment.setCallback(this)
-        }
+        reportGroupBottomDialogFragment?.setCallback(this)
         reportGroupBottomDialogFragment?.show(parentFragmentManager, ReportModalFragment.TAG)
 
     }
@@ -528,9 +524,9 @@ class FeedFragment : Fragment(),CallbackReportFragment{
                         EntourageApplication.me(activity)?.id == admin?.id
                     )
                 }
+                GroupDetailsFragment.newInstance(groupUI)
+                    .show(parentFragmentManager, GroupDetailsFragment.TAG)
             }
-            GroupDetailsFragment.newInstance(groupUI)
-                .show(parentFragmentManager, GroupDetailsFragment.TAG)
         }
     }
 
@@ -581,9 +577,9 @@ class FeedFragment : Fragment(),CallbackReportFragment{
                     it.member,
                     EntourageApplication.me(activity)?.id == it.admin?.id
                 )
+                val action = FeedFragmentDirections.actionGroupFeedToGroupAbout(groupUI)
+                findNavController().navigate(action)
             }
-            val action = FeedFragmentDirections.actionGroupFeedToGroupAbout(groupUI)
-            findNavController().navigate(action)
         }
         binding.btnShare.setOnClickListener {
             AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_GROUPOPTION_SHARE)
