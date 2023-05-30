@@ -36,6 +36,7 @@ import social.entourage.android.tools.utils.CustomAlertDialog
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.view.CommunicationRecoWebUrlHandlerViewModel
 import social.entourage.android.welcome.WelcomeOneActivity
+import social.entourage.android.welcome.WelcomeTwoActivity
 import timber.log.Timber
 
 class HomeFragment : Fragment() {
@@ -198,7 +199,7 @@ class HomeFragment : Fragment() {
             )
             // HERE UNCOMMENT TO GO NOTIF
             welcomeUser.setOnClickListener {
-                val intent = Intent(requireContext(), WelcomeOneActivity::class.java)
+                val intent = Intent(requireContext(), WelcomeTwoActivity::class.java)
                 startActivity(intent)
             }
         }

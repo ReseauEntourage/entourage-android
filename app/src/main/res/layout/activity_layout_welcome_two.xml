@@ -17,7 +17,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/layout_content_welcome_one"
-        android:layout_marginTop="140dp"
+        android:layout_marginTop="40dp"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
         android:background="@drawable/bcknd_white_35dp_corner">
@@ -51,7 +51,7 @@
                 />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/tv_text_one"
                 app:layout_constraintStart_toStartOf="parent"
@@ -62,10 +62,15 @@
                 android:paddingStart="10dp"
                 android:paddingEnd="10dp"
                 android:layout_marginTop="20dp"
+                android:text="@string/welcome_two_text_one"
+                android:textSize="15sp"
+                android:fontFamily="@font/nunitosans_regular"
+                android:textColor="@color/black"
+                android:textStyle="bold"
                 />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/tv_text_two"
                 app:layout_constraintStart_toStartOf="parent"
@@ -76,10 +81,15 @@
                 android:paddingStart="10dp"
                 android:paddingEnd="10dp"
                 android:layout_marginTop="20dp"
+                android:text="@string/welcome_two_text_two"
+                android:textSize="15sp"
+                android:fontFamily="@font/nunitosans_regular"
+                android:textColor="@color/orange"
+                android:textStyle="bold"
                 />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/tv_text_three"
                 app:layout_constraintStart_toStartOf="parent"
@@ -90,10 +100,13 @@
                 android:paddingStart="10dp"
                 android:paddingEnd="10dp"
                 android:layout_marginTop="20dp"
+                android:textSize="15sp"
+                android:fontFamily="@font/nunitosans_regular"
+                android:textColor="@color/black"
                 />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/tv_text_four"
                 app:layout_constraintStart_toStartOf="parent"
@@ -104,7 +117,41 @@
                 android:paddingStart="10dp"
                 android:paddingEnd="10dp"
                 android:layout_marginTop="20dp"
+                android:text="@string/welcome_two_text_four"
+                android:textSize="15sp"
+                android:fontFamily="@font/nunitosans_regular"
+                android:textColor="@color/orange"
+                android:textStyle="bold"
                 />
+
+            <include
+                android:id="@+id/post_example"
+                layout="@layout/post_example_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:title="@{@string/all_pedago_content}"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_text_four"
+                android:layout_margin="20dp"
+                />
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/welcome_two_button_title"
+                android:textColor="@color/white"
+                android:fontFamily="@font/nunitosans_regular"
+                android:textStyle="bold"
+                app:layout_constraintTop_toTopOf="@+id/post_example"
+                app:layout_constraintBottom_toBottomOf="@+id/post_example"
+                app:layout_constraintStart_toStartOf="@+id/post_example"
+                app:layout_constraintEnd_toEndOf="@+id/post_example"
+                android:background="@drawable/btn_shape_orange"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                />
+
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
