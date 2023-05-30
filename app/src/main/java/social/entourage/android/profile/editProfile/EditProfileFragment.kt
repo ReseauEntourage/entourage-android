@@ -30,6 +30,7 @@ import social.entourage.android.user.AvatarUploadView
 import social.entourage.android.user.edit.photo.ChooseProfilePhotoFragment
 import social.entourage.android.user.edit.photo.PhotoChooseInterface
 import social.entourage.android.user.edit.place.UserEditActionZoneFragment
+import timber.log.Timber
 import java.io.File
 
 class EditProfileFragment : Fragment(), EditProfileCallback,
@@ -80,8 +81,11 @@ class EditProfileFragment : Fragment(), EditProfileCallback,
     }
 
     private fun handleUpdateResponse(success: Boolean) {
-        if (success) findNavController().popBackStack()
-        //TODO CHECK THIS CRASH REPORTED CRASHLITICS
+        try {
+            if (success) findNavController().popBackStack()
+        } catch (e: IllegalStateException) {
+            Timber.d(e)
+        }
     }
 
     private fun setProgressThumb(progress: Int) {
