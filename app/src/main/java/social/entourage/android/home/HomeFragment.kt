@@ -198,10 +198,10 @@ class HomeFragment : Fragment() {
                 user?.displayName
             )
             // HERE UNCOMMENT TO GO NOTIF
-            welcomeUser.setOnClickListener {
-                val intent = Intent(requireContext(), WelcomeTwoActivity::class.java)
-                startActivity(intent)
-            }
+//            welcomeUser.setOnClickListener {
+//                val intent = Intent(requireContext(), WelcomeTwoActivity::class.java)
+//                startActivity(intent)
+//            }
         }
     }
 
