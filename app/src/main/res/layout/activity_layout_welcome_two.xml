@@ -129,31 +129,27 @@
                 layout="@layout/post_example_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:title="@{@string/all_pedago_content}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_text_four"
                 android:layout_margin="20dp"
                 />
 
-            <Button
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="@string/welcome_two_button_title"
-                android:textColor="@color/white"
-                android:fontFamily="@font/nunitosans_regular"
-                android:textStyle="bold"
-                app:layout_constraintTop_toTopOf="@+id/post_example"
-                app:layout_constraintBottom_toBottomOf="@+id/post_example"
-                app:layout_constraintStart_toStartOf="@+id/post_example"
-                app:layout_constraintEnd_toEndOf="@+id/post_example"
-                android:background="@drawable/btn_shape_orange"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp"
-                />
-
-
-
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
+    <Button
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/welcome_two_button_title"
+        android:textColor="@color/white"
+        android:fontFamily="@font/nunitosans_regular"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:background="@drawable/btn_shape_orange"
+        android:layout_marginStart="60dp"
+        android:layout_marginEnd="60dp"
+        android:layout_marginBottom="20dp"
+        />
 </androidx.constraintlayout.widget.ConstraintLayout>

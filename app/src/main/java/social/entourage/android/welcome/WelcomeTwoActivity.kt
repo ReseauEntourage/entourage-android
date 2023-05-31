@@ -31,7 +31,12 @@ class WelcomeTwoActivity: BaseActivity() {
     }
     private fun handleResponseGetGroup(getGroup: Group?) {
         getGroup?.let {
-            Log.wtf("wtf", "groupe name " + it.name)
+            var titleString = it.name
+            if(titleString!!.contains("Groupe") || titleString!!.contains("groupe")){
+                binding.tvTextOne.text = String.format(getString(R.string.welcome_two_text_one_corrected), it.name)
+            }else{
+                binding.tvTextOne.text = String.format(getString(R.string.welcome_two_text_one), it.name)
+            }
         }
     }
 
