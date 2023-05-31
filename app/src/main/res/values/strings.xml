@@ -466,11 +466,12 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="welcome_one_sensib">Retrouvez nos contenus de sensibilisation <u><font color="#F55F24">ici</font></u></string>
     <string name="welcome_two_title">C\'est le moment de se lancer !</string>
     <string name="welcome_two_text_one">Un réseau social, c\'est mieux à plusieurs !\nPrésentez-vous auprès de votre groupe %s</string>
+    <string name="welcome_two_text_one_corrected">Un réseau social, c\'est mieux à plusieurs !\nPrésentez-vous auprès de votre groupe %s</string>
     <string name="welcome_two_text_two">Quelques conseils pour faire connaissance:</string>
     <string name="welcome_two_text_pin_one">Donnez votre prénom, votre ville</string>
     <string name="welcome_two_text_pin_two">Parlez de vos passions</string>
     <string name="welcome_two_text_pin_three">Mettez en avant vos besoins et vos envies</string>
-    <string name="welcome_two_text_four">Besoin d\'inspiration</string>
+    <string name="welcome_two_text_four">Besoin d\'inspiration ?</string>
     <string name="welcome_two_button_title">Dire bonjour à mes voisins</string>
     <string name="welcome_card_example_card_content">Bonjour les voisins parisiens. Je m\'appelle Eric et j\'ai hâte de vous rencontrer autour des événements du réseau entourage.</string>
 
