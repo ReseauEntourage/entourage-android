@@ -33,6 +33,7 @@ class WelcomeTwoActivity: BaseActivity() {
         setThirdTV()
         getGroup()
         handleButton()
+        handleCloseButton()
         setContentView(binding.root)
     }
     fun getGroup(){
@@ -68,6 +69,12 @@ class WelcomeTwoActivity: BaseActivity() {
                 startActivity(intent)
                 finish()
             }
+        }
+    }
+
+    private fun handleCloseButton(){
+        binding.btnClose.setOnClickListener {
+            super.finish()
         }
     }
 
