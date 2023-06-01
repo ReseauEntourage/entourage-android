@@ -140,6 +140,7 @@
     <Button
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:id="@+id/button_say_hello"
         android:text="@string/welcome_two_button_title"
         android:textColor="@color/white"
         android:fontFamily="@font/nunitosans_regular"

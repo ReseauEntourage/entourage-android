@@ -115,6 +115,10 @@ class MainActivity : BaseSecuredActivity() {
 
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
+        val fromWelcomeActivity = intent.getBooleanExtra("fromWelcomeActivity", false)
+        if (fromWelcomeActivity) {
+            goGroup()
+        }
         this.intent = intent
         handleUniversalLinkFromMain(intent)
     }
@@ -221,6 +225,11 @@ class MainActivity : BaseSecuredActivity() {
 
     fun goHome(){
         navController.navigate(R.id.navigation_home)
+
+    }
+
+    fun goGroup(){
+        navController.navigate(R.id.navigation_groups)
 
     }
 

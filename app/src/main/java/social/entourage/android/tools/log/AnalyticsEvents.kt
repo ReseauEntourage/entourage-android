@@ -563,6 +563,8 @@ object AnalyticsEvents {
     const val Onboard_code = "View__Onboarding__InputCode"
     const val Onboard_profile = "View__Onboarding__InputProfile"
     const val Onboard_end = "View__Onboarding__Confirmation"
+    const val View_WelcomeOfferHelp_Day2 = "View_WelcomeOfferHelp_Day2"
+    const val Action_WelcomeOfferHelp_Day2 = "Action_WelcomeOfferHelp_Day2"
 
     val TAG: String? = AnalyticsEvents::class.java.simpleName
 
