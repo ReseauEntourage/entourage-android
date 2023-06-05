@@ -320,6 +320,7 @@ class HomeFragment : Fragment() {
             adapter = RecommendationsListAdapter(recommendationsList,
                 object : OnItemClickListener {
                     override fun onItemClick(recommendation: HomeAction) {
+                        AnalyticsEvents.logEvent("Action__Home__HowToStart")
                         if (recommendation.homeType != null && recommendation.action != null && recommendation.params != null) {
                             Navigation.getNavigateIntent(
                                 context,

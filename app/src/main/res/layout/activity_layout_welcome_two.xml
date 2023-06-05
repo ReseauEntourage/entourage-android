@@ -13,11 +13,20 @@
         android:src="@drawable/people_welcome_1"
         android:scaleType="fitXY"/>
 
+    <ImageView
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:id="@+id/btn_close"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_margin="20dp"
+        android:src="@drawable/icon_cross"/>
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/layout_content_welcome_one"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="60dp"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
         android:background="@drawable/bcknd_white_35dp_corner">
@@ -135,6 +144,7 @@
     <Button
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:id="@+id/button_say_hello"
         android:text="@string/welcome_two_button_title"
         android:textColor="@color/white"
         android:fontFamily="@font/nunitosans_regular"
