@@ -45,7 +45,7 @@ class WelcomeTwoActivity: BaseActivity() {
 
         val bulletPointList = listOf(
             getString(R.string.welcome_two_text_pin_one),
-            getString(R.string.welcome_two_text_pin_one),
+            getString(R.string.welcome_two_text_pin_two),
             getString(R.string.welcome_two_text_pin_three),
         )
 

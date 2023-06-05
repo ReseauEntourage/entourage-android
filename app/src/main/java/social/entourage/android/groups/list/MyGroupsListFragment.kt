@@ -13,6 +13,7 @@ import social.entourage.android.EntourageApplication
 import social.entourage.android.api.model.Group
 import social.entourage.android.databinding.NewFragmentMyGroupsListBinding
 import social.entourage.android.groups.GroupPresenter
+import social.entourage.android.tools.log.AnalyticsEvents
 import timber.log.Timber
 
 class MyGroupsListFragment : Fragment() {
@@ -42,6 +43,9 @@ class MyGroupsListFragment : Fragment() {
         groupPresenter.getAllMyGroups.observe(viewLifecycleOwner, ::handleResponseGetGroups)
         setDiscoverButton()
         handleSwipeRefresh()
+        AnalyticsEvents.logEvent(
+            AnalyticsEvents.VIEW_GROUP_SHOW)
+
     }
 
     private fun setDiscoverButton(){
