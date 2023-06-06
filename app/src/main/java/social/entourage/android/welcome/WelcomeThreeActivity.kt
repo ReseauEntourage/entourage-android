@@ -194,7 +194,7 @@ class WelcomeThreeActivity: BaseActivity() {
     private fun handleResponseGetEvents(allEvents: MutableList<Events>?) {
         allEvents.let {
             Log.wtf("wtf", "size" + allEvents!!.size)
-            if(allEvents.size == 0){
+            if(allEvents.size > 0){
                 handleMainButtonForEvent()
                 AnalyticsEvents.logEvent("View_WelcomeOfferHelp_Day5A")
                 binding.titleWelcomeTwo.text = getString(R.string.welcome_three_title_with_event)
