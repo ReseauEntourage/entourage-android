@@ -23,7 +23,7 @@
         android:background="@drawable/bcknd_white_35dp_corner">
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -103,7 +103,7 @@
 
             <include
                 android:id="@+id/demand_example_one"
-                layout="@layout/new_demand_item"
+                layout="@layout/demande_welcome_example"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layout_constraintStart_toStartOf="parent"
@@ -114,7 +114,7 @@
 
             <include
                 android:id="@+id/demand_example_two"
-                layout="@layout/new_demand_item"
+                layout="@layout/demande_welcome_example"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layout_constraintStart_toStartOf="parent"
@@ -125,7 +125,7 @@
 
             <include
                 android:id="@+id/demand_example_three"
-                layout="@layout/new_demand_item"
+                layout="@layout/demande_welcome_example"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layout_constraintStart_toStartOf="parent"
@@ -175,8 +175,13 @@
                 app:layout_constraintTop_toBottomOf="@+id/contrib_example_one"
                 android:layout_margin="20dp"
                 />
-
-            
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                android:background="@color/transparent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/contrib_example_two"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
     <Button
