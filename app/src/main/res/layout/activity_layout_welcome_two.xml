@@ -14,8 +14,8 @@
         android:scaleType="fitXY"/>
 
     <ImageView
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
         android:id="@+id/btn_close"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -156,5 +156,6 @@
         android:layout_marginStart="60dp"
         android:layout_marginEnd="60dp"
         android:layout_marginBottom="20dp"
+        android:textAllCaps="false"
         />
 </androidx.constraintlayout.widget.ConstraintLayout>

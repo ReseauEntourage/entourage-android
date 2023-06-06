@@ -23,12 +23,17 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:orientation="horizontal">
-
-            <ImageView
+            <androidx.cardview.widget.CardView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:id="@+id/image"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:src="@drawable/welcome_two_profile" />
+                app:cardCornerRadius="12dp">
+                <ImageView
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/image_welcome_two"
+                    android:scaleType="fitXY"/>
+            </androidx.cardview.widget.CardView>
 
             <LinearLayout
                 android:id="@+id/information"
@@ -79,41 +84,37 @@
             android:layout_height="wrap_content"
             android:autoLink="web"
             android:layout_marginTop="8dp"
+            android:layout_marginStart="16dp"
             android:text="@string/welcome_card_example_card_content" />
 
-        <ImageView
-            android:id="@+id/photo_post"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="185dp"
-            android:layout_marginTop="16dp"
-            android:gravity="center"
-            android:src="@drawable/welcome_two_group_example" />
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
 
-        <LinearLayout
-            android:id="@+id/post_comments_number_layout"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="end"
-            android:layout_marginTop="10dp"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/post_no_comments"
-                style="@style/left_default"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp">
+            <androidx.cardview.widget.CardView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/no_comments"
-                android:visibility="gone" />
+                android:layout_height="0dp"
+                android:id="@+id/photo_post"
+                android:layout_gravity="center"
+                app:cardCornerRadius="35dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                >
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="250dp"
+                    android:gravity="center"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/image_welcome_two" />
+            </androidx.cardview.widget.CardView>
 
-            <TextView
-                android:id="@+id/post_comments_number"
-                style="@style/input"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="gone"
-                tools:text="Pas de commentaires" />
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 
     </LinearLayout>
 

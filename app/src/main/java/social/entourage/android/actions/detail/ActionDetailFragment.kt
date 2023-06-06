@@ -83,7 +83,6 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
         _binding = NewFragmentActionDetailBinding.inflate(inflater,container,false)
 
         //mMap = binding.uiMapview
-        Timber.wtf("wtf " + savedInstanceState)
         binding.uiMapview.onCreate(savedInstanceState)
         binding.uiMapview.getMapAsync(this)
         return binding.root

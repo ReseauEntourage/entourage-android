@@ -15,6 +15,7 @@ import kotlinx.android.synthetic.main.new_contrib_item.view.*
 import kotlinx.android.synthetic.main.new_demand_item.view.*
 import kotlinx.android.synthetic.main.new_event_item.view.*
 import kotlinx.android.synthetic.main.new_event_item.view.information
+import social.entourage.android.MainActivity
 import social.entourage.android.R
 import social.entourage.android.actions.ActionsPresenter
 import social.entourage.android.actions.detail.ActionDetailActivity
@@ -29,6 +30,7 @@ import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.Utils
 import social.entourage.android.tools.utils.px
+import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -66,6 +68,10 @@ class WelcomeThreeActivity: BaseActivity() {
     }
 
     fun handleEveryButtons(){
+        binding.closeButton.setOnClickListener {
+            finish()
+        }
+
         binding.eventExampleOne.layout.setOnClickListener {
             AnalyticsEvents.logEvent("Action_WelcomeOfferHelp_Day5ACard")
             val intent = Intent(this, social.entourage.android.events.details.feed.FeedActivity::class.java)
@@ -102,10 +108,10 @@ class WelcomeThreeActivity: BaseActivity() {
         }
         binding.demandExampleOne.layoutDemand.setOnClickListener {
             AnalyticsEvents.logEvent("Action_WelcomeOfferHelp_Day5BCard")
-            val intent = Intent(this, social.entourage.android.events.details.feed.FeedActivity::class.java)
+            val intent = Intent(this, ActionDetailActivity::class.java)
             intent.putExtra(Const.ACTION_ID, demandeExampleOne?.id)
-            intent.putExtra(Const.ACTION_TITLE,demandeExampleOne?.title)
-            intent.putExtra(Const.IS_ACTION_DEMAND,false)
+            intent.putExtra(Const.ACTION_TITLE, demandeExampleOne?.title)
+            intent.putExtra(Const.IS_ACTION_DEMAND, true)
             intent.putExtra(Const.IS_ACTION_MINE, demandeExampleOne?.isMine())
             intent.putExtra("fromWelcomeActivity", true)
             startActivity(intent)
@@ -114,10 +120,10 @@ class WelcomeThreeActivity: BaseActivity() {
         binding.demandExampleTwo.layoutDemand.setOnClickListener {
             //GO DEMAND TWO
             AnalyticsEvents.logEvent("Action_WelcomeOfferHelp_Day5BCard")
-            val intent = Intent(this, social.entourage.android.events.details.feed.FeedActivity::class.java)
+            val intent = Intent(this, ActionDetailActivity::class.java)
             intent.putExtra(Const.ACTION_ID, demandeExampleTwo?.id)
-            intent.putExtra(Const.ACTION_TITLE,demandeExampleTwo?.title)
-            intent.putExtra(Const.IS_ACTION_DEMAND,false)
+            intent.putExtra(Const.ACTION_TITLE, demandeExampleTwo?.title)
+            intent.putExtra(Const.IS_ACTION_DEMAND, true)
             intent.putExtra(Const.IS_ACTION_MINE, demandeExampleTwo?.isMine())
             intent.putExtra("fromWelcomeActivity", true)
             startActivity(intent)
@@ -126,10 +132,10 @@ class WelcomeThreeActivity: BaseActivity() {
         binding.demandExampleThree.layoutDemand.setOnClickListener {
             //GO DEMAND THREE
             AnalyticsEvents.logEvent("Action_WelcomeOfferHelp_Day5BCard")
-            val intent = Intent(this, social.entourage.android.events.details.feed.FeedActivity::class.java)
+            val intent = Intent(this, ActionDetailActivity::class.java)
             intent.putExtra(Const.ACTION_ID, demandeExampleThree?.id)
             intent.putExtra(Const.ACTION_TITLE,demandeExampleThree?.title)
-            intent.putExtra(Const.IS_ACTION_DEMAND,false)
+            intent.putExtra(Const.IS_ACTION_DEMAND,true)
             intent.putExtra(Const.IS_ACTION_MINE, demandeExampleThree?.isMine())
             intent.putExtra("fromWelcomeActivity", true)
             startActivity(intent)
@@ -140,21 +146,36 @@ class WelcomeThreeActivity: BaseActivity() {
     private fun handleMainButtonForEvent(){
         binding.mainButton.text = getString(R.string.welcome_three_main_button_title_event)
         binding.mainButton.setOnClickListener {
-
+            AnalyticsEvents.logEvent("Action_WelcomeOfferHelp_Day5A")
+            val intent = Intent(this, MainActivity::class.java)
+            intent.putExtra("fromWelcomeActivityThreeEvent", true)
+            intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+            startActivity(intent)
+            finish()
         }
     }
 
     private fun handleMainButtonForDemand(){
         binding.mainButton.text = getString(R.string.welcome_three_main_button_title_demand)
         binding.mainButton.setOnClickListener {
-
+            AnalyticsEvents.logEvent("Action_WelcomeOfferHelp_Day5B")
+            val intent = Intent(this, MainActivity::class.java)
+            intent.putExtra("fromWelcomeActivityThreeDemand", true)
+            intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+            startActivity(intent)
+            finish()
         }
     }
 
     private fun handleMainButtonForContrib(){
         binding.mainButton.text = getString(R.string.welcome_three_main_button_title_contrib)
         binding.mainButton.setOnClickListener {
-
+            AnalyticsEvents.logEvent("Action_WelcomeOfferHelp_Day5C")
+            val intent = Intent(this, MainActivity::class.java)
+            intent.putExtra("fromWelcomeActivityThreeContrib", true)
+            intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+            startActivity(intent)
+            finish()
         }
     }
 
@@ -172,8 +193,8 @@ class WelcomeThreeActivity: BaseActivity() {
 
     private fun handleResponseGetEvents(allEvents: MutableList<Events>?) {
         allEvents.let {
-            Log.wtf("wtf", "action 1.name" + allEvents!!.size)
-            if(allEvents.size == 0 ){
+            Log.wtf("wtf", "size" + allEvents!!.size)
+            if(allEvents.size > 0 ){
                 handleMainButtonForEvent()
                 AnalyticsEvents.logEvent("View_WelcomeOfferHelp_Day5A")
                 binding.titleWelcomeTwo.text = getString(R.string.welcome_three_title_with_event)
@@ -208,7 +229,7 @@ class WelcomeThreeActivity: BaseActivity() {
                 //FILL EVENT THREE
                 binding.eventExampleOne.layout.visibility = View.VISIBLE
                 if(allEvents.size > 2){
-                    eventExampleOne = allEvents[2]
+                    eventExampleThree = allEvents[2]
                     binding.eventExampleThree.eventName.text = allEvents[2].title
                     binding.eventExampleThree.layout.visibility = View.VISIBLE
                     binding.eventExampleThree.location.text = allEvents[2].metadata?.displayAddress
@@ -239,7 +260,7 @@ class WelcomeThreeActivity: BaseActivity() {
                 }
                 //FILL EVENT TWO
                 if(allEvents.size > 1){
-                    eventExampleOne = allEvents[1]
+                    eventExampleTwo = allEvents[1]
                     binding.eventExampleTwo.eventName.text = allEvents[1].title
                     binding.eventExampleTwo.layout.visibility = View.VISIBLE
                     binding.eventExampleTwo.location.text = allEvents[1].metadata?.displayAddress
@@ -279,10 +300,10 @@ class WelcomeThreeActivity: BaseActivity() {
     }
 
     private fun handleResponseGetDemands(allDemands: MutableList<Action>?) {
-        Log.wtf("wtf", "action 1.name" + allDemands!!.size)
+        Log.wtf("wtf", "size" + allDemands!!.size)
 
         //FILL DEMAND ONE
-        if(allDemands.size == 0 ){
+        if(allDemands.size > 0 ){
             handleMainButtonForDemand()
             AnalyticsEvents.logEvent("View_WelcomeOfferHelp_Day5B")
             binding.titleWelcomeTwo.text = getString(R.string.welcome_three_title_with_demand)
@@ -312,7 +333,7 @@ class WelcomeThreeActivity: BaseActivity() {
 
             //FILL DEMAND THREE
             if(allDemands.size > 2){
-                demandeExampleOne = allDemands[2]
+                demandeExampleThree = allDemands[2]
                 binding.demandExampleThree.demandTitle.text = allDemands[2].title
                 binding.demandExampleThree.layoutDemand.visibility = View.VISIBLE
                 binding.demandExampleThree.demandLocation.text = allDemands[2].metadata?.displayAddress
@@ -337,27 +358,27 @@ class WelcomeThreeActivity: BaseActivity() {
             }
             //FILL DEMAND TWO
             if(allDemands.size > 1){
-                demandeExampleOne = allDemands[1]
-                binding.demandExampleThree.demandTitle.text = allDemands[1].title
-                binding.demandExampleThree.layoutDemand.visibility = View.VISIBLE
-                binding.demandExampleThree.demandLocation.text = allDemands[1].metadata?.displayAddress
-                binding.demandExampleThree.demandSectionName.text = MetaDataRepository.getActionSectionNameFromId(allDemands[1].sectionName)
-                binding.demandExampleThree.demandSectionPic.setImageDrawable(this.getDrawable(ActionSection.getIconFromId(allDemands[1].sectionName)))
-                binding.demandExampleThree.demandUsername.text = allDemands[1].author?.userName
-                binding.demandExampleThree.demandLocation.text = allDemands[1].metadata?.displayAddress
-                binding.demandExampleThree.demandDate.text = allDemands[1].dateFormattedString(this)
+                demandeExampleTwo = allDemands[1]
+                binding.demandExampleTwo.demandTitle.text = allDemands[1].title
+                binding.demandExampleTwo.layoutDemand.visibility = View.VISIBLE
+                binding.demandExampleTwo.demandLocation.text = allDemands[1].metadata?.displayAddress
+                binding.demandExampleTwo.demandSectionName.text = MetaDataRepository.getActionSectionNameFromId(allDemands[1].sectionName)
+                binding.demandExampleTwo.demandSectionPic.setImageDrawable(this.getDrawable(ActionSection.getIconFromId(allDemands[1].sectionName)))
+                binding.demandExampleTwo.demandUsername.text = allDemands[1].author?.userName
+                binding.demandExampleTwo.demandLocation.text = allDemands[1].metadata?.displayAddress
+                binding.demandExampleTwo.demandDate.text = allDemands[1].dateFormattedString(this)
 
                 allDemands[1].author?.avatarURLAsString?.let { avatarURL ->
-                    Glide.with(binding.demandExampleThree.demandPict.context)
+                    Glide.with(binding.demandExampleTwo.demandPict.context)
                         .load(avatarURL)
                         .error(R.drawable.placeholder_user)
                         .circleCrop()
-                        .into(binding.demandExampleThree.demandPict)
+                        .into(binding.demandExampleTwo.demandPict)
                 } ?: run {
-                    Glide.with(binding.demandExampleThree.demandPict.context)
+                    Glide.with(binding.demandExampleTwo.demandPict.context)
                         .load(R.drawable.placeholder_user)
                         .circleCrop()
-                        .into(binding.demandExampleThree.demandPict)
+                        .into(binding.demandExampleTwo.demandPict)
                 }
             }
         }else{
@@ -389,5 +410,4 @@ class WelcomeThreeActivity: BaseActivity() {
                 .into(binding.contribExampleTwo.image)
         }
     }
-
 }

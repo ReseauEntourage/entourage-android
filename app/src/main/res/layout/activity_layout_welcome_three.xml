@@ -193,5 +193,15 @@
         android:layout_marginStart="60dp"
         android:layout_marginEnd="60dp"
         android:layout_marginBottom="20dp"
+        android:textAllCaps="false"
         />
+    <ImageView
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:id="@+id/close_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:src="@drawable/icon_cross"
+        android:layout_margin="15dp"
+        android:scaleType="fitXY"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

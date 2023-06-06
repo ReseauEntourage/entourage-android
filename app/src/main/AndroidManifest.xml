@@ -73,6 +73,9 @@
             android:name=".welcome.WelcomeFourActivity"
             android:exported="false" />
         <activity
+            android:name=".welcome.WelcomeTestActivity"
+            android:exported="false" />
+        <activity
             android:name=".home.pedago.PedagoDetailActivity"
             android:exported="false" />
         <activity

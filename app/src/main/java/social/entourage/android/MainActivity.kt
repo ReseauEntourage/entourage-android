@@ -24,6 +24,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import social.entourage.android.actions.create.CreateActionActivity
 import social.entourage.android.api.MetaDataRepository
 import social.entourage.android.api.model.notification.PushNotificationMessage
 import social.entourage.android.base.BaseSecuredActivity
@@ -35,6 +36,7 @@ import social.entourage.android.home.CommunicationHandlerBadgeViewModel
 import social.entourage.android.home.UnreadMessages
 import social.entourage.android.notifications.NotificationActionManager
 import social.entourage.android.tools.log.AnalyticsEvents
+import social.entourage.android.tools.utils.Const
 import timber.log.Timber
 
 class MainActivity : BaseSecuredActivity() {
@@ -116,8 +118,23 @@ class MainActivity : BaseSecuredActivity() {
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
         val fromWelcomeActivity = intent.getBooleanExtra("fromWelcomeActivity", false)
+        val fromWelcomeActivityThreeEvent = intent.getBooleanExtra("fromWelcomeActivityThreeEvent", false)
+        val fromWelcomeActivityThreeDemand = intent.getBooleanExtra("fromWelcomeActivityThreeDemand", false)
+        val fromWelcomeActivityThreeContrib = intent.getBooleanExtra("fromWelcomeActivityThreeContrib", false)
         if (fromWelcomeActivity) {
             goGroup()
+        }
+        if (fromWelcomeActivityThreeEvent) {
+            goEvent()
+        }
+        if (fromWelcomeActivityThreeDemand) {
+            goDemand()
+        }
+        if (fromWelcomeActivityThreeContrib) {
+            goContrib()
+            val intent = Intent(this, CreateActionActivity::class.java)
+            intent.putExtra(Const.IS_ACTION_DEMAND, false)
+            startActivity(intent)
         }
         this.intent = intent
         handleUniversalLinkFromMain(intent)
@@ -247,7 +264,7 @@ class MainActivity : BaseSecuredActivity() {
 
     }
     fun goDemand(){
-        val bundle = bundleOf("isActionDemand" to false) // Mettez ici la valeur souhaitée pour "isActionDemand"
+        val bundle = bundleOf("isActionDemand" to true) // Mettez ici la valeur souhaitée pour "isActionDemand"
         navController.navigate(R.id.navigation_donations, bundle)
     }
 
