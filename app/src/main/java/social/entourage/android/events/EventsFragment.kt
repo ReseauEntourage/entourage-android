@@ -105,11 +105,18 @@ class EventsFragment : Fragment() {
 
     private fun setPage() {
         binding.viewPager.doOnPreDraw {
-            binding.viewPager.setCurrentItem(
-                if (ViewPagerDefaultPageController.shouldSelectDiscoverEvents) DISCOVER_EVENTS_TAB else MY_EVENTS_TAB,
-                false
-            )
-            ViewPagerDefaultPageController.shouldSelectDiscoverEvents = false
+            val fromWelcomeActivityThreeEvent = activity?.intent?.getBooleanExtra("fromWelcomeActivityThreeEvent", false) ?: false
+            if(fromWelcomeActivityThreeEvent){
+                binding.viewPager.setCurrentItem(
+                    DISCOVER_EVENTS_TAB
+                )
+            }else{
+                binding.viewPager.setCurrentItem(
+                    if (ViewPagerDefaultPageController.shouldSelectDiscoverEvents) DISCOVER_EVENTS_TAB else MY_EVENTS_TAB,
+                    false
+                )
+                ViewPagerDefaultPageController.shouldSelectDiscoverEvents = false
+            }
         }
 
         binding.tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
