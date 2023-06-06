@@ -17,6 +17,7 @@ import kotlinx.android.synthetic.main.new_event_item.view.*
 import kotlinx.android.synthetic.main.new_event_item.view.information
 import social.entourage.android.R
 import social.entourage.android.actions.ActionsPresenter
+import social.entourage.android.actions.detail.ActionDetailActivity
 import social.entourage.android.api.MetaDataRepository
 import social.entourage.android.api.model.*
 import social.entourage.android.base.BaseActivity
@@ -24,6 +25,7 @@ import social.entourage.android.databinding.ActivityLayoutWelcomeThreeBinding
 import social.entourage.android.events.EventsPresenter
 import social.entourage.android.events.details.feed.FeedActivity
 import social.entourage.android.events.list.EVENTS_PER_PAGE
+import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.Utils
 import social.entourage.android.tools.utils.px
@@ -37,6 +39,12 @@ class WelcomeThreeActivity: BaseActivity() {
     private val actionsPresenter: ActionsPresenter by lazy { ActionsPresenter() }
     private var currentFilters = EventActionLocationFilters()
     private var currentSectionsFilters = ActionSectionFilters()
+    private var eventExampleOne:Events? = null
+    private var eventExampleTwo:Events? = null
+    private var eventExampleThree:Events? = null
+    private var demandeExampleOne:Action? = null
+    private var demandeExampleTwo:Action? = null
+    private var demandeExampleThree:Action? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,38 +61,100 @@ class WelcomeThreeActivity: BaseActivity() {
     override fun onResume() {
         super.onResume()
         eventsPresenter.getAllEvents(0, EVENTS_PER_PAGE, currentFilters.travel_distance(),currentFilters.latitude(),currentFilters.longitude(),"future")
-
+        handleEveryButtons()
 
     }
 
     fun handleEveryButtons(){
         binding.eventExampleOne.layout.setOnClickListener {
-            var intent = Intent()
-            intent.put
-            (view.context as? Activity)?.startActivityForResult(
-                Intent(
-                    view.context,
-                    FeedActivity::class.java
-                ).putExtra(
-                    Const.EVENT_ID,
-                    child.id
-                ), 0
+            AnalyticsEvents.logEvent("Action_WelcomeOfferHelp_Day5ACard")
+            val intent = Intent(this, social.entourage.android.events.details.feed.FeedActivity::class.java)
+            intent.putExtra(
+                Const.EVENT_ID,
+                eventExampleOne?.id
             )
+            intent.putExtra("fromWelcomeActivity", true)
+            startActivity(intent)
+            finish()
+
         }
         binding.eventExampleTwo.layout.setOnClickListener {
-            //GO EVENT TWO
+            AnalyticsEvents.logEvent("Action_WelcomeOfferHelp_Day5ACard")
+            val intent = Intent(this, social.entourage.android.events.details.feed.FeedActivity::class.java)
+            intent.putExtra(
+                Const.EVENT_ID,
+                eventExampleTwo?.id
+            )
+            intent.putExtra("fromWelcomeActivity", true)
+            startActivity(intent)
+            finish()
         }
         binding.eventExampleThree.layout.setOnClickListener {
-            //GO EVENT THREE
+            AnalyticsEvents.logEvent("Action_WelcomeOfferHelp_Day5ACard")
+            val intent = Intent(this, social.entourage.android.events.details.feed.FeedActivity::class.java)
+            intent.putExtra(
+                Const.EVENT_ID,
+                eventExampleThree?.id
+            )
+            intent.putExtra("fromWelcomeActivity", true)
+            startActivity(intent)
+            finish()
         }
         binding.demandExampleOne.layoutDemand.setOnClickListener {
-            //GO DEMAND ONE
+            AnalyticsEvents.logEvent("Action_WelcomeOfferHelp_Day5BCard")
+            val intent = Intent(this, social.entourage.android.events.details.feed.FeedActivity::class.java)
+            intent.putExtra(Const.ACTION_ID, demandeExampleOne?.id)
+            intent.putExtra(Const.ACTION_TITLE,demandeExampleOne?.title)
+            intent.putExtra(Const.IS_ACTION_DEMAND,false)
+            intent.putExtra(Const.IS_ACTION_MINE, demandeExampleOne?.isMine())
+            intent.putExtra("fromWelcomeActivity", true)
+            startActivity(intent)
+            finish()
         }
         binding.demandExampleTwo.layoutDemand.setOnClickListener {
             //GO DEMAND TWO
+            AnalyticsEvents.logEvent("Action_WelcomeOfferHelp_Day5BCard")
+            val intent = Intent(this, social.entourage.android.events.details.feed.FeedActivity::class.java)
+            intent.putExtra(Const.ACTION_ID, demandeExampleTwo?.id)
+            intent.putExtra(Const.ACTION_TITLE,demandeExampleTwo?.title)
+            intent.putExtra(Const.IS_ACTION_DEMAND,false)
+            intent.putExtra(Const.IS_ACTION_MINE, demandeExampleTwo?.isMine())
+            intent.putExtra("fromWelcomeActivity", true)
+            startActivity(intent)
+            finish()
         }
         binding.demandExampleThree.layoutDemand.setOnClickListener {
             //GO DEMAND THREE
+            AnalyticsEvents.logEvent("Action_WelcomeOfferHelp_Day5BCard")
+            val intent = Intent(this, social.entourage.android.events.details.feed.FeedActivity::class.java)
+            intent.putExtra(Const.ACTION_ID, demandeExampleThree?.id)
+            intent.putExtra(Const.ACTION_TITLE,demandeExampleThree?.title)
+            intent.putExtra(Const.IS_ACTION_DEMAND,false)
+            intent.putExtra(Const.IS_ACTION_MINE, demandeExampleThree?.isMine())
+            intent.putExtra("fromWelcomeActivity", true)
+            startActivity(intent)
+            finish()
+        }
+    }
+
+    private fun handleMainButtonForEvent(){
+        binding.mainButton.text = getString(R.string.welcome_three_main_button_title_event)
+        binding.mainButton.setOnClickListener {
+
+        }
+    }
+
+    private fun handleMainButtonForDemand(){
+        binding.mainButton.text = getString(R.string.welcome_three_main_button_title_demand)
+        binding.mainButton.setOnClickListener {
+
+        }
+    }
+
+    private fun handleMainButtonForContrib(){
+        binding.mainButton.text = getString(R.string.welcome_three_main_button_title_contrib)
+        binding.mainButton.setOnClickListener {
+
         }
     }
 
@@ -104,6 +174,10 @@ class WelcomeThreeActivity: BaseActivity() {
         allEvents.let {
             Log.wtf("wtf", "action 1.name" + allEvents!!.size)
             if(allEvents.size == 0 ){
+                handleMainButtonForEvent()
+                AnalyticsEvents.logEvent("View_WelcomeOfferHelp_Day5A")
+                binding.titleWelcomeTwo.text = getString(R.string.welcome_three_title_with_event)
+                eventExampleOne = allEvents[0]
                 binding.eventExampleOne.eventName.text = allEvents[0].title
                 binding.eventExampleOne.location.text = allEvents[0].metadata?.displayAddress
                 binding.eventExampleOne.participants.text = allEvents[0].membersCount.toString()
@@ -134,6 +208,7 @@ class WelcomeThreeActivity: BaseActivity() {
                 //FILL EVENT THREE
                 binding.eventExampleOne.layout.visibility = View.VISIBLE
                 if(allEvents.size > 2){
+                    eventExampleOne = allEvents[2]
                     binding.eventExampleThree.eventName.text = allEvents[2].title
                     binding.eventExampleThree.layout.visibility = View.VISIBLE
                     binding.eventExampleThree.location.text = allEvents[2].metadata?.displayAddress
@@ -164,6 +239,7 @@ class WelcomeThreeActivity: BaseActivity() {
                 }
                 //FILL EVENT TWO
                 if(allEvents.size > 1){
+                    eventExampleOne = allEvents[1]
                     binding.eventExampleTwo.eventName.text = allEvents[1].title
                     binding.eventExampleTwo.layout.visibility = View.VISIBLE
                     binding.eventExampleTwo.location.text = allEvents[1].metadata?.displayAddress
@@ -207,6 +283,11 @@ class WelcomeThreeActivity: BaseActivity() {
 
         //FILL DEMAND ONE
         if(allDemands.size == 0 ){
+            handleMainButtonForDemand()
+            AnalyticsEvents.logEvent("View_WelcomeOfferHelp_Day5B")
+            binding.titleWelcomeTwo.text = getString(R.string.welcome_three_title_with_demand)
+            binding.tvTextOne.text = getString(R.string.welcome_three_text_one_with_demand)
+            demandeExampleOne = allDemands[0]
             binding.demandExampleOne.demandTitle.text = allDemands[0].title
             binding.demandExampleOne.layoutDemand.visibility = View.VISIBLE
             binding.demandExampleOne.demandLocation.text = allDemands[0].metadata?.displayAddress
@@ -231,6 +312,7 @@ class WelcomeThreeActivity: BaseActivity() {
 
             //FILL DEMAND THREE
             if(allDemands.size > 2){
+                demandeExampleOne = allDemands[2]
                 binding.demandExampleThree.demandTitle.text = allDemands[2].title
                 binding.demandExampleThree.layoutDemand.visibility = View.VISIBLE
                 binding.demandExampleThree.demandLocation.text = allDemands[2].metadata?.displayAddress
@@ -255,6 +337,7 @@ class WelcomeThreeActivity: BaseActivity() {
             }
             //FILL DEMAND TWO
             if(allDemands.size > 1){
+                demandeExampleOne = allDemands[1]
                 binding.demandExampleThree.demandTitle.text = allDemands[1].title
                 binding.demandExampleThree.layoutDemand.visibility = View.VISIBLE
                 binding.demandExampleThree.demandLocation.text = allDemands[1].metadata?.displayAddress
@@ -278,18 +361,32 @@ class WelcomeThreeActivity: BaseActivity() {
                 }
             }
         }else{
+            handleMainButtonForContrib()
             //IF NO DEMAND , FILL WITH CONTRIB EXAMPLE
+            AnalyticsEvents.logEvent("View_WelcomeOfferHelp_Day5C")
+            binding.titleWelcomeTwo.text = getString(R.string.welcome_three_title_with_contrib)
+            binding.tvTextOne.text = getString(R.string.welcome_three_text_one_with_contrib)
             binding.contribExampleOne.layoutContrib.visibility = View.VISIBLE
             binding.contribExampleTwo.layoutContrib.visibility = View.VISIBLE
             binding.tvTextFour.visibility = View.GONE
             //FILL CONTRIB ONE
-            binding.contribExampleOne.location.text = action.metadata?.displayAddress
-            binding.contribExampleOne.date.text = action.dateFormattedString(binding.context)
-            binding.contribExampleOne.image.setImageDrawable(getDrawable(R.drawable.placeholder_user))
+            binding.contribExampleOne.name.text = getString(R.string.welcome_three_contrib_name)
+            binding.contribExampleOne.location.text = getString(R.string.welcome_three_contrib_location)
+            binding.contribExampleOne.date.text = getString(R.string.welcome_three_contrib_date)
+            binding.contribExampleOne.distance.text = getString(R.string.welcome_three_contrib_distance)
+            Glide.with(this)
+                .load(R.drawable.contrib_example_one)
+                .transform(RoundedCorners(30))
+                .into(binding.contribExampleOne.image)
             //FILL CONTRIB TWO
-            binding.contribExampleTwo.location.text = action.metadata?.displayAddress
-            binding.contribExampleTwo.date.text = action.dateFormattedString(this)
-            binding.contribExampleTwo.image.setImageDrawable(getDrawable(R.drawable.placeholder_user))
+            binding.contribExampleTwo.name.text = getString(R.string.welcome_three_contrib_name_two)
+            binding.contribExampleTwo.location.text = getString(R.string.welcome_three_contrib_location)
+            binding.contribExampleTwo.date.text = getString(R.string.welcome_three_contrib_date)
+            binding.contribExampleTwo.distance.text = getString(R.string.welcome_three_contrib_distance)
+            Glide.with(this)
+                .load(R.drawable.contrib_example_two)
+                .transform(RoundedCorners(30))
+                .into(binding.contribExampleTwo.image)
         }
     }
 

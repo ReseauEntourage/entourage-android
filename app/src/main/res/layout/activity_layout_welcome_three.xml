@@ -2,7 +2,8 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools">
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -35,7 +36,7 @@
                 android:layout_marginStart="32dp"
                 android:fontFamily="@font/nunitosans_regular"
                 android:textColor="@color/black"
-                android:text="@string/welcome_three_title"
+                tools:text="@string/welcome_three_title_with_event"
                 android:textSize="24sp"/>
 
             <ImageView
@@ -59,7 +60,7 @@
                 android:layout_marginBottom="20dp"
                 android:paddingEnd="10dp"
                 android:layout_marginTop="20dp"
-                android:text="@string/welcome_two_text_one"
+                tools:text="@string/welcome_three_text_one"
                 android:textSize="15sp"
                 android:fontFamily="@font/nunitosans_regular"
                 android:textColor="@color/black"
@@ -180,7 +181,8 @@
     <Button
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="@string/welcome_three_button_title"
+        android:id="@+id/main_button"
+        tools:text="@string/welcome_three_button_title"
         android:textColor="@color/white"
         android:fontFamily="@font/nunitosans_regular"
         android:textStyle="bold"

@@ -464,6 +464,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="welcome_one_title">Bienvenue sur le réseau \nsocial, vraiment social</string>
     <string name="welcome_one_content">Pour beaucoup, la rue est un lieu de passage.\nPour certains, c\'est un quotidien.\nAlors pour commencer, rencontrez celles et ceux qui la vivent tous les jours.</string>
     <string name="welcome_one_sensib">Retrouvez nos contenus de sensibilisation <u><font color="#F55F24">ici</font></u></string>
+
     <string name="welcome_two_title">C\'est le moment de se lancer !</string>
     <string name="welcome_two_text_one">Un réseau social, c\'est mieux à plusieurs !\nPrésentez-vous auprès de votre groupe %s</string>
     <string name="welcome_two_text_one_corrected">Un réseau social, c\'est mieux à plusieurs !\nPrésentez-vous auprès de votre groupe %s</string>
@@ -474,9 +475,26 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="welcome_two_text_four">Besoin d\'inspiration ?</string>
     <string name="welcome_two_button_title">Dire bonjour à mes voisins</string>
     <string name="welcome_card_example_card_content">Bonjour les voisins parisiens. Je m\'appelle Eric et j\'ai hâte de vous rencontrer autour des événements du réseau entourage.</string>
+
     <string name="welcome_three_button_title">Découvrir les événements</string>
-    <string name="welcome_three_title">6000 personnes se sont faits de nouveaux amis lors d\'un événement Entourage</string>
+    <string name="welcome_three_title_with_event">6000 personnes se sont faits de nouveaux amis lors d\'un événement Entourage</string>
+    <string name="welcome_three_title_with_demand">Donnez un coup de pouce à vos voisins</string>
+    <string name="welcome_three_title_with_contrib">Pas d\'entraide autour de vous? Crééz-la ! </string>
     <string name="welcome_three_text_one">Trouvez l\'événement qui vous intéresse et venez profiter d\'un moment convivial</string>
+    <string name="welcome_three_text_one_with_demand">Trouvez l\'événement qui vous intéresse et venez profiter d\'un moment convivial</string>
+    <string name="welcome_three_text_one_with_contrib">Trouvez l\'événement qui vous intéresse et venez profiter d\'un moment convivial</string>
+    <string name="welcome_three_contrib_name">Echanger autour d\'un café</string>
+    <string name="welcome_three_contrib_name_two">Don de vêtement pour femme</string>
+    <string name="welcome_three_contrib_distance">à 10m de moi</string>
+    <string name="welcome_three_contrib_location">Paris (75010)</string>
+    <string name="welcome_three_contrib_date">Le 21 juin 2022 à 12h</string>
+    <string name="welcome_three_main_button_title_event">Découvrir les événements</string>
+    <string name="welcome_three_main_button_title_demand">Découvrir les demandes</string>
+    <string name="welcome_three_main_button_title_contrib">Créer une contribution</string>
+
+
+
+
 
 
 
