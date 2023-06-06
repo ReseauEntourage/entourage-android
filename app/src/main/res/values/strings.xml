@@ -480,9 +480,9 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="welcome_three_title_with_event">6000 personnes se sont faits de nouveaux amis lors d\'un événement Entourage</string>
     <string name="welcome_three_title_with_demand">Donnez un coup de pouce à vos voisins</string>
     <string name="welcome_three_title_with_contrib">Pas d\'entraide autour de vous? Crééz-la ! </string>
-    <string name="welcome_three_text_one">Trouvez l\'événement qui vous intéresse et venez profiter d\'un moment convivial</string>
-    <string name="welcome_three_text_one_with_demand">Trouvez l\'événement qui vous intéresse et venez profiter d\'un moment convivial</string>
-    <string name="welcome_three_text_one_with_contrib">Trouvez l\'événement qui vous intéresse et venez profiter d\'un moment convivial</string>
+    <string name="welcome_three_text_one">Trouvez l\'événement qui vous intéresse et venez profiter d\'un moment convivial.</string>
+    <string name="welcome_three_text_one_with_demand">Jetez un oeil aux demandes publiées près de chez vous :</string>
+    <string name="welcome_three_text_one_with_contrib">Un bon moyen pour créer du lien entre voisins, c\'est de partager vos centres d\'intérêt, vos passions ou juste un café pour faire connaissance.</string>
     <string name="welcome_three_contrib_name">Echanger autour d\'un café</string>
     <string name="welcome_three_contrib_name_two">Don de vêtement pour femme</string>
     <string name="welcome_three_contrib_distance">à 10m de moi</string>
