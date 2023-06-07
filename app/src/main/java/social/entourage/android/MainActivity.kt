@@ -57,10 +57,6 @@ class MainActivity : BaseSecuredActivity() {
         if (authenticationController.isAuthenticated) {
             //refresh the user info from the server
             presenter.updateUserLocation(EntLocation.currentLocation)
-            //initialize the push notifications
-            initializePushNotifications()
-            updateAnalyticsInfo()
-            //TODO authenticationController.me?.unreadCount?.let { bottomBar?.updateBadgeCountForUser(it) }
         }
 
         handleUniversalLinkFromMain(this.intent)
@@ -109,6 +105,12 @@ class MainActivity : BaseSecuredActivity() {
     override fun onResume() {
         super.onResume()
         initializeMetaData()
+        if (authenticationController.isAuthenticated) {
+            //initialize the push notifications
+            initializePushNotifications()
+            updateAnalyticsInfo()
+            //TODO authenticationController.me?.unreadCount?.let { bottomBar?.updateBadgeCountForUser(it) }
+        }
         //TODO bottomBar?.refreshBadgeCount()
         intent?.action?.let { action ->
             checkIntentAction(action, intent?.extras)
@@ -167,37 +169,41 @@ class MainActivity : BaseSecuredActivity() {
         registerForActivityResult(
             ActivityResultContracts.RequestPermission()
         ) { isGranted ->
-
-            //initializePushNotifications()
+            storePushNotificationPermision()
         }
 
     private fun initializePushNotifications() {
         val sharedPref = EntourageApplication.get().sharedPreferences
-        if(!sharedPref.contains(EntourageApplication.KEY_NOTIFICATIONS_ENABLED)) {
+        if (!sharedPref.contains(EntourageApplication.KEY_NOTIFICATIONS_ENABLED)) {
             //while processing we assume Permission is not granted
             sharedPref.edit()
                 .putBoolean(EntourageApplication.KEY_NOTIFICATIONS_ENABLED, false)
                 .apply()
             requestNotificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
         } else {
-            var notificationsEnabled = sharedPref.getBoolean(
-                EntourageApplication.KEY_NOTIFICATIONS_ENABLED,
-                true
-            )
-            val areNotificationEnabled = NotificationManagerCompat.from(this).areNotificationsEnabled()
-            if(notificationsEnabled!=areNotificationEnabled) {
-                notificationsEnabled = areNotificationEnabled
-                sharedPref.edit()
-                    .putBoolean(EntourageApplication.KEY_NOTIFICATIONS_ENABLED, areNotificationEnabled)
-                    .apply()
-            }
-            if (notificationsEnabled) {
-                FirebaseMessaging.getInstance().token.addOnSuccessListener { token ->
-                    presenter.updateApplicationInfo(token)
-                }
-            } else {
+            storePushNotificationPermision()
+        }
+    }
 
+    private fun storePushNotificationPermision() {
+        val sharedPref = EntourageApplication.get().sharedPreferences
+        var notificationsEnabled = sharedPref.getBoolean(
+            EntourageApplication.KEY_NOTIFICATIONS_ENABLED,
+            true
+        )
+        val areNotificationEnabled = NotificationManagerCompat.from(this).areNotificationsEnabled()
+        if(notificationsEnabled!=areNotificationEnabled) {
+            notificationsEnabled = areNotificationEnabled
+            sharedPref.edit()
+                .putBoolean(EntourageApplication.KEY_NOTIFICATIONS_ENABLED, areNotificationEnabled)
+                .apply()
+        }
+        if (notificationsEnabled) {
+            FirebaseMessaging.getInstance().token.addOnSuccessListener { token ->
+                presenter.updateApplicationInfo(token)
             }
+        } else {
+
         }
     }
 
