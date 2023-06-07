@@ -610,6 +610,6 @@ object AnalyticsEvents {
             mFirebaseAnalytics.setUserProperty("BackgroundRestriction", if ((Objects.requireNonNull(context.getSystemService(Context.ACTIVITY_SERVICE)) as ActivityManager).isBackgroundRestricted) "YES" else "NO")
         }
 
-        mFirebaseAnalytics.setUserProperty("engaged_user", if (user.isEngaged) "Yes" else "No")
+        mFirebaseAnalytics.setUserProperty("engaged_user", if (user.isEngaged) "YES" else "NO")
     }
 }
