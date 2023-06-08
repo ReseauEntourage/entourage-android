@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.layout_code_picker_dialog.*
 import social.entourage.android.R
+import social.entourage.android.tools.hideKeyboard
 import java.util.*
 import kotlin.math.roundToInt
 
@@ -54,9 +55,7 @@ internal class CountryCodeDialog(private val mCountryCodePicker: CountryCodePick
             override fun onItemCountrySelected(country: Country?) {
                 mCountryCodePicker.selectedCountry = country
                 //if (view != null && mCountries.get(position) != null) {
-                search_edt?.windowToken?.let {
-                    mInputMethodManager?.hideSoftInputFromWindow(it , 0)
-                }
+                search_edt?.hideKeyboard()
                 dismiss()
             }
         }

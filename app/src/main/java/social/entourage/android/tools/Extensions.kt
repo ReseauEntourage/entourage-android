@@ -75,11 +75,6 @@ fun View.hideKeyboard() {
     inputMethodManager?.hideSoftInputFromWindow(this.windowToken, 0)
 }
 
-/*fun View.hideKeyboardFromLayout() {
-    val inputMethodManager = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
-    inputMethodManager?.hideSoftInputFromWindow(this.windowToken, 0)
-}*/
-
 fun String?.isValidEmail(): Boolean {
     return this?.let {
         android.util.Patterns.EMAIL_ADDRESS.matcher(it).matches()

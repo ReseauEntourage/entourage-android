@@ -2,8 +2,6 @@ package social.entourage.android.base
 
 import android.app.ProgressDialog
 import android.os.Bundle
-import android.view.View
-import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import social.entourage.android.BuildConfig
 import social.entourage.android.EntourageApplication
