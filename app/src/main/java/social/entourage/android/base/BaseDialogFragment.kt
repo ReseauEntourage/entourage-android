@@ -67,9 +67,9 @@ open class BaseDialogFragment : DialogFragment() {
         dialog?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE)
     }
 
-    protected fun hideKeyboard() {
+    /*protected fun hideKeyboard() {
         dialog?.currentFocus?.windowToken?.let { token ->
             (activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?)?.hideSoftInputFromWindow(token, 0)
         }
-    }
+    }*/
 }
