@@ -1,11 +1,9 @@
 package social.entourage.android.base
 
-import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.*
-import android.view.inputmethod.InputMethodManager
 import androidx.annotation.StyleRes
 import androidx.fragment.app.DialogFragment
 import social.entourage.android.MainActivity

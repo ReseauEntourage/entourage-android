@@ -7,8 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
-import android.view.inputmethod.InputMethodManager
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_guide_search.*
 import retrofit2.Call
@@ -110,8 +108,7 @@ class GDSSearchFragment : BaseDialogFragment(), PoiListFragment {
 
     fun sendSearch() {
         if (ui_et_search?.text?.length ?: 0 < MIN_CHARS_SEARCH) return
-        val imm = view?.context?.let { getSystemService(it, InputMethodManager::class.java) }
-        imm?.hideSoftInputFromWindow(view?.windowToken, 0)
+        view?.hideKeyboard()
         ui_et_search?.clearFocus()
 
         ui_progress?.visibility = View.VISIBLE
