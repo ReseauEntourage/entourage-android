@@ -37,6 +37,7 @@ import social.entourage.android.home.UnreadMessages
 import social.entourage.android.notifications.NotificationActionManager
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.utils.Const
+import social.entourage.android.user.UserProfileActivity
 import timber.log.Timber
 
 class MainActivity : BaseSecuredActivity() {
@@ -49,8 +50,6 @@ class MainActivity : BaseSecuredActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.new_activity_main)
         viewModel = ViewModelProvider(this)[CommunicationHandlerBadgeViewModel::class.java]
-
-
         viewModel.badgeCount.observe(this,::handleUpdateBadgeResponse)
 
         initializeNavBar()
@@ -330,7 +329,8 @@ class MainActivity : BaseSecuredActivity() {
     }
 
     fun showProfile() {
-        presenter.handleMenuProfile("editProfile")
+        AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_PROFILE_MODPROFIL)
+        startActivityForResult(Intent(this, UserProfileActivity::class.java), 0)
     }
 
     fun showFeed() {
