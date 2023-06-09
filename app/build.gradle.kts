@@ -57,8 +57,8 @@ android {
     compileSdk = 33
     buildToolsVersion = "33.0.1"
 
-    val TEST_ACCOUNT_LOGIN = if(System.getenv("TEST_ACCOUNT_LOGIN")!=null) "\"" + System.getenv("TEST_ACCOUNT_LOGIN") + "\"" else "\"\""
-    val TEST_ACCOUNT_PWD = if(System.getenv("TEST_ACCOUNT_PWD")!=null) "\"" + System.getenv("TEST_ACCOUNT_PWD") + "\"" else "\"\""
+    val localTestAccountLogin = "\"" + (System.getenv("TEST_ACCOUNT_LOGIN") ?: "") + "\""
+    val localTestAccountPwd = "\"" + (System.getenv("TEST_ACCOUNT_PWD") ?: "") + "\""
 
     defaultConfig {
         manifestPlaceholders += mapOf(
@@ -85,16 +85,17 @@ android {
         vectorDrawables.useSupportLibrary = true
 
         buildConfigField("String", "ENTOURAGE_URL", "\"${entourageURLProd}\"")
-        buildConfigField("String", "TEST_ACCOUNT_LOGIN", TEST_ACCOUNT_LOGIN)
-        buildConfigField("String", "TEST_ACCOUNT_PWD", TEST_ACCOUNT_PWD)
+        buildConfigField("String", "TEST_ACCOUNT_LOGIN", localTestAccountLogin)
+        buildConfigField("String", "TEST_ACCOUNT_PWD", localTestAccountPwd)
     }
 
     signingConfigs {
         create("googleplay") {
+            val keystorePass= System.getenv("KEYSTORE_PASS") ?: findProperty("entourageKeystorePassword") as String
             keyAlias = "googleplay"
-            keyPassword = System.getenv("KEYSTORE_PASS")
+            keyPassword = keystorePass
             storeFile = file("../keystore/googleplay-keystore.jks")
-            storePassword = System.getenv("KEYSTORE_PASS")
+            storePassword = keystorePass
         }
 
         getByName("debug") {

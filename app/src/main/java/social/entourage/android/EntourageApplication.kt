@@ -13,7 +13,6 @@ import social.entourage.android.api.model.notification.PushNotificationMessage
 import social.entourage.android.api.model.notification.PushNotificationContent
 import social.entourage.android.api.model.TimestampedObject
 import social.entourage.android.api.model.User
-import social.entourage.android.api.model.feed.FeedItem
 import social.entourage.android.authentication.AuthenticationController
 import social.entourage.android.authentication.ComplexPreferences
 import social.entourage.android.base.BaseActivity
@@ -52,8 +51,7 @@ class EntourageApplication : MultiDexApplication() {
     }
 
     private fun setupSharedPreferences() {
-        sharedPreferences =
-            getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE)
+        sharedPreferences = getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE)
     }
 
     val firebase: FirebaseAnalytics
@@ -152,25 +150,7 @@ class EntourageApplication : MultiDexApplication() {
         //TODO EntBottomNavigationView.increaseBadgeCount()
     }
 
-    /*fun removePushNotificationsForFeedItem(feedItem: FeedItem) {
-        val count = PushNotificationManager.removePushNotificationsForFeedItem(feedItem)
-        if (count > 0) {
-            //TODO EntBottomNavigationView.decreaseBadgeCount()
-        }
-    }*/
-
-    fun removePushNotification(pushNotificationMessage: PushNotificationMessage) {
-        val count = PushNotificationManager.removePushNotification(pushNotificationMessage)
-        if (count > 0) {
-            //TODO EntBottomNavigationView.decreaseBadgeCount()
-        }
-    }
-
-    fun removePushNotification(feedItem: FeedItem, userId: Int, pushType: String?) {
-        removePushNotification(feedItem.id, feedItem.type, userId, pushType)
-    }
-
-    fun removePushNotification(content: PushNotificationContent, contentType: String) {
+    private fun removePushNotification(content: PushNotificationContent, contentType: String) {
         if (content.isEntourageRelated) {
             removePushNotification(
                 content.joinableId,
@@ -181,7 +161,7 @@ class EntourageApplication : MultiDexApplication() {
         }
     }
 
-    fun removePushNotification(feedId: Long, feedType: Int, userId: Int, pushType: String?) {
+    private fun removePushNotification(feedId: Long, feedType: Int, userId: Int, pushType: String?) {
         val count =
             PushNotificationManager.removePushNotification(feedId, feedType, userId, pushType)
         if (count > 0) {
@@ -189,7 +169,7 @@ class EntourageApplication : MultiDexApplication() {
         }
     }
 
-    fun removeAllPushNotifications() {
+    private fun removeAllPushNotifications() {
         PushNotificationManager.removeAllPushNotifications()
         // reset the badge count
         //TODO EntBottomNavigationView.resetBadgeCount()

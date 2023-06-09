@@ -2,8 +2,6 @@ package social.entourage.android.base
 
 import android.app.ProgressDialog
 import android.os.Bundle
-import android.view.View
-import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import social.entourage.android.BuildConfig
 import social.entourage.android.EntourageApplication
@@ -26,41 +24,6 @@ abstract class BaseActivity : AppCompatActivity() {
     override fun onDestroy() {
         entApp?.onActivityDestroyed(this)
         super.onDestroy()
-    }
-
-    fun showProgressDialog(resId: Int) {
-        if (progressDialog?.isShowing == true) {
-            progressDialog?.setTitle(resId)
-        } else {
-            progressDialog = ProgressDialog(this).apply {
-                if (resId != 0) {
-                    this.setTitle(resId)
-                }
-                this.setCancelable(false)
-                this.setCanceledOnTouchOutside(false)
-                this.isIndeterminate = true
-                this.show()
-            }
-        }
-    }
-
-    fun dismissProgressDialog() {
-        if (progressDialog?.isShowing == true) {
-            progressDialog?.dismiss()
-            progressDialog = null
-        }
-    }
-
-    protected fun showKeyboard(view: View) {
-        view.requestFocus()
-        val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager?
-        imm?.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT)
-    }
-
-    protected fun hideKeyboard() {
-        val view = this.currentFocus ?: return
-        val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager? ?: return
-        imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
     fun showWebView(url: String, shareMessageRes: Int = 0) {
