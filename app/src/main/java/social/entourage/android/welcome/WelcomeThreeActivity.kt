@@ -405,7 +405,6 @@ class WelcomeThreeActivity: BaseActivity() {
             binding.tvTextOne.text = getString(R.string.welcome_three_text_one_with_contrib)
             binding.contribExampleOne.layoutContrib.visibility = View.VISIBLE
             binding.contribExampleTwo.layoutContrib.visibility = View.VISIBLE
-            binding.tvTextFour.visibility = View.GONE
             //FILL CONTRIB ONE
             binding.contribExampleOne.name.text = getString(R.string.welcome_three_contrib_name)
             binding.contribExampleOne.location.text = getString(R.string.welcome_three_contrib_location)

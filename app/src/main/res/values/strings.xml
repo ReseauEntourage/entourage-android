@@ -466,8 +466,8 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="welcome_one_sensib">Retrouvez nos contenus de sensibilisation <u><font color="#F55F24">ici</font></u></string>
 
     <string name="welcome_two_title">C\'est le moment de se lancer !</string>
-    <string name="welcome_two_text_one">Un réseau social, c\'est mieux à plusieurs !\nPrésentez-vous auprès de %s</string>
-    <string name="welcome_two_text_one_corrected">Un réseau social, c\'est mieux à plusieurs !\nPrésentez-vous auprès de votre groupe %s</string>
+    <string name="welcome_two_text_one_corrected">Un réseau social, c\'est mieux à plusieurs !\nPrésentez-vous auprès de %s</string>
+    <string name="welcome_two_text_one">Un réseau social, c\'est mieux à plusieurs !\nPrésentez-vous auprès de votre groupe %s</string>
     <string name="welcome_two_text_two">Quelques conseils pour faire connaissance :</string>
     <string name="welcome_two_text_pin_one">Donnez votre prénom, votre ville</string>
     <string name="welcome_two_text_pin_two">Parlez de vos passions</string>
@@ -479,7 +479,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="welcome_three_button_title">Découvrir les événements</string>
     <string name="welcome_three_title_with_event">6000 personnes se sont faits de nouveaux amis lors d\'un événement Entourage</string>
     <string name="welcome_three_title_with_demand">Donnez un coup de pouce à vos voisins</string>
-    <string name="welcome_three_title_with_contrib">Pas d\'entraide autour de vous? Crééz-la ! </string>
+    <string name="welcome_three_title_with_contrib">Pas d\'entraide autour de vous? Créez-la ! </string>
     <string name="welcome_three_text_one">Trouvez l\'événement qui vous intéresse et venez profiter d\'un moment convivial.</string>
     <string name="welcome_three_text_one_with_demand">Jetez un oeil aux demandes publiées près de chez vous :</string>
     <string name="welcome_three_text_one_with_contrib">Un bon moyen pour créer du lien entre voisins, c\'est de partager vos centres d\'intérêt, vos passions ou juste un café pour faire connaissance.</string>
