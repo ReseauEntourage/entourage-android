@@ -50,22 +50,25 @@ class EventModel(
     constructor(parcel: Parcel) : this(
         parcel.readValue(Int::class.java.classLoader) as Int,
         parcel.readString(),
-        TODO("author"),
+        parcel.readSerializable() as FeedItemAuthor?,
         parcel.readValue(Int::class.java.classLoader) as? Int,
         parcel.readString(),
-        TODO("interests"),
+        mutableListOf<String>().apply { parcel.readStringList(this)},
         parcel.readString(),
-        TODO("members"),
+        mutableListOf<GroupMember>().apply { parcel.readList(this, GroupMember::class.java.classLoader)},
         parcel.readByte() != 0.toByte(),
-        parcel.readByte() != 0.toByte()
+        parcel.readByte() != 0.toByte(),
     )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeValue(id)
         parcel.writeString(name)
+        parcel.writeSerializable(author)
         parcel.writeValue(members_count)
         parcel.writeString(address)
+        parcel.writeStringList(interests)
         parcel.writeString(description)
+        parcel.writeList(members)
         parcel.writeByte(if (member) 1 else 0)
         parcel.writeByte(if (admin) 1 else 0)
     }
