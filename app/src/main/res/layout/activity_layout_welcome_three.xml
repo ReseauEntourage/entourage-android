@@ -153,7 +153,6 @@
                 app:layout_constraintTop_toBottomOf="@+id/demand_example_three"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginStart="20dp"
-                android:layout_marginBottom="20dp"
                 android:paddingEnd="10dp"
                 android:layout_marginTop="20dp"
                 android:text="@string/welcome_two_text_four"

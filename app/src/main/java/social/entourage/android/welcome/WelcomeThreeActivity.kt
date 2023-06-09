@@ -197,7 +197,7 @@ class WelcomeThreeActivity: BaseActivity() {
     private fun handleResponseGetEvents(allEvents: MutableList<Events>?) {
         allEvents.let {
             Log.wtf("wtf", "size" + allEvents!!.size)
-            if(allEvents.size == 0){
+            if(allEvents.size > 0){
                 binding.imgArtifice.visibility = View.VISIBLE
                 handleMainButtonForEvent()
                 AnalyticsEvents.logEvent("View_WelcomeOfferHelp_Day5A")
@@ -309,7 +309,7 @@ class WelcomeThreeActivity: BaseActivity() {
         Log.wtf("wtf", "size" + allDemands!!.size)
 
         //FILL DEMAND ONE
-        if(allDemands.size == 0 ){
+        if(allDemands.size > 0 ){
             binding.imgArtifice.visibility = View.VISIBLE
             handleMainButtonForDemand()
             AnalyticsEvents.logEvent("View_WelcomeOfferHelp_Day5B")
