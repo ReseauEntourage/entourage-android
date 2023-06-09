@@ -6,6 +6,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
@@ -189,12 +190,15 @@ class WelcomeThreeActivity: BaseActivity() {
         binding.eventExampleTwo.layout.visibility = View.GONE
         binding.eventExampleThree.layout.visibility = View.GONE
         binding.tvTextFour.visibility = View.GONE
+        binding.imagePeople.visibility = View.GONE
+        binding.imgArtifice.visibility = View.GONE
     }
 
     private fun handleResponseGetEvents(allEvents: MutableList<Events>?) {
         allEvents.let {
             Log.wtf("wtf", "size" + allEvents!!.size)
-            if(allEvents.size > 0){
+            if(allEvents.size == 0){
+                binding.imgArtifice.visibility = View.VISIBLE
                 handleMainButtonForEvent()
                 AnalyticsEvents.logEvent("View_WelcomeOfferHelp_Day5A")
                 binding.titleWelcomeTwo.text = getString(R.string.welcome_three_title_with_event)
@@ -305,7 +309,8 @@ class WelcomeThreeActivity: BaseActivity() {
         Log.wtf("wtf", "size" + allDemands!!.size)
 
         //FILL DEMAND ONE
-        if(allDemands.size > 0 ){
+        if(allDemands.size == 0 ){
+            binding.imgArtifice.visibility = View.VISIBLE
             handleMainButtonForDemand()
             AnalyticsEvents.logEvent("View_WelcomeOfferHelp_Day5B")
             binding.titleWelcomeTwo.text = getString(R.string.welcome_three_title_with_demand)
@@ -384,7 +389,16 @@ class WelcomeThreeActivity: BaseActivity() {
                 }
             }
         }else{
+            binding.imgArtifice.visibility = View.VISIBLE
+            binding.imagePeople.visibility = View.VISIBLE
+            binding.tvTextFour.visibility = View.VISIBLE
             handleMainButtonForContrib()
+            val layoutParams = binding.layoutContentWelcomeOne.layoutParams as ViewGroup.MarginLayoutParams
+            val density = resources.displayMetrics.density
+            val newMarginTop = (110 * density).toInt() // Conversion de dp en pixels
+            layoutParams.setMargins(layoutParams.leftMargin, newMarginTop, layoutParams.rightMargin, layoutParams.bottomMargin)
+            binding.layoutContentWelcomeOne.layoutParams = layoutParams
+
             //IF NO DEMAND , FILL WITH CONTRIB EXAMPLE
             AnalyticsEvents.logEvent("View_WelcomeOfferHelp_Day5C")
             binding.titleWelcomeTwo.text = getString(R.string.welcome_three_title_with_contrib)
@@ -397,19 +411,13 @@ class WelcomeThreeActivity: BaseActivity() {
             binding.contribExampleOne.location.text = getString(R.string.welcome_three_contrib_location)
             binding.contribExampleOne.date.text = getString(R.string.welcome_three_contrib_date)
             binding.contribExampleOne.distance.text = getString(R.string.welcome_three_contrib_distance)
-            Glide.with(this)
-                .load(R.drawable.contrib_example_one)
-                .transform(RoundedCorners(30))
-                .into(binding.contribExampleOne.image)
+            binding.contribExampleOne.image.setImageDrawable(getDrawable(R.drawable.contrib_example_one))
             //FILL CONTRIB TWO
             binding.contribExampleTwo.name.text = getString(R.string.welcome_three_contrib_name_two)
             binding.contribExampleTwo.location.text = getString(R.string.welcome_three_contrib_location)
             binding.contribExampleTwo.date.text = getString(R.string.welcome_three_contrib_date)
             binding.contribExampleTwo.distance.text = getString(R.string.welcome_three_contrib_distance)
-            Glide.with(this)
-                .load(R.drawable.contrib_example_two)
-                .transform(RoundedCorners(30))
-                .into(binding.contribExampleTwo.image)
+
         }
     }
 }

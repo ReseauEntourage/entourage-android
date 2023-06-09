@@ -75,7 +75,6 @@ object PushNotificationManager {
         messageList.add(pushNotificationMessage)
         pushNotifications[pushNotificationMessage.hash] = messageList
     }
-
     /**
      * Removes the notifications for a feed item, updating the groups if necessary
      * @param feedItem the feed item from which to remove the notifications
