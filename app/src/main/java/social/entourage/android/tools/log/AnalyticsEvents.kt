@@ -365,9 +365,9 @@ object AnalyticsEvents {
     //SHARE EVENT
     const val CONTRIB_SHARED= "Action__Contrib__Share"
     const val SOLICITATION_SHARED = "Action__Demand__Share"
-    const val EVENT_SHARED = "Action_EventFeed_Share"
+    const val EVENT_SHARED = "Action__EventFeed__Share"
     const val GROUP_SHARED = "Action__GroupFeed__Share"
-    const val EVENT_OPTION_SHARED = "Action_EventOption_Share"
+    const val EVENT_OPTION_SHARED = "Action__EventOption__Share"
 
 
     //GROUPES
