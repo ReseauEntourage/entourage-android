@@ -33,6 +33,11 @@ class WelcomeTestActivity:BaseActivity() {
             startActivity(intent)
             finish()
         }
+        binding.welcomeFour.setOnClickListener {
+            val intent = Intent(this, WelcomeFourActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
     }
 
 }
