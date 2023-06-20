@@ -125,6 +125,10 @@
             android:exported="false"
             android:windowSoftInputMode="adjustPan" />
         <activity
+            android:name=".welcome.WelcomeFiveActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
             android:name=".user.UserProfileActivity"
             android:exported="false" />
         <activity

@@ -478,8 +478,12 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
 
     <string name="welcome_four_title">A vous de jouer</string>
     <string name="welcome_four_main_text">Que diriez-vous d\'un petit quiz pour déconstruire les préjugés sur le monde de la rue ? </string>
-    <string name="welcome_four_secondary_text">A votre avis,quel est le pourcentage de personnes sans domicile fixe qui disposent d\'un téléphone portable</string>
+    <string name="welcome_four_secondary_text">A votre avis, quel est le pourcentage de personnes sans domicile fixe qui disposent d\'un téléphone portable?</string>
     <string name="welcome_main_text">Démarrer le quizz</string>
+
+    <string name="welcome_five_title">Déjà 10 jours : bienvenue dans la famille !</string>
+    <string name="welcome_five_main_text">C\'est fou comme le temps passe vite quand on est en bonne compagnie.\n\nMaintenant, aidez-nous à faire grandir le réseau Entourage : faites venir le vôtre !</string>
+    <string name="welcome_five_main_button">Partager l\'application</string>
 
 
     <string name="welcome_three_button_title">Découvrir les événements</string>
@@ -497,6 +501,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="welcome_three_main_button_title_event">Découvrir les événements</string>
     <string name="welcome_three_main_button_title_demand">Découvrir les demandes</string>
     <string name="welcome_three_main_button_title_contrib">Créer une contribution</string>
+    <string name="welcome_five_share_title">"Découvrez l\'application Entourage, le réseau social vraiment social"</string>
 
 
 

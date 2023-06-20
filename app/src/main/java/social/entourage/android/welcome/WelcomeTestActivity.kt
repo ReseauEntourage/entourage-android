@@ -38,6 +38,12 @@ class WelcomeTestActivity:BaseActivity() {
             startActivity(intent)
             finish()
         }
+
+        binding.welcomeFive.setOnClickListener {
+            val intent = Intent(this, WelcomeFiveActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
     }
 
 }

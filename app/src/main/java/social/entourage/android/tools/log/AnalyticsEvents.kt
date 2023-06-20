@@ -566,6 +566,15 @@ object AnalyticsEvents {
     const val View_WelcomeOfferHelp_Day2 = "View_WelcomeOfferHelp_Day2"
     const val Action_WelcomeOfferHelp_Day2 = "Action_WelcomeOfferHelp_Day2"
 
+    const val View_WelcomeOfferHelp_Day8 = "View_WelcomeOfferHelp_Day8"
+    const val Action_WelcomeOfferHelp_Day8 = "Action_WelcomeOfferHelp_Day8"
+
+    const val View_WelcomeOfferHelp_Day11 = "View_WelcomeOfferHelp_Day11"
+    const val Action_WelcomeOfferHelp_Day11 = "Action_WelcomeOfferHelp_Day11"
+
+
+
+
     val TAG: String? = AnalyticsEvents::class.java.simpleName
 
     fun logEvent(event: String) {
