@@ -126,6 +126,6 @@
         app:layout_constraintBottom_toTopOf="@+id/layout_content_welcome_one"
         android:src="@drawable/welcome_five_top_image"
         android:scaleType="fitCenter"
-        android:layout_marginStart="-100dp"
+        android:layout_marginStart="-110dp"
         />
 </androidx.constraintlayout.widget.ConstraintLayout>
