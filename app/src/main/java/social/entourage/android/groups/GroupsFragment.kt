@@ -2,6 +2,9 @@ package social.entourage.android.groups
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -52,13 +55,23 @@ class GroupsFragment : Fragment() {
         presenter.isPageHaveToChange.observe(requireActivity(),::handlePageChange)
         presenter.unreadMessages.observe(viewLifecycleOwner, ::updateUnreadCount)
         presenter.getUnreadCount()
+
+
     }
+
 
     private fun handlePageChange(isChanged:Boolean){
         ViewPagerDefaultPageController.shouldSelectDiscoverGroups = true
         setPage()
     }
 
+    private fun goDiscover(){
+        binding.viewPager.setCurrentItem(
+            DISCOVER_GROUPS_TAB ,
+            false
+        )
+        binding.viewPager
+    }
 
 
     private fun setPage() {
@@ -104,6 +117,12 @@ class GroupsFragment : Fragment() {
         if (RefreshController.shouldRefreshFragment) {
             initializeTab()
             RefreshController.shouldRefreshFragment = false
+        }
+        if(requireActivity().intent?.getBooleanExtra("goMyGroup", false) == true) {
+            Handler(Looper.getMainLooper()).postDelayed({
+                goDiscover()
+                requireActivity().intent = null
+            }, 100)  // adjust the delay as needed
         }
     }
 

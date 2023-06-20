@@ -25,6 +25,7 @@ import social.entourage.android.api.model.notification.PushNotificationMessage
 import social.entourage.android.api.model.notification.PushNotificationContent
 import social.entourage.android.api.model.TimestampedObject
 import social.entourage.android.api.model.feed.FeedItem
+import social.entourage.android.welcome.*
 import timber.log.Timber
 
 /**
@@ -346,6 +347,29 @@ object PushNotificationManager {
         val args = Bundle()
         args.putSerializable(PUSH_MESSAGE, pushNotificationMessage)
         val messageType: String = pushNotificationMessage.content?.type ?:""
+
+
+        if(pushNotificationMessage.content?.extra?.stage == "h1"){
+            val intent = Intent(context, WelcomeOneActivity::class.java)
+            return PendingIntent.getActivity(context, pushNotificationMessage.pushNotificationId, intent, PendingIntent.FLAG_IMMUTABLE)
+        }
+        if(pushNotificationMessage.content?.extra?.stage == "j2"){
+            val intent = Intent(context, WelcomeTwoActivity::class.java)
+            return PendingIntent.getActivity(context, pushNotificationMessage.pushNotificationId, intent, PendingIntent.FLAG_IMMUTABLE)
+        }
+        if(pushNotificationMessage.content?.extra?.stage == "j5"){
+            val intent = Intent(context, WelcomeThreeActivity::class.java)
+            return PendingIntent.getActivity(context, pushNotificationMessage.pushNotificationId, intent, PendingIntent.FLAG_IMMUTABLE)
+        }
+        if(pushNotificationMessage.content?.extra?.stage == "j8"){
+            val intent = Intent(context, WelcomeFourActivity::class.java)
+            return PendingIntent.getActivity(context, pushNotificationMessage.pushNotificationId, intent, PendingIntent.FLAG_IMMUTABLE)
+        }
+        if(pushNotificationMessage.content?.extra?.stage == "j11"){
+            val intent = Intent(context, WelcomeFiveActivity::class.java)
+            return PendingIntent.getActivity(context, pushNotificationMessage.pushNotificationId, intent, PendingIntent.FLAG_IMMUTABLE)
+        }
+
         val messageIntent = Intent(context, MainActivity::class.java)
         when (messageType) {
             PushNotificationContent.TYPE_NEW_JOIN_REQUEST ->                 // because of the grouping, we need an intent that is specific for each entourage
@@ -380,6 +404,8 @@ object PushNotificationManager {
         pushNotificationMessage.pushNotificationTag = pushNotificationMessage.content?.notificationTag ?: ""
         return pushNotificationMessage
     }
+
+
 
     /**
      * Returns a unique notification id for the pushNotificationMessage.<br></br>

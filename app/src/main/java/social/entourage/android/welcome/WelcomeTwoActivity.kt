@@ -50,6 +50,9 @@ class WelcomeTwoActivity: BaseActivity() {
                 binding.tvTextOne.text = String.format(getString(R.string.welcome_two_text_one), it.name)
             }
         }
+        if(!isGroupExisting){
+            binding.tvTextOne.text = getString(R.string.welcome_two_text_one_no_group)
+        }
     }
 
     private fun handleButton(){
@@ -65,6 +68,7 @@ class WelcomeTwoActivity: BaseActivity() {
             }else{
                 val intent = Intent(this, MainActivity::class.java)
                 intent.putExtra("fromWelcomeActivity", true)
+                intent.putExtra("goMyGroup", true)
                 intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
                 startActivity(intent)
                 finish()

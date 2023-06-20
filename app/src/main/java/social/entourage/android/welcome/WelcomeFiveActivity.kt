@@ -23,7 +23,6 @@ class WelcomeFiveActivity: BaseActivity() {
             val shareIntent = Intent(Intent.ACTION_SEND).apply {
                 type = "text/plain"
                 putExtra(Intent.EXTRA_TEXT, shareTitle + "\n" + urlToShare)
-
             }
             startActivity(Intent.createChooser(shareIntent, getString(R.string.welcome_five_share_title)))
         }

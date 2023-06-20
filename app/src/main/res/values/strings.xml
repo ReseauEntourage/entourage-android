@@ -468,6 +468,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="welcome_two_title">C\'est le moment de se lancer !</string>
     <string name="welcome_two_text_one_corrected">Un réseau social, c\'est mieux à plusieurs !\nPrésentez-vous auprès de %s</string>
     <string name="welcome_two_text_one">Un réseau social, c\'est mieux à plusieurs !\nPrésentez-vous auprès de votre groupe %s</string>
+    <string name="welcome_two_text_one_no_group">Présentez-vous auprès de votre groupe de voisins</string>
     <string name="welcome_two_text_two">Quelques conseils pour faire connaissance :</string>
     <string name="welcome_two_text_pin_one">Donnez votre prénom, votre ville</string>
     <string name="welcome_two_text_pin_two">Parlez de vos passions</string>
