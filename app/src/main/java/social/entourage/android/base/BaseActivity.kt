@@ -3,6 +3,7 @@ package social.entourage.android.base
 import android.app.ProgressDialog
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import social.entourage.android.BuildConfig
 import social.entourage.android.EntourageApplication
