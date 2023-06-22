@@ -236,6 +236,7 @@ class FeedFragment : Fragment(),CallbackReportFragment{
 
     private fun handleResponseGetGroup(getGroup: Group?) {
         getGroup?.let {
+            groupId = it.id!!
             group = it
             updateView()
         }
