@@ -199,7 +199,7 @@ class HomeFragment : Fragment() {
                 getString(R.string.welcome_user),
                 user?.displayName
             )
-            }
+
         }
     }
 
