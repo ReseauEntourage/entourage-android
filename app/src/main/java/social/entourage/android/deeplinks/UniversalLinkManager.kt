@@ -174,7 +174,7 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
                 .putExtra(Const.ACTION_TITLE,action.title)
                 .putExtra(Const.IS_ACTION_DEMAND,false)
                 .putExtra(Const.IS_ACTION_MINE, action.isMine())
-            (context as MainActivity).startActivity(intent)
+                context.startActivity(intent)
         }else{
             val intent = Intent(context, ActionDetailActivity::class.java)
                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
@@ -182,7 +182,7 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
                 .putExtra(Const.ACTION_TITLE,action.title)
                 .putExtra(Const.IS_ACTION_DEMAND,true)
                 .putExtra(Const.IS_ACTION_MINE, action.isMine())
-            (context as MainActivity).startActivity(intent)
+                context.startActivity(intent)
         }
     }
 
