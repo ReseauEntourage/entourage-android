@@ -504,10 +504,1956 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="welcome_three_main_button_title_contrib">Créer une contribution</string>
     <string name="welcome_five_share_title">"Découvrez l\'application Entourage, le réseau social vraiment social"</string>
 
+<!--    STRING ABOUT-->
+    <string name="about_title">À PROPOS</string>
+    <string name="about_suggestion">Une suggestion ? Un problème ?</string>
+    <string name="about_feedback">Donnez votre avis</string>
+    <string name="about_tutorial">Voir le tutoriel</string>
+    <string name="about_conditions">Conditions générales d’utilisation</string>
+    <string name="about_privacy">Politique de Confidentialité</string>
+    <string name="about_website">Site web d’Entourage</string>
+    <string name="about_email">Contactez Entourage</string>
+    <string name="about_version_format">v%1$s</string>
+    <string name="about_debug_info_format">build: staging/%1$s\nFIId: %2$s</string>
+    <string name="about_clearing_entourage_cache">Données d\'historique locales effacées</string>
+    <string name="about_rate_app">Noter l\'app</string>
+    <string name="about_share_app">Partager l\'app</string>
+    <string name="about_oss_licenses">Licenses Open-Source</string>
+    <string name="about_partner">Nos mécènes et partenaires</string>
+
+    <!--    STRING ACTION-->
+    <string name="entourage_info_discussion">DISCUSSION</string>
+    <string name="action_title_header_signal_problem">Signaler un problème</string>
+    <string name="entourage_info_text_join_rejected">\u0020 rejeté</string>
+    <string name="entourage_info_text_join_cancelled_entourage">a annulé sa demande de rejoindre le groupe</string>
+    <string name="entourage_info_text_join_quited_entourage">a quitté le groupe</string>
+    <string name="entourage_info_text_join_html"><![CDATA[<font color=\"#F55F24\">%1$s </font>%2$s]]></string>
+    <string name="entourage_info_error_chat_message">Message non envoyé</string>
+    <string name="entourage_info_options_stop">Clôturer</string>
+    <string name="entourage_info_options_cancel_event">Annuler l\'événement</string>
+    <string name="entourage_info_options_quit">Quitter</string>
+    <string name="entourage_info_options_report">Signaler un problème</string>
+    <string name="entourage_info_options_share">Partager</string>
+    <string name="entourage_info_options_join">Participer</string>
+    <string name="entourage_info_options_close">Annuler</string>
+    <string name="entourage_info_options_contact">Contacter</string>
+    <string name="entourage_info_options_cancel_request">Retirer ma demande</string>
+    <string name="entourage_info_options_promote">Promouvoir la sortie</string>
+    <string name="entourage_info_options_reopen_entourage">Rouvrir</string>
+    <string name="entourage_info_quit_action_error">Echec d\'envoi de la requête</string>
+    <string name="entourage_info_members_count">Membres (%1$d)</string>
+    <string name="entourage_info_members_add">Inviter un ami</string>
+    <string name="entourage_info_members_add_not_allowed">Invitation impossible</string>
+    <string name="entourage_info_request_join_title_entourage">Participez à la discussion</string>
+    <string name="entourage_info_request_join_title_entourage_new">Répondez présent !</string>
+    <string name="entourage_info_request_join_button_event">Participer</string>
+    <string name="entourage_info_request_join_button_entourage">Rejoindre</string>
+    <string name="entourage_info_error_retrieve_entourage">Entourage indisponible</string>
+    <string name="entourage_info_metadata_organised_by">Organisé\u0020</string>
+    <string name="entourage_info_metadata_organiser_format">par %1$s</string>
+    <string name="entourage_info_metadata_date_format">Rendez-vous %1$s %2$s</string>
+    <string name="entourage_info_metadata_dateStart_hours_format">Rendez-vous le %1$s %2$s</string>
+    <string name="entourage_info_metadata_dateStart_End_hours_format">Rendez-vous du %1$s %2$s au %3$s %4$s</string>
+    <string name="entourage_info_metadata_dateStart_hours_format_new">%1$s %2$s</string>
+    <string name="entourage_info_metadata_dateStart_End_hours_format_new">Du %1$s %2$s au %3$s %4$s</string>
+
+    <string name="loader_title_outing_finish">Suppression de l\'événement</string>
+    <string name="loader_title_action_finish">Suppression de l\'action</string>
+
+    <!-- Entourage Cell -->
+    <string name="entourage_cell_title">%1$s</string>
+    <string name="entourage_cell_author">%1$s</string>
+    <string name="entourage_cell_location">à %1$s</string>
+    <string name="entourage_cell_numberOfPeople">%1$d</string>
+    <string name="entourage_cell_button_join">Je rejoins</string>
+    <string name="entourage_cell_button_accepted">Actif</string>
+    <string name="entourage_cell_button_accepted_other">✔︎ Je participe</string>
+    <string name="entourage_cell_button_pending">En attente</string>
+    <string name="entourage_cell_button_rejected">Refusé</string>
+    <string name="entourage_cell_button_freezed">Clôturé</string>
+    <string name="entourage_cell_button_freezed_success">Succès</string>
+    <string name="entourage_cell_button_view">Voir plus</string>
+    <string name="entourage_cell_button_freezed_success_cancel">Annulé</string>
+    <string name="entourage_cell_title_event">Événement %1$s</string>
+
+    <!-- Promote Entourage Email -->
+    <string name="promote_entourage_email_title">Veuillez envoyer une notification pour la sortie %1$s</string>
+    <string name="promote_entourage_email_body">Bonjour,\nVeuillez promouvoir la sortie "%1$s" grâce à une notification envoyée aux téléphones des personnes membres des voisinages suivants :\n\nMerci</string>
+
+    <!-- Newsfeed -->
+    <string name="newsfeed_load_more_description">C\'est tout pour les actions dans ce rayon !</string>
+    <string name="newsfeed_no_more_items">Aucun autre entourage près de cette position</string>
+
+    <!-- Map Filter -->
+    <string name="map_filter_outing_title">Événements</string>
+    <string name="map_filter_entourage_outing_text">Événements</string>
+    <string name="map_filter_past_events_text">Inclure passés</string>
+
+    <!-- New detail action/event -->
+    <string name="detail_button_action_join">Participer</string>
+    <string name="detail_button_action_share">Partager</string>
+    <string name="detail_action_event_online">En ligne</string>
+    <string name="detail_action_event_info_rdv">vous donne rendez-vous</string>
+    <string name="detail_action_event_info_gift">propose cette aide</string>
+    <string name="detail_action_event_info_demand">fait appel à la solidarité du réseau</string>
+    <string name="detail_event_full">événement complet</string>
+
+    <string name="confirm_cancel_demand">Confirmez-vous vouloir retirer votre demande ?</string>
+    <string name="validate_cancel_demand">Confirmer</string>
+
+    <string name="info_event_online_feed">En ligne</string>
+
+    <string name="info_action_private">Action privée</string>
+    <string name="info_event_private">Événement privé</string>
+    <string name="info_pop_message_private">Votre demande de participation est en attente de validation.</string>
+    <string name="info_pop_private_message_action">Pour participer à cette action privée, le créateur de cette action doit valider votre participation.\n\nUne fois votre demande acceptée, vous pourrez accéder à la conversation de groupe.</string>
+    <string name="info_pop_private_message_event">Pour participer à cet événement privé, le créateur de cet événement doit valider votre participation.\n\nUne fois votre demande acceptée, vous pourrez accéder à la conversation de groupe.</string>
+    <string name="info_pop_private_title">Demande de participation</string>
+    <string name="info_pop_private_bt_ok">Confirmer</string>
+    <string name="info_pop_private_bt_cancel">Annuler</string>
+    <string name="info_asso_abo">• S\'abonner ></string>
+    <string name="info_asso_joined">• Abonné</string>
+    <string name="by_author_search">Par %1$s</string>
+
+    <string name="action_leave_voice_message">Enregistrez un message vocal</string>
+    <string name="action_voice_message_button">Lancer la reconnaissance vocale</string>
+    <string name="action_voice_message_not_supported">La reconnaissance vocale n\'est pas supportée sur votre téléphone.</string>
+    <string name="at_km_from_me">à %d km de moi</string>
+    <string name="at_meter_from_me">à %d m de moi </string>
+    <string name="inf_hundred_meter">à moins de 100m de moi</string>
+    <string name="share_title_contrib"> Cette contribution pourrait vous intéresser.</string>
+    <string name="share_title_demande"> Cette demande pourrait vous intéresser.</string>
+    <string name="share_title_event"> Cet événement Entourage pourrait vous intéresser.</string>
+    <string name="share_title_group">Ce groupe de voisins Entourage pourrait vous intéresser.</string>
+
+    <!--    STRING ACTION NEW-->
+    <string name="actions_title">Entraide</string>
+    <string name="actions_tab_contribs">Contributions</string>
+    <string name="actions_tab_demands">Demandes</string>
+
+    <string name="action_date_list">Le %s</string>
+    <string name="action_date_list_formatter">"dd MMMM yyyy"</string>
+    <string name="action_date_month_year_formatter">"MM/YYYY"</string>
+
+    <string name="action_bt_my_actions">Mes annonces</string>
+
+    <string name="action_contrib_empty_state_title">Aucune contribution ne correspond à votre recherche</string>
+    <string name="action_contrib_empty_state_desc">Vous pouvez élargir votre champ de recherche ou créer une contribution</string>
+
+    <string name="action_demand_empty_state_title">Aucune demande ne correspond à votre recherche</string>
+    <string name="action_demand_empty_state_desc">Vous pouvez élargir votre champ de recherche ou créer une demande</string>
+
+    <string name="action_bt_cat_filters">Catégories</string>
+    <string name="action_cat_filters_title">Filtrer par catégories</string>
+    <string name="action_location_filter_title">Filtrer par localisation</string>
+
+    <string name="action_menu_create_demand">Créer une demande</string>
+    <string name="action_menu_create_contrib">Créer une contribution</string>
+
+    <string name="action_my_actions">Mes annonces</string>
+
+    <string name="action_my_empty_title">Vous n’avez publié aucune annonce</string>
+    <string name="action_my_empty_subtitle">Vous pouvez créer une contribution ou une demande en cliquant sur le « + » de la page « Entraide »</string>
+
+    <string name="action_cancel_title">L’annonce a été supprimée…</string>
+    <string name="action_cancel_subtitle">Vous pouvez voir d’autres annonces susceptibles de vous interesser ou créer une demande dans la partie « Entraide »</string>
+
+    <string name="action_report_demand">Signaler la demande</string>
+    <string name="action_report_contrib">Signaler la contribution</string>
+
+    <string name="action_title_section_author">Crée le par</string>
+    <string name="action_canceled">Annonce supprimée</string>
+    <string name="action_show_charte"><u>Charte éthique</u></string>
+    <string name="signal_a_problem"><u>Signaler un problème</u></string>
+
+    <string name="action_detail_bt_cancel">Supprimer</string>
+    <string name="action_detail_bt_modify">Modifier</string>
+    <string name="action_detail_bt_contact">Contacter</string>
+    <string name="action_detail_bt_back">Retour sur la page annonces</string>
+
+    <string name="action_member_since">Membre depuis %s</string>
+    <string name="action_created_at_by">"Créé le %s par</string>
+    <string name="action_created_by">"Créé %s par</string>
+    <string name="action_created_by_">"Créé par</string>
+
+    <string name="atKm">%s, à %s km de moi</string>
+    <string name="AtKm">À %s km de moi</string>
+
+    <!-- Action create -->
+    <string name="action_create_demand_title">Nouvelle demande</string>
+    <string name="action_create_contrib_title">Nouvelle contribution</string>
+    <string name="action_create_title">Titre de l\'action</string>
+    <string name="action_create_subtitle">Donnez un nom court et explicite à votre %s</string>
+    <string name="action_create_title_hint">Nommez votre %s</string>
+    <string name="action_create_description">Description</string>
+    <string name="action_create_description_hint">Décrivez en détail la %s que vous proposez</string>
+    <string name="action_create_add_photo">Photo</string>
+
+    <string name="action_name_demand">demande</string>
+    <string name="action_name_contrib">contribution</string>
+    <string name="action_name_Demand">Demande</string>
+    <string name="action_name_Contrib">Contribution</string>
+
+    <!-- pop back create-->
+    <string name="back_create_action_title">Attention</string>
+    <string name="back_create_action_content">Si vous quittez le formulaire de création d’une %s, toutes les informations saisies seront perdues.</string>
+
+    <string name="action_crete_cat_about">Vous cherchez à proposer une %s qui ne rentre pas dans l\'une de ces catégories ? Il semble qu\'elle n\'ait pas sa place sur le réseau,</string>
+    <string name="action_create_cat_about_more0">mais vous pouvez toujours</string>
+    <string name="action_create_cat_about_more1"><u> en savoir plus par ici.</u></string>
+
+    <string name="action_create_cat_choose_category">Sélectionnez la catégorie qui décrit le mieux votre %s.</string>
+    <string name="action_create_location_title">Localisez votre %s</string>
+    <string name="action_create_location_subtitle">Votre position précise ne sera pas partagée, vous pouvez mettre une autre localisation que la zone d’action de votre profil.</string>
+
+    <string name="action_create_success_title">Votre %s\nà bien été créée !</string>
+    <string name="action_create_success_subtitle">Félicitations, vous venez de créer une nouvelle %s. Pour la rendre plus visible parlez-en sur vos groupes !</string>
+    <string name="action_create_end_finish_bt">Terminer</string>
+    <string name="action_error_create_action">Erreur lors de la création de la %s</string>
+    <string name="action_error_edit_action">Erreur lors de la modification de la %s</string>
+    <string name="action_updated">La modification a bien été prise en compte</string>
+
+    <!-- pop cancel action -->
+    <string name="action_cancel_pop_bt_yes">Oui</string>
+    <string name="action_cancel_pop_bt_no">Non</string>
+    <string name="action_cancel_pop_bt_send">Envoyer</string>
+    <string name="action_cancel_pop_title">Supprimer la %s</string>
+    <string name="action_cancel_pop_subtitle">Votre %s a-t-elle aboutie ?</string>
+    <string name="action_cancel_pop_comment">Dites nous en plus sur votre expérience</string>
+    <string name="action_cancel_pop_comment_placeholder">Racontez nous votre expérience !</string>
+
+    <string name="action_edit_demand_title">Modifier la demande</string>
+    <string name="action_edit_contrib_title">Modifier la contribution</string>
+
+
+    <!--    STRING CAROUSEL-->
+    <string name="carousel_close_button">@string/close</string>
+
+    <string name="carousel_p1_title">Présentez-vous aux membres du réseau</string>
+    <string name="carousel_p1_about">Bonjour ! Je viens de rejoindre le réseau et je voudrais rencontrer des voisins bienveillants.</string>
+    <string name="carousel_p1_content"><![CDATA[Pour renseigner votre description, accédez à votre profil depuis le bouton <font color="#ec4e1a">profil</font> en bas à droite]]></string>
+
+    <string name="carousel_p2_title">Explorez les initiatives autour de vous</string>entourages
+    <string name="carousel_p2_content"><![CDATA[Consultez les actions créées par vos voisins et <font color="#ec4e1a">rejoignez celles qui vous intéressent depuis la carte</font>]]></string>
+
+    <string name="carousel_p3_title">Osez la rencontre avec les personnes sans-abri</string>
+    <string name="carousel_p3_content"><![CDATA[<font color="#ec4e1a">Découvrez les conseils pratiques</font> du guide <font color="#ec4e1a">Simple Comme Bonjour</font> depuis le profil en bas à droite]]></string>
+
+    <string name="carousel_p4_title">Lancez une action solidaire</string>
+    <string name="carousel_p4_content"><![CDATA[Faites appel à vos voisins afin d’entourer une personne sans-abri. <font color="#ec4e1a">Créez une action avec le bouton :</font>]]></string>
+
+    <!--    STRING CGUs-->
+    <string name="group_params_cgu_title">Le règlement</string>
+    <string name="group_params_cgu_description">Règlement du groupe, à lire attentivement.</string>
+    <string name="neighborhood_CGU_1_title">Attitude</string>
+    <string name="neighborhood_CGU_1">Les échanges dans les groupes doivent se faire dans le respect, la confiance et l’entraide entre les membres afin que chacun puisse se sentir en sécurité et dans un environnement chaleureux. Il n’est donc pas permis de tenir des propos dégradants, agressifs, insultants, discriminatoires, insistants, intolérants ou diffamatoires.</string>
+    <string name="neighborhood_CGU_2_title">Commerce</string>
+    <string name="neighborhood_CGU_2">Les groupes sont des espaces d’échange et d’entraide entre voisins, la publicité y est donc interdite, tout comme les propositions d’achat, de vente ou de locations.</string>
+    <string name="neighborhood_CGU_3_title">Cagnotte</string>
+    <string name="neighborhood_CGU_3">D’une manière générale il n’y a pas de relation d’argent entre les membres des groupes, les cagnottes sont interdites.</string>
+    <string name="neighborhood_CGU_4_title">Sujets</string>
+    <string name="neighborhood_CGU_4">La libre expression bienveillante est la règle sur les groupes. Toutefois pour respecter le caractère apolitique et laïque d’Entourage et dans un souci de protection des personnes les sujets relevant de la politique, de la religion, du médical ou de la sexualité ne sont pas autorisés.</string>
+    <string name="neighborhood_CGU_5_title">Protection des personnes</string>
+    <string name="neighborhood_CGU_5">Les publications ne peuvent contenir aucune donnée personnelle permettant d’identifier et de localiser précisément une personne ni aucune donnée sensible sur les personnes (donnée médicale, judiciaire, d’origine ethique, d’orientation sexuelle ou politique etc…).</string>
+
+    <string name="event_params_cgu_title">Charte des événements</string>
+    <string name="event_params_cgu_description">Charte des événements, à lire attentivement.</string>
+    <string name="event_CGU_1_title">Être bienveillant</string>
+    <string name="event_CGU_1">J’utilise l’application à des fins d’entraide en faveur des personnes en situation de grande précarité ou d’exclusion.</string>
+    <string name="event_CGU_2_title">Recueillir l’accord</string>
+    <string name="event_CGU_2">Je m’assure du consentement des personnes concernées avant de créer une action.</string>
+    <string name="event_CGU_3_title">Assurer la protection des personnes</string>
+    <string name="event_CGU_3">Je garantie de ne pas communiquer de données personnelles sensibles (médicales, judiciaires…), ou permettant d’identifier ou de localiser précisément les personnes.</string>
+    <string name="event_CGU_4_title">Être solidaire, sans distinction</string>
+    <string name="event_CGU_4">Je m’engage à ne faire aucune distinction de race, de couleur, de sexe, de langue, de religion, d’opinion politique, de fortune, de naissance ou de toute autre situation.</string>
+
+    <string name="action_params_cgu_title">Charte éthique</string>
+    <string name="action_params_cgu_description"></string>
+    <string name="action_CGU_1_title">Entraide</string>
+    <string name="action_CGU_1">L’application permet de créer de nouvelles rencontres entre voisins et de favoriser des temps d’échanges. Les aides à distance (drive, livraison, bon cadeau, cagnotte…) ne sont pas autorisées.</string>
+    <string name="action_CGU_2_title">Contributions &amp; demandes</string>
+    <string name="action_CGU_2">Je peux demander ou proposer des biens matériels (équipement, vêtement…), des services (lessive, impression de documents…) et des temps de partage (café, activité…). Je ne peux pas demander ou proposer une aide financière, un hébergement ou une aide alimentaire. Mais si c’est mon besoin, je peux contacter le modérateur qui m’orientera.</string>
+    <string name="action_CGU_3_title">Consentement</string>
+    <string name="action_CGU_3">Lorsque je publie une demande pour une tierce personne, je m’assure d’obtenir son accord au préalable. </string>
+    <string name="action_CGU_4_title">Non discrimination</string>
+    <string name="action_CGU_4">Je m’engage à entrer en relation avec les personnes sans discrimination (race, religion, orientation sexuelle, opinion politique..).</string>
+    <string name="action_CGU_5_title">Protection des personnes</string>
+    <string name="action_CGU_5">Je garantie que mes actions ne contiennent aucune donnée personnelle (nom de famille, téléphone, adresse précise…), permettant d’identifier et de localiser précisément une personne, ni aucune donnée sensible (médicale, judiciaire…). </string>
+
+    <!--STRING COUNTRY -->
+
+    <string name="phone_code" translatable="false">+%s</string>
+    <string name="country_name_and_code" translatable="false">%1$s %2$s</string>
+    <string name="search_hint">chercher &#8230;</string>
+    <string name="no_result_found">résulte pas trouvé</string>
+    <string name="select_country">Sélectionner le pays</string>
+    <string name="country_code_and_phone_code">(%1$s) +%2$s</string>
+    <string name="country_full_name_and_phone_code">%1$s +%2$s</string>
+
+    <!-- Country Codes -->
+
+    <string name="country_afghanistan_name">Afghanistan</string>
+    <string name="country_afghanistan_code">af</string>
+    <string name="country_afghanistan_number" translatable="false">93</string>
+
+    <string name="country_albania_name">Albanie</string>
+    <string name="country_albania_code">al</string>
+    <string name="country_albania_number" translatable="false">355</string>
+
+    <string name="country_algeria_name">Algérie</string>
+    <string name="country_algeria_code">dz</string>
+    <string name="country_algeria_number" translatable="false">213</string>
+
+    <string name="country_andorra_name">Andorre</string>
+    <string name="country_andorra_code">ad</string>
+    <string name="country_andorra_number" translatable="false">376</string>
+
+    <string name="country_angola_name">Angola</string>
+    <string name="country_angola_code">ao</string>
+    <string name="country_angola_number" translatable="false">244</string>
+
+    <string name="country_argentina_name">Argentine</string>
+    <string name="country_argentina_code">ar</string>
+    <string name="country_argentina_number" translatable="false">54</string>
+
+    <string name="country_armenia_name">Arménie</string>
+    <string name="country_armenia_code">am</string>
+    <string name="country_armenia_number" translatable="false">374</string>
+
+    <string name="country_australia_name">Australie</string>
+    <string name="country_australia_code">au</string>
+    <string name="country_australia_number" translatable="false">61</string>
+
+    <string name="country_austria_name">Autriche</string>
+    <string name="country_austria_code">at</string>
+    <string name="country_austria_number" translatable="false">43</string>
+
+    <string name="country_azerbaijan_name">Azerbaïdjan</string>
+    <string name="country_azerbaijan_code">az</string>
+    <string name="country_azerbaijan_number" translatable="false">994</string>
+
+    <string name="country_bahrain_name">Bahrein</string>
+    <string name="country_bahrain_code">bh</string>
+    <string name="country_bahrain_number" translatable="false">973</string>
+
+    <string name="country_bangladesh_name">Bangladesh</string>
+    <string name="country_bangladesh_code">bd</string>
+    <string name="country_bangladesh_number" translatable="false">880</string>
+
+    <string name="country_belarus_name">Bélarus</string>
+    <string name="country_belarus_code">by</string>
+    <string name="country_belarus_number" translatable="false">375</string>
+
+    <string name="country_belgium_name">Belgique</string>
+    <string name="country_belgium_code">be</string>
+    <string name="country_belgium_number" translatable="false">32</string>
+    <string name="country_belgium_flag" translatable="false">🇧🇪</string>
+
+    <string name="country_belize_name">Bélize</string>
+    <string name="country_belize_code">bz</string>
+    <string name="country_belize_number" translatable="false">501</string>
+
+    <string name="country_benin_name">Bénin</string>
+    <string name="country_benin_code">bj</string>
+    <string name="country_benin_number" translatable="false">229</string>
+
+    <string name="country_bhutan_name">Bhoutan</string>
+    <string name="country_bhutan_code">bt</string>
+    <string name="country_bhutan_number" translatable="false">975</string>
+
+    <string name="country_bolivia_name">Bolivie</string>
+    <string name="country_bolivia_code">bo</string>
+    <string name="country_bolivia_number" translatable="false">591</string>
+
+    <string name="country_bosnia_and_herzegovina_name">Bosnie-Herzégovine</string>
+    <string name="country_bosnia_and_herzegovina_code">ba</string>
+    <string name="country_bosnia_and_herzegovina_number" translatable="false">387</string>
+
+    <string name="country_botswana_name">Botswana</string>
+    <string name="country_botswana_code">bw</string>
+    <string name="country_botswana_number" translatable="false">267</string>
+
+    <string name="country_brazil_name">Brésil</string>
+    <string name="country_brazil_code">br</string>
+    <string name="country_brazil_number" translatable="false">55</string>
+
+    <string name="country_brunei_darussalam_name">Brunéi</string>
+    <string name="country_brunei_darussalam_code">bn</string>
+    <string name="country_brunei_darussalam_number" translatable="false">673</string>
+
+    <string name="country_bulgaria_name">Bulgarie</string>
+    <string name="country_bulgaria_code">bg</string>
+    <string name="country_bulgaria_number" translatable="false">359</string>
+
+    <string name="country_burkina_faso_name">Burkina Faso</string>
+    <string name="country_burkina_faso_code">bf</string>
+    <string name="country_burkina_faso_number" translatable="false">226</string>
+
+    <string name="country_burundi_name">Burundi</string>
+    <string name="country_burundi_code">bi</string>
+    <string name="country_burundi_number" translatable="false">257</string>
+
+    <string name="country_cambodia_name">Cambodge</string>
+    <string name="country_cambodia_code">kh</string>
+    <string name="country_cambodia_number" translatable="false">855</string>
+
+    <string name="country_cameroon_name">Cameroun</string>
+    <string name="country_cameroon_code">cm</string>
+    <string name="country_cameroon_number" translatable="false">237</string>
+
+    <string name="country_canada_name">Canada</string>
+    <string name="country_canada_code">ca</string>
+    <string name="country_canada_number" translatable="false">1</string>
+
+    <string name="country_cape_verde_name">Cap Vert</string>
+    <string name="country_cape_verde_code">cv</string>
+    <string name="country_cape_verde_number" translatable="false">238</string>
+
+    <string name="country_central_african_republic_name">République Centrafricaine</string>
+    <string name="country_central_african_republic_code">cf</string>
+    <string name="country_central_african_republic_number" translatable="false">236</string>
+
+    <string name="country_chad_name">Tchad</string>
+    <string name="country_chad_code">td</string>
+    <string name="country_chad_number" translatable="false">235</string>
+
+    <string name="country_chile_name">Chili</string>
+    <string name="country_chile_code">cl</string>
+    <string name="country_chile_number" translatable="false">56</string>
+
+    <string name="country_china_name">Chine</string>
+    <string name="country_china_code">cn</string>
+    <string name="country_china_number" translatable="false">86</string>
+
+    <string name="country_colombia_name">Colombie</string>
+    <string name="country_colombia_code">co</string>
+    <string name="country_colombia_number" translatable="false">57</string>
+
+    <string name="country_congo_name">Republic of the Congo</string>
+    <string name="country_congo_code">cg</string>
+    <string name="country_congo_number" translatable="false">242</string>
+
+    <string name="country_the_democratic_republic_of_congo_name">République Démocratique du Congo</string>
+    <string name="country_the_democratic_republic_of_congo_code">cd</string>
+    <string name="country_the_democratic_republic_of_congo_number" translatable="false">243</string>
+
+    <string name="country_costa_rica_name">Costa Rica</string>
+    <string name="country_costa_rica_code">cr</string>
+    <string name="country_costa_rica_number" translatable="false">506</string>
+
+    <string name="country_croatia_name">Croatie</string>
+    <string name="country_croatia_code">hr</string>
+    <string name="country_croatia_number" translatable="false">385</string>
+
+    <string name="country_cuba_name">Cuba</string>
+    <string name="country_cuba_code">cu</string>
+    <string name="country_cuba_number" translatable="false">53</string>
+
+    <string name="country_cyprus_name">Chypre</string>
+    <string name="country_cyprus_code">cy</string>
+    <string name="country_cyprus_number" translatable="false">357</string>
+
+    <string name="country_czech_republic_name">République Tchèque</string>
+    <string name="country_czech_republic_code">cz</string>
+    <string name="country_czech_republic_number" translatable="false">420</string>
+
+    <string name="country_denmark_name">Danemark</string>
+    <string name="country_denmark_code">dk</string>
+    <string name="country_denmark_number" translatable="false">45</string>
+
+    <string name="country_djibouti_name">Djibouti</string>
+    <string name="country_djibouti_code">dj</string>
+    <string name="country_djibouti_number" translatable="false">253</string>
+
+    <string name="country_dominica_name">Dominique</string>
+    <string name="country_dominica_code">dm</string>
+    <string name="country_dominica_number" translatable="false">1767</string>
+
+    <string name="country_dominican_republic_name">République Dominicaine</string>
+    <string name="country_dominican_republic_code">do</string>
+    <string name="country_dominican_republic_number" translatable="false">1</string>
+
+    <string name="country_timor_leste_name">Timor-Leste</string>
+    <string name="country_timor_leste_code">tl</string>
+    <string name="country_timor_leste_number" translatable="false">670</string>
+
+    <string name="country_ecuador_name">Equateur</string>
+    <string name="country_ecuador_code">ec</string>
+    <string name="country_ecuador_number" translatable="false">593</string>
+
+    <string name="country_egypt_name">Egypte</string>
+    <string name="country_egypt_code">eg</string>
+    <string name="country_egypt_number" translatable="false">20</string>
+
+    <string name="country_el_salvador_name">El Salvador</string>
+    <string name="country_el_salvador_code">sv</string>
+    <string name="country_el_salvador_number" translatable="false">503</string>
+
+    <string name="country_equatorial_guinea_name">Guinée équatoriale</string>
+    <string name="country_equatorial_guinea_code">gq</string>
+    <string name="country_equatorial_guinea_number" translatable="false">240</string>
+
+    <string name="country_eritrea_name">Erythrée</string>
+    <string name="country_eritrea_code">er</string>
+    <string name="country_eritrea_number" translatable="false">291</string>
+
+    <string name="country_estonia_name">Estonie</string>
+    <string name="country_estonia_code">ee</string>
+    <string name="country_estonia_number" translatable="false">372</string>
+
+    <string name="country_ethiopia_name">Ethiopie</string>
+    <string name="country_ethiopia_code">et</string>
+    <string name="country_ethiopia_number" translatable="false">251</string>
+
+    <string name="country_fiji_name">Fidji</string>
+    <string name="country_fiji_code">fj</string>
+    <string name="country_fiji_number" translatable="false">679</string>
+
+    <string name="country_finland_name">Finlande</string>
+    <string name="country_finland_code">fi</string>
+    <string name="country_finland_number" translatable="false">358</string>
+
+    <string name="country_france_name">France</string>
+    <string name="country_france_code">fr</string>
+    <string name="country_france_number" translatable="false">33</string>
+    <string name="country_france_flag" translatable="false">🇫🇷</string>
+
+    <string name="country_french_guyana_name">Guyane française</string>
+    <string name="country_french_guyana_code">gf</string>
+    <string name="country_french_guyana_number" translatable="false">594</string>
+
+    <string name="country_french_polynesia_name">Polynésie française</string>
+    <string name="country_french_polynesia_code">pf</string>
+    <string name="country_french_polynesia_number" translatable="false">689</string>
+
+    <string name="country_gabon_name">Gabon</string>
+    <string name="country_gabon_code">ga</string>
+    <string name="country_gabon_number" translatable="false">241</string>
+
+    <string name="country_gambia_name">Gambie</string>
+    <string name="country_gambia_code">gm</string>
+    <string name="country_gambia_number" translatable="false">220</string>
+
+    <string name="country_georgia_name">Géorgie</string>
+    <string name="country_georgia_code">ge</string>
+    <string name="country_georgia_number" translatable="false">995</string>
+
+    <string name="country_germany_name">Allemagne</string>
+    <string name="country_germany_code">de</string>
+    <string name="country_germany_number" translatable="false">49</string>
+
+    <string name="country_ghana_name">Ghana</string>
+    <string name="country_ghana_code">gh</string>
+    <string name="country_ghana_number" translatable="false">233</string>
+
+    <string name="country_gibraltar_name">Gibraltar</string>
+    <string name="country_gibraltar_code">gi</string>
+    <string name="country_gibraltar_number" translatable="false">350</string>
+
+    <string name="country_greece_name">Grèce</string>
+    <string name="country_greece_code">gr</string>
+    <string name="country_greece_number" translatable="false">30</string>
+
+    <string name="country_guadeloupe_name">Guadeloupe</string>
+    <string name="country_guadeloupe_code">gp</string>
+    <string name="country_guadeloupe_number" translatable="false">590</string>
+
+    <string name="country_guatemala_name">Guatemala</string>
+    <string name="country_guatemala_code">gt</string>
+    <string name="country_guatemala_number" translatable="false">502</string>
+
+    <string name="country_guinea_name">Guinée</string>
+    <string name="country_guinea_code">gn</string>
+    <string name="country_guinea_number" translatable="false">224</string>
+
+    <string name="country_guinea_bissau_name">Guinée-Bissau</string>
+    <string name="country_guinea_bissau_code">gw</string>
+    <string name="country_guinea_bissau_number" translatable="false">245</string>
+
+    <string name="country_guyana_name">Guyana</string>
+    <string name="country_guyana_code">gy</string>
+    <string name="country_guyana_number" translatable="false">592</string>
+
+    <string name="country_haiti_name">Haïti</string>
+    <string name="country_haiti_code">ht</string>
+    <string name="country_haiti_number" translatable="false">509</string>
+
+    <string name="country_honduras_name">Honduras</string>
+    <string name="country_honduras_code">hn</string>
+    <string name="country_honduras_number" translatable="false">504</string>
+
+    <string name="country_hong_kong_name">Hong Kong</string>
+    <string name="country_hong_kong_code">hk</string>
+    <string name="country_hong_kong_number" translatable="false">852</string>
+
+    <string name="country_hungary_name">Hongrie</string>
+    <string name="country_hungary_code">hu</string>
+    <string name="country_hungary_number" translatable="false">36</string>
+
+    <string name="country_india_name">Inde</string>
+    <string name="country_india_code">in</string>
+    <string name="country_india_number" translatable="false">91</string>
+
+    <string name="country_indonesia_name">Indonésie</string>
+    <string name="country_indonesia_code">id</string>
+    <string name="country_indonesia_number" translatable="false">62</string>
+
+    <string name="country_iran_name">Iran</string>
+    <string name="country_iran_code">ir</string>
+    <string name="country_iran_number" translatable="false">98</string>
+
+    <string name="country_iraq_name">Irak</string>
+    <string name="country_iraq_code">iq</string>
+    <string name="country_iraq_number" translatable="false">964</string>
+
+    <string name="country_ireland_name">Irlande</string>
+    <string name="country_ireland_code">ie</string>
+    <string name="country_ireland_number" translatable="false">353</string>
+
+    <string name="country_iceland_name">Islande</string>
+    <string name="country_iceland_code">is</string>
+    <string name="country_iceland_number" translatable="false">354</string>
+
+    <string name="country_israel_name">Israël</string>
+    <string name="country_israel_code">il</string>
+    <string name="country_israel_number" translatable="false">972</string>
+
+    <string name="country_italy_name">Italie</string>
+    <string name="country_italy_code">it</string>
+    <string name="country_italy_number" translatable="false">39</string>
+
+    <string name="country_cote_d_ivoire_name">Côte D\'ivoire</string>
+    <string name="country_cote_d_ivoire_code">ci</string>
+    <string name="country_cote_d_ivoire_number" translatable="false">225</string>
+
+    <string name="country_jamaica_name">Jamaïque</string>
+    <string name="country_jamaica_code">jm</string>
+    <string name="country_jamaica_number" translatable="false">1</string>
+
+    <string name="country_japan_name">Japon</string>
+    <string name="country_japan_code">jp</string>
+    <string name="country_japan_number" translatable="false">81</string>
+
+    <string name="country_jordan_name">Jordanie</string>
+    <string name="country_jordan_code">jo</string>
+    <string name="country_jordan_number" translatable="false">962</string>
+
+    <string name="country_kazakhstan_name">Kazakhstan</string>
+    <string name="country_kazakhstan_code">kz</string>
+    <string name="country_kazakhstan_number" translatable="false">7</string>
+
+    <string name="country_kenya_name">Kenya</string>
+    <string name="country_kenya_code">ke</string>
+    <string name="country_kenya_number" translatable="false">254</string>
+
+    <string name="country_kuwait_name">Koweït</string>
+    <string name="country_kuwait_code">kw</string>
+    <string name="country_kuwait_number" translatable="false">965</string>
+
+    <string name="country_kyrgyzstan_name">Kirghizistan</string>
+    <string name="country_kyrgyzstan_code">kg</string>
+    <string name="country_kyrgyzstan_number" translatable="false">996</string>
+
+    <string name="country_kosovo_name">Kosovo</string>
+    <string name="country_kosovo_code">xk</string>
+    <string name="country_kosovo_number" translatable="false">383</string>
+
+    <string name="country_lao_peoples_democratic_republic_name">Laos</string>
+    <string name="country_lao_peoples_democratic_republic_code">la</string>
+    <string name="country_lao_peoples_democratic_republic_number" translatable="false">856</string>
+
+    <string name="country_latvia_name">Lettonie</string>
+    <string name="country_latvia_code">lv</string>
+    <string name="country_latvia_number" translatable="false">371</string>
+
+    <string name="country_lebanon_name">Liban</string>
+    <string name="country_lebanon_code">lb</string>
+    <string name="country_lebanon_number" translatable="false">961</string>
+
+    <string name="country_lesotho_name">Lesotho</string>
+    <string name="country_lesotho_code">ls</string>
+    <string name="country_lesotho_number" translatable="false">266</string>
+
+    <string name="country_liberia_name">Libéria</string>
+    <string name="country_liberia_code">lr</string>
+    <string name="country_liberia_number" translatable="false">231</string>
+
+    <string name="country_libya_name">Libye</string>
+    <string name="country_libya_code">ly</string>
+    <string name="country_libya_number" translatable="false">218</string>
+
+    <string name="country_liechtenstein_name">Liechtenstein</string>
+    <string name="country_liechtenstein_code">li</string>
+    <string name="country_liechtenstein_number" translatable="false">423</string>
+
+    <string name="country_lithuania_name">Lituanie</string>
+    <string name="country_lithuania_code">lt</string>
+    <string name="country_lithuania_number" translatable="false">370</string>
+
+    <string name="country_luxembourg_name">Luxembourg</string>
+    <string name="country_luxembourg_code">lu</string>
+    <string name="country_luxembourg_number" translatable="false">352</string>
+
+    <string name="country_macedonia_name">Macédoine</string>
+    <string name="country_macedonia_code">mk</string>
+    <string name="country_macedonia_number" translatable="false">389</string>
+
+    <string name="country_madagascar_name">Madagascar</string>
+    <string name="country_madagascar_code">mg</string>
+    <string name="country_madagascar_number" translatable="false">261</string>
+
+    <string name="country_malawi_name">Malawi</string>
+    <string name="country_malawi_code">mw</string>
+    <string name="country_malawi_number" translatable="false">265</string>
+
+    <string name="country_malaysia_name">Malaisie</string>
+    <string name="country_malaysia_code">my</string>
+    <string name="country_malaysia_number" translatable="false">60</string>
+
+    <string name="country_maldives_name">Maldives</string>
+    <string name="country_maldives_code">mv</string>
+    <string name="country_maldives_number" translatable="false">960</string>
+
+    <string name="country_mali_name">Mali</string>
+    <string name="country_mali_code">ml</string>
+    <string name="country_mali_number" translatable="false">223</string>
+
+    <string name="country_malta_name">Malte</string>
+    <string name="country_malta_code">mt</string>
+    <string name="country_malta_number" translatable="false">356</string>
+
+    <string name="country_martinique_name">Martinique</string>
+    <string name="country_martinique_code">mq</string>
+    <string name="country_martinique_number" translatable="false">596</string>
+
+    <string name="country_mauritania_name">Mauritanie</string>
+    <string name="country_mauritania_code">mr</string>
+    <string name="country_mauritania_number" translatable="false">222</string>
+
+    <string name="country_mauritius_name">Maurice</string>
+    <string name="country_mauritius_code">mu</string>
+    <string name="country_mauritius_number" translatable="false">230</string>
+
+    <string name="country_mayotte_name">Mayotte</string>
+    <string name="country_mayotte_code">yt</string>
+    <string name="country_mayotte_number" translatable="false">262</string>
+
+    <string name="country_mexico_name">Mexique</string>
+    <string name="country_mexico_code">mx</string>
+    <string name="country_mexico_number" translatable="false">52</string>
+
+    <string name="country_moldova_name">Moldovie</string>
+    <string name="country_moldova_code">md</string>
+    <string name="country_moldova_number" translatable="false">373</string>
+
+    <string name="country_monaco_name">Monaco</string>
+    <string name="country_monaco_code">mc</string>
+    <string name="country_monaco_number" translatable="false">377</string>
+
+    <string name="country_mongolia_name">Mongolie</string>
+    <string name="country_mongolia_code">mn</string>
+    <string name="country_mongolia_number" translatable="false">976</string>
+
+    <string name="country_montenegro_name">Monténégro</string>
+    <string name="country_montenegro_code">me</string>
+    <string name="country_montenegro_number" translatable="false">382</string>
+
+    <string name="country_morocco_name">Maroc</string>
+    <string name="country_morocco_code">ma</string>
+    <string name="country_morocco_number" translatable="false">212</string>
+
+    <string name="country_mozambique_name">Mozambique</string>
+    <string name="country_mozambique_code">mz</string>
+    <string name="country_mozambique_number" translatable="false">258</string>
+
+    <string name="country_namibia_name">Namibie</string>
+    <string name="country_namibia_code">na</string>
+    <string name="country_namibia_number" translatable="false">264</string>
+
+    <string name="country_nepal_name">Népal</string>
+    <string name="country_nepal_code">np</string>
+    <string name="country_nepal_number" translatable="false">977</string>
+
+    <string name="country_netherlands_name">Pays-Bas</string>
+    <string name="country_netherlands_code">nl</string>
+    <string name="country_netherlands_number" translatable="false">31</string>
+
+    <string name="country_new_caledonia_name">Nouvelle-Calédonie</string>
+    <string name="country_new_caledonia_code">nc</string>
+    <string name="country_new_caledonia_number" translatable="false">687</string>
+
+    <string name="country_new_zealand_name">Nouvelle-Zélande</string>
+    <string name="country_new_zealand_code">nz</string>
+    <string name="country_new_zealand_number" translatable="false">64</string>
+
+    <string name="country_nicaragua_name">Nicaragua</string>
+    <string name="country_nicaragua_code">ni</string>
+    <string name="country_nicaragua_number" translatable="false">505</string>
+
+    <string name="country_niger_name">Niger</string>
+    <string name="country_niger_code">ne</string>
+    <string name="country_niger_number" translatable="false">227</string>
+
+    <string name="country_nigeria_name">Nigéria</string>
+    <string name="country_nigeria_code">ng</string>
+    <string name="country_nigeria_number" translatable="false">234</string>
+
+    <string name="country_norway_name">Norvège</string>
+    <string name="country_norway_code">no</string>
+    <string name="country_norway_number" translatable="false">47</string>
+
+    <string name="country_oman_name">Oman</string>
+    <string name="country_oman_code">om</string>
+    <string name="country_oman_number" translatable="false">968</string>
+
+    <string name="country_pakistan_name">Pakistan</string>
+    <string name="country_pakistan_code">pk</string>
+    <string name="country_pakistan_number" translatable="false">92</string>
+
+    <string name="country_panama_name">Panama</string>
+    <string name="country_panama_code">pa</string>
+    <string name="country_panama_number" translatable="false">507</string>
+
+    <string name="country_papua_new_guinea_name">Papouasie-Nouvelle-Guinée</string>
+    <string name="country_papua_new_guinea_code">pg</string>
+    <string name="country_papua_new_guinea_number" translatable="false">675</string>
+
+    <string name="country_paraguay_name">Paraguay</string>
+    <string name="country_paraguay_code">py</string>
+    <string name="country_paraguay_number" translatable="false">595</string>
+
+    <string name="country_peru_name">Pérou</string>
+    <string name="country_peru_code">pe</string>
+    <string name="country_peru_number" translatable="false">51</string>
+
+    <string name="country_philippines_name">Philippines</string>
+    <string name="country_philippines_code">ph</string>
+    <string name="country_philippines_number" translatable="false">63</string>
+
+    <string name="country_poland_name">Pologne</string>
+    <string name="country_poland_code">pl</string>
+    <string name="country_poland_number" translatable="false">48</string>
+
+    <string name="country_portugal_name">Portugal</string>
+    <string name="country_portugal_code">pt</string>
+    <string name="country_portugal_number" translatable="false">351</string>
+
+    <string name="country_puerto_rico_name">Porto Rico</string>
+    <string name="country_puerto_rico_code">pr</string>
+    <string name="country_puerto_rico_number" translatable="false">1</string>
+
+    <string name="country_qatar_name">Qatar</string>
+    <string name="country_qatar_code">qa</string>
+    <string name="country_qatar_number" translatable="false">974</string>
+
+    <string name="country_reunion_name">Réunion</string>
+    <string name="country_reunion_code">re</string>
+    <string name="country_reunion_number" translatable="false">262</string>
+
+    <string name="country_romania_name">Roumanie</string>
+    <string name="country_romania_code">ro</string>
+    <string name="country_romania_number" translatable="false">40</string>
+
+    <string name="country_russian_federation_name">Russie</string>
+    <string name="country_russian_federation_code">ru</string>
+    <string name="country_russian_federation_number" translatable="false">7</string>
+
+    <string name="country_rwanda_name">Rwanda</string>
+    <string name="country_rwanda_code">rw</string>
+    <string name="country_rwanda_number" translatable="false">250</string>
+
+    <string name="country_saudi_arabia_name">Arabie Saoudite</string>
+    <string name="country_saudi_arabia_code">sa</string>
+    <string name="country_saudi_arabia_number" translatable="false">966</string>
+
+    <string name="country_senegal_name">Sénégal</string>
+    <string name="country_senegal_code">sn</string>
+    <string name="country_senegal_number" translatable="false">221</string>
+
+    <string name="country_serbia_name">Serbie</string>
+    <string name="country_serbia_code">rs</string>
+    <string name="country_serbia_number" translatable="false">381</string>
+
+    <string name="country_seychelles_name">Seychelles</string>
+    <string name="country_seychelles_code">sc</string>
+    <string name="country_seychelles_number" translatable="false">248</string>
+
+    <string name="country_sierra_leone_name">Sierra Leone</string>
+    <string name="country_sierra_leone_code">sl</string>
+    <string name="country_sierra_leone_number" translatable="false">232</string>
+
+    <string name="country_singapore_name">Singapour</string>
+    <string name="country_singapore_code">sg</string>
+    <string name="country_singapore_number" translatable="false">65</string>
+
+    <string name="country_slovakia_name">Slovaquie</string>
+    <string name="country_slovakia_code">sk</string>
+    <string name="country_slovakia_number" translatable="false">421</string>
+
+    <string name="country_slovenia_name">Slovénie</string>
+    <string name="country_slovenia_code">si</string>
+    <string name="country_slovenia_number" translatable="false">386</string>
+
+    <string name="country_somalia_name">Somalie</string>
+    <string name="country_somalia_code">so</string>
+    <string name="country_somalia_number" translatable="false">252</string>
+
+    <string name="country_south_africa_name">Afrique du Sud</string>
+    <string name="country_south_africa_code">za</string>
+    <string name="country_south_africa_number" translatable="false">27</string>
+
+    <string name="country_south_korea_name">Corée du Sud</string>
+    <string name="country_south_korea_code">kr</string>
+    <string name="country_south_korea_number" translatable="false">82</string>
+
+    <string name="country_spain_name">Espagne</string>
+    <string name="country_spain_code">es</string>
+    <string name="country_spain_number" translatable="false">34</string>
+
+    <string name="country_sri_lanka_name">Sri Lanka</string>
+    <string name="country_sri_lanka_code">lk</string>
+    <string name="country_sri_lanka_number" translatable="false">94</string>
+
+    <string name="country_sudan_name">Soudan</string>
+    <string name="country_sudan_code">sd</string>
+    <string name="country_sudan_number" translatable="false">249</string>
+
+    <string name="country_suriname_name">Suriname</string>
+    <string name="country_suriname_code">sr</string>
+    <string name="country_suriname_number" translatable="false">597</string>
+
+    <string name="country_swaziland_name">Swaziland</string>
+    <string name="country_swaziland_code">sz</string>
+    <string name="country_swaziland_number" translatable="false">268</string>
+
+    <string name="country_sweden_name">Suède</string>
+    <string name="country_sweden_code">se</string>
+    <string name="country_sweden_number" translatable="false">46</string>
+
+    <string name="country_switzerland_name">Suisse</string>
+    <string name="country_switzerland_code">ch</string>
+    <string name="country_switzerland_number" translatable="false">41</string>
+
+    <string name="country_syrian_arab_republic_name">Syrie</string>
+    <string name="country_syrian_arab_republic_code">sy</string>
+    <string name="country_syrian_arab_republic_number" translatable="false">963</string>
+
+    <string name="country_taiwan_name">Taïwan</string>
+    <string name="country_taiwan_code">tw</string>
+    <string name="country_taiwan_number" translatable="false">886</string>
+
+    <string name="country_tajikistan_name">Tadjikistan</string>
+    <string name="country_tajikistan_code">tj</string>
+    <string name="country_tajikistan_number" translatable="false">992</string>
+
+    <string name="country_tanzania_name">Tanzanie</string>
+    <string name="country_tanzania_code">tz</string>
+    <string name="country_tanzania_number" translatable="false">255</string>
+
+    <string name="country_thailand_name">Thaïlande</string>
+    <string name="country_thailand_code">th</string>
+    <string name="country_thailand_number" translatable="false">66</string>
+
+    <string name="country_togo_name">Togo</string>
+    <string name="country_togo_code">tg</string>
+    <string name="country_togo_number" translatable="false">228</string>
+
+    <string name="country_tunisia_name">Tunisie</string>
+    <string name="country_tunisia_code">tn</string>
+    <string name="country_tunisia_number" translatable="false">216</string>
+
+    <string name="country_turkey_name">Turquie</string>
+    <string name="country_turkey_code">tr</string>
+    <string name="country_turkey_number" translatable="false">90</string>
+
+    <string name="country_turkmenistan_name">Turkménistan</string>
+    <string name="country_turkmenistan_code">tm</string>
+    <string name="country_turkmenistan_number" translatable="false">993</string>
+
+    <string name="country_united_arab_emirates_name">Emirats arabes unis</string>
+    <string name="country_united_arab_emirates_code">ae</string>
+    <string name="country_united_arab_emirates_number" translatable="false">971</string>
+
+    <string name="country_uganda_name">Ouganda</string>
+    <string name="country_uganda_code">ug</string>
+    <string name="country_uganda_number" translatable="false">256</string>
+
+    <string name="country_united_kingdom_name">Royaume-Uni</string>
+    <string name="country_united_kingdom_code">gb</string>
+    <string name="country_united_kingdom_number" translatable="false">44</string>
+
+    <string name="country_ukraine_name">Ukraine</string>
+    <string name="country_ukraine_code">ua</string>
+    <string name="country_ukraine_number" translatable="false">380</string>
+
+    <string name="country_uruguay_name">Uruguay</string>
+    <string name="country_uruguay_code">uy</string>
+    <string name="country_uruguay_number" translatable="false">598</string>
+
+    <string name="country_united_states_name">Etats-Unis</string>
+    <string name="country_united_states_code">us</string>
+    <string name="country_united_states_number" translatable="false">1</string>
+
+    <string name="country_uzbekistan_name">Ouzbékistan</string>
+    <string name="country_uzbekistan_code">uz</string>
+    <string name="country_uzbekistan_number" translatable="false">998</string>
+
+    <string name="country_venezuela_name">Venezuela</string>
+    <string name="country_venezuela_code">ve</string>
+    <string name="country_venezuela_number" translatable="false">58</string>
+
+    <string name="country_viet_nam_name">Vietnam</string>
+    <string name="country_viet_nam_code">vn</string>
+    <string name="country_viet_nam_number" translatable="false">84</string>
+
+    <string name="country_yemen_name">Yémen</string>
+    <string name="country_yemen_code">ye</string>
+    <string name="country_yemen_number" translatable="false">967</string>
+
+    <string name="country_zambia_name">Zambie</string>
+    <string name="country_zambia_code">zm</string>
+    <string name="country_zambia_number" translatable="false">260</string>
+
+    <string name="country_zimbabwe_name">Zimbabwe</string>
+    <string name="country_zimbabwe_code">zw</string>
+    <string name="country_zimbabwe_number" translatable="false">263</string>
+
+    <!--    STRING Date-->
+    <string name="date_today">Aujourd\'hui</string>
+    <string name="date_today_lower">aujourd\'hui</string>
+    <string name="date_format_today_time">H\'h\'mm</string>
+    <string name="date_yesterday">Hier</string>
+    <string name="date_yesterday_lower">hier</string>
+    <string name="date_format">%1$d %2$s %3$d</string>
+    <string name="date_format_short">%1$d %2$s</string>
+    <string name="date_month_1">jan.</string>
+    <string name="date_month_2">fév.</string>
+    <string name="date_month_3">mar.</string>
+    <string name="date_month_4">avr.</string>
+    <string name="date_month_5">mai</string>
+    <string name="date_month_6">juin</string>
+    <string name="date_month_7">juil.</string>
+    <string name="date_month_8">août</string>
+    <string name="date_month_9">sep.</string>
+    <string name="date_month_10">oct.</string>
+    <string name="date_month_11">nov.</string>
+    <string name="date_month_12">déc.</string>
+    <string name="x_days_ago">il y a %s jours</string>
+    <string name="date_this_month">ce mois-ci</string>
+    <string name="x_months_ago">il y a %s mois</string>
+    <string name="birthday_date_format">dd-MM</string>
+    <string name="events_date">dd/MM/yyyy</string>
+    <string name="events_time">HH\'h\'mm</string>
+    <string name="duration_month">%s mois</string>
+    <string name="duration_weeks">%s sem</string>
+    <string name="duration_days">%s j</string>
+    <string name="duration_hours">%s h</string>
+    <string name="duration_minutes">%s min</string>
+    <string name="duration_secondes">à l\'instant</string>
+
+    <!--    STRING Entourage-->
+
+    <!-- Create Entourage -->
+    <string name="entourage_create_action_title">ACTION</string>
+    <string name="entourage_create_outing_title">Evénement</string>
+    <string name="entourage_create_type_label">Catégorie</string>
+    <string name="entourage_create_type_demand">Je cherche %1$s</string>
+    <string name="entourage_create_type_contribution">Je me propose de %1$s</string>
+    <string name="entourage_create_position_description">Adresse *</string>
+    <string name="entourage_create_position_description_new">Près de *</string>
+    <string name="entourage_create_title_label">Titre *</string>
+    <string name="entourage_create_title_hint">Exemple : %1$s</string>
+    <string name="entourage_create_title_char_count_format">%1$d/%2$d</string>
+    <string name="entourage_create_description_label">Description</string>
+    <string name="entourage_create_help_text_event"><![CDATA[<a href=\"%1$s\">Quels événements diffuser ?</a>]]></string>
+    <string name="entourage_create_help_text"><![CDATA[<a href=\"%1$s\">Besoin d\'idées d\'action ?</a>]]></string>
+    <string name="entourage_create_date_format">\'le\' EEEE dd MMMM \'à\' HH\'h\'mm</string>
+
+    <string name="entourage_create_date_start_label">Date de début *</string>
+    <string name="entourage_create_date_end_label">Date de fin</string>
+
+    <string name="entourage_create_privacy_public">Public</string>
+    <string name="entourage_create_privacy_private">Privé</string>
+    <string name="entourage_create_privacy_description_public">Vous acceptez que toute personne participe à votre événement, sans vérifier son profil au préalable.</string>
+    <string name="entourage_create_privacy_description_private">Vous validez chaque personne individuellement avant de  lui confirmer qu’elle peut participer.</string>
+
+    <string name="entourage_create_privacy_description_public_action">Votre action est publique, tout le monde peut y participer librement.</string>
+    <string name="entourage_create_privacy_description_private_action">Votre action est privée, vous aurez le choix  d’accepter ou de refuser toute personne demandant à y participer.</string>
+
+    <string name="entourage_create_error">L\'entourage n\'a pas été créé!</string>
+    <string name="outing_create_error">L\'événement n\'a pas pu être créé!</string>
+    <string name="entourage_create_error_category_empty">Renseignez une catégorie pour votre action</string>
+    <string name="entourage_create_error_title_empty">Le titre ne peut pas être vide</string>
+    <string name="entourage_create_error_date_empty">Choisissez une date</string>
+    <string name="entourage_create_error_location_empty">Indiquez une localisation</string>
+
+    <string name="entourage_create_menu_ask_help">Demander de l\'aide</string>
+    <string name="entourage_create_submenu_ask_help">Faire appel au réseau</string>
+    <string name="entourage_create_menu_contribute">Proposer de l\'aide</string>
+    <string name="entourage_create_submenu_contribute">Donner un bien, du temps, …</string>
+    <string name="outing_create_menu">Annoncer un événement</string>
+    <string name="outing_create_submenu">à une date précise</string>
+
+    <!-- Entourage Category Fragment -->
+    <string name="entourage_category_fragment_title">CATÉGORIE</string>
+    <string name="entourage_category_type_demand_label">JE CHERCHE…</string>
+    <string name="entourage_category_type_contribution_label">JE ME PROPOSE DE…</string>
+
+    <!-- Entourage Title Fragment -->
+    <string name="entourage_title_fragment_title">TITRE</string>
+    <string name="entourage_title_fragment_hint">Exemple : Je suis disponible pour aide administrative pour l’accès au logement </string>
+    <string name="entourage_title_fragment_info">Les actions avec un titre clair attirent plus de membres et ont plus de chances d’aboutir !</string>
+    <string name="entourage_title_fragment_error">Votre titre doit faire moins de 100 caractères. Vous pourrez en dire plus dans la description.</string>
+    <string name="entourage_title_fragment_hint_outing">Exemple : Soirée jeux entre voisins avec et sans domicile</string>
+    <string name="entourage_title_fragment_info_outing">Les événements avec un titre clair attirent plus de participants.</string>
+
+    <!-- Entourage Description Fragment -->
+    <string name="entourage_description_fragment_title">DESCRIPTION</string>
+    <string name="entourage_description_fragment_hint">Exemple : Je suis ancien employé de mairie et disponible pour aide administrative pour l’accès au logement.\nSi vous pensez avoir besoin d’aide, nous pouvons nous retrouver dans un café le weekend.</string>
+    <string name="entourage_description_fragment_info">Racontez votre histoire. Les actions avec une description claire attirent plus de membres et ont plus de chances d’aboutir !</string>
+    <string name="entourage_description_fragment_hint_outing">Exemple : Besoin de bénévoles pour la collecte nationale des Restos du Cœur dans notre équipe locale</string>
+    <string name="entourage_description_fragment_info_outing">Vous pourrez modifier cette description et la date de votre événement à tout moment.</string>
+
+    <!-- Edit Entourage -->
+    <string name="entourage_save_error">L\'entourage n\'a pas été enregistré.</string>
+    <string name="entourage_save_ok">Entourage enregistré.</string>
+    <string name="outing_save_error">L\'événement n\'a pas pu être mis à jour.</string>
+    <string name="outing_save_ok">événement mis à jour</string>
+
+    <!-- Entourage Card -->
+    <string name="entourage_type_demand">Demande</string>
+    <string name="entourage_type_contribution">Contribution</string>
+    <string name="entourage_type_outing">Événement</string>
+    <string name="entourage_type_format_bis">%1$s de\u0020</string>
+    <string name="entourage_metadata_startAt_format">\'le\' EEEE dd/MM</string>
+    <string name="entourage_metadata_startAt_format_full">EEEE dd MMMM yyyy</string>
+    <string name="entourage_metadata_startAt_time_format">\'à \'HH\'h\'mm</string>
+    <string name="entourage_info_creation_time">Créé %s</string>
+    <string name="entourage_info_update_time">actif %s</string>
+    <string name="entourage_metadata_date_startAt_endAt">du %1$s au %2$s</string>
+    <string name="entourage_metadata_time_startAt_endAt">de %1$s à %2$s</string>
+
+    <!-- Entourage Location -->
+    <string name="entourage_location_title">MA POSITION</string>
+    <string name="entourage_location_address_not_found">L\'adresse n\'a pas été trouvée</string>
+
+    <!-- Entourage Notifications -->
+    <string name="entourage_info_text_join_accepted">\u0020a rejoint le groupe.</string>
+    <string name="entourage_join_request_received_nomsg">%1$s souhaite rejoindre votre action.</string>
+    <string name="entourage_join_request_received_message_html"><![CDATA[<font color=\"#F55F24\">%1$s </font>souhaite rejoindre votre groupe]]></string>
+    <string name="entourage_join_request_received_message_short">veut rejoindre votre groupe.</string>
+    <!-- Join Request -->
+    <string name="entourage_join_request_success">Demande acceptée</string>
+    <string name="entourage_join_request_error">Erreur d\'envoi de la requête</string>
+    <string name="entourage_join_request_message_sent">Message envoyé</string>
+    <string name="entourage_join_request_message_error">Erreur d\'envoi du message</string>
+    <string name="entourage_join_request_ok_title">Votre demande est transmise</string>
+    <string name="entourage_join_request_ok_description_entourage">Merci pour votre chaleur humaine !\nVous pouvez envoyer un message aux participants, qui apparaîtra dans la conversation de groupe.</string>
+    <string name="entourage_join_request_ok_description_outing">@string/entourage_join_request_ok_description_entourage</string>
+    <string name="entourage_join_request_ok_message_hint">Votre message…</string>
+    <string name="entourage_join_request_rejected">Requête envoyée</string>
+
+    <string name="entourage_info_text_open">Entourage actif</string>
+    <string name="entourage_info_text_close">Action clôturée</string>
+    <string name="outing_info_text_close">Événement supprimé</string>
+
+    <!-- Entourage disclaimer -->
+    <string name="entourage_disclaimer_title">AVANT DE COMMENCER</string>
+    <string name="entourage_disclaimer_text_chart1">Je respecte la</string>
+    <string name="entourage_disclaimer_text_chart2">Charte d\'Entourage</string>
+    <string name="entourage_disclaimer_accord_title">Recueillir l’accord</string>
+    <string name="entourage_disclaimer_accord_details">Si je souhaite créer une demande d’aide pour quelqu’un d’autre, je dois d’abord recueillir son consentement.</string>
+    <string name="entourage_disclaimer_security_title">Sécurité</string>
+    <string name="entourage_disclaimer_security_details">Je n’inclus aucune donnée permettant d\'identifier ou de localiser les personnes concernées</string>
+    <string name="entourage_disclaimer_geolocation_title">Géolocalisation ?</string>
+    <string name="entourage_disclaimer_geolocation_details">La position précise de votre action solidaire est masquée : elle est remplacée par une zone orangée sur la carte</string>
+    <string name="entourage_disclaimer_checkbox">J\'ai lu et j\'accepte</string>
+    <string name="entourage_disclaimer_error_notaccepted">Veuillez accepter les conditions.</string>
+
+    <!-- Outing disclaimer -->
+    <string name="outing_disclaimer_accord_details">Je demande le consentement d’une personne avant de mentionner de ses informations personnelles</string>
+    <string name="outing_disclaimer_security_details">Je veille à ce qu’on ne puisse pas identifier ou localiser des personnes en me lisant</string>
+    <string name="outing_disclaimer_geolocation_title">Localisation ?</string>
+    <string name="outing_disclaimer_geolocation_details">L’adresse précise des événements est montrée</string>
+
+    <!-- Outing as chat message card -->
+    <string name="outing_message_card_created_author"><![CDATA[%1$s a créé une <font color=\"%2$s\">sortie</font> :]]></string>
+    <string name="outing_message_card_updated_author"><![CDATA[%1$s a <b>modifié</b> une <font color=\"%2$s\">sortie</font> :]]></string>
+
+    <!-- Status update as chat message card -->
+    <!-- 1 = font color, 2 = author, 3 = message -->
+    <string name="status_message_card_details"><![CDATA[<font color=\"%1$s\">%2$s</font> %3$s]]></string>
+
+    <!-- My Entourages -->
+    <string name="myentourages_all">Tous les messages</string>
+    <string name="myentourages_unread">Non lus</string>
+
+    <string name="myentourages_no_items_title">Vous n\'avez pas encore de messages…</string>
+    <string name="myentourages_no_unread_items_details">Vous n\'avez pas de messages non lus</string>
+
+    <string name="myentourages_tab_group">Discussions de groupe</string>
+    <string name="myentourages_tab_messages">Messages privés</string>
+    <!-- My Entourages Filter -->
+    <string name="myentourages_filter_entourages_title">Montrer</string>
+    <string name="myentourages_filter_closed">Inclure les actions clôturées</string>
+    <string name="myentourages_filter_unread">Uniquement les messages non lus</string>
+    <string name="myentourages_filter_created_by_me">Uniquement les actions que j’ai créées</string>
+    <string name="myentourages_filter_partner">Uniquement les actions créées par des sympathisants d’assos que je soutiens</string>
+    <string name="myentourages_filter_types_title">Types d’entourage</string>
+    <string name="myentourages_filter_demand">Demandes</string>
+    <string name="myentourages_filter_contribution">Contributions</string>
+
+    <!-- Close Entourage Popup -->
+    <string name="entourage_close_success_button">Mon action a réussi</string>
+    <string name="entourage_close_failed_button">Mon action n\'a pas abouti</string>
+
+    <string name="entourage_close_title_new">Je clôture mon\naction solidaire</string>
+    <string name="entourage_close_description_new">En clôturant l’action, la discussion sera fermée et l’action n’apparaîtra plus dans le fil d’actualité.</string>
+    <string name="entourage_close_subtitle_new">Comment ça s’est passé ?</string>
+    <string name="entourage_close_title_ask_comment">Merci, votre action\nest clôturée !</string>
+    <string name="entourage_close_subtitle_ask_comment">Voulez-vous écrire un commentaire à propos de votre action ?</string>
+
+    <string name="entourage_close_add_comment_send_title" >Dites-nous en plus,\ncomment s’est passée votre action solidaire ?</string>
+    <string name="entourage_close_add_comment_send_button">Envoyer</string>
+    <string name="entourage_close_add_comment_send_placeholder" >Mon action s’est bien passée parce que...</string>
+
+    <!-- Close event popup -->
+
+    <string name="event_close_title2">J’annule\nmon événement</string>
+    <string name="event_close_description2">En annulant l’événement, la discussion sera fermée et l’événement n’apparaîtra plus dans le fil d’actualité.</string>
+    <string name="event_validate_button2">ANNULER L’EVENEMENT</string>
+
+    <!-- Share Entourage -->
+    <string name="entourage_share_intent_title">Partager via</string>
+    <string name="entourage_share_link">https://www.entourage.social</string>
+
+    <string name="info_share_poi_sms">Bonjour ! Voici l’adresse de %1$s qui pourrait vous intéresser.\n%2$s\n%3$s\nPour plus d’infos sur ce lieu, et pour créer des liens entre voisins solidaires, je vous donne RDV sur le réseau Entourage %4$s</string>
+
+    <string name="entourage_share_text_for_entourage">%1$s.\n\nMerci beaucoup pour ta solidarité !</string>
+    <!-- Entourage Mini Card -->
+
+    <!-- My Entourages -->
+    <string name="myentourages_no_items_details">Demandez à rejoindre des actions, contactez des membres et vous retrouverez vos conversations avec les membres du réseau ici</string>
+
+    <!-- Create Action Wizard -->
+    <string name="create_action_wizard_p1_title">DERNIÈRE QUESTION</string>
+    <string name="create_action_wizard_p1_description">Créez-vous cette action solidaire <b>pour une personne identifiée, autre que vous :</b> un ami en situation précaire, une personne croisée dans la rue ?</string>
+    <string name="create_action_wizard_p1_option1">@string/yes</string>
+    <string name="create_action_wizard_p1_option2">Non, je demande pour moi</string>
+    <string name="create_action_wizard_p1_option3">Non, pour une association</string>
+
+    <string name="create_action_wizard_p2_title">DERNIÈRE QUESTION</string>
+    <string name="create_action_wizard_p2_description">Avez-vous <b>obtenu son consentement</b> pour diffuser cette action pour elle sur Entourage ?</string>
+    <string name="create_action_wizard_p2_option1">Oui, j\'ai son accord</string>
+    <string name="create_action_wizard_p2_option2">Non, pas encore</string>
+
+    <string name="create_action_wizard_p3_title">DERNIÈRE QUESTION</string>
+    <string name="create_action_wizard_p3_description">Le consentement est indispensable pour pouvoir diffuser votre action solidaire sur le réseau.\n\nVotre action est actuellement en suspens. Un modérateur va vous répondre très rapidement pour vous aider.</string>
+    <string name="create_action_wizard_p3_option1">@string/next</string>
+
+    <string name="create_action_wizard_disclaimer">La &lt;a href=\'%1$s\'>Charte éthique d’Entourage&lt;/a> vous explique pourquoi le consentement est indispensable.</string>
+
+    <!-- User Report -->
+    <string name="action_report_explanation">Vous allez signaler cette action solidaire à nos administrateurs.</string>
+    <string name="action_report_reason">Merci de préciser pourquoi\nvous signalez cette action solidaire :</string>
+    <string name="event_report_explanation">Vous allez signaler cet événement à nos administrateurs.</string>
+    <string name="event_report_reason">Merci de préciser pourquoi\nvous signalez cet événement :</string>
+
+    <string name="action_report_explanation_user">Vous allez signaler cet utilisateur à nos administrateurs.</string>
+    <string name="action_report_reason_user">Merci de préciser pourquoi\nvous signalez cet utilisateur :</string>
+
+    <string name="entourage_report_success">✔︎ Entourage signalé</string>
+    <string name="entourage_user_report_success">✔︎ Utilisateur signalé</string>
+    <string name="entourage_report_error_reason_empty">Ajoutez un message</string>
+    <string name="entourage_report_error_send_failed">L\'envoi du message a échoué, veuillez réessayer</string>
+
+    <string name="linkShared">Lien envoyé</string>
+    <string name="linkNotShared">Erreur pendant l\'envoi du lien</string>
+
+    <!-- Pop info photo profile -->
+    <string name="info_photo_profile_title">Ajoutez votre photo de profil et inspirez encore plus confiance</string>
+    <string name="info_photo_profile_description">Vous n’avez pas encore de photo de profil. Les personnes découvrant votre action solidaire seront plus susceptibles de la rejoindre si vous en ajoutez une.</string>
+    <string name="info_photo_profile_ignore">IGNORER</string>
+    <string name="info_photo_profile_add">AJOUTER</string>
+
+    <string name="button_event_add_photo">Photo</string>
+    <string name="event_add_photo_info">Illustrez votre prochain événement avec une photo proposée par Entourage :</string>
+
+    <string name="infoPopCreateContrib">Félicitations !\nVotre contribution a bien été créée.</string>
+    <string name="infoPopCreateAsk">Félicitations !\nVotre demande a bien été créée.</string>
+    <string name="infoPopCreateEvent">Félicitations !\nVotre événement a bien été créé.</string>
+    <string name="infoPopCreateContribTitle">Action solidaire\ncréée</string>
+    <string name="infoPopCreateAskTitle">Action solidaire\ncréée</string>
+    <string name="infoPopCreateEventTitle">Événement créé</string>
+
+    <!-- Search action/event placeholder -->
+    <string name="searchEventPlaceholder">Rechercher un événement</string>
+    <string name="searchAskPlaceholder">Rechercher une action</string>
+    <string name="searchContribPlaceholder">Rechercher une action</string>
+
+    <string name="button_close_event">Annuler mon événement</string>
+    <string name="button_close_action">Clôturer mon action</string>
+
+    <!-- STRING EVENT -->
+    <!-- Events -->
+    <string name="location">Localisation</string>
+    <string name="event_filter_google_placeholder">Choisir une adresse</string>
+    <string name="event_filter_position_placeholder">Ma position</string>
+    <string name="event_organisez_by">Organisé par %s</string>
+    <string name="event_organisez_asso">Événement %s</string>
+    <string name="event_organisez_entourage">Événement Entourage</string>
+
+    <string name="event_filter_title">Événements - Filtres de recherche</string>
+    <string name="event_filter_profile">À l\'adresse renseignée dans mon profil</string>
+    <string name="event_filter_google">À une nouvelle adresse</string>
+    <string name="event_filter_gps">Autour de ma position actuelle</string>
+    <string name="event_filter_error_place">Veuillez sélectionnez une adresse</string>
+    <string name="search_filter">Rechercher :</string>
+
+    <string name="event_location_title">Localisez votre événement</string>
+    <string name="event_location_detail">L’adresse sera ajoutée à la description détaillée de votre événement.</string>
+    <string name="event_btn_share_title">Partager</string>
+
+    <!-- STRING GET INVOLVED -->
+    <string name="get_involved_title">Suivre Entourage</string>
+    <string name="get_involved_rate_us">Notez-nous dans le Play Store </string>
+    <string name="get_involved_facebook">Aimez notre page Facebook</string>
+    <string name="get_involved_twitter">Suivez-nous sur Twitter</string>
+    <string name="get_involved_instagram">Suivez notre Instagram</string>
+
+    <!-- STRING GUIDE -->
+    <!-- Guide -->
+    <string name="map_poi_propose_button">Proposer une structure</string>
+
+    <!-- POI -->
+    <string name="poi_detail_contact">Contact</string>
+    <string name="poi_detail_public">Public</string>
+    <string name="activity_read_poi_title">INFORMATIONS</string>
+    <string name="poi_report_description">Ajoutez des informations sur ce lieu</string>
+    <string name="poi_report_button">Mettre à jour</string>
+    <string name="poi_report_email_subject_format">J\'ai des infos à jour concernant \'%1$s\' (#%2$s)</string>
+    <string name="poi_detail_open_time">Horaires</string>
+    <string name="poi_detail_language">Langues parlées</string>
+
+    <string name="poi_detail_soliguide_1">Les informations sur ce lieu sont fournies par Soliguide, la cartographie solidaire.</string>
+    <string name="poi_detail_soliguide_2">Pour des informations encore plus complètes et disponibles en plusieurs langues</string>
+    <string name="poi_detail_soliguide_consult">Consulter</string>
+
+    <!-- Empty Guide Popup -->
+    <string name="map_poi_empty_popup"><![CDATA[On dirait que c\'est calme ici!<br/><br/>
+    Déplacez la carte pour trouver des structures d’assistance: restaurants solidaires, douches publiques, centres médicaux ouverts aux personnes de la rue…<br/><br/>
+    Une structure manque sur la carte?<br/>
+    <a href=\'%1$s\'>Proposez une structure</a>
+<br/><br/>Le Centre Communal d’Action Sociale de votre commune peut vous renseigner sur toutes les associations locales et les aides sociales à disposition des habitants.]]></string>
+
+    <!-- Info Popup -->
+    <string name="map_poi_info_popup">Le Guide de solidarité vous permet de vous informer sur les structures d’assistance : restaurants solidaires, douches publiques, centres médicaux ouverts aux personnes de la rue…\n\n
+        En tant que riverain, vous pouvez suggérer un lieu à une personne de la rue, mais gardez à l’esprit que c’est le rôle des travailleurs sociaux d’accompagner chaque situation.</string>
+
+    <string name="map_empty_poi_recyclerV">C’est tout pour les lieux solidaires dans ce rayon autour de vous</string>
+    <!-- Guide Filter -->
+    <string name="guide_filter_title">FILTRES</string>
+    <string name="guide_filters_activated">Filtres activés</string>
+    <string name="guide_no_filter">Filtres</string>
+    <string name="guide_filter_categories_title">Catégories</string>
+
+    <!-- POI Card -->
+    <string name="poi_card_call">APPELER</string>
+    <string name="guide_alert_arrow_desc">Détails Alerte</string>
+    <string name="guide_alert_info_desc">Info Guide</string>
+    <string name="guide_alert_info_title">HORAIRES D’ÉTÉ</string>
+    <string name="guide_alert_info_text"><![CDATA[Notre partenaire <a href=https://soliguide.fr/>Soliguide.fr</a> tient un annuaire à jour pour de nombreuses villes.]]></string>
+
+    <string name="guide_display_partners">Associations et services actifs sur Entourage</string>
+    <string name="guide_filter_donate">Recherchant des dons</string>
+    <string name="guide_filter_volunteer">Recherchant des bénévoles</string>
+    <string name="guide_filter_multiInfo">Lieux proposant des services de plusieurs catégories</string>
+
+    <string name="hub_title">Guide solidaire</string>
+    <string name="hub_title_1">Adresses utiles autour de vous</string>
+    <string name="hub_description_1">Restaurants solidaires, associations recherchant des bénévoles ou des dons…</string>
+    <string name="hub_button_1">Rechercher autour de moi →</string>
+
+    <string name="hub_title_2">Ressources au cas par cas</string>
+    <string name="hub_description_2">Chaque situation est différente, mais voici des clés pour s’y retrouver : numéros d’urgence, démarches conseillées, …</string>
+    <string name="hub_button_2">Je m\'oriente</string>
+
+    <string name="hub_title_3">Se préparer à la rencontre</string>
+    <string name="hub_description_3">Voisins solidaires, le Guide Simple Comme Bonjour et nos ateliers de sensibilisation vous aident à comprendre les situations et à dépasser les blocages pour créer des liens.</string>
+    <string name="hub_button_3">Découvrir le guide →</string>
+
+    <string name="hub_description_4">Nos ateliers de sensibilisation vous aident à déconstruire les préjugés sur la rue et trouver des réponses à vos questions. </string>
+    <string name="hub_button_4">Trouver un atelier</string>
+
+    <string name="hub_description_5">L’application Entourage vous permet de vous mobiliser, entre voisins et associations locales, pour organiser des actions et événements solidaires. Pour tout comprendre, c’est par ici.</string>
+    <string name="hub_title_5">Comment mobiliser le réseau ?</string>
+    <string name="hub_button_5">Aller sur la FAQ</string>
+
+    <string name="gds_title">Lieux solidaires</string>
+    <string name="no_result">Aucun résultat</string>
+    <string name="no_result_info">Pourquoi ne pas essayer\nun autre mot-clé ?</string>
+
+    <string name="button_reset_filters">Annuler Filtres</string>
+    <string name="searchbox_placeholder_text">Rechercher</string>
+    <!-- STRING INVTE -->
+    <!-- Invite Source -->
+    <string name="invite_source_title">Invitez vos amis</string>
+    <string name="invite_source_description">à rejoindre cette action solidaire !</string>
+    <string name="invite_source_description_outing">à participer à cet événement</string>
+    <string name="invite_source_share">Partager le lien</string>
+    <string name="invite_source_contacts">Contacts</string>
+    <string name="invite_source_share_entourage">Partager sur Entourage</string>
+
+    <!-- Invite Contacts -->
+    <string name="invite_contacts_title">CONTACTS</string>
+    <string name="invite_contacts_search_hint">Rechercher</string>
+    <string name="invite_contacts_inviting">Envoi des invitations</string>
+    <string name="invite_contacts_send_error">Echec de l’envoi des invitations</string>
+    <string name="invite_contacts_permission_error">Annulation: l’app n’a pas les permissions requises</string>
+
+    <!-- Invite By Phone Number -->
+    <string name="invite_phone_title">NUMERO PORTABLE</string>
+    <string name="invite_phone_description">Entrer un numéro de portable afin d’inviter la personne à rejoindre votre entourage.</string>
+    <string name="invite_phone_number_hint">Numéro de portable</string>
+
+    <!-- Invite Success -->
+    <string name="invite_success_title">C’est envoyé !</string>
+    <string name="invite_success_description">Votre ami rejoindra l’entourage automatiquement, dès qu’il acceptera votre invitation.</string>
+
+    <!-- Invitation Card -->
+    <string name="invitation_card_description">1 nouvelle invitation à rejoindre un entourage</string>
+    <string name="invitation_card_inviter">%1$s vous invite à rejoindre</string>
+
+    <!-- Invited -->
+    <string name="invited_description">Répondez présent !</string>
+    <string name="invited_updated_ok">Invitation mise à jour</string>
+    <string name="invited_updated_error">Erreur lors de la mise à jour de l’entourage</string>
+
+    <!-- STRING INVITE -->
+    <string name="login_text_lost_code_ko">Ce numéro ne semble pas inscrit: créez un compte.\n\nMembres d\'une association utilisatrice d\'Entourage, contactez associations@entourage.social</string>
+    <string name="login_text_invalid_format">Le numéro doit comporter 9 ou 10 chiffres.</string>
+
+    <string name="login_hint_code">Code</string>
+
+    <string name="login_error">Problème d\'authentification\nVeuillez réessayer</string>
+    <string name="login_error_title">Veuillez réessayer</string>
+    <string name="login_error_invalid_credentials">Le numéro de téléphone et ce code d’accès ne correspondent pas.</string>
+    <string name="login_error_invalid_phone_format">Format du numéro invalide.\nSi votre numéro n’est pas de France métropolitaine, incluez l’indicatif pays</string>
+    <string name="login_error_network">Vérifiez votre connexion internet</string>
+    <string name="login_retry_label">Réessayer</string>
+
+    <string name="login_already_registered_go_back">Le numéro est déjà enregistré, nous allons vous rediriger vers la page de connexion.</string>
+    <string name="login_pop_information">Nouveau ! Adaptez Entourage à vos envies et besoins !</string>
+    <string name="login_info_pop_action">Depuis votre Profil, vous pouvez personnaliser votre fil d’actus et les recommandations reçues. Choisissez en toute confidentialité si vous êtes actuellement : voisin solidaire, personne dans le besoin, association.</string>
+    <string name="login_info_pop_action_yes">Personnaliser</string>
+    <string name="login_info_pop_action_no">Plus tard</string>
+    <string name="login_info_pop_action_noMore">Ne plus me montrer</string>
+    <string name="login_email_description">Maintenant, finalisons la création de votre compte !</string>
+    <string name="login_place_title">Quel est votre quartier ?</string>
+    <string name="login_place_description">Vous pourrez répondre aux demandes de personnes en difficulté et d’associations de votre quartier, et vous pourrez vous-même proposer des dons de votre temps ou matériels.</string>
+
+    <string name="login_smscode_sent">SMS envoyé</string>
+
+    <string name="error_login_phone_length">Le numéro de téléphone doit faire au minimum %s chiffres</string>
+    <string name="error_login_code_lenght">Le code doit faire 6 chiffres</string>
+    <string name="login_title">Connexion</string>
+    <string name="login_phone_placeholder">Numéro de téléphone</string>
+    <string name="login_placeholder_code">Saisir votre code</string>
+    <string name="login_button_connect">Je me connecte</string>
+    <string name="login_button_resend_code"><u>Redemander un code</u></string>
+    <string name="login_button_resend_code_text">Voulez-vous demander un nouveau code pour votre numéro de téléphone : %s ?</string>
+    <string name="login_button_resend_code_action">Demander</string>
+    <string name="login_label_country">Pays</string>
+    <string name="login_label_phone">Téléphone</string>
+    <string name="login_label_code">Code</string>
+
+    <!-- Login Change Phone -->
+    <string name="login_change_phone"><u>J’ai changé de numéro de téléphone</u></string>
+    <string name="login_change_phone_title">Nouveau numéro</string>
+    <string name="login_change_phone_old_phone">Ancien numéro</string>
+    <string name="login_change_phone_old_phone_placeholder">Ancien numéro</string>
+    <string name="login_change_phone_new_phone">Nouveau numéro</string>
+    <string name="login_change_phone_new_phone_placeholder">Nouveau numéro</string>
+    <string name="login_change_phone_email">Email (optionnel)</string>
+    <string name="login_change_phone_email_placeholder">Email</string>
+    <string name="login_change_phone_bt_validate">Envoyer</string>
+    <string name="login_change_phone_send_ok">Votre demande a bien été envoyée.\n\n\nLe support Entourage vous informera lorsque le changement de numéro sera réalisé.</string>
+    <string name="login_change_phone_bt_return">Retour</string>
+
+    <string name="login_change_warning_title">Attention</string>
+    <string name="login_change_error_phone">Veuillez verifier vos numéros de téléphone</string>
+    <string name="login_change_error_mail">Veuillez vérifier votre adresse Email</string>
+
+    <string name="login_change_error_return">Erreur</string>
+    <string name="login_change_error_number_not_found">L’ancien numéro est inconnu.\nVeuillez vérifier.</string>
+    <string name="login_change_error_number_deleted">L’ancien numéro a été supprimé.\nVeuillez vérifier.</string>
+    <string name="login_change_error_number_blocked">L’ancien numéro a été bloqué.\nVeuillez vérifier.</string>
+    <string name="login_change_error_identical_number">Les deux numéros sont identiques.\nVeuillez vérifier le nouveau numéro.</string>
+    <string name="login_change_error_generic">L’ancien numéro est inconnu ou supprimé.\nVeuillez vérifier les numéros.</string>
+
+    <string name="action_about">Aide &amp; à propos</string>
+    <string name="action_edit_profile_regular">Modifier mon profil</string>
+    <string name="action_charter_unsigned">Signer la Charte éthique</string>
+    <string name="action_charter_read">Lire la Charte éthique</string>
+    <string name="action_faq">Questions fréquentes</string>
+    <string name="action_map">actus</string>
+    <string name="action_guide">guide</string>
+    <string name="action_my_messages">messages</string>
+    <string name="action_profile">profil</string>
+    <string name="debug_info_clipboard">Information copiée dans le presse-papier</string>
+
+    <string name="events_conviv">événements\nconviviaux</string>
+    <string name="events_button">Voir la liste →</string>
+    <string name="actions_solidr">actions\nsolidaires</string>
+    <string name="actions_button">Voir la liste →</string>
+    <string name="title_my_activity">👌  MON ACTIVITÉ</string>
+    <string name="contribCreated">dons\npubliés</string>
+    <string name="askCreated">demandes\n publiées</string>
+
+    <string name="menu_info_social">Pour vivre <b>encore plus de solidarité</b> suivez Entourage sur vos réseaux !</string>
+
+    <string name="menu_info_first_title">👋 FAIRE LE PREMIER PAS</string>
+    <string name="menu_info_first_guide">Notre guide pour oser la rencontre</string>
+    <string name="menu_info_second_gift">Faire un don à Entourage</string>
+    <string name="menu_info_second_help">Aider à la réinsertion</string>
+    <string name="menu_info_second_ambassador">Devenir Ambassadeur bénévole</string>
+    <string name="menu_info_second_good">Créer des liens avec les Bonnes Ondes</string>
+    <string name="menu_info_second_title">❤️  S’ENGAGER</string>
+    <string name="menu_info_third_info">Comment en parler aux personnes isolées ?</string>
+    <string name="menu_info_third_share">Répandez la solidarité autour de vous !</string>
+    <string name="menu_info_third_title">📣 PARTAGER ENTOURAGE</string>
+
+    <string name="menu_info_profile_share">Bonjour ! Grâce au réseau Entourage, je participe à des actions solidaires entre voisins avec et sans domicile. Rejoins-moi : %s</string>
+
+    <string name="myActionsCreated">Mes actions solidaires créées</string>
+    <string name="myActions">Mes actions solidaires</string>
+    <string name="myAsk">Mes demandes</string>
+    <string name="myContrib">Mes dons</string>
+    <string name="myActionEmptyAsk">Actuellement vous n\'avez pas de demandes publiées sur l\'application ;)</string>
+    <string name="myActionEmptyContrib">Actuellement vous n\'avez pas de dons publiés sur l\'application ;)</string>
+    <string name="placeholder_birthday_my_profile">01–03</string>
+    <string name="placeholder_email_my_profile">email@gmail.com</string>
+
+    <string name="activity_map_new_entourages">\u0020Nouveaux entourages</string>
+
+    <string name="map_gps_unavailable">Veuillez activer la géolocalisation de votre appareil</string>
+    <string name="map_gps_no_permission">Veuillez autoriser Entourage à accéder à votre position</string>
+    <string name="map_permission_title">Entourage doit accéder à la géolocalisation</string>
+    <string name="map_permission_description">Sans géolocalisation Entourage ne peut pas fonctionner. Souhaitez-vous l\'activer ?</string>
+    <string name="map_permission_refuse">Refuser</string>
+    <string name="map_permission_explanation">Pour vous faire découvrir les actions solidaires autour de vous,\nEntourage doit connaître votre position.</string>
+    <string name="map_permission_activate_button">Activez la géolocalisation</string>
+    <string name="map_permission_extra">Nous concoctons une alternative qui sera disponible prochainement !</string>
+    <string name="error_dialog_disabled">La géolocalisation doit être activée pour utiliser Entourage. Voulez-vous l\'activer ?</string>
+    <string name="map_error_geolocation_disabled_use_entourage">Pour découvrir les actions solidaires autour de vous, vous devez activer la géolocalisation</string>
+    <string name="map_error_geolocation_disabled_recenter">Pour recentrer autour de vous, vous devez activer la géolocalisation</string>
+    <string name="map_empty_newsfeed">C\'est plutôt calme par ici !\n\nOn dirait bien qu\'il n\'y a aucune activité à proximité… pour l\'instant !\n\nVous aussi, vous pouvez créer une activité solidaire : appuyez sur + en bas à droite</string>
+    <string name="map_empty_newsfeed_popup">On dirait que c\'est calme ici !\n\nDéplacez la carte pour trouver des activités du réseau.\n\nVous aussi, vous pouvez créer une activité solidaire : appuyez sur + en bas à droite</string>
+    <string name="newsfeed_load_more_button"><u>Rechercher plus loin.</u></string>
+    <string name="newsfeed_no_action">Aucune activité près de cette position</string>
+    <string name="newsfeed_tab_events_no_items">Aucun événement à proximité.</string>
+    <string name="newsfeed_tab_events_no_items_button"><u>Retrouvez plus d\'événements d\'Entourage ici</u></string>
+
+    <!--SRING MAP -->
+    <string name="map_filter_title">FILTRES</string>
+    <string name="map_filter_entourage_type_title">Types d’action</string>
+    <string name="map_filter_entourage_demand_text"><b>Voir les demandes concernant :</b></string>
+    <string name="map_filter_entourage_contribution_text"><b>Voir les contributions concernant :</b></string>
+    <string name="map_filter_time_title">Mis à jour il y a moins de</string>
+    <string name="map_filter_time_option1">24H</string>
+    <string name="map_filter_time_option2">8J</string>
+    <string name="map_filter_time_option3">1M</string>
+    <string name="map_filters_activated">Filtres activés</string>
+    <string name="map_no_filter">Filtres</string>
+
+    <string name="map_filter_publish_title">Publié par …</string>
+    <string name="map_filter_all">Tous</string>
+    <string name="map_filter_partnersOnly">Associations et\ninstitutions seulement</string>
+
+    <plurals name="notification_title_join_request">
+        <item quantity="one">Nouvelle demande de %1$s</item>
+        <item quantity="other">Nouvelles demandes de %1$s,…</item>
+    </plurals>
+    <plurals name="notification_title_chat_message">
+        <item quantity="one">Nouveau message de %1$s</item>
+        <item quantity="other">Nouveaux messages de %1$s,…</item>
+    </plurals>
+    <plurals name="notification_text_chat_message">
+        <item quantity="zero">Vous n\'avez pas de nouveau message</item>
+        <item quantity="one">Vous avez %1$d nouveau message : %2$s</item>
+        <item quantity="other">Vous avez %1$d nouveaux messages</item>
+    </plurals>
+
+    <string name="notification_text_join_request_entourage_single_nomsg">@string/entourage_join_request_received_nomsg</string>
+    <plurals name="notification_text_join_request_entourage_multiple">
+        <item quantity="one">%1$d personne souhaite rejoindre votre action.</item>
+        <item quantity="other">%1$d personnes souhaitent rejoindre votre action.</item>
+    </plurals>
+
+    <string name="default_notifiation_channel">Invitation</string>
+
+    <string name="params_notifs_title">Gestion des notifications</string>
+    <string name="param_notifs_switch_notifs">Notifications</string>
+    <string name="param_notifs_switch_messages">Notifications message</string>
+    <string name="param_notifs_switch_groups">Notifications groupe</string>
+    <string name="param_notifs_switch_events">Notifications évènement</string>
+    <string name="param_notifs_switch_actions">Notifications dons &amp; service</string>
+    <string name="param_notifs_validate">Appliquer les modifications</string>
+    <string name="notif_contrib_title"> Un voisin propose une nouvelle entraide. Peut-être que cela pourrait vous intéresser ?</string>
+    <string name="notif_solicitation_title">Un voisin recherche un équipement. Peut-être que vous pourriez l’aider ?</string>
+
+    <string name="pre_onboard_button_connect">Me connecter</string>
+    <string name="pre_onboard_button_next">Suivant</string>
+
+    <!-- Carousel -->
+    <string name="bt_previous">Précédent</string>
+    <string name="bt_pass">Passer</string>
+
+    <string name="intro_title_1">Le réseau social, vraiment social.</string>
+    <string name="intro_subtitle_1">Notre mission : mobiliser et outiller les citoyens pour entourer les plus exclus.</string>
+    <string name="intro_title_2">Sur l\'app Entourage :</string>
+    <string name="intro_subtitle_2">Rencontrez les voisins qui vous ressemblent lors d\'événements et échangez autour d\'actions de solidarité.</string>
+    <string name="intro_title_3">Entourage avec vous !</string>
+    <string name="intro_subtitle_3">Les équipes d\'ambassadeurs, de bénévoles et de modérateurs d\'Entourage vous accompagnent et vous orientent au quotidien.</string>
+
+    <string name="pre_onboard_choice_description_title">Le réseau social, vraiment social.</string>
+    <string name="pre_onboard_choice_login">J’ai déjà un compte</string>
+    <string name="pre_onboard_choice_signup">Je m’inscris</string>
+    <string name="pre_onboard_choice_about"><u>Qui est l’association Entourage ?</u></string>
+
+    <!-- ONBOARDING -->
+
+    <string name="onboard_button_pass">Passer</string>
+    <string name="onboard_welcome_sub">Tout d\'abord…\nComment vous appelez-vous ?</string>
+
+    <string name="onboard_welcome_title">Bienvenue !</string>
+    <string name="onboard_welcome_info">Seule la première lettre sera visible</string>
+    <string name="onboard_welcome_placeholder_firstname">Votre prénom</string>
+    <string name="onboard_welcome_placeholder_lastname">Votre nom</string>
+    <string name="onboard_welcome_title_firstname">Prénom*</string>
+    <string name="onboard_welcome_title_lastname">Nom*</string>
+    <string name="onboard_welcome_title_country">Pays*</string>
+    <string name="onboard_welcome_title_phone">Téléphone*</string>
+    <string name="onboard_welcome_title_email">E-mail</string>
+    <string name="onboard_welcome_placeholder_email">votreadresse@mail.com</string>
+    <string name="onboard_welcome_placeholder_phone">0600000000</string>
+    <string name="onboard_welcome_consent">Je souhaite recevoir des informations et des conseils de la part d’Entourage</string>
+    <string name="onboard_welcome_info_mandatory">*Champs obligatoires. Vos informations resteront confidentielles et ne seront jamais communiquées à des tiers.</string>
+
+    <string name="onboard_welcome_title_phase2">Entrez le code reçu par SMS</string>
+    <string name="onboard_sms_sub">Un SMS vient juste de vous être envoyé au :</string>
+    <string name="onboard_sms_wait_retry">Pas de code ? Réessayez dans %s</string>
+    <string name="onboard_sms_wait_retry_end">Renvoyer un code</string>
+    <string name="mod_phone_code">- Modifier</string>
+    <string name="onboard_code_placeholder">00000000</string>
+
+    <string name="onboard_welcome_title_phase3">Enchantés %s !</string>
+
+    <string name="onboard_phase3_entour_desc">En plus de faire des rencontres humaines, comment souhaitez-vous contribuer au sein de la Communauté Entourage ? </string>
+    <string name="onboard_phase3_entour_title">Entourer</string>
+    <string name="onboard_phase3_entour_subtitle">Proposer de l’aide …</string>
+    <string name="onboard_phase3_be_entour_title">Être entouré</string>
+    <string name="onboard_phase3_be_entour_subtitle">Demander de l’aide, trouver les structures sociales autour de moi …</string>
+    <string name="onboard_phase3_place_title">Quel est votre quartier ?</string>
+    <string name="onboard_phase3_asso_title">Je suis une association</string>
+
+    <string name="onboard_end_title">Bienvenue dans la Communauté Entourage </string>
+    <string name="onboard_end_subtitle">Félicitations, vous voilà prêt à faire vivre la solidarité autour de vous.</string>
+    <string name="onboard_end_bt">Commencer l’aventure humaine</string>
 
 
 
+    <string name="onboard_phone_title">Enchantés, %s.</string>
+    <string name="onboard_phone_sub">Quel est votre numéro de téléphone ?</string>
+    <string name="onboard_phone_info">Cette information restera confidentielle. Nous voulons juste vérifier que vous n’êtes pas un robot, mais un humain au grand coeur !</string>
+    <string name="onboard_phone_placeholder_phone">Téléphone</string>
+    <string name="onboard_sms_title">Entrez le code reçu par SMS</string>
+
+    <string name="attention_pop_title">Attention</string>
+    <string name="onboard_sms_pop_alert">Veuillez patienter encore %s sec avant de renouveler la demande.</string>
+    <string name="onboard_sms_no_pwd">Veuillez remplir le password</string>
+    <string name="onboard_type_title">Enchantés, %s.</string>
+    <string name="onboard_type_sub">Comment voulez-vous personnaliser l’application ?</string>
+    <string name="onboard_type_description">Entourage vous pose ces quelques questions pour vous accueillir et vous accompagner au mieux !\n<i>(Cette information ne sera pas visible par les autres membres du réseau).</i></string>
+    <string name="onboard_type_choice_neighbour">Pour aider les personnes sans-abri et créer du lien dans votre quartier.</string>
+    <string name="onboard_type_choice_alone">Pour demander de l’aide et découvrir des lieux de solidarité.</string>
+    <string name="onboard_type_choice_asso">Pour parler au nom de votre structure.</string>
+
+    <string name="onboard_type_choice1_title">Voisin solidaire</string>
+    <string name="onboard_type_choice2_title">Personne isolée ou en précarité</string>
+    <string name="onboard_type_choice3_title">Association ou service public</string>
+
+    <string name="onboard_place_title">Quel est votre quartier ?</string>
+    <string name="onboard_place_description">Vous pourrez répondre aux demandes de personnes en difficulté et d’associations de votre quartier, et vous pourrez vous-même proposer des dons de votre temps ou matériels.</string>
+    <string name="onboard_place_title_sdf">Dans quel quartier avez vous vos habitudes ?</string>
+    <string name="onboard_place_description_sdf">Vous pourrez demander de l’aide à vos voisins et rencontrer de nouvelles personnes lors d’événements conviviaux du réseaux.</string>
+    <string name="onboard_place_info">Entourage ne communique pas cette adresse.</string>
+    <string name="onboard_place_placeholder">Ex : 35000</string>
+    <string name="onboard_place_getting_current_location">En attente du GPS</string>
+    <string name="onboard_email_pwd_title">Ok super !</string>
+    <string name="onboard_email_pwd_description">Maintenant, finalisons la création de votre compte !</string>
+    <string name="onboard_email_pwd_info">Laissez-nous votre mail pour recevoir des informations et des conseils de la part d\'Entourage !</string>
+    <string name="onboard_email_pwd_info2">Entourage ne communique pas votre adresse e-mail.</string>
+    <string name="onboard_email_pwd_placeholder_email">E-mail</string>
+    <string name="onboard_photo_title">Merci, %s !</string>
+    <string name="onboard_photo_description">La touche finale : vous pouvez ajouter votre photo. Les membres d’Entourage de votre quartier ont hâte de faire votre connaissance !</string>
+    <string name="onboard_photo_bt_take_photo">Prendre une photo</string>
+    <string name="onboard_photo_bt_take_gallery">Importer depuis la galerie</string>
+    <string name="onboard_waiting_dialog"></string>
+
+    <string name="take_photo_title">Ajouter une photo ?</string>
+    <string name="take_photo_description">Avec une photo, c’est tout de suite plus sympa.\nMontrez-nous votre sourire le plus chaleureux.</string>
 
 
+    <!-- Onboarding Asso -->
+
+    <string name="onboard_asso_start_title">Ça tombe bien !</string>
+    <string name="onboard_asso_start_description">Entourage est une association au service de vos activités.</string>
+    <string name="onboard_asso_start_description_bold">Entourage</string>
+    <string name="onboard_asso_start_description2">Quelques belles histoires qui montrent la valeur de la communauté Entourage.</string>
+    <string name="onboard_asso_info_title">Concrètement, dans l’app, des fonctionnalités vous sont dédiées</string>
+    <string name="onboard_asso_info_description">Soyez bien identifié.e sur le réseau et engagez votre communauté</string>
+    <string name="onboard_asso_info_1">Un profil vérifié pour chacun de vos membres: un gage de confiance pour vos voisins</string>
+    <string name="onboard_asso_info_1_bold">Un profil vérifié</string>
+    <string name="onboard_asso_info_2">Une page pour votre structure : pour informer localement de vos activités et besoins.</string>
+    <string name="onboard_asso_info_2_bold">Une page pour votre structure</string>
+    <string name="onboard_asso_info_3">L’envoi de notifications dans votre quartier et au-delà aux membres de la communauté.</string>
+    <string name="onboard_asso_info_3_bold">L’envoi de notifications</string>
+    <string name="onboard_asso_fill_title">Parlez-nous de votre structure</string>
+    <string name="onboard_asso_fill_description">Dites-nous en plus sur votre association, nous vous recontacterons pour vérifier votre profil et vous créer une page asso !</string>
+    <string name="onboard_asso_fill_name_placeholder">Nom de mon association</string>
+    <string name="onboard_asso_fill_cp_placeholder">Code postal de mon association</string>
+    <string name="onboard_asso_fill_function_placeholder">Ma fonction</string>
+    <string name="onboard_asso_fill_error">Veuillez renseigner tous les champs.\nMerci</string>
+    <string name="onboard_asso_activity_title">%s, quel est votre coeur d’activité ?</string>
+    <string name="onboard_asso_activity_description">Sélectionnez le ou les secteurs d’activité de votre structure, cela nous permettra de vous proposer la meilleure façon d’utiliser l’application et mobiliser la communauté Entourage.</string>
+    <string name="onboard_asso_activity_error">Veuillez renseigner au minimum 1 centre d\'intéret.\nMerci</string>
+    <string name="onboard_asso_activity_choice_1">Aide aux\npersonnes</string>
+    <string name="onboard_asso_activity_choice_2">Initiatives culturelles</string>
+    <string name="onboard_asso_activity_choice_3">Service\nPublic</string>
+    <string name="onboard_asso_activity_choice_4">Autres ?</string>
+    <string name="onboard_asso_search">Recherche</string>
+
+    <!-- Onboarding SDF -->
+    <string name="onboard_sdf_activity_title">%s, que cherchez-vous ?</string>
+    <string name="onboard_sdf_activity_description">Plusieurs choix possibles.\nIl y a mille manières d\'être entouré et aidé.</string>
+    <string name="onboard_sdf_activity_choice_1">Me faire un\ncercle d’amis</string>
+    <string name="onboard_sdf_activity_choice_2">Participer à des\névénements</string>
+    <string name="onboard_sdf_activity_choice_3">Poser des\nquestions</string>
+    <string name="onboard_sdf_activity_choice_4">Demander\nde l’aide</string>
+    <string name="onboard_sdf_activity_choice_5">M’orienter</string>
+    <string name="onboard_sdf_activity_choice_6">Trouver des\nassociations</string>
+
+    <!-- Onboarding Neighbour -->
+    <string name="onboard_neighbour_activity_title">%s, que souhaitez-vous faire dans votre quartier ?</string>
+    <string name="onboard_neighbour_activity_description">Plusieurs choix possibles.\nNous vous ferons des propositions adaptées.</string>
+    <string name="onboard_neighbour_activity_choice_1">M’informer</string>
+    <string name="onboard_neighbour_activity_choice_2">Participer à des\névénements</string>
+    <string name="onboard_neighbour_activity_choice_3">Entourer une\npersonne isolée</string>
+    <string name="onboard_neighbour_activity_choice_4">Faire des dons\nmatériels</string>
+    <string name="onboard_neighbour_activity_choice_5">M’investir dans\nl’associatif</string>
+
+    <string name="onboard_place_title2_sdf">Super !</string>
+    <string name="onboard_place_description2_sdf">Souhaitez-vous ajouter un autre quartier ?</string>
+    <string name="onboard_place_title2">Super !</string>
+    <string name="onboard_place_description2">Vous venez de rejoindre des membres de votre quartier. Voulez-vous rajouter un autre quartier dans lequel agir ?</string>
+
+    <string name="input_names_title">Heureux de vous revoir !</string>
+    <string name="input_names_sub">Cette fois, pourriez-vous me dire comment vous vous appelez ?</string>
+    <string name="input_names_error">Veuillez remplir les 2 champs avec un minimum de %s caractères.</string>
+
+    <string name="onboard_sms_help"><u>Besoin d’aide ?\nContacter l\'équipe Entourage.</u></string>
+
+    <string name="partner_add_error">Erreur d’ajout du badge</string>
+    <string name="partner_remove_error">Échec de la suppression du badge</string>
+
+    <string name="partner_add_ok">Badge ajouté</string>
+    <string name="partner_remove_ok">Badge enlevé</string>
+
+    <string name="member_type_organization">Maraudeur</string>
+    <string name="role_ambassador">Ambassadeur</string>
+    <string name="role_admin">Ambassadeur</string>
+
+    <string name="disclaimer_link_public">https://blog.entourage.social/charte-ethique-grand-public/</string>
+
+    <string name="market_url">market://details?id=%s</string>
+    <string name="playstore_url">https://play.google.com/store/apps/details?id=%s</string>
+    <string name="facebook_url">https://www.facebook.com/EntourageReseauCivique</string>
+    <string name="twitter_url">https://twitter.com/r_entourage</string>
+    <string name="instagram_url">https://www.instagram.com/reseauentourage/</string>
+
+    <string name="terms_url">https://www.entourage.social/cgu</string>
+    <string name="website_url">https://www.entourage.social</string>
+    <string name="more_events_url">https://www.facebook.com/EntourageReseauCivique/events/</string>
+
+    <string name="contact_email">app@entourage.social</string>
+
+    <string name="redirect_link_format">%1$slinks/%2$s/redirect?token=%3$s</string>
+    <string name="redirect_link_no_token_format">%1$slinks/%2$s/redirect</string>
+
+    <string name="url_share_entourage_bitly">https://bit.ly/applientourage</string>
+
+    <string name="url_linkedout">https://www.linkedout.fr</string>
+    <string name="url_app_suggest">https://entourage-asso.typeform.com/to/NRhT8vmj</string>
+
+    <string name="url_app_partner">https://www.entourage.social/mecenes-et-partenaires/</string>
+    <string name="user_profile_display_title">PROFIL</string>
+    <string name="user_button_confirm_changes">Confirmer</string>
+    <string name="user_text_update_ok">Profil mis à jour</string>
+    <string name="user_text_update_ko">Erreur de mise à jour</string>
+    <string name="user_image_add_photo">Ajouter une photo</string>
+    <string name="user_profile_edit_button">Modifier</string>
+    <string name="user_profile_verified_information_label">Identitification vérifiée</string>
+    <string name="user_information_email_label">Adresse e-mail</string>
+    <string name="user_information_phone_label">Numéro de téléphone</string>
+    <string name="user_number_entourages_title">Entourages</string>
+    <string name="user_number_entourages_label">Nombre d’entourages</string>
+    <string name="user_associations_title">Association(s)</string>
+    <string name="user_entourage_count_format">%1$d</string>
+    <string name="user_about_title">À propos de moi</string>
+    <string name="user_about_hint">Présentez-vous à la communauté en quelques mots !</string>
+    <string name="user_about_edit_button">Écrire ma présentation</string>
+    <string name="user_about_mod_button">Modifier ma présentation</string>
+    <string name="user_message_button">lui écrire</string>
+    <string name="good_waves_member">Membre des bonnes ondes</string>
+
+    <string name="user_retrieval_error">Erreur de récupération du profil</string>
+
+    <string name="user_save_button">Enregistrer</string>
+    <string name="user_edit_firstname_label">Prénom</string>
+    <string name="user_edit_lastname_label">Nom</string>
+    <string name="user_edit_privacy_label">Mes informations privées</string>
+    <string name="user_edit_email_label">E-mail</string>
+    <string name="user_edit_password_label">Mot de passe</string>
+    <string name="user_edit_password_button">Changer</string>
+    <string name="user_edit_phone_label">Téléphone</string>
+    <string name="user_edit_no_association">Vous ne trouvez pas votre association ? Ecrivez à associations@entourage.social pour nous demander de l’ajouter !</string>
+    <string name="user_edit_add_association_label">Affichez sur votre profil l’association dont vous vous sentez proche !</string>
+    <string name="user_edit_add_association_button">Afficher une association</string>
+    <string name="user_edit_notifications_label">Notifications</string>
+    <string name="user_edit_action_zone_button_no_address">Définir ma zone</string>
+    <string name="user_edit_delete_account_button">Supprimer mon compte</string>
+
+    <string name="user_edit_profile_change_pwd">Changer de mot de passe</string>
+    <string name="user_edit_password_old_password_label">Ancien code d’accès</string>
+    <string name="user_edit_password_new_password_label">Nouveau code d’accès</string>
+    <string name="user_edit_password_confirm_password_label">Confirmer le code</string>
+    <string name="user_edit_password_invalid_current_password">Mot de passe invalide</string>
+    <string name="user_edit_password_new_password_too_short">Le nouveau mot de passe est trop court.</string>
+    <string name="user_edit_password_not_match">Les mots de passe ne coïncident pas.</string>
+    <string name="user_edit_password_changed">Mise à jour du mot de passe</string>
+
+    <string name="user_edit_profile_invalid_firstname">Le prénom doit comporter au moins 2 lettres.</string>
+    <string name="user_edit_profile_invalid_lastname">Le nom doit comporter au moins 2 lettres.</string>
+    <string name="user_edit_profile_invalid_phone">Le numéro doit comporter 9 ou 10 chiffres.</string>
+    <string name="user_edit_profile_invalid_email">L’adresse email est invalide.</string>
+
+    <string name="user_delete_account_dialog">Voulez-vous vraiment supprimer votre compte ?</string>
+    <string name="user_delete_account_failure">Erreur lors de la suppression du compte</string>
+
+    <string name="user_view_profile">Voir Profil</string>
+
+    <!-- Edit Association -->
+    <string name="user_edit_asso_title">SOUTENIR</string>
+    <string name="user_edit_asso_search_hint">Rechercher une association</string>
+
+    <!-- Photo wizard -->
+    <string name="user_photo_choose_description_title">Ajouter une photo ?</string>
+    <string name="user_photo_choose_description">Avec une photo, c’est tout de suite plus sympa.\nMontrez-nous votre sourire le plus chaleureux.</string>
+    <string name="user_photo_choose_photo">Choisir une photo</string>
+    <string name="user_photo_take_photo">Prendre une photo</string>
+    <string name="user_photo_edit_description">Déplacer et zoomer pour ajuster la photo de profil.</string>
+    <string name="user_photo_error_no_camera">Caméra non détectée</string>
+    <string name="user_photo_error_photo_path">Plus d’espace libre pour la photo</string>
+    <string name="user_photo_error_no_photo">L’image ne peut être lue</string>
+    <string name="user_photo_error_not_saved">Echec de la sauvegarde de la photo</string>
+    <string name="user_photo_error_camera_permission">Annulation: l’app n’a pas les permissions requises</string>
+    <string name="user_photo_error_read_permission">Annulation: l’app n’a pas les permissions requises</string>
+    <string name="user_photo_uploading">Envoi de la photo</string>
+
+    <!-- User Edit About -->
+    <string name="user_edit_about_description">@string/user_about_hint</string>
+    <string name="user_edit_about_hint">Ecrivez quelque chose…</string>
+    <string name="user_edit_about_save_button">@string/validate</string>
+    <string name="user_edit_about_error">Votre text doit faire moins de 200 caractères.</string>
+
+    <!-- User Report -->
+    <string name="user_report_explanation">Vous allez signaler cet utilisateur à nos administrateurs.</string>
+    <string name="user_report_reason">Merci de préciser pourquoi\nvous signalez cette personne :</string>
+    <string name="user_report_reason_hint">Ecrivez quelque chose…</string>
+    <string name="user_report_success">✔︎ Utilisateur signalé</string>
+    <string name="user_report_error_reason_empty">Ajoutez un message</string>
+    <string name="user_report_error_send_failed">L\'envoi du message a échoué, veuillez réessayer</string>
+    <string name="delete_error_send_failed">La suppression a échouée, veuillez réessayer</string>
+    <string name="delete_success_send">Suppression effectuée</string>
+    <string name="user_report_error_forbidden_group">Vous ne faites pas encore partie de ce groupe</string>
+
+    <!-- Action zone -->
+    <string name="user_action_zone_title">Définissez votre zone d\'action</string>
+    <string name="user_action_zone_description">Entourage, c’est utile parce que c’est local !\nPour recevoir des recommandations personnalisées à proximité, indiquez le lieu autour duquel vous souhaitez agir.</string>
+    <string name="user_action_zone_description2">Adresse - peut être approximative</string>
+    <string name="user_action_zone_disclaimer">Cette information est strictement confidentielle et n’est partagée à personne. Vous pouvez la modifier dans vos réglages.</string>
+    <string name="user_action_zone_hint">1 avenue Jean Jaurès…</string>
+    <string name="user_action_zone_no_address_error">Veuillez ajouter une adresse</string>
+    <string name="user_action_zone_send_ok">Adresse enregistrée</string>
+    <string name="user_action_zone_send_failed">L\'adresse n\'a pas été enregistrée</string>
+
+    <!-- Edit profile -->
+    <string name="profile_edit_zone_title">Où souhaitez-vous agir ?</string>
+    <string name="profile_edit_zone_description">Entourage est un réseau social !\nDécouvrez les initiatives solidaires de votre quartier et tissez des liens avec vos voisins</string>
+    <string name="profile_action_not_selected">"Mode d'action non sélectionné</string>
+    <string name="profile_title_action_mode">Mon mode d’action</string>
+    <string name="profile_activities">Activité(s) : %s</string>
+
+    <string name="profile_my_zones">Mes zones d\'actions</string>
+    <string name="profile_my_zones_description">Soyez notifié.e des initiatives solidaires et besoins dans ces zones</string>
+    <string name="profile_button_add2nd_zone">Ajouter une zone d\'action</string>
+
+    <string name="profile_asso_activity_title">Quel est votre coeur d’activité ?</string>
+    <string name="profile_sdf_activity_title">Que cherchez-vous ?</string>
+    <string name="profile_neighbour_activity_title">Que souhaitez-vous faire dans votre quartier ?</string>
+    <string name="profile_sdf_activity_description">Plusieurs choix possibles.\nIl y a mille manières d\'être entouré et aidé.</string>
+
+    <string name="rencontrer_sdf">Me faire un cercle d’amis</string>
+    <string name="event_sdf">Participer à des événements</string>
+    <string name="questions_sdf">Poser des questions</string>
+    <string name="aide_sdf">Demander de l’aide</string>
+    <string name="m_orienter_sdf">M’orienter</string>
+    <string name="trouver_asso_sdf">Trouver des associations</string>
+
+    <string name="m_informer_riverain">M’informer</string>
+    <string name="event_riverain">Participer à des événements</string>
+    <string name="entourer_riverain">Entourer une personne isolée</string>
+    <string name="dons_riverain">Faire des dons matériels</string>
+    <string name="benevolat_riverain">M’investir dans l’associatif</string>
+
+    <string name="aide_pers_asso">Aide aux personnes</string>
+    <string name="cult_sport_asso">Initiatives culturelles et sportives</string>
+    <string name="serv_pub_asso">Service Public</string>
+    <string name="autre_asso">Autres</string>
+    <string name="next_">Suivant</string>
+
+    <string name="title_association">Association</string>
+    <string name="title_asso_donation">Accepte les dons</string>
+    <string name="title_asso_volunteer">Cherche des bénévoles</string>
+    <string name="title_asso_information">Informations</string>
+    <string name="title_asso_needs">Besoins</string>
+    <string name="title_asso_accept_needs">Accepte des dons</string>
+    <string name="title_asso_accept_volunteers">Recherche des bénévoles</string>
+    <string name="title_asso_contact">Contact</string>
+
+    <string name="buttonFollowOnPartner">Abonné.e</string>
+    <string name="buttonFollowOffPartner">S\'abonner</string>
+    <string name="partnerFollowTitle">Se désabonner de %s ?</string>
+    <string name="partnerFollowMessage">Vous ne recevrez plus de notification lorsque %s lance de nouvelles initiatives solidaires.</string>
+    <string name="partnerFollowButtonValid">Se désabonner</string>
+    <string name="partnerFollowButtonCancel">Annuler</string>
+    <string name="webview_menu_browser">Ouvrir dans le navigateur</string>
+    <string name="webview_menu_copy">Copier le lien</string>
+    <string name="webview_menu_share">Partager</string>
+
+    <string name="webview_share_text">J\'ai découvert le guide Simple Comme Bonjour pour aller à la rencontre des personnes sans-abri. C\'est à découvrir ici :\n%1$s</string>
+
+    <string name="webview_copy_ok">Lien copié!</string>
 
 </resources>
