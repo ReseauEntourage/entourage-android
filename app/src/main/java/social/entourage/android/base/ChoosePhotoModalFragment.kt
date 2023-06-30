@@ -10,6 +10,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -97,6 +98,7 @@ class ChoosePhotoModalFragment : BottomSheetDialogFragment() {
     }
 
     fun setCropView(){
+        binding.cropView.visibility = View.INVISIBLE
         binding.cropView.addOnCropListener(object : OnCropListener {
             override fun onSuccess(bitmap: Bitmap) {
                 try {
@@ -242,11 +244,14 @@ class ChoosePhotoModalFragment : BottomSheetDialogFragment() {
             AnalyticsEvents.logEvent(
                 AnalyticsEvents.ACTION_GROUP_FEED_NEW_POST_VALIDATE_PIC)
             try {
-                binding.cropView.crop()
+                if(binding.cropView.isOffFrame()){
+                    Toast.makeText(activity, R.string.user_photo_error_zoom_in, Toast.LENGTH_SHORT)
+                }else{
+                    binding.cropView.crop()
+                }
             } catch(e: Exception) {
                 Timber.e(e)
             }
-
         }
     }
 
