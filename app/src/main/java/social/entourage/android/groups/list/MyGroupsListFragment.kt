@@ -63,9 +63,10 @@ class MyGroupsListFragment : Fragment() {
 
     private fun handleResponseGetGroups(allGroups: MutableList<Group>?) {
         allGroups?.let { groupsList.addAll(it) }
-        binding.progressBar.visibility = View.GONE
         updateView(groupsList.isEmpty())
         (binding.recyclerView.adapter as? GroupsListAdapter)?.updateGroupsList(groupsList)
+        binding.progressBar.visibility = View.GONE
+
     }
 
     private fun updateView(isListEmpty: Boolean) {
@@ -88,7 +89,6 @@ class MyGroupsListFragment : Fragment() {
         binding.swipeRefresh.isRefreshing = false
         page++
         myId?.let { groupPresenter.getMyGroups(page, groupPerPage, it) } ?: run {
-            binding.progressBar.visibility = View.GONE
             binding.emptyStateLayout.visibility = View.VISIBLE
         }
     }
@@ -123,6 +123,7 @@ class MyGroupsListFragment : Fragment() {
             if (!groupPresenter.isLoading && !groupPresenter.isLastPage) {
                 if (visibleItemCount + firstVisibleItemPosition >= totalItemCount && firstVisibleItemPosition >= 0 && totalItemCount >= groupPerPage) {
                     loadGroups()
+                    binding.progressBar.visibility = View.VISIBLE
                 }
             }
         }
