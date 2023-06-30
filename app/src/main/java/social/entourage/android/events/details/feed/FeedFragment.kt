@@ -1,11 +1,8 @@
 package social.entourage.android.events.details.feed
 
 import android.content.Intent
-import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
-import android.os.Handler
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -29,21 +26,24 @@ import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
 import com.google.gson.Gson
-import kotlinx.android.synthetic.main.new_fragment_feed.view.*
 import kotlinx.android.synthetic.main.new_fragment_feed.view.arrow
 import kotlinx.android.synthetic.main.new_fragment_feed.view.subtitle
-import kotlinx.android.synthetic.main.new_fragment_feed_event.view.*
-import kotlinx.coroutines.CoroutineScope
+import kotlinx.android.synthetic.main.new_fragment_feed_event.view.tv_more
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import social.entourage.android.BuildConfig
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
-import social.entourage.android.api.MetaDataRepository
-import social.entourage.android.databinding.NewFragmentFeedEventBinding
 import social.entourage.android.RefreshController
-import social.entourage.android.api.model.*
+import social.entourage.android.api.MetaDataRepository
+import social.entourage.android.api.model.EntourageUser
+import social.entourage.android.api.model.Events
+import social.entourage.android.api.model.Post
+import social.entourage.android.api.model.Status
+import social.entourage.android.api.model.Tags
+import social.entourage.android.api.model.toEventUi
 import social.entourage.android.comment.PostAdapter
+import social.entourage.android.databinding.NewFragmentFeedEventBinding
 import social.entourage.android.events.EventsPresenter
 import social.entourage.android.events.details.SettingsModalFragment
 import social.entourage.android.groups.details.feed.CallbackReportFragment
@@ -54,13 +54,15 @@ import social.entourage.android.report.ReportModalFragment
 import social.entourage.android.report.ReportTypes
 import social.entourage.android.tools.calculateIfEventPassed
 import social.entourage.android.tools.image_viewer.ImageDialogActivity
-import social.entourage.android.tools.image_viewer.ImageDialogFragment
 import social.entourage.android.tools.log.AnalyticsEvents
-import social.entourage.android.tools.setHyperlinkClickable
-import social.entourage.android.tools.utils.*
+import social.entourage.android.tools.utils.Const
+import social.entourage.android.tools.utils.CustomAlertDialog
+import social.entourage.android.tools.utils.Utils
+import social.entourage.android.tools.utils.px
+import social.entourage.android.tools.utils.underline
 import timber.log.Timber
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Locale
 import kotlin.math.abs
 
 class FeedFragment : Fragment(), CallbackReportFragment {
@@ -71,7 +73,7 @@ class FeedFragment : Fragment(), CallbackReportFragment {
     private val eventPresenter: EventsPresenter by lazy { EventsPresenter() }
     private var interestsList: ArrayList<String> = ArrayList()
     private var eventId = Const.DEFAULT_VALUE
-    private lateinit var event: Events
+    private var event: Events? = null
     private var myId: Int? = null
     private val args: FeedFragmentArgs by navArgs()
     private var shouldShowPopUp = true
@@ -125,7 +127,7 @@ class FeedFragment : Fragment(), CallbackReportFragment {
             binding.eventImageToolbar.alpha = res
             binding.eventNameToolbar.alpha = res
             binding.participate.isVisible =
-                res == 1F && !event.member && event.status == Status.OPEN
+                res == 1F && event?.member == false && event?.status == Status.OPEN
 
             binding.eventImage.alpha = 1f - res
         }
@@ -179,10 +181,10 @@ class FeedFragment : Fragment(), CallbackReportFragment {
     }
 
     private fun openGoogleMaps() {
-        if (event.online != true) {
+        if (event?.online != true) {
             binding.location.root.setOnClickListener {
                 val geoUri =
-                    String.format(getString(R.string.geoUri), event.metadata?.displayAddress)
+                    String.format(getString(R.string.geoUri), event?.metadata?.displayAddress)
                 val intent = Intent(Intent.ACTION_VIEW, Uri.parse(geoUri))
                 startActivity(intent)
             }
@@ -193,20 +195,20 @@ class FeedFragment : Fragment(), CallbackReportFragment {
 
         MetaDataRepository.metaData.observe(requireActivity(), ::handleMetaData)
         with(binding) {
-            eventName.text = event.title
-            eventNameToolbar.text = event.title
+            eventName.text = event?.title
+            eventNameToolbar.text = event?.title
             eventMembersNumberLocation.text = String.format(
                 getString(R.string.members_number),
-                event.membersCount,
+                event?.membersCount,
             )
-            event.metadata?.placeLimit?.let {
+            event?.metadata?.placeLimit?.let {
                 placesLimit.root.visibility = View.VISIBLE
                 placesLimit.content.text = String.format(
                     getString(R.string.places_numbers),
                     it,
                 )
             }
-            event.metadata?.startsAt?.let {
+            event?.metadata?.startsAt?.let {
                 binding.dateStartsAt.content.text = SimpleDateFormat(
                     context?.getString(R.string.feed_event_date),
                     Locale.FRANCE
@@ -214,7 +216,7 @@ class FeedFragment : Fragment(), CallbackReportFragment {
                     it
                 )
             }
-            event.metadata?.startsAt?.let {
+            event?.metadata?.startsAt?.let {
                 binding.time.content.text = SimpleDateFormat(
                     context?.getString(R.string.feed_event_time),
                     Locale.FRANCE
@@ -223,7 +225,7 @@ class FeedFragment : Fragment(), CallbackReportFragment {
                 )
             }
             initializeMembersPhotos()
-            if (event.member) {
+            if (event?.member == true) {
                 more.visibility = View.VISIBLE
                 join.visibility = View.GONE
                 participate.visibility = View.GONE
@@ -235,7 +237,7 @@ class FeedFragment : Fragment(), CallbackReportFragment {
                 participate.visibility = View.VISIBLE
                 toKnow.visibility = View.VISIBLE
                 eventDescription.visibility = View.VISIBLE
-                eventDescription.text = event.description
+                eventDescription.text = event?.description
                 more.visibility = View.GONE
 
                 initializeInterests()
@@ -243,24 +245,24 @@ class FeedFragment : Fragment(), CallbackReportFragment {
 
             binding.location.icon = AppCompatResources.getDrawable(
                 requireContext(),
-                if (event.online == true) R.drawable.new_web else R.drawable.new_location
+                if (event?.online == true) R.drawable.new_web else R.drawable.new_location
             )
 
-            (if (event.online == true) event.eventUrl else event.metadata?.displayAddress)?.let {
+            (if (event?.online == true) event?.eventUrl else event?.metadata?.displayAddress)?.let {
                 binding.location.content.underline(
                     it
                 )
             }
-            event.author.let {
-                binding.organizer.content.text = String.format(getString(R.string.event_organisez_by), it?.userName)
-                it?.partner.let {
-                    if(!it?.name.isNullOrEmpty()){
-                        binding.tvAssociation.text = String.format(getString(R.string.event_organisez_asso),it?.name)
+            event?.author.let {author->
+                binding.organizer.content.text = String.format(getString(R.string.event_organisez_by), author?.userName)
+                author?.partner.let { partner->
+                    if(!partner?.name.isNullOrEmpty()){
+                        binding.tvAssociation.text = String.format(getString(R.string.event_organisez_asso),partner?.name)
                         binding.tvAssociation.visibility = View.VISIBLE
                     }
                 }
             }
-            event.metadata?.landscapeUrl?.let {
+            event?.metadata?.landscapeUrl?.let {
                 Glide.with(requireActivity())
                     .load(it)
                     .error(R.drawable.new_group_illu)
@@ -284,8 +286,8 @@ class FeedFragment : Fragment(), CallbackReportFragment {
                     .into(eventImageToolbar)
             }
 
-            canceled.isVisible = event.status == Status.CLOSED
-            if (event.status == Status.CLOSED) {
+            canceled.isVisible = event?.status == Status.CLOSED
+            if (event?.status == Status.CLOSED) {
                 eventName.setTextColor(getColor(requireContext(), R.color.grey))
                 dateStartsAt.content.setTextColor(getColor(requireContext(), R.color.grey))
                 dateStartsAt.icon = ContextCompat.getDrawable(
@@ -370,8 +372,8 @@ class FeedFragment : Fragment(), CallbackReportFragment {
                         Const.POST_ID to post.id,
                         Const.POST_AUTHOR_ID to post.user?.userId,
                         Const.SHOULD_OPEN_KEYBOARD to shouldOpenKeyboard,
-                        Const.IS_MEMBER to event.member,
-                        Const.NAME to event.title
+                        Const.IS_MEMBER to event?.member,
+                        Const.NAME to event?.title
                     )
                 ), 0
         )
@@ -387,9 +389,7 @@ class FeedFragment : Fragment(), CallbackReportFragment {
                     it, ReportTypes.REPORT_POST_EVENT, meId == userId
                 ,false,false)
             }
-        if (reportGroupBottomDialogFragment != null) {
-            reportGroupBottomDialogFragment.setCallback(this)
-        }
+        reportGroupBottomDialogFragment?.setCallback(this)
         reportGroupBottomDialogFragment?.show(parentFragmentManager, ReportModalFragment.TAG)
 
     }
@@ -397,7 +397,7 @@ class FeedFragment : Fragment(), CallbackReportFragment {
     private fun openImageFragment(imageUrl:String, postId: Int) {
         val intent = Intent(requireContext(), ImageDialogActivity::class.java)
         intent.putExtra("postId", postId)
-        intent.putExtra("eventId", this.event.id)
+        intent.putExtra("eventId", this.event?.id)
         startActivity(intent)
     }
 
@@ -412,8 +412,9 @@ class FeedFragment : Fragment(), CallbackReportFragment {
         if(isAdded){
             binding.iconSettings.setOnClickListener {
                 AnalyticsEvents.logEvent(AnalyticsEvents.Event_detail_action_param)
-                SettingsModalFragment.newInstance(event)
-                    .show(parentFragmentManager, SettingsModalFragment.TAG)
+                event?.let { event ->
+                    SettingsModalFragment.newInstance(event).show(parentFragmentManager, SettingsModalFragment.TAG)
+                }
 
             }
         }
@@ -429,19 +430,21 @@ class FeedFragment : Fragment(), CallbackReportFragment {
 
     private fun handleAboutButton() {
         binding.more.tv_more.setOnClickListener {
-            val eventUI = event.toEventUi(requireContext())
-            val action =
-                FeedFragmentDirections.actionEventFeedToEventAbout(
-                    eventUI
-                )
-            findNavController().navigate(action)
+            event?.let { event ->
+                val eventUI = event.toEventUi(requireContext())
+                val action =
+                    FeedFragmentDirections.actionEventFeedToEventAbout(
+                        eventUI
+                    )
+                findNavController().navigate(action)
+            }
         }
         binding.btnShare.setOnClickListener {
             AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_SHARED)
             val shareTitle = getString(R.string.share_title_event)
             val shareIntent = Intent(Intent.ACTION_SEND).apply {
                 type = "text/plain"
-                putExtra(Intent.EXTRA_TEXT, shareTitle + "\n" + event.title + ": " + "\n" + createShareUrl())
+                putExtra(Intent.EXTRA_TEXT, shareTitle + "\n" + event?.title + ": " + "\n" + createShareUrl())
             }
             startActivity(Intent.createChooser(shareIntent, "Partager l'URL via"))
         }
@@ -450,7 +453,7 @@ class FeedFragment : Fragment(), CallbackReportFragment {
             val shareTitle = getString(R.string.share_title_event)
             val shareIntent = Intent(Intent.ACTION_SEND).apply {
                 type = "text/plain"
-                putExtra(Intent.EXTRA_TEXT, shareTitle + "\n" + event.title + ": " + "\n" + createShareUrl())
+                putExtra(Intent.EXTRA_TEXT, shareTitle + "\n" + event?.title + ": " + "\n" + createShareUrl())
             }
             startActivity(Intent.createChooser(shareIntent, "Partager l'URL via"))
         }
@@ -458,10 +461,8 @@ class FeedFragment : Fragment(), CallbackReportFragment {
 
     private fun createShareUrl():String{
         val deepLinksHostName = BuildConfig.DEEP_LINKS_URL
-        return "https://" + deepLinksHostName + "/app/outings/" + event.uuid_v2
+        return "https://" + deepLinksHostName + "/app/outings/" + event?.uuid_v2
     }
-
-
 
     fun getPrincipalMember(){
         eventPresenter.getEventMembers(eventId)
@@ -471,7 +472,7 @@ class FeedFragment : Fragment(), CallbackReportFragment {
     fun handleResponseGetMembers(allMembers: MutableList<EntourageUser>?) {
         if (allMembers != null) {
             for(member in allMembers){
-                if(member.id.toInt() == event.author?.userID){
+                if(member.id.toInt() == event?.author?.userID){
                     Timber.wtf("wtf true" + Gson().toJson(member))
                     if(member.communityRoles?.contains("Équipe Entourage") == true || member.communityRoles?.contains("Ambassadeur") == true){
                         Timber.wtf("wtf ambassador")
@@ -485,11 +486,11 @@ class FeedFragment : Fragment(), CallbackReportFragment {
 
     private fun handleParticipateButton() {
         binding.join.setOnClickListener {
-            if (!event.member) eventPresenter.participate(eventId)
+            if (event?.member==false) eventPresenter.participate(eventId)
         }
         binding.participate.setOnClickListener {
             AnalyticsEvents.logEvent(AnalyticsEvents.Event_detail_action_participate)
-            if (!event.member) eventPresenter.participate(eventId)
+            if (event?.member==false) eventPresenter.participate(eventId)
         }
 
     }
@@ -504,17 +505,19 @@ class FeedFragment : Fragment(), CallbackReportFragment {
 
     private fun handleParticipateResponse(isParticipating: Boolean) {
         if (isParticipating) {
-            event.member = !event.member
-            updateButtonJoin()
-            handleCreatePostButton()
-            binding.participate.hide()
-            if (event.metadata?.placeLimit != null) {
-                showLimitPlacePopUp()
-            } else {
-                if (shouldShowPopUp){
-                    Utils.showAddToCalendarPopUp(requireContext(), event.toEventUi(requireContext()))
+            event?.let {event ->
+                event.member = !event.member
+                updateButtonJoin()
+                handleCreatePostButton()
+                binding.participate.hide()
+                if (event.metadata?.placeLimit != null) {
+                    showLimitPlacePopUp()
+                } else {
+                    if (shouldShowPopUp){
+                        Utils.showAddToCalendarPopUp(requireContext(), event.toEventUi(requireContext()))
+                    }
+                    shouldShowPopUp = false
                 }
-                shouldShowPopUp = false
             }
         }
     }
@@ -538,7 +541,7 @@ class FeedFragment : Fragment(), CallbackReportFragment {
     }
 
     private fun handleCreatePostButton() {
-        if (event.member) {
+        if (event?.member == false) {
             binding.createPost.show()
             binding.postsLayoutEmptyState.subtitle.visibility = View.VISIBLE
             binding.postsLayoutEmptyState.arrow.visibility = View.VISIBLE
@@ -551,12 +554,11 @@ class FeedFragment : Fragment(), CallbackReportFragment {
 
     private fun handleMetaData(tags: Tags?) {
         interestsList.clear()
-        val groupInterests = event.interests
-        tags?.interests?.forEach { interest ->
-            if (groupInterests.contains(interest.id)) interest.name?.let { it ->
-                interestsList.add(
-                    it
-                )
+        event?.interests?.let { groupInterests ->
+            tags?.interests?.forEach { interest ->
+                if (groupInterests.contains(interest.id)) interest.name?.let {
+                    interestsList.add(it)
+                }
             }
         }
         binding.interests.adapter?.notifyDataSetChanged()
@@ -565,7 +567,7 @@ class FeedFragment : Fragment(), CallbackReportFragment {
     private fun initializeMembersPhotos() {
         binding.recyclerView.apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-            adapter = event.members?.let { GroupMembersPhotosAdapter(it) }
+            adapter = event?.members?.let { GroupMembersPhotosAdapter(it) }
         }
     }
 
@@ -585,19 +587,19 @@ class FeedFragment : Fragment(), CallbackReportFragment {
 
     private fun updateButtonJoin() {
         val label =
-            getString(if (event.member) R.string.participating else R.string.participate)
+            getString(if (event?.member==false) R.string.participating else R.string.participate)
         val textColor = ContextCompat.getColor(
             requireContext(),
-            if (event.member) R.color.orange else R.color.white
+            if (event?.member==false) R.color.orange else R.color.white
         )
         val background = ResourcesCompat.getDrawable(
             resources,
-            if (event.member) R.drawable.new_bg_rounded_button_orange_stroke else R.drawable.new_bg_rounded_button_orange_fill,
+            if (event?.member==false) R.drawable.new_bg_rounded_button_orange_stroke else R.drawable.new_bg_rounded_button_orange_fill,
             null
         )
         val rightDrawable = ResourcesCompat.getDrawable(
             resources,
-            if (event.member) R.drawable.new_check else R.drawable.new_plus_white,
+            if (event?.member==false) R.drawable.new_check else R.drawable.new_plus_white,
             null
         )
         binding.join.text = label
@@ -609,7 +611,7 @@ class FeedFragment : Fragment(), CallbackReportFragment {
             rightDrawable,
             null
         )
-        if(event.calculateIfEventPassed()){
+        if(event?.calculateIfEventPassed()==true){
             binding.join.visibility = View.GONE
         }
     }
