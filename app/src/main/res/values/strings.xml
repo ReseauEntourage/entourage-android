@@ -401,7 +401,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="notification_new_publications">Les nouvelles publications</string>
     <string name="notification_new_participants">L\'arrivée de nouveaux participants</string>
     <string name="edit_event_information">Modifier l’événement</string>
-    <string name="rules_event">Charte éthique des événement</string>
+    <string name="rules_event">Charte éthique des événements</string>
     <string name="report_event">Signaler l’événement</string>
     <string name="cancel_event">Annuler l’événement</string>
     <string name="modify_recurrence">Modifier la récurrence</string>
@@ -2364,6 +2364,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="user_photo_take_photo">Prendre une photo</string>
     <string name="user_photo_edit_description">Déplacer et zoomer pour ajuster la photo de profil.</string>
     <string name="user_photo_error_no_camera">Caméra non détectée</string>
+    <string name="user_photo_error_zoom_in">Photo hors champs, veuillez zoomer et ajuster la photo</string>
     <string name="user_photo_error_photo_path">Plus d’espace libre pour la photo</string>
     <string name="user_photo_error_no_photo">L’image ne peut être lue</string>
     <string name="user_photo_error_not_saved">Echec de la sauvegarde de la photo</string>

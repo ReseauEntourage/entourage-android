@@ -6,7 +6,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/card"
         android:layout_width="match_parent"
-        android:layout_height="90dp"
+        android:layout_height="95dp"
         android:elevation="2dp"
         android:orientation="horizontal">
 
