@@ -572,6 +572,76 @@ object AnalyticsEvents {
     const val View_WelcomeOfferHelp_Day11 = "View_WelcomeOfferHelp_Day11"
     const val Action_WelcomeOfferHelp_Day11 = "Action_WelcomeOfferHelp_Day11"
 
+    const val NotificationReceived__Demand = "NotificationReceived__Demand"
+
+    const val NotificationClicked__Demand = "NotificationClicked__Demand"
+
+    const val NotificationReceived__Contribution = "NotificationReceived__Contribution"
+
+    const val NotificationClicked__Contribution = "NotificationClicked__Contribution"
+
+    const val NotificationReceived__PostGroup = "NotificationReceived__PostGroup"
+
+    const val NotificationClicked__PostGroup = "NotificationClicked__PostGroup"
+
+    const val NotificationReceived__CommentGroup = "NotificationReceived__CommentGroup"
+
+    const val NotificationClicked__CommentGroup = "NotificationClicked__CommentGroup"
+
+    const val NotificationReceived__MemberGroup = "NotificationReceived__MemberGroup"
+
+    const val NotificationClicked__MemberGroup = "NotificationClicked__MemberGroup"
+
+    const val NotificationReceived__PostEvent = "NotificationReceived__PostEvent"
+
+    const val NotificationClicked__PostEvent = "NotificationClicked__PostEvent"
+
+    const val NotificationReceived__CommentEvent = "NotificationReceived__CommentEvent"
+
+    const val NotificationClicked__CommentEvent = "NotificationClicked__CommentEvent"
+
+    const val NotificationReceived__MemberEvent = "NotificationReceived__MemberEvent"
+
+    const val NotificationClicked__MemberEvent = "NotificationClicked__MemberEvent"
+
+    const val NotificationReceived__EventInGroup = "NotificationReceived__EventInGroup"
+
+    const val NotificationClicked__EventInGroup = "NotificationClicked__EventInGroup"
+
+    const val NotificationReceived__PrivateMessage = "NotificationReceived__PrivateMessage"
+
+    const val NotificationClicked__PrivateMessage = "NotificationClicked__PrivateMessage"
+
+    const val NotificationReceived__ModifiedEvent = "NotificationReceived__ModifiedEvent"
+
+    const val NotificationClicked__ModifiedEvent = "NotificationClicked__ModifiedEvent"
+
+    const val NotificationReceived__CanceledEvent = "NotificationReceived__CanceledEvent"
+
+    const val NotificationClicked__CanceledEvent = "NotificationClicked__CanceledEvent"
+
+    const val NotificationReceived__OfferHelp__WDay1 = "NotificationReceived__OfferHelp__WDay1"
+
+    const val NotificationClicked__OfferHelp__WDay1 = "NotificationClicked__OfferHelp__WDay1"
+
+    const val NotificationReceived__OfferHelp__WDay2 = "NotificationReceived__OfferHelp__WDay2"
+
+    const val NotificationClicked__OfferHelp__WDay2 = "NotificationClicked__OfferHelp__WDay2"
+
+    const val NotificationReceived__OfferHelp__WDay5 = "NotificationReceived__OfferHelp__WDay5"
+
+    const val NotificationClicked__OfferHelp__WDay5 = "NotificationClicked__OfferHelp__WDay5"
+
+    const val NotificationReceived__OfferHelp__WDay8 = "NotificationReceived__OfferHelp__WDay8"
+
+    const val NotificationClicked__OfferHelp__WDay8 = "NotificationClicked__OfferHelp__WDay8"
+
+    const val NotificationReceived__OfferHelp__WDay11 = "NotificationReceived__OfferHelp__WDay11"
+
+    const val NotificationClicked__OfferHelp__WDay11 = "NotificationClicked__OfferHelp__WDay11"
+
+
+    // EVENT NOTIF PUSH
 
 
 
