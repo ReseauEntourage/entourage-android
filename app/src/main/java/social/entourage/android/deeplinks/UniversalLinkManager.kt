@@ -91,6 +91,8 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
                     if (pathSegments.size > 2) {
                         val neighborhoodId = pathSegments[2]
                         presenter.getGroup(neighborhoodId)
+                    }else{
+                        (context as? MainActivity)?.goGroup()
                     }
                 }
                 pathSegments.contains("conversations") || pathSegments.contains("messages") -> {
