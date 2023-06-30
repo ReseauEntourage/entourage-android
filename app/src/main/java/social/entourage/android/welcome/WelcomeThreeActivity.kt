@@ -279,7 +279,7 @@ class WelcomeThreeActivity: BaseActivity() {
                             it
                         )
                     }
-                    allEvents[2].metadata?.landscapeUrl?.let {
+                    allEvents[1].metadata?.landscapeUrl?.let {
                         Glide.with(this)
                             .load(Uri.parse(allEvents[1].metadata?.landscapeUrl))
                             .placeholder(R.drawable.ic_event_placeholder)
