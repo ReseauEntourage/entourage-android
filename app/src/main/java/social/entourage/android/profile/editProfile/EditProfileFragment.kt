@@ -132,9 +132,7 @@ class EditProfileFragment : Fragment(), EditProfileCallback,
                     getString(R.string.description_counter),
                     s.length.toString()
                 )
-                descriptionRegistered = String.format(
-                    getString(R.string.description_counter),
-                    s.length.toString())
+                descriptionRegistered = binding.description.content.text.toString()
             }
 
             override fun afterTextChanged(s: Editable) { }
