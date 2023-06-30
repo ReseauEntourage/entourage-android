@@ -25,6 +25,7 @@ import social.entourage.android.api.model.notification.PushNotificationMessage
 import social.entourage.android.api.model.notification.PushNotificationContent
 import social.entourage.android.api.model.TimestampedObject
 import social.entourage.android.api.model.feed.FeedItem
+import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.welcome.*
 import timber.log.Timber
 
@@ -231,13 +232,62 @@ object PushNotificationManager {
         if(count>0) {
             pushNotificationMessageList?.first()?.let {pushNotificationMessage.pushNotificationId = it.pushNotificationId}
         }
+        try {
+            val pushNotifString = Gson().toJson(pushNotificationMessage)
+            val pushNotif = Gson().fromJson(pushNotifString, PushNotificationContent::class.java)
+            val stage = pushNotif.extra?.stage
+            if(stage.equals("h1")){AnalyticsEvents.logEvent(AnalyticsEvents.NotificationReceived__OfferHelp__WDay1)}
+            if(stage.equals("j2")){AnalyticsEvents.logEvent(AnalyticsEvents.NotificationReceived__OfferHelp__WDay2)}
+            if(stage.equals("j5")){AnalyticsEvents.logEvent(AnalyticsEvents.NotificationReceived__OfferHelp__WDay5)}
+            if(stage.equals("j!")){AnalyticsEvents.logEvent(AnalyticsEvents.NotificationReceived__OfferHelp__WDay8)}
+            if(stage.equals("j11")){AnalyticsEvents.logEvent(AnalyticsEvents.NotificationReceived__OfferHelp__WDay11)}
+        }catch (e:Exception){
+
+        }
+        try {
+            val pushNotifString = Gson().toJson(pushNotificationMessage)
+            val pushNotif = Gson().fromJson(pushNotifString, PushNotificationContent::class.java)
+            val tracking = pushNotif.extra?.tracking
+            if(tracking != null){
+                if(tracking.equals("join_request_on_create")){
+                    AnalyticsEvents.logEvent(AnalyticsEvents.NotificationReceived__MemberEvent)}
+                if(tracking.equals("outing_on_update")){
+                    AnalyticsEvents.logEvent(AnalyticsEvents.NotificationReceived__ModifiedEvent)}
+                if(tracking.equals("outing_on_create")){
+                    AnalyticsEvents.logEvent(AnalyticsEvents.NotificationReceived__PostEvent)}
+                if(tracking.equals("post_on_create_to_neighborhood")){
+                    AnalyticsEvents.logEvent(AnalyticsEvents.NotificationReceived__PostGroup)}
+                if(tracking.equals("comment_on_create_to_neighborhood")){
+                    AnalyticsEvents.logEvent(AnalyticsEvents.NotificationReceived__CommentGroup)}
+                if(tracking.equals("comment_on_create_to_outing")){
+                    AnalyticsEvents.logEvent(AnalyticsEvents.NotificationReceived__CommentEvent)}
+                if(tracking.equals("outing_on_add_to_neighborhood")){
+                    AnalyticsEvents.logEvent(AnalyticsEvents.NotificationReceived__EventInGroup)}
+                if(tracking.equals("contribution_on_create")){
+                    AnalyticsEvents.logEvent(AnalyticsEvents.NotificationReceived__Contribution)}
+                if(tracking.equals("solicitation_on_create")){
+                    AnalyticsEvents.logEvent(AnalyticsEvents.NotificationReceived__Demand)}
+                if(tracking.equals("private_chat_message_on_create")){
+                    AnalyticsEvents.logEvent(AnalyticsEvents.NotificationReceived__PrivateMessage)}
+                if(tracking.equals("join_request_on_create_to_neighborhood")){
+                    AnalyticsEvents.logEvent(AnalyticsEvents.NotificationReceived__MemberGroup)}
+                if(tracking.equals("join_request_on_create_to_outing")){
+                    AnalyticsEvents.logEvent(AnalyticsEvents.NotificationReceived__MemberEvent)}
+                if(tracking.equals("outing_on_cancel")){
+                    AnalyticsEvents.logEvent(AnalyticsEvents.NotificationReceived__CanceledEvent)}
+            }
+        }catch(e:Exception){
+
+        }
 
         val clickedIntent = Intent(context, NotificationActionReceiver::class.java).apply {
             action = NotificationActionReceiver.ACTION_CLICKED
+            putExtra("notification_content", Gson().toJson(pushNotificationMessage)) // ou n'importe quelle autre information que vous voulez passer
         }
 
         val dismissedIntent = Intent(context, NotificationActionReceiver::class.java).apply {
             action = NotificationActionReceiver.ACTION_DISMISSED
+            putExtra("notification_content", Gson().toJson(pushNotificationMessage)) // ou n'importe quelle autre information que vous voulez passer
         }
 
         val requestCode = pushNotificationMessage.pushNotificationId
