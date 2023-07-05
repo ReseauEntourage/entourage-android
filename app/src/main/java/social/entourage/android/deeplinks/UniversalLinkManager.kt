@@ -87,7 +87,10 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
                         presenter.getEvent(outingId)
 
                     } else {
-                        (context as? MainActivity)?.goEvent()
+                        val intent = Intent(context, MainActivity::class.java)
+                            .addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+                        intent.putExtra("fromWelcomeActivityThreeEvent", true)
+                        context.startActivity(intent)
 
                     }
                 }
@@ -121,7 +124,10 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
                             val soliciationId = pathSegments[2]
                             presenter.getDetailAction(soliciationId,true)
                         }else{
-                            (context as? MainActivity)?.goContrib()
+                            val intent = Intent(context, MainActivity::class.java)
+                                .addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+                            intent.putExtra("goDemand", true)
+                            context.startActivity(intent)
                         }
                     }
                 }
@@ -135,7 +141,10 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
                             val contribId = pathSegments[2]
                             presenter.getDetailAction(contribId,false)
                         }else{
-                            (context as? MainActivity)?.goDemand()
+                            val intent = Intent(context, MainActivity::class.java)
+                                .addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+                            intent.putExtra("goContrib", true)
+                            context.startActivity(intent)
                         }
                     }
                 }

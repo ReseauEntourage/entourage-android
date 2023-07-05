@@ -72,6 +72,7 @@ class MainActivity : BaseSecuredActivity() {
         if (uri != null) {
             universalLinkManager.handleUniversalLink(uri)
         }
+        this.intent = null
 
     }
 
@@ -124,7 +125,15 @@ class MainActivity : BaseSecuredActivity() {
         val fromWelcomeActivityThreeEvent = intent.getBooleanExtra("fromWelcomeActivityThreeEvent", false)
         val fromWelcomeActivityThreeDemand = intent.getBooleanExtra("fromWelcomeActivityThreeDemand", false)
         val fromWelcomeActivityThreeContrib = intent.getBooleanExtra("fromWelcomeActivityThreeContrib", false)
+        val goContrib = intent.getBooleanExtra("goContrib", false)
+        val goDemand = intent.getBooleanExtra("goDemand", false)
 
+        if(goContrib){
+            goContrib()
+        }
+        if(goDemand){
+            goDemand()
+        }
         if (fromWelcomeActivity) {
             goGroup()
         }
@@ -271,7 +280,7 @@ class MainActivity : BaseSecuredActivity() {
         navController.navigate(R.id.navigation_messages)
     }
     fun goContrib(){
-        val bundle = bundleOf("isActionDemand" to true) // Mettez ici la valeur souhaitée pour "isActionDemand"
+        val bundle = bundleOf("isActionDemand" to false) // Mettez ici la valeur souhaitée pour "isActionDemand"
         navController.navigate(R.id.navigation_donations, bundle)
 
     }
