@@ -33,7 +33,7 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
 
     fun handleUniversalLink(uri: Uri) {
         val pathSegments = uri.pathSegments
-
+        Log.wtf("wtf", "path segment " + pathSegments)
         uri.queryParameterNames.forEach { name ->
             val value = uri.getQueryParameter(name)
             Timber.wtf("eho $name: $value")
@@ -92,7 +92,11 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
                         val neighborhoodId = pathSegments[2]
                         presenter.getGroup(neighborhoodId)
                     }else{
-                        (context as? MainActivity)?.goGroup()
+                        val intent = Intent(context, MainActivity::class.java)
+                            .addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+                        intent.putExtra("fromWelcomeActivity", true)
+                        intent.putExtra("goMyGroup", true)
+                        context.startActivity(intent)
                     }
                 }
                 pathSegments.contains("conversations") || pathSegments.contains("messages") -> {

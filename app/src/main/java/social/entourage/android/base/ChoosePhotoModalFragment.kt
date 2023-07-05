@@ -127,33 +127,21 @@ class ChoosePhotoModalFragment : BottomSheetDialogFragment() {
     }
 
     private fun saveBitmap(bitmap: Bitmap) {
-/*        if(pickingPhoto){
-            binding.cropView.setBitmap(bitmap)
-            photoFileUri?.let {
-                Utils.saveBitmapToFileWithUrl(bitmap,
-                    it, requireContext())
-            }
-
-        }else if(takingPhoto){
-            binding.cropView.setBitmap(bitmap)
-            photoFileUri?.let {
-                Utils.saveBitmapToFileWithUrl(bitmap,
-                    it, requireContext())
-            }
-        }*/
-        //photoCropedFileUri
         try {
             binding.cropView.setBitmap(bitmap)
-            photoFileUri?.let {
-                Utils.saveBitmapToFileWithUrl(bitmap,
-                    it, requireContext())
+            var saveUri = photoFileUri
+            if (pickingPhoto) {
+                Log.wtf("wtf", "gone 1")
+                saveUri = createImageFile()  // Creates new file if picking from gallery
             }
-        }catch (e: Exception){
+            saveUri?.let {
+                Log.wtf("wtf", "gone 2")
+                Utils.saveBitmapToFileWithUrl(bitmap, it, requireContext())
+            }
+        } catch (e: Exception) {
+            Log.wtf("wtf", "error 1")
             Timber.w(e)
-
         }
-
-
     }
 
 

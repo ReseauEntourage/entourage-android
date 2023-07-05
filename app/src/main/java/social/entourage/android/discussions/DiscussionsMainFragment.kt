@@ -78,6 +78,7 @@ class DiscussionsMainFragment : Fragment() {
 
     private fun handleResponseGetDiscussions(allGroups: MutableList<Conversation>?) {
         allGroups?.let {
+            messagesList.clear()
             messagesList.addAll(it) }
         binding.progressBar.visibility = View.GONE
         binding.recyclerView.adapter?.notifyDataSetChanged()
@@ -104,7 +105,7 @@ class DiscussionsMainFragment : Fragment() {
     private fun showDetail(position:Int) {
         val conversation = messagesList[position]
 
-        startActivityForResult(
+        startActivity(
             Intent(context, DetailConversationActivity::class.java)
                 .putExtras(
                     bundleOf(
@@ -117,8 +118,9 @@ class DiscussionsMainFragment : Fragment() {
                         Const.IS_CONVERSATION to true,
                         Const.HAS_TO_SHOW_MESSAGE to conversation.hasToShowFirstMessage()
                     )
-                ),0
+                )
         )
+
         messagesList[position].numberUnreadMessages = 0
         discussionsPresenter.getAllMessages.postValue(messagesList)
     }

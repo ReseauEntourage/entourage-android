@@ -50,7 +50,7 @@ class HomeFragment : Fragment() {
     private var userSummary: Summary? = null
 
     private var isAlreadyLoadSummary = false
-
+    private var timer:CountDownTimer? = null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -76,6 +76,13 @@ class HomeFragment : Fragment() {
         homePresenter.unreadMessages.observe(requireActivity(), ::updateUnreadCount)
         homePresenter.getUnreadCount()
         homePresenter.notifsCount.observe(requireActivity(), ::updateNotifsCount)
+       timer = object: CountDownTimer(2000, 1000) {
+            override fun onTick(millisUntilFinished: Long) {}
+
+            override fun onFinish() {
+                showCongratDialog()
+            }
+        }
     }
 
     override fun onResume() {
@@ -340,5 +347,10 @@ class HomeFragment : Fragment() {
 //            if (it.isEmpty()) return
 //            HomeCongratPopFragment.newInstance(it as ArrayList<HomeAction>).show(parentFragmentManager, HomeCongratPopFragment.TAG)
 //        }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        timer?.cancel()
     }
 }

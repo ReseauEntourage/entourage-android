@@ -85,7 +85,7 @@ class PedagoListAdapter(
             onItemClickListener.onItemClick(child)
         }
 
-        Glide.with(context)
+        Glide.with(childViewHolder.itemView)
             .load(child.imageUrl)
             .placeholder(R.drawable.new_illu_empty_state_event)
             .apply(RequestOptions().override(77.px, 46.px))
