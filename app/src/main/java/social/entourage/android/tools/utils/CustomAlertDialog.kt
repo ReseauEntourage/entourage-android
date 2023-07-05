@@ -50,6 +50,81 @@ object CustomAlertDialog {
         alertDialog.show()
     }
 
+    fun showForLastActionOne(
+        context: Context,
+        title: String,
+        content: String,
+        action: String,
+        onNo: () -> (Unit) = {},
+        onYes: (() -> Unit),
+    ) {
+        val layoutInflater = LayoutInflater.from(context)
+        val customDialog: View = layoutInflater.inflate(R.layout.custom_alert_action_1, null)
+        val builder = AlertDialog.Builder(context)
+        builder.setView(customDialog)
+        val alertDialog = builder.create()
+        customDialog.findViewById<TextView>(R.id.title).text = title
+        customDialog.findViewById<TextView>(R.id.content).text = content
+        customDialog.findViewById<TextView>(R.id.yes).text = action
+        customDialog.findViewById<ImageButton>(R.id.btn_cross).setOnClickListener {
+            alertDialog.dismiss()
+        }
+        customDialog.findViewById<Button>(R.id.yes).setOnClickListener {
+            onYes()
+            alertDialog.dismiss()
+        }
+        customDialog.findViewById<Button>(R.id.no).setOnClickListener {
+            onNo()
+            alertDialog.dismiss()
+        }
+        alertDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        alertDialog.show()
+    }
+    fun showForLastActionTwo(
+        context: Context,
+        title: String,
+        content: String,
+        action: String,
+        onNo: () -> (Unit) = {},
+        onYes: (() -> Unit),
+    ) {
+        val layoutInflater = LayoutInflater.from(context)
+        val customDialog: View = layoutInflater.inflate(R.layout.custom_alert_action_2, null)
+        val builder = AlertDialog.Builder(context)
+        builder.setView(customDialog)
+        val alertDialog = builder.create()
+        customDialog.findViewById<TextView>(R.id.title).text = title
+        customDialog.findViewById<TextView>(R.id.content).text = content
+        customDialog.findViewById<TextView>(R.id.yes).text = action
+        customDialog.findViewById<ImageButton>(R.id.btn_cross).setOnClickListener {
+            alertDialog.dismiss()
+        }
+        customDialog.findViewById<Button>(R.id.yes).setOnClickListener {
+            onYes()
+            alertDialog.dismiss()
+        }
+        alertDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        alertDialog.show()
+    }
+    fun showForLastActionThree(
+        context: Context,
+        title: String,
+        content: String,
+        action: String,
+        onNo: () -> (Unit) = {},
+        onYes: (() -> Unit),
+    ) {
+        val layoutInflater = LayoutInflater.from(context)
+        val customDialog: View = layoutInflater.inflate(R.layout.custom_alert_dialog_three, null)
+        val builder = AlertDialog.Builder(context)
+        builder.setView(customDialog)
+        val alertDialog = builder.create()
+        customDialog.findViewById<TextView>(R.id.title).text = title
+        customDialog.findViewById<TextView>(R.id.content).text = content
+        alertDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        alertDialog.show()
+    }
+
     fun showOnlyOneButton(
         context: Context,
         title: String,
