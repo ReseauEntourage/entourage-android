@@ -492,7 +492,6 @@ class FeedFragment : Fragment(), CallbackReportFragment {
             AnalyticsEvents.logEvent(AnalyticsEvents.Event_detail_action_participate)
             if (event?.member==false) eventPresenter.participate(eventId)
         }
-
     }
 
     private fun handleMembersButton() {
@@ -542,11 +541,11 @@ class FeedFragment : Fragment(), CallbackReportFragment {
 
     private fun handleCreatePostButton() {
         if (event?.member == false) {
-            binding.createPost.show()
+            binding.createPost.hide(true)
             binding.postsLayoutEmptyState.subtitle.visibility = View.VISIBLE
             binding.postsLayoutEmptyState.arrow.visibility = View.VISIBLE
         } else {
-            binding.createPost.hide(true)
+            binding.createPost.show()
             binding.postsLayoutEmptyState.subtitle.visibility = View.GONE
             binding.postsLayoutEmptyState.arrow.visibility = View.GONE
         }
