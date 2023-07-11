@@ -197,10 +197,20 @@ class FeedFragment : Fragment(), CallbackReportFragment {
         with(binding) {
             eventName.text = event?.title
             eventNameToolbar.text = event?.title
-            eventMembersNumberLocation.text = String.format(
-                getString(R.string.members_number),
-                event?.membersCount,
-            )
+
+            if(event != null && event?.membersCount!! > 1){
+                eventMembersNumberLocation.text = String.format(
+                    getString(R.string.members_number),
+                    event?.membersCount,
+                )
+            }else{
+                eventMembersNumberLocation.text = String.format(
+                    getString(R.string.members_number_singular),
+                    event?.membersCount,
+                )
+            }
+
+
             event?.metadata?.placeLimit?.let {
                 placesLimit.root.visibility = View.VISIBLE
                 placesLimit.content.text = String.format(

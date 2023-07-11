@@ -72,10 +72,18 @@ class PostAdapter(
                 } else {
                     binding.postCommentsNumber.visibility = View.VISIBLE
                     binding.postNoComments.visibility = View.GONE
-                    binding.postCommentsNumber.text = String.format(
-                        holder.itemView.context.getString(R.string.posts_comment_number),
-                        commentsCount
-                    )
+                    if(commentsCount != null && commentsCount!! > 1){
+                        binding.postCommentsNumber.text = String.format(
+                            holder.itemView.context.getString(R.string.posts_comment_number),
+                            commentsCount
+                        )
+                    }else{
+                        binding.postCommentsNumber.text = String.format(
+                            holder.itemView.context.getString(R.string.posts_comment_number_plural),
+                            commentsCount
+                        )
+                    }
+
                 }
                 binding.date.text = SimpleDateFormat(
                     itemView.context.getString(R.string.post_date),
