@@ -79,7 +79,7 @@ class PostAdapter(
                         )
                     }else{
                         binding.postCommentsNumber.text = String.format(
-                            holder.itemView.context.getString(R.string.posts_comment_number_plural),
+                            holder.itemView.context.getString(R.string.posts_comment_number_singular),
                             commentsCount
                         )
                     }
