@@ -83,7 +83,6 @@ class PostAdapter(
                             commentsCount
                         )
                     }
-
                 }
                 binding.date.text = SimpleDateFormat(
                     itemView.context.getString(R.string.post_date),
