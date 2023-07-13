@@ -596,7 +596,7 @@ class FeedFragment : Fragment(), CallbackReportFragment {
 
     private fun updateButtonJoin() {
         val label =
-            getString(if (event?.member==true) R.string.participate else R.string.participating)
+            getString(if (event?.member==true) R.string.participating else R.string.participate)
         val textColor = ContextCompat.getColor(
             requireContext(),
             if (event?.member==true) R.color.orange else R.color.white
