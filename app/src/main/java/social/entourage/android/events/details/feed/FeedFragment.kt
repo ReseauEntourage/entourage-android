@@ -560,7 +560,7 @@ class FeedFragment : Fragment(), CallbackReportFragment {
             binding.postsLayoutEmptyState.arrow.visibility = View.GONE
         }
     }
-
+ 
     private fun handleMetaData(tags: Tags?) {
         interestsList.clear()
         event?.interests?.let { groupInterests ->
