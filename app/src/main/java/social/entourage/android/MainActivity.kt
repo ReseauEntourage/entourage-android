@@ -120,7 +120,7 @@ class MainActivity : BaseSecuredActivity() {
     }
 
     fun useIntentForRedictection(intent: Intent){
-        intent?.action?.let { action ->
+        intent.action?.let { action ->
             checkIntentAction(action, intent?.extras)
         }
         val fromWelcomeActivity = intent.getBooleanExtra("fromWelcomeActivity", false)
