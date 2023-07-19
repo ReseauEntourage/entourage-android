@@ -282,8 +282,9 @@ object PushNotificationManager {
 
         val clickedIntent = Intent(context, NotificationActionReceiver::class.java).apply {
             action = NotificationActionReceiver.ACTION_CLICKED
-            putExtra("notification_content", Gson().toJson(pushNotificationMessage)) // ou n'importe quelle autre information que vous voulez passer
+            putExtra("notification_content", Gson().toJson(pushNotificationMessage))
         }
+
 
         val dismissedIntent = Intent(context, NotificationActionReceiver::class.java).apply {
             action = NotificationActionReceiver.ACTION_DISMISSED
