@@ -196,6 +196,7 @@ class WelcomeThreeActivity: BaseActivity() {
 
     private fun handleResponseGetEvents(allEvents: MutableList<Events>?) {
         allEvents.let {
+            Log.wtf("wtf", "size" + allEvents!!.size)
             if(allEvents.size > 0){
                 binding.imgArtifice.visibility = View.VISIBLE
                 handleMainButtonForEvent()
