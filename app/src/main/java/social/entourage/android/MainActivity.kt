@@ -72,7 +72,7 @@ class MainActivity : BaseSecuredActivity() {
         if (uri != null) {
             universalLinkManager.handleUniversalLink(uri)
         }
-        this.intent = null
+
 
     }
 
@@ -112,10 +112,11 @@ class MainActivity : BaseSecuredActivity() {
             //TODO authenticationController.me?.unreadCount?.let { bottomBar?.updateBadgeCountForUser(it) }
         }
         //TODO bottomBar?.refreshBadgeCount()
-
+        Log.wtf("wtf", "hello intent " + this.intent)
 
         if(this.intent != null){
             useIntentForRedictection(this.intent)
+            this.intent = null
         }
     }
 
