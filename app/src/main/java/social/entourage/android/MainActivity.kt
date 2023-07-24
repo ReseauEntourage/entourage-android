@@ -112,7 +112,6 @@ class MainActivity : BaseSecuredActivity() {
             //TODO authenticationController.me?.unreadCount?.let { bottomBar?.updateBadgeCountForUser(it) }
         }
         //TODO bottomBar?.refreshBadgeCount()
-        Log.wtf("wtf", "hello intent " + this.intent)
 
         if(this.intent != null){
             useIntentForRedictection(this.intent)
@@ -172,7 +171,6 @@ class MainActivity : BaseSecuredActivity() {
     }
 
     private fun checkIntentAction(action: String, extras: Bundle?) {
-        Log.wtf("wtf", "hello gone here")
         val pushNotificationMessage = extras?.get(PushNotificationManager.PUSH_MESSAGE) as? PushNotificationMessage
         pushNotificationMessage?.content?.extra?.let { extra ->
             extra.instance?.let { instance ->

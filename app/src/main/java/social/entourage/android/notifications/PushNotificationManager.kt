@@ -58,7 +58,6 @@ object PushNotificationManager {
      * @param context The context into which to add the push notification
      */
     fun handlePushNotification(pushNotificationMessage: PushNotificationMessage, context: Context) {
-        Log.wtf("wtf", "wtf : " + Gson().toJson(pushNotificationMessage))
         if(pushNotificationMessage.content!= null) {
             addPushNotification(pushNotificationMessage)
             EntourageApplication.get().addPushNotification(pushNotificationMessage)
@@ -243,7 +242,6 @@ object PushNotificationManager {
             if(stage.equals("j!")){AnalyticsEvents.logEvent(AnalyticsEvents.NotificationReceived__OfferHelp__WDay8)}
             if(stage.equals("j11")){AnalyticsEvents.logEvent(AnalyticsEvents.NotificationReceived__OfferHelp__WDay11)}
         }catch (e:Exception){
-            Log.wtf("wtf", "hello here")
         }
         try {
             val pushNotifString = Gson().toJson(pushNotificationMessage)
@@ -278,7 +276,6 @@ object PushNotificationManager {
                     AnalyticsEvents.logEvent(AnalyticsEvents.NotificationReceived__CanceledEvent)}
             }
         }catch(e:Exception){
-            Log.wtf("wtf", "hello here two")
 
         }
 
