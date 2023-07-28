@@ -69,7 +69,6 @@ class HomeFragment : Fragment() {
         actionsPresenter = ViewModelProvider(requireActivity()).get(ActionsPresenter::class.java)
         homePresenter.summary.observe(requireActivity(), ::updateContributionsView)
         isAlreadyLoadSummary = true
-        homePresenter.getSummary()
 
         val viewModel = ViewModelProvider(requireActivity()).get(
             CommunicationRecoWebUrlHandlerViewModel::class.java)
@@ -92,17 +91,19 @@ class HomeFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
+        homePresenter.getSummary()
+
         reloadDatasFromRecos(true)
         homePresenter.getNotificationsCount()
         AnalyticsEvents.logEvent(AnalyticsEvents.Home_view_home)
         //TODO : suppress this testing code
-//        var summary = Summary()
-//        var action = SummaryAction()
-//        action.title = "ma contrib/demande"
-//        action.actionType = "contribution"
-//        action.id = 10000
-//        summary.unclosedAction = action
-//        onActionUnclosed(summary)
+        var summary = Summary()
+        var action = SummaryAction()
+        action.title = "ma contrib/demande"
+        action.actionType = "solicitation"
+        action.id = 10000
+        summary.unclosedAction = action
+        onActionUnclosed(summary)
     }
 
     /*    private fun updateNotifsCount(count:Int) {
