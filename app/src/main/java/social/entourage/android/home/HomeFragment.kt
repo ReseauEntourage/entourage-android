@@ -225,11 +225,10 @@ class HomeFragment : Fragment() {
                             (activity as MainActivity).goDemand()
                             AnalyticsEvents.logEvent(AnalyticsEvents.Clic__SeeDemand__Day10)
                         })
-
                     },
                     onYes = {
                         AnalyticsEvents.logEvent(AnalyticsEvents.Clic__StateDemandPop__Yes__Day10)
-                        //actionsPresenter.cancelAction(summary.unclosedAction!!.id!!,true,true, "")
+                        actionsPresenter.cancelAction(summary.unclosedAction!!.id!!,true,true, "")
                         AnalyticsEvents.logEvent(AnalyticsEvents.View__DeleteDemandPop__Day10)
                         CustomAlertDialog.showForLastActionThree(requireContext(),
                             getString(R.string.custom_dialog_action_title_three),
