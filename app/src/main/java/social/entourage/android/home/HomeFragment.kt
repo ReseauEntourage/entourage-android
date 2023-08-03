@@ -32,6 +32,7 @@ import social.entourage.android.api.model.HomeAction
 import social.entourage.android.api.model.Summary
 import social.entourage.android.api.model.SummaryAction
 import social.entourage.android.api.model.User
+import social.entourage.android.groups.GroupPresenter
 import social.entourage.android.groups.details.feed.FeedActivity
 import social.entourage.android.profile.ProfileActivity
 import social.entourage.android.user.UserProfileActivity
@@ -52,6 +53,8 @@ class HomeFragment : Fragment() {
     val binding: NewFragmentHomeBinding get() = _binding!!
     private val homePresenter: HomePresenter by lazy { HomePresenter() }
     private lateinit var actionsPresenter: ActionsPresenter
+    private val groupPresenter: GroupPresenter by lazy { GroupPresenter() }
+
 
     private var user: User? = null
     private var userSummary: Summary? = null
@@ -82,6 +85,8 @@ class HomeFragment : Fragment() {
         handlePedagogicalContentButton()
         homePresenter.unreadMessages.observe(requireActivity(), ::updateUnreadCount)
         homePresenter.getUnreadCount()
+        groupPresenter.hasUserJoinedGroup.observe(viewLifecycleOwner, ::handleJoinResponse)
+
         homePresenter.notifsCount.observe(requireActivity(), ::updateNotifsCount)
        timer = object: CountDownTimer(2000, 1000) {
             override fun onTick(millisUntilFinished: Long) {}
@@ -208,6 +213,17 @@ class HomeFragment : Fragment() {
         onActionUnclosed(summary)
     }
 
+    private fun handleJoinResponse(hasJoined: Boolean) {
+       if(hasJoined){
+           //HERE GO TO GROUP SPORT efEKBnEVujAU
+           requireActivity().startActivity(
+               Intent(requireContext(), FeedActivity::class.java).putExtra(
+                   Const.GROUP_ID,
+                   465
+               )
+           )
+       }
+    }
     fun showAlertForRugbyDay() {
         val currentCalendar = Calendar.getInstance()
         val targetCalendar = Calendar.getInstance().apply {
@@ -231,13 +247,7 @@ class HomeFragment : Fragment() {
                 getString(R.string.pop_up_rugby_france_content),
                 getString(R.string.join),
             ) {
-                //HERE GO TO GROUP SPORT efEKBnEVujAU
-                requireActivity().startActivity(
-                    Intent(requireContext(), FeedActivity::class.java).putExtra(
-                        Const.GROUP_ID,
-                        44
-                    )
-                )
+                groupPresenter.joinGroup(465)
             }
         }
     }
