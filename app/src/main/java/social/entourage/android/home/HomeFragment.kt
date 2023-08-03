@@ -32,6 +32,7 @@ import social.entourage.android.api.model.HomeAction
 import social.entourage.android.api.model.Summary
 import social.entourage.android.api.model.SummaryAction
 import social.entourage.android.api.model.User
+import social.entourage.android.groups.details.feed.FeedActivity
 import social.entourage.android.profile.ProfileActivity
 import social.entourage.android.user.UserProfileActivity
 import social.entourage.android.tools.utils.Const
@@ -43,6 +44,8 @@ import social.entourage.android.welcome.WelcomeTestActivity
 import social.entourage.android.welcome.WelcomeThreeActivity
 import social.entourage.android.welcome.WelcomeTwoActivity
 import timber.log.Timber
+import java.time.LocalDate
+import java.util.Calendar
 
 class HomeFragment : Fragment() {
     private var _binding: NewFragmentHomeBinding? = null
@@ -96,6 +99,7 @@ class HomeFragment : Fragment() {
         reloadDatasFromRecos(true)
         homePresenter.getNotificationsCount()
         AnalyticsEvents.logEvent(AnalyticsEvents.Home_view_home)
+        showAlertForRugbyDay()
         //TODO : suppress this testing code
 //        var summary = Summary()
 //        var action = SummaryAction()
@@ -200,7 +204,42 @@ class HomeFragment : Fragment() {
                 timer.start()
             }
         }
+        //TODO TO RECONECT FOR UnclosedActions
         onActionUnclosed(summary)
+    }
+
+    fun showAlertForRugbyDay() {
+        val currentCalendar = Calendar.getInstance()
+        val targetCalendar = Calendar.getInstance().apply {
+            set(Calendar.YEAR, 2023)
+            set(Calendar.MONTH, Calendar.AUGUST)
+            set(Calendar.DAY_OF_MONTH, 3)
+        }
+
+        // Remettre à zéro les heures, minutes, secondes et millisecondes
+        listOf(currentCalendar, targetCalendar).forEach {
+            it.set(Calendar.HOUR_OF_DAY, 0)
+            it.set(Calendar.MINUTE, 0)
+            it.set(Calendar.SECOND, 0)
+            it.set(Calendar.MILLISECOND, 0)
+        }
+
+        if (currentCalendar.time == targetCalendar.time) {
+            CustomAlertDialog.showRugbyPopUpWithCancelFirst(
+                requireContext(),
+                getString(R.string.pop_up_rugby_france_title),
+                getString(R.string.pop_up_rugby_france_content),
+                getString(R.string.join),
+            ) {
+                //HERE GO TO GROUP SPORT efEKBnEVujAU
+                requireActivity().startActivity(
+                    Intent(requireContext(), FeedActivity::class.java).putExtra(
+                        Const.GROUP_ID,
+                        44
+                    )
+                )
+            }
+        }
     }
 
     private fun onActionUnclosed(summary: Summary){

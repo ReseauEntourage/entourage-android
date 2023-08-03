@@ -19,30 +19,11 @@ class NotificationActionReceiver : BroadcastReceiver() {
                 try {
                     val pushNotif = Gson().fromJson(notificationContent, PushNotificationContent::class.java)
                     val stage = pushNotif.extra?.stage
-                    /*
-                    NotificationReceived__OfferHelp__WDay1
-
-                    NotificationReceived__OfferHelp__WDay2
-
-                    NotificationReceived__OfferHelp__WDay5
-
-                    NotificationReceived__OfferHelp__WDay8
-
-                    NotificationReceived__OfferHelp__WDay11
-
-                    * */
                     if(stage.equals("h1")){AnalyticsEvents.logEvent(AnalyticsEvents.NotificationClicked__OfferHelp__WDay1)}
                     if(stage.equals("j2")){AnalyticsEvents.logEvent(AnalyticsEvents.NotificationClicked__OfferHelp__WDay2)}
                     if(stage.equals("j5")){AnalyticsEvents.logEvent(AnalyticsEvents.NotificationClicked__OfferHelp__WDay5)}
                     if(stage.equals("j!")){AnalyticsEvents.logEvent(AnalyticsEvents.NotificationClicked__OfferHelp__WDay8)}
                     if(stage.equals("j11")){AnalyticsEvents.logEvent(AnalyticsEvents.NotificationClicked__OfferHelp__WDay11)}
-
-                }catch (e:Exception){
-
-                }
-
-                try {
-                    val pushNotif = Gson().fromJson(notificationContent, PushNotificationContent::class.java)
                     val tracking = pushNotif.extra?.tracking
                     if(tracking != null) {
                         if(tracking.equals("join_request_on_create")){AnalyticsEvents.logEvent(AnalyticsEvents.NotificationClicked__MemberEvent)}
@@ -64,7 +45,6 @@ class NotificationActionReceiver : BroadcastReceiver() {
                 }catch (e:Exception){
 
                 }
-
             }
             ACTION_DISMISSED -> {
 

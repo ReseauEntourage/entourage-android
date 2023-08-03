@@ -4,6 +4,7 @@ import android.app.ActivityManager
 import android.content.Context
 import android.os.Build
 import androidx.core.app.NotificationManagerCompat
+import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import social.entourage.android.EntourageApplication
 import social.entourage.android.EntourageApplication.Companion.get
@@ -665,6 +666,9 @@ object AnalyticsEvents {
     fun logEvent(event: String) {
         //Timber.d("***** FireB Log event : ${event} -- fb:${get().firebase}")
         get().firebase.logEvent(event, null)
+    }
+    fun logEventWithContext(context: Context, event: String) {
+        FirebaseAnalytics.getInstance(context).logEvent(event, null)
     }
 
     fun onLocationPermissionGranted(isPermissionGranted: Boolean) {
