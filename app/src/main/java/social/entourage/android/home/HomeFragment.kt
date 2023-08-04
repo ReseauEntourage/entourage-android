@@ -224,6 +224,7 @@ class HomeFragment : Fragment() {
            )
        }
     }
+    
     fun showAlertForRugbyDay() {
         val currentCalendar = Calendar.getInstance()
         val targetCalendar = Calendar.getInstance().apply {
