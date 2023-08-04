@@ -229,7 +229,7 @@ class HomeFragment : Fragment() {
         val targetCalendar = Calendar.getInstance().apply {
             set(Calendar.YEAR, 2023)
             set(Calendar.MONTH, Calendar.AUGUST)
-            set(Calendar.DAY_OF_MONTH, 3)
+            set(Calendar.DAY_OF_MONTH, 4)
         }
 
         // Remettre à zéro les heures, minutes, secondes et millisecondes
