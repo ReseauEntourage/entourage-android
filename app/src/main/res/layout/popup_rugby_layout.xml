@@ -40,7 +40,7 @@
         style="@style/h2_orange"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:textColor="@color/light_orange_inactive_button"
+        android:textColor="@color/light_orange"
         android:textSize="25sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
