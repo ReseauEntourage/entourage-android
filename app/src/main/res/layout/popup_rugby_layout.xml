@@ -30,7 +30,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/layout_button"
+        app:layout_constraintTop_toBottomOf="@+id/title"
         app:lottie_autoPlay="true"
         app:lottie_loop="true"
         app:lottie_rawRes="@raw/anim_rugby" />
@@ -40,10 +40,13 @@
         style="@style/h2_orange"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:textColor="@color/light_orange_inactive_button"
+        android:textSize="25sp"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/btn_cross"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/btn_cross"
+        android:textAlignment="center"
         android:layout_marginEnd="25dp"
         tools:text="content" />
 
@@ -67,8 +70,9 @@
         android:layout_marginEnd="25dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/btn_cross"
-        app:layout_constraintTop_toBottomOf="@id/title"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/animation_view"
+        android:textAlignment="center"
         tools:text="content" />
 
     <LinearLayout
@@ -88,7 +92,8 @@
             android:layout_height="48dp"
             android:layout_marginEnd="10dp"
             android:layout_marginBottom="10dp"
-            android:background="@drawable/new_alert_dialog_button_yes"
+            android:textColor="@color/orange"
+            android:background="@drawable/new_alert_button_yes_beige"
             android:padding="10dp"
             android:minWidth="65dp"
             android:text="@string/cancel"
