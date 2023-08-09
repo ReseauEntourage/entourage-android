@@ -20,9 +20,9 @@
         android:visibility="visible"/>
 
 
-    <com.airbnb.lottie.LottieAnimationView
+    <ImageView
         android:id="@+id/animation_view"
-        android:layout_width="120dp"
+        android:layout_width="200dp"
         android:layout_height="120dp"
         android:layout_marginTop="0dp"
         android:background="@color/white"
@@ -31,9 +31,7 @@
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/title"
-        app:lottie_autoPlay="true"
-        app:lottie_loop="true"
-        app:lottie_rawRes="@raw/anim_rugby" />
+        android:src="@drawable/rugby1" />
 
     <TextView
         android:id="@+id/title"
@@ -41,7 +39,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:textColor="@color/light_orange"
-        android:textSize="25sp"
+        android:textSize="20sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

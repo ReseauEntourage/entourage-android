@@ -1,5 +1,6 @@
 package social.entourage.android.home
 
+import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.GradientDrawable
 import android.net.Uri
@@ -210,7 +211,8 @@ class HomeFragment : Fragment() {
             }
         }
         //TODO TO RECONECT FOR UnclosedActions
-        onActionUnclosed(summary)
+        //onActionUnclosed(summary)
+
     }
 
     private fun handleJoinResponse(hasJoined: Boolean) {
@@ -219,38 +221,57 @@ class HomeFragment : Fragment() {
            requireActivity().startActivity(
                Intent(requireContext(), FeedActivity::class.java).putExtra(
                    Const.GROUP_ID,
-                   465
+                   44
                )
            )
        }
     }
 
     fun showAlertForRugbyDay() {
+        val sharedPreferences = requireContext().getSharedPreferences("MyAppPreferences", Context.MODE_PRIVATE)
+
+        if (sharedPreferences.getBoolean("isPopupShown", false)) {
+            // Popup already shown, return
+            return
+        }
+
         val currentCalendar = Calendar.getInstance()
-        val targetCalendar = Calendar.getInstance().apply {
+
+        // Date de début (27 août à 17h)
+        val startCalendar = Calendar.getInstance().apply {
             set(Calendar.YEAR, 2023)
             set(Calendar.MONTH, Calendar.AUGUST)
-            set(Calendar.DAY_OF_MONTH, 4)
+            set(Calendar.DAY_OF_MONTH, 27)
+            set(Calendar.HOUR_OF_DAY, 17)
+            set(Calendar.MINUTE, 0)
+            set(Calendar.SECOND, 0)
+            set(Calendar.MILLISECOND, 0)
         }
 
-        // Remettre à zéro les heures, minutes, secondes et millisecondes
-        listOf(currentCalendar, targetCalendar).forEach {
-            it.set(Calendar.HOUR_OF_DAY, 0)
-            it.set(Calendar.MINUTE, 0)
-            it.set(Calendar.SECOND, 0)
-            it.set(Calendar.MILLISECOND, 0)
+        // Date de fin (28 août à 17h)
+        val endCalendar = Calendar.getInstance().apply {
+            set(Calendar.YEAR, 2023)
+            set(Calendar.MONTH, Calendar.AUGUST)
+            set(Calendar.DAY_OF_MONTH, 28)
+            set(Calendar.HOUR_OF_DAY, 17)
+            set(Calendar.MINUTE, 0)
+            set(Calendar.SECOND, 0)
+            set(Calendar.MILLISECOND, 0)
         }
 
-        if (currentCalendar.time == targetCalendar.time) {
+        // Vérifier si la date actuelle est entre la date de début et la date de fin
+        if (currentCalendar.after(startCalendar) && currentCalendar.before(endCalendar)) {
             CustomAlertDialog.showRugbyPopUpWithCancelFirst(
                 requireContext(),
                 getString(R.string.pop_up_rugby_france_title),
                 getString(R.string.pop_up_rugby_france_content),
                 getString(R.string.join),
             ) {
-                groupPresenter.joinGroup(465)
+                groupPresenter.joinGroup(44)
             }
         }
+        sharedPreferences.edit().putBoolean("isPopupShown", true).apply()
+
     }
 
     private fun onActionUnclosed(summary: Summary){
