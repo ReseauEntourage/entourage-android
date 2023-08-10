@@ -3,6 +3,7 @@ package social.entourage.android.groups.list
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -69,8 +70,10 @@ class DiscoverGroupsListFragment : Fragment() {
     private fun handleResponseGetGroupsSearch(allGroupsSearch: MutableList<Group>?) {
         groupsListSearch.clear()
         allGroupsSearch?.let { groupsListSearch.addAll(it) }
-        allGroupsSearch?.isEmpty()?.let { updateViewSearch(it) }
-        (binding.searchRecyclerView.adapter as? GroupsListAdapter)?.updateGroupsList(groupsList)
+        allGroupsSearch?.isEmpty()?.let {
+            Log.wtf("wtf", "isEmpty value : " + allGroupsSearch?.isEmpty())
+            updateViewSearch(it) }
+        (binding.searchRecyclerView.adapter as? GroupsListAdapter)?.updateGroupsList(groupsListSearch)
         binding.progressBar.visibility = View.GONE
     }
 
@@ -93,11 +96,14 @@ class DiscoverGroupsListFragment : Fragment() {
             binding.subtitle.text = getString(R.string.group_list_search_empty_state_subtitle)
             binding.arrow.visibility = View.GONE
             binding.recyclerView.visibility = View.GONE
+            binding.list.visibility = View.VISIBLE
 
         } else {
+            Log.wtf("wtf", "pased here")
             binding.emptyStateLayout.visibility = View.GONE
             binding.list.visibility = View.VISIBLE
             binding.searchRecyclerView.visibility = View.VISIBLE
+            binding.recyclerView.visibility = View.GONE
         }
     }
 

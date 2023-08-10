@@ -1,5 +1,6 @@
 package social.entourage.android.home
 
+import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.GradientDrawable
 import android.net.Uri
@@ -19,32 +20,44 @@ import com.bumptech.glide.Glide
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.new_home_card.view.*
 import social.entourage.android.EntourageApplication
+import social.entourage.android.MainActivity
 import social.entourage.android.R
 import social.entourage.android.databinding.NewFragmentHomeBinding
 import social.entourage.android.guide.GDSMainActivity
 import social.entourage.android.Navigation
 import social.entourage.android.ViewPagerDefaultPageController
+import social.entourage.android.actions.ActionsPresenter
 import social.entourage.android.notifications.InAppNotificationsActivity
 import social.entourage.android.home.pedago.PedagoListActivity
 import social.entourage.android.api.model.HomeAction
 import social.entourage.android.api.model.Summary
+import social.entourage.android.api.model.SummaryAction
 import social.entourage.android.api.model.User
+import social.entourage.android.groups.GroupPresenter
+import social.entourage.android.groups.details.feed.FeedActivity
 import social.entourage.android.profile.ProfileActivity
 import social.entourage.android.user.UserProfileActivity
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.CustomAlertDialog
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.view.CommunicationRecoWebUrlHandlerViewModel
+import social.entourage.android.user.UserPresenter
 import social.entourage.android.welcome.WelcomeOneActivity
 import social.entourage.android.welcome.WelcomeTestActivity
 import social.entourage.android.welcome.WelcomeThreeActivity
 import social.entourage.android.welcome.WelcomeTwoActivity
 import timber.log.Timber
+import java.time.LocalDate
+import java.util.Calendar
 
 class HomeFragment : Fragment() {
     private var _binding: NewFragmentHomeBinding? = null
     val binding: NewFragmentHomeBinding get() = _binding!!
     private val homePresenter: HomePresenter by lazy { HomePresenter() }
+    private lateinit var actionsPresenter: ActionsPresenter
+    private val groupPresenter: GroupPresenter by lazy { GroupPresenter() }
+    private val userPresenter: UserPresenter by lazy { UserPresenter() }
+
 
     private var user: User? = null
     private var userSummary: Summary? = null
@@ -62,9 +75,9 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         user = EntourageApplication.me(activity) ?: return
+        actionsPresenter = ViewModelProvider(requireActivity()).get(ActionsPresenter::class.java)
         homePresenter.summary.observe(requireActivity(), ::updateContributionsView)
         isAlreadyLoadSummary = true
-        homePresenter.getSummary()
 
         val viewModel = ViewModelProvider(requireActivity()).get(
             CommunicationRecoWebUrlHandlerViewModel::class.java)
@@ -75,6 +88,8 @@ class HomeFragment : Fragment() {
         handlePedagogicalContentButton()
         homePresenter.unreadMessages.observe(requireActivity(), ::updateUnreadCount)
         homePresenter.getUnreadCount()
+        groupPresenter.hasUserJoinedGroup.observe(viewLifecycleOwner, ::handleJoinResponse)
+
         homePresenter.notifsCount.observe(requireActivity(), ::updateNotifsCount)
        timer = object: CountDownTimer(2000, 1000) {
             override fun onTick(millisUntilFinished: Long) {}
@@ -87,9 +102,22 @@ class HomeFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
+        homePresenter.getSummary()
+
         reloadDatasFromRecos(true)
         homePresenter.getNotificationsCount()
         AnalyticsEvents.logEvent(AnalyticsEvents.Home_view_home)
+        showAlertForRugbyDay()
+        val id = EntourageApplication.me(requireContext())?.id!!
+        userPresenter.updateLanguage(id, "ar")
+        //TODO : suppress this testing code
+//        var summary = Summary()
+//        var action = SummaryAction()
+//        action.title = "ma contrib/demande"
+//        action.actionType = "solicitation"
+//        action.id = 10000
+//        summary.unclosedAction = action
+//        onActionUnclosed(summary)
     }
 
     /*    private fun updateNotifsCount(count:Int) {
@@ -184,6 +212,139 @@ class HomeFragment : Fragment() {
                     }
                 }
                 timer.start()
+            }
+        }
+        //TODO TO RECONECT FOR UnclosedActions
+        //onActionUnclosed(summary)
+
+
+    }
+
+    private fun handleJoinResponse(hasJoined: Boolean) {
+       if(hasJoined){
+           //HERE GO TO GROUP SPORT efEKBnEVujAU
+           requireActivity().startActivity(
+               Intent(requireContext(), FeedActivity::class.java).putExtra(
+                   Const.GROUP_ID,
+                   44
+               )
+           )
+       }
+    }
+
+    fun showAlertForRugbyDay() {
+        val sharedPreferences = requireContext().getSharedPreferences("MyAppPreferences", Context.MODE_PRIVATE)
+
+        if (sharedPreferences.getBoolean("isPopupShown", false)) {
+            // Popup already shown, return
+            return
+        }
+
+        val currentCalendar = Calendar.getInstance()
+
+        // Date de début (27 août à 17h)
+        val startCalendar = Calendar.getInstance().apply {
+            set(Calendar.YEAR, 2023)
+            set(Calendar.MONTH, Calendar.AUGUST)
+            set(Calendar.DAY_OF_MONTH, 11)
+            set(Calendar.HOUR_OF_DAY, 10)
+            set(Calendar.MINUTE, 0)
+            set(Calendar.SECOND, 0)
+            set(Calendar.MILLISECOND, 0)
+        }
+
+        // Date de fin (28 août à 17h)
+        val endCalendar = Calendar.getInstance().apply {
+            set(Calendar.YEAR, 2023)
+            set(Calendar.MONTH, Calendar.AUGUST)
+            set(Calendar.DAY_OF_MONTH, 28)
+            set(Calendar.HOUR_OF_DAY, 12)
+            set(Calendar.MINUTE, 0)
+            set(Calendar.SECOND, 0)
+            set(Calendar.MILLISECOND, 0)
+        }
+
+        // Vérifier si la date actuelle est entre la date de début et la date de fin
+        if (currentCalendar.after(startCalendar) && currentCalendar.before(endCalendar)) {
+            CustomAlertDialog.showRugbyPopUpWithCancelFirst(
+                requireContext(),
+                getString(R.string.pop_up_rugby_france_title),
+                getString(R.string.pop_up_rugby_france_content),
+                getString(R.string.join),
+            ) {
+                groupPresenter.joinGroup(44)
+                sharedPreferences.edit().putBoolean("isPopupShown", true).apply()
+
+            }
+        }
+
+    }
+
+    private fun onActionUnclosed(summary: Summary){
+        if(summary.unclosedAction != null){
+            if(summary.unclosedAction!!.actionType == "solicitation"){
+                AnalyticsEvents.logEvent(AnalyticsEvents.View__StateDemandPop__Day10)
+                val contentText = summary.unclosedAction!!.title
+                CustomAlertDialog.showForLastActionOne(
+                    requireContext(),
+                    getString(R.string.custom_dialog_action_title_one_demand),
+                    contentText!!,
+                    getString(R.string.custom_dialog_action_content_one_demande),
+                    getString(R.string.yes),
+                    onNo = {
+                        AnalyticsEvents.logEvent(AnalyticsEvents.Clic__StateDemandPop__No__Day10)
+                        AnalyticsEvents.logEvent(AnalyticsEvents.View__StateDemandPop__No__Day10)
+                        CustomAlertDialog.showForLastActionTwo(requireContext(),
+                        getString(R.string.custom_dialog_action_title_two),
+                        getString(R.string.custom_dialog_action_content_two_demande),
+                            getString(R.string.custom_dialog_action_two_button_demand),
+                        onYes = {
+                            (activity as MainActivity).goDemand()
+                            AnalyticsEvents.logEvent(AnalyticsEvents.Clic__SeeDemand__Day10)
+                        })
+                    },
+                    onYes = {
+                        AnalyticsEvents.logEvent(AnalyticsEvents.Clic__StateDemandPop__Yes__Day10)
+                        actionsPresenter.cancelAction(summary.unclosedAction!!.id!!,true,true, "")
+                        AnalyticsEvents.logEvent(AnalyticsEvents.View__DeleteDemandPop__Day10)
+                        CustomAlertDialog.showForLastActionThree(requireContext(),
+                            getString(R.string.custom_dialog_action_title_three),
+                            getString(R.string.custom_dialog_action_content_three_demande))
+                    }
+                )
+            }
+            if(summary.unclosedAction!!.actionType == "contribution"){
+                AnalyticsEvents.logEvent(AnalyticsEvents.View__StateContribPop__Day10)
+                val contentText = summary.unclosedAction!!.title
+                CustomAlertDialog.showForLastActionOne(
+                    requireContext(),
+                    getString(R.string.custom_dialog_action_title_one_contrib),
+                    contentText!!,
+                    getString(R.string.custom_dialog_action_content_one_contrib),
+                    getString(R.string.yes),
+                    onNo = {
+                        AnalyticsEvents.logEvent(AnalyticsEvents.Clic__StateContribPop__No__Day10)
+                        AnalyticsEvents.logEvent(AnalyticsEvents.View__StateContribPop__No__Day10)
+                        CustomAlertDialog.showForLastActionTwo(requireContext(),
+                            getString(R.string.custom_dialog_action_title_two),
+                            getString(R.string.custom_dialog_action_content_two_contrib),
+                            getString(R.string.custom_dialog_action_two_button_contrib),
+                            onYes = {
+                                (activity as MainActivity).goContrib()
+                                AnalyticsEvents.logEvent(AnalyticsEvents.Clic__SeeContrib__Day10)
+
+                            })
+
+                    },
+                    onYes = {
+                        AnalyticsEvents.logEvent(AnalyticsEvents.Clic__StateContribPop__Yes__Day10)
+                        actionsPresenter.cancelAction(summary.unclosedAction!!.id!!,false,true, "")
+                        AnalyticsEvents.logEvent(AnalyticsEvents.View__DeleteContribPop__Day10)
+                        CustomAlertDialog.showForLastActionThree(requireContext(),
+                            getString(R.string.custom_dialog_action_title_three),
+                            getString(R.string.custom_dialog_action_content_three_contrib))
+                    }
+                )
             }
         }
     }

@@ -4,6 +4,7 @@ import android.app.ActivityManager
 import android.content.Context
 import android.os.Build
 import androidx.core.app.NotificationManagerCompat
+import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import social.entourage.android.EntourageApplication
 import social.entourage.android.EntourageApplication.Companion.get
@@ -667,6 +668,21 @@ object AnalyticsEvents {
 
 
 
+    const val View__StateDemandPop__Day10 = "View__StateDemandPop__Day10"
+    const val Clic__StateDemandPop__No__Day10 = "Clic__StateDemandPop__No__Day10"
+    const val Clic__StateDemandPop__Yes__Day10 = "Clic__StateDemandPop__Yes__Day10"
+    const val View__StateDemandPop__No__Day10 = "View__StateDemandPop__No__Day10"
+    const val View__DeleteDemandPop__Day10 = "View__DeleteDemandPop__Day10"
+    const val   Clic__SeeDemand__Day10 = "Clic__SeeDemand__Day10"
+
+    const val  View__StateContribPop__Day10 = "View__StateContribPop__Day10"
+    const val  Clic__StateContribPop__No__Day10 = "Clic__StateContribPop__No__Day10"
+    const val  Clic__StateContribPop__Yes__Day10 = "Clic__StateContribPop__Yes__Day10"
+    const val  View__StateContribPop__No__Day10 = "View__StateContribPop__No__Day10"
+    const val  Clic__SeeContrib__Day10 = "Clic__SeeContrib__Day10"
+    const val   View__DeleteContribPop__Day10 = "View__DeleteContribPop__Day10"
+
+
     // EVENT NOTIF PUSH
 
 
@@ -676,6 +692,9 @@ object AnalyticsEvents {
     fun logEvent(event: String) {
         //Timber.d("***** FireB Log event : ${event} -- fb:${get().firebase}")
         get().firebase.logEvent(event, null)
+    }
+    fun logEventWithContext(context: Context, event: String) {
+        FirebaseAnalytics.getInstance(context).logEvent(event, null)
     }
 
     fun onLocationPermissionGranted(isPermissionGranted: Boolean) {

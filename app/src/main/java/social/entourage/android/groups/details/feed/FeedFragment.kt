@@ -143,6 +143,7 @@ class FeedFragment : Fragment(),CallbackReportFragment{
         groupPresenter.getGroup.observe(viewLifecycleOwner, ::handleResponseGetGroup)
         groupPresenter.getAllPosts.observe(viewLifecycleOwner, ::handleResponseGetGroupPosts)
         groupPresenter.hasUserJoinedGroup.observe(viewLifecycleOwner, ::handleJoinResponse)
+        groupPresenter.hasUserLeftGroup.observe(viewLifecycleOwner, ::handleLeftResponse)
         groupPresenter.isPostDeleted.observe(requireActivity(), ::handleDeletedResponse)
 
         handleFollowButton()
@@ -379,7 +380,11 @@ class FeedFragment : Fragment(),CallbackReportFragment{
             AnalyticsEvents.logEvent(
                 AnalyticsEvents.ACTION_GROUP_FEED_JOIN
             )
-            if (!(group?.member == true)) groupPresenter.joinGroup(groupId)
+            if (!(group?.member == true)){
+                groupPresenter.joinGroup(groupId)
+            }else{
+                groupPresenter.leaveGroup(groupId)
+            }
         }
     }
 
@@ -390,6 +395,16 @@ class FeedFragment : Fragment(),CallbackReportFragment{
                 updateButtonJoin()
                 handleCreatePostButton()
                 showWelcomeMessage()
+            }
+        }
+    }
+    private fun handleLeftResponse(hasJoined: Boolean) {
+        group?.let {
+            if (hasJoined) {
+                group?.member = !it.member
+                updateButtonJoin()
+                handleCreatePostButton()
+
             }
         }
     }

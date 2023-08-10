@@ -3,9 +3,20 @@ package social.entourage.android.api.model
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
+class SummaryAction{
+    @SerializedName("id")
+    var id: Int? = null
+    @SerializedName("action_type")
+    var actionType: String? = null
+    @SerializedName("title")
+    var title: String? = null
+
+}
+
 class Summary : Serializable {
     @SerializedName("id")
     var id: Int? = null
+
 
     @SerializedName("display_name")
     var displayName: String? = null
@@ -33,6 +44,10 @@ class Summary : Serializable {
 
     @SerializedName("congratulations")
     var congratulations: MutableList<HomeAction>? = null
+
+    @SerializedName("unclosed_action")
+    var unclosedAction: SummaryAction? = null
+
 }
 
 class HomeAction : Serializable {

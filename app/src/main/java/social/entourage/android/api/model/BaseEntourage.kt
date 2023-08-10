@@ -423,3 +423,4 @@ open class BaseEntourage : FeedItem, Serializable {
         const val NEWSFEED_TYPE = "Entourage"
     }
 }
+
