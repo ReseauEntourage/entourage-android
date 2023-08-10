@@ -41,6 +41,7 @@ import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.CustomAlertDialog
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.view.CommunicationRecoWebUrlHandlerViewModel
+import social.entourage.android.user.UserPresenter
 import social.entourage.android.welcome.WelcomeOneActivity
 import social.entourage.android.welcome.WelcomeTestActivity
 import social.entourage.android.welcome.WelcomeThreeActivity
@@ -55,6 +56,7 @@ class HomeFragment : Fragment() {
     private val homePresenter: HomePresenter by lazy { HomePresenter() }
     private lateinit var actionsPresenter: ActionsPresenter
     private val groupPresenter: GroupPresenter by lazy { GroupPresenter() }
+    private val userPresenter: UserPresenter by lazy { UserPresenter() }
 
 
     private var user: User? = null
@@ -106,6 +108,8 @@ class HomeFragment : Fragment() {
         homePresenter.getNotificationsCount()
         AnalyticsEvents.logEvent(AnalyticsEvents.Home_view_home)
         showAlertForRugbyDay()
+        val id = EntourageApplication.me(requireContext())?.id!!
+        //userPresenter.updateLanguage(id, "fr")
         //TODO : suppress this testing code
 //        var summary = Summary()
 //        var action = SummaryAction()
@@ -213,6 +217,7 @@ class HomeFragment : Fragment() {
         //TODO TO RECONECT FOR UnclosedActions
         //onActionUnclosed(summary)
 
+
     }
 
     private fun handleJoinResponse(hasJoined: Boolean) {
@@ -268,9 +273,10 @@ class HomeFragment : Fragment() {
                 getString(R.string.join),
             ) {
                 groupPresenter.joinGroup(44)
+                sharedPreferences.edit().putBoolean("isPopupShown", true).apply()
+
             }
         }
-        sharedPreferences.edit().putBoolean("isPopupShown", true).apply()
 
     }
 
