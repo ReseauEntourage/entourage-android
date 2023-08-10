@@ -44,6 +44,9 @@ interface UserRequest {
     @PUT("users/{user_id}/partners/{partner_id}")
     fun updatePartner(@Path("user_id") userId: Int, @Path("partner_id") partnerId: Long, @Body partner: PartnerWrapper): Call<PartnerResponse>
 
+    @PUT("users/{user_id}")
+    fun updateLanguage(@Path("user_id") userId: Int, @Query("user[lang]") lang:String):Call<ResponseBody>
+
     @POST("users/me/addresses/1")
     fun updatePrimaryAddressLocation(@Body address: ArrayMap<String, Any>): Call<UserResponse>
 

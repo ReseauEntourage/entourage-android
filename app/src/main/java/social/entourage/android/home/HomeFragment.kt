@@ -109,7 +109,7 @@ class HomeFragment : Fragment() {
         AnalyticsEvents.logEvent(AnalyticsEvents.Home_view_home)
         showAlertForRugbyDay()
         val id = EntourageApplication.me(requireContext())?.id!!
-        //userPresenter.updateLanguage(id, "fr")
+        userPresenter.updateLanguage(id, "ar")
         //TODO : suppress this testing code
 //        var summary = Summary()
 //        var action = SummaryAction()
@@ -246,8 +246,8 @@ class HomeFragment : Fragment() {
         val startCalendar = Calendar.getInstance().apply {
             set(Calendar.YEAR, 2023)
             set(Calendar.MONTH, Calendar.AUGUST)
-            set(Calendar.DAY_OF_MONTH, 27)
-            set(Calendar.HOUR_OF_DAY, 17)
+            set(Calendar.DAY_OF_MONTH, 11)
+            set(Calendar.HOUR_OF_DAY, 10)
             set(Calendar.MINUTE, 0)
             set(Calendar.SECOND, 0)
             set(Calendar.MILLISECOND, 0)
@@ -258,7 +258,7 @@ class HomeFragment : Fragment() {
             set(Calendar.YEAR, 2023)
             set(Calendar.MONTH, Calendar.AUGUST)
             set(Calendar.DAY_OF_MONTH, 28)
-            set(Calendar.HOUR_OF_DAY, 17)
+            set(Calendar.HOUR_OF_DAY, 12)
             set(Calendar.MINUTE, 0)
             set(Calendar.SECOND, 0)
             set(Calendar.MILLISECOND, 0)
