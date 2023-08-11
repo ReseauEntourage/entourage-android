@@ -666,23 +666,6 @@ object AnalyticsEvents {
     const val View__DeleteContribPop__Day10 = "View__DeleteContribPop__Day10"
 
 
-
-
-    const val View__StateDemandPop__Day10 = "View__StateDemandPop__Day10"
-    const val Clic__StateDemandPop__No__Day10 = "Clic__StateDemandPop__No__Day10"
-    const val Clic__StateDemandPop__Yes__Day10 = "Clic__StateDemandPop__Yes__Day10"
-    const val View__StateDemandPop__No__Day10 = "View__StateDemandPop__No__Day10"
-    const val View__DeleteDemandPop__Day10 = "View__DeleteDemandPop__Day10"
-    const val   Clic__SeeDemand__Day10 = "Clic__SeeDemand__Day10"
-
-    const val  View__StateContribPop__Day10 = "View__StateContribPop__Day10"
-    const val  Clic__StateContribPop__No__Day10 = "Clic__StateContribPop__No__Day10"
-    const val  Clic__StateContribPop__Yes__Day10 = "Clic__StateContribPop__Yes__Day10"
-    const val  View__StateContribPop__No__Day10 = "View__StateContribPop__No__Day10"
-    const val  Clic__SeeContrib__Day10 = "Clic__SeeContrib__Day10"
-    const val   View__DeleteContribPop__Day10 = "View__DeleteContribPop__Day10"
-
-
     // EVENT NOTIF PUSH
 
 

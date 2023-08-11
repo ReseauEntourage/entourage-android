@@ -22,6 +22,7 @@
     <string name="activate">Enable</string>
     <string name="view">See</string>
 
+    <string name="language">language</string>
 
     <string name="network_error">Check your connection\net try again later</string>
     <string name="technical_error">We have a little problem...\nIt will be fixed soon ;)</string>

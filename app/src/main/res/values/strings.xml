@@ -422,7 +422,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="canceled_at">Annulé le %s</string>
     <string name="leave_event">Quitter l\'événement</string>
     <string name="leave_event_dialog_content">Souhaitez-vous quitter l\'événement ?</string>
-    <string name="dot">•</string>
+    <string name="dot" translatable="false">•</string>
     <string name="event_limited_places_title">Évènement à places limitées</string>
     <string name="event_limited_places_subtitle">Attention, cet événement est à places limitées, votre inscription n’est pas garantie. L’administrateur de l’évènement reviendra vers vous pour vous confirmer la réservation de votre place.</string>
     <string name="event_add_to_calendar_title">Votre inscription est prise en compte ! </string>
@@ -2544,8 +2544,8 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
 
     <string name="param_empty_blocked_user">Vous n\'avez bloqué aucun contact.</string>
 
-    <string name="pop_up_rugby_france_title">Vivons la Coupe du Monde de Rubgy ensemble </string>
-    <string name="pop_up_rugby_france_content">Les plus belles rencontres ne se font pas forcément au stade ! Rejoignez le groupe \"Vivons le sport ensemble\"</string>
+    <string name="pop_up_rugby_france_title" translatable="false">Vivons la Coupe du Monde de Rubgy ensemble </string>
+    <string name="pop_up_rugby_france_content" translatable="false">Les plus belles rencontres ne se font pas forcément au stade ! Rejoignez le groupe \"Vivons le sport ensemble\"</string>
 
 
 </resources>

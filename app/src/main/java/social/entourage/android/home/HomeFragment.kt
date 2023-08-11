@@ -1,5 +1,6 @@
 package social.entourage.android.home
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.GradientDrawable
@@ -42,6 +43,7 @@ import social.entourage.android.tools.utils.CustomAlertDialog
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.view.CommunicationRecoWebUrlHandlerViewModel
 import social.entourage.android.user.UserPresenter
+import social.entourage.android.user.languechoose.LanguageContextWrapper
 import social.entourage.android.welcome.WelcomeOneActivity
 import social.entourage.android.welcome.WelcomeTestActivity
 import social.entourage.android.welcome.WelcomeThreeActivity
@@ -101,12 +103,15 @@ class HomeFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
+        setLocale(requireActivity())
         homePresenter.getSummary()
 
         reloadDatasFromRecos(true)
         homePresenter.getNotificationsCount()
         AnalyticsEvents.logEvent(AnalyticsEvents.Home_view_home)
         showAlertForRugbyDay()
+
+
         //TODO : suppress this testing code
 //        var summary = Summary()
 //        var action = SummaryAction()
@@ -116,6 +121,33 @@ class HomeFragment : Fragment() {
 //        summary.unclosedAction = action
 //        onActionUnclosed(summary)
     }
+
+    fun setLocale(activity: Activity) {
+        val languageCode = getStoredLanguage()
+
+        if (languageCode != null) {
+            Log.wtf("wtf", "Trying to set language: $languageCode")
+            val contextWrapper = LanguageContextWrapper.wrap(requireContext(), languageCode)
+            @Suppress("DEPRECATION")
+            activity.baseContext.resources.updateConfiguration(
+                contextWrapper.resources.configuration,
+                contextWrapper.resources.displayMetrics
+            )
+        } else {
+            Log.wtf("wtf", "Language code is null!")
+            val contextWrapper = LanguageContextWrapper.wrap(requireContext(), "fr")
+            @Suppress("DEPRECATION")
+            activity.baseContext.resources.updateConfiguration(
+                contextWrapper.resources.configuration,
+                contextWrapper.resources.displayMetrics
+            )
+        }
+    }
+    private fun getStoredLanguage(): String? {
+        val sharedPreferences = requireContext().getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
+        return sharedPreferences.getString("language", null) // retourne null si rien n'est trouvé
+    }
+
 
     /*    private fun updateNotifsCount(count:Int) {
         context?.resources?.let { resources->

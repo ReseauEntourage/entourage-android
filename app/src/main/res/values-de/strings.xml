@@ -12,6 +12,7 @@
     <string name="no">NEIN</string>
     <string name="button_OK">OK</string>
     <string name="accept">Akzeptieren</string>
+    <string name="language">Sprache</string>
     <string name="decline">Verweigern</string>
     <string name="send">Schicken</string>
     <string name="register">Registrieren</string>
@@ -356,7 +357,6 @@ Sie werden diese Nachricht lesen, sobald sie der Gruppe beitreten.</string>
     <string name="share_event_label">Sie können die Veranstaltung nur für Gruppen freigeben, in denen Sie Mitglied sind. Ihre Veranstaltung wird dann in der/den ausgewählten Gruppe(n) sichtbar und alle Mitglieder einer Gruppe können teilnehmen.</string>
     <string name="dont_share">Teilen Sie es nicht in einer Gruppe</string>
     <string name="share_in_groups">Teilen Sie es in einer oder mehreren Gruppen</string>
-
     <string name="date">Datum</string>
     <string name="start_time">Startzeit</string>
     <string name="end_time">Endzeit</string>

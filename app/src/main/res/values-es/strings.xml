@@ -10,6 +10,8 @@
     <string name="error_no_email">No hay correo electrónico configurado</string>
     <string name="yes">Sí</string>
     <string name="no">No</string>
+    <string name="language">Langue</string>
+
     <string name="button_OK">DE ACUERDO</string>
     <string name="accept">Aceptar</string>
     <string name="decline">Rechazar</string>
