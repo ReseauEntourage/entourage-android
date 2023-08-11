@@ -2,12 +2,14 @@ package social.entourage.android.notifications
 
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.gson.Gson
 import social.entourage.android.R
 import social.entourage.android.databinding.NewFragmentNotifsInAppListBinding
 import social.entourage.android.home.HomePresenter
@@ -147,8 +149,10 @@ class InAppNotificationListFragment : Fragment() {
             layoutManager = LinearLayoutManager(context)
             adapter = InAppListNotificationsAdapter(notifications, object : OnItemClick {
                 override fun onItemClick(notif: InAppNotification, position:Int) {
+                    Log.wtf("wtf", "notif : " + Gson().toJson(notif))
                     val instance = notif.instanceType
                     val instanceId = notif.instanceId
+                    val stage = notif.context
                     val postId:Int? = notif.postId
                     if (notif.completedAt == null) {
                         itemSelected = position
@@ -157,7 +161,13 @@ class InAppNotificationListFragment : Fragment() {
                     else {
                         itemSelected = -1
                     }
-                    if(instance != null && instanceId != null) NotificationActionManager.presentAction(requireContext(),parentFragmentManager,instance,instanceId,postId)
+                    Log.wtf("wtf" , "hey instance and instance id " + instance + " " + instanceId)
+                    if(instance != null && instanceId != null) {
+                        NotificationActionManager.presentAction(requireContext(),parentFragmentManager,instance,instanceId,postId,stage)
+                    } else{
+                        Log.wtf("wtf" , "hey instance and instance id " + instance + " " + instanceId)
+                        NotificationActionManager.presentWelcomeAction(requireContext(), stage)
+                    }
                 }
             })
         }

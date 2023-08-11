@@ -66,6 +66,7 @@
                     app:icon="@{@drawable/new_share}"
                     app:label="@{@string/share}" />
 
+
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/changePwd"
                     android:layout_width="match_parent"

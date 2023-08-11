@@ -98,6 +98,14 @@
                         app:title="@{@string/phone}" />
 
                     <include
+                        android:id="@+id/language"
+                        layout="@layout/new_profile_edit_item_clickable"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:icon="@{@drawable/planete}"
+                        app:title="@{@string/language}" />
+
+                    <include
                         android:id="@+id/email"
                         layout="@layout/new_profile_edit_item"
                         android:layout_width="match_parent"

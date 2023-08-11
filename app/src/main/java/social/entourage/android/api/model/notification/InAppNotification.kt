@@ -21,6 +21,8 @@ class InAppNotification (
     //value = h1, j2, j8, j11
     @SerializedName("stage")
     val stage: String? = null,
+    @SerializedName("context")
+    val context: String? = null,
     @SerializedName("url")
     val url: String? = null,
     @SerializedName("instance")

@@ -1,5 +1,6 @@
 package social.entourage.android.notifications
 
+import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.util.Log
@@ -15,7 +16,13 @@ import social.entourage.android.discussions.DetailConversationActivity
 import social.entourage.android.api.model.ActionSummary
 import social.entourage.android.api.model.HomeActionParams
 import social.entourage.android.api.model.HomeType
+import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.utils.Const
+import social.entourage.android.welcome.WelcomeFiveActivity
+import social.entourage.android.welcome.WelcomeFourActivity
+import social.entourage.android.welcome.WelcomeOneActivity
+import social.entourage.android.welcome.WelcomeThreeActivity
+import social.entourage.android.welcome.WelcomeTwoActivity
 
 /**
  * Created by Me on 26/09/2022.
@@ -23,7 +30,32 @@ import social.entourage.android.tools.utils.Const
 object NotificationActionManager {
 
     /**/
-    fun presentAction(context:Context,supportFragmentManager: FragmentManager, instance:String, id:Int, postId:Int?) {
+    fun presentAction(context:Context,supportFragmentManager: FragmentManager, instance:String, id:Int, postId:Int?, stage:String? = "") {
+        Log.wtf("wtf", "hi hi ")
+        Log.wtf("wtf", "hi hi " + stage)
+        if(!stage.isNullOrEmpty()){
+            if(stage.equals("h1")){
+                val intent = Intent(context, WelcomeOneActivity::class.java)
+                context.startActivity(intent)
+            }
+            if(stage.equals("j2")){
+                val intent = Intent(context, WelcomeTwoActivity::class.java)
+                context.startActivity(intent)
+            }
+            if(stage.equals("j5")){
+                val intent = Intent(context, WelcomeThreeActivity::class.java)
+                context.startActivity(intent)
+            }
+            if(stage.equals("j!")){
+                val intent = Intent(context, WelcomeFourActivity::class.java)
+                context.startActivity(intent)
+            }
+            if(stage.equals("j11")){
+                val intent = Intent(context, WelcomeFiveActivity::class.java)
+                context.startActivity(intent)
+            }
+        }
+
         when(getInstanceTypeFromName(instance)) {
             InstanceType.POIS -> showPoi(supportFragmentManager,id)
             InstanceType.USERS -> showUser(context,supportFragmentManager,id)
@@ -49,6 +81,34 @@ object NotificationActionManager {
             }
         }
     }
+
+    fun presentWelcomeAction(context: Context, stage:String? = ""){
+        Log.wtf("wtf", "stage : " + stage)
+        if(!stage.isNullOrEmpty()){
+            if(stage.equals("h1")){
+                val intent = Intent(context, WelcomeOneActivity::class.java)
+                context.startActivity(intent)
+            }
+            if(stage.equals("j2")){
+                val intent = Intent(context, WelcomeTwoActivity::class.java)
+                context.startActivity(intent)
+            }
+            if(stage.equals("j5")){
+                val intent = Intent(context, WelcomeThreeActivity::class.java)
+                context.startActivity(intent)
+            }
+            if(stage.equals("j8")){
+                val intent = Intent(context, WelcomeFourActivity::class.java)
+                context.startActivity(intent)
+            }
+            if(stage.equals("j11")){
+                val intent = Intent(context, WelcomeFiveActivity::class.java)
+                context.startActivity(intent)
+            }
+        }
+
+    }
+
 
     fun setPlaceHolder(instance:String?):Int {
         if (instance == null ) return R.drawable.ic_new_placeholder_notif
