@@ -1,5 +1,6 @@
 package social.entourage.android.profile.editProfile
 
+import android.content.Intent
 import android.graphics.Rect
 import android.net.Uri
 import android.os.Bundle
@@ -17,6 +18,7 @@ import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
+import social.entourage.android.databinding.ActivityChooseLanguageLayoutBinding
 import social.entourage.android.databinding.NewFragmentEditProfileBinding
 import social.entourage.android.profile.ProfileActivity
 import social.entourage.android.tools.utils.Const
@@ -30,6 +32,7 @@ import social.entourage.android.user.AvatarUploadView
 import social.entourage.android.user.edit.photo.ChooseProfilePhotoFragment
 import social.entourage.android.user.edit.photo.PhotoChooseInterface
 import social.entourage.android.user.edit.place.UserEditActionZoneFragment
+import social.entourage.android.user.languechoose.ActivityChooseLanguage
 import timber.log.Timber
 import java.io.File
 
@@ -68,6 +71,7 @@ class EditProfileFragment : Fragment(), EditProfileCallback,
         initializeSeekBar()
         onEditInterests()
         onEditImage()
+        handlelanguageButton()
         onEditActionZone()
         initializeDescriptionCounter()
         fromHomePage = activity?.intent?.extras?.getBoolean(Const.GO_TO_EDIT_PROFILE) == true
@@ -80,6 +84,13 @@ class EditProfileFragment : Fragment(), EditProfileCallback,
             (activity as ProfileActivity).profilePresenter as AvatarUpdatePresenter
         )
         (context as? PhotoChooseInterface)?.let { mListener = it }
+    }
+
+    private fun handlelanguageButton(){
+        binding.language.layout.setOnClickListener {
+            val intent = Intent(requireContext(), ActivityChooseLanguage::class.java)
+            requireActivity().startActivity(intent)
+        }
     }
 
     private fun handleUpdateResponse(success: Boolean) {

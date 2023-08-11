@@ -17,6 +17,8 @@ class UserPresenter {
     var isGetUserSuccess = MutableLiveData<Boolean>()
     var isUserReported = MutableLiveData<Boolean>()
     var user = MutableLiveData<User>()
+    var isLanguageChanged = MutableLiveData<Boolean>()
+
 
     fun getUser(userId: Int) {
         EntourageApplication.get().apiModule.userRequest.getUser(userId)
@@ -48,13 +50,16 @@ class UserPresenter {
                 ) {
                     if (response.isSuccessful) {
                         Log.wtf("wtf", "eho passed")
+                        isLanguageChanged.value = true
                     } else {
-                        Log.wtf("wtf", "eho passed")
+                        Log.wtf("wtf", "eho not passed")
+                       isLanguageChanged.value = false
                     }
                 }
 
                 override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                     Log.wtf("wtf", "eho passed")
+                    isLanguageChanged.value = true
                 }
             })
     }
