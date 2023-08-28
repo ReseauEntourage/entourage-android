@@ -496,7 +496,12 @@ class FeedFragment : Fragment(), CallbackReportFragment {
 
     private fun handleParticipateButton() {
         binding.join.setOnClickListener {
-            if (event?.member==false) eventPresenter.participate(eventId)
+            if (event?.member==false){
+                eventPresenter.participate(eventId)
+            }else{
+                eventPresenter.leaveEvent(eventId)
+            }
+
         }
         binding.participate.setOnClickListener {
             AnalyticsEvents.logEvent(AnalyticsEvents.Event_detail_action_participate)
