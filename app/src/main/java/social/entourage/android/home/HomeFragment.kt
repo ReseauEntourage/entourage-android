@@ -112,6 +112,7 @@ class HomeFragment : Fragment() {
         var action = SummaryAction()
         action.title = "ma contrib/demande"
         action.actionType = "solicitation"
+        action.actionType = "contribution"
         action.id = 10000
         summary.unclosedAction = action
         onActionUnclosed(summary)
