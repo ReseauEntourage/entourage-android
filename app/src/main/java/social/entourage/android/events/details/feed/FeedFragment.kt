@@ -107,6 +107,7 @@ class FeedFragment : Fragment(), CallbackReportFragment {
         handleSettingsButton()
         handleAboutButton()
         onFragmentResult()
+        openLink()
         AnalyticsEvents.logEvent(AnalyticsEvents.Event_detail_main)
     }
 
@@ -328,6 +329,28 @@ class FeedFragment : Fragment(), CallbackReportFragment {
     private fun handleSwipeRefresh() {
         binding.swipeRefresh.setOnRefreshListener {
             loadPosts()
+        }
+    }
+
+    private fun openMap() {
+        val geoUri =
+            String.format(getString(R.string.geoUri), event?.metadata?.displayAddress)
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(geoUri))
+        startActivityForResult(intent, 0)
+    }
+
+    private fun openLink() {
+        binding.location.root.setOnClickListener {
+            if (event?.online != true) {
+                openMap()
+            } else {
+                var url = event?.eventUrl
+                url?.let {
+                    url = Utils.checkUrlWithHttps(it)
+                    val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+                    startActivityForResult(browserIntent, 0)
+                }
+            }
         }
     }
 

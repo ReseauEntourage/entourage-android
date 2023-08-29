@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Build
+import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.Button
@@ -81,7 +82,7 @@ object CustomAlertDialog {
         alertDialog.show()
     }
 
-    fun showForLastActionOne(
+    fun showForLastActionOneDemand(
         context: Context,
         title: String,
         titleAction:String,
@@ -110,6 +111,46 @@ object CustomAlertDialog {
             onNo()
             alertDialog.dismiss()
         }
+        alertDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        alertDialog.show()
+    }
+    fun showForLastActionOneContrib(
+        context: Context,
+        title: String,
+        titleAction:String,
+        content: String,
+        action: String,
+        onNo: () -> (Unit) = {},
+        onYes: (() -> Unit),
+    ) {
+        val layoutInflater = LayoutInflater.from(context)
+        val customDialog: View = layoutInflater.inflate(R.layout.custom_alert_action_1, null)
+        val builder = AlertDialog.Builder(context)
+        builder.setView(customDialog)
+        val alertDialog = builder.create()
+        customDialog.findViewById<TextView>(R.id.title).text = title
+        customDialog.findViewById<TextView>(R.id.title_action).visibility = View.GONE
+        customDialog.findViewById<TextView>(R.id.yes).text = action
+        customDialog.findViewById<ImageButton>(R.id.btn_cross).setOnClickListener {
+            alertDialog.dismiss()
+        }
+        customDialog.findViewById<Button>(R.id.yes).setOnClickListener {
+            onYes()
+            alertDialog.dismiss()
+        }
+        customDialog.findViewById<Button>(R.id.no).setOnClickListener {
+            onNo()
+            alertDialog.dismiss()
+        }
+        val formattedString = context.getString(R.string.custom_dialog_action_content_one_contrib, titleAction)
+
+        val styledText = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            Html.fromHtml(formattedString, Html.FROM_HTML_MODE_LEGACY)
+        } else {
+            @Suppress("DEPRECATION")
+            Html.fromHtml(formattedString)
+        }
+        customDialog.findViewById<TextView>(R.id.content).text = styledText
         alertDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         alertDialog.show()
     }

@@ -213,7 +213,7 @@ class HomeFragment : Fragment() {
             }
         }
         //TODO TO RECONECT FOR UnclosedActions
-        //onActionUnclosed(summary)
+        onActionUnclosed(summary)
 
 
     }
@@ -283,7 +283,7 @@ class HomeFragment : Fragment() {
             if(summary.unclosedAction!!.actionType == "solicitation"){
                 AnalyticsEvents.logEvent(AnalyticsEvents.View__StateDemandPop__Day10)
                 val contentText = summary.unclosedAction!!.title
-                CustomAlertDialog.showForLastActionOne(
+                CustomAlertDialog.showForLastActionOneDemand(
                     requireContext(),
                     getString(R.string.custom_dialog_action_title_one_demand),
                     contentText!!,
@@ -314,7 +314,7 @@ class HomeFragment : Fragment() {
             if(summary.unclosedAction!!.actionType == "contribution"){
                 AnalyticsEvents.logEvent(AnalyticsEvents.View__StateContribPop__Day10)
                 val contentText = summary.unclosedAction!!.title
-                CustomAlertDialog.showForLastActionOne(
+                CustomAlertDialog.showForLastActionOneContrib(
                     requireContext(),
                     getString(R.string.custom_dialog_action_title_one_contrib),
                     contentText!!,

@@ -5,6 +5,7 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,6 +16,7 @@ import com.google.firebase.messaging.FirebaseMessaging
 import social.entourage.android.BuildConfig
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
+import social.entourage.android.authentication.AuthenticationController
 import social.entourage.android.databinding.NewFragmentSettingsBinding
 import social.entourage.android.tools.utils.CustomAlertDialog
 import social.entourage.android.onboarding.pre_onboarding.PreOnboardingStartActivity
@@ -151,12 +153,14 @@ class SettingsFragment : Fragment() {
 
     private fun handleLongPress(): Boolean {
         FirebaseMessaging.getInstance().token.addOnSuccessListener { token ->
+            val authenticationController: AuthenticationController = EntourageApplication.get().authenticationController
+            Log.wtf("wtf", "token : " + authenticationController.me?.token)
             val clipboardManager =
                 EntourageApplication.get()
                     .getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
             val clipData = ClipData.newPlainText(
                 "FirebaseID",
-                token
+                authenticationController.me?.token
             )
             clipboardManager.setPrimaryClip(clipData)
             EntSnackbar.make(
