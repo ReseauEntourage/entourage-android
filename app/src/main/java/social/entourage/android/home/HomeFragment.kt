@@ -108,14 +108,14 @@ class HomeFragment : Fragment() {
         AnalyticsEvents.logEvent(AnalyticsEvents.Home_view_home)
         //showAlertForRugbyDay()
         //TODO : suppress this testing code
-        var summary = Summary()
-        var action = SummaryAction()
-        action.title = "ma contrib/demande"
-        action.actionType = "solicitation"
-        action.actionType = "contribution"
-        action.id = 10000
-        summary.unclosedAction = action
-        onActionUnclosed(summary)
+//        var summary = Summary()
+//        var action = SummaryAction()
+//        action.title = "ma contrib/demande"
+//        //action.actionType = "solicitation"
+//        action.actionType = "contribution"
+//        action.id = 10000
+//        summary.unclosedAction = action
+//        onActionUnclosed(summary)
     }
 
     /*    private fun updateNotifsCount(count:Int) {

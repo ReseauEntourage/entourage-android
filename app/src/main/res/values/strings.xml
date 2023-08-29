@@ -2468,8 +2468,8 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
 
     <string name="custom_dialog_action_content_one_contrib">Votre action est-elle terminée ?</string>
     <string name="custom_dialog_action_content_one_demande">Avez-vous trouvé ce que vous cherchiez ?</string>
-    <string name="custom_dialog_action_content_two_contrib">Astuce : regardez les contributions. Un voisin pourrait proposer ce que vous cherchez.</string>
-    <string name="custom_dialog_action_content_two_demande">Astuce : regardez les demandes près de chez vous. Un voisin pourrait être intéressé.</string>
+    <string name="custom_dialog_action_content_two_demande">Astuce : regardez les contributions. Un voisin pourrait proposer ce que vous cherchez.</string>
+    <string name="custom_dialog_action_content_two_contrib">Astuce : regardez les demandes près de chez vous. Un voisin pourrait être intéressé.</string>
     <string name="custom_dialog_action_content_three_contrib">Un grand merci pour votre engagement. Nous allons pouvoir supprimer votre contribution.</string>
     <string name="custom_dialog_action_content_three_demande">Un grand merci pour votre engagement. Nous allons pouvoir supprimer votre demande.</string>
     <string name="custom_dialog_action_two_button_contrib">Voir les contributions</string>
