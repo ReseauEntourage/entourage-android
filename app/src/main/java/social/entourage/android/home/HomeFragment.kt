@@ -303,11 +303,12 @@ class HomeFragment : Fragment() {
                     },
                     onYes = {
                         AnalyticsEvents.logEvent(AnalyticsEvents.Clic__StateDemandPop__Yes__Day10)
-                        actionsPresenter.cancelAction(summary.unclosedAction!!.id!!,true,true, "")
                         AnalyticsEvents.logEvent(AnalyticsEvents.View__DeleteDemandPop__Day10)
+                        actionsPresenter.cancelAction(summary.unclosedAction!!.id!!,true,true, "")
                         CustomAlertDialog.showForLastActionThree(requireContext(),
                             getString(R.string.custom_dialog_action_title_three),
                             getString(R.string.custom_dialog_action_content_three_demande))
+
                     }
                 )
             }
@@ -336,8 +337,8 @@ class HomeFragment : Fragment() {
                     },
                     onYes = {
                         AnalyticsEvents.logEvent(AnalyticsEvents.Clic__StateContribPop__Yes__Day10)
-                        actionsPresenter.cancelAction(summary.unclosedAction!!.id!!,false,true, "")
                         AnalyticsEvents.logEvent(AnalyticsEvents.View__DeleteContribPop__Day10)
+                        actionsPresenter.cancelAction(summary.unclosedAction!!.id!!,false,true, "")
                         CustomAlertDialog.showForLastActionThree(requireContext(),
                             getString(R.string.custom_dialog_action_title_three),
                             getString(R.string.custom_dialog_action_content_three_contrib))
