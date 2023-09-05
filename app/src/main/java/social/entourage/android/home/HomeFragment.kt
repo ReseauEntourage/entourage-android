@@ -212,7 +212,6 @@ class HomeFragment : Fragment() {
                 timer.start()
             }
         }
-        //TODO TO RECONECT FOR UnclosedActions
         onActionUnclosed(summary)
 
 
@@ -295,9 +294,9 @@ class HomeFragment : Fragment() {
                         CustomAlertDialog.showForLastActionTwo(requireContext(),
                         getString(R.string.custom_dialog_action_title_two),
                         getString(R.string.custom_dialog_action_content_two_demande),
-                            getString(R.string.custom_dialog_action_two_button_demand),
+                            getString(R.string.custom_dialog_action_two_button_contrib),
                         onYes = {
-                            (activity as MainActivity).goDemand()
+                            (activity as MainActivity).goContrib()
                             AnalyticsEvents.logEvent(AnalyticsEvents.Clic__SeeDemand__Day10)
                         })
                     },
@@ -327,9 +326,9 @@ class HomeFragment : Fragment() {
                         CustomAlertDialog.showForLastActionTwo(requireContext(),
                             getString(R.string.custom_dialog_action_title_two),
                             getString(R.string.custom_dialog_action_content_two_contrib),
-                            getString(R.string.custom_dialog_action_two_button_contrib),
+                            getString(R.string.custom_dialog_action_two_button_demand),
                             onYes = {
-                                (activity as MainActivity).goContrib()
+                                (activity as MainActivity).goDemand()
                                 AnalyticsEvents.logEvent(AnalyticsEvents.Clic__SeeContrib__Day10)
 
                             })
