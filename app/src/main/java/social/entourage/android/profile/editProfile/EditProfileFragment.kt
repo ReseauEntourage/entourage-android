@@ -91,6 +91,7 @@ class EditProfileFragment : Fragment(), EditProfileCallback,
             val intent = Intent(requireContext(), ActivityChooseLanguage::class.java)
             requireActivity().startActivity(intent)
         }
+        binding.language.layout.visibility = View.GONE
     }
 
     private fun handleUpdateResponse(success: Boolean) {

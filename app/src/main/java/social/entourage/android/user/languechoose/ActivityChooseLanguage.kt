@@ -41,8 +41,7 @@ class ActivityChooseLanguage:BaseActivity() {
     fun changeLanguage(id:Int, langue:String){
         userPresenter.updateLanguage(id, langue)
         setLocale(this, langue)
-
-
+        
     }
 
 
