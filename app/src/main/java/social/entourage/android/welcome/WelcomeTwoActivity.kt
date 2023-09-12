@@ -27,6 +27,7 @@ class WelcomeTwoActivity: BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         AnalyticsEvents.logEvent(AnalyticsEvents.View_WelcomeOfferHelp_Day2)
         binding = ActivityLayoutWelcomeTwoBinding.inflate(layoutInflater)
         groupPresenter.getGroup.observe(this, ::handleResponseGetGroup)
@@ -36,6 +37,7 @@ class WelcomeTwoActivity: BaseActivity() {
         handleCloseButton()
         setContentView(binding.root)
     }
+
     fun getGroup(){
         groupPresenter.getInitialGroup()
     }

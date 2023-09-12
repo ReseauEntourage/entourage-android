@@ -1,6 +1,8 @@
 package social.entourage.android
 
 import android.Manifest
+import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -37,12 +39,15 @@ import social.entourage.android.home.UnreadMessages
 import social.entourage.android.notifications.NotificationActionManager
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.utils.Const
+import social.entourage.android.user.UserPresenter
 import social.entourage.android.user.UserProfileActivity
+import social.entourage.android.user.languechoose.LanguageContextWrapper
 import timber.log.Timber
 
 class MainActivity : BaseSecuredActivity() {
     private lateinit var navController: NavController
     private val presenter: MainPresenter = MainPresenter(this)
+    private val userPresenter: UserPresenter by lazy { UserPresenter() }
 
     private lateinit var viewModel: CommunicationHandlerBadgeViewModel
     private val universalLinkManager = UniversalLinkManager(this)
@@ -51,6 +56,12 @@ class MainActivity : BaseSecuredActivity() {
         setContentView(R.layout.new_activity_main)
         viewModel = ViewModelProvider(this)[CommunicationHandlerBadgeViewModel::class.java]
         viewModel.badgeCount.observe(this,::handleUpdateBadgeResponse)
+        val languageString = intent.getStringExtra("languages")
+        if (languageString != null) {
+            Log.wtf("wtf", "eho coucou " + languageString)
+            changeLanguage(languageString)
+        }
+
 
         initializeNavBar()
         if (authenticationController.isAuthenticated) {
@@ -72,9 +83,31 @@ class MainActivity : BaseSecuredActivity() {
         if (uri != null) {
             universalLinkManager.handleUniversalLink(uri)
         }
+    }
 
+
+
+    fun changeLanguage(langue:String){
+        val id = EntourageApplication.me(this)?.id!!
+        userPresenter.updateLanguage(id, langue)
+        setLocale(this, langue)
+        val sharedPreferences = getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        editor.putString("language", langue)
+        editor.apply()
 
     }
+
+
+    fun setLocale(activity: Activity, languageCode: String) {
+        val contextWrapper = LanguageContextWrapper.wrap(applicationContext, languageCode)
+        @Suppress("DEPRECATION")
+        activity.baseContext.resources.updateConfiguration(
+            contextWrapper.resources.configuration,
+            contextWrapper.resources.displayMetrics
+        )
+    }
+
 
     fun displayAppUpdateDialog() {
         val builder = AlertDialog.Builder(this)

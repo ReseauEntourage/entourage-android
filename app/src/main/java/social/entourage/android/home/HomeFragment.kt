@@ -103,7 +103,7 @@ class HomeFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        setLocale(requireActivity())
+        //setLocale(requireActivity())
         homePresenter.getSummary()
 
         reloadDatasFromRecos(true)

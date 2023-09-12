@@ -28,6 +28,7 @@ class ActivityChooseLanguage:BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         binding = ActivityChooseLanguageLayoutBinding.inflate(layoutInflater)
         userPresenter.isLanguageChanged.observe(this, ::updateLangue)
         handleAllButtons()
@@ -46,18 +47,20 @@ class ActivityChooseLanguage:BaseActivity() {
     }
 
     fun changeLanguage(id:Int, langue:String){
-        userPresenter.updateLanguage(id, langue)
-        setLocale(this, langue)
-        val sharedPreferences = getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
-        val editor = sharedPreferences.edit()
-        editor.putString("language", langue)
-        editor.apply()
-
+//        userPresenter.updateLanguage(id, langue)
+//        setLocale(this, langue)
+//        val sharedPreferences = getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
+//        val editor = sharedPreferences.edit()
+//        editor.putString("language", langue)
+//        editor.apply()
+        val intent = Intent(this, MainActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        intent.putExtra("languages", langue)
+        startActivity(intent)
     }
 
 
     fun setLocale(activity: Activity, languageCode: String) {
-        Log.d("LanguageChange", "Trying to set language: $languageCode")
         val contextWrapper = LanguageContextWrapper.wrap(applicationContext, languageCode)
         @Suppress("DEPRECATION")
         activity.baseContext.resources.updateConfiguration(
