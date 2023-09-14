@@ -126,7 +126,7 @@ class DiscoverEventsListFragment : Fragment() {
 
     private fun handleResponseGetMYEvents(myEvents: MutableList<Events>?) {
         binding.progressBar.visibility = View.GONE
-        eventsAdapter.resetDataMyEvent(myEvents!!)
+        //Here Set the second Recycler view
     }
 
     fun setRVScrollListener(){
@@ -140,6 +140,8 @@ class DiscoverEventsListFragment : Fragment() {
                 }
             }
         })
+        handlePagination(binding.recyclerView)
+
     }
 
     private fun handleFilterChange(hasChangedFilter:Boolean){
@@ -157,22 +159,14 @@ class DiscoverEventsListFragment : Fragment() {
     private fun initializeEvents() {
         binding.recyclerView.apply {
             // Pagination
-            addOnScrollListener(recyclerViewOnScrollListener)
             layoutManager = LinearLayoutManager(context)
             adapter = eventsAdapter
+            isNestedScrollingEnabled = false
         }
-        binding.uiLayoutLocationBt.setOnClickListener {
-            AnalyticsEvents.logEvent(AnalyticsEvents.Event_action_filter)
-            val intent = Intent(context, EventFiltersActivity::class.java)
-            intent.putExtra(EventFiltersActivity.FILTERS,currentFilters)
-            activityResultLauncher?.launch(intent)
-        }
-        binding.uiTitleLocationBt.text = currentFilters.getFilterButtonString(requireContext())
     }
 
     private fun updateFilters() {
         isFromFilters = true
-        binding.uiTitleLocationBt.text = currentFilters.getFilterButtonString(requireContext())
         page = 0
         loadEvents()
         Log.wtf("wtf", "echo 1")
@@ -197,13 +191,7 @@ class DiscoverEventsListFragment : Fragment() {
         }
     }
 
-    private val recyclerViewOnScrollListener: RecyclerView.OnScrollListener =
-        object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
-                handlePagination(recyclerView)
-            }
-        }
+
 
     private val recyclerMyeventViewOnScrollListener: RecyclerView.OnScrollListener =
         object : RecyclerView.OnScrollListener() {

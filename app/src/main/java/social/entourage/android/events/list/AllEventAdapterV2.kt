@@ -33,37 +33,26 @@ import java.util.Locale
 class AllEventAdapterV2(var userId: Int?, val recyclerViewOnScrollListener: RecyclerView.OnScrollListener) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private val TYPE_MY_EVENT_HEADER = 0
-    private val TYPE_HEADER = 1
-    private val TYPE_EVENT = 2
+    private val TYPE_HEADER = 0
+    private val TYPE_EVENT = 1
     var events:MutableList<Events> = mutableListOf()
-    var myEvents:MutableList<Events> = mutableListOf()
-    var myEventAdapter = MyEventRVAdapter()
     override fun getItemCount(): Int {
-        return 3  + events.size // 2 pour les en-têtes
+        return 2 + events.size // 2 pour les en-têtes
     }
 
     fun resetData(events:MutableList<Events>){
         this.events.addAll(events)
         notifyDataSetChanged()
     }
-    fun resetDataMyEvent(myEvents:MutableList<Events>){
-        this.myEvents.addAll(myEvents)
-        myEventAdapter.resetData(this.myEvents)
-        notifyDataSetChanged()
-        Log.wtf("wf" , "gone in the right adapter")
-    }
 
     fun clearList(){
         this.events.clear()
-        this.myEvents.clear()
         notifyDataSetChanged()
     }
 
     override fun getItemViewType(position: Int): Int {
         return when (position) {
             0 -> TYPE_HEADER
-            1 -> TYPE_MY_EVENT_HEADER
             else -> TYPE_EVENT
         }
     }
@@ -72,9 +61,6 @@ class AllEventAdapterV2(var userId: Int?, val recyclerViewOnScrollListener: Recy
         return if (viewType == TYPE_HEADER) {
             val binding = LayoutSectionHeaderEventV2Binding.inflate(LayoutInflater.from(parent.context), parent, false)
             HeaderViewHolder(binding)
-        }else if(viewType == TYPE_MY_EVENT_HEADER){
-            val binding = LayoutSectionHeaderMyEventBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-            HeaderMyEventViewHolder(binding)
         }else {
             val binding = NewEventItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
             EventViewHolder(binding)
@@ -85,21 +71,11 @@ class AllEventAdapterV2(var userId: Int?, val recyclerViewOnScrollListener: Recy
         if (holder is HeaderViewHolder) {
             holder.binding.titleSectionHeaderEvent.text = "Tous les événements"
         }
-        else if (holder is HeaderMyEventViewHolder){
-            holder.binding.titleSectionHeaderEvent.text = "Mes événements"
-            holder.binding.rvMyEvent.apply {
-                // Pagination
-                addOnScrollListener(recyclerViewOnScrollListener)
-                val settinglayoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-                layoutManager = settinglayoutManager
-                layoutManager = LinearLayoutManager(context)
-                adapter = myEventAdapter
-            }
-        }
+
 
         else if (holder is EventViewHolder) {
-            if(position < events.size -2){
-                val event = events[position - 2]
+            if(position < events.size -1){
+                val event = events[position - 1]
                 holder.binding.layout.setOnClickListener { view ->
                     (view.context as? Activity)?.startActivityForResult(
                         Intent(
@@ -178,6 +154,5 @@ class AllEventAdapterV2(var userId: Int?, val recyclerViewOnScrollListener: Recy
     }
 
     class HeaderViewHolder(val binding: LayoutSectionHeaderEventV2Binding) : RecyclerView.ViewHolder(binding.root)
-    class HeaderMyEventViewHolder(val binding: LayoutSectionHeaderMyEventBinding) : RecyclerView.ViewHolder(binding.root)
     class EventViewHolder(val binding: NewEventItemBinding) : RecyclerView.ViewHolder(binding.root)
 }

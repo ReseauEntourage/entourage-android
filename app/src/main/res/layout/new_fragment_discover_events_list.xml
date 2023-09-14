@@ -14,53 +14,45 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/title_section_header_event"
+                android:text="Mes évènements"
+                android:fontFamily="@font/quicksand_bold"
+                android:textSize="15sp"
+                android:textColor="@color/black"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="10dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:id="@+id/separator"
+                android:background="@color/orange_light_separator_event"
+                app:layout_constraintTop_toBottomOf="@+id/title_section_header_event"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="30dp"
+                />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/rv_my_event"
+                app:layout_constraintTop_toBottomOf="@+id/separator"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="10dp"
+                />
+
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/transparent">
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/ui_layout_location_bt"
-                    android:layout_width="wrap_content"
-                    android:layout_height="30dp"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginTop="16dp"
-                    android:background="@drawable/new_bg_selected_filter"
-                    android:paddingHorizontal="4dp"
-                    android:paddingVertical="6dp"
-                    android:visibility="gone"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                    <ImageView
-                        android:id="@+id/imageView26"
-                        android:layout_width="20dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:srcCompat="@drawable/new_location"
-                        app:tint="@color/white" />
-
-                    <TextView
-                        android:id="@+id/ui_title_location_bt"
-                        style="@style/selected_filter"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="8dp"
-                        android:layout_marginStart="8dp"
-                        android:ellipsize="middle"
-                        android:maxLength="45"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/imageView26"
-                        app:layout_constraintTop_toTopOf="parent"
-                        tools:text="Location" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
