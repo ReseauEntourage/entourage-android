@@ -20,7 +20,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:background="@color/beige"
+        android:background="@drawable/shape_inside_my_event_text"
         >
         <TextView
             android:layout_width="match_parent"

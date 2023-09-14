@@ -30,7 +30,7 @@ import social.entourage.android.tools.utils.px
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class AllEventAdapterV2(var userId: Int?, val recyclerViewOnScrollListener: RecyclerView.OnScrollListener) :
+class AllEventAdapterV2(var userId: Int?) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private val TYPE_EVENT = 1
@@ -42,6 +42,8 @@ class AllEventAdapterV2(var userId: Int?, val recyclerViewOnScrollListener: Recy
     fun resetData(events:MutableList<Events>){
         this.events.addAll(events)
         notifyDataSetChanged()
+        Log.wtf("wtf", "here rv " + this.events.size)
+
     }
 
     fun clearList(){
