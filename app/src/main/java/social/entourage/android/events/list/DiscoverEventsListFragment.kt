@@ -34,6 +34,7 @@ class DiscoverEventsListFragment : Fragment() {
     private var myId: Int? = null
     lateinit var eventsAdapter: AllEventAdapterV2
     private var page: Int = 0
+    private var pageMyEvent: Int = 0
 
     private var sections: MutableList<SectionHeader> = mutableListOf()
 
@@ -90,6 +91,7 @@ class DiscoverEventsListFragment : Fragment() {
         eventsPresenter.getAllEvents.value?.clear()
         eventsPresenter.isLastPage = false
         page = 0
+        pageMyEvent = 0
         loadEvents()
     }
 
@@ -101,6 +103,7 @@ class DiscoverEventsListFragment : Fragment() {
         eventsPresenter.getAllEvents.value?.clear()
         eventsPresenter.isLastPage = false
         page = 0
+        pageMyEvent = 0
     }
 
     private fun handleResponseGetEvents(allEvents: MutableList<Events>?) {
@@ -122,16 +125,8 @@ class DiscoverEventsListFragment : Fragment() {
     }
 
     private fun handleResponseGetMYEvents(myEvents: MutableList<Events>?) {
-        if(page == 1) {
-            sections.clear()
-        }
-        sections = Utils.getSectionHeaders(myEvents, sections)
         binding.progressBar.visibility = View.GONE
         eventsAdapter.resetDataMyEvent(myEvents!!)
-        if (isFromFilters && sections.size > 0) {
-            binding.recyclerView.layoutManager?.scrollToPosition(0)
-            isFromFilters = false
-        }
     }
 
     fun setRVScrollListener(){
@@ -197,6 +192,7 @@ class DiscoverEventsListFragment : Fragment() {
             eventsPresenter.getAllEvents.value?.clear()
             eventsPresenter.isLastPage = false
             page = 0
+            pageMyEvent = 0
             loadEvents()
         }
     }

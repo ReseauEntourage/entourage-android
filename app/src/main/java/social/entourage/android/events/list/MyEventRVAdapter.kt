@@ -3,6 +3,7 @@ package social.entourage.android.events.list
 import android.app.Activity
 import android.content.Intent
 import android.net.Uri
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,7 +25,7 @@ import social.entourage.android.tools.utils.px
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class MyEventRVAdapter() :  RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class MyEventRVAdapter() :RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     var events:MutableList<Events> = mutableListOf()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyEventItemViewHolder {
@@ -33,13 +34,12 @@ class MyEventRVAdapter() :  RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     }
 
     fun resetData(events:MutableList<Events>){
-        this.events.clear()
         this.events.addAll(events)
         notifyDataSetChanged()
     }
 
     fun clearList(){
-        this.events.addAll(events)
+        this.events.clear()
         notifyDataSetChanged()
     }
 

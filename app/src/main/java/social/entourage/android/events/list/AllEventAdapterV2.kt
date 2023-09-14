@@ -3,6 +3,7 @@ package social.entourage.android.events.list
 import android.app.Activity
 import android.content.Intent
 import android.net.Uri
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -43,15 +44,14 @@ class AllEventAdapterV2(var userId: Int?, val recyclerViewOnScrollListener: Recy
     }
 
     fun resetData(events:MutableList<Events>){
-        this.events.clear()
         this.events.addAll(events)
         notifyDataSetChanged()
     }
     fun resetDataMyEvent(myEvents:MutableList<Events>){
-        this.myEvents.clear()
         this.myEvents.addAll(myEvents)
         myEventAdapter.resetData(this.myEvents)
         notifyDataSetChanged()
+        Log.wtf("wf" , "gone in the right adapter")
     }
 
     fun clearList(){
@@ -90,84 +90,89 @@ class AllEventAdapterV2(var userId: Int?, val recyclerViewOnScrollListener: Recy
             holder.binding.rvMyEvent.apply {
                 // Pagination
                 addOnScrollListener(recyclerViewOnScrollListener)
+                val settinglayoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+                layoutManager = settinglayoutManager
                 layoutManager = LinearLayoutManager(context)
+                adapter = myEventAdapter
             }
         }
 
         else if (holder is EventViewHolder) {
-            val event = events[position - 2]
-            holder.binding.layout.setOnClickListener { view ->
-                (view.context as? Activity)?.startActivityForResult(
-                    Intent(
-                        view.context,
-                        FeedActivity::class.java
-                    ).putExtra(
-                        Const.EVENT_ID,
-                        event.id
-                    ), 0
-                )
-            }
-            holder.binding.eventName.text = event.title
-            event.metadata?.startsAt?.let {
-                holder.binding.date.text = SimpleDateFormat(
-                    holder.itemView.context.getString(R.string.event_date_time),
-                    Locale.FRANCE
-                ).format(
-                    it
-                )
-            }
-            holder.binding.location.text = event.metadata?.displayAddress
-            holder.binding.participants.text = event.membersCount.toString()
+            if(position < events.size -2){
+                val event = events[position - 2]
+                holder.binding.layout.setOnClickListener { view ->
+                    (view.context as? Activity)?.startActivityForResult(
+                        Intent(
+                            view.context,
+                            FeedActivity::class.java
+                        ).putExtra(
+                            Const.EVENT_ID,
+                            event.id
+                        ), 0
+                    )
+                }
+                holder.binding.eventName.text = event.title
+                event.metadata?.startsAt?.let {
+                    holder.binding.date.text = SimpleDateFormat(
+                        holder.itemView.context.getString(R.string.event_date_time),
+                        Locale.FRANCE
+                    ).format(
+                        it
+                    )
+                }
+                holder.binding.location.text = event.metadata?.displayAddress
+                holder.binding.participants.text = event.membersCount.toString()
 
-            val participantsCount = event.membersCount ?: 0
+                val participantsCount = event.membersCount ?: 0
 
-            holder.binding.participants.text =
-                holder.binding.root.context.resources.getQuantityString(
-                    R.plurals.number_of_people,
-                    participantsCount,
-                    participantsCount
-                )
+                holder.binding.participants.text =
+                    holder.binding.root.context.resources.getQuantityString(
+                        R.plurals.number_of_people,
+                        participantsCount,
+                        participantsCount
+                    )
 
-            event.metadata?.landscapeUrl?.let {
-                Glide.with(holder.binding.root.context)
-                    .load(Uri.parse(event.metadata.landscapeUrl))
-                    .placeholder(R.drawable.ic_event_placeholder)
-                    .error(R.drawable.ic_event_placeholder)
-                    .apply(RequestOptions().override(90.px, 90.px))
-                    .transform(CenterCrop(), RoundedCorners(20.px))
-                    .into(holder.binding.image)
-            } ?: run {
-                Glide.with(holder.binding.root.context)
-                    .load(R.drawable.ic_event_placeholder)
-                    .apply(RequestOptions().override(90.px, 90.px))
-                    .transform(CenterCrop(), RoundedCorners(20.px))
-                    .into(holder.binding.image)
-            }
+                event.metadata?.landscapeUrl?.let {
+                    Glide.with(holder.binding.root.context)
+                        .load(Uri.parse(event.metadata.landscapeUrl))
+                        .placeholder(R.drawable.ic_event_placeholder)
+                        .error(R.drawable.ic_event_placeholder)
+                        .apply(RequestOptions().override(90.px, 90.px))
+                        .transform(CenterCrop(), RoundedCorners(20.px))
+                        .into(holder.binding.image)
+                } ?: run {
+                    Glide.with(holder.binding.root.context)
+                        .load(R.drawable.ic_event_placeholder)
+                        .apply(RequestOptions().override(90.px, 90.px))
+                        .transform(CenterCrop(), RoundedCorners(20.px))
+                        .into(holder.binding.image)
+                }
 
-            holder.binding.star.isVisible = event.author?.userID == userId
-            holder.binding.admin.isVisible = event.author?.userID == userId
-            holder.binding.canceled.isVisible = event.status == Status.CLOSED
-            holder.binding.ivCanceled.isVisible = event.status == Status.CLOSED
-            holder.binding.eventName.setTextColor(
-                ContextCompat.getColor(
-                    holder.binding.root.context,
-                    if (event.status == Status.CLOSED) R.color.grey else R.color.black)
-            )
-
-            if(event.calculateIfEventPassed()){
+                holder.binding.star.isVisible = event.author?.userID == userId
+                holder.binding.admin.isVisible = event.author?.userID == userId
+                holder.binding.canceled.isVisible = event.status == Status.CLOSED
+                holder.binding.ivCanceled.isVisible = event.status == Status.CLOSED
                 holder.binding.eventName.setTextColor(
                     ContextCompat.getColor(
                         holder.binding.root.context,
-                    R.color.grey)
+                        if (event.status == Status.CLOSED) R.color.grey else R.color.black)
                 )
-                holder.binding.blackLayout.visibility = View.VISIBLE
-            }else{
-                holder.binding.eventName.setTextColor(
-                    ContextCompat.getColor(
-                        holder.binding.root.context,
-                    R.color.black)
-                )
-                holder.binding.blackLayout.visibility = View.GONE
+
+                if(event.calculateIfEventPassed()){
+                    holder.binding.eventName.setTextColor(
+                        ContextCompat.getColor(
+                            holder.binding.root.context,
+                            R.color.grey)
+                    )
+                    holder.binding.blackLayout.visibility = View.VISIBLE
+                }else{
+                    holder.binding.eventName.setTextColor(
+                        ContextCompat.getColor(
+                            holder.binding.root.context,
+                            R.color.black)
+                    )
+                    holder.binding.blackLayout.visibility = View.GONE
+                }
             }
         }
     }
