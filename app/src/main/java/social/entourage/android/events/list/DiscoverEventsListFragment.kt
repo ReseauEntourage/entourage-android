@@ -33,6 +33,7 @@ class DiscoverEventsListFragment : Fragment() {
     private lateinit var eventsPresenter: EventsPresenter
     private var myId: Int? = null
     lateinit var eventsAdapter: AllEventAdapterV2
+    lateinit var myeventsAdapter: MyEventRVAdapter
     private var page: Int = 0
     private var pageMyEvent: Int = 0
 
@@ -73,6 +74,7 @@ class DiscoverEventsListFragment : Fragment() {
         eventsPresenter = ViewModelProvider(requireActivity()).get(EventsPresenter::class.java)
         myId = EntourageApplication.me(activity)?.id
         eventsAdapter = AllEventAdapterV2(myId,recyclerMyeventViewOnScrollListener)
+        myeventsAdapter = MyEventRVAdapter()
         loadEvents()
         eventsPresenter.getAllEvents.observe(viewLifecycleOwner, ::handleResponseGetEvents)
         eventsPresenter.hasChangedFilter.observe(viewLifecycleOwner, ::handleFilterChange)
@@ -126,7 +128,7 @@ class DiscoverEventsListFragment : Fragment() {
 
     private fun handleResponseGetMYEvents(myEvents: MutableList<Events>?) {
         binding.progressBar.visibility = View.GONE
-        //Here Set the second Recycler view
+        myeventsAdapter.resetData(myEvents!!)
     }
 
     fun setRVScrollListener(){
@@ -161,7 +163,14 @@ class DiscoverEventsListFragment : Fragment() {
             // Pagination
             layoutManager = LinearLayoutManager(context)
             adapter = eventsAdapter
-            isNestedScrollingEnabled = false
+        }
+        binding.rvMyEvent.apply {
+            // Pagination
+            val settinglayoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            layoutManager = settinglayoutManager
+            // Supprimez cette ligne ci-dessous
+            //layoutManager = LinearLayoutManager(context)
+            adapter = myeventsAdapter
         }
     }
 

@@ -17,7 +17,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/title_section_header_event"
+                android:id="@+id/title_section_header_my_event"
                 android:text="Mes évènements"
                 android:fontFamily="@font/quicksand_bold"
                 android:textSize="15sp"
@@ -48,14 +48,36 @@
                 android:layout_marginStart="30dp"
                 android:layout_marginTop="10dp"
                 />
-
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/title_section_header_event"
+                android:text="Tous les évènements"
+                android:fontFamily="@font/quicksand_bold"
+                android:textSize="15sp"
+                android:textColor="@color/black"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="10dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:id="@+id/separator2"
+                android:background="@color/orange_light_separator_event"
+                app:layout_constraintTop_toBottomOf="@+id/title_section_header_event"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="30dp"
+                />
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/transparent">
 
             </androidx.constraintlayout.widget.ConstraintLayout>
-
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_view"
                 android:layout_width="match_parent"
@@ -69,7 +91,6 @@
                 app:layout_constraintTop_toBottomOf="@id/divider"
                 tools:itemCount="4"
                 tools:listitem="@layout/new_event_item" />
-
             <ProgressBar
                 android:id="@+id/progressBar"
                 style="?android:attr/progressBarStyleLarge"
@@ -77,14 +98,12 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="15dp" />
-
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/emptyStateLayout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
                 android:visibility="gone">
-
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -93,7 +112,6 @@
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
-
                     <ImageView
                         android:id="@+id/image"
                         android:layout_width="wrap_content"
@@ -104,7 +122,6 @@
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintRight_toRightOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
-
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -113,7 +130,6 @@
                         android:src="@drawable/new_group_stars"
                         app:layout_constraintBottom_toTopOf="@id/title"
                         app:layout_constraintLeft_toLeftOf="parent" />
-
                     <TextView
                         android:id="@+id/title"
                         style="@style/mini_header_black"
@@ -139,7 +155,6 @@
                         app:layout_constraintTop_toBottomOf="@+id/title" />
 
                 </LinearLayout>
-
                 <ImageView
                     android:id="@+id/arrow"
                     android:layout_width="wrap_content"
@@ -151,9 +166,7 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     />
-
             </androidx.constraintlayout.widget.ConstraintLayout>
-
         </LinearLayout>
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </layout>
