@@ -42,7 +42,6 @@ class AllEventAdapterV2(var userId: Int?) :
     fun resetData(events:MutableList<Events>){
         this.events.addAll(events)
         notifyDataSetChanged()
-        Log.wtf("wtf", "here rv " + this.events.size)
 
     }
 

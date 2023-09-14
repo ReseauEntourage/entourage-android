@@ -59,6 +59,7 @@ class EventsPresenter: ViewModel() {
 
     var isLoading: Boolean = false
     var isLastPage: Boolean = false
+    var isLastPageMyEvent: Boolean = false
 
     var isSendingCreatePost = false
 
@@ -100,8 +101,8 @@ class EventsPresenter: ViewModel() {
                 ) {
 
                     response.body()?.let { allEventsWrapper ->
-                        if (allEventsWrapper.allEvents.size < EVENTS_PER_PAGE) isLastPage = true
-                        getAllMyEvents.value = allEventsWrapper.allEvents
+                        if (allEventsWrapper.allEvents.size < EVENTS_PER_PAGE) isLastPageMyEvent = true
+                        getAllMyEvents.postValue(allEventsWrapper.allEvents)
                     }
                 }
 
@@ -119,8 +120,9 @@ class EventsPresenter: ViewModel() {
                 ) {
 
                     response.body()?.let { allEventsWrapper ->
+                        Log.wtf("wtf", "my call event size " + allEventsWrapper.allEvents.size)
                         if (allEventsWrapper.allEvents.size < EVENTS_PER_PAGE) isLastPage = true
-                        getAllEvents.value = allEventsWrapper.allEvents
+                        getAllEvents.postValue(allEventsWrapper.allEvents)
 
                     }
                 }
