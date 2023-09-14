@@ -18,6 +18,8 @@
     <color name="tomato">#ee3e3a</color>
     <color name="brownish_grey">#5d5d5d</color>
     <color name="light_grey">#ededed</color>
+    <color name="orange_light_separator_event">#FF9C5D</color>
+
 
     <!-- Backgrounds -->
     <color name="background">@color/primary</color>

@@ -3,6 +3,7 @@ package social.entourage.android.events.list
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -31,7 +32,7 @@ class DiscoverEventsListFragment : Fragment() {
 
     private lateinit var eventsPresenter: EventsPresenter
     private var myId: Int? = null
-    lateinit var eventsAdapter: GroupEventsListAdapter
+    lateinit var eventsAdapter: AllEventAdapterV2
     private var page: Int = 0
 
     private var sections: MutableList<SectionHeader> = mutableListOf()
@@ -50,6 +51,7 @@ class DiscoverEventsListFragment : Fragment() {
                 val filters = result.data?.getSerializableExtra(EventFiltersActivity.FILTERS) as? EventActionLocationFilters
                 filters?.let {
                     this.currentFilters = filters
+                    eventsPresenter.tellParentFragmentToupdateLocation(this.currentFilters)
                     updateFilters()
                 }
             }
@@ -69,11 +71,13 @@ class DiscoverEventsListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         eventsPresenter = ViewModelProvider(requireActivity()).get(EventsPresenter::class.java)
         myId = EntourageApplication.me(activity)?.id
-        eventsAdapter =
-            GroupEventsListAdapter(requireContext(), sections, myId)
+        eventsAdapter = AllEventAdapterV2(myId,recyclerMyeventViewOnScrollListener)
         loadEvents()
         eventsPresenter.getAllEvents.observe(viewLifecycleOwner, ::handleResponseGetEvents)
+        eventsPresenter.hasChangedFilter.observe(viewLifecycleOwner, ::handleFilterChange)
+        eventsPresenter.getAllMyEvents.observe(viewLifecycleOwner,::handleResponseGetMYEvents)
         initializeEvents()
+        setRVScrollListener()
         handleSwipeRefresh()
         AnalyticsEvents.logEvent(AnalyticsEvents.Event_view_discover)
     }
@@ -82,7 +86,7 @@ class DiscoverEventsListFragment : Fragment() {
         super.onResume()
         binding.progressBar.visibility = View.VISIBLE
         sections.clear()
-        eventsAdapter.notifyDataChanged(sections)
+        eventsAdapter.clearList()
         eventsPresenter.getAllEvents.value?.clear()
         eventsPresenter.isLastPage = false
         page = 0
@@ -93,7 +97,7 @@ class DiscoverEventsListFragment : Fragment() {
         super.onStop()
         binding.progressBar.visibility = View.VISIBLE
         sections.clear()
-        eventsAdapter.notifyDataChanged(sections)
+        eventsAdapter.clearList()
         eventsPresenter.getAllEvents.value?.clear()
         eventsPresenter.isLastPage = false
         page = 0
@@ -106,19 +110,54 @@ class DiscoverEventsListFragment : Fragment() {
         sections = Utils.getSectionHeaders(allEvents, sections)
         binding.progressBar.visibility = View.GONE
         updateView(sections.isEmpty())
-        eventsAdapter.notifyDataChanged(sections)
+        eventsAdapter.resetData(allEvents!!)
+        if (isFromFilters && sections.size > 0) {
+            binding.recyclerView.layoutManager?.scrollToPosition(0)
+            isFromFilters = false
+        }
+        myId = EntourageApplication.me(activity)?.id
+        if(myId != null){
+            eventsPresenter.getMyEvents(myId!!, page, EVENTS_PER_PAGE)
+        }
+    }
+
+    private fun handleResponseGetMYEvents(myEvents: MutableList<Events>?) {
+        if(page == 1) {
+            sections.clear()
+        }
+        sections = Utils.getSectionHeaders(myEvents, sections)
+        binding.progressBar.visibility = View.GONE
+        eventsAdapter.resetDataMyEvent(myEvents!!)
         if (isFromFilters && sections.size > 0) {
             binding.recyclerView.layoutManager?.scrollToPosition(0)
             isFromFilters = false
         }
     }
 
+    fun setRVScrollListener(){
+        binding.recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                if (dy > 0) {
+                   eventsPresenter.tellParentFragmentToMoveButton(false)
+                } else if (dy < 0) {
+                    eventsPresenter.tellParentFragmentToMoveButton(true)
+                }
+            }
+        })
+    }
+
+    private fun handleFilterChange(hasChangedFilter:Boolean){
+        AnalyticsEvents.logEvent(AnalyticsEvents.Event_action_filter)
+        val intent = Intent(context, EventFiltersActivity::class.java)
+        intent.putExtra(EventFiltersActivity.FILTERS,currentFilters)
+        activityResultLauncher?.launch(intent)
+    }
+
     private fun updateView(isListEmpty: Boolean) {
         binding.emptyStateLayout.isVisible = isListEmpty
         binding.recyclerView.isVisible = !isListEmpty
     }
-
-
 
     private fun initializeEvents() {
         binding.recyclerView.apply {
@@ -127,14 +166,12 @@ class DiscoverEventsListFragment : Fragment() {
             layoutManager = LinearLayoutManager(context)
             adapter = eventsAdapter
         }
-
         binding.uiLayoutLocationBt.setOnClickListener {
             AnalyticsEvents.logEvent(AnalyticsEvents.Event_action_filter)
             val intent = Intent(context, EventFiltersActivity::class.java)
             intent.putExtra(EventFiltersActivity.FILTERS,currentFilters)
             activityResultLauncher?.launch(intent)
         }
-
         binding.uiTitleLocationBt.text = currentFilters.getFilterButtonString(requireContext())
     }
 
@@ -143,6 +180,7 @@ class DiscoverEventsListFragment : Fragment() {
         binding.uiTitleLocationBt.text = currentFilters.getFilterButtonString(requireContext())
         page = 0
         loadEvents()
+        Log.wtf("wtf", "echo 1")
     }
 
     private fun loadEvents() {
@@ -155,7 +193,7 @@ class DiscoverEventsListFragment : Fragment() {
         binding.swipeRefresh.setOnRefreshListener {
             binding.progressBar.visibility = View.VISIBLE
             sections.clear()
-            eventsAdapter.notifyDataChanged(sections)
+            eventsAdapter.clearList()
             eventsPresenter.getAllEvents.value?.clear()
             eventsPresenter.isLastPage = false
             page = 0
@@ -171,6 +209,14 @@ class DiscoverEventsListFragment : Fragment() {
             }
         }
 
+    private val recyclerMyeventViewOnScrollListener: RecyclerView.OnScrollListener =
+        object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                handlePaginationMyRv(recyclerView)
+            }
+        }
+
     fun handlePagination(recyclerView: RecyclerView) {
         val layoutManager = recyclerView.layoutManager as LinearLayoutManager?
         layoutManager?.let {
@@ -180,6 +226,21 @@ class DiscoverEventsListFragment : Fragment() {
                 layoutManager.findFirstVisibleItemPosition()
             if (!eventsPresenter.isLoading && !eventsPresenter.isLastPage) {
                 if (visibleItemCount + firstVisibleItemPosition >= totalItemCount && firstVisibleItemPosition >= 0 && totalItemCount >= EVENTS_PER_PAGE) {
+                    loadEvents()
+                }
+            }
+        }
+    }
+    fun handlePaginationMyRv(recyclerView: RecyclerView) {
+        val layoutManager = recyclerView.layoutManager as LinearLayoutManager?
+        layoutManager?.let {
+            val visibleItemCount: Int = layoutManager.childCount
+            val totalItemCount: Int = layoutManager.itemCount
+            val firstVisibleItemPosition: Int =
+                layoutManager.findFirstVisibleItemPosition()
+            if (!eventsPresenter.isLoading && !eventsPresenter.isLastPage) {
+                if (visibleItemCount + firstVisibleItemPosition >= totalItemCount && firstVisibleItemPosition >= 0 && totalItemCount >= EVENTS_PER_PAGE) {
+                    //here change to myevent
                     loadEvents()
                 }
             }

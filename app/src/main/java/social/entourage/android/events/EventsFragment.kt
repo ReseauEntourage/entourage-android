@@ -1,14 +1,19 @@
 package social.entourage.android.events
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.appbar.AppBarLayout
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import social.entourage.android.EntourageApplication
@@ -16,6 +21,7 @@ import social.entourage.android.R
 import social.entourage.android.databinding.NewFragmentEventsBinding
 import social.entourage.android.RefreshController
 import social.entourage.android.ViewPagerDefaultPageController
+import social.entourage.android.api.model.EventActionLocationFilters
 import social.entourage.android.events.create.CreateEventActivity
 import social.entourage.android.events.list.EventsViewPagerAdapter
 import social.entourage.android.home.CommunicationHandlerBadgeViewModel
@@ -30,6 +36,11 @@ const val DISCOVER_EVENTS_TAB = 1
 
 class EventsFragment : Fragment() {
     private var _binding: NewFragmentEventsBinding? = null
+    private var currentFilters = EventActionLocationFilters()
+    private var activityResultLauncher: ActivityResultLauncher<Intent>? = null
+    private var isFromFilters = false
+
+
     val binding: NewFragmentEventsBinding get() = _binding!!
     private lateinit var eventsPresenter: EventsPresenter
 
@@ -42,6 +53,21 @@ class EventsFragment : Fragment() {
             }
         }
     }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        activityResultLauncher = registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult())
+        { result ->
+            val filters = result.data?.getSerializableExtra(EventFiltersActivity.FILTERS) as? EventActionLocationFilters
+            filters?.let {
+                this.currentFilters = filters
+                updateFilters()
+            }
+        }
+    }
+
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -56,11 +82,12 @@ class EventsFragment : Fragment() {
         eventsPresenter = ViewModelProvider(requireActivity()).get(EventsPresenter::class.java)
         createEvent()
         initializeTab()
-        handleImageViewAnimation()
         setPage()
         eventsPresenter.unreadMessages.observe(requireActivity(), ::updateUnreadCount)
         eventsPresenter.haveToChangePage.observe(requireActivity(),::handlePageChange)
         eventsPresenter.haveToCreateEvent.observe(requireActivity(),::handleLaunchCreateEvent)
+        eventsPresenter.isCreateButtonExtended.observe(requireActivity(),::handleButtonBehavior)
+        eventsPresenter.hasChangedFilterLocationForParentFragment.observe(requireActivity(),::handleFilterTitleAfterChange)
         eventsPresenter.getUnreadCount()
     }
 
@@ -70,9 +97,44 @@ class EventsFragment : Fragment() {
             initializeTab()
             RefreshController.shouldRefreshEventFragment = false
         }
+        initView()
+    }
+    private fun updateFilters() {
+        isFromFilters = true
+        binding.uiTitleLocationBt.text = currentFilters.getFilterButtonString(requireContext())
+
+    }
+    fun initView(){
+
+        binding.uiLayoutLocationBt.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Event_action_filter)
+            eventsPresenter.changedFilterFromUpperFragment()
+
+        }
+        binding.uiTitleLocationBt.text = currentFilters.getFilterButtonString(requireContext())
+        binding.createEventRetracted.visibility = View.GONE
+        binding.createEventExpanded.visibility = View.VISIBLE
     }
 
+    fun handleFilterTitleAfterChange(filter:EventActionLocationFilters){
+        this.currentFilters = filter
+        binding.uiTitleLocationBt.text = currentFilters.getFilterButtonString(requireContext())
 
+    }
+
+    fun handleButtonBehavior(isExtended:Boolean){
+        /*
+        android:src="@drawable/new_fab_plus"
+        android:text="@string/create_event_btn_title"
+                */
+        if(isExtended){
+            binding.createEventRetracted.visibility = View.GONE
+            binding.createEventExpanded.visibility = View.VISIBLE
+        }else{
+            binding.createEventRetracted.visibility = View.VISIBLE
+            binding.createEventExpanded.visibility = View.GONE
+        }
+    }
 
     private fun handlePageChange(haveChange:Boolean){
         ViewPagerDefaultPageController.shouldSelectDiscoverEvents = true
@@ -92,49 +154,16 @@ class EventsFragment : Fragment() {
         val viewPager = binding.viewPager
         val adapter = EventsViewPagerAdapter(childFragmentManager, lifecycle)
         viewPager.adapter = adapter
-
-        val tabLayout = binding.tabLayout
-        val tabs = arrayOf(
-            requireContext().getString(R.string.my_events),
-            requireContext().getString(R.string.discover_events),
-        )
-        TabLayoutMediator(tabLayout, viewPager) { tab, position ->
-            tab.text = tabs[position]
-        }.attach()
     }
 
     private fun setPage() {
         binding.viewPager.doOnPreDraw {
-            val fromWelcomeActivityThreeEvent = activity?.intent?.getBooleanExtra("fromWelcomeActivityThreeEvent", false) ?: false
-            if(fromWelcomeActivityThreeEvent){
-                binding.viewPager.setCurrentItem(
-                    DISCOVER_EVENTS_TAB
-                )
-            }else{
-                binding.viewPager.setCurrentItem(
-                    if (ViewPagerDefaultPageController.shouldSelectDiscoverEvents) DISCOVER_EVENTS_TAB else MY_EVENTS_TAB,
-                    false
-                )
-                ViewPagerDefaultPageController.shouldSelectDiscoverEvents = false
-            }
+            binding.viewPager.setCurrentItem(
+               DISCOVER_EVENTS_TAB
+            )
+            ViewPagerDefaultPageController.shouldSelectDiscoverEvents = true
         }
 
-        binding.tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
-            override fun onTabSelected(tab: TabLayout.Tab?) {
-                if (tab?.position == 0) {
-                    AnalyticsEvents.logEvent(AnalyticsEvents.Event_view_discover)
-                }
-                else {
-                    AnalyticsEvents.logEvent(AnalyticsEvents.Event_view_my)
-                }
-            }
-
-            override fun onTabUnselected(tab: TabLayout.Tab?) {
-            }
-
-            override fun onTabReselected(tab: TabLayout.Tab?) {
-            }
-        })
     }
 
     private fun updateUnreadCount(unreadMessages: UnreadMessages?) {
@@ -145,16 +174,16 @@ class EventsFragment : Fragment() {
         }
     }
 
-    private fun handleImageViewAnimation() {
-        binding.appBar.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
-            val res: Float =
-                abs(verticalOffset).toFloat() / appBarLayout.totalScrollRange
-            binding.img.alpha = 1f - res
-        })
-    }
 
     private fun createEvent() {
-        binding.createEvent.setOnClickListener {
+        binding.createEventExpanded.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Event_action_create)
+            startActivityForResult(
+                Intent(context, CreateEventActivity::class.java),
+                0
+            )
+        }
+        binding.createEventRetracted.setOnClickListener {
             AnalyticsEvents.logEvent(AnalyticsEvents.Event_action_create)
             startActivityForResult(
                 Intent(context, CreateEventActivity::class.java),

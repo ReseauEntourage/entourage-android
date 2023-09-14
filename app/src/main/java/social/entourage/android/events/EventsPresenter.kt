@@ -1,5 +1,6 @@
 package social.entourage.android.events
 
+import android.util.Log
 import androidx.collection.ArrayMap
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -16,6 +17,7 @@ import social.entourage.android.EntourageApplication
 import social.entourage.android.api.request.*
 import social.entourage.android.RefreshController
 import social.entourage.android.api.model.EntourageUser
+import social.entourage.android.api.model.EventActionLocationFilters
 import social.entourage.android.events.create.CreateEvent
 import social.entourage.android.events.list.EVENTS_PER_PAGE
 import social.entourage.android.home.UnreadMessages
@@ -40,6 +42,9 @@ class EventsPresenter: ViewModel() {
     var getMembersSearch = MutableLiveData<MutableList<EntourageUser>>()
     var getAllPosts = MutableLiveData<MutableList<Post>>()
     var getCurrentParentPost = MutableLiveData<Post>()
+    var hasChangedFilter = MutableLiveData<Boolean>()
+    var hasChangedFilterLocationForParentFragment = MutableLiveData<EventActionLocationFilters>()
+    var isCreateButtonExtended = MutableLiveData<Boolean>()
 
     var hasUserLeftEvent = MutableLiveData<Boolean>()
     var eventCanceled = MutableLiveData<Boolean>()
@@ -72,6 +77,19 @@ class EventsPresenter: ViewModel() {
     fun resetAllEvent(){
         this.getAllMyEvents.value?.clear()
     }
+
+    fun changedFilterFromUpperFragment(){
+        hasChangedFilter.postValue(true)
+    }
+
+    fun tellParentFragmentToupdateLocation(filter: EventActionLocationFilters){
+        hasChangedFilterLocationForParentFragment.postValue(filter)
+    }
+
+    fun tellParentFragmentToMoveButton(isExtended:Boolean){
+        isCreateButtonExtended.postValue(isExtended)
+    }
+
 
     fun getMyEvents(userId: Int, page: Int, per: Int) {
         EntourageApplication.get().apiModule.eventsRequest.getMyEvents(userId, page, per)

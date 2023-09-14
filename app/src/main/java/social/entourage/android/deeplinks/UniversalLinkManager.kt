@@ -35,7 +35,6 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
         val pathSegments = uri.pathSegments
         uri.queryParameterNames.forEach { name ->
             val value = uri.getQueryParameter(name)
-            Timber.wtf("eho $name: $value")
         }
         if (uri.host == stagingURL || uri.host == prodURL) {
             when {
@@ -88,7 +87,8 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
                     } else {
                         val intent = Intent(context, MainActivity::class.java)
                             .addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
-                        intent.putExtra("fromWelcomeActivityThreeEvent", true)
+                        //intent.putExtra("fromWelcomeActivityThreeEvent", true)
+                        intent.putExtra("goDiscoverEvent", true)
                         context.startActivity(intent)
 
                     }
@@ -101,7 +101,7 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
                         val intent = Intent(context, MainActivity::class.java)
                             .addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
                         intent.putExtra("fromWelcomeActivity", true)
-                        intent.putExtra("goMyGroup", true)
+                        intent.putExtra("goDiscoverGroup", true)
                         context.startActivity(intent)
                     }
                 }

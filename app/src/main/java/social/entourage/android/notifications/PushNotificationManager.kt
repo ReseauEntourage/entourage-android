@@ -467,7 +467,6 @@ object PushNotificationManager {
     }
 
     private fun doTracking(notificationContent:String){
-        Log.wtf("wtf", "tracking done")
         try {
             val pushNotif = Gson().fromJson(notificationContent, PushNotificationContent::class.java)
             val stage = pushNotif.extra?.stage

@@ -1,5 +1,6 @@
 package social.entourage.android.groups
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
@@ -15,10 +16,13 @@ import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import social.entourage.android.EntourageApplication
+import social.entourage.android.MainActivity
 import social.entourage.android.R
 import social.entourage.android.databinding.NewFragmentGroupsBinding
 import social.entourage.android.RefreshController
 import social.entourage.android.ViewPagerDefaultPageController
+import social.entourage.android.events.DISCOVER_EVENTS_TAB
+import social.entourage.android.events.MY_EVENTS_TAB
 import social.entourage.android.groups.create.CreateGroupActivity
 import social.entourage.android.home.CommunicationHandlerBadgeViewModel
 import social.entourage.android.home.UnreadMessages
@@ -66,21 +70,44 @@ class GroupsFragment : Fragment() {
     }
 
     private fun goDiscover(){
-        binding.viewPager.setCurrentItem(
-            DISCOVER_GROUPS_TAB ,
-            false
-        )
-        binding.viewPager
+        if(isAdded){
+            binding.viewPager.setCurrentItem(
+                DISCOVER_GROUPS_TAB ,
+                false
+            )
+            binding.viewPager
+        }
     }
 
 
     private fun setPage() {
-        binding.viewPager.doOnPreDraw {
+        /*binding.viewPager.doOnPreDraw {
             binding.viewPager.setCurrentItem(
                 if (ViewPagerDefaultPageController.shouldSelectDiscoverGroups) DISCOVER_GROUPS_TAB else MY_GROUPS_TAB,
                 false
             )
             ViewPagerDefaultPageController.shouldSelectDiscoverGroups = false
+        }*/
+        binding.viewPager.doOnPreDraw {
+
+            val goDiscoverGroup = activity?.intent?.getBooleanExtra("goDiscoverGroup", false) ?: false
+            val insideVarOfActivity = (context as MainActivity).getFromDeepLGoDiscoverGroup()
+
+
+            if(insideVarOfActivity){
+                binding.viewPager.setCurrentItem(
+                    DISCOVER_GROUPS_TAB
+
+                )
+                ViewPagerDefaultPageController.shouldSelectDiscoverGroups = true
+                (context as MainActivity).setGoDiscoverGroupFromDeepL(false)
+            }else{
+                binding.viewPager.setCurrentItem(
+                    if (ViewPagerDefaultPageController.shouldSelectDiscoverEvents) DISCOVER_GROUPS_TAB else MY_GROUPS_TAB,
+                    false
+                )
+                ViewPagerDefaultPageController.shouldSelectDiscoverGroups = false
+            }
         }
     }
 
@@ -117,12 +144,6 @@ class GroupsFragment : Fragment() {
         if (RefreshController.shouldRefreshFragment) {
             initializeTab()
             RefreshController.shouldRefreshFragment = false
-        }
-        if(requireActivity().intent?.getBooleanExtra("goMyGroup", false) == true) {
-            Handler(Looper.getMainLooper()).postDelayed({
-                goDiscover()
-                requireActivity().intent = null
-            }, 100)  // adjust the delay as needed
         }
     }
 

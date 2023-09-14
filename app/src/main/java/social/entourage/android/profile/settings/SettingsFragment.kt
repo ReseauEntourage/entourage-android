@@ -154,7 +154,6 @@ class SettingsFragment : Fragment() {
     private fun handleLongPress(): Boolean {
         FirebaseMessaging.getInstance().token.addOnSuccessListener { token ->
             val authenticationController: AuthenticationController = EntourageApplication.get().authenticationController
-            Log.wtf("wtf", "token : " + authenticationController.me?.token)
             val clipboardManager =
                 EntourageApplication.get()
                     .getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager

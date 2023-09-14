@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/title_section_header_event"
+        android:text="Mes évènements"
+        android:fontFamily="@font/quicksand_bold"
+        android:textSize="15sp"
+        android:textColor="@color/black"
+        android:layout_margin="12dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:id="@+id/separator"
+        android:background="@color/orange_light_separator_event"
+        app:layout_constraintTop_toBottomOf="@+id/title_section_header_event"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_margin="12dp"
+        />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/rv_my_event"
+        app:layout_constraintTop_toBottomOf="@+id/separator"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_margin="12dp"
+        />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

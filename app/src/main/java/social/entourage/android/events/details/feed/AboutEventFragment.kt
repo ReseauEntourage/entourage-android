@@ -228,9 +228,7 @@ class AboutEventFragment : Fragment(), OnMapReadyCallback {
         if (allMembers != null) {
             for(member in allMembers){
                 if(member.id.toInt() == event?.author?.userID){
-                    Timber.wtf("wtf true" + Gson().toJson(member))
                     if(member.communityRoles?.contains("Équipe Entourage") == true || member.communityRoles?.contains("Ambassadeur") == true){
-                        Timber.wtf("wtf ambassador")
                         binding.tvAssociation.text = getString(R.string.event_organisez_entourage)
                         binding.tvAssociation.visibility = View.VISIBLE
                     }

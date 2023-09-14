@@ -71,7 +71,6 @@ class DiscoverGroupsListFragment : Fragment() {
         groupsListSearch.clear()
         allGroupsSearch?.let { groupsListSearch.addAll(it) }
         allGroupsSearch?.isEmpty()?.let {
-            Log.wtf("wtf", "isEmpty value : " + allGroupsSearch?.isEmpty())
             updateViewSearch(it) }
         (binding.searchRecyclerView.adapter as? GroupsListAdapter)?.updateGroupsList(groupsListSearch)
         binding.progressBar.visibility = View.GONE
@@ -99,7 +98,6 @@ class DiscoverGroupsListFragment : Fragment() {
             binding.list.visibility = View.VISIBLE
 
         } else {
-            Log.wtf("wtf", "pased here")
             binding.emptyStateLayout.visibility = View.GONE
             binding.list.visibility = View.VISIBLE
             binding.searchRecyclerView.visibility = View.VISIBLE

@@ -49,16 +49,13 @@ class UserPresenter {
                     response: Response<ResponseBody>
                 ) {
                     if (response.isSuccessful) {
-                        Log.wtf("wtf", "eho passed")
                         isLanguageChanged.value = true
                     } else {
-                        Log.wtf("wtf", "eho not passed")
                        isLanguageChanged.value = false
                     }
                 }
 
                 override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                    Log.wtf("wtf", "eho passed")
                     isLanguageChanged.value = true
                 }
             })

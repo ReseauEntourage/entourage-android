@@ -227,6 +227,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="create_post">Créer une publication</string>
     <string name="create_event">Créer un événement sur le groupe</string>
     <string name="create_event_if_no_event">Créer un événement</string>
+    <string name="create_event_btn_title">Créer un événement</string>
     <string name="group_success_title">Votre groupe \nest en ligne !</string>
     <string name="group_success_subtitle">Félicitations, vous venez de créer un nouveau groupe. Pour le rendre plus actif, créez la première publication.</string>
     <string name="select_photo">Sélectionner une photo</string>
