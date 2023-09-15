@@ -122,7 +122,16 @@ class DiscoverEventsListFragment : Fragment() {
 
     private fun handleResponseGetMYEvents(myEvents: MutableList<Events>?) {
         binding.progressBar.visibility = View.GONE
-        myeventsAdapter.resetData(myEvents!!)
+        if(myEvents != null && myEvents.size > 0 ) {
+            myeventsAdapter.resetData(myEvents!!)
+            binding.rvMyEvent.visibility = View.VISIBLE
+            binding.separator.visibility = View.VISIBLE
+            binding.titleSectionHeaderMyEvent.visibility = View.VISIBLE
+        }else{
+            binding.rvMyEvent.visibility = View.GONE
+            binding.separator.visibility = View.GONE
+            binding.titleSectionHeaderMyEvent.visibility = View.GONE
+        }
     }
 
     fun setRVScrollListener() {
@@ -153,7 +162,6 @@ class DiscoverEventsListFragment : Fragment() {
                 if (totalItemCount <= (lastVisibleItemPosition + 2) && !eventsPresenter.isLastPageMyEvent) {
                     binding.progressBar.visibility = View.VISIBLE
                     loadMyEvents()
-
                 }
             }
         })
