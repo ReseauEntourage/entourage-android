@@ -73,6 +73,7 @@ class MyEventRVAdapter() :RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                     it
                 )
             }
+            binding.placeMyEvent.text = event.metadata?.displayAddress
             event.metadata?.landscapeUrl?.let {
                 Glide.with(binding.root.context)
                     .load(Uri.parse(event.metadata.landscapeUrl))
