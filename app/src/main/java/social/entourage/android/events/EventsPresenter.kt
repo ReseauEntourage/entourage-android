@@ -111,6 +111,10 @@ class EventsPresenter: ViewModel() {
             })
     }
 
+    fun hasChangedFilter(){
+        hasChangedFilter.postValue(false)
+    }
+
     fun getAllEvents(page: Int, per: Int,distance:Int?,latitude:Double?,longitude:Double?,period:String) {
         EntourageApplication.get().apiModule.eventsRequest.getAllEvents(page, per,distance,latitude,longitude,period)
             .enqueue(object : Callback<EventsListWrapper> {

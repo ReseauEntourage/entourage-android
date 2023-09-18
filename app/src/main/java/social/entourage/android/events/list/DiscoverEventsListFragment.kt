@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.new_header_bottom_sheet.view.view
 import social.entourage.android.EntourageApplication
+import social.entourage.android.R
 import social.entourage.android.databinding.NewFragmentDiscoverEventsListBinding
 import social.entourage.android.events.EventFiltersActivity
 import social.entourage.android.events.EventsPresenter
@@ -24,7 +25,7 @@ import social.entourage.android.api.model.Events
 import social.entourage.android.tools.utils.Utils
 import social.entourage.android.tools.log.AnalyticsEvents
 
-const val EVENTS_PER_PAGE = 20
+const val EVENTS_PER_PAGE = 30
 
 class DiscoverEventsListFragment : Fragment() {
 
@@ -132,6 +133,7 @@ class DiscoverEventsListFragment : Fragment() {
             binding.separator.visibility = View.GONE
             binding.titleSectionHeaderMyEvent.visibility = View.GONE
         }
+        binding.rvMyEvent.scrollX
     }
 
     fun setRVScrollListener() {
@@ -170,10 +172,13 @@ class DiscoverEventsListFragment : Fragment() {
     }
 
     private fun handleFilterChange(hasChangedFilter:Boolean){
-        AnalyticsEvents.logEvent(AnalyticsEvents.Event_action_filter)
-        val intent = Intent(context, EventFiltersActivity::class.java)
-        intent.putExtra(EventFiltersActivity.FILTERS,currentFilters)
-        activityResultLauncher?.launch(intent)
+        if(hasChangedFilter){
+            AnalyticsEvents.logEvent(AnalyticsEvents.Event_action_filter)
+            val intent = Intent(context, EventFiltersActivity::class.java)
+            intent.putExtra(EventFiltersActivity.FILTERS,currentFilters)
+            activityResultLauncher?.launch(intent)
+            eventsPresenter.hasChangedFilter()
+        }
     }
 
     private fun updateView(isListEmpty: Boolean) {
@@ -186,13 +191,15 @@ class DiscoverEventsListFragment : Fragment() {
             // Pagination
             layoutManager = LinearLayoutManager(context)
             adapter = eventsAdapter
+            isNestedScrollingEnabled = false
         }
         binding.rvMyEvent.apply {
             // Pagination
             val settinglayoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             layoutManager = settinglayoutManager
-            // Supprimez cette ligne ci-dessous
-            //layoutManager = LinearLayoutManager(context)
+            val offsetInPixels = resources.getDimensionPixelSize(R.dimen.horizontal_offset) // Define this in your resources
+            setPadding(offsetInPixels, 0, 0, 0)
+            clipToPadding = false
             adapter = myeventsAdapter
         }
     }

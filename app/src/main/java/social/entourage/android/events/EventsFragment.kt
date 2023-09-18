@@ -40,7 +40,7 @@ class EventsFragment : Fragment() {
     private var activityResultLauncher: ActivityResultLauncher<Intent>? = null
     private var isFromFilters = false
 
-
+    //TODO title same size as
     val binding: NewFragmentEventsBinding get() = _binding!!
     private lateinit var eventsPresenter: EventsPresenter
 
@@ -117,6 +117,7 @@ class EventsFragment : Fragment() {
     }
 
     fun handleFilterTitleAfterChange(filter:EventActionLocationFilters){
+        //TODO CORRECT Context
         this.currentFilters = filter
         binding.uiTitleLocationBt.text = currentFilters.getFilterButtonString(requireContext())
 

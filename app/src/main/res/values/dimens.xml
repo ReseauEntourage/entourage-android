@@ -72,5 +72,7 @@
     <dimen name="contributions_value">30sp</dimen>
     <dimen name="contributions_empty_label">10sp</dimen>
     <dimen name="design_bottom_navigation_height" tools:override="true">@dimen/tabs_height</dimen>
+    <dimen name="horizontal_offset">22dp</dimen>
+
 
 </resources>

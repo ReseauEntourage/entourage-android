@@ -46,6 +46,7 @@ class MyEventRVAdapter() :RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder is MyEventItemViewHolder) {
             holder.bind(events[position])
+
         }
     }
 
@@ -102,6 +103,7 @@ class MyEventRVAdapter() :RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                         binding.root.context,
                         R.color.grey)
                 )
+                //TODO reduce margin left
             }else{
                 binding.titleMyEvent.setTextColor(
                     ContextCompat.getColor(
