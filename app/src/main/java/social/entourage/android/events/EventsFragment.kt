@@ -118,9 +118,10 @@ class EventsFragment : Fragment() {
 
     fun handleFilterTitleAfterChange(filter:EventActionLocationFilters){
         //TODO CORRECT Context
-        this.currentFilters = filter
-        binding.uiTitleLocationBt.text = currentFilters.getFilterButtonString(requireContext())
-
+        if(isAdded){
+            this.currentFilters = filter
+            binding.uiTitleLocationBt.text = currentFilters.getFilterButtonString(requireContext())
+        }
     }
 
     fun handleButtonBehavior(isExtended:Boolean){
