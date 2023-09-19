@@ -16,6 +16,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.new_header_bottom_sheet.view.view
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.databinding.NewFragmentDiscoverEventsListBinding
@@ -141,19 +144,22 @@ class DiscoverEventsListFragment : Fragment() {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             binding.nestedScrollView.setOnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
-                val layoutManager = binding.recyclerView.layoutManager as LinearLayoutManager
-                val lastVisibleItemPosition = layoutManager.findLastVisibleItemPosition()
-
-                if (lastVisibleItemPosition == eventsAdapter.events.count() - 1 && lastVisibleItemPosition > 0 && !eventsPresenter.isLastPage) {
-                    binding.progressBar.visibility = View.VISIBLE
-                    loadEvents()
-                }
-
                 if (scrollY > oldScrollY) {
                     eventsPresenter.tellParentFragmentToMoveButton(false)
                 } else if (scrollY < oldScrollY) {
                     eventsPresenter.tellParentFragmentToMoveButton(true)
                 }
+
+                val layoutManager = binding.recyclerView.layoutManager as LinearLayoutManager
+                val lastVisibleItemPosition = layoutManager.findLastVisibleItemPosition()
+
+                if (lastVisibleItemPosition == eventsAdapter.events.count() - 1 && lastVisibleItemPosition > 0 && !eventsPresenter.isLastPage) {
+                    binding.progressBar.visibility = View.VISIBLE
+                    CoroutineScope(Dispatchers.IO).launch {
+                        loadEvents()
+                    }
+                }
+
             }
         }
 
@@ -211,8 +217,7 @@ class DiscoverEventsListFragment : Fragment() {
     private fun updateFilters() {
         isFromFilters = true
         page = 0
-        eventsAdapter.clearList()
-        loadEvents()
+
     }
 
     private fun loadEvents() {

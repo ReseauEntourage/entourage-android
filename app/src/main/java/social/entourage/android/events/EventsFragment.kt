@@ -1,8 +1,13 @@
 package social.entourage.android.events
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
+import android.animation.ValueAnimator
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.transition.AutoTransition
+import android.transition.TransitionManager
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -124,18 +129,42 @@ class EventsFragment : Fragment() {
     }
 
     fun handleButtonBehavior(isExtended:Boolean){
-        /*
-        android:src="@drawable/new_fab_plus"
-        android:text="@string/create_event_btn_title"
-                */
-        if(isExtended){
-            binding.createEventRetracted.visibility = View.GONE
-            binding.createEventExpanded.visibility = View.VISIBLE
-        }else{
-            binding.createEventRetracted.visibility = View.VISIBLE
-            binding.createEventExpanded.visibility = View.GONE
+        if (isExtended) {
+            animateToExtendedState()
+        } else {
+            animateToRetractedState()
         }
     }
+
+    private fun animateToExtendedState() {
+        if (binding.createEventExpanded.visibility == View.VISIBLE) {
+            // Le bouton est déjà dans l'état étendu
+            return
+        }
+
+        binding.createEventExpanded.alpha = 0f
+        binding.createEventExpanded.visibility = View.VISIBLE
+        binding.createEventExpanded.animate().scaleX(1f).alpha(1f).setDuration(200).withEndAction {
+            binding.createEventRetracted.visibility = View.GONE
+        }.start()
+        binding.createEventRetracted.animate().scaleX(0f).alpha(0f).setDuration(200).start()
+    }
+
+    private fun animateToRetractedState() {
+        if (binding.createEventRetracted.visibility == View.VISIBLE) {
+            // Le bouton est déjà dans l'état rétracté
+            return
+        }
+
+        binding.createEventRetracted.alpha = 0f
+        binding.createEventRetracted.visibility = View.VISIBLE
+        binding.createEventRetracted.animate().scaleX(1f).alpha(1f).setDuration(200).withEndAction {
+            binding.createEventExpanded.visibility = View.GONE
+        }.start()
+        binding.createEventExpanded.animate().scaleX(0f).alpha(0f).setDuration(200).start()
+    }
+
+
 
     private fun handlePageChange(haveChange:Boolean){
         ViewPagerDefaultPageController.shouldSelectDiscoverEvents = true

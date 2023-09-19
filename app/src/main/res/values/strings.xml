@@ -335,7 +335,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="picture">Photo</string>
     <string name="image_mandatory">La photo est obligatoire</string>
     <string name="show_more_lined"><u>Voir plus</u></string>
-    <string name="group_events">Évènements du groupe</string>
+    <string name="group_events">Événements du groupe</string>
     <string name="group_events_new">Le groupe organise aussi :</string>
     <string name="january">Janvier</string>
     <string name="february">Février</string>
@@ -355,7 +355,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="see_event">Voir mon événement</string>
     <string name="share_event">Partager l\'événement dans vos groupes</string>
     <string name="share_event_settings">Partager l\'événement</string>
-    <string name="share_event_label">Vous ne pouvez partager l’évènement seulement aux groupes dont vous êtes membre. Votre événement sera alors visible dans le(s) groupe(s) sélectionné(s) et tous les membres d\'un groupe pourront y participer.</string>
+    <string name="share_event_label">Vous ne pouvez partager l’événement seulement aux groupes dont vous êtes membre. Votre événement sera alors visible dans le(s) groupe(s) sélectionné(s) et tous les membres d\'un groupe pourront y participer.</string>
     <string name="dont_share">Ne partager dans aucun groupe</string>
     <string name="share_in_groups">Partager dans un ou plusieurs groupes</string>
 
@@ -424,8 +424,8 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="leave_event">Quitter l\'événement</string>
     <string name="leave_event_dialog_content">Souhaitez-vous quitter l\'événement ?</string>
     <string name="dot">•</string>
-    <string name="event_limited_places_title">Évènement à places limitées</string>
-    <string name="event_limited_places_subtitle">Attention, cet événement est à places limitées, votre inscription n’est pas garantie. L’administrateur de l’évènement reviendra vers vous pour vous confirmer la réservation de votre place.</string>
+    <string name="event_limited_places_title">Événement à places limitées</string>
+    <string name="event_limited_places_subtitle">Attention, cet événement est à places limitées, votre inscription n’est pas garantie. L’administrateur de l’événement reviendra vers vous pour vous confirmer la réservation de votre place.</string>
     <string name="event_add_to_calendar_title">Votre inscription est prise en compte ! </string>
     <string name="event_add_to_calendar_subtitle">Voulez-vous ajouter cet événement à votre agenda personnel ?</string>
     <string name="add">Ajouter</string>
@@ -438,13 +438,13 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
         <item quantity="one">%1$d participant</item>
         <item quantity="other">%1$d participants</item>
     </plurals>
-    <string name="event_cancel_subtitle_pop">Souhaitez-vous annuler l’évènement ? Tous les particpants seront prévenus de l’annulation.</string>
-    <string name="event_cancel_recurrent_event">Annuler un évènement récurrent</string>
+    <string name="event_cancel_subtitle_pop">Souhaitez-vous annuler l’événement ? Tous les particpants seront prévenus de l’annulation.</string>
+    <string name="event_cancel_recurrent_event">Annuler un événement récurrent</string>
     <string name="this_event">Cet événement</string>
     <string name="all_events_recurrent">Cet événement et tous les suivants</string>
     <string name="date_of_event">Date de l’événement</string>
     <string name="edit_event">Editer l\'événement</string>
-    <string name="event_edit_recurrent_event">Modifier un évènement récurrent</string>
+    <string name="event_edit_recurrent_event">Modifier un événement récurrent</string>
     <string name="error_event_end_time">L\'heure de fin ne peut pas dépasser minuit</string>
     <string name="deleted_publi">Cette publication a été supprimée.</string>
     <string name="deleted_message">Ce message a été supprimé.</string>
@@ -2101,7 +2101,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="param_notifs_switch_notifs">Notifications</string>
     <string name="param_notifs_switch_messages">Notifications message</string>
     <string name="param_notifs_switch_groups">Notifications groupe</string>
-    <string name="param_notifs_switch_events">Notifications évènement</string>
+    <string name="param_notifs_switch_events">Notifications événement</string>
     <string name="param_notifs_switch_actions">Notifications dons &amp; service</string>
     <string name="param_notifs_validate">Appliquer les modifications</string>
     <string name="notif_contrib_title"> Un voisin propose une nouvelle entraide. Peut-être que cela pourrait vous intéresser ?</string>

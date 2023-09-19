@@ -246,6 +246,7 @@ dependencies {
     implementation("com.facebook.android:facebook-core:15.2.0")
     compileOnly("org.glassfish:javax.annotation:10.0-b28")
 
+
     //androidTestImplementation testDependencies.values()
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
     androidTestImplementation("androidx.test.espresso:espresso-contrib:3.5.1")
@@ -275,5 +276,7 @@ dependencies {
 
     //photoview to click and zoom
     implementation("com.github.chrisbanes:PhotoView:2.3.0")
+    implementation("androidx.transition:transition:1.4.1") // Remplacez 'x.x.x' par la dernière version disponible.
+
 
 }

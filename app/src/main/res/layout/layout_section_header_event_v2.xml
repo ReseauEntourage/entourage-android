@@ -7,7 +7,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/title_section_header_event"
-        android:text="Mes évènements"
+        android:text="Mes événements"
         android:fontFamily="@font/quicksand_bold"
         android:textSize="15sp"
         android:layout_margin="12dp"

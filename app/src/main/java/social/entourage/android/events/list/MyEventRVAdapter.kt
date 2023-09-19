@@ -12,6 +12,7 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
+import com.bumptech.glide.load.resource.bitmap.GranularRoundedCorners
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import social.entourage.android.R
@@ -83,13 +84,11 @@ class MyEventRVAdapter() :RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                     .load(Uri.parse(event.metadata.landscapeUrl))
                     .placeholder(R.drawable.placeholder_my_event)
                     .error(R.drawable.placeholder_my_event)
-                    .apply(RequestOptions().override(90.px, 90.px))
-                    .transform(CenterCrop(), RoundedCorners(20.px))
+                    .transform(CenterCrop(), GranularRoundedCorners(14F, 14F, 0F, 0F))
                     .into(binding.imageItemMyEvent)
             } ?: run {
                 Glide.with(binding.root.context)
                     .load(R.drawable.placeholder_my_event)
-                    .apply(RequestOptions().override(90.px, 90.px))
                     .transform(CenterCrop(), RoundedCorners(20.px))
                     .into(binding.imageItemMyEvent)
             }
