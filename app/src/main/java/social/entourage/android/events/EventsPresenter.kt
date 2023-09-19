@@ -78,6 +78,9 @@ class EventsPresenter: ViewModel() {
     fun resetAllEvent(){
         this.getAllMyEvents.value?.clear()
     }
+    fun resetMyEvent(){
+        this.getAllEvents.value?.clear()
+    }
 
     fun changedFilterFromUpperFragment(){
         hasChangedFilter.postValue(true)
@@ -124,7 +127,6 @@ class EventsPresenter: ViewModel() {
                 ) {
 
                     response.body()?.let { allEventsWrapper ->
-                        Log.wtf("wtf", "my call event size " + allEventsWrapper.allEvents.size)
                         if (allEventsWrapper.allEvents.size < EVENTS_PER_PAGE) isLastPage = true
                         getAllEvents.postValue(allEventsWrapper.allEvents)
 

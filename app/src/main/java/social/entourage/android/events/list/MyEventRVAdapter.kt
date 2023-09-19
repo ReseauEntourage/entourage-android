@@ -35,11 +35,14 @@ class MyEventRVAdapter() :RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     fun resetData(events:MutableList<Events>){
         this.events.addAll(events)
+        Log.wtf("wtf", "event count " + events.size)
+        Log.wtf("wtf", "event count " + this.events.size)
         notifyDataSetChanged()
     }
 
     fun clearList(){
         this.events.clear()
+        Log.wtf("wtf", "event count from clear " + this.events.size)
         notifyDataSetChanged()
     }
 
@@ -78,14 +81,14 @@ class MyEventRVAdapter() :RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             event.metadata?.landscapeUrl?.let {
                 Glide.with(binding.root.context)
                     .load(Uri.parse(event.metadata.landscapeUrl))
-                    .placeholder(R.drawable.ic_event_placeholder)
-                    .error(R.drawable.ic_event_placeholder)
+                    .placeholder(R.drawable.placeholder_my_event)
+                    .error(R.drawable.placeholder_my_event)
                     .apply(RequestOptions().override(90.px, 90.px))
                     .transform(CenterCrop(), RoundedCorners(20.px))
                     .into(binding.imageItemMyEvent)
             } ?: run {
                 Glide.with(binding.root.context)
-                    .load(R.drawable.ic_event_placeholder)
+                    .load(R.drawable.placeholder_my_event)
                     .apply(RequestOptions().override(90.px, 90.px))
                     .transform(CenterCrop(), RoundedCorners(20.px))
                     .into(binding.imageItemMyEvent)

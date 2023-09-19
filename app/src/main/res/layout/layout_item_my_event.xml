@@ -14,7 +14,7 @@
         android:layout_height="match_parent"
         android:id="@+id/image_item_my_event"
         app:layout_constraintTop_toTopOf="parent"
-        android:scaleType="fitStart"
+        android:scaleType="fitXY"
         app:layout_constraintStart_toStartOf="parent"
         android:src="@drawable/placeholder_my_event"/>
     <androidx.constraintlayout.widget.ConstraintLayout

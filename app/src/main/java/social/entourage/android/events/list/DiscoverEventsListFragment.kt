@@ -2,6 +2,7 @@ package social.entourage.android.events.list
 
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -88,12 +89,15 @@ class DiscoverEventsListFragment : Fragment() {
         super.onResume()
         binding.progressBar.visibility = View.VISIBLE
         eventsAdapter.clearList()
+        myeventsAdapter.clearList()
         eventsPresenter.isLastPage = false
         eventsPresenter.isLastPageMyEvent = false
         page = 0
         pageMyEvent = 0
         loadEvents()
         loadMyEvents()
+        Log.wtf("wtf", "gone here resume ?")
+
     }
 
     override fun onStop() {
@@ -137,23 +141,25 @@ class DiscoverEventsListFragment : Fragment() {
     }
 
     fun setRVScrollListener() {
-        binding.recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
-                val layoutManager = recyclerView.layoutManager as LinearLayoutManager
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            binding.nestedScrollView.setOnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
+                val layoutManager = binding.recyclerView.layoutManager as LinearLayoutManager
                 val lastVisibleItemPosition = layoutManager.findLastVisibleItemPosition()
-                if(lastVisibleItemPosition == eventsAdapter.events.count() - 1 && lastVisibleItemPosition > 0 && !eventsPresenter.isLastPage ){
+
+                if (lastVisibleItemPosition == eventsAdapter.events.count() - 1 && lastVisibleItemPosition > 0 && !eventsPresenter.isLastPage) {
                     binding.progressBar.visibility = View.VISIBLE
                     loadEvents()
                 }
-                if (dy > 0) {
+
+                if (scrollY > oldScrollY) {
                     eventsPresenter.tellParentFragmentToMoveButton(false)
-                } else if (dy < 0) {
+                } else if (scrollY < oldScrollY) {
                     eventsPresenter.tellParentFragmentToMoveButton(true)
                 }
             }
+        }
 
-        })
 
         binding.rvMyEvent.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -164,6 +170,7 @@ class DiscoverEventsListFragment : Fragment() {
                 if (totalItemCount <= (lastVisibleItemPosition + 2) && !eventsPresenter.isLastPageMyEvent) {
                     binding.progressBar.visibility = View.VISIBLE
                     loadMyEvents()
+
                 }
             }
         })
@@ -210,20 +217,22 @@ class DiscoverEventsListFragment : Fragment() {
         pageMyEvent = 0
         loadEvents()
         loadMyEvents()
+        Log.wtf("wtf", "gone here ? filter")
+
     }
 
     private fun loadEvents() {
-
         binding.swipeRefresh.isRefreshing = false
         page++
         eventsPresenter.getAllEvents(page, EVENTS_PER_PAGE, currentFilters.travel_distance(),currentFilters.latitude(),currentFilters.longitude(),"future")
     }
     private fun loadMyEvents() {
+        Log.wtf("wtf", "load event ?")
         binding.swipeRefresh.isRefreshing = false
         pageMyEvent++
         myId = EntourageApplication.me(activity)?.id
         if(myId != null){
-            eventsPresenter.getMyEvents(myId!!, page, EVENTS_PER_PAGE)
+            eventsPresenter.getMyEvents(myId!!, pageMyEvent, EVENTS_PER_PAGE)
         }
     }
 
@@ -238,6 +247,7 @@ class DiscoverEventsListFragment : Fragment() {
             pageMyEvent = 0
             loadEvents()
             loadMyEvents()
+            Log.wtf("wtf", "gone here ? refresh")
         }
     }
 
