@@ -96,7 +96,6 @@ class DiscoverEventsListFragment : Fragment() {
         pageMyEvent = 0
         loadEvents()
         loadMyEvents()
-        Log.wtf("wtf", "gone here resume ?")
 
     }
 
@@ -121,12 +120,10 @@ class DiscoverEventsListFragment : Fragment() {
         if (isFromFilters) {
             binding.recyclerView.layoutManager?.scrollToPosition(0)
             isFromFilters = false
-
         }
     }
 
     private fun handleResponseGetMYEvents(myEvents: MutableList<Events>?) {
-        binding.progressBar.visibility = View.GONE
         if(myEvents != null && myEvents.size > 0 ) {
             myeventsAdapter.resetData(myEvents!!)
             binding.rvMyEvent.visibility = View.VISIBLE
@@ -137,7 +134,7 @@ class DiscoverEventsListFragment : Fragment() {
             binding.separator.visibility = View.GONE
             binding.titleSectionHeaderMyEvent.visibility = View.GONE
         }
-        binding.rvMyEvent.scrollX
+
     }
 
     fun setRVScrollListener() {
@@ -214,11 +211,8 @@ class DiscoverEventsListFragment : Fragment() {
     private fun updateFilters() {
         isFromFilters = true
         page = 0
-        pageMyEvent = 0
+        eventsAdapter.clearList()
         loadEvents()
-        loadMyEvents()
-        Log.wtf("wtf", "gone here ? filter")
-
     }
 
     private fun loadEvents() {
@@ -227,7 +221,6 @@ class DiscoverEventsListFragment : Fragment() {
         eventsPresenter.getAllEvents(page, EVENTS_PER_PAGE, currentFilters.travel_distance(),currentFilters.latitude(),currentFilters.longitude(),"future")
     }
     private fun loadMyEvents() {
-        Log.wtf("wtf", "load event ?")
         binding.swipeRefresh.isRefreshing = false
         pageMyEvent++
         myId = EntourageApplication.me(activity)?.id
@@ -247,7 +240,6 @@ class DiscoverEventsListFragment : Fragment() {
             pageMyEvent = 0
             loadEvents()
             loadMyEvents()
-            Log.wtf("wtf", "gone here ? refresh")
         }
     }
 
