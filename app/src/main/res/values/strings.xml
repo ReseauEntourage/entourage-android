@@ -2512,7 +2512,6 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="discussion_block_title">Bloquer</string>
     <string name="discussion_block_subtitle">%s ne pourra plus vous écrire.</string>
 
-    //Pop Blockuser
     <string name="params_block_user_conv_pop_title">Bloquer l’utilisateur</string>
     <string name="params_block_user_conv_pop_message">Souhaitez-vous bloquer %s ?\nCet utilisateur ne pourra plus vous envoyer de message. Vous pourrez débloquer l’utilisateur à tout moment depuis les paramètres de votre profil.</string>
     <string name="params_block_user_conv_pop_bt_quit">Bloquer</string>
@@ -2547,6 +2546,33 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
 
     <string name="pop_up_rugby_france_title">Vivons la Coupe du Monde de Rubgy ensemble </string>
     <string name="pop_up_rugby_france_content">Les plus belles rencontres ne se font pas forcément au stade ! Rejoignez le groupe \"Vivons le sport ensemble\"</string>
+
+    <!-- New Home string -->
+    <string name="home_v2_title">L\'app qui recrée du lien entre voisins</string>
+
+    <string name="home_v2_title_action">Donner un coup de pouce</string>
+    <string name="home_v2_subtitle_action">Vos voisins ont besoin de vous !</string>
+    <string name="home_v2_btn_more_action">Voir toutes les demandes</string>
+
+    <string name="home_v2_title_event">Participer à un événement solidaire</string>
+    <string name="home_v2_subtitle_event">Le plein de solidarité à proximité</string>
+    <string name="home_v2_btn_more_event">Voir tous les événements</string>
+
+    <string name="home_v2_title_group">Vos groupes de voisins</string>
+    <string name="home_v2_subtitle_group">Échanger avec vos voisins de tous horizons</string>
+    <string name="home_v2_btn_more_group">Voir tous les groupes</string>
+
+    <string name="home_v2_title_map">Découvrir des adresses utiles</string>
+    <string name="home_v2_subtitle_map">Toutes les structures solidaires à proximité</string>
+    <string name="home_v2_button_map">Carte des lieux solidaires près de vous</string>
+
+    <string name="home_v2_title_pedago">Tout savoir pour passer à l‘action</string>
+    <string name="home_v2_subtitle_pedago">Combattre la précarité, c’est comme tout, ça s’apprend !</string>
+    <string name="home_v2_btn_more_pedago">Consulter tous les articles</string>
+
+    <string name="home_v2_title_help">Vous êtes perdu ?</string>
+    <string name="home_v2_subtitle_help">Pas de panique, commencez pas à pas !</string>
+    <string name="home_v2_btn_more_help">Consulter tous les articles</string>
 
 
 </resources>
