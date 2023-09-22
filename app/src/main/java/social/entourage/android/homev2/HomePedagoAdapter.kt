@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
+import com.bumptech.glide.load.resource.bitmap.GranularRoundedCorners
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import social.entourage.android.R
@@ -46,6 +47,7 @@ class HomePedagoAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 Glide.with(holder.binding.root.context)
                     .load(Uri.parse(it))
                     .placeholder(R.drawable.ic_event_placeholder)
+                    .transform(CenterCrop(), GranularRoundedCorners(15F, 15F, 0F, 0F))
                     .error(R.drawable.ic_event_placeholder)
                     .into(holder.binding.ivPedagoItem)
             }

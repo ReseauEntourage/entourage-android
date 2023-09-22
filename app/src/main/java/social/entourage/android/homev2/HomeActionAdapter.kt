@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
+import com.bumptech.glide.load.resource.bitmap.GranularRoundedCorners
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import kotlinx.android.synthetic.main.new_contrib_item.view.distance
@@ -48,6 +49,7 @@ class HomeActionAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 Glide.with(holder.binding.root.context)
                     .load(Uri.parse(it))
                     .placeholder(R.drawable.placeholder_user)
+                    .transform(CenterCrop(), GranularRoundedCorners(15F, 0F, 0F, 15F))
                     .error(R.drawable.placeholder_user)
                     .into(holder.binding.ivActionItem)
             }
