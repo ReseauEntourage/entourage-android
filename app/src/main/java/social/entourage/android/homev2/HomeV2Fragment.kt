@@ -25,6 +25,9 @@ import social.entourage.android.databinding.FragmentHomeV2LayoutBinding
 import social.entourage.android.events.EventsPresenter
 import social.entourage.android.home.HomePresenter
 import social.entourage.android.home.pedago.PedagoListActivity
+import social.entourage.android.notifications.InAppNotificationsActivity
+import social.entourage.android.tools.log.AnalyticsEvents
+import social.entourage.android.tools.utils.Const
 
 class HomeV2Fragment: Fragment() {
 
@@ -107,6 +110,15 @@ class HomeV2Fragment: Fragment() {
         binding.btnMorePedago.setOnClickListener {
             val intent = Intent(requireActivity(), PedagoListActivity::class.java)
             requireContext().startActivity(intent)
+        }
+    }
+
+    fun setNotifButton(){
+        binding.uiLayoutNotif.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Home_action_notif)
+            val intent = Intent(requireContext(), InAppNotificationsActivity::class.java)
+            intent.putExtra(Const.NOTIF_COUNT,homePresenter.notifsCount.value)
+            startActivityForResult(intent, 0)
         }
     }
 
