@@ -11,6 +11,7 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.google.gson.Gson
 import social.entourage.android.EntourageApplication
 import social.entourage.android.MainActivity
@@ -23,6 +24,7 @@ import social.entourage.android.api.model.Group
 import social.entourage.android.api.model.Help
 import social.entourage.android.api.model.Pedago
 import social.entourage.android.api.model.Summary
+import social.entourage.android.api.model.User
 import social.entourage.android.databinding.FragmentHomeV2LayoutBinding
 import social.entourage.android.events.EventsPresenter
 import social.entourage.android.home.HomePresenter
@@ -47,6 +49,8 @@ class HomeV2Fragment: Fragment() {
     private var nbOfItemForVerticalList = 3
     private var currentFilters = EventActionLocationFilters()
     private var currentSectionsFilters = ActionSectionFilters()
+    private var user: User? = null
+
 
 
     override fun onCreateView(
@@ -65,6 +69,8 @@ class HomeV2Fragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        user = EntourageApplication.me(activity) ?: return
+        updateAvatar()
         callToInitHome()
     }
 
@@ -176,6 +182,8 @@ class HomeV2Fragment: Fragment() {
         homeHelpAdapter.resetData(helps)
     }
 
+
+    //HERE JUST RECONNECT OLD FUNCTIONS
     private fun updateNotifsCount(count: Int) {
         Log.wtf("wtf", "notif count ? " + count)
         context?.resources?.let { resources ->
@@ -195,6 +203,23 @@ class HomeV2Fragment: Fragment() {
                     null
                 )
             )
+        }
+    }
+
+    private fun updateAvatar() {
+        with(binding) {
+            avatar.let { photoView ->
+                user?.avatarURL?.let { avatarURL ->
+                    Glide.with(requireActivity())
+                        .load(avatarURL)
+                        .placeholder(R.drawable.placeholder_user)
+                        .circleCrop()
+                        .into(photoView)
+                } ?: run {
+                    photoView.setImageResource(R.drawable.placeholder_user)
+                }
+
+            }
         }
     }
 
