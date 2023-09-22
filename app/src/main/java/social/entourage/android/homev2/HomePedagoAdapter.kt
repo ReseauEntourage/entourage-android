@@ -60,6 +60,7 @@ class HomePedagoAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             }?: run {
                 Glide.with(holder.binding.root.context)
                     .load(R.drawable.ic_placeholder_action)
+                    .transform(CenterCrop(), GranularRoundedCorners(16F, 16F, 16F, 16F))
                     .into(holder.binding.ivPedagoItem)
             }
             pedago.name.let {

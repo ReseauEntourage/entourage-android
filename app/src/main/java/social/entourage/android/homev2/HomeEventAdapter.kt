@@ -48,12 +48,13 @@ class HomeEventAdapter:RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 Glide.with(holder.binding.root.context)
                     .load(Uri.parse(event.metadata.landscapeUrl))
                     .placeholder(R.drawable.ic_event_placeholder)
-                    .transform(CenterCrop(), GranularRoundedCorners(15F, 15F, 0F, 0F))
+                    .transform(CenterCrop(), GranularRoundedCorners(45F, 45F, 0F, 0F))
                     .error(R.drawable.ic_event_placeholder)
                     .into(holder.binding.ivEventItem)
             } ?: run {
                 Glide.with(holder.binding.root.context)
                     .load(R.drawable.ic_event_placeholder)
+                    .transform(CenterCrop(), GranularRoundedCorners(45F, 45F, 0F, 0F))
                     .into(holder.binding.ivEventItem)
             }
             event.title.let {
@@ -62,9 +63,10 @@ class HomeEventAdapter:RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             event.metadata?.displayAddress.let {
                 holder.binding.tvPlaceHomeV2EventItem.text = it
             }
+
             event.metadata?.startsAt?.let {
                 holder.binding.tvDateHomeV2EventItem.text = SimpleDateFormat(
-                    holder.itemView.context.getString(R.string.event_date_time),
+                    holder.itemView.context.getString(R.string.post_date),
                     Locale.FRANCE
                 ).format(
                     it

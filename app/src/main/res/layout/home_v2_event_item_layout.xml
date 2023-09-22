@@ -100,7 +100,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginStart="@dimen/entourage_little_margin_start"
-        android:layout_marginEnd="@dimen/entourage_little_margin_five"
+        android:layout_marginEnd="@dimen/entourage_margin_end"
         android:textSize="@dimen/entourage_font_very_small"
         android:textColor="@color/new_light_grey"
         android:fontFamily="@font/nunitosans_regular"
