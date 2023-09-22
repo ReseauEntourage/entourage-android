@@ -1,6 +1,7 @@
 package social.entourage.android.homev2
 
 import android.net.Uri
+import android.os.Build
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -43,12 +44,21 @@ class HomeHelpAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         if (holder is HelpViewHolder) {
             val help = helps[position]
             help.title.let {
+                val context = holder.binding.root.context
                 holder.binding.tvHomeV2HelpItem.text = it
+                if(it.contains("question")){
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        holder.binding.homeV2PedagoItemMainLayout.setBackgroundColor(context.getColor(R.color.orange))
+                        holder.binding.tvHomeV2HelpItem.setTextColor(context.getColor(R.color.white))
+                        holder.binding.ivArrowRightHomeV2HelpItem.setColorFilter(context.getColor(R.color.white))
+                    }
+                }
             }
             if(help.ressourceId != 0){
                 val context = holder.binding.root.context
                 holder.binding.ivHomeV2HelpItem.setImageDrawable(context.getDrawable(help.ressourceId))
             }
+
         }
     }
 

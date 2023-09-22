@@ -15,6 +15,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        android:background="@drawable/home_v2_pedago_iv_item_shape"
         tools:src="@drawable/placeholder_my_event"
         android:scaleType="centerCrop"
         />

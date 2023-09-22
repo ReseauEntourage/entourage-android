@@ -20,6 +20,7 @@ import social.entourage.android.api.model.Events
 import social.entourage.android.api.model.Group
 import social.entourage.android.api.model.Help
 import social.entourage.android.api.model.Pedago
+import social.entourage.android.api.model.Summary
 import social.entourage.android.databinding.FragmentHomeV2LayoutBinding
 import social.entourage.android.events.EventsPresenter
 import social.entourage.android.home.HomePresenter
@@ -65,11 +66,12 @@ class HomeV2Fragment: Fragment() {
         if(isAdded){
             val meId = EntourageApplication.get().me()?.id
             if(meId == null) return
+            homePresenter.getSummary()
             homePresenter.getMyGroups(pagegroup,nbOfItemForHozrizontalList,meId)
             homePresenter.getAllEvents(pageEvent,nbOfItemForHozrizontalList,currentFilters.travel_distance(),currentFilters.latitude(),currentFilters.longitude(),"future")
             homePresenter.getAllDemands(0,nbOfItemForVerticalList,currentFilters.travel_distance(),currentFilters.latitude(),currentFilters.longitude(),currentSectionsFilters.getSectionsForWS())
             homePresenter.getPedagogicalResources()
-            handleHelps()
+
         }
     }
 
@@ -109,6 +111,7 @@ class HomeV2Fragment: Fragment() {
     }
 
     fun setObservations(){
+        homePresenter.summary.observe(requireActivity(), ::updateContributionsView)
         homePresenter.getAllEvents.observe(viewLifecycleOwner,::handleEvent)
         homePresenter.getAllMyGroups.observe(viewLifecycleOwner,::handleGroup)
         homePresenter.getAllActions.observe(viewLifecycleOwner,::handleAction)
@@ -139,14 +142,21 @@ class HomeV2Fragment: Fragment() {
         this.homePedagoAdapter.resetData(pedagos)
     }
 
-    fun handleHelps(){
-        val help1 = Help("Aide 1" , R.drawable.first_help_item_illu)
-        val help2 = Help("Aide 2" , R.drawable.first_help_item_illu)
-        val help3 = Help("Aide 3" , R.drawable.first_help_item_illu)
+    private fun updateContributionsView(summary: Summary) {
+        handleHelps(summary)
+    }
+
+    fun handleHelps(summary: Summary){
+        val formattedString = requireContext().getString(R.string.home_v2_help_title_three, summary.moderator?.displayName)
+
+        val help1 = Help(requireContext().getString(R.string.home_v2_help_title_one) , R.drawable.first_help_item_illu)
+        val help2 = Help(requireContext().getString(R.string.home_v2_help_title_two) , R.drawable.first_help_item_illu)
+        val help3 = Help(formattedString , R.drawable.first_help_item_illu)
         var helps:MutableList<Help> = mutableListOf()
         helps.add(help1)
         helps.add(help2)
         helps.add(help3)
+        homeHelpAdapter.resetData(helps)
     }
-    
+
 }

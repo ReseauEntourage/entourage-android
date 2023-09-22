@@ -4,7 +4,7 @@
         <shape
             android:shape="rectangle">
             <!-- Vous pouvez changer la couleur de fond ici -->
-            <solid android:color="@color/beige" />
+            <solid android:color="@color/white" />
             <!-- Définir les rayons pour les coins -->
             <corners
                 android:topLeftRadius="15dp"

@@ -51,7 +51,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_new_notif_off" />
+            app:srcCompat="@drawable/ic_new_notif_off"
+            android:layout_marginEnd="@dimen/entourage_margin_end"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <TextView
@@ -379,7 +380,7 @@
                 android:fontFamily="@font/quicksand_bold"
                 android:textSize="@dimen/entourage_font_medium"
                 android:textColor="@color/grey_dark"
-                android:text="@string/home_v2_title_pedago"
+                android:text="@string/home_v2_title_help"
                 />
             <TextView
                 android:layout_width="wrap_content"
@@ -390,7 +391,7 @@
                 android:layout_marginStart="@dimen/entourage_marginstart"
                 android:fontFamily="@font/nunitosans_regular"
                 android:textSize="@dimen/entourage_font_very_small"
-                android:text="@string/home_v2_subtitle_pedago"
+                android:text="@string/home_v2_subtitle_help"
                 />
             <androidx.recyclerview.widget.RecyclerView
                 android:layout_width="match_parent"
