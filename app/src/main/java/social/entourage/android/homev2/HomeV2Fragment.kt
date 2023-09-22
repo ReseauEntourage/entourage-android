@@ -1,11 +1,13 @@
 package social.entourage.android.homev2
 
 import android.content.Intent
+import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -75,7 +77,7 @@ class HomeV2Fragment: Fragment() {
             homePresenter.getAllEvents(pageEvent,nbOfItemForHozrizontalList,currentFilters.travel_distance(),currentFilters.latitude(),currentFilters.longitude(),"future")
             homePresenter.getAllDemands(0,nbOfItemForVerticalList,currentFilters.travel_distance(),currentFilters.latitude(),currentFilters.longitude(),currentSectionsFilters.getSectionsForWS())
             homePresenter.getPedagogicalResources()
-
+            homePresenter.getNotificationsCount()
         }
     }
 
@@ -129,6 +131,8 @@ class HomeV2Fragment: Fragment() {
         homePresenter.getAllMyGroups.observe(viewLifecycleOwner,::handleGroup)
         homePresenter.getAllActions.observe(viewLifecycleOwner,::handleAction)
         homePresenter.pedagogicalContent.observe(viewLifecycleOwner,::handlePedago)
+        homePresenter.notifsCount.observe(requireActivity(), ::updateNotifsCount)
+
     }
 
     fun handleGroup(allGroup: MutableList<Group>?){
@@ -150,7 +154,7 @@ class HomeV2Fragment: Fragment() {
         if(allPedago == null) return
         var pedagos:MutableList<Pedago> = mutableListOf()
         for(pedago in allPedago){
-            Log.wtf("wtf" , Gson().toJson(pedago))
+            //Log.wtf("wtf" , Gson().toJson(pedago))
         }
         this.homePedagoAdapter.resetData(pedagos)
     }
@@ -170,6 +174,28 @@ class HomeV2Fragment: Fragment() {
         helps.add(help2)
         helps.add(help3)
         homeHelpAdapter.resetData(helps)
+    }
+
+    private fun updateNotifsCount(count: Int) {
+        Log.wtf("wtf", "notif count ? " + count)
+        context?.resources?.let { resources ->
+            val bgColor = if (count > 0) {
+                ResourcesCompat.getColor(resources, R.color.orange, null)
+            } else {
+                ResourcesCompat.getColor(resources, R.color.partner_logo_background, null)
+            }
+
+            val shapeDrawable = binding.uiLayoutNotif.background as? GradientDrawable
+            shapeDrawable?.setColor(bgColor)
+
+            binding.uiBellNotif.setImageDrawable(
+                ResourcesCompat.getDrawable(
+                    resources,
+                    if (count > 0) R.drawable.ic_white_notif_on else R.drawable.ic_new_notif_off,
+                    null
+                )
+            )
+        }
     }
 
 }
