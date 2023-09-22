@@ -22,6 +22,7 @@ class HomeHelpAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
 
     fun resetData(helps:MutableList<Help>){
+        this.helps.clear()
         this.helps.addAll(helps)
         notifyDataSetChanged()
 

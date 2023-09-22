@@ -20,6 +20,7 @@ class HomePedagoAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
 
     fun resetData(pedagos:MutableList<Pedago>){
+        this.pedagos.clear()
         this.pedagos.addAll(pedagos)
         notifyDataSetChanged()
 

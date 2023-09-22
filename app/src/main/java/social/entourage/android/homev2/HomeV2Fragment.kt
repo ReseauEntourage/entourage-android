@@ -57,6 +57,7 @@ class HomeV2Fragment: Fragment() {
         setRecyclerViews()
         setSeeAllButtons()
         setObservations()
+        setNotifButton()
         return binding.root
     }
 

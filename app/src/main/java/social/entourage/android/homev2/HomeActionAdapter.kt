@@ -22,6 +22,7 @@ class HomeActionAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
 
     fun resetData(actions:MutableList<Action>){
+        this.actions.clear()
         this.actions.addAll(actions)
         notifyDataSetChanged()
 
@@ -46,8 +47,8 @@ class HomeActionAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             action.author?.avatarURLAsString.let {
                 Glide.with(holder.binding.root.context)
                     .load(Uri.parse(it))
-                    .placeholder(R.drawable.ic_event_placeholder)
-                    .error(R.drawable.ic_event_placeholder)
+                    .placeholder(R.drawable.placeholder_user)
+                    .error(R.drawable.placeholder_user)
                     .into(holder.binding.ivActionItem)
             }
             action.title.let {
