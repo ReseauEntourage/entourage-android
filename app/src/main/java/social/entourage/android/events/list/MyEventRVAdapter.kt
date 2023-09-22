@@ -36,14 +36,12 @@ class MyEventRVAdapter() :RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     fun resetData(events:MutableList<Events>){
         this.events.addAll(events)
-        Log.wtf("wtf", "event count " + events.size)
-        Log.wtf("wtf", "event count " + this.events.size)
+
         notifyDataSetChanged()
     }
 
     fun clearList(){
         this.events.clear()
-        Log.wtf("wtf", "event count from clear " + this.events.size)
         notifyDataSetChanged()
     }
 
@@ -58,7 +56,7 @@ class MyEventRVAdapter() :RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     inner class MyEventItemViewHolder(private val binding: LayoutItemMyEventBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(event: Events) {
-            binding.layoutItemMyEvent.setOnClickListener { view ->
+            binding.entireCardLayoutItem.setOnClickListener { view ->
                 (view.context as? Activity)?.startActivityForResult(
                     Intent(
                         view.context,

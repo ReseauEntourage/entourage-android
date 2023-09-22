@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="140dp"
+    android:layout_height="180dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/home_v2_item_group_shape"
+    android:layout_marginTop="@dimen/entourage_little_margin_top"
+    android:layout_marginStart="@dimen/entourage_little_margin_five">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:id="@+id/iv_event_item"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:src="@drawable/placeholder_my_event"
+        android:scaleType="centerCrop"
+        />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/home_v2_item_event_layout"
+        android:background="@drawable/home_v2_item_event_tag_layout_shape"
+        app:layout_constraintTop_toBottomOf="@+id/iv_event_item"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="@dimen/entourage_little_margin_top"
+        android:layout_marginStart="@dimen/entourage_little_margin_start"
+        android:paddingStart="4dp"
+        android:paddingEnd="4dp"
+        >
+
+        <ImageView
+            android:id="@+id/iv_tag_home_v2_event_item"
+            android:layout_width="5dp"
+            android:layout_height="7dp"
+            android:layout_marginStart="@dimen/entourage_little_margin_five"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="@color/orange"
+            tools:src="@drawable/home_v2_second_help_item_illu" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tv_tag_home_v2_event_item"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="@dimen/entourage_little_margin_five"
+            app:layout_constraintStart_toEndOf="@+id/iv_tag_home_v2_event_item"
+            android:layout_marginStart="@dimen/entourage_little_margin_five"
+            android:textColor="@color/orange"
+            android:textSize="8sp"
+            android:fontFamily="@font/quicksand_bold"
+            tools:text="Sport"
+            />
+
+        
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_title_event_item"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/home_v2_item_event_layout"
+        android:layout_marginTop="@dimen/entourage_little_margin_top"
+        android:fontFamily="@font/quicksand_bold"
+        android:textSize="@dimen/entourage_font_small"
+        tools:text="Un Titre de groupe cool"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:lines="1"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_date_home_v2_event_item"
+        app:layout_constraintTop_toBottomOf="@+id/tv_title_event_item"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="@dimen/entourage_little_margin_start"
+        android:textSize="@dimen/entourage_font_very_small"
+        android:textColor="@color/new_light_grey"
+        android:fontFamily="@font/nunitosans_regular"
+        tools:text="24.03.1991"
+        />
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_place_home_v2_event_item"
+        app:layout_constraintTop_toBottomOf="@+id/tv_date_home_v2_event_item"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="@dimen/entourage_little_margin_start"
+        android:layout_marginEnd="@dimen/entourage_little_margin_five"
+        android:textSize="@dimen/entourage_font_very_small"
+        android:textColor="@color/new_light_grey"
+        android:fontFamily="@font/nunitosans_regular"
+        android:maxLines="1"
+        android:ellipsize="end"
+        tools:text="place de la révolution Tournus"
+        />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

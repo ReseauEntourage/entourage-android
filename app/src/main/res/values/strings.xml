@@ -2574,5 +2574,8 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="home_v2_subtitle_help">Pas de panique, commencez pas à pas !</string>
     <string name="home_v2_btn_more_help">Consulter tous les articles</string>
 
+    <string name="home_v2_pedag_item_lenght_title">"%d min de lecture</string>
+
+
 
 </resources>

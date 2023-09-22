@@ -205,7 +205,7 @@
                 android:fontFamily="@font/quicksand_bold"
                 android:textSize="@dimen/entourage_font_medium"
                 android:textColor="@color/grey_dark"
-                android:text="@string/home_v2_title_event"
+                android:text="@string/home_v2_title_group"
                 />
             <TextView
                 android:layout_width="wrap_content"
@@ -216,7 +216,7 @@
                 android:layout_marginStart="@dimen/entourage_marginstart"
                 android:fontFamily="@font/nunitosans_regular"
                 android:textSize="@dimen/entourage_font_very_small"
-                android:text="@string/home_v2_subtitle_event"
+                android:text="@string/home_v2_subtitle_group"
                 />
             <androidx.recyclerview.widget.RecyclerView
                 android:layout_width="match_parent"
@@ -242,7 +242,7 @@
                     android:fontFamily="@font/quicksand_bold"
                     android:textSize="@dimen/entourage_font_medium"
                     android:textColor="@color/light_orange"
-                    android:text="@string/home_v2_btn_more_event"
+                    android:text="@string/home_v2_btn_more_group"
                     android:layout_marginEnd="@dimen/entourage_little_margin_end" />
                 <ImageView
                     android:layout_width="25dp"

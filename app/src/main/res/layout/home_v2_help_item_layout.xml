@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="60dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/home_v2_action_item_shape"
+    android:layout_marginTop="@dimen/entourage_little_margin_top"
+    android:layout_marginStart="@dimen/entourage_little_margin_five">
+    <ImageView
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:id="@+id/iv_home_v2_help_item"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="@dimen/entourage_little_margin_start"
+        tools:src="@drawable/first_help_item_illu"
+        />
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_home_v2_help_item"
+        app:layout_constraintStart_toEndOf="@+id/iv_home_v2_help_item"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/iv_arrow_right_home_v2_help_item"
+        android:layout_marginStart="@dimen/entourage_little_margin_start"
+        android:textSize="@dimen/entourage_font_small"
+        android:fontFamily="@font/quicksand_bold"
+        android:textColor="@color/black"
+        tools:text="Comment créer un événement"/>
+    
+    <ImageView
+        android:layout_width="10dp"
+        android:layout_height="16dp"
+        android:id="@+id/iv_arrow_right_home_v2_help_item"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="@dimen/entourage_little_margin_end"
+        android:src="@drawable/arrow_right_orange"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

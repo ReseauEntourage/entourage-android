@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/home_v2_action_item_shape"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginStart="@dimen/entourage_marginstart"
+    android:layout_marginEnd="@dimen/entourage_margin_end"
+    android:layout_marginTop="@dimen/entourage_little_margin_top">
+    <ImageView
+        android:layout_width="54dp"
+        android:layout_height="60dp"
+        android:id="@+id/iv_action_item"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:background="@drawable/home_v2_action_item_iv_shape"
+        tools:src="@drawable/placeholder_my_event"
+        android:scaleType="centerCrop"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_action_item_title"
+        app:layout_constraintStart_toEndOf="@+id/iv_action_item"
+        app:layout_constraintTop_toTopOf="parent"
+        android:fontFamily="@font/quicksand_bold"
+        android:textSize="@dimen/entourage_font_small"
+        android:layout_marginTop="@dimen/entourage_little_margin_top"
+        android:layout_marginStart="@dimen/entourage_little_margin_start"
+        android:textColor="@color/grey_dark"
+        tools:text="Un titre d'action stylée"
+        
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_action_item_subtitle"
+        app:layout_constraintStart_toEndOf="@+id/iv_action_item_equipment"
+        app:layout_constraintTop_toTopOf="@+id/iv_action_item_equipment"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_action_item_equipment"
+        android:layout_marginStart="@dimen/entourage_little_margin_start"
+        android:fontFamily="@font/nunitosans_regular"
+        android:textSize="@dimen/entourage_font_very_small"
+        android:textColor="@color/light_orange"
+        tools:text="un sous titre méga cool"
+        />
+    <ImageView
+        android:layout_width="12dp"
+        android:layout_height="12dp"
+        android:id="@+id/iv_action_item_equipment"
+        app:layout_constraintStart_toEndOf="@+id/iv_action_item"
+        app:layout_constraintTop_toBottomOf="@+id/tv_action_item_title"
+        android:layout_marginStart="@dimen/entourage_little_margin_start"
+        android:layout_marginTop="@dimen/entourage_little_margin_five"
+        app:tint="@color/light_orange"
+        tools:src="@drawable/ic_action_section_equipment"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_action_item_distance"
+        app:layout_constraintTop_toTopOf="@+id/iv_action_item_equipment"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_action_item_equipment"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="@dimen/entourage_margin_end"
+        android:fontFamily="@font/nunitosans_regular"
+        android:textSize="@dimen/entourage_font_very_small"
+        android:textColor="@color/grey"
+        tools:text="à 6km de moi"
+        />
+
+    
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -3,21 +3,23 @@
 
     <!-- Entourage font sizes -->
     <dimen name="entourage_font_xtra_large">30sp</dimen>
-    <dimen name="entourage_font_big">22sp</dimen>
-    <dimen name="entourage_font_title_3">20sp</dimen>
+    <dimen name="entourage_font_big">21sp</dimen>
+    <dimen name="entourage_font_title_3">19sp</dimen>
     <dimen name="entourage_font_large">17sp</dimen>
     <dimen name="entourage_font_medium">15sp</dimen>
-    <dimen name="entourage_font_small">14sp</dimen>
-    <dimen name="entourage_font_very_small">12sp</dimen>
+    <dimen name="entourage_font_small">13sp</dimen>
+    <dimen name="entourage_font_very_small">11sp</dimen>
 
 
     <dimen name="entourage_margin_top">20dp</dimen>
-    <dimen name="entourage_little_margin_top">10dp</dimen>
     <dimen name="entourage_margin_bottom">10dp</dimen>
     <dimen name="entourage_marginstart">20dp</dimen>
     <dimen name="entourage_margin_end">20dp</dimen>
-    <dimen name="entourage_little_margin_end">5dp</dimen>
     <dimen name="entourage_margin_interitem">10dp</dimen>
+    <dimen name="entourage_little_margin_top">10dp</dimen>
+    <dimen name="entourage_little_margin_end">10dp</dimen>
+    <dimen name="entourage_little_margin_start">10dp</dimen>
+    <dimen name="entourage_little_margin_five">5dp</dimen>
 
 
 
