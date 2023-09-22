@@ -159,8 +159,8 @@ class HomeV2Fragment: Fragment() {
     fun handlePedago(allPedago: MutableList<Pedago>?){
         if(allPedago == null) return
         var pedagos:MutableList<Pedago> = mutableListOf()
-        for(pedago in allPedago){
-            //Log.wtf("wtf" , Gson().toJson(pedago))
+        for (k in 0 until 3) {
+            pedagos.add(allPedago[k])
         }
         this.homePedagoAdapter.resetData(pedagos)
     }

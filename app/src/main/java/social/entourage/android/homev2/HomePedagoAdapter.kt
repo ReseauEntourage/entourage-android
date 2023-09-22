@@ -1,6 +1,7 @@
 package social.entourage.android.homev2
 
 import android.net.Uri
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -42,24 +43,36 @@ class HomePedagoAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder is PedagoViewHolder) {
+
             val pedago = pedagos[position]
+            Log.wtf("wtf" , "pedago name " + pedago.name)
+            Log.wtf("wtf" , "pedago imageUrl " + pedago.imageUrl)
+            Log.wtf("wtf" , "pedago duration " + pedago.duration)
+            Log.wtf("wtf" , "pedago category " + pedago.category)
+
             pedago.imageUrl?.let {
                 Glide.with(holder.binding.root.context)
                     .load(Uri.parse(it))
                     .placeholder(R.drawable.ic_event_placeholder)
-                    .transform(CenterCrop(), GranularRoundedCorners(15F, 15F, 0F, 0F))
+                    .transform(CenterCrop(), GranularRoundedCorners(16F, 16F, 16F, 16F))
                     .error(R.drawable.ic_event_placeholder)
+                    .into(holder.binding.ivPedagoItem)
+            }?: run {
+                Glide.with(holder.binding.root.context)
+                    .load(R.drawable.ic_placeholder_action)
                     .into(holder.binding.ivPedagoItem)
             }
             pedago.name.let {
-                holder.binding.tvLenghtPedagoItem.text = it
+                holder.binding.tvTitleItemPedago.text = it
             }
             pedago.duration.let {
                 val context = holder.binding.root.context
                 val formattedString = context.getString(R.string.home_v2_pedag_item_lenght_title, it)
-                pedago.category.let {
-                    holder.binding.tvLenghtPedagoItem.text = it.toString() + " - " + formattedString
-                }
+               holder.binding.tvLenghtPedagoItem.text = formattedString
+            }
+            pedago.category.let {
+                holder.binding.tvTagPedagoItem.text = "Comprendre"
+
             }
         }
     }
