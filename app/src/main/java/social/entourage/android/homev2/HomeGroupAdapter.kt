@@ -1,5 +1,7 @@
 package social.entourage.android.homev2
 
+import android.app.Activity
+import android.content.Intent
 import android.net.Uri
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -13,6 +15,8 @@ import social.entourage.android.R
 import social.entourage.android.api.model.Events
 import social.entourage.android.api.model.Group
 import social.entourage.android.databinding.HomeV2GroupItemLayoutBinding
+import social.entourage.android.groups.details.feed.FeedActivity
+import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.px
 
 class HomeGroupAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -43,6 +47,15 @@ class HomeGroupAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder is GroupViewHolder) {
             val group = groups[position]
+            holder.binding.layout.setOnClickListener {view ->
+                (view.context as? Activity)?.startActivityForResult(
+                    Intent(view.context, FeedActivity::class.java).putExtra(
+                        Const.GROUP_ID,
+                        group.id
+                    ), 0
+                )
+            }
+
             group.imageUrl?.let {
                 Glide.with(holder.binding.root.context)
                     .load(Uri.parse(it))

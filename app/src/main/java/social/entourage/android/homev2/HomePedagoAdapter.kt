@@ -14,9 +14,11 @@ import social.entourage.android.R
 import social.entourage.android.api.model.Events
 import social.entourage.android.api.model.Pedago
 import social.entourage.android.databinding.HomeV2PedagoItemLayoutBinding
+import social.entourage.android.home.pedago.OnItemClick
+import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.utils.px
 
-class HomePedagoAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class HomePedagoAdapter(private var onItemClickListener: OnItemClick): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     var pedagos:MutableList<Pedago> = mutableListOf()
 
@@ -45,10 +47,10 @@ class HomePedagoAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         if (holder is PedagoViewHolder) {
 
             val pedago = pedagos[position]
-            Log.wtf("wtf" , "pedago name " + pedago.name)
-            Log.wtf("wtf" , "pedago imageUrl " + pedago.imageUrl)
-            Log.wtf("wtf" , "pedago duration " + pedago.duration)
-            Log.wtf("wtf" , "pedago category " + pedago.category)
+            holder.binding.root.setOnClickListener {
+                AnalyticsEvents.logEvent(AnalyticsEvents.Pedago_View_card)
+                onItemClickListener.onItemClick(pedago)
+            }
 
             pedago.imageUrl?.let {
                 Glide.with(holder.binding.root.context)

@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.google.gson.Gson
@@ -27,11 +28,17 @@ import social.entourage.android.api.model.Summary
 import social.entourage.android.api.model.User
 import social.entourage.android.databinding.FragmentHomeV2LayoutBinding
 import social.entourage.android.events.EventsPresenter
+import social.entourage.android.guide.GDSMainActivity
 import social.entourage.android.home.HomePresenter
+import social.entourage.android.home.pedago.OnItemClick
+import social.entourage.android.home.pedago.PedagoDetailActivity
 import social.entourage.android.home.pedago.PedagoListActivity
+import social.entourage.android.home.pedago.PedagoListFragmentDirections
 import social.entourage.android.notifications.InAppNotificationsActivity
+import social.entourage.android.profile.ProfileActivity
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.utils.Const
+import social.entourage.android.user.UserProfileActivity
 
 class HomeV2Fragment: Fragment() {
 
@@ -42,7 +49,7 @@ class HomeV2Fragment: Fragment() {
     private var homeEventAdapter = HomeEventAdapter()
     private var homeActionAdapter = HomeActionAdapter()
     private var homeHelpAdapter = HomeHelpAdapter()
-    private var homePedagoAdapter = HomePedagoAdapter()
+    private var homePedagoAdapter:HomePedagoAdapter? = null
     private var pagegroup = 0
     private var pageEvent = 0
     private var nbOfItemForHozrizontalList = 10
@@ -60,10 +67,24 @@ class HomeV2Fragment: Fragment() {
     ): View? {
         binding = FragmentHomeV2LayoutBinding.inflate(layoutInflater)
         homePresenter = ViewModelProvider(requireActivity()).get(HomePresenter::class.java)
+        homePedagoAdapter = HomePedagoAdapter(object : OnItemClick {
+            override fun onItemClick(pedagogicalContent: Pedago) {
+                Log.wtf("wtf", "pedagoclicked")
+                if (pedagogicalContent.html != null && pedagogicalContent.id != null) {
+                    val intent = Intent(requireActivity(), PedagoDetailActivity::class.java)
+                    intent.putExtra(Const.ID, pedagogicalContent.id)
+                    intent.putExtra(Const.HTML_CONTENT, pedagogicalContent.html)
+                    requireActivity().startActivity(intent)
+                }
+            }
+        })
+
         setRecyclerViews()
         setSeeAllButtons()
         setObservations()
         setNotifButton()
+        setMapButton()
+        setProfileButton()
         return binding.root
     }
 
@@ -162,7 +183,7 @@ class HomeV2Fragment: Fragment() {
         for (k in 0 until 3) {
             pedagos.add(allPedago[k])
         }
-        this.homePedagoAdapter.resetData(pedagos)
+        this.homePedagoAdapter?.resetData(pedagos)
     }
 
     private fun updateContributionsView(summary: Summary) {
@@ -221,6 +242,24 @@ class HomeV2Fragment: Fragment() {
 
             }
         }
+    }
+
+    private fun setMapButton(){
+        binding.homeButtonMap.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Home_action_map)
+            val intent = Intent(requireContext(), GDSMainActivity::class.java)
+            startActivityForResult(intent, 0)
+        }
+    }
+
+    private fun setProfileButton(){
+        binding.avatar.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Home_action_profile)
+            startActivityForResult(
+                Intent(context, ProfileActivity::class.java), 0
+            )
+        }
+
     }
 
 }

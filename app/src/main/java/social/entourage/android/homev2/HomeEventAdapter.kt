@@ -1,5 +1,7 @@
 package social.entourage.android.homev2
 
+import android.app.Activity
+import android.content.Intent
 import android.net.Uri
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -13,6 +15,8 @@ import social.entourage.android.R
 import social.entourage.android.api.model.Events
 import social.entourage.android.api.model.Interest
 import social.entourage.android.databinding.HomeV2EventItemLayoutBinding
+import social.entourage.android.events.details.feed.FeedActivity
+import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.px
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -44,6 +48,19 @@ class HomeEventAdapter:RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder is EventViewHolder) {
             val event = events[position]
+            holder.binding.layoutItemHomeEvent.setOnClickListener { view ->
+                (view.context as? Activity)?.startActivityForResult(
+                    Intent(
+                        view.context,
+                        FeedActivity::class.java
+                    ).putExtra(
+                        Const.EVENT_ID,
+                        event.id
+                    ), 0
+                )
+            }
+
+
             event.metadata?.landscapeUrl?.let {
                 Glide.with(holder.binding.root.context)
                     .load(Uri.parse(event.metadata.landscapeUrl))

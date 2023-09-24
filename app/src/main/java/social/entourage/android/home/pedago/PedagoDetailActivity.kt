@@ -7,13 +7,17 @@ import social.entourage.android.R
 import social.entourage.android.tools.utils.Const
 
 class PedagoDetailActivity : AppCompatActivity() {
+
+    var id:Int = 0
+    var htmlContent = ""
+    var isFromNotif = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_pedago_detail)
 
-        val id = intent.getIntExtra(Const.ID, Const.DEFAULT_VALUE)
-        val htmlContent = intent.getStringExtra(Const.HTML_CONTENT)
-        val isFromNotif = intent.getBooleanExtra(Const.IS_FROM_NOTIF,false)
+        id = intent.getIntExtra(Const.ID, Const.DEFAULT_VALUE)
+        htmlContent = intent.getStringExtra(Const.HTML_CONTENT).toString()
+        isFromNotif = intent.getBooleanExtra(Const.IS_FROM_NOTIF,false)
 
         val bundle = Bundle().apply {
             putInt(Const.ID, id)

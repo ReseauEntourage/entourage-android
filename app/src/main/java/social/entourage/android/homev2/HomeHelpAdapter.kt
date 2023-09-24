@@ -52,6 +52,7 @@ class HomeHelpAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                         holder.binding.homeV2PedagoItemMainLayout.setBackgroundColor(context.getColor(R.color.orange))
                         holder.binding.tvHomeV2HelpItem.setTextColor(context.getColor(R.color.white))
                         holder.binding.ivArrowRightHomeV2HelpItem.setColorFilter(context.getColor(R.color.white))
+
                     }
                 }
             }

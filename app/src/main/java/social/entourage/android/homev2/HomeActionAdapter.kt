@@ -1,5 +1,7 @@
 package social.entourage.android.homev2
 
+import android.app.Activity
+import android.content.Intent
 import android.net.Uri
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -10,12 +12,15 @@ import com.bumptech.glide.load.resource.bitmap.GranularRoundedCorners
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import kotlinx.android.synthetic.main.new_contrib_item.view.distance
+import kotlinx.android.synthetic.main.new_contrib_item.view.layout_contrib
 import social.entourage.android.R
+import social.entourage.android.actions.detail.ActionDetailActivity
 import social.entourage.android.api.model.Action
 import social.entourage.android.api.model.ActionSection
 import social.entourage.android.api.model.Events
 import social.entourage.android.databinding.HomeV2ActionItemLayoutBinding
 import social.entourage.android.tools.displayDistance
+import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.px
 
 class HomeActionAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -45,6 +50,16 @@ class HomeActionAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder is ActionViewHolder) {
             val action = actions[position]
+            holder.binding.layout.setOnClickListener { view ->
+                (view.context as? Activity)?.startActivityForResult(
+                    Intent(view.context, ActionDetailActivity::class.java)
+                        .putExtra(Const.ACTION_ID, action.id)
+                        .putExtra(Const.ACTION_TITLE,action.title)
+                        .putExtra(Const.IS_ACTION_DEMAND,true)
+                        .putExtra(Const.IS_ACTION_MINE, action.isMine()),
+                    0
+                )
+            }
             action.author?.avatarURLAsString.let {
                 Glide.with(holder.binding.root.context)
                     .load(Uri.parse(it))
