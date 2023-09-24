@@ -78,7 +78,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/home_title"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginTop="@dimen/entourage_margin_top"
+        android:layout_marginTop="@dimen/entourage_little_margin_top"
+        android:paddingTop="@dimen/entourage_margin_top"
         android:background="@drawable/home_v2_scrollview_shape"
         android:fillViewport="true">
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -90,7 +91,6 @@
             android:id="@+id/home_title_action"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginTop="@dimen/entourage_margin_top"
             android:layout_marginStart="@dimen/entourage_marginstart"
             android:fontFamily="@font/quicksand_bold"
             android:textSize="@dimen/entourage_font_medium"
@@ -112,7 +112,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/rv_home_action"
-                android:layout_marginTop="@dimen/entourage_margin_top"
+                android:layout_marginTop="@dimen/entourage_little_margin_top"
                 app:layout_constraintTop_toBottomOf="@+id/home_subtitle_action"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"/>
@@ -168,7 +168,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/rv_home_event"
-                android:layout_marginTop="@dimen/entourage_margin_top"
+                android:layout_marginTop="@dimen/entourage_little_margin_top"
                 app:layout_constraintTop_toBottomOf="@+id/home_subtitle_event"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"/>
@@ -224,7 +224,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/rv_home_group"
-                android:layout_marginTop="@dimen/entourage_margin_top"
+                android:layout_marginTop="@dimen/entourage_little_margin_top"
                 app:layout_constraintTop_toBottomOf="@+id/home_subtitle_group"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"/>
@@ -342,7 +342,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/rv_home_pedago"
-                android:layout_marginTop="@dimen/entourage_margin_top"
+                android:layout_marginTop="@dimen/entourage_little_margin_top"
                 app:layout_constraintTop_toBottomOf="@+id/home_subtitle_pedago"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"/>
@@ -398,7 +398,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/rv_home_help"
-                android:layout_marginTop="@dimen/entourage_margin_top"
+                android:layout_marginTop="@dimen/entourage_little_margin_top"
                 app:layout_constraintTop_toBottomOf="@+id/home_subtitle_help"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

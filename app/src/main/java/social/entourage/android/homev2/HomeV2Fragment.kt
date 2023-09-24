@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -57,6 +58,10 @@ class HomeV2Fragment: Fragment() {
     private var currentFilters = EventActionLocationFilters()
     private var currentSectionsFilters = ActionSectionFilters()
     private var user: User? = null
+    private val NEW_MARGIN = 10
+    private val DEFAULT_MARGIN = 40
+    private val NEW_MARGIN_LOGO = 10
+    private val DEFAULT_MARGIN_LOGO = 30
 
 
 
@@ -85,6 +90,7 @@ class HomeV2Fragment: Fragment() {
         setNotifButton()
         setMapButton()
         setProfileButton()
+        setNestedScrollViewAnimation()
         return binding.root
     }
 
@@ -262,4 +268,28 @@ class HomeV2Fragment: Fragment() {
 
     }
 
+    private fun setNestedScrollViewAnimation(){
+        binding.homeNestedScrollView.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { _, _, scrollY, _, _ ->
+            // récupérez la référence de votre élément en haut (par exemple, l'avatar)
+            val layoutParamsProfile = binding.avatar.layoutParams as ViewGroup.MarginLayoutParams
+            val layoutParamsNotif = binding.uiLayoutNotif.layoutParams as ViewGroup.MarginLayoutParams
+            val layoutParamsLogo = binding.ivLogoHome.layoutParams as ViewGroup.MarginLayoutParams
+
+            // ajustez la marge en fonction de la position de défilement
+            if (scrollY > 50) {
+                layoutParamsProfile.topMargin = NEW_MARGIN // définissez la nouvelle marge
+                layoutParamsNotif.topMargin = NEW_MARGIN // définissez la nouvelle marge
+                layoutParamsLogo.topMargin = NEW_MARGIN_LOGO // définissez la nouvelle marge
+                binding.homeTitle.visibility = View.GONE
+            } else {
+                layoutParamsProfile.topMargin = DEFAULT_MARGIN // rétablissez la marge par défaut
+                layoutParamsNotif.topMargin = DEFAULT_MARGIN // rétablissez la marge par défaut
+                layoutParamsLogo.topMargin = DEFAULT_MARGIN_LOGO // rétablissez la marge par défaut
+                binding.homeTitle.visibility = View.VISIBLE
+            }
+            binding.avatar.layoutParams = layoutParamsProfile
+            binding.uiLayoutNotif.layoutParams = layoutParamsNotif
+            binding.ivLogoHome.layoutParams = layoutParamsLogo
+        })
+    }
 }
