@@ -169,24 +169,34 @@ class HomeV2Fragment: Fragment() {
     }
 
     fun handleGroup(allGroup: MutableList<Group>?){
-        if(allGroup == null) return
+        if(allGroup == null){
+            return
+        }
         this.homeGroupAdapter.resetData(allGroup!!)
     }
 
     fun handleEvent(allEvent: MutableList<Events>?){
-        if(allEvent == null) return
+        if(allEvent == null){
+            return
+        }
         this.homeEventAdapter.resetData(allEvent!!)
 
     }
     fun handleAction(allAction: MutableList<Action>?){
-        if(allAction == null) return
+        if(allAction == null){
+            //
+            return
+        }
         this.homeActionAdapter.resetData(allAction!!)
 
     }
     fun handlePedago(allPedago: MutableList<Pedago>?){
-        if(allPedago == null) return
+        if(allPedago == null) {
+
+            return
+        }
         var pedagos:MutableList<Pedago> = mutableListOf()
-        for (k in 0 until 3) {
+        for (k in 0 until 2) {
             pedagos.add(allPedago[k])
         }
         this.homePedagoAdapter?.resetData(pedagos)

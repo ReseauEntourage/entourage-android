@@ -60,12 +60,17 @@ class HomeActionAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                     0
                 )
             }
-            action.author?.avatarURLAsString.let {
+            action.author?.avatarURLAsString?.let {
                 Glide.with(holder.binding.root.context)
                     .load(Uri.parse(it))
                     .placeholder(R.drawable.placeholder_user)
                     .transform(CenterCrop(), GranularRoundedCorners(15F, 0F, 0F, 15F))
                     .error(R.drawable.placeholder_user)
+                    .into(holder.binding.ivActionItem)
+            } ?: run {
+                Glide.with(holder.binding.root.context)
+                    .load(R.drawable.placeholder_user)
+                    .transform(CenterCrop(), GranularRoundedCorners(15F, 0F, 0F, 15F))
                     .into(holder.binding.ivActionItem)
             }
             action.title.let {

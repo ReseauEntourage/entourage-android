@@ -63,6 +63,11 @@ class HomeGroupAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                     .transform(CenterCrop(), GranularRoundedCorners(15F, 15F, 0F, 0F))
                     .error(R.drawable.ic_event_placeholder)
                     .into(holder.binding.ivGroupItem)
+            } ?: run {
+                Glide.with(holder.binding.root.context)
+                    .load(R.drawable.ic_event_placeholder)
+                    .transform(CenterCrop(), GranularRoundedCorners(15F, 0F, 0F, 15F))
+                    .into(holder.binding.ivGroupItem)
             }
             group.name.let {
                 holder.binding.tvGroupItem.text = it
