@@ -90,7 +90,6 @@ class HomePedagoAdapter(private var onItemClickListener: OnItemClick): RecyclerV
                     Category.UNDERSTAND -> holder.binding.tvTagPedagoItem.text = context.getString(R.string.home_v2_pedago_item_tag_understand)
                     null -> holder.binding.tvTagPedagoItem.text = ""
                 }
-                holder.binding.tvTagPedagoItem.text = "Comprendre"
             }
         }
     }

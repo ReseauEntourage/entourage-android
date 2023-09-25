@@ -107,6 +107,7 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         user = EntourageApplication.me(activity) ?: return
+        disapearAllAtBeginning()
         updateAvatar()
         callToInitHome()
     }
@@ -126,6 +127,28 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener {
             homePresenter.getPedagogicalResources()
             homePresenter.getNotificationsCount()
         }
+    }
+
+    fun disapearAllAtBeginning(){
+        binding.btnMoreGroup.visibility = View.GONE
+        binding.rvHomeGroup.visibility = View.GONE
+        binding.homeSubtitleGroup.visibility = View.GONE
+        binding.homeTitleGroup.visibility = View.GONE
+
+        binding.btnMoreEvent.visibility = View.GONE
+        binding.rvHomeEvent.visibility = View.GONE
+        binding.homeSubtitleEvent.visibility = View.GONE
+        binding.homeTitleEvent.visibility = View.GONE
+
+        binding.btnMoreAction.visibility = View.GONE
+        binding.rvHomeAction.visibility = View.GONE
+        binding.homeSubtitleAction.visibility = View.GONE
+        binding.homeTitleAction.visibility = View.GONE
+
+        binding.btnMorePedago.visibility = View.GONE
+        binding.rvHomePedago.visibility = View.GONE
+        binding.homeSubtitlePedago.visibility = View.GONE
+        binding.homeTitlePedago.visibility = View.GONE
     }
 
     private fun setRecyclerViews(){
@@ -187,10 +210,6 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener {
 
     fun handleGroup(allGroup: MutableList<Group>?){
         if(allGroup == null){
-            binding.btnMoreGroup.visibility = View.GONE
-            binding.rvHomeGroup.visibility = View.GONE
-            binding.homeSubtitleGroup.visibility = View.GONE
-            binding.homeTitleGroup.visibility = View.GONE
             return
         }
         binding.btnMoreGroup.visibility = View.VISIBLE
@@ -202,10 +221,6 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener {
 
     fun handleEvent(allEvent: MutableList<Events>?){
         if(allEvent == null){
-            binding.btnMoreEvent.visibility = View.GONE
-            binding.rvHomeEvent.visibility = View.GONE
-            binding.homeSubtitleEvent.visibility = View.GONE
-            binding.homeTitleEvent.visibility = View.GONE
             return
         }
         binding.btnMoreEvent.visibility = View.VISIBLE
@@ -217,10 +232,6 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener {
     }
     fun handleAction(allAction: MutableList<Action>?){
         if(allAction == null){
-            binding.btnMoreAction.visibility = View.GONE
-            binding.rvHomeAction.visibility = View.GONE
-            binding.homeSubtitleAction.visibility = View.GONE
-            binding.homeTitleAction.visibility = View.GONE
             return
         }
         binding.btnMoreAction.visibility = View.VISIBLE
@@ -232,10 +243,6 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener {
     }
     fun handlePedago(allPedago: MutableList<Pedago>?){
         if(allPedago == null) {
-            binding.btnMorePedago.visibility = View.GONE
-            binding.rvHomePedago.visibility = View.GONE
-            binding.homeSubtitlePedago.visibility = View.GONE
-            binding.homeTitlePedago.visibility = View.GONE
             return
         }
         binding.btnMorePedago.visibility = View.VISIBLE
@@ -243,10 +250,19 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener {
         binding.homeSubtitlePedago.visibility = View.VISIBLE
         binding.homeTitlePedago.visibility = View.VISIBLE
         var pedagos:MutableList<Pedago> = mutableListOf()
-        for (k in 0 until 2) {
-            pedagos.add(allPedago[k])
+        for(pedago in allPedago){
+            if (pedagos.size > 1){
+                break
+            }
+            if(pedago.watched == false){
+                pedagos.add(pedago)
+            }
         }
+        /*for (k in 0 until 2) {
+            pedagos.add(allPedago[k])
+        }*/
         for(pedago in allPedago) {
+
             pedago.id?.let { id ->
                 val createEventId: Int = BuildConfig.PEDAGO_CREATE_EVENT_ID.toInt()
                 val createGroupId: Int = BuildConfig.PEDAGO_CREATE_GROUP_ID.toInt()
@@ -270,8 +286,8 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener {
 
     fun handleHelps(summary: Summary){
         val formattedString = requireContext().getString(R.string.home_v2_help_title_three, summary.moderator?.displayName)
-        val help1 = Help(requireContext().getString(R.string.home_v2_help_title_one) , R.drawable.ic_home_v2_create_group)
-        val help2 = Help(requireContext().getString(R.string.home_v2_help_title_two) , R.drawable.first_help_item_illu)
+        val help1 = Help(requireContext().getString(R.string.home_v2_help_title_one) , R.drawable.first_help_item_illu)
+        val help2 = Help(requireContext().getString(R.string.home_v2_help_title_two) , R.drawable.ic_home_v2_create_group)
         val help3 = Help(formattedString , R.drawable.first_help_item_illu)
         var helps:MutableList<Help> = mutableListOf()
         helps.add(help1)

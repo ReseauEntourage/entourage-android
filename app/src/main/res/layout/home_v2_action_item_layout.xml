@@ -19,6 +19,7 @@
         app:layout_constraintStart_toStartOf="parent"
         tools:src="@drawable/placeholder_my_event"
         android:scaleType="centerCrop"
+        android:elevation="0dp"
         />
     <TextView
         android:layout_width="wrap_content"
@@ -32,7 +33,7 @@
         android:layout_marginStart="@dimen/entourage_little_margin_start"
         android:textColor="@color/grey_dark"
         tools:text="Un titre d'action stylée"
-        
+
         />
     <TextView
         android:layout_width="wrap_content"
@@ -72,5 +73,5 @@
         tools:text="à 6km de moi"
         />
 
-    
+
 </androidx.constraintlayout.widget.ConstraintLayout>
