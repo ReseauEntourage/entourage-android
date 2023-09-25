@@ -2570,6 +2570,11 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="home_v2_subtitle_pedago">Combattre la précarité, c’est comme tout, ça s’apprend !</string>
     <string name="home_v2_btn_more_pedago">Consulter tous les articles</string>
 
+    <string name="home_v2_pedago_item_tag_all">Tout</string>
+    <string name="home_v2_pedago_item_tag_act">Agir</string>
+    <string name="home_v2_pedago_item_tag_inspire">Inspirer</string>
+    <string name="home_v2_pedago_item_tag_understand">Comprendre</string>
+
     <string name="home_v2_title_help">Vous êtes perdu ?</string>
     <string name="home_v2_subtitle_help">Pas de panique, commencez pas à pas !</string>
     <string name="home_v2_btn_more_help">Consulter tous les articles</string>

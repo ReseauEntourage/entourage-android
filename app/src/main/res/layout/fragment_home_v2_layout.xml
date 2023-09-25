@@ -300,7 +300,7 @@
                     android:text="@string/home_v2_button_map"
                     android:fontFamily="@font/quicksand_bold"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/entourage_font_medium"
+                    android:textSize="@dimen/entourage_font_small"
                     />
                 <ImageView
                     android:layout_width="11dp"

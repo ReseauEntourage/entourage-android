@@ -15,6 +15,7 @@ import kotlinx.android.synthetic.main.new_contrib_item.view.distance
 import kotlinx.android.synthetic.main.new_contrib_item.view.layout_contrib
 import social.entourage.android.R
 import social.entourage.android.actions.detail.ActionDetailActivity
+import social.entourage.android.api.MetaDataRepository
 import social.entourage.android.api.model.Action
 import social.entourage.android.api.model.ActionSection
 import social.entourage.android.api.model.Events
@@ -63,13 +64,13 @@ class HomeActionAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             action.author?.avatarURLAsString?.let {
                 Glide.with(holder.binding.root.context)
                     .load(Uri.parse(it))
-                    .placeholder(R.drawable.placeholder_user)
+                    .placeholder(R.drawable.ic_placeholder_action)
                     .transform(CenterCrop(), GranularRoundedCorners(15F, 0F, 0F, 15F))
-                    .error(R.drawable.placeholder_user)
+                    .error(R.drawable.ic_placeholder_action)
                     .into(holder.binding.ivActionItem)
             } ?: run {
                 Glide.with(holder.binding.root.context)
-                    .load(R.drawable.placeholder_user)
+                    .load(R.drawable.ic_placeholder_action)
                     .transform(CenterCrop(), GranularRoundedCorners(15F, 0F, 0F, 15F))
                     .into(holder.binding.ivActionItem)
             }
@@ -80,7 +81,8 @@ class HomeActionAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 val context = holder.binding.root.context
                 val itemDrawable = ActionSection.getIconFromId(it)
                 holder.binding.ivActionItemEquipment.setImageDrawable(context.getDrawable(itemDrawable))
-                holder.binding.tvActionItemSubtitle.text = it
+                holder.binding.tvActionItemSubtitle.text = MetaDataRepository.getActionSectionNameFromId(it)
+
             }
             action.distance.let {
                 val context = holder.binding.root.context

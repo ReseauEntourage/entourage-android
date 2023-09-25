@@ -7,7 +7,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:background="@drawable/home_v2_action_item_shape"
     android:layout_marginTop="@dimen/entourage_little_margin_top"
-    android:layout_marginStart="@dimen/entourage_little_margin_five">
+    android:layout_marginStart="@dimen/entourage_marginstart"
+    android:layout_marginEnd="@dimen/entourage_margin_end">
     <ImageView
         android:layout_width="24dp"
         android:layout_height="24dp"

@@ -29,7 +29,7 @@ android {
 
     // App versions
     val versionMajor = 8
-    val versionMinor = 11
+    val versionMinor = 12
     val versionPatch = "git rev-list HEAD --count".runCommand().toInt()
     val versionBranchName = "git rev-parse --abbrev-ref HEAD".runCommand()
     val versionCodeInt = (versionMajor * 100 + versionMinor) * 10000 + versionPatch % 10000
@@ -111,6 +111,8 @@ android {
             buildConfigField("String", "ENTOURAGE_URL", "\"${entourageURLProd}\"")
             buildConfigField("String", "DEEP_LINKS_SCHEME", "\"${deepLinksSchemeProd}\"")
             buildConfigField("String", "DEEP_LINKS_URL", "\"${deepLinksURLProd}\"")
+            buildConfigField("int", "PEDAGO_CREATE_EVENT_ID", "15")
+            buildConfigField("int", "PEDAGO_CREATE_GROUP_ID", "37")
         }
         create("staging") {
             manifestPlaceholders += mapOf(
@@ -122,6 +124,9 @@ android {
             buildConfigField("String", "ENTOURAGE_URL", "\"${entourageURLStaging}\"")
             buildConfigField("String", "DEEP_LINKS_SCHEME", "\"${deepLinksSchemeStaging}\"")
             buildConfigField("String", "DEEP_LINKS_URL", "\"${deepLinksURLStaging}\"")
+            buildConfigField("int", "PEDAGO_CREATE_EVENT_ID", "32")
+            buildConfigField("int", "PEDAGO_CREATE_GROUP_ID", "33")
+
         }
          create("entourage") {
             dimension = "app"

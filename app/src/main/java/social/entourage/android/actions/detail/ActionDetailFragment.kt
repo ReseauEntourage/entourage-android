@@ -312,7 +312,6 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
                 binding.uiTitleAuthor.text = action?.createdDateString(requireContext())
                 binding.uiUserName.text = action?.author?.userName
                 binding.uiUserMember.text = action?.memberSinceDateString(requireContext())
-
                 updateMarker()
             }
         }

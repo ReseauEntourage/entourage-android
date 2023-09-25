@@ -295,6 +295,7 @@ class MainActivity : BaseSecuredActivity() {
     }
 
 
+
     fun goEvent(){
         navController.navigate(R.id.navigation_events)
 

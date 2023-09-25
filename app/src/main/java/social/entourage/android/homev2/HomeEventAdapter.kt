@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -92,8 +93,21 @@ class HomeEventAdapter:RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             event.interests.let {
                 if(it.size > 0){
                     val context = holder.binding.root.context
-                    holder.binding.ivTagHomeV2EventItem.setImageDrawable(context.getDrawable(Interest.getIconFromId(it[0])))
                     holder.binding.tvTagHomeV2EventItem.text = it[0]
+                    when (it[0]) {
+                        Interest.animals -> holder.binding.ivTagHomeV2EventItem.setImageDrawable(context.getDrawable(R.drawable.new_animals))
+                        Interest.wellBeing -> holder.binding.ivTagHomeV2EventItem.setImageDrawable(context.getDrawable(R.drawable.new_wellbeing))
+                        Interest.cooking -> holder.binding.ivTagHomeV2EventItem.setImageDrawable(context.getDrawable(R.drawable.new_cooking))
+                        Interest.culture -> holder.binding.ivTagHomeV2EventItem.setImageDrawable(context.getDrawable(R.drawable.new_art))
+                        Interest.games -> holder.binding.ivTagHomeV2EventItem.setImageDrawable(context.getDrawable(R.drawable.new_games))
+                        Interest.nature -> holder.binding.ivTagHomeV2EventItem.setImageDrawable(context.getDrawable(R.drawable.new_nature))
+                        Interest.sport -> holder.binding.ivTagHomeV2EventItem.setImageDrawable(context.getDrawable(R.drawable.new_sport))
+                        Interest.activities -> holder.binding.ivTagHomeV2EventItem.setImageDrawable(context.getDrawable(R.drawable.new_drawing))
+                        Interest.marauding -> holder.binding.ivTagHomeV2EventItem.setImageDrawable(context.getDrawable(R.drawable.new_encounters))
+                        else -> holder.binding.ivTagHomeV2EventItem.setImageDrawable(context.getDrawable(R.drawable.new_others))
+                    }
+                }else{
+                    holder.binding.homeV2ItemEventLayoutTag.visibility = View.GONE
                 }
             }
         }

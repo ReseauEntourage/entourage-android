@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.new_fragment_edit_group.nestedScrollView
+import social.entourage.android.BuildConfig
 import social.entourage.android.EntourageApplication
 import social.entourage.android.MainActivity
 import social.entourage.android.R
@@ -46,7 +47,7 @@ import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.user.UserProfileActivity
 
-class HomeV2Fragment: Fragment() {
+class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener {
 
     //VAR
     private lateinit var binding:FragmentHomeV2LayoutBinding
@@ -54,7 +55,7 @@ class HomeV2Fragment: Fragment() {
     private var homeGroupAdapter = HomeGroupAdapter()
     private var homeEventAdapter = HomeEventAdapter()
     private var homeActionAdapter = HomeActionAdapter()
-    private var homeHelpAdapter = HomeHelpAdapter()
+    private lateinit var homeHelpAdapter:HomeHelpAdapter
     private var homePedagoAdapter:HomePedagoAdapter? = null
     private var pagegroup = 0
     private var pageEvent = 0
@@ -68,6 +69,8 @@ class HomeV2Fragment: Fragment() {
     private val NEW_MARGIN_LOGO = 10
     private val DEFAULT_MARGIN_LOGO = 30
     private var isAnimating = false
+    private var pedagoItemForCreateEvent:Pedago? = null
+    private var pedagoItemForCreateGroup:Pedago? = null
 
 
 
@@ -78,6 +81,7 @@ class HomeV2Fragment: Fragment() {
     ): View? {
         binding = FragmentHomeV2LayoutBinding.inflate(layoutInflater)
         homePresenter = ViewModelProvider(requireActivity()).get(HomePresenter::class.java)
+        homeHelpAdapter = HomeHelpAdapter(this)
         homePedagoAdapter = HomePedagoAdapter(object : OnItemClick {
             override fun onItemClick(pedagogicalContent: Pedago) {
                 Log.wtf("wtf", "pedagoclicked")
@@ -104,6 +108,11 @@ class HomeV2Fragment: Fragment() {
         super.onViewCreated(view, savedInstanceState)
         user = EntourageApplication.me(activity) ?: return
         updateAvatar()
+        callToInitHome()
+    }
+
+    override fun onResume() {
+        super.onResume()
         callToInitHome()
     }
 
@@ -145,7 +154,10 @@ class HomeV2Fragment: Fragment() {
 
     fun setSeeAllButtons(){
         val mainActivity = (requireActivity() as? MainActivity)
-        binding.btnMoreGroup.setOnClickListener { mainActivity?.goGroup() }
+        binding.btnMoreGroup.setOnClickListener {
+            mainActivity?.setGoDiscoverGroupFromDeepL(true)
+            mainActivity?.goGroup()
+        }
         binding.btnMoreEvent.setOnClickListener { mainActivity?.goEvent() }
         binding.btnMoreAction.setOnClickListener { mainActivity?.goDemand() }
         binding.btnMorePedago.setOnClickListener {
@@ -175,45 +187,79 @@ class HomeV2Fragment: Fragment() {
 
     fun handleGroup(allGroup: MutableList<Group>?){
         if(allGroup == null){
+            binding.btnMoreGroup.visibility = View.GONE
+            binding.rvHomeGroup.visibility = View.GONE
+            binding.homeSubtitleGroup.visibility = View.GONE
+            binding.homeTitleGroup.visibility = View.GONE
             return
         }
+        binding.btnMoreGroup.visibility = View.VISIBLE
+        binding.rvHomeGroup.visibility = View.VISIBLE
+        binding.homeSubtitleGroup.visibility = View.VISIBLE
+        binding.homeTitleGroup.visibility = View.VISIBLE
         this.homeGroupAdapter.resetData(allGroup)
     }
 
     fun handleEvent(allEvent: MutableList<Events>?){
         if(allEvent == null){
+            binding.btnMoreEvent.visibility = View.GONE
+            binding.rvHomeEvent.visibility = View.GONE
+            binding.homeSubtitleEvent.visibility = View.GONE
+            binding.homeTitleEvent.visibility = View.GONE
             return
         }
+        binding.btnMoreEvent.visibility = View.VISIBLE
+        binding.rvHomeEvent.visibility = View.VISIBLE
+        binding.homeSubtitleEvent.visibility = View.VISIBLE
+        binding.homeTitleEvent.visibility = View.VISIBLE
         this.homeEventAdapter.resetData(allEvent)
 
     }
     fun handleAction(allAction: MutableList<Action>?){
         if(allAction == null){
-            //
+            binding.btnMoreAction.visibility = View.GONE
+            binding.rvHomeAction.visibility = View.GONE
+            binding.homeSubtitleAction.visibility = View.GONE
+            binding.homeTitleAction.visibility = View.GONE
             return
         }
-
+        binding.btnMoreAction.visibility = View.VISIBLE
+        binding.rvHomeAction.visibility = View.VISIBLE
+        binding.homeSubtitleAction.visibility = View.VISIBLE
+        binding.homeTitleAction.visibility = View.VISIBLE
         this.homeActionAdapter.resetData(allAction)
 
     }
     fun handlePedago(allPedago: MutableList<Pedago>?){
         if(allPedago == null) {
-
+            binding.btnMorePedago.visibility = View.GONE
+            binding.rvHomePedago.visibility = View.GONE
+            binding.homeSubtitlePedago.visibility = View.GONE
+            binding.homeTitlePedago.visibility = View.GONE
             return
         }
+        binding.btnMorePedago.visibility = View.VISIBLE
+        binding.rvHomePedago.visibility = View.VISIBLE
+        binding.homeSubtitlePedago.visibility = View.VISIBLE
+        binding.homeTitlePedago.visibility = View.VISIBLE
         var pedagos:MutableList<Pedago> = mutableListOf()
         for (k in 0 until 2) {
             pedagos.add(allPedago[k])
         }
-        this.homePedagoAdapter?.resetData(pedagos)
-        for(pedago in allPedago){
-            if(pedago.name!!.contains("Comment créer")){
-                Log.wtf("wtf", "pedago name " + pedago.name + " pedago id " + pedago.id)
-            }
-            if(pedago.name!!.contains("points communs")){
-                Log.wtf("wtf", "pedago name " + pedago.name + " pedago id " + pedago.id)
+        for(pedago in allPedago) {
+            pedago.id?.let { id ->
+                val createEventId: Int = BuildConfig.PEDAGO_CREATE_EVENT_ID.toInt()
+                val createGroupId: Int = BuildConfig.PEDAGO_CREATE_GROUP_ID.toInt()
+                if(id == createEventId) {
+                    this.pedagoItemForCreateEvent = pedago
+                }
+                if(id == createGroupId) {
+                    this.pedagoItemForCreateGroup = pedago
+                }
             }
         }
+
+        this.homePedagoAdapter?.resetData(pedagos)
         homePresenter.getSummary()
 
     }
@@ -223,18 +269,15 @@ class HomeV2Fragment: Fragment() {
     }
 
     fun handleHelps(summary: Summary){
-
-
         val formattedString = requireContext().getString(R.string.home_v2_help_title_three, summary.moderator?.displayName)
-
-        val help1 = Help(requireContext().getString(R.string.home_v2_help_title_one) , R.drawable.first_help_item_illu)
+        val help1 = Help(requireContext().getString(R.string.home_v2_help_title_one) , R.drawable.ic_home_v2_create_group)
         val help2 = Help(requireContext().getString(R.string.home_v2_help_title_two) , R.drawable.first_help_item_illu)
         val help3 = Help(formattedString , R.drawable.first_help_item_illu)
         var helps:MutableList<Help> = mutableListOf()
         helps.add(help1)
         helps.add(help2)
         helps.add(help3)
-        homeHelpAdapter.resetData(helps)
+        homeHelpAdapter.resetData(helps, summary)
     }
 
 
@@ -340,5 +383,29 @@ class HomeV2Fragment: Fragment() {
                 animator.start()
             }
         })
+    }
+
+    override fun onItemClick(position: Int, moderatorId:Int) {
+        if(position == 0){
+            val intent = Intent(requireActivity(), PedagoDetailActivity::class.java)
+            intent.putExtra(Const.ID, pedagoItemForCreateGroup?.id)
+            intent.putExtra(Const.HTML_CONTENT, pedagoItemForCreateGroup?.html)
+            requireActivity().startActivity(intent)
+        }
+        if(position == 1){
+            val intent = Intent(requireActivity(), PedagoDetailActivity::class.java)
+            intent.putExtra(Const.ID, pedagoItemForCreateEvent?.id)
+            intent.putExtra(Const.HTML_CONTENT, pedagoItemForCreateEvent?.html)
+            requireActivity().startActivity(intent)
+        }
+        if(position == 2){
+            AnalyticsEvents.logEvent(AnalyticsEvents.Home_action_moderator)
+            startActivity(
+                Intent(context, UserProfileActivity::class.java).putExtra(
+                    Const.USER_ID,
+                    moderatorId
+                )
+            )
+        }
     }
 }

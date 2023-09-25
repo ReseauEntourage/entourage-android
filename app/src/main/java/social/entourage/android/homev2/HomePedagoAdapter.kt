@@ -3,6 +3,7 @@ package social.entourage.android.homev2
 import android.net.Uri
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -10,7 +11,9 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.GranularRoundedCorners
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
+import okhttp3.internal.checkDuration
 import social.entourage.android.R
+import social.entourage.android.api.model.Category
 import social.entourage.android.api.model.Events
 import social.entourage.android.api.model.Pedago
 import social.entourage.android.databinding.HomeV2PedagoItemLayoutBinding
@@ -72,10 +75,22 @@ class HomePedagoAdapter(private var onItemClickListener: OnItemClick): RecyclerV
                 val context = holder.binding.root.context
                 val formattedString = context.getString(R.string.home_v2_pedag_item_lenght_title, it)
                holder.binding.tvLenghtPedagoItem.text = formattedString
+                if(it == null ){
+                    holder.binding.tvLenghtPedagoItem.visibility = View.GONE
+                }else{
+                    holder.binding.tvLenghtPedagoItem.visibility = View.VISIBLE
+                }
             }
             pedago.category.let {
+                val context = holder.binding.root.context
+                when(it){
+                    Category.ALL -> holder.binding.tvTagPedagoItem.text = context.getString(R.string.home_v2_pedago_item_tag_all)
+                    Category.ACT -> holder.binding.tvTagPedagoItem.text = context.getString(R.string.home_v2_pedago_item_tag_act)
+                    Category.INSPIRE -> holder.binding.tvTagPedagoItem.text = context.getString(R.string.home_v2_pedago_item_tag_inspire)
+                    Category.UNDERSTAND -> holder.binding.tvTagPedagoItem.text = context.getString(R.string.home_v2_pedago_item_tag_understand)
+                    null -> holder.binding.tvTagPedagoItem.text = ""
+                }
                 holder.binding.tvTagPedagoItem.text = "Comprendre"
-
             }
         }
     }
