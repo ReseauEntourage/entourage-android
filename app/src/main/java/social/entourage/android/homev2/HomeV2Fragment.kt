@@ -84,11 +84,10 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener {
         homeHelpAdapter = HomeHelpAdapter(this)
         homePedagoAdapter = HomePedagoAdapter(object : OnItemClick {
             override fun onItemClick(pedagogicalContent: Pedago) {
-                Log.wtf("wtf", "pedagoclicked")
                 if (pedagogicalContent.html != null && pedagogicalContent.id != null) {
                     val intent = Intent(requireActivity(), PedagoDetailActivity::class.java)
                     intent.putExtra(Const.ID, pedagogicalContent.id)
-                    intent.putExtra(Const.HTML_CONTENT, pedagogicalContent.html)
+                    //intent.putExtra(Const.HTML_CONTENT, pedagogicalContent.html)
                     requireActivity().startActivity(intent)
                 }
             }
@@ -114,6 +113,8 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener {
 
     override fun onResume() {
         super.onResume()
+        Log.wtf("wtf", "hello passed here ")
+        resetFilter()
         callToInitHome()
     }
 
@@ -126,7 +127,13 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener {
             homePresenter.getAllDemands(0,nbOfItemForVerticalList,currentFilters.travel_distance(),currentFilters.latitude(),currentFilters.longitude(),currentSectionsFilters.getSectionsForWS())
             homePresenter.getPedagogicalResources()
             homePresenter.getNotificationsCount()
+
         }
+    }
+
+    fun resetFilter(){
+        currentFilters = EventActionLocationFilters()
+        currentSectionsFilters = ActionSectionFilters()
     }
 
     fun disapearAllAtBeginning(){
@@ -212,10 +219,12 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener {
         if(allGroup == null){
             return
         }
-        binding.btnMoreGroup.visibility = View.VISIBLE
-        binding.rvHomeGroup.visibility = View.VISIBLE
-        binding.homeSubtitleGroup.visibility = View.VISIBLE
-        binding.homeTitleGroup.visibility = View.VISIBLE
+        if(allGroup.size > 0 ){
+            binding.btnMoreGroup.visibility = View.VISIBLE
+            binding.rvHomeGroup.visibility = View.VISIBLE
+            binding.homeSubtitleGroup.visibility = View.VISIBLE
+            binding.homeTitleGroup.visibility = View.VISIBLE
+        }
         this.homeGroupAdapter.resetData(allGroup)
     }
 
@@ -223,10 +232,12 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener {
         if(allEvent == null){
             return
         }
-        binding.btnMoreEvent.visibility = View.VISIBLE
-        binding.rvHomeEvent.visibility = View.VISIBLE
-        binding.homeSubtitleEvent.visibility = View.VISIBLE
-        binding.homeTitleEvent.visibility = View.VISIBLE
+        if(allEvent.size > 0 ){
+            binding.btnMoreEvent.visibility = View.VISIBLE
+            binding.rvHomeEvent.visibility = View.VISIBLE
+            binding.homeSubtitleEvent.visibility = View.VISIBLE
+            binding.homeTitleEvent.visibility = View.VISIBLE
+        }
         this.homeEventAdapter.resetData(allEvent)
 
     }
@@ -234,10 +245,12 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener {
         if(allAction == null){
             return
         }
-        binding.btnMoreAction.visibility = View.VISIBLE
-        binding.rvHomeAction.visibility = View.VISIBLE
-        binding.homeSubtitleAction.visibility = View.VISIBLE
-        binding.homeTitleAction.visibility = View.VISIBLE
+        if(allAction.size > 0 ){
+            binding.btnMoreAction.visibility = View.VISIBLE
+            binding.rvHomeAction.visibility = View.VISIBLE
+            binding.homeSubtitleAction.visibility = View.VISIBLE
+            binding.homeTitleAction.visibility = View.VISIBLE
+        }
         this.homeActionAdapter.resetData(allAction)
 
     }
@@ -245,10 +258,12 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener {
         if(allPedago == null) {
             return
         }
-        binding.btnMorePedago.visibility = View.VISIBLE
-        binding.rvHomePedago.visibility = View.VISIBLE
-        binding.homeSubtitlePedago.visibility = View.VISIBLE
-        binding.homeTitlePedago.visibility = View.VISIBLE
+        if(allPedago.size > 0 ){
+            binding.btnMorePedago.visibility = View.VISIBLE
+            binding.rvHomePedago.visibility = View.VISIBLE
+            binding.homeSubtitlePedago.visibility = View.VISIBLE
+            binding.homeTitlePedago.visibility = View.VISIBLE
+        }
         var pedagos:MutableList<Pedago> = mutableListOf()
         for(pedago in allPedago){
             if (pedagos.size > 1){
@@ -360,7 +375,6 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener {
             val layoutParamsProfile = binding.avatar.layoutParams as ViewGroup.MarginLayoutParams
             val layoutParamsNotif = binding.uiLayoutNotif.layoutParams as ViewGroup.MarginLayoutParams
             val layoutParamsLogo = binding.ivLogoHome.layoutParams as ViewGroup.MarginLayoutParams
-            Log.wtf("wtf", "wtf scroll y " + scrollY)
             if(scrollY == 0) isAnimating = false
             if(isAnimating == false){
                 isAnimating = true

@@ -22,17 +22,20 @@
         android:elevation="0dp"
         />
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:id="@+id/tv_action_item_title"
         app:layout_constraintStart_toEndOf="@+id/iv_action_item"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         android:fontFamily="@font/quicksand_bold"
         android:textSize="@dimen/entourage_font_small"
         android:layout_marginTop="@dimen/entourage_little_margin_top"
         android:layout_marginStart="@dimen/entourage_little_margin_start"
         android:textColor="@color/grey_dark"
         tools:text="Un titre d'action stylée"
+        android:ellipsize="end"
+        android:maxLines="1"
 
         />
     <TextView
