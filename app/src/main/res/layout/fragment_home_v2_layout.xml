@@ -93,7 +93,7 @@
             app:layout_constraintTop_toTopOf="parent"
             android:layout_marginStart="@dimen/entourage_marginstart"
             android:fontFamily="@font/quicksand_bold"
-            android:textSize="@dimen/entourage_font_medium"
+            android:textSize="@dimen/entourage_font_large"
             android:textColor="@color/grey_dark"
             android:text="@string/home_v2_title_action"
             />
@@ -130,7 +130,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/quicksand_bold"
-                    android:textSize="@dimen/entourage_font_medium"
+                    android:textSize="@dimen/entourage_font_small"
                     android:textColor="@color/light_orange"
                     android:text="@string/home_v2_btn_more_action"
                     android:layout_marginEnd="@dimen/entourage_little_margin_end" />
@@ -149,7 +149,7 @@
                 android:layout_marginTop="@dimen/entourage_margin_section"
                 android:layout_marginStart="@dimen/entourage_marginstart"
                 android:fontFamily="@font/quicksand_bold"
-                android:textSize="@dimen/entourage_font_medium"
+                android:textSize="@dimen/entourage_font_large"
                 android:textColor="@color/grey_dark"
                 android:text="@string/home_v2_title_event"
                 />
@@ -186,7 +186,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/quicksand_bold"
-                    android:textSize="@dimen/entourage_font_medium"
+                    android:textSize="@dimen/entourage_font_small"
                     android:textColor="@color/light_orange"
                     android:text="@string/home_v2_btn_more_event"
                     android:layout_marginEnd="@dimen/entourage_little_margin_end" />
@@ -205,7 +205,7 @@
                 android:layout_marginTop="@dimen/entourage_margin_section"
                 android:layout_marginStart="@dimen/entourage_marginstart"
                 android:fontFamily="@font/quicksand_bold"
-                android:textSize="@dimen/entourage_font_medium"
+                android:textSize="@dimen/entourage_font_large"
                 android:textColor="@color/grey_dark"
                 android:text="@string/home_v2_title_group"
                 />
@@ -217,7 +217,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/home_title_group"
                 android:layout_marginStart="@dimen/entourage_marginstart"
                 android:fontFamily="@font/nunitosans_regular"
-                android:textSize="@dimen/entourage_font_very_small"
+                android:textSize="@dimen/entourage_font_small"
                 android:text="@string/home_v2_subtitle_group"
                 />
             <androidx.recyclerview.widget.RecyclerView
@@ -242,7 +242,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/quicksand_bold"
-                    android:textSize="@dimen/entourage_font_medium"
+                    android:textSize="@dimen/entourage_font_small"
                     android:textColor="@color/light_orange"
                     android:text="@string/home_v2_btn_more_group"
                     android:layout_marginEnd="@dimen/entourage_little_margin_end" />
@@ -261,7 +261,7 @@
                 android:layout_marginTop="@dimen/entourage_margin_section"
                 android:layout_marginStart="@dimen/entourage_marginstart"
                 android:fontFamily="@font/quicksand_bold"
-                android:textSize="@dimen/entourage_font_medium"
+                android:textSize="@dimen/entourage_font_large"
                 android:textColor="@color/grey_dark"
                 android:text="@string/home_v2_title_map"
                 />
@@ -290,8 +290,8 @@
                 android:layout_marginEnd="@dimen/entourage_margin_end"
                 android:background="@drawable/home_version_two_large_button_gradient_shape">
                 <ImageView
-                    android:layout_width="23dp"
-                    android:layout_height="23dp"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
                     android:id="@+id/icon_hom_v2_map_button"
                     android:src="@drawable/home_map_button_illu"
                     app:layout_constraintStart_toStartOf="parent"
@@ -336,7 +336,7 @@
                 android:layout_marginTop="@dimen/entourage_margin_section"
                 android:layout_marginStart="@dimen/entourage_marginstart"
                 android:fontFamily="@font/quicksand_bold"
-                android:textSize="@dimen/entourage_font_medium"
+                android:textSize="@dimen/entourage_font_large"
                 android:textColor="@color/grey_dark"
                 android:text="@string/home_v2_title_pedago"
                 />
@@ -373,7 +373,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/quicksand_bold"
-                    android:textSize="@dimen/entourage_font_medium"
+                    android:textSize="@dimen/entourage_font_small"
                     android:textColor="@color/light_orange"
                     android:text="@string/home_v2_btn_more_pedago"
                     android:layout_marginEnd="@dimen/entourage_little_margin_end" />
@@ -392,7 +392,7 @@
                 android:layout_marginTop="@dimen/entourage_margin_section"
                 android:layout_marginStart="@dimen/entourage_marginstart"
                 android:fontFamily="@font/quicksand_bold"
-                android:textSize="@dimen/entourage_font_medium"
+                android:textSize="@dimen/entourage_font_large"
                 android:textColor="@color/grey_dark"
                 android:text="@string/home_v2_title_help"
                 />
