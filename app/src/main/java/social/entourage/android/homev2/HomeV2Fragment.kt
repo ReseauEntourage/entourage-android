@@ -113,7 +113,7 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener {
 
     override fun onResume() {
         super.onResume()
-        Log.wtf("wtf", "hello passed here ")
+        disapearAllAtBeginning()
         resetFilter()
         callToInitHome()
     }

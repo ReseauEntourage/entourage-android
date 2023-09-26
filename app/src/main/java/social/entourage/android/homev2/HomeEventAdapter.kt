@@ -93,7 +93,7 @@ class HomeEventAdapter:RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             event.interests.let {
                 if(it.size > 0){
                     val context = holder.binding.root.context
-                    holder.binding.tvTagHomeV2EventItem.text = it[0]
+                    holder.binding.tvTagHomeV2EventItem.text = it[0].replaceFirstChar { char -> char.uppercaseChar() }
                     when (it[0]) {
                         Interest.animals -> holder.binding.ivTagHomeV2EventItem.setImageDrawable(context.getDrawable(R.drawable.new_animals))
                         Interest.wellBeing -> holder.binding.ivTagHomeV2EventItem.setImageDrawable(context.getDrawable(R.drawable.new_wellbeing))

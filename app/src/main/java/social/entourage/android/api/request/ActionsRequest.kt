@@ -36,6 +36,8 @@ interface ActionsRequest {
         @Query("travel_distance") travelDistance: Int?,
         @Query("latitude") latitude: Double?,
         @Query("longitude") longitude: Double?,
+        @Query("exclude_memberships") excludeMemberships : Boolean?,
+
     ): Call<DemandsListWrapper>
 
     @GET("users/me/actions")

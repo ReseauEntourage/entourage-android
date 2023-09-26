@@ -116,7 +116,7 @@ class HomePresenter: ViewModel() {
     }
 
     fun getAllDemands(page: Int, per: Int,distance:Int?,latitude:Double?,longitude:Double?,sections: String?) {
-        EntourageApplication.get().apiModule.actionsRequest.getAllActionsDemand(page,per,sections,distance,latitude,longitude)
+        EntourageApplication.get().apiModule.actionsRequest.getAllActionsDemand(page,per,sections,distance,latitude,longitude, true)
             .enqueue(object : Callback<DemandsListWrapper> {
                 override fun onResponse(
                     call: Call<DemandsListWrapper>,
