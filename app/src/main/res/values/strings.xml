@@ -2557,6 +2557,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="home_v2_title_event">Participer à un événement solidaire</string>
     <string name="home_v2_subtitle_event">Le plein de solidarité à proximité</string>
     <string name="home_v2_btn_more_event">Voir tous les événements</string>
+    <string name="tag_other">Autre</string>
 
     <string name="home_v2_title_group">Vos groupes de voisins</string>
     <string name="home_v2_subtitle_group">Échanger avec vos voisins de tous horizons</string>
