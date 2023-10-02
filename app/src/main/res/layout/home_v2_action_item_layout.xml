@@ -9,7 +9,7 @@
     android:layout_marginStart="@dimen/entourage_marginstart"
     android:layout_marginEnd="@dimen/entourage_margin_end"
     android:layout_marginTop="@dimen/entourage_little_margin_top"
-    android:padding="2dp">
+    android:padding="1dp">
     <ImageView
         android:layout_width="74dp"
         android:layout_height="match_parent"
@@ -17,7 +17,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:background="@drawable/home_v2_action_item_shape"
         tools:src="@drawable/placeholder_action"
         android:scaleType="centerCrop"
         android:elevation="0dp"
