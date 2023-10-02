@@ -97,9 +97,10 @@ class DiscoverEventsListFragment : Fragment() {
         eventsPresenter.isLastPageMyEvent = false
         page = 0
         pageMyEvent = 0
-        loadEvents()
-        loadMyEvents()
-
+        CoroutineScope(Dispatchers.IO).launch {
+            loadEvents()
+            loadMyEvents()
+        }
     }
 
     override fun onStop() {
@@ -153,13 +154,12 @@ class DiscoverEventsListFragment : Fragment() {
                 val layoutManager = binding.recyclerView.layoutManager as LinearLayoutManager
                 val lastVisibleItemPosition = layoutManager.findLastVisibleItemPosition()
 
-                if (lastVisibleItemPosition == eventsAdapter.events.count() - 1 && lastVisibleItemPosition > 0 && !eventsPresenter.isLastPage) {
+                if (lastVisibleItemPosition == eventsAdapter.events.count() - 4 && lastVisibleItemPosition > 0 && !eventsPresenter.isLastPage) {
                     binding.progressBar.visibility = View.VISIBLE
                     CoroutineScope(Dispatchers.IO).launch {
                         loadEvents()
                     }
                 }
-
             }
         }
 
@@ -173,12 +173,9 @@ class DiscoverEventsListFragment : Fragment() {
                 if (totalItemCount <= (lastVisibleItemPosition + 2) && !eventsPresenter.isLastPageMyEvent) {
                     binding.progressBar.visibility = View.VISIBLE
                     loadMyEvents()
-
                 }
             }
         })
-
-
     }
 
     private fun handleFilterChange(hasChangedFilter:Boolean){
@@ -243,9 +240,10 @@ class DiscoverEventsListFragment : Fragment() {
             eventsPresenter.isLastPageMyEvent = false
             page = 0
             pageMyEvent = 0
-            loadEvents()
-            loadMyEvents()
+            CoroutineScope(Dispatchers.IO).launch {
+                loadEvents()
+                loadMyEvents()
+            }
         }
     }
-
 }
