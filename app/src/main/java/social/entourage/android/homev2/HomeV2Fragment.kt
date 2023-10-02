@@ -161,12 +161,18 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener {
     private fun setRecyclerViews(){
         //Group RV
         val settingGrouplayoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        val offsetInPixels = resources.getDimensionPixelSize(R.dimen.horizontal_offset_home) // Define this in your resources
+
         binding.rvHomeGroup.adapter = homeGroupAdapter
         binding.rvHomeGroup.layoutManager = settingGrouplayoutManager
+        binding.rvHomeGroup.setPadding(offsetInPixels, 0, 0, 0)
+        binding.rvHomeGroup.clipToPadding = false
         //Event RV
         val settingEventlayoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         binding.rvHomeEvent.adapter = homeEventAdapter
         binding.rvHomeEvent.layoutManager = settingEventlayoutManager
+        binding.rvHomeEvent.setPadding(offsetInPixels, 0, 0, 0)
+        binding.rvHomeEvent.clipToPadding = false
         //Action RV
         val settingActionlayoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         binding.rvHomeAction.adapter = homeActionAdapter

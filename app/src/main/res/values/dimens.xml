@@ -19,6 +19,7 @@
     <dimen name="entourage_little_margin_top">10dp</dimen>
     <dimen name="entourage_little_margin_end">10dp</dimen>
     <dimen name="entourage_little_margin_start">17dp</dimen>
+    <dimen name="entourage_margin_start_inner_item">10dp</dimen>
     <dimen name="entourage_little_margin_five">4dp</dimen>
     <dimen name="entourage_margin_section">28dp</dimen>
 
@@ -91,6 +92,7 @@
     <dimen name="contributions_empty_label">10sp</dimen>
     <dimen name="design_bottom_navigation_height" tools:override="true">@dimen/tabs_height</dimen>
     <dimen name="horizontal_offset">22dp</dimen>
+    <dimen name="horizontal_offset_home">15dp</dimen>
 
 
 </resources>

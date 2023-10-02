@@ -290,8 +290,8 @@
                 android:layout_marginEnd="@dimen/entourage_margin_end"
                 android:background="@drawable/home_version_two_large_button_gradient_shape">
                 <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
+                    android:layout_width="29dp"
+                    android:layout_height="29dp"
                     android:id="@+id/icon_hom_v2_map_button"
                     android:src="@drawable/home_map_button_illu"
                     android:scaleType="fitXY"
@@ -302,7 +302,7 @@
 
                     />
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:id="@+id/tv_title_button_map"
                     app:layout_constraintTop_toTopOf="parent"
