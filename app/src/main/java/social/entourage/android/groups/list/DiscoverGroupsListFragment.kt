@@ -1,5 +1,6 @@
 package social.entourage.android.groups.list
 
+import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -45,6 +46,7 @@ class DiscoverGroupsListFragment : Fragment() {
         handleCross()
         handleSwipeRefresh()
         handleCrossButton()
+        setRVScrollListener()
         binding.searchBarLayout.endIconMode = END_ICON_NONE
     }
 
@@ -59,12 +61,25 @@ class DiscoverGroupsListFragment : Fragment() {
         return binding.root
     }
 
+    override fun onResume() {
+        super.onResume()
+        groupsList.clear()
+        groupsListSearch.clear()
+        groupPresenter.isLastPage = false
+        (binding.recyclerView.adapter as? GroupsListAdapter)?.updateGroupsList(groupsList)
+        (binding.searchRecyclerView.adapter as? GroupsListAdapter)?.updateGroupsList(groupsListSearch)
+        page = 0
+        loadGroups()
+    }
+
     private fun handleResponseGetGroups(allGroups: MutableList<Group>?) {
         //groupsList.clear()
         allGroups?.let { groupsList.addAll(it) }
         binding.progressBar.visibility = View.GONE
         allGroups?.isEmpty()?.let { updateView(it) }
         (binding.recyclerView.adapter as? GroupsListAdapter)?.updateGroupsList(groupsList)
+        groupPresenter.isLoading = false
+
     }
 
     private fun handleResponseGetGroupsSearch(allGroupsSearch: MutableList<Group>?) {
@@ -108,7 +123,6 @@ class DiscoverGroupsListFragment : Fragment() {
     private fun initializeGroups() {
         binding.recyclerView.apply {
             // Pagination
-            addOnScrollListener(recyclerViewOnScrollListener)
             layoutManager = LinearLayoutManager(context)
             adapter = GroupsListAdapter(groupsList, null, FromScreen.DISCOVER)
             (adapter as? GroupsListAdapter)?.updateGroupsList(groupsList)
@@ -126,28 +140,39 @@ class DiscoverGroupsListFragment : Fragment() {
     }
 
     private fun loadGroups() {
+        groupPresenter.isLoading = true
         binding.swipeRefresh.isRefreshing = false
         page += 1
         groupPresenter.getAllGroups(page, groupPerPage)
     }
 
-    private val recyclerViewOnScrollListener: RecyclerView.OnScrollListener =
-        object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
-                handlePagination(recyclerView)
+    private fun setRVScrollListener(){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            binding.recyclerView.setOnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
+                handlePagination(binding.recyclerView)
+
             }
         }
+    }
+
+
 
     fun handlePagination(recyclerView: RecyclerView) {
+
         val layoutManager = recyclerView.layoutManager as LinearLayoutManager?
         layoutManager?.let {
             val visibleItemCount: Int = layoutManager.childCount
             val totalItemCount: Int = layoutManager.itemCount
-            val firstVisibleItemPosition: Int =
-                layoutManager.findFirstVisibleItemPosition()
-            if (!groupPresenter.isLoading && !groupPresenter.isLastPage) {
-                if (visibleItemCount + firstVisibleItemPosition >= totalItemCount && firstVisibleItemPosition >= 0 && totalItemCount >= groupPerPage) {
+            val firstVisibleItemPosition: Int = layoutManager.findFirstCompletelyVisibleItemPosition()
+            val lastVisibleItemPosition: Int = layoutManager.findLastVisibleItemPosition()
+            val itemlist = groupsList.size - 5
+            if(firstVisibleItemPosition > 0 ){
+                binding.searchBarLayout.visibility = View.GONE
+            }else{
+                binding.searchBarLayout.visibility = View.VISIBLE
+            }
+            if (!groupPresenter.isLoading &&  !groupPresenter.isLastPage) {
+                if (lastVisibleItemPosition >= groupsList.size - 5) {
                     binding.progressBar.visibility = View.VISIBLE
                     loadGroups()
                 }
@@ -210,7 +235,12 @@ class DiscoverGroupsListFragment : Fragment() {
 
     private fun handleSwipeRefresh() {
         binding.swipeRefresh.setOnRefreshListener {
-            page += 1
+            page = 0
+            groupsList.clear()
+            groupsListSearch.clear()
+            groupPresenter.isLastPage = false
+            (binding.recyclerView.adapter as? GroupsListAdapter)?.updateGroupsList(groupsList)
+            (binding.searchRecyclerView.adapter as? GroupsListAdapter)?.updateGroupsList(groupsListSearch)
             loadGroups()
         }
     }
