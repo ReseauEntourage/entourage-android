@@ -34,7 +34,6 @@ class HomeActionAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         notifyDataSetChanged()
 
     }
-
     fun clearList(){
         this.actions.clear()
         notifyDataSetChanged()
