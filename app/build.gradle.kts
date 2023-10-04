@@ -195,7 +195,7 @@ dependencies {
     implementation("androidx.cardview:cardview:1.0.0")
     implementation("androidx.coordinatorlayout:coordinatorlayout:1.2.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
-    implementation("androidx.fragment:fragment-ktx:1.5.6")
+    implementation("androidx.fragment:fragment-ktx:1.5.7")
     implementation("androidx.multidex:multidex:2.0.1")
     implementation("androidx.recyclerview:recyclerview:1.3.0")
     implementation("androidx.preference:preference-ktx:1.2.0")
@@ -206,7 +206,7 @@ dependencies {
     implementation("com.jakewharton.timber:timber:5.0.1")
 
     //https://firebase.google.com/support/release-notes/android
-    implementation(platform("com.google.firebase:firebase-bom:31.5.0"))
+    implementation(platform("com.google.firebase:firebase-bom:32.1.0"))
     //implementation firebaseDependencies.values()
     implementation("com.google.firebase:firebase-analytics-ktx")
     implementation("com.google.firebase:firebase-messaging-ktx")
@@ -221,7 +221,7 @@ dependencies {
     implementation("com.google.android.gms:play-services-location:21.0.1") //v19 needs refactoring
     implementation("com.google.android.libraries.places:places-compat:2.6.0")
     //https://developers.google.com/android/guides/opensource
-    implementation("com.google.android.gms:play-services-oss-licenses:17.0.0")
+    implementation("com.google.android.gms:play-services-oss-licenses:17.0.1")
 
     //implementation networkDependencies.values()
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")

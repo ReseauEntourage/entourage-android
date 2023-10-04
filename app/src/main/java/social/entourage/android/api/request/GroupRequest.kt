@@ -43,6 +43,9 @@ interface GroupRequest {
     @GET("neighborhoods/{id}")
     fun getGroup(@Path("id") groupId: Int): Call<GroupWrapper>
 
+    @GET("neighborhoods/{id}")
+    fun getGroupWithStringId(@Path("id") groupId: String): Call<GroupWrapper>
+
     @PATCH("neighborhoods/{id}")
     fun updateGroup(
         @Path("id") groupId: Int,

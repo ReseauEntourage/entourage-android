@@ -65,13 +65,17 @@ class ImageDialogActivity:BaseActivity() {
         params.height = screenHeight
         binding.photoView.layoutParams = params
         CoroutineScope(Dispatchers.IO).launch {
-            val bitmap = Glide.with(applicationContext)
-                .asBitmap()
-                .load(imageUrl)
-                .submit(screenWidth,screenHeight)
-                .get()
-            withContext(Dispatchers.Main) {
-                binding.photoView.setImageBitmap(bitmap)
+            try {
+                val bitmap = Glide.with(applicationContext)
+                    .asBitmap()
+                    .load(imageUrl)
+                    .submit(screenWidth,screenHeight)
+                    .get()
+                withContext(Dispatchers.Main) {
+                    binding.photoView.setImageBitmap(bitmap)
+                }
+            } catch(e: Exception) {
+                Timber.e(e)
             }
         }
     }

@@ -112,6 +112,26 @@ class GroupPresenter: ViewModel() {
             })
     }
 
+    fun getInitialGroup() {
+        EntourageApplication.get().apiModule.groupRequest.getGroupWithStringId("default")
+            .enqueue(object : Callback<GroupWrapper> {
+                override fun onResponse(
+                    call: Call<GroupWrapper>,
+                    response: Response<GroupWrapper>
+                ) {
+                    if (response.isSuccessful) {
+                        response.body()?.let { groupWrapper ->
+                            getGroup.value = groupWrapper.group
+                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<GroupWrapper>, t: Throwable) {
+                }
+            })
+    }
+
+
     fun updateGroup(id: Int, userEdited: ArrayMap<String, Any>) {
         EntourageApplication.get().apiModule.groupRequest.updateGroup(id, userEdited)
             .enqueue(object : Callback<GroupWrapper> {
