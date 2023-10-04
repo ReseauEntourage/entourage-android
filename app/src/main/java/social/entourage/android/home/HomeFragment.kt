@@ -56,7 +56,6 @@ class HomeFragment : Fragment() {
     private val homePresenter: HomePresenter by lazy { HomePresenter() }
     private lateinit var actionsPresenter: ActionsPresenter
     private val groupPresenter: GroupPresenter by lazy { GroupPresenter() }
-    private val userPresenter: UserPresenter by lazy { UserPresenter() }
 
 
     private var user: User? = null
@@ -107,14 +106,13 @@ class HomeFragment : Fragment() {
         reloadDatasFromRecos(true)
         homePresenter.getNotificationsCount()
         AnalyticsEvents.logEvent(AnalyticsEvents.Home_view_home)
-        showAlertForRugbyDay()
-        val id = EntourageApplication.me(requireContext())?.id!!
-        //userPresenter.updateLanguage(id, "fr")
+        //showAlertForRugbyDay()
         //TODO : suppress this testing code
 //        var summary = Summary()
 //        var action = SummaryAction()
 //        action.title = "ma contrib/demande"
-//        action.actionType = "solicitation"
+//        //action.actionType = "solicitation"
+//        action.actionType = "contribution"
 //        action.id = 10000
 //        summary.unclosedAction = action
 //        onActionUnclosed(summary)
@@ -214,8 +212,7 @@ class HomeFragment : Fragment() {
                 timer.start()
             }
         }
-        //TODO TO RECONECT FOR UnclosedActions
-        //onActionUnclosed(summary)
+        onActionUnclosed(summary)
 
 
     }
@@ -285,7 +282,7 @@ class HomeFragment : Fragment() {
             if(summary.unclosedAction!!.actionType == "solicitation"){
                 AnalyticsEvents.logEvent(AnalyticsEvents.View__StateDemandPop__Day10)
                 val contentText = summary.unclosedAction!!.title
-                CustomAlertDialog.showForLastActionOne(
+                CustomAlertDialog.showForLastActionOneDemand(
                     requireContext(),
                     getString(R.string.custom_dialog_action_title_one_demand),
                     contentText!!,
@@ -297,26 +294,27 @@ class HomeFragment : Fragment() {
                         CustomAlertDialog.showForLastActionTwo(requireContext(),
                         getString(R.string.custom_dialog_action_title_two),
                         getString(R.string.custom_dialog_action_content_two_demande),
-                            getString(R.string.custom_dialog_action_two_button_demand),
+                            getString(R.string.custom_dialog_action_two_button_contrib),
                         onYes = {
-                            (activity as MainActivity).goDemand()
+                            (activity as MainActivity).goContrib()
                             AnalyticsEvents.logEvent(AnalyticsEvents.Clic__SeeDemand__Day10)
                         })
                     },
                     onYes = {
                         AnalyticsEvents.logEvent(AnalyticsEvents.Clic__StateDemandPop__Yes__Day10)
-                        actionsPresenter.cancelAction(summary.unclosedAction!!.id!!,true,true, "")
                         AnalyticsEvents.logEvent(AnalyticsEvents.View__DeleteDemandPop__Day10)
+                        actionsPresenter.cancelAction(summary.unclosedAction!!.id!!,true,true, "")
                         CustomAlertDialog.showForLastActionThree(requireContext(),
                             getString(R.string.custom_dialog_action_title_three),
                             getString(R.string.custom_dialog_action_content_three_demande))
+
                     }
                 )
             }
             if(summary.unclosedAction!!.actionType == "contribution"){
                 AnalyticsEvents.logEvent(AnalyticsEvents.View__StateContribPop__Day10)
                 val contentText = summary.unclosedAction!!.title
-                CustomAlertDialog.showForLastActionOne(
+                CustomAlertDialog.showForLastActionOneContrib(
                     requireContext(),
                     getString(R.string.custom_dialog_action_title_one_contrib),
                     contentText!!,
@@ -328,9 +326,9 @@ class HomeFragment : Fragment() {
                         CustomAlertDialog.showForLastActionTwo(requireContext(),
                             getString(R.string.custom_dialog_action_title_two),
                             getString(R.string.custom_dialog_action_content_two_contrib),
-                            getString(R.string.custom_dialog_action_two_button_contrib),
+                            getString(R.string.custom_dialog_action_two_button_demand),
                             onYes = {
-                                (activity as MainActivity).goContrib()
+                                (activity as MainActivity).goDemand()
                                 AnalyticsEvents.logEvent(AnalyticsEvents.Clic__SeeContrib__Day10)
 
                             })
@@ -338,8 +336,8 @@ class HomeFragment : Fragment() {
                     },
                     onYes = {
                         AnalyticsEvents.logEvent(AnalyticsEvents.Clic__StateContribPop__Yes__Day10)
-                        actionsPresenter.cancelAction(summary.unclosedAction!!.id!!,false,true, "")
                         AnalyticsEvents.logEvent(AnalyticsEvents.View__DeleteContribPop__Day10)
+                        actionsPresenter.cancelAction(summary.unclosedAction!!.id!!,false,true, "")
                         CustomAlertDialog.showForLastActionThree(requireContext(),
                             getString(R.string.custom_dialog_action_title_three),
                             getString(R.string.custom_dialog_action_content_three_contrib))

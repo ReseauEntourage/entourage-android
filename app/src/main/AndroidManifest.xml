@@ -47,6 +47,7 @@
         android:label="@string/app_name"
         android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher"
+        android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <receiver android:name=".notifications.NotificationActionReceiver" />
 
@@ -77,6 +78,9 @@
             android:exported="false" />
         <activity
             android:name=".home.pedago.PedagoDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".user.languechoose.ActivityChooseLanguage"
             android:exported="false" />
         <activity
             android:name=".discussions.DetailConversationActivity"

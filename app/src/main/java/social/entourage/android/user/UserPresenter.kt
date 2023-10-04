@@ -1,5 +1,6 @@
 package social.entourage.android.user
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import okhttp3.ResponseBody
 import retrofit2.Call
@@ -16,6 +17,8 @@ class UserPresenter {
     var isGetUserSuccess = MutableLiveData<Boolean>()
     var isUserReported = MutableLiveData<Boolean>()
     var user = MutableLiveData<User>()
+    var isLanguageChanged = MutableLiveData<Boolean>()
+
 
     fun getUser(userId: Int) {
         EntourageApplication.get().apiModule.userRequest.getUser(userId)
@@ -34,6 +37,29 @@ class UserPresenter {
 
                 override fun onFailure(call: Call<UserResponse>, t: Throwable) {
                     isGetUserSuccess.value = false
+                }
+            })
+    }
+
+    fun updateLanguage(userId: Int,lang:String) {
+        EntourageApplication.get().apiModule.userRequest.updateLanguage(userId, lang)
+            .enqueue(object : Callback<ResponseBody> {
+                override fun onResponse(
+                    call: Call<ResponseBody>,
+                    response: Response<ResponseBody>
+                ) {
+                    if (response.isSuccessful) {
+                        Log.wtf("wtf", "eho passed")
+                        isLanguageChanged.value = true
+                    } else {
+                        Log.wtf("wtf", "eho not passed")
+                       isLanguageChanged.value = false
+                    }
+                }
+
+                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                    Log.wtf("wtf", "eho passed")
+                    isLanguageChanged.value = true
                 }
             })
     }

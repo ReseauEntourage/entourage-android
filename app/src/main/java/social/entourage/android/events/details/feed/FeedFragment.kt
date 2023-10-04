@@ -107,6 +107,7 @@ class FeedFragment : Fragment(), CallbackReportFragment {
         handleSettingsButton()
         handleAboutButton()
         onFragmentResult()
+        openLink()
         AnalyticsEvents.logEvent(AnalyticsEvents.Event_detail_main)
     }
 
@@ -331,6 +332,28 @@ class FeedFragment : Fragment(), CallbackReportFragment {
         }
     }
 
+    private fun openMap() {
+        val geoUri =
+            String.format(getString(R.string.geoUri), event?.metadata?.displayAddress)
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(geoUri))
+        startActivityForResult(intent, 0)
+    }
+
+    private fun openLink() {
+        binding.location.root.setOnClickListener {
+            if (event?.online != true) {
+                openMap()
+            } else {
+                var url = event?.eventUrl
+                url?.let {
+                    url = Utils.checkUrlWithHttps(it)
+                    val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+                    startActivityForResult(browserIntent, 0)
+                }
+            }
+        }
+    }
+
     private fun showToast(message: String) {
         Toast.makeText(activity, message, Toast.LENGTH_SHORT).show()
     }
@@ -496,7 +519,12 @@ class FeedFragment : Fragment(), CallbackReportFragment {
 
     private fun handleParticipateButton() {
         binding.join.setOnClickListener {
-            if (event?.member==false) eventPresenter.participate(eventId)
+            if (event?.member==false){
+                eventPresenter.participate(eventId)
+            }else{
+                eventPresenter.leaveEvent(eventId)
+            }
+
         }
         binding.participate.setOnClickListener {
             AnalyticsEvents.logEvent(AnalyticsEvents.Event_detail_action_participate)
