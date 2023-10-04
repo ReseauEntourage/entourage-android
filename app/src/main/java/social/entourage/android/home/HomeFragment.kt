@@ -145,6 +145,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun updateContributionsView(summary: Summary) {
+        Log.wtf("wtf", "wtf " + summary.unclosed_action)
         if(isAdded){
             isAlreadyLoadSummary = false
             userSummary = summary

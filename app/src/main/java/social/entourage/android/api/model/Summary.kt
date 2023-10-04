@@ -33,6 +33,10 @@ class Summary : Serializable {
 
     @SerializedName("congratulations")
     var congratulations: MutableList<HomeAction>? = null
+
+    @SerializedName("unclosed_action")
+    var unclosed_action: String? = null
+
 }
 
 class HomeAction : Serializable {

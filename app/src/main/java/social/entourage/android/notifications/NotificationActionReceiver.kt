@@ -64,6 +64,7 @@ class NotificationActionReceiver : BroadcastReceiver() {
                 }catch (e:Exception){
 
                 }
+
             }
             ACTION_DISMISSED -> {
                 Log.wtf("wtf", "coucou j'ai swipé")

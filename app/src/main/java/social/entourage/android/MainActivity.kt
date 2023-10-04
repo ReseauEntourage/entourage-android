@@ -112,15 +112,17 @@ class MainActivity : BaseSecuredActivity() {
             //TODO authenticationController.me?.unreadCount?.let { bottomBar?.updateBadgeCountForUser(it) }
         }
         //TODO bottomBar?.refreshBadgeCount()
-        intent?.action?.let { action ->
-            checkIntentAction(action, intent?.extras)
-        }
+
+
         if(this.intent != null){
             useIntentForRedictection(this.intent)
         }
     }
 
     fun useIntentForRedictection(intent: Intent){
+        intent.action?.let { action ->
+            checkIntentAction(action, intent?.extras)
+        }
         val fromWelcomeActivity = intent.getBooleanExtra("fromWelcomeActivity", false)
         val fromWelcomeActivityThreeEvent = intent.getBooleanExtra("fromWelcomeActivityThreeEvent", false)
         val fromWelcomeActivityThreeDemand = intent.getBooleanExtra("fromWelcomeActivityThreeDemand", false)
@@ -169,6 +171,7 @@ class MainActivity : BaseSecuredActivity() {
     }
 
     private fun checkIntentAction(action: String, extras: Bundle?) {
+        Log.wtf("wtf", "hello gone here")
         val pushNotificationMessage = extras?.get(PushNotificationManager.PUSH_MESSAGE) as? PushNotificationMessage
         pushNotificationMessage?.content?.extra?.let { extra ->
             extra.instance?.let { instance ->
