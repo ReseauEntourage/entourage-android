@@ -3,11 +3,13 @@ package social.entourage.android.notifications
 import android.util.Log
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
+import com.google.gson.Gson
 import social.entourage.android.EntourageApplication
 import social.entourage.android.tools.log.AnalyticsEvents
 
 class EntourageFirebaseMessagingService : FirebaseMessagingService() {
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
+
         AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_NOTIFICATION_RECEIVED)
         if (remoteMessage.data.isNotEmpty()) {
             //we always provide some extra data in our push notif
