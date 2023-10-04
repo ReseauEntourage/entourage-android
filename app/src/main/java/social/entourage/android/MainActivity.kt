@@ -72,7 +72,7 @@ class MainActivity : BaseSecuredActivity() {
         if (uri != null) {
             universalLinkManager.handleUniversalLink(uri)
         }
-        this.intent = null
+
 
     }
 
@@ -113,9 +113,9 @@ class MainActivity : BaseSecuredActivity() {
         }
         //TODO bottomBar?.refreshBadgeCount()
 
-
         if(this.intent != null){
             useIntentForRedictection(this.intent)
+            this.intent = null
         }
     }
 
@@ -171,7 +171,6 @@ class MainActivity : BaseSecuredActivity() {
     }
 
     private fun checkIntentAction(action: String, extras: Bundle?) {
-        Log.wtf("wtf", "hello gone here")
         val pushNotificationMessage = extras?.get(PushNotificationManager.PUSH_MESSAGE) as? PushNotificationMessage
         pushNotificationMessage?.content?.extra?.let { extra ->
             extra.instance?.let { instance ->

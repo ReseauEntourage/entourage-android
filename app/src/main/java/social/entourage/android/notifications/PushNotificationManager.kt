@@ -242,7 +242,6 @@ object PushNotificationManager {
             if(stage.equals("j!")){AnalyticsEvents.logEvent(AnalyticsEvents.NotificationReceived__OfferHelp__WDay8)}
             if(stage.equals("j11")){AnalyticsEvents.logEvent(AnalyticsEvents.NotificationReceived__OfferHelp__WDay11)}
         }catch (e:Exception){
-
         }
         try {
             val pushNotifString = Gson().toJson(pushNotificationMessage)

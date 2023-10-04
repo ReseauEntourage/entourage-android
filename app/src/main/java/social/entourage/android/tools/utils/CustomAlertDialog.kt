@@ -53,6 +53,7 @@ object CustomAlertDialog {
     fun showForLastActionOne(
         context: Context,
         title: String,
+        titleAction:String,
         content: String,
         action: String,
         onNo: () -> (Unit) = {},
@@ -64,6 +65,7 @@ object CustomAlertDialog {
         builder.setView(customDialog)
         val alertDialog = builder.create()
         customDialog.findViewById<TextView>(R.id.title).text = title
+        customDialog.findViewById<TextView>(R.id.title_action).text = titleAction
         customDialog.findViewById<TextView>(R.id.content).text = content
         customDialog.findViewById<TextView>(R.id.yes).text = action
         customDialog.findViewById<ImageButton>(R.id.btn_cross).setOnClickListener {
@@ -85,7 +87,6 @@ object CustomAlertDialog {
         title: String,
         content: String,
         action: String,
-        onNo: () -> (Unit) = {},
         onYes: (() -> Unit),
     ) {
         val layoutInflater = LayoutInflater.from(context)
@@ -110,9 +111,7 @@ object CustomAlertDialog {
         context: Context,
         title: String,
         content: String,
-        action: String,
-        onNo: () -> (Unit) = {},
-        onYes: (() -> Unit),
+
     ) {
         val layoutInflater = LayoutInflater.from(context)
         val customDialog: View = layoutInflater.inflate(R.layout.custom_alert_dialog_three, null)
@@ -121,6 +120,9 @@ object CustomAlertDialog {
         val alertDialog = builder.create()
         customDialog.findViewById<TextView>(R.id.title).text = title
         customDialog.findViewById<TextView>(R.id.content).text = content
+        customDialog.findViewById<ImageButton>(R.id.btn_cross).setOnClickListener {
+            alertDialog.dismiss()
+        }
         alertDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         alertDialog.show()
     }
