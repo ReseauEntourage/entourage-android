@@ -62,14 +62,21 @@ class GroupsListAdapter(
                 binding.groupName.text = this.name
                 this.members?.size?.let {
                     binding.members.text = String.format(
-                        holder.itemView.context.getString(if (it > 1) R.string.members_number else R.string.member_number),
+                        holder.itemView.context.getString(if (it > 1) R.string.members_number else R.string.members_number_singular),
                         it
                     )
                 }
-                binding.futureOutgoingEvents.text = String.format(
-                    holder.itemView.context.getString(R.string.future_outgoing_events_number),
-                    this.futureOutingsCount
-                )
+                if(this.futureOutingsCount == 0 || this.futureOutingsCount == 1){
+                    binding.futureOutgoingEvents.text = String.format(
+                        holder.itemView.context.getString(R.string.future_outgoing_events_number_singular),
+                        this.futureOutingsCount)
+                }else{
+                    binding.futureOutgoingEvents.text = String.format(
+                        holder.itemView.context.getString(R.string.future_outgoing_events_number),
+                        this.futureOutingsCount
+                    )
+                }
+
                 this.imageUrl?.let {
                     Glide.with(binding.image.context)
                         .load(Uri.parse(it))

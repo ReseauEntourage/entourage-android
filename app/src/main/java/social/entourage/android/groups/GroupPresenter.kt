@@ -174,6 +174,7 @@ class GroupPresenter: ViewModel() {
                     response: Response<GroupsListWrapper>
                 ) {
                     response.body()?.let { allGroupsWrapper ->
+                        Log.wtf("wtf", "wtf group search " + Gson().toJson(allGroupsWrapper.allGroups))
                         getGroupsSearch.value = allGroupsWrapper.allGroups
                     }
                 }

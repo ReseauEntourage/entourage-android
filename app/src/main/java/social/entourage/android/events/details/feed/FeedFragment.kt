@@ -197,10 +197,20 @@ class FeedFragment : Fragment(), CallbackReportFragment {
         with(binding) {
             eventName.text = event?.title
             eventNameToolbar.text = event?.title
-            eventMembersNumberLocation.text = String.format(
-                getString(R.string.members_number),
-                event?.membersCount,
-            )
+
+            if(event != null && event?.membersCount!! > 1){
+                eventMembersNumberLocation.text = String.format(
+                    getString(R.string.members_number),
+                    event?.membersCount,
+                )
+            }else{
+                eventMembersNumberLocation.text = String.format(
+                    getString(R.string.members_number_singular),
+                    event?.membersCount,
+                )
+            }
+
+
             event?.metadata?.placeLimit?.let {
                 placesLimit.root.visibility = View.VISIBLE
                 placesLimit.content.text = String.format(
@@ -586,19 +596,19 @@ class FeedFragment : Fragment(), CallbackReportFragment {
 
     private fun updateButtonJoin() {
         val label =
-            getString(if (event?.member==false) R.string.participating else R.string.participate)
+            getString(if (event?.member==true) R.string.participating else R.string.participate)
         val textColor = ContextCompat.getColor(
             requireContext(),
-            if (event?.member==false) R.color.orange else R.color.white
+            if (event?.member==true) R.color.orange else R.color.white
         )
         val background = ResourcesCompat.getDrawable(
             resources,
-            if (event?.member==false) R.drawable.new_bg_rounded_button_orange_stroke else R.drawable.new_bg_rounded_button_orange_fill,
+            if (event?.member==true) R.drawable.new_bg_rounded_button_orange_stroke else R.drawable.new_bg_rounded_button_orange_fill,
             null
         )
         val rightDrawable = ResourcesCompat.getDrawable(
             resources,
-            if (event?.member==false) R.drawable.new_check else R.drawable.new_plus_white,
+            if (event?.member==true) R.drawable.new_check else R.drawable.new_plus_white,
             null
         )
         binding.join.text = label

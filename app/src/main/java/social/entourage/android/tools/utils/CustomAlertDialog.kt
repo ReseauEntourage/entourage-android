@@ -251,6 +251,7 @@ object CustomAlertDialog {
         val alertDialog = builder.create()
         customDialog.findViewById<TextView>(R.id.title).text = title
         customDialog.findViewById<TextView>(R.id.content).text = content
+        customDialog.findViewById<ImageView>(R.id.btn_cross).setOnClickListener { alertDialog.dismiss() }
         with(customDialog.findViewById<TextView>(R.id.no)) {
             text = noAction
             setOnClickListener {

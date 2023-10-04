@@ -93,10 +93,18 @@ class AboutEventFragment : Fragment(), OnMapReadyCallback {
         MetaDataRepository.metaData.observe(requireActivity(), ::handleMetaData)
         with(binding) {
             eventName.text = event?.name
-            eventMembersNumberLocation.text = String.format(
-                getString(R.string.members_number),
-                event?.members_count
-            )
+
+            if(event != null && event?.members_count!! > 1 ){
+                eventMembersNumberLocation.text = String.format(
+                    getString(R.string.members_number),
+                    event?.members_count
+                )
+            }else{
+                eventMembersNumberLocation.text = String.format(
+                    getString(R.string.members_number_singular),
+                    event?.members_count
+                )
+            }
             binding.location.icon = AppCompatResources.getDrawable(
                 requireContext(),
                 if (event?.online == true) R.drawable.new_web else R.drawable.new_location
