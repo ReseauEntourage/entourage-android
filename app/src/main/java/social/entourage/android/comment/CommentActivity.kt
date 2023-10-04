@@ -1,5 +1,6 @@
 package social.entourage.android.comment
 
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.text.Editable
@@ -19,6 +20,7 @@ import social.entourage.android.api.model.EntourageUser
 import social.entourage.android.api.model.Post
 import social.entourage.android.base.BaseActivity
 import social.entourage.android.databinding.NewActivityCommentsBinding
+import social.entourage.android.deeplinks.UniversalLinkManager
 import social.entourage.android.discussions.DiscussionsPresenter
 import social.entourage.android.report.ReportModalFragment
 import social.entourage.android.report.ReportTypes
@@ -52,6 +54,7 @@ abstract class CommentActivity : BaseActivity(), onDissmissFragment {
     protected var isConversation = false
     protected var isFromNotif = false
     var currentParentPost:Post? = null
+    private val universalLinkManager = UniversalLinkManager(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -171,6 +174,11 @@ abstract class CommentActivity : BaseActivity(), onDissmissFragment {
                 }
 
                 override fun onShowWeb(url: String) {
+                    if(url.contains("www.entourage.social") || url.contains("preprod.entourage.social")){
+                        val uri = Uri.parse(url)
+                        universalLinkManager.handleUniversalLink(uri)
+                        return
+                    }
                     var urlNew = url
                     if (url.contains("http:")) {
                         urlNew = url.replace("http","https")

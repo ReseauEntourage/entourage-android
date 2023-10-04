@@ -365,9 +365,9 @@ object AnalyticsEvents {
     //SHARE EVENT
     const val CONTRIB_SHARED= "Action__Contrib__Share"
     const val SOLICITATION_SHARED = "Action__Demand__Share"
-    const val EVENT_SHARED = "Action_EventFeed_Share"
+    const val EVENT_SHARED = "Action__EventFeed__Share"
     const val GROUP_SHARED = "Action__GroupFeed__Share"
-    const val EVENT_OPTION_SHARED = "Action_EventOption_Share"
+    const val EVENT_OPTION_SHARED = "Action__EventOption__Share"
 
 
     //GROUPES
@@ -563,6 +563,17 @@ object AnalyticsEvents {
     const val Onboard_code = "View__Onboarding__InputCode"
     const val Onboard_profile = "View__Onboarding__InputProfile"
     const val Onboard_end = "View__Onboarding__Confirmation"
+    const val View_WelcomeOfferHelp_Day2 = "View_WelcomeOfferHelp_Day2"
+    const val Action_WelcomeOfferHelp_Day2 = "Action_WelcomeOfferHelp_Day2"
+
+    const val View_WelcomeOfferHelp_Day8 = "View_WelcomeOfferHelp_Day8"
+    const val Action_WelcomeOfferHelp_Day8 = "Action_WelcomeOfferHelp_Day8"
+
+    const val View_WelcomeOfferHelp_Day11 = "View_WelcomeOfferHelp_Day11"
+    const val Action_WelcomeOfferHelp_Day11 = "Action_WelcomeOfferHelp_Day11"
+
+
+
 
     val TAG: String? = AnalyticsEvents::class.java.simpleName
 
@@ -608,6 +619,6 @@ object AnalyticsEvents {
             mFirebaseAnalytics.setUserProperty("BackgroundRestriction", if ((Objects.requireNonNull(context.getSystemService(Context.ACTIVITY_SERVICE)) as ActivityManager).isBackgroundRestricted) "YES" else "NO")
         }
 
-        mFirebaseAnalytics.setUserProperty("engaged_user", if (user.isEngaged) "Yes" else "No")
+        mFirebaseAnalytics.setUserProperty("engaged_user", if (user.isEngaged) "YES" else "NO")
     }
 }

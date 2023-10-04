@@ -24,6 +24,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import social.entourage.android.actions.create.CreateActionActivity
 import social.entourage.android.api.MetaDataRepository
 import social.entourage.android.api.model.notification.PushNotificationMessage
 import social.entourage.android.base.BaseSecuredActivity
@@ -35,6 +36,8 @@ import social.entourage.android.home.CommunicationHandlerBadgeViewModel
 import social.entourage.android.home.UnreadMessages
 import social.entourage.android.notifications.NotificationActionManager
 import social.entourage.android.tools.log.AnalyticsEvents
+import social.entourage.android.tools.utils.Const
+import social.entourage.android.user.UserProfileActivity
 import timber.log.Timber
 
 class MainActivity : BaseSecuredActivity() {
@@ -47,18 +50,12 @@ class MainActivity : BaseSecuredActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.new_activity_main)
         viewModel = ViewModelProvider(this)[CommunicationHandlerBadgeViewModel::class.java]
-
-
         viewModel.badgeCount.observe(this,::handleUpdateBadgeResponse)
 
         initializeNavBar()
         if (authenticationController.isAuthenticated) {
             //refresh the user info from the server
             presenter.updateUserLocation(EntLocation.currentLocation)
-            //initialize the push notifications
-            initializePushNotifications()
-            updateAnalyticsInfo()
-            //TODO authenticationController.me?.unreadCount?.let { bottomBar?.updateBadgeCountForUser(it) }
         }
 
         handleUniversalLinkFromMain(this.intent)
@@ -106,17 +103,60 @@ class MainActivity : BaseSecuredActivity() {
 
     override fun onResume() {
         super.onResume()
+        Log.wtf("wtf", "i passed ")
         initializeMetaData()
+        if (authenticationController.isAuthenticated) {
+            //initialize the push notifications
+            initializePushNotifications()
+            updateAnalyticsInfo()
+            //TODO authenticationController.me?.unreadCount?.let { bottomBar?.updateBadgeCountForUser(it) }
+        }
         //TODO bottomBar?.refreshBadgeCount()
         intent?.action?.let { action ->
             checkIntentAction(action, intent?.extras)
         }
+        if(this.intent != null){
+            Log.wtf("wtf", "eho passed here")
+            useIntentForRedictection(this.intent)
+        }
+    }
+
+    fun useIntentForRedictection(intent: Intent){
+        val fromWelcomeActivity = intent.getBooleanExtra("fromWelcomeActivity", false)
+        val fromWelcomeActivityThreeEvent = intent.getBooleanExtra("fromWelcomeActivityThreeEvent", false)
+        val fromWelcomeActivityThreeDemand = intent.getBooleanExtra("fromWelcomeActivityThreeDemand", false)
+        val fromWelcomeActivityThreeContrib = intent.getBooleanExtra("fromWelcomeActivityThreeContrib", false)
+        Log.wtf("wtf", "wtf my boolean fromWelcomeActivity : " + fromWelcomeActivity)
+        Log.wtf("wtf", "wtf my boolean fromWelcomeActivityThreeEvent : " + fromWelcomeActivityThreeEvent)
+        Log.wtf("wtf", "wtf my boolean fromWelcomeActivityThreeDemand : " + fromWelcomeActivityThreeDemand)
+        Log.wtf("wtf", "wtf my boolean fromWelcomeActivityThreeContrib : " + fromWelcomeActivityThreeContrib)
+
+        if (fromWelcomeActivity) {
+            Log.wtf("wtf", "wtf gone here Activity ")
+            goGroup()
+        }
+        if (fromWelcomeActivityThreeEvent) {
+            Log.wtf("wtf", "wtf gone here Event ")
+            goEvent()
+        }
+        if (fromWelcomeActivityThreeDemand) {
+            Log.wtf("wtf", "wtf gone here demand ")
+            goDemand()
+        }
+        if (fromWelcomeActivityThreeContrib) {
+            Log.wtf("wtf", "wtf gone here Contrib")
+            goContrib()
+            val intent = Intent(this, CreateActionActivity::class.java)
+            intent.putExtra(Const.IS_ACTION_DEMAND, false)
+            startActivity(intent)
+        }
+        this.intent = intent
+        handleUniversalLinkFromMain(intent)
     }
 
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
-        this.intent = intent
-        handleUniversalLinkFromMain(intent)
+        useIntentForRedictection(intent)
     }
 
     private fun updateAnalyticsInfo() {
@@ -138,7 +178,6 @@ class MainActivity : BaseSecuredActivity() {
                 }
             }
         }
-
         intent = null
     }
 
@@ -146,37 +185,41 @@ class MainActivity : BaseSecuredActivity() {
         registerForActivityResult(
             ActivityResultContracts.RequestPermission()
         ) { isGranted ->
-
-            //initializePushNotifications()
+            storePushNotificationPermision()
         }
 
     private fun initializePushNotifications() {
         val sharedPref = EntourageApplication.get().sharedPreferences
-        if(!sharedPref.contains(EntourageApplication.KEY_NOTIFICATIONS_ENABLED)) {
+        if (!sharedPref.contains(EntourageApplication.KEY_NOTIFICATIONS_ENABLED)) {
             //while processing we assume Permission is not granted
             sharedPref.edit()
                 .putBoolean(EntourageApplication.KEY_NOTIFICATIONS_ENABLED, false)
                 .apply()
             requestNotificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
         } else {
-            var notificationsEnabled = sharedPref.getBoolean(
-                EntourageApplication.KEY_NOTIFICATIONS_ENABLED,
-                true
-            )
-            val areNotificationEnabled = NotificationManagerCompat.from(this).areNotificationsEnabled()
-            if(notificationsEnabled!=areNotificationEnabled) {
-                notificationsEnabled = areNotificationEnabled
-                sharedPref.edit()
-                    .putBoolean(EntourageApplication.KEY_NOTIFICATIONS_ENABLED, areNotificationEnabled)
-                    .apply()
-            }
-            if (notificationsEnabled) {
-                FirebaseMessaging.getInstance().token.addOnSuccessListener { token ->
-                    presenter.updateApplicationInfo(token)
-                }
-            } else {
+            storePushNotificationPermision()
+        }
+    }
 
+    private fun storePushNotificationPermision() {
+        val sharedPref = EntourageApplication.get().sharedPreferences
+        var notificationsEnabled = sharedPref.getBoolean(
+            EntourageApplication.KEY_NOTIFICATIONS_ENABLED,
+            true
+        )
+        val areNotificationEnabled = NotificationManagerCompat.from(this).areNotificationsEnabled()
+        if(notificationsEnabled!=areNotificationEnabled) {
+            notificationsEnabled = areNotificationEnabled
+            sharedPref.edit()
+                .putBoolean(EntourageApplication.KEY_NOTIFICATIONS_ENABLED, areNotificationEnabled)
+                .apply()
+        }
+        if (notificationsEnabled) {
+            FirebaseMessaging.getInstance().token.addOnSuccessListener { token ->
+                presenter.updateApplicationInfo(token)
             }
+        } else {
+
         }
     }
 
@@ -224,6 +267,11 @@ class MainActivity : BaseSecuredActivity() {
 
     }
 
+    fun goGroup(){
+        navController.navigate(R.id.navigation_groups)
+
+    }
+
     fun goEvent(){
         navController.navigate(R.id.navigation_events)
 
@@ -238,7 +286,7 @@ class MainActivity : BaseSecuredActivity() {
 
     }
     fun goDemand(){
-        val bundle = bundleOf("isActionDemand" to false) // Mettez ici la valeur souhaitée pour "isActionDemand"
+        val bundle = bundleOf("isActionDemand" to true) // Mettez ici la valeur souhaitée pour "isActionDemand"
         navController.navigate(R.id.navigation_donations, bundle)
     }
 
@@ -298,7 +346,8 @@ class MainActivity : BaseSecuredActivity() {
     }
 
     fun showProfile() {
-        presenter.handleMenuProfile("editProfile")
+        AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_PROFILE_MODPROFIL)
+        startActivityForResult(Intent(this, UserProfileActivity::class.java), 0)
     }
 
     fun showFeed() {

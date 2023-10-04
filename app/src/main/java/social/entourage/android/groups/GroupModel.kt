@@ -33,15 +33,23 @@ data class GroupModel(
         parcel.readValue(Int::class.java.classLoader) as? Int,
         parcel.readString(),
         parcel.readString(),
-        parcel.readValue(Int::class.java.classLoader) as? Int
+        parcel.readValue(Int::class.java.classLoader) as? Int,
+        parcel.readString(),
+        mutableListOf<String>().apply { parcel.readStringList(this)},
+        parcel.readString(),
+        mutableListOf<GroupMember>().apply { parcel.readList(this, GroupMember::class.java.classLoader)},
+        parcel.readByte() != 0.toByte()
     )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeValue(id)
-        parcel.writeValue(uuid_v2)
         parcel.writeString(name)
+        parcel.writeValue(uuid_v2)
         parcel.writeValue(members_count)
+        parcel.writeString(address)
+        parcel.writeStringList(interests)
         parcel.writeString(description)
+        parcel.writeList(members)
         parcel.writeByte(if (member) 1 else 0)
     }
 

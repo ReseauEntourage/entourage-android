@@ -36,6 +36,8 @@ import social.entourage.android.tools.utils.CustomAlertDialog
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.view.CommunicationRecoWebUrlHandlerViewModel
 import social.entourage.android.welcome.WelcomeOneActivity
+import social.entourage.android.welcome.WelcomeTestActivity
+import social.entourage.android.welcome.WelcomeThreeActivity
 import social.entourage.android.welcome.WelcomeTwoActivity
 import timber.log.Timber
 
@@ -197,11 +199,7 @@ class HomeFragment : Fragment() {
                 getString(R.string.welcome_user),
                 user?.displayName
             )
-            // HERE UNCOMMENT TO GO NOTIF
-//            welcomeUser.setOnClickListener {
-//                val intent = Intent(requireContext(), WelcomeTwoActivity::class.java)
-//                startActivity(intent)
-//            }
+
         }
     }
 
@@ -319,6 +317,7 @@ class HomeFragment : Fragment() {
             adapter = RecommendationsListAdapter(recommendationsList,
                 object : OnItemClickListener {
                     override fun onItemClick(recommendation: HomeAction) {
+                        AnalyticsEvents.logEvent("Action__Home__HowToStart")
                         if (recommendation.homeType != null && recommendation.action != null && recommendation.params != null) {
                             Navigation.getNavigateIntent(
                                 context,

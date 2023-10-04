@@ -1,11 +1,9 @@
 package social.entourage.android.base
 
-import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.*
-import android.view.inputmethod.InputMethodManager
 import androidx.annotation.StyleRes
 import androidx.fragment.app.DialogFragment
 import social.entourage.android.MainActivity
@@ -67,9 +65,9 @@ open class BaseDialogFragment : DialogFragment() {
         dialog?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE)
     }
 
-    protected fun hideKeyboard() {
+    /*protected fun hideKeyboard() {
         dialog?.currentFocus?.windowToken?.let { token ->
             (activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?)?.hideSoftInputFromWindow(token, 0)
         }
-    }
+    }*/
 }

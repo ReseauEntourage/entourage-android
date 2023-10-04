@@ -1,14 +1,16 @@
 package social.entourage.android.base
 
 import android.app.ProgressDialog
+import android.net.Uri
 import android.os.Bundle
-import android.view.View
-import android.view.inputmethod.InputMethodManager
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import social.entourage.android.BuildConfig
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
+import social.entourage.android.deeplinks.UniversalLinkManager
 import social.entourage.android.tools.view.WebViewFragment
+import java.net.URL
 
 /**
  * Base activity which set up a scoped graph and inject it
@@ -17,6 +19,7 @@ abstract class BaseActivity : AppCompatActivity() {
     private var progressDialog: ProgressDialog? = null
     val entApp: EntourageApplication?
         get()= (application as? EntourageApplication)
+    private val universalLinkManager = UniversalLinkManager(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         entApp?.onActivityCreated(this)
@@ -28,42 +31,12 @@ abstract class BaseActivity : AppCompatActivity() {
         super.onDestroy()
     }
 
-    fun showProgressDialog(resId: Int) {
-        if (progressDialog?.isShowing == true) {
-            progressDialog?.setTitle(resId)
-        } else {
-            progressDialog = ProgressDialog(this).apply {
-                if (resId != 0) {
-                    this.setTitle(resId)
-                }
-                this.setCancelable(false)
-                this.setCanceledOnTouchOutside(false)
-                this.isIndeterminate = true
-                this.show()
-            }
-        }
-    }
-
-    fun dismissProgressDialog() {
-        if (progressDialog?.isShowing == true) {
-            progressDialog?.dismiss()
-            progressDialog = null
-        }
-    }
-
-    protected fun showKeyboard(view: View) {
-        view.requestFocus()
-        val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager?
-        imm?.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT)
-    }
-
-    protected fun hideKeyboard() {
-        val view = this.currentFocus ?: return
-        val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager? ?: return
-        imm.hideSoftInputFromWindow(view.windowToken, 0)
-    }
-
     fun showWebView(url: String, shareMessageRes: Int = 0) {
+        if(url.contains("www.entourage.social") || url.contains("preprod.entourage.social")){
+            val uri = Uri.parse(url)
+            universalLinkManager.handleUniversalLink(uri)
+            return
+        }
         if(shareMessageRes!=0 || !WebViewFragment.launchURL(this, url, shareMessageRes)) {
             WebViewFragment.newInstance(url, shareMessageRes, false)
                 .show(supportFragmentManager, WebViewFragment.TAG)

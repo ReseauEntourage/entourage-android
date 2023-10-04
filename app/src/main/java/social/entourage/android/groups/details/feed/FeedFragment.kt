@@ -170,6 +170,12 @@ class FeedFragment : Fragment(),CallbackReportFragment{
     override fun onResume() {
         super.onResume()
         loadPosts()
+        val fromWelcomeActivity = activity?.intent?.getBooleanExtra("fromWelcomeActivity", false)
+        if (fromWelcomeActivity == true) {
+            createAPost()
+            activity?.intent= Intent(activity, FeedActivity::class.java) // Réinitialise l'intent
+
+        }
     }
 
     override fun onCreateView(
@@ -230,6 +236,7 @@ class FeedFragment : Fragment(),CallbackReportFragment{
 
     private fun handleResponseGetGroup(getGroup: Group?) {
         getGroup?.let {
+            groupId = it.id!!
             group = it
             updateView()
         }

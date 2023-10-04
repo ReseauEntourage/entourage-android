@@ -15,9 +15,7 @@ import social.entourage.android.api.request.UserRequest
 import social.entourage.android.api.request.UserResponse
 import social.entourage.android.authentication.AuthenticationController
 import social.entourage.android.configuration.Configuration
-import social.entourage.android.user.UserProfileActivity
 import social.entourage.android.onboarding.pre_onboarding.PreOnboardingStartActivity
-import social.entourage.android.tools.log.AnalyticsEvents
 import timber.log.Timber
 
 /**
@@ -35,21 +33,6 @@ class MainPresenter(private val activity: MainActivity) {
     // ATTRIBUTES
     // ----------------------------------
     private var checkForUpdate = true
-
-    // ----------------------------------
-    // MENU HANDLING
-    // ----------------------------------
-    //Handle menu profile new version
-    fun handleMenuProfile(menuPosition: String) {
-        when (menuPosition) {
-            "editProfile" -> {
-                AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_PROFILE_MODPROFIL)
-                activity.startActivityForResult(Intent(activity, UserProfileActivity::class.java), 0)
-            }
-            else -> Toast.makeText(activity, R.string.error_not_yet_implemented, Toast.LENGTH_SHORT)
-                .show()
-        }
-    }
 
     // ----------------------------------
     // DISPLAY SCREENS METHODS

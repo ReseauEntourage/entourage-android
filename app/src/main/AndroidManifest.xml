@@ -73,6 +73,9 @@
             android:name=".welcome.WelcomeFourActivity"
             android:exported="false" />
         <activity
+            android:name=".welcome.WelcomeTestActivity"
+            android:exported="false" />
+        <activity
             android:name=".home.pedago.PedagoDetailActivity"
             android:exported="false" />
         <activity
@@ -119,6 +122,10 @@
             android:exported="false" />
         <activity
             android:name=".events.create.CreateEventActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".welcome.WelcomeFiveActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustPan" />
         <activity

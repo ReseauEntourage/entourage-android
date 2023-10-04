@@ -464,15 +464,49 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="welcome_one_title">Bienvenue sur le réseau \nsocial, vraiment social</string>
     <string name="welcome_one_content">Pour beaucoup, la rue est un lieu de passage.\nPour certains, c\'est un quotidien.\nAlors pour commencer, rencontrez celles et ceux qui la vivent tous les jours.</string>
     <string name="welcome_one_sensib">Retrouvez nos contenus de sensibilisation <u><font color="#F55F24">ici</font></u></string>
+
     <string name="welcome_two_title">C\'est le moment de se lancer !</string>
+    <string name="welcome_two_text_one_corrected">Un réseau social, c\'est mieux à plusieurs !\nPrésentez-vous auprès de %s</string>
     <string name="welcome_two_text_one">Un réseau social, c\'est mieux à plusieurs !\nPrésentez-vous auprès de votre groupe %s</string>
-    <string name="welcome_two_text_two">Quelques conseils pour faire connaissance:</string>
+    <string name="welcome_two_text_one_no_group">Présentez-vous auprès de votre groupe de voisins</string>
+    <string name="welcome_two_text_two">Quelques conseils pour faire connaissance :</string>
     <string name="welcome_two_text_pin_one">Donnez votre prénom, votre ville</string>
     <string name="welcome_two_text_pin_two">Parlez de vos passions</string>
     <string name="welcome_two_text_pin_three">Mettez en avant vos besoins et vos envies</string>
-    <string name="welcome_two_text_four">Besoin d\'inspiration</string>
+    <string name="welcome_two_text_four">Besoin d\'inspiration ?</string>
     <string name="welcome_two_button_title">Dire bonjour à mes voisins</string>
     <string name="welcome_card_example_card_content">Bonjour les voisins parisiens. Je m\'appelle Eric et j\'ai hâte de vous rencontrer autour des événements du réseau entourage.</string>
+
+    <string name="welcome_four_title">A vous de jouer</string>
+    <string name="welcome_four_main_text">Que diriez-vous d\'un petit quiz pour déconstruire les préjugés sur le monde de la rue ? </string>
+    <string name="welcome_four_secondary_text">A votre avis, quel est le pourcentage de personnes sans domicile fixe qui disposent d\'un téléphone portable ?</string>
+    <string name="welcome_main_text">Démarrer le quiz</string>
+
+    <string name="welcome_five_title">Déjà 10 jours : bienvenue dans la famille !</string>
+    <string name="welcome_five_main_text">C\'est fou comme le temps passe vite quand on est en bonne compagnie.\n\nMaintenant, aidez-nous à faire grandir le réseau Entourage : faites venir le vôtre !</string>
+    <string name="welcome_five_main_button">Partager l\'application</string>
+
+
+    <string name="welcome_three_button_title">Découvrir les événements</string>
+    <string name="welcome_three_title_with_event">6000 personnes se sont faits de nouveaux amis lors d\'un événement Entourage</string>
+    <string name="welcome_three_title_with_demand">Donnez un coup de pouce à vos voisins</string>
+    <string name="welcome_three_title_with_contrib">Pas d\'entraide autour de vous? Créez-la ! </string>
+    <string name="welcome_three_text_one">Trouvez l\'événement qui vous intéresse et venez profiter d\'un moment convivial.</string>
+    <string name="welcome_three_text_one_with_demand">Jetez un oeil aux demandes publiées près de chez vous :</string>
+    <string name="welcome_three_text_one_with_contrib">Un bon moyen pour créer du lien entre voisins, c\'est de partager vos centres d\'intérêt, vos passions ou juste un café pour faire connaissance.</string>
+    <string name="welcome_three_contrib_name">Echanger autour d\'un café</string>
+    <string name="welcome_three_contrib_name_two">Don de vêtement pour femme</string>
+    <string name="welcome_three_contrib_distance">à 10m de moi</string>
+    <string name="welcome_three_contrib_location">Paris (75010)</string>
+    <string name="welcome_three_contrib_date">Le 21 juin 2022 à 12h</string>
+    <string name="welcome_three_main_button_title_event">Découvrir les événements</string>
+    <string name="welcome_three_main_button_title_demand">Découvrir les demandes</string>
+    <string name="welcome_three_main_button_title_contrib">Créer une contribution</string>
+    <string name="welcome_five_share_title">"Découvrez l\'application Entourage, le réseau social vraiment social"</string>
+
+
+
+
 
 
 
