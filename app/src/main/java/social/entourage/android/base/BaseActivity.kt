@@ -1,6 +1,7 @@
 package social.entourage.android.base
 
 import android.app.ProgressDialog
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log

@@ -1,6 +1,7 @@
 package social.entourage.android.onboarding.pre_onboarding
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import social.entourage.android.R
 import social.entourage.android.base.BaseActivity
@@ -35,7 +36,8 @@ class PreOnboardingChoiceActivity : BaseActivity() {
             goLogin()
         }
         binding.uiButtonAbout.setOnClickListener {
-            showWebView(getString(R.string.website_url))
+            val chartIntent = Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.website_url)))
+            startActivity(chartIntent)
         }
 
         AnalyticsEvents.logEvent(AnalyticsEvents.PreOnboard_view_choice)

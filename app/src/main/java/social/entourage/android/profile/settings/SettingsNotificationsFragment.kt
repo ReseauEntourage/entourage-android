@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.MutableLiveData
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.android.synthetic.main.new_fragment_settings_notifs.*
 import social.entourage.android.databinding.NewFragmentSettingsNotifsBinding
@@ -16,6 +17,7 @@ class SettingsNotificationsFragment : BottomSheetDialogFragment() {
     val binding: NewFragmentSettingsNotifsBinding get() = _binding!!
 
     private val homePresenter: HomePresenter by lazy { HomePresenter() }
+    var notificationsPermission = MutableLiveData<InAppNotificationPermission?>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,6 +38,7 @@ class SettingsNotificationsFragment : BottomSheetDialogFragment() {
 
     private fun updateSwitch(notifsPermissions: InAppNotificationPermission?) {
         notifsPermissions?.let {
+            this.notificationsPermission
             binding.uiSwitchNotifsActions.isChecked = it.action
             binding.uiSwitchNotifsEvents.isChecked = it.outing
             binding.uiSwitchNotifsGroups.isChecked = it.neighborhood
@@ -71,11 +74,10 @@ class SettingsNotificationsFragment : BottomSheetDialogFragment() {
         }
 
         binding.validate.button.setOnClickListener {
-                homePresenter.notificationsPermission.value?.action = ui_switch_notifs_actions.isChecked
-                homePresenter.notificationsPermission.value?.neighborhood = ui_switch_notifs_groups.isChecked
-                homePresenter.notificationsPermission.value?.outing = ui_switch_notifs_events.isChecked
-                homePresenter.notificationsPermission.value?.chat_message = ui_switch_notifs_messages.isChecked
-
+                homePresenter.notificationsPermission.value?.action = binding.uiSwitchNotifsActions.isChecked
+                homePresenter.notificationsPermission.value?.neighborhood = binding.uiSwitchNotifsGroups.isChecked
+                homePresenter.notificationsPermission.value?.outing = binding.uiSwitchNotifsEvents.isChecked
+                homePresenter.notificationsPermission.value?.chat_message = binding.uiSwitchNotifsMessages.isChecked
             homePresenter.updateNotificationsPermissions()
             dismiss()
         }

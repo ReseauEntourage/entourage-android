@@ -69,10 +69,9 @@ class DiscoverGroupsListFragment : Fragment() {
     private fun handleResponseGetGroupsSearch(allGroupsSearch: MutableList<Group>?) {
         groupsListSearch.clear()
         allGroupsSearch?.let { groupsListSearch.addAll(it) }
-        binding.progressBar.visibility = View.GONE
         allGroupsSearch?.isEmpty()?.let { updateViewSearch(it) }
         (binding.searchRecyclerView.adapter as? GroupsListAdapter)?.updateGroupsList(groupsList)
-
+        binding.progressBar.visibility = View.GONE
     }
 
     private fun updateView(isListEmpty: Boolean) {
@@ -145,10 +144,12 @@ class DiscoverGroupsListFragment : Fragment() {
                 layoutManager.findFirstVisibleItemPosition()
             if (!groupPresenter.isLoading && !groupPresenter.isLastPage) {
                 if (visibleItemCount + firstVisibleItemPosition >= totalItemCount && firstVisibleItemPosition >= 0 && totalItemCount >= groupPerPage) {
+                    binding.progressBar.visibility = View.VISIBLE
                     loadGroups()
                 }
             }
         }
+
     }
 
     private fun handleEnterButton() {

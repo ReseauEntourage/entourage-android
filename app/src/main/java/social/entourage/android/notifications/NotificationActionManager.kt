@@ -21,6 +21,7 @@ import social.entourage.android.tools.utils.Const
  */
 object NotificationActionManager {
 
+    /**/
     fun presentAction(context:Context,supportFragmentManager: FragmentManager, instance:String, id:Int, postId:Int?) {
         when(getInstanceTypeFromName(instance)) {
             InstanceType.POIS -> showPoi(supportFragmentManager,id)

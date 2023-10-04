@@ -42,6 +42,8 @@ class EditProfileFragment : Fragment(), EditProfileCallback,
     private val paddingRight = 20
     private val paddingRightLimit = 60
     private val progressLimit = 96
+    private var descriptionRegistered = ""
+
 
     private lateinit var avatarUploadPresenter: AvatarUploadPresenter
     private val editProfilePresenter: EditProfilePresenter by lazy { EditProfilePresenter() }
@@ -130,9 +132,10 @@ class EditProfileFragment : Fragment(), EditProfileCallback,
                     getString(R.string.description_counter),
                     s.length.toString()
                 )
+                descriptionRegistered = binding.description.content.text.toString()
             }
 
-            override fun afterTextChanged(s: Editable) {}
+            override fun afterTextChanged(s: Editable) { }
         })
     }
 
@@ -174,7 +177,11 @@ class EditProfileFragment : Fragment(), EditProfileCallback,
         with(binding) {
             firstname.content.setText(user.firstName)
             lastname.content.setText(user.lastName)
-            description.content.setText(user.about)
+            if(descriptionRegistered.equals("")){
+                description.content.setText(user.about)
+            }else{
+                description.content.setText(descriptionRegistered)
+            }
             birthday.content.transformIntoDatePicker(
                 requireContext(),
                 getString(R.string.birthday_date_format)

@@ -85,6 +85,9 @@ class PushNotificationContent : Serializable {
         @SerializedName("stage")
         val stage: String? = null
 
+        @SerializedName("tracking")
+        val tracking: String? = null
+
         @SerializedName("url")
         val url: String? = null
 

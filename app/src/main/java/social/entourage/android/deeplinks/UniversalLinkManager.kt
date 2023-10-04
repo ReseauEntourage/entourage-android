@@ -33,13 +33,17 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
 
     fun handleUniversalLink(uri: Uri) {
         val pathSegments = uri.pathSegments
-
+        Log.wtf("wtf", "path segment " + pathSegments)
         uri.queryParameterNames.forEach { name ->
             val value = uri.getQueryParameter(name)
             Timber.wtf("eho $name: $value")
         }
         if (uri.host == stagingURL || uri.host == prodURL) {
             when {
+                pathSegments.contains("charte-ethique-grand-public") ->{
+                    val chartIntent = Intent(Intent.ACTION_VIEW, Uri.parse(context.getString(R.string.disclaimer_link_public)))
+                    context.startActivity(chartIntent)
+                }
                 pathSegments.contains("app") && pathSegments.size == 1 -> {
                     (context as? MainActivity)?.goHome()
                 }
@@ -83,7 +87,10 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
                         presenter.getEvent(outingId)
 
                     } else {
-                        (context as? MainActivity)?.goEvent()
+                        val intent = Intent(context, MainActivity::class.java)
+                            .addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+                        intent.putExtra("fromWelcomeActivityThreeEvent", true)
+                        context.startActivity(intent)
 
                     }
                 }
@@ -91,6 +98,12 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
                     if (pathSegments.size > 2) {
                         val neighborhoodId = pathSegments[2]
                         presenter.getGroup(neighborhoodId)
+                    }else{
+                        val intent = Intent(context, MainActivity::class.java)
+                            .addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+                        intent.putExtra("fromWelcomeActivity", true)
+                        intent.putExtra("goMyGroup", true)
+                        context.startActivity(intent)
                     }
                 }
                 pathSegments.contains("conversations") || pathSegments.contains("messages") -> {
@@ -111,7 +124,10 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
                             val soliciationId = pathSegments[2]
                             presenter.getDetailAction(soliciationId,true)
                         }else{
-                            (context as? MainActivity)?.goContrib()
+                            val intent = Intent(context, MainActivity::class.java)
+                                .addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+                            intent.putExtra("goDemand", true)
+                            context.startActivity(intent)
                         }
                     }
                 }
@@ -125,7 +141,10 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
                             val contribId = pathSegments[2]
                             presenter.getDetailAction(contribId,false)
                         }else{
-                            (context as? MainActivity)?.goDemand()
+                            val intent = Intent(context, MainActivity::class.java)
+                                .addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+                            intent.putExtra("goContrib", true)
+                            context.startActivity(intent)
                         }
                     }
                 }
@@ -174,7 +193,7 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
                 .putExtra(Const.ACTION_TITLE,action.title)
                 .putExtra(Const.IS_ACTION_DEMAND,false)
                 .putExtra(Const.IS_ACTION_MINE, action.isMine())
-                context.startActivity(intent)
+            context.startActivity(intent)
         }else{
             val intent = Intent(context, ActionDetailActivity::class.java)
                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
@@ -182,7 +201,7 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
                 .putExtra(Const.ACTION_TITLE,action.title)
                 .putExtra(Const.IS_ACTION_DEMAND,true)
                 .putExtra(Const.IS_ACTION_MINE, action.isMine())
-                context.startActivity(intent)
+            context.startActivity(intent)
         }
     }
 

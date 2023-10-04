@@ -72,6 +72,7 @@ class MainActivity : BaseSecuredActivity() {
         if (uri != null) {
             universalLinkManager.handleUniversalLink(uri)
         }
+        this.intent = null
 
     }
 
@@ -103,7 +104,6 @@ class MainActivity : BaseSecuredActivity() {
 
     override fun onResume() {
         super.onResume()
-        Log.wtf("wtf", "i passed ")
         initializeMetaData()
         if (authenticationController.isAuthenticated) {
             //initialize the push notifications
@@ -116,7 +116,6 @@ class MainActivity : BaseSecuredActivity() {
             checkIntentAction(action, intent?.extras)
         }
         if(this.intent != null){
-            Log.wtf("wtf", "eho passed here")
             useIntentForRedictection(this.intent)
         }
     }
@@ -126,25 +125,25 @@ class MainActivity : BaseSecuredActivity() {
         val fromWelcomeActivityThreeEvent = intent.getBooleanExtra("fromWelcomeActivityThreeEvent", false)
         val fromWelcomeActivityThreeDemand = intent.getBooleanExtra("fromWelcomeActivityThreeDemand", false)
         val fromWelcomeActivityThreeContrib = intent.getBooleanExtra("fromWelcomeActivityThreeContrib", false)
-        Log.wtf("wtf", "wtf my boolean fromWelcomeActivity : " + fromWelcomeActivity)
-        Log.wtf("wtf", "wtf my boolean fromWelcomeActivityThreeEvent : " + fromWelcomeActivityThreeEvent)
-        Log.wtf("wtf", "wtf my boolean fromWelcomeActivityThreeDemand : " + fromWelcomeActivityThreeDemand)
-        Log.wtf("wtf", "wtf my boolean fromWelcomeActivityThreeContrib : " + fromWelcomeActivityThreeContrib)
+        val goContrib = intent.getBooleanExtra("goContrib", false)
+        val goDemand = intent.getBooleanExtra("goDemand", false)
 
+        if(goContrib){
+            goContrib()
+        }
+        if(goDemand){
+            goDemand()
+        }
         if (fromWelcomeActivity) {
-            Log.wtf("wtf", "wtf gone here Activity ")
             goGroup()
         }
         if (fromWelcomeActivityThreeEvent) {
-            Log.wtf("wtf", "wtf gone here Event ")
             goEvent()
         }
         if (fromWelcomeActivityThreeDemand) {
-            Log.wtf("wtf", "wtf gone here demand ")
             goDemand()
         }
         if (fromWelcomeActivityThreeContrib) {
-            Log.wtf("wtf", "wtf gone here Contrib")
             goContrib()
             val intent = Intent(this, CreateActionActivity::class.java)
             intent.putExtra(Const.IS_ACTION_DEMAND, false)
@@ -281,7 +280,7 @@ class MainActivity : BaseSecuredActivity() {
         navController.navigate(R.id.navigation_messages)
     }
     fun goContrib(){
-        val bundle = bundleOf("isActionDemand" to true) // Mettez ici la valeur souhaitée pour "isActionDemand"
+        val bundle = bundleOf("isActionDemand" to false) // Mettez ici la valeur souhaitée pour "isActionDemand"
         navController.navigate(R.id.navigation_donations, bundle)
 
     }

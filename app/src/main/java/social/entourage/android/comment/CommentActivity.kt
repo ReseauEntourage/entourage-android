@@ -1,5 +1,6 @@
 package social.entourage.android.comment
 
+import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -183,6 +184,7 @@ abstract class CommentActivity : BaseActivity(), onDissmissFragment {
                     if (url.contains("http:")) {
                         urlNew = url.replace("http","https")
                     }
+                    //TODO CORRECTION CHARTE LIST
                     if (!url.contains("http:") && !url.contains("https:")) {
                         urlNew = "https://$url"
                     }

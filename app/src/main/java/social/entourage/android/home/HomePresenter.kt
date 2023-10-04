@@ -216,4 +216,23 @@ class HomePresenter {
                 }
             })
     }
+    fun updateNotificationsPermissionsFromValue(notifPermData:InAppNotificationPermission) {
+        if (notificationsPermission.value == null) return
+        EntourageApplication.get().apiModule.homeRequest.updateNotificationsPermissions(
+            NotificationPermissionsResponse(notifPermData))
+            .enqueue(object : Callback<NotificationPermissionsResponse> {
+                override fun onResponse(
+                    call: Call<NotificationPermissionsResponse>,
+                    response: Response<NotificationPermissionsResponse>
+                ) {
+                    if (response.isSuccessful) {
+                        notificationsPermission.value = response.body()?.notifsPermission
+                    }
+                }
+
+                override fun onFailure(call: Call<NotificationPermissionsResponse>, t: Throwable) {
+                    notificationsPermission.value = null
+                }
+            })
+    }
 }
