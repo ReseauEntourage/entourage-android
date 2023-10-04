@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape
+            android:shape="rectangle">
+            <!-- Vous pouvez changer la couleur de fond ici -->
+            <solid android:color="@color/beige_clair" />
+            <!-- Définir les rayons pour les coins -->
+            <corners
+                android:topLeftRadius="12dp"
+                android:topRightRadius="12dp"
+                android:bottomRightRadius="12dp"
+                android:bottomLeftRadius="12dp" />
+        </shape>
+    </item>
+</layer-list>

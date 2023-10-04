@@ -437,6 +437,11 @@
         <item name="android:fontFamily">@font/nunitosans_bold</item>
         <item name="android:textColor">@android:color/white</item>
     </style>
+    <style name="selected_filter_orange">
+        <item name="android:textSize">@dimen/profile_labels</item>
+        <item name="android:fontFamily">@font/nunitosans_bold</item>
+        <item name="android:textColor">@color/orange</item>
+    </style>
 
     <style name="unselected_filter">
         <item name="android:textSize">@dimen/profile_labels</item>

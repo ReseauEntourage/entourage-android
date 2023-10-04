@@ -6,7 +6,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import social.entourage.android.events.MY_EVENTS_TAB
 
-private const val NB_TABS = 2
+private const val NB_TABS = 1
 
 class EventsViewPagerAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycle) :
     FragmentStateAdapter(fragmentManager, lifecycle) {
@@ -16,10 +16,6 @@ class EventsViewPagerAdapter(fragmentManager: FragmentManager, lifecycle: Lifecy
     }
 
     override fun createFragment(position: Int): Fragment {
-        return if (position == MY_EVENTS_TAB) {
-            MyEventsListFragment()
-        } else {
-            DiscoverEventsListFragment()
-        }
+        return DiscoverEventsListFragment()
     }
 }

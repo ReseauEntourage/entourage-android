@@ -28,15 +28,15 @@ class Interest(
     }
 
     companion object {
-        private const val animals = "animaux"
-        private const val wellBeing = "bien-etre"
-        private const val cooking = "cuisine"
-        private const val culture = "culture"
-        private const val games = "jeux"
-        private const val nature = "nature"
-        private const val sport = "sport"
-        private const val activities = "activites"
-        private const val marauding = "marauding"
+        const val animals = "animaux"
+        const val wellBeing = "bien-etre"
+        const val cooking = "cuisine"
+        const val culture = "culture"
+        const val games = "jeux"
+        const val nature = "nature"
+        const val sport = "sport"
+        const val activities = "activites"
+        const val marauding = "marauding"
 
         fun getIconFromId(id: String): Int = when (id) {
             animals -> R.drawable.new_interests_animal_item

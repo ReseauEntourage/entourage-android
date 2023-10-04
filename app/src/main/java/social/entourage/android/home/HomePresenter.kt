@@ -1,17 +1,23 @@
 package social.entourage.android.home
 
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import social.entourage.android.EntourageApplication
+import social.entourage.android.api.model.Action
+import social.entourage.android.api.model.Events
+import social.entourage.android.api.model.Group
 import social.entourage.android.api.request.*
 import social.entourage.android.api.model.InAppNotification
 import social.entourage.android.api.model.InAppNotificationPermission
 import social.entourage.android.api.model.Pedago
 import social.entourage.android.api.model.Summary
+import social.entourage.android.events.list.EVENTS_PER_PAGE
+import social.entourage.android.groups.list.groupPerPage
 
-class HomePresenter {
+class HomePresenter: ViewModel() {
     var getSummarySuccess = MutableLiveData<Boolean>()
     var summary = MutableLiveData<Summary>()
     var pedagogicalContent = MutableLiveData<MutableList<Pedago>>()
@@ -25,8 +31,15 @@ class HomePresenter {
     var notificationsInApp = MutableLiveData<MutableList<InAppNotification>?>()
     var notificationInApp = MutableLiveData<InAppNotification?>()
 
+    var getAllMyGroups = MutableLiveData<MutableList<Group>>()
+    var getAllEvents = MutableLiveData<MutableList<Events>>()
+    var getAllActions = MutableLiveData<MutableList<Action>>()
+
     var isLoading: Boolean = false
     var isLastPage: Boolean = false
+    var isLastPageGroup: Boolean = false
+    var isLastPageEvent: Boolean = false
+    var isLastPageAction: Boolean = false
 
     fun getSummary() {
         EntourageApplication.get().apiModule.homeRequest
@@ -48,6 +61,76 @@ class HomePresenter {
             })
     }
 
+    fun getMyGroups(page: Int, per: Int, userId: Int) {
+        EntourageApplication.get().apiModule.groupRequest.getMyGroups(userId, page, per)
+            .enqueue(object : Callback<GroupsListWrapper> {
+                override fun onResponse(
+                    call: Call<GroupsListWrapper>,
+                    response: Response<GroupsListWrapper>
+                ) {
+                    response.body()?.let { allGroupsWrapper ->
+                        if (allGroupsWrapper.allGroups.size < groupPerPage) isLastPageGroup = true
+                        getAllMyGroups.value = allGroupsWrapper.allGroups
+                    }
+                }
+
+                override fun onFailure(call: Call<GroupsListWrapper>, t: Throwable) {
+                }
+            })
+    }
+
+    fun getAllEvents(page: Int, per: Int,distance:Int?,latitude:Double?,longitude:Double?,period:String) {
+        EntourageApplication.get().apiModule.eventsRequest.getAllEvents(page, per,distance,latitude,longitude,period)
+            .enqueue(object : Callback<EventsListWrapper> {
+                override fun onResponse(
+                    call: Call<EventsListWrapper>,
+                    response: Response<EventsListWrapper>
+                ) {
+
+                    response.body()?.let { allEventsWrapper ->
+                        if (allEventsWrapper.allEvents.size < EVENTS_PER_PAGE) isLastPageEvent = true
+                        getAllEvents.postValue(allEventsWrapper.allEvents)
+
+                    }
+                }
+
+                override fun onFailure(call: Call<EventsListWrapper>, t: Throwable) {
+                }
+            })
+    }
+
+    fun getAllContribs(page: Int, per: Int,distance:Int?,latitude:Double?,longitude:Double?,sections: String?) {
+        EntourageApplication.get().apiModule.actionsRequest.getAllActionsContrib(page,per,sections,distance,latitude,longitude)
+            .enqueue(object : Callback<ContribsListWrapper> {
+                override fun onResponse(
+                    call: Call<ContribsListWrapper>,
+                    response: Response<ContribsListWrapper>
+                ) {
+                    response.body()?.let { allActionsWrapper ->
+                        if (allActionsWrapper.allActions.size < EVENTS_PER_PAGE) isLastPageAction = true
+                        getAllActions.value = allActionsWrapper.allActions
+                    }
+                }
+                override fun onFailure(call: Call<ContribsListWrapper>, t: Throwable) {}
+            })
+    }
+
+    fun getAllDemands(page: Int, per: Int,distance:Int?,latitude:Double?,longitude:Double?,sections: String?) {
+        EntourageApplication.get().apiModule.actionsRequest.getAllActionsDemandWithoutMine(page,per,sections,distance,latitude,longitude, true)
+            .enqueue(object : Callback<DemandsListWrapper> {
+                override fun onResponse(
+                    call: Call<DemandsListWrapper>,
+                    response: Response<DemandsListWrapper>
+                ) {
+                    response.body()?.let { allActionsWrapper ->
+                        if (allActionsWrapper.allActions.size < EVENTS_PER_PAGE) isLastPageAction = true
+                        getAllActions.value = allActionsWrapper.allActions
+                    }
+                }
+                override fun onFailure(call: Call<DemandsListWrapper>, t: Throwable) {}
+            })
+    }
+
     fun getPedagogicalResources() {
         EntourageApplication.get().apiModule.homeRequest
             .getPedagogicalResources()
@@ -66,6 +149,8 @@ class HomePresenter {
                 }
             })
     }
+
+
 
     fun getPedagogicalResource(resourceId:Int) {
         EntourageApplication.get().apiModule.homeRequest

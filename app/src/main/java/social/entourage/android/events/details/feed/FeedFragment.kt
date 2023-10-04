@@ -96,6 +96,7 @@ class FeedFragment : Fragment(), CallbackReportFragment {
         eventPresenter.getEvent(eventId)
         eventPresenter.getEvent.observe(viewLifecycleOwner, ::handleResponseGetEvent)
         eventPresenter.isEventReported.observe(requireActivity(), ::handleDeletedResponse)
+        eventPresenter.hasUserLeftEvent.observe(requireActivity(),::handleLeaveResponse)
         eventPresenter.isUserParticipating.observe(viewLifecycleOwner, ::handleParticipateResponse)
         eventPresenter.getAllPosts.observe(viewLifecycleOwner, ::handleResponseGetEventPosts)
         eventPresenter.getMembers.observe(viewLifecycleOwner, ::handleResponseGetMembers)
@@ -506,9 +507,7 @@ class FeedFragment : Fragment(), CallbackReportFragment {
         if (allMembers != null) {
             for(member in allMembers){
                 if(member.id.toInt() == event?.author?.userID){
-                    Timber.wtf("wtf true" + Gson().toJson(member))
                     if(member.communityRoles?.contains("Équipe Entourage") == true || member.communityRoles?.contains("Ambassadeur") == true){
-                        Timber.wtf("wtf ambassador")
                         binding.tvAssociation.text = getString(R.string.event_organisez_entourage)
                         binding.tvAssociation.visibility = View.VISIBLE
                     }
@@ -524,11 +523,14 @@ class FeedFragment : Fragment(), CallbackReportFragment {
             }else{
                 eventPresenter.leaveEvent(eventId)
             }
-
         }
         binding.participate.setOnClickListener {
             AnalyticsEvents.logEvent(AnalyticsEvents.Event_detail_action_participate)
-            if (event?.member==false) eventPresenter.participate(eventId)
+            if (event?.member==false){
+                eventPresenter.participate(eventId)
+            }else{
+                eventPresenter.leaveEvent(eventId)
+            }
         }
     }
 
@@ -556,6 +558,14 @@ class FeedFragment : Fragment(), CallbackReportFragment {
                     shouldShowPopUp = false
                 }
             }
+        }
+    }
+    private fun handleLeaveResponse(isParticipating: Boolean) {
+        event?.let {event ->
+            event.member = !event.member
+            updateButtonJoin()
+            handleCreatePostButton()
+            binding.participate.show()
         }
     }
 

@@ -29,7 +29,7 @@ android {
 
     // App versions
     val versionMajor = 8
-    val versionMinor = 11
+    val versionMinor = 13
     val versionPatch = "git rev-list HEAD --count".runCommand().toInt()
     val versionBranchName = "git rev-parse --abbrev-ref HEAD".runCommand()
     val versionCodeInt = (versionMajor * 100 + versionMinor) * 10000 + versionPatch % 10000
@@ -111,6 +111,8 @@ android {
             buildConfigField("String", "ENTOURAGE_URL", "\"${entourageURLProd}\"")
             buildConfigField("String", "DEEP_LINKS_SCHEME", "\"${deepLinksSchemeProd}\"")
             buildConfigField("String", "DEEP_LINKS_URL", "\"${deepLinksURLProd}\"")
+            buildConfigField("int", "PEDAGO_CREATE_EVENT_ID", "15")
+            buildConfigField("int", "PEDAGO_CREATE_GROUP_ID", "37")
         }
         create("staging") {
             manifestPlaceholders += mapOf(
@@ -122,6 +124,9 @@ android {
             buildConfigField("String", "ENTOURAGE_URL", "\"${entourageURLStaging}\"")
             buildConfigField("String", "DEEP_LINKS_SCHEME", "\"${deepLinksSchemeStaging}\"")
             buildConfigField("String", "DEEP_LINKS_URL", "\"${deepLinksURLStaging}\"")
+            buildConfigField("int", "PEDAGO_CREATE_EVENT_ID", "32")
+            buildConfigField("int", "PEDAGO_CREATE_GROUP_ID", "33")
+
         }
          create("entourage") {
             dimension = "app"
@@ -235,7 +240,7 @@ dependencies {
     implementation("com.github.clans:fab:1.6.4")
     implementation("com.github.takusemba:cropme:2.0.8")
     implementation("com.google.maps.android:maps-utils-ktx:3.4.0")
-    implementation("com.google.android.material:material:1.8.0")
+    implementation("com.google.android.material:material:1.9.0")
     implementation("com.github.bumptech.glide:glide:4.14.2")
     implementation("me.leolin:ShortcutBadger:1.1.22@aar")
     implementation("net.yslibrary.keyboardvisibilityevent:keyboardvisibilityevent:3.0.0-RC3")
@@ -245,6 +250,7 @@ dependencies {
     implementation("com.facebook.android:facebook-android-sdk:15.2.0")
     implementation("com.facebook.android:facebook-core:15.2.0")
     compileOnly("org.glassfish:javax.annotation:10.0-b28")
+
 
     //androidTestImplementation testDependencies.values()
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
@@ -275,5 +281,7 @@ dependencies {
 
     //photoview to click and zoom
     implementation("com.github.chrisbanes:PhotoView:2.3.0")
+    implementation("androidx.transition:transition:1.4.1") // Remplacez 'x.x.x' par la dernière version disponible.
+
 
 }

@@ -149,7 +149,6 @@ class InAppNotificationListFragment : Fragment() {
             layoutManager = LinearLayoutManager(context)
             adapter = InAppListNotificationsAdapter(notifications, object : OnItemClick {
                 override fun onItemClick(notif: InAppNotification, position:Int) {
-                    Log.wtf("wtf", "notif : " + Gson().toJson(notif))
                     val instance = notif.instanceType
                     val instanceId = notif.instanceId
                     val stage = notif.context
@@ -161,11 +160,9 @@ class InAppNotificationListFragment : Fragment() {
                     else {
                         itemSelected = -1
                     }
-                    Log.wtf("wtf" , "hey instance and instance id " + instance + " " + instanceId)
                     if(instance != null && instanceId != null) {
                         NotificationActionManager.presentAction(requireContext(),parentFragmentManager,instance,instanceId,postId,stage)
                     } else{
-                        Log.wtf("wtf" , "hey instance and instance id " + instance + " " + instanceId)
                         NotificationActionManager.presentWelcomeAction(requireContext(), stage)
                     }
                 }

@@ -46,6 +46,7 @@ class MainActivity : BaseSecuredActivity() {
 
     private lateinit var viewModel: CommunicationHandlerBadgeViewModel
     private val universalLinkManager = UniversalLinkManager(this)
+    private var fromDeepLinlGoDiscoverGroup = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.new_activity_main)
@@ -59,6 +60,14 @@ class MainActivity : BaseSecuredActivity() {
         }
 
         handleUniversalLinkFromMain(this.intent)
+    }
+
+    fun setGoDiscoverGroupFromDeepL(bool:Boolean){
+        this.fromDeepLinlGoDiscoverGroup = bool
+    }
+
+    fun getFromDeepLGoDiscoverGroup():Boolean{
+        return this.fromDeepLinlGoDiscoverGroup
     }
 
 
@@ -129,27 +138,39 @@ class MainActivity : BaseSecuredActivity() {
         val fromWelcomeActivityThreeContrib = intent.getBooleanExtra("fromWelcomeActivityThreeContrib", false)
         val goContrib = intent.getBooleanExtra("goContrib", false)
         val goDemand = intent.getBooleanExtra("goDemand", false)
+        val goDiscoverGroup = intent.getBooleanExtra("goDiscoverGroup", false)
 
         if(goContrib){
             goContrib()
+            return
+        }
+        if(goDiscoverGroup){
+            this.setGoDiscoverGroupFromDeepL(goDiscoverGroup)
+            goGroup()
+            return
         }
         if(goDemand){
             goDemand()
+            return
         }
         if (fromWelcomeActivity) {
             goGroup()
+            return
         }
         if (fromWelcomeActivityThreeEvent) {
             goEvent()
+            return
         }
         if (fromWelcomeActivityThreeDemand) {
             goDemand()
+            return
         }
         if (fromWelcomeActivityThreeContrib) {
             goContrib()
             val intent = Intent(this, CreateActionActivity::class.java)
             intent.putExtra(Const.IS_ACTION_DEMAND, false)
             startActivity(intent)
+            return
         }
         this.intent = intent
         handleUniversalLinkFromMain(intent)
@@ -272,6 +293,8 @@ class MainActivity : BaseSecuredActivity() {
         navController.navigate(R.id.navigation_groups)
 
     }
+
+
 
     fun goEvent(){
         navController.navigate(R.id.navigation_events)

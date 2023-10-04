@@ -1,5 +1,30 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Default screen margins, per the Android Design guidelines. -->
+
+    <!-- Entourage font sizes -->
+    <dimen name="entourage_font_xtra_large">30sp</dimen>
+    <dimen name="entourage_font_big">22sp</dimen>
+    <dimen name="entourage_font_title_3">20sp</dimen>
+    <dimen name="entourage_font_large">18sp</dimen>
+    <dimen name="entourage_font_medium">16sp</dimen>
+    <dimen name="entourage_font_small">14sp</dimen>
+    <dimen name="entourage_font_very_small">12sp</dimen>
+
+
+    <dimen name="entourage_margin_top">20dp</dimen>
+    <dimen name="entourage_margin_bottom">10dp</dimen>
+    <dimen name="entourage_marginstart">16dp</dimen>
+    <dimen name="entourage_margin_end">16dp</dimen>
+    <dimen name="entourage_margin_interitem">10dp</dimen>
+    <dimen name="entourage_little_margin_top">10dp</dimen>
+    <dimen name="entourage_little_margin_end">10dp</dimen>
+    <dimen name="entourage_little_margin_start">17dp</dimen>
+    <dimen name="entourage_margin_start_inner_item">10dp</dimen>
+    <dimen name="entourage_little_margin_five">4dp</dimen>
+    <dimen name="entourage_margin_section">28dp</dimen>
+
+
+
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="about_items_padding">16dp</dimen>
     <dimen name="google_1x">8dp</dimen>
@@ -22,13 +47,7 @@
     <!-- Entourage padding -->
     <dimen name="entourage_padding_10">10dp</dimen>
 
-    <!-- Entourage font sizes -->
-    <dimen name="entourage_font_xtra_large">30sp</dimen>
-    <dimen name="entourage_font_big">22sp</dimen>
-    <dimen name="entourage_font_title_3">20sp</dimen>
-    <dimen name="entourage_font_large">17sp</dimen>
-    <dimen name="entourage_font_medium">15sp</dimen>
-    <dimen name="entourage_font_small">13sp</dimen>
+
 
     <dimen name="badge_size">10sp</dimen>
 
@@ -72,5 +91,8 @@
     <dimen name="contributions_value">30sp</dimen>
     <dimen name="contributions_empty_label">10sp</dimen>
     <dimen name="design_bottom_navigation_height" tools:override="true">@dimen/tabs_height</dimen>
+    <dimen name="horizontal_offset">22dp</dimen>
+    <dimen name="horizontal_offset_home">15dp</dimen>
+
 
 </resources>

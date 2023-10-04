@@ -174,6 +174,22 @@ class ReportModalFragment : BottomSheetDialogFragment() {
         getIsFromMe()
         getIsFromConv()
         getIsOneToOne()
+        if (reportType == ReportTypes.REPORT_GROUP.code){
+            setAfterChoose()
+            setView()
+            return
+        }
+        if (reportType == ReportTypes.REPORT_EVENT.code){
+            setAfterChoose()
+            setView()
+            return
+        }
+        if (reportType == ReportTypes.REPORT_CONVERSATION.code){
+            setAfterChoose()
+            setView()
+            return
+        }
+
         if(isFromMe == false){
             binding.layoutChooseSuppress.visibility = View.GONE
             binding.layoutChooseSignal.visibility = View.VISIBLE

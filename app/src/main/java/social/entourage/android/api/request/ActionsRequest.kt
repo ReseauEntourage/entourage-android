@@ -36,7 +36,19 @@ interface ActionsRequest {
         @Query("travel_distance") travelDistance: Int?,
         @Query("latitude") latitude: Double?,
         @Query("longitude") longitude: Double?,
+
     ): Call<DemandsListWrapper>
+    @GET("solicitations")
+    fun getAllActionsDemandWithoutMine(
+        @Query("page") page: Int,
+        @Query("per") per: Int,
+        @Query("sections[]") sections: String?,
+        @Query("travel_distance") travelDistance: Int?,
+        @Query("latitude") latitude: Double?,
+        @Query("longitude") longitude: Double?,
+        @Query("exclude_memberships") excludeMemberships : Boolean?,
+
+        ): Call<DemandsListWrapper>
 
     @GET("users/me/actions")
     fun getMyActions(

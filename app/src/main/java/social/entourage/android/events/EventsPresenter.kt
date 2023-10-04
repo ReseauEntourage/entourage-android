@@ -1,5 +1,6 @@
 package social.entourage.android.events
 
+import android.util.Log
 import androidx.collection.ArrayMap
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -16,6 +17,7 @@ import social.entourage.android.EntourageApplication
 import social.entourage.android.api.request.*
 import social.entourage.android.RefreshController
 import social.entourage.android.api.model.EntourageUser
+import social.entourage.android.api.model.EventActionLocationFilters
 import social.entourage.android.events.create.CreateEvent
 import social.entourage.android.events.list.EVENTS_PER_PAGE
 import social.entourage.android.home.UnreadMessages
@@ -40,6 +42,9 @@ class EventsPresenter: ViewModel() {
     var getMembersSearch = MutableLiveData<MutableList<EntourageUser>>()
     var getAllPosts = MutableLiveData<MutableList<Post>>()
     var getCurrentParentPost = MutableLiveData<Post>()
+    var hasChangedFilter = MutableLiveData<Boolean>()
+    var hasChangedFilterLocationForParentFragment = MutableLiveData<EventActionLocationFilters>()
+    var isCreateButtonExtended = MutableLiveData<Boolean>()
 
     var hasUserLeftEvent = MutableLiveData<Boolean>()
     var eventCanceled = MutableLiveData<Boolean>()
@@ -54,6 +59,7 @@ class EventsPresenter: ViewModel() {
 
     var isLoading: Boolean = false
     var isLastPage: Boolean = false
+    var isLastPageMyEvent: Boolean = false
 
     var isSendingCreatePost = false
 
@@ -72,6 +78,22 @@ class EventsPresenter: ViewModel() {
     fun resetAllEvent(){
         this.getAllMyEvents.value?.clear()
     }
+    fun resetMyEvent(){
+        this.getAllEvents.value?.clear()
+    }
+
+    fun changedFilterFromUpperFragment(){
+        hasChangedFilter.postValue(true)
+    }
+
+    fun tellParentFragmentToupdateLocation(filter: EventActionLocationFilters){
+        hasChangedFilterLocationForParentFragment.postValue(filter)
+    }
+
+    fun tellParentFragmentToMoveButton(isExtended:Boolean){
+        isCreateButtonExtended.postValue(isExtended)
+    }
+
 
     fun getMyEvents(userId: Int, page: Int, per: Int) {
         EntourageApplication.get().apiModule.eventsRequest.getMyEvents(userId, page, per)
@@ -82,14 +104,18 @@ class EventsPresenter: ViewModel() {
                 ) {
 
                     response.body()?.let { allEventsWrapper ->
-                        if (allEventsWrapper.allEvents.size < EVENTS_PER_PAGE) isLastPage = true
-                        getAllMyEvents.value = allEventsWrapper.allEvents
+                        if (allEventsWrapper.allEvents.size < EVENTS_PER_PAGE) isLastPageMyEvent = true
+                        getAllMyEvents.postValue(allEventsWrapper.allEvents)
                     }
                 }
 
                 override fun onFailure(call: Call<EventsListWrapper>, t: Throwable) {
                 }
             })
+    }
+
+    fun hasChangedFilter(){
+        hasChangedFilter.postValue(false)
     }
 
     fun getAllEvents(page: Int, per: Int,distance:Int?,latitude:Double?,longitude:Double?,period:String) {
@@ -102,7 +128,7 @@ class EventsPresenter: ViewModel() {
 
                     response.body()?.let { allEventsWrapper ->
                         if (allEventsWrapper.allEvents.size < EVENTS_PER_PAGE) isLastPage = true
-                        getAllEvents.value = allEventsWrapper.allEvents
+                        getAllEvents.postValue(allEventsWrapper.allEvents)
 
                     }
                 }

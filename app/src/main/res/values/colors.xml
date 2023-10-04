@@ -18,6 +18,9 @@
     <color name="tomato">#ee3e3a</color>
     <color name="brownish_grey">#5d5d5d</color>
     <color name="light_grey">#ededed</color>
+    <color name="grey_dark">#3d3d3d</color>
+    <color name="orange_light_separator_event">#FF9C5D</color>
+
 
     <!-- Backgrounds -->
     <color name="background">@color/primary</color>
@@ -124,6 +127,7 @@
     <color name="light_beige">#fffcfa</color>
     <color name="light_beige_96">#F5fffcfa</color>
     <color name="beige">#ffeadc</color>
+    <color name="beige_clair">#FFF5EB</color>
     <color name="orange">#f55f24</color>
     <color name="light_orange">#ff9c5d</color>
     <color name="light_orange_opacity_50">#80ff9c5d</color>
@@ -141,7 +145,6 @@
     <color name="deleted_grey">#a8a8a8</color>
     <color name="bottom_sheet_background">#B5545454</color>
     <color name="orange_opacity_50">#ffcbab</color>
-
     <color name="new_orange_bubble">#FFCDAE</color>
 
 </resources>

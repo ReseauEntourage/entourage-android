@@ -31,8 +31,6 @@ object NotificationActionManager {
 
     /**/
     fun presentAction(context:Context,supportFragmentManager: FragmentManager, instance:String, id:Int, postId:Int?, stage:String? = "") {
-        Log.wtf("wtf", "hi hi ")
-        Log.wtf("wtf", "hi hi " + stage)
         if(!stage.isNullOrEmpty()){
             if(stage.equals("h1")){
                 val intent = Intent(context, WelcomeOneActivity::class.java)
@@ -83,7 +81,6 @@ object NotificationActionManager {
     }
 
     fun presentWelcomeAction(context: Context, stage:String? = ""){
-        Log.wtf("wtf", "stage : " + stage)
         if(!stage.isNullOrEmpty()){
             if(stage.equals("h1")){
                 val intent = Intent(context, WelcomeOneActivity::class.java)
