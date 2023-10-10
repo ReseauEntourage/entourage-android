@@ -45,6 +45,7 @@ import social.entourage.android.notifications.InAppNotificationsActivity
 import social.entourage.android.profile.ProfileActivity
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.utils.Const
+import social.entourage.android.tools.view.WebViewFragment
 import social.entourage.android.user.UserProfileActivity
 
 class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener {
@@ -71,7 +72,9 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener {
     private var isAnimating = false
     private var pedagoItemForCreateEvent:Pedago? = null
     private var pedagoItemForCreateGroup:Pedago? = null
-
+    private var checksum = 0
+    private var isEventsEmpty = false
+    private var isActionEmpty = false
 
 
     override fun onCreateView(
@@ -92,6 +95,7 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener {
                 }
             }
         })
+        AnalyticsEvents.logEvent(AnalyticsEvents.View__Home)
 
         setRecyclerViews()
         setSeeAllButtons()
@@ -106,13 +110,15 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         user = EntourageApplication.me(activity) ?: return
+
+        Log.wtf("wtf", "user type " + Gson().toJson(user))
         disapearAllAtBeginning()
         updateAvatar()
-        callToInitHome()
     }
 
     override fun onResume() {
         super.onResume()
+        checksum = 0
         disapearAllAtBeginning()
         resetFilter()
         callToInitHome()
@@ -128,6 +134,23 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener {
             homePresenter.getPedagogicalResources()
             homePresenter.getNotificationsCount()
 
+        }
+    }
+
+    private fun checkSumEventAction(){
+        checksum++
+        Log.wtf("wtf", "user type " + Gson().toJson(user))
+        if (checksum == 2){
+            if(isEventsEmpty && isActionEmpty){
+                binding.itemHz.layoutItemHz.visibility = View.VISIBLE
+            }else{
+                binding.itemHz.layoutItemHz.visibility = View.GONE
+            }
+        }
+        binding.itemHz.buttonHzItem.setOnClickListener {
+            val urlString = "https://reseauentourage.notion.site/Buffet-du-lien-social-69c20e089dbd483cb093e90ae2953a54"
+            WebViewFragment.newInstance(urlString, 0, true)
+                .show(requireActivity().supportFragmentManager, WebViewFragment.TAG)
         }
     }
 
@@ -191,12 +214,20 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener {
     fun setSeeAllButtons(){
         val mainActivity = (requireActivity() as? MainActivity)
         binding.btnMoreGroup.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Action_Home_Group_All)
             mainActivity?.setGoDiscoverGroupFromDeepL(true)
             mainActivity?.goGroup()
         }
-        binding.btnMoreEvent.setOnClickListener { mainActivity?.goEvent() }
-        binding.btnMoreAction.setOnClickListener { mainActivity?.goDemand() }
+        binding.btnMoreEvent.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Action_Home_Event_All)
+            mainActivity?.goEvent()
+        }
+        binding.btnMoreAction.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Action_Home_Demand_All)
+            mainActivity?.goDemand()
+        }
         binding.btnMorePedago.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Action__Home__Pedago)
             val intent = Intent(requireActivity(), PedagoListActivity::class.java)
             requireContext().startActivity(intent)
         }
@@ -204,7 +235,7 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener {
 
     fun setNotifButton(){
         binding.uiLayoutNotif.setOnClickListener {
-            AnalyticsEvents.logEvent(AnalyticsEvents.Home_action_notif)
+            AnalyticsEvents.logEvent(AnalyticsEvents.Action__Home__Notif)
             val intent = Intent(requireContext(), InAppNotificationsActivity::class.java)
             intent.putExtra(Const.NOTIF_COUNT,homePresenter.notifsCount.value)
             startActivityForResult(intent, 0)
@@ -238,12 +269,17 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener {
         if(allEvent == null){
             return
         }
+
         if(allEvent.size > 0 ){
+            isEventsEmpty = false
             binding.btnMoreEvent.visibility = View.VISIBLE
             binding.rvHomeEvent.visibility = View.VISIBLE
             binding.homeSubtitleEvent.visibility = View.VISIBLE
             binding.homeTitleEvent.visibility = View.VISIBLE
+        }else{
+            isEventsEmpty = true
         }
+        checkSumEventAction()
         this.homeEventAdapter.resetData(allEvent)
 
     }
@@ -252,11 +288,15 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener {
             return
         }
         if(allAction.size > 0 ){
+            isActionEmpty = false
             binding.btnMoreAction.visibility = View.VISIBLE
             binding.rvHomeAction.visibility = View.VISIBLE
             binding.homeSubtitleAction.visibility = View.VISIBLE
             binding.homeTitleAction.visibility = View.VISIBLE
+        }else{
+            isActionEmpty = true
         }
+        checkSumEventAction()
         this.homeActionAdapter.resetData(allAction)
 
     }
@@ -303,6 +343,8 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener {
 
     private fun updateContributionsView(summary: Summary) {
         handleHelps(summary)
+        Log.wtf("wtf", "summary " + Gson().toJson(summary))
+
     }
 
     fun handleHelps(summary: Summary){
@@ -362,7 +404,7 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener {
 
     private fun setMapButton(){
         binding.homeButtonMap.setOnClickListener {
-            AnalyticsEvents.logEvent(AnalyticsEvents.Home_action_map)
+            AnalyticsEvents.logEvent(AnalyticsEvents.Action__Home__Map)
             val intent = Intent(requireContext(), GDSMainActivity::class.java)
             startActivityForResult(intent, 0)
         }
@@ -370,7 +412,7 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener {
 
     private fun setProfileButton(){
         binding.avatar.setOnClickListener {
-            AnalyticsEvents.logEvent(AnalyticsEvents.Home_action_profile)
+            AnalyticsEvents.logEvent(AnalyticsEvents.Action__Tab__Profil)
             startActivityForResult(
                 Intent(context, ProfileActivity::class.java), 0
             )
@@ -430,19 +472,21 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener {
 
     override fun onItemClick(position: Int, moderatorId:Int) {
         if(position == 0){
+            AnalyticsEvents.logEvent(AnalyticsEvents.Action_Home_CreateGroup)
             val intent = Intent(requireActivity(), PedagoDetailActivity::class.java)
             intent.putExtra(Const.ID, pedagoItemForCreateGroup?.id)
             intent.putExtra(Const.HTML_CONTENT, pedagoItemForCreateGroup?.html)
             requireActivity().startActivity(intent)
         }
         if(position == 1){
+            AnalyticsEvents.logEvent(AnalyticsEvents.Action_Home_CreateEvent)
             val intent = Intent(requireActivity(), PedagoDetailActivity::class.java)
             intent.putExtra(Const.ID, pedagoItemForCreateEvent?.id)
             intent.putExtra(Const.HTML_CONTENT, pedagoItemForCreateEvent?.html)
             requireActivity().startActivity(intent)
         }
         if(position == 2){
-            AnalyticsEvents.logEvent(AnalyticsEvents.Home_action_moderator)
+            AnalyticsEvents.logEvent(AnalyticsEvents.Action__Home__Moderator)
             startActivity(
                 Intent(context, UserProfileActivity::class.java).putExtra(
                     Const.USER_ID,

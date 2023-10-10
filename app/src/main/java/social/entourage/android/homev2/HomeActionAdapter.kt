@@ -21,6 +21,7 @@ import social.entourage.android.api.model.ActionSection
 import social.entourage.android.api.model.Events
 import social.entourage.android.databinding.HomeV2ActionItemLayoutBinding
 import social.entourage.android.tools.displayDistance
+import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.px
 
@@ -51,6 +52,7 @@ class HomeActionAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         if (holder is ActionViewHolder) {
             val action = actions[position]
             holder.binding.layout.setOnClickListener { view ->
+                AnalyticsEvents.logEvent(AnalyticsEvents.Action_Home_Demand_Detail)
                 (view.context as? Activity)?.startActivityForResult(
                     Intent(view.context, ActionDetailActivity::class.java)
                         .putExtra(Const.ACTION_ID, action.id)

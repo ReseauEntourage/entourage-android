@@ -33,6 +33,9 @@ class User : Serializable {
     @SerializedName("avatar_url")
     var avatarURL: String?
 
+    @SerializedName("preference")
+    var preference: String? = null
+
     @SerializedName("firebase_properties")
     val firebaseProperties: UserFirebaseProperties? = null
     var about: String? = ""

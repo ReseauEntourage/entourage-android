@@ -18,7 +18,7 @@
     <dimen name="entourage_margin_interitem">10dp</dimen>
     <dimen name="entourage_little_margin_top">10dp</dimen>
     <dimen name="entourage_little_margin_end">10dp</dimen>
-    <dimen name="entourage_little_margin_start">17dp</dimen>
+    <dimen name="entourage_little_margin_start">16dp</dimen>
     <dimen name="entourage_margin_start_inner_item">10dp</dimen>
     <dimen name="entourage_little_margin_five">4dp</dimen>
     <dimen name="entourage_margin_section">28dp</dimen>

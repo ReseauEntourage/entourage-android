@@ -383,14 +383,25 @@
                     android:layout_height="25dp"
                     android:src="@drawable/arrow_light_orange"/>
             </LinearLayout>
+            <include
+                android:id="@+id/item_hz"
+                layout="@layout/home_v2_hors_zone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/btn_more_pedago"
+                android:layout_margin="20dp"
+                android:visibility="gone"
+                />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/home_title_help"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/btn_more_pedago"
-                android:layout_marginTop="@dimen/entourage_margin_section"
+                app:layout_constraintTop_toBottomOf="@+id/item_hz"
+                android:layout_marginTop="@dimen/entourage_margin_top"
                 android:layout_marginStart="@dimen/entourage_marginstart"
                 android:fontFamily="@font/quicksand_bold"
                 android:textSize="@dimen/entourage_font_large"
