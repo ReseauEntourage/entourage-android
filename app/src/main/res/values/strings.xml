@@ -2554,6 +2554,10 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="home_v2_subtitle_action">Vos voisins ont besoin de vous !</string>
     <string name="home_v2_btn_more_action">Voir toutes les demandes</string>
 
+    <string name="home_v2_title_action_contrib">Besoin d\'un coup de pouce ?</string>
+    <string name="home_v2_subtitle_action_contrib">Découvrez ce que proposent vos voisins !</string>
+    <string name="home_v2_btn_more_action_contrib">Voir toutes les contributions</string>
+
     <string name="home_v2_title_event">Participer à un événement solidaire</string>
     <string name="home_v2_subtitle_event">Le plein de solidarité à proximité</string>
     <string name="home_v2_btn_more_event">Voir tous les événements</string>

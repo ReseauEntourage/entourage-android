@@ -14,7 +14,7 @@
         android:id="@+id/iv_hz_item"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginStart="@dimen/entourage_margin_section"
+        android:layout_marginStart="@dimen/entourage_marginstart"
         android:layout_marginTop="@dimen/entourage_margin_top"
         android:src="@drawable/ic_horszone_home_v2"
         />
