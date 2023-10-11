@@ -25,10 +25,12 @@ import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.px
 
-class HomeActionAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class HomeActionAdapter(var isContrib:Boolean): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     var actions:MutableList<Action> = mutableListOf()
 
-
+    fun getIsContrib():Boolean{
+        return isContrib
+    }
     fun resetData(actions:MutableList<Action>){
         this.actions.clear()
         this.actions.addAll(actions)
@@ -51,16 +53,30 @@ class HomeActionAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder is ActionViewHolder) {
             val action = actions[position]
+
+
             holder.binding.layout.setOnClickListener { view ->
-                AnalyticsEvents.logEvent(AnalyticsEvents.Action_Home_Demand_Detail)
-                (view.context as? Activity)?.startActivityForResult(
-                    Intent(view.context, ActionDetailActivity::class.java)
-                        .putExtra(Const.ACTION_ID, action.id)
-                        .putExtra(Const.ACTION_TITLE,action.title)
-                        .putExtra(Const.IS_ACTION_DEMAND,true)
-                        .putExtra(Const.IS_ACTION_MINE, action.isMine()),
-                    0
-                )
+                if(isContrib){
+                    AnalyticsEvents.logEvent(AnalyticsEvents.Action_Home_Contrib_Detail)
+                    (view.context as? Activity)?.startActivityForResult(
+                        Intent(view.context, ActionDetailActivity::class.java)
+                            .putExtra(Const.ACTION_ID, action.id)
+                            .putExtra(Const.ACTION_TITLE,action.title)
+                            .putExtra(Const.IS_ACTION_DEMAND,false)
+                            .putExtra(Const.IS_ACTION_MINE, action.isMine()),
+                        0
+                    )
+                }else{
+                    AnalyticsEvents.logEvent(AnalyticsEvents.Action_Home_Demand_Detail)
+                    (view.context as? Activity)?.startActivityForResult(
+                        Intent(view.context, ActionDetailActivity::class.java)
+                            .putExtra(Const.ACTION_ID, action.id)
+                            .putExtra(Const.ACTION_TITLE,action.title)
+                            .putExtra(Const.IS_ACTION_DEMAND,true)
+                            .putExtra(Const.IS_ACTION_MINE, action.isMine()),
+                        0
+                    )
+                }
             }
             action.author?.avatarURLAsString?.let {
                 Glide.with(holder.binding.root.context)

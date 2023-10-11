@@ -43,7 +43,7 @@
         android:layout_marginEnd="@dimen/entourage_little_margin_start"
         android:layout_marginTop="@dimen/entourage_margin_start_inner_item"
         android:text="@string/home_v2_hz_item_subtitle"
-        android:textSize="@dimen/entourage_font_medium"
+        android:textSize="@dimen/entourage_font_small"
         android:fontFamily="@font/nunitosans_regular"
         android:textColor="@color/white"/>
 
@@ -63,7 +63,7 @@
         android:layout_marginTop="@dimen/entourage_margin_start_inner_item"
         android:layout_marginBottom="16dp"
         android:textSize="@dimen/entourage_font_medium"
-        android:fontFamily="@font/nunitosans_regular"
+        android:fontFamily="@font/quicksand_bold"
         android:textAllCaps="false"
         />
 
