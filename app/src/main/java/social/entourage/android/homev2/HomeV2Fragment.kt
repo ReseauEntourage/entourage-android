@@ -139,6 +139,7 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener {
 
     private fun checkSumEventAction(){
         checksum++
+        Log.wtf("wtf", "checksum " + checksum)
         if (checksum == 2){
             if(isEventsEmpty && isActionEmpty){
                 binding.itemHz.layoutItemHz.visibility = View.VISIBLE
@@ -324,7 +325,6 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener {
             binding.homeTitleAction.visibility = View.VISIBLE
         }else{
             isActionEmpty = true
-            isActionEmpty = false
             binding.btnMoreAction.visibility = View.GONE
             binding.rvHomeAction.visibility = View.GONE
             binding.homeSubtitleAction.visibility = View.GONE
