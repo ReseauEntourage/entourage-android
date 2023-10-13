@@ -1,7 +1,9 @@
 package social.entourage.android.api
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.collection.ArrayMap
+import com.google.gson.Gson
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.ResponseBody
@@ -44,12 +46,13 @@ class OnboardingAPI {
 
         val request = ArrayMap<String, Any>()
         request["user"] = user
-
+        Log.wtf("wtf", "my request body " + Gson().toJson(request))
         val call = onboardingService.registerUser(request)
 
         call.enqueue(object : Callback<UserResponse> {
             override fun onResponse(call: Call<UserResponse>, response: Response<UserResponse>) {
                 if (response.isSuccessful) {
+                    Log.wtf("wtf", "my request body " + Gson().toJson(response))
                     Timber.d("Response ok create user ?")
                     listener(true,null)
                 } else {

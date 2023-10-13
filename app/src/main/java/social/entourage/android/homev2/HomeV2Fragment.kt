@@ -285,7 +285,17 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener {
         doTotalchecksumToDisplayHomeFirstTime()
 
         if(allEvent.size > 0 ){
-            isEventsEmpty = false
+            var _offline_events:MutableList<Events> = mutableListOf()
+            for(event in allEvent){
+                if(event.online == false){
+                    _offline_events.add(event)
+                }
+            }
+            if(_offline_events.size == 0){
+                isEventsEmpty = true
+            }else{
+                isEventsEmpty = false
+            }
             binding.btnMoreEvent.visibility = View.VISIBLE
             binding.rvHomeEvent.visibility = View.VISIBLE
             binding.homeSubtitleEvent.visibility = View.VISIBLE
