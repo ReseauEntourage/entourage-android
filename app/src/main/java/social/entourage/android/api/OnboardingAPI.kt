@@ -46,13 +46,11 @@ class OnboardingAPI {
 
         val request = ArrayMap<String, Any>()
         request["user"] = user
-        Log.wtf("wtf", "my request body " + Gson().toJson(request))
         val call = onboardingService.registerUser(request)
 
         call.enqueue(object : Callback<UserResponse> {
             override fun onResponse(call: Call<UserResponse>, response: Response<UserResponse>) {
                 if (response.isSuccessful) {
-                    Log.wtf("wtf", "my request body " + Gson().toJson(response))
                     Timber.d("Response ok create user ?")
                     listener(true,null)
                 } else {
