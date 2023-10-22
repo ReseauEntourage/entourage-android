@@ -49,6 +49,7 @@ class MainActivity : BaseSecuredActivity() {
     private var fromDeepLinlGoDiscoverGroup = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        instance = this
         setContentView(R.layout.new_activity_main)
         viewModel = ViewModelProvider(this)[CommunicationHandlerBadgeViewModel::class.java]
         viewModel.badgeCount.observe(this,::handleUpdateBadgeResponse)
@@ -126,6 +127,11 @@ class MainActivity : BaseSecuredActivity() {
             useIntentForRedictection(this.intent)
             this.intent = null
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        instance = null
     }
 
     fun useIntentForRedictection(intent: Intent){
@@ -407,6 +413,9 @@ class MainActivity : BaseSecuredActivity() {
 
     fun deleteApplicationInfo(listener:() -> Unit) {
         presenter.deleteApplicationInfo(listener)
+    }
+    companion object {
+        var instance: MainActivity? = null
     }
 }
 

@@ -1,8 +1,11 @@
 package social.entourage.android.profile
 
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.navigation.fragment.NavHostFragment
+import social.entourage.android.MainActivity
 import social.entourage.android.R
 import social.entourage.android.base.BaseSecuredActivity
 import social.entourage.android.tools.utils.Const
@@ -46,5 +49,10 @@ class ProfileActivity : BaseSecuredActivity(), AvatarUploadView {
     private fun showErrorToast() {
         Toast.makeText(this, R.string.user_photo_error_not_saved, Toast.LENGTH_SHORT)
             .show()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        MainActivity.instance?.recreate()
     }
 }

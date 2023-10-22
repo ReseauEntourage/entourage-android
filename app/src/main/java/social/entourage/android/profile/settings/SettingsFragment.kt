@@ -18,6 +18,7 @@ import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.authentication.AuthenticationController
 import social.entourage.android.databinding.NewFragmentSettingsBinding
+import social.entourage.android.language.LanguageBottomFragment
 import social.entourage.android.tools.utils.CustomAlertDialog
 import social.entourage.android.onboarding.pre_onboarding.PreOnboardingStartActivity
 import social.entourage.android.profile.editProfile.EditPasswordFragment
@@ -73,6 +74,10 @@ class SettingsFragment : Fragment() {
     }
 
     private fun addOnClickListeners() {
+        binding.language.layout.setOnClickListener {
+            LanguageBottomFragment.newInstance().show(parentFragmentManager, LanguageBottomFragment.TAG)
+        }
+
         binding.notifications.layout.setOnClickListener {
             SettingsNotificationsFragment.newInstance()
                 .show(parentFragmentManager, SettingsNotificationsFragment.TAG)
