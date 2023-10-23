@@ -66,7 +66,7 @@ android {
             "deepLinksScheme" to deepLinksSchemeProd
         )
         applicationId = "social.entourage.android"
-        resourceConfigurations += listOf("en", "fr")
+        resourceConfigurations += listOf("en", "fr", "de", "pl", "es", "ar", "uk", "ro")
 
         minSdk = 21 /*November 2014: Android 5.0, Lollipop*/
         targetSdk = 33

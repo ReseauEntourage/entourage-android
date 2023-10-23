@@ -85,8 +85,7 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val savedLanguage = LanguageManager.loadLanguageFromPreferences(requireContext())
-        LanguageManager.setLocale(requireContext(), savedLanguage)
+
         binding = FragmentHomeV2LayoutBinding.inflate(layoutInflater)
         binding.homeNestedScrollView.visibility = View.GONE
         disapearAllAtBeginning()

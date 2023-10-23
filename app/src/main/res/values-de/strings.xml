@@ -422,7 +422,7 @@ Sie werden diese Nachricht lesen, sobald sie der Gruppe beitreten.</string>
     <string name="event_places">Anzahl der Plätze</string>
     <string name="event_canceled">Veranstaltung abgesagt</string>
     <string name="member_since">Seitdem Entourage-Mitglied</string>
-    <string name="profile_date_format">MM/JJJJ</string>
+    <string name="profile_date_format">MM/yyyy</string>
     <plurals name="number_of_people">
         <item quantity="one">%1$d Teilnehmer</item>
         <item quantity="other">%1$d Teilnehmer</item>
@@ -626,8 +626,7 @@ Sie werden diese Nachricht lesen, sobald sie der Gruppe beitreten.</string>
     <string name="actions_tab_demands">Anfragen</string>
 
     <string name="action_date_list">Der %s</string>
-    <string name="action_date_list_formatter">„TT MMMM jjjj“</string>
-    <string name="action_date_month_year_formatter">„MM/JJJJ“</string>
+
 
     <string name="action_bt_my_actions">Meine Anzeigen</string>
 
@@ -2595,4 +2594,7 @@ Sie werden diese Nachricht lesen, sobald sie der Gruppe beitreten.</string>
     <string name="entourage_metadata_startAt_format_full">EEEE dd MMMM yyyy</string>
     <string name="date_format_profile">dd-MM</string>
     <string name="date_format_profile_fr">Day month</string>
+    <string name="action_date_list_formatter">“dd MMMM yyyy”</string>
+    <string name="action_date_month_year_formatter">“MM/YYYY”</string>
+
 </resources>
