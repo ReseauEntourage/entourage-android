@@ -1,0 +1,2612 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resources>
+
+    <string name="app_name">Оточення</string>
+    <string name="button_loading">Завантаження…</string>
+    <string name="error_not_yet_implemented">Недоступний</string>
+    <string name="error_google_play_store_not_installed">Google Play Store n\ не встановлено</string>
+    <string name="error_application_update">Версія d\ "Встановлено Entourage n\" більше не підтримується. Щоб продовжити користуватися нашими послугами та отримати найкращий досвід, будь ласка, оновіть до останньої версії, натиснувши це посилання.</string>
+    <string name="button_update_version">Оновити</string>
+    <string name="title_update_version">ДОСТУПНЕ ОНОВЛЕННЯ</string>
+    <string name="error_no_email">Електронна пошта не налаштована</string>
+    <string name="yes">Так</string>
+    <string name="no">Немає</string>
+    <string name="button_OK">в порядку</string>
+    <string name="accept">прийняти</string>
+    <string name="decline">Відмовитися</string>
+    <string name="send">Надіслати</string>
+    <string name="register">зберегти</string>
+    <string name="ignore">Ігнорувати</string>
+    <string name="next">Продовжити</string>
+    <string name="close">Закрити</string>
+    <string name="edit">Щоб змінити</string>
+    <string name="activate">Увімкнути</string>
+    <string name="view">Побачити</string>
+
+
+    <string name="network_error">Перевірте підключення\net спробуйте пізніше</string>
+    <string name="technical_error">У нас невелика проблема…\nНезабаром її буде вирішено ;)</string>
+    <string name="server_error">У нас є невелика проблема…\nЦе буде виправлено дуже швидко ;)</string>
+    <string name="no_browser_error">Браузер n\ не встановлено</string>
+
+    <string name="badge_count_format">%1$d</string>
+
+    <string name="empty_description"></string>
+
+    <string name="preference_file_key">ENTOURAGE_GCM_DATA</string>
+    <string name="action_overlay_close">Закрийте меню Дії</string>
+    <string name="plus_image_subtitle">Головне - зустріч!</string>
+
+    <string name="agir_help_button_title_alone">Дивіться наші поради</string>
+    <string name="agir_help_button_help_asso">Як мобілізувати сусідів?</string>
+    <string name="agir_help_button_help_others">Не відчуваєте себе готовим?</string>
+    <string name="agir_title_bonnes_ondes">Приєднуйтесь до Good Waves</string>
+    <string name="agir_bonnes_ondes_alone">створити коло друзів d\ Entourage</string>
+    <string name="agir_bonnes_ondes_others">підтримати ізольовану людину в групі</string>
+
+    //Tooltips
+    <string name="tooltip_desc1">Вашу стрічку новин відфільтровано відповідно до ваших уподобань. Змініть налаштування, натиснувши цю кнопку.</string>
+    <string name="tooltip_title2">Довідник «Солідарність».</string>
+    <string name="tooltip_desc2">Потрібна інформація? Знайдіть навколо себе всі місця солідарності.</string>
+
+    //Home Cells
+
+    <string name="cell_demand_from">Запит від</string>
+    <string name="cell_invit_from">Гість від</string>
+    <string name="cell_contrib_from">Внесок від</string>
+
+    <string name="cell_numberOfPeople">%1$d учасник</string>
+    <string name="cell_numberOfPeoples">%1$d учасників</string>
+    <string name="show_more">Побачити більше</string>
+    <string name="show_more_event">Перегляньте подію \</string>
+    <string name="show_more_actions">Показати більше \ запитів та \ ініціатив</string>
+    <string name="show_more_events">Afficher plus\nd’événements</string>
+    <string name="show_more_actions_ask">Переглянути всі запити</string>
+    <string name="show_more_actions_contrib">Переглянути всі пожертви</string>
+
+    <string name="home_title_headlines">Рекомендовані</string>
+    <string name="home_title_actions">Запити та ініціативи</string>
+    <string name="home_title_events">Події</string>
+    <string name="home_title_none"></string>
+    <string name="home_title_actions_contrib">Внески</string>
+    <string name="home_title_actions_ask">Запити</string>
+
+    <string name="home_help_title">Антураж різний</string>
+    <string name="home_help_description">Ось як взяти участь у проекті Антураж, якщо у вашому регіоні немає заходів чи акцій:</string>
+    <string name="home_help_button_1">Зробіть фінансову пожертву \nEntourage</string>
+    <string name="home_help_button_2">Devenir reporter pour\nEntourage</string>
+    <string name="home_help_button_3">Розмова про Entourage</string>
+    <string name="home_help_button_4">Стань амбасадором</string>
+    <string name="home_help_button_5">Програма LinkedOut</string>
+    <string name="home_button_help_title">Я допомагаю Entourage іншим способом</string>
+    <string name="home_button_change_zone">Я зміню свою сферу діяльності</string>
+    <string name="home_cell_info_demand_empty">C\Тут досить тихо</string>
+    <string name="home_cell_info_demand_empty_button">Шукайте \далі</string>
+
+    <string name="home_help_report_description">Щоб допомогти з майбутнім розгортанням Entourage у вашому регіоні, будьте нашими очима та вухами! Поділіться з нами тим, що ви спостерігаєте у своєму оточенні.\n\nЦя анкета охоплює різні теми, дайте на них якомога більше відповідей. Якщо ситуація зміниться, ви можете заповнити його ще раз, щоб інформувати нас.\n\nВаша співпраця цінна, ми щиро вдячні!</string>
+    <string name="home_button_help_title_report">Журналісти The Entourage</string>
+    <string name="i_participe">брати участь</string>
+
+    <string name="equip_mod">L\'команда модераторів d\'Оточення</string>
+    <string name="back_button_hint">назад</string>
+    <string name="button_clear_hint">стерти</string>
+
+    <!-- New -->
+    <string name="my_activity">Моя діяльність</string>
+    <string name="my_information">Моя інформація</string>
+    <string name="his_activity">Його діяльність</string>
+    <string name="test">5</string>
+    <string name="events">Події</string>
+    <string name="contributions">Внески</string>
+    <string name="firstname">Ім&amp;apos;я</string>
+    <string name="lastname">Ім&amp;apos;я</string>
+    <string name="birthday">день народження</string>
+    <string name="phone">Телефон</string>
+    <string name="email">Електронна пошта</string>
+    <string name="profile">Профіль</string>
+    <string name="city">Місто</string>
+    <string name="language">Мова</string>
+    <string name="city_action_zone">Місто і район дії *</string>
+    <string name="within">У межах:</string>
+    <string name="settings">Налаштування</string>
+    <string name="my_profile">Мій профіль</string>
+    <string name="min_progressbar">1 км</string>
+    <string name="max_progressbar">100 км</string>
+    <string name="indications">* Ваша зона дії дозволяє вам визначити, як далеко ви можете діяти та рухатися</string>
+    <string name="notifications">Сповіщення</string>
+    <string name="help_about">Довідка та Про</string>
+    <string name="unblock">Розблокувати учасників</string>
+    <string name="sign_out">Вийти з аккаунта</string>
+    <string name="delete_account">Видалити мій обліковий запис</string>
+    <string name="share_app">Добрий ранок ! Завдяки мережі Entourage я беру участь в акціях солідарності між сусідами без дому та без нього. Приєднуйтесь до мене: https://bit.ly/applientourage</string>
+    <string name="edit_profile">Редагувати мою інформацію</string>
+    <string name="description">Опис (макс. 200 символів)</string>
+    <string name="my_interests">Мої інтереси</string>
+    <string name="interests">Центри інтересів</string>
+    <string name="write_message">Нове повідомлення</string>
+    <string name="ethics">Етичний кодекс</string>
+    <string name="ambassador_program">Подайте заявку на програму амбасадора</string>
+    <string name="donation">Зробіть пожертву</string>
+    <string name="faq">поширені запитання</string>
+    <string name="share">Поділіться додатком</string>
+    <string name="suggest">Пропозиція щодо програми?</string>
+    <string name="feedback">Оцініть програму в магазинах</string>
+    <string name="cgu">Умови використання</string>
+    <string name="confidentiality">Політика конфіденційності</string>
+    <string name="licence">Ліцензія з відкритим кодом</string>
+    <string name="cancel">Скасувати</string>
+    <string name="delete">ВИДАЛИТИ</string>
+    <string name="signing_out">Відключити</string>
+
+    <string name="delete_account_dialog_title">Видалення облікового запису</string>
+    <string name="delete_account_dialog_content">Ви хочете видалити свій обліковий запис?</string>
+
+    <string name="unsubscribe_title">Ви хочете скасувати підписку?</string>
+    <string name="unsubscribe_content">Відписавшись, ви більше не будете отримувати сповіщення, новини та нові події від цього об&amp;apos;єднання.</string>
+
+    <string name="sign_out_dialog_title">Відключити</string>
+    <string name="sign_out_dialog_content">Ви хочете вийти?</string>
+    <string name="progress_km">%s км</string>
+    <string name="modify_image"><u>Modifier ma photo</u></string>
+    <string name="modify_interests_subtitle">Виберіть одну або кілька категорій, які вас цікавлять.</string>
+    <string name="add_image">Додайте картинку</string>
+    <string name="add_image_subtitle">З фотографією одразу стає приємніше.
+ Покажіть нам свою найгарнішу посмішку.</string>
+    <string name="edit_action_zone">Де ти хочеш виступати?</string>
+    <string name="edit_action_zone_subtitle">Entourage — це соціальна мережа!
+Відкрийте для себе ініціативи у вашому районі та налагодьте зв’язки зі своїми сусідами.</string>
+    <string name="add_location_mandatory">Додати місце *</string>
+    <string name="city_or_department">Місто чи департамент</string>
+    <string name="dont_communicate">* Entourage не повідомляє цю адресу.</string>
+    <string name="validate">Для підтвердження</string>
+    <string name="take_picture">Щоб сфотографувати</string>
+    <string name="import_picture">Імпортувати з галереї</string>
+    <string name="description_counter">%s /200</string>
+    <string name="events_description_counter">%s /900</string>
+    <string name="apply_modifications">Застосувати зміни</string>
+    <string name="edit_interests">Змінити мої інтереси</string>
+    <string name="follow">S\підписатися</string>
+    <string name="following">Абонент</string>
+    <string name="ambassador">посол</string>
+
+    <string name="group_name">Назва групи</string>
+    <string name="event_name">Назва події \</string>
+    <string name="group_name_hint">Сусіди Парижа 18</string>
+    <string name="event_name_hint">Дайте явну назву події \</string>
+    <string name="write_description">Напишіть опис</string>
+    <string name="write_description_hint">Зустріти сусідів з 18-го</string>
+    <string name="add_location">Ajouter un lieu</string>
+    <string name="add_location_hint">Адреса, місто чи відділ</string>
+    <string name="mandatory">- ОБОВ&amp;apos;ЯЗКОВО</string>
+    <string name="optional">- необов&amp;apos;язковий</string>
+    <string name="step">етап</string>
+    <string name="stepOne">01.</string>
+    <string name="stepThree">03.</string>
+    <string name="stepTwo">02.</string>
+    <string name="stepFour">04.</string>
+    <string name="stepFive">05.</string>
+    <string name="choose_categories_group">Виберіть категорію (категорії), яка найкраще описує тему обговорення в групі.</string>
+    <string name="web_site">Веб-сайт</string>
+    <string name="address">Адреса</string>
+    <string name="report_user">Повідомити про користувача l\</string>
+    <string name="report_member">Повідомити про учасника</string>
+    <string name="report_post">Повідомити про пост</string>
+    <string name="report_comment">Повідомити про коментар</string>
+    <string name="report_eventt">Повідомити про подію</string>
+    <string name="why_reporting">Повідомте нам причину вашого повідомлення</string>
+    <string name="new_next">Слідую</string>
+    <string name="back">Назад</string>
+    <string name="cancel_event_continue">Продовжити</string>
+    <string name="previous">Попередній</string>
+    <string name="add_location_subtitle">Entourage не повідомляє цю адресу користувачам.</string>
+    <string name="new_group">Нова група</string>
+    <string name="new_event">нова подія</string>
+    <string name="edit_group">Редагувати групу</string>
+    <string name="error_mandatory_fields">Будь ласка, заповніть усі обов&amp;apos;язкові поля</string>
+    <string name="error_categories_create_group">Необхідно вибрати категорію.</string>
+    <string name="error_categories_create_group_image">Виберіть зображення</string>
+    <string name="error_empty_other_category_create_group">Будь ласка, вкажіть іншу категорію</string>
+    <string name="error_lastname">В назві повинно бути не менше 2 букв.</string>
+    <string name="error_email">недійсна електронна адреса</string>
+    <string name="contact">контакт</string>
+    <string name="needs">потреби</string>
+    <string name="accept_donations">Приймає пожертви</string>
+    <string name="volunteers">Шукаємо волонтерів</string>
+    <string name="group_welcome_message">Напишіть вітальне повідомлення</string>
+    <string name="group_welcome_message_hint">Вітаємо нових учасників!
+Вони прочитають це повідомлення, щойно приєднаються до групи.</string>
+    <string name="group_photo_label">Ви можете змінити це пізніше</string>
+    <string name="group_choose_photo">Додайте картинку</string>
+    <string name="back_create_group_title">Увага</string>
+    <string name="exit">Залишити</string>
+    <string name="back_create_group_content">Якщо ви вийдете з форми створення групи, вся введена інформація буде втрачена.</string>
+    <string name="other">Інший</string>
+    <string name="category_name_label">Опишіть категорію своєї групи одним словом</string>
+    <string name="pass">Пас</string>
+    <string name="create_post">Створити пост</string>
+    <string name="create_event">Створіть подію в групі</string>
+    <string name="create_event_if_no_event">Створіть подію</string>
+    <string name="create_event_btn_title">Створіть подію</string>
+    <string name="group_success_title">Ваша група \n онлайн!</string>
+    <string name="group_success_subtitle">Вітаємо, ви щойно створили нову групу. Щоб зробити його більш активним, створіть перший пост.</string>
+    <string name="select_photo">Виберіть фото</string>
+    <string name="create">Створити</string>
+    <string name="error_create_group">Помилка створення групи</string>
+    <string name="edit_photo">Редагувати фото</string>
+    <string name="group_updated">Модифікацію прийнято до уваги</string>
+    <string name="group_error_updated">Помилка редагування групи</string>
+    <string name="title_activity_main">Основна діяльність</string>
+    <string name="title_home">Ласкаво просимо</string>
+    <string name="title_donations">Взаємодопомога</string>
+    <string name="title_messages">дискусії</string>
+    <string name="title_groups">Групи</string>
+    <string name="title_events">Події</string>
+    <string name="communities">Групи</string>
+    <string name="discover_groups">Я відкриваю</string>
+    <string name="my_groups">Мої групи</string>
+    <string name="members_number">%s членів</string>
+    <string name="members_number_singular">Член %s</string>
+    <string name="member_number">Член %s</string>
+    <string name="future_outgoing_events_number">%s запланованих подій</string>
+    <string name="future_outgoing_events_number_singular">%s очікувана подія</string>
+    <string name="search_group_hint">Пошук групи</string>
+    <string name="group_list_empty_state_title">На жаль, навколо вас ще немає інших груп.</string>
+    <string name="group_list_empty_state_subtitle">N\Не соромтеся створювати \nнові групи сусідів!</string>
+    <string name="group_list_search_empty_state_title">Блін, немає результатів, які відповідають вашому пошуку!</string>
+    <string name="group_list_search_empty_state_subtitle">Якщо на цю тему не існує групи n\, \nстворіть її!</string>
+    <string name="my_group_list_empty_state_title">Ви n\ ще не приєдналися до групи.</string>
+    <string name="my_group_list_empty_state_button">Відкрийте для себе групи</string>
+    <string name="admin">адмін</string>
+    <string name="to_know">Знати</string>
+    <string name="to_know_group">Про групу</string>
+    <string name="join">Приєднуйтесь</string>
+    <string name="welcome_message_placeholder">Не соромтеся надіслати перше повідомлення, щоб представитися.</string>
+    <string name="welcome_message_title">Вітаємо, ви учасник групи!</string>
+    <string name="welcome_message_btn_title">Я представляюсь</string>
+    <string name="member">Член</string>
+    <string name="members_location">%s членів. %s</string>
+    <string name="more"><u>En savoir plus</u></string>
+    <string name="group_settings">Налаштування групи</string>
+    <string name="report_group">щоб повідомити про проблему</string>
+    <string name="rules_group">Правила групи</string>
+    <string name="rules">Правило</string>
+    <string name="group_event">Групові заходи</string>
+    <string name="group_event_empty_state_title">У цій групі ще не заплановано жодної події</string>
+    <string name="group_event_empty_state_subtitle">Натисніть «+», щоб створити його</string>
+    <string name="group_posts_empty_state_title">У цій групі n\ (поки що) немає публікацій</string>
+    <string name="group_posts_empty_state_subtitle">Чому б не почати дискусію з сусідами?</string>
+    <string name="posts">Новини</string>
+    <string name="see_members">Переглянути учасників</string>
+    <string name="leave_group">Вийти з групи</string>
+    <string name="edit_group_information">Редагувати інформацію про групу</string>
+    <string name="notification_new_event">Нові події</string>
+    <string name="notification_new_messages">Нові повідомлення</string>
+    <string name="notification_new_members">L\ прибуття нових учасників</string>
+    <string name="group_notification_all">Вся групова діяльність</string>
+    <string name="group_share">Поділитися групою</string>
+    <string name="notify_me">Повідомте мене про</string>
+    <string name="about_group">Про групу</string>
+    <string name="leave_group_dialog_content">Ви хочете залишити групу?</string>
+    <string name="discuss">Коментувати…</string>
+    <string name="discussbis">Щоб написати повідомлення…</string>
+    <string name="no_comments">Без коментарів</string>
+    <string name="posts_comment_number"><u>%s commentaires</u></string>
+    <string name="posts_comment_number_singular"><u>%s commentaire</u></string>
+    <string name="comments_title">Коментарі</string>
+    <string name="write_your_message">Напишіть своє повідомлення</string>
+    <string name="share_post">Поділіться</string>
+    <string name="zoom_photo">Перемістіть і масштабуйте, щоб налаштувати фотографію.</string>
+    <string name="old_publications">Старі видання</string>
+    <string name="new_publications">Нові публікації</string>
+    <string name="empty_state_comments">Поки немає коментарів</string>
+    <string name="retry_comment">Помилка публікації, повторіть спробу</string>
+    <string name="join_group_to_comment">* Щоб прокоментувати цю публікацію, приєднайтеся до групи “%s”!</string>
+    <string name="report_sent">Ваш запит надіслано. Наша команда опрацює його якомога швидше.</string>
+    <string name="post_deleted">Ваш пост видалено!.</string>
+    <string name="message_deleted">Ваше повідомлення видалено!.</string>
+    <string name="welcome_user">Вітаємо, %s!</string>
+    <string name="contributions_title">Мої дії в мережі</string>
+    <string name="contributions_meeting">Красиві зустрічі Антураж</string>
+    <string name="contributions_meeting_empty">Ще немає зустрічей Entourage</string>
+    <string name="contributions_message">Відправлене повідомлення</string>
+    <string name="contributions_message_empty">Ще не надіслано жодного повідомлення</string>
+    <string name="contributions_event">Події\n</string>
+    <string name="contribution_event">Подія\n</string>
+    <string name="contributions_event_empty">Відвідайте свій перший захід</string>
+    <string name="contributions_group">Групи \n сусідів</string>
+    <string name="contribution_group">Група сусідів \n</string>
+    <string name="contributions_group_empty">N\ Не чекайте більше, щоб приєднатися до групи сусідів!</string>
+    <string name="zero">0</string>
+    <string name="all_pedago_content">Весь навчальний контент</string>
+    <string name="pedago_details">Навчальний зміст</string>
+    <string name="read">Читай!</string>
+    <string name="act">Діяти</string>
+    <string name="inspire">S\'надихає</string>
+    <string name="understand">Зрозуміти</string>
+    <string name="all">все</string>
+    <string name="want_to_act">Я тільки починаю</string>
+    <string name="not_implemented">Не впроваджений</string>
+    <string name="pedagogical_content">Усе, що вам потрібно знати, щоб перейти від \ до \'action</string>
+    <string name="picture">Фото</string>
+    <string name="image_mandatory">Фото обов&amp;apos;язкове</string>
+    <string name="show_more_lined"><u>Voir plus</u></string>
+    <string name="group_events">Групові заходи</string>
+    <string name="group_events_new">Також група організовує:</string>
+    <string name="january">січня</string>
+    <string name="february">ЛЮТИЙ</string>
+    <string name="march">березень</string>
+    <string name="april">квітень</string>
+    <string name="may">Може</string>
+    <string name="june">червень</string>
+    <string name="july">липень</string>
+    <string name="august">серпень</string>
+    <string name="september">Вересень</string>
+    <string name="october">жовтень</string>
+    <string name="november">Листопад</string>
+    <string name="december">Грудень</string>
+    <string name="choose_categories_event">Виберіть категорію (категорії), яка найкраще описує тему обговорення події \.</string>
+    <string name="event_success_title">Ваша подія \n онлайн!</string>
+    <string name="event_success_subtitle">Вітаємо, ви щойно створили нову подію.\nЩоб зробити її активнішою, \поговоріть про неї у своїх групах!</string>
+    <string name="see_event">Переглянути мою подію</string>
+    <string name="share_event">Поділіться подією \ у своїх групах</string>
+    <string name="share_event_settings">Поділіться подією \</string>
+    <string name="share_event_label">Ви можете поділитися подією лише з групами, учасником яких ви є. Тоді ваша подія стане видимою у вибраних групах, і всі учасники групи зможуть взяти участь.</string>
+    <string name="dont_share">Не діліться в жодній групі</string>
+    <string name="share_in_groups">Поділіться в одній або кількох групах</string>
+
+    <string name="date">Дата</string>
+    <string name="start_time">Час початку</string>
+    <string name="end_time">Час закінчення</string>
+    <string name="recurrence">Повторюваність</string>
+    <string name="juste_once">Тільки один раз</string>
+    <string name="every_week">Кожного тижня</string>
+    <string name="every_two_week">Кожних два тижні</string>
+    <string name="once_a_month">Раз на місяць</string>
+    <string name="place">Місце</string>
+    <string name="event_available_places">Кількість вільних місць</string>
+    <string name="event_limited_places">Чи кількість місць на заході обмежена?</string>
+    <string name="face_to_face">Особисто</string>
+    <string name="online">Онлайн</string>
+    <string name="add_url">Додайте URL-адресу</string>
+    <string name="discover_events">Я відкриваю</string>
+    <string name="my_events">Я беру участь</string>
+    <string name="canceled">- Скасовано</string>
+    <string name="title_btn_discover_event">Відкрийте для себе події</string>
+    <string name="title_button_create_event">Створіть подію</string>
+    <string name="event_list_empty_state_title">Ви ще не приєдналися до події</string>
+    <string name="event_list_empty_state_subtitle">C\ — це можливість дізнатися, що відбувається поблизу вас, або створити нову подію!</string>
+    <string name="discover_event_list_empty_state_title">Блін, немає результатів, які відповідають вашому пошуку!</string>
+    <string name="discover_event_list_empty_state_subtitle">Якщо поблизу вас немає подій, ви можете розширити область пошуку</string>
+    <string name="event_list_empty_state_no_discover">Ніяких подій навколо вас. N\Створіть його без вагань!</string>
+    <string name="need_help">Потрібна допомога d\</string>
+    <string name="solidarity_places_map">Карта місць солідарності</string>
+    <string name="solidarity_places_map_sub">Денні прийоми, камера зберігання багажу…</string>
+    <string name="moderator_subtitle">Ваш путівник у додатку</string>
+    <string name="create_encounters">Щоб створити чудову зустріч, немає нічого простішого!</string>
+    <string name="participate_to_events">Ваш лічильник збільшується з кожною участю в події та з кожним новим внеском або зробленим запитом.</string>
+    <string name="places_numbers">%s місць</string>
+    <string name="event_posts_empty_state_title">Є n\Цю подію (поки що) немає</string>
+    <string name="event_posts_empty_state_subtitle">привіт! C\ – це можливість поділитися першою новиною, щоб почати обговорення!</string>
+    <string name="participate">брати участь</string>
+    <string name="participating">брати участь</string>
+    <string name="geoUri">http://maps.google.com/maps?q=loc:%s</string>
+    <string name="event_settings">Параметри події \</string>
+    <string name="event_notification_all">Уся активність l\ події l\</string>
+    <string name="notification_new_publications">Нові публікації</string>
+    <string name="notification_new_participants">L\ прибуття нових учасників</string>
+    <string name="edit_event_information">Редагувати подію</string>
+    <string name="rules_event">Етична хартія заходів</string>
+    <string name="report_event">Повідомити про подію</string>
+    <string name="cancel_event">Скасувати подію</string>
+    <string name="modify_recurrence">Редагувати повторення</string>
+    <string name="about_event">Про подію \</string>
+    <string name="categories">Категорії</string>
+    <string name="category">Категорія</string>
+    <string name="associated_groups">Асоційовані групи:</string>
+    <string name="associated_group">Пов&amp;apos;язана група:</string>
+    <string name="date_recurrence_event">%s . %s</string>
+    <string name="start_and_end_time_event">Від %s до %s</string>
+    <string name="limited_places">Обмежена кількість місць: %s</string>
+    <string name="created_at">Створено %s</string>
+    <string name="updated_at">Змінено %s</string>
+    <string name="canceled_at">Скасовано %s</string>
+    <string name="leave_event">Вийти з події \</string>
+    <string name="leave_event_dialog_content">Ви хочете вийти з події \?</string>
+    <string name="dot">•</string>
+    <string name="event_limited_places_title">Захід з обмеженою кількістю місць</string>
+    <string name="event_limited_places_subtitle">Зверніть увагу, кількість місць на цій події обмежена, тому ваша реєстрація не гарантується. Адміністратор заходу зв’яжеться з вами для підтвердження бронювання місця.</string>
+    <string name="event_add_to_calendar_title">Ваша реєстрація врахована!</string>
+    <string name="event_add_to_calendar_subtitle">Бажаєте додати цю подію до свого особистого календаря?</string>
+    <string name="add">додати</string>
+    <string name="add_oui">Так</string>
+    <string name="event_places">Кількість місць</string>
+    <string name="event_canceled">Захід скасовано</string>
+    <string name="member_since">Член оточення з</string>
+    <string name="profile_date_format">ММ/рррр</string>
+    <plurals name="number_of_people">
+        <item quantity="one">%1$d учасник</item>
+        <item quantity="few">%1$d учасники</item>
+        <item quantity="many">%1$d учасників</item>
+        <item quantity="other">%1$d учасників</item>
+    </plurals>
+    <string name="event_cancel_subtitle_pop">Ви хочете скасувати подію? Всі учасники будуть повідомлені про скасування.</string>
+    <string name="event_cancel_recurrent_event">Скасувати подію, що повторюється</string>
+    <string name="this_event">Ця подія</string>
+    <string name="all_events_recurrent">Ця подія і всі наступні</string>
+    <string name="date_of_event">Дата події</string>
+    <string name="edit_event">Відредагуйте подію \</string>
+    <string name="event_edit_recurrent_event">Редагувати повторювану подію</string>
+    <string name="error_event_end_time">Час завершення L\ не може перевищувати півночі</string>
+    <string name="deleted_publi">Ця публікація була видалена.</string>
+    <string name="deleted_message">Це повідомлення було видалено.</string>
+    <string name="deleted_comment">Цей коментар було видалено.</string>
+    <string name="deleted__my_message">Ви видалили це повідомлення.</string>
+
+    <!-- Home pop congrat -->
+
+    /** Home popup congratulation */
+    <string name="home_congrat_title_single">молодці ! Ви виконали %d нову дію!</string>
+    <string name="home_congrat_title_plural">молодці ! Ви виконали %d нових дій!</string>
+    <string name="home_congrat_title_next">Чудово, у \ є щось нове!</string>
+    <string name="three_point">…</string>
+
+    <!-- Home ERROR DEEPLINKS -->
+    <string name="error_get_event">Ця подія n\ більше не існує.</string>
+    <string name="error_get_group">Ця сусідня група n\ більше не існує.</string>
+    <string name="error_get_action">Ця дія n\ більше не існує.</string>
+    <string name="error_get_discussion">Це обговорення n\'більше не існує.</string>
+
+    <!-- WELCOME PAGES -->
+    <string name="welcome_one_title">Ласкаво просимо до \nсоціальної мережі, по-справжньому соціальної</string>
+    <string name="welcome_one_content">Для багатьох вулиця — це місце проходу.\nДля деяких c\ — це повсякденне життя.\nТож для початку познайомтеся з тими, хто живе ним щодня.</string>
+    <string name="welcome_one_sensib">Знайдіть наш інформаційний вміст<u><font color="#F55F24">ici</font></u></string>
+
+    <string name="welcome_two_title">C\Пора починати!</string>
+    <string name="welcome_two_text_one_corrected">Соціальна мережа, c\, краща з кількома людьми!\nПредставтеся %s</string>
+    <string name="welcome_two_text_one">Соціальна мережа c\'краща з кількома людьми!\nПредставтеся своїй групі %s</string>
+    <string name="welcome_two_text_one_no_group">Представтеся своїй групі сусідів</string>
+    <string name="welcome_two_text_two">Кілька порад щодо знайомства:</string>
+    <string name="welcome_two_text_pin_one">Назвіть своє ім&amp;apos;я, своє місто</string>
+    <string name="welcome_two_text_pin_two">Поговоріть про свої захоплення</string>
+    <string name="welcome_two_text_pin_three">Підкресліть свої потреби та бажання</string>
+    <string name="welcome_two_text_four">Потрібне натхнення d\?</string>
+    <string name="welcome_two_button_title">Передай привіт моїм сусідам</string>
+    <string name="welcome_card_example_card_content">Привіт паризькі сусіди. Мене звуть m\ Ерік і j\ Я з нетерпінням чекаю зустрічі з вами на подіях антуражної мережі.</string>
+
+    <string name="welcome_four_title">На ваш розсуд</string>
+    <string name="welcome_four_main_text">Як щодо d\, невеликої вікторини, щоб позбутися упереджень щодо світу вулиці?</string>
+    <string name="welcome_four_secondary_text">На Вашу думку, який відсоток бездомних має мобільний телефон?</string>
+    <string name="welcome_main_text">Розпочніть вікторину</string>
+
+    <string name="welcome_five_title">Вже 10 днів: ласкаво просимо в сім&amp;apos;ю!</string>
+    <string name="welcome_five_main_text">C\Це божевільно, як швидко летить час, коли ти в хорошій компанії.\n\nТепер допоможи нам розширити мережу Entourage: принеси свій!</string>
+    <string name="welcome_five_main_button">Поділіться програмою \</string>
+
+
+    <string name="welcome_three_button_title">Відкрийте для себе події</string>
+    <string name="welcome_three_title_with_event">6000 людей знайшли нових друзів на заході Entourage</string>
+    <string name="welcome_three_title_with_demand">Протягни руку допомоги сусідам</string>
+    <string name="welcome_three_title_with_contrib">Поруч немає допомоги з d\? Створіть його!</string>
+    <string name="welcome_three_text_one">Знайдіть подію \, яка вас цікавить, і приходьте та насолодіться дружнім моментом.</string>
+    <string name="welcome_three_text_one_with_demand">Подивіться на запити, опубліковані поблизу вас:</string>
+    <string name="welcome_three_text_one_with_contrib">Хороший спосіб налагодити зв’язки між сусідами – поділитися своїми інтересами, пристрастями або просто випити кави, щоб познайомитися.</string>
+    <string name="welcome_three_contrib_name">Обговорити за кавою</string>
+    <string name="welcome_three_contrib_name_two">Дарування жіночого одягу</string>
+    <string name="welcome_three_contrib_distance">10 м від мене</string>
+    <string name="welcome_three_contrib_location">Париж (75010)</string>
+    <string name="welcome_three_contrib_date">21 червня 2022 року о 12 год.</string>
+    <string name="welcome_three_main_button_title_event">Відкрийте для себе події</string>
+    <string name="welcome_three_main_button_title_demand">Відкрийте запити</string>
+    <string name="welcome_three_main_button_title_contrib">Створіть внесок</string>
+    <string name="welcome_five_share_title">«Відкрийте для себе програму \ Entourage, справді соціальну соціальну мережу»</string>
+
+    <!--    STRING ABOUT-->
+    <string name="about_title">ПРО</string>
+    <string name="about_suggestion">Пропозиція? Проблема ?</string>
+    <string name="about_feedback">поділіться своєю думкою</string>
+    <string name="about_tutorial">Перегляньте підручник</string>
+    <string name="about_conditions">Умови використання</string>
+    <string name="about_privacy">Політика конфіденційності</string>
+    <string name="about_website">Сайт Entourage</string>
+    <string name="about_email">Зв&amp;apos;яжіться з Entourage</string>
+    <string name="about_version_format">v%1$s</string>
+    <string name="about_debug_info_format">збірка: постановка/%1$s\nFIId: %2$s</string>
+    <string name="about_clearing_entourage_cache">Дані локальної історії d\ видалено</string>
+    <string name="about_rate_app">Оцініть програму \</string>
+    <string name="about_share_app">Поділіться додатком \</string>
+    <string name="about_oss_licenses">Ліцензії з відкритим кодом</string>
+    <string name="about_partner">Наші меценати та партнери</string>
+
+    <!--    STRING ACTION-->
+    <string name="entourage_info_discussion">ДИСКУСІЯ</string>
+    <string name="action_title_header_signal_problem">щоб повідомити про проблему</string>
+    <string name="entourage_info_text_join_rejected">\u0020 відхилено</string>
+    <string name="entourage_info_text_join_cancelled_entourage">скасував свій запит на приєднання до групи</string>
+    <string name="entourage_info_text_join_quited_entourage">залишив групу</string>
+    <string name="entourage_info_text_join_html">&lt;font color=\"#F55F24\"&gt;%1$s &lt;/font&gt;%2$s</string>
+    <string name="entourage_info_error_chat_message">Повідомлення не надіслано</string>
+    <string name="entourage_info_options_stop">Вкладати</string>
+    <string name="entourage_info_options_cancel_event">Скасувати подію \</string>
+    <string name="entourage_info_options_quit">Залишити</string>
+    <string name="entourage_info_options_report">щоб повідомити про проблему</string>
+    <string name="entourage_info_options_share">Поділіться</string>
+    <string name="entourage_info_options_join">брати участь</string>
+    <string name="entourage_info_options_close">Скасувати</string>
+    <string name="entourage_info_options_contact">контакт</string>
+    <string name="entourage_info_options_cancel_request">Відкликайте мій запит</string>
+    <string name="entourage_info_options_promote">Сприяти випуску</string>
+    <string name="entourage_info_options_reopen_entourage">Знову відкрити</string>
+    <string name="entourage_info_quit_action_error">d\ не вдалося надіслати запит</string>
+    <string name="entourage_info_members_count">Учасники (%1$d)</string>
+    <string name="entourage_info_members_add">Запросіть друга</string>
+    <string name="entourage_info_members_add_not_allowed">Не вдалося запросити</string>
+    <string name="entourage_info_request_join_title_entourage">Приєднуйтесь до обговорення</string>
+    <string name="entourage_info_request_join_title_entourage_new">Відповідай зараз!</string>
+    <string name="entourage_info_request_join_button_event">брати участь</string>
+    <string name="entourage_info_request_join_button_entourage">Приєднуйтесь</string>
+    <string name="entourage_info_error_retrieve_entourage">Антураж недоступний</string>
+    <string name="entourage_info_metadata_organised_by">Організовано \u0020</string>
+    <string name="entourage_info_metadata_organiser_format">від %1$s</string>
+    <string name="entourage_info_metadata_date_format">Зустріч %1$s %2$s</string>
+    <string name="entourage_info_metadata_dateStart_hours_format">До зустрічі на %1$s %2$s</string>
+    <string name="entourage_info_metadata_dateStart_End_hours_format">Зустріч з %1$s %2$s до %3$s %4$s</string>
+    <string name="entourage_info_metadata_dateStart_hours_format_new">%1$s %2$s</string>
+    <string name="entourage_info_metadata_dateStart_End_hours_format_new">Від %1$s %2$s до %3$s %4$s</string>
+
+    <string name="loader_title_outing_finish">Видалення події \</string>
+    <string name="loader_title_action_finish">Видалення дії \</string>
+
+    <!-- Entourage Cell -->
+    <string name="entourage_cell_title">%1$s</string>
+    <string name="entourage_cell_author">%1$s</string>
+    <string name="entourage_cell_location">у %1$s</string>
+    <string name="entourage_cell_numberOfPeople">%1$d</string>
+    <string name="entourage_cell_button_join">приєднуюсь</string>
+    <string name="entourage_cell_button_accepted">Активний</string>
+    <string name="entourage_cell_button_accepted_other">✔︎ Я беру участь</string>
+    <string name="entourage_cell_button_pending">На утриманні</string>
+    <string name="entourage_cell_button_rejected">Відмовлено</string>
+    <string name="entourage_cell_button_freezed">Паркан</string>
+    <string name="entourage_cell_button_freezed_success">Успіх</string>
+    <string name="entourage_cell_button_view">Побачити більше</string>
+    <string name="entourage_cell_button_freezed_success_cancel">Скасовано</string>
+    <string name="entourage_cell_title_event">Подія %1$s</string>
+
+    <!-- Promote Entourage Email -->
+    <string name="promote_entourage_email_title">Надішліть сповіщення про випуск %1$s</string>
+    <string name="promote_entourage_email_body">Привіт!\nПросимо прорекламувати екскурсію "%1$s" за допомогою сповіщень, надісланих на телефони членів таких районів:\n\nДякуємо</string>
+
+    <!-- Newsfeed -->
+    <string name="newsfeed_load_more_description">C\ для акцій цього відділу!</string>
+    <string name="newsfeed_no_more_items">Ніякого іншого оточення поблизу цієї позиції немає</string>
+
+    <!-- Map Filter -->
+    <string name="map_filter_outing_title">Події</string>
+    <string name="map_filter_entourage_outing_text">Події</string>
+    <string name="map_filter_past_events_text">Включати минуле</string>
+
+    <!-- New detail action/event -->
+    <string name="detail_button_action_join">брати участь</string>
+    <string name="detail_button_action_share">Поділіться</string>
+    <string name="detail_action_event_online">Онлайн</string>
+    <string name="detail_action_event_info_rdv">призначає вам зустріч</string>
+    <string name="detail_action_event_info_gift">запропонуйте цю допомогу</string>
+    <string name="detail_action_event_info_demand">закликає до мережевої солідарності</string>
+    <string name="detail_event_full">повна подія</string>
+
+    <string name="confirm_cancel_demand">Ви підтверджуєте, що хочете відкликати свій запит?</string>
+    <string name="validate_cancel_demand">Підтвердити</string>
+
+    <string name="info_event_online_feed">Онлайн</string>
+
+    <string name="info_action_private">Приватна дія</string>
+    <string name="info_event_private">Приватна подія</string>
+    <string name="info_pop_message_private">Ваш запит на участь очікує перевірки.</string>
+    <string name="info_pop_private_message_action">Щоб взяти участь у цій приватній дії, автор цієї дії має підтвердити вашу участь.\n\nЯкщо ваш запит буде прийнято, ви зможете отримати доступ до групової розмови.</string>
+    <string name="info_pop_private_message_event">Щоб взяти участь у цій приватній події, автор цієї події має підтвердити вашу участь.\n\nЯкщо ваш запит буде прийнято, ви зможете отримати доступ до групової розмови.</string>
+    <string name="info_pop_private_title">Заявка на участь</string>
+    <string name="info_pop_private_bt_ok">Підтвердити</string>
+    <string name="info_pop_private_bt_cancel">Скасувати</string>
+    <string name="info_asso_abo">• S\підписатися &gt;</string>
+    <string name="info_asso_joined">• Абонент</string>
+    <string name="by_author_search">Від %1$s</string>
+
+    <string name="action_leave_voice_message">Записати голосове повідомлення</string>
+    <string name="action_voice_message_button">Почніть розпізнавання голосу</string>
+    <string name="action_voice_message_not_supported">Розпізнавання голосу n\ не підтримується на вашому телефоні.</string>
+    <string name="at_km_from_me">до %d км від мене</string>
+    <string name="at_meter_from_me">до %d м від мене</string>
+    <string name="inf_hundred_meter">менше 100 м від мене</string>
+    <string name="share_title_contrib">Цей внесок може вас зацікавити.</string>
+    <string name="share_title_demande">Цей запит може вас зацікавити.</string>
+    <string name="share_title_event">Ця подія Entourage може вас зацікавити.</string>
+    <string name="share_title_group">Ця група сусідів Entourage може вас зацікавити.</string>
+
+    <!--    STRING ACTION NEW-->
+    <string name="actions_title">Взаємодопомога</string>
+    <string name="actions_tab_contribs">Внески</string>
+    <string name="actions_tab_demands">Запити</string>
+
+    <string name="action_date_list">%s</string>
+
+    <string name="action_bt_my_actions">Мої оголошення</string>
+
+    <string name="action_contrib_empty_state_title">Немає внесків, що відповідають вашому пошуку</string>
+    <string name="action_contrib_empty_state_desc">Ви можете розширити поле пошуку або зробити внесок</string>
+
+    <string name="action_demand_empty_state_title">Немає запитів, що відповідають вашому пошуку</string>
+    <string name="action_demand_empty_state_desc">Ви можете розширити поле пошуку або створити запит</string>
+
+    <string name="action_bt_cat_filters">Категорії</string>
+    <string name="action_cat_filters_title">Фільтрувати за категоріями</string>
+    <string name="action_location_filter_title">Фільтрувати за розташуванням</string>
+
+    <string name="action_menu_create_demand">Створіть запит</string>
+    <string name="action_menu_create_contrib">Створіть внесок</string>
+
+    <string name="action_my_actions">Мої оголошення</string>
+
+    <string name="action_my_empty_title">Ви не публікували жодної реклами</string>
+    <string name="action_my_empty_subtitle">Ви можете створити внесок або запит, натиснувши на «+» на сторінці «Взаємодопомога».</string>
+
+    <string name="action_cancel_title">Оголошення видалено...</string>
+    <string name="action_cancel_subtitle">Ви можете переглянути інші оголошення, які можуть вас зацікавити, або створити заявку в розділі «Взаємодопомога».</string>
+
+    <string name="action_report_demand">Запит звіту</string>
+    <string name="action_report_contrib">Звіт про внесок</string>
+
+    <string name="action_title_section_author">Створіть його за допомогою</string>
+    <string name="action_canceled">Оголошення видалено</string>
+    <string name="action_show_charte"><u>Charte éthique</u></string>
+    <string name="signal_a_problem"><u>Signaler un problème</u></string>
+
+    <string name="action_detail_bt_cancel">ВИДАЛИТИ</string>
+    <string name="action_detail_bt_modify">Щоб змінити</string>
+    <string name="action_detail_bt_contact">контакт</string>
+    <string name="action_detail_bt_back">Повернення до сторінки оголошень</string>
+
+    <string name="action_member_since">Учасник з %s</string>
+    <string name="action_created_at_by">"Створив %s</string>
+    <string name="action_created_by">"Створено %s</string>
+    <string name="action_created_by_">"Створений</string>
+
+    <string name="atKm">%s, %s км від мене</string>
+    <string name="AtKm">TO %s км від мене</string>
+
+    <!-- Action create -->
+    <string name="action_create_demand_title">Новий запит</string>
+    <string name="action_create_contrib_title">Новий внесок</string>
+    <string name="action_create_title">Назва дії \</string>
+    <string name="action_create_subtitle">Дайте коротку та зрозумілу назву своєму %s</string>
+    <string name="action_create_title_hint">Назвіть %s</string>
+    <string name="action_create_description">опис</string>
+    <string name="action_create_description_hint">Детально опишіть %s, який ви пропонуєте</string>
+    <string name="action_create_add_photo">Фото</string>
+
+    <string name="action_name_demand">запит</string>
+    <string name="action_name_contrib">внесок</string>
+    <string name="action_name_Demand">запит</string>
+    <string name="action_name_Contrib">внесок</string>
+
+    <!-- pop back create-->
+    <string name="back_create_action_title">Увага</string>
+    <string name="back_create_action_content">Якщо ви вийдете з форми створення %s, уся введена інформація буде втрачена.</string>
+
+    <string name="action_crete_cat_about">Ви бажаєте запропонувати %s, який не відповідає жодній із цих категорій? Здається, \ не місце в мережі,</string>
+    <string name="action_create_cat_about_more0">але завжди можна</string>
+    <string name="action_create_cat_about_more1"><u> en savoir plus par ici.</u></string>
+
+    <string name="action_create_cat_choose_category">Виберіть категорію, яка найкраще описує ваш %s.</string>
+    <string name="action_create_location_title">Знайдіть %s</string>
+    <string name="action_create_location_subtitle">Ваше точне місцезнаходження не повідомлятиметься, ви можете вказати місцезнаходження, відмінне від зони дії вашого профілю.</string>
+
+    <string name="action_create_success_title">Ваш %s\n успішно створено!</string>
+    <string name="action_create_success_subtitle">Вітаємо, ви щойно створили новий %s. Щоб зробити це більш помітним, обговоріть це у своїх групах!</string>
+    <string name="action_create_end_finish_bt">До кінця</string>
+    <string name="action_error_create_action">Помилка створення %s</string>
+    <string name="action_error_edit_action">Помилка зміни %s</string>
+    <string name="action_updated">Модифікацію прийнято до уваги</string>
+
+    <!-- pop cancel action -->
+    <string name="action_cancel_pop_bt_yes">Так</string>
+    <string name="action_cancel_pop_bt_no">Немає</string>
+    <string name="action_cancel_pop_bt_send">Надіслати</string>
+    <string name="action_cancel_pop_title">Видалити %s</string>
+    <string name="action_cancel_pop_subtitle">Ваш %s був успішним?</string>
+    <string name="action_cancel_pop_comment">Розкажіть нам більше про свій досвід</string>
+    <string name="action_cancel_pop_comment_placeholder">Розкажіть про свій досвід!</string>
+
+    <string name="action_edit_demand_title">Редагувати запит</string>
+    <string name="action_edit_contrib_title">Редагувати пост</string>
+
+
+    <!--    STRING CAROUSEL-->
+    <string name="carousel_close_button">@string/close</string>
+
+    <string name="carousel_p1_title">Представтеся учасникам мережі</string>
+    <string name="carousel_p1_about">Добрий ранок ! Я щойно приєднався до мережі і хотів би познайомитися з турботливими сусідами.</string>
+    <string name="carousel_p1_content">Щоб ввести свій опис, перейдіть до свого профілю за допомогою кнопки &lt;font color="#ec4e1a"&gt;profile&lt;/font&gt; унизу праворуч</string>
+
+    <string name="carousel_p2_title">Досліджуйте ініціативи навколо вас</string>entourages
+    <string name="carousel_p2_content">Ознайомтеся з діями, створеними вашими сусідами, і &lt;font color="#ec4e1a"&gt;приєднайтеся до тих, які вас цікавлять на карті&lt;/font&gt;</string>
+
+    <string name="carousel_p3_title">Наважтеся зустрітися з бездомними</string>
+    <string name="carousel_p3_content">&lt;font color="#ec4e1a"&gt;Відкрийте для себе практичні поради&lt;/font&gt; посібника &lt;font color="#ec4e1a"&gt;Simple Comme Bonjour&lt;/font&gt; у профілі внизу праворуч</string>
+
+    <string name="carousel_p4_title">Запустіть акцію солідарності</string>
+    <string name="carousel_p4_content">Покличте сусідів допомогти оточити бездомного. &lt;font color="#ec4e1a"&gt;Створити дію за допомогою кнопки:&lt;/font&gt;</string>
+
+    <!--    STRING CGUs-->
+    <string name="group_params_cgu_title">Правило</string>
+    <string name="group_params_cgu_description">Правила групи, читайте уважно.</string>
+    <string name="neighborhood_CGU_1_title">Ставлення</string>
+    <string name="neighborhood_CGU_1">Обмін у групах має відбуватися з повагою, довірою та взаємодопомогою між членами, щоб кожен почувався в безпеці та в теплому оточенні. Тому забороняється робити принизливі, агресивні, образливі, дискримінаційні, наполегливі, нетерпимі чи наклепницькі коментарі.</string>
+    <string name="neighborhood_CGU_2_title">Торгівля</string>
+    <string name="neighborhood_CGU_2">Групи є місцями обміну та взаємодопомоги між сусідами, тому реклама заборонена, як і пропозиції купівлі, продажу чи оренди.</string>
+    <string name="neighborhood_CGU_3_title">Джекпот</string>
+    <string name="neighborhood_CGU_3">Загалом між учасниками груп немає грошових відносин, призові фонди заборонені.</string>
+    <string name="neighborhood_CGU_4_title">Теми</string>
+    <string name="neighborhood_CGU_4">Доброзичливе вільне вираження є правилом для груп. Однак, щоб поважати аполітичний і світський характер Entourage та в інтересах захисту людей, теми, пов’язані з політикою, релігією, медициною чи сексуальністю, не дозволені.</string>
+    <string name="neighborhood_CGU_5_title">Захист людей</string>
+    <string name="neighborhood_CGU_5">Публікації не можуть містити жодних персональних даних, які дозволяють точно ідентифікувати та знайти особу, а також будь-яких конфіденційних даних про людей (медичне, судове, етичне походження, дані про сексуальну чи політичну орієнтацію тощо).</string>
+
+    <string name="event_params_cgu_title">Статут заходів</string>
+    <string name="event_params_cgu_description">Статут заходів, читайте уважно.</string>
+    <string name="event_CGU_1_title">Бути добрим</string>
+    <string name="event_CGU_1">Я використовую програму з метою взаємодопомоги людям, які перебувають у дуже нестабільних або виключених ситуаціях.</string>
+    <string name="event_CGU_2_title">Колектова угода</string>
+    <string name="event_CGU_2">Я забезпечую згоду зацікавлених людей перед створенням дії.</string>
+    <string name="event_CGU_3_title">Забезпечення захисту людей</string>
+    <string name="event_CGU_3">Я гарантую, що не повідомлятиму конфіденційних особистих даних (медичних, юридичних тощо), а також дозволятиму точну ідентифікацію чи місцезнаходження людей.</string>
+    <string name="event_CGU_4_title">Будьте єдині, без різниці</string>
+    <string name="event_CGU_4">Я зобов&amp;apos;язуюсь не робити різниці щодо раси, кольору шкіри, статі, мови, релігії, політичних поглядів, власності, народження чи будь-якого іншого стану.</string>
+
+    <string name="action_params_cgu_title">Етичний кодекс</string>
+    <string name="action_params_cgu_description"></string>
+    <string name="action_CGU_1_title">Взаємодопомога</string>
+    <string name="action_CGU_1">Додаток дозволяє створювати нові зустрічі між сусідами та заохочувати час обміну. Віддалена допомога (автомобілем, доставкою, подарунковим ваучером, призовим фондом тощо) не дозволена.</string>
+    <string name="action_CGU_2_title">Внески та запити</string>
+    <string name="action_CGU_2">Я можу попросити або запропонувати матеріальні блага (обладнання, одяг тощо), послуги (пральня, друк документів тощо) та час спільного спілкування (кава, заходи тощо). Я не можу вимагати чи пропонувати фінансову допомогу, допомогу з проживанням чи харчуванням. Але якщо мені це потрібно, я можу зв&amp;apos;язатися з модератором, який мене скерує.</string>
+    <string name="action_CGU_3_title">Згода</string>
+    <string name="action_CGU_3">Коли я публікую запит для третьої сторони, я обов’язково отримую їхню згоду заздалегідь.</string>
+    <string name="action_CGU_4_title">Жодної дискримінації</string>
+    <string name="action_CGU_4">Я зобов&amp;apos;язуюсь вступати в стосунки з людьми без дискримінації (за расою, релігією, сексуальною орієнтацією, політичними переконаннями тощо).</string>
+    <string name="action_CGU_5_title">Захист людей</string>
+    <string name="action_CGU_5">Я гарантую, що мої дії не містять жодних персональних даних (прізвища, номера телефону, точної адреси тощо), які дозволяють точно ідентифікувати та знайти особу, а також будь-яких конфіденційних даних (медичних, юридичних тощо).</string>
+
+    <!--STRING COUNTRY -->
+
+    <string name="phone_code" translatable="false">+%s</string>
+    <string name="country_name_and_code" translatable="false">%1$s %2$s</string>
+    <string name="search_hint">шукати…</string>
+    <string name="no_result_found">результатів не знайдено</string>
+    <string name="select_country">Виберіть країну</string>
+    <string name="country_code_and_phone_code">(%1$s) +%2$s</string>
+    <string name="country_full_name_and_phone_code">%1$s +%2$s</string>
+
+    <!-- Country Codes -->
+
+    <string name="country_afghanistan_name">Афганістан</string>
+    <string name="country_afghanistan_code">аф</string>
+    <string name="country_afghanistan_number" translatable="false">93</string>
+
+    <string name="country_albania_name">Албанія</string>
+    <string name="country_albania_code">al</string>
+    <string name="country_albania_number" translatable="false">355</string>
+
+    <string name="country_algeria_name">Алжир</string>
+    <string name="country_algeria_code">дз</string>
+    <string name="country_algeria_number" translatable="false">213</string>
+
+    <string name="country_andorra_name">Андорра</string>
+    <string name="country_andorra_code">оголошення</string>
+    <string name="country_andorra_number" translatable="false">376</string>
+
+    <string name="country_angola_name">Ангола</string>
+    <string name="country_angola_code">ао</string>
+    <string name="country_angola_number" translatable="false">244</string>
+
+    <string name="country_argentina_name">Аргентина</string>
+    <string name="country_argentina_code">ар</string>
+    <string name="country_argentina_number" translatable="false">54</string>
+
+    <string name="country_armenia_name">Вірменія</string>
+    <string name="country_armenia_code">ранок</string>
+    <string name="country_armenia_number" translatable="false">374</string>
+
+    <string name="country_australia_name">Австралія</string>
+    <string name="country_australia_code">на</string>
+    <string name="country_australia_number" translatable="false">61</string>
+
+    <string name="country_austria_name">Австрія</string>
+    <string name="country_austria_code">в</string>
+    <string name="country_austria_number" translatable="false">43</string>
+
+    <string name="country_azerbaijan_name">Азербайджан</string>
+    <string name="country_azerbaijan_code">аз</string>
+    <string name="country_azerbaijan_number" translatable="false">994</string>
+
+    <string name="country_bahrain_name">Бахрейн</string>
+    <string name="country_bahrain_code">bh</string>
+    <string name="country_bahrain_number" translatable="false">973</string>
+
+    <string name="country_bangladesh_name">Бангладеш</string>
+    <string name="country_bangladesh_code">комікс</string>
+    <string name="country_bangladesh_number" translatable="false">880</string>
+
+    <string name="country_belarus_name">Білорусь</string>
+    <string name="country_belarus_code">за</string>
+    <string name="country_belarus_number" translatable="false">375</string>
+
+    <string name="country_belgium_name">Бельгія</string>
+    <string name="country_belgium_code">бути</string>
+    <string name="country_belgium_number" translatable="false">32</string>
+    <string name="country_belgium_flag" translatable="false">🇧🇪</string>
+
+    <string name="country_belize_name">Беліз</string>
+    <string name="country_belize_code">bz</string>
+    <string name="country_belize_number" translatable="false">501</string>
+
+    <string name="country_benin_name">Доброякісний</string>
+    <string name="country_benin_code">bj</string>
+    <string name="country_benin_number" translatable="false">229</string>
+
+    <string name="country_bhutan_name">Бутан</string>
+    <string name="country_bhutan_code">bt</string>
+    <string name="country_bhutan_number" translatable="false">975</string>
+
+    <string name="country_bolivia_name">Болівія</string>
+    <string name="country_bolivia_code">бо</string>
+    <string name="country_bolivia_number" translatable="false">591</string>
+
+    <string name="country_bosnia_and_herzegovina_name">Боснія і Герцеговина</string>
+    <string name="country_bosnia_and_herzegovina_code">ба</string>
+    <string name="country_bosnia_and_herzegovina_number" translatable="false">387</string>
+
+    <string name="country_botswana_name">Ботсвана</string>
+    <string name="country_botswana_code">bw</string>
+    <string name="country_botswana_number" translatable="false">267</string>
+
+    <string name="country_brazil_name">Бразилія</string>
+    <string name="country_brazil_code">бр</string>
+    <string name="country_brazil_number" translatable="false">55</string>
+
+    <string name="country_brunei_darussalam_name">Бруней</string>
+    <string name="country_brunei_darussalam_code">млрд</string>
+    <string name="country_brunei_darussalam_number" translatable="false">673</string>
+
+    <string name="country_bulgaria_name">Болгарія</string>
+    <string name="country_bulgaria_code">bg</string>
+    <string name="country_bulgaria_number" translatable="false">359</string>
+
+    <string name="country_burkina_faso_name">Буркіна Фасо</string>
+    <string name="country_burkina_faso_code">bf</string>
+    <string name="country_burkina_faso_number" translatable="false">226</string>
+
+    <string name="country_burundi_name">Бурунді</string>
+    <string name="country_burundi_code">бі</string>
+    <string name="country_burundi_number" translatable="false">257</string>
+
+    <string name="country_cambodia_name">Камбоджа</string>
+    <string name="country_cambodia_code">х</string>
+    <string name="country_cambodia_number" translatable="false">855</string>
+
+    <string name="country_cameroon_name">Камерун</string>
+    <string name="country_cameroon_code">см</string>
+    <string name="country_cameroon_number" translatable="false">237</string>
+
+    <string name="country_canada_name">Канада</string>
+    <string name="country_canada_code">що</string>
+    <string name="country_canada_number" translatable="false">1</string>
+
+    <string name="country_cape_verde_name">зелена шапка</string>
+    <string name="country_cape_verde_code">резюме</string>
+    <string name="country_cape_verde_number" translatable="false">238</string>
+
+    <string name="country_central_african_republic_name">Центральноафриканська Республіка</string>
+    <string name="country_central_african_republic_code">побачити</string>
+    <string name="country_central_african_republic_number" translatable="false">236</string>
+
+    <string name="country_chad_name">Чад</string>
+    <string name="country_chad_code">тд</string>
+    <string name="country_chad_number" translatable="false">235</string>
+
+    <string name="country_chile_name">Чилі</string>
+    <string name="country_chile_code">кл</string>
+    <string name="country_chile_number" translatable="false">56</string>
+
+    <string name="country_china_name">Китай</string>
+    <string name="country_china_code">cn</string>
+    <string name="country_china_number" translatable="false">86</string>
+
+    <string name="country_colombia_name">Колумбія</string>
+    <string name="country_colombia_code">співробітництво</string>
+    <string name="country_colombia_number" translatable="false">57</string>
+
+    <string name="country_congo_name">Республіка Конго</string>
+    <string name="country_congo_code">cg</string>
+    <string name="country_congo_number" translatable="false">242</string>
+
+    <string name="country_the_democratic_republic_of_congo_name">Демократична Республіка Конго</string>
+    <string name="country_the_democratic_republic_of_congo_code">CD</string>
+    <string name="country_the_democratic_republic_of_congo_number" translatable="false">243</string>
+
+    <string name="country_costa_rica_name">Коста-Ріка</string>
+    <string name="country_costa_rica_code">кр</string>
+    <string name="country_costa_rica_number" translatable="false">506</string>
+
+    <string name="country_croatia_name">Хорватія</string>
+    <string name="country_croatia_code">год</string>
+    <string name="country_croatia_number" translatable="false">385</string>
+
+    <string name="country_cuba_name">Куба</string>
+    <string name="country_cuba_code">куб</string>
+    <string name="country_cuba_number" translatable="false">53</string>
+
+    <string name="country_cyprus_name">Кіпр</string>
+    <string name="country_cyprus_code">cy</string>
+    <string name="country_cyprus_number" translatable="false">357</string>
+
+    <string name="country_czech_republic_name">Чеська Республіка</string>
+    <string name="country_czech_republic_code">cz</string>
+    <string name="country_czech_republic_number" translatable="false">420</string>
+
+    <string name="country_denmark_name">Данія</string>
+    <string name="country_denmark_code">dk</string>
+    <string name="country_denmark_number" translatable="false">45</string>
+
+    <string name="country_djibouti_name">Джібуті</string>
+    <string name="country_djibouti_code">діджей</string>
+    <string name="country_djibouti_number" translatable="false">253</string>
+
+    <string name="country_dominica_name">Домінік</string>
+    <string name="country_dominica_code">дм</string>
+    <string name="country_dominica_number" translatable="false">1767 рік</string>
+
+    <string name="country_dominican_republic_name">Домініканська республіка</string>
+    <string name="country_dominican_republic_code">робити</string>
+    <string name="country_dominican_republic_number" translatable="false">1</string>
+
+    <string name="country_timor_leste_name">Тимор-Лешті</string>
+    <string name="country_timor_leste_code">tl</string>
+    <string name="country_timor_leste_number" translatable="false">670</string>
+
+    <string name="country_ecuador_name">Еквадор</string>
+    <string name="country_ecuador_code">ек</string>
+    <string name="country_ecuador_number" translatable="false">593</string>
+
+    <string name="country_egypt_name">Єгипет</string>
+    <string name="country_egypt_code">напр.</string>
+    <string name="country_egypt_number" translatable="false">20</string>
+
+    <string name="country_el_salvador_name">Сальвадор</string>
+    <string name="country_el_salvador_code">с.в.</string>
+    <string name="country_el_salvador_number" translatable="false">503</string>
+
+    <string name="country_equatorial_guinea_name">Екваторіальна Гвінея</string>
+    <string name="country_equatorial_guinea_code">gq</string>
+    <string name="country_equatorial_guinea_number" translatable="false">240</string>
+
+    <string name="country_eritrea_name">Еритрея</string>
+    <string name="country_eritrea_code">ер</string>
+    <string name="country_eritrea_number" translatable="false">291</string>
+
+    <string name="country_estonia_name">Естонія</string>
+    <string name="country_estonia_code">е-е</string>
+    <string name="country_estonia_number" translatable="false">372</string>
+
+    <string name="country_ethiopia_name">Ефіопія</string>
+    <string name="country_ethiopia_code">І</string>
+    <string name="country_ethiopia_number" translatable="false">251</string>
+
+    <string name="country_fiji_name">Фіджі</string>
+    <string name="country_fiji_code">fj</string>
+    <string name="country_fiji_number" translatable="false">679</string>
+
+    <string name="country_finland_name">Фінляндія</string>
+    <string name="country_finland_code">фі</string>
+    <string name="country_finland_number" translatable="false">358</string>
+
+    <string name="country_france_name">Франція</string>
+    <string name="country_france_code">О</string>
+    <string name="country_france_number" translatable="false">33</string>
+    <string name="country_france_flag" translatable="false">🇫🇷</string>
+
+    <string name="country_french_guyana_name">Французька Гвіана</string>
+    <string name="country_french_guyana_code">gf</string>
+    <string name="country_french_guyana_number" translatable="false">594</string>
+
+    <string name="country_french_polynesia_name">Французька Полінезія</string>
+    <string name="country_french_polynesia_code">pf</string>
+    <string name="country_french_polynesia_number" translatable="false">689</string>
+
+    <string name="country_gabon_name">Габон</string>
+    <string name="country_gabon_code">ga</string>
+    <string name="country_gabon_number" translatable="false">241</string>
+
+    <string name="country_gambia_name">Гамбія</string>
+    <string name="country_gambia_code">gm</string>
+    <string name="country_gambia_number" translatable="false">220</string>
+
+    <string name="country_georgia_name">Грузія</string>
+    <string name="country_georgia_code">вік</string>
+    <string name="country_georgia_number" translatable="false">995</string>
+
+    <string name="country_germany_name">Німеччина</string>
+    <string name="country_germany_code">з</string>
+    <string name="country_germany_number" translatable="false">49</string>
+
+    <string name="country_ghana_name">Гана</string>
+    <string name="country_ghana_code">gh</string>
+    <string name="country_ghana_number" translatable="false">233</string>
+
+    <string name="country_gibraltar_name">Гібралтар</string>
+    <string name="country_gibraltar_code">gi</string>
+    <string name="country_gibraltar_number" translatable="false">350</string>
+
+    <string name="country_greece_name">Греція</string>
+    <string name="country_greece_code">гр</string>
+    <string name="country_greece_number" translatable="false">30</string>
+
+    <string name="country_guadeloupe_name">Гваделупа</string>
+    <string name="country_guadeloupe_code">GP</string>
+    <string name="country_guadeloupe_number" translatable="false">590</string>
+
+    <string name="country_guatemala_name">Гватемала</string>
+    <string name="country_guatemala_code">gt</string>
+    <string name="country_guatemala_number" translatable="false">502</string>
+
+    <string name="country_guinea_name">Гвінея</string>
+    <string name="country_guinea_code">gn</string>
+    <string name="country_guinea_number" translatable="false">224</string>
+
+    <string name="country_guinea_bissau_name">Гвінея-Бісау</string>
+    <string name="country_guinea_bissau_code">gw</string>
+    <string name="country_guinea_bissau_number" translatable="false">245</string>
+
+    <string name="country_guyana_name">Гайана</string>
+    <string name="country_guyana_code">gy</string>
+    <string name="country_guyana_number" translatable="false">592</string>
+
+    <string name="country_haiti_name">Гаїті</string>
+    <string name="country_haiti_code">ht</string>
+    <string name="country_haiti_number" translatable="false">509</string>
+
+    <string name="country_honduras_name">Гондурас</string>
+    <string name="country_honduras_code">hn</string>
+    <string name="country_honduras_number" translatable="false">504</string>
+
+    <string name="country_hong_kong_name">Гонконг</string>
+    <string name="country_hong_kong_code">hk</string>
+    <string name="country_hong_kong_number" translatable="false">852</string>
+
+    <string name="country_hungary_name">Угорщина</string>
+    <string name="country_hungary_code">hu</string>
+    <string name="country_hungary_number" translatable="false">36</string>
+
+    <string name="country_india_name">Індія</string>
+    <string name="country_india_code">в</string>
+    <string name="country_india_number" translatable="false">91</string>
+
+    <string name="country_indonesia_name">Індонезія</string>
+    <string name="country_indonesia_code">id</string>
+    <string name="country_indonesia_number" translatable="false">62</string>
+
+    <string name="country_iran_name">Іран</string>
+    <string name="country_iran_code">ir</string>
+    <string name="country_iran_number" translatable="false">98</string>
+
+    <string name="country_iraq_name">Ірак</string>
+    <string name="country_iraq_code">iq</string>
+    <string name="country_iraq_number" translatable="false">964</string>
+
+    <string name="country_ireland_name">Ірландія</string>
+    <string name="country_ireland_code">тобто</string>
+    <string name="country_ireland_number" translatable="false">353</string>
+
+    <string name="country_iceland_name">Ісландія</string>
+    <string name="country_iceland_code">є</string>
+    <string name="country_iceland_number" translatable="false">354</string>
+
+    <string name="country_israel_name">Ізраїль</string>
+    <string name="country_israel_code">він</string>
+    <string name="country_israel_number" translatable="false">972</string>
+
+    <string name="country_italy_name">Італія</string>
+    <string name="country_italy_code">це</string>
+    <string name="country_italy_number" translatable="false">39</string>
+
+    <string name="country_cote_d_ivoire_name">Кот-д&amp;apos;Івуар D\</string>
+    <string name="country_cote_d_ivoire_code">це</string>
+    <string name="country_cote_d_ivoire_number" translatable="false">225</string>
+
+    <string name="country_jamaica_name">Ямайка</string>
+    <string name="country_jamaica_code">jm</string>
+    <string name="country_jamaica_number" translatable="false">1</string>
+
+    <string name="country_japan_name">Японія</string>
+    <string name="country_japan_code">jp</string>
+    <string name="country_japan_number" translatable="false">81</string>
+
+    <string name="country_jordan_name">Йорданія</string>
+    <string name="country_jordan_code">Джо</string>
+    <string name="country_jordan_number" translatable="false">962</string>
+
+    <string name="country_kazakhstan_name">Казахстан</string>
+    <string name="country_kazakhstan_code">kz</string>
+    <string name="country_kazakhstan_number" translatable="false">7</string>
+
+    <string name="country_kenya_name">Кенія</string>
+    <string name="country_kenya_code">ke</string>
+    <string name="country_kenya_number" translatable="false">254</string>
+
+    <string name="country_kuwait_name">Кувейт</string>
+    <string name="country_kuwait_code">кВт</string>
+    <string name="country_kuwait_number" translatable="false">965</string>
+
+    <string name="country_kyrgyzstan_name">Киргизстан</string>
+    <string name="country_kyrgyzstan_code">кг</string>
+    <string name="country_kyrgyzstan_number" translatable="false">996</string>
+
+    <string name="country_kosovo_name">Косово</string>
+    <string name="country_kosovo_code">xk</string>
+    <string name="country_kosovo_number" translatable="false">383</string>
+
+    <string name="country_lao_peoples_democratic_republic_name">Лаос</string>
+    <string name="country_lao_peoples_democratic_republic_code">там</string>
+    <string name="country_lao_peoples_democratic_republic_number" translatable="false">856</string>
+
+    <string name="country_latvia_name">Латвія</string>
+    <string name="country_latvia_code">lv</string>
+    <string name="country_latvia_number" translatable="false">371</string>
+
+    <string name="country_lebanon_name">Ліван</string>
+    <string name="country_lebanon_code">фунт</string>
+    <string name="country_lebanon_number" translatable="false">961</string>
+
+    <string name="country_lesotho_name">Лесото</string>
+    <string name="country_lesotho_code">ls</string>
+    <string name="country_lesotho_number" translatable="false">266</string>
+
+    <string name="country_liberia_name">Ліберія</string>
+    <string name="country_liberia_code">lr</string>
+    <string name="country_liberia_number" translatable="false">231</string>
+
+    <string name="country_libya_name">Лівія</string>
+    <string name="country_libya_code">ly</string>
+    <string name="country_libya_number" translatable="false">218</string>
+
+    <string name="country_liechtenstein_name">Ліхтенштейн</string>
+    <string name="country_liechtenstein_code">li</string>
+    <string name="country_liechtenstein_number" translatable="false">423</string>
+
+    <string name="country_lithuania_name">Литва</string>
+    <string name="country_lithuania_code">lt</string>
+    <string name="country_lithuania_number" translatable="false">370</string>
+
+    <string name="country_luxembourg_name">Люксембург</string>
+    <string name="country_luxembourg_code">читати</string>
+    <string name="country_luxembourg_number" translatable="false">352</string>
+
+    <string name="country_macedonia_name">Македонія</string>
+    <string name="country_macedonia_code">мк</string>
+    <string name="country_macedonia_number" translatable="false">389</string>
+
+    <string name="country_madagascar_name">Мадагаскар</string>
+    <string name="country_madagascar_code">мг</string>
+    <string name="country_madagascar_number" translatable="false">261</string>
+
+    <string name="country_malawi_name">Малаві</string>
+    <string name="country_malawi_code">мвт</string>
+    <string name="country_malawi_number" translatable="false">265</string>
+
+    <string name="country_malaysia_name">Малайзія</string>
+    <string name="country_malaysia_code">мій</string>
+    <string name="country_malaysia_number" translatable="false">60</string>
+
+    <string name="country_maldives_name">Мальдіви</string>
+    <string name="country_maldives_code">мв</string>
+    <string name="country_maldives_number" translatable="false">960</string>
+
+    <string name="country_mali_name">Малі</string>
+    <string name="country_mali_code">мл</string>
+    <string name="country_mali_number" translatable="false">223</string>
+
+    <string name="country_malta_name">Мальта</string>
+    <string name="country_malta_code">mt</string>
+    <string name="country_malta_number" translatable="false">356</string>
+
+    <string name="country_martinique_name">Мартініка</string>
+    <string name="country_martinique_code">mq</string>
+    <string name="country_martinique_number" translatable="false">596</string>
+
+    <string name="country_mauritania_name">Мавританія</string>
+    <string name="country_mauritania_code">Містер</string>
+    <string name="country_mauritania_number" translatable="false">222</string>
+
+    <string name="country_mauritius_name">Маврикій</string>
+    <string name="country_mauritius_code">му</string>
+    <string name="country_mauritius_number" translatable="false">230</string>
+
+    <string name="country_mayotte_name">Майотта</string>
+    <string name="country_mayotte_code">yt</string>
+    <string name="country_mayotte_number" translatable="false">262</string>
+
+    <string name="country_mexico_name">Мексика</string>
+    <string name="country_mexico_code">mx</string>
+    <string name="country_mexico_number" translatable="false">52</string>
+
+    <string name="country_moldova_name">Молдова</string>
+    <string name="country_moldova_code">md</string>
+    <string name="country_moldova_number" translatable="false">373</string>
+
+    <string name="country_monaco_name">Монако</string>
+    <string name="country_monaco_code">mc</string>
+    <string name="country_monaco_number" translatable="false">377</string>
+
+    <string name="country_mongolia_name">Монголія</string>
+    <string name="country_mongolia_code">хв</string>
+    <string name="country_mongolia_number" translatable="false">976</string>
+
+    <string name="country_montenegro_name">Чорногорія</string>
+    <string name="country_montenegro_code">мене</string>
+    <string name="country_montenegro_number" translatable="false">382</string>
+
+    <string name="country_morocco_name">Марокко</string>
+    <string name="country_morocco_code">мій</string>
+    <string name="country_morocco_number" translatable="false">212</string>
+
+    <string name="country_mozambique_name">Мозамбік</string>
+    <string name="country_mozambique_code">мз</string>
+    <string name="country_mozambique_number" translatable="false">258</string>
+
+    <string name="country_namibia_name">Намібія</string>
+    <string name="country_namibia_code">n / A</string>
+    <string name="country_namibia_number" translatable="false">264</string>
+
+    <string name="country_nepal_name">Непал</string>
+    <string name="country_nepal_code">п.п.</string>
+    <string name="country_nepal_number" translatable="false">977</string>
+
+    <string name="country_netherlands_name">Нідерланди</string>
+    <string name="country_netherlands_code">nl</string>
+    <string name="country_netherlands_number" translatable="false">31</string>
+
+    <string name="country_new_caledonia_name">Нова Каледонія</string>
+    <string name="country_new_caledonia_code">н.у.</string>
+    <string name="country_new_caledonia_number" translatable="false">687</string>
+
+    <string name="country_new_zealand_name">Нова Зеландія</string>
+    <string name="country_new_zealand_code">nz</string>
+    <string name="country_new_zealand_number" translatable="false">64</string>
+
+    <string name="country_nicaragua_name">Нікарагуа</string>
+    <string name="country_nicaragua_code">ні</string>
+    <string name="country_nicaragua_number" translatable="false">505</string>
+
+    <string name="country_niger_name">Нігер</string>
+    <string name="country_niger_code">народився</string>
+    <string name="country_niger_number" translatable="false">227</string>
+
+    <string name="country_nigeria_name">Нігерія</string>
+    <string name="country_nigeria_code">нг</string>
+    <string name="country_nigeria_number" translatable="false">234</string>
+
+    <string name="country_norway_name">Норвегія</string>
+    <string name="country_norway_code">немає</string>
+    <string name="country_norway_number" translatable="false">47</string>
+
+    <string name="country_oman_name">Оман</string>
+    <string name="country_oman_code">ом</string>
+    <string name="country_oman_number" translatable="false">968</string>
+
+    <string name="country_pakistan_name">Пакистан</string>
+    <string name="country_pakistan_code">шт</string>
+    <string name="country_pakistan_number" translatable="false">92</string>
+
+    <string name="country_panama_name">Панама</string>
+    <string name="country_panama_code">па</string>
+    <string name="country_panama_number" translatable="false">507</string>
+
+    <string name="country_papua_new_guinea_name">Папуа-Нова Гвінея</string>
+    <string name="country_papua_new_guinea_code">стор</string>
+    <string name="country_papua_new_guinea_number" translatable="false">675</string>
+
+    <string name="country_paraguay_name">Парагвай</string>
+    <string name="country_paraguay_code">py</string>
+    <string name="country_paraguay_number" translatable="false">595</string>
+
+    <string name="country_peru_name">Перу</string>
+    <string name="country_peru_code">pe</string>
+    <string name="country_peru_number" translatable="false">51</string>
+
+    <string name="country_philippines_name">Філіппіни</string>
+    <string name="country_philippines_code">тел</string>
+    <string name="country_philippines_number" translatable="false">63</string>
+
+    <string name="country_poland_name">Польща</string>
+    <string name="country_poland_code">мн</string>
+    <string name="country_poland_number" translatable="false">48</string>
+
+    <string name="country_portugal_name">Португалія</string>
+    <string name="country_portugal_code">пт</string>
+    <string name="country_portugal_number" translatable="false">351</string>
+
+    <string name="country_puerto_rico_name">Порто Ріко</string>
+    <string name="country_puerto_rico_code">пр</string>
+    <string name="country_puerto_rico_number" translatable="false">1</string>
+
+    <string name="country_qatar_name">Катар</string>
+    <string name="country_qatar_code">qa</string>
+    <string name="country_qatar_number" translatable="false">974</string>
+
+    <string name="country_reunion_name">Зустріч</string>
+    <string name="country_reunion_code">Д</string>
+    <string name="country_reunion_number" translatable="false">262</string>
+
+    <string name="country_romania_name">Румунія</string>
+    <string name="country_romania_code">ро</string>
+    <string name="country_romania_number" translatable="false">40</string>
+
+    <string name="country_russian_federation_name">Росія</string>
+    <string name="country_russian_federation_code">ru</string>
+    <string name="country_russian_federation_number" translatable="false">7</string>
+
+    <string name="country_rwanda_name">Руанда</string>
+    <string name="country_rwanda_code">rw</string>
+    <string name="country_rwanda_number" translatable="false">250</string>
+
+    <string name="country_saudi_arabia_name">Саудівська Аравія</string>
+    <string name="country_saudi_arabia_code">її</string>
+    <string name="country_saudi_arabia_number" translatable="false">966</string>
+
+    <string name="country_senegal_name">Сенегал</string>
+    <string name="country_senegal_code">сн</string>
+    <string name="country_senegal_number" translatable="false">221</string>
+
+    <string name="country_serbia_name">Сербія</string>
+    <string name="country_serbia_code">рупій</string>
+    <string name="country_serbia_number" translatable="false">381</string>
+
+    <string name="country_seychelles_name">Сейшельські острови</string>
+    <string name="country_seychelles_code">sc</string>
+    <string name="country_seychelles_number" translatable="false">248</string>
+
+    <string name="country_sierra_leone_name">Сьєрра-Леоне</string>
+    <string name="country_sierra_leone_code">сл</string>
+    <string name="country_sierra_leone_number" translatable="false">232</string>
+
+    <string name="country_singapore_name">Сінгапур</string>
+    <string name="country_singapore_code">sg</string>
+    <string name="country_singapore_number" translatable="false">65</string>
+
+    <string name="country_slovakia_name">Словаччина</string>
+    <string name="country_slovakia_code">ск</string>
+    <string name="country_slovakia_number" translatable="false">421</string>
+
+    <string name="country_slovenia_name">Словенія</string>
+    <string name="country_slovenia_code">якщо</string>
+    <string name="country_slovenia_number" translatable="false">386</string>
+
+    <string name="country_somalia_name">Сомалі</string>
+    <string name="country_somalia_code">так</string>
+    <string name="country_somalia_number" translatable="false">252</string>
+
+    <string name="country_south_africa_name">Південна Африка</string>
+    <string name="country_south_africa_code">за</string>
+    <string name="country_south_africa_number" translatable="false">27</string>
+
+    <string name="country_south_korea_name">Південна Корея</string>
+    <string name="country_south_korea_code">кр</string>
+    <string name="country_south_korea_number" translatable="false">82</string>
+
+    <string name="country_spain_name">Іспанія</string>
+    <string name="country_spain_code">є</string>
+    <string name="country_spain_number" translatable="false">34</string>
+
+    <string name="country_sri_lanka_name">Шрі Ланка</string>
+    <string name="country_sri_lanka_code">lk</string>
+    <string name="country_sri_lanka_number" translatable="false">94</string>
+
+    <string name="country_sudan_name">Судан</string>
+    <string name="country_sudan_code">sd</string>
+    <string name="country_sudan_number" translatable="false">249</string>
+
+    <string name="country_suriname_name">Сурінам</string>
+    <string name="country_suriname_code">сер</string>
+    <string name="country_suriname_number" translatable="false">597</string>
+
+    <string name="country_swaziland_name">Свазіленд</string>
+    <string name="country_swaziland_code">sz</string>
+    <string name="country_swaziland_number" translatable="false">268</string>
+
+    <string name="country_sweden_name">Швеція</string>
+    <string name="country_sweden_code">se</string>
+    <string name="country_sweden_number" translatable="false">46</string>
+
+    <string name="country_switzerland_name">швейцарський</string>
+    <string name="country_switzerland_code">гл</string>
+    <string name="country_switzerland_number" translatable="false">41</string>
+
+    <string name="country_syrian_arab_republic_name">Сирія</string>
+    <string name="country_syrian_arab_republic_code">sy</string>
+    <string name="country_syrian_arab_republic_number" translatable="false">963</string>
+
+    <string name="country_taiwan_name">Тайвань</string>
+    <string name="country_taiwan_code">tw</string>
+    <string name="country_taiwan_number" translatable="false">886</string>
+
+    <string name="country_tajikistan_name">Таджикистан</string>
+    <string name="country_tajikistan_code">tj</string>
+    <string name="country_tajikistan_number" translatable="false">992</string>
+
+    <string name="country_tanzania_name">Танзанія</string>
+    <string name="country_tanzania_code">tz</string>
+    <string name="country_tanzania_number" translatable="false">255</string>
+
+    <string name="country_thailand_name">Таїланд</string>
+    <string name="country_thailand_code">тис</string>
+    <string name="country_thailand_number" translatable="false">66</string>
+
+    <string name="country_togo_name">Йти</string>
+    <string name="country_togo_code">tg</string>
+    <string name="country_togo_number" translatable="false">228</string>
+
+    <string name="country_tunisia_name">Туніс</string>
+    <string name="country_tunisia_code">тн</string>
+    <string name="country_tunisia_number" translatable="false">216</string>
+
+    <string name="country_turkey_name">Туреччина</string>
+    <string name="country_turkey_code">тр</string>
+    <string name="country_turkey_number" translatable="false">90</string>
+
+    <string name="country_turkmenistan_name">Туркменістан</string>
+    <string name="country_turkmenistan_code">тм</string>
+    <string name="country_turkmenistan_number" translatable="false">993</string>
+
+    <string name="country_united_arab_emirates_name">Об&amp;apos;єднані Арабські Емірати</string>
+    <string name="country_united_arab_emirates_code">ae</string>
+    <string name="country_united_arab_emirates_number" translatable="false">971</string>
+
+    <string name="country_uganda_name">Уганда</string>
+    <string name="country_uganda_code">U g</string>
+    <string name="country_uganda_number" translatable="false">256</string>
+
+    <string name="country_united_kingdom_name">Об&amp;apos;єднане Королівство</string>
+    <string name="country_united_kingdom_code">gb</string>
+    <string name="country_united_kingdom_number" translatable="false">44</string>
+
+    <string name="country_ukraine_name">Україна</string>
+    <string name="country_ukraine_code">au</string>
+    <string name="country_ukraine_number" translatable="false">380</string>
+
+    <string name="country_uruguay_name">Уругвай</string>
+    <string name="country_uruguay_code">uy</string>
+    <string name="country_uruguay_number" translatable="false">598</string>
+
+    <string name="country_united_states_name">СПОЛУЧЕНІ ШТАТИ</string>
+    <string name="country_united_states_code">нас</string>
+    <string name="country_united_states_number" translatable="false">1</string>
+
+    <string name="country_uzbekistan_name">Узбекистан</string>
+    <string name="country_uzbekistan_code">уз</string>
+    <string name="country_uzbekistan_number" translatable="false">998</string>
+
+    <string name="country_venezuela_name">Венесуела</string>
+    <string name="country_venezuela_code">ve</string>
+    <string name="country_venezuela_number" translatable="false">58</string>
+
+    <string name="country_viet_nam_name">В&amp;apos;єтнам</string>
+    <string name="country_viet_nam_code">вн</string>
+    <string name="country_viet_nam_number" translatable="false">84</string>
+
+    <string name="country_yemen_name">Ємен</string>
+    <string name="country_yemen_code">так</string>
+    <string name="country_yemen_number" translatable="false">967</string>
+
+    <string name="country_zambia_name">Замбія</string>
+    <string name="country_zambia_code">зм</string>
+    <string name="country_zambia_number" translatable="false">260</string>
+
+    <string name="country_zimbabwe_name">Зімбабве</string>
+    <string name="country_zimbabwe_code">zw</string>
+    <string name="country_zimbabwe_number" translatable="false">263</string>
+
+    <!--    STRING Date-->
+    <string name="date_today">Сьогодні \сьогодні</string>
+    <string name="date_today_lower">сьогодні \сьогодні</string>
+    <string name="date_format_today_time">H\'h\'мм</string>
+    <string name="date_yesterday">вчора</string>
+    <string name="date_yesterday_lower">вчора</string>
+    <string name="date_format">%1$d %2$s %3$d</string>
+    <string name="date_format_short">%1$d %2$s</string>
+    <string name="date_month_1">січ.</string>
+    <string name="date_month_2">лютий</string>
+    <string name="date_month_3">березень</string>
+    <string name="date_month_4">квіт.</string>
+    <string name="date_month_5">може</string>
+    <string name="date_month_6">червень</string>
+    <string name="date_month_7">лип.</string>
+    <string name="date_month_8">серпень</string>
+    <string name="date_month_9">вер.</string>
+    <string name="date_month_10">жовтень</string>
+    <string name="date_month_11">лис.</string>
+    <string name="date_month_12">дек.</string>
+    <string name="x_days_ago">%s днів тому</string>
+    <string name="date_this_month">цього місяця</string>
+    <string name="x_months_ago">%s місяців тому</string>
+    <string name="duration_month">%s місяць</string>
+    <string name="duration_weeks">%s тиждень</string>
+    <string name="duration_days">%s j</string>
+    <string name="duration_hours">%s год</string>
+    <string name="duration_minutes">%s хв</string>
+    <string name="duration_secondes">у момент \</string>
+
+    <!--    STRING Entourage-->
+
+    <!-- Create Entourage -->
+    <string name="entourage_create_action_title">ДІЯ</string>
+    <string name="entourage_create_outing_title">Подія</string>
+    <string name="entourage_create_type_label">Категорія</string>
+    <string name="entourage_create_type_demand">Я шукаю %1$s</string>
+    <string name="entourage_create_type_contribution">Я пропоную %1$s</string>
+    <string name="entourage_create_position_description">Адреса *</string>
+    <string name="entourage_create_position_description_new">Поруч з *</string>
+    <string name="entourage_create_title_label">Назва *</string>
+    <string name="entourage_create_title_hint">Приклад: %1$s</string>
+    <string name="entourage_create_title_char_count_format">%1$d/%2$d</string>
+    <string name="entourage_create_description_label">опис</string>
+    <string name="entourage_create_help_text_event">&lt;a href=\"%1$s\"&gt;Які події транслювати?&lt;/a&gt;</string>
+    <string name="entourage_create_help_text">&lt;a href=\"%1$s\"&gt;Потрібні d\'ідеї для d\'дій?&lt;/a&gt;</string>
+
+    <string name="entourage_create_date_start_label">Дата початку *</string>
+    <string name="entourage_create_date_end_label">Дата закінчення</string>
+
+    <string name="entourage_create_privacy_public">Аудиторія</string>
+    <string name="entourage_create_privacy_private">Приватний</string>
+    <string name="entourage_create_privacy_description_public">Ви погоджуєтеся, що будь-хто бере участь у вашій події без попередньої перевірки свого профілю.</string>
+    <string name="entourage_create_privacy_description_private">Ви підтверджуєте кожну особу окремо, перш ніж підтвердити, що вона може брати участь.</string>
+
+    <string name="entourage_create_privacy_description_public_action">Ваша акція публічна, кожен може вільно брати участь.</string>
+    <string name="entourage_create_privacy_description_private_action">Ваша дія є конфіденційною, у вас буде вибір прийняти або відмовити будь-якій особі, яка надіслала запит на участь.</string>
+
+    <string name="entourage_create_error">Оточення L\ n\' не створено!</string>
+    <string name="outing_create_error">Подію L\ n\ не вдалося створити!</string>
+    <string name="entourage_create_error_category_empty">Введіть категорію для вашої дії</string>
+    <string name="entourage_create_error_title_empty">Назва не може бути пустою</string>
+    <string name="entourage_create_error_date_empty">Виберіть дату</string>
+    <string name="entourage_create_error_location_empty">Вкажіть місце розташування</string>
+
+    <string name="entourage_create_menu_ask_help">Запит на допомогу</string>
+    <string name="entourage_create_submenu_ask_help">Телефонуйте в мережу</string>
+    <string name="entourage_create_menu_contribute">Запропонуйте допомогу</string>
+    <string name="entourage_create_submenu_contribute">Дарувати щось, час і т.д.</string>
+    <string name="outing_create_menu">Анонсувати подію</string>
+    <string name="outing_create_submenu">на конкретну дату</string>
+
+    <!-- Entourage Category Fragment -->
+    <string name="entourage_category_fragment_title">КАТЕГОРІЯ</string>
+    <string name="entourage_category_type_demand_label">Я ШУКАЮ…</string>
+    <string name="entourage_category_type_contribution_label">ПРОПОНУЮ…</string>
+
+    <!-- Entourage Title Fragment -->
+    <string name="entourage_title_fragment_title">НАЗВА</string>
+    <string name="entourage_title_fragment_hint">Приклад: я готовий отримати адміністративну допомогу щодо доступу до житла</string>
+    <string name="entourage_title_fragment_info">Дії з чіткою назвою залучають більше учасників і мають більше шансів на успіх!</string>
+    <string name="entourage_title_fragment_error">Ваш заголовок має містити менше 100 символів. Більше можна сказати в описі.</string>
+    <string name="entourage_title_fragment_hint_outing">Приклад: Ігровий вечір між сусідами з будинками та без них</string>
+    <string name="entourage_title_fragment_info_outing">Заходи зі зрозумілою назвою залучають більше учасників.</string>
+
+    <!-- Entourage Description Fragment -->
+    <string name="entourage_description_fragment_title">ОПИС</string>
+    <string name="entourage_description_fragment_hint">Приклад: я колишній працівник мерії, і я готовий отримати адміністративну допомогу в отриманні житла. \nЯкщо ви вважаєте, що вам потрібна допомога, ми можемо зустрітися в кафе на вихідних.</string>
+    <string name="entourage_description_fragment_info">Розкажіть свою історію. Дії з чітким описом залучають більше учасників і мають більше шансів на успіх!</string>
+    <string name="entourage_description_fragment_hint_outing">Приклад: потрібні волонтери для національної колекції Restos du Cœur у нашій місцевій команді</string>
+    <string name="entourage_description_fragment_info_outing">Ви можете будь-коли змінити цей опис і дату вашої події.</string>
+
+    <!-- Edit Entourage -->
+    <string name="entourage_save_error">Оточення L\ n\' не було збережено.</string>
+    <string name="entourage_save_ok">Околиці записані.</string>
+    <string name="outing_save_error">Не вдалося оновити подію L\ n\.</string>
+    <string name="outing_save_ok">подія оновлена</string>
+
+    <!-- Entourage Card -->
+    <string name="entourage_type_demand">запит</string>
+    <string name="entourage_type_contribution">внесок</string>
+    <string name="entourage_type_outing">Подія</string>
+    <string name="entourage_type_format_bis">%1$s від \u0020</string>
+    <string name="entourage_info_creation_time">Створено %s</string>
+    <string name="entourage_info_update_time">активний %s</string>
+    <string name="entourage_metadata_date_startAt_endAt">від %1$s до %2$s</string>
+    <string name="entourage_metadata_time_startAt_endAt">від %1$s до %2$s</string>
+
+    <!-- Entourage Location -->
+    <string name="entourage_location_title">МОЯ ПОЗИЦІЯ</string>
+    <string name="entourage_location_address_not_found">L\ адресу n\ не знайдено</string>
+
+    <!-- Entourage Notifications -->
+    <string name="entourage_info_text_join_accepted">\u0020приєднався до групи.</string>
+    <string name="entourage_join_request_received_nomsg">%1$s хоче приєднатися до вашої дії.</string>
+    <string name="entourage_join_request_received_message_html">&lt;font color=\"#F55F24\"&gt;%1$s &lt;/font&gt;бажає приєднатися до вашої групи</string>
+    <string name="entourage_join_request_received_message_short">хоче приєднатися до вашої групи.</string>
+    <!-- Join Request -->
+    <string name="entourage_join_request_success">Запит прийнято</string>
+    <string name="entourage_join_request_error">Помилка d\ під час надсилання запиту</string>
+    <string name="entourage_join_request_message_sent">Повідомлення надіслано</string>
+    <string name="entourage_join_request_message_error">Помилка d\ під час надсилання повідомлення</string>
+    <string name="entourage_join_request_ok_title">Ваш запит відправлено</string>
+    <string name="entourage_join_request_ok_description_entourage">Дякуємо за вашу теплоту! \nВи можете надіслати повідомлення учасникам, яке з’явиться в груповому чаті.</string>
+    <string name="entourage_join_request_ok_description_outing">@string/entourage_join_request_ok_description_entourage</string>
+    <string name="entourage_join_request_ok_message_hint">Ваше повідомлення…</string>
+    <string name="entourage_join_request_rejected">Запит надіслано</string>
+
+    <string name="entourage_info_text_open">Активний антураж</string>
+    <string name="entourage_info_text_close">Акція закрита</string>
+    <string name="outing_info_text_close">Подію видалено</string>
+
+    <!-- Entourage disclaimer -->
+    <string name="entourage_disclaimer_title">ПЕРЕД ПОЧАТКОМ</string>
+    <string name="entourage_disclaimer_text_chart1">Я поважаю</string>
+    <string name="entourage_disclaimer_text_chart2">d\'Статут оточення</string>
+    <string name="entourage_disclaimer_accord_title">Колектова угода</string>
+    <string name="entourage_disclaimer_accord_details">Якщо я хочу створити запит на допомогу для когось іншого, я повинен спочатку отримати їхню згоду.</string>
+    <string name="entourage_disclaimer_security_title">Безпека</string>
+    <string name="entourage_disclaimer_security_details">Я не включаю жодних даних, які б дозволили d\ ідентифікувати або знайти відповідних людей</string>
+    <string name="entourage_disclaimer_geolocation_title">Геолокація?</string>
+    <string name="entourage_disclaimer_geolocation_details">Точна позиція вашої акції солідарності прихована: її замінює помаранчева область на карті</string>
+    <string name="entourage_disclaimer_checkbox">J\ прочитав і j\ приймає</string>
+    <string name="entourage_disclaimer_error_notaccepted">Будь ласка, прийміть умови.</string>
+
+    <!-- Outing disclaimer -->
+    <string name="outing_disclaimer_accord_details">Я прошу згоди людини, перш ніж ділитися її особистою інформацією</string>
+    <string name="outing_disclaimer_security_details">Я гарантую, що людей неможливо ідентифікувати або знайти, прочитавши мене</string>
+    <string name="outing_disclaimer_geolocation_title">Місцезнаходження ?</string>
+    <string name="outing_disclaimer_geolocation_details">Вказано точну адресу подій</string>
+
+    <!-- Outing as chat message card -->
+    <string name="outing_message_card_created_author">%1$s створив &lt;font color=\"%2$s\"&gt;вихід&lt;/font&gt;:</string>
+    <string name="outing_message_card_updated_author">%1$s &lt;b&gt;змінив&lt;/b&gt; &lt;font color=\"%2$s\"&gt;вихід&lt;/font&gt;:</string>
+
+    <!-- Status update as chat message card -->
+    <!-- 1 = font color, 2 = author, 3 = message -->
+    <string name="status_message_card_details">&lt;font color=\"%1$s\"&gt;%2$s&lt;/font&gt; %3$s</string>
+
+    <!-- My Entourages -->
+    <string name="myentourages_all">Всі пости</string>
+    <string name="myentourages_unread">Непрочитаний</string>
+
+    <string name="myentourages_no_items_title">Ви n\ ще не маєте повідомлень…</string>
+    <string name="myentourages_no_unread_items_details">У вас n\ немає непрочитаних повідомлень</string>
+
+    <string name="myentourages_tab_group">Групові чати</string>
+    <string name="myentourages_tab_messages">Приватні повідомлення</string>
+    <!-- My Entourages Filter -->
+    <string name="myentourages_filter_entourages_title">Показати</string>
+    <string name="myentourages_filter_closed">Включати закриті дії</string>
+    <string name="myentourages_filter_unread">Лише непрочитані повідомлення</string>
+    <string name="myentourages_filter_created_by_me">Лише створені мною дії</string>
+    <string name="myentourages_filter_partner">Тільки акції, створені прихильниками об&amp;apos;єднань, які я підтримую</string>
+    <string name="myentourages_filter_types_title">Види антуражу</string>
+    <string name="myentourages_filter_demand">Запити</string>
+    <string name="myentourages_filter_contribution">Внески</string>
+
+    <!-- Close Entourage Popup -->
+    <string name="entourage_close_success_button">Моя акція була успішною</string>
+    <string name="entourage_close_failed_button">Моя дія n\ не була успішною</string>
+
+    <string name="entourage_close_title_new">Я закриваю свою акцію солідарності \</string>
+    <string name="entourage_close_description_new">Після закриття дії обговорення буде закрито, а дія більше не з’являтиметься в стрічці новин.</string>
+    <string name="entourage_close_subtitle_new">Як це сталося?</string>
+    <string name="entourage_close_title_ask_comment">Дякуємо, вашу дію \n закрито!</string>
+    <string name="entourage_close_subtitle_ask_comment">Хочете написати коментар про свій вчинок?</string>
+
+    <string name="entourage_close_add_comment_send_title">Розкажіть нам більше, \nяк пройшла ваша акція солідарності?</string>
+    <string name="entourage_close_add_comment_send_button">Надіслати</string>
+    <string name="entourage_close_add_comment_send_placeholder">Моя дія пройшла добре, тому що...</string>
+
+    <!-- Close event popup -->
+
+    <string name="event_close_title2">Я скасовую\nсвою подію</string>
+    <string name="event_close_description2">Після скасування події обговорення буде закрито, а подія більше не з’являтиметься в стрічці новин.</string>
+    <string name="event_validate_button2">СКАСУВАТИ ПОДІЮ</string>
+
+    <!-- Share Entourage -->
+    <string name="entourage_share_intent_title">Поділитися через</string>
+    <string name="entourage_share_link">https://www.entourage.social</string>
+
+    <string name="info_share_poi_sms">Добрий ранок ! Ось адреса %1$s, яка може вас зацікавити.\n%2$s\n%3$s\nДля отримання додаткової інформації про це місце та встановлення зв’язків між сусідами, які підтримують вас, я призначу вам зустріч у мережі Entourage %4 $ с</string>
+
+    <string name="entourage_share_text_for_entourage">%1$s.\n\nЩиро дякуємо за вашу солідарність!</string>
+    <!-- Entourage Mini Card -->
+
+    <!-- My Entourages -->
+    <string name="myentourages_no_items_details">Попросіть приєднатися до дій, зв&amp;apos;яжіться з учасниками, і ви знайдете тут ваші розмови з учасниками мережі</string>
+
+    <!-- Create Action Wizard -->
+    <string name="create_action_wizard_p1_title">ОСТАННЄ ПИТАННЯ</string>
+    <string name="create_action_wizard_p1_description">Створіть цю акцію солідарності для себе<b>pour une personne identifiée, autre que vous :</b> un ami en situation précaire, une personne croisée dans la rue ?</string>
+    <string name="create_action_wizard_p1_option1">@string/yes</string>
+    <string name="create_action_wizard_p1_option2">Ні, я питаю за себе</string>
+    <string name="create_action_wizard_p1_option3">Ні, для асоціації</string>
+
+    <string name="create_action_wizard_p2_title">ОСТАННЄ ПИТАННЯ</string>
+    <string name="create_action_wizard_p2_description">Ти отримав<b>obtenu son consentement</b> pour diffuser cette action pour elle sur Entourage ?</string>
+    <string name="create_action_wizard_p2_option1">Так, j\ має свою згоду</string>
+    <string name="create_action_wizard_p2_option2">Ні, ще ні</string>
+
+    <string name="create_action_wizard_p3_title">ОСТАННЄ ПИТАННЯ</string>
+    <string name="create_action_wizard_p3_description">Щоб транслювати свою акцію солідарності в мережі, необхідна згода.\n\nНаразі вашу дію призупинено. Модератор дуже швидко відповість, щоб допомогти вам.</string>
+    <string name="create_action_wizard_p3_option1">@string/next</string>
+
+    <string name="create_action_wizard_disclaimer">У &lt;a href=\'%1$s\'&gt;Хартії етики Entourage&lt;/a&gt; пояснюється, чому згода є важливою.</string>
+
+    <!-- User Report -->
+    <string name="action_report_explanation">Ви повідомите про цю акцію солідарності нашим адміністраторам.</string>
+    <string name="action_report_reason">Будь ласка, вкажіть, чому\ви повідомляєте про цю акцію солідарності:</string>
+    <string name="event_report_explanation">Ви повідомите про цю подію нашим адміністраторам.</string>
+    <string name="event_report_reason">Укажіть, чому\ви повідомляєте про цю подію:</string>
+
+    <string name="action_report_explanation_user">Ви повідомите про цього користувача нашим адміністраторам.</string>
+    <string name="action_report_reason_user">Будь ласка, вкажіть, чому\ви повідомляєте про цього користувача:</string>
+
+    <string name="entourage_report_success">✔︎ Повідомлено про оточення</string>
+    <string name="entourage_user_report_success">✔︎ Користувач повідомив</string>
+    <string name="entourage_report_error_reason_empty">Додайте повідомлення</string>
+    <string name="entourage_report_error_send_failed">L\повідомлення не надіслано, спробуйте ще раз</string>
+
+    <string name="linkShared">Посилання надіслано</string>
+    <string name="linkNotShared">Помилка під час надсилання посилання \</string>
+
+    <!-- Pop info photo profile -->
+    <string name="info_photo_profile_title">Додайте свою фотографію профілю та вселийте ще більше впевненості</string>
+    <string name="info_photo_profile_description">У вас ще немає фотографії профілю. Люди, які дізнаються про вашу акцію солідарності, з більшою ймовірністю приєднаються до неї, якщо ви її додасте.</string>
+    <string name="info_photo_profile_ignore">ІГНОРУЙТЕ</string>
+    <string name="info_photo_profile_add">ДОДАТИ</string>
+
+    <string name="button_event_add_photo">Фото</string>
+    <string name="event_add_photo_info">Проілюструйте свою наступну подію фото, запропонованим Entourage:</string>
+
+    <string name="infoPopCreateContrib">Вітаємо! \nВаш внесок успішно створено.</string>
+    <string name="infoPopCreateAsk">Вітаємо! \nВаш запит успішно створено.</string>
+    <string name="infoPopCreateEvent">Вітаємо! \nВашу подію успішно створено.</string>
+    <string name="infoPopCreateContribTitle">Акція солідарності \створена</string>
+    <string name="infoPopCreateAskTitle">Акція солідарності \створена</string>
+    <string name="infoPopCreateEventTitle">Подія створена</string>
+
+    <!-- Search action/event placeholder -->
+    <string name="searchEventPlaceholder">Пошук події</string>
+    <string name="searchAskPlaceholder">Пошук дії</string>
+    <string name="searchContribPlaceholder">Пошук дії</string>
+
+    <string name="button_close_event">Скасувати мою подію</string>
+    <string name="button_close_action">Закрити мою дію</string>
+
+    <!-- STRING EVENT -->
+    <!-- Events -->
+    <string name="location">Місцезнаходження</string>
+    <string name="event_filter_google_placeholder">Виберіть адресу</string>
+    <string name="event_filter_position_placeholder">Моя позиція</string>
+    <string name="event_organisez_by">Організатор: %s</string>
+    <string name="event_organisez_asso">Подія %s</string>
+    <string name="event_organisez_entourage">Entourage Event</string>
+
+    <string name="event_filter_title">Події - фільтри пошуку</string>
+    <string name="event_filter_profile">За адресою \, указаною в моєму профілі</string>
+    <string name="event_filter_google">За новою адресою</string>
+    <string name="event_filter_gps">Навколо мого поточного місцезнаходження</string>
+    <string name="event_filter_error_place">Виберіть адресу</string>
+    <string name="search_filter">Досліджувати :</string>
+
+    <string name="event_location_title">Знайдіть свою подію</string>
+    <string name="event_location_detail">Адреса буде додана до детального опису вашої події.</string>
+    <string name="event_btn_share_title">Поділіться</string>
+
+    <!-- STRING GET INVOLVED -->
+    <string name="get_involved_title">Слідкуйте за Entourage</string>
+    <string name="get_involved_rate_us">Оцініть нас у магазині Play</string>
+    <string name="get_involved_facebook">Вподобайте нашу сторінку у Facebook</string>
+    <string name="get_involved_twitter">Слідкуйте за нами в Twitter</string>
+    <string name="get_involved_instagram">Слідкуйте за нашим Instagram</string>
+
+    <!-- STRING GUIDE -->
+    <!-- Guide -->
+    <string name="map_poi_propose_button">Запропонуйте структуру</string>
+
+    <!-- POI -->
+    <string name="poi_detail_contact">контакт</string>
+    <string name="poi_detail_public">Аудиторія</string>
+    <string name="activity_read_poi_title">ІНФОРМАЦІЯ</string>
+    <string name="poi_report_description">Додайте інформацію про це місце</string>
+    <string name="poi_report_button">Оновити</string>
+    <string name="poi_report_email_subject_format">J\ оновив інформацію щодо \'%1$s\' (#%2$s)</string>
+    <string name="poi_detail_open_time">Розклади</string>
+    <string name="poi_detail_language">Розмовні мови</string>
+
+    <string name="poi_detail_soliguide_1">Інформацію про це місце надає Soliguide, солідарна картографія.</string>
+    <string name="poi_detail_soliguide_2">Ще більш повна інформація доступна кількома мовами</string>
+    <string name="poi_detail_soliguide_consult">Проконсультуватися</string>
+
+    <!-- Empty Guide Popup -->
+    <string name="map_poi_empty_popup">Схоже, c\ тут спокійний!&lt;br/&gt;&lt;br/&gt;
+ Перемістіть карту, щоб знайти структури підтримки: ресторани солідарності, громадські душові, медичні центри, відкриті для вуличних людей…&lt;br/&gt;&lt;br /&gt;
+ Будівля є відсутній на карті?&lt;br/&gt;
+ &lt;a href=\'%1$s\'&gt;Запропонуйте структуру&lt;/a&gt;
+&lt;br/&gt;&lt;br/&gt;Міський центр соціальних дій у вашому муніципалітеті може надати вам інформація про всі місцеві асоціації та соціальну допомогу, доступну мешканцям.</string>
+
+    <!-- Info Popup -->
+    <string name="map_poi_info_popup">Посібник Солідарності дає вам змогу дізнатися про структури підтримки: ресторани солідарності, громадські душові, медичні центри, відкриті для вуличних людей...\n\n
+ Як місцевий житель, ви можете запропонувати вулицям місце, але майте на увазі, що це роль соціальних працівників у підтримці кожної ситуації.</string>
+
+    <string name="map_empty_poi_recyclerV">Це все для місць солідарності в цьому радіусі навколо вас</string>
+    <!-- Guide Filter -->
+    <string name="guide_filter_title">ФІЛЬТРИ</string>
+    <string name="guide_filters_activated">Фільтри включені</string>
+    <string name="guide_no_filter">Фільтри</string>
+    <string name="guide_filter_categories_title">Категорії</string>
+
+    <!-- POI Card -->
+    <string name="poi_card_call">ДЗВОНИТИ</string>
+    <string name="guide_alert_arrow_desc">Деталі сповіщення</string>
+    <string name="guide_alert_info_desc">Інформаційний посібник</string>
+    <string name="guide_alert_info_title">ЛІТНІЙ ГОДИН</string>
+    <string name="guide_alert_info_text">Наш партнер &lt;a href=https://soliguide.fr/&gt;Soliguide.fr&lt;/a&gt; підтримує актуальний каталог для багатьох міст.</string>
+
+    <string name="guide_display_partners">Асоціації та служби, активні на Entourage</string>
+    <string name="guide_filter_donate">Шукаємо пожертви</string>
+    <string name="guide_filter_volunteer">Шукаємо волонтерів</string>
+    <string name="guide_filter_multiInfo">Місця, що пропонують послуги кількох категорій</string>
+
+    <string name="hub_title">Посібник солідарності</string>
+    <string name="hub_title_1">Корисні адреси навколо вас</string>
+    <string name="hub_description_1">Ресторани солідарності, асоціації, які шукають волонтерів чи пожертвувань…</string>
+    <string name="hub_button_1">Пошук навколо мене →</string>
+
+    <string name="hub_title_2">Ресурси для кожного конкретного випадку</string>
+    <string name="hub_description_2">Кожна ситуація різна, але ось кілька ключів, які допоможуть знайти дорогу: номери екстрених служб, рекомендовані процедури тощо.</string>
+    <string name="hub_button_2">Я m\'орієнтую</string>
+
+    <string name="hub_title_3">Підготуватися до зустрічі</string>
+    <string name="hub_description_3">Сусіди, які підтримують вас, простий посібник Comme Bonjour і наші семінари з підвищення обізнаності допоможуть вам зрозуміти ситуації та подолати блокування, щоб створити зв’язки.</string>
+    <string name="hub_button_3">Відкрийте для себе посібник →</string>
+
+    <string name="hub_description_4">Наші інформаційні семінари допоможуть вам позбутися упереджень на вулиці та знайти відповіді на ваші запитання.</string>
+    <string name="hub_button_4">Знайдіть майстерню</string>
+
+    <string name="hub_description_5">Додаток Entourage дозволяє мобілізувати сусідів і місцеві асоціації для організації акцій солідарності та заходів. Щоб все зрозуміти, натисніть тут.</string>
+    <string name="hub_title_5">Як мобілізувати мережу?</string>
+    <string name="hub_button_5">Перейти до FAQ</string>
+
+    <string name="gds_title">Місця солідарності</string>
+    <string name="no_result">Жодного результату</string>
+    <string name="no_result_info">Чому б не спробувати \ інше ключове слово?</string>
+
+    <string name="button_reset_filters">Скасувати фільтри</string>
+    <string name="searchbox_placeholder_text">Досліджувати</string>
+    <!-- STRING INVTE -->
+    <!-- Invite Source -->
+    <string name="invite_source_title">запросіть своїх друзів</string>
+    <string name="invite_source_description">приєднатися до цієї акції солідарності!</string>
+    <string name="invite_source_description_outing">взяти участь у цьому заході</string>
+    <string name="invite_source_share">Розповсюдити посилання</string>
+    <string name="invite_source_contacts">Контакти</string>
+    <string name="invite_source_share_entourage">Поділіться на Entourage</string>
+
+    <!-- Invite Contacts -->
+    <string name="invite_contacts_title">КОНТАКТИ</string>
+    <string name="invite_contacts_search_hint">Досліджувати</string>
+    <string name="invite_contacts_inviting">Розсилка запрошень</string>
+    <string name="invite_contacts_send_error">Не вдалося надіслати запрошення</string>
+    <string name="invite_contacts_permission_error">Скасування: програма не має необхідних дозволів</string>
+
+    <!-- Invite By Phone Number -->
+    <string name="invite_phone_title">НОМЕР МОБІЛЬНОГО</string>
+    <string name="invite_phone_description">Введіть номер мобільного телефону, щоб запросити людину приєднатися до вашого оточення.</string>
+    <string name="invite_phone_number_hint">Номер стільникового</string>
+
+    <!-- Invite Success -->
+    <string name="invite_success_title">Надіслано!</string>
+    <string name="invite_success_description">Ваш друг автоматично приєднається до оточення, щойно прийме ваше запрошення.</string>
+
+    <!-- Invitation Card -->
+    <string name="invitation_card_description">1 нове запрошення приєднатися до оточення</string>
+    <string name="invitation_card_inviter">%1$s запрошує вас приєднатися</string>
+
+    <!-- Invited -->
+    <string name="invited_description">Відповідай зараз!</string>
+    <string name="invited_updated_ok">Оновлене запрошення</string>
+    <string name="invited_updated_error">Помилка оновлення антуражу</string>
+
+    <!-- STRING INVITE -->
+    <string name="login_text_lost_code_ko">Здається, цей номер не зареєстровано: створіть обліковий запис.\n\nMembers d\'асоціація за допомогою d\'Entourage, зв’яжіться з associations@entourage.social</string>
+    <string name="login_text_invalid_format">Номер повинен складатися з 9 або 10 цифр.</string>
+
+    <string name="login_hint_code">Закодований</string>
+
+    <string name="login_error">Problème d\'authentification\nVeuillez réessayer</string>
+    <string name="login_error_title">Спробуйте знову</string>
+    <string name="login_error_invalid_credentials">Номер телефону та цей код доступу не збігаються.</string>
+    <string name="login_error_invalid_phone_format">Недійсний формат номера.\nЯкщо ваш номер не з материкової Франції, додайте код країни</string>
+    <string name="login_error_network">Перевірте підключення до Інтернету</string>
+    <string name="login_retry_label">Спробуйте знову</string>
+
+    <string name="login_already_registered_go_back">Номер уже зареєстрований, ми перенаправить вас на сторінку входу.</string>
+    <string name="login_pop_information">Новинка! Адаптуйте Entourage під свої бажання та потреби!</string>
+    <string name="login_info_pop_action">У своєму профілі ви можете персоналізувати свою стрічку новин і отримані рекомендації. Вибирайте з дотриманням повної конфіденційності, якщо ви зараз: сусід, який підтримує вас, потребуюча особа, товариство.</string>
+    <string name="login_info_pop_action_yes">Персоналізація</string>
+    <string name="login_info_pop_action_no">Пізніше</string>
+    <string name="login_info_pop_action_noMore">Не показуй мені більше</string>
+    <string name="login_email_description">Тепер давайте завершимо створення вашого облікового запису!</string>
+    <string name="login_place_title">Який ваш район?</string>
+    <string name="login_place_description">Ви зможете відповідати на запити людей, які перебувають у скрутному становищі, і асоціацій у вашому районі, а також ви самі зможете пропонувати пожертвування свого часу чи матеріалів.</string>
+
+    <string name="login_smscode_sent">SMS відправлено</string>
+
+    <string name="error_login_phone_length">Номер телефону має містити принаймні %s цифр</string>
+    <string name="error_login_code_lenght">Код повинен складатися з 6 цифр</string>
+    <string name="login_title">Підключення</string>
+    <string name="login_phone_placeholder">Номер телефону</string>
+    <string name="login_placeholder_code">введіть ваш код</string>
+    <string name="login_button_connect">Я підключаю</string>
+    <string name="login_button_resend_code"><u>Redemander un code</u></string>
+    <string name="login_button_resend_code_text">Ви хочете отримати новий код для свого номера телефону: %s?</string>
+    <string name="login_button_resend_code_action">Запитуйте</string>
+    <string name="login_label_country">Країна</string>
+    <string name="login_label_phone">Телефон</string>
+    <string name="login_label_code">Закодований</string>
+
+    <!-- Login Change Phone -->
+    <string name="login_change_phone"><u>J’ai changé de numéro de téléphone</u></string>
+    <string name="login_change_phone_title">Новий номер</string>
+    <string name="login_change_phone_old_phone">Старе питання</string>
+    <string name="login_change_phone_old_phone_placeholder">Старе питання</string>
+    <string name="login_change_phone_new_phone">Новий номер</string>
+    <string name="login_change_phone_new_phone_placeholder">Новий номер</string>
+    <string name="login_change_phone_email">Електронна адреса (необов&amp;apos;язково)</string>
+    <string name="login_change_phone_email_placeholder">Електронна пошта</string>
+    <string name="login_change_phone_bt_validate">Надіслати</string>
+    <string name="login_change_phone_send_ok">Ваш запит надіслано.\n\n\nСлужба підтримки Entourage повідомить вас, коли зміна номера буде завершена.</string>
+    <string name="login_change_phone_bt_return">Назад</string>
+
+    <string name="login_change_warning_title">Увага</string>
+    <string name="login_change_error_phone">Будь ласка, перевірте ваші номери телефонів</string>
+    <string name="login_change_error_mail">Перевірте свою електронну адресу</string>
+
+    <string name="login_change_error_return">Помилка</string>
+    <string name="login_change_error_number_not_found">Старий номер невідомий.\nПеревірте.</string>
+    <string name="login_change_error_number_deleted">Стару проблему видалено.\nПеревірте.</string>
+    <string name="login_change_error_number_blocked">Старий номер заблоковано.\nПеревірте.</string>
+    <string name="login_change_error_identical_number">Обидва номери однакові.\nПеревірте новий номер.</string>
+    <string name="login_change_error_generic">Старий номер невідомий або видалений.\nПеревірте номери.</string>
+
+    <string name="action_about">Довідка та про</string>
+    <string name="action_edit_profile_regular">Редагувати мій профіль</string>
+    <string name="action_charter_unsigned">Підпишіть Хартію етики</string>
+    <string name="action_charter_read">Прочитайте Хартію етики</string>
+    <string name="action_faq">Питання що часто задаються</string>
+    <string name="action_map">новини</string>
+    <string name="action_guide">керівництво</string>
+    <string name="action_my_messages">повідомлення</string>
+    <string name="action_profile">профіль</string>
+    <string name="debug_info_clipboard">Інформація скопійована в буфер обміну</string>
+
+    <string name="events_conviv">події\недружній</string>
+    <string name="events_button">Переглянути список →</string>
+    <string name="actions_solidr">дії\nsolidaires</string>
+    <string name="actions_button">Переглянути список →</string>
+    <string name="title_my_activity">👌 МОЯ ДІЯЛЬНІСТЬ</string>
+    <string name="contribCreated">пожертви\неопубліковано</string>
+    <string name="askCreated">запити\не опубліковано</string>
+
+    <string name="menu_info_social">Жити<b>encore plus de solidarité</b> suivez Entourage sur vos réseaux !</string>
+
+    <string name="menu_info_first_title">👋 ЗРОБИ ПЕРШИЙ КРОК</string>
+    <string name="menu_info_first_guide">Наш посібник, як наважитися на зустріч</string>
+    <string name="menu_info_second_gift">Пожертвуйте Entourage</string>
+    <string name="menu_info_second_help">Допомога з реінтеграцією</string>
+    <string name="menu_info_second_ambassador">Стань волонтерським амбасадором</string>
+    <string name="menu_info_second_good">Створюйте посилання з Good Waves</string>
+    <string name="menu_info_second_title">❤️ ПРИЄДНУЙТЕСЯ</string>
+    <string name="menu_info_third_info">Як поговорити про це з ізольованими людьми?</string>
+    <string name="menu_info_third_share">Поширюйте солідарність навколо себе!</string>
+    <string name="menu_info_third_title">📣 ПОДІЛИТЬСЯ ОТРУЖЕННЯМ</string>
+
+    <string name="menu_info_profile_share">Добрий ранок ! Завдяки мережі Entourage я беру участь в акціях солідарності між сусідами без дому та без нього. Приєднуйтесь до мене: %s</string>
+
+    <string name="myActionsCreated">Мої акції солідарності створені</string>
+    <string name="myActions">Мої дії солідарності</string>
+    <string name="myAsk">Мої прохання</string>
+    <string name="myContrib">Мої пожертви</string>
+    <string name="myActionEmptyAsk">Наразі у вас n\ немає запитів, опублікованих у програмі ;)</string>
+    <string name="myActionEmptyContrib">Наразі у вашому додатку \ немає опублікованих пожертвувань ;)</string>
+    <string name="placeholder_birthday_my_profile">01–03</string>
+    <string name="placeholder_email_my_profile">email@gmail.com</string>
+
+    <string name="activity_map_new_entourages">\u0020Нові антуражі</string>
+
+    <string name="map_gps_unavailable">Увімкніть геолокацію на своєму пристрої</string>
+    <string name="map_gps_no_permission">Будь ласка, надайте Entourage доступ до вашого місцезнаходження</string>
+    <string name="map_permission_title">Entourage потребує доступу до геолокації</string>
+    <string name="map_permission_description">Без геолокації Entourage працювати не може. Бажаєте ввімкнути \?</string>
+    <string name="map_permission_refuse">Відмовитися</string>
+    <string name="map_permission_explanation">Щоб допомогти вам дізнатися про дії солідарності навколо вас, \nEntourage має знати вашу позицію.</string>
+    <string name="map_permission_activate_button">Увімкніть геолокацію</string>
+    <string name="map_permission_extra">Ми створюємо альтернативу, яка незабаром буде доступна!</string>
+    <string name="error_dialog_disabled">Щоб використовувати Entourage, необхідно ввімкнути геолокацію. Бажаєте ввімкнути \?</string>
+    <string name="map_error_geolocation_disabled_use_entourage">Щоб виявити навколо себе акції солідарності, необхідно активувати геолокацію</string>
+    <string name="map_error_geolocation_disabled_recenter">Щоб перефокусуватися навколо себе, необхідно активувати геолокацію</string>
+    <string name="map_empty_newsfeed">C\Тут досить тихо!\n\nЗдається, \'там n\'поблизу немає жодної активності... на даний момент!\n\nВи також можете створити активність солідарності: натисніть + внизу праворуч</string>
+    <string name="map_empty_newsfeed_popup">Схоже, тут тихо!\n\nПеремістіть карту, щоб знайти заходи в мережі.\n\nВи також можете створити активність солідарності: натисніть + унизу праворуч</string>
+    <string name="newsfeed_load_more_button"><u>Rechercher plus loin.</u></string>
+    <string name="newsfeed_no_action">Немає активності поблизу цієї позиції</string>
+    <string name="newsfeed_tab_events_no_items">Немає подій поблизу.</string>
+    <string name="newsfeed_tab_events_no_items_button"><u>Retrouvez plus d\'événements d\'Entourage ici</u></string>
+
+    <!--SRING MAP -->
+    <string name="map_filter_title">ФІЛЬТРИ</string>
+    <string name="map_filter_entourage_type_title">Види дії</string>
+    <string name="map_filter_entourage_demand_text"><b>Voir les demandes concernant :</b></string>
+    <string name="map_filter_entourage_contribution_text"><b>Voir les contributions concernant :</b></string>
+    <string name="map_filter_time_title">Оновлено менше ніж</string>
+    <string name="map_filter_time_option1">24 години</string>
+    <string name="map_filter_time_option2">8D</string>
+    <string name="map_filter_time_option3">1М</string>
+    <string name="map_filters_activated">Фільтри включені</string>
+    <string name="map_no_filter">Фільтри</string>
+
+    <string name="map_filter_publish_title">Опубліковано …</string>
+    <string name="map_filter_all">все</string>
+    <string name="map_filter_partnersOnly">Associations et\ninstitutions seulement</string>
+
+    <plurals name="notification_title_join_request">
+        <item quantity="one">Новий запит на %1$s</item>
+        <item quantity="few">Нові запити на %1$s</item>
+        <item quantity="many">Нові запити для %1$s,…</item>
+        <item quantity="other">Нові запити для %1$s,…</item>
+    </plurals>
+
+    <plurals name="notification_title_chat_message">
+        <item quantity="one">Нове повідомлення від %1$s</item>
+        <item quantity="few">Нові повідомлення від %1$s</item>
+        <item quantity="many">Нові повідомлення від %1$s</item>
+        <item quantity="other">Нові повідомлення від %1$s,…</item>
+    </plurals>
+
+    <plurals name="notification_text_chat_message">
+        <item quantity="zero">У вас немає нових повідомлень</item>
+        <item quantity="one">У вас %1$d нове повідомлення: %2$s</item>
+        <item quantity="few">У вас %1$d нові повідомлення: %2$s</item>
+        <item quantity="many">У вас %1$d нових повідомлень</item>
+        <item quantity="other">У вас %1$d нових повідомлень</item>
+    </plurals>
+
+    <string name="notification_text_join_request_entourage_single_nomsg">@string/entourage_join_request_received_nomsg</string>
+
+    <plurals name="notification_text_join_request_entourage_multiple">
+        <item quantity="one">%1$d особа хоче приєднатися до вашої дії.</item>
+        <item quantity="few">%1$d особи хочуть приєднатися до вашої дії.</item>
+        <item quantity="many">%1$d людей хочуть приєднатися до вашої дії.</item>
+        <item quantity="other">%1$d людей хочуть приєднатися до вашої дії.</item>
+    </plurals>
+
+
+    <string name="default_notifiation_channel">Запрошення</string>
+
+    <string name="params_notifs_title">Управління сповіщеннями</string>
+    <string name="param_notifs_switch_notifs">Сповіщення</string>
+    <string name="param_notifs_switch_messages">Сповіщення про повідомлення</string>
+    <string name="param_notifs_switch_groups">Групові сповіщення</string>
+    <string name="param_notifs_switch_events">Сповіщення про події</string>
+    <string name="param_notifs_switch_actions">Сповіщення про пожертви та послуги</string>
+    <string name="param_notifs_validate">Застосувати зміни</string>
+    <string name="notif_contrib_title">Сусід пропонує нову допомогу. Можливо це вас зацікавить?</string>
+    <string name="notif_solicitation_title">Сусід шукає техніку. Може, ви могли б йому допомогти?</string>
+
+    <string name="pre_onboard_button_connect">авторизуватися</string>
+    <string name="pre_onboard_button_next">Слідую</string>
+
+    <!-- Carousel -->
+    <string name="bt_previous">Попередній</string>
+    <string name="bt_pass">Пас</string>
+
+    <string name="intro_title_1">Соціальна мережа, справді соціальна.</string>
+    <string name="intro_subtitle_1">Наша місія: мобілізувати та підготувати громадян для підтримки найбільш ізольованих.</string>
+    <string name="intro_title_2">У програмі \' Entourage:</string>
+    <string name="intro_subtitle_2">Зустрічайте схожих на вас сусідів під час заходів \ і обговорюйте дії солідарності.</string>
+    <string name="intro_title_3">Антураж з вами!</string>
+    <string name="intro_subtitle_3">Команди d\'амбасадорів, волонтерів і модераторів d\'Entourage супроводжують вас і направляють вас щодня.</string>
+
+    <string name="pre_onboard_choice_description_title">Соціальна мережа, справді соціальна.</string>
+    <string name="pre_onboard_choice_login">У мене вже є обліковий запис</string>
+    <string name="pre_onboard_choice_signup">Я реєструюся</string>
+    <string name="pre_onboard_choice_about"><u>Qui est l’association Entourage ?</u></string>
+
+    <!-- ONBOARDING -->
+
+    <string name="onboard_button_pass">Пас</string>
+    <string name="onboard_welcome_sub">Перш за все d\…\nЯк тебе звати?</string>
+
+    <string name="onboard_welcome_title">Ласкаво просимо!</string>
+    <string name="onboard_welcome_info">Буде видно лише першу літеру</string>
+    <string name="onboard_welcome_placeholder_firstname">Ваше ім&amp;apos;я</string>
+    <string name="onboard_welcome_placeholder_lastname">Твоє ім&amp;apos;я</string>
+    <string name="onboard_welcome_title_firstname">Ім&amp;apos;я*</string>
+    <string name="onboard_welcome_title_lastname">Ім&amp;apos;я*</string>
+    <string name="onboard_welcome_title_country">країна*</string>
+    <string name="onboard_welcome_title_phone">Телефон*</string>
+    <string name="onboard_welcome_title_email">Електронна пошта</string>
+    <string name="onboard_welcome_placeholder_email">youraddress@mail.com</string>
+    <string name="onboard_welcome_placeholder_phone">0600000000</string>
+    <string name="onboard_welcome_consent">Я хотів би отримати інформацію та поради від Entourage</string>
+    <string name="onboard_welcome_info_mandatory">*Обов&amp;apos;язкові поля. Ваша інформація залишатиметься конфіденційною та ніколи не буде передана третім особам.</string>
+
+    <string name="onboard_welcome_title_phase2">Введіть код, отриманий в SMS</string>
+    <string name="onboard_sms_sub">Вам щойно надіслано SMS на адресу:</string>
+    <string name="onboard_sms_wait_retry">Немає коду? Повторіть спробу через %s</string>
+    <string name="onboard_sms_wait_retry_end">Повторно надішліть код</string>
+    <string name="mod_phone_code">- Щоб змінити</string>
+    <string name="onboard_code_placeholder">00000000</string>
+
+    <string name="onboard_welcome_title_phase3">У захваті від %s!</string>
+
+    <string name="onboard_phase3_entour_desc">Крім зустрічей з людьми, як ви хочете зробити внесок у спільноту Entourage?</string>
+    <string name="onboard_phase3_entour_title">Об&amp;apos;ємний</string>
+    <string name="onboard_phase3_entour_subtitle">Запропонуйте допомогу...</string>
+    <string name="onboard_phase3_be_entour_title">Бути оточеним</string>
+    <string name="onboard_phase3_be_entour_subtitle">Зверніться по допомогу, знайдіть соціальні структури навколо мене...</string>
+    <string name="onboard_phase3_place_title">Який ваш район?</string>
+    <string name="onboard_phase3_asso_title">Я асоціація</string>
+
+    <string name="onboard_end_title">Ласкаво просимо до спільноти Entourage</string>
+    <string name="onboard_end_subtitle">Вітаємо, ви готові принести солідарність у життя навколо вас.</string>
+    <string name="onboard_end_bt">Почніть людську пригоду</string>
+
+
+
+    <string name="onboard_phone_title">Приємно познайомитися, %s.</string>
+    <string name="onboard_phone_sub">Який у тебе номер телефону ?</string>
+    <string name="onboard_phone_info">Ця інформація залишатиметься конфіденційною. Ми просто хочемо переконатися, що ви не робот, а людина з великим серцем!</string>
+    <string name="onboard_phone_placeholder_phone">Телефон</string>
+    <string name="onboard_sms_title">Введіть код, отриманий в SMS</string>
+
+    <string name="attention_pop_title">Увага</string>
+    <string name="onboard_sms_pop_alert">Зачекайте %s с, перш ніж повторити запит.</string>
+    <string name="onboard_sms_no_pwd">Будь ласка, введіть пароль</string>
+    <string name="onboard_type_title">Приємно познайомитися, %s.</string>
+    <string name="onboard_type_sub">Як ви хочете налаштувати програму?</string>
+    <string name="onboard_type_description">Entourage ставить вам ці кілька запитань, щоб привітати вас і підтримати якнайкраще!\n<i>(Cette information ne sera pas visible par les autres membres du réseau).</i></string>
+    <string name="onboard_type_choice_neighbour">Допомагати бездомним людям і створювати зв’язки у вашому районі.</string>
+    <string name="onboard_type_choice_alone">Просити допомоги та відкривати місця солідарності.</string>
+    <string name="onboard_type_choice_asso">Говорити від імені вашої структури.</string>
+
+    <string name="onboard_type_choice1_title">Солідарний сусід</string>
+    <string name="onboard_type_choice2_title">Ізольована або ненадійна особа</string>
+    <string name="onboard_type_choice3_title">Асоціація або державна служба</string>
+
+    <string name="onboard_place_title">Який ваш район?</string>
+    <string name="onboard_place_description">Ви зможете відповідати на запити людей, які перебувають у скрутному становищі, і асоціацій у вашому районі, а також ви самі зможете пропонувати пожертвування свого часу чи матеріалів.</string>
+    <string name="onboard_place_title_sdf">В якому районі ви зазвичай живете?</string>
+    <string name="onboard_place_description_sdf">Ви зможете просити допомоги у сусідів і знайомитися з новими людьми під час дружніх мережевих заходів.</string>
+    <string name="onboard_place_info">Entourage не повідомляє цю адресу.</string>
+    <string name="onboard_place_placeholder">Наприклад: 35000</string>
+    <string name="onboard_place_getting_current_location">Очікування GPS</string>
+    <string name="onboard_email_pwd_title">ОК добре !</string>
+    <string name="onboard_email_pwd_description">Тепер давайте завершимо створення вашого облікового запису!</string>
+    <string name="onboard_email_pwd_info">Залиште нам свою електронну адресу, щоб отримувати інформацію та поради від d\'Entourage!</string>
+    <string name="onboard_email_pwd_info2">Entourage не повідомляє вашу електронну адресу.</string>
+    <string name="onboard_email_pwd_placeholder_email">Електронна пошта</string>
+    <string name="onboard_photo_title">Дякуємо, %s!</string>
+    <string name="onboard_photo_description">Останній штрих: ви можете додати своє фото. Члени Entourage у вашому районі не можуть дочекатися зустрічі з вами!</string>
+    <string name="onboard_photo_bt_take_photo">Щоб сфотографувати</string>
+    <string name="onboard_photo_bt_take_gallery">Імпортувати з галереї</string>
+    <string name="onboard_waiting_dialog"></string>
+
+    <string name="take_photo_title">Додати фото?</string>
+    <string name="take_photo_description">З фотографією одразу стає приємніше.\nПокажіть нам свою найтеплішу усмішку.</string>
+
+
+    <!-- Onboarding Asso -->
+
+    <string name="onboard_asso_start_title">Добре !</string>
+    <string name="onboard_asso_start_description">Entourage - це асоціація, яка обслуговує вашу діяльність.</string>
+    <string name="onboard_asso_start_description_bold">Оточення</string>
+    <string name="onboard_asso_start_description2">Деякі чудові історії, які демонструють цінність спільноти Entourage.</string>
+    <string name="onboard_asso_info_title">Якщо говорити конкретно, у додатку функції призначені для вас</string>
+    <string name="onboard_asso_info_description">Будьте добре ідентифіковані в мережі та залучайте свою спільноту</string>
+    <string name="onboard_asso_info_1">Перевірений профіль для кожного вашого учасника: гарантія довіри для ваших сусідів</string>
+    <string name="onboard_asso_info_1_bold">Перевірений профіль</string>
+    <string name="onboard_asso_info_2">Сторінка для вашої структури: щоб інформувати місцеве про вашу діяльність та потреби.</string>
+    <string name="onboard_asso_info_2_bold">Сторінка для вашої структури</string>
+    <string name="onboard_asso_info_3">Надсилання сповіщень у вашому районі та за його межами членам спільноти.</string>
+    <string name="onboard_asso_info_3_bold">Надсилання повідомлень</string>
+    <string name="onboard_asso_fill_title">Розкажіть про свою структуру</string>
+    <string name="onboard_asso_fill_description">Розкажіть нам більше про вашу асоціацію, ми зв’яжемося з вами, щоб перевірити ваш профіль і створити для вас сторінку асоціації!</string>
+    <string name="onboard_asso_fill_name_placeholder">Назва моєї асоціації</string>
+    <string name="onboard_asso_fill_cp_placeholder">Поштовий індекс моєї асоціації</string>
+    <string name="onboard_asso_fill_function_placeholder">моя функція</string>
+    <string name="onboard_asso_fill_error">Заповніть усі поля.\nДякуємо</string>
+    <string name="onboard_asso_activity_title">%s, який ваш основний бізнес?</string>
+    <string name="onboard_asso_activity_description">Виберіть сектор(и) діяльності вашої структури, це дозволить нам запропонувати вам найкращий спосіб використання програми та мобілізувати спільноту Entourage.</string>
+    <string name="onboard_asso_activity_error">Будь ласка, повідомте принаймні 1 центр d\'Interes.\nДякуємо</string>
+    <string name="onboard_asso_activity_choice_1">Допомога \nлюдям</string>
+    <string name="onboard_asso_activity_choice_2">Культурні ініціативи</string>
+    <string name="onboard_asso_activity_choice_3">Сервіс \nПублічний</string>
+    <string name="onboard_asso_activity_choice_4">інші ?</string>
+    <string name="onboard_asso_search">дослідження</string>
+
+    <!-- Onboarding SDF -->
+    <string name="onboard_sdf_activity_title">%s, що ви шукаєте?</string>
+    <string name="onboard_sdf_activity_description">Кілька можливих варіантів.\nЄ тисячі способів\отримати підтримку та допомогу.</string>
+    <string name="onboard_sdf_activity_choice_1">Додайте мене до кола друзів \</string>
+    <string name="onboard_sdf_activity_choice_2">Participer à des\névénements</string>
+    <string name="onboard_sdf_activity_choice_3">Ставте запитання \</string>
+    <string name="onboard_sdf_activity_choice_4">Попросіть \ про допомогу</string>
+    <string name="onboard_sdf_activity_choice_5">Зорієнтуватися</string>
+    <string name="onboard_sdf_activity_choice_6">Знайдіть \асоціації</string>
+
+    <!-- Onboarding Neighbour -->
+    <string name="onboard_neighbour_activity_title">%s, що ви хочете зробити у своєму районі?</string>
+    <string name="onboard_neighbour_activity_description">Можливі кілька варіантів.\nМи зробимо для вас відповідні пропозиції.</string>
+    <string name="onboard_neighbour_activity_choice_1">Повідом мене</string>
+    <string name="onboard_neighbour_activity_choice_2">Participer à des\névénements</string>
+    <string name="onboard_neighbour_activity_choice_3">Оточіть \окрему людину</string>
+    <string name="onboard_neighbour_activity_choice_4">Зробіть пожертви\nматеріали</string>
+    <string name="onboard_neighbour_activity_choice_5">Приєднуйтесь до \nасоціації</string>
+
+    <string name="onboard_place_title2_sdf">Чудово!</string>
+    <string name="onboard_place_description2_sdf">Бажаєте додати інший район?</string>
+    <string name="onboard_place_title2">Чудово!</string>
+    <string name="onboard_place_description2">Ви щойно приєдналися до учасників свого району. Ви хочете додати ще один округ для виступів?</string>
+
+    <string name="input_names_title">Радий бачити вас знову!</string>
+    <string name="input_names_sub">Цього разу ви можете сказати мені, як вас звати?</string>
+    <string name="input_names_error">Заповніть обидва поля принаймні %s символів.</string>
+
+    <string name="onboard_sms_help"><u>Besoin d’aide ?\nContacter l\'équipe Entourage.</u></string>
+
+    <string name="partner_add_error">Помилка додавання значка</string>
+    <string name="partner_remove_error">Не вдалося видалити значок</string>
+
+    <string name="partner_add_ok">Значок додано</string>
+    <string name="partner_remove_ok">Бейдж видалено</string>
+
+    <string name="member_type_organization">Мародер</string>
+    <string name="role_ambassador">посол</string>
+    <string name="role_admin">посол</string>
+
+    <string name="disclaimer_link_public">https://blog.entourage.social/charte-ethique-grand-public/</string>
+
+    <string name="market_url">market://details?id=%s</string>
+    <string name="playstore_url">https://play.google.com/store/apps/details?id=%s</string>
+    <string name="facebook_url">https://www.facebook.com/EntourageReseauCivique</string>
+    <string name="twitter_url">https://twitter.com/r_entourage</string>
+    <string name="instagram_url">https://www.instagram.com/reseauentourage/</string>
+
+    <string name="terms_url">https://www.entourage.social/cgu</string>
+    <string name="website_url">https://www.entourage.social</string>
+    <string name="more_events_url">https://www.facebook.com/EntourageReseauCivique/events/</string>
+
+    <string name="contact_email">app@entourage.social</string>
+
+    <string name="redirect_link_format">%1$slinks/%2$s/redirect?token=%3$s</string>
+    <string name="redirect_link_no_token_format">%1$slinks/%2$s/redirect</string>
+
+    <string name="url_share_entourage_bitly">https://bit.ly/applientourage</string>
+
+    <string name="url_linkedout">https://www.linkedout.fr</string>
+    <string name="url_app_suggest">https://entourage-asso.typeform.com/to/NRhT8vmj</string>
+
+    <string name="url_app_partner">https://www.entourage.social/mecenes-et-partenaires/</string>
+    <string name="user_profile_display_title">ПРОФІЛЬ</string>
+    <string name="user_button_confirm_changes">Підтвердити</string>
+    <string name="user_text_update_ok">Профіль оновлено</string>
+    <string name="user_text_update_ko">Помилка оновлення</string>
+    <string name="user_image_add_photo">Додайте картинку</string>
+    <string name="user_profile_edit_button">Щоб змінити</string>
+    <string name="user_profile_verified_information_label">Перевірена ідентифікація</string>
+    <string name="user_information_email_label">Адреса електронної пошти</string>
+    <string name="user_information_phone_label">Номер телефону</string>
+    <string name="user_number_entourages_title">Оточення</string>
+    <string name="user_number_entourages_label">Кількість антуражів</string>
+    <string name="user_associations_title">Асоціації)</string>
+    <string name="user_entourage_count_format">%1$d</string>
+    <string name="user_about_title">Про мене</string>
+    <string name="user_about_hint">Представтеся спільноті кількома словами!</string>
+    <string name="user_about_edit_button">Напишіть мою презентацію</string>
+    <string name="user_about_mod_button">Редагувати мою презентацію</string>
+    <string name="user_message_button">напиши йому</string>
+    <string name="good_waves_member">Учасник Good Waves</string>
+
+    <string name="user_retrieval_error">Помилка отримання профілю</string>
+
+    <string name="user_save_button">зберегти</string>
+    <string name="user_edit_firstname_label">Ім&amp;apos;я</string>
+    <string name="user_edit_lastname_label">Ім&amp;apos;я</string>
+    <string name="user_edit_privacy_label">Моя особиста інформація</string>
+    <string name="user_edit_email_label">Електронна пошта</string>
+    <string name="user_edit_password_label">Пароль</string>
+    <string name="user_edit_password_button">Змінювати</string>
+    <string name="user_edit_phone_label">Телефон</string>
+    <string name="user_edit_no_association">Ви не можете знайти свою асоціацію? Напишіть на associations@entourage.social, щоб попросити нас додати його!</string>
+    <string name="user_edit_add_association_label">Покажіть у своєму профілі асоціацію, яка вам близька!</string>
+    <string name="user_edit_add_association_button">Покажіть асоціацію</string>
+    <string name="user_edit_notifications_label">Сповіщення</string>
+    <string name="user_edit_action_zone_button_no_address">Визнач мою зону</string>
+    <string name="user_edit_delete_account_button">Видалити мій обліковий запис</string>
+
+    <string name="user_edit_profile_change_pwd">Змінити пароль</string>
+    <string name="user_edit_password_old_password_label">Старий код доступу</string>
+    <string name="user_edit_password_new_password_label">Новий код доступу</string>
+    <string name="user_edit_password_confirm_password_label">Підтвердьте код</string>
+    <string name="user_edit_password_invalid_current_password">Недійсний пароль</string>
+    <string name="user_edit_password_new_password_too_short">Новий пароль занадто короткий.</string>
+    <string name="user_edit_password_not_match">Паролі не збігаються.</string>
+    <string name="user_edit_password_changed">Оновлення пароля</string>
+
+    <string name="user_edit_profile_invalid_firstname">Ім&amp;apos;я має містити не менше 2 літер.</string>
+    <string name="user_edit_profile_invalid_lastname">В назві повинно бути не менше 2 букв.</string>
+    <string name="user_edit_profile_invalid_phone">Номер повинен складатися з 9 або 10 цифр.</string>
+    <string name="user_edit_profile_invalid_email">Адреса електронної пошти недійсна.</string>
+
+    <string name="user_delete_account_dialog">Ви впевнені, що хочете видалити свій обліковий запис?</string>
+    <string name="user_delete_account_failure">Помилка видалення облікового запису</string>
+
+    <string name="user_view_profile">Перегляд профілю</string>
+
+    <!-- Edit Association -->
+    <string name="user_edit_asso_title">ПІДТРИМУЙТЕСЯ</string>
+    <string name="user_edit_asso_search_hint">Пошук асоціації</string>
+
+    <!-- Photo wizard -->
+    <string name="user_photo_choose_description_title">Додати фото?</string>
+    <string name="user_photo_choose_description">З фотографією одразу стає приємніше.\nПокажіть нам свою найтеплішу усмішку.</string>
+    <string name="user_photo_choose_photo">Виберіть фото</string>
+    <string name="user_photo_take_photo">Щоб сфотографувати</string>
+    <string name="user_photo_edit_description">Перемістіть і масштабуйте, щоб налаштувати фотографію профілю.</string>
+    <string name="user_photo_error_no_camera">Камера не виявлена</string>
+    <string name="user_photo_error_zoom_in">Фото поза рамкою, будь ласка, збільште та відкоригуйте фото</string>
+    <string name="user_photo_error_photo_path">Більше вільного місця для фотографій</string>
+    <string name="user_photo_error_no_photo">Зображення не можна відтворити</string>
+    <string name="user_photo_error_not_saved">Не вдалося зберегти фото</string>
+    <string name="user_photo_error_camera_permission">Скасування: програма не має необхідних дозволів</string>
+    <string name="user_photo_error_read_permission">Скасування: програма не має необхідних дозволів</string>
+    <string name="user_photo_uploading">Надсилання фото</string>
+
+    <!-- User Edit About -->
+    <string name="user_edit_about_description">@string/user_about_hint</string>
+    <string name="user_edit_about_hint">Щось написати…</string>
+    <string name="user_edit_about_save_button">@string/validate</string>
+    <string name="user_edit_about_error">Ваш текст має містити менше 200 символів.</string>
+
+    <!-- User Report -->
+    <string name="user_report_explanation">Ви повідомите про цього користувача нашим адміністраторам.</string>
+    <string name="user_report_reason">Будь ласка, вкажіть, чому\ви повідомляєте про цю особу:</string>
+    <string name="user_report_reason_hint">Щось написати…</string>
+    <string name="user_report_success">✔︎ Користувач повідомив</string>
+    <string name="user_report_error_reason_empty">Додайте повідомлення</string>
+    <string name="user_report_error_send_failed">L\повідомлення не надіслано, спробуйте ще раз</string>
+    <string name="delete_error_send_failed">Не вдалося видалити, повторіть спробу</string>
+    <string name="delete_success_send">Видалення зроблено</string>
+    <string name="user_report_error_forbidden_group">Ви ще не є частиною цієї групи</string>
+
+    <!-- Action zone -->
+    <string name="user_action_zone_title">Установіть зону дії d\</string>
+    <string name="user_action_zone_description">Entourage корисний, оскільки він локальний!\nЩоб отримувати персоналізовані рекомендації поблизу, укажіть місце, біля якого ви хочете діяти.</string>
+    <string name="user_action_zone_description2">Адреса - може бути приблизною</string>
+    <string name="user_action_zone_disclaimer">Ця інформація є суворо конфіденційною і нікому не надається. Ви можете змінити це в налаштуваннях.</string>
+    <string name="user_action_zone_hint">1 авеню Жана Жореса…</string>
+    <string name="user_action_zone_no_address_error">Будь ласка, додайте адресу</string>
+    <string name="user_action_zone_send_ok">Адреса зареєстрована</string>
+    <string name="user_action_zone_send_failed">Адреса L\ n\' не зареєстрована</string>
+
+    <!-- Edit profile -->
+    <string name="profile_edit_zone_title">Де ти хочеш виступати?</string>
+    <string name="profile_edit_zone_description">Entourage — це соціальна мережа!\nВідкрийте для себе ініціативи солідарності у вашому районі та налагодьте зв’язки зі своїми сусідами</string>
+    <string name="profile_action_not_selected">«Режим дії не вибрано</string>
+    <string name="profile_title_action_mode">Мій спосіб дії</string>
+    <string name="profile_activities">Дії: %s</string>
+
+    <string name="profile_my_zones">Мої області d\'дії</string>
+    <string name="profile_my_zones_description">Отримуйте повідомлення про ініціативи солідарності та потреби в цих областях</string>
+    <string name="profile_button_add2nd_zone">Додайте зону дії d\</string>
+
+    <string name="profile_asso_activity_title">Який ваш основний бізнес?</string>
+    <string name="profile_sdf_activity_title">Що ти шукаєш ?</string>
+    <string name="profile_neighbour_activity_title">Що ви хочете зробити у своєму районі?</string>
+    <string name="profile_sdf_activity_description">Кілька можливих варіантів.\nЄ тисячі способів\отримати підтримку та допомогу.</string>
+
+    <string name="rencontrer_sdf">Створіть коло друзів</string>
+    <string name="event_sdf">Брати участь у заходах</string>
+    <string name="questions_sdf">Задавати питання</string>
+    <string name="aide_sdf">Просити про допомогу</string>
+    <string name="m_orienter_sdf">Зорієнтуватися</string>
+    <string name="trouver_asso_sdf">Знайдіть асоціації</string>
+
+    <string name="m_informer_riverain">Повідом мене</string>
+    <string name="event_riverain">Брати участь у заходах</string>
+    <string name="entourer_riverain">Оточіть ізольовану людину</string>
+    <string name="dons_riverain">Зробіть матеріальні пожертви</string>
+    <string name="benevolat_riverain">Вступайте в асоціацію</string>
+
+    <string name="aide_pers_asso">Допомога людям</string>
+    <string name="cult_sport_asso">Культурні та спортивні ініціативи</string>
+    <string name="serv_pub_asso">Державна служба</string>
+    <string name="autre_asso">інші</string>
+    <string name="next_">Слідую</string>
+
+    <string name="title_association">Асоціація</string>
+    <string name="title_asso_donation">Приймайте пожертви</string>
+    <string name="title_asso_volunteer">Шукаємо волонтерів</string>
+    <string name="title_asso_information">Інформація</string>
+    <string name="title_asso_needs">потреби</string>
+    <string name="title_asso_accept_needs">Приймає пожертви</string>
+    <string name="title_asso_accept_volunteers">Шукаємо волонтерів</string>
+    <string name="title_asso_contact">контакт</string>
+
+    <string name="buttonFollowOnPartner">Абонент</string>
+    <string name="buttonFollowOffPartner">S\підписатися</string>
+    <string name="partnerFollowTitle">Скасувати підписку на %s?</string>
+    <string name="partnerFollowMessage">Ви більше не отримуватимете сповіщень, коли %s запускає нові ініціативи солідарності.</string>
+    <string name="partnerFollowButtonValid">відписатися</string>
+    <string name="partnerFollowButtonCancel">Скасувати</string>
+    <string name="webview_menu_browser">Відкрити в браузері</string>
+    <string name="webview_menu_copy">Копіювати посилання</string>
+    <string name="webview_menu_share">Поділіться</string>
+
+    <string name="webview_share_text">J\ знайшов путівник Simple Comme Bonjour для знайомства з бездомними. C\ можна знайти тут: \n%1$s</string>
+
+    <string name="webview_copy_ok">Посилання скопійовано!</string>
+
+    <string name="custom_dialog_action_title_one_contrib">Де ваш внесок?</string>
+    <string name="custom_dialog_action_title_one_demand">Де ваш запит?</string>
+    <string name="custom_dialog_action_title_two">Дякую за Ваше терпіння</string>
+    <string name="custom_dialog_action_title_three">Гарні новини !</string>
+
+    <string name="custom_dialog_action_content_one_contrib">Чи виконано вашу дію \"&lt;b&gt;%1$s&lt;/b&gt;\"?</string>
+    <string name="custom_dialog_action_content_one_demande">Ти знайшов те що шукав?</string>
+    <string name="custom_dialog_action_content_two_demande">Порада: дивіться внески. Сусід може запропонувати те, що ви шукаєте.</string>
+    <string name="custom_dialog_action_content_two_contrib">Порада: перегляньте запити поблизу вас. Можливо сусід зацікавиться.</string>
+    <string name="custom_dialog_action_content_three_contrib">Велике спасибі за вашу відданість. Ми зможемо видалити ваш внесок.</string>
+    <string name="custom_dialog_action_content_three_demande">Велике спасибі за вашу відданість. Ми зможемо видалити ваш запит.</string>
+    <string name="custom_dialog_action_two_button_contrib">Переглянути внески</string>
+    <string name="custom_dialog_action_two_button_demand">Переглянути запити</string>
+
+    <string name="discussion_main_title">дискусії</string>
+    <string name="discussion_settings_title">Налаштування чату</string>
+    <string name="discussion_settings_signal">звіт</string>
+    <string name="discussion_choose_signal">Повідомити про цю публікацію команді Entourage \</string>
+    <string name="discussion_entraide_signal">Повідомте про цю допомогу команді Entourage \</string>
+    <string name="discussion_choose_supress">Видалити мій пост</string>
+    <string name="discussion_choose_supress_message">Видалити повідомлення</string>
+    <string name="discussion_choose_supress_commentary">Видалити коментар</string>
+    <string name="discussion_supress_the_post">Видалити пост</string>
+    <string name="discussion_supress_the_message">Видалити повідомлення</string>
+    <string name="discussion_supress_the_comment">Видалити коментар</string>
+    <string name="title_param_post">Налаштування публікації</string>
+    <string name="title_param_message">Параметри повідомлення d\</string>
+    <string name="title_param_comment">Налаштування d\' один коментар</string>
+    <string name="discussion_ask_supress">Ви б хотіли видалити цю публікацію?</string>
+    <string name="discussion_ask_supress_message">Чи бажаєте ви видалити це повідомлення з розмови?</string>
+    <string name="discussion_ask_supress_comment">Ви б хотіли видалити цей коментар?</string>
+    <string name="discussion_button_supress">ВИДАЛИТИ</string>
+    <string name="discussion_settings_signal_sub">Повідомити про цю розмову команді Entourage.</string>
+    <string name="discussion_settings_profil">Перегляд профілю</string>
+    <string name="discussion_settings_members">Учасники бесіди</string>
+    <string name="discussion_settings_quit">Залиште розмову</string>
+
+    <string name="discussion_settings_search">Пошук учасника чату</string>
+    <string name="discussion_settings_search_empty">На жаль, немає результатів, які відповідають вашому пошуку!</string>
+    <string name="discussion_report_conversation">Повідомити про розмову</string>
+
+    <string name="leave_conversation">Залиште розмову</string>
+    <string name="leave_conversation_dialog_content">Ви хочете залишити розмову?</string>
+
+    <string name="discussion_pop_new_message_title">Нова розмова</string>
+    <string name="discussion_pop_new_message_subtitle">Ви ще не взаємодіяли з цим користувачем. Якщо виникла проблема, ви можете повідомити про розмову в налаштуваннях.</string>
+
+    <string name="discussion_block_title">Блокувати</string>
+    <string name="discussion_block_subtitle">%s більше не зможе писати вам.</string>
+
+    <string name="params_block_user_conv_pop_title">Заблокувати користувача</string>
+    <string name="params_block_user_conv_pop_message">Ви хочете заблокувати %s? \nЦей користувач більше не зможе надсилати вам повідомлення. Ви можете будь-коли розблокувати користувача в налаштуваннях профілю.</string>
+    <string name="params_block_user_conv_pop_bt_quit">Блокувати</string>
+    <string name="params_block_user_conv_pop_bt_cancel">Скасувати</string>
+
+    <string name="params_block_user_conv_pop_validate_title">Заблокувати %s</string>
+    <string name="params_block_user_conv_pop_validate_subtitle">Цей контакт заблоковано.</string>
+    <string name="params_block_user_conv_pop_validate_bt">в порядку</string>
+
+    <string name="message_user_blocked_by_me_list">Ви заблокували цей контакт</string>
+    <string name="message_user_blocked_by_me">Ви заблокували %s. Ви більше не можете надіслати йому повідомлення.</string>
+    <string name="message_user_blocked_by_other">Ви більше не можете надсилати повідомлення %s. Цю розмову заблоковано.</string>
+
+    <string name="params_unblock_users_title">Розблокувати контакти</string>
+
+    <string name="settingsUnblockUserInfo">Виберіть один або кілька контактів для розблокування.</string>
+    <string name="settingsUnblockBT">Розблокувати</string>
+    <string name="settingsUnblockUser_error">Виберіть хоча б один контакт</string>
+
+    <string name="params_unblock_user_pop_title">Розблокувати контакт</string>
+    <string name="params_unblock_users_pop_title">Розблокувати контакти</string>
+    <string name="params_unblock_user_pop_message">Бажаєте розблокувати %s? \nВи знову зможете надсилати повідомлення один одному.</string>
+    <string name="params_unblock_user_pop_bt_unblock">Розблокувати</string>
+    <string name="params_unblock_user_pop_bt_cancel">Скасувати</string>
+
+    <string name="params_unblock_user_pop_validate_title">Розблокуйте %s</string>
+    <string name="params_unblock_user_pop_validate_subtitle">Цей контакт щойно розблоковано, ви можете писати один одному знову.</string>
+    <string name="params_unblock_users_pop_validate_subtitle">Ці контакти щойно розблоковано, ви можете писати один одному знову.</string>
+    <string name="params_unblock_user_pop_validate_bt">в порядку</string>
+
+    <string name="param_empty_blocked_user">Ви n\ не заблокували жодного контакту.</string>
+
+    <string name="pop_up_rugby_france_title">Давайте переживемо Кубок світу з регбі разом</string>
+    <string name="pop_up_rugby_france_content">Найкращі зустрічі не обов&amp;apos;язково відбуваються на стадіоні! Приєднуйтесь до групи \ «Давайте разом займатися спортом\»</string>
+
+    <!-- New Home string -->
+    <string name="home_v2_title">Програма L\, яка відтворює зв’язки між сусідами</string>
+
+    <string name="home_v2_title_action">Дайте поштовх</string>
+    <string name="home_v2_subtitle_action">Ви потрібні своїм сусідам!</string>
+    <string name="home_v2_btn_more_action">Переглянути всі запити</string>
+
+    <string name="home_v2_title_action_contrib">Потрібна допомога d\?</string>
+    <string name="home_v2_subtitle_action_contrib">Дізнайтеся, що пропонують ваші сусіди!</string>
+    <string name="home_v2_btn_more_action_contrib">Переглянути всі внески</string>
+
+    <string name="home_v2_title_event">Взяти участь в акції солідарності</string>
+    <string name="home_v2_subtitle_event">Багато солідарності поруч</string>
+    <string name="home_v2_btn_more_event">Переглянути всі події</string>
+    <string name="tag_other">Інший</string>
+
+    <string name="home_v2_title_group">Ваші групи сусідів</string>
+    <string name="home_v2_subtitle_group">Обмінюйтеся з сусідами з усіх верств суспільства</string>
+    <string name="home_v2_btn_more_group">Переглянути всі групи</string>
+
+    <string name="home_v2_title_map">Відкрийте для себе корисні адреси</string>
+    <string name="home_v2_subtitle_map">Всі споруди солідарності поруч</string>
+    <string name="home_v2_button_map">Карта місць солідарності поблизу вас</string>
+
+    <string name="home_v2_title_pedago">Усе, що вам потрібно знати, щоб діяти</string>
+    <string name="home_v2_subtitle_pedago">Боротьба з нестабільністю – це як усе, цьому можна навчитися!</string>
+    <string name="home_v2_btn_more_pedago">Переглянути всі статті</string>
+
+    <string name="home_v2_pedago_item_tag_all">все</string>
+    <string name="home_v2_pedago_item_tag_act">Діяти</string>
+    <string name="home_v2_pedago_item_tag_inspire">Надихайте</string>
+    <string name="home_v2_pedago_item_tag_understand">Зрозуміти</string>
+
+    <string name="home_v2_title_help">Ви заблукали?</string>
+    <string name="home_v2_subtitle_help">Не панікуйте, починайте крок за кроком!</string>
+    <string name="home_v2_btn_more_help">Переглянути всі статті</string>
+
+    <string name="home_v2_help_title_one">Як створити групу?</string>
+    <string name="home_v2_help_title_two">Як створити подію?</string>
+    <string name="home_v2_help_title_three">Питання? \nЗв’язатися з %s</string>
+
+    <string name="home_v2_pedag_item_lenght_title">«Прочитано %d хв</string>
+
+    <string name="home_v2_hz_item_title">«Гей, тут, здається, трохи тихо…</string>
+    <string name="home_v2_hz_item_subtitle">"Що, якби ви принесли трохи солідарності у своє місто? Entourage дасть вам ключі, щоб почати!</string>
+    <string name="home_v2_hz_item_button">"Вивчайте більше</string>
+
+    <string name="event_date_time">“dd MMMM yyyy à HH’h’mm”</string>
+    <string name="event_date">“dd/MM/yyyy”</string>
+    <string name="post_date">"dd.MM.yyyy"</string>
+    <string name="comments_date">dd.MM.yy à HH:mm</string>
+    <string name="date_hint">dd/mm/yy</string>
+    <string name="time_hint">hh-mm</string>
+    <string name="event_date_formatter_to_date">dd/MM/yyyy HH\'h\'mm</string>
+    <string name="event_date_formatter_to_string">yyyy-MM-dd HH:mm:ss Z</string>
+    <string name="feed_event_date">“dd MMMM yyyy”</string>
+    <string name="feed_event_time">HH\'h\'mm</string>
+    <string name="entourage_create_date_format">\'le\' EEEE dd MMMM \'à\' HH\'h\'mm</string>
+    <string name="entourage_metadata_startAt_time_format">\'à \'HH\'h\'mm</string>
+    <string name="birthday_date_format">dd-MM</string>
+    <string name="events_date">dd/MM/yyyy</string>
+    <string name="events_time">HH\'h\'mm</string>
+    <string name="entourage_metadata_startAt_format">\'le\' EEEE dd/MM</string>
+    <string name="entourage_metadata_startAt_format_full">EEEE dd MMMM yyyy</string>
+    <string name="date_format_profile">dd-MM</string>
+    <string name="date_format_profile_fr">Day month</string>
+    <string name="action_date_list_formatter">“dd MMMM yyyy”</string>
+    <string name="action_date_month_year_formatter">“MM/YYYY”</string>
+</resources>
