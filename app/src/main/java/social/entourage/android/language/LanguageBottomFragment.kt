@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import social.entourage.android.databinding.BottomFragmentLanguageFragmentBinding
+import social.entourage.android.user.UserPresenter
 
 interface OnLanguageClicked {
     fun onLangChanged(langItem: LanguageItem)
@@ -18,6 +19,7 @@ class LanguageBottomFragment : BottomSheetDialogFragment(), OnLanguageClicked {
     private lateinit var binding: BottomFragmentLanguageFragmentBinding
     private var languages: MutableList<LanguageItem> = mutableListOf()
     private lateinit var adapter: LanguageAdapter
+    private val userPresenter: UserPresenter by lazy { UserPresenter() }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -57,6 +59,7 @@ class LanguageBottomFragment : BottomSheetDialogFragment(), OnLanguageClicked {
 
         LanguageManager.saveLanguageToPreferences(requireContext(), langCode)
         LanguageManager.setLocale(requireContext(), langCode)
+        userPresenter.updateLanguage(id, langCode)
 
         var k = 0
         for (_lang in languages) {
