@@ -24,7 +24,7 @@ interface HomeRequest {
     fun getSummary(): Call<SummaryResponse>
 
     @GET("resources")
-    fun getPedagogicalResources(): Call<PedagogicResponse>
+    fun getPedagogicalResources(@Query("noHtml") noHtml:Boolean): Call<PedagogicResponse>
 
     @GET("resources/{id}")
     fun getPedagogicalResource(@Path("id") resourceId: Int): Call<PedagogicSingleResponse>

@@ -158,8 +158,8 @@ Discover initiatives in your neighborhood and build connections with your neighb
     <string name="add_location_mandatory">Add a place *</string>
     <string name="city_or_department">City or department</string>
     <string name="dont_communicate">* Entourage does not communicate this address.</string>
-    <string name="validate">To validate</string>
-    <string name="take_picture">To take a picture</string>
+    <string name="validate">Validate</string>
+    <string name="take_picture">Take a picture</string>
     <string name="import_picture">Import from gallery</string>
     <string name="description_counter">%s /200</string>
     <string name="events_description_counter">%s /900</string>

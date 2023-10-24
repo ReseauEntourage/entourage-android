@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import social.entourage.android.databinding.BottomFragmentLanguageFragmentBinding
 import social.entourage.android.user.UserPresenter
@@ -29,14 +30,29 @@ class LanguageBottomFragment : BottomSheetDialogFragment(), OnLanguageClicked {
         binding = BottomFragmentLanguageFragmentBinding.inflate(inflater, container, false)
 
         fillArray()
+        handleValidateCLick()
         handleCrossButton()
 
         adapter = LanguageAdapter(requireContext(), this)
         adapter.setData(languages)
         binding.rvLangue.layoutManager = LinearLayoutManager(requireContext())
         binding.rvLangue.adapter = adapter
-
         return binding.root
+    }
+
+    override fun onResume() {
+        super.onResume()
+        setBottomSheetBehavior()
+    }
+
+    private fun handleValidateCLick(){
+        binding.validate.setOnClickListener {
+            this.dismiss()
+        }
+    }
+    private fun setBottomSheetBehavior(){
+        val bottomSheetBehavior = BottomSheetBehavior.from(binding.root.parent as View)
+        bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
     }
 
     private fun fillArray() {

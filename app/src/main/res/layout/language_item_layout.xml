@@ -2,14 +2,16 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:backgroundTint="@color/light_beige"
+    >
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/button_lang"
         android:layout_width="match_parent"
         android:layout_height="55dp"
         android:layout_marginEnd="@dimen/entourage_margin_end"
         android:layout_marginStart="@dimen/entourage_marginstart"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="@dimen/entourage_marginstart"
         android:background="@drawable/language_layout_background_full"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -31,10 +33,10 @@
 
         <ImageView
             android:id="@+id/iv_button"
-            android:layout_width="11dp"
-            android:layout_height="16dp"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
             android:layout_marginEnd="25dp"
-            android:src="@drawable/icon_orange_check"
+            android:src="@drawable/ic_orange_check_quality"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -45,7 +47,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/entourage_margin_end"
             android:layout_marginStart="@dimen/entourage_little_margin_five"
-            android:fontFamily="@font/nunitosans_regular"
+            android:fontFamily="@font/nunitosans_bold"
             android:text="France"
             android:textColor="@color/black"
             android:textSize="@dimen/entourage_font_medium"
