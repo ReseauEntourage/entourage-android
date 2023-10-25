@@ -28,8 +28,7 @@
                     android:layout_height="match_parent"
                     app:color="@{@android:color/black}"
                     app:icon="@{@drawable/ic_translate}"
-                    app:label="@{@string/translate}"
-                    android:visibility="gone"/>
+                    app:label="@{@string/translate}" />
 
                 <include
                     android:id="@+id/language"
@@ -38,8 +37,7 @@
                     android:layout_height="match_parent"
                     app:color="@{@android:color/black}"
                     app:icon="@{@drawable/ic_language}"
-                    app:label="@{@string/title_language}"
-                    android:visibility="gone"/>
+                    app:label="@{@string/title_language}" />
 
                 <include
                     android:id="@+id/notifications"

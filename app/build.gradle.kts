@@ -29,7 +29,7 @@ android {
 
     // App versions
     val versionMajor = 8
-    val versionMinor = 17
+    val versionMinor = 18
     val versionPatch = "git rev-list HEAD --count".runCommand().toInt()
     val versionBranchName = "git rev-parse --abbrev-ref HEAD".runCommand()
     val versionCodeInt = (versionMajor * 100 + versionMinor) * 10000 + versionPatch % 10000
@@ -66,7 +66,7 @@ android {
             "deepLinksScheme" to deepLinksSchemeProd
         )
         applicationId = "social.entourage.android"
-        resourceConfigurations += listOf("fr")
+        resourceConfigurations += listOf("en", "fr", "de", "pl", "es", "ar", "uk", "ro")
 
         minSdk = 21 /*November 2014: Android 5.0, Lollipop*/
         targetSdk = 33
