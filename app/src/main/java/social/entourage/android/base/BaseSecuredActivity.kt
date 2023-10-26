@@ -2,10 +2,12 @@ package social.entourage.android.base
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import social.entourage.android.BuildConfig
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.authentication.AuthenticationController
+import social.entourage.android.onboarding.pre_onboarding.PreOnboardingLanguage
 import social.entourage.android.onboarding.pre_onboarding.PreOnboardingStartActivity
 import timber.log.Timber
 
@@ -24,7 +26,8 @@ abstract class BaseSecuredActivity : BaseActivity() {
         if (authenticationController.isAuthenticated && isMigrationAfterV7) {
             entApp?.finishLoginActivity()
         } else {
-            startActivity(Intent(this, PreOnboardingStartActivity::class.java))
+            Log.wtf("wtf", "hello there")
+            startActivity(Intent(this, PreOnboardingLanguage::class.java))
             finish()
         }
     }

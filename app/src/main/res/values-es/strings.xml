@@ -421,7 +421,7 @@ Leerán este mensaje tan pronto como se unan al grupo.</string>
     <string name="event_places">Número de plazas</string>
     <string name="event_canceled">Evento cancelado</string>
     <string name="member_since">Miembro del séquito desde</string>
-    <string name="profile_date_format">MM/aaaa</string>
+    <string name="profile_date_format">MM/yyyy</string>
     <plurals name="number_of_people">
         <item quantity="one">%1$d participante</item>
         <item quantity="other">%1$d participantes</item>

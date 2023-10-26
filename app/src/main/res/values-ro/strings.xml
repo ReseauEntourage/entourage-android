@@ -422,7 +422,7 @@ Ei vor citi acest mesaj imediat ce se vor alătura grupului.</string>
     <string name="event_places">Numărul de locuri</string>
     <string name="event_canceled">Eveniment anulat</string>
     <string name="member_since">Membru anturaj de atunci</string>
-    <string name="profile_date_format">LL/aaaa</string>
+    <string name="profile_date_format">MM/yyyy</string>
 
     <string name="event_cancel_subtitle_pop">Doriți să anulați evenimentul? Toți participanții vor fi anunțați cu privire la anulare.</string>
     <string name="event_cancel_recurrent_event">Anulați un eveniment recurent</string>

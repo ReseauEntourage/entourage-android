@@ -422,7 +422,7 @@ Przeczytają tę wiadomość, gdy tylko dołączą do grupy.</string>
     <string name="event_places">Liczba miejsc</string>
     <string name="event_canceled">Wydarzenie odwołane</string>
     <string name="member_since">Członek świty od</string>
-    <string name="profile_date_format">MM/rrrr</string>
+    <string name="profile_date_format">MM/yyyy</string>
 
     <string name="event_cancel_subtitle_pop">Czy chcesz odwołać wydarzenie? O odwołaniu wszyscy uczestnicy zostaną powiadomieni.</string>
     <string name="event_cancel_recurrent_event">Anuluj wydarzenie cykliczne</string>

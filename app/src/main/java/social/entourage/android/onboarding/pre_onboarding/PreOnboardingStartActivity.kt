@@ -41,7 +41,6 @@ class PreOnboardingStartActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        Log.wtf("wtf", "hello")
     }
 
     private fun setupViews() {

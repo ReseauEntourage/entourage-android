@@ -38,19 +38,20 @@ import social.entourage.android.language.LanguageManager
 import social.entourage.android.notifications.NotificationActionManager
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.utils.Const
+import social.entourage.android.user.UserPresenter
 import social.entourage.android.user.UserProfileActivity
 import timber.log.Timber
 
 class MainActivity : BaseSecuredActivity() {
     private lateinit var navController: NavController
     private val presenter: MainPresenter = MainPresenter(this)
+    private val userPresenter: UserPresenter by lazy { UserPresenter() }
 
     private lateinit var viewModel: CommunicationHandlerBadgeViewModel
     private val universalLinkManager = UniversalLinkManager(this)
     private var fromDeepLinlGoDiscoverGroup = false
     override fun onCreate(savedInstanceState: Bundle?) {
-        val savedLanguage = LanguageManager.loadLanguageFromPreferences(this)
-        LanguageManager.setLocale(this, savedLanguage)
+        updateLanguage()
         super.onCreate(savedInstanceState)
         instance = this
         setContentView(R.layout.new_activity_main)
@@ -116,6 +117,7 @@ class MainActivity : BaseSecuredActivity() {
     }
 
     override fun onResume() {
+        updateLanguage()
         super.onResume()
         initializeMetaData()
         if (authenticationController.isAuthenticated) {
@@ -129,6 +131,15 @@ class MainActivity : BaseSecuredActivity() {
         if(this.intent != null){
             useIntentForRedictection(this.intent)
             this.intent = null
+        }
+    }
+
+    fun updateLanguage(){
+        val savedLanguage = LanguageManager.loadLanguageFromPreferences(this)
+        LanguageManager.setLocale(this, savedLanguage)
+        val id = EntourageApplication.me(this)?.id
+        if(id != null){
+            userPresenter.updateLanguage(id, LanguageManager.loadLanguageFromPreferences(this))
         }
     }
 

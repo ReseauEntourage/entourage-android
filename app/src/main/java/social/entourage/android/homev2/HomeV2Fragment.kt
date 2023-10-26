@@ -91,7 +91,6 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener {
 
         binding = FragmentHomeV2LayoutBinding.inflate(layoutInflater)
         binding.homeNestedScrollView.visibility = View.GONE
-        firstTimeHome()
         disapearAllAtBeginning()
         binding.progressBar.visibility = View.VISIBLE
         homePresenter = ViewModelProvider(requireActivity()).get(HomePresenter::class.java)
@@ -122,22 +121,6 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener {
         super.onViewCreated(view, savedInstanceState)
         user = EntourageApplication.me(activity) ?: return
         updateAvatar()
-    }
-
-    private fun firstTimeHome() {
-        val sharedPreferences = requireContext().getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE)
-        val isFirstTime = sharedPreferences.getBoolean("isFirstTimeHome", true)
-
-        if (isFirstTime) {
-            val id = EntourageApplication.me(requireContext())?.id!!
-            userPresenter.updateLanguage(id, LanguageManager.loadLanguageFromPreferences(requireContext()))
-            requireActivity().recreate()
-
-            // Set the flag in SharedPreferences to false so the code block won't be executed next time
-            val editor = sharedPreferences.edit()
-            editor.putBoolean("isFirstTimeHome", false)
-            editor.apply()
-        }
     }
 
     override fun onResume() {

@@ -77,14 +77,14 @@ class LanguageAdapter(var context: Context, var callback: OnLanguageClicked) : R
                 else -> binding.icon.setImageDrawable(null)
             }
             when(languageItem.lang) {
-                "Français" -> binding.tvTrad.text = context.getString(R.string.lang_fr)
-                "English" -> binding.tvTrad.text = context.getString(R.string.lang_en)
-                "Deutsch" -> binding.tvTrad.text = context.getString(R.string.lang_de)
-                "Español" -> binding.tvTrad.text = context.getString(R.string.lang_es)
-                "Polski" -> binding.tvTrad.text = context.getString(R.string.lang_pl)
-                "Українська" -> binding.tvTrad.text = context.getString(R.string.lang_uk)
-                "Română" -> binding.tvTrad.text = context.getString(R.string.lang_ro)
-                "العربية" -> binding.tvTrad.text = context.getString(R.string.lang_ar)
+                "Français" -> binding.tvTrad.text = "- " + context.getString(R.string.lang_fr)
+                "English" -> binding.tvTrad.text = "- " +context.getString(R.string.lang_en)
+                "Deutsch" -> binding.tvTrad.text = "- " +context.getString(R.string.lang_de)
+                "Español" -> binding.tvTrad.text = "- " +context.getString(R.string.lang_es)
+                "Polski" -> binding.tvTrad.text = "- " +context.getString(R.string.lang_pl)
+                "Українська" -> binding.tvTrad.text = "- " +context.getString(R.string.lang_uk)
+                "Română" -> binding.tvTrad.text = "- " +context.getString(R.string.lang_ro)
+                "العربية" -> binding.tvTrad.text = "- " +context.getString(R.string.lang_ar)
                 else -> binding.tvTrad.text = ""
             }
         }

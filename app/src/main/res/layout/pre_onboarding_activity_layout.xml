@@ -21,7 +21,7 @@
         android:text="@string/welcome_user"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginTop="63dp"
+        android:layout_marginTop="@dimen/entourage_margin_section"
         android:layout_marginStart="33dp"
         android:fontFamily="@font/quicksand_bold"
         android:textColor="@color/white"
@@ -54,7 +54,6 @@
             android:id="@+id/title_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
             android:layout_marginTop="@dimen/entourage_margin_section"
             android:layout_marginBottom="16dp"
             android:text="@string/select_language"
@@ -91,14 +90,14 @@
             android:layout_marginTop="20dp"
             android:layout_marginBottom="@dimen/entourage_margin_bottom"
             android:layout_marginStart="40dp"
-            android:layout_marginEnd="38dp"
+            android:layout_marginEnd="36dp"
             android:backgroundTint="@color/light_beige"
             />
     </androidx.constraintlayout.widget.ConstraintLayout>
     <Button
     android:id="@+id/validate"
     style="@style/h2_white"
-    android:layout_width="wrap_content"
+    android:layout_width="120dp"
     android:layout_height="wrap_content"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintBottom_toBottomOf="parent"
