@@ -1726,7 +1726,7 @@
     <!-- Create Action Wizard -->
     <string name="create_action_wizard_p1_title">السؤال الأخير</string>
     <string name="create_action_wizard_p1_description">قم بإنشاء هذا العمل التضامني لنفسك<b>pour une personne identifiée, autre que vous :</b> un ami en situation précaire, une personne croisée dans la rue ?</string>
-    <string name="create_action_wizard_p1_option1">@string/create_action_wizard_p3_option1</string>
+    <string name="create_action_wizard_p1_option1">@string/yes</string>
     <string name="create_action_wizard_p1_option2">لا، أنا أطلب لنفسي</string>
     <string name="create_action_wizard_p1_option3">لا، من أجل الجمعية</string>
 
@@ -1737,7 +1737,7 @@
 
     <string name="create_action_wizard_p3_title">السؤال الأخير</string>
     <string name="create_action_wizard_p3_description">الموافقة ضرورية لتتمكن من بث تحركك التضامني على الشبكة.\n\nإجراءك معلق حاليًا. سوف يستجيب المشرف بسرعة كبيرة لمساعدتك.</string>
-    <string name="create_action_wizard_p3_option1">@string/user_save_button</string>
+    <string name="create_action_wizard_p3_option1">@string/next</string>
 
     <string name="create_action_wizard_disclaimer">يوضح &lt;a href=\'%1$s\'&gt;ميثاق أخلاقيات Entourage&lt;/a&gt; أهمية الموافقة.</string>
 

@@ -1733,7 +1733,7 @@ Leerán este mensaje tan pronto como se unan al grupo.</string>
 
     <string name="create_action_wizard_p3_title">ÚLTIMA PREGUNTA</string>
     <string name="create_action_wizard_p3_description">El consentimiento es imprescindible para poder difundir tu acción solidaria en la red.\n\nTu acción está actualmente en suspenso. Un moderador responderá muy rápidamente para ayudarte.</string>
-    <string name="create_action_wizard_p3_option1">@string/create_action_wizard_p1_option3</string>
+    <string name="create_action_wizard_p3_option1">@string/next</string>
 
     <string name="create_action_wizard_disclaimer">La &lt;a href=\'%1$s\'&gt;Carta de Ética de Entourage&lt;/a&gt; explica por qué el consentimiento es esencial.</string>
 
