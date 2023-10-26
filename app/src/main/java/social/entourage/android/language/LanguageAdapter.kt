@@ -56,9 +56,11 @@ class LanguageAdapter(var context: Context, var callback: OnLanguageClicked) : R
             if(languageItem.isSelected){
                 binding.buttonLang.background = context.getDrawable(R.drawable.language_layout_background_full)
                 binding.ivButton.visibility = View.VISIBLE
+                binding.tvTrad.visibility = View.GONE
             }else{
                 binding.buttonLang.background = context.getDrawable(R.drawable.language_layout_background)
                 binding.ivButton.visibility = View.GONE
+                binding.tvTrad.visibility = View.VISIBLE
             }
             binding.buttonLang.setOnClickListener {
                 callback.onLangChanged(languageItem)
@@ -74,7 +76,17 @@ class LanguageAdapter(var context: Context, var callback: OnLanguageClicked) : R
                 "العربية" -> binding.icon.setImageDrawable(context.getDrawable(R.drawable.icon_ar))
                 else -> binding.icon.setImageDrawable(null)
             }
-
+            when(languageItem.lang) {
+                "Français" -> binding.tvTrad.text = context.getString(R.string.lang_fr)
+                "English" -> binding.tvTrad.text = context.getString(R.string.lang_en)
+                "Deutsch" -> binding.tvTrad.text = context.getString(R.string.lang_de)
+                "Español" -> binding.tvTrad.text = context.getString(R.string.lang_es)
+                "Polski" -> binding.tvTrad.text = context.getString(R.string.lang_pl)
+                "Українська" -> binding.tvTrad.text = context.getString(R.string.lang_uk)
+                "Română" -> binding.tvTrad.text = context.getString(R.string.lang_ro)
+                "العربية" -> binding.tvTrad.text = context.getString(R.string.lang_ar)
+                else -> binding.tvTrad.text = ""
+            }
         }
     }
 }

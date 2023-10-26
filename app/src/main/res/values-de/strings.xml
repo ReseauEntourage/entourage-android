@@ -304,7 +304,7 @@ Sie werden diese Nachricht lesen, sobald sie der Gruppe beitreten.</string>
     <string name="report_sent">Ihre Anfrage wurde verschickt. Die Bearbeitung erfolgt schnellstmöglich durch unser Team.</string>
     <string name="post_deleted">Ihr Beitrag wurde gelöscht!.</string>
     <string name="message_deleted">Ihre Nachricht wurde gelöscht!.</string>
-    <string name="welcome_user">Willkommen %s!</string>
+    <string name="welcome_user">Willkommen !</string>
     <string name="contributions_title">Meine Aktionen innerhalb des Netzwerks</string>
     <string name="contributions_meeting">Schöne Begegnungen Entourage</string>
     <string name="contributions_meeting_empty">Noch keine Entourage-Treffen</string>
@@ -2596,5 +2596,20 @@ Sie werden diese Nachricht lesen, sobald sie der Gruppe beitreten.</string>
     <string name="date_format_profile_fr">Day month</string>
     <string name="action_date_list_formatter">“dd MMMM yyyy”</string>
     <string name="action_date_month_year_formatter">“MM/YYYY”</string>
+
+    <string name="translate">Übersetzung</string>
+    <string name="title_language">Sprache</string>
+    <string name="select_language">Wählen Sie Ihre Sprache</string>
+    <string name="all_event">Alle Veranstaltungen</string>
+    <string name="all_my_event">Meine Veranstaltungen</string>
+    <string name="lang_fr">Französisch</string>
+    <string name="lang_en">Englisch</string>
+    <string name="lang_de">Deutsch</string>
+    <string name="lang_uk">Ukrainisch</string>
+    <string name="lang_es">Spanisch</string>
+    <string name="lang_ro">Rumänisch</string>
+    <string name="lang_ar">Arabisch</string>
+    <string name="lang_pl">"Polnisch"</string>
+
 
 </resources>

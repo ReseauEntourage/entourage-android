@@ -304,7 +304,7 @@
     <string name="report_sent">تم ارسال طلبك. سيتم معالجتها في أسرع وقت ممكن من قبل فريقنا.</string>
     <string name="post_deleted">لقد تم حذف مشاركتك!.</string>
     <string name="message_deleted">لقد تم حذف رسالتك!.</string>
-    <string name="welcome_user">مرحبًا %s!</string>
+    <string name="welcome_user">مرحبًا !</string>
     <string name="contributions_title">تصرفاتي داخل الشبكة</string>
     <string name="contributions_meeting">لقاءات جميلة حاشية</string>
     <string name="contributions_meeting_empty">لا توجد اجتماعات Entourage حتى الآن</string>
@@ -2617,5 +2617,20 @@
     <string name="date_format_profile_fr">Day month</string>
     <string name="action_date_list_formatter">“dd MMMM yyyy”</string>
     <string name="action_date_month_year_formatter">“MM/YYYY”</string>
+
+    <string name="translate">ترجمة</string>
+    <string name="title_language">لغة</string>
+    <string name="select_language">اختر لغتك</string>
+    <string name="all_event">جميع الأحداث</string>
+    <string name="all_my_event">أحداثي</string>
+    <string name="lang_fr">فرنسي</string>
+    <string name="lang_en">إنجليزي</string>
+    <string name="lang_de">ألماني</string>
+    <string name="lang_uk">أوكراني</string>
+    <string name="lang_es">إسباني</string>
+    <string name="lang_ro">روماني</string>
+    <string name="lang_ar">عربي</string>
+    <string name="lang_pl">"بولندي</string>
+
 
 </resources>

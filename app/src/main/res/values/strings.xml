@@ -309,7 +309,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="report_sent">Votre demande a bien été envoyée. Elle sera traitée au plus vite par notre équipe.</string>
     <string name="post_deleted">Votre publication a été supprimée !.</string>
     <string name="message_deleted">Votre message a été supprimé !.</string>
-    <string name="welcome_user">Bienvenue %s !</string>
+    <string name="welcome_user">Bienvenue !</string>
     <string name="contributions_title">Mes actions au sein du réseau</string>
     <string name="contributions_meeting">Belles rencontres Entourage</string>
     <string name="contributions_meeting_empty">Pas encore de rencontres Entourage</string>
@@ -2597,5 +2597,19 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="translate">"Traduction</string>
     <string name="title_language">"Langue</string>
     <string name="select_language">"Sélectionnez votre langue</string>
+    <string name="all_event">"Tous les événements"</string>
+    <string name="all_my_event">"Mes événements"</string>
+
+    <!--    STRING Language-->
+
+    <string name="lang_fr">"Français"</string>
+    <string name="lang_en">"Anglais"</string>
+    <string name="lang_de">"Allemand"</string>
+    <string name="lang_uk">"Ukrainien"</string>
+    <string name="lang_es">"Espagnol"</string>
+    <string name="lang_ro">"Roumain"</string>
+    <string name="lang_ar">"Arabe"</string>
+    <string name="lang_pl">"Polonais"</string>
+
 
 </resources>

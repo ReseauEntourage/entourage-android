@@ -303,7 +303,7 @@ Leerán este mensaje tan pronto como se unan al grupo.</string>
     <string name="report_sent">Tu solicitud ha sido enviada. Nuestro equipo lo procesará lo más rápido posible.</string>
     <string name="post_deleted">¡Tu publicación ha sido eliminada!.</string>
     <string name="message_deleted">¡Tu mensaje ha sido eliminado!.</string>
-    <string name="welcome_user">¡Bienvenido %s!</string>
+    <string name="welcome_user">¡Bienvenido !</string>
     <string name="contributions_title">Mis acciones dentro de la red</string>
     <string name="contributions_meeting">Hermosos encuentros Entourage</string>
     <string name="contributions_meeting_empty">Aún no hay reuniones de Entourage</string>
@@ -2594,6 +2594,20 @@ Leerán este mensaje tan pronto como se unan al grupo.</string>
     <string name="date_format_profile_fr">Day month</string>
     <string name="action_date_list_formatter">“dd MMMM yyyy”</string>
     <string name="action_date_month_year_formatter">“MM/YYYY”</string>
+
+    <string name="translate">Traducción</string>
+    <string name="title_language">Idioma</string>
+    <string name="select_language">Seleccione su idioma</string>
+    <string name="all_event">Todos los eventos</string>
+    <string name="all_my_event">Mis eventos</string>
+    <string name="lang_fr">Francés</string>
+    <string name="lang_en">Inglés</string>
+    <string name="lang_de">Alemán</string>
+    <string name="lang_uk">Ucraniano</string>
+    <string name="lang_es">Español</string>
+    <string name="lang_ro">Rumano</string>
+    <string name="lang_ar">Árabe</string>
+    <string name="lang_pl">"Polaco"</string>
 
 
 </resources>

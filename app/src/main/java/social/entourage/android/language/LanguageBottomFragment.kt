@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import social.entourage.android.EntourageApplication
 import social.entourage.android.databinding.BottomFragmentLanguageFragmentBinding
 import social.entourage.android.user.UserPresenter
 
@@ -75,8 +76,8 @@ class LanguageBottomFragment : BottomSheetDialogFragment(), OnLanguageClicked {
 
         LanguageManager.saveLanguageToPreferences(requireContext(), langCode)
         LanguageManager.setLocale(requireContext(), langCode)
+        val id = EntourageApplication.me(requireContext())?.id!!
         userPresenter.updateLanguage(id, langCode)
-
         var k = 0
         for (_lang in languages) {
             if (_lang.lang == langItem.lang) {

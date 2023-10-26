@@ -304,7 +304,7 @@ Ei vor citi acest mesaj imediat ce se vor alătura grupului.</string>
     <string name="report_sent">Cererea ta a fost trimisă. Acesta va fi procesat cât mai repede posibil de către echipa noastră.</string>
     <string name="post_deleted">Postarea ta a fost ștearsă!.</string>
     <string name="message_deleted">Mesajul tău a fost șters!.</string>
-    <string name="welcome_user">Bun venit %s!</string>
+    <string name="welcome_user">Bun venit !</string>
     <string name="contributions_title">Acțiunile mele în cadrul rețelei</string>
     <string name="contributions_meeting">Întâlniri frumoase Anturaj</string>
     <string name="contributions_meeting_empty">Nu există încă întâlniri Anturaj</string>
@@ -2601,4 +2601,19 @@ Ei vor citi acest mesaj imediat ce se vor alătura grupului.</string>
     <string name="date_format_profile_fr">Day month</string>
     <string name="action_date_list_formatter">“dd MMMM yyyy”</string>
     <string name="action_date_month_year_formatter">“MM/YYYY”</string>
+
+    <string name="translate">Traducere</string>
+    <string name="title_language">Limbă</string>
+    <string name="select_language">Selectați limba dvs.</string>
+    <string name="all_event">Toate evenimentele</string>
+    <string name="all_my_event">Evenimentele mele</string>
+    <string name="lang_fr">Franceză</string>
+    <string name="lang_en">Engleză</string>
+    <string name="lang_de">Germană</string>
+    <string name="lang_uk">Ucraineană</string>
+    <string name="lang_es">Spaniolă</string>
+    <string name="lang_ro">Română</string>
+    <string name="lang_ar">Arabă</string>
+    <string name="lang_pl">"Poloneză"</string>
+
 </resources>

@@ -304,7 +304,7 @@
     <string name="report_sent">Ваш запит надіслано. Наша команда опрацює його якомога швидше.</string>
     <string name="post_deleted">Ваш пост видалено!.</string>
     <string name="message_deleted">Ваше повідомлення видалено!.</string>
-    <string name="welcome_user">Вітаємо, %s!</string>
+    <string name="welcome_user">Вітаємо!</string>
     <string name="contributions_title">Мої дії в мережі</string>
     <string name="contributions_meeting">Красиві зустрічі Антураж</string>
     <string name="contributions_meeting_empty">Ще немає зустрічей Entourage</string>
@@ -2609,4 +2609,19 @@
     <string name="date_format_profile_fr">Day month</string>
     <string name="action_date_list_formatter">“dd MMMM yyyy”</string>
     <string name="action_date_month_year_formatter">“MM/YYYY”</string>
+
+    <string name="translate">Переклад</string>
+    <string name="title_language">Мова</string>
+    <string name="select_language">Виберіть свою мову</string>
+    <string name="all_event">Всі події</string>
+    <string name="all_my_event">Мої події</string>
+    <string name="lang_fr">Французька</string>
+    <string name="lang_en">Англійська</string>
+    <string name="lang_de">Німецька</string>
+    <string name="lang_uk">Українська</string>
+    <string name="lang_es">Іспанська</string>
+    <string name="lang_ro">Румунська</string>
+    <string name="lang_ar">Арабська</string>
+    <string name="lang_pl">"Польська "</string>
+
 </resources>

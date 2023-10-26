@@ -3,6 +3,7 @@ package social.entourage.android.onboarding.pre_onboarding
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import social.entourage.android.R
 import social.entourage.android.base.BaseActivity
 import social.entourage.android.onboarding.login.LoginActivity
@@ -48,5 +49,9 @@ class PreOnboardingChoiceActivity : BaseActivity() {
         val intent = Intent(this, LoginActivity::class.java)
         startActivity(intent)
         finish()
+    }
+
+    override fun onResume() {
+        super.onResume()
     }
 }

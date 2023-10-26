@@ -2,6 +2,7 @@ package social.entourage.android.onboarding.pre_onboarding
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
@@ -36,6 +37,11 @@ class PreOnboardingStartActivity : AppCompatActivity() {
         setupViews()
         setupRecyclerView()
         updateViewAndDots()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Log.wtf("wtf", "hello")
     }
 
     private fun setupViews() {

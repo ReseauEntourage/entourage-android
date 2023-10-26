@@ -55,5 +55,21 @@
             app:layout_constraintStart_toEndOf="@+id/icon"
             app:layout_constraintTop_toTopOf="parent"
             />
+
+        <TextView
+            android:id="@+id/tv_trad"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/entourage_margin_end"
+            android:layout_marginStart="@dimen/entourage_little_margin_five"
+            android:fontFamily="@font/nunitosans_bold"
+            android:text="Français"
+            android:textColor="@color/grey"
+            android:textSize="@dimen/entourage_font_medium"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/tv_title"
+            app:layout_constraintTop_toTopOf="parent"
+            android:visibility="gone"
+            />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

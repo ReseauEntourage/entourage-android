@@ -3,6 +3,7 @@ package social.entourage.android.homev2
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.animation.ValueAnimator
+import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
@@ -47,6 +48,7 @@ import social.entourage.android.profile.ProfileActivity
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.view.WebViewFragment
+import social.entourage.android.user.UserPresenter
 import social.entourage.android.user.UserProfileActivity
 
 class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener {
@@ -57,6 +59,7 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener {
     private var homeGroupAdapter = HomeGroupAdapter()
     private var homeEventAdapter = HomeEventAdapter()
     private var homeActionAdapter = HomeActionAdapter(false)
+    private val userPresenter: UserPresenter by lazy { UserPresenter() }
     private lateinit var homeHelpAdapter:HomeHelpAdapter
     private var homePedagoAdapter:HomePedagoAdapter? = null
     private var pagegroup = 0
@@ -88,6 +91,7 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener {
 
         binding = FragmentHomeV2LayoutBinding.inflate(layoutInflater)
         binding.homeNestedScrollView.visibility = View.GONE
+        firstTimeHome()
         disapearAllAtBeginning()
         binding.progressBar.visibility = View.VISIBLE
         homePresenter = ViewModelProvider(requireActivity()).get(HomePresenter::class.java)
@@ -118,6 +122,22 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener {
         super.onViewCreated(view, savedInstanceState)
         user = EntourageApplication.me(activity) ?: return
         updateAvatar()
+    }
+
+    private fun firstTimeHome() {
+        val sharedPreferences = requireContext().getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE)
+        val isFirstTime = sharedPreferences.getBoolean("isFirstTimeHome", true)
+
+        if (isFirstTime) {
+            val id = EntourageApplication.me(requireContext())?.id!!
+            userPresenter.updateLanguage(id, LanguageManager.loadLanguageFromPreferences(requireContext()))
+            requireActivity().recreate()
+
+            // Set the flag in SharedPreferences to false so the code block won't be executed next time
+            val editor = sharedPreferences.edit()
+            editor.putBoolean("isFirstTimeHome", false)
+            editor.apply()
+        }
     }
 
     override fun onResume() {

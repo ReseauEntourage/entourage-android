@@ -304,7 +304,7 @@ They will read this message as soon as they join the group.</string>
     <string name="report_sent">Your request has been sent. It will be processed as quickly as possible by our team.</string>
     <string name="post_deleted">Your post has been deleted!.</string>
     <string name="message_deleted">Your message has been deleted!.</string>
-    <string name="welcome_user">Welcome %s!</string>
+    <string name="welcome_user">Welcome !</string>
     <string name="contributions_title">My actions within the network</string>
     <string name="contributions_meeting">Beautiful encounters Entourage</string>
     <string name="contributions_meeting_empty">No Entourage meetings yet</string>
@@ -2601,4 +2601,20 @@ They will read this message as soon as they join the group.</string>
     <string name="entourage_metadata_startAt_format_full">EEEE dd MMMM yyyy</string>
     <string name="date_format_profile">dd-MM</string>
     <string name="date_format_profile_fr">Day month</string>
+
+
+    <string name="translate">Translation</string>
+    <string name="title_language">Language</string>
+    <string name="select_language">Select your language</string>
+    <string name="all_event">All events</string>
+    <string name="all_my_event">My events</string>
+    <string name="lang_fr">French</string>
+    <string name="lang_en">English</string>
+    <string name="lang_de">German</string>
+    <string name="lang_uk">Ukrainian</string>
+    <string name="lang_es">Spanish</string>
+    <string name="lang_ro">Romanian</string>
+    <string name="lang_ar">Arabic</string>
+    <string name="lang_pl">"Polish"</string>
+
 </resources>
