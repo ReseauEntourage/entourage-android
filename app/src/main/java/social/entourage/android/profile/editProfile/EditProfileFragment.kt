@@ -185,43 +185,45 @@ class EditProfileFragment : Fragment(), EditProfileCallback,
     }
 
     private fun updateUserView() {
-        val user = EntourageApplication.me(activity) ?: return
-        with(binding) {
-            firstname.content.setText(user.firstName)
-            lastname.content.setText(user.lastName)
-            if(descriptionRegistered.equals("")){
-                description.content.setText(user.about)
-            }else{
-                description.content.setText(descriptionRegistered)
-            }
-            birthday.content.transformIntoDatePicker(
-                requireContext(),
-                getString(R.string.birthday_date_format)
-            )
-            birthday.content.setText(user.birthday)
-            phone.content.text = user.phone
-            phone.content.setTextColor(
-                ContextCompat.getColor(
+        if(isAdded){
+            val user = EntourageApplication.me(activity) ?: return
+            with(binding) {
+                firstname.content.setText(user.firstName)
+                lastname.content.setText(user.lastName)
+                if(descriptionRegistered.equals("")){
+                    description.content.setText(user.about)
+                }else{
+                    description.content.setText(descriptionRegistered)
+                }
+                birthday.content.transformIntoDatePicker(
                     requireContext(),
-                    R.color.dark_grey_opacity_40
+                    getString(R.string.birthday_date_format)
                 )
-            )
-            phone.divider.visibility = View.GONE
-            email.content.setText(user.email)
-            cityAction.content.text = user.address?.displayAddress
-            seekBarLayout.seekbar.progress = user.travelDistance ?: 0
-            validate.button.setOnClickListener { onSaveProfile() }
-            seekBarLayout.seekbar.post {
-                user.travelDistance?.let { setProgressThumb(it) }
-            }
-            user.avatarURL?.let { avatarURL ->
-                Glide.with(requireActivity())
-                    .load(Uri.parse(avatarURL))
-                    .placeholder(R.drawable.placeholder_user)
-                    .circleCrop()
-                    .into(imageProfile)
-            } ?: run {
-                imageProfile.setImageResource(R.drawable.placeholder_user)
+                birthday.content.setText(user.birthday)
+                phone.content.text = user.phone
+                phone.content.setTextColor(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.dark_grey_opacity_40
+                    )
+                )
+                phone.divider.visibility = View.GONE
+                email.content.setText(user.email)
+                cityAction.content.text = user.address?.displayAddress
+                seekBarLayout.seekbar.progress = user.travelDistance ?: 0
+                validate.button.setOnClickListener { onSaveProfile() }
+                seekBarLayout.seekbar.post {
+                    user.travelDistance?.let { setProgressThumb(it) }
+                }
+                user.avatarURL?.let { avatarURL ->
+                    Glide.with(requireActivity())
+                        .load(Uri.parse(avatarURL))
+                        .placeholder(R.drawable.placeholder_user)
+                        .circleCrop()
+                        .into(imageProfile)
+                } ?: run {
+                    imageProfile.setImageResource(R.drawable.placeholder_user)
+                }
             }
         }
     }
