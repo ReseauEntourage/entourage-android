@@ -9,6 +9,7 @@ import social.entourage.android.api.model.notification.PushNotificationContent
 import social.entourage.android.tools.log.AnalyticsEvents
 
 class NotificationActionReceiver : BroadcastReceiver() {
+
     override fun onReceive(context: Context, intent: Intent) {
 
         when (intent.action) {

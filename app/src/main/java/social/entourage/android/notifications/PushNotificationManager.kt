@@ -381,6 +381,8 @@ object PushNotificationManager {
         return true
     }
 
+
+
     /**
      * Creates the pending intent to be used when creating the OS notification
      * @param pushNotificationMessage the pushNotificationMessage

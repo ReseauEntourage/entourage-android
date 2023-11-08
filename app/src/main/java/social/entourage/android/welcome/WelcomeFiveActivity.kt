@@ -14,6 +14,7 @@ class WelcomeFiveActivity: BaseActivity() {
     val urlToShare = "https://s3-eu-west-1.amazonaws.com/entourage-ressources/store_redirection.html"
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        super.updateLanguage()
         super.onCreate(savedInstanceState)
         val shareTitle = getString(R.string.welcome_five_share_title)
         binding = ActivityWelcomeFiveBinding.inflate(layoutInflater)

@@ -46,7 +46,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/entourage_margin_end"
-            android:layout_marginStart="@dimen/entourage_little_margin_five"
+            android:layout_marginStart="@dimen/entourage_marginstart"
             android:fontFamily="@font/nunitosans_bold"
             android:text="France"
             android:textColor="@color/black"

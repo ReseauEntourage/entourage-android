@@ -51,7 +51,7 @@ class MainActivity : BaseSecuredActivity() {
     private val universalLinkManager = UniversalLinkManager(this)
     private var fromDeepLinlGoDiscoverGroup = false
     override fun onCreate(savedInstanceState: Bundle?) {
-        updateLanguage()
+        updateMainLanguage()
         super.onCreate(savedInstanceState)
         instance = this
         setContentView(R.layout.new_activity_main)
@@ -134,9 +134,8 @@ class MainActivity : BaseSecuredActivity() {
         }
     }
 
-    fun updateLanguage(){
-        val savedLanguage = LanguageManager.loadLanguageFromPreferences(this)
-        LanguageManager.setLocale(this, savedLanguage)
+     fun updateMainLanguage(){
+        updateLanguage()
         val id = EntourageApplication.me(this)?.id
         if(id != null){
             userPresenter.updateLanguage(id, LanguageManager.loadLanguageFromPreferences(this))

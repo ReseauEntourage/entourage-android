@@ -36,6 +36,7 @@ class WelcomeOneActivity:BaseActivity(), OnVideoLoaCallback {
     private var videoLink = "https://www.youtube.com/watch?v=IYUo5WAZxXs"
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        super.updateLanguage()
         super.onCreate(savedInstanceState)
         binding = ActivityLayoutWelcomeOneBinding.inflate(layoutInflater)
 

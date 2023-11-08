@@ -12,6 +12,7 @@ class WelcomeFourActivity: BaseActivity() {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        super.updateLanguage()
         super.onCreate(savedInstanceState)
         AnalyticsEvents.logEvent(AnalyticsEvents.View_WelcomeOfferHelp_Day8)
 

@@ -10,6 +10,7 @@ import social.entourage.android.BuildConfig
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.deeplinks.UniversalLinkManager
+import social.entourage.android.language.LanguageManager
 import social.entourage.android.tools.view.WebViewFragment
 import java.net.URL
 
@@ -51,5 +52,10 @@ abstract class BaseActivity : AppCompatActivity() {
 
     open fun getLink(linkId: String): String {
         return getString(R.string.redirect_link_no_token_format, BuildConfig.ENTOURAGE_URL, linkId)
+    }
+
+     fun updateLanguage(){
+        val savedLanguage = LanguageManager.loadLanguageFromPreferences(this)
+        LanguageManager.setLocale(this, savedLanguage)
     }
 }

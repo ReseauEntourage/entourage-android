@@ -51,6 +51,7 @@ class WelcomeThreeActivity: BaseActivity() {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        super.updateLanguage()
         super.onCreate(savedInstanceState)
         binding = ActivityLayoutWelcomeThreeBinding.inflate(layoutInflater)
         //INIT PRESENTER
