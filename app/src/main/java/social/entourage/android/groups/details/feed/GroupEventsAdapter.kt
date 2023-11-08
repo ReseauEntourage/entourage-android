@@ -35,12 +35,13 @@ class GroupEventsAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        var locale = Locale.getDefault()
         holder.binding.name.text = eventsList[position].title
         holder.binding.address.text = eventsList[position].metadata?.placeName
         eventsList[position].metadata?.startsAt?.let {
             holder.binding.date.text = SimpleDateFormat(
                 holder.itemView.context.getString(R.string.event_date),
-                Locale.FRANCE
+                locale
             ).format(
                 it
             )

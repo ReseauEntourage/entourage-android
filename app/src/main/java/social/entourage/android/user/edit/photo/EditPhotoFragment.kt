@@ -222,7 +222,8 @@ open class EditPhotoFragment : BaseDialogFragment(), PhotoEditInterface {
     @Throws(IOException::class)
     protected fun createImageFile(): Uri? {
         // Create an image file name
-        val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.FRANCE).format(Date())
+        var locale = Locale.getDefault()
+        val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss", locale).format(Date())
         val imageFileName = "ENTOURAGE_" + timeStamp + "_"
         val storageDir = File(requireContext().filesDir, "images")
         if (!storageDir.exists()) {

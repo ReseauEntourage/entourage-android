@@ -100,9 +100,10 @@ class GroupEventsListAdapter(
         }
         childViewHolder.binding.eventName.text = child.title
         child.metadata?.startsAt?.let {
+            var locale = Locale.getDefault()
             childViewHolder.binding.date.text = SimpleDateFormat(
                 childViewHolder.itemView.context.getString(R.string.event_date_time),
-                Locale.FRANCE
+                locale
             ).format(
                 it
             )

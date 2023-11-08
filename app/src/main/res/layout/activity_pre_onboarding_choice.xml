@@ -77,14 +77,14 @@
 
     <ImageView
         android:id="@+id/ui_logo2"
-        android:layout_width="wrap_content"
-        android:layout_height="54dp"
+        android:layout_width="200dp"
+        android:layout_height="40dp"
         android:layout_marginStart="32dp"
         android:layout_marginTop="8dp"
         android:contentDescription="@string/empty_description"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:src="@drawable/ic_logo_entourage_onboarding_new" />
+        android:src="@drawable/logo_entourage_rvb_horizontal" />
 
     <Button
         android:id="@+id/ui_button_about"

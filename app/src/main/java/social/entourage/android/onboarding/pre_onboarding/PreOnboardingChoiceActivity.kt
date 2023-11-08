@@ -26,6 +26,7 @@ class PreOnboardingChoiceActivity : BaseActivity() {
             goLogin()
         }
 
+
         binding.uiButtonSignup.setOnClickListener {
             AnalyticsEvents.logEvent(AnalyticsEvents.PreOnboard_action_signup)
             val intent = Intent(this, OnboardingStartActivity::class.java)
@@ -43,6 +44,7 @@ class PreOnboardingChoiceActivity : BaseActivity() {
 
         AnalyticsEvents.logEvent(AnalyticsEvents.PreOnboard_view_choice)
     }
+
 
     private fun goLogin() {
         AnalyticsEvents.logEvent(AnalyticsEvents.PreOnboard_action_signin)

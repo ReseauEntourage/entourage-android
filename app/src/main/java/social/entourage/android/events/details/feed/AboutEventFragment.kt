@@ -135,32 +135,34 @@ class AboutEventFragment : Fragment(), OnMapReadyCallback {
                 }
             )
             event?.metadata?.startsAt?.let {
+                var locale = Locale.getDefault()
                 binding.dateStartsAt.content.text =
                     String.format(
                         getString(R.string.date_recurrence_event),
                         SimpleDateFormat(
                             context?.getString(R.string.feed_event_date),
-                            Locale.FRANCE
+                            locale
                         ).format(
                             it
                         ), recurrence
                     )
             }
             event?.metadata?.let {
+                var locale = Locale.getDefault()
                 binding.time.content.text =
                     String.format(
                         getString(R.string.start_and_end_time_event),
                         it.startsAt?.let { it1 ->
                             SimpleDateFormat(
                                 context?.getString(R.string.feed_event_time),
-                                Locale.FRANCE
+                                locale
                             ).format(
                                 it1
                             )
                         }, it.endsAt?.let { it1 ->
                             SimpleDateFormat(
                                 context?.getString(R.string.feed_event_time),
-                                Locale.FRANCE
+                                locale
                             ).format(
                                 it1
                             )
@@ -168,22 +170,24 @@ class AboutEventFragment : Fragment(), OnMapReadyCallback {
                     )
             }
             if (event?.updatedAt != null) {
+                var locale = Locale.getDefault()
                 updatedDate.text = String.format(
                     getString(R.string.updated_at), event?.updatedAt?.let {
                         SimpleDateFormat(
                             context?.getString(R.string.feed_event_date),
-                            Locale.FRANCE
+                            locale
                         ).format(
                             it
                         )
                     }
                 )
             } else {
+                var locale = Locale.getDefault()
                 updatedDate.text = String.format(
                     getString(R.string.created_at), event?.createdAt?.let {
                         SimpleDateFormat(
                             context?.getString(R.string.feed_event_date),
-                            Locale.FRANCE
+                            locale
                         ).format(
                             it
                         )
@@ -239,11 +243,12 @@ class AboutEventFragment : Fragment(), OnMapReadyCallback {
 
     private fun handleEventCanceled() {
         with(binding) {
+            var locale = Locale.getDefault()
             updatedDate.text = String.format(
                 getString(R.string.canceled_at), event?.previousAt?.let {
                     SimpleDateFormat(
                         context?.getString(R.string.feed_event_date),
-                        Locale.FRANCE
+                        locale
                     ).format(
                         it
                     )

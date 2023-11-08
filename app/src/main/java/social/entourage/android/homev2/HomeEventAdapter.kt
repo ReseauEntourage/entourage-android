@@ -85,9 +85,10 @@ class HomeEventAdapter:RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             }
 
             event.metadata?.startsAt?.let {
+                var locale = Locale.getDefault()
                 holder.binding.tvDateHomeV2EventItem.text = SimpleDateFormat(
                     holder.itemView.context.getString(R.string.post_date),
-                    Locale.FRANCE
+                    locale
                 ).format(
                     it
                 )

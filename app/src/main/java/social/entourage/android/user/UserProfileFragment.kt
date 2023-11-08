@@ -165,9 +165,10 @@ class UserProfileFragment : Fragment() {
                 events.content.text = it.outingsCount.toString()
             }
             user.createdAt?.let {
+                var locale = Locale.getDefault()
                 binding.joined.date.text = SimpleDateFormat(
                     requireContext().getString(R.string.profile_date_format),
-                    Locale.FRANCE
+                    locale
                 ).format(
                     it
                 )

@@ -129,7 +129,8 @@ class DetailConversationActivity : CommentActivity() {
             for (mappp in _allevents) {
                 val datePost = Post()
                 datePost.isDatePostOnly = true
-                datePost.datePostText = mappp.key.capitalize(Locale.FRANCE)
+                var locale = Locale.getDefault()
+                datePost.datePostText = mappp.key.capitalize(locale)
                 newList.add(datePost)
                 for (_msg in mappp.value) {
                     newList.add(_msg)

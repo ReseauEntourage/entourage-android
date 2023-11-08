@@ -34,7 +34,8 @@ class Post(
     var isDatePostOnly = false
 
     fun getFormatedStr() : String {
-        return createdTime?.let { SimpleDateFormat("EEEE dd MMMM yyyy",Locale.FRANCE).format(it) } ?: ""
+        val locale = Locale.getDefault()
+        return createdTime?.let { SimpleDateFormat("EEEE dd MMMM yyyy",locale).format(it) } ?: ""
     }
 
     override fun toString(): String {

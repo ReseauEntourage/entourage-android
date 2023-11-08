@@ -94,8 +94,9 @@ data class Action(
     fun memberSinceDateString(context: android.content.Context) : String {
         author?.creation_date?.let {
             try{
+                val locale = Locale.getDefault()
                 val dateStr = SimpleDateFormat(context.getString(R.string.action_date_month_year_formatter),
-                    Locale.FRANCE).format(it)
+                    locale).format(it)
                 return context.getString( R.string.action_member_since,dateStr)
             }catch (e:Exception){
                 return  "-"

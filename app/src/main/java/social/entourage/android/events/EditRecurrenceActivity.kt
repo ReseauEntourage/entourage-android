@@ -46,7 +46,8 @@ class EditRecurrenceActivity : AppCompatActivity() {
     }
 
     private fun setView() {
-        val sdf = SimpleDateFormat(getString(R.string.events_date), Locale.FRANCE)
+        var locale = Locale.getDefault()
+        val sdf = SimpleDateFormat(getString(R.string.events_date), locale)
         binding.date.text = date?.let { it1 ->
             sdf.format(
                 it1

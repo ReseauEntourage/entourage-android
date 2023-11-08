@@ -69,9 +69,10 @@ class MyEventRVAdapter() :RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             }
             binding.titleMyEvent.text = event.title
             event.metadata?.startsAt?.let {
+                var locale = Locale.getDefault()
                 binding.dateMyEvent.text = SimpleDateFormat(
                     itemView.context.getString(R.string.post_date),
-                    Locale.FRANCE
+                    locale
                 ).format(
                     it
                 )

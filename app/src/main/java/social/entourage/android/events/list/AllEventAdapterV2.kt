@@ -76,9 +76,11 @@ class AllEventAdapterV2(var userId: Int?) :
                 }
                 holder.binding.eventName.text = event.title
                 event.metadata?.startsAt?.let {
+                    Log.wtf("wtf", "event metadata date " + it)
+                    var locale = Locale.getDefault()
                     holder.binding.date.text = SimpleDateFormat(
                         holder.itemView.context.getString(R.string.event_date_time),
-                        Locale.FRANCE
+                        locale
                     ).format(
                         it
                     )

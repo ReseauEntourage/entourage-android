@@ -84,9 +84,10 @@ class PostAdapter(
                         )
                     }
                 }
+                var locale = Locale.getDefault()
                 binding.date.text = SimpleDateFormat(
                     itemView.context.getString(R.string.post_date),
-                    Locale.FRANCE
+                    locale
                 ).format(
                     createdTime
                 )

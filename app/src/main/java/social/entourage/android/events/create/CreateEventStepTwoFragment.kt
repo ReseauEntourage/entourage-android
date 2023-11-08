@@ -149,8 +149,9 @@ class CreateEventStepTwoFragment : Fragment() {
             this?.let {
                 binding.layout.recurrenceTitle.root.isVisible = this.recurrence == null
                 binding.layout.recurrence.isVisible = this.recurrence == null
-                val sdfDate = SimpleDateFormat(getString(R.string.events_date), Locale.FRANCE)
-                val sdfTime = SimpleDateFormat(getString(R.string.events_time), Locale.FRANCE)
+                var locale = Locale.getDefault()
+                val sdfDate = SimpleDateFormat(getString(R.string.events_date), locale)
+                val sdfTime = SimpleDateFormat(getString(R.string.events_time), locale)
                 binding.layout.eventDate.setText(this.metadata?.startsAt?.let { it1 ->
                     sdfDate.format(
                         it1
