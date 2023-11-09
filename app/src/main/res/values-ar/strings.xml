@@ -2630,5 +2630,11 @@
     <string name="lang_ar">عربي</string>
     <string name="lang_pl">"بولندي</string>
 
+    <string name="translation_bottom_fragment_title">"نترجم تلقائيًا الرسائل المكتوبة من قبل المواطنين."</string>
+    <string name="translation_bottom_fragment_main_title">"الترجمة"</string>
+
+
+
+
 
 </resources>

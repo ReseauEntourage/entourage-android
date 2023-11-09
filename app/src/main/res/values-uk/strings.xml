@@ -2622,4 +2622,7 @@
     <string name="lang_ar">Арабська</string>
     <string name="lang_pl">"Польська "</string>
 
+    <string name="translation_bottom_fragment_title">"Ми автоматично перекладаємо повідомлення, написані громадянами."</string>
+    <string name="translation_bottom_fragment_main_title">"Переклад"</string>
+
 </resources>

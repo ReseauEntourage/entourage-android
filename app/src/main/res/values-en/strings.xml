@@ -2616,4 +2616,7 @@ They will read this message as soon as they join the group.</string>
     <string name="lang_ar">Arabic</string>
     <string name="lang_pl">"Polish"</string>
 
+    <string name="translation_bottom_fragment_title">"We automatically translate messages written by citizens."</string>
+    <string name="translation_bottom_fragment_main_title">"Translation"</string>
+
 </resources>

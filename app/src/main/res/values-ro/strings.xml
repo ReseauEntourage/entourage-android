@@ -2614,4 +2614,9 @@ Ei vor citi acest mesaj imediat ce se vor alătura grupului.</string>
     <string name="lang_ar">Arabă</string>
     <string name="lang_pl">"Poloneză"</string>
 
+    <string name="translation_bottom_fragment_title">"Traducem automat mesajele scrise de cetățeni."</string>
+    <string name="translation_bottom_fragment_main_title">"Traducere"</string>
+
+
+
 </resources>

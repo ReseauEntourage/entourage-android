@@ -2609,5 +2609,7 @@ Sie werden diese Nachricht lesen, sobald sie der Gruppe beitreten.</string>
     <string name="lang_ar">Arabisch</string>
     <string name="lang_pl">"Polnisch"</string>
 
+    <string name="translation_bottom_fragment_title">"Wir übersetzen automatisch Nachrichten, die von Bürgern verfasst wurden."</string>
+    <string name="translation_bottom_fragment_main_title">"Übersetzung"</string>
 
 </resources>

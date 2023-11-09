@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:backgroundTint="@color/light_beige"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <ImageView
+        android:id="@+id/icon_cross"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_marginTop="@dimen/entourage_margin_section"
+        android:layout_marginBottom="16dp"
+        android:layout_marginStart="@dimen/entourage_marginstart"
+        android:layout_marginEnd="@dimen/entourage_marginstart"
+        android:src="@drawable/new_cross"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:src="@drawable/new_cross" />
+
+    <TextView
+        android:id="@+id/title_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="@dimen/entourage_margin_section"
+        android:layout_marginBottom="16dp"
+        android:text="@string/translation_bottom_fragment_main_title"
+        app:layout_constraintBottom_toTopOf="@id/divider"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:fontFamily="@font/quicksand_bold"
+        android:textColor="@color/black"
+        android:textSize="@dimen/entourage_font_medium"
+        android:backgroundTint="@color/light_beige"
+
+        />
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/light_orange_opacity_50"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="@dimen/entourage_margin_top"
+        android:layout_marginEnd="20dp"
+        app:layout_constraintTop_toBottomOf="@+id/title_name"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_translation"
+        app:layout_constraintTop_toBottomOf="@+id/divider"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/switch_translation"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="37dp"
+        android:fontFamily="@font/nunitosans_regular"
+        android:textSize="@dimen/entourage_font_small"
+        android:text="@string/translation_bottom_fragment_title"
+        />
+
+    <Switch
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/switch_translation"
+        app:layout_constraintTop_toTopOf="@+id/tv_translation"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_translation"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="20dp"/>
+    <Button
+        android:id="@+id/validate"
+        style="@style/h2_white"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_translation"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginHorizontal="@dimen/padding_horizontal"
+        android:layout_marginTop="100dp"
+        android:layout_marginBottom="30dp"
+        android:background="@drawable/new_bg_rounded_button_orange_fill"
+        android:drawablePadding="10dp"
+        android:text="@string/validate"
+        android:textAllCaps="false" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -2611,5 +2611,8 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="lang_ar">"Arabe"</string>
     <string name="lang_pl">"Polonais"</string>
 
+    <string name="translation_bottom_fragment_title">"Nous traduisons automatiquement les messages rédigés par les citoyens."</string>
+    <string name="translation_bottom_fragment_main_title">"Traduction"</string>
+
 
 </resources>

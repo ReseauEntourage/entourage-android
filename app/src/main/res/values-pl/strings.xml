@@ -2619,5 +2619,8 @@ Przeczytają tę wiadomość, gdy tylko dołączą do grupy.</string>
     <string name="lang_ar">Arabski</string>
     <string name="lang_pl">"Polski"</string>
 
+    <string name="translation_bottom_fragment_title">"Automatycznie tłumaczymy wiadomości napisane przez obywateli."</string>
+    <string name="translation_bottom_fragment_main_title">"Tłumaczenie"</string>
+
 
 </resources>

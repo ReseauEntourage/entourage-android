@@ -2607,5 +2607,7 @@ Leerán este mensaje tan pronto como se unan al grupo.</string>
     <string name="lang_ar">Árabe</string>
     <string name="lang_pl">"Polaco"</string>
 
+    <string name="translation_bottom_fragment_title">"Traducimos automáticamente los mensajes escritos por los ciudadanos."</string>
+    <string name="translation_bottom_fragment_main_title">"Traducción"</string>
 
 </resources>
