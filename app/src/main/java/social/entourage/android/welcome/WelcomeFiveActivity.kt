@@ -2,6 +2,7 @@ package social.entourage.android.welcome
 
 import android.content.Intent
 import android.os.Bundle
+import social.entourage.android.MainActivity
 import social.entourage.android.R
 import social.entourage.android.base.BaseActivity
 import social.entourage.android.databinding.ActivityWelcomeFiveBinding
@@ -31,5 +32,11 @@ class WelcomeFiveActivity: BaseActivity() {
             this.finish()
         }
         setContentView(binding.root)
+    }
+    override fun onBackPressed() {
+        super.onBackPressed()
+        val intent = Intent(this, MainActivity::class.java)
+            .addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+        this.startActivity(intent)
     }
 }
