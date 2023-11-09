@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isVisible
+import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -152,11 +153,14 @@ class DiscoverEventsListFragment : Fragment() {
                 } else if (scrollY < oldScrollY) {
                     eventsPresenter.tellParentFragmentToMoveButton(true)
                 }
-                Log.wtf("wtf", "scrollY " + scrollY)
-                Log.wtf("wtf", "v.measuredHeight " + v.measuredHeight )
-                Log.wtf("wtf", "is last page  " + eventsPresenter.isLastPage )
+                val nestedScrollView = v as NestedScrollView
 
-                if (scrollY >= v.measuredHeight - 500 && isLoading == false && !eventsPresenter.isLastPage) {
+                // Calcul de la hauteur totale du contenu à l'intérieur du NestedScrollView
+                val contentHeight = v.getChildAt(0).measuredHeight
+                // Calcul de la hauteur actuellement visible (la hauteur de la fenêtre de NestedScrollView)
+                val visibleHeight = v.height
+                // Vérification si la position de défilement actuelle est proche du bas
+                if ((scrollY + visibleHeight >= contentHeight - 300) && !isLoading && !eventsPresenter.isLastPage) {
                     isLoading = true
                     loadEvents()
                     binding.progressBar.visibility = View.VISIBLE
@@ -164,20 +168,21 @@ class DiscoverEventsListFragment : Fragment() {
             }
         }
 
-
         binding.rvMyEvent.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
                 val layoutManager = recyclerView.layoutManager as LinearLayoutManager
                 val totalItemCount = layoutManager.itemCount
                 val lastVisibleItemPosition = layoutManager.findLastVisibleItemPosition()
-                if (totalItemCount <= (lastVisibleItemPosition + 2) && !eventsPresenter.isLastPageMyEvent) {
-                    binding.progressBar.visibility = View.VISIBLE
+                if (totalItemCount <= (lastVisibleItemPosition + 2) && !isLoading && !eventsPresenter.isLastPageMyEvent) {
+                    isLoading = true
                     loadMyEvents()
+                    binding.progressBar.visibility = View.VISIBLE
                 }
             }
         })
     }
+
 
     private fun handleFilterChange(hasChangedFilter:Boolean){
         if(hasChangedFilter){
