@@ -26,13 +26,12 @@ class LanguageAdapter(var context: Context, var callback: OnLanguageClicked) : R
         if(actualClickedPosition == -1){
             actualClickedPosition = position
             this.languageItems[position].isSelected = true
-            notifyItemChanged(position)
+            notifyDataSetChanged()
             return
         }
         this.languageItems[position].isSelected = true
         this.languageItems[actualClickedPosition].isSelected = false
-        notifyItemChanged(position)
-        notifyItemChanged(actualClickedPosition)
+        notifyDataSetChanged()
         this.actualClickedPosition = position
 
     }
