@@ -70,6 +70,8 @@
         android:layout_marginHorizontal="@dimen/padding_horizontal"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="30dp"
+        android:paddingStart="5dp"
+        android:paddingEnd="5dp"
         android:background="@drawable/new_bg_rounded_button_orange_fill"
         android:drawablePadding="10dp"
         android:text="@string/validate"

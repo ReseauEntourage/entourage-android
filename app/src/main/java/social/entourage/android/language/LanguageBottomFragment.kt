@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import social.entourage.android.EntourageApplication
+import social.entourage.android.R
 import social.entourage.android.databinding.BottomFragmentLanguageFragmentBinding
 import social.entourage.android.user.UserPresenter
 
@@ -84,6 +85,8 @@ class LanguageBottomFragment : BottomSheetDialogFragment(), OnLanguageClicked {
             }
             k++
         }
+        binding.titleName.text = getString(R.string.select_language)
+        binding.validate.text = getString(R.string.validate)
     }
 
     private fun handleCrossButton() {
