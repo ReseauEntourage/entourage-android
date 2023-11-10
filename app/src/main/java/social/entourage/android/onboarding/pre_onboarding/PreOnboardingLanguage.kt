@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.pre_onboarding_activity_layout.rv_langue
 import social.entourage.android.R
+import social.entourage.android.base.BaseActivity
 import social.entourage.android.databinding.PreOnboardingActivityLayoutBinding
 import social.entourage.android.language.LanguageItem
 import social.entourage.android.language.LanguageManager
@@ -19,11 +20,13 @@ import social.entourage.android.language.OnLanguageClicked
 import social.entourage.android.user.UserPresenter
 import java.util.Locale
 
-class PreOnboardingLanguage:Activity(), OnLanguageClicked {
+class PreOnboardingLanguage:BaseActivity(), OnLanguageClicked {
     private lateinit var binding: PreOnboardingActivityLayoutBinding
     private var languages: MutableList<LanguageItem> = mutableListOf()
     private lateinit var adapter: LanguageAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
+        val phoneLanguageCode = Locale.getDefault().language
+        LanguageManager.setLocale(this, phoneLanguageCode)
         super.onCreate(savedInstanceState)
         binding = PreOnboardingActivityLayoutBinding.inflate(layoutInflater)
         handleNextButton()
@@ -35,17 +38,12 @@ class PreOnboardingLanguage:Activity(), OnLanguageClicked {
         setContentView(binding.root)
     }
     private fun fillArray() {
-        val currentLanguageCode = LanguageManager.loadLanguageFromPreferences(this)
         val phoneLanguageCode = Locale.getDefault().language
-        val selectedLanguageCode = if (currentLanguageCode.isNullOrEmpty()) {
-            phoneLanguageCode
-        } else {
-            currentLanguageCode
-        }
+        LanguageManager.saveLanguageToPreferences(this,phoneLanguageCode)
+        val selectedLanguageCode = phoneLanguageCode
 
         languages = mutableListOf(
             //Français - anglais - arabe - ukrainien - espagnol - allemand - roumain - polonais
-
             LanguageItem("Français", isSelected = LanguageManager.mapLanguageToCode("Français") == selectedLanguageCode),
             LanguageItem("English", isSelected = LanguageManager.mapLanguageToCode("English") == selectedLanguageCode),
             //LanguageItem("العربية", isSelected = LanguageManager.mapLanguageToCode("العربية") == selectedLanguageCode),

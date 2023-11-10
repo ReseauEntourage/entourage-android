@@ -25,6 +25,7 @@ import social.entourage.android.BuildConfig
 import social.entourage.android.EntourageApplication
 import social.entourage.android.MainActivity
 import social.entourage.android.R
+import social.entourage.android.actions.ActionsPresenter
 import social.entourage.android.api.model.Action
 import social.entourage.android.api.model.ActionSectionFilters
 import social.entourage.android.api.model.EventActionLocationFilters
@@ -47,6 +48,7 @@ import social.entourage.android.notifications.InAppNotificationsActivity
 import social.entourage.android.profile.ProfileActivity
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.utils.Const
+import social.entourage.android.tools.utils.CustomAlertDialog
 import social.entourage.android.tools.view.WebViewFragment
 import social.entourage.android.user.UserPresenter
 import social.entourage.android.user.UserProfileActivity
@@ -81,6 +83,7 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener {
     private var isEventsEmpty = false
     private var isActionEmpty = false
     private var isContribution = false
+    private lateinit var actionsPresenter: ActionsPresenter
 
 
     override fun onCreateView(
@@ -399,6 +402,7 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener {
     }
 
     private fun updateContributionsView(summary: Summary) {
+        onActionUnclosed(summary)
         handleHelps(summary)
         isContribution = summary.preference.equals("contribution")
         if(isContribution){
@@ -557,6 +561,75 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener {
                     moderatorId
                 )
             )
+        }
+    }
+    private fun onActionUnclosed(summary: Summary){
+        if(summary.unclosedAction != null){
+            if(summary.unclosedAction!!.actionType == "solicitation"){
+                AnalyticsEvents.logEvent(AnalyticsEvents.View__StateDemandPop__Day10)
+                val contentText = summary.unclosedAction!!.title
+                CustomAlertDialog.showForLastActionOneDemand(
+                    requireContext(),
+                    getString(R.string.custom_dialog_action_title_one_demand),
+                    contentText!!,
+                    getString(R.string.custom_dialog_action_content_one_demande),
+                    getString(R.string.yes),
+                    onNo = {
+                        AnalyticsEvents.logEvent(AnalyticsEvents.Clic__StateDemandPop__No__Day10)
+                        AnalyticsEvents.logEvent(AnalyticsEvents.View__StateDemandPop__No__Day10)
+                        CustomAlertDialog.showForLastActionTwo(requireContext(),
+                            getString(R.string.custom_dialog_action_title_two),
+                            getString(R.string.custom_dialog_action_content_two_demande),
+                            getString(R.string.custom_dialog_action_two_button_contrib),
+                            onYes = {
+                                (activity as MainActivity).goContrib()
+                                AnalyticsEvents.logEvent(AnalyticsEvents.Clic__SeeDemand__Day10)
+                            })
+                    },
+                    onYes = {
+                        AnalyticsEvents.logEvent(AnalyticsEvents.Clic__StateDemandPop__Yes__Day10)
+                        AnalyticsEvents.logEvent(AnalyticsEvents.View__DeleteDemandPop__Day10)
+                        actionsPresenter.cancelAction(summary.unclosedAction!!.id!!,true,true, "")
+                        CustomAlertDialog.showForLastActionThree(requireContext(),
+                            getString(R.string.custom_dialog_action_title_three),
+                            getString(R.string.custom_dialog_action_content_three_demande))
+
+                    }
+                )
+            }
+            if(summary.unclosedAction!!.actionType == "contribution"){
+                AnalyticsEvents.logEvent(AnalyticsEvents.View__StateContribPop__Day10)
+                val contentText = summary.unclosedAction!!.title
+                CustomAlertDialog.showForLastActionOneContrib(
+                    requireContext(),
+                    getString(R.string.custom_dialog_action_title_one_contrib),
+                    contentText!!,
+                    getString(R.string.custom_dialog_action_content_one_contrib),
+                    getString(R.string.yes),
+                    onNo = {
+                        AnalyticsEvents.logEvent(AnalyticsEvents.Clic__StateContribPop__No__Day10)
+                        AnalyticsEvents.logEvent(AnalyticsEvents.View__StateContribPop__No__Day10)
+                        CustomAlertDialog.showForLastActionTwo(requireContext(),
+                            getString(R.string.custom_dialog_action_title_two),
+                            getString(R.string.custom_dialog_action_content_two_contrib),
+                            getString(R.string.custom_dialog_action_two_button_demand),
+                            onYes = {
+                                (activity as MainActivity).goDemand()
+                                AnalyticsEvents.logEvent(AnalyticsEvents.Clic__SeeContrib__Day10)
+
+                            })
+
+                    },
+                    onYes = {
+                        AnalyticsEvents.logEvent(AnalyticsEvents.Clic__StateContribPop__Yes__Day10)
+                        AnalyticsEvents.logEvent(AnalyticsEvents.View__DeleteContribPop__Day10)
+                        actionsPresenter.cancelAction(summary.unclosedAction!!.id!!,false,true, "")
+                        CustomAlertDialog.showForLastActionThree(requireContext(),
+                            getString(R.string.custom_dialog_action_title_three),
+                            getString(R.string.custom_dialog_action_content_three_contrib))
+                    }
+                )
+            }
         }
     }
 }
