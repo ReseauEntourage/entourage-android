@@ -158,6 +158,8 @@ class MainActivity : BaseSecuredActivity() {
         val goContrib = intent.getBooleanExtra("goContrib", false)
         val goDemand = intent.getBooleanExtra("goDemand", false)
         val goDiscoverGroup = intent.getBooleanExtra("goDiscoverGroup", false)
+        val goDiscoverEvent = intent.getBooleanExtra("goDiscoverEvent", false)
+
 
         if(goContrib){
             goContrib()
@@ -166,6 +168,10 @@ class MainActivity : BaseSecuredActivity() {
         if(goDiscoverGroup){
             this.setGoDiscoverGroupFromDeepL(goDiscoverGroup)
             goGroup()
+            return
+        }
+        if(goDiscoverEvent){
+            goEvent()
             return
         }
         if(goDemand){
