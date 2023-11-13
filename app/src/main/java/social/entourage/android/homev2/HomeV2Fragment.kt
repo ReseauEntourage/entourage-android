@@ -97,6 +97,7 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener {
         disapearAllAtBeginning()
         binding.progressBar.visibility = View.VISIBLE
         homePresenter = ViewModelProvider(requireActivity()).get(HomePresenter::class.java)
+        actionsPresenter = ViewModelProvider(requireActivity()).get(ActionsPresenter::class.java)
         homeHelpAdapter = HomeHelpAdapter(this)
         homePedagoAdapter = HomePedagoAdapter(object : OnItemClick {
             override fun onItemClick(pedagogicalContent: Pedago) {

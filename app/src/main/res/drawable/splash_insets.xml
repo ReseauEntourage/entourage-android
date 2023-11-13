@@ -1,0 +1,6 @@
+<inset xmlns:android="http://schemas.android.com/apk/res/android"
+    android:drawable="@drawable/logo_entourage_vertical"
+    android:insetLeft="37dp"
+    android:insetRight="37dp"
+    android:insetTop="42dp"
+    android:insetBottom="42dp"/>

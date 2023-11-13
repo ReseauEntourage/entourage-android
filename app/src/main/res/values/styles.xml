@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
@@ -40,7 +40,10 @@
         <item name="textAppearanceCaption">@style/TextAppearance.MaterialComponents.Caption</item>
         <item name="textAppearanceButton">@style/TextAppearance.MaterialComponents.Button</item>
         <item name="textAppearanceOverline">@style/TextAppearance.MaterialComponents.Overline</item>
-
+        <item name="android:windowSplashScreenBackground" tools:targetApi="s">@color/transparent</item>
+        <item name="android:windowSplashScreenAnimatedIcon" tools:targetApi="s">@drawable/splash_insets</item>
+        <item name="android:windowSplashScreenAnimationDuration" tools:targetApi="s">5000</item>
+        <item name="android:windowSplashScreenIconBackgroundColor" tools:targetApi="s">@color/transparent</item>
     </style>
 
     <!-- Custom Edit Text theme for the login views. -->
@@ -660,5 +663,8 @@
         <item name="android:fontFamily">@font/nunitosans_light</item>
         <item name="android:textSize">13sp</item>
     </style>
+    <style name="SplashTheme" parent="AppTheme">
+        <item name="android:windowBackground">@drawable/logo_v2_vertical</item>
 
+    </style>
 </resources>
