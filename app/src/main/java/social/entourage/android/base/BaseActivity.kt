@@ -6,12 +6,16 @@ import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import com.google.gson.Gson
 import social.entourage.android.BuildConfig
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
+import social.entourage.android.api.model.notification.PushNotificationContent
 import social.entourage.android.deeplinks.UniversalLinkManager
 import social.entourage.android.language.LanguageManager
+import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.view.WebViewFragment
+import timber.log.Timber
 import java.net.URL
 
 /**
@@ -31,6 +35,12 @@ abstract class BaseActivity : AppCompatActivity() {
     override fun onDestroy() {
         entApp?.onActivityDestroyed(this)
         super.onDestroy()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        fromNotifLogFirebaseEvent()
+
     }
 
     fun showWebView(url: String, shareMessageRes: Int = 0) {
@@ -57,5 +67,63 @@ abstract class BaseActivity : AppCompatActivity() {
      fun updateLanguage(){
         val savedLanguage = LanguageManager.loadLanguageFromPreferences(this)
         LanguageManager.setLocale(this, savedLanguage)
+    }
+
+    //TODO REFACTOR THIS
+    fun fromNotifLogFirebaseEvent(){
+        try {
+            Log.wtf("wtf", "clicked on notif")
+            val notificationContent = Gson().fromJson(intent.getStringExtra("notification_content"), PushNotificationContent::class.java)
+            val notificationBoolean= intent.getBooleanExtra("notification_content_boolean", false)
+            Log.wtf("wtf", "my content boolean extra " + notificationBoolean)
+            val stage = notificationContent.extra?.stage
+            if(stage.equals("h1")){
+                AnalyticsEvents.logEvent(AnalyticsEvents.NotificationClicked__OfferHelp__WDay1)}
+            if(stage.equals("j2")){
+                Log.wtf("wtf", "clicked on notif and go on it")
+                AnalyticsEvents.logEvent(AnalyticsEvents.NotificationClicked__OfferHelp__WDay2)}
+            if(stage.equals("j5")){
+                AnalyticsEvents.logEvent(AnalyticsEvents.NotificationClicked__OfferHelp__WDay5)}
+            if(stage.equals("j8")){
+                AnalyticsEvents.logEvent(AnalyticsEvents.NotificationClicked__OfferHelp__WDay8)}
+            if(stage.equals("j11")){
+                AnalyticsEvents.logEvent(AnalyticsEvents.NotificationClicked__OfferHelp__WDay11)}
+            val tracking = notificationContent.extra?.tracking
+            if(tracking != null) {
+                if(tracking.equals("join_request_on_create")){
+                    AnalyticsEvents.logEvent(AnalyticsEvents.NotificationClicked__MemberEvent)}
+                if(tracking.equals("outing_on_update")){
+                    AnalyticsEvents.logEvent(AnalyticsEvents.NotificationClicked__ModifiedEvent)}
+                if(tracking.equals("outing_on_create")){
+                    AnalyticsEvents.logEvent(AnalyticsEvents.NotificationClicked__PostEvent)}
+                if(tracking.equals("post_on_create_to_neighborhood")){
+                    AnalyticsEvents.logEvent(AnalyticsEvents.NotificationClicked__PostGroup)}
+                if(tracking.equals("comment_on_create_to_neighborhood")){
+                    AnalyticsEvents.logEvent(AnalyticsEvents.NotificationClicked__CommentGroup)}
+                if(tracking.equals("comment_on_create_to_outing")){
+                    AnalyticsEvents.logEvent(AnalyticsEvents.NotificationClicked__CommentEvent)}
+                if(tracking.equals("outing_on_add_to_neighborhood")){
+                    AnalyticsEvents.logEvent(AnalyticsEvents.NotificationClicked__EventInGroup)}
+                if(tracking.equals("contribution_on_create")){
+                    AnalyticsEvents.logEvent(AnalyticsEvents.NotificationClicked__Contribution)}
+                if(tracking.equals("solicitation_on_create")){
+                    AnalyticsEvents.logEvent(AnalyticsEvents.NotificationClicked__Demand)}
+                if(tracking.equals("private_chat_message_on_create")){
+                    AnalyticsEvents.logEvent(AnalyticsEvents.NotificationClicked__PrivateMessage)}
+                if(tracking.equals("join_request_on_create_to_neighborhood")){
+                    AnalyticsEvents.logEvent(AnalyticsEvents.NotificationClicked__MemberGroup)}
+                if(tracking.equals("join_request_on_create_to_outing")){
+                    AnalyticsEvents.logEvent(AnalyticsEvents.NotificationClicked__MemberEvent)}
+                if(tracking.equals("outing_on_cancel")){
+                    AnalyticsEvents.logEvent(AnalyticsEvents.NotificationClicked__CanceledEvent)}
+                if(tracking.equals("post_on_create_to_outing")){
+                    AnalyticsEvents.logEvent(AnalyticsEvents.NotificationReceived__PostEvent)}
+                if(tracking.equals("public_chat_message_on_create")){
+                    AnalyticsEvents.logEvent("UNDEFINED_PUSH_TRACKING")}
+            }
+
+        }catch (e:Exception){
+            Timber.e("failed parse notif")
+        }
     }
 }
