@@ -64,15 +64,16 @@ class LanguageAdapter(var context: Context, var callback: OnLanguageClicked) : R
             binding.buttonLang.setOnClickListener {
                 callback.onLangChanged(languageItem)
             }
+            binding.icon.visibility = View.GONE
             when(languageItem.lang) {
-                "Français" -> binding.icon.setImageDrawable(context.getDrawable(R.drawable.icon_fr))
-                "English" -> binding.icon.setImageDrawable(context.getDrawable(R.drawable.icon_en))
-                "Deutsch" -> binding.icon.setImageDrawable(context.getDrawable(R.drawable.icon_de))
-                "Español" -> binding.icon.setImageDrawable(context.getDrawable(R.drawable.icon_es))
-                "Polski" -> binding.icon.setImageDrawable(context.getDrawable(R.drawable.icon_pl))
-                "Українська" -> binding.icon.setImageDrawable(context.getDrawable(R.drawable.icon_uk))
-                "Română" -> binding.icon.setImageDrawable(context.getDrawable(R.drawable.icon_ro))
-                "العربية" -> binding.icon.setImageDrawable(context.getDrawable(R.drawable.icon_ar))
+                "Français" -> binding.tvTitle.text = "\uD83C\uDDEB\uD83C\uDDF7   ${languageItem.lang}"
+                "English" -> binding.tvTitle.text = "\uD83C\uDDEC\uD83C\uDDE7   ${languageItem.lang}"
+                "Deutsch" -> binding.tvTitle.text = "\uD83C\uDDE9\uD83C\uDDEA   ${languageItem.lang}"
+                "Español" -> binding.tvTitle.text = "\uD83C\uDDEA\uD83C\uDDF8   ${languageItem.lang}"
+                "Polski" -> binding.tvTitle.text = "\uD83C\uDDF5\uD83C\uDDF1   ${languageItem.lang}"
+                "Українська" -> binding.tvTitle.text = "\uD83C\uDDFA\uD83C\uDDE6   ${languageItem.lang}"
+                "Română" -> binding.tvTitle.text = "\uD83C\uDDF7\uD83C\uDDF4   ${languageItem.lang}"
+                "العربية" -> binding.tvTitle.text = "\uD83C\uDDE6\uD83C\uDDEA   ${languageItem.lang}"
                 else -> binding.icon.setImageDrawable(null)
             }
             when(languageItem.lang) {

@@ -48,7 +48,6 @@ class NotificationActionReceiver : BroadcastReceiver() {
                 }
             }
             ACTION_DISMISSED -> {
-
                 // Gérer l'action de swipe pour supprimer la notification
                 val notificationContent = intent.getStringExtra("notification_content") // null si l'extra "notification_content" n'existe pas
                 try {

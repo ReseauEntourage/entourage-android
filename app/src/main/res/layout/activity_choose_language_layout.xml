@@ -11,11 +11,11 @@
         android:textColor="@color/orange"
         android:textSize="16sp"
         android:layout_margin="16dp"
-        android:text="Français"
+        android:text="\uD83C\uDDEB\uD83C\uDDF7 Français"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        />
+        app:layout_constraintEnd_toEndOf="parent"/>
+
     <TextView
         android:layout_width="0dp"
         android:layout_height="wrap_content"

@@ -147,7 +147,6 @@
     <string name="sign_out_dialog_title">قطع الاتصال</string>
     <string name="sign_out_dialog_content">هل ترغب بالخروج؟</string>
     <string name="progress_km">%s كم</string>
-    <string name="modify_image"><u>Modifier ma photo</u></string>
     <string name="modify_interests_subtitle">اختر واحدة أو أكثر من الفئات التي تهمك.</string>
     <string name="add_image">أضف صورة</string>
     <string name="add_image_subtitle">مع الصورة يصبح الأمر أجمل على الفور.
@@ -265,7 +264,6 @@
     <string name="welcome_message_btn_title">اقدم نفسي</string>
     <string name="member">عضو</string>
     <string name="members_location">%s من الأعضاء. %s</string>
-    <string name="more"><u>En savoir plus</u></string>
     <string name="group_settings">إعدادات المجموعة</string>
     <string name="report_group">للإبلاغ عن مشكلة</string>
     <string name="rules_group">قواعد المجموعة</string>
@@ -290,8 +288,6 @@
     <string name="discuss">يعلق…</string>
     <string name="discussbis">لكتابة رسالة…</string>
     <string name="no_comments">بدون تعليق</string>
-    <string name="posts_comment_number"><u>%s commentaires</u></string>
-    <string name="posts_comment_number_singular"><u>%s commentaire</u></string>
     <string name="comments_title">تعليقات</string>
     <string name="write_your_message">اكتب رسالتك</string>
     <string name="share_post">مشاركة</string>
@@ -329,7 +325,6 @@
     <string name="pedagogical_content">كل ما تحتاج إلى معرفته للانتقال من \ إلى \'action</string>
     <string name="picture">صورة</string>
     <string name="image_mandatory">الصورة إلزامية</string>
-    <string name="show_more_lined"><u>Voir plus</u></string>
     <string name="group_events">أحداث المجموعة</string>
     <string name="group_events_new">كما تنظم المجموعة:</string>
     <string name="january">يناير</string>
@@ -461,7 +456,6 @@
     <!-- WELCOME PAGES -->
     <string name="welcome_one_title">مرحبًا بك في شبكة \ الاجتماعية، الاجتماعية حقًا</string>
     <string name="welcome_one_content">بالنسبة للكثيرين، يعد الشارع مكانًا للمرور.\nبالنسبة للبعض، يعد c\ حياة يومية.\n لذا، للبدء، قابل أولئك الذين يعيشونها كل يوم.</string>
-    <string name="welcome_one_sensib">ابحث عن المحتوى التوعوي الخاص بنا<u><font color="#F55F24">ici</font></u></string>
 
     <string name="welcome_two_title">C\حان الوقت للبدء!</string>
     <string name="welcome_two_text_one_corrected">تعتبر الشبكة الاجتماعية، c\، أفضل مع العديد من الأشخاص!\nقدم نفسك إلى %s</string>
@@ -658,8 +652,6 @@
 
     <string name="action_title_section_author">إنشائها بواسطة</string>
     <string name="action_canceled">تمت إزالة الإعلان</string>
-    <string name="action_show_charte"><u>Charte éthique</u></string>
-    <string name="signal_a_problem"><u>Signaler un problème</u></string>
 
     <string name="action_detail_bt_cancel">يمسح</string>
     <string name="action_detail_bt_modify">للتعديل</string>
@@ -695,7 +687,6 @@
 
     <string name="action_crete_cat_about">هل تتطلع إلى تقديم %s لا يتناسب مع إحدى هذه الفئات؟ يبدو أن \ ليس له مكان على الشبكة،</string>
     <string name="action_create_cat_about_more0">ولكن يمكنك دائما</string>
-    <string name="action_create_cat_about_more1"><u> en savoir plus par ici.</u></string>
 
     <string name="action_create_cat_choose_category">حدد الفئة التي تصف %s على أفضل وجه.</string>
     <string name="action_create_location_title">حدد موقع %s</string>
@@ -1666,7 +1657,6 @@
 
     <!-- Outing as chat message card -->
     <string name="outing_message_card_created_author">قام %1$s بإنشاء &lt;font color=\"%2$s\"&gt;الإخراج&lt;/font&gt;:</string>
-    <string name="outing_message_card_updated_author">%1$s &lt;b&gt;عدّل&lt;/b&gt; &lt;font color=\"%2$s\"&gt;الإخراج&lt;/font&gt;:</string>
 
     <!-- Status update as chat message card -->
     <!-- 1 = font color, 2 = author, 3 = message -->
@@ -1725,13 +1715,11 @@
 
     <!-- Create Action Wizard -->
     <string name="create_action_wizard_p1_title">السؤال الأخير</string>
-    <string name="create_action_wizard_p1_description">قم بإنشاء هذا العمل التضامني لنفسك<b>pour une personne identifiée, autre que vous :</b> un ami en situation précaire, une personne croisée dans la rue ?</string>
     <string name="create_action_wizard_p1_option1">@string/yes</string>
     <string name="create_action_wizard_p1_option2">لا، أنا أطلب لنفسي</string>
     <string name="create_action_wizard_p1_option3">لا، من أجل الجمعية</string>
 
     <string name="create_action_wizard_p2_title">السؤال الأخير</string>
-    <string name="create_action_wizard_p2_description">هل لديك<b>obtenu son consentement</b> pour diffuser cette action pour elle sur Entourage ?</string>
     <string name="create_action_wizard_p2_option1">نعم، حصل j\ على موافقته</string>
     <string name="create_action_wizard_p2_option2">لا ليس بعد</string>
 
@@ -1948,7 +1936,6 @@
     <string name="login_phone_placeholder">رقم الهاتف</string>
     <string name="login_placeholder_code">ادخل رمزك</string>
     <string name="login_button_connect">انا اتواصل</string>
-    <string name="login_button_resend_code"><u>Redemander un code</u></string>
     <string name="login_button_resend_code_text">هل تريد طلب رمز جديد لرقم هاتفك: %s؟</string>
     <string name="login_button_resend_code_action">بسأل</string>
     <string name="login_label_country">دولة</string>
@@ -1956,7 +1943,6 @@
     <string name="login_label_code">مشفرة</string>
 
     <!-- Login Change Phone -->
-    <string name="login_change_phone"><u>J’ai changé de numéro de téléphone</u></string>
     <string name="login_change_phone_title">رقم جديد</string>
     <string name="login_change_phone_old_phone">قضية قديمة</string>
     <string name="login_change_phone_old_phone_placeholder">قضية قديمة</string>
@@ -1998,7 +1984,6 @@
     <string name="contribCreated">تم نشر التبرعات\</string>
     <string name="askCreated">تم نشر الطلبات\n</string>
 
-    <string name="menu_info_social">للعيش<b>encore plus de solidarité</b> suivez Entourage sur vos réseaux !</string>
 
     <string name="menu_info_first_title">👋 اتخذ الخطوة الأولى</string>
     <string name="menu_info_first_guide">دليلنا للجرأة للقاء</string>
@@ -2037,16 +2022,12 @@
     <string name="map_error_geolocation_disabled_recenter">لإعادة التركيز من حولك، يجب عليك تفعيل تحديد الموقع الجغرافي</string>
     <string name="map_empty_newsfeed">C\المكان هادئ إلى حد ما هنا!\n\nيبدو أن \'هناك n\'لا يوجد أي نشاط قريب... في الوقت الحالي!\n\nيمكنك أيضًا إنشاء نشاط تضامني: اضغط على + في أسفل اليمين</string>
     <string name="map_empty_newsfeed_popup">يبدو أن الوضع هادئ هنا!\n\nحرك الخريطة للعثور على أنشطة الشبكة.\n\nيمكنك أيضًا إنشاء نشاط تضامني: اضغط على + في أسفل اليمين</string>
-    <string name="newsfeed_load_more_button"><u>Rechercher plus loin.</u></string>
     <string name="newsfeed_no_action">لا يوجد نشاط بالقرب من هذا الموقف</string>
     <string name="newsfeed_tab_events_no_items">لا توجد أحداث قريبة.</string>
-    <string name="newsfeed_tab_events_no_items_button"><u>Retrouvez plus d\'événements d\'Entourage ici</u></string>
 
     <!--SRING MAP -->
     <string name="map_filter_title">المرشحات</string>
     <string name="map_filter_entourage_type_title">أنواع الفعل</string>
-    <string name="map_filter_entourage_demand_text"><b>Voir les demandes concernant :</b></string>
-    <string name="map_filter_entourage_contribution_text"><b>Voir les contributions concernant :</b></string>
     <string name="map_filter_time_title">تم التحديث أقل من</string>
     <string name="map_filter_time_option1">24 ساعة</string>
     <string name="map_filter_time_option2">8 د</string>
@@ -2126,7 +2107,6 @@
     <string name="pre_onboard_choice_description_title">الشبكة الاجتماعية، الاجتماعية حقا.</string>
     <string name="pre_onboard_choice_login">لدي حساب بالفعل</string>
     <string name="pre_onboard_choice_signup">أتسجل</string>
-    <string name="pre_onboard_choice_about"><u>Qui est l’association Entourage ?</u></string>
 
     <!-- ONBOARDING -->
 
@@ -2269,7 +2249,6 @@
     <string name="input_names_sub">هذه المرة، هل يمكنك أن تخبرني ما هو اسمك؟</string>
     <string name="input_names_error">الرجاء إكمال كلا الحقلين بحد أدنى %s من الأحرف.</string>
 
-    <string name="onboard_sms_help"><u>Besoin d’aide ?\nContacter l\'équipe Entourage.</u></string>
 
     <string name="partner_add_error">حدث خطأ أثناء إضافة الشارة</string>
     <string name="partner_remove_error">فشلت إزالة الشارة</string>
@@ -2469,7 +2448,6 @@
     <string name="custom_dialog_action_title_two">أشكركم على صبركم</string>
     <string name="custom_dialog_action_title_three">خبر سار !</string>
 
-    <string name="custom_dialog_action_content_one_contrib">هل اكتمل إجراء \"&lt;b&gt;%1$s&lt;/b&gt;\"؟</string>
     <string name="custom_dialog_action_content_one_demande">هل وجدت ما كنت تبحث عنه؟</string>
     <string name="custom_dialog_action_content_two_demande">نصيحة: انظر إلى المساهمات. قد يعرض عليك أحد الجيران ما تبحث عنه.</string>
     <string name="custom_dialog_action_content_two_contrib">نصيحة: انظر إلى الطلبات القريبة منك. قد يكون أحد الجيران مهتمًا.</string>
@@ -2632,6 +2610,54 @@
 
     <string name="translation_bottom_fragment_title">"نترجم تلقائيًا الرسائل المكتوبة من قبل المواطنين."</string>
     <string name="translation_bottom_fragment_main_title">"الترجمة"</string>
+    <string name="action_social_name">وقت المشاركة</string>
+    <string name="action_social_subname">قهوة، نشاط...</string>
+
+    <string name="action_services_name">خدمة</string>
+    <string name="action_services_subname">غسيل، طباعة وثائق...</string>
+
+    <string name="action_clothes_name">ملابس</string>
+    <string name="action_clothes_subname">أحذية، معطف...</string>
+
+    <string name="action_equipment_name">معدات</string>
+    <string name="action_equipment_subname">هاتف، كيس نوم...</string>
+
+    <string name="action_hygiene_name">منتج نظافة</string>
+    <string name="action_hygiene_subname">صابون، حماية صحية...</string>
+
+    <string name="interest_activites">الأعمال اليدوية</string>
+    <string name="interest_animaux">الحيوانات</string>
+    <string name="interest_bien_etre">الرفاهية</string>
+    <string name="interest_cuisine">الطبخ</string>
+    <string name="interest_culture">الفن والثقافة</string>
+    <string name="interest_jeux">الألعاب</string>
+    <string name="interest_nature">الطبيعة</string>
+    <string name="interest_sport">الرياضة</string>
+    <string name="interest_marauding">لقاءات الرحالة</string>
+    <string name="interest_other">أخرى</string>
+
+    <string name="modify_image"><u>تعديل صورتي</u></string>
+    <string name="more"><u>اعرف أكثر</u></string>
+    <string name="posts_comment_number"><u>%s تعليقات</u></string>
+    <string name="posts_comment_number_singular"><u>%s تعليق</u></string>
+    <string name="show_more_lined"><u>عرض المزيد</u></string>
+    <string name="welcome_one_sensib">ابحث عن محتوانا التوعوي <u><font color="#F55F24">هنا</font></u></string>
+    <string name="action_show_charte"><u>ميثاق أخلاقي</u></string>
+    <string name="signal_a_problem"><u>الإبلاغ عن مشكلة</u></string>
+    <string name="action_create_cat_about_more1"><u> تعرف أكثر من هنا.</u></string>
+    <string name="login_button_resend_code"><u>طلب الرمز مرة أخرى</u></string>
+    <string name="login_change_phone"><u>لقد غيرت رقم هاتفي</u></string>
+    <string name="newsfeed_load_more_button"><u>البحث أكثر.</u></string>
+    <string name="newsfeed_tab_events_no_items_button"><u>ابحث عن المزيد من فعاليات Entourage هنا</u></string>
+    <string name="pre_onboard_choice_about"><u>من هي جمعية Entourage؟</u></string>
+    <string name="onboard_sms_help"><u>بحاجة إلى مساعدة؟\nاتصل بفريق Entourage.</u></string>
+    <string name="outing_message_card_updated_author"><![CDATA[%1$s <b>قام بتعديل</b> <font color=\"%2$s\">رحلة</font>:]]></string>
+    <string name="create_action_wizard_p1_description">هل تقوم بإنشاء هذا النشاط التضامني <b>لشخص محدد غيرك:</b> صديق في وضع صعب، شخص قابلته في الشارع؟</string>
+    <string name="create_action_wizard_p2_description">هل <b>حصلت على موافقته</b> لنشر هذا النشاط من أجله على Entourage؟</string>
+    <string name="menu_info_social">لتعيش <b>تضامنًا أكثر</b> تابع Entourage على شبكاتك!</string>
+    <string name="map_filter_entourage_demand_text"><b>عرض الطلبات المتعلقة بـ:</b></string>
+    <string name="map_filter_entourage_contribution_text"><b>عرض المساهمات المتعلقة بـ:</b></string>
+    <string name="custom_dialog_action_content_one_contrib">هل اكتملت مهمتك \"<![CDATA[<b>%1$s</b>]]>\"؟</string>
 
 
 

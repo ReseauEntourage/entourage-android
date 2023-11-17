@@ -18,6 +18,7 @@ import social.entourage.android.api.MetaDataRepository
 import social.entourage.android.actions.detail.ActionDetailActivity
 import social.entourage.android.api.model.Action
 import social.entourage.android.api.model.ActionSection
+import social.entourage.android.api.model.ActionUtils
 import social.entourage.android.tools.displayDistance
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.px
@@ -105,7 +106,7 @@ class ActionsListAdapter(
             }
 
             binding.demand_title.text = action.title
-            binding.demand_section_name.text = MetaDataRepository.getActionSectionNameFromId(action.sectionName)
+            binding.demand_section_name.text = ActionUtils.showTagTranslated(context,action.sectionName!!)
             binding.demand_section_pic.setImageDrawable(binding.context.getDrawable(ActionSection.getIconFromId(action.sectionName)))
             binding.demand_username.text = action.author?.userName
             binding.demand_location.text = action.metadata?.displayAddress

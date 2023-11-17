@@ -1,11 +1,14 @@
 package social.entourage.android.profile.myProfile
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import social.entourage.android.R
+import social.entourage.android.api.model.EventUtils
+import social.entourage.android.api.model.Events
 
 class InterestsAdapter(private val mList: List<String>) :
     RecyclerView.Adapter<InterestsAdapter.ViewHolder>() {
@@ -17,8 +20,8 @@ class InterestsAdapter(private val mList: List<String>) :
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.label.text = mList[position]
-
+        val context = holder.label.context
+        holder.label.text = EventUtils.showTagTranslated(context, mList[position].lowercase())
     }
 
     override fun getItemCount(): Int {

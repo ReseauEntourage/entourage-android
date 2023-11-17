@@ -147,7 +147,6 @@
     <string name="sign_out_dialog_title">Rozłączyć się</string>
     <string name="sign_out_dialog_content">Czy chcesz się wylogować?</string>
     <string name="progress_km">%s km</string>
-    <string name="modify_image"><u>Modifier ma photo</u></string>
     <string name="modify_interests_subtitle">Wybierz jedną lub więcej kategorii, które Cię interesują.</string>
     <string name="add_image">Dodaj zdjęcie</string>
     <string name="add_image_subtitle">Dzięki zdjęciu od razu jest ładniej.
@@ -265,7 +264,6 @@ Przeczytają tę wiadomość, gdy tylko dołączą do grupy.</string>
     <string name="welcome_message_btn_title">przedstawię się</string>
     <string name="member">Członek</string>
     <string name="members_location">%s członków. %s</string>
-    <string name="more"><u>En savoir plus</u></string>
     <string name="group_settings">Ustawienia grupy</string>
     <string name="report_group">zgłosić problem</string>
     <string name="rules_group">Zasady grupy</string>
@@ -290,8 +288,6 @@ Przeczytają tę wiadomość, gdy tylko dołączą do grupy.</string>
     <string name="discuss">Komentarz…</string>
     <string name="discussbis">Aby napisać wiadomość…</string>
     <string name="no_comments">Bez komentarza</string>
-    <string name="posts_comment_number"><u>%s commentaires</u></string>
-    <string name="posts_comment_number_singular"><u>%s commentaire</u></string>
     <string name="comments_title">Uwagi</string>
     <string name="write_your_message">Napisz swoją wiadomość</string>
     <string name="share_post">Udział</string>
@@ -329,7 +325,6 @@ Przeczytają tę wiadomość, gdy tylko dołączą do grupy.</string>
     <string name="pedagogical_content">Wszystko, co musisz wiedzieć, aby przejść z akcji \ do akcji \</string>
     <string name="picture">Zdjęcie</string>
     <string name="image_mandatory">Zdjęcie jest obowiązkowe</string>
-    <string name="show_more_lined"><u>Voir plus</u></string>
     <string name="group_events">Wydarzenia grupowe</string>
     <string name="group_events_new">Grupa organizuje także:</string>
     <string name="january">Styczeń</string>
@@ -454,7 +449,6 @@ Przeczytają tę wiadomość, gdy tylko dołączą do grupy.</string>
     <!-- WELCOME PAGES -->
     <string name="welcome_one_title">Witamy w \n sieci społecznościowej, naprawdę społecznościowej</string>
     <string name="welcome_one_content">Dla wielu ulica jest miejscem przejścia.\nDla niektórych c\ to codzienność.\nA więc na początek poznaj tych, którzy żyją nią na co dzień.</string>
-    <string name="welcome_one_sensib">Znajdź nasze treści uświadamiające<u><font color="#F55F24">ici</font></u></string>
 
     <string name="welcome_two_title">C\Czas zacząć!</string>
     <string name="welcome_two_text_one_corrected">Sieć społecznościowa c\ jest lepsza w przypadku kilku osób!\nPrzedstaw się %s</string>
@@ -651,8 +645,6 @@ Przeczytają tę wiadomość, gdy tylko dołączą do grupy.</string>
 
     <string name="action_title_section_author">Utwórz go według</string>
     <string name="action_canceled">Ogłoszenie usunięte</string>
-    <string name="action_show_charte"><u>Charte éthique</u></string>
-    <string name="signal_a_problem"><u>Signaler un problème</u></string>
 
     <string name="action_detail_bt_cancel">USUWAĆ</string>
     <string name="action_detail_bt_modify">Modyfikować</string>
@@ -688,7 +680,6 @@ Przeczytają tę wiadomość, gdy tylko dołączą do grupy.</string>
 
     <string name="action_crete_cat_about">Czy chcesz zaoferować %s, który nie pasuje do żadnej z tych kategorii? Wygląda na to, że \ nie ma miejsca w sieci,</string>
     <string name="action_create_cat_about_more0">ale zawsze możesz</string>
-    <string name="action_create_cat_about_more1"><u> en savoir plus par ici.</u></string>
 
     <string name="action_create_cat_choose_category">Wybierz kategorię, która najlepiej opisuje Twojego %s.</string>
     <string name="action_create_location_title">Znajdź swój %s</string>
@@ -1660,7 +1651,6 @@ Przeczytają tę wiadomość, gdy tylko dołączą do grupy.</string>
 
     <!-- Outing as chat message card -->
     <string name="outing_message_card_created_author">%1$s utworzył &lt;font color=\"%2$s\"&gt;wyjście&lt;/font&gt;:</string>
-    <string name="outing_message_card_updated_author">%1$s &lt;b&gt;zmodyfikował&lt;/b&gt; &lt;font color=\"%2$s\"&gt;wyjście&lt;/font&gt;:</string>
 
     <!-- Status update as chat message card -->
     <!-- 1 = font color, 2 = author, 3 = message -->
@@ -1719,13 +1709,11 @@ Przeczytają tę wiadomość, gdy tylko dołączą do grupy.</string>
 
     <!-- Create Action Wizard -->
     <string name="create_action_wizard_p1_title">OSTATNIE PYTANIE</string>
-    <string name="create_action_wizard_p1_description">Stwórz dla siebie tę akcję solidarnościową<b>pour une personne identifiée, autre que vous :</b> un ami en situation précaire, une personne croisée dans la rue ?</string>
     <string name="create_action_wizard_p1_option1">@string/yes</string>
     <string name="create_action_wizard_p1_option2">Nie, proszę o siebie</string>
     <string name="create_action_wizard_p1_option3">Nie, dla stowarzyszenia</string>
 
     <string name="create_action_wizard_p2_title">OSTATNIE PYTANIE</string>
-    <string name="create_action_wizard_p2_description">Masz<b>obtenu son consentement</b> pour diffuser cette action pour elle sur Entourage ?</string>
     <string name="create_action_wizard_p2_option1">Tak, j\ ma swoją zgodę</string>
     <string name="create_action_wizard_p2_option2">Nie, jeszcze nie</string>
 
@@ -1942,7 +1930,6 @@ Przeczytają tę wiadomość, gdy tylko dołączą do grupy.</string>
     <string name="login_phone_placeholder">Numer telefonu</string>
     <string name="login_placeholder_code">Wpisz swój kod</string>
     <string name="login_button_connect">łączę</string>
-    <string name="login_button_resend_code"><u>Redemander un code</u></string>
     <string name="login_button_resend_code_text">Czy chcesz poprosić o nowy kod dla swojego numeru telefonu: %s?</string>
     <string name="login_button_resend_code_action">Zapytać</string>
     <string name="login_label_country">Kraj</string>
@@ -1950,7 +1937,6 @@ Przeczytają tę wiadomość, gdy tylko dołączą do grupy.</string>
     <string name="login_label_code">Zakodowane</string>
 
     <!-- Login Change Phone -->
-    <string name="login_change_phone"><u>J’ai changé de numéro de téléphone</u></string>
     <string name="login_change_phone_title">Nowy numer</string>
     <string name="login_change_phone_old_phone">Stary problem</string>
     <string name="login_change_phone_old_phone_placeholder">Stary problem</string>
@@ -1992,7 +1978,6 @@ Przeczytają tę wiadomość, gdy tylko dołączą do grupy.</string>
     <string name="contribCreated">darowizny\nopublikowane</string>
     <string name="askCreated">żądania\n zostały opublikowane</string>
 
-    <string name="menu_info_social">Żyć<b>encore plus de solidarité</b> suivez Entourage sur vos réseaux !</string>
 
     <string name="menu_info_first_title">👋 ZRÓB PIERWSZY KROK</string>
     <string name="menu_info_first_guide">Nasz przewodnik po odważeniu się na spotkanie</string>
@@ -2031,16 +2016,12 @@ Przeczytają tę wiadomość, gdy tylko dołączą do grupy.</string>
     <string name="map_error_geolocation_disabled_recenter">Aby ponownie skupić się wokół siebie, musisz aktywować geolokalizację</string>
     <string name="map_empty_newsfeed">C\W okolicy jest raczej cicho!\n\nWygląda na to, że\'tam n\'nie ma żadnej aktywności w pobliżu... w tej chwili!\n\nTy też możesz utworzyć działanie solidarnościowe: dotknij + na dole prawda</string>
     <string name="map_empty_newsfeed_popup">Wygląda na to, że jest tu cicho!\n\nPrzesuń mapę, aby znaleźć aktywność w sieci.\n\nTy też możesz utworzyć działanie solidarnościowe: naciśnij + w prawym dolnym rogu</string>
-    <string name="newsfeed_load_more_button"><u>Rechercher plus loin.</u></string>
     <string name="newsfeed_no_action">Brak aktywności w pobliżu tej pozycji</string>
     <string name="newsfeed_tab_events_no_items">Brak wydarzeń w pobliżu.</string>
-    <string name="newsfeed_tab_events_no_items_button"><u>Retrouvez plus d\'événements d\'Entourage ici</u></string>
 
     <!--SRING MAP -->
     <string name="map_filter_title">FILTRY</string>
     <string name="map_filter_entourage_type_title">Rodzaje działań</string>
-    <string name="map_filter_entourage_demand_text"><b>Voir les demandes concernant :</b></string>
-    <string name="map_filter_entourage_contribution_text"><b>Voir les contributions concernant :</b></string>
     <string name="map_filter_time_title">Zaktualizowano mniej niż</string>
     <string name="map_filter_time_option1">24H</string>
     <string name="map_filter_time_option2">8D</string>
@@ -2115,7 +2096,6 @@ Przeczytają tę wiadomość, gdy tylko dołączą do grupy.</string>
     <string name="pre_onboard_choice_description_title">Sieć społecznościowa, naprawdę społeczna.</string>
     <string name="pre_onboard_choice_login">mam już konto</string>
     <string name="pre_onboard_choice_signup">Rejestruję się</string>
-    <string name="pre_onboard_choice_about"><u>Qui est l’association Entourage ?</u></string>
 
     <!-- ONBOARDING -->
 
@@ -2258,7 +2238,6 @@ Przeczytają tę wiadomość, gdy tylko dołączą do grupy.</string>
     <string name="input_names_sub">Czy tym razem możesz mi powiedzieć, jak masz na imię?</string>
     <string name="input_names_error">Wypełnij oba pola, używając co najmniej %s znaków.</string>
 
-    <string name="onboard_sms_help"><u>Besoin d’aide ?\nContacter l\'équipe Entourage.</u></string>
 
     <string name="partner_add_error">Błąd podczas dodawania plakietki</string>
     <string name="partner_remove_error">Nie udało się usunąć plakietki</string>
@@ -2458,7 +2437,6 @@ Przeczytają tę wiadomość, gdy tylko dołączą do grupy.</string>
     <string name="custom_dialog_action_title_two">Dziękuję za cierpliwość</string>
     <string name="custom_dialog_action_title_three">Dobre wieści !</string>
 
-    <string name="custom_dialog_action_content_one_contrib">Czy twój backslash_placeholder „&lt;b&gt;%1 $ S &lt;/b&gt; backslash_placeholder” zakończyła się akcją?</string>
     <string name="custom_dialog_action_content_one_demande">Czy znalazłeś to, czego szukałeś?</string>
     <string name="custom_dialog_action_content_two_demande">Wskazówka: przejrzyj wpisy. Sąsiad może zaoferować to, czego szukasz.</string>
     <string name="custom_dialog_action_content_two_contrib">Wskazówka: spójrz na prośby w Twojej okolicy. Może sąsiad będzie zainteresowany.</string>
@@ -2621,6 +2599,55 @@ Przeczytają tę wiadomość, gdy tylko dołączą do grupy.</string>
 
     <string name="translation_bottom_fragment_title">"Automatycznie tłumaczymy wiadomości napisane przez obywateli."</string>
     <string name="translation_bottom_fragment_main_title">"Tłumaczenie"</string>
+
+    <string name="action_social_name">Czas na dzielenie się</string>
+    <string name="action_social_subname">kawa, aktywność...</string>
+
+    <string name="action_services_name">Usługa</string>
+    <string name="action_services_subname">pranie, drukowanie dokumentów...</string>
+
+    <string name="action_clothes_name">Ubranie</string>
+    <string name="action_clothes_subname">buty, płaszcz...</string>
+
+    <string name="action_equipment_name">Wyposażenie</string>
+    <string name="action_equipment_subname">telefon, śpiwór...</string>
+
+    <string name="action_hygiene_name">Produkt higieniczny</string>
+    <string name="action_hygiene_subname">mydło, środki higieniczne...</string>
+
+    <string name="interest_activites">Zajęcia ręczne</string>
+    <string name="interest_animaux">Zwierzęta</string>
+    <string name="interest_bien_etre">Dobrostan</string>
+    <string name="interest_cuisine">Kuchnia</string>
+    <string name="interest_culture">Sztuka i kultura</string>
+    <string name="interest_jeux">Gry</string>
+    <string name="interest_nature">Natura</string>
+    <string name="interest_sport">Sport</string>
+    <string name="interest_marauding">Spotkania nomadów</string>
+    <string name="interest_other">Inne</string>
+
+    <string name="modify_image"><u>Edytuj moje zdjęcie</u></string>
+    <string name="more"><u>Dowiedz się więcej</u></string>
+    <string name="posts_comment_number"><u>%s komentarze</u></string>
+    <string name="posts_comment_number_singular"><u>%s komentarz</u></string>
+    <string name="show_more_lined"><u>Pokaż więcej</u></string>
+    <string name="welcome_one_sensib">Znajdź nasze treści z zakresu świadomości <u><font color="#F55F24">tutaj</font></u></string>
+    <string name="action_show_charte"><u>Karta etyczna</u></string>
+    <string name="signal_a_problem"><u>Zgłoś problem</u></string>
+    <string name="action_create_cat_about_more1"><u> dowiedz się więcej tutaj.</u></string>
+    <string name="login_button_resend_code"><u>Poproś ponownie o kod</u></string>
+    <string name="login_change_phone"><u>Zmieniłem numer telefonu</u></string>
+    <string name="newsfeed_load_more_button"><u>Szukaj dalej.</u></string>
+    <string name="newsfeed_tab_events_no_items_button"><u>Znajdź więcej wydarzeń Entourage tutaj</u></string>
+    <string name="pre_onboard_choice_about"><u>Kim jest stowarzyszenie Entourage?</u></string>
+    <string name="onboard_sms_help"><u>Potrzebujesz pomocy?\nSkontaktuj się z zespołem Entourage.</u></string>
+    <string name="outing_message_card_updated_author"><![CDATA[%1$s <b>zmodyfikował(a)</b> <font color=\"%2$s\">wycieczkę</font>:]]></string>
+    <string name="create_action_wizard_p1_description">Czy tworzysz tę akcję solidarnościową <b>dla zidentyfikowanej osoby, innej niż Ty:</b> przyjaciel w trudnej sytuacji, osoba spotkana na ulicy?</string>
+    <string name="create_action_wizard_p2_description">Czy uzyskałeś(aś) <b>jej zgodę</b> na rozpowszechnianie tej akcji dla niej w Entourage?</string>
+    <string name="menu_info_social">Aby doświadczyć <b>jeszcze większej solidarności</b>, śledź Entourage w swoich sieciach!</string>
+    <string name="map_filter_entourage_demand_text"><b>Zobacz wnioski dotyczące:</b></string>
+    <string name="map_filter_entourage_contribution_text"><b>Zobacz wkłady dotyczące:</b></string>
+    <string name="custom_dialog_action_content_one_contrib">Czy Twoja akcja \"<![CDATA[<b>%1$s</b>]]>\" została zakończona?</string>
 
 
 </resources>

@@ -26,7 +26,6 @@ abstract class BaseSecuredActivity : BaseActivity() {
         if (authenticationController.isAuthenticated && isMigrationAfterV7) {
             entApp?.finishLoginActivity()
         } else {
-            Log.wtf("wtf", "hello there")
             startActivity(Intent(this, PreOnboardingLanguage::class.java))
             finish()
         }

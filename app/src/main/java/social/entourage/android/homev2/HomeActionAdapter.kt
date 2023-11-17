@@ -18,6 +18,7 @@ import social.entourage.android.actions.detail.ActionDetailActivity
 import social.entourage.android.api.MetaDataRepository
 import social.entourage.android.api.model.Action
 import social.entourage.android.api.model.ActionSection
+import social.entourage.android.api.model.ActionUtils
 import social.entourage.android.api.model.Events
 import social.entourage.android.databinding.HomeV2ActionItemLayoutBinding
 import social.entourage.android.tools.displayDistance
@@ -99,7 +100,7 @@ class HomeActionAdapter(var isContrib:Boolean): RecyclerView.Adapter<RecyclerVie
                 val context = holder.binding.root.context
                 val itemDrawable = ActionSection.getIconFromId(it)
                 holder.binding.ivActionItemEquipment.setImageDrawable(context.getDrawable(itemDrawable))
-                holder.binding.tvActionItemSubtitle.text = MetaDataRepository.getActionSectionNameFromId(it)
+                holder.binding.tvActionItemSubtitle.text = ActionUtils.showTagTranslated(context ,it!!)
 
             }
             action.distance.let {

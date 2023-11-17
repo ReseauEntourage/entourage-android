@@ -1,6 +1,9 @@
 package social.entourage.android.api.model
 
+import android.content.Context
 import com.google.gson.annotations.SerializedName
+import social.entourage.android.EntourageApplication
+import social.entourage.android.R
 
 data class Group(
     @SerializedName("id")
@@ -88,5 +91,25 @@ data class Group(
 
     override fun toString(): String {
         return "Group(id=$id, name=$name, description=$description, welcomeMessage=$welcomeMessage, ethics=$ethics, address=$address, neighborhoodImageId=$neighborhoodImageId, otherInterest=$otherInterest, interests=$interests, imageUrl=$imageUrl, members=$members, futureOutingsCount=$futureOutingsCount, admin=$admin, members_count=$members_count)"
+    }
+
+}
+class GroupUtils {
+    companion object {
+        fun showTagTranslated(context: Context, section: String): String {
+            when(section.lowercase()){
+                "activites" -> return context.getString(R.string.interest_activites)
+                "animaux" -> return context.getString(R.string.interest_animaux)
+                "bien-etre" -> return context.getString(R.string.interest_bien_etre)
+                "cuisine" -> return context.getString(R.string.interest_cuisine)
+                "culture" -> return context.getString(R.string.interest_culture)
+                "jeux" -> return context.getString(R.string.interest_jeux)
+                "nature" -> return context.getString(R.string.interest_nature)
+                "sport" -> return context.getString(R.string.interest_sport)
+                "marauding" -> return context.getString(R.string.interest_marauding)
+                "other" -> return context.getString(R.string.interest_other)
+                else -> return context.getString(R.string.interest_other)
+            }
+        }
     }
 }

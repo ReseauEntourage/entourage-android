@@ -3,6 +3,7 @@ package social.entourage.android.api.model
 import android.content.Context
 import com.google.gson.annotations.SerializedName
 import social.entourage.android.EntourageApplication
+import social.entourage.android.R
 import social.entourage.android.api.model.feed.FeedItemAuthor
 import social.entourage.android.events.EventModel
 import java.io.Serializable
@@ -25,6 +26,7 @@ data class GroupEvent(
 ) : Serializable
 
 data class Events(
+
     @field:SerializedName("metadata")
     val metadata: EventMetadata? = null,
 
@@ -148,3 +150,32 @@ fun Events.toEventUi(context: Context): EventModel {
     )
 }
 
+class EventUtils {
+    companion object {
+        fun showTagTranslated(context: Context,section: String): String {
+            when(section.lowercase()){
+                "activites" -> return context.getString(R.string.interest_activites)
+                "animaux" -> return context.getString(R.string.interest_animaux)
+                "bien-etre" -> return context.getString(R.string.interest_bien_etre)
+                "cuisine" -> return context.getString(R.string.interest_cuisine)
+                "culture" -> return context.getString(R.string.interest_culture)
+                "jeux" -> return context.getString(R.string.interest_jeux)
+                "nature" -> return context.getString(R.string.interest_nature)
+                "sport" -> return context.getString(R.string.interest_sport)
+                "marauding" -> return context.getString(R.string.interest_marauding)
+                "other" -> return context.getString(R.string.interest_other)
+                "activités manuelles"  -> return context.getString(R.string.interest_activites)
+                "animaux" -> return context.getString(R.string.interest_animaux)
+                "bien-être" -> return context.getString(R.string.interest_bien_etre)
+                "cuisine" -> return context.getString(R.string.interest_cuisine)
+                "art & culture" -> return context.getString(R.string.interest_culture)
+                "jeux" -> return context.getString(R.string.interest_jeux)
+                "nature" -> return context.getString(R.string.interest_nature)
+                "sport" -> return context.getString(R.string.interest_sport)
+                "rencontres nomades" -> return context.getString(R.string.interest_marauding)
+                "autre" -> return context.getString(R.string.interest_other)
+                else -> return context.getString(R.string.interest_other)
+            }
+        }
+    }
+}

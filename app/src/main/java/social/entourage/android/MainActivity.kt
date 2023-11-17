@@ -247,7 +247,6 @@ class MainActivity : BaseSecuredActivity() {
             storePushNotificationPermision()
         }
     }
-
     private fun storePushNotificationPermision() {
         val sharedPref = EntourageApplication.get().sharedPreferences
         var notificationsEnabled = sharedPref.getBoolean(

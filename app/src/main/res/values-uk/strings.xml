@@ -147,7 +147,6 @@
     <string name="sign_out_dialog_title">Відключити</string>
     <string name="sign_out_dialog_content">Ви хочете вийти?</string>
     <string name="progress_km">%s км</string>
-    <string name="modify_image"><u>Modifier ma photo</u></string>
     <string name="modify_interests_subtitle">Виберіть одну або кілька категорій, які вас цікавлять.</string>
     <string name="add_image">Додайте картинку</string>
     <string name="add_image_subtitle">З фотографією одразу стає приємніше.
@@ -265,7 +264,6 @@
     <string name="welcome_message_btn_title">Я представляюсь</string>
     <string name="member">Член</string>
     <string name="members_location">%s членів. %s</string>
-    <string name="more"><u>En savoir plus</u></string>
     <string name="group_settings">Налаштування групи</string>
     <string name="report_group">щоб повідомити про проблему</string>
     <string name="rules_group">Правила групи</string>
@@ -290,8 +288,6 @@
     <string name="discuss">Коментувати…</string>
     <string name="discussbis">Щоб написати повідомлення…</string>
     <string name="no_comments">Без коментарів</string>
-    <string name="posts_comment_number"><u>%s commentaires</u></string>
-    <string name="posts_comment_number_singular"><u>%s commentaire</u></string>
     <string name="comments_title">Коментарі</string>
     <string name="write_your_message">Напишіть своє повідомлення</string>
     <string name="share_post">Поділіться</string>
@@ -329,7 +325,6 @@
     <string name="pedagogical_content">Усе, що вам потрібно знати, щоб перейти від \ до \'action</string>
     <string name="picture">Фото</string>
     <string name="image_mandatory">Фото обов&amp;apos;язкове</string>
-    <string name="show_more_lined"><u>Voir plus</u></string>
     <string name="group_events">Групові заходи</string>
     <string name="group_events_new">Також група організовує:</string>
     <string name="january">січня</string>
@@ -459,7 +454,6 @@
     <!-- WELCOME PAGES -->
     <string name="welcome_one_title">Ласкаво просимо до \nсоціальної мережі, по-справжньому соціальної</string>
     <string name="welcome_one_content">Для багатьох вулиця — це місце проходу.\nДля деяких c\ — це повсякденне життя.\nТож для початку познайомтеся з тими, хто живе ним щодня.</string>
-    <string name="welcome_one_sensib">Знайдіть наш інформаційний вміст<u><font color="#F55F24">ici</font></u></string>
 
     <string name="welcome_two_title">C\Пора починати!</string>
     <string name="welcome_two_text_one_corrected">Соціальна мережа, c\, краща з кількома людьми!\nПредставтеся %s</string>
@@ -657,8 +651,6 @@
 
     <string name="action_title_section_author">Створіть його за допомогою</string>
     <string name="action_canceled">Оголошення видалено</string>
-    <string name="action_show_charte"><u>Charte éthique</u></string>
-    <string name="signal_a_problem"><u>Signaler un problème</u></string>
 
     <string name="action_detail_bt_cancel">ВИДАЛИТИ</string>
     <string name="action_detail_bt_modify">Щоб змінити</string>
@@ -694,7 +686,6 @@
 
     <string name="action_crete_cat_about">Ви бажаєте запропонувати %s, який не відповідає жодній із цих категорій? Здається, \ не місце в мережі,</string>
     <string name="action_create_cat_about_more0">але завжди можна</string>
-    <string name="action_create_cat_about_more1"><u> en savoir plus par ici.</u></string>
 
     <string name="action_create_cat_choose_category">Виберіть категорію, яка найкраще описує ваш %s.</string>
     <string name="action_create_location_title">Знайдіть %s</string>
@@ -1665,7 +1656,6 @@
 
     <!-- Outing as chat message card -->
     <string name="outing_message_card_created_author">%1$s створив &lt;font color=\"%2$s\"&gt;вихід&lt;/font&gt;:</string>
-    <string name="outing_message_card_updated_author">%1$s &lt;b&gt;змінив&lt;/b&gt; &lt;font color=\"%2$s\"&gt;вихід&lt;/font&gt;:</string>
 
     <!-- Status update as chat message card -->
     <!-- 1 = font color, 2 = author, 3 = message -->
@@ -1724,13 +1714,11 @@
 
     <!-- Create Action Wizard -->
     <string name="create_action_wizard_p1_title">ОСТАННЄ ПИТАННЯ</string>
-    <string name="create_action_wizard_p1_description">Створіть цю акцію солідарності для себе<b>pour une personne identifiée, autre que vous :</b> un ami en situation précaire, une personne croisée dans la rue ?</string>
     <string name="create_action_wizard_p1_option1">@string/yes</string>
     <string name="create_action_wizard_p1_option2">Ні, я питаю за себе</string>
     <string name="create_action_wizard_p1_option3">Ні, для асоціації</string>
 
     <string name="create_action_wizard_p2_title">ОСТАННЄ ПИТАННЯ</string>
-    <string name="create_action_wizard_p2_description">Ти отримав<b>obtenu son consentement</b> pour diffuser cette action pour elle sur Entourage ?</string>
     <string name="create_action_wizard_p2_option1">Так, j\ має свою згоду</string>
     <string name="create_action_wizard_p2_option2">Ні, ще ні</string>
 
@@ -1947,7 +1935,6 @@
     <string name="login_phone_placeholder">Номер телефону</string>
     <string name="login_placeholder_code">введіть ваш код</string>
     <string name="login_button_connect">Я підключаю</string>
-    <string name="login_button_resend_code"><u>Redemander un code</u></string>
     <string name="login_button_resend_code_text">Ви хочете отримати новий код для свого номера телефону: %s?</string>
     <string name="login_button_resend_code_action">Запитуйте</string>
     <string name="login_label_country">Країна</string>
@@ -1955,7 +1942,6 @@
     <string name="login_label_code">Закодований</string>
 
     <!-- Login Change Phone -->
-    <string name="login_change_phone"><u>J’ai changé de numéro de téléphone</u></string>
     <string name="login_change_phone_title">Новий номер</string>
     <string name="login_change_phone_old_phone">Старе питання</string>
     <string name="login_change_phone_old_phone_placeholder">Старе питання</string>
@@ -1997,7 +1983,6 @@
     <string name="contribCreated">пожертви\неопубліковано</string>
     <string name="askCreated">запити\не опубліковано</string>
 
-    <string name="menu_info_social">Жити<b>encore plus de solidarité</b> suivez Entourage sur vos réseaux !</string>
 
     <string name="menu_info_first_title">👋 ЗРОБИ ПЕРШИЙ КРОК</string>
     <string name="menu_info_first_guide">Наш посібник, як наважитися на зустріч</string>
@@ -2036,16 +2021,12 @@
     <string name="map_error_geolocation_disabled_recenter">Щоб перефокусуватися навколо себе, необхідно активувати геолокацію</string>
     <string name="map_empty_newsfeed">C\Тут досить тихо!\n\nЗдається, \'там n\'поблизу немає жодної активності... на даний момент!\n\nВи також можете створити активність солідарності: натисніть + внизу праворуч</string>
     <string name="map_empty_newsfeed_popup">Схоже, тут тихо!\n\nПеремістіть карту, щоб знайти заходи в мережі.\n\nВи також можете створити активність солідарності: натисніть + унизу праворуч</string>
-    <string name="newsfeed_load_more_button"><u>Rechercher plus loin.</u></string>
     <string name="newsfeed_no_action">Немає активності поблизу цієї позиції</string>
     <string name="newsfeed_tab_events_no_items">Немає подій поблизу.</string>
-    <string name="newsfeed_tab_events_no_items_button"><u>Retrouvez plus d\'événements d\'Entourage ici</u></string>
 
     <!--SRING MAP -->
     <string name="map_filter_title">ФІЛЬТРИ</string>
     <string name="map_filter_entourage_type_title">Види дії</string>
-    <string name="map_filter_entourage_demand_text"><b>Voir les demandes concernant :</b></string>
-    <string name="map_filter_entourage_contribution_text"><b>Voir les contributions concernant :</b></string>
     <string name="map_filter_time_title">Оновлено менше ніж</string>
     <string name="map_filter_time_option1">24 години</string>
     <string name="map_filter_time_option2">8D</string>
@@ -2118,7 +2099,6 @@
     <string name="pre_onboard_choice_description_title">Соціальна мережа, справді соціальна.</string>
     <string name="pre_onboard_choice_login">У мене вже є обліковий запис</string>
     <string name="pre_onboard_choice_signup">Я реєструюся</string>
-    <string name="pre_onboard_choice_about"><u>Qui est l’association Entourage ?</u></string>
 
     <!-- ONBOARDING -->
 
@@ -2261,7 +2241,6 @@
     <string name="input_names_sub">Цього разу ви можете сказати мені, як вас звати?</string>
     <string name="input_names_error">Заповніть обидва поля принаймні %s символів.</string>
 
-    <string name="onboard_sms_help"><u>Besoin d’aide ?\nContacter l\'équipe Entourage.</u></string>
 
     <string name="partner_add_error">Помилка додавання значка</string>
     <string name="partner_remove_error">Не вдалося видалити значок</string>
@@ -2461,7 +2440,6 @@
     <string name="custom_dialog_action_title_two">Дякую за Ваше терпіння</string>
     <string name="custom_dialog_action_title_three">Гарні новини !</string>
 
-    <string name="custom_dialog_action_content_one_contrib">Чи виконано вашу дію \"&lt;b&gt;%1$s&lt;/b&gt;\"?</string>
     <string name="custom_dialog_action_content_one_demande">Ти знайшов те що шукав?</string>
     <string name="custom_dialog_action_content_two_demande">Порада: дивіться внески. Сусід може запропонувати те, що ви шукаєте.</string>
     <string name="custom_dialog_action_content_two_contrib">Порада: перегляньте запити поблизу вас. Можливо сусід зацікавиться.</string>
@@ -2624,5 +2602,55 @@
 
     <string name="translation_bottom_fragment_title">"Ми автоматично перекладаємо повідомлення, написані громадянами."</string>
     <string name="translation_bottom_fragment_main_title">"Переклад"</string>
+
+    <string name="action_social_name">Час спілкування</string>
+    <string name="action_social_subname">кава, активності...</string>
+
+    <string name="action_services_name">Сервіс</string>
+    <string name="action_services_subname">прання, друк документів...</string>
+
+    <string name="action_clothes_name">Одяг</string>
+    <string name="action_clothes_subname">взуття, пальто...</string>
+
+    <string name="action_equipment_name">Обладнання</string>
+    <string name="action_equipment_subname">телефон, спальний мішок...</string>
+
+    <string name="action_hygiene_name">Гігієнічний продукт</string>
+    <string name="action_hygiene_subname">мило, гігієнічний захист...</string>
+
+    <string name="interest_activites">Ручні роботи</string>
+    <string name="interest_animaux">Тварини</string>
+    <string name="interest_bien_etre">Добробут</string>
+    <string name="interest_cuisine">Кулінарія</string>
+    <string name="interest_culture">Мистецтво та культура</string>
+    <string name="interest_jeux">Ігри</string>
+    <string name="interest_nature">Природа</string>
+    <string name="interest_sport">Спорт</string>
+    <string name="interest_marauding">Кочові зустрічі</string>
+    <string name="interest_other">Інше</string>
+
+    <string name="modify_image"><u>Редагувати моє фото</u></string>
+    <string name="more"><u>Дізнатися більше</u></string>
+    <string name="posts_comment_number"><u>%s коментарів</u></string>
+    <string name="posts_comment_number_singular"><u>%s коментар</u></string>
+    <string name="show_more_lined"><u>Показати більше</u></string>
+    <string name="welcome_one_sensib">Знайдіть наші матеріали для підвищення обізнаності <u><font color="#F55F24">тут</font></u></string>
+    <string name="action_show_charte"><u>Етична хартія</u></string>
+    <string name="signal_a_problem"><u>Повідомити про проблему</u></string>
+    <string name="action_create_cat_about_more1"><u> дізнатися більше тут.</u></string>
+    <string name="login_button_resend_code"><u>Запросити код знову</u></string>
+    <string name="login_change_phone"><u>Я змінив номер телефону</u></string>
+    <string name="newsfeed_load_more_button"><u>Шукати далі.</u></string>
+    <string name="newsfeed_tab_events_no_items_button"><u>Знайти більше подій Entourage тут</u></string>
+    <string name="pre_onboard_choice_about"><u>Хто така асоціація Entourage?</u></string>
+    <string name="onboard_sms_help"><u>Потрібна допомога?\nЗверніться до команди Entourage.</u></string>
+    <string name="outing_message_card_updated_author"><![CDATA[%1$s <b>змінив(ла)</b> <font color=\"%2$s\">похід</font>:]]></string>
+    <string name="create_action_wizard_p1_description">Чи створюєте ви цю акцію солідарності <b>для ідентифікованої особи, не вас:</b> друга у скрутному становищі, людини, з якою ви зустрілися на вулиці?</string>
+    <string name="create_action_wizard_p2_description">Чи отримали ви <b>згоду цієї особи</b> на розповсюдження цієї акції за них в Entourage?</string>
+    <string name="menu_info_social">Щоб відчути <b>ще більше солідарності</b>, слідкуйте за Entourage у ваших мережах!</string>
+    <string name="map_filter_entourage_demand_text"><b>Переглянути запити стосовно:</b></string>
+    <string name="map_filter_entourage_contribution_text"><b>Переглянути внески стосовно:</b></string>
+    <string name="custom_dialog_action_content_one_contrib">Чи завершилася ваша діяльність \"<![CDATA[<b>%1$s</b>]]>\"?</string>
+
 
 </resources>

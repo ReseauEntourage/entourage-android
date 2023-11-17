@@ -396,22 +396,28 @@ object PushNotificationManager {
 
         if(pushNotificationMessage.content?.extra?.stage == "h1"){
             val intent = Intent(context, WelcomeOneActivity::class.java)
+            intent.putExtra("notification_content", Gson().toJson(pushNotificationMessage.content))
             return PendingIntent.getActivity(context, pushNotificationMessage.pushNotificationId, intent, PendingIntent.FLAG_IMMUTABLE)
         }
         if(pushNotificationMessage.content?.extra?.stage == "j2"){
             val intent = Intent(context, WelcomeTwoActivity::class.java)
+            intent.putExtra("notification_content", Gson().toJson(pushNotificationMessage.content))
+            intent.putExtra("notification_content_boolean", true)
             return PendingIntent.getActivity(context, pushNotificationMessage.pushNotificationId, intent, PendingIntent.FLAG_IMMUTABLE)
         }
         if(pushNotificationMessage.content?.extra?.stage == "j5"){
             val intent = Intent(context, WelcomeThreeActivity::class.java)
+            intent.putExtra("notification_content", Gson().toJson(pushNotificationMessage.content))
             return PendingIntent.getActivity(context, pushNotificationMessage.pushNotificationId, intent, PendingIntent.FLAG_IMMUTABLE)
         }
         if(pushNotificationMessage.content?.extra?.stage == "j8"){
             val intent = Intent(context, WelcomeFourActivity::class.java)
+            intent.putExtra("notification_content", Gson().toJson(pushNotificationMessage.content))
             return PendingIntent.getActivity(context, pushNotificationMessage.pushNotificationId, intent, PendingIntent.FLAG_IMMUTABLE)
         }
         if(pushNotificationMessage.content?.extra?.stage == "j11"){
             val intent = Intent(context, WelcomeFiveActivity::class.java)
+            intent.putExtra("notification_content", Gson().toJson(pushNotificationMessage.content))
             return PendingIntent.getActivity(context, pushNotificationMessage.pushNotificationId, intent, PendingIntent.FLAG_IMMUTABLE)
         }
 
@@ -428,6 +434,7 @@ object PushNotificationManager {
         }
         messageIntent.action = messageType
         messageIntent.putExtras(args)
+        messageIntent.putExtra("notification_content", Gson().toJson(pushNotificationMessage.content))
         return PendingIntent.getActivity(context, pushNotificationMessage.pushNotificationId, messageIntent, PendingIntent.FLAG_IMMUTABLE)
     }
 
