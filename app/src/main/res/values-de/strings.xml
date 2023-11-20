@@ -606,7 +606,7 @@ Sie werden diese Nachricht lesen, sobald sie der Gruppe beitreten.</string>
     <string name="action_leave_voice_message">Nehmen Sie eine Sprachnachricht auf</string>
     <string name="action_voice_message_button">Starten Sie die Spracherkennung</string>
     <string name="action_voice_message_not_supported">Die Spracherkennung nwird auf Ihrem Telefon nicht unterstützt.</string>
-    <string name="at_km_from_me">bis %d km von mir entfernt</string>
+    <string name="at_km_from_me">Bis %d km von mir entfernt</string>
     <string name="at_meter_from_me">bis %d m von mir</string>
     <string name="inf_hundred_meter">weniger als 100m von mir entfernt</string>
     <string name="share_title_contrib">Dieser Beitrag könnte Sie interessieren.</string>

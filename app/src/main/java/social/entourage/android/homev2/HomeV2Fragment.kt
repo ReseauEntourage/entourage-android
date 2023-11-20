@@ -5,6 +5,7 @@ import android.animation.AnimatorListenerAdapter
 import android.animation.ValueAnimator
 import android.content.Context
 import android.content.Intent
+import android.content.IntentSender
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.util.Log
@@ -19,6 +20,10 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
+import com.google.android.play.core.appupdate.AppUpdateManager
+import com.google.android.play.core.appupdate.AppUpdateManagerFactory
+import com.google.android.play.core.install.model.AppUpdateType
+import com.google.android.play.core.install.model.UpdateAvailability
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.new_fragment_edit_group.nestedScrollView
 import social.entourage.android.BuildConfig
@@ -133,6 +138,26 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener {
         resetFilter()
         callToInitHome()
     }
+
+//    fun showUpdateApplication(){
+//        val appUpdateManager: AppUpdateManager = AppUpdateManagerFactory.create(requireContext())
+//
+//        appUpdateManager.appUpdateInfo.addOnSuccessListener { appUpdateInfo ->
+//            if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
+//                && appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)) {
+//                try {
+//                    appUpdateManager.startUpdateFlowForResult(
+//                        appUpdateInfo,
+//                        AppUpdateType.IMMEDIATE,
+//                        // Votre Activity actuelle
+//                        this,
+//                        123456)
+//                } catch (e: IntentSender.SendIntentException) {
+//                    e.printStackTrace()
+//                }
+//            }
+//        }
+//    }
 
     fun callToInitHome(){
         if(isAdded){

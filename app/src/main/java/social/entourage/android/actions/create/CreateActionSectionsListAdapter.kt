@@ -1,6 +1,7 @@
 package social.entourage.android.actions.create
 
 import android.graphics.Typeface
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +10,7 @@ import kotlinx.android.synthetic.main.new_action_create_cat_infos.view.*
 import kotlinx.android.synthetic.main.new_action_create_cat_item.view.*
 import social.entourage.android.R
 import social.entourage.android.api.model.ActionSection
+import social.entourage.android.api.model.EventUtils
 
 interface OnItemCheckListener {
     fun onItemCheck(position: Int)
@@ -29,8 +31,9 @@ class CreateActionSectionsListAdapter(
             else {
                 binding.title.typeface = Typeface.create(binding.title.typeface,Typeface.NORMAL)
             }
-            binding.title.text = category.title
-            binding.subtitle.text = category.subtitle
+            Log.wtf("wtf", "bind: ${category.title}")
+            binding.title.text = EventUtils.showTagTranslated( binding.context,category.title!!)
+            binding.subtitle.text = EventUtils.showSubTagTranslated( binding.context,category.subtitle!!)
             binding.checkBox.isChecked = category.isSelected
             binding.icon.setImageResource(category.icon)
 

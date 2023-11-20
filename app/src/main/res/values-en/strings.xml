@@ -463,7 +463,7 @@
     <string name="entourage_info_text_join_rejected">\u0020 rejected</string>
     <string name="entourage_info_text_join_cancelled_entourage">canceled his request to join the group</string>
     <string name="entourage_info_text_join_quited_entourage">left the group</string>
-    <string name="entourage_info_text_join_html">&amp;lt;font color</string>
+    <string name="entourage_info_text_join_html">&amp; lt;font color</string>
     <string name="entourage_info_error_chat_message">Message not sent</string>
     <string name="entourage_info_options_stop">To enclose</string>
     <string name="entourage_info_options_cancel_event">Cancel the \ event</string>
@@ -533,13 +533,13 @@
     <string name="info_pop_private_title">Request to participate</string>
     <string name="info_pop_private_bt_ok">Confirm</string>
     <string name="info_pop_private_bt_cancel">Cancel</string>
-    <string name="info_asso_abo">• S\subscribe &amp;gt;</string>
+    <string name="info_asso_abo">• S\subscribe &amp; gt;</string>
     <string name="info_asso_joined">• Subscriber</string>
     <string name="by_author_search">By %1$s</string>
     <string name="action_leave_voice_message">Record a voice message</string>
     <string name="action_voice_message_button">Start voice recognition</string>
     <string name="action_voice_message_not_supported">Voice recognition n\ is not supported on your phone.</string>
-    <string name="at_km_from_me">to %d km from me</string>
+    <string name="at_km_from_me">To %d km from me</string>
     <string name="at_meter_from_me">to %d m from me</string>
     <string name="inf_hundred_meter">less than 100m from me</string>
     <string name="share_title_contrib">This contribution might interest you.</string>
@@ -549,9 +549,9 @@
     <string name="actions_title">Mutual aid</string>
     <string name="actions_tab_contribs">Contributions</string>
     <string name="actions_tab_demands">Requests</string>
-    <string name="action_date_list">The %s</string>
-    <string name="action_date_list_formatter">“dd MMMM yyyy”</string>
-    <string name="action_date_month_year_formatter">“MM/YYYY”</string>
+    <string name="action_date_list">%s</string>
+    <string name="action_date_list_formatter">dd MMMM yyyy</string>
+    <string name="action_date_month_year_formatter">MM/YYYY</string>
     <string name="action_bt_my_actions">My ads</string>
     <string name="action_contrib_empty_state_title">No contributions match your search</string>
     <string name="action_contrib_empty_state_desc">You can broaden your search field or create a contribution</string>
@@ -618,7 +618,7 @@
     <string name="carousel_close_button">@string/close</string>
     <string name="carousel_p1_title">Introduce yourself to network members</string>
     <string name="carousel_p1_about">Good morning ! I have just joined the network and I would like to meet some caring neighbors.</string>
-    <string name="carousel_p1_content">To enter your description, access your profile from the &amp;lt;font color</string>
+    <string name="carousel_p1_content">To enter your description, access your profile from the &amp; lt;font color</string>
     <string name="carousel_p2_title">Explore the initiatives around you</string>
     <string name="carousel_p2_content">Consult the actions created by your neighbors and &amp;lt;font color</string>
     <string name="carousel_p3_title">Dare to meet homeless people</string>
@@ -650,7 +650,7 @@
     <string name="action_params_cgu_title">Code of ethics</string>
     <string name="action_CGU_1_title">Mutual aid</string>
     <string name="action_CGU_1">The application allows you to create new meetings between neighbors and encourage times of exchange. Remote assistance (drive, delivery, gift voucher, prize pool, etc.) is not authorized.</string>
-    <string name="action_CGU_2_title">Contributions &amp;amp; requests</string>
+    <string name="action_CGU_2_title">Contributions &amp; requests</string>
     <string name="action_CGU_2">I can ask for or offer material goods (equipment, clothing, etc.), services (laundry, printing of documents, etc.) and sharing times (coffee, activity, etc.). I cannot request or offer financial assistance, accommodation or food assistance. But if I need it, I can contact the moderator who will guide me.</string>
     <string name="action_CGU_3_title">Consent</string>
     <string name="action_CGU_3">When I post a request for a third party, I make sure to obtain their consent beforehand.</string>
@@ -750,7 +750,7 @@
     <string name="entourage_location_address_not_found">L\ address n\ was not found</string>
     <string name="entourage_info_text_join_accepted">\u0020joined the group.</string>
     <string name="entourage_join_request_received_nomsg">%1$s would like to join your action.</string>
-    <string name="entourage_join_request_received_message_html">&amp;lt;font color</string>
+    <string name="entourage_join_request_received_message_html">&amp; lt;font color</string>
     <string name="entourage_join_request_received_message_short">wants to join your group.</string>
     <string name="entourage_join_request_success">Request accepted</string>
     <string name="entourage_join_request_error">Error d\ sending request</string>
@@ -779,8 +779,8 @@
     <string name="outing_disclaimer_security_details">I ensure that people cannot be identified or located by reading me</string>
     <string name="outing_disclaimer_geolocation_title">Location ?</string>
     <string name="outing_disclaimer_geolocation_details">The precise address of the events is shown</string>
-    <string name="outing_message_card_created_author">%1$s created an &amp;lt;font color</string>
-    <string name="status_message_card_details">&amp;lt;font color</string>
+    <string name="outing_message_card_created_author">%1$s created an &amp; lt;font color</string>
+    <string name="status_message_card_details">&amp; lt;font color</string>
     <string name="myentourages_all">All posts</string>
     <string name="myentourages_unread">Unread</string>
     <string name="myentourages_no_items_title">You n\have no messages yet…</string>
@@ -823,7 +823,7 @@
     <string name="create_action_wizard_p3_title">LAST QUESTION</string>
     <string name="create_action_wizard_p3_description">Consent is essential to be able to broadcast your solidarity action on the network.\n\nYour action is currently on hold. A moderator will respond very quickly to help you.</string>
     <string name="create_action_wizard_p3_option1">@string/next</string>
-    <string name="create_action_wizard_disclaimer">The &amp;lt;a href</string>
+    <string name="create_action_wizard_disclaimer">The &amp; lt;a href</string>
     <string name="action_report_explanation">You will report this solidarity action to our administrators.</string>
     <string name="action_report_reason">Please specify why\nyou are reporting this solidarity action:</string>
     <string name="event_report_explanation">You will report this event to our administrators.</string>
@@ -885,7 +885,7 @@
     <string name="poi_detail_soliguide_1">Information on this location is provided by Soliguide, solidarity cartography.</string>
     <string name="poi_detail_soliguide_2">For even more complete information available in several languages</string>
     <string name="poi_detail_soliguide_consult">To consult</string>
-    <string name="map_poi_empty_popup">It looks like c\ is calm here!&amp;lt;br/&amp;gt;&amp;lt;br/&amp;gt;</string>
+    <string name="map_poi_empty_popup">It looks like c\ is calm here! &amp; lt;br/&amp;gt;&amp;lt;br/&amp;gt;</string>
     <string name="map_poi_info_popup">The Solidarity Guide allows you to find out about support structures: solidarity restaurants, public showers, medical centers open to street people...\n\n</string>
     <string name="map_empty_poi_recyclerV">That\'s all for the solidarity places in this radius around you</string>
     <string name="guide_filter_title">FILTERS</string>
@@ -896,7 +896,7 @@
     <string name="guide_alert_arrow_desc">Alert Details</string>
     <string name="guide_alert_info_desc">Information Guide</string>
     <string name="guide_alert_info_title">SUMMER HOURS</string>
-    <string name="guide_alert_info_text">Our partner &amp;lt;a href</string>
+    <string name="guide_alert_info_text">Our partner &amp; lt;a href</string>
     <string name="guide_display_partners">Associations and services active on Entourage</string>
     <string name="guide_filter_donate">Looking for donations</string>
     <string name="guide_filter_volunteer">Looking for volunteers</string>
@@ -991,7 +991,7 @@
     <string name="login_change_error_number_blocked">The old number has been blocked.\nPlease check.</string>
     <string name="login_change_error_identical_number">Both numbers are the same.\nPlease check the new number.</string>
     <string name="login_change_error_generic">The old number is unknown or deleted.\nPlease check the numbers.</string>
-    <string name="action_about">Help &amp;amp; About</string>
+    <string name="action_about">Help &amp; About</string>
     <string name="action_edit_profile_regular">Edit my profile</string>
     <string name="action_charter_unsigned">Sign the Ethics Charter</string>
     <string name="action_charter_read">Read the Ethics Charter</string>
@@ -1039,7 +1039,7 @@
     <string name="error_dialog_disabled">Geolocation must be enabled to use Entourage. Do you want to enable \?</string>
     <string name="map_error_geolocation_disabled_use_entourage">To discover solidarity actions around you, you must activate geolocation</string>
     <string name="map_error_geolocation_disabled_recenter">To refocus around you, you must activate geolocation</string>
-    <string name="map_empty_newsfeed">C\It\'s rather quiet around here!\n\nIt seems like\'there n\'there\'s no activity nearby... for the moment!\n\nYou too can create a solidarity activity: tap + at the bottom right</string>
+    <string name="map_empty_newsfeed">C\It\'s rather quiet around here!\n\nIt seems like\'there \n\'there\'s no activity nearby... for the moment!\n\nYou too can create a solidarity activity: tap + at the bottom right</string>
     <string name="map_empty_newsfeed_popup">It looks like it\'s quiet here!\n\nMove the map to find network activities.\n\nYou too can create a solidarity activity: press + at the bottom right</string>
     <string name="newsfeed_no_action">No activity near this position</string>
     <string name="newsfeed_tab_events_no_items">No events nearby.</string>
@@ -1061,7 +1061,7 @@
     <string name="param_notifs_switch_messages">Message notifications</string>
     <string name="param_notifs_switch_groups">Group notifications</string>
     <string name="param_notifs_switch_events">Event notifications</string>
-    <string name="param_notifs_switch_actions">Donation &amp;amp; service notifications</string>
+    <string name="param_notifs_switch_actions">Donation &amp; service notifications</string>
     <string name="param_notifs_validate">Apply changes</string>
     <string name="notif_contrib_title">A neighbor offers new help. Maybe this might interest you?</string>
     <string name="notif_solicitation_title">A neighbor is looking for equipment. Maybe you could help him?</string>
@@ -1468,7 +1468,7 @@
     <string name="entourage_metadata_startAt_format">"'on' EEEE, MM/dd"</string>
     <string name="entourage_metadata_startAt_format_full">"EEEE, MMMM dd, yyyy"</string>
     <string name="date_format_profile">"MM-dd"</string>
-    <string name="date_format_profile_fr">"Month day"</string>
+    <string name="date_format_profile_fr">Month day</string>
 
 
     <string name="translate">Translation</string>
@@ -1496,7 +1496,7 @@
     <string name="action_clothes_subname">shoes, coat...</string>
     <string name="action_equipment_name">Equipment</string>
     <string name="action_equipment_subname">phone, sleeping bag...</string>
-    <string name="action_hygiene_name">Hygiene Product</string>
+    <string name="action_hygiene_name">Hygiene</string>
     <string name="action_hygiene_subname">soap, sanitary protection...</string>
     <string name="interest_activites">Manual Activities</string>
     <string name="interest_animaux">Animals</string>
@@ -1506,7 +1506,7 @@
     <string name="interest_jeux">Games</string>
     <string name="interest_nature">Nature</string>
     <string name="interest_sport">Sport</string>
-    <string name="interest_marauding">Nomadic Encounters</string>
+    <string name="interest_marauding">Homeless Encounters</string>
     <string name="interest_other">Other</string>
 
     <string name="modify_image"><u>Edit my photo</u></string>

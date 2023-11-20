@@ -173,7 +173,21 @@ class EventUtils {
                 "nature" -> return context.getString(R.string.interest_nature)
                 "sport" -> return context.getString(R.string.interest_sport)
                 "rencontres nomades" -> return context.getString(R.string.interest_marauding)
-                "autre" -> return context.getString(R.string.interest_other)
+                "temps de partage" -> return context.getString(R.string.action_social_name)
+                "service" -> return context.getString(R.string.action_services_name)
+                "vêtement" -> return context.getString(R.string.action_clothes_name)
+                "équipement" -> return context.getString(R.string.action_equipment_name)
+                "produit d'hygiène" -> return context.getString(R.string.action_hygiene_name)
+                else -> return context.getString(R.string.interest_other)
+            }
+        }
+        fun showSubTagTranslated(context: Context,section: String): String {
+            when(section.lowercase()){
+                "temps de partage" -> return context.getString(R.string.action_social_subname)
+                "service" -> return context.getString(R.string.action_services_subname)
+                "vêtement" -> return context.getString(R.string.action_clothes_subname)
+                "équipement" -> return context.getString(R.string.action_equipment_subname)
+                "produit d'hygiène" -> return context.getString(R.string.action_hygiene_subname)
                 else -> return context.getString(R.string.interest_other)
             }
         }

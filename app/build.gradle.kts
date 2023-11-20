@@ -283,6 +283,7 @@ dependencies {
     implementation("com.github.chrisbanes:PhotoView:2.3.0")
     implementation("androidx.transition:transition:1.4.1") // Remplacez 'x.x.x' par la dernière version disponible.
     implementation("androidx.core:core-splashscreen:1.0.1")
+    implementation("com.google.android.play:core:1.10.0")
 
 
 }

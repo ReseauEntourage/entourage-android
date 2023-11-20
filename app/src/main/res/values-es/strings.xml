@@ -605,7 +605,7 @@ Leerán este mensaje tan pronto como se unan al grupo.</string>
     <string name="action_leave_voice_message">Grabar un mensaje de voz</string>
     <string name="action_voice_message_button">Iniciar reconocimiento de voz</string>
     <string name="action_voice_message_not_supported">El reconocimiento de voz n\ no es compatible con su teléfono.</string>
-    <string name="at_km_from_me">a %d km de mí</string>
+    <string name="at_km_from_me">A %d km de mí</string>
     <string name="at_meter_from_me">a %d m de mí</string>
     <string name="inf_hundred_meter">a menos de 100 metros de mí</string>
     <string name="share_title_contrib">Esta contribución podría interesarte.</string>

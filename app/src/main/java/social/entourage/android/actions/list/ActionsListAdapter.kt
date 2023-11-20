@@ -70,7 +70,7 @@ class ActionsListAdapter(
                 binding.distance.text = action.displayDistance(context)
 
             }else{
-                binding.distance.text = "À xx km de moi"
+                binding.distance.text = "xx km"
             }
             binding.location.text = action.metadata?.displayAddress
             binding.date.text = action.dateFormattedString(binding.context)
