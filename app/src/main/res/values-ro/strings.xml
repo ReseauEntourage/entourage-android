@@ -2643,6 +2643,7 @@ Ei vor citi acest mesaj imediat ce se vor alătura grupului.</string>
     <string name="map_filter_entourage_demand_text"><b>Vezi cererile referitoare la:</b></string>
     <string name="map_filter_entourage_contribution_text"><b>Vezi contribuțiile referitoare la:</b></string>
     <string name="custom_dialog_action_content_one_contrib">Acțiunea ta \"<![CDATA[<b>%1$s</b>]]>\" este completă?</string>
+    <string name="search_member_hint">Caută un membru</string>
 
 
 

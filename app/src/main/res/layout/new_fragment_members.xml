@@ -41,7 +41,7 @@
                     android:layout_height="40dp"
                     android:background="@drawable/new_bg_rounded_search_orange_stroke_transparent"
                     android:drawablePadding="8dp"
-                    android:hint="@string/search_group_hint"
+                    android:hint="@string/search_member_hint"
                     android:imeOptions="actionSearch"
                     android:inputType="text"
                     android:paddingStart="16dp"

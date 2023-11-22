@@ -2641,7 +2641,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="map_filter_entourage_demand_text"><b>Voir les demandes concernant :</b></string>
     <string name="map_filter_entourage_contribution_text"><b>Voir les contributions concernant :</b></string>
     <string name="custom_dialog_action_content_one_contrib">Votre action \"<![CDATA[<b>%1$s</b>]]>\" est-elle terminée ?</string>
-
+    <string name="search_member_hint">Chercher un membre</string>
 
 
 </resources>

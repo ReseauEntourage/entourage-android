@@ -2631,6 +2631,7 @@ Leerán este mensaje tan pronto como se unan al grupo.</string>
     <string name="map_filter_entourage_demand_text"><b>Ver las solicitudes sobre:</b></string>
     <string name="map_filter_entourage_contribution_text"><b>Ver las contribuciones sobre:</b></string>
     <string name="custom_dialog_action_content_one_contrib">¿Se ha completado tu acción \"<![CDATA[<b>%1$s</b>]]>\"?</string>
+    <string name="search_member_hint">Buscar un miembro</string>
 
 
 </resources>

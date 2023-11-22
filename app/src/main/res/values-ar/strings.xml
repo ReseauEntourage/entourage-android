@@ -2658,7 +2658,7 @@
     <string name="map_filter_entourage_demand_text"><b>عرض الطلبات المتعلقة بـ:</b></string>
     <string name="map_filter_entourage_contribution_text"><b>عرض المساهمات المتعلقة بـ:</b></string>
     <string name="custom_dialog_action_content_one_contrib">هل اكتملت مهمتك \"<![CDATA[<b>%1$s</b>]]>\"؟</string>
-
+    <string name="search_member_hint">ابحث عن عضو</string>
 
 
 

@@ -2638,6 +2638,7 @@ Sie werden diese Nachricht lesen, sobald sie der Gruppe beitreten.</string>
     <string name="map_filter_entourage_demand_text"><b>Anfragen bezüglich:</b></string>
     <string name="map_filter_entourage_contribution_text"><b>Beiträge bezüglich:</b></string>
     <string name="custom_dialog_action_content_one_contrib">Ist Ihre Aktion \"<![CDATA[<b>%1$s</b>]]>\" abgeschlossen?</string>
+    <string name="search_member_hint">Ein Mitglied suchen</string>
 
 
 </resources>
