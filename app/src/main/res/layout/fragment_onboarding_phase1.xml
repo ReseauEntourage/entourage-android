@@ -205,7 +205,8 @@
                     android:textSize="15sp"
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="@+id/ui_onboard_phone_ccp_code"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:visibility="invisible"/>
 
                 <TextView
                     android:id="@+id/textView9"

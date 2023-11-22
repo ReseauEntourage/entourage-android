@@ -90,7 +90,7 @@
     <string name="my_profile">My profile</string>
     <string name="min_progressbar">1 km</string>
     <string name="max_progressbar">100km</string>
-    <string name="indications">*Your action zone allows you to define how far you can take action and move</string>
+    <string name="indications">*Your action zone allows you to define how far you can act and move</string>
     <string name="notifications">Notifications</string>
     <string name="help_about">Help and support</string>
     <string name="unblock">Unblock members</string>
@@ -205,13 +205,13 @@
     <string name="group_updated">The modification has been taken into account</string>
     <string name="group_error_updated">Error editing group</string>
     <string name="title_activity_main">Main activity</string>
-    <string name="title_home">Welcome</string>
+    <string name="title_home">Home</string>
     <string name="title_donations">Mutual aid</string>
-    <string name="title_messages">Discussions</string>
+    <string name="title_messages">Chats</string>
     <string name="title_groups">Groups</string>
     <string name="title_events">Events</string>
     <string name="communities">Groups</string>
-    <string name="discover_groups">I discover</string>
+    <string name="discover_groups">All groups</string>
     <string name="my_groups">My groups</string>
     <string name="members_number">%s members</string>
     <string name="members_number_singular">%s member</string>
@@ -226,7 +226,7 @@
     <string name="my_group_list_empty_state_title">You haven\'t joined a group yet.</string>
     <string name="my_group_list_empty_state_button">Discover groups</string>
     <string name="admin">Admin</string>
-    <string name="to_know">Good to know</string>
+    <string name="to_know">About the group</string>
     <string name="to_know_group">About the group</string>
     <string name="join">Join</string>
     <string name="welcome_message_placeholder">Don’t hesitate to send a first message to introduce yourself.</string>
@@ -270,7 +270,7 @@
     <string name="report_sent">Your request has been sent. It will be processed as soon as possible by our team.</string>
     <string name="post_deleted">Your post has been deleted!</string>
     <string name="message_deleted">Your message has been deleted!</string>
-    <string name="welcome_user">Welcome!</string>
+    <string name="welcome_user">Welcome !</string>
     <string name="contributions_title">My actions within the network</string>
     <string name="contributions_meeting">Beautiful encounters Entourage</string>
     <string name="contributions_meeting_empty">No Entourage meetings yet</string>
@@ -351,14 +351,14 @@
     <string name="event_posts_empty_state_title">There is no publication (yet) on this event</string>
     <string name="event_posts_empty_state_subtitle">Hey! It\s time to share the first news to start the discussion!</string>
     <string name="participate">Participate</string>
-    <string name="participating">Participates</string>
+    <string name="participating">Participate</string>
     <string name="geoUri">http://maps.google.com/maps?q</string>
     <string name="event_settings">Event settings</string>
     <string name="event_notification_all">All event activity</string>
     <string name="notification_new_publications">New posts</string>
     <string name="notification_new_participants">Arrival of new participants</string>
     <string name="edit_event_information">Edit event</string>
-    <string name="rules_event">Code of ethics for events</string>
+    <string name="rules_event">Charter of events</string>
     <string name="report_event">Report the event</string>
     <string name="cancel_event">Cancel event</string>
     <string name="modify_recurrence">Edit recurrence</string>
@@ -859,11 +859,11 @@
     <string name="event_organisez_asso">%s event</string>
     <string name="event_organisez_entourage">Entourage Event</string>
     <string name="event_filter_title">Events - Search Filters</string>
-    <string name="event_filter_profile">At the \ address provided in my profile</string>
+    <string name="event_filter_profile">To the address provided in my profile</string>
     <string name="event_filter_google">At a new address</string>
     <string name="event_filter_gps">Around my current location</string>
     <string name="event_filter_error_place">Please select an address</string>
-    <string name="search_filter">To research :</string>
+    <string name="search_filter">Search :</string>
     <string name="event_location_title">Locate your event</string>
     <string name="event_location_detail">The address will be added to the detailed description of your event.</string>
     <string name="event_btn_share_title">Share</string>
@@ -933,7 +933,7 @@
     <string name="invite_contacts_permission_error">Cancellation: the app does not have the required permissions</string>
     <string name="invite_phone_title">Mobile phone number</string>
     <string name="invite_phone_description">Provide a mobile number to invite the person to join your entourage.</string>
-    <string name="invite_phone_number_hint">Cell phone number</string>
+    <string name="invite_phone_number_hint">Phone number</string>
     <string name="invite_success_title">It’s sent!</string>
     <string name="invite_success_description">Your friend will join the entourage automatically, as soon as they accept your invitation.</string>
     <string name="invitation_card_description">1 new invitation to join an entourage</string>
@@ -962,15 +962,15 @@
     <string name="login_smscode_sent">SMS sent</string>
     <string name="error_login_phone_length">The phone number must be at least %s digits long</string>
     <string name="error_login_code_lenght">The code must be 6 digits long</string>
-    <string name="login_title">Connection</string>
+    <string name="login_title">Log in</string>
     <string name="login_phone_placeholder">Phone number</string>
     <string name="login_placeholder_code">Enter your code</string>
-    <string name="login_button_connect">I connect</string>
+    <string name="login_button_connect">Log in</string>
     <string name="login_button_resend_code_text">Do you want to request a new code for your phone number: %s?</string>
     <string name="login_button_resend_code_action">Ask</string>
     <string name="login_label_country">Country</string>
     <string name="login_label_phone">Phone number</string>
-    <string name="login_label_code">Coded</string>
+    <string name="login_label_code">Code</string>
     <string name="login_change_phone_title">New phone number</string>
     <string name="login_change_phone_old_phone">Old phone number</string>
     <string name="login_change_phone_old_phone_placeholder">Old phone number</string>
@@ -979,7 +979,7 @@
     <string name="login_change_phone_email">Email adress (optional)</string>
     <string name="login_change_phone_email_placeholder">Email adress</string>
     <string name="login_change_phone_bt_validate">Send</string>
-    <string name="login_change_phone_send_ok">Your request has been sent.\n\n\nEntourage support team will notify you when the phone number change has been completed.;</string>
+    <string name="login_change_phone_send_ok">Your request has been sent.\n\n\nEntourage support team will notify you when the phone number change has been completed.</string>
     <string name="login_change_phone_bt_return">Back</string>
     <string name="login_change_warning_title">Attention</string>
     <string name="login_change_error_phone">Please check your phone number</string>
@@ -1053,8 +1053,6 @@
     <string name="map_filter_publish_title">Published by …</string>
     <string name="map_filter_all">All</string>
     <string name="map_filter_partnersOnly">Associations et\ninstitutions seulement</string>
-    <string name="notification_text_join_request_entourage_single_nomsg">@string/entourage_join_request_received_nomsg</string>
-    <string name="other">%1$d people want to join your action.</string>
     <string name="default_notifiation_channel">Invitation</string>
     <string name="params_notifs_title">Notification settings</string>
     <string name="param_notifs_switch_notifs">Notifications</string>
@@ -1096,10 +1094,10 @@
     <string name="onboard_welcome_title_phase2">Enter the code received by text message</string>
     <string name="onboard_sms_sub">A text message has just been sent to :</string>
     <string name="onboard_sms_wait_retry">No code received? Try again in %s</string>
-    <string name="onboard_sms_wait_retry_end">Resend code;</string>
+    <string name="onboard_sms_wait_retry_end">Resend code</string>
     <string name="mod_phone_code">- Edit</string>
     <string name="onboard_code_placeholder">0</string>
-    <string name="onboard_welcome_title_phase3">Delighted with %s!</string>
+    <string name="onboard_welcome_title_phase3">Delighted %s!</string>
     <string name="onboard_phase3_entour_desc">Beyond meeting new people, how would you like to contribute to the Entourage community?</string>
     <string name="onboard_phase3_entour_title">Surround</string>
     <string name="onboard_phase3_entour_subtitle">Proposing help...</string>
@@ -1359,7 +1357,7 @@
     <string name="custom_dialog_action_content_three_demande">Many thanks for your commitment. We will be able to delete your request.</string>
     <string name="custom_dialog_action_two_button_contrib">View contributions</string>
     <string name="custom_dialog_action_two_button_demand">View requests</string>
-    <string name="discussion_main_title">Discussions</string>
+    <string name="discussion_main_title">Chats</string>
     <string name="discussion_settings_title">Chat settings</string>
     <string name="discussion_settings_signal">Report</string>
     <string name="discussion_choose_signal">Report this post to the Entourage team</string>
@@ -1413,7 +1411,7 @@
     <string name="params_unblock_user_pop_validate_subtitle">This contact has just been unblocked, you can write to each other again.</string>
     <string name="params_unblock_users_pop_validate_subtitle">These contacts have just been unlocked, you can write to each other again.</string>
     <string name="params_unblock_user_pop_validate_bt">Ok</string>
-    <string name="param_empty_blocked_user">You n\ have blocked no contacts.</string>
+    <string name="param_empty_blocked_user">You have not blocked any contacts.</string>
     <string name="pop_up_rugby_france_title">Let\'s experience the Rugby World Cup together</string>
     <string name="pop_up_rugby_france_content">The best encounters don\'t necessarily happen at the stadium! Join the group “Let’s experience sport together\”</string>
     <string name="home_v2_title">The app that brings neighbors together</string>
@@ -1433,12 +1431,12 @@
     <string name="home_v2_title_map">Discover useful addresses</string>
     <string name="home_v2_subtitle_map">All solidarity structures nearby</string>
     <string name="home_v2_button_map">Map of solidarity places near you</string>
-    <string name="home_v2_title_pedago">Everything you need to know to take action</string>
+    <string name="home_v2_title_pedago">Everything you need to know </string>
     <string name="home_v2_subtitle_pedago">Fighting precarity, like everything else, can be learned!</string>
     <string name="home_v2_btn_more_pedago">View all articles</string>
     <string name="home_v2_pedago_item_tag_all">All</string>
     <string name="home_v2_pedago_item_tag_act">Act</string>
-    <string name="home_v2_pedago_item_tag_inspire">Inspire</string>
+    <string name="home_v2_pedago_item_tag_inspire">Get inspired</string>
     <string name="home_v2_pedago_item_tag_understand">Understand</string>
     <string name="home_v2_title_help">Are you lost?</string>
     <string name="home_v2_subtitle_help">Don\'t panic, start step by step!</string>
@@ -1446,12 +1444,17 @@
     <string name="home_v2_help_title_one">How to create a group?</string>
     <string name="home_v2_help_title_two">How to create an event?</string>
     <string name="home_v2_help_title_three">A question?\nContact %s</string>
-
-
     <string name="home_v2_pedag_item_lenght_title">%d min read</string>
     <string name="home_v2_hz_item_title">Hey, it seems a little quiet around here…</string>
     <string name="home_v2_hz_item_subtitle">How about bringing solidarity to your city? Entourage gives you the keys to getting started!</string>
     <string name="home_v2_hz_item_button">Learn more</string>
+
+
+
+
+
+
+
     <string name="event_date_time">"dd MMMM yyyy 'at' HH:mm"</string>
     <string name="event_date">"MM/dd/yyyy"</string>
     <string name="post_date">"MM.dd.yyyy"</string>

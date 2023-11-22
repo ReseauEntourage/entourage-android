@@ -235,7 +235,7 @@ Leerán este mensaje tan pronto como se unan al grupo.</string>
     <string name="group_updated">Se ha tenido en cuenta la modificación.</string>
     <string name="group_error_updated">Error al editar grupo</string>
     <string name="title_activity_main">ActividadPrincipal</string>
-    <string name="title_home">bienvenida</string>
+    <string name="title_home">Inicio</string>
     <string name="title_donations">Ayuda mutua</string>
     <string name="title_messages">Discusiones</string>
     <string name="title_groups">Grupos</string>
