@@ -51,7 +51,7 @@
         android:id="@+id/ui_logo"
         android:layout_width="200dp"
         android:layout_height="54dp"
-        android:layout_marginStart="48dp"
+        android:layout_marginStart="32dp"
         android:scaleType="fitCenter"
         android:contentDescription="@string/empty_description"
         app:layout_constraintStart_toStartOf="parent"
