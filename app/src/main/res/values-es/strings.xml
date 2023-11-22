@@ -108,7 +108,7 @@
     <string name="language">Lengua</string>
     <string name="city_action_zone">Ciudad y zona de actuación*</string>
     <string name="within">Dentro :</string>
-    <string name="settings">configuraciones</string>
+    <string name="settings">Configuraciones</string>
     <string name="my_profile">Mi perfil</string>
     <string name="min_progressbar">1km</string>
     <string name="max_progressbar">100km</string>
@@ -2632,6 +2632,7 @@ Leerán este mensaje tan pronto como se unan al grupo.</string>
     <string name="map_filter_entourage_contribution_text"><b>Ver las contribuciones sobre:</b></string>
     <string name="custom_dialog_action_content_one_contrib">¿Se ha completado tu acción \"<![CDATA[<b>%1$s</b>]]>\"?</string>
     <string name="search_member_hint">Buscar un miembro</string>
+    <string name="terms_and_conditions_html">Al hacer clic en &lt;b&gt;Siguiente&lt;/b&gt;, aceptas los &lt;a href=\'https://www.entourage.social/condiciones/\'&gt;Términos y Condiciones&lt;/a&gt; y la &lt;a href=\'https://www.entourage.social/politica-de-privacidad/\'&gt;Política de Privacidad&lt;/a&gt;</string>
 
 
 </resources>

@@ -2649,6 +2649,7 @@ Przeczytają tę wiadomość, gdy tylko dołączą do grupy.</string>
     <string name="map_filter_entourage_contribution_text"><b>Zobacz wkłady dotyczące:</b></string>
     <string name="custom_dialog_action_content_one_contrib">Czy Twoja akcja \"<![CDATA[<b>%1$s</b>]]>\" została zakończona?</string>
     <string name="search_member_hint">Szukaj członka</string>
+    <string name="terms_and_conditions_html">Klikając &lt;b&gt;Dalej&lt;/b&gt;, akceptujesz &lt;a href=\'https://www.entourage.social/regulamin/\'&gt;Warunki korzystania&lt;/a&gt; oraz &lt;a href=\'https://www.entourage.social/polityka-prywatnosci/\'&gt;Politykę prywatności&lt;/a&gt;</string>
 
 
 </resources>

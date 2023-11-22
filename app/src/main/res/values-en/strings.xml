@@ -1053,7 +1053,24 @@
     <string name="map_no_filter">Filters</string>
     <string name="map_filter_publish_title">Published by …</string>
     <string name="map_filter_all">All</string>
-    <string name="map_filter_partnersOnly">Associations et\ninstitutions seulement</string>
+    <string name="map_filter_partnersOnly">Associations and\ninstitutions only</string>
+    <plurals name="notification_title_join_request">
+        <item quantity="one">New request from %1$s</item>
+        <item quantity="other">New requests from %1$s…</item>
+    </plurals>
+    <plurals name="notification_title_chat_message">
+        <item quantity="one">New message from %1$s</item>
+        <item quantity="other">New messages from %1$s…</item>
+    </plurals>
+    <plurals name="notification_text_chat_message">
+        <item quantity="one">You have %1$d new message: %2$s</item>
+        <item quantity="other">You have %1$d new messages</item>
+    </plurals>
+    <string name="notification_text_join_request_entourage_single_nomsg">@string/entourage_join_request_received_nomsg</string>
+    <plurals name="notification_text_join_request_entourage_multiple">
+        <item quantity="one">%1$d person wishes to join your action.</item>
+        <item quantity="other">%1$d people wish to join your action.</item>
+    </plurals>
     <string name="default_notifiation_channel">Invitation</string>
     <string name="params_notifs_title">Notification settings</string>
     <string name="param_notifs_switch_notifs">Notifications</string>
@@ -1538,6 +1555,7 @@
     <string name="map_filter_entourage_contribution_text"><b>See contributions regarding:</b></string>
     <string name="custom_dialog_action_content_one_contrib">Is your action \"<![CDATA[<b>%1$s</b>]]>\" completed?</string>
     <string name="search_member_hint">Search a member</string>
+    <string name="terms_and_conditions_html">By clicking &lt;b&gt;Next&lt;/b&gt;, you agree to the &lt;a href=\'https://www.entourage.social/terms/\'&gt;Terms and Conditions&lt;/a&gt; and the &lt;a href=\'https://www.entourage.social/privacy-policy/\'&gt;Privacy Policy&lt;/a&gt;</string>
 
 
 </resources>

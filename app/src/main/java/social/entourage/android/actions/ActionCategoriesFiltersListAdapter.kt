@@ -1,5 +1,6 @@
 package social.entourage.android.actions
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,7 +22,8 @@ class ActionCategoriesFiltersListAdapter(
                 android.graphics.Typeface.BOLD
             )
             binding.title.text = EventUtils.showTagTranslated(binding.context,category.title!!)
-            binding.subtitle.text = EventUtils.showSubTagTranslated(binding.context, category.subtitle!!)
+            Log.wtf("wtf", "subtitle: ${category.subtitle!!}")
+            binding.subtitle.text = EventUtils.showSubTagTranslated(binding.context, category.title!!)
             binding.checkBox.isChecked = category.isSelected
             binding.icon.setImageResource(category.icon)
             binding.layout.setOnClickListener {

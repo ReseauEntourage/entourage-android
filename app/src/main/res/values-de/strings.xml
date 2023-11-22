@@ -233,8 +233,8 @@ Sie werden diese Nachricht lesen, sobald sie der Gruppe beitreten.</string>
     <string name="group_updated">Die Änderung wurde berücksichtigt</string>
     <string name="group_error_updated">Fehler beim Bearbeiten der Gruppe</string>
     <string name="title_activity_main">AktivitätHaupt</string>
-    <string name="title_home">Hilfe</string>
-    <string name="title_donations">Gegenseitige Hilfe</string>
+    <string name="title_home">Home</string>
+    <string name="title_donations"> Hilfe</string>
     <string name="title_messages">Chats</string>
     <string name="title_groups">Gruppen</string>
     <string name="title_events">Events</string>
@@ -2637,6 +2637,7 @@ Sie werden diese Nachricht lesen, sobald sie der Gruppe beitreten.</string>
     <string name="map_filter_entourage_contribution_text"><b>Beiträge bezüglich:</b></string>
     <string name="custom_dialog_action_content_one_contrib">Ist Ihre Aktion \"<![CDATA[<b>%1$s</b>]]>\" abgeschlossen?</string>
     <string name="search_member_hint">Ein Mitglied suchen</string>
+    <string name="terms_and_conditions_html">Durch Klicken auf &lt;b&gt;Weiter&lt;/b&gt; akzeptieren Sie die &lt;a href=\'https://www.entourage.social/agb/\'&gt;Allgemeinen Geschäftsbedingungen&lt;/a&gt; und die &lt;a href=\'https://www.entourage.social/datenschutz/\'&gt;Datenschutzrichtlinie&lt;/a&gt;</string>
 
 
 </resources>
