@@ -44,12 +44,10 @@
     <string name="agir_bonnes_ondes_alone">Erstellen Sie einen Freundeskreis dEntourage</string>
     <string name="agir_bonnes_ondes_others">eine isolierte Person in einer Gruppe unterstützen</string>
 
-    //Tooltips
     <string name="tooltip_desc1">Ihr Newsfeed wurde nach Ihren Präferenzen gefiltert. Ändern Sie Ihre Einstellungen, indem Sie auf diese Schaltfläche klicken.</string>
     <string name="tooltip_title2">Solidaritätsverzeichnis</string>
     <string name="tooltip_desc2">Benötigen Sie Informationen? Finden Sie alle Orte der Solidarität in Ihrer Nähe.</string>
 
-    //Home Cells
 
     <string name="cell_demand_from">Eine Anfrage von</string>
     <string name="cell_invit_from">Gast von</string>
@@ -169,7 +167,7 @@ Entdecken Sie Initiativen in Ihrer Nachbarschaft und bauen Sie Kontakte zu Ihren
     <string name="ambassador">Botschafter</string>
 
     <string name="group_name">Name der Gruppe</string>
-    <string name="event_name">Ereignisname \</string>
+    <string name="event_name">Ereignisname</string>
     <string name="group_name_hint">Die Nachbarn von Paris 18</string>
     <string name="event_name_hint">Geben Sie dem Ereignis einen expliziten Namen</string>
     <string name="write_description">Schreibe eine Beschreibung</string>
@@ -235,11 +233,11 @@ Sie werden diese Nachricht lesen, sobald sie der Gruppe beitreten.</string>
     <string name="group_updated">Die Änderung wurde berücksichtigt</string>
     <string name="group_error_updated">Fehler beim Bearbeiten der Gruppe</string>
     <string name="title_activity_main">AktivitätHaupt</string>
-    <string name="title_home">Home</string>
+    <string name="title_home">Hilfe</string>
     <string name="title_donations">Gegenseitige Hilfe</string>
-    <string name="title_messages">Diskussionen</string>
+    <string name="title_messages">Chats</string>
     <string name="title_groups">Gruppen</string>
-    <string name="title_events">Veranstaltungen</string>
+    <string name="title_events">Events</string>
     <string name="communities">Gruppen</string>
     <string name="discover_groups">ich entdecke</string>
     <string name="my_groups">Meine Gruppen</string>

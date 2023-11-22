@@ -235,8 +235,8 @@ Przeczytają tę wiadomość, gdy tylko dołączą do grupy.</string>
     <string name="group_updated">Modyfikacja została uwzględniona</string>
     <string name="group_error_updated">Błąd podczas edytowania grupy</string>
     <string name="title_activity_main">AktywnośćGłówna</string>
-    <string name="title_home">Strona główna</string>
-    <string name="title_donations">Wzajemna pomoc</string>
+    <string name="title_home">Start</string>
+    <string name="title_donations">Pomoc</string>
     <string name="title_messages">Dyskusje</string>
     <string name="title_groups">Grupy</string>
     <string name="title_events">Wydarzenia</string>
