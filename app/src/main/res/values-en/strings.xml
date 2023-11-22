@@ -270,7 +270,7 @@
     <string name="report_sent">Your request has been sent. It will be processed as soon as possible by our team.</string>
     <string name="post_deleted">Your post has been deleted!</string>
     <string name="message_deleted">Your message has been deleted!</string>
-    <string name="welcome_user">Welcome %s!</string>
+    <string name="welcome_user">Welcome!</string>
     <string name="contributions_title">My actions within the network</string>
     <string name="contributions_meeting">Beautiful encounters Entourage</string>
     <string name="contributions_meeting_empty">No Entourage meetings yet</string>
