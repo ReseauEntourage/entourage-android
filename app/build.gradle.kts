@@ -130,7 +130,7 @@ android {
         }
          create("entourage") {
             dimension = "app"
-            buildConfigField("String", "API_KEY", "\"50968038037d1df181e8372d\"")
+            buildConfigField("String", "API_KEY", "\"4a7373f3e7dd45fc391a2f19\"")
         }
     }
 
