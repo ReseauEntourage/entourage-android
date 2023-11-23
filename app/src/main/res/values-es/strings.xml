@@ -618,7 +618,7 @@ Leerán este mensaje tan pronto como se unan al grupo.</string>
     <string name="actions_tab_contribs">Contribuciones</string>
     <string name="actions_tab_demands">Peticiones</string>
 
-    <string name="action_date_list">El %s</string>
+    <string name="action_date_list">%s</string>
 
     <string name="action_bt_my_actions">Mis anuncios</string>
 

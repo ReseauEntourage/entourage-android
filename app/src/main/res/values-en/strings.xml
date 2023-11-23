@@ -549,7 +549,7 @@
     <string name="actions_title">Mutual aid</string>
     <string name="actions_tab_contribs">Contributions</string>
     <string name="actions_tab_demands">Requests</string>
-    <string name="action_date_list">The %s</string>
+    <string name="action_date_list">%s</string>
 
     <string name="action_bt_my_actions">My listings</string>
     <string name="action_contrib_empty_state_title">No contributions match your search</string>

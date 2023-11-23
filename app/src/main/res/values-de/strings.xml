@@ -617,7 +617,7 @@ Sie werden diese Nachricht lesen, sobald sie der Gruppe beitreten.</string>
     <string name="actions_tab_contribs">Beiträge</string>
     <string name="actions_tab_demands">Anfragen</string>
 
-    <string name="action_date_list">Der %s</string>
+    <string name="action_date_list">D%s</string>
 
 
     <string name="action_bt_my_actions">Meine Anzeigen</string>
