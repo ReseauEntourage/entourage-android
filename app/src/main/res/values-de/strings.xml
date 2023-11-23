@@ -681,9 +681,6 @@ Sie werden diese Nachricht lesen, sobald sie der Gruppe beitreten.</string>
     <string name="back_create_action_title">Aufmerksamkeit</string>
     <string name="back_create_action_content">Wenn Sie das %s-Erstellungsformular verlassen, gehen alle eingegebenen Informationen verloren.</string>
 
-    <string name="action_crete_cat_about">Möchten Sie einen %s anbieten, der nicht in eine dieser Kategorien passt? Es scheint, dass keinen Platz im Netzwerk hat.</string>
-    <string name="action_create_cat_about_more0">aber du kannst immer</string>
-
     <string name="action_create_cat_choose_category">Wählen Sie die Kategorie aus, die Ihren %s am besten beschreibt.</string>
     <string name="action_create_location_title">Suchen Sie Ihren %s</string>
     <string name="action_create_location_subtitle">Ihr genauer Standort wird nicht weitergegeben, Sie können einen anderen Standort als den Aktionsbereich Ihres Profils angeben.</string>
@@ -2575,6 +2572,9 @@ Sie werden diese Nachricht lesen, sobald sie der Gruppe beitreten.</string>
     <string name="entourage_metadata_startAt_format_full">"EEEE, dd. MMMM yyyy"</string>
     <string name="date_format_profile">"dd-MM"</string>
     <string name="date_format_profile_fr">"Tag Monat"</string>
+    <string name="action_date_list_formatter">dd. MMMM yyyy</string>
+    <string name="action_date_month_year_formatter">MM/yyyy</string>
+
 
     <string name="translate">Übersetzung</string>
     <string name="title_language">Sprache</string>
@@ -2622,7 +2622,6 @@ Sie werden diese Nachricht lesen, sobald sie der Gruppe beitreten.</string>
     <string name="welcome_one_sensib">Finden Sie unsere Sensibilisierungsinhalte <u><font color="#F55F24">hier</font></u></string>
     <string name="action_show_charte"><u>Ethische Charta</u></string>
     <string name="signal_a_problem"><u>Ein Problem melden</u></string>
-    <string name="action_create_cat_about_more1"><u> hier mehr erfahren.</u></string>
     <string name="login_button_resend_code"><u>Code erneut anfordern</u></string>
     <string name="login_change_phone"><u>Ich habe meine Telefonnummer geändert</u></string>
     <string name="newsfeed_load_more_button"><u>Weiter suchen.</u></string>
@@ -2638,6 +2637,8 @@ Sie werden diese Nachricht lesen, sobald sie der Gruppe beitreten.</string>
     <string name="custom_dialog_action_content_one_contrib">Ist Ihre Aktion \"<![CDATA[<b>%1$s</b>]]>\" abgeschlossen?</string>
     <string name="search_member_hint">Ein Mitglied suchen</string>
     <string name="terms_and_conditions_html">Durch Klicken auf &lt;b&gt;Weiter&lt;/b&gt; akzeptieren Sie die &lt;a href=\'https://www.entourage.social/agb/\'&gt;Allgemeinen Geschäftsbedingungen&lt;/a&gt; und die &lt;a href=\'https://www.entourage.social/datenschutz/\'&gt;Datenschutzrichtlinie&lt;/a&gt;</string>
+    <string name="action_crete_cat_about">Möchtest du ein %s anbieten, das in keine dieser Kategorien passt? Es scheint, dass \ keinen Platz im Netzwerk hat, aber du kannst immer </string>
+    <string name="action_create_cat_about_link"> mehr hier erfahren.</string>
 
 
 </resources>

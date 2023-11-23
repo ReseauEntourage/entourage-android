@@ -626,8 +626,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="actions_tab_demands">Demandes</string>
 
     <string name="action_date_list">Le %s</string>
-    <string name="action_date_list_formatter">"dd MMMM yyyy"</string>
-    <string name="action_date_month_year_formatter">"MM/YYYY"</string>
+
     <string name="action_bt_my_actions">Mes annonces</string>
 
     <string name="action_contrib_empty_state_title">Aucune contribution ne correspond à votre recherche</string>
@@ -690,8 +689,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="back_create_action_title">Attention</string>
     <string name="back_create_action_content">Si vous quittez le formulaire de création d’une %s, toutes les informations saisies seront perdues.</string>
 
-    <string name="action_crete_cat_about">Vous cherchez à proposer une %s qui ne rentre pas dans l\'une de ces catégories ? Il semble qu\'elle n\'ait pas sa place sur le réseau,</string>
-    <string name="action_create_cat_about_more0">mais vous pouvez toujours</string>
+
 
     <string name="action_create_cat_choose_category">Sélectionnez la catégorie qui décrit le mieux votre %s.</string>
     <string name="action_create_location_title">Localisez votre %s</string>
@@ -2583,6 +2581,9 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
 
     <!--    STRING Language-->
 
+    <string name="action_date_list_formatter">dd MMMM yyyy</string>
+    <string name="action_date_month_year_formatter">MM/YYYY</string>
+
     <string name="lang_fr">"Français"</string>
     <string name="lang_en">"Anglais"</string>
     <string name="lang_de">"Allemand"</string>
@@ -2629,7 +2630,6 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="welcome_one_sensib">Retrouvez nos contenus de sensibilisation <u><font color="#F55F24">ici</font></u></string>
     <string name="action_show_charte"><u>Charte éthique</u></string>
     <string name="signal_a_problem"><u>Signaler un problème</u></string>
-    <string name="action_create_cat_about_more1"><u> en savoir plus par ici.</u></string>
     <string name="login_button_resend_code"><u>Redemander un code</u></string>
     <string name="login_change_phone"><u>J’ai changé de numéro de téléphone</u></string>
     <string name="newsfeed_load_more_button"><u>Rechercher plus loin.</u></string>
@@ -2645,6 +2645,8 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="custom_dialog_action_content_one_contrib">Votre action \"<![CDATA[<b>%1$s</b>]]>\" est-elle terminée ?</string>
     <string name="search_member_hint">Chercher un membre</string>
     <string name="terms_and_conditions_html">En cliquant sur &lt;b&gt;Suivant&lt;/b&gt;, vous acceptez les &lt;a href=\'https://www.entourage.social/cgu/\'&gt;Conditions Générales d\'Utilisation&lt;/a&gt; et la &lt;a href=\'https://www.entourage.social/politique-de-confidentialite/\'&gt;Politique de Confidentialité&lt;/a&gt;</string>
+    <string name="action_crete_cat_about">Vous cherchez à proposer une %s qui ne rentre pas dans l\'une de ces catégories ? Il semble qu\'elle n\'ait pas sa place sur le réseau,mais vous pouvez toujours</string>
+    <string name="action_create_cat_about_link"> en savoir plus par ici.</string>
 
 
 </resources>

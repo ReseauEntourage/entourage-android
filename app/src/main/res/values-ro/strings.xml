@@ -679,8 +679,6 @@ Ei vor citi acest mesaj imediat ce se vor alătura grupului.</string>
     <string name="back_create_action_title">Atenţie</string>
     <string name="back_create_action_content">Dacă părăsiți formularul de creare %s, toate informațiile introduse se vor pierde.</string>
 
-    <string name="action_crete_cat_about">Doriți să oferiți %s care nu se încadrează într-una dintre aceste categorii? Se pare că \ nu are loc în rețea,</string>
-    <string name="action_create_cat_about_more0">dar poți întotdeauna</string>
 
     <string name="action_create_cat_choose_category">Selectați categoria care descrie cel mai bine %s.</string>
     <string name="action_create_location_title">Găsiți %s</string>
@@ -2577,6 +2575,8 @@ Ei vor citi acest mesaj imediat ce se vor alătura grupului.</string>
     <string name="entourage_metadata_startAt_format_full">"EEEE dd MMMM yyyy"</string>
     <string name="date_format_profile">"dd-MM"</string>
     <string name="date_format_profile_fr">"Zi lună"</string>
+    <string name="action_date_list_formatter">dd MMMM yyyy</string>
+    <string name="action_date_month_year_formatter">MM/yyyy</string>
 
     <string name="translate">Traducere</string>
     <string name="title_language">Limbă</string>
@@ -2629,7 +2629,6 @@ Ei vor citi acest mesaj imediat ce se vor alătura grupului.</string>
     <string name="welcome_one_sensib">Găsiți conținutul nostru de sensibilizare <u><font color="#F55F24">aici</font></u></string>
     <string name="action_show_charte"><u>Cartă etică</u></string>
     <string name="signal_a_problem"><u>Raportează o problemă</u></string>
-    <string name="action_create_cat_about_more1"><u> află mai multe aici.</u></string>
     <string name="login_button_resend_code"><u>Cereți din nou codul</u></string>
     <string name="login_change_phone"><u>Mi-am schimbat numărul de telefon</u></string>
     <string name="newsfeed_load_more_button"><u>Caută mai departe.</u></string>
@@ -2645,6 +2644,8 @@ Ei vor citi acest mesaj imediat ce se vor alătura grupului.</string>
     <string name="custom_dialog_action_content_one_contrib">Acțiunea ta \"<![CDATA[<b>%1$s</b>]]>\" este completă?</string>
     <string name="search_member_hint">Caută un membru</string>
     <string name="terms_and_conditions_html">Făcând clic pe &lt;b&gt;Următorul&lt;/b&gt;, sunteți de acord cu &lt;a href=\'https://www.entourage.social/termeni/\'&gt;Termenii și Condițiile&lt;/a&gt; și &lt;a href=\'https://www.entourage.social/politica-de-confidențialitate/\'&gt;Politica de Confidențialitate&lt;/a&gt;</string>
+    <string name="action_crete_cat_about">Dorești să oferi un %s care nu se încadrează în niciuna dintre aceste categorii? Se pare că \ nu are loc în rețea, dar întotdeauna poți</string>
+    <string name="action_create_cat_about_link"> afla mai multe aici.</string>
 
 
 

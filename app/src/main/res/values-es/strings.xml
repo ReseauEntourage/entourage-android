@@ -681,9 +681,6 @@ Leerán este mensaje tan pronto como se unan al grupo.</string>
     <string name="back_create_action_title">Atención</string>
     <string name="back_create_action_content">Si sale del formulario de creación %s, se perderá toda la información ingresada.</string>
 
-    <string name="action_crete_cat_about">¿Está buscando ofrecer un %s que no encaja en una de estas categorías? Parece que \ no tiene lugar en la red,</string>
-    <string name="action_create_cat_about_more0">pero siempre puedes</string>
-
     <string name="action_create_cat_choose_category">Seleccione la categoría que mejor describa su %s.</string>
     <string name="action_create_location_title">Localiza tu %s</string>
     <string name="action_create_location_subtitle">Tu ubicación precisa no será compartida, puedes poner una ubicación distinta al área de acción de tu perfil.</string>
@@ -2570,6 +2567,9 @@ Leerán este mensaje tan pronto como se unan al grupo.</string>
     <string name="entourage_metadata_startAt_format_full">"EEEE dd 'de' MMMM 'de' yyyy"</string>
     <string name="date_format_profile">"dd-MM"</string>
     <string name="date_format_profile_fr">"Día mes"</string>
+    <string name="action_date_list_formatter">dd \'de\' MMMM \'de\' yyyy</string>
+    <string name="action_date_month_year_formatter">MM/yyyy</string>
+
 
     <string name="translate">Traducción</string>
     <string name="title_language">Idioma</string>
@@ -2617,7 +2617,6 @@ Leerán este mensaje tan pronto como se unan al grupo.</string>
     <string name="welcome_one_sensib">Encuentra nuestro contenido de sensibilización <u><font color="#F55F24">aquí</font></u></string>
     <string name="action_show_charte"><u>Carta ética</u></string>
     <string name="signal_a_problem"><u>Reportar un problema</u></string>
-    <string name="action_create_cat_about_more1"><u> saber más aquí.</u></string>
     <string name="login_button_resend_code"><u>Solicitar un código de nuevo</u></string>
     <string name="login_change_phone"><u>He cambiado mi número de teléfono</u></string>
     <string name="newsfeed_load_more_button"><u>Buscar más lejos.</u></string>
@@ -2633,6 +2632,8 @@ Leerán este mensaje tan pronto como se unan al grupo.</string>
     <string name="custom_dialog_action_content_one_contrib">¿Se ha completado tu acción \"<![CDATA[<b>%1$s</b>]]>\"?</string>
     <string name="search_member_hint">Buscar un miembro</string>
     <string name="terms_and_conditions_html">Al hacer clic en &lt;b&gt;Siguiente&lt;/b&gt;, aceptas los &lt;a href=\'https://www.entourage.social/condiciones/\'&gt;Términos y Condiciones&lt;/a&gt; y la &lt;a href=\'https://www.entourage.social/politica-de-privacidad/\'&gt;Política de Privacidad&lt;/a&gt;</string>
+    <string name="action_crete_cat_about">¿Estás buscando ofrecer un %s que no encaja en ninguna de estas categorías? Parece que \ no tiene lugar en la red, pero siempre puedes.</string>
+    <string name="action_create_cat_about_link"> aprender más aquí.</string>
 
 
 </resources>

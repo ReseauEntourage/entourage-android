@@ -550,8 +550,7 @@
     <string name="actions_tab_contribs">Contributions</string>
     <string name="actions_tab_demands">Requests</string>
     <string name="action_date_list">The %s</string>
-    <string name="action_date_list_formatter">“dd MMMM yyyy”</string>
-    <string name="action_date_month_year_formatter">“MM/YYYY”</string>
+
     <string name="action_bt_my_actions">My listings</string>
     <string name="action_contrib_empty_state_title">No contributions match your search</string>
     <string name="action_contrib_empty_state_desc">You can broaden your search field or create a contribution</string>
@@ -595,8 +594,6 @@
     <string name="action_name_Contrib">Contribution</string>
     <string name="back_create_action_title">Attention</string>
     <string name="back_create_action_content">If you exit the %s creation form, all information entered will be lost.</string>
-    <string name="action_crete_cat_about">Are you looking to offer a %s that does not fit into one of these categories? It seems that \ has no place on the network,</string>
-    <string name="action_create_cat_about_more0">but you can always</string>
     <string name="action_create_cat_choose_category">Select the category that best describes your %s.</string>
     <string name="action_create_location_title">Locate your %s</string>
     <string name="action_create_location_subtitle">Your precise location will not be shared, you can put a location other than the area of ​​action of your profile.</string>
@@ -1501,6 +1498,8 @@
     <string name="entourage_metadata_startAt_format_full">"EEEE, MMMM dd, yyyy"</string>
     <string name="date_format_profile">"MM-dd"</string>
     <string name="date_format_profile_fr">Month day</string>
+    <string name="action_date_list_formatter">dd MMMM yyyy</string>
+    <string name="action_date_month_year_formatter">MM/yyyy</string>
 
 
     <string name="translate">Translation</string>
@@ -1549,7 +1548,6 @@
     <string name="welcome_one_sensib">Find our awareness content <u><font color="#F55F24">here</font></u></string>
     <string name="action_show_charte"><u>Ethical Charter</u></string>
     <string name="signal_a_problem"><u>Report a problem</u></string>
-    <string name="action_create_cat_about_more1"><u> learn more here.</u></string>
     <string name="login_button_resend_code"><u>Request a code again</u></string>
     <string name="login_change_phone"><u>I changed my phone number</u></string>
     <string name="newsfeed_load_more_button"><u>Search further.</u></string>
@@ -1565,6 +1563,9 @@
     <string name="custom_dialog_action_content_one_contrib">Is your action \"<![CDATA[<b>%1$s</b>]]>\" completed?</string>
     <string name="search_member_hint">Search a member</string>
     <string name="terms_and_conditions_html">By clicking &lt;b&gt;Next&lt;/b&gt;, you agree to the &lt;a href=\'https://www.entourage.social/terms/\'&gt;Terms and Conditions&lt;/a&gt; and the &lt;a href=\'https://www.entourage.social/privacy-policy/\'&gt;Privacy Policy&lt;/a&gt;</string>
+
+    <string name="action_crete_cat_about">Are you looking to offer a %s that does not fit into one of these categories? It seems that \ has no place on the network,but you can always</string>
+    <string name="action_create_cat_about_link"> learn more here.</string>
 
 
 </resources>

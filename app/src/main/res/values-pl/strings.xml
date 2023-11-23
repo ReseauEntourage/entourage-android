@@ -678,9 +678,6 @@ Przeczytają tę wiadomość, gdy tylko dołączą do grupy.</string>
     <string name="back_create_action_title">Uwaga</string>
     <string name="back_create_action_content">Jeśli wyjdziesz z formularza tworzenia %s, wszystkie wprowadzone informacje zostaną utracone.</string>
 
-    <string name="action_crete_cat_about">Czy chcesz zaoferować %s, który nie pasuje do żadnej z tych kategorii? Wygląda na to, że \ nie ma miejsca w sieci,</string>
-    <string name="action_create_cat_about_more0">ale zawsze możesz</string>
-
     <string name="action_create_cat_choose_category">Wybierz kategorię, która najlepiej opisuje Twojego %s.</string>
     <string name="action_create_location_title">Znajdź swój %s</string>
     <string name="action_create_location_subtitle">Twoja dokładna lokalizacja nie będzie udostępniana, możesz podać lokalizację inną niż obszar działania Twojego profilu.</string>
@@ -2582,6 +2579,9 @@ Przeczytają tę wiadomość, gdy tylko dołączą do grupy.</string>
     <string name="entourage_metadata_startAt_format_full">"EEEE dd MMMM yyyy"</string>
     <string name="date_format_profile">"dd-MM"</string>
     <string name="date_format_profile_fr">"Dzień miesiąc"</string>
+    <string name="action_date_list_formatter">dd MMMM yyyy</string>
+    <string name="action_date_month_year_formatter">MM/yyyy</string>
+
 
     <string name="translate">Tłumaczenie</string>
     <string name="title_language">Język</string>
@@ -2634,7 +2634,6 @@ Przeczytają tę wiadomość, gdy tylko dołączą do grupy.</string>
     <string name="welcome_one_sensib">Znajdź nasze treści z zakresu świadomości <u><font color="#F55F24">tutaj</font></u></string>
     <string name="action_show_charte"><u>Karta etyczna</u></string>
     <string name="signal_a_problem"><u>Zgłoś problem</u></string>
-    <string name="action_create_cat_about_more1"><u> dowiedz się więcej tutaj.</u></string>
     <string name="login_button_resend_code"><u>Poproś ponownie o kod</u></string>
     <string name="login_change_phone"><u>Zmieniłem numer telefonu</u></string>
     <string name="newsfeed_load_more_button"><u>Szukaj dalej.</u></string>
@@ -2650,6 +2649,8 @@ Przeczytają tę wiadomość, gdy tylko dołączą do grupy.</string>
     <string name="custom_dialog_action_content_one_contrib">Czy Twoja akcja \"<![CDATA[<b>%1$s</b>]]>\" została zakończona?</string>
     <string name="search_member_hint">Szukaj członka</string>
     <string name="terms_and_conditions_html">Klikając &lt;b&gt;Dalej&lt;/b&gt;, akceptujesz &lt;a href=\'https://www.entourage.social/regulamin/\'&gt;Warunki korzystania&lt;/a&gt; oraz &lt;a href=\'https://www.entourage.social/polityka-prywatnosci/\'&gt;Politykę prywatności&lt;/a&gt;</string>
+    <string name="action_crete_cat_about">Czy chcesz zaoferować %s, które nie pasuje do żadnej z tych kategorii? Wygląda na to, że \ nie ma miejsca w sieci, ale zawsze możesz</string>
+    <string name="action_create_cat_about_link"> dowiedzieć się więcej tutaj.</string>
 
 
 </resources>

@@ -113,6 +113,7 @@ android {
             buildConfigField("String", "DEEP_LINKS_URL", "\"${deepLinksURLProd}\"")
             buildConfigField("int", "PEDAGO_CREATE_EVENT_ID", "15")
             buildConfigField("int", "PEDAGO_CREATE_GROUP_ID", "37")
+            buildConfigField("int", "PEDAGO_ACTION_SECTION_ID", "34")
         }
         create("staging") {
             manifestPlaceholders += mapOf(
@@ -126,6 +127,7 @@ android {
             buildConfigField("String", "DEEP_LINKS_URL", "\"${deepLinksURLStaging}\"")
             buildConfigField("int", "PEDAGO_CREATE_EVENT_ID", "32")
             buildConfigField("int", "PEDAGO_CREATE_GROUP_ID", "33")
+            buildConfigField("int", "PEDAGO_ACTION_SECTION_ID", "33")
 
         }
          create("entourage") {

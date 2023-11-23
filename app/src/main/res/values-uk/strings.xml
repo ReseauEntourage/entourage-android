@@ -683,10 +683,6 @@
     <!-- pop back create-->
     <string name="back_create_action_title">Увага</string>
     <string name="back_create_action_content">Якщо ви вийдете з форми створення %s, уся введена інформація буде втрачена.</string>
-
-    <string name="action_crete_cat_about">Ви бажаєте запропонувати %s, який не відповідає жодній із цих категорій? Здається, \ не місце в мережі,</string>
-    <string name="action_create_cat_about_more0">але завжди можна</string>
-
     <string name="action_create_cat_choose_category">Виберіть категорію, яка найкраще описує ваш %s.</string>
     <string name="action_create_location_title">Знайдіть %s</string>
     <string name="action_create_location_subtitle">Ваше точне місцезнаходження не повідомлятиметься, ви можете вказати місцезнаходження, відмінне від зони дії вашого профілю.</string>
@@ -2585,6 +2581,9 @@
     <string name="entourage_metadata_startAt_format_full">"EEEE dd MMMM yyyy"</string>
     <string name="date_format_profile">"dd-MM"</string>
     <string name="date_format_profile_fr">"День місяць"</string>
+    <string name="action_date_list_formatter">dd MMMM yyyy</string>
+    <string name="action_date_month_year_formatter">MM/yyyy</string>
+
 
     <string name="translate">Переклад</string>
     <string name="title_language">Мова</string>
@@ -2637,7 +2636,6 @@
     <string name="welcome_one_sensib">Знайдіть наші матеріали для підвищення обізнаності <u><font color="#F55F24">тут</font></u></string>
     <string name="action_show_charte"><u>Етична хартія</u></string>
     <string name="signal_a_problem"><u>Повідомити про проблему</u></string>
-    <string name="action_create_cat_about_more1"><u> дізнатися більше тут.</u></string>
     <string name="login_button_resend_code"><u>Запросити код знову</u></string>
     <string name="login_change_phone"><u>Я змінив номер телефону</u></string>
     <string name="newsfeed_load_more_button"><u>Шукати далі.</u></string>
@@ -2653,6 +2651,8 @@
     <string name="custom_dialog_action_content_one_contrib">Чи завершилася ваша діяльність \"<![CDATA[<b>%1$s</b>]]>\"?</string>
     <string name="search_member_hint">Шукати члена</string>
     <string name="terms_and_conditions_html">Натискаючи &lt;b&gt;Далі&lt;/b&gt;, ви погоджуєтеся з &lt;a href=\'https://www.entourage.social/terms/\'&gt;Умовами користування&lt;/a&gt; та &lt;a href=\'https://www.entourage.social/privacy-policy/\'&gt;Політикою конфіденційності&lt;/a&gt;</string>
+    <string name="action_crete_cat_about">Шукаєте можливість запропонувати %s, яке не вписується в жодну з цих категорій? Здається, що \ не має місця в мережі, але ви завжди можете</string>
+    <string name="action_create_cat_about_link"> дізнатися більше тут.</string>
 
 
 </resources>

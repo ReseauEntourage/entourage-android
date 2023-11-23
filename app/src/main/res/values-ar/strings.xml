@@ -684,10 +684,6 @@
     <!-- pop back create-->
     <string name="back_create_action_title">حذاري</string>
     <string name="back_create_action_content">إذا قمت بالخروج من نموذج إنشاء %s، فسيتم فقدان جميع المعلومات التي تم إدخالها.</string>
-
-    <string name="action_crete_cat_about">هل تتطلع إلى تقديم %s لا يتناسب مع إحدى هذه الفئات؟ يبدو أن \ ليس له مكان على الشبكة،</string>
-    <string name="action_create_cat_about_more0">ولكن يمكنك دائما</string>
-
     <string name="action_create_cat_choose_category">حدد الفئة التي تصف %s على أفضل وجه.</string>
     <string name="action_create_location_title">حدد موقع %s</string>
     <string name="action_create_location_subtitle">لن تتم مشاركة موقعك الدقيق، يمكنك وضع موقع آخر غير منطقة العمل في ملفك الشخصي.</string>
@@ -2593,6 +2589,10 @@
     <string name="entourage_metadata_startAt_format_full">"EEEE dd MMMM yyyy"</string>
     <string name="date_format_profile">"dd-MM"</string>
     <string name="date_format_profile_fr">"اليوم الشهر"</string>
+    <string name="action_date_list_formatter">dd MMMM yyyy</string>
+    <string name="action_date_month_year_formatter">MM/yyyy</string>
+
+
 
     <string name="translate">ترجمة</string>
     <string name="title_language">لغة</string>
@@ -2644,7 +2644,6 @@
     <string name="welcome_one_sensib">ابحث عن محتوانا التوعوي <u><font color="#F55F24">هنا</font></u></string>
     <string name="action_show_charte"><u>ميثاق أخلاقي</u></string>
     <string name="signal_a_problem"><u>الإبلاغ عن مشكلة</u></string>
-    <string name="action_create_cat_about_more1"><u> تعرف أكثر من هنا.</u></string>
     <string name="login_button_resend_code"><u>طلب الرمز مرة أخرى</u></string>
     <string name="login_change_phone"><u>لقد غيرت رقم هاتفي</u></string>
     <string name="newsfeed_load_more_button"><u>البحث أكثر.</u></string>
@@ -2660,6 +2659,8 @@
     <string name="custom_dialog_action_content_one_contrib">هل اكتملت مهمتك \"<![CDATA[<b>%1$s</b>]]>\"؟</string>
     <string name="search_member_hint">ابحث عن عضو</string>
     <string name="terms_and_conditions_html">بالنقر على &lt;b&gt;التالي&lt;/b&gt;، فإنك توافق على &lt;a href=\'https://www.entourage.social</string>
+    <string name="action_crete_cat_about">هل تبحث عن تقديم %s لا يندرج ضمن هذه الفئات؟ يبدو أن \ ليس له مكان في الشبكة، لكن يمكنك دائمًا </string>
+    <string name="action_create_cat_about_link"> معرفة المزيد هنا</string>
 
 
 
