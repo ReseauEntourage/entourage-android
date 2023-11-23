@@ -33,7 +33,7 @@ class CreateActionSectionsListAdapter(
             }
             Log.wtf("wtf", "bind: ${category.title}")
             binding.title.text = EventUtils.showTagTranslated( binding.context,category.title!!)
-            binding.subtitle.text = EventUtils.showSubTagTranslated( binding.context,category.subtitle!!)
+            binding.subtitle.text = EventUtils.showSubTagTranslated( binding.context,category.title!!)
             binding.checkBox.isChecked = category.isSelected
             binding.icon.setImageResource(category.icon)
 

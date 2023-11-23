@@ -650,7 +650,7 @@
     <string name="action_params_cgu_title">Code of ethics</string>
     <string name="action_CGU_1_title">Mutual aid</string>
     <string name="action_CGU_1">The application enables neighbors to meet up and share ideas. Distance assistance (drive, delivery, gift voucher, kitty...) is not authorized.</string>
-    <string name="action_CGU_2_title">Contributions &amp;amp; requests</string>
+    <string name="action_CGU_2_title">Contributions &amp; requests</string>
     <string name="action_CGU_2">I can ask for or offer material goods (equipment, clothing, etc.), services (laundry, printing of documents, etc.) and sharing times (coffee, activity, etc.). I cannot request or offer financial assistance, accommodation or food assistance. But if I need it, I can contact the moderator who will guide me.</string>
     <string name="action_CGU_3_title">Consent</string>
     <string name="action_CGU_3">When I post a request for a third party, I make sure to obtain their consent beforehand.</string>
@@ -991,7 +991,7 @@
     <string name="login_change_error_number_blocked">Old phone number has been blocked.\nPlease check.</string>
     <string name="login_change_error_identical_number">Both phone numbers are the same.\nPlease check the new phone number.</string>
     <string name="login_change_error_generic">Old phone number is unknown or deleted.\nPlease check the numbers.</string>
-    <string name="action_about">Help &amp;amp; about</string>
+    <string name="action_about">Help &amp; about</string>
     <string name="action_edit_profile_regular">Edit my profile</string>
     <string name="action_charter_unsigned">Sign the Code of Ethics</string>
     <string name="action_charter_read">Reas the Code of Ethics</string>
@@ -1077,7 +1077,7 @@
     <string name="param_notifs_switch_messages">Message notifications</string>
     <string name="param_notifs_switch_groups">Group notifications</string>
     <string name="param_notifs_switch_events">Event notifications</string>
-    <string name="param_notifs_switch_actions">Donation &amp;amp; service notifications</string>
+    <string name="param_notifs_switch_actions">Donation &amp; service notifications</string>
     <string name="param_notifs_validate">Save</string>
     <string name="notif_contrib_title">A neighbor offers new help. Maybe this might interest you?</string>
     <string name="notif_solicitation_title">A neighbor is looking for equipment. Maybe you could help him?</string>
@@ -1466,7 +1466,16 @@
     <string name="home_v2_hz_item_title">Hey, it seems a little quiet around here…</string>
     <string name="home_v2_hz_item_subtitle">How about bringing solidarity to your city? Entourage gives you the keys to getting started!</string>
     <string name="home_v2_hz_item_button">Learn more</string>
-
+    <string name="empty_description"></string>
+    <plurals name="number_of_people">
+        <item quantity="one">%1$d participant</item>
+        <item quantity="other">%1$d participants</item>
+    </plurals>
+    <string name="other">Other</string>
+    <string name="date_today">Today</string>
+    <string name="date_today_lower">today</string>
+    <string name="date_format">%1$d %2$s %3$d</string>
+    <string name="date_format_short">%1$d %2$s</string>
 
 
 

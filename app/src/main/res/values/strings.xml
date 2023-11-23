@@ -30,7 +30,6 @@
 
     <string name="badge_count_format">%1$d</string>
 
-    <string name="empty_description"></string>
 
     <string name="preference_file_key">ENTOURAGE_GCM_DATA</string>
     <string name="action_overlay_close">Fermer le menu Actions</string>
@@ -220,7 +219,6 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="back_create_group_title">Attention</string>
     <string name="exit">Quitter</string>
     <string name="back_create_group_content">Si vous quittez le formulaire de création d’un groupe, toutes les informations saisies seront perdues.</string>
-    <string name="other">Autre</string>
     <string name="category_name_label">Décrivez en un mot la catégorie de votre groupe</string>
     <string name="pass">Passer</string>
     <string name="create_post">Créer une publication</string>
@@ -429,10 +427,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="event_canceled">Evénement annulé</string>
     <string name="member_since">Membre Entourage depuis</string>
     <string name="profile_date_format">MM/yyyy</string>
-    <plurals name="number_of_people">
-        <item quantity="one">%1$d participant</item>
-        <item quantity="other">%1$d participants</item>
-    </plurals>
+
     <string name="event_cancel_subtitle_pop">Souhaitez-vous annuler l’événement ? Tous les particpants seront prévenus de l’annulation.</string>
     <string name="event_cancel_recurrent_event">Annuler un événement récurrent</string>
     <string name="this_event">Cet événement</string>
@@ -633,7 +628,6 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="action_date_list">Le %s</string>
     <string name="action_date_list_formatter">"dd MMMM yyyy"</string>
     <string name="action_date_month_year_formatter">"MM/YYYY"</string>
-
     <string name="action_bt_my_actions">Mes annonces</string>
 
     <string name="action_contrib_empty_state_title">Aucune contribution ne correspond à votre recherche</string>
@@ -1516,13 +1510,11 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="country_zimbabwe_number" translatable="false">263</string>
 
     <!--    STRING Date-->
-    <string name="date_today">Aujourd\'hui</string>
-    <string name="date_today_lower">aujourd\'hui</string>
+
     <string name="date_format_today_time">H\'h\'mm</string>
     <string name="date_yesterday">Hier</string>
     <string name="date_yesterday_lower">hier</string>
-    <string name="date_format">%1$d %2$s %3$d</string>
-    <string name="date_format_short">%1$d %2$s</string>
+
     <string name="date_month_1">jan.</string>
     <string name="date_month_2">fév.</string>
     <string name="date_month_3">mar.</string>
@@ -2572,6 +2564,16 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="home_v2_hz_item_title">"Tiens, ça semble un peu calme par ici…</string>
     <string name="home_v2_hz_item_subtitle">"Et si vous mettiez un peu de solidarité dans votre ville ? Entourage vous donne les clés pour vous lancer !</string>
     <string name="home_v2_hz_item_button">"En savoir plus</string>
+    <string name="empty_description"></string>
+    <plurals name="number_of_people">
+        <item quantity="one">%1$d participant</item>
+        <item quantity="other">%1$d participants</item>
+    </plurals>
+    <string name="other">Autre</string>
+    <string name="date_today">Aujourd\'hui</string>
+    <string name="date_today_lower">aujourd\'hui</string>
+    <string name="date_format">%1$d %2$s %3$d</string>
+    <string name="date_format_short">%1$d %2$s</string>
 
     <string name="translate">"Traduction</string>
     <string name="title_language">"Langue</string>
