@@ -2504,7 +2504,7 @@ Leerán este mensaje tan pronto como se unan al grupo.</string>
     <!-- New Home string -->
     <string name="home_v2_title">Aplicación L\ que recrea enlaces entre vecinos</string>
 
-    <string name="home_v2_title_action">dar un impulso</string>
+    <string name="home_v2_title_action">Echar una mano</string>
     <string name="home_v2_subtitle_action">¡Tus vecinos te necesitan!</string>
     <string name="home_v2_btn_more_action">Ver todas las solicitudes</string>
 
