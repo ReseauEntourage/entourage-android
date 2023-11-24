@@ -57,6 +57,7 @@ class LanguageBottomFragment : BottomSheetDialogFragment(), OnLanguageClicked {
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
     }
 
+    //TODO : REFACTOR WITH LANGUAGE CODE
     private fun fillArray() {
         val currentLanguageCode = LanguageManager.loadLanguageFromPreferences(requireContext())
         languages = mutableListOf(
