@@ -764,8 +764,6 @@
 
     <!--STRING COUNTRY -->
 
-    <string name="phone_code" translatable="false">+%s</string>
-    <string name="country_name_and_code" translatable="false">%1$s %2$s</string>
     <string name="search_hint">يطلب …</string>
     <string name="no_result_found">لم يتم العثور على النتائج</string>
     <string name="select_country">حدد الدولة</string>
@@ -776,31 +774,24 @@
 
     <string name="country_afghanistan_name">أفغانستان</string>
     <string name="country_afghanistan_code">بالعربية</string>
-    <string name="country_afghanistan_number" translatable="false">93</string>
 
     <string name="country_albania_name">ألبانيا</string>
     <string name="country_albania_code">آل</string>
-    <string name="country_albania_number" translatable="false">355</string>
 
     <string name="country_algeria_name">الجزائر</string>
     <string name="country_algeria_code">dz</string>
-    <string name="country_algeria_number" translatable="false">213</string>
 
     <string name="country_andorra_name">أندورا</string>
     <string name="country_andorra_code">إعلان</string>
-    <string name="country_andorra_number" translatable="false">376</string>
 
     <string name="country_angola_name">أنغولا</string>
     <string name="country_angola_code">ao</string>
-    <string name="country_angola_number" translatable="false">244</string>
 
     <string name="country_argentina_name">الأرجنتين</string>
     <string name="country_argentina_code">ع</string>
-    <string name="country_argentina_number" translatable="false">54</string>
 
     <string name="country_armenia_name">أرمينيا</string>
     <string name="country_armenia_code">أكون</string>
-    <string name="country_armenia_number" translatable="false">374</string>
 
     <string name="country_australia_name">أستراليا</string>
     <string name="country_australia_code">في</string>
@@ -808,7 +799,6 @@
 
     <string name="country_austria_name">النمسا</string>
     <string name="country_austria_code">في</string>
-    <string name="country_austria_number" translatable="false">43</string>
 
     <string name="country_azerbaijan_name">أذربيجان</string>
     <string name="country_azerbaijan_code">من الألف إلى الياء</string>

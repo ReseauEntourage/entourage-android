@@ -48,7 +48,11 @@
         android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        android:localeConfig="@xml/locales_config">
+        >
+
+
         <receiver android:name=".notifications.NotificationActionReceiver"
             android:exported="true"/>
 

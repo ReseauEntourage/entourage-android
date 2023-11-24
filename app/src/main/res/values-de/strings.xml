@@ -761,8 +761,6 @@ Sie werden diese Nachricht lesen, sobald sie der Gruppe beitreten.</string>
 
     <!--STRING COUNTRY -->
 
-    <string name="phone_code" translatable="false">+%s</string>
-    <string name="country_name_and_code" translatable="false">%1$s %2$s</string>
     <string name="search_hint">suchen …</string>
     <string name="no_result_found">Ergebnisse nicht gefunden</string>
     <string name="select_country">Land auswählen</string>
@@ -773,31 +771,24 @@ Sie werden diese Nachricht lesen, sobald sie der Gruppe beitreten.</string>
 
     <string name="country_afghanistan_name">Afghanistan</string>
     <string name="country_afghanistan_code">af</string>
-    <string name="country_afghanistan_number" translatable="false">93</string>
 
     <string name="country_albania_name">Albanien</string>
     <string name="country_albania_code">al</string>
-    <string name="country_albania_number" translatable="false">355</string>
 
     <string name="country_algeria_name">Algerien</string>
     <string name="country_algeria_code">dz</string>
-    <string name="country_algeria_number" translatable="false">213</string>
 
     <string name="country_andorra_name">Andorra</string>
     <string name="country_andorra_code">Anzeige</string>
-    <string name="country_andorra_number" translatable="false">376</string>
 
     <string name="country_angola_name">Angola</string>
     <string name="country_angola_code">ao</string>
-    <string name="country_angola_number" translatable="false">244</string>
 
     <string name="country_argentina_name">Argentinien</string>
     <string name="country_argentina_code">ar</string>
-    <string name="country_argentina_number" translatable="false">54</string>
 
     <string name="country_armenia_name">Armenien</string>
     <string name="country_armenia_code">Bin</string>
-    <string name="country_armenia_number" translatable="false">374</string>
 
     <string name="country_australia_name">Australien</string>
     <string name="country_australia_code">Bei</string>
@@ -805,7 +796,6 @@ Sie werden diese Nachricht lesen, sobald sie der Gruppe beitreten.</string>
 
     <string name="country_austria_name">Österreich</string>
     <string name="country_austria_code">bei</string>
-    <string name="country_austria_number" translatable="false">43</string>
 
     <string name="country_azerbaijan_name">Aserbaidschan</string>
     <string name="country_azerbaijan_code">az</string>

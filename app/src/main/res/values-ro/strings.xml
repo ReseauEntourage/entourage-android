@@ -760,8 +760,6 @@ Ei vor citi acest mesaj imediat ce se vor alătura grupului.</string>
 
     <!--STRING COUNTRY -->
 
-    <string name="phone_code" translatable="false">+%s</string>
-    <string name="country_name_and_code" translatable="false">%1$s %2$s</string>
     <string name="search_hint">căuta …</string>
     <string name="no_result_found">rezultate nu au fost găsite</string>
     <string name="select_country">Selecteaza tara</string>
@@ -772,31 +770,24 @@ Ei vor citi acest mesaj imediat ce se vor alătura grupului.</string>
 
     <string name="country_afghanistan_name">Afganistan</string>
     <string name="country_afghanistan_code">af</string>
-    <string name="country_afghanistan_number" translatable="false">93</string>
 
     <string name="country_albania_name">Albania</string>
     <string name="country_albania_code">al</string>
-    <string name="country_albania_number" translatable="false">355</string>
 
     <string name="country_algeria_name">Algeria</string>
     <string name="country_algeria_code">dz</string>
-    <string name="country_algeria_number" translatable="false">213</string>
 
     <string name="country_andorra_name">Andorra</string>
     <string name="country_andorra_code">anunț</string>
-    <string name="country_andorra_number" translatable="false">376</string>
 
     <string name="country_angola_name">Angola</string>
     <string name="country_angola_code">ao</string>
-    <string name="country_angola_number" translatable="false">244</string>
 
     <string name="country_argentina_name">Argentina</string>
     <string name="country_argentina_code">ar</string>
-    <string name="country_argentina_number" translatable="false">54</string>
 
     <string name="country_armenia_name">Armenia</string>
     <string name="country_armenia_code">a.m</string>
-    <string name="country_armenia_number" translatable="false">374</string>
 
     <string name="country_australia_name">Australia</string>
     <string name="country_australia_code">La</string>
@@ -804,7 +795,6 @@ Ei vor citi acest mesaj imediat ce se vor alătura grupului.</string>
 
     <string name="country_austria_name">Austria</string>
     <string name="country_austria_code">la</string>
-    <string name="country_austria_number" translatable="false">43</string>
 
     <string name="country_azerbaijan_name">Azerbaidjan</string>
     <string name="country_azerbaijan_code">az</string>

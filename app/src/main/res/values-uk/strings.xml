@@ -763,8 +763,6 @@
 
     <!--STRING COUNTRY -->
 
-    <string name="phone_code" translatable="false">+%s</string>
-    <string name="country_name_and_code" translatable="false">%1$s %2$s</string>
     <string name="search_hint">шукати…</string>
     <string name="no_result_found">результатів не знайдено</string>
     <string name="select_country">Виберіть країну</string>
@@ -775,39 +773,30 @@
 
     <string name="country_afghanistan_name">Афганістан</string>
     <string name="country_afghanistan_code">аф</string>
-    <string name="country_afghanistan_number" translatable="false">93</string>
 
     <string name="country_albania_name">Албанія</string>
     <string name="country_albania_code">al</string>
-    <string name="country_albania_number" translatable="false">355</string>
 
     <string name="country_algeria_name">Алжир</string>
     <string name="country_algeria_code">дз</string>
-    <string name="country_algeria_number" translatable="false">213</string>
 
     <string name="country_andorra_name">Андорра</string>
     <string name="country_andorra_code">оголошення</string>
-    <string name="country_andorra_number" translatable="false">376</string>
 
     <string name="country_angola_name">Ангола</string>
     <string name="country_angola_code">ао</string>
-    <string name="country_angola_number" translatable="false">244</string>
 
     <string name="country_argentina_name">Аргентина</string>
     <string name="country_argentina_code">ар</string>
-    <string name="country_argentina_number" translatable="false">54</string>
 
     <string name="country_armenia_name">Вірменія</string>
     <string name="country_armenia_code">ранок</string>
-    <string name="country_armenia_number" translatable="false">374</string>
 
     <string name="country_australia_name">Австралія</string>
     <string name="country_australia_code">на</string>
-    <string name="country_australia_number" translatable="false">61</string>
 
     <string name="country_austria_name">Австрія</string>
     <string name="country_austria_code">в</string>
-    <string name="country_austria_number" translatable="false">43</string>
 
     <string name="country_azerbaijan_name">Азербайджан</string>
     <string name="country_azerbaijan_code">аз</string>
