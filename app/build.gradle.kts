@@ -54,6 +54,11 @@ android {
         dataBinding = true
 
     }
+    bundle {
+        language {
+            enableSplit = false
+        }
+    }
 
     compileSdk = 33
     buildToolsVersion = "33.0.1"
@@ -67,7 +72,7 @@ android {
             "deepLinksScheme" to deepLinksSchemeProd
         )
         applicationId = "social.entourage.android"
-        resourceConfigurations += listOf("en", "fr", "de", "pl", "es", "ar", "uk", "ro")
+        resourceConfigurations += listOf("en", "fr", "de", "pl", "es","uk", "ro")
 
         minSdk = 21 /*November 2014: Android 5.0, Lollipop*/
         targetSdk = 33
@@ -76,7 +81,7 @@ android {
         // require a full APK build and reinstallation because the AndroidManifest.xml
         // must be updated.
         versionCode =800
-        versionName ="8.0"
+        versionName ="9.0"
 
         buildConfigField("String", "VERSION_FULL_NAME", "\"" + versionNameProd + "\"")
         buildConfigField("String", "VERSION_DISPLAY_BRANCH_NAME", "\"" + versionBranchName + "\"")
@@ -94,6 +99,7 @@ android {
         create("googleplay") {
             val keystorePass= System.getenv("KEYSTORE_PASS") ?: findProperty("entourageKeystorePassword") as String
             keyAlias = "googleplay"
+
             keyPassword = keystorePass
             storeFile = file("../keystore/googleplay-keystore.jks")
             storePassword = keystorePass
