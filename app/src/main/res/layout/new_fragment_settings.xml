@@ -29,7 +29,7 @@
                     app:color="@{@android:color/black}"
                     app:icon="@{@drawable/ic_translate}"
                     app:label="@{@string/translate}"
-                    android:visibility="visible"/>
+                    android:visibility="gone"/>
 
                 <include
                     android:id="@+id/language"
