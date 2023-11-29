@@ -1,6 +1,7 @@
 package social.entourage.android.api.model
 
 import android.content.Context
+import android.util.Log
 import com.google.gson.annotations.SerializedName
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
@@ -153,6 +154,7 @@ fun Events.toEventUi(context: Context): EventModel {
 class EventUtils {
     companion object {
         fun showTagTranslated(context: Context,section: String): String {
+            Log.wtf("wtf", "section " + section)
             when(section.lowercase()){
                 "activites" -> return context.getString(R.string.interest_activites)
                 "animaux" -> return context.getString(R.string.interest_animaux)
@@ -165,6 +167,7 @@ class EventUtils {
                 "marauding" -> return context.getString(R.string.interest_marauding)
                 "other" -> return context.getString(R.string.interest_other)
                 "activités manuelles"  -> return context.getString(R.string.interest_activites)
+
                 "animaux" -> return context.getString(R.string.interest_animaux)
                 "bien-être" -> return context.getString(R.string.interest_bien_etre)
                 "cuisine" -> return context.getString(R.string.interest_cuisine)
@@ -178,6 +181,14 @@ class EventUtils {
                 "vêtement" -> return context.getString(R.string.action_clothes_name)
                 "équipement" -> return context.getString(R.string.action_equipment_name)
                 "produit d'hygiène" -> return context.getString(R.string.action_hygiene_name)
+
+                "social" -> return context.getString(R.string.action_social_name)
+                "services" -> return context.getString(R.string.action_services_name)
+                "clothes" -> return context.getString(R.string.action_clothes_name)
+                "equipment" -> return context.getString(R.string.action_equipment_name)
+                "hygiene" -> return context.getString(R.string.action_hygiene_name)
+
+
                 else -> return context.getString(R.string.interest_other)
             }
         }
@@ -188,6 +199,11 @@ class EventUtils {
                 "vêtement" -> return context.getString(R.string.action_clothes_subname)
                 "équipement" -> return context.getString(R.string.action_equipment_subname)
                 "produit d'hygiène" -> return context.getString(R.string.action_hygiene_subname)
+                "social" -> return context.getString(R.string.action_social_subname)
+                "services" -> return context.getString(R.string.action_services_subname)
+                "clothes" -> return context.getString(R.string.action_clothes_subname)
+                "equipment" -> return context.getString(R.string.action_equipment_subname)
+                "hygiene" -> return context.getString(R.string.action_hygiene_subname)
                 else -> return context.getString(R.string.interest_other)
             }
         }

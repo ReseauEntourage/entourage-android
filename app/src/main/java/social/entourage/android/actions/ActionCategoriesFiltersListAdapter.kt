@@ -21,9 +21,8 @@ class ActionCategoriesFiltersListAdapter(
                 binding.title.typeface,
                 android.graphics.Typeface.BOLD
             )
-            binding.title.text = EventUtils.showTagTranslated(binding.context,category.title!!)
-            Log.wtf("wtf", "subtitle: ${category.subtitle!!}")
-            binding.subtitle.text = EventUtils.showSubTagTranslated(binding.context, category.title!!)
+            binding.title.text = EventUtils.showTagTranslated(binding.context,category.id!!)
+            binding.subtitle.text = EventUtils.showSubTagTranslated(binding.context, category.id!!)
             binding.checkBox.isChecked = category.isSelected
             binding.icon.setImageResource(category.icon)
             binding.layout.setOnClickListener {
