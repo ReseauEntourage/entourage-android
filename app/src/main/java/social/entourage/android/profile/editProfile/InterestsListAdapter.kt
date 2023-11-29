@@ -45,7 +45,7 @@ class InterestsListAdapter(
                 android.graphics.Typeface.BOLD
             )
             val context = binding.context
-            binding.title.text = EventUtils.showTagTranslated(context ,interest.title!!)
+            binding.title.text = EventUtils.showTagTranslated(context ,interest.id!!)
             binding.checkBox.isChecked = interest.isSelected
             binding.icon.setImageResource(interest.icon)
             binding.layout.setOnClickListener {
