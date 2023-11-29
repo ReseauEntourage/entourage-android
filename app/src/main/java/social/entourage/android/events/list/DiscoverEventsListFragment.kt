@@ -219,13 +219,14 @@ class DiscoverEventsListFragment : Fragment() {
     private fun updateFilters() {
         isFromFilters = true
         page = 0
-
     }
 
     private fun loadEvents() {
-        binding.swipeRefresh.isRefreshing = false
-        page++
-        eventsPresenter.getAllEvents(page, EVENTS_PER_PAGE, currentFilters.travel_distance(),currentFilters.latitude(),currentFilters.longitude(),"future")
+        if(!eventsPresenter.isLastPage){
+            binding.swipeRefresh.isRefreshing = false
+            page++
+            eventsPresenter.getAllEvents(page, EVENTS_PER_PAGE, currentFilters.travel_distance(),currentFilters.latitude(),currentFilters.longitude(),"future")
+        }
     }
     private fun loadMyEvents() {
         binding.swipeRefresh.isRefreshing = false
