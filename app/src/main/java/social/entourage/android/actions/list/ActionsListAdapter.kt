@@ -106,7 +106,9 @@ class ActionsListAdapter(
             }
 
             binding.demand_title.text = action.title
-            binding.demand_section_name.text = ActionUtils.showTagTranslated(context,action.sectionName!!)
+            if(action.sectionName != null){
+                binding.demand_section_name.text = ActionUtils.showTagTranslated(context,action.sectionName!!)
+            }
             binding.demand_section_pic.setImageDrawable(binding.context.getDrawable(ActionSection.getIconFromId(action.sectionName)))
             binding.demand_username.text = action.author?.userName
             binding.demand_location.text = action.metadata?.displayAddress
