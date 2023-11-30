@@ -21,6 +21,7 @@
                 android:paddingHorizontal="25dp"
                 android:paddingVertical="20dp">
 
+                
                 <include
                     android:id="@+id/translate"
                     layout="@layout/new_profile_settings_item"
