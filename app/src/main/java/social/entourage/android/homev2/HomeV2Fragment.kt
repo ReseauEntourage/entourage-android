@@ -165,6 +165,7 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener {
             if(meId == null) return
             homePresenter.getMyGroups(pagegroup,nbOfItemForHozrizontalList,meId)
             homePresenter.getAllEvents(pageEvent,nbOfItemForHozrizontalList,currentFilters.travel_distance(),currentFilters.latitude(),currentFilters.longitude(),"future")
+            homePresenter.getAllDemands(0,nbOfItemForVerticalList,currentFilters.travel_distance(),currentFilters.latitude(),currentFilters.longitude(),currentSectionsFilters.getSectionsForWS())
             homePresenter.getPedagogicalResources()
             homePresenter.getNotificationsCount()
 
