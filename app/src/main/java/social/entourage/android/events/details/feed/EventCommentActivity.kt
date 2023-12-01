@@ -35,6 +35,11 @@ class EventCommentActivity : CommentActivity() {
         }
     }
 
+    override fun translateView(id: Int) {
+        val adapter = binding.comments.adapter as? CommentsListAdapter
+        adapter?.translateItem(id)
+    }
+
     private fun setAdapterForEvent(){
         if(binding.comments.adapter is CommentsListAdapter){
             var _adapter = binding.comments.adapter as? CommentsListAdapter

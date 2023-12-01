@@ -5,6 +5,7 @@ import com.google.gson.annotations.SerializedName
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.api.model.ActionMetadata
+import social.entourage.android.api.model.notification.Translation
 import social.entourage.android.tools.utils.Utils
 import java.io.Serializable
 import java.text.SimpleDateFormat
@@ -26,8 +27,14 @@ data class Action(
     @field:SerializedName("title")
     var title: String? = null,
 
+    @SerializedName("title_translations")
+    val titleTranslations: Translation? = null,
+
     @field:SerializedName("description")
     var description: String? = null,
+
+    @SerializedName("description_translations")
+    val descriptionTranslations: Translation? = null,
 
     @field:SerializedName("image_url")
     var imageUrl: String? = null,

@@ -17,6 +17,7 @@ import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.view.WebViewFragment
 import timber.log.Timber
 import java.net.URL
+import social.entourage.android.report.DataLanguageStock
 
 /**
  * Base activity which set up a scoped graph and inject it
@@ -65,6 +66,7 @@ abstract class BaseActivity : AppCompatActivity() {
     }
 
      fun updateLanguage(){
+        DataLanguageStock.updateUserLanguage(LanguageManager.loadLanguageFromPreferences(this))
         val savedLanguage = LanguageManager.loadLanguageFromPreferences(this)
         LanguageManager.setLocale(this, savedLanguage)
     }
@@ -72,10 +74,8 @@ abstract class BaseActivity : AppCompatActivity() {
     //TODO REFACTOR THIS
     fun fromNotifLogFirebaseEvent(){
         try {
-            Log.wtf("wtf", "clicked on notif")
             val notificationContent = Gson().fromJson(intent.getStringExtra("notification_content"), PushNotificationContent::class.java)
             val notificationBoolean= intent.getBooleanExtra("notification_content_boolean", false)
-            Log.wtf("wtf", "my content boolean extra " + notificationBoolean)
             val stage = notificationContent.extra?.stage
             if(stage.equals("h1")){
                 AnalyticsEvents.logEvent(AnalyticsEvents.NotificationClicked__OfferHelp__WDay1)}

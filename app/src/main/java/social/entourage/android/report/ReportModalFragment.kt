@@ -35,6 +35,7 @@ import social.entourage.android.user.UserPresenter
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.CustomAlertDialog
 import timber.log.Timber
+import social.entourage.android.report.DataLanguageStock
 
 enum class ReportTypes(val code: Int) {
     REPORT_USER(0),
@@ -49,7 +50,7 @@ enum class ReportTypes(val code: Int) {
 }
 
 
-class ReportModalFragment : BottomSheetDialogFragment() {
+class ReportModalFragment() : BottomSheetDialogFragment() {
 
     private var signalList: MutableList<TagMetaData> = ArrayList()
     private var _binding: NewFragmentReportBinding? = null
@@ -70,7 +71,6 @@ class ReportModalFragment : BottomSheetDialogFragment() {
     private var isFromConv: Boolean? = false
     private var isOneToOne: Boolean? = false
     private var dismissCallback:onDissmissFragment? = null
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -171,6 +171,14 @@ class ReportModalFragment : BottomSheetDialogFragment() {
         animSupress.start()
     }
     fun setStartView(){
+        if(DataLanguageStock.postLanguage == DataLanguageStock.userLanguage ){
+            binding.layoutChooseTranslate.visibility = View.GONE
+        }else{
+            binding.layoutChooseTranslate.visibility = View.VISIBLE
+        }
+        if(isFromMe == true){
+            binding.layoutChooseTranslate.visibility = View.GONE
+        }
         getIsFromMe()
         getIsFromConv()
         getIsOneToOne()
@@ -278,6 +286,15 @@ class ReportModalFragment : BottomSheetDialogFragment() {
         binding.layoutChooseSignal.setOnClickListener {
             setAfterChoose()
             setView()
+        }
+        binding.layoutChooseTranslate.setOnClickListener {
+            Log.wtf("wtf", "reportedId : $reportedId")
+            if(reportedId != null){
+                dismissCallback?.translateView(reportedId!!)
+                callback?.onTranslatePost(reportedId!!)
+            }
+            onClose()
+            dismiss()
         }
 
     }
@@ -526,4 +543,18 @@ class ReportModalFragment : BottomSheetDialogFragment() {
 
 interface onDissmissFragment{
     fun reloadView()
+    fun translateView(id:Int)
+}
+
+public object DataLanguageStock {
+    var userLanguage: String = "default"
+    var postLanguage: String = "default"
+
+    fun updateUserLanguage(language: String) {
+        userLanguage = language
+    }
+
+    fun updatePostLanguage(language: String) {
+        postLanguage = language
+    }
 }

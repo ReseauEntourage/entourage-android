@@ -2647,7 +2647,14 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="terms_and_conditions_html">En cliquant sur &lt;b&gt;Suivant&lt;/b&gt;, vous acceptez les &lt;a href=\'https://www.entourage.social/cgu/\'&gt;Conditions Générales d\'Utilisation&lt;/a&gt; et la &lt;a href=\'https://www.entourage.social/politique-de-confidentialite/\'&gt;Politique de Confidentialité&lt;/a&gt;</string>
     <string name="action_crete_cat_about">Vous cherchez à proposer une %s qui ne rentre pas dans l\'une de ces catégories ? Il semble qu\'elle n\'ait pas sa place sur le réseau,mais vous pouvez toujours</string>
     <string name="action_create_cat_about_link"> en savoir plus par ici.</string>
+    <string name="report_modal_title_translate">Traduire</string>
+    <string name="report_modal_subtitle_translate">Nous traduisons automatiquement les messages rédigés par les citoyens</string>
+    <string name="layout_translate_title_original">Afficher la version originale</string>
+    <string name="layout_translate_title_translation">Afficher la traduction</string>
 
-
+    <string name="layout_translate_action_translation_button">Cliquer ici pour afficher la version originale</string>
+    <string name="layout_translate_title_original_button">Afficher la traduction</string>
+    <string name="layout_translate_title_original_title">Cette page n’a pas été traduite.</string>
+    <string name="layout_translate_title_translation_title">Certaines informations ont été traduites automatiquement.</string>
 </resources>
 

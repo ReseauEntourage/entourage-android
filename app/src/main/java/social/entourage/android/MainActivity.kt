@@ -86,8 +86,6 @@ class MainActivity : BaseSecuredActivity() {
         if (uri != null) {
             universalLinkManager.handleUniversalLink(uri)
         }
-
-
     }
 
     fun displayAppUpdateDialog() {

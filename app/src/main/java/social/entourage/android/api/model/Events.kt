@@ -6,6 +6,7 @@ import com.google.gson.annotations.SerializedName
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.api.model.feed.FeedItemAuthor
+import social.entourage.android.api.model.notification.Translation
 import social.entourage.android.events.EventModel
 import java.io.Serializable
 import java.util.*
@@ -46,11 +47,17 @@ data class Events(
     @field:SerializedName("description")
     val description: String? = null,
 
+    @SerializedName("description_translations")
+    val descriptionTranslations: Translation? = null,
+
     @field:SerializedName("group_type")
     val groupType: String? = null,
 
     @field:SerializedName("title")
     val title: String? = null,
+
+    @SerializedName("title_translations")
+    val titleTranslations: Translation? = null,
 
     @field:SerializedName("uuid")
     val uuid: String? = null,
@@ -154,7 +161,6 @@ fun Events.toEventUi(context: Context): EventModel {
 class EventUtils {
     companion object {
         fun showTagTranslated(context: Context,section: String): String {
-            Log.wtf("wtf", "section " + section)
             when(section.lowercase()){
                 "activites" -> return context.getString(R.string.interest_activites)
                 "animaux" -> return context.getString(R.string.interest_animaux)

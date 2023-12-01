@@ -35,12 +35,16 @@ class GroupCommentActivity : CommentActivity() {
         }
     }
 
+    override fun translateView(id: Int) {
+        val adapter = binding.comments.adapter as? CommentsListAdapter
+        adapter?.translateItem(id)
+    }
+
     private fun handleParentPost(currentPost: Post?) {
         this.currentParentPost = currentPost
         binding.progressBar.visibility = View.GONE
         (binding.comments.adapter as? CommentsListAdapter)?.updateDatas(this.currentParentPost)
         scrollAfterLayout()
-
         updateView(commentsList.size == 0)
     }
 

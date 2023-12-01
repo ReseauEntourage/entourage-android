@@ -2629,6 +2629,14 @@ Sie werden diese Nachricht lesen, sobald sie der Gruppe beitreten.</string>
     <string name="terms_and_conditions_html">Durch Klicken auf &lt;b&gt;Weiter&lt;/b&gt; akzeptieren Sie die &lt;a href=\'https://www.entourage.social/agb/\'&gt;Allgemeinen Geschäftsbedingungen&lt;/a&gt; und die &lt;a href=\'https://www.entourage.social/datenschutz/\'&gt;Datenschutzrichtlinie&lt;/a&gt;</string>
     <string name="action_crete_cat_about">Möchtest du ein %s anbieten, das in keine dieser Kategorien passt? Es scheint, dass \ keinen Platz im Netzwerk hat, aber du kannst immer </string>
     <string name="action_create_cat_about_link"> mehr hier erfahren.</string>
+    <string name="report_modal_title_translate">Übersetzen</string>
+    <string name="report_modal_subtitle_translate">Wir übersetzen automatisch die von Bürgern verfassten Nachrichten</string>
+    <string name="layout_translate_title_original">Originalversion anzeigen</string>
+    <string name="layout_translate_title_translation">Übersetzung anzeigen</string>
+    <string name="layout_translate_action_translation_button">Klicken Sie hier, um die Originalversion anzuzeigen</string>
+    <string name="layout_translate_title_original_button">Übersetzung anzeigen</string>
+    <string name="layout_translate_title_original_title">Diese Seite wurde nicht übersetzt.</string>
+    <string name="layout_translate_title_translation_title">Einige Informationen wurden automatisch übersetzt.</string>
 
 
 </resources>

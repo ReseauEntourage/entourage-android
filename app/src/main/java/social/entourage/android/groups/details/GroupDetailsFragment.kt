@@ -22,6 +22,7 @@ import social.entourage.android.groups.GroupPresenter
 import social.entourage.android.groups.details.rules.GroupRulesActivity
 import social.entourage.android.groups.edit.EditGroupActivity
 import social.entourage.android.profile.myProfile.InterestsAdapter
+import social.entourage.android.report.DataLanguageStock
 import social.entourage.android.report.ReportModalFragment
 import social.entourage.android.report.ReportTypes
 import social.entourage.android.tools.utils.Const
@@ -239,6 +240,11 @@ class GroupDetailsFragment : BottomSheetDialogFragment() {
     private fun handleReportGroup() {
         val reportGroupBottomDialogFragment =
             group?.id?.let {
+                val fromLang = group?.descriptionTranslations?.fromLang
+                if (fromLang != null) {
+                    DataLanguageStock.updatePostLanguage(fromLang)
+                }
+
                 ReportModalFragment.newInstance(
                     it,
                     Const.DEFAULT_VALUE, ReportTypes.REPORT_GROUP, false, false,false)

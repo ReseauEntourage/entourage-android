@@ -1,5 +1,6 @@
 package social.entourage.android.home
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import retrofit2.Call
@@ -54,7 +55,6 @@ class HomePresenter: ViewModel() {
                     }
                     getSummarySuccess.value = response.isSuccessful
                 }
-
                 override fun onFailure(call: Call<SummaryResponse>, t: Throwable) {
                     getSummarySuccess.value = false
                 }

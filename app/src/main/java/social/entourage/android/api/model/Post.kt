@@ -1,6 +1,7 @@
 package social.entourage.android.api.model
 
 import com.google.gson.annotations.SerializedName
+import social.entourage.android.api.model.notification.Translation
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -9,6 +10,8 @@ class Post(
     val id: Int? = null,
     @SerializedName("content")
     val content: String? = null,
+    @SerializedName("content_translations")
+    val contentTranslations: Translation? = null,
     @SerializedName("user")
     var user: EntourageUser? = null,
     @SerializedName("created_at")

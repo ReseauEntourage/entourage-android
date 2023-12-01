@@ -35,6 +35,7 @@ import social.entourage.android.api.model.Events
 import social.entourage.android.api.model.Status
 import social.entourage.android.api.model.Tags
 import social.entourage.android.profile.myProfile.InterestsAdapter
+import social.entourage.android.report.DataLanguageStock
 import social.entourage.android.report.ReportModalFragment
 import social.entourage.android.report.ReportTypes
 import social.entourage.android.tools.log.AnalyticsEvents
@@ -234,6 +235,10 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
     private fun handleReportEvent() {
         val reportGroupBottomDialogFragment =
             event?.id?.let {
+                val fromLang = event?.descriptionTranslations?.fromLang
+                if (fromLang != null) {
+                    DataLanguageStock.updatePostLanguage(fromLang)
+                }
                 ReportModalFragment.newInstance(
                     it,
                     Const.DEFAULT_VALUE, ReportTypes.REPORT_EVENT

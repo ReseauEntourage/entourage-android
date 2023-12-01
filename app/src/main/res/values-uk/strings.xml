@@ -2642,6 +2642,14 @@
     <string name="terms_and_conditions_html">Натискаючи &lt;b&gt;Далі&lt;/b&gt;, ви погоджуєтеся з &lt;a href=\'https://www.entourage.social/terms/\'&gt;Умовами користування&lt;/a&gt; та &lt;a href=\'https://www.entourage.social/privacy-policy/\'&gt;Політикою конфіденційності&lt;/a&gt;</string>
     <string name="action_crete_cat_about">Шукаєте можливість запропонувати %s, яке не вписується в жодну з цих категорій? Здається, що \ не має місця в мережі, але ви завжди можете</string>
     <string name="action_create_cat_about_link"> дізнатися більше тут.</string>
+    <string name="report_modal_title_translate">Перекласти</string>
+    <string name="report_modal_subtitle_translate">Ми автоматично перекладаємо повідомлення, написані громадянами</string>
+    <string name="layout_translate_title_original">Показати оригінальну версію</string>
+    <string name="layout_translate_title_translation">Показати переклад</string>
+    <string name="layout_translate_action_translation_button">Натисніть тут, щоб показати оригінальну версію</string>
+    <string name="layout_translate_title_original_button">Показати переклад</string>
+    <string name="layout_translate_title_original_title">Ця сторінка не була перекладена.</string>
+    <string name="layout_translate_title_translation_title">Деяка інформація була перекладена автоматично.</string>
 
 
 </resources>

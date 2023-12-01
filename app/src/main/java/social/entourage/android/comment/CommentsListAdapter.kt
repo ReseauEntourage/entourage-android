@@ -8,6 +8,7 @@ import android.graphics.*
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.VectorDrawable
 import android.os.Build
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,6 +22,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
+import com.google.gson.Gson
 import io.github.armcha.autolink.MODE_URL
 import kotlinx.android.synthetic.main.new_comment_detail_post_top.view.*
 import kotlinx.android.synthetic.main.new_comment_item_date.view.*
@@ -44,7 +46,7 @@ enum class CommentsTypes(val code: Int) {
 
 interface OnItemClickListener {
     fun onItemClick(comment: Post)
-    fun onCommentReport(commentId: Int?, isForEvent:Boolean, isMe:Boolean)
+    fun onCommentReport(commentId: Int?, isForEvent:Boolean, isMe:Boolean, commentLang:String)
     fun onShowWeb(url:String)
 }
 
@@ -60,11 +62,22 @@ class CommentsListAdapter(
 
     var isForEvent:Boolean = false
 
-    fun setForEvent(){
+    fun setForEvent() {
         isForEvent = true
     }
+    private val translationExceptions = mutableSetOf<Int>()
 
-
+    fun translateItem(commentId: Int) {
+        if (translationExceptions.contains(commentId)) {
+            translationExceptions.remove(commentId)
+        } else {
+            translationExceptions.add(commentId)
+        }
+        //Log.wtf("wtf","translationExceptions : $translationExceptions")
+        Log.wtf("wtf","commentId : $commentId")
+        Log.wtf("wtf","indexOfFirst : ${commentsList.indexOfFirst { it.id == commentId }}")
+        notifyItemChanged(commentsList.indexOfFirst { it.id == commentId } + 1)
+    }
 
     inner class ViewHolder(val binding: View) :
         RecyclerView.ViewHolder(binding) {
@@ -73,6 +86,7 @@ class CommentsListAdapter(
 
             if (isDetailPost) {
                 //TODO: parse Detail post
+                Log.wtf("wtf","hello " + comment.id)
                 binding.comment_post.text = comment.content
                 binding.comment_post.setHyperlinkClickable()
                 comment.createdTime?.let {
@@ -158,7 +172,22 @@ class CommentsListAdapter(
                     binding.comment.setTextColor(context.getColor(R.color.grey_deleted_icon))
                 }
             }else{
-                binding.comment.text = comment.content
+                val translatedByDefault = context.getSharedPreferences(
+                    context.getString(R.string.preference_file_key), Context.MODE_PRIVATE
+                ).getBoolean("translatedByDefault", false)
+                var contentToShow = comment.content
+                val isTranslated = translatedByDefault && !translationExceptions.contains(comment.id)
+                Log.wtf("wtf", "isTranslated " + isTranslated)
+
+                if(comment.contentTranslations != null){
+                    if(isTranslated){
+                        contentToShow = comment.contentTranslations?.translation
+                    }else{
+                        contentToShow = comment.contentTranslations?.original
+                    }
+                }
+                binding.comment.text = contentToShow
+
                 if(isMe){
                     binding.comment.background = context.getDrawable(R.drawable.new_comment_background_orange)
                 }else{
@@ -170,12 +199,15 @@ class CommentsListAdapter(
                 }
             }
             binding.report.setOnClickListener {
-                onItemClick.onCommentReport(comment.id, isForEvent, isMe)
+                val commentLang = comment?.contentTranslations?.fromLang ?: ""
+
+                onItemClick.onCommentReport(comment.id, isForEvent, isMe,commentLang)
             }
             //here
             if(isMe && comment.status != "deleted" ){
+                val commentLang = comment?.contentTranslations?.fromLang ?: ""
                 binding.comment.setOnLongClickListener {
-                    onItemClick.onCommentReport(comment.id, isForEvent, isMe)
+                    onItemClick.onCommentReport(comment.id, isForEvent, isMe,commentLang)
                     return@setOnLongClickListener true
                 }
             }

@@ -536,11 +536,11 @@ class FeedFragment : Fragment(),CallbackReportFragment{
             group?.let {
                 with(it) {
                     groupUI = GroupModel(
-                        groupId, name, uuid_v2,
+                        groupId, name, nameTranslations, uuid_v2,
                         members_count,
                         address?.displayAddress,
                         interests,
-                        description,
+                        description, descriptionTranslations,
                         members,
                         member,
                         EntourageApplication.me(activity)?.id == admin?.id
@@ -590,11 +590,13 @@ class FeedFragment : Fragment(),CallbackReportFragment{
                 groupUI = GroupModel(
                     groupId,
                     it.name,
+                    it.nameTranslations,
                     it.uuid_v2,
                     it.members_count,
                     it.address?.displayAddress,
                     it.interests,
                     it.description,
+                    it.descriptionTranslations,
                     it.members,
                     it.member,
                     EntourageApplication.me(activity)?.id == it.admin?.id
@@ -652,8 +654,20 @@ class FeedFragment : Fragment(),CallbackReportFragment{
             updateView()
         }
     }
+
+    override fun onTranslatePost(id: Int) {
+        val isNewPost = newPostsList.any { it.id == id }
+        val adapter = if (isNewPost) {
+            binding.postsNewRecyclerview.adapter as? PostAdapter
+        } else {
+            binding.postsOldRecyclerview.adapter as? PostAdapter
+        }
+        adapter?.translateItem(id)
+    }
+
 }
 
  interface CallbackReportFragment{
     fun onSuppressPost()
+    fun onTranslatePost(id:Int)
 }

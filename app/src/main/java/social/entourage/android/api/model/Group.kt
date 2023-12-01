@@ -4,6 +4,7 @@ import android.content.Context
 import com.google.gson.annotations.SerializedName
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
+import social.entourage.android.api.model.notification.Translation
 
 data class Group(
     @SerializedName("id")
@@ -12,8 +13,12 @@ data class Group(
     var uuid_v2: String? = null,
     @SerializedName("name")
     var name: String? = null,
+    @SerializedName("name_translations")
+    val nameTranslations: Translation? = null,
     @SerializedName("description")
     var description: String? = null,
+    @SerializedName("description_translations")
+    val descriptionTranslations: Translation? = null,
     @SerializedName("welcome_message")
     var welcomeMessage: String? = null,
     @SerializedName("ethics")

@@ -2651,6 +2651,14 @@
     <string name="terms_and_conditions_html">بالنقر على &lt;b&gt;التالي&lt;/b&gt;، فإنك توافق على &lt;a href=\'https://www.entourage.social</string>
     <string name="action_crete_cat_about">هل تبحث عن تقديم %s لا يندرج ضمن هذه الفئات؟ يبدو أن \ ليس له مكان في الشبكة، لكن يمكنك دائمًا </string>
     <string name="action_create_cat_about_link"> معرفة المزيد هنا</string>
+    <string name="report_modal_title_translate">ترجمة</string>
+    <string name="report_modal_subtitle_translate">نترجم تلقائيًا الرسائل التي كتبها المواطنون</string>
+    <string name="layout_translate_title_original">عرض النسخة الأصلية</string>
+    <string name="layout_translate_title_translation">عرض الترجمة</string>
+    <string name="layout_translate_action_translation_button">انقر هنا لعرض النسخة الأصلية</string>
+    <string name="layout_translate_title_original_button">عرض الترجمة</string>
+    <string name="layout_translate_title_original_title">لم يتم ترجمة هذه الصفحة.</string>
+    <string name="layout_translate_title_translation_title">تمت ترجمة بعض المعلومات تلقائيًا.</string>
 
 
 

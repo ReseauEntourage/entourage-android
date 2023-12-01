@@ -5,7 +5,9 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Build
+import android.text.SpannableString
 import android.text.method.LinkMovementMethod
+import android.text.style.UnderlineSpan
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -23,7 +25,6 @@ import social.entourage.android.tools.setHyperlinkClickable
 import social.entourage.android.user.UserProfileActivity
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.px
-import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -34,7 +35,16 @@ class PostAdapter(
     var onReport: (Int,Int) -> Unit,
     var onClickImage: (imageUrl:String, postId:Int) -> Unit,
     ) : RecyclerView.Adapter<PostAdapter.ViewHolder>() {
+    private val translationExceptions = mutableSetOf<Int>()
 
+    fun translateItem(postId: Int) {
+        if (translationExceptions.contains(postId)) {
+            translationExceptions.remove(postId)
+        } else {
+            translationExceptions.add(postId)
+        }
+        notifyItemChanged(postsList.indexOfFirst { it.id == postId })
+    }
     inner class ViewHolder(val binding: NewLayoutPostBinding) :
         RecyclerView.ViewHolder(binding.root)
 
@@ -51,18 +61,41 @@ class PostAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         with(holder) {
             with(postsList[position]) {
-                binding.postComment.setOnClickListener {
-                    onClick(postsList[position], true)
+                // Récupérer la préférence pour savoir si la traduction est activée par défaut
+                val translatedByDefault = context.getSharedPreferences(
+                    context.getString(R.string.preference_file_key), Context.MODE_PRIVATE
+                ).getBoolean("translatedByDefault", false)
+
+                // Déterminer si ce post spécifique doit être traduit ou non
+                val isTranslated = if (translationExceptions.contains(id)) {
+                    translatedByDefault
+                } else {
+                    !translatedByDefault
                 }
-                binding.postCommentsNumberLayout.setOnClickListener {
-                    onClick(postsList[position], false)
+
+                // Configurer le bouton de traduction
+                val text = if (isTranslated) {
+                    context.getString(R.string.layout_translate_title_translation)
+                } else {
+                    context.getString(R.string.layout_translate_title_original)
                 }
-                binding.name.text = user?.displayName
+                val titleButton = SpannableString(text)
+                titleButton.setSpan(UnderlineSpan(), 0, text.length, 0)
+                binding.postTranslationButton.tvTranslate.text = titleButton
+                binding.postTranslationButton.layoutCsTranslate.setOnClickListener {
+                    translateItem(id ?: this.id!!)
+                }
+
+                // Configurer le contenu du post en fonction de la traduction
+                var contentToShow = content
+                if (contentTranslations != null) {
+                    contentToShow = if (isTranslated) contentTranslations.translation else contentTranslations.original
+                }
+                binding.postMessage.text = contentToShow
+
                 content?.let {
                     binding.postMessage.visibility = View.VISIBLE
-                    binding.postMessage.text = it
                     binding.postMessage.setHyperlinkClickable()
-
                 } ?: run {
                     binding.postMessage.visibility = View.GONE
                 }
@@ -165,7 +198,19 @@ class PostAdapter(
                     binding.postComment.visibility = View.GONE
                     binding.btnReportPost.visibility = View.GONE
                 }else{
-                    binding.postMessage.text = content
+                    val translatedByDefault = context.getSharedPreferences(
+                        context.getString(R.string.preference_file_key), Context.MODE_PRIVATE
+                    ).getBoolean("translatedByDefault", false)
+                    val isTranslated = translatedByDefault && !translationExceptions.contains(id)
+                    var contentToShow = content
+                    if(contentTranslations != null){
+                        if(isTranslated){
+                            contentToShow = contentTranslations.translation
+                        }else{
+                            contentToShow = contentTranslations.original
+                        }
+                    }
+                    binding.postMessage.text = contentToShow
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                         binding.postMessage.setTextColor(context.getColor(R.color.black))
                     }

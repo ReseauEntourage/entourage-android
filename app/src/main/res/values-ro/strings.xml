@@ -2636,6 +2636,14 @@ Ei vor citi acest mesaj imediat ce se vor alătura grupului.</string>
     <string name="terms_and_conditions_html">Făcând clic pe &lt;b&gt;Următorul&lt;/b&gt;, sunteți de acord cu &lt;a href=\'https://www.entourage.social/termeni/\'&gt;Termenii și Condițiile&lt;/a&gt; și &lt;a href=\'https://www.entourage.social/politica-de-confidențialitate/\'&gt;Politica de Confidențialitate&lt;/a&gt;</string>
     <string name="action_crete_cat_about">Dorești să oferi un %s care nu se încadrează în niciuna dintre aceste categorii? Se pare că \ nu are loc în rețea, dar întotdeauna poți</string>
     <string name="action_create_cat_about_link"> afla mai multe aici.</string>
+    <string name="report_modal_title_translate">Traduceți</string>
+    <string name="report_modal_subtitle_translate">Traducem automat mesajele scrise de cetățeni</string>
+    <string name="layout_translate_title_original">Afișează versiunea originală</string>
+    <string name="layout_translate_title_translation">Afișează traducerea</string>
+    <string name="layout_translate_action_translation_button">Apasă aici pentru a afișa versiunea originală</string>
+    <string name="layout_translate_title_original_button">Afișează traducerea</string>
+    <string name="layout_translate_title_original_title">Această pagină nu a fost tradusă.</string>
+    <string name="layout_translate_title_translation_title">Unele informații au fost traduse automat.</string>
 
 
 

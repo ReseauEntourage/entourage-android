@@ -42,6 +42,7 @@ import social.entourage.android.api.model.Post
 import social.entourage.android.api.model.Status
 import social.entourage.android.api.model.Tags
 import social.entourage.android.api.model.toEventUi
+import social.entourage.android.comment.CommentsListAdapter
 import social.entourage.android.comment.PostAdapter
 import social.entourage.android.databinding.NewFragmentFeedEventBinding
 import social.entourage.android.events.EventsPresenter
@@ -50,6 +51,7 @@ import social.entourage.android.groups.details.feed.CallbackReportFragment
 import social.entourage.android.groups.details.feed.GroupMembersPhotosAdapter
 import social.entourage.android.groups.details.members.MembersType
 import social.entourage.android.profile.myProfile.InterestsAdapter
+import social.entourage.android.report.DataLanguageStock
 import social.entourage.android.report.ReportModalFragment
 import social.entourage.android.report.ReportTypes
 import social.entourage.android.tools.calculateIfEventPassed
@@ -419,6 +421,10 @@ class FeedFragment : Fragment(), CallbackReportFragment {
         val reportGroupBottomDialogFragment =
             event?.id?.let {
                 val meId = EntourageApplication.get().me()?.id
+                val fromLang = event?.descriptionTranslations?.fromLang
+                if (fromLang != null) {
+                    DataLanguageStock.updatePostLanguage(fromLang)
+                }
                 ReportModalFragment.newInstance(
                     postId,
                     it, ReportTypes.REPORT_POST_EVENT, meId == userId
@@ -675,5 +681,15 @@ class FeedFragment : Fragment(), CallbackReportFragment {
             delay(500)
             loadPosts()
         }
+    }
+
+    override fun onTranslatePost(id: Int) {
+        val isNewPost = newPostsList.any { it.id == id }
+        val adapter = if (isNewPost) {
+            binding.postsNewRecyclerview.adapter as? PostAdapter
+        } else {
+            binding.postsOldRecyclerview.adapter as? PostAdapter
+        }
+        adapter?.translateItem(id)
     }
 }
