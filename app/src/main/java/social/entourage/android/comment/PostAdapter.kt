@@ -192,7 +192,7 @@ class PostAdapter(
                 binding.name.setOnClickListener {
                     showUserDetail(binding.name.context,this.user?.userId)
                 }
-
+                binding.name.text = user?.displayName
                 binding.image.setOnClickListener {
                     showUserDetail(binding.image.context,this.user?.userId)
                 }
