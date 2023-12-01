@@ -30,7 +30,7 @@ import social.entourage.android.api.model.Events
 import social.entourage.android.tools.utils.Utils
 import social.entourage.android.tools.log.AnalyticsEvents
 
-const val EVENTS_PER_PAGE = 40
+const val EVENTS_PER_PAGE = 200
 
 class DiscoverEventsListFragment : Fragment() {
 

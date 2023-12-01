@@ -99,6 +99,9 @@ class PostAdapter(
                 binding.postCommentsNumberLayout.setOnClickListener {
                     onClick(this, false)
                 }
+                binding.comment.setOnClickListener {
+                    onClick(this, false)
+                }
 
                 // Configurer le contenu du post en fonction de la traduction
                 var contentToShow = content
