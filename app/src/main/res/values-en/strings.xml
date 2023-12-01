@@ -1568,8 +1568,8 @@
     <string name="action_create_cat_about_link"> learn more here.</string>
     <string name="report_modal_title_translate">Translate</string>
     <string name="report_modal_subtitle_translate">We automatically translate messages written by citizens</string>
-    <string name="layout_translate_title_original">Display the original version</string>
-    <string name="layout_translate_title_translation">Show Translation</string>
+    <string name="layout_translate_title_original">Show original</string>
+    <string name="layout_translate_title_translation">Translate</string>
     <string name="layout_translate_action_translation_button">Click here to show the original version</string>
     <string name="layout_translate_title_original_button">Show translation</string>
     <string name="layout_translate_title_original_title">This page has not been translated.</string>

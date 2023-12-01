@@ -179,6 +179,10 @@ class ReportModalFragment() : BottomSheetDialogFragment() {
         if(isFromMe == true){
             binding.layoutChooseTranslate.visibility = View.GONE
         }
+        Log.wtf("wtf", "reportType : $reportType")
+        if(reportType != ReportTypes.REPORT_COMMENT.code || reportType != ReportTypes.REPORT_POST_EVENT.code){
+            binding.layoutChooseTranslate.visibility = View.GONE
+        }
         getIsFromMe()
         getIsFromConv()
         getIsOneToOne()
