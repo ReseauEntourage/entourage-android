@@ -25,7 +25,7 @@
         app:layout_constraintBottom_toBottomOf="@+id/iv_translate"
         app:layout_constraintEnd_toEndOf="parent"
         android:fontFamily="@font/quicksand_bold"
-        android:textSize="15sp"
+        android:textSize="13sp"
         android:textColor="@color/orange"
         android:layout_marginStart="10dp"
         />
