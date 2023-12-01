@@ -338,11 +338,12 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
                 } ?: kotlin.run {
                     binding.uiImagePlaceholder.isVisible = true
                 }
-
-                binding.uiTitleCatContrib.text = ActionUtils.showTagTranslated(requireContext(), it.sectionName!!)
+                if(it.sectionName != null){
+                    binding.uiTitleCatContrib.text = ActionUtils.showTagTranslated(requireContext(), it.sectionName!!)
+                    binding.uiTitleCatDemand.text = ActionUtils.showTagTranslated(requireContext(), it.sectionName!!)
+                }
                 binding.uiIvCatContrib.setImageDrawable(ResourcesCompat.getDrawable(resources,
                     ActionSection.getIconFromId(it.sectionName),null))
-                binding.uiTitleCatDemand.text = ActionUtils.showTagTranslated(requireContext(), it.sectionName!!)
                 binding.uiIvCatDemand.setImageDrawable(ResourcesCompat.getDrawable(resources,
                     ActionSection.getIconFromId(it.sectionName),null))
                 binding.uiActionDescription.text = action?.description

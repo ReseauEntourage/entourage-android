@@ -100,8 +100,9 @@ class HomeActionAdapter(var isContrib:Boolean): RecyclerView.Adapter<RecyclerVie
                 val context = holder.binding.root.context
                 val itemDrawable = ActionSection.getIconFromId(it)
                 holder.binding.ivActionItemEquipment.setImageDrawable(context.getDrawable(itemDrawable))
-                holder.binding.tvActionItemSubtitle.text = ActionUtils.showTagTranslated(context ,it!!)
-
+                if(it != null ){
+                    holder.binding.tvActionItemSubtitle.text = ActionUtils.showTagTranslated(context ,it!!)
+                }
             }
             action.distance.let {
                 val context = holder.binding.root.context

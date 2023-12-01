@@ -171,21 +171,26 @@ class ReportModalFragment() : BottomSheetDialogFragment() {
         animSupress.start()
     }
     fun setStartView(){
-        if(DataLanguageStock.postLanguage == DataLanguageStock.userLanguage ){
-            binding.layoutChooseTranslate.visibility = View.GONE
-        }else{
-            binding.layoutChooseTranslate.visibility = View.VISIBLE
-        }
-        if(isFromMe == true){
-            binding.layoutChooseTranslate.visibility = View.GONE
-        }
-        Log.wtf("wtf", "reportType : $reportType")
-        if(reportType != ReportTypes.REPORT_COMMENT.code || reportType != ReportTypes.REPORT_POST_EVENT.code){
-            binding.layoutChooseTranslate.visibility = View.GONE
-        }
         getIsFromMe()
         getIsFromConv()
         getIsOneToOne()
+        if(DataLanguageStock.postLanguage == DataLanguageStock.userLanguage ){
+            binding.layoutChooseTranslate.visibility = View.GONE
+            Log.wtf("wtf"  , "wtf 1")
+        }else{
+            binding.layoutChooseTranslate.visibility = View.VISIBLE
+            Log.wtf("wtf"  , "wtf 2")
+        }
+        if(isFromMe == true){
+            binding.layoutChooseTranslate.visibility = View.GONE
+            Log.wtf("wtf"  , "wtf 3")
+        }
+        if(reportType == ReportTypes.REPORT_COMMENT.code || reportType == ReportTypes.REPORT_POST_EVENT.code){
+            binding.layoutChooseTranslate.visibility = View.VISIBLE
+        }else{
+            binding.layoutChooseTranslate.visibility = View.GONE
+        }
+
         if (reportType == ReportTypes.REPORT_GROUP.code){
             setAfterChoose()
             setView()
@@ -292,7 +297,6 @@ class ReportModalFragment() : BottomSheetDialogFragment() {
             setView()
         }
         binding.layoutChooseTranslate.setOnClickListener {
-            Log.wtf("wtf", "reportedId : $reportedId")
             if(reportedId != null){
                 dismissCallback?.translateView(reportedId!!)
                 callback?.onTranslatePost(reportedId!!)

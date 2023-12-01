@@ -88,8 +88,6 @@ class CommentsListAdapter(
             translationExceptions.add(commentId)
         }
         //Log.wtf("wtf","translationExceptions : $translationExceptions")
-        Log.wtf("wtf","commentId : $commentId")
-        Log.wtf("wtf","indexOfFirst : ${commentsList.indexOfFirst { it.id == commentId }}")
         notifyItemChanged(commentsList.indexOfFirst { it.id == commentId } + 1)
     }
 
@@ -100,7 +98,6 @@ class CommentsListAdapter(
 
             if (isDetailPost) {
                 //TODO: parse Detail post
-                Log.wtf("wtf","hello " + comment.id)
                 binding.comment_post.text = comment.content
                 binding.comment_post.setHyperlinkClickable()
                 comment.createdTime?.let {
@@ -190,7 +187,7 @@ class CommentsListAdapter(
                 var contentToShow = comment.content
                 val isTranslated = !translationExceptions.contains(comment.id)
                 Log.wtf("wtf", "isTranslated " + isTranslated)
-
+                Log.wtf("wtf", "contententTranslation " + Gson().toJson(comment.contentTranslations))
                 if(comment.contentTranslations != null){
                     if(isTranslated){
                         contentToShow = comment.contentTranslations?.translation
