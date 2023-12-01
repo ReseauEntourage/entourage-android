@@ -62,6 +62,20 @@ class CommentsListAdapter(
 
     var isForEvent:Boolean = false
 
+    fun initiateList(){
+        val translatedByDefault = context.getSharedPreferences(
+            context.getString(R.string.preference_file_key), Context.MODE_PRIVATE
+        ).getBoolean("translatedByDefault", true)
+        if (translatedByDefault) {
+            commentsList.forEach {
+                if (it.contentTranslations != null) {
+                    translationExceptions.add(it.id!!)
+                }
+            }
+        }
+        notifyDataSetChanged()
+    }
+
     fun setForEvent() {
         isForEvent = true
     }
@@ -172,11 +186,9 @@ class CommentsListAdapter(
                     binding.comment.setTextColor(context.getColor(R.color.grey_deleted_icon))
                 }
             }else{
-                val translatedByDefault = context.getSharedPreferences(
-                    context.getString(R.string.preference_file_key), Context.MODE_PRIVATE
-                ).getBoolean("translatedByDefault", false)
+
                 var contentToShow = comment.content
-                val isTranslated = translatedByDefault && !translationExceptions.contains(comment.id)
+                val isTranslated = !translationExceptions.contains(comment.id)
                 Log.wtf("wtf", "isTranslated " + isTranslated)
 
                 if(comment.contentTranslations != null){

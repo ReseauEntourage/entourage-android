@@ -385,8 +385,8 @@ class FeedFragment : Fragment(), CallbackReportFragment {
                 ::openCommentPage,
                 ::openReportFragment,
                 ::openImageFragment
-
             )
+            (adapter as? PostAdapter)?.initiateList()
         }
         binding.postsOldRecyclerview.apply {
             layoutManager = LinearLayoutManager(requireContext())
@@ -397,6 +397,7 @@ class FeedFragment : Fragment(), CallbackReportFragment {
                 ::openReportFragment,
                 ::openImageFragment
             )
+            (adapter as? PostAdapter)?.initiateList()
         }
     }
 

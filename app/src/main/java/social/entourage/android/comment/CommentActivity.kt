@@ -194,6 +194,7 @@ abstract class CommentActivity : BaseActivity(), onDissmissFragment {
                         .show(supportFragmentManager, WebViewFragment.TAG)
                 }
             })
+            (adapter as? CommentsListAdapter)?.initiateList()
         }
     }
 

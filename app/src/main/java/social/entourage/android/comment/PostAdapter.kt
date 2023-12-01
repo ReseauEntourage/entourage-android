@@ -21,6 +21,7 @@ import com.google.gson.Gson
 import social.entourage.android.R
 import social.entourage.android.api.model.Post
 import social.entourage.android.databinding.NewLayoutPostBinding
+import social.entourage.android.report.DataLanguageStock
 import social.entourage.android.tools.setHyperlinkClickable
 import social.entourage.android.user.UserProfileActivity
 import social.entourage.android.tools.utils.Const
@@ -36,6 +37,20 @@ class PostAdapter(
     var onClickImage: (imageUrl:String, postId:Int) -> Unit,
     ) : RecyclerView.Adapter<PostAdapter.ViewHolder>() {
     private val translationExceptions = mutableSetOf<Int>()
+
+    fun initiateList(){
+        val translatedByDefault = context.getSharedPreferences(
+            context.getString(R.string.preference_file_key), Context.MODE_PRIVATE
+        ).getBoolean("translatedByDefault", false)
+        if (translatedByDefault) {
+            postsList.forEach {
+                if (it.contentTranslations != null) {
+                    translationExceptions.add(it.id!!)
+                }
+            }
+        }
+        notifyDataSetChanged()
+    }
 
     fun translateItem(postId: Int) {
         if (translationExceptions.contains(postId)) {
@@ -61,17 +76,13 @@ class PostAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         with(holder) {
             with(postsList[position]) {
-                // Récupérer la préférence pour savoir si la traduction est activée par défaut
-                val translatedByDefault = context.getSharedPreferences(
-                    context.getString(R.string.preference_file_key), Context.MODE_PRIVATE
-                ).getBoolean("translatedByDefault", false)
-
-                // Déterminer si ce post spécifique doit être traduit ou non
-                val isTranslated = if (translationExceptions.contains(id)) {
-                    translatedByDefault
-                } else {
-                    !translatedByDefault
+                if(DataLanguageStock.userLanguage == this?.contentTranslations?.fromLang){
+                    binding.postTranslationButton.layoutCsTranslate.visibility = View.GONE
+                }else{
+                    binding.postTranslationButton.layoutCsTranslate.visibility = View.VISIBLE
                 }
+                // Déterminer si ce post spécifique doit être traduit ou non
+                val isTranslated = !translationExceptions.contains(id)
 
                 // Configurer le bouton de traduction
                 val text = if (isTranslated) {
@@ -84,6 +95,9 @@ class PostAdapter(
                 binding.postTranslationButton.tvTranslate.text = titleButton
                 binding.postTranslationButton.layoutCsTranslate.setOnClickListener {
                     translateItem(id ?: this.id!!)
+                }
+                binding.postCommentsNumberLayout.setOnClickListener {
+                    onClick(this, false)
                 }
 
                 // Configurer le contenu du post en fonction de la traduction
@@ -198,16 +212,14 @@ class PostAdapter(
                     binding.postComment.visibility = View.GONE
                     binding.btnReportPost.visibility = View.GONE
                 }else{
-                    val translatedByDefault = context.getSharedPreferences(
-                        context.getString(R.string.preference_file_key), Context.MODE_PRIVATE
-                    ).getBoolean("translatedByDefault", false)
-                    val isTranslated = translatedByDefault && !translationExceptions.contains(id)
+
+                    val isTranslated = !translationExceptions.contains(id)
                     var contentToShow = content
                     if(contentTranslations != null){
                         if(isTranslated){
-                            contentToShow = contentTranslations.translation
-                        }else{
                             contentToShow = contentTranslations.original
+                        }else{
+                            contentToShow = contentTranslations.translation
                         }
                     }
                     binding.postMessage.text = contentToShow
