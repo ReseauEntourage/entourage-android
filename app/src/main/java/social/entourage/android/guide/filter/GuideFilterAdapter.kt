@@ -71,6 +71,7 @@ class GuideFilterAdapter(var context: Context) : BaseAdapter() {
             else -> item.categoryType.displayName
         }
 
+        
         val categoryType = item.categoryType
         val displayName: String = if (categoryType.categoryId == CategoryType.PARTNERS.categoryId) {
             view.context?.getString(R.string.guide_display_partners) ?: categoryDisplayName
