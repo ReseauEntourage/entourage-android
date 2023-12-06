@@ -195,8 +195,8 @@
     <string name="pass">Skip</string>
     <string name="create_post">Create a post</string>
     <string name="create_event">Create an event on the group</string>
-    <string name="create_event_if_no_event">Create an event</string>
-    <string name="create_event_btn_title">Create an event</string>
+    <string name="create_event_if_no_event">Create event</string>
+    <string name="create_event_btn_title">Create event</string>
     <string name="group_success_title">Your group is online!</string>
     <string name="group_success_subtitle">Congratulations, you have just created a new group. To make it more active, create the first post.</string>
     <string name="select_photo">Select a photo</string>
@@ -336,7 +336,7 @@
     <string name="my_events">I participate</string>
     <string name="canceled">- Canceled</string>
     <string name="title_btn_discover_event">Discover the events</string>
-    <string name="title_button_create_event">Create an event</string>
+    <string name="title_button_create_event">Create event</string>
     <string name="event_list_empty_state_title">You haven\'t joined an event yet</string>
     <string name="event_list_empty_state_subtitle">It\'s your chance to find out what\'s going on near you, or to create a new event!</string>
     <string name="discover_event_list_empty_state_title">No results match your search!</string>
@@ -1548,8 +1548,8 @@
     <string name="welcome_one_sensib">Find our awareness content <u><font color="#F55F24">here</font></u></string>
     <string name="action_show_charte"><u>Ethical Charter</u></string>
     <string name="signal_a_problem"><u>Report a problem</u></string>
-    <string name="login_button_resend_code"><u>Request a code again</u></string>
-    <string name="login_change_phone"><u>I changed my phone number</u></string>
+    <string name="login_button_resend_code"><u>Resend code</u></string>
+    <string name="login_change_phone"><u>My phone number has changed</u></string>
     <string name="newsfeed_load_more_button"><u>Search further.</u></string>
     <string name="newsfeed_tab_events_no_items_button"><u>Find more Entourage events here</u></string>
     <string name="pre_onboard_choice_about"><u>Who is the Entourage association?</u></string>
