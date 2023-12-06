@@ -1575,4 +1575,20 @@
     <string name="layout_translate_title_original_title">This page has not been translated.</string>
     <string name="layout_translate_title_translation_title">Some information has been automatically translated.</string>
 
+    <string name="category_other">Other</string>
+    <string name="category_food">Food</string>
+    <string name="category_housing">Housing</string>
+    <string name="category_medical">Medical</string>
+    <string name="category_orientation">Orientation</string>
+    <string name="category_insertion">Reintegration</string>
+    <string name="category_partners">Partners</string>
+    <string name="category_toilettes">Toilets</string>
+    <string name="category_fontaines">Fountains</string>
+    <string name="category_douches">Showers</string>
+    <string name="category_laverlinge">Laundries</string>
+    <string name="category_self_care">Well-being &amp; Activities</string>
+    <string name="category_vetements">Clothes &amp; Equipment</string>
+    <string name="category_bagages">Luggage Storage</string>
+    <string name="category_boitesdons">Donation Boxes &amp; Reading</string>
+
 </resources>

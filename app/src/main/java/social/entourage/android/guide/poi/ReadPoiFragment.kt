@@ -93,7 +93,7 @@ class ReadPoiFragment : BaseDialogFragment() {
     }
 
     private fun setupRVHelp() {
-        val filterAdapter = GuideFilterAdapter()
+        val filterAdapter = GuideFilterAdapter(requireContext())
         filterAdapter.setHelpOnly()
         guide_filter_list?.adapter = filterAdapter
 

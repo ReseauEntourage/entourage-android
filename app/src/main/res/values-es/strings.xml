@@ -2632,6 +2632,20 @@ Leerán este mensaje tan pronto como se unan al grupo.</string>
     <string name="layout_translate_title_original_button">Mostrar traducción</string>
     <string name="layout_translate_title_original_title">Esta página no ha sido traducida.</string>
     <string name="layout_translate_title_translation_title">Alguna información ha sido traducida automáticamente.</string>
-
+    <string name="category_other">Otro</string>
+    <string name="category_food">Alimentarse</string>
+    <string name="category_housing">Alojamiento</string>
+    <string name="category_medical">Atención médica</string>
+    <string name="category_orientation">Orientación</string>
+    <string name="category_insertion">Reinserción</string>
+    <string name="category_partners">Socios</string>
+    <string name="category_toilettes">Aseos</string>
+    <string name="category_fontaines">Fuentes</string>
+    <string name="category_douches">Duchas</string>
+    <string name="category_laverlinge">Lavanderías</string>
+    <string name="category_self_care">Bienestar &amp; Actividades</string>
+    <string name="category_vetements">Ropa &amp; Materiales</string>
+    <string name="category_bagages">Consignas</string>
+    <string name="category_boitesdons">Cajas de donación &amp; Lectura</string>
 
 </resources>
