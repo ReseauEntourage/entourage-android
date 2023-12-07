@@ -1576,10 +1576,10 @@
     <string name="layout_translate_title_translation_title">Some information has been automatically translated.</string>
 
     <string name="category_other">Other</string>
-    <string name="category_food">Food</string>
-    <string name="category_housing">Housing</string>
+    <string name="category_food">Feed</string>
+    <string name="category_housing">Lodge</string>
     <string name="category_medical">Medical</string>
-    <string name="category_orientation">Orientation</string>
+    <string name="category_orientation">Get oriented</string>
     <string name="category_insertion">Reintegration</string>
     <string name="category_partners">Partners</string>
     <string name="category_toilettes">Toilets</string>
