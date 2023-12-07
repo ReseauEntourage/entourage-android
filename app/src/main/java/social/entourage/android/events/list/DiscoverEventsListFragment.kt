@@ -77,7 +77,6 @@ class DiscoverEventsListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        AnalyticsEvents.logEvent(AnalyticsEvents.Action__Event__New)
         eventsPresenter = ViewModelProvider(requireActivity()).get(EventsPresenter::class.java)
         myId = EntourageApplication.me(activity)?.id
         eventsAdapter = AllEventAdapterV2(myId)
@@ -88,10 +87,12 @@ class DiscoverEventsListFragment : Fragment() {
         initializeEvents()
         setRVScrollListener()
         handleSwipeRefresh()
+
     }
 
     override fun onResume() {
         super.onResume()
+        AnalyticsEvents.logEvent(AnalyticsEvents.View__Event__List)
         binding.progressBar.visibility = View.VISIBLE
         eventsAdapter.clearList()
         myeventsAdapter.clearList()
