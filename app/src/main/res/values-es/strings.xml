@@ -461,7 +461,7 @@ Leerán este mensaje tan pronto como se unan al grupo.</string>
     <string name="welcome_two_text_pin_two">Habla de tus pasiones</string>
     <string name="welcome_two_text_pin_three">Destaca tus necesidades y deseos</string>
     <string name="welcome_two_text_four">¿Necesitas inspiración d\?</string>
-    <string name="welcome_two_button_title">saludar a mis vecinos</string>
+    <string name="welcome_two_button_title">Saludar a mis vecinos</string>
     <string name="welcome_card_example_card_content">Hola vecinos parisinos. Mi nombre m\ es Eric y j\. Espero conocerte en los eventos de Entourage Network.</string>
 
     <string name="welcome_four_title">Tú decides</string>
@@ -2492,7 +2492,7 @@ Leerán este mensaje tan pronto como se unan al grupo.</string>
     <string name="pop_up_rugby_france_content">¡Los mejores encuentros no necesariamente ocurren en el estadio! Únete al grupo \ “Experimentemos el deporte juntos\”</string>
 
     <!-- New Home string -->
-    <string name="home_v2_title">Aplicación L\ que recrea enlaces entre vecinos</string>
+    <string name="home_v2_title">La aplicación que reúne a los vecinos</string>
 
     <string name="home_v2_title_action">Echar una mano</string>
     <string name="home_v2_subtitle_action">¡Tus vecinos te necesitan!</string>
@@ -2503,16 +2503,16 @@ Leerán este mensaje tan pronto como se unan al grupo.</string>
     <string name="home_v2_btn_more_action_contrib">Ver todas las contribuciones</string>
 
     <string name="home_v2_title_event">Participa en un evento solidario</string>
-    <string name="home_v2_subtitle_event">Mucha solidaridad cerca.</string>
+    <string name="home_v2_subtitle_event">Mucha solidaridad cerca</string>
     <string name="home_v2_btn_more_event">Ver todos los eventos</string>
     <string name="tag_other">Otro</string>
 
     <string name="home_v2_title_group">Tus grupos de vecinos</string>
-    <string name="home_v2_subtitle_group">Intercambia con tus vecinos de todos los ámbitos de la vida.</string>
+    <string name="home_v2_subtitle_group">Intercambia con tus vecinos de todos los ámbitos de la vida</string>
     <string name="home_v2_btn_more_group">Ver todos los grupos</string>
 
     <string name="home_v2_title_map">Descubra direcciones útiles</string>
-    <string name="home_v2_subtitle_map">Todas las estructuras solidarias cercanas.</string>
+    <string name="home_v2_subtitle_map">Todas las estructuras solidarias cercanas</string>
     <string name="home_v2_button_map">Mapa de lugares solidarios cerca de ti</string>
 
     <string name="home_v2_title_pedago">Todo lo que necesitas saber para actuar</string>
@@ -2632,6 +2632,20 @@ Leerán este mensaje tan pronto como se unan al grupo.</string>
     <string name="layout_translate_title_original_button">Mostrar traducción</string>
     <string name="layout_translate_title_original_title">Esta página no ha sido traducida.</string>
     <string name="layout_translate_title_translation_title">Alguna información ha sido traducida automáticamente.</string>
-
+    <string name="category_other">Otro</string>
+    <string name="category_food">Alimentarse</string>
+    <string name="category_housing">Alojamiento</string>
+    <string name="category_medical">Atención médica</string>
+    <string name="category_orientation">Orientación</string>
+    <string name="category_insertion">Reinserción</string>
+    <string name="category_partners">Socios</string>
+    <string name="category_toilettes">Aseos</string>
+    <string name="category_fontaines">Fuentes</string>
+    <string name="category_douches">Duchas</string>
+    <string name="category_laverlinge">Lavanderías</string>
+    <string name="category_self_care">Bienestar &amp; Actividades</string>
+    <string name="category_vetements">Ropa &amp; Materiales</string>
+    <string name="category_bagages">Consignas</string>
+    <string name="category_boitesdons">Cajas de donación &amp; Lectura</string>
 
 </resources>

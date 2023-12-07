@@ -2492,7 +2492,7 @@ Sie werden diese Nachricht lesen, sobald sie der Gruppe beitreten.</string>
     <string name="pop_up_rugby_france_content">Die besten Begegnungen finden nicht unbedingt im Stadion statt! Treten Sie der \-Gruppe Lasst uns gemeinsam Sport erleben\“ bei</string>
 
     <!-- New Home string -->
-    <string name="home_v2_title">L\'app, die Verbindungen zwischen Nachbarn wiederherstellt</string>
+    <string name="home_v2_title">Die App, die Nachbarn zusammenbringt</string>
 
     <string name="home_v2_title_action">Geben Sie einen Schub</string>
     <string name="home_v2_subtitle_action">Deine Nachbarn brauchen dich!</string>
@@ -2637,6 +2637,21 @@ Sie werden diese Nachricht lesen, sobald sie der Gruppe beitreten.</string>
     <string name="layout_translate_title_original_button">Übersetzung anzeigen</string>
     <string name="layout_translate_title_original_title">Diese Seite wurde nicht übersetzt.</string>
     <string name="layout_translate_title_translation_title">Einige Informationen wurden automatisch übersetzt.</string>
+    <string name="category_other">Sonstiges</string>
+    <string name="category_food">Essen</string>
+    <string name="category_housing">Wohnen</string>
+    <string name="category_medical">Medizinisch</string>
+    <string name="category_orientation">Orientierung</string>
+    <string name="category_insertion">Wiedereingliederung</string>
+    <string name="category_partners">Partner</string>
+    <string name="category_toilettes">Toiletten</string>
+    <string name="category_fontaines">Brunnen</string>
+    <string name="category_douches">Duschen</string>
+    <string name="category_laverlinge">Waschsalons</string>
+    <string name="category_self_care">Wohlbefinden &amp; Aktivitäten</string>
+    <string name="category_vetements">Kleidung &amp; Material</string>
+    <string name="category_bagages">Gepäckaufbewahrung</string>
+    <string name="category_boitesdons">Spendenboxen &amp; Lesen</string>
 
 
 </resources>

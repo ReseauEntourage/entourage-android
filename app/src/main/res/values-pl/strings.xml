@@ -2649,6 +2649,20 @@ Przeczytają tę wiadomość, gdy tylko dołączą do grupy.</string>
     <string name="layout_translate_title_original_button">Pokaż tłumaczenie</string>
     <string name="layout_translate_title_original_title">Ta strona nie została przetłumaczona.</string>
     <string name="layout_translate_title_translation_title">Niektóre informacje zostały przetłumaczone automatycznie.</string>
-
+    <string name="category_other">Inne</string>
+    <string name="category_food">Jedzenie</string>
+    <string name="category_housing">Mieszkanie</string>
+    <string name="category_medical">Opieka medyczna</string>
+    <string name="category_orientation">Orientacja</string>
+    <string name="category_insertion">Reintegracja</string>
+    <string name="category_partners">Partnerzy</string>
+    <string name="category_toilettes">Toalety</string>
+    <string name="category_fontaines">Fontanny</string>
+    <string name="category_douches">Prysznice</string>
+    <string name="category_laverlinge">Pralnie</string>
+    <string name="category_self_care">Dobrostan &amp; Aktywności</string>
+    <string name="category_vetements">Odzież &amp; Wyposażenie</string>
+    <string name="category_bagages">Przechowalnie bagażu</string>
+    <string name="category_boitesdons">Pudła darów &amp; Czytanie</string>
 
 </resources>

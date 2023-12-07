@@ -2650,6 +2650,20 @@
     <string name="layout_translate_title_original_button">Показати переклад</string>
     <string name="layout_translate_title_original_title">Ця сторінка не була перекладена.</string>
     <string name="layout_translate_title_translation_title">Деяка інформація була перекладена автоматично.</string>
-
+    <string name="category_other">Інше</string>
+    <string name="category_food">Їжа</string>
+    <string name="category_housing">Житло</string>
+    <string name="category_medical">Медичне</string>
+    <string name="category_orientation">Орієнтація</string>
+    <string name="category_insertion">Реінтеграція</string>
+    <string name="category_partners">Партнери</string>
+    <string name="category_toilettes">Туалети</string>
+    <string name="category_fontaines">Фонтани</string>
+    <string name="category_douches">Душі</string>
+    <string name="category_laverlinge">Пральні</string>
+    <string name="category_self_care">Добробут &amp; Заходи</string>
+    <string name="category_vetements">Одяг &amp; Обладнання</string>
+    <string name="category_bagages">Зберігання багажу</string>
+    <string name="category_boitesdons">Бокси для пожертв &amp; Читання</string>
 
 </resources>

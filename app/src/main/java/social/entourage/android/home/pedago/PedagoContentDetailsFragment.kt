@@ -13,6 +13,9 @@ import android.webkit.WebViewClient
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import kotlinx.android.synthetic.main.new_fragment_home.view.header
+import kotlinx.android.synthetic.main.new_header.view.header_title
+import social.entourage.android.R
 import social.entourage.android.databinding.NewFragmentPedagoContentDetailsBinding
 import social.entourage.android.home.HomePresenter
 import social.entourage.android.api.model.Pedago
@@ -68,6 +71,7 @@ class PedagoContentDetailsFragment : Fragment() {
 
     private fun setView() {
         if (isAdded) {
+            binding.header.headerTitle.text = getString(R.string.pedago_details)
             with(binding.content) {
                 webViewClient = WebViewClient()
                 webChromeClient = WebChrome(requireActivity())
