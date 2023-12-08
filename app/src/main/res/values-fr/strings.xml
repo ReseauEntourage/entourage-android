@@ -2593,7 +2593,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="lang_ar">"Arabe"</string>
     <string name="lang_pl">"Polonais"</string>
 
-    <string name="translation_bottom_fragment_title">"Nous traduisons automatiquement les messages rédigés par les citoyens."</string>
+    <string name="translation_bottom_fragment_title">"Nous traduisons automatiquement les messages rédigés par les utilisateurs de l’application."</string>
     <string name="translation_bottom_fragment_main_title">"Traduction"</string>
 
     <string name="action_social_name">Temps de partage</string>
@@ -2648,7 +2648,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="action_crete_cat_about">Vous cherchez à proposer une %s qui ne rentre pas dans l\'une de ces catégories ? Il semble qu\'elle n\'ait pas sa place sur le réseau,mais vous pouvez toujours</string>
     <string name="action_create_cat_about_link"> en savoir plus par ici.</string>
     <string name="report_modal_title_translate">Traduire</string>
-    <string name="report_modal_subtitle_translate">Nous traduisons automatiquement les messages rédigés par les citoyens</string>
+    <string name="report_modal_subtitle_translate">Nous traduisons automatiquement les messages rédigés par les utilisateurs de l’application.</string>
     <string name="layout_translate_title_original">Afficher la version originale</string>
     <string name="layout_translate_title_translation">Afficher la traduction</string>
 
