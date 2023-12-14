@@ -31,7 +31,7 @@
                     />
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="2dp"
+                    android:layout_height="1dp"
                     android:id="@+id/separator"
                     android:background="@color/orange_light_separator_event"
                     app:layout_constraintTop_toBottomOf="@+id/title_section_header_event"
@@ -66,7 +66,7 @@
                     />
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="2dp"
+                    android:layout_height="1dp"
                     android:id="@+id/separator2"
                     android:background="@color/orange_light_separator_event"
                     app:layout_constraintTop_toBottomOf="@+id/title_section_header_event"
