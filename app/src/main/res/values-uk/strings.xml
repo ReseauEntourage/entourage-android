@@ -608,8 +608,8 @@
     <string name="action_leave_voice_message">Записати голосове повідомлення</string>
     <string name="action_voice_message_button">Почніть розпізнавання голосу</string>
     <string name="action_voice_message_not_supported">Розпізнавання голосу n\ не підтримується на вашому телефоні.</string>
-    <string name="at_km_from_me">до %d км від мене</string>
-    <string name="at_meter_from_me">до %d м від мене</string>
+    <string name="at_km_from_me">%d км від мене</string>
+    <string name="at_meter_from_me">%d м від мене</string>
     <string name="inf_hundred_meter">менше 100 м від мене</string>
     <string name="share_title_contrib">Цей внесок може вас зацікавити.</string>
     <string name="share_title_demande">Цей запит може вас зацікавити.</string>

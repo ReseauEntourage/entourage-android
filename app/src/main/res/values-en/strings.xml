@@ -539,8 +539,8 @@
     <string name="action_leave_voice_message">Record a voice message</string>
     <string name="action_voice_message_button">Start voice recognition</string>
     <string name="action_voice_message_not_supported">Voice recognition n\ is not supported on your phone.</string>
-    <string name="at_km_from_me">to %d km from me</string>
-    <string name="at_meter_from_me">to %d m from me</string>
+    <string name="at_km_from_me">%d km from me</string>
+    <string name="at_meter_from_me">%d m from me</string>
     <string name="inf_hundred_meter">less than 100m from me</string>
     <string name="share_title_contrib">This contribution might interest you.</string>
     <string name="share_title_demande">This request might interest you.</string>
@@ -875,13 +875,13 @@
     <string name="poi_detail_public">Audience</string>
     <string name="activity_read_poi_title">INFORMATION</string>
     <string name="poi_report_description">Add information about this location</string>
-    <string name="poi_report_button">To update</string>
+    <string name="poi_report_button">Update</string>
     <string name="poi_report_email_subject_format">J\ has updated information regarding \'%1$s\' (#%2$s)</string>
     <string name="poi_detail_open_time">Schedules</string>
     <string name="poi_detail_language">Spoken languages</string>
     <string name="poi_detail_soliguide_1">Information on this location is provided by Soliguide, solidarity cartography.</string>
     <string name="poi_detail_soliguide_2">For even more complete information available in several languages</string>
-    <string name="poi_detail_soliguide_consult">To consult</string>
+    <string name="poi_detail_soliguide_consult">Consult</string>
     <string name="map_poi_empty_popup">It looks like c\ is calm here!&amp;lt;br/&amp;gt;&amp;lt;br/&amp;gt;</string>
     <string name="map_poi_info_popup">The Solidarity Guide allows you to find out about support structures: solidarity restaurants, public showers, medical centers open to unhoused people...\n\n</string>
     <string name="map_empty_poi_recyclerV">That\'s all for the solidarity places in this radius around you</string>

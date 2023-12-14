@@ -603,8 +603,8 @@ Ei vor citi acest mesaj imediat ce se vor alătura grupului.</string>
     <string name="action_leave_voice_message">Înregistrați un mesaj vocal</string>
     <string name="action_voice_message_button">Porniți recunoașterea vocii</string>
     <string name="action_voice_message_not_supported">Recunoașterea vocală n\ nu este acceptată pe telefonul dvs.</string>
-    <string name="at_km_from_me">la %d km de mine</string>
-    <string name="at_meter_from_me">la %d m de la mine</string>
+    <string name="at_km_from_me">%d km de mine</string>
+    <string name="at_meter_from_me">%d m de la mine</string>
     <string name="inf_hundred_meter">la mai putin de 100 m de mine</string>
     <string name="share_title_contrib">Această contribuție vă poate interesa.</string>
     <string name="share_title_demande">Această solicitare vă poate interesa.</string>

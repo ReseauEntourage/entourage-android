@@ -48,6 +48,7 @@ class DiscoverGroupsListFragment : Fragment() {
         handleCrossButton()
         setRVScrollListener()
         binding.searchBarLayout.endIconMode = END_ICON_NONE
+
     }
 
     override fun onCreateView(

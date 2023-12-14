@@ -603,8 +603,8 @@ Przeczytają tę wiadomość, gdy tylko dołączą do grupy.</string>
     <string name="action_leave_voice_message">Nagraj wiadomość głosową</string>
     <string name="action_voice_message_button">Rozpocznij rozpoznawanie głosu</string>
     <string name="action_voice_message_not_supported">Rozpoznawanie głosu n\ nie jest obsługiwane w Twoim telefonie.</string>
-    <string name="at_km_from_me">do %d km ode mnie</string>
-    <string name="at_meter_from_me">do %d m ode mnie</string>
+    <string name="at_km_from_me">%d km ode mnie</string>
+    <string name="at_meter_from_me">%d m ode mnie</string>
     <string name="inf_hundred_meter">niecałe 100 m ode mnie</string>
     <string name="share_title_contrib">Ten wpis może Cię zainteresować.</string>
     <string name="share_title_demande">Ta prośba może Cię zainteresować.</string>

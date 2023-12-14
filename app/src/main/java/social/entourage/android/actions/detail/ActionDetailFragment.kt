@@ -39,6 +39,7 @@ import social.entourage.android.api.model.Action
 import social.entourage.android.api.model.ActionSection
 import social.entourage.android.api.model.ActionUtils
 import social.entourage.android.api.model.Conversation
+import social.entourage.android.language.LanguageManager
 import social.entourage.android.report.DataLanguageStock
 import social.entourage.android.report.ReportModalFragment
 import social.entourage.android.report.ReportTypes
@@ -49,6 +50,7 @@ import social.entourage.android.tools.utils.CustomAlertDialog
 import social.entourage.android.tools.utils.px
 import social.entourage.android.tools.log.AnalyticsEvents
 import timber.log.Timber
+import java.text.SimpleDateFormat
 
 class ActionDetailFragment : Fragment(), OnMapReadyCallback {
     private var _binding: NewFragmentActionDetailBinding? = null
@@ -128,7 +130,7 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
         val sharedPrefs = requireActivity().getSharedPreferences(
             getString(R.string.preference_file_key), Context.MODE_PRIVATE
         )
-        if(DataLanguageStock.userLanguage == action?.descriptionTranslations?.fromLang){
+        if(LanguageManager.getCurrentDeviceLanguage() == action?.descriptionTranslations?.fromLang){
             binding.layoutCsTranslate.visibility = View.GONE
         }else{
             binding.layoutCsTranslate.visibility = View.VISIBLE

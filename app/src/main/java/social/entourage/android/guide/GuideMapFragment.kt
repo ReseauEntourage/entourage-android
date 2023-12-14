@@ -179,7 +179,8 @@ class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), PoiListFr
     // PRIVATE METHODS
     // ----------------------------------
     private fun clearOldPois() {
-        presenter.clear()
+        //TODO UNCOMMENT FOR PROD
+        //presenter.clear()
         poisAdapter.removeAll()
         map?.clear()
     }

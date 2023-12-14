@@ -114,7 +114,14 @@ data class Action(
 
     fun createdDateString(context: android.content.Context) : String {
         createdAt?.let {
-            val _str = Utils.dateAsStringLitteralFromNow(it,context,null,false)
+            var locale = Locale.getDefault()
+            val _str = SimpleDateFormat(
+                context?.getString(R.string.feed_event_date),
+                locale
+            ).format(
+                it
+            )
+            //val _str = Utils.dateAsStringLitteralFromNow(it,context,null,false)
             return context.getString(R.string.action_created_by, _str)
         } ?: return  context.getString(R.string.action_created_by_)
     }
