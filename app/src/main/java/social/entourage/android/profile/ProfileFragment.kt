@@ -100,19 +100,21 @@ class ProfileFragment : Fragment() {
     }
 
     private fun updateUserView() {
-        val user = EntourageApplication.me(activity) ?: return
-        with(binding) {
-            name.text = user.displayName
-            imageProfile.let { photoView ->
-                user.avatarURL?.let { avatarURL ->
-                    Glide.with(requireActivity())
-                        .load(avatarURL)
-                        .placeholder(R.drawable.placeholder_user)
-                        .error(R.drawable.placeholder_user)
-                        .circleCrop()
-                        .into(photoView)
-                } ?: run {
-                    photoView.setImageResource(R.drawable.placeholder_user)
+        if(isAdded){
+            val user = EntourageApplication.me(activity) ?: return
+            with(binding) {
+                name.text = user.displayName
+                imageProfile.let { photoView ->
+                    user.avatarURL?.let { avatarURL ->
+                        Glide.with(requireActivity())
+                            .load(avatarURL)
+                            .placeholder(R.drawable.placeholder_user)
+                            .error(R.drawable.placeholder_user)
+                            .circleCrop()
+                            .into(photoView)
+                    } ?: run {
+                        photoView.setImageResource(R.drawable.placeholder_user)
+                    }
                 }
             }
         }
