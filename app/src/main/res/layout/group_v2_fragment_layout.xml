@@ -60,16 +60,16 @@ android:background="@drawable/new_profile_header_orange_dark">
                 android:textSize="15sp"
                 android:textColor="@android:color/black"
                 android:fontFamily="@font/quicksand_bold"
-                android:layout_marginStart="@dimen/entourage_little_margin_start"
-                android:layout_marginEnd="@dimen/entourage_little_margin_start"
+                android:layout_marginStart="@dimen/entourage_margin_section"
+                android:layout_marginEnd="@dimen/entourage_margin_section"
                />
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="@color/light_orange"
                 android:layout_marginTop="3dp"
-                android:layout_marginStart="@dimen/entourage_little_margin_start"
-                android:layout_marginEnd="@dimen/entourage_little_margin_start"/>
+                android:layout_marginStart="@dimen/entourage_margin_section"
+                android:layout_marginEnd="@dimen/entourage_margin_section"/>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerViewHorizontal"
@@ -78,8 +78,8 @@ android:background="@drawable/new_profile_header_orange_dark">
                 android:orientation="horizontal"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 android:scrollbars="horizontal"
-                android:layout_marginStart="@dimen/entourage_little_margin_start"
-                android:layout_marginEnd="@dimen/entourage_little_margin_start"
+                android:layout_marginStart="@dimen/entourage_margin_section"
+                android:layout_marginEnd="@dimen/entourage_margin_section"
                 android:layout_marginTop="20dp"/>
 
 
@@ -91,15 +91,15 @@ android:background="@drawable/new_profile_header_orange_dark">
                 android:textColor="@android:color/black"
                 android:fontFamily="@font/quicksand_bold"
                 android:layout_marginTop="@dimen/entourage_margin_section"
-                android:layout_marginStart="@dimen/entourage_little_margin_start"
-                android:layout_marginEnd="@dimen/entourage_little_margin_start"/>
+                android:layout_marginStart="@dimen/entourage_margin_section"
+                android:layout_marginEnd="@dimen/entourage_margin_section"/>
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="@color/light_orange"
                 android:layout_marginTop="3dp"
-                android:layout_marginStart="@dimen/entourage_little_margin_start"
-                android:layout_marginEnd="@dimen/entourage_little_margin_start"/>
+                android:layout_marginStart="@dimen/entourage_margin_section"
+                android:layout_marginEnd="@dimen/entourage_margin_section"/>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerViewVertical"
@@ -108,8 +108,8 @@ android:background="@drawable/new_profile_header_orange_dark">
                 android:orientation="vertical"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 android:scrollbars="vertical"
-                android:layout_marginStart="@dimen/entourage_little_margin_start"
-                android:layout_marginEnd="@dimen/entourage_little_margin_start"
+                android:layout_marginStart="@dimen/entourage_margin_section"
+                android:layout_marginEnd="@dimen/entourage_margin_section"
                 android:layout_marginTop="20dp"/>
 
         </LinearLayout>
