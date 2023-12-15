@@ -8,7 +8,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import social.entourage.android.EntourageApplication
+import social.entourage.android.R
 import social.entourage.android.api.model.Group
 import social.entourage.android.databinding.GroupV2FragmentLayoutBinding
 import social.entourage.android.databinding.NewFragmentGroupsBinding
@@ -45,11 +47,14 @@ class GroupeV2Fragment: Fragment() {
             androidx.recyclerview.widget.LinearLayoutManager.VERTICAL,
             false
         )
-        binding.recyclerViewHorizontal.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(
-            activity,
-            androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL,
-            false
-        )
+        binding.recyclerViewHorizontal.apply {
+            // Pagination
+            val settinglayoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            layoutManager = settinglayoutManager
+            val offsetInPixels = resources.getDimensionPixelSize(R.dimen.horizontal_offset) // Define this in your resources
+            setPadding(offsetInPixels, 0, 0, 0)
+            clipToPadding = false
+        }
         handleCreateGroupButton()
         setupScrollViewListener()
         AnalyticsEvents.logEvent(AnalyticsEvents.VIEW_GROUP_SHOW)
