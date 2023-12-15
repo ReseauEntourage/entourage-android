@@ -47,6 +47,7 @@ class GroupeV2Fragment: Fragment() {
             androidx.recyclerview.widget.LinearLayoutManager.VERTICAL,
             false
         )
+        binding.recyclerViewVertical.isVerticalScrollBarEnabled = false
         binding.recyclerViewHorizontal.apply {
             // Pagination
             val settinglayoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
@@ -54,6 +55,7 @@ class GroupeV2Fragment: Fragment() {
             val offsetInPixels = resources.getDimensionPixelSize(R.dimen.horizontal_offset) // Define this in your resources
             setPadding(offsetInPixels, 0, 0, 0)
             clipToPadding = false
+            isHorizontalScrollBarEnabled = false
         }
         handleCreateGroupButton()
         setupScrollViewListener()

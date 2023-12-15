@@ -44,14 +44,14 @@ android:background="@drawable/new_profile_header_orange_dark">
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="16dp"
         android:background="@drawable/new_bg_profile"
-        android:paddingTop="10dp"
         android:layout_marginStart="7dp"
         android:layout_marginEnd="7dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:layout_marginTop="10dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -62,6 +62,7 @@ android:background="@drawable/new_profile_header_orange_dark">
                 android:fontFamily="@font/quicksand_bold"
                 android:layout_marginStart="@dimen/entourage_margin_section"
                 android:layout_marginEnd="@dimen/entourage_margin_section"
+
                />
             <View
                 android:layout_width="match_parent"
