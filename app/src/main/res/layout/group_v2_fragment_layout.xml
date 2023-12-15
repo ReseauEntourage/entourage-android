@@ -196,6 +196,24 @@ android:background="@drawable/new_profile_header_orange_dark">
         android:src="@drawable/new_fab_plus"
         app:fab_colorNormal="@color/orange"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
+        app:layout_constraintRight_toRightOf="parent"
+        android:visibility="gone"/>
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/create_group_expanded"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        android:layout_margin="16dp"
+        android:src="@drawable/new_fab_plus"
+        android:text="@string/btn_create_group"
+        android:textColor="@color/white"
+        android:padding="10dp"
+        app:fabSize="auto"
+        android:textSize="15sp"
+        android:fontFamily="@font/nunitosans_bold"
+        app:backgroundTint="@color/orange"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:visibility="visible"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

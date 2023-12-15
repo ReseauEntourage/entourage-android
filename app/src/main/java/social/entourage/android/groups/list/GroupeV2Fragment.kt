@@ -116,12 +116,23 @@ class GroupeV2Fragment: Fragment() {
             )
             startActivityForResult(Intent(context, CreateGroupActivity::class.java), 0)
         }
+        binding.createGroupExpanded.setOnClickListener {
+            AnalyticsEvents.logEvent(
+                AnalyticsEvents.ACTION_GROUP_PLUS
+            )
+            startActivityForResult(Intent(context, CreateGroupActivity::class.java), 0)
+        }
     }
     private fun setupScrollViewListener() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            binding.nestedScrollView.setOnScrollChangeListener { _, _, scrollY, _, _ ->
+            binding.nestedScrollView.setOnScrollChangeListener { _, _, scrollY, _, oldScrollY ->
                 val newFontSize = calculateFontSize(scrollY)
                 binding.textViewTitleGroupes.textSize = newFontSize
+                if(scrollY > oldScrollY){
+                    handleButtonBehavior(false)
+                }else{
+                    handleButtonBehavior(true)
+                }
             }
         }
     }
@@ -133,4 +144,41 @@ class GroupeV2Fragment: Fragment() {
 
         return if (scrollY > scrollThreshold) minSize else maxSize
     }
+
+    fun handleButtonBehavior(isExtended:Boolean){
+        if (isExtended) {
+            animateToExtendedState()
+        } else {
+            animateToRetractedState()
+        }
+    }
+
+    private fun animateToExtendedState() {
+        if (binding.createGroupExpanded.visibility == View.VISIBLE) {
+            // Le bouton est déjà dans l'état étendu
+            return
+        }
+
+        binding.createGroupExpanded.alpha = 0f
+        binding.createGroupExpanded.visibility = View.VISIBLE
+        binding.createGroupExpanded.animate().scaleX(1f).alpha(1f).setDuration(200).withEndAction {
+            binding.createGroup.visibility = View.GONE
+        }.start()
+        binding.createGroup.animate().scaleX(0f).alpha(0f).setDuration(200).start()
+    }
+
+    private fun animateToRetractedState() {
+        if (binding.createGroup.visibility == View.VISIBLE) {
+            // Le bouton est déjà dans l'état rétracté
+            return
+        }
+
+        binding.createGroup.alpha = 0f
+        binding.createGroup.visibility = View.VISIBLE
+        binding.createGroup.animate().scaleX(1f).alpha(1f).setDuration(200).withEndAction {
+            binding.createGroupExpanded.visibility = View.GONE
+        }.start()
+        binding.createGroupExpanded.animate().scaleX(0f).alpha(0f).setDuration(200).start()
+    }
+
 }

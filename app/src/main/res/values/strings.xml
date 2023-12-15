@@ -2672,6 +2672,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="category_bagages">Bagageries</string>
     <string name="category_boitesdons">Boîtes à dons &amp; lire</string>
     <string name="all_groups">Tous les groupes</string>
+    <string name="btn_create_group">Créer un groupe</string>
 
 
 </resources>

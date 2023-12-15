@@ -2665,5 +2665,6 @@ Przeczytają tę wiadomość, gdy tylko dołączą do grupy.</string>
     <string name="category_bagages">Przechowalnie bagażu</string>
     <string name="category_boitesdons">Pudła darów &amp; Czytanie</string>
     <string name="all_groups">Wszystkie grupy</string>
+    <string name="btn_create_group">Utwórz grupę</string>
 
 </resources>
