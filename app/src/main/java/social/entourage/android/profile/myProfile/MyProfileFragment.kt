@@ -19,6 +19,7 @@ import social.entourage.android.api.MetaDataRepository
 import social.entourage.android.api.model.Tags
 import social.entourage.android.api.model.User
 import social.entourage.android.databinding.NewFragmentMyProfileBinding
+import social.entourage.android.language.LanguageManager
 import social.entourage.android.profile.ProfileFragmentDirections
 import social.entourage.android.tools.log.AnalyticsEvents
 import java.text.SimpleDateFormat
@@ -138,7 +139,7 @@ class MyProfileFragment : Fragment() {
                     if (it.contains("ambassador")) ambassador.visibility = View.VISIBLE
                 }
                 user.createdAt?.let {
-                    var locale = Locale.getDefault()
+                    var locale = LanguageManager.getLocaleFromPreferences(requireContext())
                     binding.joined.date.text = SimpleDateFormat(
                         requireContext().getString(R.string.profile_date_format),
                         locale

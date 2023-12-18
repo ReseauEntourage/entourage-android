@@ -30,6 +30,7 @@ import kotlinx.android.synthetic.main.new_comment_item_left.view.*
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.api.model.Post
+import social.entourage.android.language.LanguageManager
 import social.entourage.android.tools.setHyperlinkClickable
 import social.entourage.android.user.UserProfileActivity
 import social.entourage.android.tools.utils.Const
@@ -101,7 +102,7 @@ class CommentsListAdapter(
                 binding.comment_post.text = comment.content
                 binding.comment_post.setHyperlinkClickable()
                 comment.createdTime?.let {
-                    var locale = Locale.getDefault()
+                    var locale = LanguageManager.getLocaleFromPreferences(context)
                     binding.publication_date_post.text = "le ${SimpleDateFormat("dd.MM.yyyy",
                         locale
                     ).format(it)}"
@@ -186,8 +187,6 @@ class CommentsListAdapter(
 
                 var contentToShow = comment.content
                 val isTranslated = !translationExceptions.contains(comment.id)
-                Log.wtf("wtf", "isTranslated " + isTranslated)
-                Log.wtf("wtf", "contententTranslation " + Gson().toJson(comment.contentTranslations))
                 if(comment.contentTranslations != null){
                     if(isTranslated){
                         contentToShow = comment.contentTranslations?.translation
@@ -225,13 +224,13 @@ class CommentsListAdapter(
                 binding.information_layout.visibility = View.VISIBLE
                 binding.error.visibility = View.GONE
                 if (isConversation) {
-                    var locale = Locale.getDefault()
+                    var locale = LanguageManager.getLocaleFromPreferences(context)
                     binding.publication_date.text = SimpleDateFormat("HH'h'mm",
                         locale
                     ).format(it)
                 }
                 else {
-                    var locale = Locale.getDefault()
+                    var locale = LanguageManager.getLocaleFromPreferences(context)
                     binding.publication_date.text = "le ${SimpleDateFormat(
                         binding.context.getString(R.string.comments_date),
                         locale

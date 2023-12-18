@@ -432,7 +432,7 @@ class FeedFragment : Fragment(),CallbackReportFragment{
     private fun initializeEvents() {
         binding.eventsRecyclerview.apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-            adapter = group?.futureEvents?.let { GroupEventsAdapter(it) }
+            adapter = group?.futureEvents?.let { GroupEventsAdapter(it, context) }
         }
     }
 

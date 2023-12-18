@@ -11,6 +11,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import social.entourage.android.R
 import social.entourage.android.databinding.NewFragmentCreateEventStepTwoBinding
+import social.entourage.android.language.LanguageManager
 import social.entourage.android.tools.utils.transformIntoDatePicker
 import social.entourage.android.tools.log.AnalyticsEvents
 import java.text.SimpleDateFormat
@@ -149,7 +150,7 @@ class CreateEventStepTwoFragment : Fragment() {
             this?.let {
                 binding.layout.recurrenceTitle.root.isVisible = this.recurrence == null
                 binding.layout.recurrence.isVisible = this.recurrence == null
-                var locale = Locale.getDefault()
+                var locale = LanguageManager.getLocaleFromPreferences(requireContext())
                 val sdfDate = SimpleDateFormat(getString(R.string.events_date), locale)
                 val sdfTime = SimpleDateFormat(getString(R.string.events_time), locale)
                 binding.layout.eventDate.setText(this.metadata?.startsAt?.let { it1 ->

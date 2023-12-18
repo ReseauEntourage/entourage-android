@@ -1590,7 +1590,7 @@
     <string name="category_vetements">Clothes &amp; Equipment</string>
     <string name="category_bagages">Luggage Storage</string>
     <string name="category_boitesdons">Donation Boxes &amp; Reading</string>
-    <string name="all_groups">All Groups</string>
-    <string name="btn_create_group">Create Group</string>
+    <string name="all_groups">All groups</string>
+    <string name="btn_create_group">Create group</string>
 
 </resources>

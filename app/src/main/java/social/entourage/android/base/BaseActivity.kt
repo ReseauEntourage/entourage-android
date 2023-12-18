@@ -80,7 +80,6 @@ abstract class BaseActivity : AppCompatActivity() {
             if(stage.equals("h1")){
                 AnalyticsEvents.logEvent(AnalyticsEvents.NotificationClicked__OfferHelp__WDay1)}
             if(stage.equals("j2")){
-                Log.wtf("wtf", "clicked on notif and go on it")
                 AnalyticsEvents.logEvent(AnalyticsEvents.NotificationClicked__OfferHelp__WDay2)}
             if(stage.equals("j5")){
                 AnalyticsEvents.logEvent(AnalyticsEvents.NotificationClicked__OfferHelp__WDay5)}

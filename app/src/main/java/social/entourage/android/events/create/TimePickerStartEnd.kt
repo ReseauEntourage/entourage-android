@@ -8,6 +8,7 @@ import android.widget.EditText
 import androidx.constraintlayout.widget.ConstraintLayout
 import social.entourage.android.R
 import social.entourage.android.databinding.NewTimePickerStartEndBinding
+import social.entourage.android.language.LanguageManager
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
@@ -68,7 +69,7 @@ class TimePickerStartEnd @JvmOverloads constructor(
     private fun startTimeTransformIntoTimePicker(format: String) {
         binding.startTime.setOnClickListener {
             val endTimeString = binding.endTime.text.toString()
-            var locale = Locale.getDefault()
+            var locale = LanguageManager.getLocaleFromPreferences(context)
             val sdf = SimpleDateFormat(format, locale)
             val myCalendar = Calendar.getInstance()
             myCalendar.add(Calendar.MINUTE,5)
@@ -101,7 +102,7 @@ class TimePickerStartEnd @JvmOverloads constructor(
     private fun endTimeTransformIntoTimePicker(format: String) {
         binding.endTime.setOnClickListener {
             val startTimeString = binding.startTime.text.toString()
-            var locale = Locale.getDefault()
+            var locale = LanguageManager.getLocaleFromPreferences(context)
             val sdf = SimpleDateFormat(format, locale)
             val myCalendar = Calendar.getInstance()
 
@@ -140,7 +141,7 @@ class TimePickerStartEnd @JvmOverloads constructor(
     }
 
     private fun parseTime(format: String, time: String): Date? {
-        var locale = Locale.getDefault()
+        var locale = LanguageManager.getLocaleFromPreferences(context)
         val sdf = SimpleDateFormat(format, locale)
         return try {
             sdf.parse(time)

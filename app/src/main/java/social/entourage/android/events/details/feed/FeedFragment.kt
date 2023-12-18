@@ -50,6 +50,7 @@ import social.entourage.android.events.details.SettingsModalFragment
 import social.entourage.android.groups.details.feed.CallbackReportFragment
 import social.entourage.android.groups.details.feed.GroupMembersPhotosAdapter
 import social.entourage.android.groups.details.members.MembersType
+import social.entourage.android.language.LanguageManager
 import social.entourage.android.profile.myProfile.InterestsAdapter
 import social.entourage.android.report.DataLanguageStock
 import social.entourage.android.report.ReportModalFragment
@@ -213,7 +214,7 @@ class FeedFragment : Fragment(), CallbackReportFragment {
                     event?.membersCount,
                 )
             }
-            var locale = Locale.getDefault()
+            var locale = LanguageManager.getLocaleFromPreferences(requireContext())
 
 
             event?.metadata?.placeLimit?.let {

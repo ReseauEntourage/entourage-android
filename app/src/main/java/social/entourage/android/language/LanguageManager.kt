@@ -36,6 +36,10 @@ object LanguageManager {
         return sharedPreferences.getString(KEY_SELECTED_LANGUAGE, "fr") ?: "fr"
     }
 
+    fun getLocaleFromPreferences(context: Context): Locale {
+        val languageCode = loadLanguageFromPreferences(context)
+        return Locale(languageCode)
+    }
     fun setLocale(context: Context, langCode: String) {
         val locale = Locale(langCode)
         Locale.setDefault(locale)

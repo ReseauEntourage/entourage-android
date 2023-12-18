@@ -79,8 +79,8 @@ class DiscoverEventsListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         eventsPresenter = ViewModelProvider(requireActivity()).get(EventsPresenter::class.java)
         myId = EntourageApplication.me(activity)?.id
-        eventsAdapter = AllEventAdapterV2(myId)
-        myeventsAdapter = MyEventRVAdapter()
+        eventsAdapter = AllEventAdapterV2(myId,requireContext())
+        myeventsAdapter = MyEventRVAdapter(requireContext())
         eventsPresenter.getAllEvents.observe(viewLifecycleOwner, ::handleResponseGetEvents)
         eventsPresenter.hasChangedFilter.observe(viewLifecycleOwner, ::handleFilterChange)
         eventsPresenter.getAllMyEvents.observe(viewLifecycleOwner,::handleResponseGetMYEvents)

@@ -6,6 +6,7 @@ import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.api.model.ActionMetadata
 import social.entourage.android.api.model.notification.Translation
+import social.entourage.android.language.LanguageManager
 import social.entourage.android.tools.utils.Utils
 import java.io.Serializable
 import java.text.SimpleDateFormat
@@ -114,7 +115,7 @@ data class Action(
 
     fun createdDateString(context: android.content.Context) : String {
         createdAt?.let {
-            var locale = Locale.getDefault()
+            var locale = LanguageManager.getLocaleFromPreferences(context)
             val _str = SimpleDateFormat(
                 context?.getString(R.string.feed_event_date),
                 locale

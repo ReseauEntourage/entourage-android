@@ -176,14 +176,11 @@ class ReportModalFragment() : BottomSheetDialogFragment() {
         getIsOneToOne()
         if(DataLanguageStock.postLanguage == DataLanguageStock.userLanguage ){
             binding.layoutChooseTranslate.visibility = View.GONE
-            Log.wtf("wtf"  , "wtf 1")
         }else{
             binding.layoutChooseTranslate.visibility = View.VISIBLE
-            Log.wtf("wtf"  , "wtf 2")
         }
         if(isFromMe == true){
             binding.layoutChooseTranslate.visibility = View.GONE
-            Log.wtf("wtf"  , "wtf 3")
         }
         if(reportType == ReportTypes.REPORT_COMMENT.code || reportType == ReportTypes.REPORT_POST_EVENT.code){
             binding.layoutChooseTranslate.visibility = View.VISIBLE

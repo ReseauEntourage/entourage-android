@@ -137,7 +137,6 @@ class DetailConversationActivity : CommentActivity() {
         // Charge la langue préférée de l'utilisateur
         val languageCode = LanguageManager.loadLanguageFromPreferences(context)
         val locale = Locale(languageCode)
-        Log.wtf("wtf", "locale: $locale")
         val _allevents = allEvents?.groupBy { it.getFormatedStr() }
         val newList = ArrayList<Post>()
         _allevents?.let {
@@ -145,7 +144,6 @@ class DetailConversationActivity : CommentActivity() {
                 val datePost = Post()
                 datePost.isDatePostOnly = true
                 // Utilise la locale chargée pour formater la date
-                Log.wtf("wtf", "datePostText: $datePost.datePostText")
                 datePost.datePostText = mappp.key.capitalize(locale)
                 newList.add(datePost)
                 for (_msg in mappp.value) {

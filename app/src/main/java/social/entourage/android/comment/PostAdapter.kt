@@ -21,6 +21,7 @@ import com.google.gson.Gson
 import social.entourage.android.R
 import social.entourage.android.api.model.Post
 import social.entourage.android.databinding.NewLayoutPostBinding
+import social.entourage.android.language.LanguageManager
 import social.entourage.android.report.DataLanguageStock
 import social.entourage.android.tools.setHyperlinkClickable
 import social.entourage.android.user.UserProfileActivity
@@ -134,7 +135,7 @@ class PostAdapter(
                         )
                     }
                 }
-                var locale = Locale.getDefault()
+                var locale = LanguageManager.getLocaleFromPreferences(context)
                 binding.date.text = SimpleDateFormat(
                     itemView.context.getString(R.string.post_date),
                     locale

@@ -51,7 +51,6 @@ class GuideFilterAdapter(var context: Context) : BaseAdapter() {
         }
         // Populate the view
         val item = getItem(position)
-        Log.wtf("wtf", "hello passed here")
         val categoryDisplayName = when (item.categoryType.displayName) {
             "Other" -> context.getString(R.string.category_other)
             "Se nourrir" -> context.getString(R.string.category_food)

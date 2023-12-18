@@ -64,7 +64,7 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener {
     private lateinit var binding:FragmentHomeV2LayoutBinding
     private lateinit var homePresenter:HomePresenter
     private var homeGroupAdapter = HomeGroupAdapter()
-    private var homeEventAdapter = HomeEventAdapter()
+    private var homeEventAdapter = HomeEventAdapter(requireContext())
     private var homeActionAdapter = HomeActionAdapter(false)
     private val userPresenter: UserPresenter by lazy { UserPresenter() }
     private lateinit var homeHelpAdapter:HomeHelpAdapter
@@ -173,7 +173,6 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener {
 
     private fun checkSumEventAction(){
         checksum++
-        Log.wtf("wtf", "checksum " + checksum)
         if (checksum == 2){
             if(isEventsEmpty && isActionEmpty){
                 binding.itemHz.layoutItemHz.visibility = View.VISIBLE
@@ -458,7 +457,6 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener {
     }
     //HERE JUST RECONNECT OLD FUNCTIONS
     private fun updateNotifsCount(count: Int) {
-        Log.wtf("wtf", "notif count ? " + count)
         context?.resources?.let { resources ->
             val bgColor = if (count > 0) {
                 ResourcesCompat.getColor(resources, R.color.orange, null)

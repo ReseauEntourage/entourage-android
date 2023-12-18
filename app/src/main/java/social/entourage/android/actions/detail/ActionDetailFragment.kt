@@ -147,7 +147,6 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
     }
 
     private fun updateTranslationText() {
-        Log.wtf("wtf", "action description translation" + Gson().toJson(action?.descriptionTranslations))
         if(isTranslated){
             binding.titleActionTranslate.text = getString(R.string.layout_translate_title_translation_title)
             binding.uiActionDescription.text = action?.descriptionTranslations?.translation
