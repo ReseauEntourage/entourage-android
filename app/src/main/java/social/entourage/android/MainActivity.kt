@@ -34,6 +34,7 @@ import social.entourage.android.guide.GDSMainActivity
 import social.entourage.android.notifications.PushNotificationManager
 import social.entourage.android.home.CommunicationHandlerBadgeViewModel
 import social.entourage.android.home.UnreadMessages
+import social.entourage.android.language.LanguageManager
 import social.entourage.android.notifications.NotificationActionManager
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.utils.Const
@@ -48,7 +49,10 @@ class MainActivity : BaseSecuredActivity() {
     private val universalLinkManager = UniversalLinkManager(this)
     private var fromDeepLinlGoDiscoverGroup = false
     override fun onCreate(savedInstanceState: Bundle?) {
+        val savedLanguage = LanguageManager.loadLanguageFromPreferences(this)
+        LanguageManager.setLocale(this, savedLanguage)
         super.onCreate(savedInstanceState)
+        instance = this
         setContentView(R.layout.new_activity_main)
         viewModel = ViewModelProvider(this)[CommunicationHandlerBadgeViewModel::class.java]
         viewModel.badgeCount.observe(this,::handleUpdateBadgeResponse)
@@ -126,6 +130,11 @@ class MainActivity : BaseSecuredActivity() {
             useIntentForRedictection(this.intent)
             this.intent = null
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        instance = null
     }
 
     fun useIntentForRedictection(intent: Intent){
@@ -407,6 +416,9 @@ class MainActivity : BaseSecuredActivity() {
 
     fun deleteApplicationInfo(listener:() -> Unit) {
         presenter.deleteApplicationInfo(listener)
+    }
+    companion object {
+        var instance: MainActivity? = null
     }
 }
 

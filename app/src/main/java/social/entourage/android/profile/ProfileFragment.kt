@@ -1,6 +1,8 @@
 package social.entourage.android.profile
 
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +14,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import social.entourage.android.EntourageApplication
+import social.entourage.android.MainActivity
 import social.entourage.android.R
 import social.entourage.android.api.request.UserResponse
 import social.entourage.android.databinding.NewFragmentProfileBinding
@@ -36,6 +39,7 @@ class ProfileFragment : Fragment() {
         initializeEditButton()
         getUser()
         handleBackButton()
+        val activityName = activity?.javaClass?.name
     }
 
     private fun initializeTab() {
@@ -70,7 +74,7 @@ class ProfileFragment : Fragment() {
 
     private fun handleBackButton() {
         binding.iconBack.setOnClickListener {
-            requireActivity().finish()
+            requireActivity().finish() // termine l'activité actuelle
         }
     }
 

@@ -29,7 +29,7 @@ import social.entourage.android.api.model.Events
 import social.entourage.android.tools.utils.Utils
 import social.entourage.android.tools.log.AnalyticsEvents
 
-const val EVENTS_PER_PAGE = 30
+const val EVENTS_PER_PAGE = 10
 
 class DiscoverEventsListFragment : Fragment() {
 
@@ -48,6 +48,7 @@ class DiscoverEventsListFragment : Fragment() {
     private var activityResultLauncher:ActivityResultLauncher<Intent>? = null
 
     private var isFromFilters = false
+    private var isLoading = false
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -125,6 +126,7 @@ class DiscoverEventsListFragment : Fragment() {
             binding.recyclerView.layoutManager?.scrollToPosition(0)
             isFromFilters = false
         }
+        isLoading = false
     }
 
     private fun handleResponseGetMYEvents(myEvents: MutableList<Events>?) {
@@ -150,15 +152,14 @@ class DiscoverEventsListFragment : Fragment() {
                 } else if (scrollY < oldScrollY) {
                     eventsPresenter.tellParentFragmentToMoveButton(true)
                 }
+                Log.wtf("wtf", "scrollY " + scrollY)
+                Log.wtf("wtf", "v.measuredHeight " + v.measuredHeight )
+                Log.wtf("wtf", "is last page  " + eventsPresenter.isLastPage )
 
-                val layoutManager = binding.recyclerView.layoutManager as LinearLayoutManager
-                val lastVisibleItemPosition = layoutManager.findLastVisibleItemPosition()
-
-                if (lastVisibleItemPosition == eventsAdapter.events.count() - 4 && lastVisibleItemPosition > 0 && !eventsPresenter.isLastPage) {
+                if (scrollY >= v.measuredHeight - 500 && isLoading == false && !eventsPresenter.isLastPage) {
+                    isLoading = true
+                    loadEvents()
                     binding.progressBar.visibility = View.VISIBLE
-                    CoroutineScope(Dispatchers.IO).launch {
-                        loadEvents()
-                    }
                 }
             }
         }

@@ -33,6 +33,8 @@
                     android:orientation="vertical"
                     android:paddingHorizontal="@dimen/padding_horizontal">
 
+
+
                     <include
                         android:id="@+id/ethic"
                         layout="@layout/new_about_item"

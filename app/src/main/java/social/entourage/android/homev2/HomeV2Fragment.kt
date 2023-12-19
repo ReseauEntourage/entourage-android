@@ -41,6 +41,7 @@ import social.entourage.android.home.pedago.OnItemClick
 import social.entourage.android.home.pedago.PedagoDetailActivity
 import social.entourage.android.home.pedago.PedagoListActivity
 import social.entourage.android.home.pedago.PedagoListFragmentDirections
+import social.entourage.android.language.LanguageManager
 import social.entourage.android.notifications.InAppNotificationsActivity
 import social.entourage.android.profile.ProfileActivity
 import social.entourage.android.tools.log.AnalyticsEvents
@@ -84,6 +85,7 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
         binding = FragmentHomeV2LayoutBinding.inflate(layoutInflater)
         binding.homeNestedScrollView.visibility = View.GONE
         disapearAllAtBeginning()

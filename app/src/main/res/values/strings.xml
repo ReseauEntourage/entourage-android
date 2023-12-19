@@ -2593,4 +2593,9 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="home_v2_hz_item_title">"Tiens, ça semble un peu calme par ici…</string>
     <string name="home_v2_hz_item_subtitle">"Et si vous mettiez un peu de solidarité dans votre ville ? Entourage vous donne les clés pour vous lancer !</string>
     <string name="home_v2_hz_item_button">"En savoir plus</string>
+
+    <string name="translate">"Traduction</string>
+    <string name="title_language">"Langue</string>
+    <string name="select_language">"Sélectionnez votre langue</string>
+
 </resources>
