@@ -21,6 +21,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.badge.BadgeDrawable
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.messaging.FirebaseMessaging
+import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -58,6 +59,7 @@ class MainActivity : BaseSecuredActivity() {
         setContentView(R.layout.new_activity_main)
         viewModel = ViewModelProvider(this)[CommunicationHandlerBadgeViewModel::class.java]
         viewModel.badgeCount.observe(this,::handleUpdateBadgeResponse)
+        userPresenter.isGetUserSuccess.observe(this, ::handleResponse)
 
         initializeNavBar()
         if (authenticationController.isAuthenticated) {
@@ -116,7 +118,7 @@ class MainActivity : BaseSecuredActivity() {
     }
 
     override fun onResume() {
-        updateLanguage()
+        updateMainLanguage()
         super.onResume()
         initializeMetaData()
         if (authenticationController.isAuthenticated) {
@@ -136,6 +138,8 @@ class MainActivity : BaseSecuredActivity() {
      fun updateMainLanguage(){
         updateLanguage()
         val id = EntourageApplication.me(this)?.id
+         userPresenter.getUser(id ?: 0)
+
         if(id != null){
             userPresenter.updateLanguage(id, LanguageManager.loadLanguageFromPreferences(this))
             LanguageManager.setLocale(this, LanguageManager.loadLanguageFromPreferences(this))
@@ -153,6 +157,13 @@ class MainActivity : BaseSecuredActivity() {
     override fun onDestroy() {
         super.onDestroy()
         instance = null
+    }
+
+    fun handleResponse(success: Boolean){
+        Log.wtf("wtf", "wtf is sucess : $success")
+        Log.wtf("wtf", "user " + Gson().toJson(userPresenter.user.value))
+
+
     }
 
     fun useIntentForRedictection(intent: Intent){

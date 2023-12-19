@@ -430,7 +430,7 @@ object PushNotificationManager {
             PushNotificationContent.TYPE_ENTOURAGE_INVITATION,
             PushNotificationContent.TYPE_INVITATION_STATUS -> {
             }
-            else -> Timber.e("Notif has no pending intent")
+            else -> Timber.i("Notif has no pending intent")
         }
         messageIntent.action = messageType
         messageIntent.putExtras(args)
