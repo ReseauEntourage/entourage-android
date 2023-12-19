@@ -17,6 +17,7 @@ import social.entourage.android.api.model.Events
 import social.entourage.android.api.model.Interest
 import social.entourage.android.databinding.HomeV2EventItemLayoutBinding
 import social.entourage.android.events.details.feed.FeedActivity
+import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.px
 import java.text.SimpleDateFormat
@@ -50,6 +51,7 @@ class HomeEventAdapter:RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         if (holder is EventViewHolder) {
             val event = events[position]
             holder.binding.layoutItemHomeEvent.setOnClickListener { view ->
+                AnalyticsEvents.logEvent(AnalyticsEvents.Action_Home_Event_Detail)
                 (view.context as? Activity)?.startActivityForResult(
                     Intent(
                         view.context,

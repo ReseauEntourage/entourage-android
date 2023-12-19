@@ -51,7 +51,7 @@ class HomePedagoAdapter(private var onItemClickListener: OnItemClick): RecyclerV
 
             val pedago = pedagos[position]
             holder.binding.root.setOnClickListener {
-                AnalyticsEvents.logEvent(AnalyticsEvents.Pedago_View_card)
+                AnalyticsEvents.logEvent(AnalyticsEvents.Action_Home_Article)
                 onItemClickListener.onItemClick(pedago)
             }
 

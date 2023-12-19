@@ -16,6 +16,7 @@ import social.entourage.android.api.model.Events
 import social.entourage.android.api.model.Group
 import social.entourage.android.databinding.HomeV2GroupItemLayoutBinding
 import social.entourage.android.groups.details.feed.FeedActivity
+import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.px
 
@@ -48,6 +49,7 @@ class HomeGroupAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         if (holder is GroupViewHolder) {
             val group = groups[position]
             holder.binding.layout.setOnClickListener {view ->
+                AnalyticsEvents.logEvent(AnalyticsEvents.Action_Home_Group_Detail)
                 (view.context as? Activity)?.startActivityForResult(
                     Intent(view.context, FeedActivity::class.java).putExtra(
                         Const.GROUP_ID,

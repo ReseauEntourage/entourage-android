@@ -52,6 +52,7 @@
         android:fontFamily="@font/quicksand_bold"
         android:maxLines="2"
         tools:text="un super titre pour ma carte pedago pour tester si elle passe bien"/>
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

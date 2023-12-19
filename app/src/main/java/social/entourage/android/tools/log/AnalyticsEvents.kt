@@ -656,6 +656,38 @@ object AnalyticsEvents {
     const val  Clic__SeeContrib__Day10 = "Clic__SeeContrib__Day10"
     const val   View__DeleteContribPop__Day10 = "View__DeleteContribPop__Day10"
 
+    //NEW EVENT
+    const val   View__Home = "View__Home"
+    const val   Action__Home__Notif = "Action__Home__Notif"
+    const val   Action__Tab__Profil = "Action__Tab__Profil"
+    const val   Action_Home_Demand_Detail = "Action_Home_Demand_Detail"
+    const val   Action_Home_Demand_All = "Action_Home_Demand_All"
+    const val   Action_Home_Event_Detail = "Action_Home_Event_Detail"
+    const val   Action_Home_Event_All = "Action_Home_Event_All"
+    const val   Action_Home_Group_Detail = "Action_Home_Group_Detail"
+    const val   Action_Home_Group_All = "Action_Home_Group_All"
+    const val   Action__Home__Map = "Action__Home__Map"
+    const val   Action_Home_Article = "Action_Home_Article"
+    const val   Action__Home__Pedago = "Action__Home__Pedago"
+    const val   Action_Home_CreateEvent = "Action_Home_CreateEvent"
+    const val   Action_Home_CreateGroup = "Action_Home_CreateGroup"
+    const val   Action__Home__Moderator = "Action__Home__Moderator"
+    const val   Action_Home_Contrib_Detail = "Action_Home_Contrib_Detail"
+    const val   Action_Home_Contrib_All = "Action_Home_Contrib_All"
+    const val   Action_Home_Buffet = "Action_Home_Buffet"
+
+// NEW EVENT
+    const val   View__Event__List = "View__Event__List"
+    const val   Action__Event__LocationFilter = "Action__Event__LocationFilter"
+    const val   Action__Event__New = "Action__Event__New"
+
+
+
+
+
+
+
+
 
     // EVENT NOTIF PUSH
 

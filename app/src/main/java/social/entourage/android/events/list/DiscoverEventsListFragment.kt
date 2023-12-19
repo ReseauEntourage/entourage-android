@@ -75,6 +75,7 @@ class DiscoverEventsListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        AnalyticsEvents.logEvent(AnalyticsEvents.Action__Event__New)
         eventsPresenter = ViewModelProvider(requireActivity()).get(EventsPresenter::class.java)
         myId = EntourageApplication.me(activity)?.id
         eventsAdapter = AllEventAdapterV2(myId)
@@ -85,7 +86,6 @@ class DiscoverEventsListFragment : Fragment() {
         initializeEvents()
         setRVScrollListener()
         handleSwipeRefresh()
-        AnalyticsEvents.logEvent(AnalyticsEvents.Event_view_discover)
     }
 
     override fun onResume() {
@@ -180,7 +180,6 @@ class DiscoverEventsListFragment : Fragment() {
 
     private fun handleFilterChange(hasChangedFilter:Boolean){
         if(hasChangedFilter){
-            AnalyticsEvents.logEvent(AnalyticsEvents.Event_action_filter)
             val intent = Intent(context, EventFiltersActivity::class.java)
             intent.putExtra(EventFiltersActivity.FILTERS,currentFilters)
             activityResultLauncher?.launch(intent)

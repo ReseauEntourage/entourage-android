@@ -112,7 +112,7 @@ class EventsFragment : Fragment() {
     fun initView(){
 
         binding.uiLayoutLocationBt.setOnClickListener {
-            AnalyticsEvents.logEvent(AnalyticsEvents.Event_action_filter)
+            AnalyticsEvents.logEvent(AnalyticsEvents.Action__Event__LocationFilter)
             eventsPresenter.changedFilterFromUpperFragment()
 
         }
@@ -173,7 +173,8 @@ class EventsFragment : Fragment() {
 
     private fun handleLaunchCreateEvent(haveToLaunchCreateEvent:Boolean){
         if(haveToLaunchCreateEvent){
-            AnalyticsEvents.logEvent(AnalyticsEvents.Event_action_create)
+            AnalyticsEvents.logEvent(AnalyticsEvents.Action__Event__LocationFilter)
+
             startActivityForResult(
                 Intent(context, CreateEventActivity::class.java),
                 0
@@ -207,14 +208,14 @@ class EventsFragment : Fragment() {
 
     private fun createEvent() {
         binding.createEventExpanded.setOnClickListener {
-            AnalyticsEvents.logEvent(AnalyticsEvents.Event_action_create)
+            AnalyticsEvents.logEvent(AnalyticsEvents.Action__Event__New)
             startActivityForResult(
                 Intent(context, CreateEventActivity::class.java),
                 0
             )
         }
         binding.createEventRetracted.setOnClickListener {
-            AnalyticsEvents.logEvent(AnalyticsEvents.Event_action_create)
+            AnalyticsEvents.logEvent(AnalyticsEvents.Action__Event__New)
             startActivityForResult(
                 Intent(context, CreateEventActivity::class.java),
                 0

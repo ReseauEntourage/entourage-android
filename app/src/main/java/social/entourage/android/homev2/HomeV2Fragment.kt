@@ -45,6 +45,7 @@ import social.entourage.android.notifications.InAppNotificationsActivity
 import social.entourage.android.profile.ProfileActivity
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.utils.Const
+import social.entourage.android.tools.view.WebViewFragment
 import social.entourage.android.user.UserProfileActivity
 
 class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener {
@@ -54,7 +55,7 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener {
     private lateinit var homePresenter:HomePresenter
     private var homeGroupAdapter = HomeGroupAdapter()
     private var homeEventAdapter = HomeEventAdapter()
-    private var homeActionAdapter = HomeActionAdapter()
+    private var homeActionAdapter = HomeActionAdapter(false)
     private lateinit var homeHelpAdapter:HomeHelpAdapter
     private var homePedagoAdapter:HomePedagoAdapter? = null
     private var pagegroup = 0
@@ -71,7 +72,11 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener {
     private var isAnimating = false
     private var pedagoItemForCreateEvent:Pedago? = null
     private var pedagoItemForCreateGroup:Pedago? = null
-
+    private var checksum = 0
+    private var totalchecksum = 0
+    private var isEventsEmpty = false
+    private var isActionEmpty = false
+    private var isContribution = false
 
 
     override fun onCreateView(
@@ -80,6 +85,9 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentHomeV2LayoutBinding.inflate(layoutInflater)
+        binding.homeNestedScrollView.visibility = View.GONE
+        disapearAllAtBeginning()
+        binding.progressBar.visibility = View.VISIBLE
         homePresenter = ViewModelProvider(requireActivity()).get(HomePresenter::class.java)
         homeHelpAdapter = HomeHelpAdapter(this)
         homePedagoAdapter = HomePedagoAdapter(object : OnItemClick {
@@ -92,6 +100,7 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener {
                 }
             }
         })
+        AnalyticsEvents.logEvent(AnalyticsEvents.View__Home)
 
         setRecyclerViews()
         setSeeAllButtons()
@@ -106,14 +115,12 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         user = EntourageApplication.me(activity) ?: return
-        disapearAllAtBeginning()
         updateAvatar()
-        callToInitHome()
     }
 
     override fun onResume() {
         super.onResume()
-        disapearAllAtBeginning()
+        checksum = 0
         resetFilter()
         callToInitHome()
     }
@@ -124,10 +131,34 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener {
             if(meId == null) return
             homePresenter.getMyGroups(pagegroup,nbOfItemForHozrizontalList,meId)
             homePresenter.getAllEvents(pageEvent,nbOfItemForHozrizontalList,currentFilters.travel_distance(),currentFilters.latitude(),currentFilters.longitude(),"future")
-            homePresenter.getAllDemands(0,nbOfItemForVerticalList,currentFilters.travel_distance(),currentFilters.latitude(),currentFilters.longitude(),currentSectionsFilters.getSectionsForWS())
             homePresenter.getPedagogicalResources()
             homePresenter.getNotificationsCount()
 
+        }
+    }
+
+    private fun checkSumEventAction(){
+        checksum++
+        Log.wtf("wtf", "checksum " + checksum)
+        if (checksum == 2){
+            if(isEventsEmpty && isActionEmpty){
+                binding.itemHz.layoutItemHz.visibility = View.VISIBLE
+            }else{
+                binding.itemHz.layoutItemHz.visibility = View.GONE
+            }
+        }
+        binding.itemHz.buttonHzItem.setOnClickListener {
+            val urlString = "https://reseauentourage.notion.site/Buffet-du-lien-social-69c20e089dbd483cb093e90ae2953a54"
+            WebViewFragment.newInstance(urlString, 0, true)
+                .show(requireActivity().supportFragmentManager, WebViewFragment.TAG)
+        }
+    }
+
+    private fun doTotalchecksumToDisplayHomeFirstTime(){
+        totalchecksum++
+        if(totalchecksum == 5){
+            binding.homeNestedScrollView.visibility = View.VISIBLE
+            binding.progressBar.visibility = View.GONE
         }
     }
 
@@ -141,7 +172,6 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener {
         binding.rvHomeGroup.visibility = View.GONE
         binding.homeSubtitleGroup.visibility = View.GONE
         binding.homeTitleGroup.visibility = View.GONE
-
         binding.btnMoreEvent.visibility = View.GONE
         binding.rvHomeEvent.visibility = View.GONE
         binding.homeSubtitleEvent.visibility = View.GONE
@@ -191,12 +221,20 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener {
     fun setSeeAllButtons(){
         val mainActivity = (requireActivity() as? MainActivity)
         binding.btnMoreGroup.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Action_Home_Group_All)
             mainActivity?.setGoDiscoverGroupFromDeepL(true)
             mainActivity?.goGroup()
         }
-        binding.btnMoreEvent.setOnClickListener { mainActivity?.goEvent() }
-        binding.btnMoreAction.setOnClickListener { mainActivity?.goDemand() }
+        binding.btnMoreEvent.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Action_Home_Event_All)
+            mainActivity?.goEvent()
+        }
+        binding.btnMoreAction.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Action_Home_Demand_All)
+            mainActivity?.goDemand()
+        }
         binding.btnMorePedago.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Action__Home__Pedago)
             val intent = Intent(requireActivity(), PedagoListActivity::class.java)
             requireContext().startActivity(intent)
         }
@@ -204,7 +242,7 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener {
 
     fun setNotifButton(){
         binding.uiLayoutNotif.setOnClickListener {
-            AnalyticsEvents.logEvent(AnalyticsEvents.Home_action_notif)
+            AnalyticsEvents.logEvent(AnalyticsEvents.Action__Home__Notif)
             val intent = Intent(requireContext(), InAppNotificationsActivity::class.java)
             intent.putExtra(Const.NOTIF_COUNT,homePresenter.notifsCount.value)
             startActivityForResult(intent, 0)
@@ -225,11 +263,17 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener {
         if(allGroup == null){
             return
         }
+        doTotalchecksumToDisplayHomeFirstTime()
         if(allGroup.size > 0 ){
             binding.btnMoreGroup.visibility = View.VISIBLE
             binding.rvHomeGroup.visibility = View.VISIBLE
             binding.homeSubtitleGroup.visibility = View.VISIBLE
             binding.homeTitleGroup.visibility = View.VISIBLE
+        }else{
+            binding.btnMoreGroup.visibility = View.GONE
+            binding.rvHomeGroup.visibility = View.GONE
+            binding.homeSubtitleGroup.visibility = View.GONE
+            binding.homeTitleGroup.visibility = View.GONE
         }
         this.homeGroupAdapter.resetData(allGroup)
     }
@@ -238,12 +282,32 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener {
         if(allEvent == null){
             return
         }
+        doTotalchecksumToDisplayHomeFirstTime()
+
         if(allEvent.size > 0 ){
+            var _offline_events:MutableList<Events> = mutableListOf()
+            for(event in allEvent){
+                if(event.online == false){
+                    _offline_events.add(event)
+                }
+            }
+            if(_offline_events.size == 0){
+                isEventsEmpty = true
+            }else{
+                isEventsEmpty = false
+            }
             binding.btnMoreEvent.visibility = View.VISIBLE
             binding.rvHomeEvent.visibility = View.VISIBLE
             binding.homeSubtitleEvent.visibility = View.VISIBLE
             binding.homeTitleEvent.visibility = View.VISIBLE
+        }else{
+            isEventsEmpty = true
+            binding.btnMoreEvent.visibility = View.GONE
+            binding.rvHomeEvent.visibility = View.GONE
+            binding.homeSubtitleEvent.visibility = View.GONE
+            binding.homeTitleEvent.visibility = View.GONE
         }
+        checkSumEventAction()
         this.homeEventAdapter.resetData(allEvent)
 
     }
@@ -251,11 +315,33 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener {
         if(allAction == null){
             return
         }
+        doTotalchecksumToDisplayHomeFirstTime()
+
         if(allAction.size > 0 ){
+            if(isContribution){
+                binding.homeTitleAction.text = getString(R.string.home_v2_title_action_contrib)
+                binding.homeSubtitleAction.text = getString(R.string.home_v2_subtitle_action_contrib)
+                binding.titleButtonAction.text = getString(R.string.home_v2_btn_more_action_contrib)
+                binding.btnMoreAction.setOnClickListener {
+                    AnalyticsEvents.logEvent(AnalyticsEvents.Action_Home_Contrib_All)
+                    val mainActivity = (requireActivity() as? MainActivity)
+                    mainActivity?.goContrib()
+                }
+            }
+            isActionEmpty = false
             binding.btnMoreAction.visibility = View.VISIBLE
             binding.rvHomeAction.visibility = View.VISIBLE
             binding.homeSubtitleAction.visibility = View.VISIBLE
             binding.homeTitleAction.visibility = View.VISIBLE
+        }else{
+            isActionEmpty = true
+            binding.btnMoreAction.visibility = View.GONE
+            binding.rvHomeAction.visibility = View.GONE
+            binding.homeSubtitleAction.visibility = View.GONE
+            binding.homeTitleAction.visibility = View.GONE
+        }
+        if(!isContribution){
+            checkSumEventAction()
         }
         this.homeActionAdapter.resetData(allAction)
 
@@ -264,11 +350,17 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener {
         if(allPedago == null) {
             return
         }
+        doTotalchecksumToDisplayHomeFirstTime()
         if(allPedago.size > 0 ){
             binding.btnMorePedago.visibility = View.VISIBLE
             binding.rvHomePedago.visibility = View.VISIBLE
             binding.homeSubtitlePedago.visibility = View.VISIBLE
             binding.homeTitlePedago.visibility = View.VISIBLE
+        }else{
+            binding.btnMorePedago.visibility = View.GONE
+            binding.rvHomePedago.visibility = View.GONE
+            binding.homeSubtitlePedago.visibility = View.GONE
+            binding.homeTitlePedago.visibility = View.GONE
         }
         var pedagos:MutableList<Pedago> = mutableListOf()
         for(pedago in allPedago){
@@ -303,10 +395,21 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener {
 
     private fun updateContributionsView(summary: Summary) {
         handleHelps(summary)
+        isContribution = summary.preference.equals("contribution")
+        if(isContribution){
+            if(!homeActionAdapter.getIsContrib()){
+                homeActionAdapter = HomeActionAdapter(isContribution)
+            }
+            binding.rvHomeAction.adapter = homeActionAdapter
+            homePresenter.getAllContribs(0,nbOfItemForVerticalList,currentFilters.travel_distance(),currentFilters.latitude(),currentFilters.longitude(),currentSectionsFilters.getSectionsForWS())
+        }else{
+            homePresenter.getAllDemands(0,nbOfItemForVerticalList,currentFilters.travel_distance(),currentFilters.latitude(),currentFilters.longitude(),currentSectionsFilters.getSectionsForWS())
+        }
     }
 
     fun handleHelps(summary: Summary){
         if(isAdded){
+            doTotalchecksumToDisplayHomeFirstTime()
             val formattedString = requireContext().getString(R.string.home_v2_help_title_three, summary.moderator?.displayName)
             val help1 = Help(requireContext().getString(R.string.home_v2_help_title_one) , R.drawable.first_help_item_illu)
             val help2 = Help(requireContext().getString(R.string.home_v2_help_title_two) , R.drawable.ic_home_v2_create_group)
@@ -318,8 +421,6 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener {
             homeHelpAdapter.resetData(helps, summary)
         }
     }
-
-
     //HERE JUST RECONNECT OLD FUNCTIONS
     private fun updateNotifsCount(count: Int) {
         Log.wtf("wtf", "notif count ? " + count)
@@ -362,7 +463,7 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener {
 
     private fun setMapButton(){
         binding.homeButtonMap.setOnClickListener {
-            AnalyticsEvents.logEvent(AnalyticsEvents.Home_action_map)
+            AnalyticsEvents.logEvent(AnalyticsEvents.Action__Home__Map)
             val intent = Intent(requireContext(), GDSMainActivity::class.java)
             startActivityForResult(intent, 0)
         }
@@ -370,7 +471,7 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener {
 
     private fun setProfileButton(){
         binding.avatar.setOnClickListener {
-            AnalyticsEvents.logEvent(AnalyticsEvents.Home_action_profile)
+            AnalyticsEvents.logEvent(AnalyticsEvents.Action__Tab__Profil)
             startActivityForResult(
                 Intent(context, ProfileActivity::class.java), 0
             )
@@ -430,19 +531,21 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener {
 
     override fun onItemClick(position: Int, moderatorId:Int) {
         if(position == 0){
+            AnalyticsEvents.logEvent(AnalyticsEvents.Action_Home_CreateGroup)
             val intent = Intent(requireActivity(), PedagoDetailActivity::class.java)
             intent.putExtra(Const.ID, pedagoItemForCreateGroup?.id)
             intent.putExtra(Const.HTML_CONTENT, pedagoItemForCreateGroup?.html)
             requireActivity().startActivity(intent)
         }
         if(position == 1){
+            AnalyticsEvents.logEvent(AnalyticsEvents.Action_Home_CreateEvent)
             val intent = Intent(requireActivity(), PedagoDetailActivity::class.java)
             intent.putExtra(Const.ID, pedagoItemForCreateEvent?.id)
             intent.putExtra(Const.HTML_CONTENT, pedagoItemForCreateEvent?.html)
             requireActivity().startActivity(intent)
         }
         if(position == 2){
-            AnalyticsEvents.logEvent(AnalyticsEvents.Home_action_moderator)
+            AnalyticsEvents.logEvent(AnalyticsEvents.Action__Home__Moderator)
             startActivity(
                 Intent(context, UserProfileActivity::class.java).putExtra(
                     Const.USER_ID,

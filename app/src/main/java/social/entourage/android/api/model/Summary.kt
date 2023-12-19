@@ -48,6 +48,9 @@ class Summary : Serializable {
     @SerializedName("unclosed_action")
     var unclosedAction: SummaryAction? = null
 
+    @SerializedName("preference")
+    var preference: String? = null
+
 }
 
 class HomeAction : Serializable {
