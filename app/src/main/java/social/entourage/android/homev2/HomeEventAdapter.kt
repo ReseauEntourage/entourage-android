@@ -94,6 +94,7 @@ class HomeEventAdapter:RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 if(it.size > 0){
                     val context = holder.binding.root.context
                     holder.binding.tvTagHomeV2EventItem.text = it[0].replaceFirstChar { char -> char.uppercaseChar() }
+                    holder.binding.homeV2ItemEventLayoutTag.visibility = View.VISIBLE
                     if(it[0].equals("other")){
                         holder.binding.tvTagHomeV2EventItem.text = context.getString(R.string.tag_other)
                     }

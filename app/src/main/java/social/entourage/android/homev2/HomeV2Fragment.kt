@@ -306,15 +306,17 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener {
     }
 
     fun handleHelps(summary: Summary){
-        val formattedString = requireContext().getString(R.string.home_v2_help_title_three, summary.moderator?.displayName)
-        val help1 = Help(requireContext().getString(R.string.home_v2_help_title_one) , R.drawable.first_help_item_illu)
-        val help2 = Help(requireContext().getString(R.string.home_v2_help_title_two) , R.drawable.ic_home_v2_create_group)
-        val help3 = Help(formattedString , R.drawable.first_help_item_illu)
-        var helps:MutableList<Help> = mutableListOf()
-        helps.add(help1)
-        helps.add(help2)
-        helps.add(help3)
-        homeHelpAdapter.resetData(helps, summary)
+        if(isAdded){
+            val formattedString = requireContext().getString(R.string.home_v2_help_title_three, summary.moderator?.displayName)
+            val help1 = Help(requireContext().getString(R.string.home_v2_help_title_one) , R.drawable.first_help_item_illu)
+            val help2 = Help(requireContext().getString(R.string.home_v2_help_title_two) , R.drawable.ic_home_v2_create_group)
+            val help3 = Help(formattedString , R.drawable.first_help_item_illu)
+            var helps:MutableList<Help> = mutableListOf()
+            helps.add(help1)
+            helps.add(help2)
+            helps.add(help3)
+            homeHelpAdapter.resetData(helps, summary)
+        }
     }
 
 
