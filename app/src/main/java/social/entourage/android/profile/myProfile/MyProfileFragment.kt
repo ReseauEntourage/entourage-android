@@ -137,9 +137,10 @@ class MyProfileFragment : Fragment() {
                 if (it.contains("ambassador")) ambassador.visibility = View.VISIBLE
             }
             user.createdAt?.let {
+                var locale = Locale.getDefault()
                 binding.joined.date.text = SimpleDateFormat(
                     requireContext().getString(R.string.profile_date_format),
-                    Locale.FRANCE
+                    locale
                 ).format(
                     it
                 )

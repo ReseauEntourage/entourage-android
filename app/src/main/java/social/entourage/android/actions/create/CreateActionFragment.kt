@@ -175,13 +175,16 @@ class CreateActionFragment : Fragment() {
         )
     }
 
-    private fun handleButtonState(isButtonActive: Boolean) {
+    private fun handleButtonState(isButtonActive: Boolean?) {
+        val isActive = isButtonActive ?: false // Si isButtonActive est null, considérez-le comme false.
+
         val background = ContextCompat.getDrawable(
             requireContext(),
-            if (isButtonActive) R.drawable.new_rounded_button_light_orange else R.drawable.new_bg_rounded_inactive_button_light_orange
+            if (isActive) R.drawable.new_rounded_button_light_orange else R.drawable.new_bg_rounded_inactive_button_light_orange
         )
         binding.next.background = background
     }
+
 
     private fun setPreviousClickListener() {
         binding.previous.setOnClickListener {

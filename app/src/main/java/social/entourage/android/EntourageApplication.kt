@@ -105,6 +105,7 @@ class EntourageApplication : MultiDexApplication() {
                 editor.remove(KEY_NOTIFICATIONS_ENABLED)
                 editor.remove(KEY_GEOLOCATION_ENABLED)
                 editor.remove(KEY_NO_MORE_DEMAND)
+                editor.remove(isFirstTimeHome)
                 editor.putInt(KEY_NB_OF_LAUNCH, 0)
                 editor.apply()
 
@@ -190,6 +191,7 @@ class EntourageApplication : MultiDexApplication() {
         const val KEY_ONBOARDING_SHOW_POP_FIRSTLOGIN = "isFirstLogin"
         const val KEY_NB_OF_LAUNCH = "nbOfLaunch"
         const val KEY_NO_MORE_DEMAND = "noMoreDemand"
+        const val isFirstTimeHome = "noMoreDemand"
 
         // ----------------------------------
         // MEMBERS

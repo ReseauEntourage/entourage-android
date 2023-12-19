@@ -315,25 +315,27 @@ class ReportModalFragment : BottomSheetDialogFragment() {
     }
 
     private fun handleReportResponse(success: Boolean) {
-        if(success){
-            if(reportType == ReportTypes.REPORT_EVENT.code){
-                AnalyticsEvents.logEvent("Action_EventOption_ReportConfirmation")
-            }else if(reportType == ReportTypes.REPORT_CONTRIB.code){
-                AnalyticsEvents.logEvent("Action__Contrib__Report_Confirmation")
-            }else if(reportType == ReportTypes.REPORT_DEMAND.code){
-                AnalyticsEvents.logEvent("Action__Demand__Report_Confirmation")
-            }else if (reportType == ReportTypes.REPORT_GROUP.code){
-                AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_GROUP_REPORT)
+        if(isAdded){
+            if(success){
+                if(reportType == ReportTypes.REPORT_EVENT.code){
+                    AnalyticsEvents.logEvent("Action_EventOption_ReportConfirmation")
+                }else if(reportType == ReportTypes.REPORT_CONTRIB.code){
+                    AnalyticsEvents.logEvent("Action__Contrib__Report_Confirmation")
+                }else if(reportType == ReportTypes.REPORT_DEMAND.code){
+                    AnalyticsEvents.logEvent("Action__Demand__Report_Confirmation")
+                }else if (reportType == ReportTypes.REPORT_GROUP.code){
+                    AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_GROUP_REPORT)
+                }
             }
+            if (success) CustomAlertDialog.showOnlyOneButton(
+                requireContext(),
+                title,
+                getString(R.string.report_sent),
+                getString(R.string.button_OK)
+            )
+            else showToast(getString(R.string.user_report_error_send_failed))
+            dismiss()
         }
-        if (success) CustomAlertDialog.showOnlyOneButton(
-            requireContext(),
-            title,
-            getString(R.string.report_sent),
-            getString(R.string.button_OK)
-        )
-        else showToast(getString(R.string.user_report_error_send_failed))
-        dismiss()
     }
 
     private fun handleDeletedResponse(success: Boolean) {

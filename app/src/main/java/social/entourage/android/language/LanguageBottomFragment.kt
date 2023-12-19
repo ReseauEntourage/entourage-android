@@ -9,6 +9,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import social.entourage.android.EntourageApplication
+import social.entourage.android.R
 import social.entourage.android.databinding.BottomFragmentLanguageFragmentBinding
 import social.entourage.android.user.UserPresenter
 
@@ -55,19 +57,19 @@ class LanguageBottomFragment : BottomSheetDialogFragment(), OnLanguageClicked {
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
     }
 
+    //TODO : REFACTOR WITH LANGUAGE CODE
     private fun fillArray() {
         val currentLanguageCode = LanguageManager.loadLanguageFromPreferences(requireContext())
-
         languages = mutableListOf(
             LanguageItem("Français", isSelected = LanguageManager.mapLanguageToCode("Français") == currentLanguageCode),
             LanguageItem("English", isSelected = LanguageManager.mapLanguageToCode("English") == currentLanguageCode),
-            LanguageItem("Deutsch", isSelected = LanguageManager.mapLanguageToCode("Deutsch") == currentLanguageCode),
-            LanguageItem("Español", isSelected = LanguageManager.mapLanguageToCode("Español") == currentLanguageCode),
-            LanguageItem("Polski", isSelected = LanguageManager.mapLanguageToCode("Polski") == currentLanguageCode),
+            //LanguageItem("العربية", isSelected = LanguageManager.mapLanguageToCode("العربية") == currentLanguageCode),
             LanguageItem("Українська", isSelected = LanguageManager.mapLanguageToCode("Українська") == currentLanguageCode),
+            LanguageItem("Español", isSelected = LanguageManager.mapLanguageToCode("Español") == currentLanguageCode),
+            LanguageItem("Deutsch", isSelected = LanguageManager.mapLanguageToCode("Deutsch") == currentLanguageCode),
             LanguageItem("Română", isSelected = LanguageManager.mapLanguageToCode("Română") == currentLanguageCode),
-            LanguageItem("العربية", isSelected = LanguageManager.mapLanguageToCode("العربية") == currentLanguageCode)
-        )
+            LanguageItem("Polski", isSelected = LanguageManager.mapLanguageToCode("Polski") == currentLanguageCode)
+            )
     }
 
     override fun onLangChanged(langItem: LanguageItem) {
@@ -75,8 +77,8 @@ class LanguageBottomFragment : BottomSheetDialogFragment(), OnLanguageClicked {
 
         LanguageManager.saveLanguageToPreferences(requireContext(), langCode)
         LanguageManager.setLocale(requireContext(), langCode)
+        val id = EntourageApplication.me(requireContext())?.id!!
         userPresenter.updateLanguage(id, langCode)
-
         var k = 0
         for (_lang in languages) {
             if (_lang.lang == langItem.lang) {
@@ -84,6 +86,8 @@ class LanguageBottomFragment : BottomSheetDialogFragment(), OnLanguageClicked {
             }
             k++
         }
+        binding.titleName.text = getString(R.string.select_language)
+        binding.validate.text = getString(R.string.validate)
     }
 
     private fun handleCrossButton() {

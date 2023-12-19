@@ -25,6 +25,7 @@ import social.entourage.android.base.BaseActivity
 import social.entourage.android.databinding.ActivityLayoutWelcomeOneBinding
 import social.entourage.android.home.pedago.PedagoContentDetailsFragment
 import android.webkit.WebView
+import social.entourage.android.MainActivity
 import social.entourage.android.R
 import social.entourage.android.home.pedago.PedagoListActivity
 import social.entourage.android.tools.log.AnalyticsEvents
@@ -36,6 +37,7 @@ class WelcomeOneActivity:BaseActivity(), OnVideoLoaCallback {
     private var videoLink = "https://www.youtube.com/watch?v=IYUo5WAZxXs"
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        super.updateLanguage()
         super.onCreate(savedInstanceState)
         binding = ActivityLayoutWelcomeOneBinding.inflate(layoutInflater)
 
@@ -165,10 +167,16 @@ class WelcomeOneActivity:BaseActivity(), OnVideoLoaCallback {
             }
         }
     }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        val intent = Intent(this, MainActivity::class.java)
+            .addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+        this.startActivity(intent)
+    }
 }
 
 class CustomWebViewClient(var callback:OnVideoLoaCallback) : WebViewClient() {
-
 
     override fun onPageFinished(view: WebView?, url: String?) {
         super.onPageFinished(view, url)

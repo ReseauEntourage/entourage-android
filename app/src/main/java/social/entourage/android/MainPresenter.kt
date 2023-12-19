@@ -15,6 +15,7 @@ import social.entourage.android.api.request.UserRequest
 import social.entourage.android.api.request.UserResponse
 import social.entourage.android.authentication.AuthenticationController
 import social.entourage.android.configuration.Configuration
+import social.entourage.android.onboarding.pre_onboarding.PreOnboardingLanguage
 import social.entourage.android.onboarding.pre_onboarding.PreOnboardingStartActivity
 import timber.log.Timber
 
@@ -41,7 +42,7 @@ class MainPresenter(private val activity: MainActivity) {
         if (!forced && !Configuration.showTutorial()) return
         //Configuration.INSTANCE.showTutorial() is always false
         try {
-            activity.startActivityForResult(Intent(activity, PreOnboardingStartActivity::class.java), 0)
+            activity.startActivity(Intent(activity, PreOnboardingLanguage::class.java))
             activity.finish()
         } catch (e: Exception) {
             // This is just to see if we still get the Illegal state exception

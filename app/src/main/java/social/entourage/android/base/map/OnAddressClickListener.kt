@@ -11,6 +11,7 @@ import java.util.*
 class OnAddressClickListener(private val context: Context, private val address: String, val isFromDetail:Boolean = false) : View.OnClickListener {
 
     override fun onClick(v: View) {
+
         Uri.parse(String.format(Locale.FRENCH, "geo:0,0?q=%s", address))?.let {uri ->
             openExternalMap(uri)
         }

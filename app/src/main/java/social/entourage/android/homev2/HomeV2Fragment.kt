@@ -3,7 +3,9 @@ package social.entourage.android.homev2
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.animation.ValueAnimator
+import android.content.Context
 import android.content.Intent
+import android.content.IntentSender
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.util.Log
@@ -18,12 +20,17 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
+import com.google.android.play.core.appupdate.AppUpdateManager
+import com.google.android.play.core.appupdate.AppUpdateManagerFactory
+import com.google.android.play.core.install.model.AppUpdateType
+import com.google.android.play.core.install.model.UpdateAvailability
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.new_fragment_edit_group.nestedScrollView
 import social.entourage.android.BuildConfig
 import social.entourage.android.EntourageApplication
 import social.entourage.android.MainActivity
 import social.entourage.android.R
+import social.entourage.android.actions.ActionsPresenter
 import social.entourage.android.api.model.Action
 import social.entourage.android.api.model.ActionSectionFilters
 import social.entourage.android.api.model.EventActionLocationFilters
@@ -46,7 +53,9 @@ import social.entourage.android.notifications.InAppNotificationsActivity
 import social.entourage.android.profile.ProfileActivity
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.utils.Const
+import social.entourage.android.tools.utils.CustomAlertDialog
 import social.entourage.android.tools.view.WebViewFragment
+import social.entourage.android.user.UserPresenter
 import social.entourage.android.user.UserProfileActivity
 
 class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener {
@@ -57,6 +66,7 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener {
     private var homeGroupAdapter = HomeGroupAdapter()
     private var homeEventAdapter = HomeEventAdapter()
     private var homeActionAdapter = HomeActionAdapter(false)
+    private val userPresenter: UserPresenter by lazy { UserPresenter() }
     private lateinit var homeHelpAdapter:HomeHelpAdapter
     private var homePedagoAdapter:HomePedagoAdapter? = null
     private var pagegroup = 0
@@ -78,6 +88,7 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener {
     private var isEventsEmpty = false
     private var isActionEmpty = false
     private var isContribution = false
+    private lateinit var actionsPresenter: ActionsPresenter
 
 
     override fun onCreateView(
@@ -91,6 +102,7 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener {
         disapearAllAtBeginning()
         binding.progressBar.visibility = View.VISIBLE
         homePresenter = ViewModelProvider(requireActivity()).get(HomePresenter::class.java)
+        actionsPresenter = ViewModelProvider(requireActivity()).get(ActionsPresenter::class.java)
         homeHelpAdapter = HomeHelpAdapter(this)
         homePedagoAdapter = HomePedagoAdapter(object : OnItemClick {
             override fun onItemClick(pedagogicalContent: Pedago) {
@@ -126,6 +138,26 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener {
         resetFilter()
         callToInitHome()
     }
+
+//    fun showUpdateApplication(){
+//        val appUpdateManager: AppUpdateManager = AppUpdateManagerFactory.create(requireContext())
+//
+//        appUpdateManager.appUpdateInfo.addOnSuccessListener { appUpdateInfo ->
+//            if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
+//                && appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)) {
+//                try {
+//                    appUpdateManager.startUpdateFlowForResult(
+//                        appUpdateInfo,
+//                        AppUpdateType.IMMEDIATE,
+//                        // Votre Activity actuelle
+//                        this,
+//                        123456)
+//                } catch (e: IntentSender.SendIntentException) {
+//                    e.printStackTrace()
+//                }
+//            }
+//        }
+//    }
 
     fun callToInitHome(){
         if(isAdded){
@@ -396,6 +428,7 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener {
     }
 
     private fun updateContributionsView(summary: Summary) {
+        onActionUnclosed(summary)
         handleHelps(summary)
         isContribution = summary.preference.equals("contribution")
         if(isContribution){
@@ -554,6 +587,75 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener {
                     moderatorId
                 )
             )
+        }
+    }
+    private fun onActionUnclosed(summary: Summary){
+        if(summary.unclosedAction != null){
+            if(summary.unclosedAction!!.actionType == "solicitation"){
+                AnalyticsEvents.logEvent(AnalyticsEvents.View__StateDemandPop__Day10)
+                val contentText = summary.unclosedAction!!.title
+                CustomAlertDialog.showForLastActionOneDemand(
+                    requireContext(),
+                    getString(R.string.custom_dialog_action_title_one_demand),
+                    contentText!!,
+                    getString(R.string.custom_dialog_action_content_one_demande),
+                    getString(R.string.yes),
+                    onNo = {
+                        AnalyticsEvents.logEvent(AnalyticsEvents.Clic__StateDemandPop__No__Day10)
+                        AnalyticsEvents.logEvent(AnalyticsEvents.View__StateDemandPop__No__Day10)
+                        CustomAlertDialog.showForLastActionTwo(requireContext(),
+                            getString(R.string.custom_dialog_action_title_two),
+                            getString(R.string.custom_dialog_action_content_two_demande),
+                            getString(R.string.custom_dialog_action_two_button_contrib),
+                            onYes = {
+                                (activity as MainActivity).goContrib()
+                                AnalyticsEvents.logEvent(AnalyticsEvents.Clic__SeeDemand__Day10)
+                            })
+                    },
+                    onYes = {
+                        AnalyticsEvents.logEvent(AnalyticsEvents.Clic__StateDemandPop__Yes__Day10)
+                        AnalyticsEvents.logEvent(AnalyticsEvents.View__DeleteDemandPop__Day10)
+                        actionsPresenter.cancelAction(summary.unclosedAction!!.id!!,true,true, "")
+                        CustomAlertDialog.showForLastActionThree(requireContext(),
+                            getString(R.string.custom_dialog_action_title_three),
+                            getString(R.string.custom_dialog_action_content_three_demande))
+
+                    }
+                )
+            }
+            if(summary.unclosedAction!!.actionType == "contribution"){
+                AnalyticsEvents.logEvent(AnalyticsEvents.View__StateContribPop__Day10)
+                val contentText = summary.unclosedAction!!.title
+                CustomAlertDialog.showForLastActionOneContrib(
+                    requireContext(),
+                    getString(R.string.custom_dialog_action_title_one_contrib),
+                    contentText!!,
+                    getString(R.string.custom_dialog_action_content_one_contrib),
+                    getString(R.string.yes),
+                    onNo = {
+                        AnalyticsEvents.logEvent(AnalyticsEvents.Clic__StateContribPop__No__Day10)
+                        AnalyticsEvents.logEvent(AnalyticsEvents.View__StateContribPop__No__Day10)
+                        CustomAlertDialog.showForLastActionTwo(requireContext(),
+                            getString(R.string.custom_dialog_action_title_two),
+                            getString(R.string.custom_dialog_action_content_two_contrib),
+                            getString(R.string.custom_dialog_action_two_button_demand),
+                            onYes = {
+                                (activity as MainActivity).goDemand()
+                                AnalyticsEvents.logEvent(AnalyticsEvents.Clic__SeeContrib__Day10)
+
+                            })
+
+                    },
+                    onYes = {
+                        AnalyticsEvents.logEvent(AnalyticsEvents.Clic__StateContribPop__Yes__Day10)
+                        AnalyticsEvents.logEvent(AnalyticsEvents.View__DeleteContribPop__Day10)
+                        actionsPresenter.cancelAction(summary.unclosedAction!!.id!!,false,true, "")
+                        CustomAlertDialog.showForLastActionThree(requireContext(),
+                            getString(R.string.custom_dialog_action_title_three),
+                            getString(R.string.custom_dialog_action_content_three_contrib))
+                    }
+                )
+            }
         }
     }
 }

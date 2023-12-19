@@ -13,6 +13,7 @@ import com.bumptech.glide.load.resource.bitmap.GranularRoundedCorners
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import social.entourage.android.R
+import social.entourage.android.api.model.EventUtils
 import social.entourage.android.api.model.Events
 import social.entourage.android.api.model.Interest
 import social.entourage.android.databinding.HomeV2EventItemLayoutBinding
@@ -85,9 +86,10 @@ class HomeEventAdapter:RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             }
 
             event.metadata?.startsAt?.let {
+                var locale = Locale.getDefault()
                 holder.binding.tvDateHomeV2EventItem.text = SimpleDateFormat(
                     holder.itemView.context.getString(R.string.post_date),
-                    Locale.FRANCE
+                    locale
                 ).format(
                     it
                 )
@@ -95,7 +97,7 @@ class HomeEventAdapter:RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             event.interests.let {
                 if(it.size > 0){
                     val context = holder.binding.root.context
-                    holder.binding.tvTagHomeV2EventItem.text = it[0].replaceFirstChar { char -> char.uppercaseChar() }
+                    holder.binding.tvTagHomeV2EventItem.text = EventUtils.showTagTranslated(context ,it[0]).replaceFirstChar { char -> char.uppercaseChar() }
                     holder.binding.homeV2ItemEventLayoutTag.visibility = View.VISIBLE
                     if(it[0].equals("other")){
                         holder.binding.tvTagHomeV2EventItem.text = context.getString(R.string.tag_other)

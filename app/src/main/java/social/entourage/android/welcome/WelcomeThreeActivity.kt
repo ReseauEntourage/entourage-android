@@ -51,6 +51,7 @@ class WelcomeThreeActivity: BaseActivity() {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        super.updateLanguage()
         super.onCreate(savedInstanceState)
         binding = ActivityLayoutWelcomeThreeBinding.inflate(layoutInflater)
         //INIT PRESENTER
@@ -209,9 +210,10 @@ class WelcomeThreeActivity: BaseActivity() {
                 binding.eventExampleOne.location.text = allEvents[0].metadata?.displayAddress
                 binding.eventExampleOne.participants.text = allEvents[0].membersCount.toString()
                 allEvents[0].metadata?.startsAt?.let {
+                    var locale = Locale.getDefault()
                     binding.eventExampleOne.date.text = SimpleDateFormat(
                         getString(R.string.event_date_time),
-                        Locale.FRANCE
+                        locale
                     ).format(
                         it
                     )
@@ -241,9 +243,10 @@ class WelcomeThreeActivity: BaseActivity() {
                     binding.eventExampleThree.location.text = allEvents[2].metadata?.displayAddress
                     binding.eventExampleThree.participants.text = allEvents[2].membersCount.toString()
                     allEvents[2].metadata?.startsAt?.let {
+                        var locale = Locale.getDefault()
                         binding.eventExampleThree.date.text = SimpleDateFormat(
                             getString(R.string.event_date_time),
-                            Locale.FRANCE
+                            locale
                         ).format(
                             it
                         )
@@ -272,9 +275,10 @@ class WelcomeThreeActivity: BaseActivity() {
                     binding.eventExampleTwo.location.text = allEvents[1].metadata?.displayAddress
                     binding.eventExampleTwo.participants.text = allEvents[1].membersCount.toString()
                     allEvents[1].metadata?.startsAt?.let {
+                        var locale = Locale.getDefault()
                         binding.eventExampleTwo.date.text = SimpleDateFormat(
                             getString(R.string.event_date_time),
-                            Locale.FRANCE
+                            locale
                         ).format(
                             it
                         )
@@ -418,5 +422,11 @@ class WelcomeThreeActivity: BaseActivity() {
             binding.contribExampleTwo.distance.text = getString(R.string.welcome_three_contrib_distance)
 
         }
+    }
+    override fun onBackPressed() {
+        super.onBackPressed()
+        val intent = Intent(this, MainActivity::class.java)
+            .addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+        this.startActivity(intent)
     }
 }

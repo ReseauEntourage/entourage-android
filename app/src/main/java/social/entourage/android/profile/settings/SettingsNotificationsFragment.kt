@@ -31,7 +31,6 @@ class SettingsNotificationsFragment : BottomSheetDialogFragment() {
         super.onViewCreated(view, savedInstanceState)
         populate()
         handleCloseButton()
-
         homePresenter.notificationsPermission.observe(requireActivity(), ::updateSwitch)
         homePresenter.getNotificationsPermissions()
     }
@@ -43,7 +42,6 @@ class SettingsNotificationsFragment : BottomSheetDialogFragment() {
             binding.uiSwitchNotifsEvents.isChecked = it.outing
             binding.uiSwitchNotifsGroups.isChecked = it.neighborhood
             binding.uiSwitchNotifsMessages.isChecked = it.chat_message
-
             binding.uiSwitchNotifsAll.isChecked = it.isAllChecked()
         }
     }

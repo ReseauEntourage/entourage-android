@@ -32,8 +32,8 @@ object LanguageManager {
 
     fun loadLanguageFromPreferences(context: Context): String {
         val sharedPreferences = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
-        // Defaulting to English ("en") if no language has been selected
-        return sharedPreferences.getString(KEY_SELECTED_LANGUAGE, "en") ?: "en"
+        // Defaulting to French ("fr") if no language has been selected
+        return sharedPreferences.getString(KEY_SELECTED_LANGUAGE, "fr") ?: "fr"
     }
 
     fun setLocale(context: Context, langCode: String) {

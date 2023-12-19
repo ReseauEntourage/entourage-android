@@ -68,7 +68,8 @@ class TimePickerStartEnd @JvmOverloads constructor(
     private fun startTimeTransformIntoTimePicker(format: String) {
         binding.startTime.setOnClickListener {
             val endTimeString = binding.endTime.text.toString()
-            val sdf = SimpleDateFormat(format, Locale.FRANCE)
+            var locale = Locale.getDefault()
+            val sdf = SimpleDateFormat(format, locale)
             val myCalendar = Calendar.getInstance()
             myCalendar.add(Calendar.MINUTE,5)
             val endTime = parseTime(format, endTimeString)
@@ -100,7 +101,8 @@ class TimePickerStartEnd @JvmOverloads constructor(
     private fun endTimeTransformIntoTimePicker(format: String) {
         binding.endTime.setOnClickListener {
             val startTimeString = binding.startTime.text.toString()
-            val sdf = SimpleDateFormat(format, Locale.FRANCE)
+            var locale = Locale.getDefault()
+            val sdf = SimpleDateFormat(format, locale)
             val myCalendar = Calendar.getInstance()
 
             val startTime = parseTime(format, startTimeString)
@@ -138,7 +140,8 @@ class TimePickerStartEnd @JvmOverloads constructor(
     }
 
     private fun parseTime(format: String, time: String): Date? {
-        val sdf = SimpleDateFormat(format, Locale.FRANCE)
+        var locale = Locale.getDefault()
+        val sdf = SimpleDateFormat(format, locale)
         return try {
             sdf.parse(time)
         } catch (e: ParseException) {

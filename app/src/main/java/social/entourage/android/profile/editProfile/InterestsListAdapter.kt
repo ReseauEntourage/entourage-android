@@ -12,6 +12,7 @@ import kotlinx.android.synthetic.main.new_profile_edit_interest_item.view.layout
 import kotlinx.android.synthetic.main.new_profile_edit_interest_item.view.title
 import kotlinx.android.synthetic.main.new_profile_edit_interests_edittext_item.view.*
 import social.entourage.android.R
+import social.entourage.android.api.model.EventUtils
 import social.entourage.android.api.model.Interest
 
 interface OnItemCheckListener {
@@ -43,7 +44,8 @@ class InterestsListAdapter(
                 binding.title.typeface,
                 android.graphics.Typeface.BOLD
             )
-            binding.title.text = interest.title
+            val context = binding.context
+            binding.title.text = EventUtils.showTagTranslated(context ,interest.title!!)
             binding.checkBox.isChecked = interest.isSelected
             binding.icon.setImageResource(interest.icon)
             binding.layout.setOnClickListener {

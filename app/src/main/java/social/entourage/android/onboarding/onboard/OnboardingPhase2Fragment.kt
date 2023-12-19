@@ -159,9 +159,11 @@ class OnboardingPhase2Fragment : Fragment() {
         ui_onboard_code_tv_phone_mod?.setOnClickListener {
             callback?.goPreviousManually()
         }
-        val text = "En cliquant sur <b>Suivant</b>, vous acceptez les <a href='https://www.entourage.social/cgu/'>Conditions Générales d'Utilisation</a> et la <a href='https://www.entourage.social/politique-de-confidentialite/'>Politique de Confidentialité</a>"
+
+        val text = getString(R.string.terms_and_conditions_html)
         tv_condition_generales.text = Html.fromHtml(text)
         tv_condition_generales.movementMethod = LinkMovementMethod.getInstance()
+
 
         addTextwatcher()
     }

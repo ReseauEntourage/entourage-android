@@ -1,5 +1,6 @@
 package social.entourage.android.actions
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -7,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.new_action_category_item.view.*
 import social.entourage.android.R
 import social.entourage.android.api.model.ActionSection
+import social.entourage.android.api.model.EventUtils
 
 class ActionCategoriesFiltersListAdapter(
     private var catfiltersList: List<ActionSection>
@@ -19,8 +21,9 @@ class ActionCategoriesFiltersListAdapter(
                 binding.title.typeface,
                 android.graphics.Typeface.BOLD
             )
-            binding.title.text = category.title
-            binding.subtitle.text = category.subtitle
+            binding.title.text = EventUtils.showTagTranslated(binding.context,category.title!!)
+            Log.wtf("wtf", "subtitle: ${category.subtitle!!}")
+            binding.subtitle.text = EventUtils.showSubTagTranslated(binding.context, category.title!!)
             binding.checkBox.isChecked = category.isSelected
             binding.icon.setImageResource(category.icon)
             binding.layout.setOnClickListener {

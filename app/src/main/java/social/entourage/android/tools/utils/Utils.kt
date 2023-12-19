@@ -210,8 +210,9 @@ object Utils {
         }
 
         // custom regular date
+        var locale = Locale.getDefault()
         val dateStr = SimpleDateFormat(context.getString(R.string.action_date_list_formatter),
-            Locale.FRANCE).format(date)
+            locale).format(date)
         return if (format != null) context.getString(format,dateStr) else dateStr
     }
 
@@ -324,7 +325,8 @@ object Utils {
     @Throws(IOException::class)
     private fun createImageFile(): File {
         // Create an image file name
-        val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.FRANCE).format(Date())
+        var locale = Locale.getDefault()
+        val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss", locale).format(Date())
         val imageFileName = "ENTOURAGE_CROP_" + timeStamp + "_"
         val storageDir = Environment.getExternalStoragePublicDirectory(
             Environment.DIRECTORY_PICTURES)

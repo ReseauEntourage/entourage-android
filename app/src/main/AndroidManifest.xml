@@ -48,8 +48,13 @@
         android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-        <receiver android:name=".notifications.NotificationActionReceiver" />
+        android:theme="@style/AppTheme"
+        android:localeConfig="@xml/locales_config">
+        >
+
+
+        <receiver android:name=".notifications.NotificationActionReceiver"
+            android:exported="true"/>
 
         <activity
             android:name=".notifications.InAppNotificationsActivity"
@@ -186,7 +191,6 @@
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
             <intent-filter android:autoVerify="true" tools:targetApi="m">
@@ -236,6 +240,9 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".onboarding.pre_onboarding.PreOnboardingStartActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".onboarding.pre_onboarding.PreOnboardingLanguage"
             android:screenOrientation="portrait" />
         <activity
             android:name=".onboarding.login.LoginActivity"

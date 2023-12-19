@@ -259,7 +259,8 @@ open class BaseEntourage : FeedItem, Serializable {
 
         fun getStartDateAsString(context: Context): String {
             startDate?.let {
-                return SimpleDateFormat(context.getString(R.string.entourage_metadata_startAt_format), Locale.FRENCH)
+                val locale = Locale.getDefault()
+                return SimpleDateFormat(context.getString(R.string.entourage_metadata_startAt_format), locale)
                         .format(it)
             }
             return ""
@@ -267,7 +268,8 @@ open class BaseEntourage : FeedItem, Serializable {
 
         fun getStartDateFullAsString(context: Context): String {
             startDate?.let {
-                return SimpleDateFormat(context.getString(R.string.entourage_metadata_startAt_format_full), Locale.FRENCH)
+                val locale = Locale.getDefault()
+                return SimpleDateFormat(context.getString(R.string.entourage_metadata_startAt_format_full), locale)
                         .format(it)
             }
             return ""
@@ -280,7 +282,8 @@ open class BaseEntourage : FeedItem, Serializable {
                 calendar.time = it
                 calendar[Calendar.MINUTE] = calendar[Calendar.MINUTE] / 15 * 15
                 //format it
-                val df = SimpleDateFormat(context.getString(R.string.entourage_metadata_startAt_time_format), Locale.FRENCH)
+                val locale = Locale.getDefault()
+                val df = SimpleDateFormat(context.getString(R.string.entourage_metadata_startAt_time_format), locale)
                 return df.format(calendar.time)
             }
             return ""
@@ -292,7 +295,8 @@ open class BaseEntourage : FeedItem, Serializable {
 
         fun getEndDateFullAsString(context: Context): String {
             endDate?.let {
-                val df = SimpleDateFormat(context.getString(R.string.entourage_metadata_startAt_format_full), Locale.FRENCH)
+                val locale = Locale.getDefault()
+                val df = SimpleDateFormat(context.getString(R.string.entourage_metadata_startAt_format_full), locale)
                 return df.format(it)
             }
             return ""
@@ -305,7 +309,8 @@ open class BaseEntourage : FeedItem, Serializable {
                 calendar.time = it
                 calendar[Calendar.MINUTE] = calendar[Calendar.MINUTE]  / 15 * 15
                 //format it
-                val df = SimpleDateFormat(context.getString(R.string.entourage_metadata_startAt_time_format), Locale.FRENCH)
+                val locale = Locale.getDefault()
+                val df = SimpleDateFormat(context.getString(R.string.entourage_metadata_startAt_time_format), locale)
                 return df.format(calendar.time)
             }
             return ""
@@ -314,7 +319,8 @@ open class BaseEntourage : FeedItem, Serializable {
         fun getStartEndDatesAsString(context: Context): String {
             startDate?.let { start->
                 endDate?.let{ end ->
-                    val df = SimpleDateFormat("dd/MM", Locale.FRENCH)
+                    val locale = Locale.getDefault()
+                    val df = SimpleDateFormat("dd/MM", locale)
                     return String.format(context.getString(R.string.entourage_metadata_date_startAt_endAt), df.format(start), df.format(end))
                 }
             }
@@ -328,7 +334,8 @@ open class BaseEntourage : FeedItem, Serializable {
             calendarEnd.time = endDate ?: return ""
             calendarStart[Calendar.MINUTE] = calendarStart[Calendar.MINUTE] / 15 * 15
             calendarEnd[Calendar.MINUTE] = calendarEnd[Calendar.MINUTE] / 15 * 15
-            val df = SimpleDateFormat("HH'h'mm", Locale.FRENCH)
+            val locale = Locale.getDefault()
+            val df = SimpleDateFormat("HH'h'mm", locale)
             return String.format(context.resources.getString(R.string.entourage_metadata_time_startAt_endAt), df.format(calendarStart.time), df.format(calendarEnd.time))
         }
 

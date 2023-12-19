@@ -1,5 +1,6 @@
 package social.entourage.android.api.model
 
+import android.content.Context
 import com.google.gson.annotations.SerializedName
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
@@ -94,8 +95,9 @@ data class Action(
     fun memberSinceDateString(context: android.content.Context) : String {
         author?.creation_date?.let {
             try{
+                val locale = Locale.getDefault()
                 val dateStr = SimpleDateFormat(context.getString(R.string.action_date_month_year_formatter),
-                    Locale.FRANCE).format(it)
+                    locale).format(it)
                 return context.getString( R.string.action_member_since,dateStr)
             }catch (e:Exception){
                 return  "-"
@@ -145,3 +147,29 @@ data class ActionCancel (
     @field:SerializedName("close_message")
     val closeMessage: String? = null
 )
+
+class ActionUtils {
+    companion object {
+        fun showTagTranslated(context: Context,section: String):String{
+            when(section.lowercase()){
+                "social" -> return context.getString(R.string.action_social_name)
+                "clothes" -> return context.getString(R.string.action_clothes_name)
+                "equipment" -> return context.getString(R.string.action_equipment_name)
+                "hygiene" -> return context.getString(R.string.action_hygiene_name)
+                "services" -> return context.getString(R.string.action_services_name)
+                else -> return context.getString(R.string.interest_other)
+            }
+        }
+        fun showSubTagTranslated(context: Context,section: String):String{
+            when(section){
+                "social" -> return context.getString(R.string.action_social_subname)
+                "clothes" -> return context.getString(R.string.action_clothes_subname)
+                "equipment" -> return context.getString(R.string.action_equipment_subname)
+                "hygiene" -> return context.getString(R.string.action_hygiene_subname)
+                "services" -> return context.getString(R.string.action_services_subname)
+                else -> return context.getString(R.string.interest_other)
+            }
+        }
+    }
+}
+

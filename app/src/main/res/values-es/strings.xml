@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources>
 
-    <string name="app_name">Alrededores</string>
+    <string name="app_name">Entourage</string>
     <string name="button_loading">Cargando…</string>
     <string name="error_not_yet_implemented">Indisponible</string>
     <string name="error_google_play_store_not_installed">La tienda Google Play Store n\ no está instalada</string>
@@ -108,7 +108,7 @@
     <string name="language">Lengua</string>
     <string name="city_action_zone">Ciudad y zona de actuación*</string>
     <string name="within">Dentro :</string>
-    <string name="settings">configuraciones</string>
+    <string name="settings">Configuraciones</string>
     <string name="my_profile">Mi perfil</string>
     <string name="min_progressbar">1km</string>
     <string name="max_progressbar">100km</string>
@@ -147,7 +147,6 @@
     <string name="sign_out_dialog_title">Desconectar</string>
     <string name="sign_out_dialog_content">¿Quieres cerrar sesión?</string>
     <string name="progress_km">%s kilómetros</string>
-    <string name="modify_image"><u>Modifier ma photo</u></string>
     <string name="modify_interests_subtitle">Seleccione una o más categorías que le interesen.</string>
     <string name="add_image">Añadir una imagen</string>
     <string name="add_image_subtitle">Con una foto es inmediatamente mejor.
@@ -236,7 +235,7 @@ Leerán este mensaje tan pronto como se unan al grupo.</string>
     <string name="group_updated">Se ha tenido en cuenta la modificación.</string>
     <string name="group_error_updated">Error al editar grupo</string>
     <string name="title_activity_main">ActividadPrincipal</string>
-    <string name="title_home">bienvenida</string>
+    <string name="title_home">Inicio</string>
     <string name="title_donations">Ayuda mutua</string>
     <string name="title_messages">Discusiones</string>
     <string name="title_groups">Grupos</string>
@@ -265,7 +264,6 @@ Leerán este mensaje tan pronto como se unan al grupo.</string>
     <string name="welcome_message_btn_title">Me presento</string>
     <string name="member">Miembro</string>
     <string name="members_location">%s miembros. %s</string>
-    <string name="more"><u>En savoir plus</u></string>
     <string name="group_settings">Configuración de grupo</string>
     <string name="report_group">Informar de un problema</string>
     <string name="rules_group">Reglas del grupo</string>
@@ -290,8 +288,6 @@ Leerán este mensaje tan pronto como se unan al grupo.</string>
     <string name="discuss">Comentario…</string>
     <string name="discussbis">Para escribir un mensaje…</string>
     <string name="no_comments">Sin comentarios</string>
-    <string name="posts_comment_number"><u>%s commentaires</u></string>
-    <string name="posts_comment_number_singular"><u>%s commentaire</u></string>
     <string name="write_your_message">escribe tu mensaje</string>
     <string name="share_post">Compartir, repartir</string>
     <string name="zoom_photo">Mueve y haz zoom para ajustar la foto.</string>
@@ -303,7 +299,7 @@ Leerán este mensaje tan pronto como se unan al grupo.</string>
     <string name="report_sent">Tu solicitud ha sido enviada. Nuestro equipo lo procesará lo más rápido posible.</string>
     <string name="post_deleted">¡Tu publicación ha sido eliminada!.</string>
     <string name="message_deleted">¡Tu mensaje ha sido eliminado!.</string>
-    <string name="welcome_user">¡Bienvenido %s!</string>
+    <string name="welcome_user">¡Bienvenido !</string>
     <string name="contributions_title">Mis acciones dentro de la red</string>
     <string name="contributions_meeting">Hermosos encuentros Entourage</string>
     <string name="contributions_meeting_empty">Aún no hay reuniones de Entourage</string>
@@ -328,7 +324,6 @@ Leerán este mensaje tan pronto como se unan al grupo.</string>
     <string name="pedagogical_content">Todo lo que necesitas saber para pasar de \ a la acción \</string>
     <string name="picture">Foto</string>
     <string name="image_mandatory">La foto es obligatoria.</string>
-    <string name="show_more_lined"><u>Voir plus</u></string>
     <string name="group_events">Eventos grupales</string>
     <string name="group_events_new">El grupo también organiza:</string>
     <string name="january">Enero</string>
@@ -421,7 +416,7 @@ Leerán este mensaje tan pronto como se unan al grupo.</string>
     <string name="event_places">Número de plazas</string>
     <string name="event_canceled">Evento cancelado</string>
     <string name="member_since">Miembro del séquito desde</string>
-    <string name="profile_date_format">MM/aaaa</string>
+    <string name="profile_date_format">MM/yyyy</string>
     <plurals name="number_of_people">
         <item quantity="one">%1$d participante</item>
         <item quantity="other">%1$d participantes</item>
@@ -456,7 +451,6 @@ Leerán este mensaje tan pronto como se unan al grupo.</string>
     <!-- WELCOME PAGES -->
     <string name="welcome_one_title">Bienvenido a la red social \n, verdaderamente social</string>
     <string name="welcome_one_content">Para muchos, la calle es un lugar de paso.\nPara algunos, c\'es la vida cotidiana.\nPara empezar, conozca a quienes la viven todos los días.</string>
-    <string name="welcome_one_sensib">Encuentre nuestro contenido de concientización<u><font color="#F55F24">ici</font></u></string>
 
     <string name="welcome_two_title">C\¡Es hora de empezar!</string>
     <string name="welcome_two_text_one_corrected">¡Una red social, c\, es mejor con varias personas!\nPreséntate a %s</string>
@@ -611,7 +605,7 @@ Leerán este mensaje tan pronto como se unan al grupo.</string>
     <string name="action_leave_voice_message">Grabar un mensaje de voz</string>
     <string name="action_voice_message_button">Iniciar reconocimiento de voz</string>
     <string name="action_voice_message_not_supported">El reconocimiento de voz n\ no es compatible con su teléfono.</string>
-    <string name="at_km_from_me">a %d km de mí</string>
+    <string name="at_km_from_me">A %d km de mí</string>
     <string name="at_meter_from_me">a %d m de mí</string>
     <string name="inf_hundred_meter">a menos de 100 metros de mí</string>
     <string name="share_title_contrib">Esta contribución podría interesarte.</string>
@@ -624,7 +618,7 @@ Leerán este mensaje tan pronto como se unan al grupo.</string>
     <string name="actions_tab_contribs">Contribuciones</string>
     <string name="actions_tab_demands">Peticiones</string>
 
-    <string name="action_date_list">El %s</string>
+    <string name="action_date_list">%s</string>
 
     <string name="action_bt_my_actions">Mis anuncios</string>
 
@@ -654,8 +648,6 @@ Leerán este mensaje tan pronto como se unan al grupo.</string>
 
     <string name="action_title_section_author">Crearlo por</string>
     <string name="action_canceled">Anuncio eliminado</string>
-    <string name="action_show_charte"><u>Charte éthique</u></string>
-    <string name="signal_a_problem"><u>Signaler un problème</u></string>
 
     <string name="action_detail_bt_cancel">BORRAR</string>
     <string name="action_detail_bt_modify">Editar</string>
@@ -688,10 +680,6 @@ Leerán este mensaje tan pronto como se unan al grupo.</string>
     <!-- pop back create-->
     <string name="back_create_action_title">Atención</string>
     <string name="back_create_action_content">Si sale del formulario de creación %s, se perderá toda la información ingresada.</string>
-
-    <string name="action_crete_cat_about">¿Está buscando ofrecer un %s que no encaja en una de estas categorías? Parece que \ no tiene lugar en la red,</string>
-    <string name="action_create_cat_about_more0">pero siempre puedes</string>
-    <string name="action_create_cat_about_more1"><u> en savoir plus par ici.</u></string>
 
     <string name="action_create_cat_choose_category">Seleccione la categoría que mejor describa su %s.</string>
     <string name="action_create_location_title">Localiza tu %s</string>
@@ -773,8 +761,6 @@ Leerán este mensaje tan pronto como se unan al grupo.</string>
 
     <!--STRING COUNTRY -->
 
-    <string name="phone_code" translatable="false">+%s</string>
-    <string name="country_name_and_code" translatable="false">%1$s %2$s</string>
     <string name="search_hint">buscar …</string>
     <string name="no_result_found">resultados no encontrados</string>
     <string name="select_country">Seleccionar país</string>
@@ -785,31 +771,24 @@ Leerán este mensaje tan pronto como se unan al grupo.</string>
 
     <string name="country_afghanistan_name">Afganistán</string>
     <string name="country_afghanistan_code">af</string>
-    <string name="country_afghanistan_number" translatable="false">93</string>
 
     <string name="country_albania_name">Albania</string>
     <string name="country_albania_code">Alabama</string>
-    <string name="country_albania_number" translatable="false">355</string>
 
     <string name="country_algeria_name">Argelia</string>
     <string name="country_algeria_code">dz</string>
-    <string name="country_algeria_number" translatable="false">213</string>
 
     <string name="country_andorra_name">Andorra</string>
     <string name="country_andorra_code">anuncio</string>
-    <string name="country_andorra_number" translatable="false">376</string>
 
     <string name="country_angola_name">Angola</string>
     <string name="country_angola_code">ao</string>
-    <string name="country_angola_number" translatable="false">244</string>
 
     <string name="country_argentina_name">Argentina</string>
     <string name="country_argentina_code">Arkansas</string>
-    <string name="country_argentina_number" translatable="false">54</string>
 
     <string name="country_armenia_name">Armenia</string>
     <string name="country_armenia_code">soy</string>
-    <string name="country_armenia_number" translatable="false">374</string>
 
     <string name="country_australia_name">Australia</string>
     <string name="country_australia_code">En</string>
@@ -817,7 +796,6 @@ Leerán este mensaje tan pronto como se unan al grupo.</string>
 
     <string name="country_austria_name">Austria</string>
     <string name="country_austria_code">en</string>
-    <string name="country_austria_number" translatable="false">43</string>
 
     <string name="country_azerbaijan_name">Azerbaiyán</string>
     <string name="country_azerbaijan_code">Arizona</string>
@@ -1662,7 +1640,6 @@ Leerán este mensaje tan pronto como se unan al grupo.</string>
 
     <!-- Outing as chat message card -->
     <string name="outing_message_card_created_author">%1$s creó una &lt;font color=\"%2$s\"&gt;salida&lt;/font&gt;:</string>
-    <string name="outing_message_card_updated_author">%1$s &lt;b&gt;modificó&lt;/b&gt; una &lt;font color=\"%2$s\"&gt;salida&lt;/font&gt;:</string>
 
     <!-- Status update as chat message card -->
     <!-- 1 = font color, 2 = author, 3 = message -->
@@ -1721,19 +1698,17 @@ Leerán este mensaje tan pronto como se unan al grupo.</string>
 
     <!-- Create Action Wizard -->
     <string name="create_action_wizard_p1_title">ÚLTIMA PREGUNTA</string>
-    <string name="create_action_wizard_p1_description">Crea esta acción solidaria para ti<b>pour une personne identifiée, autre que vous :</b> un ami en situation précaire, une personne croisée dans la rue ?</string>
     <string name="create_action_wizard_p1_option1">@string/yes</string>
     <string name="create_action_wizard_p1_option2">No, estoy preguntando por mí</string>
     <string name="create_action_wizard_p1_option3">No, para una asociación.</string>
 
     <string name="create_action_wizard_p2_title">ÚLTIMA PREGUNTA</string>
-    <string name="create_action_wizard_p2_description">Tiene<b>obtenu son consentement</b> pour diffuser cette action pour elle sur Entourage ?</string>
     <string name="create_action_wizard_p2_option1">Sí, j\ tiene su acuerdo.</string>
     <string name="create_action_wizard_p2_option2">No, aún no</string>
 
     <string name="create_action_wizard_p3_title">ÚLTIMA PREGUNTA</string>
     <string name="create_action_wizard_p3_description">El consentimiento es imprescindible para poder difundir tu acción solidaria en la red.\n\nTu acción está actualmente en suspenso. Un moderador responderá muy rápidamente para ayudarte.</string>
-    <string name="create_action_wizard_p3_option1">@string/create_action_wizard_p1_option3</string>
+    <string name="create_action_wizard_p3_option1">@string/next</string>
 
     <string name="create_action_wizard_disclaimer">La &lt;a href=\'%1$s\'&gt;Carta de Ética de Entourage&lt;/a&gt; explica por qué el consentimiento es esencial.</string>
 
@@ -1944,7 +1919,6 @@ Leerán este mensaje tan pronto como se unan al grupo.</string>
     <string name="login_phone_placeholder">Número de teléfono</string>
     <string name="login_placeholder_code">Ingrese su código</string>
     <string name="login_button_connect">Me conecto</string>
-    <string name="login_button_resend_code"><u>Redemander un code</u></string>
     <string name="login_button_resend_code_text">¿Quieres solicitar un nuevo código para tu número de teléfono: %s?</string>
     <string name="login_button_resend_code_action">Preguntar</string>
     <string name="login_label_country">País</string>
@@ -1952,7 +1926,6 @@ Leerán este mensaje tan pronto como se unan al grupo.</string>
     <string name="login_label_code">codificado</string>
 
     <!-- Login Change Phone -->
-    <string name="login_change_phone"><u>J’ai changé de numéro de téléphone</u></string>
     <string name="login_change_phone_title">Nuevo número</string>
     <string name="login_change_phone_old_phone">viejo problema</string>
     <string name="login_change_phone_old_phone_placeholder">viejo problema</string>
@@ -1994,7 +1967,6 @@ Leerán este mensaje tan pronto como se unan al grupo.</string>
     <string name="contribCreated">donaciones\npublicado</string>
     <string name="askCreated">solicitudes\n publicadas</string>
 
-    <string name="menu_info_social">Para vivir<b>encore plus de solidarité</b> suivez Entourage sur vos réseaux !</string>
 
     <string name="menu_info_first_title">👋 DA EL PRIMER PASO</string>
     <string name="menu_info_first_guide">Nuestra guía para atreverse a encontrarse</string>
@@ -2033,16 +2005,12 @@ Leerán este mensaje tan pronto como se unan al grupo.</string>
     <string name="map_error_geolocation_disabled_recenter">Para reenfocarte a tu alrededor debes activar la geolocalización</string>
     <string name="map_empty_newsfeed">C\¡Es bastante tranquilo por aquí!\n\nParece que\'allí n\'no hay actividad cerca... ¡por el momento!\n\nTú también puedes crear una actividad solidaria: toca + en la parte inferior derecha</string>
     <string name="map_empty_newsfeed_popup">¡Parece que aquí está tranquilo!\n\nMueve el mapa para encontrar actividades de la red.\n\nTú también puedes crear una actividad solidaria: presiona + en la parte inferior derecha</string>
-    <string name="newsfeed_load_more_button"><u>Rechercher plus loin.</u></string>
     <string name="newsfeed_no_action">No hay actividad cerca de esta posición</string>
     <string name="newsfeed_tab_events_no_items">No hay eventos cercanos.</string>
-    <string name="newsfeed_tab_events_no_items_button"><u>Retrouvez plus d\'événements d\'Entourage ici</u></string>
 
     <!--SRING MAP -->
     <string name="map_filter_title">FILTROS</string>
     <string name="map_filter_entourage_type_title">Tipos de acción</string>
-    <string name="map_filter_entourage_demand_text"><b>Voir les demandes concernant :</b></string>
-    <string name="map_filter_entourage_contribution_text"><b>Voir les contributions concernant :</b></string>
     <string name="map_filter_time_title">Actualizado menos de</string>
     <string name="map_filter_time_option1">24H</string>
     <string name="map_filter_time_option2">8D</string>
@@ -2103,7 +2071,6 @@ Leerán este mensaje tan pronto como se unan al grupo.</string>
     <string name="pre_onboard_choice_description_title">La red social, verdaderamente social.</string>
     <string name="pre_onboard_choice_login">ya tengo una cuenta</string>
     <string name="pre_onboard_choice_signup">Me inscribo</string>
-    <string name="pre_onboard_choice_about"><u>Qui est l’association Entourage ?</u></string>
 
     <!-- ONBOARDING -->
 
@@ -2246,7 +2213,6 @@ Leerán este mensaje tan pronto como se unan al grupo.</string>
     <string name="input_names_sub">Esta vez ¿podrías decirme cómo te llamas?</string>
     <string name="input_names_error">Complete ambos campos con un mínimo de %s caracteres.</string>
 
-    <string name="onboard_sms_help"><u>Besoin d’aide ?\nContacter l\'équipe Entourage.</u></string>
 
     <string name="partner_add_error">Error al agregar la insignia</string>
     <string name="partner_remove_error">No se pudo eliminar la insignia</string>
@@ -2446,7 +2412,6 @@ Leerán este mensaje tan pronto como se unan al grupo.</string>
     <string name="custom_dialog_action_title_two">gracias por su paciencia</string>
     <string name="custom_dialog_action_title_three">Buena noticia !</string>
 
-    <string name="custom_dialog_action_content_one_contrib">¿Se completó tu acción \"&lt;b&gt;%1$s&lt;/b&gt;\"?</string>
     <string name="custom_dialog_action_content_one_demande">¿Encontraste lo que buscabas?</string>
     <string name="custom_dialog_action_content_two_demande">Consejo: mira las contribuciones. Un vecino podría ofrecerte lo que estás buscando.</string>
     <string name="custom_dialog_action_content_two_contrib">Consejo: mira las solicitudes cerca de ti. A un vecino le podría interesar.</string>
@@ -2529,7 +2494,7 @@ Leerán este mensaje tan pronto como se unan al grupo.</string>
     <!-- New Home string -->
     <string name="home_v2_title">Aplicación L\ que recrea enlaces entre vecinos</string>
 
-    <string name="home_v2_title_action">dar un impulso</string>
+    <string name="home_v2_title_action">Echar una mano</string>
     <string name="home_v2_subtitle_action">¡Tus vecinos te necesitan!</string>
     <string name="home_v2_btn_more_action">Ver todas las solicitudes</string>
 
@@ -2573,27 +2538,92 @@ Leerán este mensaje tan pronto como se unan al grupo.</string>
     <string name="home_v2_hz_item_subtitle">“¿Y si trajeras un poco de solidaridad a tu ciudad? ¡Entourage te da las claves para empezar!</string>
     <string name="home_v2_hz_item_button">"Más información</string>
 
-    <string name="event_date_time">“dd MMMM yyyy à HH’h’mm”</string>
-    <string name="event_date">“dd/MM/yyyy”</string>
+    <string name="event_date_time">"dd 'de' MMMM 'de' yyyy 'a las' HH:mm"</string>
+    <string name="event_date">"dd/MM/yyyy"</string>
     <string name="post_date">"dd.MM.yyyy"</string>
-    <string name="comments_date">dd.MM.yy à HH:mm</string>
-    <string name="date_hint">dd/mm/yy</string>
-    <string name="time_hint">hh-mm</string>
-    <string name="event_date_formatter_to_date">dd/MM/yyyy HH\'h\'mm</string>
-    <string name="event_date_formatter_to_string">yyyy-MM-dd HH:mm:ss Z</string>
-    <string name="feed_event_date">“dd MMMM yyyy”</string>
-    <string name="feed_event_time">HH\'h\'mm</string>
-    <string name="entourage_create_date_format">\'le\' EEEE dd MMMM \'à\' HH\'h\'mm</string>
-    <string name="entourage_metadata_startAt_time_format">\'à \'HH\'h\'mm</string>
-    <string name="birthday_date_format">dd-MM</string>
-    <string name="events_date">dd/MM/yyyy</string>
-    <string name="events_time">HH\'h\'mm</string>
-    <string name="entourage_metadata_startAt_format">\'le\' EEEE dd/MM</string>
-    <string name="entourage_metadata_startAt_format_full">EEEE dd MMMM yyyy</string>
-    <string name="date_format_profile">dd-MM</string>
-    <string name="date_format_profile_fr">Day month</string>
-    <string name="action_date_list_formatter">“dd MMMM yyyy”</string>
-    <string name="action_date_month_year_formatter">“MM/YYYY”</string>
+    <string name="comments_date">"dd.MM.yy 'a las' HH:mm"</string>
+    <string name="date_hint">"dd/MM/yy"</string>
+    <string name="time_hint">"HH:mm"</string>
+    <string name="event_date_formatter_to_date">"dd/MM/yyyy 'a las' HH:mm"</string>
+    <string name="event_date_formatter_to_string">"yyyy-MM-dd HH:mm:ss Z"</string>
+    <string name="feed_event_date">"dd 'de' MMMM 'de' yyyy"</string>
+    <string name="feed_event_time">"HH:mm"</string>
+    <string name="entourage_create_date_format">"'el' EEEE dd 'de' MMMM 'a las' HH:mm"</string>
+    <string name="entourage_metadata_startAt_time_format">"'a las' HH:mm"</string>
+    <string name="birthday_date_format">"dd-MM"</string>
+    <string name="events_date">"dd/MM/yyyy"</string>
+    <string name="events_time">"HH:mm"</string>
+    <string name="entourage_metadata_startAt_format">"'el' EEEE dd/MM"</string>
+    <string name="entourage_metadata_startAt_format_full">"EEEE dd 'de' MMMM 'de' yyyy"</string>
+    <string name="date_format_profile">"dd-MM"</string>
+    <string name="date_format_profile_fr">"Día mes"</string>
+    <string name="action_date_list_formatter">dd \'de\' MMMM \'de\' yyyy</string>
+    <string name="action_date_month_year_formatter">MM/yyyy</string>
+
+
+    <string name="translate">Traducción</string>
+    <string name="title_language">Idioma</string>
+    <string name="select_language">Seleccione su idioma</string>
+    <string name="all_event">Todos los eventos</string>
+    <string name="all_my_event">Mis eventos</string>
+    <string name="lang_fr">Francés</string>
+    <string name="lang_en">Inglés</string>
+    <string name="lang_de">Alemán</string>
+    <string name="lang_uk">Ucraniano</string>
+    <string name="lang_es">Español</string>
+    <string name="lang_ro">Rumano</string>
+    <string name="lang_ar">Árabe</string>
+    <string name="lang_pl">"Polaco"</string>
+
+    <string name="translation_bottom_fragment_title">"Traducimos automáticamente los mensajes escritos por los ciudadanos."</string>
+    <string name="translation_bottom_fragment_main_title">"Traducción"</string>
+
+    <string name="action_social_name">Tiempo de compartir</string>
+    <string name="action_social_subname">café, actividades...</string>
+    <string name="action_services_name">Servicio</string>
+    <string name="action_services_subname">lavandería, impresión de documentos...</string>
+    <string name="action_clothes_name">Ropa</string>
+    <string name="action_clothes_subname">zapatos, abrigo...</string>
+    <string name="action_equipment_name">Equipo</string>
+    <string name="action_equipment_subname">teléfono, saco de dormir...</string>
+    <string name="action_hygiene_name">Producto de higiene</string>
+    <string name="action_hygiene_subname">jabón, protección sanitaria...</string>
+    <string name="interest_activites">Actividades manuales</string>
+    <string name="interest_animaux">Animales</string>
+    <string name="interest_bien_etre">Bienestar</string>
+    <string name="interest_cuisine">Cocina</string>
+    <string name="interest_culture">Arte y cultura</string>
+    <string name="interest_jeux">Juegos</string>
+    <string name="interest_nature">Naturaleza</string>
+    <string name="interest_sport">Deporte</string>
+    <string name="interest_marauding">Encuentros nómadas</string>
+    <string name="interest_other">Otro</string>
+
+    <string name="modify_image"><u>Editar mi foto</u></string>
+    <string name="more"><u>Saber más</u></string>
+    <string name="posts_comment_number"><u>%s comentarios</u></string>
+    <string name="posts_comment_number_singular"><u>%s comentario</u></string>
+    <string name="show_more_lined"><u>Ver más</u></string>
+    <string name="welcome_one_sensib">Encuentra nuestro contenido de sensibilización <u><font color="#F55F24">aquí</font></u></string>
+    <string name="action_show_charte"><u>Carta ética</u></string>
+    <string name="signal_a_problem"><u>Reportar un problema</u></string>
+    <string name="login_button_resend_code"><u>Solicitar un código de nuevo</u></string>
+    <string name="login_change_phone"><u>He cambiado mi número de teléfono</u></string>
+    <string name="newsfeed_load_more_button"><u>Buscar más lejos.</u></string>
+    <string name="newsfeed_tab_events_no_items_button"><u>Encuentra más eventos de Entourage aquí</u></string>
+    <string name="pre_onboard_choice_about"><u>¿Quién es la asociación Entourage?</u></string>
+    <string name="onboard_sms_help"><u>¿Necesitas ayuda?\nContactar al equipo de Entourage.</u></string>
+    <string name="outing_message_card_updated_author"><![CDATA[%1$s ha <b>modificado</b> una <font color=\"%2$s\">salida</font>:]]></string>
+    <string name="create_action_wizard_p1_description">¿Estás creando esta acción solidaria <b>para una persona identificada, que no seas tú:</b> un amigo en situación precaria, una persona que conociste en la calle?</string>
+    <string name="create_action_wizard_p2_description">¿Has <b>obtenido su consentimiento</b> para difundir esta acción por ellos en Entourage?</string>
+    <string name="menu_info_social">Para vivir <b>aún más solidaridad</b> sigue a Entourage en tus redes!</string>
+    <string name="map_filter_entourage_demand_text"><b>Ver las solicitudes sobre:</b></string>
+    <string name="map_filter_entourage_contribution_text"><b>Ver las contribuciones sobre:</b></string>
+    <string name="custom_dialog_action_content_one_contrib">¿Se ha completado tu acción \"<![CDATA[<b>%1$s</b>]]>\"?</string>
+    <string name="search_member_hint">Buscar un miembro</string>
+    <string name="terms_and_conditions_html">Al hacer clic en &lt;b&gt;Siguiente&lt;/b&gt;, aceptas los &lt;a href=\'https://www.entourage.social/condiciones/\'&gt;Términos y Condiciones&lt;/a&gt; y la &lt;a href=\'https://www.entourage.social/politica-de-privacidad/\'&gt;Política de Privacidad&lt;/a&gt;</string>
+    <string name="action_crete_cat_about">¿Estás buscando ofrecer un %s que no encaja en ninguna de estas categorías? Parece que \ no tiene lugar en la red, pero siempre puedes.</string>
+    <string name="action_create_cat_about_link"> aprender más aquí.</string>
 
 
 </resources>

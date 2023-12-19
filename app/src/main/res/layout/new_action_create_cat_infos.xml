@@ -13,39 +13,17 @@
         <TextView
             android:id="@+id/ui_tv_message_info"
             style="@style/left_legend"
+            android:fontFamily="@font/nunitosans_light"
+            android:textColor="@color/black"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/action_crete_cat_about"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="@string/action_crete_cat_about" />
+            app:layout_constraintBottom_toTopOf="@+id/divider"
+            tools:text="@string/action_crete_cat_about"
+            android:layout_marginBottom="10dp"/>
 
-        <TextView
-            android:id="@+id/ui_tv_more0"
-            style="@style/left_legend"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
-            android:text="@string/action_create_cat_about_more0"
-            app:layout_constraintBottom_toTopOf="@id/divider"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ui_tv_message_info"
-            tools:text="@string/action_create_cat_about_more0" />
-
-        <TextView
-            android:id="@+id/ui_tv_more1"
-            style="@style/left_legend"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:layout_marginBottom="20dp"
-            android:text="@string/action_create_cat_about_more1"
-            android:textColor="@color/accent"
-            app:layout_constraintBottom_toTopOf="@id/divider"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/ui_tv_more0"
-            app:layout_constraintTop_toBottomOf="@+id/ui_tv_message_info"
-            tools:text="@string/action_create_cat_about_more1" />
 
         <View
             android:id="@+id/divider"

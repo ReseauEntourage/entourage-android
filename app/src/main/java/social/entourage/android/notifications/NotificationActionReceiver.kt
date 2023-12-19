@@ -9,6 +9,7 @@ import social.entourage.android.api.model.notification.PushNotificationContent
 import social.entourage.android.tools.log.AnalyticsEvents
 
 class NotificationActionReceiver : BroadcastReceiver() {
+
     override fun onReceive(context: Context, intent: Intent) {
 
         when (intent.action) {
@@ -47,7 +48,6 @@ class NotificationActionReceiver : BroadcastReceiver() {
                 }
             }
             ACTION_DISMISSED -> {
-
                 // Gérer l'action de swipe pour supprimer la notification
                 val notificationContent = intent.getStringExtra("notification_content") // null si l'extra "notification_content" n'existe pas
                 try {

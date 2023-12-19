@@ -32,6 +32,7 @@ import social.entourage.android.discussions.DiscussionsPresenter
 import social.entourage.android.groups.details.rules.GroupRulesActivity
 import social.entourage.android.api.model.Action
 import social.entourage.android.api.model.ActionSection
+import social.entourage.android.api.model.ActionUtils
 import social.entourage.android.api.model.Conversation
 import social.entourage.android.report.ReportModalFragment
 import social.entourage.android.report.ReportTypes
@@ -286,10 +287,10 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
                     binding.uiImagePlaceholder.isVisible = true
                 }
 
-                binding.uiTitleCatContrib.text = MetaDataRepository.getActionSectionNameFromId(it.sectionName)
+                binding.uiTitleCatContrib.text = ActionUtils.showTagTranslated(requireContext(), it.sectionName!!)
                 binding.uiIvCatContrib.setImageDrawable(ResourcesCompat.getDrawable(resources,
                     ActionSection.getIconFromId(it.sectionName),null))
-                binding.uiTitleCatDemand.text = MetaDataRepository.getActionSectionNameFromId(it.sectionName)
+                binding.uiTitleCatDemand.text = ActionUtils.showTagTranslated(requireContext(), it.sectionName!!)
                 binding.uiIvCatDemand.setImageDrawable(ResourcesCompat.getDrawable(resources,
                     ActionSection.getIconFromId(it.sectionName),null))
                 binding.uiActionDescription.text = action?.description

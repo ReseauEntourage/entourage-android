@@ -76,8 +76,9 @@ class CommentsListAdapter(
                 binding.comment_post.text = comment.content
                 binding.comment_post.setHyperlinkClickable()
                 comment.createdTime?.let {
+                    var locale = Locale.getDefault()
                     binding.publication_date_post.text = "le ${SimpleDateFormat("dd.MM.yyyy",
-                        Locale.FRANCE
+                        locale
                     ).format(it)}"
                 }
 
@@ -183,14 +184,16 @@ class CommentsListAdapter(
                 binding.information_layout.visibility = View.VISIBLE
                 binding.error.visibility = View.GONE
                 if (isConversation) {
+                    var locale = Locale.getDefault()
                     binding.publication_date.text = SimpleDateFormat("HH'h'mm",
-                        Locale.FRANCE
+                        locale
                     ).format(it)
                 }
                 else {
+                    var locale = Locale.getDefault()
                     binding.publication_date.text = "le ${SimpleDateFormat(
                         binding.context.getString(R.string.comments_date),
-                        Locale.FRANCE
+                        locale
                     ).format(it)}"
                 }
 

@@ -211,6 +211,7 @@ class FeedFragment : Fragment(), CallbackReportFragment {
                     event?.membersCount,
                 )
             }
+            var locale = Locale.getDefault()
 
 
             event?.metadata?.placeLimit?.let {
@@ -223,7 +224,7 @@ class FeedFragment : Fragment(), CallbackReportFragment {
             event?.metadata?.startsAt?.let {
                 binding.dateStartsAt.content.text = SimpleDateFormat(
                     context?.getString(R.string.feed_event_date),
-                    Locale.FRANCE
+                    locale
                 ).format(
                     it
                 )
@@ -231,7 +232,7 @@ class FeedFragment : Fragment(), CallbackReportFragment {
             event?.metadata?.startsAt?.let {
                 binding.time.content.text = SimpleDateFormat(
                     context?.getString(R.string.feed_event_time),
-                    Locale.FRANCE
+                    locale
                 ).format(
                     it
                 )

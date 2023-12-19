@@ -28,8 +28,8 @@ android {
     val targetCompatibilityVersion = JavaVersion.VERSION_11
 
     // App versions
-    val versionMajor = 8
-    val versionMinor = 17
+    val versionMajor = 9
+    val versionMinor = 0
     val versionPatch = "git rev-list HEAD --count".runCommand().toInt()
     val versionBranchName = "git rev-parse --abbrev-ref HEAD".runCommand()
     val versionCodeInt = (versionMajor * 100 + versionMinor) * 10000 + versionPatch % 10000
@@ -52,6 +52,7 @@ android {
     buildFeatures {
         viewBinding = true
         dataBinding = true
+
     }
 
     compileSdk = 33
@@ -66,7 +67,7 @@ android {
             "deepLinksScheme" to deepLinksSchemeProd
         )
         applicationId = "social.entourage.android"
-        resourceConfigurations += listOf("fr")
+        resourceConfigurations += listOf("en", "fr", "de", "pl", "es", "ar", "uk", "ro")
 
         minSdk = 21 /*November 2014: Android 5.0, Lollipop*/
         targetSdk = 33
@@ -113,6 +114,7 @@ android {
             buildConfigField("String", "DEEP_LINKS_URL", "\"${deepLinksURLProd}\"")
             buildConfigField("int", "PEDAGO_CREATE_EVENT_ID", "15")
             buildConfigField("int", "PEDAGO_CREATE_GROUP_ID", "37")
+            buildConfigField("int", "PEDAGO_ACTION_SECTION_ID", "34")
         }
         create("staging") {
             manifestPlaceholders += mapOf(
@@ -126,11 +128,12 @@ android {
             buildConfigField("String", "DEEP_LINKS_URL", "\"${deepLinksURLStaging}\"")
             buildConfigField("int", "PEDAGO_CREATE_EVENT_ID", "32")
             buildConfigField("int", "PEDAGO_CREATE_GROUP_ID", "33")
+            buildConfigField("int", "PEDAGO_ACTION_SECTION_ID", "33")
 
         }
          create("entourage") {
             dimension = "app"
-            buildConfigField("String", "API_KEY", "\"50968038037d1df181e8372d\"")
+            buildConfigField("String", "API_KEY", "\"4a7373f3e7dd45fc391a2f19\"")
         }
     }
 
@@ -282,6 +285,8 @@ dependencies {
     //photoview to click and zoom
     implementation("com.github.chrisbanes:PhotoView:2.3.0")
     implementation("androidx.transition:transition:1.4.1") // Remplacez 'x.x.x' par la dernière version disponible.
+    implementation("androidx.core:core-splashscreen:1.0.1")
+    implementation("com.google.android.play:core:1.10.0")
 
 
 }

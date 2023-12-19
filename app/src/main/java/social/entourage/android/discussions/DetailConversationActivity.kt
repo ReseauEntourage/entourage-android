@@ -1,5 +1,6 @@
 package social.entourage.android.discussions
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -12,6 +13,7 @@ import social.entourage.android.R
 import social.entourage.android.comment.CommentActivity
 import social.entourage.android.api.model.Conversation
 import social.entourage.android.api.model.Post
+import social.entourage.android.language.LanguageManager
 import social.entourage.android.user.UserProfileActivity
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.log.AnalyticsEvents
@@ -100,7 +102,7 @@ class DetailConversationActivity : CommentActivity() {
     }
 
     override fun handleGetPostComments(allComments: MutableList<Post>?) {
-        val newComments = sortAndExtractDays(allComments)
+        val newComments = sortAndExtractDays(allComments, this)
         commentsList.clear()
         newComments?.let { commentsList.addAll(it) }
         binding.progressBar.visibility = View.GONE
@@ -122,14 +124,20 @@ class DetailConversationActivity : CommentActivity() {
         }
     }
 
-    fun sortAndExtractDays(allEvents: MutableList<Post>?) : MutableList<Post>? {
+    fun sortAndExtractDays(allEvents: MutableList<Post>?, context: Context) : MutableList<Post>? {
+        // Charge la langue préférée de l'utilisateur
+        val languageCode = LanguageManager.loadLanguageFromPreferences(context)
+        val locale = Locale(languageCode)
+        Log.wtf("wtf", "locale: $locale")
         val _allevents = allEvents?.groupBy { it.getFormatedStr() }
         val newList = ArrayList<Post>()
         _allevents?.let {
             for (mappp in _allevents) {
                 val datePost = Post()
                 datePost.isDatePostOnly = true
-                datePost.datePostText = mappp.key.capitalize(Locale.FRANCE)
+                // Utilise la locale chargée pour formater la date
+                Log.wtf("wtf", "datePostText: $datePost.datePostText")
+                datePost.datePostText = mappp.key.capitalize(locale)
                 newList.add(datePost)
                 for (_msg in mappp.value) {
                     newList.add(_msg)
@@ -138,6 +146,7 @@ class DetailConversationActivity : CommentActivity() {
         }
         return newList
     }
+
 
     fun updateDiscussion() {
         viewModel.getDetailConversation(id)

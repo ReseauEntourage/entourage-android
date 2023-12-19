@@ -3,6 +3,10 @@ package social.entourage.android.onboarding.pre_onboarding
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
+import android.widget.ImageView
+import android.widget.LinearLayout
+import androidx.constraintlayout.widget.ConstraintLayout
 import social.entourage.android.R
 import social.entourage.android.base.BaseActivity
 import social.entourage.android.onboarding.login.LoginActivity
@@ -25,6 +29,8 @@ class PreOnboardingChoiceActivity : BaseActivity() {
             goLogin()
         }
 
+        setImage()
+
         binding.uiButtonSignup.setOnClickListener {
             AnalyticsEvents.logEvent(AnalyticsEvents.PreOnboard_action_signup)
             val intent = Intent(this, OnboardingStartActivity::class.java)
@@ -43,10 +49,32 @@ class PreOnboardingChoiceActivity : BaseActivity() {
         AnalyticsEvents.logEvent(AnalyticsEvents.PreOnboard_view_choice)
     }
 
+
     private fun goLogin() {
         AnalyticsEvents.logEvent(AnalyticsEvents.PreOnboard_action_signin)
         val intent = Intent(this, LoginActivity::class.java)
         startActivity(intent)
         finish()
+    }
+
+    private fun setImage(){
+        binding.uiLogo2.setImageDrawable(getDrawable(R.drawable.logo_entourage_rvb_horizontal))
+
+        val width = 500  // Remplace par la largeur souhaitée en pixels
+        val height = 250 // Remplace par la hauteur souhaitée en pixels
+        val params = ConstraintLayout.LayoutParams(width, height)
+        val marginStart = 70  // En pixels
+        val marginTop = 55   // En pixels
+        params.marginStart = marginStart
+        params.topMargin = marginTop
+        params.topToTop = ConstraintLayout.LayoutParams.PARENT_ID
+        params.startToStart = ConstraintLayout.LayoutParams.PARENT_ID
+        binding.uiLogo2.scaleType = ImageView.ScaleType.FIT_START
+        binding.uiLogo2.layoutParams = params
+
+    }
+
+    override fun onResume() {
+        super.onResume()
     }
 }

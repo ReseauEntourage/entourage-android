@@ -46,6 +46,7 @@ class CreateGroupStepTwoFragment : Fragment() {
 
     private fun handleMetaData(tags: Tags?) {
         interestsList.clear()
+
         tags?.interests?.forEach { interest ->
             interestsList.add(
                 Interest(

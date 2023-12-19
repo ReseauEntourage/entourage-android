@@ -90,10 +90,11 @@ class LoginActivity : BaseActivity() {
             val intent = Intent(this, LoginChangePhoneActivity::class.java)
             startActivity(intent)
         }
-
-        val text = "En cliquant sur <b>Je me connecte</b>, vous acceptez les <a href='https://www.entourage.social/cgu/'>Conditions Générales d'Utilisation</a> et la <a href='https://www.entourage.social/politique-de-confidentialite/'>Politique de Confidentialité</a> d'Entourage."
+        val text = getString(R.string.terms_and_conditions_html)
         tv_condition_generales.text = Html.fromHtml(text)
         tv_condition_generales.movementMethod = LinkMovementMethod.getInstance()
+
+
     }
 
     /********************************

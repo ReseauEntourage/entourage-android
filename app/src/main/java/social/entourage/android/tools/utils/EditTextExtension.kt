@@ -26,13 +26,13 @@ fun EditText.transformIntoDatePicker(
     isFocusableInTouchMode = false
     isClickable = true
     isFocusable = false
-
+    var locale = Locale.getDefault()
     val myCalendar = Calendar.getInstance()
     val datePickerOnDataSetListener =
         DatePickerDialog.OnDateSetListener { _, _, monthOfYear, dayOfMonth ->
             myCalendar.set(Calendar.MONTH, monthOfYear)
             myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
-            val sdf = SimpleDateFormat(format, Locale.FRANCE)
+            val sdf = SimpleDateFormat(format, locale)
             setText(sdf.format(myCalendar.time))
         }
 
@@ -55,11 +55,12 @@ fun EditText.transformIntoTimePicker(context: Context, format: String) {
     isFocusable = false
 
     val myCalendar = Calendar.getInstance()
+    var locale = Locale.getDefault()
     val timePickerOnDataSetListener =
         TimePickerDialog.OnTimeSetListener { _, hourOfDay, minute ->
             myCalendar.set(Calendar.HOUR_OF_DAY, hourOfDay)
             myCalendar.set(Calendar.MINUTE, minute)
-            val sdf = SimpleDateFormat(format, Locale.FRANCE)
+            val sdf = SimpleDateFormat(format, locale)
             setText(sdf.format(myCalendar.time))
 
         }
