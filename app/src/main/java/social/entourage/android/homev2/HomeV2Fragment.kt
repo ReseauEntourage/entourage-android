@@ -64,7 +64,7 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener {
     private lateinit var binding:FragmentHomeV2LayoutBinding
     private lateinit var homePresenter:HomePresenter
     private var homeGroupAdapter = HomeGroupAdapter()
-    private var homeEventAdapter = HomeEventAdapter(requireContext())
+    private lateinit var homeEventAdapter:HomeEventAdapter
     private var homeActionAdapter = HomeActionAdapter(false)
     private val userPresenter: UserPresenter by lazy { UserPresenter() }
     private lateinit var homeHelpAdapter:HomeHelpAdapter
@@ -104,6 +104,7 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener {
         homePresenter = ViewModelProvider(requireActivity()).get(HomePresenter::class.java)
         actionsPresenter = ViewModelProvider(requireActivity()).get(ActionsPresenter::class.java)
         homeHelpAdapter = HomeHelpAdapter(this)
+        homeEventAdapter = HomeEventAdapter(requireContext())
         homePedagoAdapter = HomePedagoAdapter(object : OnItemClick {
             override fun onItemClick(pedagogicalContent: Pedago) {
                 if (pedagogicalContent.html != null && pedagogicalContent.id != null) {
