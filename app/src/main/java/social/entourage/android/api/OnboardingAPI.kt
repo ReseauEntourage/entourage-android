@@ -37,13 +37,13 @@ class OnboardingAPI {
     /**********************
      * Create user
      */
-    fun createUser(tempUser: User, listener:(isOK:Boolean, error:String?) -> Unit) {
+    fun createUser(tempUser: User,hasConsent:Boolean, listener:(isOK:Boolean, error:String?) -> Unit) {
 
-        val user: MutableMap<String, String> = ArrayMap()
+        val user: MutableMap<String, Any> = ArrayMap()
         user["phone"] = tempUser.phone ?: ""
         user["first_name"] = tempUser.firstName ?: ""
         user["last_name"] = tempUser.lastName ?:""
-
+        user["newsletter_subscription"] = hasConsent
         val request = ArrayMap<String, Any>()
         request["user"] = user
         val call = onboardingService.registerUser(request)
