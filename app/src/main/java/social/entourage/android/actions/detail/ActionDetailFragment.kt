@@ -279,11 +279,12 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
         binding.uiBtDelete.setOnClickListener {
             val _title = getString(R.string.action_cancel_pop_title, if (isDemand) getString(R.string.action_name_demand) else getString(R.string.action_name_contrib))
             val _subtitle = getString(R.string.action_cancel_pop_subtitle, if (isDemand) getString(R.string.action_name_demand) else getString(R.string.action_name_contrib))
-            CustomAlertDialog.showButtonClickedWithCrossClose(requireContext(),_title,_subtitle, getString(R.string.action_cancel_pop_bt_no), getString(R.string.action_cancel_pop_bt_yes), showCross = true, {
-                showCancelActionMessage(false)
+            CustomAlertDialog.showButtonClickedWithCrossClose(requireContext(),_title,_subtitle, getString(R.string.action_cancel_pop_bt_yes), getString(R.string.action_cancel_pop_bt_no), showCross = false,
+                {
+                showCancelActionMessage(true)
             },
                 {
-                    showCancelActionMessage(true)
+                    showCancelActionMessage(false)
                 }
             )
         }

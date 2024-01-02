@@ -186,15 +186,23 @@ class CommentsListAdapter(
             }else{
 
                 var contentToShow = comment.content
-                val isTranslated = !translationExceptions.contains(comment.id)
+                val sharedPrefs = context.getSharedPreferences(context.getString(R.string.preference_file_key), Context.MODE_PRIVATE)
+                val isTranslatedByDefault = sharedPrefs.getBoolean("translatedByDefault", true)
+                val isTranslated = if (translationExceptions.contains(comment.id)) {
+                    !isTranslatedByDefault
+                } else {
+                    isTranslatedByDefault
+                }
                 if(comment.contentTranslations != null){
-                    if(isTranslated){
-                        contentToShow = comment.contentTranslations?.translation
-                    }else{
-                        contentToShow = comment.contentTranslations?.original
+                    contentToShow = if (isTranslated) {
+                        comment.contentTranslations?.translation ?: comment.content
+                    } else {
+                        comment.contentTranslations?.original ?: comment.content
                     }
                 }
+
                 binding.comment.text = contentToShow
+
 
                 if(isMe){
                     binding.comment.background = context.getDrawable(R.drawable.new_comment_background_orange)

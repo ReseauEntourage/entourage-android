@@ -2677,6 +2677,7 @@
     <string name="category_boitesdons">صناديق التبرعات &amp; القراءة</string>
     <string name="all_groups">جميع المجموعات</string>
     <string name="btn_create_group">إنشاء مجموعة</string>
+    <string name="back_create_event_content">إذا غادرت نموذج إنشاء الحدث، ستُفقد كل المعلومات التي تم إدخالها.</string>
 
 
 </resources>

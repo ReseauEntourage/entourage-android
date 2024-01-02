@@ -1,13 +1,17 @@
 package social.entourage.android
 
 import android.Manifest
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.content.IntentSender
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.NotificationManagerCompat
@@ -20,6 +24,9 @@ import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.badge.BadgeDrawable
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.play.core.appupdate.AppUpdateManagerFactory
+import com.google.android.play.core.install.model.AppUpdateType
+import com.google.android.play.core.install.model.UpdateAvailability
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineScope
@@ -52,6 +59,8 @@ class MainActivity : BaseSecuredActivity() {
     private lateinit var viewModel: CommunicationHandlerBadgeViewModel
     private val universalLinkManager = UniversalLinkManager(this)
     private var fromDeepLinlGoDiscoverGroup = false
+    private lateinit var updateActivityResultLauncher: ActivityResultLauncher<IntentSenderRequest>
+
     override fun onCreate(savedInstanceState: Bundle?) {
         updateMainLanguage()
         super.onCreate(savedInstanceState)
@@ -66,8 +75,15 @@ class MainActivity : BaseSecuredActivity() {
             //refresh the user info from the server
             presenter.updateUserLocation(EntLocation.currentLocation)
         }
-
         handleUniversalLinkFromMain(this.intent)
+
+        updateActivityResultLauncher = registerForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) { result ->
+            if (result.resultCode != Activity.RESULT_OK) {
+                Log.e("Update", "La mise à jour a échoué ou a été annulée par l'utilisateur.")
+            }
+        }
+        checkForAppUpdate()
+
     }
 
     fun setGoDiscoverGroupFromDeepL(bool:Boolean){
@@ -77,6 +93,7 @@ class MainActivity : BaseSecuredActivity() {
     fun getFromDeepLGoDiscoverGroup():Boolean{
         return this.fromDeepLinlGoDiscoverGroup
     }
+
 
 
     override fun onStart() {
@@ -135,6 +152,34 @@ class MainActivity : BaseSecuredActivity() {
         }
     }
 
+    private fun checkForAppUpdate() {
+        val appUpdateManager = AppUpdateManagerFactory.create(this)
+        val appUpdateInfoTask = appUpdateManager.appUpdateInfo
+
+        appUpdateInfoTask.addOnSuccessListener { appUpdateInfo ->
+            if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
+                && appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)) {
+                try {
+                    appUpdateManager.startUpdateFlowForResult(
+                        appUpdateInfo,
+                        AppUpdateType.IMMEDIATE,
+                        this, // Ton Activity.
+                        UPDATE_REQUEST_CODE // Un code de requête défini par toi.
+                    )
+                } catch (e: IntentSender.SendIntentException) {
+                    e.printStackTrace()
+                }
+            }
+        }
+    }
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == UPDATE_REQUEST_CODE) {
+            if (resultCode != RESULT_OK) {
+                Log.e("Update", "La mise à jour a échoué ou a été annulée par l'utilisateur.")
+            }
+        }
+    }
      fun updateMainLanguage(){
         updateLanguage()
         val id = EntourageApplication.me(this)?.id
@@ -453,6 +498,8 @@ class MainActivity : BaseSecuredActivity() {
     }
     companion object {
         var instance: MainActivity? = null
+        const val UPDATE_REQUEST_CODE = 1001 // Ou tout autre numéro que tu souhaites.
+
     }
 }
 

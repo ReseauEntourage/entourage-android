@@ -2654,6 +2654,7 @@ Sie werden diese Nachricht lesen, sobald sie der Gruppe beitreten.</string>
     <string name="category_boitesdons">Spendenboxen &amp; Lesen</string>
     <string name="all_groups">Alle Gruppen</string>
     <string name="btn_create_group">Gruppe erstellen</string>
+    <string name="back_create_event_content">Wenn Sie das Formular zur Erstellung eines Ereignisses verlassen, gehen alle eingegebenen Informationen verloren.</string>
 
 
 </resources>

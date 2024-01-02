@@ -2649,5 +2649,7 @@ Leerán este mensaje tan pronto como se unan al grupo.</string>
     <string name="category_boitesdons">Cajas de donación &amp; Lectura</string>
     <string name="all_groups">Todos los grupos</string>
     <string name="btn_create_group">Crear grupo</string>
+    <string name="back_create_event_content">Si abandona el formulario de creación de un evento, toda la información ingresada se perderá.</string>
+
 
 </resources>

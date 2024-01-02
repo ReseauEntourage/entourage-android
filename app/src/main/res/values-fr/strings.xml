@@ -2674,6 +2674,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="category_boitesdons">Boîtes à dons &amp; lire</string>
     <string name="all_groups">Tous les groupes</string>
     <string name="btn_create_group">Créer un groupe</string>
+    <string name="back_create_event_content">Si vous quittez le formulaire de création d’un événement, toutes les informations saisies seront perdues.</string>
 
 </resources>
 
