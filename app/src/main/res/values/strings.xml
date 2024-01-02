@@ -219,6 +219,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="back_create_group_title">Attention</string>
     <string name="exit">Quitter</string>
     <string name="back_create_group_content">Si vous quittez le formulaire de création d’un groupe, toutes les informations saisies seront perdues.</string>
+    <string name="back_create_event_content">Si vous quittez le formulaire de création d’un événement, toutes les informations saisies seront perdues.</string>
     <string name="category_name_label">Décrivez en un mot la catégorie de votre groupe</string>
     <string name="pass">Passer</string>
     <string name="create_post">Créer une publication</string>

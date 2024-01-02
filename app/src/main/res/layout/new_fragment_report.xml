@@ -64,7 +64,7 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/layout_choose_translate"
                 android:paddingHorizontal="@dimen/padding_horizontal"
@@ -91,11 +91,12 @@
                     android:textSize="15sp"
                     />
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:id="@+id/tv_choose_translate"
                     app:layout_constraintStart_toEndOf="@+id/iv_choose_translate"
                     app:layout_constraintTop_toBottomOf="@+id/title_translate_post"
+                    app:layout_constraintEnd_toEndOf="parent"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
                     android:textSize="12sp"

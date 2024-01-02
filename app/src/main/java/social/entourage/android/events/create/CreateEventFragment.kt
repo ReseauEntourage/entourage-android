@@ -180,7 +180,7 @@ class CreateEventFragment : Fragment() {
                 CustomAlertDialog.showWithCancelFirst(
                     requireContext(),
                     getString(R.string.back_create_group_title),
-                    getString(R.string.back_create_group_content),
+                    getString(R.string.back_create_event_content),
                     getString(R.string.exit)
                 ) {
                     requireActivity().finish()

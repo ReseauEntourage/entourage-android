@@ -2667,5 +2667,6 @@
     <string name="category_boitesdons">Бокси для пожертв &amp; Читання</string>
     <string name="all_groups">Усі групи</string>
     <string name="btn_create_group">Створити групу</string>
+    <string name="back_create_event_content">Якщо ви залишите форму створення події, всі введені дані будуть втрачені.</string>
 
 </resources>

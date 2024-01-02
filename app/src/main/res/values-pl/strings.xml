@@ -2666,5 +2666,7 @@ Przeczytają tę wiadomość, gdy tylko dołączą do grupy.</string>
     <string name="category_boitesdons">Pudła darów &amp; Czytanie</string>
     <string name="all_groups">Wszystkie grupy</string>
     <string name="btn_create_group">Utwórz grupę</string>
+    <string name="back_create_event_content">Jeśli opuścisz formularz tworzenia wydarzenia, wszystkie wprowadzone informacje zostaną utracone.</string>
+
 
 </resources>

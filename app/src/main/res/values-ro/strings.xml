@@ -2661,5 +2661,7 @@ Ei vor citi acest mesaj imediat ce se vor alătura grupului.</string>
     <string name="category_boitesdons">Cutii de donații &amp; Lectură</string>
     <string name="all_groups">Toate grupurile</string>
     <string name="btn_create_group">Creează un grup</string>
+    <string name="back_create_event_content">Dacă părăsiți formularul de creare a unui eveniment, toate informațiile introduse vor fi pierdute.</string>
+
 
 </resources>

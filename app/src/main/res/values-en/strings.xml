@@ -1592,5 +1592,7 @@
     <string name="category_boitesdons">Donation Boxes &amp; Reading</string>
     <string name="all_groups">All groups</string>
     <string name="btn_create_group">Create group</string>
+    <string name="back_create_event_content">If you leave the event creation form, all entered information will be lost.</string>
+
 
 </resources>
