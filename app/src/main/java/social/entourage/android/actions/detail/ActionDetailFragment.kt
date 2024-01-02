@@ -66,7 +66,6 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
     private var mGoogleMap:GoogleMap? = null
     private var isTranslated: Boolean = false
 
-
     var action: Action? = null
     var isDemand = false
     var isMine = false
@@ -101,7 +100,6 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
         super.onViewCreated(view, savedInstanceState)
 
         initializeViews()
-        setupTranslationButton()
         setupButtons()
         handleReportPost(id,isDemand)
         loadAction()
@@ -130,7 +128,9 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
         val sharedPrefs = requireActivity().getSharedPreferences(
             getString(R.string.preference_file_key), Context.MODE_PRIVATE
         )
-        if(LanguageManager.getCurrentDeviceLanguage() == action?.descriptionTranslations?.fromLang){
+        Log.wtf("wtf", "DataLanguageStock.userLanguage = ${DataLanguageStock.userLanguage}")
+        Log.wtf("wtf", "action?.descriptionTranslations?.fromLang = ${action?.descriptionTranslations?.fromLang}")
+        if(DataLanguageStock.userLanguage == action?.descriptionTranslations?.fromLang){
             binding.layoutCsTranslate.visibility = View.GONE
         }else{
             binding.layoutCsTranslate.visibility = View.VISIBLE
@@ -369,6 +369,7 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
                 binding.uiUserMember.text = action?.memberSinceDateString(requireContext())
                 updateMarker()
             }
+            setupTranslationButton()
         }
     }
 
