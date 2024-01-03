@@ -9,6 +9,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.RadioButton
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
@@ -339,12 +341,18 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
         builder.setView(customDialog)
         val alertDialog = builder.create()
         with(customDialog.findViewById<Button>(R.id.yes)) {
-            text = getString(R.string.back)
+            text = getString(R.string.cancel_event)
             setOnClickListener {
                 alertDialog.dismiss()
             }
         }
-        customDialog.findViewById<TextView>(R.id.title).text =
+        with(customDialog.findViewById<ImageButton>(R.id.btn_cross)){
+            visibility = View.VISIBLE
+            setOnClickListener {
+                alertDialog.dismiss()
+            }
+        }
+            customDialog.findViewById<TextView>(R.id.title).text =
             getString(R.string.event_cancel_recurrent_event)
         val cancelOneEvent = customDialog.findViewById<RadioButton>(R.id.one_event)
         val cancelAllEvents =

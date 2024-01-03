@@ -257,12 +257,12 @@ object CustomAlertDialog {
             }
         }
         customDialog.findViewById<TextView>(R.id.content).text = content
-        customDialog.findViewById<Button>(R.id.yes).visibility = View.GONE
-        with(customDialog.findViewById<TextView>(R.id.no)) {
+        customDialog.findViewById<Button>(R.id.no).visibility = View.GONE
+        with(customDialog.findViewById<TextView>(R.id.yes)) {
             text = action
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                setTextColor(context.getColor(R.color.orange))
-                background = context.getDrawable(R.drawable.new_alert_button_yes_transparent)
+                setTextColor(context.getColor(R.color.white))
+
             }
             setOnClickListener {
                 AnalyticsEvents.logEvent(AnalyticsEvents.I_present_click_i_post)
