@@ -1,6 +1,7 @@
 package social.entourage.android.api.model.notification
 
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
 data class Translation(
     @SerializedName("translation")
@@ -11,4 +12,4 @@ data class Translation(
     val fromLang: String? = null,
     @SerializedName("to_lang")
     val toLang: String? = null
-)
+) : Serializable

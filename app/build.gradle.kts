@@ -294,5 +294,4 @@ dependencies {
     implementation("androidx.core:core-splashscreen:1.0.1")
     implementation("com.google.android.play:core:1.10.0")
 
-
 }

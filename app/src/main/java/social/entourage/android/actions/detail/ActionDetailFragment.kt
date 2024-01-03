@@ -128,8 +128,7 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
         val sharedPrefs = requireActivity().getSharedPreferences(
             getString(R.string.preference_file_key), Context.MODE_PRIVATE
         )
-        Log.wtf("wtf", "DataLanguageStock.userLanguage = ${DataLanguageStock.userLanguage}")
-        Log.wtf("wtf", "action?.descriptionTranslations?.fromLang = ${action?.descriptionTranslations?.fromLang}")
+
         if(DataLanguageStock.userLanguage == action?.descriptionTranslations?.fromLang){
             binding.layoutCsTranslate.visibility = View.GONE
         }else{

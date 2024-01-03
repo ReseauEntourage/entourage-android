@@ -2662,6 +2662,7 @@ Ei vor citi acest mesaj imediat ce se vor alătura grupului.</string>
     <string name="all_groups">Toate grupurile</string>
     <string name="btn_create_group">Creează un grup</string>
     <string name="back_create_event_content">Dacă părăsiți formularul de creare a unui eveniment, toate informațiile introduse vor fi pierdute.</string>
-
+    <string name="friendly_links_title">Legături prietenoase și solidare</string>
+    <string name="friendly_links_text">La Entourage, obiectivul principal este de a favoriza legăturile prietenoase și durabile. Mă angajez să respect această orientare evitând orice abordare sau publicare de natură romantică sau amorosă. Astfel, contribui activ la menținerea unui mediu cald și binevoitor pentru toți.</string>
 
 </resources>

@@ -1593,6 +1593,8 @@
     <string name="all_groups">All groups</string>
     <string name="btn_create_group">Create group</string>
     <string name="back_create_event_content">If you leave the event creation form, all entered information will be lost.</string>
+    <string name="friendly_links_title">Friendly and Supportive Connections</string>
+    <string name="friendly_links_text">At Entourage, the main goal is to foster friendly and lasting relationships. I commit to respecting this focus by avoiding any romantic or amorous approach or publication. Thus, I actively contribute to maintaining a warm and caring environment for everyone.</string>
 
 
 </resources>

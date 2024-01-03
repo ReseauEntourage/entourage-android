@@ -2678,6 +2678,7 @@
     <string name="all_groups">جميع المجموعات</string>
     <string name="btn_create_group">إنشاء مجموعة</string>
     <string name="back_create_event_content">إذا غادرت نموذج إنشاء الحدث، ستُفقد كل المعلومات التي تم إدخالها.</string>
-
+    <string name="friendly_links_title">روابط ودية وداعمة</string>
+    <string name="friendly_links_text">في Entourage، الهدف الرئيسي هو تعزيز الروابط الودية والمستدامة. أتعهد باحترام هذا التوجه من خلال تجنب أي نهج أو نشر ذي طابع رومانسي أو عاطفي. وبذلك، أساهم بنشاط في الحفاظ على بيئة دافئة ومرحبة للجميع.</string>
 
 </resources>

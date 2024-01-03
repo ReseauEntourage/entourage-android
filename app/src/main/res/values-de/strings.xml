@@ -2655,6 +2655,7 @@ Sie werden diese Nachricht lesen, sobald sie der Gruppe beitreten.</string>
     <string name="all_groups">Alle Gruppen</string>
     <string name="btn_create_group">Gruppe erstellen</string>
     <string name="back_create_event_content">Wenn Sie das Formular zur Erstellung eines Ereignisses verlassen, gehen alle eingegebenen Informationen verloren.</string>
-
+    <string name="friendly_links_title">Freundliche und solidarische Verbindungen</string>
+    <string name="friendly_links_text">Bei Entourage ist das Hauptziel, freundliche und dauerhafte Beziehungen zu fördern. Ich verpflichte mich, diese Ausrichtung zu respektieren, indem ich jegliches romantische oder liebevolle Vorgehen oder Veröffentlichung vermeide. So trage ich aktiv zu einer warmen und fürsorglichen Umgebung für alle bei.</string>
 
 </resources>

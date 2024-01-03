@@ -2668,5 +2668,7 @@
     <string name="all_groups">Усі групи</string>
     <string name="btn_create_group">Створити групу</string>
     <string name="back_create_event_content">Якщо ви залишите форму створення події, всі введені дані будуть втрачені.</string>
+    <string name="friendly_links_title">Дружні та солідарні зв\'язки</string>
+    <string name="friendly_links_text">У Entourage основною метою є сприяння дружнім та стійким зв\'язкам. Я зобов\'язуюсь дотримуватися цього напрямку, уникаючи будь-яких романтичних чи коханих підходів чи публікацій. Таким чином, я активно сприяю підтриманню теплої та доброзичливої атмосфери для всіх.</string>
 
 </resources>
