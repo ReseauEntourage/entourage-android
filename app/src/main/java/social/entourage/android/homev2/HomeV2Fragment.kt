@@ -21,6 +21,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
+import com.google.android.play.core.appupdate.AppUpdateManager
+import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 import social.entourage.android.BuildConfig
 import social.entourage.android.EntourageApplication
 import social.entourage.android.MainActivity
@@ -36,20 +38,16 @@ import social.entourage.android.api.model.Pedago
 import social.entourage.android.api.model.Summary
 import social.entourage.android.api.model.User
 import social.entourage.android.databinding.FragmentHomeV2LayoutBinding
-import social.entourage.android.events.EventsPresenter
 import social.entourage.android.guide.GDSMainActivity
 import social.entourage.android.home.HomePresenter
 import social.entourage.android.home.pedago.OnItemClick
 import social.entourage.android.home.pedago.PedagoDetailActivity
 import social.entourage.android.home.pedago.PedagoListActivity
-import social.entourage.android.home.pedago.PedagoListFragmentDirections
-import social.entourage.android.language.LanguageManager
 import social.entourage.android.notifications.InAppNotificationsActivity
 import social.entourage.android.profile.ProfileActivity
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.CustomAlertDialog
-import social.entourage.android.tools.utils.showSkeleton
 import social.entourage.android.tools.view.WebViewFragment
 import social.entourage.android.user.UserPresenter
 import social.entourage.android.user.UserProfileActivity
@@ -92,7 +90,7 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
+        totalchecksum = 0
         binding = FragmentHomeV2LayoutBinding.inflate(layoutInflater)
         binding.homeNestedScrollView.visibility = View.GONE
         disapearAllAtBeginning()
@@ -112,7 +110,6 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener {
             }
         })
         AnalyticsEvents.logEvent(AnalyticsEvents.View__Home)
-
         setRecyclerViews()
         setSeeAllButtons()
         setObservations()
@@ -135,29 +132,12 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener {
         checksum = 0
         resetFilter()
         callToInitHome()
+        Log.wtf("wtf","hello home onResume")
     }
 
-//    fun showUpdateApplication(){
-//        val appUpdateManager: AppUpdateManager = AppUpdateManagerFactory.create(requireContext())
-//
-//        appUpdateManager.appUpdateInfo.addOnSuccessListener { appUpdateInfo ->
-//            if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
-//                && appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)) {
-//                try {
-//                    appUpdateManager.startUpdateFlowForResult(
-//                        appUpdateInfo,
-//                        AppUpdateType.IMMEDIATE,
-//                        // Votre Activity actuelle
-//                        this,
-//                        123456)
-//                } catch (e: IntentSender.SendIntentException) {
-//                    e.printStackTrace()
-//                }
-//            }
-//        }
-//    }
 
     fun callToInitHome(){
+
         if(isAdded){
             val meId = EntourageApplication.get().me()?.id
             if(meId == null) return
@@ -295,6 +275,8 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener {
             return
         }
         doTotalchecksumToDisplayHomeFirstTime()
+        Log.wtf("wtf","hello home all group")
+
         if(allGroup.size > 0 ){
             binding.btnMoreGroup.visibility = View.VISIBLE
             binding.rvHomeGroup.visibility = View.VISIBLE

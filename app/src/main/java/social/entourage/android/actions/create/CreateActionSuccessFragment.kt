@@ -43,12 +43,6 @@ class CreateActionSuccessFragment : Fragment() {
 
     private fun handleFinishButton() {
         binding.post.setOnClickListener {
-            val intent = Intent(context, ActionDetailActivity::class.java)
-                .putExtra(Const.ACTION_ID, args.successActionId)
-                .putExtra(Const.ACTION_TITLE,args.successTitle)
-                .putExtra(Const.IS_ACTION_DEMAND,args.successIsDemand)
-                .putExtra(Const.IS_ACTION_MINE, true)
-            startActivityForResult(intent, 0)
             requireActivity().finish()
             RefreshController.shouldRefreshFragment = true
 
