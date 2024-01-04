@@ -253,8 +253,9 @@ abstract class CommentActivity : BaseActivity(), onDissmissFragment {
         if (fromLang != null) {
             DataLanguageStock.updatePostLanguage(fromLang)
         }
+        val isMyLanguage = DataLanguageStock.postLanguage == DataLanguageStock.userLanguage
         val reportGroupBottomDialogFragment =
-            ReportModalFragment.newInstance(id, this.id, type, isMe ,true, this.isOne2One)
+            ReportModalFragment.newInstance(id, this.id, type, isMe ,true, this.isOne2One,isMyLanguage)
         if(isEventComment){
             reportGroupBottomDialogFragment.setEventComment()
         }

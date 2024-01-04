@@ -3,6 +3,7 @@ package social.entourage.android.tools.utils
 object Const {
     const val REPORTED_ID = "reported_id"
     const val IS_FROM_ME = "is_from_me"
+    const val IS_MY_LANGUAGE = "is_my_language"
     const val GROUP_NAME_MIN_LENGTH = 2
     const val GROUP_DESCRIPTION_MIN_LENGTH = 1
     const val DEFAULT_VALUE = -1

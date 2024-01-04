@@ -172,21 +172,23 @@ class ReportModalFragment() : BottomSheetDialogFragment() {
     }
     fun setStartView(){
         getIsFromMe()
+        getIsMyLanguage()
         getIsFromConv()
         getIsOneToOne()
-        if(DataLanguageStock.postLanguage == DataLanguageStock.userLanguage ){
-            binding.layoutChooseTranslate.visibility = View.GONE
-        }else{
-            binding.layoutChooseTranslate.visibility = View.VISIBLE
-        }
-        if(isFromMe == true){
-            binding.layoutChooseTranslate.visibility = View.GONE
-        }
+        Log.wtf("wtf", "is language différent ? " + (DataLanguageStock.postLanguage == DataLanguageStock.userLanguage))
         if(reportType == ReportTypes.REPORT_COMMENT.code || reportType == ReportTypes.REPORT_POST_EVENT.code){
             binding.layoutChooseTranslate.visibility = View.VISIBLE
         }else{
             binding.layoutChooseTranslate.visibility = View.GONE
         }
+        if(DataLanguageStock.postLanguage == DataLanguageStock.userLanguage || (isFromMe == true)  ){
+            Log.wtf("wtf", "passed here")
+            binding.layoutChooseTranslate.visibility = View.GONE
+        }else{
+            Log.wtf("wtf", "passed there")
+            binding.layoutChooseTranslate.visibility = View.VISIBLE
+        }
+        
 
         if (reportType == ReportTypes.REPORT_GROUP.code){
             setAfterChoose()
@@ -334,6 +336,7 @@ class ReportModalFragment() : BottomSheetDialogFragment() {
             title = getString(R.string.report_comment)
         }
         binding.header.title = title
+
     }
 
     private fun handleReportResponse(success: Boolean) {
@@ -384,6 +387,10 @@ class ReportModalFragment() : BottomSheetDialogFragment() {
     }
     fun getIsFromMe(){
         isFromMe = arguments?.getBoolean(Const.IS_FROM_ME)
+    }
+
+    fun getIsMyLanguage(){
+        isFromMe = arguments?.getBoolean(Const.IS_MY_LANGUAGE)
     }
     fun getIsFromConv(){
         isFromConv = arguments?.getBoolean(Const.IS_FROM_CONV)
@@ -530,12 +537,15 @@ class ReportModalFragment() : BottomSheetDialogFragment() {
 
     companion object {
         const val TAG = "ReportModalFragment"
-        fun newInstance(id: Int, groupId: Int, reportType: ReportTypes , isFromMe:Boolean, isConv:Boolean, isOneToOne:Boolean): ReportModalFragment {
+        fun newInstance(id: Int, groupId: Int, reportType: ReportTypes , isFromMe:Boolean, isConv:Boolean, isOneToOne:Boolean, isMyLanguage:Boolean? = null): ReportModalFragment {
             val fragment = ReportModalFragment()
             val args = Bundle()
             args.putInt(Const.REPORTED_ID, id)
             args.putInt(Const.GROUP_ID, groupId)
             args.putBoolean(Const.IS_FROM_ME, isFromMe)
+            if(isMyLanguage != null){
+                args.putBoolean(Const.IS_MY_LANGUAGE, isMyLanguage)
+            }
             args.putInt(Const.REPORT_TYPE, reportType.code)
             args.putInt(Const.REPORT_TYPE, reportType.code)
             args.putBoolean(Const.IS_FROM_CONV, isConv)

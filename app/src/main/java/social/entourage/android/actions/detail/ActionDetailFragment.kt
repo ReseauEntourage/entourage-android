@@ -182,7 +182,7 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
         }
 
         val reportGroupBottomDialogFragment =
-            ReportModalFragment.newInstance(actionId, id, type,isMine,false, false)
+            ReportModalFragment.newInstance(actionId, id, type,isMine,false, false, )
         reportGroupBottomDialogFragment.show(
             requireActivity().supportFragmentManager,
             ReportModalFragment.TAG

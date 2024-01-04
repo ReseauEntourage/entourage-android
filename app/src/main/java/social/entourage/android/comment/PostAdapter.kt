@@ -18,6 +18,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.google.gson.Gson
+import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.api.model.Post
 import social.entourage.android.databinding.NewLayoutPostBinding
@@ -76,8 +77,9 @@ class PostAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         with(holder) {
+            val meId = EntourageApplication.get().me()?.id
             with(postsList[position]) {
-                if(DataLanguageStock.userLanguage == this?.contentTranslations?.fromLang){
+                if(DataLanguageStock.userLanguage == this?.contentTranslations?.fromLang || (this.user?.id == meId?.toLong()) && (this.content == "")){
                     binding.postTranslationButton.layoutCsTranslate.visibility = View.GONE
                 }else{
                     binding.postTranslationButton.layoutCsTranslate.visibility = View.VISIBLE
