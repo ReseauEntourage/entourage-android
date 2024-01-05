@@ -157,7 +157,13 @@ class CreateEventFragment : Fragment() {
         val cancelOneEvent = customDialog.findViewById<RadioButton>(R.id.one_event)
         val cancelAllEvents =
             customDialog.findViewById<RadioButton>(R.id.all_events_recurrent)
+
+
+        //buttonYes.background = requireContext().getDrawable(R.drawable.btn_shape_orange_alert_dialog)
+
         with(customDialog.findViewById<Button>(R.id.yes)) {
+           this.background = requireContext().getDrawable(R.drawable.btn_shape_light_orange)
+
             text = getString(R.string.validate)
             setOnClickListener {
                 if (cancelOneEvent.isChecked) updateEventWithoutRecurrence()

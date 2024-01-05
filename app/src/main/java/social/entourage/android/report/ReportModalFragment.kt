@@ -188,7 +188,7 @@ class ReportModalFragment() : BottomSheetDialogFragment() {
             Log.wtf("wtf", "passed there")
             binding.layoutChooseTranslate.visibility = View.VISIBLE
         }
-        
+
 
         if (reportType == ReportTypes.REPORT_GROUP.code){
             setAfterChoose()

@@ -12,6 +12,7 @@ import android.widget.Button
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.RadioButton
+import android.widget.RadioGroup
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.collection.ArrayMap
@@ -340,7 +341,21 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
         val builder = AlertDialog.Builder(requireContext())
         builder.setView(customDialog)
         val alertDialog = builder.create()
-        with(customDialog.findViewById<Button>(R.id.yes)) {
+
+        val buttonYes = customDialog.findViewById<Button>(R.id.yes)
+        val radioGroup = customDialog.findViewById<RadioGroup>(R.id.recurrence)
+
+        buttonYes.isEnabled = false
+        buttonYes.background = requireContext().getDrawable(R.drawable.btn_shape_light_orange)
+
+        radioGroup.setOnCheckedChangeListener { group, checkedId ->
+            buttonYes.isEnabled = group.checkedRadioButtonId != -1
+            if (buttonYes.isEnabled) {
+                buttonYes.background = requireContext().getDrawable(R.drawable.btn_shape_orange_alert_dialog)
+            }
+        }
+
+        with(buttonYes) {
             text = getString(R.string.cancel_event)
             setOnClickListener {
                 alertDialog.dismiss()
@@ -357,6 +372,9 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
         val cancelOneEvent = customDialog.findViewById<RadioButton>(R.id.one_event)
         val cancelAllEvents =
             customDialog.findViewById<RadioButton>(R.id.all_events_recurrent)
+
+
+
         customDialog.findViewById<Button>(R.id.yes).setOnClickListener {
             if (cancelOneEvent.isChecked) cancelEventWithoutRecurrence()
             if (cancelAllEvents.isChecked) cancelEventWithRecurrence()

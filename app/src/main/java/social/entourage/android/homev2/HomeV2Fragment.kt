@@ -132,7 +132,6 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener {
         checksum = 0
         resetFilter()
         callToInitHome()
-        Log.wtf("wtf","hello home onResume")
     }
 
 
@@ -275,7 +274,6 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener {
             return
         }
         doTotalchecksumToDisplayHomeFirstTime()
-        Log.wtf("wtf","hello home all group")
 
         if(allGroup.size > 0 ){
             binding.btnMoreGroup.visibility = View.VISIBLE
