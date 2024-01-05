@@ -68,6 +68,7 @@ class ReportModalFragment() : BottomSheetDialogFragment() {
     private var isEventComment = false
     private var callback: CallbackReportFragment? = null
     private var isFromMe: Boolean? = false
+    private var isMyLanguage: Boolean? = false
     private var isFromConv: Boolean? = false
     private var isOneToOne: Boolean? = false
     private var dismissCallback:onDissmissFragment? = null
@@ -175,17 +176,15 @@ class ReportModalFragment() : BottomSheetDialogFragment() {
         getIsMyLanguage()
         getIsFromConv()
         getIsOneToOne()
-        Log.wtf("wtf", "is language différent ? " + (DataLanguageStock.postLanguage == DataLanguageStock.userLanguage))
+        Log.wtf("wtf", "isFromme : $isFromMe")
         if(reportType == ReportTypes.REPORT_COMMENT.code || reportType == ReportTypes.REPORT_POST_EVENT.code){
             binding.layoutChooseTranslate.visibility = View.VISIBLE
         }else{
             binding.layoutChooseTranslate.visibility = View.GONE
         }
         if(DataLanguageStock.postLanguage == DataLanguageStock.userLanguage || (isFromMe == true)  ){
-            Log.wtf("wtf", "passed here")
             binding.layoutChooseTranslate.visibility = View.GONE
         }else{
-            Log.wtf("wtf", "passed there")
             binding.layoutChooseTranslate.visibility = View.VISIBLE
         }
 
@@ -387,10 +386,11 @@ class ReportModalFragment() : BottomSheetDialogFragment() {
     }
     fun getIsFromMe(){
         isFromMe = arguments?.getBoolean(Const.IS_FROM_ME)
+
     }
 
     fun getIsMyLanguage(){
-        isFromMe = arguments?.getBoolean(Const.IS_MY_LANGUAGE)
+        isMyLanguage = arguments?.getBoolean(Const.IS_MY_LANGUAGE)
     }
     fun getIsFromConv(){
         isFromConv = arguments?.getBoolean(Const.IS_FROM_CONV)
@@ -542,6 +542,7 @@ class ReportModalFragment() : BottomSheetDialogFragment() {
             val args = Bundle()
             args.putInt(Const.REPORTED_ID, id)
             args.putInt(Const.GROUP_ID, groupId)
+            Log.wtf("wtf", isFromMe.toString())
             args.putBoolean(Const.IS_FROM_ME, isFromMe)
             if(isMyLanguage != null){
                 args.putBoolean(Const.IS_MY_LANGUAGE, isMyLanguage)

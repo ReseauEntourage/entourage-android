@@ -3,6 +3,7 @@ package social.entourage.android.events.details.feed
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -83,6 +84,7 @@ class FeedFragment : Fragment(), CallbackReportFragment {
 
     private var newPostsList: MutableList<Post> = mutableListOf()
     private var oldPostsList: MutableList<Post> = mutableListOf()
+    private var allPostsList: MutableList<Post> = mutableListOf()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -142,7 +144,9 @@ class FeedFragment : Fragment(), CallbackReportFragment {
         binding.swipeRefresh.isRefreshing = false
         newPostsList.clear()
         oldPostsList.clear()
+        allPostsList.clear()
         allPosts?.let {
+            allPostsList.addAll(allPosts)
             it.forEach { post ->
                 if (post.read == true || post.read == null) oldPostsList.add(post)
                 else newPostsList.add(post)
@@ -423,13 +427,17 @@ class FeedFragment : Fragment(), CallbackReportFragment {
         val reportGroupBottomDialogFragment =
             event?.id?.let {
                 val meId = EntourageApplication.get().me()?.id
-                val fromLang = event?.descriptionTranslations?.fromLang
+                val post = allPostsList.find { it.id == postId }
+                val fromLang = post?.contentTranslations?.fromLang
                 if (fromLang != null) {
                     DataLanguageStock.updatePostLanguage(fromLang)
                 }
+                val isFrome = meId == post?.user?.id?.toInt()
+                Log.wtf("wtf", "isFrome $isFrome")
+
                 ReportModalFragment.newInstance(
                     postId,
-                    it, ReportTypes.REPORT_POST_EVENT, meId == userId
+                    it, ReportTypes.REPORT_POST_EVENT, isFrome
                 ,false,false)
             }
         reportGroupBottomDialogFragment?.setCallback(this)

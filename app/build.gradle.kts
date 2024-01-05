@@ -1,3 +1,5 @@
+import com.android.build.api.dsl.Lint
+import com.android.build.api.dsl.LintOptions
 import java.io.ByteArrayOutputStream
 
 plugins {

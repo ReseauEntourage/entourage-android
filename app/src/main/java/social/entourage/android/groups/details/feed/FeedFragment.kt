@@ -3,6 +3,7 @@ package social.entourage.android.groups.details.feed
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -46,6 +47,7 @@ import social.entourage.android.groups.GroupPresenter
 import social.entourage.android.groups.details.GroupDetailsFragment
 import social.entourage.android.groups.details.members.MembersType
 import social.entourage.android.profile.myProfile.InterestsAdapter
+import social.entourage.android.report.DataLanguageStock
 import social.entourage.android.report.ReportModalFragment
 import social.entourage.android.report.ReportTypes
 import social.entourage.android.tools.image_viewer.ImageDialogActivity
@@ -133,6 +135,7 @@ class FeedFragment : Fragment(),CallbackReportFragment{
 
     private var newPostsList: MutableList<Post> = ArrayList()
     private var oldPostsList: MutableList<Post> = ArrayList()
+    private var allPostsList: MutableList<Post> = ArrayList()
     private var page: Int = 0
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -194,7 +197,9 @@ class FeedFragment : Fragment(),CallbackReportFragment{
         binding.swipeRefresh.isRefreshing = false
         newPostsList.clear()
         oldPostsList.clear()
+        allPostsList.clear()
         allPosts?.let {
+            allPostsList.addAll(allPosts)
             it.forEach { post ->
                 if (post.read == true || post.read == null) oldPostsList.add(post)
                 else newPostsList.add(post)
@@ -411,7 +416,7 @@ class FeedFragment : Fragment(),CallbackReportFragment{
 
     private fun showWelcomeMessage(){
         var message = getString(R.string.welcome_message_placeholder)
-        var title = getString(R.string.welcome_message_title)
+        val title = getString(R.string.welcome_message_title)
         if (group?.welcomeMessage?.isNotBlank() == true) message = group?.welcomeMessage.toString()
         CustomAlertDialog.showWelcomeAlert(
             requireContext(),
@@ -479,7 +484,13 @@ class FeedFragment : Fragment(),CallbackReportFragment{
     private fun openReportFragment(postId:Int,userId:Int) {
 
         val meId = EntourageApplication.get().me()?.id
-        val isFrome = meId == userId
+        val post = allPostsList.find { it.id == postId }
+        val isFrome = meId == post?.user?.id?.toInt()
+        Log.wtf("wtf", "isFrome $isFrome")
+        val fromLang = post?.contentTranslations?.fromLang
+        if (fromLang != null) {
+            DataLanguageStock.updatePostLanguage(fromLang)
+        }
         val reportGroupBottomDialogFragment =
             group?.id?.let {
                 ReportModalFragment.newInstance(
