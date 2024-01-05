@@ -74,7 +74,7 @@ android {
         applicationId = "social.entourage.android"
         resourceConfigurations += listOf("en", "fr", "de", "pl", "es","uk", "ro")
 
-        minSdk = 21 /*November 2014: Android 5.0, Lollipop*/
+        minSdk = 23 /*November 2015: Android 6.0, MarshMallow*/
         targetSdk = 33
 
         // Making either of these two values dynamic in the defaultConfig will
