@@ -79,7 +79,11 @@ class PostAdapter(
         with(holder) {
             val meId = EntourageApplication.get().me()?.id
             with(postsList[position]) {
-                if(DataLanguageStock.userLanguage == this?.contentTranslations?.fromLang || (this.user?.id == meId?.toLong()) && (this.content == "")){
+                Log.wtf("wtf" , "position" + position)
+                Log.wtf("wtf" , "DataLanguageStock " + "DataLanguageStock.userLanguage == this?.contentTranslations?.fromLang")
+                Log.wtf("wtf" , "DataLanguageStock" + (this.user?.id == meId?.toLong()))
+
+                if(DataLanguageStock.userLanguage == this?.contentTranslations?.fromLang || (this.user?.id == meId?.toLong()) || (this.content == "")){
                     binding.postTranslationButton.layoutCsTranslate.visibility = View.GONE
                 }else{
                     binding.postTranslationButton.layoutCsTranslate.visibility = View.VISIBLE
