@@ -152,6 +152,8 @@ class FeedFragment : Fragment(), CallbackReportFragment {
                 else newPostsList.add(post)
             }
         }
+        Log.wtf("wtf", "newPostsList: " + newPostsList.size)
+        Log.wtf("wtf", "oldpostlist: " + oldPostsList.size)
 
         when {
             newPostsList.isEmpty() && oldPostsList.isEmpty() -> {
