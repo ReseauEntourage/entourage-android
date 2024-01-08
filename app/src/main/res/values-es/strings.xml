@@ -2653,5 +2653,9 @@ Leerán este mensaje tan pronto como se unan al grupo.</string>
     <string name="friendly_links_title">Vínculos amistosos y solidarios</string>
     <string name="friendly_links_text">En Entourage, el objetivo principal es fomentar lazos amistosos y duraderos. Me comprometo a respetar esta orientación evitando cualquier enfoque o publicación de carácter romántico o amoroso. De esta manera, contribuyo activamente a mantener un ambiente cálido y acogedor para todos.</string>
 
+    <string name="copied_text">¡Copiado al portapapeles!</string>
+    <string name="copy_the_text">Copiar el texto</string>
+    <string name="copy_the_text_explanation">El texto se copiará al portapapeles</string>
+
 
 </resources>

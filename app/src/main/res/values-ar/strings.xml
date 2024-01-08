@@ -2681,4 +2681,8 @@
     <string name="friendly_links_title">روابط ودية وداعمة</string>
     <string name="friendly_links_text">في Entourage، الهدف الرئيسي هو تعزيز الروابط الودية والمستدامة. أتعهد باحترام هذا التوجه من خلال تجنب أي نهج أو نشر ذي طابع رومانسي أو عاطفي. وبذلك، أساهم بنشاط في الحفاظ على بيئة دافئة ومرحبة للجميع.</string>
 
+    <string name="copied_text">تم النسخ إلى الحافظة!</string>
+    <string name="copy_the_text">انسخ النص</string>
+    <string name="copy_the_text_explanation">سيتم نسخ النص إلى الحافظة</string>
+
 </resources>

@@ -1,6 +1,8 @@
 package social.entourage.android.comment
 
 import android.app.Activity
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
@@ -12,6 +14,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.graphics.drawable.toBitmap
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -78,12 +81,27 @@ class PostAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         with(holder) {
             val meId = EntourageApplication.get().me()?.id
+
             
             with(postsList[position]) {
+                Log.wtf("wtf", "hello there " + this.content)
+                binding.postMessage.setOnLongClickListener {
+                    val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                    val clip = ClipData.newPlainText("Copied Text", binding.postMessage.text)
+                    clipboard.setPrimaryClip(clip)
+                    // Afficher un petit message de confirmation, si vous voulez
+                    Toast.makeText(context, context.getString(R.string.copied_text), Toast.LENGTH_SHORT).show()
+                    true // Retourne true pour indiquer que l'événement a été géré
+                }
+
+
                 if(DataLanguageStock.userLanguage == this.contentTranslations?.fromLang || (this.user?.id == meId?.toLong()) && (this.content == "")){
                     binding.postTranslationButton.layoutCsTranslate.visibility = View.GONE
                 }else{
                     binding.postTranslationButton.layoutCsTranslate.visibility = View.VISIBLE
+                }
+                if(this.contentTranslations == null ){
+                    binding.postTranslationButton.layoutCsTranslate.visibility = View.GONE
                 }
                 // Déterminer si ce post spécifique doit être traduit ou non
                 val isTranslated = !translationExceptions.contains(id)

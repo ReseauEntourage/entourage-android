@@ -242,10 +242,12 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
                 if (fromLang != null) {
                     DataLanguageStock.updatePostLanguage(fromLang)
                 }
+                var description = event?.description ?: ""
+
                 ReportModalFragment.newInstance(
                     it,
                     Const.DEFAULT_VALUE, ReportTypes.REPORT_EVENT
-                ,false,false, false)
+                ,false,false, false, contentCopied = description)
             }
         binding.report.setOnClickListener {
             AnalyticsEvents.logEvent("Action_EventOption_Report")

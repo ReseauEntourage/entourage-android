@@ -1596,5 +1596,9 @@
     <string name="friendly_links_title">Friendly and Supportive Connections</string>
     <string name="friendly_links_text">At Entourage, the main goal is to foster friendly and lasting relationships. I commit to respecting this focus by avoiding any romantic or amorous approach or publication. Thus, I actively contribute to maintaining a warm and caring environment for everyone.</string>
 
+    <string name="copied_text">Copied to clipboard!</string>
+    <string name="copy_the_text">Copy text</string>
+    <string name="copy_the_text_explanation">The text will be copied to the clipboard</string>
+
 
 </resources>

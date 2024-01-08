@@ -2671,4 +2671,8 @@
     <string name="friendly_links_title">Дружні та солідарні зв\'язки</string>
     <string name="friendly_links_text">У Entourage основною метою є сприяння дружнім та стійким зв\'язкам. Я зобов\'язуюсь дотримуватися цього напрямку, уникаючи будь-яких романтичних чи коханих підходів чи публікацій. Таким чином, я активно сприяю підтриманню теплої та доброзичливої атмосфери для всіх.</string>
 
+    <string name="copied_text">Скопійовано до буферу обміну!</string>
+    <string name="copy_the_text">Скопіювати текст</string>
+    <string name="copy_the_text_explanation">Текст буде скопійовано до буферу обміну</string>
+
 </resources>

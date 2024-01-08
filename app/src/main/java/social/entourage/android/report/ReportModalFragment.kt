@@ -3,6 +3,9 @@ package social.entourage.android.report
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.animation.ObjectAnimator
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
 import android.content.DialogInterface
 import android.os.Build
 import android.os.Bundle
@@ -69,9 +72,11 @@ class ReportModalFragment() : BottomSheetDialogFragment() {
     private var callback: CallbackReportFragment? = null
     private var isFromMe: Boolean? = false
     private var isMyLanguage: Boolean? = false
+    private var isNotTranslatable: Boolean? = false
     private var isFromConv: Boolean? = false
     private var isOneToOne: Boolean? = false
     private var dismissCallback:onDissmissFragment? = null
+    private var contentCopied:String? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -173,10 +178,26 @@ class ReportModalFragment() : BottomSheetDialogFragment() {
     }
     fun setStartView(){
         getIsFromMe()
+        getIsNotTranslatable()
+        getContentCopied()
         getIsMyLanguage()
         getIsFromConv()
         getIsOneToOne()
         Log.wtf("wtf", "isFromme : $isFromMe")
+        if(contentCopied == null || contentCopied.isNullOrEmpty()){
+            binding.layoutChooseCopy.visibility = View.GONE
+        }else{
+            binding.layoutChooseCopy.setOnClickListener {
+                val clipboard = context?.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                val clip = ClipData.newPlainText("Copied Text", contentCopied)
+                clipboard.setPrimaryClip(clip)
+                Toast.makeText(context, context?.getString(R.string.copied_text), Toast.LENGTH_SHORT).show()
+                true
+                onClose()
+                dismiss()
+            }
+        }
+            binding.layoutChooseTranslate.visibility = View.VISIBLE
         if(reportType == ReportTypes.REPORT_COMMENT.code || reportType == ReportTypes.REPORT_POST_EVENT.code){
             binding.layoutChooseTranslate.visibility = View.VISIBLE
         }else{
@@ -186,6 +207,9 @@ class ReportModalFragment() : BottomSheetDialogFragment() {
             binding.layoutChooseTranslate.visibility = View.GONE
         }else{
             binding.layoutChooseTranslate.visibility = View.VISIBLE
+        }
+        if(isNotTranslatable == true){
+            binding.layoutChooseTranslate.visibility = View.GONE
         }
 
 
@@ -386,11 +410,18 @@ class ReportModalFragment() : BottomSheetDialogFragment() {
     }
     fun getIsFromMe(){
         isFromMe = arguments?.getBoolean(Const.IS_FROM_ME)
+    }
+    fun getContentCopied(){
+        contentCopied = arguments?.getString(Const.CONTENT_COPIED)
 
     }
 
     fun getIsMyLanguage(){
         isMyLanguage = arguments?.getBoolean(Const.IS_MY_LANGUAGE)
+    }
+    fun getIsNotTranslatable(){
+
+        isNotTranslatable = arguments?.getBoolean(Const.IS_NOT_TRANSLATABLE)
     }
     fun getIsFromConv(){
         isFromConv = arguments?.getBoolean(Const.IS_FROM_CONV)
@@ -537,15 +568,18 @@ class ReportModalFragment() : BottomSheetDialogFragment() {
 
     companion object {
         const val TAG = "ReportModalFragment"
-        fun newInstance(id: Int, groupId: Int, reportType: ReportTypes , isFromMe:Boolean, isConv:Boolean, isOneToOne:Boolean, isMyLanguage:Boolean? = null): ReportModalFragment {
+        fun newInstance(id: Int, groupId: Int, reportType: ReportTypes , isFromMe:Boolean, isConv:Boolean, isOneToOne:Boolean, isMyLanguage:Boolean? = null, isNotTranslatable:Boolean? = null, contentCopied:String): ReportModalFragment {
             val fragment = ReportModalFragment()
             val args = Bundle()
             args.putInt(Const.REPORTED_ID, id)
             args.putInt(Const.GROUP_ID, groupId)
-            Log.wtf("wtf", isFromMe.toString())
             args.putBoolean(Const.IS_FROM_ME, isFromMe)
+            args.putString(Const.CONTENT_COPIED, contentCopied)
             if(isMyLanguage != null){
                 args.putBoolean(Const.IS_MY_LANGUAGE, isMyLanguage)
+            }
+            if(isNotTranslatable != null){
+                args.putBoolean(Const.IS_NOT_TRANSLATABLE, isNotTranslatable)
             }
             args.putInt(Const.REPORT_TYPE, reportType.code)
             args.putInt(Const.REPORT_TYPE, reportType.code)
@@ -556,6 +590,7 @@ class ReportModalFragment() : BottomSheetDialogFragment() {
         }
     }
 }
+
 
 interface onDissmissFragment{
     fun reloadView()

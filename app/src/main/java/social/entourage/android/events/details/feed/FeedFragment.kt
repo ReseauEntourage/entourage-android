@@ -437,10 +437,12 @@ class FeedFragment : Fragment(), CallbackReportFragment {
                 val isFrome = meId == post?.user?.id?.toInt()
                 Log.wtf("wtf", "isFrome $isFrome")
 
+                var description = allPostsList.find { it.id == postId }?.content ?: ""
+
                 ReportModalFragment.newInstance(
                     postId,
                     it, ReportTypes.REPORT_POST_EVENT, isFrome
-                ,false,false)
+                ,false,false, contentCopied = description)
             }
         reportGroupBottomDialogFragment?.setCallback(this)
         reportGroupBottomDialogFragment?.show(parentFragmentManager, ReportModalFragment.TAG)

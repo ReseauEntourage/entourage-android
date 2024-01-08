@@ -180,9 +180,9 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
         }else{
             AnalyticsEvents.logEvent("Action__Demand__Report")
         }
-
+        var description = action?.description ?: ""
         val reportGroupBottomDialogFragment =
-            ReportModalFragment.newInstance(actionId, id, type,isMine,false, false, )
+            ReportModalFragment.newInstance(actionId, id, type,isMine,false, false, contentCopied = description)
         reportGroupBottomDialogFragment.show(
             requireActivity().supportFragmentManager,
             ReportModalFragment.TAG

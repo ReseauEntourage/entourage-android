@@ -250,12 +250,16 @@ abstract class CommentActivity : BaseActivity(), onDissmissFragment {
 
     protected fun handleReport(id: Int, type: ReportTypes, isEventComment :Boolean, isMe:Boolean, commentLang:String) {
         val fromLang =  commentLang
-        if (fromLang != null) {
+        var isNotTranslatable = false
+        if (fromLang == null || fromLang.equals("")){
             DataLanguageStock.updatePostLanguage(fromLang)
+        }else{
+            isNotTranslatable = true
         }
-        val isMyLanguage = DataLanguageStock.postLanguage == DataLanguageStock.userLanguage
+
+        var description = comment?.content ?: ""
         val reportGroupBottomDialogFragment =
-            ReportModalFragment.newInstance(id, this.id, type, isMe ,true, this.isOne2One,isMyLanguage)
+            ReportModalFragment.newInstance(id, this.id, type, isMe ,true, this.isOne2One, contentCopied = description, isNotTranslatable = isNotTranslatable)
         if(isEventComment){
             reportGroupBottomDialogFragment.setEventComment()
         }

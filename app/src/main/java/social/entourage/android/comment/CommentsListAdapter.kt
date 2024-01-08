@@ -201,6 +201,7 @@ class CommentsListAdapter(
                     }
                 }
 
+
                 binding.comment.text = contentToShow
 
 
@@ -216,7 +217,6 @@ class CommentsListAdapter(
             }
             binding.report.setOnClickListener {
                 val commentLang = comment?.contentTranslations?.fromLang ?: ""
-
                 onItemClick.onCommentReport(comment.id, isForEvent, isMe,commentLang)
             }
             //here

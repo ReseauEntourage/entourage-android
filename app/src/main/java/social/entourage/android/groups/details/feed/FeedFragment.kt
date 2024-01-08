@@ -491,12 +491,13 @@ class FeedFragment : Fragment(),CallbackReportFragment{
         if (fromLang != null) {
             DataLanguageStock.updatePostLanguage(fromLang)
         }
+        var description = allPostsList.find { it.id == postId }?.content ?: ""
         val reportGroupBottomDialogFragment =
             group?.id?.let {
                 ReportModalFragment.newInstance(
                     postId,
                     it, ReportTypes.REPORT_POST,isFrome
-                ,false,false)
+                ,false,false, contentCopied = description)
             }
         reportGroupBottomDialogFragment?.setCallback(this)
         reportGroupBottomDialogFragment?.show(parentFragmentManager, ReportModalFragment.TAG)
@@ -509,8 +510,6 @@ class FeedFragment : Fragment(),CallbackReportFragment{
         intent.putExtra("postId", postId)
         intent.putExtra("groupId", this.group?.id)
         startActivity(intent)
-
-
     }
 
     private fun initializeInterests() {

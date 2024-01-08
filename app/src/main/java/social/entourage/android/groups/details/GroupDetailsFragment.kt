@@ -244,10 +244,11 @@ class GroupDetailsFragment : BottomSheetDialogFragment() {
                 if (fromLang != null) {
                     DataLanguageStock.updatePostLanguage(fromLang)
                 }
+                var description = group?.description ?: ""
 
                 ReportModalFragment.newInstance(
                     it,
-                    Const.DEFAULT_VALUE, ReportTypes.REPORT_GROUP, false, false,false)
+                    Const.DEFAULT_VALUE, ReportTypes.REPORT_GROUP, false, false,false, contentCopied = description)
             }
         binding.report.setOnClickListener {
             reportGroupBottomDialogFragment?.show(parentFragmentManager, ReportModalFragment.TAG)

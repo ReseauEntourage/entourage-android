@@ -2678,6 +2678,9 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="friendly_links_title">Liens amicaux et solidaires</string>
     <string name="friendly_links_text">Chez Entourage, l\'objectif principal est de favoriser les liens amicaux et durables. Je m\'engage à respecter cette orientation en évitant toute démarche ou publication à caractère romantique ou amoureux. Ainsi, je contribue activement à maintenir un environnement chaleureux et bienveillant pour tous et toutes.</string>
 
+    <string name="copied_text">Copié dans le presse-papier !</string>
+    <string name="copy_the_text">Copier le texte</string>
+    <string name="copy_the_text_explanation">Le texte sera copié dans le presse-papier</string>
 
 </resources>
 
