@@ -78,7 +78,7 @@ class PostAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         with(holder) {
             val meId = EntourageApplication.get().me()?.id
-
+            
             with(postsList[position]) {
                 if(DataLanguageStock.userLanguage == this.contentTranslations?.fromLang || (this.user?.id == meId?.toLong()) && (this.content == "")){
                     binding.postTranslationButton.layoutCsTranslate.visibility = View.GONE
