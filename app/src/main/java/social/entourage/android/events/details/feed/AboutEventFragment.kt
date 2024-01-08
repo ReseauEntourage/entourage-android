@@ -47,6 +47,7 @@ import social.entourage.android.tools.displayDistance
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.setHyperlinkClickable
 import social.entourage.android.tools.utils.*
+import social.entourage.android.tools.utils.Utils.enableCopyOnLongClick
 import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
@@ -199,6 +200,7 @@ class AboutEventFragment : Fragment(), OnMapReadyCallback {
             initializeMembersPhotos()
             eventDescription.text = event?.description
             eventDescription.setHyperlinkClickable()
+            eventDescription.enableCopyOnLongClick()
             initializeInterests()
             initializeGroups()
             if (event?.status == Status.CLOSED)

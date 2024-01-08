@@ -49,6 +49,7 @@ import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.CustomAlertDialog
 import social.entourage.android.tools.utils.px
 import social.entourage.android.tools.log.AnalyticsEvents
+import social.entourage.android.tools.utils.Utils.enableCopyOnLongClick
 import timber.log.Timber
 import java.text.SimpleDateFormat
 
@@ -149,6 +150,7 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
         if(isTranslated){
             binding.titleActionTranslate.text = getString(R.string.layout_translate_title_translation_title)
             binding.uiActionDescription.text = action?.descriptionTranslations?.translation
+            binding.uiActionDescription.enableCopyOnLongClick()
             binding.uiTitleMain.text = action?.titleTranslations?.translation
         }else{
             binding.titleActionTranslate.text = getString(R.string.layout_translate_title_original_title)

@@ -259,7 +259,7 @@ abstract class CommentActivity : BaseActivity(), onDissmissFragment {
 
         var description = comment?.content ?: ""
         val reportGroupBottomDialogFragment =
-            ReportModalFragment.newInstance(id, this.id, type, isMe ,true, this.isOne2One, contentCopied = description, isNotTranslatable = isNotTranslatable)
+            ReportModalFragment.newInstance(id, this.id, type, isMe ,true, this.isOne2One, contentCopied = DataLanguageStock.contentToCopy, isNotTranslatable = isNotTranslatable)
         if(isEventComment){
             reportGroupBottomDialogFragment.setEventComment()
         }

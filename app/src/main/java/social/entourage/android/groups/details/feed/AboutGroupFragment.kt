@@ -27,6 +27,7 @@ import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.CustomAlertDialog
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.setHyperlinkClickable
+import social.entourage.android.tools.utils.Utils.enableCopyOnLongClick
 
 class AboutGroupFragment : Fragment() {
 
@@ -75,6 +76,7 @@ class AboutGroupFragment : Fragment() {
             )
             initializeMembersPhotos()
             groupDescription.text = group?.description
+            groupDescription.enableCopyOnLongClick()
             groupDescription.setHyperlinkClickable()
             initializeInterests()
             /*

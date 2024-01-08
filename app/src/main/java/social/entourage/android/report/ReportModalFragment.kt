@@ -183,8 +183,9 @@ class ReportModalFragment() : BottomSheetDialogFragment() {
         getIsMyLanguage()
         getIsFromConv()
         getIsOneToOne()
-        Log.wtf("wtf", "isFromme : $isFromMe")
+        Log.wtf("wtf", "contentCopied : $contentCopied")
         if(contentCopied == null || contentCopied.isNullOrEmpty()){
+            Log.wtf("wtf", "coucou")
             binding.layoutChooseCopy.visibility = View.GONE
         }else{
             binding.layoutChooseCopy.setOnClickListener {
@@ -193,6 +194,7 @@ class ReportModalFragment() : BottomSheetDialogFragment() {
                 clipboard.setPrimaryClip(clip)
                 Toast.makeText(context, context?.getString(R.string.copied_text), Toast.LENGTH_SHORT).show()
                 true
+                DataLanguageStock.deleteContentToCopy()
                 onClose()
                 dismiss()
             }
@@ -600,6 +602,7 @@ interface onDissmissFragment{
 public object DataLanguageStock {
     var userLanguage: String = "default"
     var postLanguage: String = "default"
+    var contentToCopy:String = ""
 
     fun updateUserLanguage(language: String) {
         userLanguage = language
@@ -607,5 +610,11 @@ public object DataLanguageStock {
 
     fun updatePostLanguage(language: String) {
         postLanguage = language
+    }
+    fun updateContentToCopy(content:String){
+        contentToCopy = content
+    }
+    fun deleteContentToCopy(){
+        contentToCopy = ""
     }
 }

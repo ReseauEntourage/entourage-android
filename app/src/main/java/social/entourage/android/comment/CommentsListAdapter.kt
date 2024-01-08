@@ -31,6 +31,7 @@ import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.api.model.Post
 import social.entourage.android.language.LanguageManager
+import social.entourage.android.report.DataLanguageStock
 import social.entourage.android.tools.setHyperlinkClickable
 import social.entourage.android.user.UserProfileActivity
 import social.entourage.android.tools.utils.Const
@@ -217,12 +218,14 @@ class CommentsListAdapter(
             }
             binding.report.setOnClickListener {
                 val commentLang = comment?.contentTranslations?.fromLang ?: ""
+                DataLanguageStock.updateContentToCopy(comment.content ?: "")
                 onItemClick.onCommentReport(comment.id, isForEvent, isMe,commentLang)
             }
             //here
-            if(isMe && comment.status != "deleted" ){
+            if(comment.status != "deleted" ){
                 val commentLang = comment?.contentTranslations?.fromLang ?: ""
                 binding.comment.setOnLongClickListener {
+                    DataLanguageStock.updateContentToCopy(comment.content ?: "")
                     onItemClick.onCommentReport(comment.id, isForEvent, isMe,commentLang)
                     return@setOnLongClickListener true
                 }
