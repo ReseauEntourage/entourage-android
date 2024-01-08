@@ -190,7 +190,7 @@ class ReportModalFragment() : BottomSheetDialogFragment() {
         }else{
             binding.layoutChooseCopy.setOnClickListener {
                 val clipboard = context?.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-                val clip = ClipData.newPlainText("Copied Text", contentCopied)
+                val clip = ClipData.newPlainText(requireContext().getString(R.string.copied_text), contentCopied)
                 clipboard.setPrimaryClip(clip)
                 Toast.makeText(context, context?.getString(R.string.copied_text), Toast.LENGTH_SHORT).show()
                 true

@@ -50,13 +50,12 @@ object Utils {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
     }
 
-    fun TextView.enableCopyOnLongClick() {
+    fun TextView.enableCopyOnLongClick(context: Context) {
         setOnLongClickListener {
             val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-            val clip = ClipData.newPlainText("Copied Text", text)
+            val clip = ClipData.newPlainText(context.getString(R.string.copied_text), text)
             clipboard.setPrimaryClip(clip)
-
-            Toast.makeText(context, "Texte copié dans le presse-papiers", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, context.getString(R.string.copied_text), Toast.LENGTH_SHORT).show()
             true // Indique que l'événement de long clic a été géré
         }
     }
