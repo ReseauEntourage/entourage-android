@@ -150,7 +150,7 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
         if(isTranslated){
             binding.titleActionTranslate.text = getString(R.string.layout_translate_title_translation_title)
             binding.uiActionDescription.text = action?.descriptionTranslations?.translation
-            binding.uiActionDescription.enableCopyOnLongClick()
+            binding.uiActionDescription.enableCopyOnLongClick(requireContext())
             binding.uiTitleMain.text = action?.titleTranslations?.translation
         }else{
             binding.titleActionTranslate.text = getString(R.string.layout_translate_title_original_title)

@@ -200,7 +200,7 @@ class AboutEventFragment : Fragment(), OnMapReadyCallback {
             initializeMembersPhotos()
             eventDescription.text = event?.description
             eventDescription.setHyperlinkClickable()
-            eventDescription.enableCopyOnLongClick()
+            eventDescription.enableCopyOnLongClick(requireContext())
             initializeInterests()
             initializeGroups()
             if (event?.status == Status.CLOSED)

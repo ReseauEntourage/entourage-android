@@ -76,7 +76,7 @@ class AboutGroupFragment : Fragment() {
             )
             initializeMembersPhotos()
             groupDescription.text = group?.description
-            groupDescription.enableCopyOnLongClick()
+            groupDescription.enableCopyOnLongClick(requireContext())
             groupDescription.setHyperlinkClickable()
             initializeInterests()
             /*
