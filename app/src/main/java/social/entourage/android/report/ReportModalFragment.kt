@@ -155,8 +155,10 @@ class ReportModalFragment() : BottomSheetDialogFragment() {
 
         val animSignal= ObjectAnimator.ofFloat(binding.layoutChooseSignal, "alpha", 1.0f,0.0F)
         val animSupress = ObjectAnimator.ofFloat(binding.layoutChooseSuppress, "alpha", 1.0f,0.0F)
+        val animCopy = ObjectAnimator.ofFloat(binding.layoutChooseCopy, "alpha", 1.0f,0.0F)
         animSignal.duration = 100
         animSupress.duration = 100
+        animCopy.duration = 100
         animSignal.addListener(object : AnimatorListenerAdapter() {
             override fun onAnimationEnd(animation: Animator, isReverse: Boolean) {
                 binding.layoutChooseSignal.visibility = View.GONE
@@ -173,8 +175,19 @@ class ReportModalFragment() : BottomSheetDialogFragment() {
                 setPeekHeight(0.7)
             }
         })
+        animCopy.addListener(object : AnimatorListenerAdapter() {
+            override fun onAnimationEnd(animation: Animator, isReverse: Boolean) {
+                binding.layoutChooseCopy.visibility = View.GONE
+                val view = binding.root
+                val behavior = BottomSheetBehavior.from(view.parent as View)
+                val peekheight = view.height
+                behavior.peekHeight = peekheight
+                setPeekHeight(0.7)
+            }
+        })
         animSignal.start()
         animSupress.start()
+        animCopy.start()
     }
     fun setStartView(){
         getIsFromMe()
