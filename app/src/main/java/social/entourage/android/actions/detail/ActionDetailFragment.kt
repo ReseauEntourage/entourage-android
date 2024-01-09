@@ -148,7 +148,6 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
     }
 
     private fun updateTranslationText() {
-        binding.uiActionDescription.enableCopyOnLongClick(requireContext())
         if(isTranslated){
             binding.titleActionTranslate.text = getString(R.string.layout_translate_title_translation_title)
             binding.uiActionDescription.text = action?.descriptionTranslations?.translation
@@ -240,6 +239,7 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
         binding.layoutTopCancel.isVisible = false
         binding.layoutTopDemand.isVisible = isDemand
         binding.layoutTopContrib.isVisible = !isDemand
+        binding.uiActionDescription.enableCopyOnLongClick(requireContext())
 
         if (isMine) {
             binding.layoutActionsMy.isVisible = true
