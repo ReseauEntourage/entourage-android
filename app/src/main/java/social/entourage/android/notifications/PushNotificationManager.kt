@@ -306,6 +306,7 @@ object PushNotificationManager {
         }
         val builder = NotificationCompat.Builder(context, channelId)
                 .setSmallIcon(R.drawable.ic_entourage_logo_one_color)
+                .setStyle(NotificationCompat.BigTextStyle())
                 .setContentIntent(createMessagePendingIntent(pushNotificationMessage, context))
                 .setLargeIcon(BitmapFactory.decodeResource(context.resources, R.drawable.ic_entourage_logo_two_colors))
                 .setContentTitle(pushNotificationMessage.getContentTitleForCount(count, context))
