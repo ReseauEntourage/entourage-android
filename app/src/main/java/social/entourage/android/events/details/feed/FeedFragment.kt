@@ -209,7 +209,7 @@ class FeedFragment : Fragment(), CallbackReportFragment {
         with(binding) {
             eventName.text = event?.title
             eventNameToolbar.text = event?.title
-            toKnow.enableCopyOnLongClick(requireContext())
+            eventDescription.enableCopyOnLongClick(requireContext())
             if(event != null && event?.membersCount!! > 1){
                 eventMembersNumberLocation.text = String.format(
                     getString(R.string.members_number),
