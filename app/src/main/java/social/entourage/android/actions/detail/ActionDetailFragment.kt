@@ -234,7 +234,6 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
             )
         }
     }
-
     private fun initializeViews() {
         binding.layoutTopCancel.isVisible = false
         binding.layoutTopDemand.isVisible = isDemand
