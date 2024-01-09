@@ -77,6 +77,7 @@ class GroupeV2Fragment: Fragment() {
 
     override fun onResume() {
         super.onResume()
+        binding.progressBar.visibility = View.VISIBLE
         groupsList.clear()
         myGroupsList.clear()
         presenter.getAllGroups(page, 100)
@@ -90,6 +91,7 @@ class GroupeV2Fragment: Fragment() {
             adapterGroup.updateGroupsList(groupsList)
         }
         checkingSumForEmptyView()
+        binding.progressBar.visibility = View.GONE
 
 
     }
@@ -98,6 +100,7 @@ class GroupeV2Fragment: Fragment() {
         allGroups?.let {
             myGroupsList.addAll(it)
             adapterMyGroup.resetData(myGroupsList)
+
         }
         checkingSumForEmptyView()
     }
@@ -105,7 +108,6 @@ class GroupeV2Fragment: Fragment() {
     private fun checkingSumForEmptyView() {
         checkSum++
         if(checkSum >= 1){
-            binding.progressBar.visibility = View.GONE
             binding.emptyStateLayout.visibility = View.GONE
         }
     }
