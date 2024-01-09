@@ -300,7 +300,7 @@ class FeedFragment : Fragment(),CallbackReportFragment{
 
         MetaDataRepository.metaData.observe(requireActivity(), ::handleMetaData)
         with(binding) {
-            toKnow.enableCopyOnLongClick()
+            toKnow.enableCopyOnLongClick(requireContext())
             groupName.text = group?.name
             groupNameToolbar.text = group?.name
             groupMembersNumberLocation.text = String.format(

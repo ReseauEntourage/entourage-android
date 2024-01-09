@@ -62,6 +62,7 @@ import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.CustomAlertDialog
 import social.entourage.android.tools.utils.Utils
+import social.entourage.android.tools.utils.Utils.enableCopyOnLongClick
 import social.entourage.android.tools.utils.px
 import social.entourage.android.tools.utils.underline
 import timber.log.Timber
@@ -208,7 +209,7 @@ class FeedFragment : Fragment(), CallbackReportFragment {
         with(binding) {
             eventName.text = event?.title
             eventNameToolbar.text = event?.title
-
+            toKnow.enableCopyOnLongClick(requireContext())
             if(event != null && event?.membersCount!! > 1){
                 eventMembersNumberLocation.text = String.format(
                     getString(R.string.members_number),
