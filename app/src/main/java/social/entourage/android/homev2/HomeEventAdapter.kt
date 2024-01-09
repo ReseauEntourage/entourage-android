@@ -87,13 +87,7 @@ class HomeEventAdapter(var context: Context):RecyclerView.Adapter<RecyclerView.V
             event.metadata?.displayAddress.let {
                 Log.wtf("wtf", "address: $it")
                 val adressCondensed = it?.split(",")
-                if(adressCondensed?.size!! > 1){
-                    holder.binding.tvPlaceHomeV2EventItem.text = adressCondensed[1]
-                }else if(adressCondensed?.size!! > 0){
-                    holder.binding.tvPlaceHomeV2EventItem.text = adressCondensed[0]
-                }else{
-                    holder.binding.tvPlaceHomeV2EventItem.text = it
-                }
+                holder.binding.tvPlaceHomeV2EventItem.text = adressCondensed?.lastOrNull() ?: it
             }
 
             event.metadata?.startsAt?.let {
