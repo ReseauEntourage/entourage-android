@@ -54,6 +54,7 @@ import social.entourage.android.tools.image_viewer.ImageDialogActivity
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.CustomAlertDialog
+import social.entourage.android.tools.utils.Utils.enableCopyOnLongClick
 import social.entourage.android.tools.utils.px
 import uk.co.markormesher.android_fab.SpeedDialMenuAdapter
 import uk.co.markormesher.android_fab.SpeedDialMenuItem
@@ -296,8 +297,10 @@ class FeedFragment : Fragment(),CallbackReportFragment{
     }
 
     private fun updateView() {
+
         MetaDataRepository.metaData.observe(requireActivity(), ::handleMetaData)
         with(binding) {
+            toKnow.enableCopyOnLongClick()
             groupName.text = group?.name
             groupNameToolbar.text = group?.name
             groupMembersNumberLocation.text = String.format(
