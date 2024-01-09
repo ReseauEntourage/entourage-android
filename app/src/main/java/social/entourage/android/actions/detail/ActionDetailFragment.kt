@@ -136,6 +136,7 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
             binding.layoutCsTranslate.visibility = View.VISIBLE
         }
 
+
         isTranslated = sharedPrefs.getBoolean("translatedByDefault", false)
         updateTranslationText()
 
@@ -147,10 +148,10 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
     }
 
     private fun updateTranslationText() {
+        binding.uiActionDescription.enableCopyOnLongClick(requireContext())
         if(isTranslated){
             binding.titleActionTranslate.text = getString(R.string.layout_translate_title_translation_title)
             binding.uiActionDescription.text = action?.descriptionTranslations?.translation
-            binding.uiActionDescription.enableCopyOnLongClick(requireContext())
             binding.uiTitleMain.text = action?.titleTranslations?.translation
         }else{
             binding.titleActionTranslate.text = getString(R.string.layout_translate_title_original_title)
