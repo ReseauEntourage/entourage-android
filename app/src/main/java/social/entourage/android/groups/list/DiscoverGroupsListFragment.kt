@@ -24,7 +24,7 @@ import social.entourage.android.tools.log.AnalyticsEvents
 
 const val groupPerPage = 10
 
-class DiscoverGroupsListFragment : Fragment() {
+class DiscoverGroupsListFragment : Fragment() , UpdateGroupInter {
 
     private var _binding: NewFragmentGroupsListBinding? = null
     val binding: NewFragmentGroupsListBinding get() = _binding!!
@@ -75,7 +75,8 @@ class DiscoverGroupsListFragment : Fragment() {
 
     private fun handleResponseGetGroups(allGroups: MutableList<Group>?) {
         //groupsList.clear()
-        allGroups?.let { groupsList.addAll(it) }
+        allGroups?.let { groupsList.addAll(it)
+        }
         binding.progressBar.visibility = View.GONE
         allGroups?.isEmpty()?.let { updateView(it) }
         (binding.recyclerView.adapter as? GroupsListAdapter)?.updateGroupsList(groupsList)
@@ -122,22 +123,20 @@ class DiscoverGroupsListFragment : Fragment() {
     }
 
     private fun initializeGroups() {
-        binding.recyclerView.apply {
-            // Pagination
-            layoutManager = LinearLayoutManager(context)
-            adapter = GroupsListAdapter(groupsList, null, FromScreen.DISCOVER)
-            (adapter as? GroupsListAdapter)?.updateGroupsList(groupsList)
+        // Pagination
+        binding.recyclerView.layoutManager = LinearLayoutManager(context)
+        binding.recyclerView.adapter = GroupsListAdapter(groupsList, null, FromScreen.DISCOVER, this)
+        ( binding.recyclerView.adapter as? GroupsListAdapter)?.updateGroupsList(groupsList)
 
-        }
+
     }
 
     private fun initializeSearchGroups() {
-        binding.searchRecyclerView.apply {
-            // Pagination
-            layoutManager = LinearLayoutManager(context)
-            adapter = GroupsListAdapter(groupsListSearch, null, FromScreen.DISCOVER_SEARCH)
-            (adapter as? GroupsListAdapter)?.updateGroupsList(groupsList)
-        }
+        // Pagination
+        binding.recyclerView.layoutManager = LinearLayoutManager(context)
+        binding.recyclerView.adapter = GroupsListAdapter(groupsListSearch, null, FromScreen.DISCOVER_SEARCH, this)
+        ( binding.recyclerView.adapter as? GroupsListAdapter)?.updateGroupsList(groupsList)
+
     }
 
     private fun loadGroups() {
@@ -257,5 +256,9 @@ class DiscoverGroupsListFragment : Fragment() {
                 AnalyticsEvents.ACTION_GROUP_SEARCH_DELETE
             )
         }
+    }
+
+    override fun updateGroup() {
+
     }
 }

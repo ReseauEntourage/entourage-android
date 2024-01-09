@@ -3,6 +3,7 @@ package social.entourage.android.groups.list
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,8 +20,9 @@ import social.entourage.android.groups.create.CreateGroupActivity
 import social.entourage.android.homev2.HomeGroupAdapter
 import social.entourage.android.tools.log.AnalyticsEvents
 
-class GroupeV2Fragment: Fragment() {
-    private lateinit var binding: GroupV2FragmentLayoutBinding
+class GroupeV2Fragment: Fragment() , UpdateGroupInter {
+
+private lateinit var binding: GroupV2FragmentLayoutBinding
     private lateinit var presenter: GroupPresenter
     private var groupsList: MutableList<Group> = ArrayList()
     private var myGroupsList: MutableList<Group> = ArrayList()
@@ -38,7 +40,7 @@ class GroupeV2Fragment: Fragment() {
         presenter = ViewModelProvider(requireActivity()).get(GroupPresenter::class.java)
         presenter.getAllGroups.observe(viewLifecycleOwner, ::handleResponseGetGroups)
         presenter.getAllMyGroups.observe(viewLifecycleOwner, ::handleResponseMyGetGroups)
-        adapterGroup = GroupsListAdapter(groupsList, null, FromScreen.DISCOVER)
+        adapterGroup = GroupsListAdapter(groupsList, null, FromScreen.DISCOVER, this)
         adapterMyGroup= HomeGroupAdapter()
         binding.recyclerViewVertical.adapter = adapterGroup
         binding.recyclerViewHorizontal.adapter = adapterMyGroup
@@ -77,9 +79,10 @@ class GroupeV2Fragment: Fragment() {
 
     override fun onResume() {
         super.onResume()
+
         groupsList.clear()
         myGroupsList.clear()
-        presenter.getAllGroups(page, 100)
+        presenter.getAllGroups(page, 500)
         if (myId != null) {
             presenter.getMyGroups(pageMy, 100, myId!!)
         }
@@ -88,10 +91,9 @@ class GroupeV2Fragment: Fragment() {
     private fun handleResponseGetGroups(allGroups: MutableList<Group>?) {
         allGroups?.let { groupsList.addAll(it)
             adapterGroup.updateGroupsList(groupsList)
+            Log.wtf("wtf", "groupsList size: ${groupsList.size}")
         }
         checkingSumForEmptyView()
-
-
     }
 
     private fun handleResponseMyGetGroups(allGroups: MutableList<Group>?) {
@@ -105,7 +107,6 @@ class GroupeV2Fragment: Fragment() {
     private fun checkingSumForEmptyView() {
         checkSum++
         if(checkSum >= 1){
-            binding.progressBar.visibility = View.GONE
             binding.emptyStateLayout.visibility = View.GONE
         }
     }
@@ -180,5 +181,10 @@ class GroupeV2Fragment: Fragment() {
         }.start()
         binding.createGroupExpanded.animate().scaleX(0f).alpha(0f).setDuration(200).start()
     }
+
+    override fun updateGroup() {
+        binding.progressBar.visibility = View.GONE
+    }
+
 
 }
