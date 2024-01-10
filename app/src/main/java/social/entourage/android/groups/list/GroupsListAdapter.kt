@@ -19,10 +19,14 @@ import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.px
 import social.entourage.android.tools.log.AnalyticsEvents
 
+interface UpdateGroupInter{
+    fun updateGroup()
+}
 class GroupsListAdapter(
     private var groupsList: List<Group>,
     var userId: Int?,
-    var from: FromScreen?
+    var from: FromScreen?,
+    var updateCallBack:UpdateGroupInter
 ) : RecyclerView.Adapter<GroupsListAdapter.ViewHolder>() {
 
 
@@ -42,6 +46,7 @@ class GroupsListAdapter(
     fun updateGroupsList(newGroupsList: List<Group>) {
         this.groupsList = newGroupsList.toList() // Crée une copie de la liste
         notifyDataSetChanged()
+        updateCallBack.updateGroup()
     }
 
 
