@@ -91,7 +91,6 @@ private lateinit var binding: GroupV2FragmentLayoutBinding
     private fun handleResponseGetGroups(allGroups: MutableList<Group>?) {
         allGroups?.let { groupsList.addAll(it)
             adapterGroup.updateGroupsList(groupsList)
-            Log.wtf("wtf", "groupsList size: ${groupsList.size}")
         }
         checkingSumForEmptyView()
     }
@@ -185,6 +184,5 @@ private lateinit var binding: GroupV2FragmentLayoutBinding
     override fun updateGroup() {
         binding.progressBar.visibility = View.GONE
     }
-
 
 }
