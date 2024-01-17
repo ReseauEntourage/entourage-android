@@ -2,6 +2,7 @@ package social.entourage.android.onboarding.onboard
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.annotation.StringRes
@@ -78,10 +79,13 @@ class OnboardingStartActivity : AppCompatActivity(), OnboardingStartCallback {
     /********
      * Network
      */
-
+    fun setEmail(email: String){
+        temporaryEmail = email
+        temporaryUser.email = email
+    }
     private fun callSignup() {
         alertDialog.show(R.string.onboard_waiting_dialog)
-
+        Log.wtf("wtf", "callSignup: " + temporaryUser.email )
         OnboardingAPI.getInstance().createUser(temporaryUser, hasConsent) { isOK, error ->
             alertDialog.dismiss()
             if (isOK) {

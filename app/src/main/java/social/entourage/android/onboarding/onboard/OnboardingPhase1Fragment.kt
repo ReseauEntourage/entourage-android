@@ -2,6 +2,7 @@ package social.entourage.android.onboarding.onboard
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -92,6 +93,18 @@ class OnboardingPhase1Fragment : Fragment() {
         ui_onboard_phone_et_phone.setText(phone)
         ui_onboard_names_et_lastname.setText(lastname)
         ui_onboard_names_et_firstname.setText(firstname)
+        ui_onboard_email.addTextChangedListener(object : android.text.TextWatcher {
+            override fun afterTextChanged(s: android.text.Editable?) {
+                (requireActivity() as OnboardingStartActivity).setEmail(s.toString())
+                Log.wtf("wtf","email: $s")
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            }
+        })
 
         ui_onboard_phone_ccp_code?.countryCodePickerListener = object : CountryCodePickerListener {
             override fun updatedCountry(newCountry: Country) {
