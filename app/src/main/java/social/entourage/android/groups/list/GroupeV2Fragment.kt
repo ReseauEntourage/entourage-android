@@ -85,10 +85,13 @@ private lateinit var binding: GroupV2FragmentLayoutBinding
 
         groupsList.clear()
         myGroupsList.clear()
+        presenter.isLastPage = false
+        isLoading = false
         presenter.getAllGroups(page, PER_PAGE)
         if (myId != null) {
             presenter.getMyGroups(pageMy, 100, myId!!)
         }
+
     }
 
     private fun handleResponseGetGroups(allGroups: MutableList<Group>?) {
