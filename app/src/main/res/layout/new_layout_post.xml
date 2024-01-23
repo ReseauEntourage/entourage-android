@@ -103,6 +103,8 @@ Nous sommes prêt pour les beaux jours ! :-)" />
             android:gravity="center"
             android:src="@drawable/new_illu_header_group" />
 
+
+
         <LinearLayout
             android:id="@+id/post_comments_number_layout"
             android:layout_width="wrap_content"
@@ -133,40 +135,13 @@ Nous sommes prêt pour les beaux jours ! :-)" />
                 android:visibility="gone"
                 tools:text="Pas de commentaires" />
         </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/post_comment"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="end"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:paddingVertical="12dp"
-            android:weightSum="1">
+            android:layout_height="50dp">
 
-            <TextView
-                android:id="@+id/comment"
-                style="@style/left_courant_orange"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@drawable/new_bg_rounded_button_orange_stroke_transparent"
-                android:padding="13dp"
-                android:text="@string/discuss"
-                tools:text="@string/discuss" />
 
-            <ImageButton
-                android:layout_width="46dp"
-                android:layout_height="46dp"
-                android:layout_marginStart="7dp"
-                android:background="@drawable/new_circle_orange_button_fill"
-                android:clickable="false"
-                android:gravity="end"
-                android:paddingVertical="10dp"
-                android:src="@drawable/new_contact_white"
-                app:shapeAppearanceOverlay="@drawable/new_circle_orange_button_fill" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-        </LinearLayout>
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

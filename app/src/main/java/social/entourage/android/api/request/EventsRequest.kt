@@ -57,6 +57,31 @@ interface EventsRequest {
         @Path("event_id") groupId: Int,
         @Path("post_id") postId: Int
     ): Call<ResponseBody>
+    @GET("outings/{event_id}/chat_messages/{post_id}/reactions")
+    fun getReactionCount(
+        @Path("event_id") groupId: Int,
+        @Path("post_id") postId: Int
+    ): Call<ResponseBody>
+
+    @GET("outings/{event_id}/chat_messages/{post_id}/details")
+    fun getReactionDetails(
+        @Path("event_id") groupId: Int,
+        @Path("post_id") postId: Int
+    ): Call<ResponseBody>
+
+    @POST("outings/{event_id}/chat_messages/{post_id}/reactions")
+    fun postReactAnEventPost(
+        @Path("event_id") groupId: Int,
+        @Path("post_id") postId: Int
+    ): Call<ResponseBody>
+
+    @DELETE("outings/{event_id}/chat_messages/{post_id}/reactions")
+    fun deleteReactionAnEventPost(
+        @Path("event_id") groupId: Int,
+        @Path("post_id") postId: Int
+    ): Call<ResponseBody>
+
+
 
     @GET("outings/{id}")
     fun getEvent(@Path("id") eventId: String): Call<EventWrapper>

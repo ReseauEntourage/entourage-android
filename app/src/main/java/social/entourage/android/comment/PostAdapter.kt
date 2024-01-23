@@ -121,9 +121,9 @@ class PostAdapter(
                 binding.postCommentsNumberLayout.setOnClickListener {
                     onClick(this, false)
                 }
-                binding.comment.setOnClickListener {
+                /*binding.comment.setOnClickListener {
                     onClick(this, false)
-                }
+                }*/
 
                 // Configurer le contenu du post en fonction de la traduction
                 var contentToShow = content
@@ -234,7 +234,7 @@ class PostAdapter(
                         binding.postMessage.setTextColor(context.getColor(R.color.deleted_grey))
                     }
                     binding.postMessage.visibility = View.VISIBLE
-                    binding.postComment.visibility = View.GONE
+                    /*binding.postComment.visibility = View.GONE*/
                     binding.btnReportPost.visibility = View.GONE
                 }else{
 
@@ -252,7 +252,7 @@ class PostAdapter(
                         binding.postMessage.setTextColor(context.getColor(R.color.black))
                     }
                     binding.postMessage.visibility = View.VISIBLE
-                    binding.postComment.visibility = View.VISIBLE
+                    /*binding.postComment.visibility = View.VISIBLE*/
                     binding.btnReportPost.visibility = View.VISIBLE
                 }
             }

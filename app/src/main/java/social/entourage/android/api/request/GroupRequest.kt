@@ -138,6 +138,35 @@ interface GroupRequest {
         @Path("neighborhood_id") groupId: Int,
     ): Call<EventsListWrapper>
 
+    @GET("neighborhoods/{neighborhood_id}/chat_messages/{post_id}/reactions")
+    fun getReactionGroupPost(
+        @Path("neighborhood_id") groupId: Int,
+        @Path("post_id") postId: Int,
+        @Query("image_size") size:String,
+    ): Call<PostWrapper>
+
+    @GET("neighborhoods/{neighborhood_id}/chat_messages/{post_id}/details")
+    fun getDetailsReactionGroupPost(
+        @Path("neighborhood_id") groupId: Int,
+        @Path("post_id") postId: Int,
+        @Query("image_size") size:String,
+    ): Call<PostWrapper>
+
+    @POST("neighborhoods/{neighborhood_id}/chat_messages/{post_id}/reactions")
+    fun postReactionGroupPost(
+        @Path("neighborhood_id") groupId: Int,
+        @Path("post_id") postId: Int,
+        @Query("image_size") size:String,
+    ): Call<PostWrapper>
+
+    @DELETE("neighborhoods/{neighborhood_id}/chat_messages/{post_id}/reactions")
+    fun deleteReactionGroupPost(
+        @Path("neighborhood_id") groupId: Int,
+        @Path("post_id") postId: Int,
+        @Query("image_size") size:String,
+    ): Call<PostWrapper>
+
+
 
     @GET("neighborhoods/{neighborhood_id}/chat_messages/{post_id}")
     fun getPostDetail(

@@ -1,6 +1,8 @@
 package social.entourage.android.api
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
+import com.google.gson.Gson
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -24,11 +26,15 @@ object MetaDataRepository {
                 response: Response<MetaDataResponse>
             ) {
                 if (response.isSuccessful) {
+                    Log.wtf("wtf", "eho metadata: " + Gson().toJson(response.body()))
                     metaData.value = response.body()?.tags
+                }else{
+                    Log.wtf("wtf", "eho metadata: " + Gson().toJson(response.errorBody()))
                 }
             }
 
             override fun onFailure(call: Call<MetaDataResponse>, t: Throwable) {
+                Log.wtf("wtf", "eho metadata: " + t.message)
             }
         })
     }

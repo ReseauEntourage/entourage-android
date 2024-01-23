@@ -32,6 +32,9 @@ private lateinit var binding: GroupV2FragmentLayoutBinding
     private lateinit var adapterGroup: GroupsListAdapter
     private lateinit var adapterMyGroup: HomeGroupAdapter
     private var checkSum = 0
+    private var isLoading = false
+    private var PER_PAGE = 10
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -82,7 +85,7 @@ private lateinit var binding: GroupV2FragmentLayoutBinding
 
         groupsList.clear()
         myGroupsList.clear()
-        presenter.getAllGroups(page, 500)
+        presenter.getAllGroups(page, PER_PAGE)
         if (myId != null) {
             presenter.getMyGroups(pageMy, 100, myId!!)
         }
@@ -128,13 +131,23 @@ private lateinit var binding: GroupV2FragmentLayoutBinding
             binding.nestedScrollView.setOnScrollChangeListener { _, _, scrollY, _, oldScrollY ->
                 val newFontSize = calculateFontSize(scrollY)
                 binding.textViewTitleGroupes.textSize = newFontSize
-                if(scrollY > oldScrollY){
-                    handleButtonBehavior(false)
-                }else{
-                    handleButtonBehavior(true)
+                handleButtonBehavior(scrollY <= oldScrollY)
+
+                // Vérifier si on a atteint le bas du NestedScrollView
+                if (!binding.nestedScrollView.canScrollVertically(1) && !presenter.isLastPage && !isLoading) {
+                    isLoading = true
+                    page++ // Incrémente la page pour la pagination
+                    loadMoreGroups()
                 }
             }
         }
+    }
+
+    private fun loadMoreGroups() {
+        // Ajoute ici la logique pour charger plus de groupes
+        binding.progressBar.visibility = View.VISIBLE
+        presenter.getAllGroups(page, PER_PAGE) // PER_PAGE est la quantité de groupes à charger par page
+        isLoading = false
     }
     private fun calculateFontSize(scrollY: Int): Float {
         // Ici, tu peux ajuster la logique de calcul en fonction de tes besoins
