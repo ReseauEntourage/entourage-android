@@ -33,7 +33,7 @@ private lateinit var binding: GroupV2FragmentLayoutBinding
     private lateinit var adapterMyGroup: HomeGroupAdapter
     private var checkSum = 0
     private var isLoading = false
-    private var PER_PAGE = 10
+    private var PER_PAGE = 20
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

@@ -103,29 +103,11 @@ Nous sommes prêt pour les beaux jours ! :-)" />
             android:gravity="center"
             android:src="@drawable/new_illu_header_group" />
 
-
-
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/post_comments_number_layout"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="end"
-            android:layout_marginTop="10dp"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/new_comments" />
-
-            <TextView
-                android:id="@+id/post_no_comments"
-                style="@style/left_default"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/no_comments"
-                android:visibility="gone" />
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp">
 
             <TextView
                 android:id="@+id/post_comments_number"
@@ -133,8 +115,35 @@ Nous sommes prêt pour les beaux jours ! :-)" />
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:visibility="gone"
-                tools:text="Pas de commentaires" />
-        </LinearLayout>
+                tools:text="Pas de commentaires"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/post_no_comments" />
+
+            <TextView
+                android:id="@+id/post_no_comments"
+                style="@style/left_default"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/no_comments"
+                android:visibility="gone"
+                app:layout_constraintStart_toEndOf="@id/post_comments_number"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/imageViewComments" />
+
+            <ImageView
+                android:id="@+id/imageViewComments"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/new_comments"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="50dp">

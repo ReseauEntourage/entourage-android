@@ -84,7 +84,6 @@ class PostAdapter(
 
             
             with(postsList[position]) {
-                Log.wtf("wtf", "hello there " + this.content)
                 binding.postMessage.setOnLongClickListener {
                     val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
                     val clip = ClipData.newPlainText(context.getString(R.string.copied_text), binding.postMessage.text)
