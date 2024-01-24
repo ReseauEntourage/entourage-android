@@ -103,23 +103,36 @@ Nous sommes prêt pour les beaux jours ! :-)" />
             android:gravity="center"
             android:src="@drawable/new_illu_header_group" />
 
+
+
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/post_comments_number_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp">
+            <GridLayout
+                android:id="@+id/reactionsGridLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:columnCount="4"
+                android:rowCount="1"
+                android:orientation="horizontal"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="@id/post_comments_number_layout">
+             </GridLayout>
 
-            <TextView
+             <TextView
                 android:id="@+id/post_comments_number"
                 style="@style/input"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:visibility="gone"
                 tools:text="Pas de commentaires"
-                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/post_no_comments" />
+                app:layout_constraintEnd_toStartOf="@+id/imageViewComments" />
 
             <TextView
                 android:id="@+id/post_no_comments"
@@ -128,10 +141,10 @@ Nous sommes prêt pour les beaux jours ! :-)" />
                 android:layout_height="wrap_content"
                 android:text="@string/no_comments"
                 android:visibility="gone"
-                app:layout_constraintStart_toEndOf="@id/post_comments_number"
+                app:layout_constraintEnd_toStartOf="@id/post_comments_number"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/imageViewComments" />
+                 />
 
             <ImageView
                 android:id="@+id/imageViewComments"
@@ -142,7 +155,11 @@ Nous sommes prêt pour les beaux jours ! :-)" />
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent" />
 
+
+
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"

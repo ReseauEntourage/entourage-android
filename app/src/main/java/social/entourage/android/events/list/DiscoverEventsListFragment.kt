@@ -30,7 +30,7 @@ import social.entourage.android.api.model.Events
 import social.entourage.android.tools.utils.Utils
 import social.entourage.android.tools.log.AnalyticsEvents
 
-const val EVENTS_PER_PAGE = 200
+const val EVENTS_PER_PAGE = 20
 
 class DiscoverEventsListFragment : Fragment() {
 
@@ -93,6 +93,7 @@ class DiscoverEventsListFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         AnalyticsEvents.logEvent(AnalyticsEvents.View__Event__List)
+        isLoading = false
         binding.progressBar.visibility = View.VISIBLE
         eventsAdapter.clearList()
         myeventsAdapter.clearList()
@@ -117,7 +118,6 @@ class DiscoverEventsListFragment : Fragment() {
     }
 
     private fun handleResponseGetEvents(allEvents: MutableList<Events>?) {
-        binding.progressBar.visibility = View.GONE
         if(allEvents != null && allEvents.size > 0){
             eventsAdapter.resetData(allEvents)
             updateView(false)
@@ -129,7 +129,10 @@ class DiscoverEventsListFragment : Fragment() {
             isFromFilters = false
         }
         isLoading = false
+        binding.progressBar.visibility = View.GONE
+
     }
+
 
     private fun handleResponseGetMYEvents(myEvents: MutableList<Events>?) {
         if(myEvents != null && myEvents.size > 0 ) {
@@ -146,28 +149,18 @@ class DiscoverEventsListFragment : Fragment() {
     }
 
     fun setRVScrollListener() {
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            binding.nestedScrollView.setOnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
-                if (scrollY > oldScrollY) {
-                    eventsPresenter.tellParentFragmentToMoveButton(false)
-                } else if (scrollY < oldScrollY) {
-                    eventsPresenter.tellParentFragmentToMoveButton(true)
-                }
-                val nestedScrollView = v as NestedScrollView
-
-                // Calcul de la hauteur totale du contenu à l'intérieur du NestedScrollView
-                val contentHeight = v.getChildAt(0).measuredHeight
-                // Calcul de la hauteur actuellement visible (la hauteur de la fenêtre de NestedScrollView)
-                val visibleHeight = v.height
-                // Vérification si la position de défilement actuelle est proche du bas
-                if ((scrollY + visibleHeight >= contentHeight - 300) && !isLoading && !eventsPresenter.isLastPage) {
-                    isLoading = true
-                    loadEvents()
-                    binding.progressBar.visibility = View.VISIBLE
-                }
+        binding.nestedScrollView.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { v, _, scrollY, _, oldScrollY ->
+            if (scrollY > oldScrollY) {
+                eventsPresenter.tellParentFragmentToMoveButton(false)
+            } else if (scrollY < oldScrollY) {
+                eventsPresenter.tellParentFragmentToMoveButton(true)
             }
-        }
+            Log.wtf("wtf", "isLastPage: ${eventsPresenter.isLastPage} isLoading: $isLoading")
+            if (!binding.nestedScrollView.canScrollVertically(1) && !isLoading && !eventsPresenter.isLastPage) {
+                binding.progressBar.visibility = View.VISIBLE
+                loadEvents()
+            }
+        })
 
         binding.rvMyEvent.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -176,14 +169,11 @@ class DiscoverEventsListFragment : Fragment() {
                 val totalItemCount = layoutManager.itemCount
                 val lastVisibleItemPosition = layoutManager.findLastVisibleItemPosition()
                 if (totalItemCount <= (lastVisibleItemPosition + 2) && !isLoading && !eventsPresenter.isLastPageMyEvent) {
-                    isLoading = true
                     loadMyEvents()
-                    binding.progressBar.visibility = View.VISIBLE
                 }
             }
         })
     }
-
 
     private fun handleFilterChange(hasChangedFilter:Boolean){
         if(hasChangedFilter){
@@ -223,12 +213,13 @@ class DiscoverEventsListFragment : Fragment() {
     }
 
     private fun loadEvents() {
-        if(!eventsPresenter.isLastPage){
-            binding.swipeRefresh.isRefreshing = false
+        if(!eventsPresenter.isLastPage && !isLoading){
+            isLoading = true
             page++
             eventsPresenter.getAllEvents(page, EVENTS_PER_PAGE, currentFilters.travel_distance(),currentFilters.latitude(),currentFilters.longitude(),"future")
         }
     }
+
     private fun loadMyEvents() {
         binding.swipeRefresh.isRefreshing = false
         pageMyEvent++

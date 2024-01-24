@@ -2,179 +2,194 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/swipe_refresh">
-        <androidx.core.widget.NestedScrollView
+        android:layout_height="match_parent">
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginTop="15dp" />
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/nestedScrollView"
-            android:fillViewport="true">
-            <LinearLayout
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:id="@+id/swipe_refresh">
+            <androidx.core.widget.NestedScrollView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_height="match_parent"
+                android:id="@+id/nestedScrollView"
+                android:fillViewport="true">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/title_section_header_my_event"
-                    android:text="@string/all_my_event"
-                    android:fontFamily="@font/quicksand_bold"
-                    android:textSize="15sp"
-                    android:textColor="@color/black"
-                    android:layout_marginStart="30dp"
-                    android:layout_marginTop="10dp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    />
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:id="@+id/separator"
-                    android:background="@color/orange_light_separator_event"
-                    app:layout_constraintTop_toBottomOf="@+id/title_section_header_event"
-                    app:layout_constraintStart_toStartOf="parent"
-                    android:layout_marginStart="30dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginEnd="30dp"
-                    />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/rv_my_event"
-                    android:nestedScrollingEnabled="false"
-                    app:layout_constraintTop_toBottomOf="@+id/separator"
-                    app:layout_constraintStart_toStartOf="parent"
-                    android:layout_marginStart="2dp"
-                    android:layout_marginTop="20dp"
-                    />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/title_section_header_event"
-                    android:text="@string/all_event"
-                    android:fontFamily="@font/quicksand_bold"
-                    android:textSize="15sp"
-                    android:textColor="@color/black"
-                    android:layout_marginStart="30dp"
-                    android:layout_marginTop="10dp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    />
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:id="@+id/separator2"
-                    android:background="@color/orange_light_separator_event"
-                    app:layout_constraintTop_toBottomOf="@+id/title_section_header_event"
-                    app:layout_constraintStart_toStartOf="parent"
-                    android:layout_marginStart="30dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginEnd="30dp"
-                    android:layout_marginBottom="10dp"
-                    />
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/transparent">
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recycler_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:clipToPadding="false"
-                    android:paddingHorizontal="20dp"
-                    android:visibility="gone"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/divider"
-                    tools:itemCount="4"
-                    tools:listitem="@layout/new_event_item" />
-                <ProgressBar
-                    android:id="@+id/progressBar"
-                    style="?android:attr/progressBarStyleLarge"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="15dp" />
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/emptyStateLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:visibility="gone">
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        app:layout_constraintBottom_toTopOf="@id/arrow"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toTopOf="parent">
-                        <ImageView
-                            android:id="@+id/image"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:src="@drawable/new_event_empty_state"
-                            app:layout_constraintBottom_toTopOf="@+id/title"
-                            app:layout_constraintLeft_toLeftOf="parent"
-                            app:layout_constraintRight_toRightOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="16dp"
-                            android:layout_marginBottom="-15dp"
-                            android:src="@drawable/new_group_stars"
-                            app:layout_constraintBottom_toTopOf="@id/title"
-                            app:layout_constraintLeft_toLeftOf="parent" />
-                        <TextView
-                            android:id="@+id/title"
-                            style="@style/mini_header_black"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginHorizontal="32dp"
-                            android:layout_marginTop="10dp"
-                            android:text="@string/discover_event_list_empty_state_title"
-                            app:layout_constraintBottom_toTopOf="@id/title"
-                            app:layout_constraintLeft_toLeftOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/image" />
-
-                        <TextView
-                            android:id="@+id/subtitle"
-                            style="@style/h4"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginHorizontal="32dp"
-                            android:layout_marginTop="10dp"
-                            android:gravity="start"
-                            android:text="@string/discover_event_list_empty_state_subtitle"
-                            app:layout_constraintLeft_toLeftOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/title" />
-
-                    </LinearLayout>
-                    <ImageView
-                        android:id="@+id/arrow"
+                    <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="250dp"
-                        android:layout_marginEnd="115dp"
-                        android:layout_marginBottom="90dp"
-                        android:visibility="gone"
-                        android:src="@drawable/new_arrow_create_group"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintRight_toRightOf="parent"
+                        android:id="@+id/title_section_header_my_event"
+                        android:text="@string/all_my_event"
+                        android:fontFamily="@font/quicksand_bold"
+                        android:textSize="15sp"
+                        android:textColor="@color/black"
+                        android:layout_marginStart="30dp"
+                        android:layout_marginTop="10dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
                         />
-                </androidx.constraintlayout.widget.ConstraintLayout>
-            </LinearLayout>
-        </androidx.core.widget.NestedScrollView>
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:id="@+id/separator"
+                        android:background="@color/orange_light_separator_event"
+                        app:layout_constraintTop_toBottomOf="@+id/title_section_header_event"
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:layout_marginStart="30dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="30dp"
+                        />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/rv_my_event"
+                        android:nestedScrollingEnabled="false"
+                        app:layout_constraintTop_toBottomOf="@+id/separator"
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:layout_marginStart="2dp"
+                        android:layout_marginTop="20dp"
+                        />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/title_section_header_event"
+                        android:text="@string/all_event"
+                        android:fontFamily="@font/quicksand_bold"
+                        android:textSize="15sp"
+                        android:textColor="@color/black"
+                        android:layout_marginStart="30dp"
+                        android:layout_marginTop="10dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        />
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:id="@+id/separator2"
+                        android:background="@color/orange_light_separator_event"
+                        app:layout_constraintTop_toBottomOf="@+id/title_section_header_event"
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:layout_marginStart="30dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="30dp"
+                        android:layout_marginBottom="10dp"
+                        />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/transparent">
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recycler_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:clipToPadding="false"
+                        android:paddingHorizontal="20dp"
+                        android:visibility="gone"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/divider"
+                        tools:itemCount="4"
+                        tools:listitem="@layout/new_event_item" />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/emptyStateLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            app:layout_constraintBottom_toTopOf="@id/arrow"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
+                            <ImageView
+                                android:id="@+id/image"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:src="@drawable/new_event_empty_state"
+                                app:layout_constraintBottom_toTopOf="@+id/title"
+                                app:layout_constraintLeft_toLeftOf="parent"
+                                app:layout_constraintRight_toRightOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="16dp"
+                                android:layout_marginBottom="-15dp"
+                                android:src="@drawable/new_group_stars"
+                                app:layout_constraintBottom_toTopOf="@id/title"
+                                app:layout_constraintLeft_toLeftOf="parent" />
+                            <TextView
+                                android:id="@+id/title"
+                                style="@style/mini_header_black"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginHorizontal="32dp"
+                                android:layout_marginTop="10dp"
+                                android:text="@string/discover_event_list_empty_state_title"
+                                app:layout_constraintBottom_toTopOf="@id/title"
+                                app:layout_constraintLeft_toLeftOf="parent"
+                                app:layout_constraintTop_toBottomOf="@id/image" />
+
+                            <TextView
+                                android:id="@+id/subtitle"
+                                style="@style/h4"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginHorizontal="32dp"
+                                android:layout_marginTop="10dp"
+                                android:gravity="start"
+                                android:text="@string/discover_event_list_empty_state_subtitle"
+                                app:layout_constraintLeft_toLeftOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/title" />
+
+                        </LinearLayout>
+                        <ImageView
+                            android:id="@+id/arrow"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="250dp"
+                            android:layout_marginEnd="115dp"
+                            android:layout_marginBottom="90dp"
+                            android:visibility="gone"
+                            android:src="@drawable/new_arrow_create_group"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintRight_toRightOf="parent"
+                            />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </LinearLayout>
+            </androidx.core.widget.NestedScrollView>
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 
 
 </layout>
