@@ -82,7 +82,7 @@ private lateinit var binding: GroupV2FragmentLayoutBinding
 
     override fun onResume() {
         super.onResume()
-
+        binding.progressBar.visibility = View.VISIBLE
         groupsList.clear()
         myGroupsList.clear()
         presenter.isLastPage = false
@@ -111,9 +111,13 @@ private lateinit var binding: GroupV2FragmentLayoutBinding
 
     private fun checkingSumForEmptyView() {
         checkSum++
-        if(checkSum >= 1){
+        if(checkSum > 1){
             binding.emptyStateLayout.visibility = View.GONE
         }
+        if (groupsList.isEmpty()){
+            binding.emptyStateLayout.visibility = View.VISIBLE
+        }
+        binding.progressBar.visibility = View.GONE
     }
     private fun handleCreateGroupButton() {
         binding.createGroup.setOnClickListener {

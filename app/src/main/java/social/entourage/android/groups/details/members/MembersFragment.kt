@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -74,11 +75,20 @@ open class MembersFragment : Fragment() {
         handleCross()
         handleCrossButton()
         binding.searchBarLayout.endIconMode = TextInputLayout.END_ICON_NONE
-        if(isFromReact){
-            binding.header.headerTitle.setText(requireContext().getString(R.string.see_member_react))
-        }
+
         //Use to show or create conversation 1 to 1
         discussionPresenter.newConversation.observe(requireActivity(), ::handleGetConversation)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if(isFromReact){
+            binding.headerTitle.text = requireContext().getString(R.string.see_member_react)
+
+        }else {
+            binding.headerTitle.text = requireContext().getString(R.string.see_members)
+
+        }
     }
 
     private fun getMembers() {
@@ -150,7 +160,7 @@ open class MembersFragment : Fragment() {
     }
 
     private fun handleCloseButton() {
-        binding.header.iconBack.setOnClickListener {
+        binding.iconBack.setOnClickListener {
             findNavController().popBackStack()
         }
     }

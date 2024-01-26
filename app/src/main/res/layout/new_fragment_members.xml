@@ -10,14 +10,30 @@
         android:orientation="vertical"
         app:layout_goneMarginTop="8dp">
 
-        <include
-            android:id="@+id/header"
-            layout="@layout/new_header"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintBottom_toTopOf="@id/title"
-            app:layout_constraintTop_toTopOf="parent"
-            app:title="@{@string/see_members}" />
+            android:orientation="horizontal">
+            <ImageView
+                android:id="@+id/icon_back"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginBottom="11dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="10dp"
+                android:padding="10dp"
+                android:src="@drawable/new_back"
+               />
+
+            <TextView
+                android:id="@+id/header_title"
+                style="@style/h2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                />
+
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"

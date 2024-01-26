@@ -96,6 +96,8 @@ class PostAdapter(
             if(isPouceOrange){
                 binding.ivILike.setImageDrawable(context.getDrawable(R.drawable.ic_pouce_orange))
             }
+            binding.tvTitleILike.setText(context.getText(R.string.text_title_i_like))
+            binding.tvIComment.setText(context.getText(R.string.text_title_comment))
 
             binding.layoutPostParent.setOnClickListener {
                 binding.layoutReactions.visibility = View.GONE

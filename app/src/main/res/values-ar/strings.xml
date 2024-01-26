@@ -2685,5 +2685,8 @@
     <string name="copy_the_text">انسخ النص</string>
     <string name="copy_the_text_explanation">سيتم نسخ النص إلى الحافظة</string>
     <string name="see_member_react">الأشخاص الذين تفاعلوا</string>
+    <string name="text_title_i_like">أعجبني</string>
+    <string name="text_title_comment">تعليق</string>
+
 
 </resources>
