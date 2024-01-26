@@ -30,6 +30,7 @@ import social.entourage.android.api.model.notification.ReactionType
 import social.entourage.android.databinding.NewLayoutPostBinding
 import social.entourage.android.language.LanguageManager
 import social.entourage.android.report.DataLanguageStock
+import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.setHyperlinkClickable
 import social.entourage.android.user.UserProfileActivity
 import social.entourage.android.tools.utils.Const
@@ -253,6 +254,7 @@ class PostAdapter(
                 }
 
                 binding.postMessage.setOnLongClickListener {
+                    AnalyticsEvents.logEvent(AnalyticsEvents.Clic_CopyPaste_LongClic)
                     val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
                     val clip = ClipData.newPlainText(context.getString(R.string.copied_text), binding.postMessage.text)
                     clipboard.setPrimaryClip(clip)

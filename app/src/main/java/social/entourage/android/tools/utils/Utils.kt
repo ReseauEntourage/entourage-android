@@ -32,6 +32,7 @@ import social.entourage.android.events.EventModel
 import social.entourage.android.events.list.SectionHeader
 import social.entourage.android.api.model.Events
 import social.entourage.android.language.LanguageManager
+import social.entourage.android.tools.log.AnalyticsEvents
 import timber.log.Timber
 import java.io.File
 import java.io.FileOutputStream
@@ -52,6 +53,7 @@ object Utils {
 
     fun TextView.enableCopyOnLongClick(context: Context) {
         setOnLongClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Clic_CopyPaste_LongClic)
             val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
             val clip = ClipData.newPlainText(context.getString(R.string.copied_text), text)
             clipboard.setPrimaryClip(clip)

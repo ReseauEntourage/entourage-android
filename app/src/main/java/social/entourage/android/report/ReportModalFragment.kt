@@ -215,6 +215,7 @@ class ReportModalFragment() : BottomSheetDialogFragment() {
             binding.layoutChooseCopy.visibility = View.GONE
         }else{
             binding.layoutChooseCopy.setOnClickListener {
+                AnalyticsEvents.logEvent(AnalyticsEvents.Clic_CopyPaste_Settings)
                 val clipboard = context?.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
                 val clip = ClipData.newPlainText(requireContext().getString(R.string.copied_text), contentCopied)
                 clipboard.setPrimaryClip(clip)
