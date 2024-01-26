@@ -27,6 +27,8 @@ import social.entourage.android.events.EventFiltersActivity
 import social.entourage.android.events.EventsPresenter
 import social.entourage.android.api.model.EventActionLocationFilters
 import social.entourage.android.api.model.Events
+import social.entourage.android.api.request.HomeRequest
+import social.entourage.android.homev2.HomeEventAdapter
 import social.entourage.android.tools.utils.Utils
 import social.entourage.android.tools.log.AnalyticsEvents
 
@@ -40,7 +42,7 @@ class DiscoverEventsListFragment : Fragment() {
     private lateinit var eventsPresenter: EventsPresenter
     private var myId: Int? = null
     lateinit var eventsAdapter: AllEventAdapterV2
-    lateinit var myeventsAdapter: MyEventRVAdapter
+    lateinit var myeventsAdapter: HomeEventAdapter
     private var page: Int = 0
     private var pageMyEvent: Int = 0
 
@@ -80,7 +82,7 @@ class DiscoverEventsListFragment : Fragment() {
         eventsPresenter = ViewModelProvider(requireActivity()).get(EventsPresenter::class.java)
         myId = EntourageApplication.me(activity)?.id
         eventsAdapter = AllEventAdapterV2(myId,requireContext())
-        myeventsAdapter = MyEventRVAdapter(requireContext())
+        myeventsAdapter = HomeEventAdapter(requireContext())
         eventsPresenter.getAllEvents.observe(viewLifecycleOwner, ::handleResponseGetEvents)
         eventsPresenter.hasChangedFilter.observe(viewLifecycleOwner, ::handleFilterChange)
         eventsPresenter.getAllMyEvents.observe(viewLifecycleOwner,::handleResponseGetMYEvents)

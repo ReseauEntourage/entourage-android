@@ -49,6 +49,7 @@ import social.entourage.android.groups.GroupPresenter
 import social.entourage.android.groups.details.GroupDetailsFragment
 import social.entourage.android.groups.details.members.MembersFragment
 import social.entourage.android.groups.details.members.MembersType
+import social.entourage.android.homev2.HomeEventAdapter
 import social.entourage.android.profile.myProfile.InterestsAdapter
 import social.entourage.android.report.DataLanguageStock
 import social.entourage.android.report.ReportModalFragment
@@ -444,7 +445,10 @@ class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface {
     private fun initializeEvents() {
         binding.eventsRecyclerview.apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-            adapter = group?.futureEvents?.let { GroupEventsAdapter(it, context) }
+            adapter = HomeEventAdapter(context)
+            group?.futureEvents?.let {
+                (adapter as? HomeEventAdapter)?.resetData(it)
+            }
         }
     }
 

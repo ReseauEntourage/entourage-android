@@ -370,6 +370,7 @@ purus dui, aliquet cursus tellus a, dictum hen." />
                         android:layout_marginTop="15dp"
                         android:clipToPadding="false"
                         android:orientation="horizontal"
+                        android:background="@color/beige"
                         android:paddingLeft="18dp"
                         android:visibility="gone"
                         app:layout_constraintLeft_toLeftOf="parent"
