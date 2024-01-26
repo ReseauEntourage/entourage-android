@@ -26,6 +26,7 @@ import social.entourage.android.MainActivity
 import social.entourage.android.R
 import social.entourage.android.api.model.Post
 import social.entourage.android.api.model.notification.Reaction
+import social.entourage.android.api.model.notification.ReactionType
 import social.entourage.android.databinding.NewLayoutPostBinding
 import social.entourage.android.language.LanguageManager
 import social.entourage.android.report.DataLanguageStock
@@ -39,6 +40,7 @@ import java.util.*
 interface ReactionInterface{
     fun onReactionClicked(postId: Post, reactionId: Int)
     fun seeMemberReaction(post: Post)
+    fun deleteReaction(post: Post)
 }
 class PostAdapter(
     var context:Context,
@@ -86,35 +88,47 @@ class PostAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        var isPouceOrange = false
+
 
         with(holder) {
             val meId = EntourageApplication.get().me()?.id
+            var isPouceOrange = postsList[position].hasReacted ?: false
+            if(isPouceOrange){
+                binding.ivILike.setImageDrawable(context.getDrawable(R.drawable.ic_pouce_orange))
+            }
+
             binding.layoutPostParent.setOnClickListener {
                 binding.layoutReactions.visibility = View.GONE
             }
             binding.btnILike.setOnClickListener {
-                binding.layoutReactions.visibility = View.GONE
-                val post = postsList[adapterPosition]
+
                 val firstReactionType = MainActivity.reactionsList?.firstOrNull()
-                firstReactionType?.let {
-                    postsList[position].reactions?.add(Reaction().apply {
-                        reactionId = firstReactionType.id
-                        reactionsCount = 1
-                    })
-                    reactionCallback.onReactionClicked(post, it.id)
-                    if (isPouceOrange) {
-                        // Si le pouce est orange, le changer en gris
-                        binding.ivILike.setImageDrawable(context.getDrawable(R.drawable.ic_pouce_grey))
-                        isPouceOrange = false
-                    } else {
-                        // Si le pouce est gris, le changer en orange
-                        binding.ivILike.setImageDrawable(context.getDrawable(R.drawable.ic_pouce_orange))
-                        isPouceOrange = true
+                if (isPouceOrange) {
+                    // Si le pouce est orange, le changer en gris
+                    binding.ivILike.setImageDrawable(context.getDrawable(R.drawable.ic_pouce_grey))
+                    reactionCallback.deleteReaction(postsList[position])
+                    postsList[position].hasReacted = false
+                    var found = false
+                    for (i in postsList[position].reactions?.indices!!) {
+                        if (postsList[position].reactions!![i].reactionId == firstReactionType?.id && !found) {
+                            postsList[position].reactions!!.removeAt(i)
+                            found = true
+                            break // Arrête la boucle après avoir trouvé et supprimé la première occurrence
+                        }
+                    }
+                } else {
+                    // Si le pouce est gris, le changer en orange
+                    binding.ivILike.setImageDrawable(context.getDrawable(R.drawable.ic_pouce_orange))
+                    firstReactionType?.let {
+                        postsList[position].reactions?.add(Reaction().apply {
+                            reactionId = firstReactionType.id
+                            reactionsCount = 1
+                        })
+                        reactionCallback.onReactionClicked(postsList[position], it.id)
+                        postsList[position].hasReacted = true
                     }
                 }
                 notifyItemChanged(position)
-
             }
 
             // Ajouter un listener pour l'appui long sur le bouton "j'aime"
@@ -122,12 +136,13 @@ class PostAdapter(
                 binding.layoutReactions.visibility = if (binding.layoutReactions.visibility == View.VISIBLE) View.GONE else View.VISIBLE
                 if (isPouceOrange) {
                     // Si le pouce est orange, le changer en gris
+                    reactionCallback.deleteReaction(postsList[position])
                     binding.ivILike.setImageDrawable(context.getDrawable(R.drawable.ic_pouce_grey))
-                    isPouceOrange = false
+                    postsList[position].hasReacted = false
                 } else {
                     // Si le pouce est gris, le changer en orange
                     binding.ivILike.setImageDrawable(context.getDrawable(R.drawable.ic_pouce_orange))
-                    isPouceOrange = true
+                    postsList[position].hasReacted = true
                 }
                 true
             }
@@ -142,17 +157,7 @@ class PostAdapter(
                 binding.ivReactFive
             )
 
-            reactionImageViews.forEachIndexed { index, imageView ->
-                imageView.setOnClickListener {
-                    val reactionType = MainActivity.reactionsList?.getOrNull(index)
-                    reactionType?.let {
-                        reactionCallback.onReactionClicked(postsList[adapterPosition], it.id)
-                    }
-                }
-            }
 
-
-            
             with(postsList[position]) {
 
                 val reactionTypes = MainActivity.reactionsList
@@ -166,23 +171,19 @@ class PostAdapter(
                 )
 
                 if (reactionTypes != null) {
-                    for(k in 0..4){
-                        Glide.with(context)
-                            .load(reactionTypes[k].imageUrl)
-                            .into(reactionImageViews[k])
-                        // Définir le clic pour chaque réaction
-                        reactionImageViews[k].setOnClickListener {
-                            reactionCallback.onReactionClicked(this, reactionTypes[k].id)
-                            binding.layoutReactions.visibility = View.GONE
-                            this.reactions?.add(Reaction().apply {
-                                reactionId = reactionTypes[k].id
-                                reactionsCount = 1
-                            })
-                            notifyItemChanged(position)
+                    val reactionTypes = MainActivity.reactionsList
+                    reactionTypes?.let { types ->
+                        types.take(5).forEachIndexed { index, reactionType ->
+                            // Configuration de l'image de réaction
+                            Glide.with(context).load(reactionType.imageUrl).into(reactionImageViews[index])
+                            // Configuration du listener de clic
+                            reactionImageViews[index].setOnClickListener {
+                                handleReactionClick(postsList[adapterPosition], reactionType, isPouceOrange)
+                                binding.layoutReactions.visibility = View.GONE
+                            }
                         }
                     }
                 }
-
 
                 val reactionViews = listOf(
                     binding.reaction1,
@@ -414,7 +415,34 @@ class PostAdapter(
             }
         }
     }
+    private fun handleReactionClick(post: Post, reactionType: ReactionType, isPouceOrange: Boolean) {
+        if (isPouceOrange) {
+            for(reac in post.reactions!!){
+                Log.wtf("wtf" , "reac id : ${reac.reactionId} reactionType id : ${reactionType.id}")
+                if(reac.reactionId == reactionType.id){
+                   post.reactions!!.removeAt(post.reactions!!.indexOf(reac))
+                    notifyItemChanged(postsList.indexOf(post))
+                    break
+                }
+            }
+            reactionCallback.deleteReaction(post)
+            post.reactions?.add(Reaction().apply {
+                reactionId = reactionType.id
+                reactionsCount = 1
+            })
+            reactionCallback.onReactionClicked(post, reactionType.id)
+            post.hasReacted = true
 
+        }else {
+            post.reactions?.add(Reaction().apply {
+                reactionId = reactionType.id
+                reactionsCount = 1
+            })
+            reactionCallback.onReactionClicked(post, reactionType.id)
+            post.hasReacted = true
+        }
+        notifyItemChanged(postsList.indexOf(post))
+    }
     private fun showUserDetail(context:Context,userId:Int?) {
         (context as? Activity)?.startActivityForResult(
             Intent(context, UserProfileActivity::class.java).putExtra(

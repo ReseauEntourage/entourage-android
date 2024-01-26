@@ -74,7 +74,9 @@ open class MembersFragment : Fragment() {
         handleCross()
         handleCrossButton()
         binding.searchBarLayout.endIconMode = TextInputLayout.END_ICON_NONE
-
+        if(isFromReact){
+            binding.header.headerTitle.setText(requireContext().getString(R.string.see_member_react))
+        }
         //Use to show or create conversation 1 to 1
         discussionPresenter.newConversation.observe(requireActivity(), ::handleGetConversation)
     }
@@ -97,7 +99,6 @@ open class MembersFragment : Fragment() {
             )
         }
         if(isFromReact) {
-            binding.header.headerTitle.text = requireContext().getString(R.string.see_member_react)
             if(type == MembersType.GROUP) {
                 for(reactionType in MainActivity.reactionsList!!){
                     groupPresenter.getReactDetails(id!!,MembersFragment.postId,reactionType.id)

@@ -565,13 +565,26 @@ class EventsPresenter: ViewModel() {
                 }
             }
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                Log.d("EventPresenter", "onFailure: $t")
+                Log.d("EventPresenter deleteReactToPost", "onFailure: $t")
             }
         })
     }
 
-    fun deleteReactToPost(){
-
+    fun deleteReactToPost(eventId:Int, postId: Int){
+        EntourageApplication.get().apiModule.eventsRequest.deleteReactionAnEventPost(eventId, postId).enqueue(object : Callback<ResponseBody> {
+            override fun onResponse(
+                call: Call<ResponseBody>,
+                response: Response<ResponseBody>
+            ) {
+                if (response.isSuccessful) {
+                    response.body()?.let {
+                    }
+                }
+            }
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                Log.d("deleteReactToPost deleteReactToPost", "onFailure: $t")
+            }
+        })
     }
 
     fun getReactDetails(eventId:Int, postId:Int,reactionId:Int){

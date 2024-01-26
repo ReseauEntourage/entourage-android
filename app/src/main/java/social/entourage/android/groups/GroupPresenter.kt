@@ -116,8 +116,22 @@ class GroupPresenter: ViewModel() {
         })
     }
 
-    fun deleteReactToPost(){
+    fun deleteReactToPost(groupId: Int,postId: Int){
+        EntourageApplication.get().apiModule.groupRequest.deleteReactionGroupPost(groupId,postId).enqueue(object : Callback<ResponseBody> {
+            override fun onResponse(
+                call: Call<ResponseBody>,
+                response: Response<ResponseBody>
+            ) {
+                if (response.isSuccessful) {
+                    response.body()?.let {
 
+                    }
+                }
+            }
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                Log.d("GroupPresenter", "onFailure: $t")
+            }
+        })
     }
 
     fun getReactDetails(groupId:Int, postId:Int,reactionId:Int){

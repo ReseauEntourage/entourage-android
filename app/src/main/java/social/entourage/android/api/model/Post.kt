@@ -34,6 +34,8 @@ class Post(
     var reactions: MutableList<Reaction>? = mutableListOf(),
     @SerializedName("read")
     val read: Boolean? = null,
+    @SerializedName("has_reacted")
+    var hasReacted: Boolean? = null,
     val idInternal: UUID? = null,
 ) {
     var datePostText = ""

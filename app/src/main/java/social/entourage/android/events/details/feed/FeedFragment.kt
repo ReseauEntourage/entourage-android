@@ -719,11 +719,12 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface {
     override fun seeMemberReaction(post: Post) {
         MembersFragment.isFromReact = true
         MembersFragment.postId = post.id!!
-        AnalyticsEvents.logEvent(
-            AnalyticsEvents.ACTION_GROUP_FEED_MORE_MEMBERS
-        )
         val action =
-            social.entourage.android.groups.details.feed.FeedFragmentDirections.actionGroupFeedToGroupMembers(eventId, MembersType.EVENT)
+            FeedFragmentDirections.actionEventFeedToMembers(eventId, MembersType.EVENT)
         findNavController().navigate(action)
+    }
+
+    override fun deleteReaction(post: Post) {
+        eventPresenter.deleteReactToPost(eventId,post.id!!)
     }
 }

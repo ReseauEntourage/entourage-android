@@ -703,6 +703,10 @@ class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface {
             FeedFragmentDirections.actionGroupFeedToGroupMembers(groupId, MembersType.GROUP)
         findNavController().navigate(action)
     }
+
+    override fun deleteReaction(post: Post) {
+        groupPresenter.deleteReactToPost(groupId, post.id!!)
+    }
 }
 
  interface CallbackReportFragment{
