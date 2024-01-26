@@ -24,6 +24,7 @@ import social.entourage.android.home.UnreadMessages
 import social.entourage.android.api.model.Events
 import social.entourage.android.api.model.Group
 import social.entourage.android.api.model.Post
+import social.entourage.android.api.model.notification.ReactionWrapper
 import social.entourage.android.groups.details.feed.CreatePostGroupActivity
 import timber.log.Timber
 import java.io.File
@@ -38,6 +39,7 @@ class GroupPresenter: ViewModel() {
     var getAllMyGroups = MutableLiveData<MutableList<Group>>()
     var getAllComments = MutableLiveData<MutableList<Post>>()
     var getMembers = MutableLiveData<MutableList<EntourageUser>>()
+    var getMembersReact = MutableLiveData<MutableList<EntourageUser>>()
     var getMembersSearch = MutableLiveData<MutableList<EntourageUser>>()
     var isGroupUpdated = MutableLiveData<Boolean>()
     var newGroupCreated = MutableLiveData<Group>()
@@ -51,6 +53,7 @@ class GroupPresenter: ViewModel() {
     var isPostDeleted = MutableLiveData<Boolean>()
     var getAllEvents = MutableLiveData<MutableList<Events>>()
     var getCurrentParentPost = MutableLiveData<Post>()
+    var haveReacted = MutableLiveData<Int>()
 
     var isPageHaveToChange = MutableLiveData<Boolean>()
     var isLoading: Boolean = false
@@ -91,6 +94,51 @@ class GroupPresenter: ViewModel() {
     fun onDiscoverButtonChanged(){
         isChangingPage = !isChangingPage
         this.isPageHaveToChange.postValue(isChangingPage)
+    }
+
+    fun reactToPost(groupId:Int, postId:Int, reactionId:Int){
+        var reactionWrapper = ReactionWrapper()
+        reactionWrapper.reactionId = reactionId
+
+        EntourageApplication.get().apiModule.groupRequest.postReactionGroupPost(groupId,postId,reactionWrapper).enqueue(object : Callback<ResponseBody> {
+            override fun onResponse(
+                call: Call<ResponseBody>,
+                response: Response<ResponseBody>
+            ) {
+                if (response.isSuccessful) {
+                    response.body()?.let {
+                    }
+                }
+            }
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                Log.d("GroupPresenter", "onFailure: $t")
+            }
+        })
+    }
+
+    fun deleteReactToPost(){
+
+    }
+
+    fun getReactDetails(groupId:Int, postId:Int,reactionId:Int){
+        EntourageApplication.get().apiModule.groupRequest.getDetailsReactionGroupPost(groupId,postId,reactionId).enqueue(object : Callback<MembersWrapper> {
+            override fun onResponse(
+                call: Call<MembersWrapper>,
+                response: Response<MembersWrapper>
+            ) {
+                if (response.isSuccessful) {
+                    response.body()?.let {
+                        getMembersReact.value = it.users
+
+                    }
+                }else{
+                    Timber.e("getReactDetails: ${response.errorBody()?.string()}")
+                }
+            }
+            override fun onFailure(call: Call<MembersWrapper>, t: Throwable) {
+                Timber.e("getReactDetails: $t")
+            }
+        })
     }
 
     fun getGroup(id: Int) {
@@ -528,7 +576,6 @@ class GroupPresenter: ViewModel() {
                         getCurrentParentPost.value = post.post
                     }
                 }
-
                 override fun onFailure(call: Call<PostWrapper>, t: Throwable) {
                 }
             })

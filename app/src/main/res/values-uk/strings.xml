@@ -2674,5 +2674,6 @@
     <string name="copied_text">Скопійовано до буферу обміну!</string>
     <string name="copy_the_text">Скопіювати текст</string>
     <string name="copy_the_text_explanation">Текст буде скопійовано до буферу обміну</string>
+    <string name="see_member_react">Люди, які відреагували</string>
 
 </resources>

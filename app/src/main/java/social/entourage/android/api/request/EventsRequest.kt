@@ -8,6 +8,7 @@ import retrofit2.http.*
 import social.entourage.android.events.create.CreateEvent
 import social.entourage.android.api.model.Events
 import social.entourage.android.api.model.Image
+import social.entourage.android.api.model.notification.ReactionWrapper
 
 class EventsImagesResponse(@field:SerializedName("entourage_images") val eventImages: ArrayList<Image>)
 class EventsListWrapper(@field:SerializedName("outings") val allEvents: MutableList<Events>)
@@ -151,6 +152,33 @@ interface EventsRequest {
     fun getPostDetail(
         @Path("event_id") eventId: Int,
         @Path("post_id") postId: Int,
-        @Query("image_size") size:String,
+        @Query("image_size") size:String
     ): Call<PostWrapper>
+
+    @GET("outings/{outing_id}/chat_messages/{post_id}/details")
+    fun getReactionEventPost(
+        @Path("outing_id") eventId: Int,
+        @Path("post_id") postId: Int,
+    ): Call<ResponseBody>
+
+    @GET("outings/{outing_id}/chat_messages/{post_id}/reactions/{reaction_id}/details")
+    fun getDetailsReactionEventPost(
+        @Path("outing_id") eventId: Int,
+        @Path("post_id") postId: Int,
+        @Path("reaction_id") reactionId: Int,
+    ): Call<MembersWrapper>
+
+    @POST("outings/{outing_id}/chat_messages/{post_id}/reactions")
+    fun postReactionEventPost(
+        @Path("outing_id") eventId: Int,
+        @Path("post_id") postId: Int,
+        @Body reactionWrapper: ReactionWrapper
+    ): Call<ResponseBody>
+
+    @DELETE("outings/{outing_id}/chat_messages/{post_id}/reactions")
+    fun deleteReactionEventPost(
+        @Path("outing_id") eventId: Int,
+        @Path("post_id") postId: Int,
+    ): Call<ResponseBody>
+
 }

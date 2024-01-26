@@ -39,12 +39,15 @@ import social.entourage.android.api.MetaDataRepository
 import social.entourage.android.api.model.Group
 import social.entourage.android.api.model.Post
 import social.entourage.android.api.model.Tags
+import social.entourage.android.api.model.notification.Reaction
 import social.entourage.android.comment.PostAdapter
+import social.entourage.android.comment.ReactionInterface
 import social.entourage.android.databinding.NewFragmentFeedBinding
 import social.entourage.android.events.create.CreateEventActivity
 import social.entourage.android.groups.GroupModel
 import social.entourage.android.groups.GroupPresenter
 import social.entourage.android.groups.details.GroupDetailsFragment
+import social.entourage.android.groups.details.members.MembersFragment
 import social.entourage.android.groups.details.members.MembersType
 import social.entourage.android.profile.myProfile.InterestsAdapter
 import social.entourage.android.report.DataLanguageStock
@@ -63,7 +66,7 @@ import kotlin.math.abs
 
 const val rotationDegree = 135F
 
-class FeedFragment : Fragment(),CallbackReportFragment{
+class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface {
 
     private var _binding: NewFragmentFeedBinding? = null
     val binding: NewFragmentFeedBinding get() = _binding!!
@@ -149,6 +152,7 @@ class FeedFragment : Fragment(),CallbackReportFragment{
         groupPresenter.hasUserJoinedGroup.observe(viewLifecycleOwner, ::handleJoinResponse)
         groupPresenter.hasUserLeftGroup.observe(viewLifecycleOwner, ::handleLeftResponse)
         groupPresenter.isPostDeleted.observe(requireActivity(), ::handleDeletedResponse)
+        groupPresenter.haveReacted.observe(requireActivity(), ::handleReactionGroupPost)
 
         handleFollowButton()
         handleBackButton()
@@ -445,28 +449,30 @@ class FeedFragment : Fragment(),CallbackReportFragment{
     }
 
     private fun initializePosts() {
-        binding.postsNewRecyclerview.apply {
-            layoutManager = LinearLayoutManager(requireContext())
-            adapter = PostAdapter(
-                requireContext(),
-                newPostsList,
-                ::openCommentPage,
-                ::openReportFragment,
-                ::openImageFragment
-            )
-            (adapter as? PostAdapter)?.initiateList()
-        }
-        binding.postsOldRecyclerview.apply {
-            layoutManager = LinearLayoutManager(requireContext())
-            adapter = PostAdapter(
-                requireContext(),
-                oldPostsList,
-                ::openCommentPage,
-                ::openReportFragment,
-                ::openImageFragment
-            )
-            (adapter as? PostAdapter)?.initiateList()
-        }
+
+        binding.postsNewRecyclerview.layoutManager = LinearLayoutManager(requireContext())
+        binding.postsNewRecyclerview.adapter = PostAdapter(
+            requireContext(),
+            this,
+            newPostsList,
+            ::openCommentPage,
+            ::openReportFragment,
+            ::openImageFragment
+        )
+        (binding.postsNewRecyclerview.adapter as? PostAdapter)?.initiateList()
+
+
+        binding.postsOldRecyclerview.layoutManager = LinearLayoutManager(requireContext())
+        binding.postsOldRecyclerview.adapter = PostAdapter(
+            requireContext(),
+            this,
+            oldPostsList,
+            ::openCommentPage,
+            ::openReportFragment,
+            ::openImageFragment
+        )
+        (binding.postsOldRecyclerview.adapter as? PostAdapter)?.initiateList()
+
     }
 
     private fun openCommentPage(post: Post, shouldOpenKeyboard: Boolean) {
@@ -578,6 +584,10 @@ class FeedFragment : Fragment(),CallbackReportFragment{
         }
     }
 
+    private fun handleReactionGroupPost(reactionId: Int) {
+
+    }
+
     private fun handleGroupEventsButton() {
         binding.seeMoreEvents.setOnClickListener {
             group?.name?.let { name ->
@@ -679,7 +689,20 @@ class FeedFragment : Fragment(),CallbackReportFragment{
         }
         adapter?.translateItem(id)
     }
+    override fun onReactionClicked(postId: Post, reactionId: Int) {
+        groupPresenter.reactToPost(groupId,postId.id!!, reactionId)
+    }
 
+    override fun seeMemberReaction(post: Post) {
+        MembersFragment.isFromReact = true
+        MembersFragment.postId = post.id!!
+        AnalyticsEvents.logEvent(
+            AnalyticsEvents.ACTION_GROUP_FEED_MORE_MEMBERS
+        )
+        val action =
+            FeedFragmentDirections.actionGroupFeedToGroupMembers(groupId, MembersType.GROUP)
+        findNavController().navigate(action)
+    }
 }
 
  interface CallbackReportFragment{

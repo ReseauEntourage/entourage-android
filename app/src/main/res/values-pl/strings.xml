@@ -2673,5 +2673,6 @@ Przeczytają tę wiadomość, gdy tylko dołączą do grupy.</string>
     <string name="copied_text">Skopiowano do schowka!</string>
     <string name="copy_the_text">Kopiuj tekst</string>
     <string name="copy_the_text_explanation">Tekst zostanie skopiowany do schowka</string>
+    <string name="see_member_react">Osoby, które zareagowały</string>
 
 </resources>

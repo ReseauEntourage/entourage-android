@@ -2656,6 +2656,7 @@ Leerán este mensaje tan pronto como se unan al grupo.</string>
     <string name="copied_text">¡Copiado al portapapeles!</string>
     <string name="copy_the_text">Copiar el texto</string>
     <string name="copy_the_text_explanation">El texto se copiará al portapapeles</string>
+    <string name="see_member_react">Personas que reaccionaron</string>
 
 
 </resources>

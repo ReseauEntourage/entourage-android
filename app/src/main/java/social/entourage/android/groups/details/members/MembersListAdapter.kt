@@ -1,7 +1,9 @@
 package social.entourage.android.groups.details.members
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +12,7 @@ import com.bumptech.glide.Glide
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.api.model.EntourageUser
+import social.entourage.android.api.model.notification.ReactionType
 import social.entourage.android.databinding.NewGroupMemberItemBinding
 import social.entourage.android.user.UserProfileActivity
 import social.entourage.android.tools.utils.Const
@@ -19,8 +22,11 @@ interface OnItemShowListener {
 }
 
 class MembersListAdapter(
+    private val context:Context,
     private var membersList: List<EntourageUser>,
-    private var onItemShowListener: OnItemShowListener
+    private var reactionList: List<ReactionType>,
+    private var onItemShowListener: OnItemShowListener,
+
 ) : RecyclerView.Adapter<MembersListAdapter.ViewHolder>() {
 
     inner class ViewHolder(val binding: NewGroupMemberItemBinding) :
@@ -38,7 +44,15 @@ class MembersListAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         with(holder) {
             with(membersList[position]) {
-
+                if(reactionList.isNotEmpty()) {
+                    binding.reaction.layoutItemReactionParent.visibility = View.VISIBLE
+                    Glide.with(context)
+                        .load(reactionList[position].imageUrl)
+                        .into(binding.reaction.image)
+                }
+                else {
+                    binding.reaction.layoutItemReactionParent.visibility = View.GONE
+                }
                 val isMe = EntourageApplication.get().me()?.id == userId
                 binding.contact.visibility = if (isMe) View.INVISIBLE else View.VISIBLE
 

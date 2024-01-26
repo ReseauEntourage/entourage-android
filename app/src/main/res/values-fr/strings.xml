@@ -2681,6 +2681,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="copied_text">Copié dans le presse-papier !</string>
     <string name="copy_the_text">Copier le texte</string>
     <string name="copy_the_text_explanation">Le texte sera copié dans le presse-papier</string>
+    <string name="see_member_react">Personnes ayant réagi</string>
 
 </resources>
 

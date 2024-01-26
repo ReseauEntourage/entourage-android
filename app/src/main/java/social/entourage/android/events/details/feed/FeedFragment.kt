@@ -45,11 +45,13 @@ import social.entourage.android.api.model.Tags
 import social.entourage.android.api.model.toEventUi
 import social.entourage.android.comment.CommentsListAdapter
 import social.entourage.android.comment.PostAdapter
+import social.entourage.android.comment.ReactionInterface
 import social.entourage.android.databinding.NewFragmentFeedEventBinding
 import social.entourage.android.events.EventsPresenter
 import social.entourage.android.events.details.SettingsModalFragment
 import social.entourage.android.groups.details.feed.CallbackReportFragment
 import social.entourage.android.groups.details.feed.GroupMembersPhotosAdapter
+import social.entourage.android.groups.details.members.MembersFragment
 import social.entourage.android.groups.details.members.MembersType
 import social.entourage.android.language.LanguageManager
 import social.entourage.android.profile.myProfile.InterestsAdapter
@@ -70,7 +72,7 @@ import java.text.SimpleDateFormat
 import java.util.Locale
 import kotlin.math.abs
 
-class FeedFragment : Fragment(), CallbackReportFragment {
+class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface {
 
     private var _binding: NewFragmentFeedEventBinding? = null
     val binding: NewFragmentFeedEventBinding get() = _binding!!
@@ -385,28 +387,30 @@ class FeedFragment : Fragment(), CallbackReportFragment {
     }
 
     private fun initializePosts() {
-        binding.postsNewRecyclerview.apply {
-            layoutManager = LinearLayoutManager(requireContext())
-            adapter = PostAdapter(
+
+        binding.postsNewRecyclerview.layoutManager = LinearLayoutManager(requireContext())
+        binding.postsNewRecyclerview.adapter = PostAdapter(
                 requireContext(),
+                this,
                 newPostsList,
                 ::openCommentPage,
                 ::openReportFragment,
                 ::openImageFragment
             )
-            (adapter as? PostAdapter)?.initiateList()
-        }
-        binding.postsOldRecyclerview.apply {
-            layoutManager = LinearLayoutManager(requireContext())
-            adapter = PostAdapter(
+            (binding.postsNewRecyclerview.adapter as? PostAdapter)?.initiateList()
+
+
+        binding.postsOldRecyclerview.layoutManager = LinearLayoutManager(requireContext())
+        binding.postsOldRecyclerview.adapter = PostAdapter(
                 requireContext(),
+            this,
                 oldPostsList,
                 ::openCommentPage,
                 ::openReportFragment,
                 ::openImageFragment
             )
-            (adapter as? PostAdapter)?.initiateList()
-        }
+            (binding.postsOldRecyclerview.adapter as? PostAdapter)?.initiateList()
+
     }
 
     private fun openCommentPage(post: Post, shouldOpenKeyboard: Boolean) {
@@ -706,5 +710,20 @@ class FeedFragment : Fragment(), CallbackReportFragment {
             binding.postsOldRecyclerview.adapter as? PostAdapter
         }
         adapter?.translateItem(id)
+    }
+
+    override fun onReactionClicked(postId: Post, reactionId: Int) {
+        eventPresenter.reactToPost(eventId,postId.id!!, reactionId)
+    }
+
+    override fun seeMemberReaction(post: Post) {
+        MembersFragment.isFromReact = true
+        MembersFragment.postId = post.id!!
+        AnalyticsEvents.logEvent(
+            AnalyticsEvents.ACTION_GROUP_FEED_MORE_MEMBERS
+        )
+        val action =
+            social.entourage.android.groups.details.feed.FeedFragmentDirections.actionGroupFeedToGroupMembers(eventId, MembersType.EVENT)
+        findNavController().navigate(action)
     }
 }

@@ -23,6 +23,7 @@ import social.entourage.android.events.list.EVENTS_PER_PAGE
 import social.entourage.android.home.UnreadMessages
 import social.entourage.android.api.model.Events
 import social.entourage.android.api.model.Post
+import social.entourage.android.api.model.notification.ReactionWrapper
 import timber.log.Timber
 import java.io.File
 import java.io.IOException
@@ -39,6 +40,7 @@ class EventsPresenter: ViewModel() {
     var isEventCreated = MutableLiveData<Boolean>()
     var isUserParticipating = MutableLiveData<Boolean>()
     var getMembers = MutableLiveData<MutableList<EntourageUser>>()
+    var getMembersReact = MutableLiveData<MutableList<EntourageUser>>()
     var getMembersSearch = MutableLiveData<MutableList<EntourageUser>>()
     var getAllPosts = MutableLiveData<MutableList<Post>>()
     var getCurrentParentPost = MutableLiveData<Post>()
@@ -547,4 +549,51 @@ class EventsPresenter: ViewModel() {
                 }
             })
     }
+
+    fun reactToPost(eventId:Int, postId:Int, reactionId:Int){
+        var reactionWrapper = ReactionWrapper()
+        reactionWrapper.reactionId = reactionId
+
+        EntourageApplication.get().apiModule.eventsRequest.postReactionEventPost(eventId,postId,reactionWrapper).enqueue(object : Callback<ResponseBody> {
+            override fun onResponse(
+                call: Call<ResponseBody>,
+                response: Response<ResponseBody>
+            ) {
+                if (response.isSuccessful) {
+                    response.body()?.let {
+                    }
+                }
+            }
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                Log.d("EventPresenter", "onFailure: $t")
+            }
+        })
+    }
+
+    fun deleteReactToPost(){
+
+    }
+
+    fun getReactDetails(eventId:Int, postId:Int,reactionId:Int){
+        EntourageApplication.get().apiModule.eventsRequest.getDetailsReactionEventPost(eventId,postId,reactionId).enqueue(object : Callback<MembersWrapper> {
+            override fun onResponse(
+                call: Call<MembersWrapper>,
+                response: Response<MembersWrapper>
+            ) {
+                if (response.isSuccessful) {
+                    response.body()?.let {
+                        getMembersReact.value = it.users
+                    }
+                }else{
+                    Timber.e("getReactDetails: ${response.errorBody()?.string()}")
+
+                }
+            }
+            override fun onFailure(call: Call<MembersWrapper>, t: Throwable) {
+                Timber.e("getReactDetails: $t")
+            }
+        })
+    }
+
+
 }

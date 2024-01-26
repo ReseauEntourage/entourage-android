@@ -7,6 +7,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import social.entourage.android.EntourageApplication
+import social.entourage.android.MainActivity
 import social.entourage.android.api.model.Image
 import social.entourage.android.api.model.Tags
 import social.entourage.android.api.request.EventsImagesResponse
@@ -26,15 +27,14 @@ object MetaDataRepository {
                 response: Response<MetaDataResponse>
             ) {
                 if (response.isSuccessful) {
-                    Log.wtf("wtf", "eho metadata: " + Gson().toJson(response.body()))
                     metaData.value = response.body()?.tags
-                }else{
-                    Log.wtf("wtf", "eho metadata: " + Gson().toJson(response.errorBody()))
+                    MainActivity.reactionsList = response.body()?.reactions
+
                 }
             }
 
             override fun onFailure(call: Call<MetaDataResponse>, t: Throwable) {
-                Log.wtf("wtf", "eho metadata: " + t.message)
+
             }
         })
     }

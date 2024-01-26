@@ -2684,5 +2684,6 @@
     <string name="copied_text">تم النسخ إلى الحافظة!</string>
     <string name="copy_the_text">انسخ النص</string>
     <string name="copy_the_text_explanation">سيتم نسخ النص إلى الحافظة</string>
+    <string name="see_member_react">الأشخاص الذين تفاعلوا</string>
 
 </resources>

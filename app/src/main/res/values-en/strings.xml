@@ -1599,6 +1599,7 @@
     <string name="copied_text">Copied to clipboard!</string>
     <string name="copy_the_text">Copy text</string>
     <string name="copy_the_text_explanation">The text will be copied to the clipboard</string>
+    <string name="see_member_react">People who reacted</string>
 
 
 </resources>
