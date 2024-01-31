@@ -7,6 +7,8 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Build
+import android.os.Handler
+import android.os.Looper
 import android.text.SpannableString
 import android.text.method.LinkMovementMethod
 import android.text.style.UnderlineSpan
@@ -89,12 +91,10 @@ class PostAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-
-
         with(holder) {
             val meId = EntourageApplication.get().me()?.id
-            var isPouceOrange = postsList[position].hasReacted ?: false
-            if(isPouceOrange){
+            var isPouceOrange = postsList[position].postId ?: 0
+            if(isPouceOrange != 0){
                 binding.ivILike.setImageDrawable(context.getDrawable(R.drawable.ic_pouce_orange))
             }
             binding.tvTitleILike.setText(context.getText(R.string.text_title_i_like))
@@ -103,68 +103,31 @@ class PostAdapter(
             binding.layoutPostParent.setOnClickListener {
                 binding.layoutReactions.visibility = View.GONE
             }
-            binding.btnILike.setOnClickListener {
 
-                val firstReactionType = MainActivity.reactionsList?.firstOrNull()
-                if (isPouceOrange) {
-                    // Si le pouce est orange, le changer en gris
-                    binding.ivILike.setImageDrawable(context.getDrawable(R.drawable.ic_pouce_grey))
-                    reactionCallback.deleteReaction(postsList[position])
-                    postsList[position].hasReacted = false
-                    var found = false
-                    for (i in postsList[position].reactions?.indices!!) {
-                        if (postsList[position].reactions!![i].reactionId == firstReactionType?.id && !found) {
-                            postsList[position].reactions!!.removeAt(i)
-                            found = true
-                            break // Arrête la boucle après avoir trouvé et supprimé la première occurrence
-                        }
-                    }
-                } else {
-                    // Si le pouce est gris, le changer en orange
-                    binding.ivILike.setImageDrawable(context.getDrawable(R.drawable.ic_pouce_orange))
-                    firstReactionType?.let {
-                        postsList[position].reactions?.add(Reaction().apply {
-                            reactionId = firstReactionType.id
-                            reactionsCount = 1
-                        })
-                        reactionCallback.onReactionClicked(postsList[position], it.id)
-                        postsList[position].hasReacted = true
-                    }
-                }
-                notifyItemChanged(position)
-            }
 
             // Ajouter un listener pour l'appui long sur le bouton "j'aime"
             binding.btnILike.setOnLongClickListener {
                 binding.layoutReactions.visibility = if (binding.layoutReactions.visibility == View.VISIBLE) View.GONE else View.VISIBLE
-                if (isPouceOrange) {
-                    // Si le pouce est orange, le changer en gris
-                    reactionCallback.deleteReaction(postsList[position])
-                    binding.ivILike.setImageDrawable(context.getDrawable(R.drawable.ic_pouce_grey))
-                    postsList[position].hasReacted = false
-                } else {
-                    // Si le pouce est gris, le changer en orange
-                    binding.ivILike.setImageDrawable(context.getDrawable(R.drawable.ic_pouce_orange))
-                    postsList[position].hasReacted = true
-                }
                 true
             }
 
-
-            // Initialisation des listeners pour chaque réaction dans layout_reactions
-            val reactionImageViews = arrayOf(
-                binding.ivReactOne,
-                binding.ivReactTwo,
-                binding.ivReactThree,
-                binding.ivReactFour,
-                binding.ivReactFive
-            )
-
-
             with(postsList[position]) {
 
-                val reactionTypes = MainActivity.reactionsList
+                if (this.reactionId != 0) {
+                    // Si le pouce est orange, le changer en gris
+                    binding.ivILike.setImageDrawable(context.getDrawable(R.drawable.ic_pouce_orange))
+                } else {
+                    // Si le pouce est gris, le changer en orange
+                    binding.ivILike.setImageDrawable(context.getDrawable(R.drawable.ic_pouce_grey))
+                }
 
+                binding.btnILike.setOnClickListener {
+                    val firstReactionType = MainActivity.reactionsList?.firstOrNull()
+                    if(firstReactionType != null){
+                        binding.layoutReactions.visibility =  View.GONE
+                        handleReactionClick(this, firstReactionType)
+                    }
+                }
                 val reactionImageViews = listOf(
                     binding.ivReactOne,
                     binding.ivReactTwo,
@@ -172,18 +135,13 @@ class PostAdapter(
                     binding.ivReactFour,
                     binding.ivReactFive
                 )
-
-                if (reactionTypes != null) {
-                    val reactionTypes = MainActivity.reactionsList
-                    reactionTypes?.let { types ->
-                        types.take(5).forEachIndexed { index, reactionType ->
-                            // Configuration de l'image de réaction
-                            Glide.with(context).load(reactionType.imageUrl).into(reactionImageViews[index])
-                            // Configuration du listener de clic
-                            reactionImageViews[index].setOnClickListener {
-                                handleReactionClick(postsList[adapterPosition], reactionType, isPouceOrange)
-                                binding.layoutReactions.visibility = View.GONE
-                            }
+                val reactionTypes = MainActivity.reactionsList
+                reactionTypes?.let { types ->
+                    types.take(5).forEachIndexed { index, reactionType ->
+                        Glide.with(context).load(reactionType.imageUrl).into(reactionImageViews[index])
+                        reactionImageViews[index].setOnClickListener {
+                            handleReactionClick(this, reactionType)
+                            binding.layoutReactions.visibility =  View.GONE
                         }
                     }
                 }
@@ -419,33 +377,68 @@ class PostAdapter(
             }
         }
     }
-    private fun handleReactionClick(post: Post, reactionType: ReactionType, isPouceOrange: Boolean) {
-        if (isPouceOrange) {
-            for(reac in post.reactions!!){
-                Log.wtf("wtf" , "reac id : ${reac.reactionId} reactionType id : ${reactionType.id}")
-                if(reac.reactionId == reactionType.id){
-                   post.reactions!!.removeAt(post.reactions!!.indexOf(reac))
-                    notifyItemChanged(postsList.indexOf(post))
-                    break
-                }
-            }
-            reactionCallback.deleteReaction(post)
-            post.reactions?.add(Reaction().apply {
-                reactionId = reactionType.id
-                reactionsCount = 1
-            })
-            reactionCallback.onReactionClicked(post, reactionType.id)
-            post.hasReacted = true
+    private fun handleReactionClick(post: Post, reactionType: ReactionType) {
+        val currentUserReactionId = post.reactionId
+        val isSameReaction = currentUserReactionId == reactionType.id
 
-        }else {
-            post.reactions?.add(Reaction().apply {
+        if (currentUserReactionId != 0) {
+            val existingReaction = post.reactions?.find { it.reactionId == currentUserReactionId }
+
+            if (isSameReaction) {
+                // Supprimer la réaction actuelle
+                existingReaction?.let {
+                    it.reactionsCount--
+                    if (it.reactionsCount <= 0) {
+                        post.reactions?.remove(it)
+                    }
+                    post.reactionId = 0
+                    reactionCallback.deleteReaction(post)
+                    notifyItemChanged(postsList.indexOf(post))
+                }
+            } else {
+                // Remplacer la réaction
+                existingReaction?.let {
+                    it.reactionsCount--
+                    if (it.reactionsCount <= 0) {
+                        post.reactions?.remove(it)
+                    }
+                }
+                post.reactionId = reactionType.id
+                reactionCallback.deleteReaction(post)
+
+                // Ajouter un délai avant d'ajouter la nouvelle réaction
+                Handler(Looper.getMainLooper()).postDelayed({
+                    addOrUpdateReaction(post, reactionType)
+                    reactionCallback.onReactionClicked(post, reactionType.id)
+                    notifyItemChanged(postsList.indexOf(post))
+                }, 500) // Délai de 500 millisecondes
+            }
+        } else {
+            // Première réaction de l'utilisateur
+            addOrUpdateReaction(post, reactionType)
+            post.reactionId = reactionType.id
+            reactionCallback.onReactionClicked(post, reactionType.id)
+        }
+
+        if (!isSameReaction) {
+            notifyItemChanged(postsList.indexOf(post))
+        }
+    }
+
+
+    private fun addOrUpdateReaction(post: Post, reactionType: ReactionType) {
+        val existingReaction = post.reactions?.find { it.reactionId == reactionType.id }
+        if (existingReaction != null) {
+            // Mettre à jour la réaction existante
+            existingReaction.reactionsCount++
+        } else {
+            // Ajouter une nouvelle réaction
+            val newReaction = Reaction().apply {
                 reactionId = reactionType.id
                 reactionsCount = 1
-            })
-            reactionCallback.onReactionClicked(post, reactionType.id)
-            post.hasReacted = true
+            }
+            post.reactions?.add(newReaction)
         }
-        notifyItemChanged(postsList.indexOf(post))
     }
     private fun showUserDetail(context:Context,userId:Int?) {
         (context as? Activity)?.startActivityForResult(
