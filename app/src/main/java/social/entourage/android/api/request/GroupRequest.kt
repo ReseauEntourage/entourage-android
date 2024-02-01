@@ -145,7 +145,7 @@ interface GroupRequest {
         @Path("post_id") postId: Int,
     ): Call<ResponseBody>
 
-    @GET("neighborhoods/{neighborhood_id}/chat_messages/{post_id}/reactions/{reaction_id}/details")
+    @GET("neighborhoods/{neighborhood_id}/chat_messages/{post_id}/reactions/users")
     fun getDetailsReactionGroupPost(
         @Path("neighborhood_id") groupId: Int,
         @Path("post_id") postId: Int,

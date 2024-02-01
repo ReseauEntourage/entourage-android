@@ -378,7 +378,7 @@ class PostAdapter(
         }
     }
     private fun handleReactionClick(post: Post, reactionType: ReactionType) {
-        val currentUserReactionId = post.reactionId
+        val currentUserReactionId = post.reactionId ?: 0
         val isSameReaction = currentUserReactionId == reactionType.id
 
         if (currentUserReactionId != 0) {
