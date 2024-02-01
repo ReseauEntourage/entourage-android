@@ -732,6 +732,17 @@ class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface {
     }
 
     override fun deleteReaction(post: Post) {
+        if(this.group?.member == false){
+            AlertDialog.Builder(context) // Utilise 'this' si c'est dans une activité, ou 'getActivity()' si c'est dans un fragment
+                .setTitle("Attention")
+                .setMessage("Vous devez rejoindre le groupe pour effectuer cette action.")
+                .setPositiveButton("Retour") { dialog, which ->
+                    // Code à exécuter lorsque le bouton "Retour" est cliqué.
+                    // Si tu ne veux rien faire, tu peux laisser ce bloc vide.
+                }
+                .show()
+            return
+        }
         groupPresenter.deleteReactToPost(groupId, post.id!!)
     }
 }

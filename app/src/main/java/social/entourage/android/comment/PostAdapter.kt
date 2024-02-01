@@ -94,10 +94,7 @@ class PostAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         with(holder) {
             val meId = EntourageApplication.get().me()?.id
-            var isPouceOrange = postsList[position].postId ?: 0
-            if(isPouceOrange != 0){
-                binding.ivILike.setImageDrawable(context.getDrawable(R.drawable.ic_pouce_orange))
-            }
+
             binding.tvTitleILike.setText(context.getText(R.string.text_title_i_like))
             binding.tvIComment.setText(context.getText(R.string.text_title_comment))
 
@@ -116,14 +113,22 @@ class PostAdapter(
             }
 
             with(postsList[position]) {
-
-                if (this.reactionId != 0) {
+                if(this.reactionId == null ){
+                    Log.wtf("wtf", "eho passed null ")
+                    binding.ivILike.setImageDrawable(context.getDrawable(R.drawable.ic_pouce_grey))
+                    binding.tvTitleILike.setTextColor(context.getColor(R.color.black))
+                }else if (this.reactionId != 0 ) {
                     // Si le pouce est orange, le changer en gris
+                    Log.wtf("wtf", "eho passed colored " + this.reactionId)
                     binding.ivILike.setImageDrawable(context.getDrawable(R.drawable.ic_pouce_orange))
+                    binding.tvTitleILike.setTextColor(context.getColor(R.color.orange))
                 } else {
+                    Log.wtf("wtf", "eho passed 0 ")
                     // Si le pouce est gris, le changer en orange
                     binding.ivILike.setImageDrawable(context.getDrawable(R.drawable.ic_pouce_grey))
+                    binding.tvTitleILike.setTextColor(context.getColor(R.color.black))
                 }
+
 
                 binding.btnILike.setOnClickListener {
                     AnalyticsEvents.logEvent(
@@ -258,6 +263,10 @@ class PostAdapter(
                 binding.postNoComments.setOnClickListener {
                     onClick(this, false)
                 }
+                val noCommentsText = context.getString(R.string.no_comments) // Utilise le texte approprié depuis tes ressources
+                val spannableNoCommentsText = SpannableString(noCommentsText)
+                spannableNoCommentsText.setSpan(UnderlineSpan(), 0, noCommentsText.length, Spanned.SPAN_INCLUSIVE_INCLUSIVE)
+                binding.postNoComments.text = spannableNoCommentsText
                 binding.postCommentsNumber.setOnClickListener {
                     onClick(this, false)
                 }

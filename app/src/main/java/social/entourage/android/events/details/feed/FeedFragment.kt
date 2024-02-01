@@ -1,5 +1,6 @@
 package social.entourage.android.events.details.feed
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -713,6 +714,17 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface {
     }
 
     override fun onReactionClicked(postId: Post, reactionId: Int) {
+        if(this.event?.member == false){
+            AlertDialog.Builder(context) // Utilise 'this' si c'est dans une activité, ou 'getActivity()' si c'est dans un fragment
+                .setTitle("Attention")
+                .setMessage("Vous devez rejoindre le groupe pour effectuer cette action.")
+                .setPositiveButton("Retour") { dialog, which ->
+                    // Code à exécuter lorsque le bouton "Retour" est cliqué.
+                    // Si tu ne veux rien faire, tu peux laisser ce bloc vide.
+                }
+                .show()
+            return
+        }
         eventPresenter.reactToPost(eventId,postId.id!!, reactionId)
     }
 
@@ -725,6 +737,17 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface {
     }
 
     override fun deleteReaction(post: Post) {
+        if(this.event?.member == false){
+            AlertDialog.Builder(context) // Utilise 'this' si c'est dans une activité, ou 'getActivity()' si c'est dans un fragment
+                .setTitle("Attention")
+                .setMessage("Vous devez rejoindre le groupe pour effectuer cette action.")
+                .setPositiveButton("Retour") { dialog, which ->
+                    // Code à exécuter lorsque le bouton "Retour" est cliqué.
+                    // Si tu ne veux rien faire, tu peux laisser ce bloc vide.
+                }
+                .show()
+            return
+        }
         eventPresenter.deleteReactToPost(eventId,post.id!!)
     }
 }
