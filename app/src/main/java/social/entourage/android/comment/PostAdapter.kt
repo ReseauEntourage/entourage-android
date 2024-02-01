@@ -10,6 +10,7 @@ import android.os.Build
 import android.os.Handler
 import android.os.Looper
 import android.text.SpannableString
+import android.text.Spanned
 import android.text.method.LinkMovementMethod
 import android.text.style.UnderlineSpan
 import android.util.Log
@@ -279,17 +280,19 @@ class PostAdapter(
                 } else {
                     binding.postCommentsNumber.visibility = View.VISIBLE
                     binding.postNoComments.visibility = View.GONE
-                    if(commentsCount != null && commentsCount!! > 1){
-                        binding.postCommentsNumber.text = String.format(
-                            holder.itemView.context.getString(R.string.posts_comment_number),
-                            commentsCount
-                        )
-                    }else{
-                        binding.postCommentsNumber.text = String.format(
-                            holder.itemView.context.getString(R.string.posts_comment_number_singular),
-                            commentsCount
-                        )
+                    if (commentsCount != null) {
+                        val resId = if (commentsCount > 1) R.string.posts_comment_number else R.string.posts_comment_number_singular
+                        val commentsText = String.format(holder.itemView.context.getString(resId), commentsCount)
+
+                        val spannableString = SpannableString(commentsText)
+                        spannableString.setSpan(UnderlineSpan(), 0, commentsText.length, Spanned.SPAN_INCLUSIVE_INCLUSIVE)
+
+                        binding.postCommentsNumber.text = spannableString
+                    } else {
+                        // Gérer le cas où commentsCount est null si nécessaire
+                        binding.postCommentsNumber.text = "" // Ou une valeur par défaut
                     }
+
                 }
                 var locale = LanguageManager.getLocaleFromPreferences(context)
                 binding.date.text = SimpleDateFormat(

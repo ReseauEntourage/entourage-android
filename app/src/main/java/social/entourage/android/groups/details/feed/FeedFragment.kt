@@ -1,5 +1,6 @@
 package social.entourage.android.groups.details.feed
 
+import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -495,6 +496,17 @@ class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface {
         )
     }
     private fun openReportFragment(postId:Int,userId:Int) {
+        if(this.group?.member == false){
+            AlertDialog.Builder(context) // Utilise 'this' si c'est dans une activité, ou 'getActivity()' si c'est dans un fragment
+                .setTitle("Attention")
+                .setMessage("Vous devez rejoindre le groupe pour effectuer cette action.")
+                .setPositiveButton("Retour") { dialog, which ->
+                    // Code à exécuter lorsque le bouton "Retour" est cliqué.
+                    // Si tu ne veux rien faire, tu peux laisser ce bloc vide.
+                }
+                .show()
+            return
+        }
 
         val meId = EntourageApplication.get().me()?.id
         val post = allPostsList.find { it.id == postId }
@@ -694,6 +706,17 @@ class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface {
         adapter?.translateItem(id)
     }
     override fun onReactionClicked(postId: Post, reactionId: Int) {
+        if(this.group?.member == false){
+            AlertDialog.Builder(context) // Utilise 'this' si c'est dans une activité, ou 'getActivity()' si c'est dans un fragment
+                .setTitle("Attention")
+                .setMessage("Vous devez rejoindre le groupe pour effectuer cette action.")
+                .setPositiveButton("Retour") { dialog, which ->
+                    // Code à exécuter lorsque le bouton "Retour" est cliqué.
+                    // Si tu ne veux rien faire, tu peux laisser ce bloc vide.
+                }
+                .show()
+            return
+        }
         groupPresenter.reactToPost(groupId,postId.id!!, reactionId)
     }
 

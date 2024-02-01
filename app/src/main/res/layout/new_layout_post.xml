@@ -308,8 +308,7 @@ Nous sommes prêt pour les beaux jours ! :-)" />
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    android:layout_marginEnd="40dp"
+                    android:layout_marginStart="55dp"
                     />
                 <TextView
                     android:layout_width="wrap_content"
@@ -339,20 +338,19 @@ Nous sommes prêt pour les beaux jours ! :-)" />
                     android:src="@drawable/ic_comment_grey"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    android:layout_marginEnd="40dp"
+                    app:layout_constraintEnd_toStartOf="@+id/tv_i_comment"
+                    android:layout_marginEnd="5dp"
 
                     />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/tv_i_comment"
-                    app:layout_constraintStart_toEndOf="@+id/iv_i_comment"
                     style="@style/left_courant_black"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="55dp"
                     tools:text="commenter"
                     />
 
