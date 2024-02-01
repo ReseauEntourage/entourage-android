@@ -684,6 +684,9 @@ object AnalyticsEvents {
     const val   Clic_CopyPaste_LongClic = "Clic_CopyPaste_LongClic"
     const val   Clic_CopyPaste_Settings = "Clic_CopyPaste_Settings"
 
+    const val   Clic_Post_Like = "Clic_Post_Like"
+    const val   Clic_Post_List_Reactions = "Clic_Post_List_Reactions"
+    const val   Clic_ListReactions_Contact = "Clic_ListReactions_Contact"
 
 
 

@@ -107,6 +107,9 @@ class PostAdapter(
 
             // Ajouter un listener pour l'appui long sur le bouton "j'aime"
             binding.btnILike.setOnLongClickListener {
+                AnalyticsEvents.logEvent(
+                    AnalyticsEvents.Clic_Post_List_Reactions
+                )
                 binding.layoutReactions.visibility = if (binding.layoutReactions.visibility == View.VISIBLE) View.GONE else View.VISIBLE
                 true
             }
@@ -122,6 +125,9 @@ class PostAdapter(
                 }
 
                 binding.btnILike.setOnClickListener {
+                    AnalyticsEvents.logEvent(
+                        AnalyticsEvents.Clic_Post_Like
+                    )
                     val firstReactionType = MainActivity.reactionsList?.firstOrNull()
                     if(firstReactionType != null){
                         binding.layoutReactions.visibility =  View.GONE
@@ -208,6 +214,9 @@ class PostAdapter(
                 }
 
                 binding.postCommentsNumberLayout.setOnClickListener {
+                    AnalyticsEvents.logEvent(
+                        AnalyticsEvents.Clic_ListReactions_Contact
+                    )
                     reactionCallback.seeMemberReaction(this)
                 }
 
