@@ -111,6 +111,7 @@ open class MembersFragment : Fragment() {
             )
         }
         if(isFromReact) {
+            binding.searchBar.visibility = View.GONE
             if(type == MembersType.GROUP) {
                 groupPresenter.getReactDetails(id!!,MembersFragment.postId)
 
