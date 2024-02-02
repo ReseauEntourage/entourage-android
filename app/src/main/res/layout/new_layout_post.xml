@@ -124,7 +124,7 @@ Nous sommes prêt pour les beaux jours ! :-)" />
                 android:layout_marginBottom="2dp"
                 android:background="@drawable/shape_layout_reactions"
                 android:elevation="15dp"
-                android:visibility="visible">
+                android:visibility="gone">
 
                 <ImageView
                     android:layout_width="25dp"
