@@ -261,7 +261,7 @@ Nous sommes prêt pour les beaux jours ! :-)" />
                 style="@style/left_default"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/no_comments"
+                android:text=""
                 android:visibility="gone"
                 app:layout_constraintEnd_toStartOf="@id/post_comments_number"
                 app:layout_constraintTop_toTopOf="parent"

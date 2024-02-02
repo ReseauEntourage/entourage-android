@@ -270,7 +270,7 @@ class PostAdapter(
                     onClick(this, false)
                     binding.layoutReactions.visibility =  View.GONE
                 }
-                val noCommentsText = context.getString(R.string.no_comments) // Utilise le texte approprié depuis tes ressources
+                val noCommentsText = "" // Utilise le texte approprié depuis tes ressources
                 val spannableNoCommentsText = SpannableString(noCommentsText)
                 spannableNoCommentsText.setSpan(UnderlineSpan(), 0, noCommentsText.length, Spanned.SPAN_INCLUSIVE_INCLUSIVE)
                 binding.postNoComments.text = spannableNoCommentsText
