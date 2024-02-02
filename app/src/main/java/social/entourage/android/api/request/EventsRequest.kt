@@ -8,6 +8,7 @@ import retrofit2.http.*
 import social.entourage.android.events.create.CreateEvent
 import social.entourage.android.api.model.Events
 import social.entourage.android.api.model.Image
+import social.entourage.android.api.model.notification.CompleteReactionsResponse
 import social.entourage.android.api.model.notification.ReactionWrapper
 
 class EventsImagesResponse(@field:SerializedName("entourage_images") val eventImages: ArrayList<Image>)
@@ -58,23 +59,8 @@ interface EventsRequest {
         @Path("event_id") groupId: Int,
         @Path("post_id") postId: Int
     ): Call<ResponseBody>
-    @GET("outings/{event_id}/chat_messages/{post_id}/reactions")
-    fun getReactionCount(
-        @Path("event_id") groupId: Int,
-        @Path("post_id") postId: Int
-    ): Call<ResponseBody>
 
-    @GET("outings/{event_id}/chat_messages/{post_id}/details")
-    fun getReactionDetails(
-        @Path("event_id") groupId: Int,
-        @Path("post_id") postId: Int
-    ): Call<ResponseBody>
 
-    @POST("outings/{event_id}/chat_messages/{post_id}/reactions")
-    fun postReactAnEventPost(
-        @Path("event_id") groupId: Int,
-        @Path("post_id") postId: Int
-    ): Call<ResponseBody>
 
     @DELETE("outings/{event_id}/chat_messages/{post_id}/reactions")
     fun deleteReactionAnEventPost(
@@ -161,12 +147,11 @@ interface EventsRequest {
         @Path("post_id") postId: Int,
     ): Call<ResponseBody>
 
-    @GET("outings/{outing_id}/chat_messages/{post_id}/reactions/{reaction_id}/details")
+    @GET("outings/{outing_id}/chat_messages/{post_id}/reactions/user")
     fun getDetailsReactionEventPost(
         @Path("outing_id") eventId: Int,
         @Path("post_id") postId: Int,
-        @Path("reaction_id") reactionId: Int,
-    ): Call<MembersWrapper>
+    ): Call<CompleteReactionsResponse>
 
     @POST("outings/{outing_id}/chat_messages/{post_id}/reactions")
     fun postReactionEventPost(
@@ -175,10 +160,6 @@ interface EventsRequest {
         @Body reactionWrapper: ReactionWrapper
     ): Call<ResponseBody>
 
-    @DELETE("outings/{outing_id}/chat_messages/{post_id}/reactions")
-    fun deleteReactionEventPost(
-        @Path("outing_id") eventId: Int,
-        @Path("post_id") postId: Int,
-    ): Call<ResponseBody>
+
 
 }

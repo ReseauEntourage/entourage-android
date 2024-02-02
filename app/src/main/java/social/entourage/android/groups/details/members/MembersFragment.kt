@@ -26,6 +26,7 @@ import social.entourage.android.events.EventsPresenter
 import social.entourage.android.groups.GroupPresenter
 import social.entourage.android.api.model.Conversation
 import social.entourage.android.api.model.EntourageUser
+import social.entourage.android.api.model.notification.CompleteReactionsResponse
 import social.entourage.android.api.model.notification.ReactionType
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.Utils
@@ -51,6 +52,7 @@ open class MembersFragment : Fragment() {
     private val discussionPresenter: DiscussionsPresenter by lazy { DiscussionsPresenter() }
     private var reactionIterator:Int = 0
     private var reactionList:MutableList<ReactionType> = mutableListOf()
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -95,14 +97,14 @@ open class MembersFragment : Fragment() {
 
         if (type == MembersType.GROUP) {
             groupPresenter.getMembers.observe(viewLifecycleOwner, ::handleResponseGetMembers)
-            groupPresenter.getMembersReact.observe(viewLifecycleOwner, ::handleResponseGetMembersReact)
+            groupPresenter.getMembersReactResponse.observe(viewLifecycleOwner, ::handleResponseGetMembersReact)
             groupPresenter.getMembersSearch.observe(
                 viewLifecycleOwner,
                 ::handleResponseGetMembersSearch
             )
         } else if (type == MembersType.EVENT) {
             eventPresenter.getMembers.observe(viewLifecycleOwner, ::handleResponseGetMembers)
-            eventPresenter.getMembersReact.observe(viewLifecycleOwner, ::handleResponseGetMembersReact)
+            eventPresenter.getMembersReactResponse.observe(viewLifecycleOwner, ::handleResponseGetMembersReact)
             eventPresenter.getMembersSearch.observe(
                 viewLifecycleOwner,
                 ::handleResponseGetMembersSearch
@@ -110,13 +112,11 @@ open class MembersFragment : Fragment() {
         }
         if(isFromReact) {
             if(type == MembersType.GROUP) {
-                for(reactionType in MainActivity.reactionsList!!){
-                    groupPresenter.getReactDetails(id!!,MembersFragment.postId,reactionType.id)
-                }
+                groupPresenter.getReactDetails(id!!,MembersFragment.postId)
+
             } else if(type == MembersType.EVENT) {
-                for(reactionType in MainActivity.reactionsList!!){
-                    eventPresenter.getReactDetails(id!!,MembersFragment.postId,reactionType.id)
-                }
+                eventPresenter.getReactDetails(id!!,MembersFragment.postId)
+
             }
             return
         }
@@ -139,16 +139,34 @@ open class MembersFragment : Fragment() {
         allMembers?.isEmpty()?.let { updateView(it) }
         binding.recyclerView.adapter?.notifyDataSetChanged()
     }
-    private fun handleResponseGetMembersReact(allMembers: MutableList<EntourageUser>?) {
-        for(k in 0 until allMembers!!.size){
-            reactionList.add(MainActivity.reactionsList?.get(reactionIterator) ?: ReactionType())
+    private fun handleResponseGetMembersReact(reactionsResponse: CompleteReactionsResponse) {
+        membersList.clear()
+        reactionList.clear()
+
+        reactionsResponse.user_reactions.forEach { userReaction ->
+            // Ajoute l'utilisateur
+            membersList.add(userReaction.user)
+
+            // Trouve la réaction correspondante dans MainActivity.reactionsList
+            val matchingReaction = MainActivity.reactionsList?.find { it.id == userReaction.reaction_id }
+
+            // Si une réaction correspondante est trouvée, l'utilise; sinon, crée un nouvel objet ReactionType avec des valeurs par défaut
+            val reaction = matchingReaction ?: ReactionType(
+                id = userReaction.reaction_id,
+                key = matchingReaction?.key , // Ici, tu pourrais mettre une valeur par défaut ou laisser null si aucune correspondance n'est trouvée
+                imageUrl = matchingReaction?.imageUrl // Idem pour imageUrl
+            )
+
+            reactionList.add(reaction)
         }
-        reactionIterator++
-        allMembers?.let { membersList.addAll(it) }
+
+        updateView(membersList.isEmpty())
         binding.progressBar.visibility = View.GONE
-        allMembers?.isEmpty()?.let { updateView(it) }
-        binding.recyclerView.adapter?.notifyDataSetChanged()
+        (binding.recyclerView.adapter as MembersListAdapter).resetData(membersList, reactionList)
     }
+
+
+
 
 
     private fun handleResponseGetMembersSearch(allMembersSearch: MutableList<EntourageUser>?) {

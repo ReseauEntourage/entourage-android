@@ -24,6 +24,7 @@ import social.entourage.android.home.UnreadMessages
 import social.entourage.android.api.model.Events
 import social.entourage.android.api.model.Group
 import social.entourage.android.api.model.Post
+import social.entourage.android.api.model.notification.CompleteReactionsResponse
 import social.entourage.android.api.model.notification.ReactionWrapper
 import social.entourage.android.groups.details.feed.CreatePostGroupActivity
 import timber.log.Timber
@@ -40,6 +41,7 @@ class GroupPresenter: ViewModel() {
     var getAllComments = MutableLiveData<MutableList<Post>>()
     var getMembers = MutableLiveData<MutableList<EntourageUser>>()
     var getMembersReact = MutableLiveData<MutableList<EntourageUser>>()
+    var getMembersReactResponse = MutableLiveData<CompleteReactionsResponse>()
     var getMembersSearch = MutableLiveData<MutableList<EntourageUser>>()
     var isGroupUpdated = MutableLiveData<Boolean>()
     var newGroupCreated = MutableLiveData<Group>()
@@ -134,22 +136,21 @@ class GroupPresenter: ViewModel() {
         })
     }
 
-    fun getReactDetails(groupId:Int, postId:Int,reactionId:Int){
-        EntourageApplication.get().apiModule.groupRequest.getDetailsReactionGroupPost(groupId,postId,reactionId).enqueue(object : Callback<MembersWrapper> {
+    fun getReactDetails(groupId:Int, postId:Int){
+        EntourageApplication.get().apiModule.groupRequest.getDetailsReactionGroupPost(groupId,postId).enqueue(object : Callback<CompleteReactionsResponse> {
             override fun onResponse(
-                call: Call<MembersWrapper>,
-                response: Response<MembersWrapper>
+                call: Call<CompleteReactionsResponse>,
+                response: Response<CompleteReactionsResponse>
             ) {
                 if (response.isSuccessful) {
                     response.body()?.let {
-                        getMembersReact.value = it.users
-
+                        getMembersReactResponse.value = it
                     }
                 }else{
                     Timber.e("getReactDetails: ${response.errorBody()?.string()}")
                 }
             }
-            override fun onFailure(call: Call<MembersWrapper>, t: Throwable) {
+            override fun onFailure(call: Call<CompleteReactionsResponse>, t: Throwable) {
                 Timber.e("getReactDetails: $t")
             }
         })
