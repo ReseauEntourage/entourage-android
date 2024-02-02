@@ -147,7 +147,7 @@ interface EventsRequest {
         @Path("post_id") postId: Int,
     ): Call<ResponseBody>
 
-    @GET("outings/{outing_id}/chat_messages/{post_id}/reactions/user")
+    @GET("outings/{outing_id}/chat_messages/{post_id}/reactions/users")
     fun getDetailsReactionEventPost(
         @Path("outing_id") eventId: Int,
         @Path("post_id") postId: Int,

@@ -598,6 +598,7 @@ class EventsPresenter: ViewModel() {
                 if (response.isSuccessful) {
                     response.body()?.let {
                         getMembersReactResponse.value = it
+                        Log.wtf("wtf", "hello " + it)
                     }
                 }else{
                     Timber.e("getReactDetails: ${response.errorBody()?.string()}")
