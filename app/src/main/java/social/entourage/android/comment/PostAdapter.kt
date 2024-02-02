@@ -216,6 +216,7 @@ class PostAdapter(
                     }
                 }
                 binding.btnIComment.setOnClickListener {
+                    binding.layoutReactions.visibility =  View.GONE
                     onClick(this, false)
                 }
 
@@ -223,6 +224,7 @@ class PostAdapter(
                     AnalyticsEvents.logEvent(
                         AnalyticsEvents.Clic_ListReactions_Contact
                     )
+                    binding.layoutReactions.visibility =  View.GONE
                     reactionCallback.seeMemberReaction(this)
                 }
 
@@ -256,12 +258,15 @@ class PostAdapter(
                 binding.postTranslationButton.tvTranslate.text = titleButton
                 binding.postTranslationButton.layoutCsTranslate.setOnClickListener {
                     translateItem(id ?: this.id!!)
+                    binding.layoutReactions.visibility =  View.GONE
                 }
                 binding.imageViewComments.setOnClickListener {
                     onClick(this, false)
+                    binding.layoutReactions.visibility =  View.GONE
                 }
                 binding.postNoComments.setOnClickListener {
                     onClick(this, false)
+                    binding.layoutReactions.visibility =  View.GONE
                 }
                 val noCommentsText = context.getString(R.string.no_comments) // Utilise le texte approprié depuis tes ressources
                 val spannableNoCommentsText = SpannableString(noCommentsText)
@@ -269,6 +274,7 @@ class PostAdapter(
                 binding.postNoComments.text = spannableNoCommentsText
                 binding.postCommentsNumber.setOnClickListener {
                     onClick(this, false)
+                    binding.layoutReactions.visibility =  View.GONE
                 }
 
                 // Configurer le contenu du post en fonction de la traduction
@@ -319,7 +325,10 @@ class PostAdapter(
                         .error(R.drawable.new_group_illu)
                         .into(binding.photoPost)
                     binding.photoPost.setOnClickListener {
-                        this.id?.let { it1 -> onClickImage(imageUrl, it1) }
+                        this.id?.let {
+                            it1 -> onClickImage(imageUrl, it1)
+                            binding.layoutReactions.visibility =  View.GONE
+                        }
                     }
                 } ?: run {
                     binding.photoPost.visibility = View.GONE
@@ -358,15 +367,19 @@ class PostAdapter(
                 }
                 binding.name.setOnClickListener {
                     showUserDetail(binding.name.context,this.user?.userId)
+                    binding.layoutReactions.visibility =  View.GONE
                 }
                 binding.name.text = user?.displayName
                 binding.image.setOnClickListener {
                     showUserDetail(binding.image.context,this.user?.userId)
+                    binding.layoutReactions.visibility =  View.GONE
                 }
                 binding.btnReportPost.setOnClickListener {
+                    binding.layoutReactions.visibility =  View.GONE
                     val userId = postsList[position].user?.id?.toInt()
                     if (userId != null){
-                        postsList[position].id?.let { it1 -> onReport(it1,userId) }
+                        postsList[position].id?.let { it1 -> onReport(it1,userId)
+                        }
                     }
                 }
                 if(status == "deleted"){

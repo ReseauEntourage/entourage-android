@@ -21,6 +21,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
@@ -176,6 +177,7 @@ class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface {
                 R.color.light_beige_96
             )
         )
+        setupRecyclerViewScrollListener()
     }
 
     override fun onResume() {
@@ -237,6 +239,28 @@ class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface {
         } else {
             binding.postsOldRecyclerview.visibility = View.GONE
         }
+    }
+    private fun setupRecyclerViewScrollListener() {
+        val scrollListener = object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                if (dy != 0) { // Si dy != 0, cela signifie que l'utilisateur a fait défiler la liste verticalement
+                    val layoutManager = recyclerView.layoutManager as LinearLayoutManager
+                    val firstVisiblePosition = layoutManager.findFirstVisibleItemPosition()
+                    val lastVisiblePosition = layoutManager.findLastVisibleItemPosition()
+
+                    // Parcours toutes les cellules visibles et met à jour la visibilité de layoutReactions
+                    for (i in firstVisiblePosition..lastVisiblePosition) {
+                        val viewHolder = recyclerView.findViewHolderForAdapterPosition(i) as? PostAdapter.ViewHolder
+                        viewHolder?.binding?.layoutReactions?.visibility = View.GONE
+                    }
+                }
+            }
+        }
+
+        // Ajoute le listener aux RecyclerViews
+        binding.postsNewRecyclerview.addOnScrollListener(scrollListener)
+        binding.postsOldRecyclerview.addOnScrollListener(scrollListener)
     }
 
     private fun handleSwipeRefresh() {
