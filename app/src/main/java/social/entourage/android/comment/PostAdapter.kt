@@ -292,7 +292,7 @@ class PostAdapter(
                     binding.postMessage.visibility = View.GONE
                 }
                 if (hasComments == false) {
-                    binding.postNoComments.visibility = View.VISIBLE
+                    binding.postNoComments.visibility = View.GONE
                     binding.postCommentsNumber.visibility = View.GONE
                 } else {
                     binding.postCommentsNumber.visibility = View.VISIBLE
