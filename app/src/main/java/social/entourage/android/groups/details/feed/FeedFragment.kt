@@ -490,6 +490,7 @@ class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface {
             requireContext(),
             this,
             newPostsList,
+            this.group?.member,
             ::openCommentPage,
             ::openReportFragment,
             ::openImageFragment
@@ -502,6 +503,7 @@ class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface {
             requireContext(),
             this,
             oldPostsList,
+            this.group?.member,
             ::openCommentPage,
             ::openReportFragment,
             ::openImageFragment

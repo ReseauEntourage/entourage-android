@@ -50,6 +50,7 @@ class PostAdapter(
     var context:Context,
     var reactionCallback: ReactionInterface,
     var postsList: List<Post>,
+    var isMember: Boolean? = false,
     var onClick: (Post, Boolean) -> Unit,
     var onReport: (Int,Int) -> Unit,
     var onClickImage: (imageUrl:String, postId:Int) -> Unit,
@@ -408,6 +409,25 @@ class PostAdapter(
                     }
                     binding.postMessage.visibility = View.VISIBLE
                     binding.btnReportPost.visibility = View.VISIBLE
+                }
+                //HERE DISABLE CLICK ON REACTIONS IF NOT MEMBER
+                if(isMember == false){
+                    binding.btnReportPost.setOnClickListener {
+                        reactionCallback.onReactionClicked(this, 0)
+                    }
+                    binding.btnILike.setOnClickListener {
+                        reactionCallback.onReactionClicked(this, 0)
+
+                    }
+                    binding.btnIComment.setOnClickListener {
+                        reactionCallback.onReactionClicked(this, 0)
+
+                    }
+                    binding.btnILike.setOnLongClickListener {
+                        reactionCallback.onReactionClicked(this, 0)
+
+                        true
+                    }
                 }
             }
         }
