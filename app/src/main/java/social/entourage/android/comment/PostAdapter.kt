@@ -56,6 +56,7 @@ class PostAdapter(
     ) : RecyclerView.Adapter<PostAdapter.ViewHolder>() {
     private val translationExceptions = mutableSetOf<Int>()
 
+
     fun initiateList(){
         val translatedByDefault = context.getSharedPreferences(
             context.getString(R.string.preference_file_key), Context.MODE_PRIVATE

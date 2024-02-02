@@ -14,6 +14,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
+import androidx.core.widget.NestedScrollView
 import androidx.core.widget.TextViewCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
@@ -177,8 +178,9 @@ class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface {
                 R.color.light_beige_96
             )
         )
-        setupRecyclerViewScrollListener()
+        setupNestedScrollViewScrollListener()
     }
+
 
     override fun onResume() {
         super.onResume()
@@ -202,6 +204,31 @@ class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface {
         return binding.root
     }
 
+    private fun setupNestedScrollViewScrollListener() {
+        binding.nestSvFeedFragment.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { _, _, scrollY, _, _ ->
+            if (scrollY > 0) {
+                Log.wtf("NestedScroll", "Scrolling in NestedScrollView")
+                // Ici, tu peux notifier ton RecyclerView adapter de cacher les éléments layoutReactions
+                hideReactionsInRecyclerView()
+            }
+        })
+    }
+
+    private fun hideReactionsInRecyclerView() {
+        hideReactionsInView(binding.postsNewRecyclerview)
+        hideReactionsInView(binding.postsOldRecyclerview)
+    }
+
+    private fun hideReactionsInView(recyclerView: RecyclerView) {
+        val firstVisiblePosition = (recyclerView.layoutManager as? LinearLayoutManager)?.findFirstVisibleItemPosition() ?: return
+        val lastVisiblePosition = (recyclerView.layoutManager as? LinearLayoutManager)?.findLastVisibleItemPosition() ?: return
+
+        // Parcours toutes les cellules visibles
+        for (i in firstVisiblePosition..lastVisiblePosition) {
+            val viewHolder = recyclerView.findViewHolderForAdapterPosition(i) as? PostAdapter.ViewHolder
+            viewHolder?.binding?.layoutReactions?.visibility = View.GONE
+        }
+    }
     private fun handleResponseGetGroupPosts(allPosts: MutableList<Post>?) {
         binding.swipeRefresh.isRefreshing = false
         newPostsList.clear()
@@ -240,28 +267,7 @@ class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface {
             binding.postsOldRecyclerview.visibility = View.GONE
         }
     }
-    private fun setupRecyclerViewScrollListener() {
-        val scrollListener = object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
-                if (dy != 0) { // Si dy != 0, cela signifie que l'utilisateur a fait défiler la liste verticalement
-                    val layoutManager = recyclerView.layoutManager as LinearLayoutManager
-                    val firstVisiblePosition = layoutManager.findFirstVisibleItemPosition()
-                    val lastVisiblePosition = layoutManager.findLastVisibleItemPosition()
 
-                    // Parcours toutes les cellules visibles et met à jour la visibilité de layoutReactions
-                    for (i in firstVisiblePosition..lastVisiblePosition) {
-                        val viewHolder = recyclerView.findViewHolderForAdapterPosition(i) as? PostAdapter.ViewHolder
-                        viewHolder?.binding?.layoutReactions?.visibility = View.GONE
-                    }
-                }
-            }
-        }
-
-        // Ajoute le listener aux RecyclerViews
-        binding.postsNewRecyclerview.addOnScrollListener(scrollListener)
-        binding.postsOldRecyclerview.addOnScrollListener(scrollListener)
-    }
 
     private fun handleSwipeRefresh() {
         binding.swipeRefresh.setOnRefreshListener {
