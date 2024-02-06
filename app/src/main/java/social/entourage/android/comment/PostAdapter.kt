@@ -221,13 +221,15 @@ class PostAdapter(
                     binding.layoutReactions.visibility =  View.GONE
                     onClick(this, false)
                 }
-
-                binding.postCommentsNumberLayout.setOnClickListener {
+                binding.btnReaction.setOnClickListener {
                     AnalyticsEvents.logEvent(
                         AnalyticsEvents.Clic_ListReactions_Contact
                     )
                     binding.layoutReactions.visibility =  View.GONE
                     reactionCallback.seeMemberReaction(this)
+                }
+                binding.postCommentsNumberLayout.setOnClickListener {
+
                 }
 
                 binding.postMessage.setOnLongClickListener {
