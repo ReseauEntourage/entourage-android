@@ -38,6 +38,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:id="@+id/layout_searchbar"
             android:layout_marginHorizontal="@dimen/padding_horizontal">
 
             <com.google.android.material.textfield.TextInputLayout
@@ -62,6 +63,7 @@
                     android:inputType="text"
                     android:paddingStart="16dp"
                     app:drawableStartCompat="@drawable/new_search" />
+
             </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>
 
