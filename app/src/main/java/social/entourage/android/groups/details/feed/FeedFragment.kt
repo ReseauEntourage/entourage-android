@@ -438,6 +438,7 @@ class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface {
                 group?.member = !it.member
                 updateButtonJoin()
                 handleCreatePostButton()
+                groupPresenter.getGroup(groupId)
                 showWelcomeMessage()
             }
         }
@@ -447,6 +448,7 @@ class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface {
             if (hasJoined) {
                 group?.member = !it.member
                 updateButtonJoin()
+                groupPresenter.getGroup(groupId)
                 handleCreatePostButton()
 
             }
