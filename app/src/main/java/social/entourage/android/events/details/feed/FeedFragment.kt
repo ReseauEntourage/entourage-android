@@ -607,6 +607,7 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface {
                 updateButtonJoin()
                 handleCreatePostButton()
                 binding.participate.hide()
+                eventPresenter.getEvent(eventId)
                 if (event.metadata?.placeLimit != null) {
                     showLimitPlacePopUp()
                 } else {
@@ -624,6 +625,7 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface {
             updateButtonJoin()
             handleCreatePostButton()
             binding.participate.show()
+            eventPresenter.getEvent(eventId)
         }
     }
 
