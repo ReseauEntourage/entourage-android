@@ -1,5 +1,6 @@
 package social.entourage.android.user.edit.place
 
+import android.content.Intent
 import android.location.Geocoder
 import android.os.Bundle
 import android.view.View
@@ -9,6 +10,7 @@ import androidx.navigation.fragment.findNavController
 import kotlinx.android.synthetic.main.fragment_select_place.*
 import kotlinx.android.synthetic.main.layout_view_title.view.*
 import social.entourage.android.EntourageApplication
+import social.entourage.android.MainActivity
 import social.entourage.android.R
 import social.entourage.android.api.OnboardingAPI
 import social.entourage.android.api.model.User
@@ -54,7 +56,15 @@ class UserEditActionZoneFragment : UserActionPlaceFragment() {
         }
         edit_place_title_layout?.title_close_button?.setOnClickListener {
             dismiss()
-            findNavController().popBackStack()
+            if (isAdded && view != null) {
+                findNavController().popBackStack()
+            } else {
+                val intent = Intent(context, MainActivity::class.java)
+                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                intent.putExtra("goDemand", true)
+                requireContext().startActivity(intent)
+            }
+
         }
     }
 
@@ -97,7 +107,14 @@ class UserEditActionZoneFragment : UserActionPlaceFragment() {
                                 displayAddress = userDisplayAddress.toString()
                             }
                             mListener?.onUserEditActionZoneFragmentAddressSaved()
-                            findNavController().popBackStack()
+                            if (isAdded && view != null) {
+                                findNavController().popBackStack()
+                            } else {
+                                val intent = Intent(context, MainActivity::class.java)
+                                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                                intent.putExtra("goDemand", true)
+                                requireContext().startActivity(intent)
+                            }
                         }
                     }
                 }
@@ -126,7 +143,14 @@ class UserEditActionZoneFragment : UserActionPlaceFragment() {
                                     newUser.phone = phone
                                     authenticationController.saveUser(newUser)
                                     mListener?.onUserEditActionZoneFragmentAddressSaved()
-                                    findNavController().popBackStack()
+                                    if (isAdded && view != null) {
+                                        findNavController().popBackStack()
+                                    } else {
+                                        val intent = Intent(context, MainActivity::class.java)
+                                            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                                        intent.putExtra("goDemand", true)
+                                        requireContext().startActivity(intent)
+                                    }
                                     dismissAllowingStateLoss()
                                 }
                             }
