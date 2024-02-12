@@ -33,6 +33,7 @@ import social.entourage.android.groups.details.feed.rotationDegree
 import social.entourage.android.home.CommunicationHandlerBadgeViewModel
 import social.entourage.android.home.UnreadMessages
 import social.entourage.android.api.model.EventActionLocationFilters
+import social.entourage.android.homev2.HomeV2Fragment
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.log.AnalyticsEvents
 import uk.co.markormesher.android_fab.SpeedDialMenuAdapter
@@ -159,6 +160,7 @@ class ActionsFragment : Fragment() {
         arguments?.let {
             isDemand = it.getBoolean(Const.IS_ACTION_DEMAND, false)
         }
+        isDemand = !HomeV2Fragment.isContribProfile
         ViewPagerDefaultPageController.shouldSelectActionDemand = isDemand
     }
 

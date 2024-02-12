@@ -408,6 +408,7 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener {
         onActionUnclosed(summary)
         handleHelps(summary)
         isContribution = summary.preference.equals("contribution")
+        isContribProfile = isContribution
         if(isContribution){
             if(!homeActionAdapter.getIsContrib()){
                 homeActionAdapter = HomeActionAdapter(isContribution)
@@ -633,5 +634,8 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener {
                 )
             }
         }
+    }
+    companion object {
+        var isContribProfile = false
     }
 }

@@ -65,6 +65,7 @@ class MainActivity : BaseSecuredActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         updateMainLanguage()
         super.onCreate(savedInstanceState)
+
         instance = this
         setContentView(R.layout.new_activity_main)
         viewModel = ViewModelProvider(this)[CommunicationHandlerBadgeViewModel::class.java]
