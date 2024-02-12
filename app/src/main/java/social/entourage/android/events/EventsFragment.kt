@@ -28,6 +28,7 @@ import social.entourage.android.RefreshController
 import social.entourage.android.ViewPagerDefaultPageController
 import social.entourage.android.api.model.EventActionLocationFilters
 import social.entourage.android.events.create.CreateEventActivity
+import social.entourage.android.events.list.DiscoverEventsListFragment
 import social.entourage.android.events.list.EventsViewPagerAdapter
 import social.entourage.android.home.CommunicationHandlerBadgeViewModel
 import social.entourage.android.home.UnreadMessages
@@ -98,11 +99,18 @@ class EventsFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
+        if (isFromDetails == true){
+            isFromDetails = false
+        }else{
+            this.currentFilters  = EventActionLocationFilters()
+            updateFilters()
+        }
         if (RefreshController.shouldRefreshEventFragment) {
             initializeTab()
             RefreshController.shouldRefreshEventFragment = false
         }
         initView()
+
     }
     private fun updateFilters() {
         isFromFilters = true
@@ -221,5 +229,8 @@ class EventsFragment : Fragment() {
                 0
             )
         }
+    }
+    companion object {
+        var isFromDetails = false
     }
 }

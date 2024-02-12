@@ -24,6 +24,7 @@ import social.entourage.android.api.model.Status
 import social.entourage.android.databinding.LayoutSectionHeaderEventV2Binding
 import social.entourage.android.databinding.LayoutSectionHeaderMyEventBinding
 import social.entourage.android.databinding.NewEventItemBinding
+import social.entourage.android.events.EventsFragment
 import social.entourage.android.events.details.feed.FeedActivity
 import social.entourage.android.language.LanguageManager
 import social.entourage.android.tools.calculateIfEventPassed
@@ -66,6 +67,7 @@ class AllEventAdapterV2(var userId: Int?, var context:Context) :
             if(position < events.size){
                 val event = events[position]
                 holder.binding.layout.setOnClickListener { view ->
+                    EventsFragment.isFromDetails = true
                     (view.context as? Activity)?.startActivityForResult(
                         Intent(
                             view.context,
