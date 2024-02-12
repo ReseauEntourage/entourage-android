@@ -87,6 +87,9 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface {
     private var myId: Int? = null
     private val args: FeedFragmentArgs by navArgs()
     private var shouldShowPopUp = true
+    private var isLoading = false
+    private var page:Int = 1
+    private val ITEM_PER_PAGE = 25
 
     private var newPostsList: MutableList<Post> = mutableListOf()
     private var oldPostsList: MutableList<Post> = mutableListOf()
@@ -134,11 +137,17 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface {
     }
 
     private fun setupNestedScrollViewScrollListener() {
-        binding.scrollView.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { _, _, scrollY, _, _ ->
+        binding.scrollView.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { _, _, scrollY, _, oldScrollY ->
             if (scrollY > 0) {
                 Log.wtf("NestedScroll", "Scrolling in NestedScrollView")
                 // Ici, tu peux notifier ton RecyclerView adapter de cacher les éléments layoutReactions
                 hideReactionsInRecyclerView()
+                if (!binding.scrollView.canScrollVertically(1) && !isLoading) {
+                    isLoading = true
+                    page++ // Incrémente la page pour la pagination
+                    binding.progressBar.visibility = View.VISIBLE
+                    loadPosts()
+                }
             }
         })
     }
@@ -175,9 +184,7 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface {
 
     private fun handleResponseGetEventPosts(allPosts: MutableList<Post>?) {
         binding.swipeRefresh.isRefreshing = false
-        newPostsList.clear()
-        oldPostsList.clear()
-        allPostsList.clear()
+        binding.progressBar.visibility = View.GONE
         allPosts?.let {
             allPostsList.addAll(allPosts)
             it.forEach { post ->
@@ -413,7 +420,7 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface {
     }
 
     private fun loadPosts() {
-        eventPresenter.getEventPosts(eventId)
+        eventPresenter.getEventPosts(eventId,page,ITEM_PER_PAGE)
     }
 
     private fun initializePosts() {
@@ -515,6 +522,9 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface {
     override fun onResume() {
         super.onResume()
         if (RefreshController.shouldRefreshEventFragment) eventPresenter.getEvent(eventId)
+        newPostsList.clear()
+        oldPostsList.clear()
+        allPostsList.clear()
         loadPosts()
 
     }

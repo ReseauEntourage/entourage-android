@@ -321,8 +321,8 @@ class GroupPresenter: ViewModel() {
             })
     }
 
-    fun getGroupPosts(groupId: Int) {
-        EntourageApplication.get().apiModule.groupRequest.getGroupPosts(groupId)
+    fun getGroupPosts(groupId: Int, page:Int, per: Int) {
+        EntourageApplication.get().apiModule.groupRequest.getGroupPosts(groupId,page,per)
             .enqueue(object : Callback<PostListWrapper> {
                 override fun onResponse(
                     call: Call<PostListWrapper>,

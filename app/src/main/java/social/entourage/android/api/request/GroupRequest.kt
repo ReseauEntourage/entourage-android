@@ -94,8 +94,11 @@ interface GroupRequest {
 
     @GET("neighborhoods/{neighborhood_id}/chat_messages")
     fun getGroupPosts(
-        @Path("neighborhood_id") groupId: Int
+        @Path("neighborhood_id") groupId: Int,
+        @Query("page") page: Int,
+        @Query("per") per: Int,
     ): Call<PostListWrapper>
+
 
     @POST("neighborhoods/{neighborhood_id}/chat_messages/presigned_upload")
     fun prepareAddPost(

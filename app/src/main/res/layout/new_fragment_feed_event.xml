@@ -496,6 +496,18 @@ purus dui, aliquet cursus tellus a, dictum hen." />
                         android:layout_marginHorizontal="33dp"
                         android:visibility="gone"
                         app:content="@{@string/old_publications}" />
+                    <ProgressBar
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:id="@+id/progressBar"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        android:layout_gravity="center"
+                        android:elevation="10dp"
+                        android:visibility="visible"
+                        />
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/posts_old_recyclerview"

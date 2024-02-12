@@ -81,6 +81,13 @@ class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface {
     private lateinit var groupUI: GroupModel
     private var myId: Int? = null
     private val args: FeedFragmentArgs by navArgs()
+    private var isLoading = false
+    private var page:Int = 1
+    private val ITEM_PER_PAGE = 25
+
+    private var newPostsList: MutableList<Post> = ArrayList()
+    private var oldPostsList: MutableList<Post> = ArrayList()
+    private var allPostsList: MutableList<Post> = ArrayList()
 
     private val speedDialMenuAdapter = object : SpeedDialMenuAdapter() {
         override fun getCount(): Int = 2
@@ -141,10 +148,6 @@ class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface {
         override fun fabRotationDegrees(): Float = rotationDegree
     }
 
-    private var newPostsList: MutableList<Post> = ArrayList()
-    private var oldPostsList: MutableList<Post> = ArrayList()
-    private var allPostsList: MutableList<Post> = ArrayList()
-    private var page: Int = 0
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -184,6 +187,9 @@ class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface {
 
     override fun onResume() {
         super.onResume()
+        newPostsList.clear()
+        oldPostsList.clear()
+        allPostsList.clear()
         loadPosts()
         val fromWelcomeActivity = activity?.intent?.getBooleanExtra("fromWelcomeActivity", false)
         if (fromWelcomeActivity == true) {
@@ -205,11 +211,17 @@ class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface {
     }
 
     private fun setupNestedScrollViewScrollListener() {
-        binding.nestSvFeedFragment.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { _, _, scrollY, _, _ ->
+        binding.nestSvFeedFragment.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { _, _, scrollY, _, oldScrollY ->
             if (scrollY > 0) {
                 Log.wtf("NestedScroll", "Scrolling in NestedScrollView")
                 // Ici, tu peux notifier ton RecyclerView adapter de cacher les éléments layoutReactions
                 hideReactionsInRecyclerView()
+                if (!binding.nestSvFeedFragment.canScrollVertically(1) && !isLoading) {
+                    isLoading = true
+                    page++ // Incrémente la page pour la pagination
+                    binding.progressBar.visibility = View.VISIBLE
+                    loadPosts()
+                }
             }
         })
     }
@@ -231,9 +243,8 @@ class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface {
     }
     private fun handleResponseGetGroupPosts(allPosts: MutableList<Post>?) {
         binding.swipeRefresh.isRefreshing = false
-        newPostsList.clear()
-        oldPostsList.clear()
-        allPostsList.clear()
+        binding.progressBar.visibility = View.GONE
+
         allPosts?.let {
             allPostsList.addAll(allPosts)
             it.forEach { post ->
@@ -586,7 +597,7 @@ class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface {
     }
 
     private fun loadPosts() {
-        groupPresenter.getGroupPosts(groupId)
+        groupPresenter.getGroupPosts(groupId, page, ITEM_PER_PAGE)
     }
 
     private fun handleBackButton() {

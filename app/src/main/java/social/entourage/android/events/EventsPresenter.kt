@@ -348,8 +348,8 @@ class EventsPresenter: ViewModel() {
             })
     }
 
-    fun getEventPosts(eventId: Int) {
-        EntourageApplication.get().apiModule.eventsRequest.getEventPosts(eventId)
+    fun getEventPosts(eventId: Int, page:Int, per:Int) {
+        EntourageApplication.get().apiModule.eventsRequest.getEventPosts(eventId,page,per)
             .enqueue(object : Callback<PostListWrapper> {
                 override fun onResponse(
                     call: Call<PostListWrapper>,
