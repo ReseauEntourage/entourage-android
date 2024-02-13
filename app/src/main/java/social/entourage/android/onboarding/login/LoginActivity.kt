@@ -7,7 +7,6 @@ import android.text.Html
 import android.text.method.LinkMovementMethod
 import android.widget.TextView
 import android.widget.Toast
-import kotlinx.android.synthetic.main.activity_login.*
 import social.entourage.android.EntourageApplication
 import social.entourage.android.EntourageApplication.Companion.KEY_ONBOARDING_SHOW_POP_FIRSTLOGIN
 import social.entourage.android.MainActivity
@@ -15,6 +14,7 @@ import social.entourage.android.R
 import social.entourage.android.api.OnboardingAPI
 import social.entourage.android.authentication.AuthenticationController
 import social.entourage.android.base.BaseActivity
+import social.entourage.android.databinding.ActivityLoginBinding
 import social.entourage.android.tools.utils.CustomAlertDialog
 import social.entourage.android.tools.utils.Utils
 import social.entourage.android.onboarding.pre_onboarding.PreOnboardingChoiceActivity
@@ -25,6 +25,7 @@ import social.entourage.android.tools.view.CustomProgressDialog
 class LoginActivity : BaseActivity() {
 
     lateinit var authenticationController: AuthenticationController
+    private lateinit var binding:ActivityLoginBinding
 
     private val minimumPhoneCharacters = 9
     private val TIME_BEFORE_CALL = 60
@@ -37,13 +38,12 @@ class LoginActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        binding = ActivityLoginBinding.inflate(layoutInflater)
         authenticationController = EntourageApplication.get().authenticationController
-        setContentView(R.layout.activity_login)
 
         alertDialog = CustomProgressDialog(this)
         setupViews()
-
+        setContentView(binding.root)
         AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_VIEW_LOGIN_LOGIN)
     }
 
@@ -54,24 +54,24 @@ class LoginActivity : BaseActivity() {
 
     fun setupViews() {
 
-        onboard_login_mainlayout?.setOnTouchListener { view, motionEvent ->
+        binding.onboardLoginMainlayout?.setOnTouchListener { view, motionEvent ->
             view.hideKeyboard()
             view.performClick()
             true
         }
 
-       icon_back?.setOnClickListener {
+       binding.iconBack?.setOnClickListener {
             goBack()
         }
 
-        ui_login_button_resend_code?.setOnClickListener {
-            if(ui_login_phone_et_phone?.text.toString().isNotEmpty()) {
+        binding.uiLoginButtonResendCode?.setOnClickListener {
+            if(binding.uiLoginPhoneEtPhone?.text.toString().isNotEmpty()) {
                 CustomAlertDialog.showWithCancelFirst(
                     this,
                     getString(R.string.login_button_resend_code),
                     String.format(
                         getString(R.string.login_button_resend_code_text),
-                        ui_login_phone_et_phone?.text.toString()
+                        binding.uiLoginPhoneEtPhone?.text.toString()
                     ),
                     getString(R.string.login_button_resend_code_action)
                 ) {
@@ -82,17 +82,17 @@ class LoginActivity : BaseActivity() {
             }
         }
 
-        ui_login_button_signup?.setOnClickListener {
+        binding.uiLoginButtonSignup?.setOnClickListener {
             validateInputsAndLogin()
         }
 
-        ui_login_button_change_phone?.setOnClickListener {
+        binding.uiLoginButtonChangePhone?.setOnClickListener {
             val intent = Intent(this, LoginChangePhoneActivity::class.java)
             startActivity(intent)
         }
         val text = getString(R.string.terms_and_conditions_html)
-        tv_condition_generales.text = Html.fromHtml(text)
-        tv_condition_generales.movementMethod = LinkMovementMethod.getInstance()
+        binding.tvConditionGenerales.text = Html.fromHtml(text)
+        binding.tvConditionGenerales.movementMethod = LinkMovementMethod.getInstance()
 
 
     }
@@ -149,9 +149,9 @@ class LoginActivity : BaseActivity() {
      ********************************/
 
     fun validateInputsAndLogin() {
-        val countryCode = ui_login_phone_ccp_code?.selectedCountryCodeWithPlus
-        val phoneNumber = ui_login_phone_et_phone?.text.toString()
-        val codePwd = ui_login_et_code?.text.toString()
+        val countryCode = binding.uiLoginPhoneCcpCode?.selectedCountryCodeWithPlus
+        val phoneNumber = binding.uiLoginPhoneEtPhone?.text.toString()
+        val codePwd = binding.uiLoginPhoneEtPhone?.text.toString()
 
         var isValidate = true
         var message = ""
@@ -188,8 +188,8 @@ class LoginActivity : BaseActivity() {
     }
 
     private fun checkAndResendCode() {
-        val countryCode = ui_login_phone_ccp_code?.selectedCountryCodeWithPlus
-        val phoneNumber = ui_login_phone_et_phone?.text.toString()
+        val countryCode = binding.uiLoginPhoneCcpCode?.selectedCountryCodeWithPlus
+        val phoneNumber = binding.uiLoginPhoneEtPhone?.text.toString()
 
         if (phoneNumber.length <= minimumPhoneCharacters) {
             val message =
