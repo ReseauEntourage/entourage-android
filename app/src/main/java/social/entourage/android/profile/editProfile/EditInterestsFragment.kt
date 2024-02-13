@@ -47,6 +47,7 @@ class EditInterestsFragment : Fragment() {
     }
 
     private fun handleUpdateResponse(success: Boolean) {
+        if (!isAdded) return // Vérifie si le fragment est attaché
         if (success) findNavController().popBackStack()
         else Toast.makeText(
             requireActivity(),
