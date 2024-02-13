@@ -253,6 +253,8 @@ Nous sommes prêt pour les beaux jours ! :-)" />
                 style="@style/left_courant_black"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
+                android:maxLines="1"
+                android:ellipsize="none"
                 tools:text="12"
                 />
 

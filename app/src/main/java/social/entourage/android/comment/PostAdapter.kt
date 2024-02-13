@@ -200,6 +200,7 @@ class PostAdapter(
                 binding.numberReaction.text = totalReactionsCount.toString()
                 if (totalReactionsCount > 0) {
                     binding.numberReaction.visibility = View.VISIBLE
+                    binding.numberReaction.text = 1000.toString()
                 } else {
                     binding.numberReaction.visibility = View.GONE
                 }
