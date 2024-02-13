@@ -55,8 +55,10 @@ class EditPasswordFragment()  : BaseDialogFragment() {
     }
 
     fun onSaveNewPassword() {
-        Toast.makeText(context, getString(R.string.user_edit_password_changed), Toast.LENGTH_SHORT).show()
-        dismiss()
+        if(isAdded){
+            Toast.makeText(context, getString(R.string.user_edit_password_changed), Toast.LENGTH_SHORT).show()
+            dismiss()
+        }
     }
 
     fun onSavePasswordError() {

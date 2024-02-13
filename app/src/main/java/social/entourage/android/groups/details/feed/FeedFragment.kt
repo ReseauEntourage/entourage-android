@@ -83,7 +83,7 @@ class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface {
     private val args: FeedFragmentArgs by navArgs()
     private var isLoading = false
     private var page:Int = 1
-    private val ITEM_PER_PAGE = 25
+    private val ITEM_PER_PAGE = 10
 
     private var newPostsList: MutableList<Post> = ArrayList()
     private var oldPostsList: MutableList<Post> = ArrayList()
@@ -244,7 +244,7 @@ class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface {
     private fun handleResponseGetGroupPosts(allPosts: MutableList<Post>?) {
         binding.swipeRefresh.isRefreshing = false
         binding.progressBar.visibility = View.GONE
-
+        isLoading = false
         allPosts?.let {
             allPostsList.addAll(allPosts)
             it.forEach { post ->

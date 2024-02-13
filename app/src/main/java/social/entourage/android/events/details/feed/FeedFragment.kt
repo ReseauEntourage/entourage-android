@@ -33,8 +33,11 @@ import com.google.gson.Gson
 import kotlinx.android.synthetic.main.new_fragment_feed.view.arrow
 import kotlinx.android.synthetic.main.new_fragment_feed.view.subtitle
 import kotlinx.android.synthetic.main.new_fragment_feed_event.view.tv_more
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import social.entourage.android.BuildConfig
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
@@ -89,7 +92,7 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface {
     private var shouldShowPopUp = true
     private var isLoading = false
     private var page:Int = 1
-    private val ITEM_PER_PAGE = 25
+    private val ITEM_PER_PAGE = 10
 
     private var newPostsList: MutableList<Post> = mutableListOf()
     private var oldPostsList: MutableList<Post> = mutableListOf()
@@ -185,6 +188,7 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface {
     private fun handleResponseGetEventPosts(allPosts: MutableList<Post>?) {
         binding.swipeRefresh.isRefreshing = false
         binding.progressBar.visibility = View.GONE
+        isLoading = false
         allPosts?.let {
             allPostsList.addAll(allPosts)
             it.forEach { post ->
@@ -192,9 +196,6 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface {
                 else newPostsList.add(post)
             }
         }
-        Log.wtf("wtf", "newPostsList: " + newPostsList.size)
-        Log.wtf("wtf", "oldpostlist: " + oldPostsList.size)
-
         when {
             newPostsList.isEmpty() && oldPostsList.isEmpty() -> {
                 binding.postsLayoutEmptyState.visibility = View.VISIBLE
@@ -419,8 +420,11 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface {
         }
     }
 
+
     private fun loadPosts() {
-        eventPresenter.getEventPosts(eventId,page,ITEM_PER_PAGE)
+        CoroutineScope(Dispatchers.IO).launch {
+            eventPresenter.getEventPosts(eventId,page,ITEM_PER_PAGE)
+        }
     }
 
     private fun initializePosts() {
