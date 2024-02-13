@@ -200,7 +200,6 @@ class PostAdapter(
                 binding.numberReaction.text = totalReactionsCount.toString()
                 if (totalReactionsCount > 0) {
                     binding.numberReaction.visibility = View.VISIBLE
-                    binding.numberReaction.text = 1000.toString()
                 } else {
                     binding.numberReaction.visibility = View.GONE
                 }
@@ -395,8 +394,14 @@ class PostAdapter(
                     binding.postMessage.visibility = View.VISIBLE
                     /*binding.postComment.visibility = View.GONE*/
                     binding.btnReportPost.visibility = View.GONE
-                }else{
+                    binding.btnsLayout.visibility = View.GONE
+                    binding.separatorLayout.visibility = View.GONE
+                    reactionImageViews.forEach { it.visibility = View.GONE }
+                    binding.numberReaction.visibility = View.GONE
 
+                }else{
+                    binding.btnsLayout.visibility = View.VISIBLE
+                    binding.separatorLayout.visibility = View.VISIBLE
                     val isTranslated = !translationExceptions.contains(id)
                     var contentToShow = content
                     if(contentTranslations != null){

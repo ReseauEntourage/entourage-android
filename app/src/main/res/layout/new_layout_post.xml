@@ -293,6 +293,7 @@ Nous sommes prêt pour les beaux jours ! :-)" />
             <View
                 android:layout_width="match_parent"
                 android:layout_height="2dp"
+                android:id="@+id/separator_layout"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/reaction1"
                 android:layout_marginTop="20dp"
@@ -304,6 +305,7 @@ Nous sommes prêt pour les beaux jours ! :-)" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
+            android:id="@+id/btns_layout"
             android:layout_height="40dp"
             android:layout_marginTop="10dp">
             <androidx.constraintlayout.widget.ConstraintLayout
