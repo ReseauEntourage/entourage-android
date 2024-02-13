@@ -33,6 +33,8 @@ import com.google.android.material.appbar.AppBarLayout
 import kotlinx.android.synthetic.main.new_fragment_feed.view.arrow
 import kotlinx.android.synthetic.main.new_fragment_feed.view.empty_state_events_subtitle
 import kotlinx.android.synthetic.main.new_fragment_feed.view.subtitle
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import social.entourage.android.BuildConfig
@@ -242,40 +244,42 @@ class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface {
         }
     }
     private fun handleResponseGetGroupPosts(allPosts: MutableList<Post>?) {
-        binding.swipeRefresh.isRefreshing = false
-        binding.progressBar.visibility = View.GONE
-        isLoading = false
-        allPosts?.let {
-            allPostsList.addAll(allPosts)
-            it.forEach { post ->
-                if (post.read == true || post.read == null) oldPostsList.add(post)
-                else newPostsList.add(post)
+        CoroutineScope(Dispatchers.Main).launch {
+            binding.swipeRefresh.isRefreshing = false
+            binding.progressBar.visibility = View.GONE
+            isLoading = false
+            allPosts?.let {
+                allPostsList.addAll(allPosts)
+                it.forEach { post ->
+                    if (post.read == true || post.read == null) oldPostsList.add(post)
+                    else newPostsList.add(post)
+                }
             }
-        }
-        //allPosts?.let { newPostsList.addAll(it) }
-        if (newPostsList.isEmpty() && oldPostsList.isEmpty()) {
-            binding.postsLayoutEmptyState.visibility = View.VISIBLE
-            binding.postsNewRecyclerview.visibility = View.GONE
-            binding.postsOldRecyclerview.visibility = View.GONE
-        }
-        if (newPostsList.isNotEmpty()) {
-            binding.postsNew.root.visibility = View.VISIBLE
-            binding.postsNewRecyclerview.visibility = View.VISIBLE
-            binding.postsLayoutEmptyState.visibility = View.GONE
-            binding.postsNewRecyclerview.adapter?.notifyDataSetChanged()
-        } else {
-            binding.postsNew.root.visibility = View.GONE
-            binding.postsNewRecyclerview.visibility = View.GONE
-        }
+            //allPosts?.let { newPostsList.addAll(it) }
+            if (newPostsList.isEmpty() && oldPostsList.isEmpty()) {
+                binding.postsLayoutEmptyState.visibility = View.VISIBLE
+                binding.postsNewRecyclerview.visibility = View.GONE
+                binding.postsOldRecyclerview.visibility = View.GONE
+            }
+            if (newPostsList.isNotEmpty()) {
+                binding.postsNew.root.visibility = View.VISIBLE
+                binding.postsNewRecyclerview.visibility = View.VISIBLE
+                binding.postsLayoutEmptyState.visibility = View.GONE
+                binding.postsNewRecyclerview.adapter?.notifyDataSetChanged()
+            } else {
+                binding.postsNew.root.visibility = View.GONE
+                binding.postsNewRecyclerview.visibility = View.GONE
+            }
 
-        if (oldPostsList.isNotEmpty()) {
-            if (newPostsList.isNotEmpty()) binding.postsOld.root.visibility = View.VISIBLE
-            else binding.postsOld.root.visibility = View.GONE
-            binding.postsOldRecyclerview.visibility = View.VISIBLE
-            binding.postsLayoutEmptyState.visibility = View.GONE
-            binding.postsOldRecyclerview.adapter?.notifyDataSetChanged()
-        } else {
-            binding.postsOldRecyclerview.visibility = View.GONE
+            if (oldPostsList.isNotEmpty()) {
+                if (newPostsList.isNotEmpty()) binding.postsOld.root.visibility = View.VISIBLE
+                else binding.postsOld.root.visibility = View.GONE
+                binding.postsOldRecyclerview.visibility = View.VISIBLE
+                binding.postsLayoutEmptyState.visibility = View.GONE
+                binding.postsOldRecyclerview.adapter?.notifyDataSetChanged()
+            } else {
+                binding.postsOldRecyclerview.visibility = View.GONE
+            }
         }
     }
 
@@ -598,6 +602,7 @@ class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface {
 
     private fun loadPosts() {
         groupPresenter.getGroupPosts(groupId, page, ITEM_PER_PAGE)
+
     }
 
     private fun handleBackButton() {
