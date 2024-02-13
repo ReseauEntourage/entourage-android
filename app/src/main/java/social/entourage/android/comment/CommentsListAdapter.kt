@@ -101,6 +101,9 @@ class CommentsListAdapter(
             if (isDetailPost) {
                 //TODO: parse Detail post
                 binding.comment_post.text = comment.content
+                if(comment.status.equals("deleted")){
+                    binding.comment_post.text = context.getString(R.string.deleted_publi)
+                }
                 binding.comment_post.setHyperlinkClickable()
                 comment.createdTime?.let {
                     var locale = LanguageManager.getLocaleFromPreferences(context)

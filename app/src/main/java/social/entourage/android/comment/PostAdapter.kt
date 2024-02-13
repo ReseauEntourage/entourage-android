@@ -219,7 +219,7 @@ class PostAdapter(
                 }
                 binding.btnIComment.setOnClickListener {
                     binding.layoutReactions.visibility =  View.GONE
-                    onClick(this, false)
+                    onClick(this, true)
                 }
                 binding.btnReaction.setOnClickListener {
                     AnalyticsEvents.logEvent(
