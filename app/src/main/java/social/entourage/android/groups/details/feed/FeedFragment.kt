@@ -86,6 +86,7 @@ class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface {
     private var isLoading = false
     private var page:Int = 1
     private val ITEM_PER_PAGE = 10
+    private var hasShownWelcomeMessage = false
 
     private var newPostsList: MutableList<Post> = ArrayList()
     private var oldPostsList: MutableList<Post> = ArrayList()
@@ -459,6 +460,7 @@ class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface {
         }
     }
     private fun handleLeftResponse(hasJoined: Boolean) {
+        hasShownWelcomeMessage = false
         group?.let {
             if (hasJoined) {
                 group?.member = !it.member
@@ -471,6 +473,10 @@ class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface {
     }
 
     private fun showWelcomeMessage(){
+        if(hasShownWelcomeMessage){
+            return
+        }
+        hasShownWelcomeMessage = true
         var message = getString(R.string.welcome_message_placeholder)
         val title = getString(R.string.welcome_message_title)
         if (group?.welcomeMessage?.isNotBlank() == true) message = group?.welcomeMessage.toString()
