@@ -60,6 +60,7 @@ import social.entourage.android.groups.details.feed.GroupMembersPhotosAdapter
 import social.entourage.android.groups.details.members.MembersFragment
 import social.entourage.android.groups.details.members.MembersType
 import social.entourage.android.language.LanguageManager
+import social.entourage.android.members.MembersActivity
 import social.entourage.android.profile.myProfile.InterestsAdapter
 import social.entourage.android.report.DataLanguageStock
 import social.entourage.android.report.ReportModalFragment
@@ -610,9 +611,12 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface {
 
     private fun handleMembersButton() {
         binding.members.setOnClickListener {
-            val action =
-                FeedFragmentDirections.actionEventFeedToMembers(eventId, MembersType.EVENT)
-            findNavController().navigate(action)
+            val intent = Intent(context, MembersActivity::class.java).apply {
+                // Passage des arguments nécessaires
+                putExtra("ID", eventId) // Assure-toi que 'groupId' est un Int
+                putExtra("TYPE", MembersType.EVENT.code) // Utilise 'code' pour passer l'enum comme un Int
+            }
+            startActivity(intent)
         }
     }
 
@@ -778,11 +782,14 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface {
     }
 
     override fun seeMemberReaction(post: Post) {
-        MembersFragment.isFromReact = true
-        MembersFragment.postId = post.id!!
-        val action =
-            FeedFragmentDirections.actionEventFeedToMembers(eventId, MembersType.EVENT)
-        findNavController().navigate(action)
+        MembersActivity.isFromReact = true
+        MembersActivity.postId = post.id!!
+        val intent = Intent(context, MembersActivity::class.java).apply {
+            // Passage des arguments nécessaires
+            putExtra("ID", eventId) // Assure-toi que 'groupId' est un Int
+            putExtra("TYPE", MembersType.EVENT.code) // Utilise 'code' pour passer l'enum comme un Int
+        }
+        startActivity(intent)
     }
 
     override fun deleteReaction(post: Post) {

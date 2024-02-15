@@ -55,6 +55,7 @@ import social.entourage.android.groups.details.GroupDetailsFragment
 import social.entourage.android.groups.details.members.MembersFragment
 import social.entourage.android.groups.details.members.MembersType
 import social.entourage.android.homev2.HomeEventAdapter
+import social.entourage.android.members.MembersActivity
 import social.entourage.android.profile.myProfile.InterestsAdapter
 import social.entourage.android.report.DataLanguageStock
 import social.entourage.android.report.ReportModalFragment
@@ -188,11 +189,6 @@ class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface {
         loadPosts()
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        // Sauvegarde de l'état
-
-    }
 
     override fun onResume() {
         super.onResume()
@@ -663,9 +659,12 @@ class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface {
             AnalyticsEvents.logEvent(
                 AnalyticsEvents.ACTION_GROUP_FEED_MORE_MEMBERS
             )
-            val action =
-                FeedFragmentDirections.actionGroupFeedToGroupMembers(groupId, MembersType.GROUP)
-            findNavController().navigate(action)
+            val intent = Intent(context, MembersActivity::class.java).apply {
+                // Passage des arguments nécessaires
+                putExtra("ID", groupId) // Assure-toi que 'groupId' est un Int
+                putExtra("TYPE", MembersType.GROUP.code) // Utilise 'code' pour passer l'enum comme un Int
+            }
+            startActivity(intent)
         }
     }
 
@@ -790,14 +789,17 @@ class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface {
     }
 
     override fun seeMemberReaction(post: Post) {
-        MembersFragment.isFromReact = true
-        MembersFragment.postId = post.id!!
+        MembersActivity.isFromReact = true
+        MembersActivity.postId = post.id!!
         AnalyticsEvents.logEvent(
             AnalyticsEvents.ACTION_GROUP_FEED_MORE_MEMBERS
         )
-        val action =
-            FeedFragmentDirections.actionGroupFeedToGroupMembers(groupId, MembersType.GROUP)
-        findNavController().navigate(action)
+        val intent = Intent(context, MembersActivity::class.java).apply {
+            // Passage des arguments nécessaires
+            putExtra("ID", groupId) // Assure-toi que 'groupId' est un Int
+            putExtra("TYPE", MembersType.GROUP.code) // Utilise 'code' pour passer l'enum comme un Int
+        }
+        startActivity(intent)
     }
 
     override fun deleteReaction(post: Post) {

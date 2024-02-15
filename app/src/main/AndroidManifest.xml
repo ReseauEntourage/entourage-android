@@ -81,6 +81,8 @@
         <activity
             android:name=".welcome.WelcomeTestActivity"
             android:exported="false" />
+        <activity android:name=".members.MembersActivity"
+            android:exported="false" />
         <activity
             android:name=".home.pedago.PedagoDetailActivity"
             android:exported="false" />
