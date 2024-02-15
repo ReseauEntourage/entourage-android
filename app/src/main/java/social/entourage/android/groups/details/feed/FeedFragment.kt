@@ -84,7 +84,7 @@ class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface {
     private var myId: Int? = null
     private val args: FeedFragmentArgs by navArgs()
     private var isLoading = false
-    private var page:Int = 1
+    private var page:Int = 0
     private val ITEM_PER_PAGE = 10
     private var hasShownWelcomeMessage = false
 
@@ -185,15 +185,26 @@ class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface {
             )
         )
         setupNestedScrollViewScrollListener()
+        loadPosts()
     }
 
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        // Sauvegarde de l'état
+
+    }
 
     override fun onResume() {
         super.onResume()
-        newPostsList.clear()
-        oldPostsList.clear()
-        allPostsList.clear()
-        loadPosts()
+        if(isFromCreation) {
+            isFromCreation = false
+            page = 0
+            oldPostsList.clear()
+            newPostsList.clear()
+            allPostsList.clear()
+            isLoading = true
+            loadPosts()
+        }
         val fromWelcomeActivity = activity?.intent?.getBooleanExtra("fromWelcomeActivity", false)
         if (fromWelcomeActivity == true) {
             createAPost()
@@ -221,7 +232,7 @@ class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface {
                 hideReactionsInRecyclerView()
                 if (!binding.nestSvFeedFragment.canScrollVertically(1) && !isLoading) {
                     isLoading = true
-                    page++ // Incrémente la page pour la pagination
+
                     binding.progressBar.visibility = View.VISIBLE
                     loadPosts()
                 }
@@ -340,6 +351,7 @@ class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface {
     }
 
     private fun createAPost(){
+        isFromCreation = true
         AnalyticsEvents.logEvent(
             AnalyticsEvents.ACTION_GROUP_FEED_NEW_POST
         )
@@ -607,6 +619,7 @@ class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface {
     }
 
     private fun loadPosts() {
+        page++
         groupPresenter.getGroupPosts(groupId, page, ITEM_PER_PAGE)
 
     }
@@ -800,6 +813,9 @@ class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface {
             return
         }
         groupPresenter.deleteReactToPost(groupId, post.id!!)
+    }
+    companion object {
+        var isFromCreation = false
     }
 }
 

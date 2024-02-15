@@ -217,6 +217,10 @@ class PostAdapter(
                         }
                     }
                 }
+                if(reactions?.isEmpty() == true && commentsCount == 0){
+                    binding.postCommentsNumberLayout.visibility =  View.GONE
+
+                }
                 binding.btnIComment.setOnClickListener {
                     binding.layoutReactions.visibility =  View.GONE
                     onClick(this, true)

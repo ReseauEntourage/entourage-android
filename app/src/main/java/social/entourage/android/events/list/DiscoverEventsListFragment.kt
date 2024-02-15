@@ -17,8 +17,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.new_header_bottom_sheet.view.view
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
@@ -103,10 +101,9 @@ class DiscoverEventsListFragment : Fragment() {
         eventsPresenter.isLastPageMyEvent = false
         page = 0
         pageMyEvent = 0
-        CoroutineScope(Dispatchers.IO).launch {
-            loadEvents()
-            loadMyEvents()
-        }
+        loadEvents()
+        loadMyEvents()
+
     }
 
     override fun onStop() {
@@ -120,6 +117,7 @@ class DiscoverEventsListFragment : Fragment() {
     }
 
     private fun handleResponseGetEvents(allEvents: MutableList<Events>?) {
+        Log.wtf("wtf", "allEvents: $allEvents")
         if(allEvents != null && allEvents.size > 0){
             eventsAdapter.resetData(allEvents)
             updateView(false)
@@ -240,10 +238,8 @@ class DiscoverEventsListFragment : Fragment() {
             eventsPresenter.isLastPageMyEvent = false
             page = 0
             pageMyEvent = 0
-            CoroutineScope(Dispatchers.IO).launch {
-                loadEvents()
-                loadMyEvents()
-            }
+            loadEvents()
+            loadMyEvents()
         }
     }
 }
