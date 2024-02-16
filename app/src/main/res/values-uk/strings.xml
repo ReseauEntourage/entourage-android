@@ -1,4 +1,4 @@
-<?xml version='1.0' encoding='utf-8'?>
+<?xml version='1.0' encoding='UTF-8'?>
 <resources>
 
     <string name="app_name">Entourage</string>
@@ -31,7 +31,7 @@
 
     <string name="badge_count_format">%1$d</string>
 
-    <string name="empty_description" />
+    <string name="empty_description"></string>
 
     <string name="preference_file_key">ENTOURAGE_GCM_DATA</string>
     <string name="action_overlay_close">Закрийте меню Дії</string>
@@ -67,7 +67,7 @@
     <string name="home_title_headlines">Рекомендовані</string>
     <string name="home_title_actions">Запити та ініціативи</string>
     <string name="home_title_events">Події</string>
-    <string name="home_title_none" />
+    <string name="home_title_none"></string>
     <string name="home_title_actions_contrib">Внески</string>
     <string name="home_title_actions_ask">Запити</string>
 
@@ -91,7 +91,7 @@
     <string name="back_button_hint">назад</string>
     <string name="button_clear_hint">стерти</string>
 
-    
+    <!-- New -->
     <string name="my_activity">Моя діяльність</string>
     <string name="my_information">Моя інформація</string>
     <string name="his_activity">Його діяльність</string>
@@ -437,7 +437,7 @@
     <string name="deleted_comment">Цей коментар було видалено.</string>
     <string name="deleted__my_message">Ви видалили це повідомлення.</string>
 
-    
+    <!-- Home pop congrat -->
 
     /** Home popup congratulation */
     <string name="home_congrat_title_single">молодці ! Ви виконали %d нову дію!</string>
@@ -445,13 +445,13 @@
     <string name="home_congrat_title_next">Чудово, у \ є щось нове!</string>
     <string name="three_point">…</string>
 
-    
+    <!-- Home ERROR DEEPLINKS -->
     <string name="error_get_event">Ця подія n\ більше не існує.</string>
     <string name="error_get_group">Ця сусідня група n\ більше не існує.</string>
     <string name="error_get_action">Ця дія n\ більше не існує.</string>
     <string name="error_get_discussion">Це обговорення n\'більше не існує.</string>
 
-    
+    <!-- WELCOME PAGES -->
     <string name="welcome_one_title">Ласкаво просимо до \nсоціальної мережі, по-справжньому соціальної</string>
     <string name="welcome_one_content">Для багатьох вулиця — це місце проходу.\nДля деяких c\ — це повсякденне життя.\nТож для початку познайомтеся з тими, хто живе ним щодня.</string>
 
@@ -494,7 +494,7 @@
     <string name="welcome_three_main_button_title_contrib">Створіть внесок</string>
     <string name="welcome_five_share_title">«Відкрийте для себе програму \ Entourage, справді соціальну соціальну мережу»</string>
 
-    
+    <!--    STRING ABOUT-->
     <string name="about_title">ПРО</string>
     <string name="about_suggestion">Пропозиція? Проблема ?</string>
     <string name="about_feedback">поділіться своєю думкою</string>
@@ -511,7 +511,7 @@
     <string name="about_oss_licenses">Ліцензії з відкритим кодом</string>
     <string name="about_partner">Наші меценати та партнери</string>
 
-    
+    <!--    STRING ACTION-->
     <string name="entourage_info_discussion">ДИСКУСІЯ</string>
     <string name="action_title_header_signal_problem">щоб повідомити про проблему</string>
     <string name="entourage_info_text_join_rejected">\u0020 відхилено</string>
@@ -550,7 +550,7 @@
     <string name="loader_title_outing_finish">Видалення події \</string>
     <string name="loader_title_action_finish">Видалення дії \</string>
 
-    
+    <!-- Entourage Cell -->
     <string name="entourage_cell_title">%1$s</string>
     <string name="entourage_cell_author">%1$s</string>
     <string name="entourage_cell_location">у %1$s</string>
@@ -566,20 +566,20 @@
     <string name="entourage_cell_button_freezed_success_cancel">Скасовано</string>
     <string name="entourage_cell_title_event">Подія %1$s</string>
 
-    
+    <!-- Promote Entourage Email -->
     <string name="promote_entourage_email_title">Надішліть сповіщення про випуск %1$s</string>
     <string name="promote_entourage_email_body">Привіт!\nПросимо прорекламувати екскурсію "%1$s" за допомогою сповіщень, надісланих на телефони членів таких районів:\n\nДякуємо</string>
 
-    
+    <!-- Newsfeed -->
     <string name="newsfeed_load_more_description">C\ для акцій цього відділу!</string>
     <string name="newsfeed_no_more_items">Ніякого іншого оточення поблизу цієї позиції немає</string>
 
-    
+    <!-- Map Filter -->
     <string name="map_filter_outing_title">Події</string>
     <string name="map_filter_entourage_outing_text">Події</string>
     <string name="map_filter_past_events_text">Включати минуле</string>
 
-    
+    <!-- New detail action/event -->
     <string name="detail_button_action_join">брати участь</string>
     <string name="detail_button_action_share">Поділіться</string>
     <string name="detail_action_event_online">Онлайн</string>
@@ -616,7 +616,7 @@
     <string name="share_title_event">Ця подія Entourage може вас зацікавити.</string>
     <string name="share_title_group">Ця група сусідів Entourage може вас зацікавити.</string>
 
-    
+    <!--    STRING ACTION NEW-->
     <string name="actions_title">Взаємодопомога</string>
     <string name="actions_tab_contribs">Внески</string>
     <string name="actions_tab_demands">Запити</string>
@@ -665,7 +665,7 @@
     <string name="atKm">%s, %s км від мене</string>
     <string name="AtKm">TO %s км від мене</string>
 
-    
+    <!-- Action create -->
     <string name="action_create_demand_title">Новий запит</string>
     <string name="action_create_contrib_title">Новий внесок</string>
     <string name="action_create_title">Назва дії \</string>
@@ -680,7 +680,7 @@
     <string name="action_name_Demand">запит</string>
     <string name="action_name_Contrib">внесок</string>
 
-    
+    <!-- pop back create-->
     <string name="back_create_action_title">Увага</string>
     <string name="back_create_action_content">Якщо ви вийдете з форми створення %s, уся введена інформація буде втрачена.</string>
     <string name="action_create_cat_choose_category">Виберіть категорію, яка найкраще описує ваш %s.</string>
@@ -694,7 +694,7 @@
     <string name="action_error_edit_action">Помилка зміни %s</string>
     <string name="action_updated">Модифікацію прийнято до уваги</string>
 
-    
+    <!-- pop cancel action -->
     <string name="action_cancel_pop_bt_yes">Так</string>
     <string name="action_cancel_pop_bt_no">Немає</string>
     <string name="action_cancel_pop_bt_send">Надіслати</string>
@@ -707,7 +707,7 @@
     <string name="action_edit_contrib_title">Редагувати пост</string>
 
 
-    
+    <!--    STRING CAROUSEL-->
     <string name="carousel_close_button">@string/close</string>
 
     <string name="carousel_p1_title">Представтеся учасникам мережі</string>
@@ -723,7 +723,7 @@
     <string name="carousel_p4_title">Запустіть акцію солідарності</string>
     <string name="carousel_p4_content">Покличте сусідів допомогти оточити бездомного. &lt;font color="#ec4e1a"&gt;Створити дію за допомогою кнопки:&lt;/font&gt;</string>
 
-    
+    <!--    STRING CGUs-->
     <string name="group_params_cgu_title">Правило</string>
     <string name="group_params_cgu_description">Правила групи, читайте уважно.</string>
     <string name="neighborhood_CGU_1_title">Ставлення</string>
@@ -749,7 +749,7 @@
     <string name="event_CGU_4">Я зобов&amp;apos;язуюсь не робити різниці щодо раси, кольору шкіри, статі, мови, релігії, політичних поглядів, власності, народження чи будь-якого іншого стану.</string>
 
     <string name="action_params_cgu_title">Етичний кодекс</string>
-    <string name="action_params_cgu_description" />
+    <string name="action_params_cgu_description"></string>
     <string name="action_CGU_1_title">Взаємодопомога</string>
     <string name="action_CGU_1">Додаток дозволяє створювати нові зустрічі між сусідами та заохочувати час обміну. Віддалена допомога (автомобілем, доставкою, подарунковим ваучером, призовим фондом тощо) не дозволена.</string>
     <string name="action_CGU_2_title">Внески та запити</string>
@@ -761,7 +761,7 @@
     <string name="action_CGU_5_title">Захист людей</string>
     <string name="action_CGU_5">Я гарантую, що мої дії не містять жодних персональних даних (прізвища, номера телефону, точної адреси тощо), які дозволяють точно ідентифікувати та знайти особу, а також будь-яких конфіденційних даних (медичних, юридичних тощо).</string>
 
-    
+    <!--STRING COUNTRY -->
 
     <string name="search_hint">шукати…</string>
     <string name="no_result_found">результатів не знайдено</string>
@@ -769,7 +769,7 @@
     <string name="country_code_and_phone_code">(%1$s) +%2$s</string>
     <string name="country_full_name_and_phone_code">%1$s +%2$s</string>
 
-    
+    <!-- Country Codes -->
 
     <string name="country_afghanistan_name">Афганістан</string>
     <string name="country_afghanistan_code">аф</string>
@@ -1488,7 +1488,7 @@
     <string name="country_zimbabwe_code">zw</string>
     <string name="country_zimbabwe_number" translatable="false">263</string>
 
-    
+    <!--    STRING Date-->
     <string name="date_today">Сьогодні \сьогодні</string>
     <string name="date_today_lower">сьогодні \сьогодні</string>
     <string name="date_format_today_time">H\'h\'мм</string>
@@ -1518,9 +1518,9 @@
     <string name="duration_minutes">%s хв</string>
     <string name="duration_secondes">у момент \</string>
 
-    
+    <!--    STRING Entourage-->
 
-    
+    <!-- Create Entourage -->
     <string name="entourage_create_action_title">ДІЯ</string>
     <string name="entourage_create_outing_title">Подія</string>
     <string name="entourage_create_type_label">Категорія</string>
@@ -1560,12 +1560,12 @@
     <string name="outing_create_menu">Анонсувати подію</string>
     <string name="outing_create_submenu">на конкретну дату</string>
 
-    
+    <!-- Entourage Category Fragment -->
     <string name="entourage_category_fragment_title">КАТЕГОРІЯ</string>
     <string name="entourage_category_type_demand_label">Я ШУКАЮ…</string>
     <string name="entourage_category_type_contribution_label">ПРОПОНУЮ…</string>
 
-    
+    <!-- Entourage Title Fragment -->
     <string name="entourage_title_fragment_title">НАЗВА</string>
     <string name="entourage_title_fragment_hint">Приклад: я готовий отримати адміністративну допомогу щодо доступу до житла</string>
     <string name="entourage_title_fragment_info">Дії з чіткою назвою залучають більше учасників і мають більше шансів на успіх!</string>
@@ -1573,20 +1573,20 @@
     <string name="entourage_title_fragment_hint_outing">Приклад: Ігровий вечір між сусідами з будинками та без них</string>
     <string name="entourage_title_fragment_info_outing">Заходи зі зрозумілою назвою залучають більше учасників.</string>
 
-    
+    <!-- Entourage Description Fragment -->
     <string name="entourage_description_fragment_title">ОПИС</string>
     <string name="entourage_description_fragment_hint">Приклад: я колишній працівник мерії, і я готовий отримати адміністративну допомогу в отриманні житла. \nЯкщо ви вважаєте, що вам потрібна допомога, ми можемо зустрітися в кафе на вихідних.</string>
     <string name="entourage_description_fragment_info">Розкажіть свою історію. Дії з чітким описом залучають більше учасників і мають більше шансів на успіх!</string>
     <string name="entourage_description_fragment_hint_outing">Приклад: потрібні волонтери для національної колекції Restos du Cœur у нашій місцевій команді</string>
     <string name="entourage_description_fragment_info_outing">Ви можете будь-коли змінити цей опис і дату вашої події.</string>
 
-    
+    <!-- Edit Entourage -->
     <string name="entourage_save_error">Оточення L\ n\' не було збережено.</string>
     <string name="entourage_save_ok">Околиці записані.</string>
     <string name="outing_save_error">Не вдалося оновити подію L\ n\.</string>
     <string name="outing_save_ok">подія оновлена</string>
 
-    
+    <!-- Entourage Card -->
     <string name="entourage_type_demand">запит</string>
     <string name="entourage_type_contribution">внесок</string>
     <string name="entourage_type_outing">Подія</string>
@@ -1596,16 +1596,16 @@
     <string name="entourage_metadata_date_startAt_endAt">від %1$s до %2$s</string>
     <string name="entourage_metadata_time_startAt_endAt">від %1$s до %2$s</string>
 
-    
+    <!-- Entourage Location -->
     <string name="entourage_location_title">МОЯ ПОЗИЦІЯ</string>
     <string name="entourage_location_address_not_found">L\ адресу n\ не знайдено</string>
 
-    
+    <!-- Entourage Notifications -->
     <string name="entourage_info_text_join_accepted">\u0020приєднався до групи.</string>
     <string name="entourage_join_request_received_nomsg">%1$s хоче приєднатися до вашої дії.</string>
     <string name="entourage_join_request_received_message_html">&lt;font color=\"#F55F24\"&gt;%1$s &lt;/font&gt;бажає приєднатися до вашої групи</string>
     <string name="entourage_join_request_received_message_short">хоче приєднатися до вашої групи.</string>
-    
+    <!-- Join Request -->
     <string name="entourage_join_request_success">Запит прийнято</string>
     <string name="entourage_join_request_error">Помилка d\ під час надсилання запиту</string>
     <string name="entourage_join_request_message_sent">Повідомлення надіслано</string>
@@ -1620,7 +1620,7 @@
     <string name="entourage_info_text_close">Акція закрита</string>
     <string name="outing_info_text_close">Подію видалено</string>
 
-    
+    <!-- Entourage disclaimer -->
     <string name="entourage_disclaimer_title">ПЕРЕД ПОЧАТКОМ</string>
     <string name="entourage_disclaimer_text_chart1">Я поважаю</string>
     <string name="entourage_disclaimer_text_chart2">d\'Статут оточення</string>
@@ -1633,20 +1633,20 @@
     <string name="entourage_disclaimer_checkbox">J\ прочитав і j\ приймає</string>
     <string name="entourage_disclaimer_error_notaccepted">Будь ласка, прийміть умови.</string>
 
-    
+    <!-- Outing disclaimer -->
     <string name="outing_disclaimer_accord_details">Я прошу згоди людини, перш ніж ділитися її особистою інформацією</string>
     <string name="outing_disclaimer_security_details">Я гарантую, що людей неможливо ідентифікувати або знайти, прочитавши мене</string>
     <string name="outing_disclaimer_geolocation_title">Місцезнаходження ?</string>
     <string name="outing_disclaimer_geolocation_details">Вказано точну адресу подій</string>
 
-    
+    <!-- Outing as chat message card -->
     <string name="outing_message_card_created_author">%1$s створив &lt;font color=\"%2$s\"&gt;вихід&lt;/font&gt;:</string>
 
-    
-    
+    <!-- Status update as chat message card -->
+    <!-- 1 = font color, 2 = author, 3 = message -->
     <string name="status_message_card_details">&lt;font color=\"%1$s\"&gt;%2$s&lt;/font&gt; %3$s</string>
 
-    
+    <!-- My Entourages -->
     <string name="myentourages_all">Всі пости</string>
     <string name="myentourages_unread">Непрочитаний</string>
 
@@ -1655,7 +1655,7 @@
 
     <string name="myentourages_tab_group">Групові чати</string>
     <string name="myentourages_tab_messages">Приватні повідомлення</string>
-    
+    <!-- My Entourages Filter -->
     <string name="myentourages_filter_entourages_title">Показати</string>
     <string name="myentourages_filter_closed">Включати закриті дії</string>
     <string name="myentourages_filter_unread">Лише непрочитані повідомлення</string>
@@ -1665,7 +1665,7 @@
     <string name="myentourages_filter_demand">Запити</string>
     <string name="myentourages_filter_contribution">Внески</string>
 
-    
+    <!-- Close Entourage Popup -->
     <string name="entourage_close_success_button">Моя акція була успішною</string>
     <string name="entourage_close_failed_button">Моя дія n\ не була успішною</string>
 
@@ -1679,25 +1679,25 @@
     <string name="entourage_close_add_comment_send_button">Надіслати</string>
     <string name="entourage_close_add_comment_send_placeholder">Моя дія пройшла добре, тому що...</string>
 
-    
+    <!-- Close event popup -->
 
     <string name="event_close_title2">Я скасовую\nсвою подію</string>
     <string name="event_close_description2">Після скасування події обговорення буде закрито, а подія більше не з’являтиметься в стрічці новин.</string>
     <string name="event_validate_button2">СКАСУВАТИ ПОДІЮ</string>
 
-    
+    <!-- Share Entourage -->
     <string name="entourage_share_intent_title">Поділитися через</string>
     <string name="entourage_share_link">https://www.entourage.social</string>
 
     <string name="info_share_poi_sms">Добрий ранок ! Ось адреса %1$s, яка може вас зацікавити.\n%2$s\n%3$s\nДля отримання додаткової інформації про це місце та встановлення зв’язків між сусідами, які підтримують вас, я призначу вам зустріч у мережі Entourage %4 $ с</string>
 
     <string name="entourage_share_text_for_entourage">%1$s.\n\nЩиро дякуємо за вашу солідарність!</string>
-    
+    <!-- Entourage Mini Card -->
 
-    
+    <!-- My Entourages -->
     <string name="myentourages_no_items_details">Попросіть приєднатися до дій, зв&amp;apos;яжіться з учасниками, і ви знайдете тут ваші розмови з учасниками мережі</string>
 
-    
+    <!-- Create Action Wizard -->
     <string name="create_action_wizard_p1_title">ОСТАННЄ ПИТАННЯ</string>
     <string name="create_action_wizard_p1_option1">@string/yes</string>
     <string name="create_action_wizard_p1_option2">Ні, я питаю за себе</string>
@@ -1713,7 +1713,7 @@
 
     <string name="create_action_wizard_disclaimer">У &lt;a href=\'%1$s\'&gt;Хартії етики Entourage&lt;/a&gt; пояснюється, чому згода є важливою.</string>
 
-    
+    <!-- User Report -->
     <string name="action_report_explanation">Ви повідомите про цю акцію солідарності нашим адміністраторам.</string>
     <string name="action_report_reason">Будь ласка, вкажіть, чому\ви повідомляєте про цю акцію солідарності:</string>
     <string name="event_report_explanation">Ви повідомите про цю подію нашим адміністраторам.</string>
@@ -1730,7 +1730,7 @@
     <string name="linkShared">Посилання надіслано</string>
     <string name="linkNotShared">Помилка під час надсилання посилання \</string>
 
-    
+    <!-- Pop info photo profile -->
     <string name="info_photo_profile_title">Додайте свою фотографію профілю та вселийте ще більше впевненості</string>
     <string name="info_photo_profile_description">У вас ще немає фотографії профілю. Люди, які дізнаються про вашу акцію солідарності, з більшою ймовірністю приєднаються до неї, якщо ви її додасте.</string>
     <string name="info_photo_profile_ignore">ІГНОРУЙТЕ</string>
@@ -1746,7 +1746,7 @@
     <string name="infoPopCreateAskTitle">Акція солідарності \створена</string>
     <string name="infoPopCreateEventTitle">Подія створена</string>
 
-    
+    <!-- Search action/event placeholder -->
     <string name="searchEventPlaceholder">Пошук події</string>
     <string name="searchAskPlaceholder">Пошук дії</string>
     <string name="searchContribPlaceholder">Пошук дії</string>
@@ -1754,8 +1754,8 @@
     <string name="button_close_event">Скасувати мою подію</string>
     <string name="button_close_action">Закрити мою дію</string>
 
-    
-    
+    <!-- STRING EVENT -->
+    <!-- Events -->
     <string name="location">Місцезнаходження</string>
     <string name="event_filter_google_placeholder">Виберіть адресу</string>
     <string name="event_filter_position_placeholder">Моя позиція</string>
@@ -1774,18 +1774,18 @@
     <string name="event_location_detail">Адреса буде додана до детального опису вашої події.</string>
     <string name="event_btn_share_title">Поділіться</string>
 
-    
+    <!-- STRING GET INVOLVED -->
     <string name="get_involved_title">Слідкуйте за Entourage</string>
     <string name="get_involved_rate_us">Оцініть нас у магазині Play</string>
     <string name="get_involved_facebook">Вподобайте нашу сторінку у Facebook</string>
     <string name="get_involved_twitter">Слідкуйте за нами в Twitter</string>
     <string name="get_involved_instagram">Слідкуйте за нашим Instagram</string>
 
-    
-    
+    <!-- STRING GUIDE -->
+    <!-- Guide -->
     <string name="map_poi_propose_button">Запропонуйте структуру</string>
 
-    
+    <!-- POI -->
     <string name="poi_detail_contact">контакт</string>
     <string name="poi_detail_public">Аудиторія</string>
     <string name="activity_read_poi_title">ІНФОРМАЦІЯ</string>
@@ -1799,25 +1799,25 @@
     <string name="poi_detail_soliguide_2">Ще більш повна інформація доступна кількома мовами</string>
     <string name="poi_detail_soliguide_consult">Проконсультуватися</string>
 
-    
+    <!-- Empty Guide Popup -->
     <string name="map_poi_empty_popup">Схоже, c\ тут спокійний!&lt;br/&gt;&lt;br/&gt;
  Перемістіть карту, щоб знайти структури підтримки: ресторани солідарності, громадські душові, медичні центри, відкриті для вуличних людей…&lt;br/&gt;&lt;br /&gt;
  Будівля є відсутній на карті?&lt;br/&gt;
  &lt;a href=\'%1$s\'&gt;Запропонуйте структуру&lt;/a&gt;
 &lt;br/&gt;&lt;br/&gt;Міський центр соціальних дій у вашому муніципалітеті може надати вам інформація про всі місцеві асоціації та соціальну допомогу, доступну мешканцям.</string>
 
-    
+    <!-- Info Popup -->
     <string name="map_poi_info_popup">Посібник Солідарності дає вам змогу дізнатися про структури підтримки: ресторани солідарності, громадські душові, медичні центри, відкриті для вуличних людей...\n\n
  Як місцевий житель, ви можете запропонувати вулицям місце, але майте на увазі, що це роль соціальних працівників у підтримці кожної ситуації.</string>
 
     <string name="map_empty_poi_recyclerV">Це все для місць солідарності в цьому радіусі навколо вас</string>
-    
+    <!-- Guide Filter -->
     <string name="guide_filter_title">ФІЛЬТРИ</string>
     <string name="guide_filters_activated">Фільтри включені</string>
     <string name="guide_no_filter">Фільтри</string>
     <string name="guide_filter_categories_title">Категорії</string>
 
-    
+    <!-- POI Card -->
     <string name="poi_card_call">ДЗВОНИТИ</string>
     <string name="guide_alert_arrow_desc">Деталі сповіщення</string>
     <string name="guide_alert_info_desc">Інформаційний посібник</string>
@@ -1855,8 +1855,8 @@
 
     <string name="button_reset_filters">Скасувати фільтри</string>
     <string name="searchbox_placeholder_text">Досліджувати</string>
-    
-    
+    <!-- STRING INVTE -->
+    <!-- Invite Source -->
     <string name="invite_source_title">запросіть своїх друзів</string>
     <string name="invite_source_description">приєднатися до цієї акції солідарності!</string>
     <string name="invite_source_description_outing">взяти участь у цьому заході</string>
@@ -1864,32 +1864,32 @@
     <string name="invite_source_contacts">Контакти</string>
     <string name="invite_source_share_entourage">Поділіться на Entourage</string>
 
-    
+    <!-- Invite Contacts -->
     <string name="invite_contacts_title">КОНТАКТИ</string>
     <string name="invite_contacts_search_hint">Досліджувати</string>
     <string name="invite_contacts_inviting">Розсилка запрошень</string>
     <string name="invite_contacts_send_error">Не вдалося надіслати запрошення</string>
     <string name="invite_contacts_permission_error">Скасування: програма не має необхідних дозволів</string>
 
-    
+    <!-- Invite By Phone Number -->
     <string name="invite_phone_title">НОМЕР МОБІЛЬНОГО</string>
     <string name="invite_phone_description">Введіть номер мобільного телефону, щоб запросити людину приєднатися до вашого оточення.</string>
     <string name="invite_phone_number_hint">Номер стільникового</string>
 
-    
+    <!-- Invite Success -->
     <string name="invite_success_title">Надіслано!</string>
     <string name="invite_success_description">Ваш друг автоматично приєднається до оточення, щойно прийме ваше запрошення.</string>
 
-    
+    <!-- Invitation Card -->
     <string name="invitation_card_description">1 нове запрошення приєднатися до оточення</string>
     <string name="invitation_card_inviter">%1$s запрошує вас приєднатися</string>
 
-    
+    <!-- Invited -->
     <string name="invited_description">Відповідай зараз!</string>
     <string name="invited_updated_ok">Оновлене запрошення</string>
     <string name="invited_updated_error">Помилка оновлення антуражу</string>
 
-    
+    <!-- STRING INVITE -->
     <string name="login_text_lost_code_ko">Здається, цей номер не зареєстровано: створіть обліковий запис.\n\nMembers d\'асоціація за допомогою d\'Entourage, зв’яжіться з associations@entourage.social</string>
     <string name="login_text_invalid_format">Номер повинен складатися з 9 або 10 цифр.</string>
 
@@ -1926,7 +1926,7 @@
     <string name="login_label_phone">Телефон</string>
     <string name="login_label_code">Закодований</string>
 
-    
+    <!-- Login Change Phone -->
     <string name="login_change_phone_title">Новий номер</string>
     <string name="login_change_phone_old_phone">Старе питання</string>
     <string name="login_change_phone_old_phone_placeholder">Старе питання</string>
@@ -2009,7 +2009,7 @@
     <string name="newsfeed_no_action">Немає активності поблизу цієї позиції</string>
     <string name="newsfeed_tab_events_no_items">Немає подій поблизу.</string>
 
-    
+    <!--SRING MAP -->
     <string name="map_filter_title">ФІЛЬТРИ</string>
     <string name="map_filter_entourage_type_title">Види дії</string>
     <string name="map_filter_time_title">Оновлено менше ніж</string>
@@ -2070,7 +2070,7 @@
     <string name="pre_onboard_button_connect">авторизуватися</string>
     <string name="pre_onboard_button_next">Слідую</string>
 
-    
+    <!-- Carousel -->
     <string name="bt_previous">Попередній</string>
     <string name="bt_pass">Пас</string>
 
@@ -2085,7 +2085,7 @@
     <string name="pre_onboard_choice_login">У мене вже є обліковий запис</string>
     <string name="pre_onboard_choice_signup">Я реєструюся</string>
 
-    
+    <!-- ONBOARDING -->
 
     <string name="onboard_button_pass">Пас</string>
     <string name="onboard_welcome_sub">Перш за все d\…\nЯк тебе звати?</string>
@@ -2163,13 +2163,13 @@
     <string name="onboard_photo_description">Останній штрих: ви можете додати своє фото. Члени Entourage у вашому районі не можуть дочекатися зустрічі з вами!</string>
     <string name="onboard_photo_bt_take_photo">Щоб сфотографувати</string>
     <string name="onboard_photo_bt_take_gallery">Імпортувати з галереї</string>
-    <string name="onboard_waiting_dialog" />
+    <string name="onboard_waiting_dialog"></string>
 
     <string name="take_photo_title">Додати фото?</string>
     <string name="take_photo_description">З фотографією одразу стає приємніше.\nПокажіть нам свою найтеплішу усмішку.</string>
 
 
-    
+    <!-- Onboarding Asso -->
 
     <string name="onboard_asso_start_title">Добре !</string>
     <string name="onboard_asso_start_description">Entourage - це асоціація, яка обслуговує вашу діяльність.</string>
@@ -2198,7 +2198,7 @@
     <string name="onboard_asso_activity_choice_4">інші ?</string>
     <string name="onboard_asso_search">дослідження</string>
 
-    
+    <!-- Onboarding SDF -->
     <string name="onboard_sdf_activity_title">%s, що ви шукаєте?</string>
     <string name="onboard_sdf_activity_description">Кілька можливих варіантів.\nЄ тисячі способів\отримати підтримку та допомогу.</string>
     <string name="onboard_sdf_activity_choice_1">Додайте мене до кола друзів \</string>
@@ -2208,7 +2208,7 @@
     <string name="onboard_sdf_activity_choice_5">Зорієнтуватися</string>
     <string name="onboard_sdf_activity_choice_6">Знайдіть \асоціації</string>
 
-    
+    <!-- Onboarding Neighbour -->
     <string name="onboard_neighbour_activity_title">%s, що ви хочете зробити у своєму районі?</string>
     <string name="onboard_neighbour_activity_description">Можливі кілька варіантів.\nМи зробимо для вас відповідні пропозиції.</string>
     <string name="onboard_neighbour_activity_choice_1">Повідом мене</string>
@@ -2316,11 +2316,11 @@
 
     <string name="user_view_profile">Перегляд профілю</string>
 
-    
+    <!-- Edit Association -->
     <string name="user_edit_asso_title">ПІДТРИМУЙТЕСЯ</string>
     <string name="user_edit_asso_search_hint">Пошук асоціації</string>
 
-    
+    <!-- Photo wizard -->
     <string name="user_photo_choose_description_title">Додати фото?</string>
     <string name="user_photo_choose_description">З фотографією одразу стає приємніше.\nПокажіть нам свою найтеплішу усмішку.</string>
     <string name="user_photo_choose_photo">Виберіть фото</string>
@@ -2335,13 +2335,13 @@
     <string name="user_photo_error_read_permission">Скасування: програма не має необхідних дозволів</string>
     <string name="user_photo_uploading">Надсилання фото</string>
 
-    
+    <!-- User Edit About -->
     <string name="user_edit_about_description">@string/user_about_hint</string>
     <string name="user_edit_about_hint">Щось написати…</string>
     <string name="user_edit_about_save_button">@string/validate</string>
     <string name="user_edit_about_error">Ваш текст має містити менше 200 символів.</string>
 
-    
+    <!-- User Report -->
     <string name="user_report_explanation">Ви повідомите про цього користувача нашим адміністраторам.</string>
     <string name="user_report_reason">Будь ласка, вкажіть, чому\ви повідомляєте про цю особу:</string>
     <string name="user_report_reason_hint">Щось написати…</string>
@@ -2352,7 +2352,7 @@
     <string name="delete_success_send">Видалення зроблено</string>
     <string name="user_report_error_forbidden_group">Ви ще не є частиною цієї групи</string>
 
-    
+    <!-- Action zone -->
     <string name="user_action_zone_title">Установіть зону дії d\</string>
     <string name="user_action_zone_description">Entourage корисний, оскільки він локальний!\nЩоб отримувати персоналізовані рекомендації поблизу, укажіть місце, біля якого ви хочете діяти.</string>
     <string name="user_action_zone_description2">Адреса - може бути приблизною</string>
@@ -2362,7 +2362,7 @@
     <string name="user_action_zone_send_ok">Адреса зареєстрована</string>
     <string name="user_action_zone_send_failed">Адреса L\ n\' не зареєстрована</string>
 
-    
+    <!-- Edit profile -->
     <string name="profile_edit_zone_title">Де ти хочеш виступати?</string>
     <string name="profile_edit_zone_description">Entourage — це соціальна мережа!\nВідкрийте для себе ініціативи солідарності у вашому районі та налагодьте зв’язки зі своїми сусідами</string>
     <string name="profile_action_not_selected">«Режим дії не вибрано</string>
@@ -2504,7 +2504,7 @@
     <string name="pop_up_rugby_france_title">Давайте переживемо Кубок світу з регбі разом</string>
     <string name="pop_up_rugby_france_content">Найкращі зустрічі не обов&amp;apos;язково відбуваються на стадіоні! Приєднуйтесь до групи \ «Давайте разом займатися спортом\»</string>
 
-    
+    <!-- New Home string -->
     <string name="home_v2_title">Програма L\, яка відтворює зв’язки між сусідами</string>
 
     <string name="home_v2_title_action">Дайте поштовх</string>
@@ -2631,13 +2631,13 @@
     <string name="newsfeed_tab_events_no_items_button"><u>Знайти більше подій Entourage тут</u></string>
     <string name="pre_onboard_choice_about"><u>Хто така асоціація Entourage?</u></string>
     <string name="onboard_sms_help"><u>Потрібна допомога?\nЗверніться до команди Entourage.</u></string>
-    <string name="outing_message_card_updated_author">%1$s &lt;b&gt;змінив(ла)&lt;/b&gt; &lt;font color=\"%2$s\"&gt;похід&lt;/font&gt;:</string>
+    <string name="outing_message_card_updated_author"><![CDATA[%1$s <b>змінив(ла)</b> <font color=\"%2$s\">похід</font>:]]></string>
     <string name="create_action_wizard_p1_description">Чи створюєте ви цю акцію солідарності <b>для ідентифікованої особи, не вас:</b> друга у скрутному становищі, людини, з якою ви зустрілися на вулиці?</string>
     <string name="create_action_wizard_p2_description">Чи отримали ви <b>згоду цієї особи</b> на розповсюдження цієї акції за них в Entourage?</string>
     <string name="menu_info_social">Щоб відчути <b>ще більше солідарності</b>, слідкуйте за Entourage у ваших мережах!</string>
     <string name="map_filter_entourage_demand_text"><b>Переглянути запити стосовно:</b></string>
     <string name="map_filter_entourage_contribution_text"><b>Переглянути внески стосовно:</b></string>
-    <string name="custom_dialog_action_content_one_contrib">Чи завершилася ваша діяльність \"&lt;b&gt;%1$s&lt;/b&gt;\"?</string>
+    <string name="custom_dialog_action_content_one_contrib">Чи завершилася ваша діяльність \"<![CDATA[<b>%1$s</b>]]>\"?</string>
     <string name="search_member_hint">Шукати члена</string>
     <string name="terms_and_conditions_html">Натискаючи &lt;b&gt;Далі&lt;/b&gt;, ви погоджуєтеся з &lt;a href=\'https://www.entourage.social/terms/\'&gt;Умовами користування&lt;/a&gt; та &lt;a href=\'https://www.entourage.social/privacy-policy/\'&gt;Політикою конфіденційності&lt;/a&gt;</string>
     <string name="action_crete_cat_about">Шукаєте можливість запропонувати %s, яке не вписується в жодну з цих категорій? Здається, що \ не має місця в мережі, але ви завжди можете</string>
@@ -2678,4 +2678,4 @@
     <string name="text_title_i_like">Подобається</string>
     <string name="text_title_comment">Коментувати</string>
 
-<string name="phone_code">TO TRANSLATE</string><string name="country_name_and_code">TO TRANSLATE</string><string name="country_afghanistan_number">TO TRANSLATE</string><string name="country_albania_number">TO TRANSLATE</string><string name="country_algeria_number">TO TRANSLATE</string><string name="country_andorra_number">TO TRANSLATE</string><string name="country_angola_number">TO TRANSLATE</string><string name="country_argentina_number">TO TRANSLATE</string><string name="country_armenia_number">TO TRANSLATE</string><string name="country_australia_number">TO TRANSLATE</string><string name="country_austria_number">TO TRANSLATE</string></resources>
+</resources>
