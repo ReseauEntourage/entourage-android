@@ -1,6 +1,8 @@
 package social.entourage.android.onboarding.login
 
+import android.app.Activity
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.text.Html
@@ -22,6 +24,7 @@ import social.entourage.android.onboarding.pre_onboarding.PreOnboardingChoiceAct
 import social.entourage.android.tools.hideKeyboard
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.view.CustomProgressDialog
+import java.util.Locale
 
 class LoginActivity : BaseActivity() {
 
@@ -98,6 +101,17 @@ class LoginActivity : BaseActivity() {
 
     }
 
+    fun changeLocale(activity: Activity, locale: Locale) {
+        val resources = activity.resources
+        val configuration = resources.configuration
+        configuration.setLocale(locale)
+        resources.updateConfiguration(configuration, resources.displayMetrics)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            activity.applicationContext.createConfigurationContext(configuration)
+        }
+    }
+
     /********************************
      * Methods
      ********************************/
@@ -156,6 +170,8 @@ class LoginActivity : BaseActivity() {
 
         var isValidate = true
         var message = ""
+        Log.wtf("wtf", "phone: $phoneNumber " + phoneNumber.length)
+
         if (phoneNumber.length < minimumPhoneCharacters) {
             isValidate = false
             message =
@@ -231,7 +247,6 @@ class LoginActivity : BaseActivity() {
         AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ACTION_LOGIN_SUBMIT)
         OnboardingAPI.getInstance().login(phone, codePwd) { isOK, loginResponse, error ->
             isLoading = false
-            Log.wtf("wtf", "isOK: $isOK")
             if (isOK) {
                 AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ACTION_LOGIN_SUCCESS)
                 loginResponse?.let {
