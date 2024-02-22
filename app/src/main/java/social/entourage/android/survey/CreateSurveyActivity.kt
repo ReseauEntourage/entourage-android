@@ -69,10 +69,10 @@ class CreateSurveyActivity: BaseActivity() {
         // Vérifie si c'est un sondage pour un groupe ou un événement et appelle la méthode correspondante
         when {
             groupId != null && groupId != 0 -> {
-                surveyPresenter.createSurveyInGroup(groupId!!, content, choices, true) // `true` pour multiple si tu veux permettre des réponses multiples
+                surveyPresenter.createSurveyInGroup(groupId!!, content, choices, binding.switchMultipleChoice.isActivated) // `true` pour multiple si tu veux permettre des réponses multiples
             }
             eventId != null && eventId != 0 -> {
-                surveyPresenter.createSurveyInEvent(eventId!!, content, choices, true)
+                surveyPresenter.createSurveyInEvent(eventId!!, content, choices, binding.switchMultipleChoice.isActivated)
             }
             else -> {
                 Toast.makeText(this, "Erreur: Identifiant de groupe ou d'événement non spécifié.", Toast.LENGTH_LONG).show()

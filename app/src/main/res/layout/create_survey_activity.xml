@@ -152,6 +152,29 @@
                 android:layout_marginEnd="30dp"
                 android:fontFamily="@font/nunitosans_regular"
                 android:textSize="15sp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/tv_title_multiple_choice"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/edit_text_option_5"
+                android:fontFamily="@font/quicksand_bold"
+                android:textSize="15sp"
+                android:textColor="@color/black"
+                android:text="@string/title_switch_mutiple_choice"
+                android:layout_marginTop="30dp"
+                android:layout_marginStart="20dp"/>
+            <Switch
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/switch_multiple_choice"
+                app:layout_constraintTop_toTopOf="@+id/tv_title_multiple_choice"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_title_multiple_choice"
+                app:layout_constraintStart_toEndOf="@+id/tv_title_multiple_choice"
+                android:layout_marginStart="60dp"
+                android:thumbTint="@color/switch_selector"
+                android:trackTint="@color/switch_selector"/>
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
     <androidx.constraintlayout.widget.Guideline

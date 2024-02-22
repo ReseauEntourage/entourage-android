@@ -171,16 +171,32 @@ class PostAdapter(
 
                             // Gestion du clic sur l'icône de vérification
                             binding.parent.setOnClickListener {
+                                // Si l'option est actuellement non sélectionnée et va être sélectionnée
+                                val previouslySelected = isSelected
                                 isSelected = !isSelected
-                                if (isSelected) {
-                                    // Si actuellement sélectionné, montre l'icône non sélectionnée et mets à jour l'état
-                                    binding.uiIvCheck.setImageResource(R.drawable.new_bg_unselected_filter)
+                                val newSummary = if (isSelected) summary + 1 else summary - 1 // Corrige la logique d'ajustement
+                                val newTotalResponses = if (previouslySelected) totalResponses - 1 else totalResponses + 1 // Assure que le total des réponses est correctement ajusté
+
+                                // Met à jour l'affichage
+                                binding.tvNumberAnswer.text = "$newSummary"
+                                val newProgress = if (newTotalResponses > 0) (newSummary * 100 / newTotalResponses) else 0
+                                binding.progressBar3.progress = newProgress
+
+                                if (survey.multiple) {
+                                    val iconRes = if (isSelected) R.drawable.new_bg_selected_filter else R.drawable.new_bg_unselected_filter
+                                    binding.uiIvCheck.setImageResource(iconRes)
                                 } else {
-                                    // Si actuellement non sélectionné, montre l'icône sélectionnée et mets à jour l'état
-                                    binding.uiIvCheck.setImageResource(R.drawable.new_bg_selected_filter)
+                                    // Désélectionne toutes les autres options pour les sondages à choix unique
+                                    listOf(surveyHolder.binding.choiceOne, surveyHolder.binding.choiceTwo, surveyHolder.binding.choiceThree, surveyHolder.binding.choiceFour, surveyHolder.binding.choiceFive).forEach {
+                                        it.uiIvCheck.setImageResource(R.drawable.new_bg_unselected_filter)
+                                    }
+                                    // Sélectionne cette option si elle vient d'être sélectionnée
+                                    if (isSelected) {
+                                        binding.uiIvCheck.setImageResource(R.drawable.new_bg_selected_filter)
+                                    }
                                 }
-                                // Met à jour le modèle de données ou la structure de gestion de l'état pour refléter le changement
                             }
+
                         }
                     }
 
