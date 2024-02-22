@@ -60,6 +60,7 @@ import social.entourage.android.profile.myProfile.InterestsAdapter
 import social.entourage.android.report.DataLanguageStock
 import social.entourage.android.report.ReportModalFragment
 import social.entourage.android.report.ReportTypes
+import social.entourage.android.survey.CreateSurveyActivity
 import social.entourage.android.tools.image_viewer.ImageDialogActivity
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.utils.Const
@@ -94,7 +95,7 @@ class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface {
     private var allPostsList: MutableList<Post> = ArrayList()
 
     private val speedDialMenuAdapter = object : SpeedDialMenuAdapter() {
-        override fun getCount(): Int = 2
+        override fun getCount(): Int = 3
         override fun getMenuItem(context: Context, position: Int): SpeedDialMenuItem =
             when (position) {
                 0 -> SpeedDialMenuItem(
@@ -103,6 +104,11 @@ class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface {
                     getString(R.string.create_post)
                 )
                 1 -> SpeedDialMenuItem(
+                    context,
+                    R.drawable.ic_survey_bar,
+                    getString(R.string.create_survey)
+                )
+                2 -> SpeedDialMenuItem(
                     context,
                     R.drawable.new_create_event,
                     getString(R.string.create_event)
@@ -122,6 +128,14 @@ class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface {
                     createAPost()
                 }
                 1 -> {
+                    AnalyticsEvents.logEvent(
+                        AnalyticsEvents.ACTION_GROUP_FEED_NEW_EVENT
+                    )
+                    val intent = Intent(context, CreateSurveyActivity::class.java)
+                    intent.putExtra(Const.GROUP_ID, groupId)
+                    startActivity(intent)
+                }
+                2 -> {
                     AnalyticsEvents.logEvent(
                         AnalyticsEvents.ACTION_GROUP_FEED_NEW_EVENT
                     )

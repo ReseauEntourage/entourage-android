@@ -222,6 +222,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="category_name_label">Décrivez en un mot la catégorie de votre groupe</string>
     <string name="pass">Passer</string>
     <string name="create_post">Créer une publication</string>
+    <string name="create_survey">Créer un sondage</string>
     <string name="create_event">Créer un événement sur le groupe</string>
     <string name="create_event_if_no_event">Créer un événement</string>
     <string name="create_event_btn_title">Créer un événement</string>

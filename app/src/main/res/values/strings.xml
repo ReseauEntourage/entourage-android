@@ -223,6 +223,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="category_name_label">Décrivez en un mot la catégorie de votre groupe</string>
     <string name="pass">Passer</string>
     <string name="create_post">Créer une publication</string>
+    <string name="create_survey">Créer un sondage</string>
     <string name="create_event">Créer un événement sur le groupe</string>
     <string name="create_event_if_no_event">Créer un événement</string>
     <string name="create_event_btn_title">Créer un événement</string>
@@ -2685,6 +2686,23 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="see_member_react">Personnes ayant réagi</string>
     <string name="text_title_i_like">J\'aime</string>
     <string name="text_title_comment">Commenter</string>
+    <string name="text_title_votes">Voir les votes</string>
+
+    <!--    CREATE SURVEY-->
+    <string name="header_title_create_survey">Créer un sondage</string>
+    <string name="create_question_title">Ecrire votre question</string>
+    <string name="create_question_hint">Ecrivez votre question</string>
+    <string name="create_option_title">Ecrire les options</string>
+    <string name="create_option_hint">Ecrivez votre option</string>
+    <string name="title_switch_mutiple_choice">Plusieurs réponses possibles</string>
+    <string name="btn_survey_validate">Valider</string>
+    <string name="btn_survey_cancel">Annuler</string>
+    <string name="popup_survey_title">Attention</string>
+    <string name="popup_survey_content">Si vous quittez la création de sondage, toutes les informations saisies seront perdues</string>
+    <string name="popup_survey_btn_leave">Quitter</string>
+    <string name="popup_survey_btn_cancel">Annuler</string>
+
+
 
 </resources>
 

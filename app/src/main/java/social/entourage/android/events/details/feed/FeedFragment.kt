@@ -440,8 +440,7 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface {
                 this.event?.member,
                 ::openCommentPage,
                 ::openReportFragment,
-                ::openImageFragment
-            )
+                ::openImageFragment)
             (binding.postsNewRecyclerview.adapter as? PostAdapter)?.initiateList()
 
 

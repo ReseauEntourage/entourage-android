@@ -37,6 +37,8 @@ class Post(
     @SerializedName("reaction_id")
     var reactionId: Int? = null,
     val idInternal: UUID? = null,
+    @SerializedName("survey")
+    val survey: Survey? = null,
 ) {
     var datePostText = ""
     var isDatePostOnly = false
@@ -50,3 +52,13 @@ class Post(
         return "Post(id=$id, content=$content, user=$user, createdTime=$createdTime, messageType=$messageType, postId=$postId, hasComments=$hasComments, commentsCount=$commentsCount, imageUrl=$imageUrl, read=$read)"
     }
 }
+
+
+data class Survey(
+    @SerializedName("choices")
+    val choices: List<String>,
+    @SerializedName("multiple")
+    val multiple: Boolean,
+    @SerializedName("summary")
+    val summary: List<Int>
+)
