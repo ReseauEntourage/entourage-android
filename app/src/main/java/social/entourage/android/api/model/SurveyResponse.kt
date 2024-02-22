@@ -19,6 +19,7 @@ data class SurveyResponsesListWrapper(
 
 data class ChatMessageSurvey(
     val content: String,
+    @SerializedName("survey_attributes")
     val surveyAttributes: SurveyAttributes? = null
 )
 

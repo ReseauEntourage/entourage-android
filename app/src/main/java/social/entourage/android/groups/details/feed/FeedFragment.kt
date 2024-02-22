@@ -132,6 +132,7 @@ class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface {
                         AnalyticsEvents.ACTION_GROUP_FEED_NEW_EVENT
                     )
                     val intent = Intent(context, CreateSurveyActivity::class.java)
+                    isFromCreation = true
                     intent.putExtra(Const.GROUP_ID, groupId)
                     startActivity(intent)
                 }
