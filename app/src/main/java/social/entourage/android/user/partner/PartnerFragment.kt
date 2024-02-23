@@ -11,7 +11,6 @@ import androidx.appcompat.app.AlertDialog
 import androidx.collection.ArrayMap
 import androidx.core.content.res.ResourcesCompat
 import com.bumptech.glide.Glide
-import kotlinx.android.synthetic.main.layout_view_title.view.*
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
@@ -111,8 +110,8 @@ class PartnerFragment : BaseDialogFragment() {
     }
 
     fun configureViews() {
-        binding.userTitleLayout.title_text?.text = requireActivity().resources.getString(R.string.title_association)
-        binding.userTitleLayout.title_close_button?.setOnClickListener {dismiss()}
+        binding.userTitleLayout.binding.titleText.text = requireActivity().resources.getString(R.string.title_association)
+        binding.userTitleLayout.binding.titleCloseButton.setOnClickListener {dismiss()}
 
         partner?.let { partner ->
             binding.uiAssoTvTitle.text = partner.name
