@@ -62,8 +62,8 @@ android {
         }
     }
 
-    compileSdk = 33
-    buildToolsVersion = "33.0.1"
+    compileSdk = 34
+    buildToolsVersion = "34.0.0"
 
     val localTestAccountLogin = "\"" + (System.getenv("TEST_ACCOUNT_LOGIN") ?: "") + "\""
     val localTestAccountPwd = "\"" + (System.getenv("TEST_ACCOUNT_PWD") ?: "") + "\""
@@ -77,7 +77,7 @@ android {
         resourceConfigurations += listOf("en", "fr", "de", "pl", "es","uk", "ro")
 
         minSdk = 23 /*November 2015: Android 6.0, MarshMallow*/
-        targetSdk = 33
+        targetSdk = 34
 
         // Making either of these two values dynamic in the defaultConfig will
         // require a full APK build and reinstallation because the AndroidManifest.xml
@@ -156,8 +156,6 @@ android {
             applicationIdSuffix = ".debug"
             //firebaseCrashlytics.mappingFileUploadEnabled = false
             //optimizing build speed
-            splits.abi.isEnable = false
-            splits.density.isEnable = false
             aaptOptions.cruncherEnabled = false
             /*FirebasePerformance {
                 // Set this flag to "false" to disable @AddTrace annotation processing and
@@ -273,7 +271,7 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-intents:3.5.1")
     androidTestImplementation("androidx.test.uiautomator:uiautomator:2.2.0")
 
-    androidTestImplementation("com.jakewharton.espresso:okhttp3-idling-resource:1.0.0")
+    //androidTestImplementation("com.jakewharton.espresso:okhttp3-idling-resource:1.0.0")
     //,exclude: [group: "com.squareup.okhttp3"                    ]
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test:runner:1.5.2")
