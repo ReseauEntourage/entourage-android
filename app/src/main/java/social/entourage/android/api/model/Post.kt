@@ -39,6 +39,8 @@ class Post(
     val idInternal: UUID? = null,
     @SerializedName("survey")
     val survey: Survey? = null,
+    @SerializedName("survey_response")
+    var surveyResponse: MutableList<Boolean>? = mutableListOf(),
 ) {
     var datePostText = ""
     var isDatePostOnly = false
@@ -56,9 +58,9 @@ class Post(
 
 data class Survey(
     @SerializedName("choices")
-    val choices: List<String>,
+    var choices: List<String>,
     @SerializedName("multiple")
-    val multiple: Boolean,
+    var multiple: Boolean,
     @SerializedName("summary")
-    val summary: List<Int>
+    var summary: List<Int>
 )
