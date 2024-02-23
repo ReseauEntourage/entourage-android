@@ -206,8 +206,7 @@ dependencies {
 
     //TODO check why annotation:1.6 needs kotlin 1.8
     implementation("androidx.annotation:annotation:1.5.0")
-    //TODO check why alpha02 needs kotlin 1.8
-    implementation("androidx.appcompat:appcompat:1.7.0-alpha01")
+    implementation("androidx.appcompat:appcompat:1.7.0-alpha03")
     implementation("androidx.browser:browser:1.5.0")
     implementation("androidx.cardview:cardview:1.0.0")
     implementation("androidx.coordinatorlayout:coordinatorlayout:1.2.0")
@@ -218,7 +217,7 @@ dependencies {
     implementation("androidx.preference:preference-ktx:1.2.0")
 
     //implementation devDependencies.values()
-    implementation("net.danlew:android.joda:2.12.1")
+    //implementation("net.danlew:android.joda:2.12.5")
     implementation("com.squareup:tape:1.2.3")
     implementation("com.jakewharton.timber:timber:5.0.1")
 
@@ -293,7 +292,6 @@ dependencies {
     implementation("androidx.navigation:navigation-ui-ktx:2.5.3")
     implementation("uk.co.markormesher:android-fab:2.5.0")
     implementation("com.github.IntruderShanky:Sectioned-RecyclerView:2.1.1")
-    implementation("com.github.mmin18:realtimeblurview:1.2.1")
 
     implementation("com.airbnb.android:lottie:5.2.0")
     implementation("com.github.armcha:AutoLinkTextViewV2:3.0.0")
@@ -301,7 +299,5 @@ dependencies {
     //photoview to click and zoom
     implementation("com.github.chrisbanes:PhotoView:2.3.0")
     implementation("androidx.transition:transition:1.4.1") // Remplacez 'x.x.x' par la dernière version disponible.
-    implementation("androidx.core:core-splashscreen:1.0.1")
     implementation("com.google.android.play:core:1.10.0")
-
 }
