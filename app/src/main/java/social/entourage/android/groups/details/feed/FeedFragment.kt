@@ -47,6 +47,7 @@ import social.entourage.android.api.model.Tags
 import social.entourage.android.api.model.notification.Reaction
 import social.entourage.android.comment.PostAdapter
 import social.entourage.android.comment.ReactionInterface
+import social.entourage.android.comment.SurveyInteractionListener
 import social.entourage.android.databinding.NewFragmentFeedBinding
 import social.entourage.android.events.create.CreateEventActivity
 import social.entourage.android.groups.GroupModel
@@ -74,7 +75,8 @@ import kotlin.math.abs
 
 const val rotationDegree = 135F
 
-class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface {
+class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface,
+    SurveyInteractionListener {
 
     private var _binding: NewFragmentFeedBinding? = null
     val binding: NewFragmentFeedBinding get() = _binding!!
@@ -535,6 +537,7 @@ class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface {
         binding.postsNewRecyclerview.adapter = PostAdapter(
             requireContext(),
             this,
+            this,
             newPostsList,
             this.group?.member,
             ::openCommentPage,
@@ -547,6 +550,7 @@ class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface {
         binding.postsOldRecyclerview.layoutManager = LinearLayoutManager(requireContext())
         binding.postsOldRecyclerview.adapter = PostAdapter(
             requireContext(),
+            this,
             this,
             oldPostsList,
             this.group?.member,
@@ -833,6 +837,14 @@ class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface {
     }
     companion object {
         var isFromCreation = false
+    }
+
+    override fun onSurveyOptionClicked(postId: Int, surveyResponse: MutableList<Boolean>) {
+       Toast.makeText(requireContext(), "Survey option clicked", Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onDeleteSurveyClick(postId: Int, surveyResponse: MutableList<Boolean>) {
+        Toast.makeText(requireContext(), "Survey option deleted", Toast.LENGTH_SHORT).show()
     }
 }
 

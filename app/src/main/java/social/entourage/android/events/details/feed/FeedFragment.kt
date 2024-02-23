@@ -52,6 +52,7 @@ import social.entourage.android.api.model.toEventUi
 import social.entourage.android.comment.CommentsListAdapter
 import social.entourage.android.comment.PostAdapter
 import social.entourage.android.comment.ReactionInterface
+import social.entourage.android.comment.SurveyInteractionListener
 import social.entourage.android.databinding.NewFragmentFeedEventBinding
 import social.entourage.android.events.EventsPresenter
 import social.entourage.android.events.details.SettingsModalFragment
@@ -79,7 +80,8 @@ import java.text.SimpleDateFormat
 import java.util.Locale
 import kotlin.math.abs
 
-class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface {
+class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
+    SurveyInteractionListener {
 
     private var _binding: NewFragmentFeedEventBinding? = null
     val binding: NewFragmentFeedEventBinding get() = _binding!!
@@ -436,6 +438,7 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface {
         binding.postsNewRecyclerview.adapter = PostAdapter(
                 requireContext(),
                 this,
+                this,
                 newPostsList,
                 this.event?.member,
                 ::openCommentPage,
@@ -447,6 +450,7 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface {
         binding.postsOldRecyclerview.layoutManager = LinearLayoutManager(requireContext())
         binding.postsOldRecyclerview.adapter = PostAdapter(
                 requireContext(),
+            this,
             this,
                 oldPostsList,
                 this.event?.member,
@@ -804,5 +808,15 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface {
             return
         }
         eventPresenter.deleteReactToPost(eventId,post.id!!)
+    }
+
+    override fun onSurveyOptionClicked(postId: Int, surveyResponse: MutableList<Boolean>) {
+        Toast.makeText(requireContext(), "Survey option clicked", Toast.LENGTH_SHORT).show()
+
+    }
+
+    override fun onDeleteSurveyClick(postId: Int, surveyResponse: MutableList<Boolean>) {
+        Toast.makeText(requireContext(), "Survey option deleted", Toast.LENGTH_SHORT).show()
+
     }
 }

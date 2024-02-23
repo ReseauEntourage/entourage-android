@@ -29,6 +29,7 @@ import social.entourage.android.EntourageApplication
 import social.entourage.android.MainActivity
 import social.entourage.android.R
 import social.entourage.android.api.model.Post
+import social.entourage.android.api.model.Survey
 import social.entourage.android.api.model.notification.Reaction
 import social.entourage.android.api.model.notification.ReactionType
 import social.entourage.android.databinding.NewLayoutPostBinding
@@ -43,6 +44,10 @@ import social.entourage.android.tools.utils.px
 import java.text.SimpleDateFormat
 import java.util.*
 
+interface SurveyInteractionListener {
+    fun onSurveyOptionClicked(postId: Int, surveyResponse: MutableList<Boolean>)
+    fun onDeleteSurveyClick(postId: Int, surveyResponse: MutableList<Boolean>)
+}
 interface ReactionInterface{
     fun onReactionClicked(postId: Post, reactionId: Int)
     fun seeMemberReaction(post: Post)
@@ -51,6 +56,7 @@ interface ReactionInterface{
 class PostAdapter(
     var context:Context,
     var reactionCallback: ReactionInterface,
+    var surveyCallback: SurveyInteractionListener,
     var postsList: List<Post>,
     var isMember: Boolean? = false,
     var onClick: (Post, Boolean) -> Unit,
@@ -58,6 +64,7 @@ class PostAdapter(
     var onClickImage: (imageUrl:String, postId:Int) -> Unit,
     ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private val translationExceptions = mutableSetOf<Int>()
+    private val localSurveyResponseState: MutableMap<Int, MutableList<Boolean>> = mutableMapOf()
 
     companion object {
         const val TYPE_POST = 0
@@ -119,35 +126,33 @@ class PostAdapter(
                 TYPE_SURVEY -> {
                     val surveyHolder = holder as SurveyViewHolder
                     val post = postsList[position]
-                    val user = post.user
 
-                    // Peuple les informations de l'auteur du sondage
-                    surveyHolder.binding.name.text = user?.displayName ?: "Nom inconnu"
-                    user?.avatarURLAsString?.let { avatarUrl ->
-                        Glide.with(context)
-                            .load(avatarUrl)
-                            .placeholder(R.drawable.placeholder_user) // Mettez une placeholder par défaut
-                            .error(R.drawable.placeholder_user) // Image à afficher en cas d'erreur
-                            .circleCrop() // Pour arrondir l'image
-                            .into(surveyHolder.binding.image)
-                    } ?: run {
-                        // Dans le cas où il n'y a pas d'URL pour l'avatar, utiliser une image par défaut
-                        Glide.with(context)
-                            .load(R.drawable.placeholder_user)
-                            .circleCrop()
-                            .into(surveyHolder.binding.image)
+                    val localState = localSurveyResponseState.getOrPut(post.id ?: position) {
+                        post.surveyResponse ?: post.survey?.choices?.map { false }?.toMutableList() ?: mutableListOf()
                     }
 
+                    // Création d'une copie locale de summary pour ajustements
+                    val localSummary = post.survey?.summary?.toMutableList() ?: mutableListOf()
 
+                    surveyHolder.binding.name.text = post.user?.displayName ?: "Nom inconnu"
+                    Glide.with(context)
+                        .load(post.user?.avatarURLAsString ?: R.drawable.placeholder_user)
+                        .placeholder(R.drawable.placeholder_user)
+                        .error(R.drawable.placeholder_user)
+                        .circleCrop()
+                        .into(surveyHolder.binding.image)
 
-                    // Peuple la question du sondage si disponible
                     surveyHolder.binding.surveyQuestion.text = post.content ?: "Question non disponible"
 
-                    // Initialisation des choix de sondage
-                    val survey = post.survey
-                    val totalResponses = survey?.summary?.sum() ?: 0 // Calcul du total des réponses pour calculer les pourcentages
-                    survey?.choices?.forEachIndexed { index, choice ->
-                        val choiceBinding = when (index) {
+                    val survey = post.survey ?: return@with
+                    listOf(surveyHolder.binding.choiceOne, surveyHolder.binding.choiceTwo, surveyHolder.binding.choiceThree, surveyHolder.binding.choiceFour, surveyHolder.binding.choiceFive).forEachIndexed { index, choiceBinding ->
+                        if (index >= survey.choices.size) {
+                            choiceBinding.parent.visibility = View.GONE
+                        }
+                    }
+
+                    survey.choices.forEachIndexed { index, choice ->
+                        val binding = when (index) {
                             0 -> surveyHolder.binding.choiceOne
                             1 -> surveyHolder.binding.choiceTwo
                             2 -> surveyHolder.binding.choiceThree
@@ -156,59 +161,56 @@ class PostAdapter(
                             else -> null
                         }
 
-                        choiceBinding?.let { binding ->
-                            binding.parent.visibility = View.VISIBLE
-                            binding.tvQuestionSurvey.text = choice
-                            // Met à jour la ProgressBar et le nombre de réponses
-                            val summary = survey.summary.getOrNull(index) ?: 0
-                            val progress = if (totalResponses > 0) (summary * 100 / totalResponses) else 0
-                            binding.progressBar3.progress = progress
-                            binding.tvNumberAnswer.text = "$summary"
+                        binding?.let {
+                            it.parent.visibility = View.VISIBLE
+                            it.tvQuestionSurvey.text = choice
+                            val isSelected = localState.getOrNull(index) ?: false
+                            it.uiIvCheck.setImageResource(if (isSelected) R.drawable.new_bg_selected_filter else R.drawable.new_bg_unselected_filter)
 
-                            // Initialiser avec l'icône non sélectionnée ou en fonction de l'état actuel
-                            binding.uiIvCheck.setImageResource(R.drawable.new_bg_unselected_filter)
-                            var isSelected = false // Cet état doit être récupéré ou calculé en fonction de tes données
+                            // Utilisation de localSummary pour l'UI
+                            val choiceResponses = localSummary.getOrNull(index) ?: 0
+                            val totalResponses = localSummary.sum()
+                            val progress = if (totalResponses > 0) (choiceResponses * 100 / totalResponses) else 0
+                            it.progressBar3.progress = progress
+                            it.tvNumberAnswer.text = "$choiceResponses"
 
-                            // Gestion du clic sur l'icône de vérification
-                            binding.parent.setOnClickListener {
-                                // Si l'option est actuellement non sélectionnée et va être sélectionnée
-                                val previouslySelected = isSelected
-                                isSelected = !isSelected
-                                val newSummary = if (isSelected) summary + 1 else summary - 1 // Corrige la logique d'ajustement
-                                val newTotalResponses = if (previouslySelected) totalResponses - 1 else totalResponses + 1 // Assure que le total des réponses est correctement ajusté
-
-                                // Met à jour l'affichage
-                                binding.tvNumberAnswer.text = "$newSummary"
-                                val newProgress = if (newTotalResponses > 0) (newSummary * 100 / newTotalResponses) else 0
-                                binding.progressBar3.progress = newProgress
-
+                            it.parent.setOnClickListener {
+                                val wasSelected = localState[index]
                                 if (survey.multiple) {
-                                    val iconRes = if (isSelected) R.drawable.new_bg_selected_filter else R.drawable.new_bg_unselected_filter
-                                    binding.uiIvCheck.setImageResource(iconRes)
+                                    // Logique pour sondages à choix multiples
+                                    localState[index] = !wasSelected
+                                    if (localState[index]) {
+                                        localSummary[index] = localSummary.getOrNull(index)?.plus(1) ?: 1
+                                    } else {
+                                        localSummary[index] = (localSummary.getOrNull(index)?.minus(1))?.coerceAtLeast(0) ?: 0
+                                    }
                                 } else {
-                                    // Désélectionne toutes les autres options pour les sondages à choix unique
-                                    listOf(surveyHolder.binding.choiceOne, surveyHolder.binding.choiceTwo, surveyHolder.binding.choiceThree, surveyHolder.binding.choiceFour, surveyHolder.binding.choiceFive).forEach {
-                                        it.uiIvCheck.setImageResource(R.drawable.new_bg_unselected_filter)
+                                    // Logique pour sondages à choix unique
+                                    val previouslySelectedIndex = localState.indexOf(true) // Trouve l'ancienne réponse sélectionnée
+                                    if (previouslySelectedIndex != -1) {
+                                        // Décrémente l'ancienne réponse si elle existe
+                                        localSummary[previouslySelectedIndex] = (localSummary[previouslySelectedIndex] - 1).coerceAtLeast(0)
+                                        localState[previouslySelectedIndex] = false
                                     }
-                                    // Sélectionne cette option si elle vient d'être sélectionnée
-                                    if (isSelected) {
-                                        binding.uiIvCheck.setImageResource(R.drawable.new_bg_selected_filter)
-                                    }
+                                    // Sélectionne la nouvelle réponse
+                                    localState.fill(false) // Désélectionne toutes les réponses
+                                    localState[index] = true // Sélectionne la nouvelle réponse
+                                    localSummary[index] = localSummary.getOrNull(index)?.plus(1) ?: 1
                                 }
-                            }
 
-                        }
-                    }
+                                // Mise à jour de l'UI pour tous les choix après ajustement
+                                survey.choices.forEachIndexed { choiceIndex, _ ->
+                                    updateSurveyUI(surveyHolder, choiceIndex, survey, localState, localSummary)
+                                }
 
-                    // Assure-toi de cacher les choix excédentaires si le sondage en contient moins que le nombre de choix préparés
-                    if (survey?.choices?.size ?: 0 < 5) {
-                        listOf(surveyHolder.binding.choiceOne, surveyHolder.binding.choiceTwo, surveyHolder.binding.choiceThree, surveyHolder.binding.choiceFour, surveyHolder.binding.choiceFive).forEachIndexed { index, choiceBinding ->
-                            if (index >= (survey?.choices?.size ?: 0)) {
-                                choiceBinding.parent.visibility = View.GONE
+                                surveyCallback.onSurveyOptionClicked(post.id ?: 0, localState)
                             }
                         }
+
                     }
                 }
+
+
 
                 TYPE_POST -> {
                     val binding = (holder as ViewHolder).binding
@@ -560,6 +562,86 @@ class PostAdapter(
 
         }
     }
+
+    fun updateUIForAllChoices(surveyHolder: SurveyViewHolder, survey: Survey?, localState: MutableList<Boolean>) {
+        survey?.choices?.forEachIndexed { index, _ ->
+            val binding = when (index) {
+                0 -> surveyHolder.binding.choiceOne
+                1 -> surveyHolder.binding.choiceTwo
+                2 -> surveyHolder.binding.choiceThree
+                3 -> surveyHolder.binding.choiceFour
+                4 -> surveyHolder.binding.choiceFive
+                else -> null
+            }
+            binding?.let {
+                val isSelected = localState.getOrNull(index) ?: false
+                it.uiIvCheck.setImageResource(if (isSelected) R.drawable.new_bg_selected_filter else R.drawable.new_bg_unselected_filter)
+
+                // Recalcul des valeurs pour la progress bar et le nombre de votes
+                val totalResponses = localState.count { it }
+                val summary = if (isSelected) 1 else 0 // Simplification pour l'exemple, ajustez selon votre logique
+                val progress = if (totalResponses > 0) (summary * 100 / totalResponses) else 0
+
+                it.progressBar3.progress = progress
+                it.tvNumberAnswer.text = "$summary"
+            }
+        }
+    }
+    private fun updateSurveyUI(surveyHolder: SurveyViewHolder, index: Int, survey: Survey, localState: MutableList<Boolean>, localSummary: List<Int>) {
+        val binding = when (index) {
+            0 -> surveyHolder.binding.choiceOne
+            1 -> surveyHolder.binding.choiceTwo
+            2 -> surveyHolder.binding.choiceThree
+            3 -> surveyHolder.binding.choiceFour
+            4 -> surveyHolder.binding.choiceFive
+            else -> null
+        }
+
+        binding?.let {
+            val isSelected = localState.getOrNull(index) ?: false
+            it.uiIvCheck.setImageResource(if (isSelected) R.drawable.new_bg_selected_filter else R.drawable.new_bg_unselected_filter)
+
+            // Utilise les totaux ajustés de localSummary pour l'affichage
+            val choiceResponses = localSummary.getOrNull(index) ?: 0
+            val totalResponses = localSummary.sum()
+            val progress = if (totalResponses > 0) (choiceResponses * 100 / totalResponses) else 0
+
+            it.progressBar3.progress = progress
+            it.tvNumberAnswer.text = "$choiceResponses"
+            it.parent.visibility = View.VISIBLE
+        }
+    }
+
+
+
+    fun adjustSurveyTotalsBasedOnLocalState(survey: Survey, localState: MutableList<Boolean>, previousLocalState: MutableList<Boolean>): List<Int> {
+        // Copie les totaux originaux pour ne pas les modifier directement
+        val adjustedSummary = survey.summary.toMutableList()
+
+        // Parcourt l'état local pour ajuster les totaux
+        localState.forEachIndexed { index, isSelected ->
+            val wasSelected = previousLocalState[index]
+            if (isSelected && !wasSelected) {
+                // Si l'option est maintenant sélectionnée mais ne l'était pas avant, incrémente le total
+                adjustedSummary[index] = adjustedSummary[index] + 1
+            } else if (!isSelected && wasSelected) {
+                // Si l'option était sélectionnée mais ne l'est plus, décrémente le total
+                // en veillant à ne pas aller en dessous de zéro
+                adjustedSummary[index] = (adjustedSummary[index] - 1).coerceAtLeast(0)
+            }
+        }
+
+        // Met à jour le précédent état local pour refléter l'état actuel après ajustement
+        previousLocalState.clear()
+        previousLocalState.addAll(localState)
+
+        return adjustedSummary
+    }
+
+
+
+
+
     private fun handleReactionClick(post: Post, reactionType: ReactionType) {
         val currentUserReactionId = post.reactionId ?: 0
         val isSameReaction = currentUserReactionId == reactionType.id
