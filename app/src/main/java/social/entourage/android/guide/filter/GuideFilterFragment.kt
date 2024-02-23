@@ -5,10 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
-import kotlinx.android.synthetic.main.fragment_guide_filter.*
-import kotlinx.android.synthetic.main.layout_view_title.*
 import social.entourage.android.R
 import social.entourage.android.base.BaseDialogFragment
+import social.entourage.android.databinding.FragmentGuideFilterBinding
 import social.entourage.android.guide.GuideMapFragment
 import social.entourage.android.guide.poi.PoiRenderer
 import social.entourage.android.tools.log.AnalyticsEvents
@@ -18,7 +17,8 @@ import social.entourage.android.tools.log.AnalyticsEvents.ACTION_GUIDE_SUBMITFIL
  * Guide Filter Fragment
  */
 class GuideFilterFragment : BaseDialogFragment() {
-    // ----------------------------------
+    private var _binding: FragmentGuideFilterBinding? = null
+    val binding: FragmentGuideFilterBinding get() = _binding!!    // ----------------------------------
     // Attributes
     // ----------------------------------
     private var items = ArrayList<GuideFilterAdapter.GuideFilterItem>()
@@ -32,18 +32,17 @@ class GuideFilterFragment : BaseDialogFragment() {
     // ----------------------------------
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        super.onCreateView(inflater, container, savedInstanceState)
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_guide_filter, container, false)
+        _binding = FragmentGuideFilterBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initializeFiltersList()
-        title_close_button?.setOnClickListener {  dismiss() }
-        bottom_action_button?.setOnClickListener { onValidateClicked() }
+        binding.entourageTitleView.binding.titleCloseButton.setOnClickListener {  dismiss() }
+        binding.bottomActionButton.setOnClickListener { onValidateClicked() }
 
-        ui_bt_cancel?.setOnClickListener {
+        binding.uiBtCancel.setOnClickListener {
             setAllFiltersOn()
             initializeFiltersList()
         }
@@ -52,7 +51,7 @@ class GuideFilterFragment : BaseDialogFragment() {
     // ----------------------------------
     // Buttons handling
     // ----------------------------------
-    fun onValidateClicked() {
+    private fun onValidateClicked() {
         // Save the filter
         items.forEach { filterItem ->
             GuideFilter.instance.setValueForCategoryId(filterItem.categoryType.categoryId, filterItem.isChecked)
@@ -88,8 +87,8 @@ class GuideFilterFragment : BaseDialogFragment() {
         updateButtonText()
 
         val linearLayoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-        ui_recyclerView?.setHasFixedSize(true)
-        ui_recyclerView?.layoutManager = linearLayoutManager
+        binding.uiRecyclerView.setHasFixedSize(true)
+        binding.uiRecyclerView.layoutManager = linearLayoutManager
 
         adapterRV = FilterGuideRVAdapter(requireContext(),items,
                 isPartnersTmpSelected,isDonationsTmpSelected,
@@ -139,22 +138,22 @@ class GuideFilterFragment : BaseDialogFragment() {
             adapterRV?.updateDatas(items,isPartnersTmpSelected,isDonationsTmpSelected,isVolunteersTmpSelected,isDefaultFilters())
             updateButtonText()
         })
-        ui_recyclerView?.adapter = adapterRV
+        binding.uiRecyclerView.adapter = adapterRV
     }
 
-    fun updateButtonText() {
-        if (isDefaultFilters()) {
-            bottom_action_button?.text = "Voir tout"
+    private fun updateButtonText() {
+        binding.bottomActionButton.text = if (isDefaultFilters()) {
+            "Voir tout"
         }
         else {
-            bottom_action_button?.text = getString(R.string.validate)
+            getString(R.string.validate)
         }
     }
 
     /*****
      * Methods for filters
      */
-    fun isDefaultFilters(): Boolean {
+    private fun isDefaultFilters(): Boolean {
 
         var isDefault = true
 
@@ -171,7 +170,7 @@ class GuideFilterFragment : BaseDialogFragment() {
         return isDefault
     }
 
-    fun setAllFiltersOn() {
+    private fun setAllFiltersOn() {
         for (item in items) {
             item.isChecked = true
         }
@@ -180,7 +179,7 @@ class GuideFilterFragment : BaseDialogFragment() {
         isVolunteersTmpSelected = false
     }
 
-    fun setAllFiltersOff(position:Int) {
+    private fun setAllFiltersOff(position:Int) {
         for (item in items) {
             item.isChecked = false
         }
@@ -210,7 +209,7 @@ class GuideFilterFragment : BaseDialogFragment() {
         }
     }
 
-    fun setupFilters() {
+    private fun setupFilters() {
         items = ArrayList()
         for (i in 1 until PoiRenderer.CategoryType.values().size) {
             val categoryType = PoiRenderer.CategoryType.values()[i]

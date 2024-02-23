@@ -31,7 +31,7 @@ class CustomTitleView : RelativeLayout {
     private fun init(attrs: AttributeSet?, defStyle: Int) {
         //View.inflate(context, R.layout.layout_view_title, this)
         _binding = LayoutViewTitleBinding.inflate(
-            LayoutInflater.from(context)
+            LayoutInflater.from(context), this, true
         )
 
         // Load attributes
