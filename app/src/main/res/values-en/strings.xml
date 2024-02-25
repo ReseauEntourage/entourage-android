@@ -977,8 +977,8 @@
     <string name="login_change_phone_old_phone_placeholder">Old phone number</string>
     <string name="login_change_phone_new_phone">New phone number</string>
     <string name="login_change_phone_new_phone_placeholder">New phone number</string>
-    <string name="login_change_phone_email">Email adress (optional)</string>
-    <string name="login_change_phone_email_placeholder">Email adress</string>
+    <string name="login_change_phone_email">Email address (optional)</string>
+    <string name="login_change_phone_email_placeholder">Email address</string>
     <string name="login_change_phone_bt_validate">Send</string>
     <string name="login_change_phone_send_ok">Your request has been sent.\n\n\nEntourage support team will notify you when the phone number change has been completed.</string>
     <string name="login_change_phone_bt_return">Back</string>
