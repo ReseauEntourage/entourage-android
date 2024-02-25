@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentSender
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
@@ -302,7 +303,11 @@ class MainActivity : BaseSecuredActivity() {
             sharedPref.edit()
                 .putBoolean(EntourageApplication.KEY_NOTIFICATIONS_ENABLED, false)
                 .apply()
-            requestNotificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                requestNotificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+            } else {
+                //TODO
+            }
         } else {
             storePushNotificationPermision()
         }
