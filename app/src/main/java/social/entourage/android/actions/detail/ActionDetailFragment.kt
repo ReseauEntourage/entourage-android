@@ -6,7 +6,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.SpannableString
 import android.text.style.UnderlineSpan
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -25,33 +24,27 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
-import com.google.gson.Gson
-import kotlinx.android.synthetic.main.new_home_card.description
 import social.entourage.android.R
-import social.entourage.android.api.MetaDataRepository
-import social.entourage.android.databinding.NewFragmentActionDetailBinding
 import social.entourage.android.actions.ActionsPresenter
 import social.entourage.android.actions.create.CreateActionActivity
-import social.entourage.android.discussions.DetailConversationActivity
-import social.entourage.android.discussions.DiscussionsPresenter
-import social.entourage.android.groups.details.rules.GroupRulesActivity
 import social.entourage.android.api.model.Action
 import social.entourage.android.api.model.ActionSection
 import social.entourage.android.api.model.ActionUtils
 import social.entourage.android.api.model.Conversation
-import social.entourage.android.language.LanguageManager
+import social.entourage.android.databinding.NewFragmentActionDetailBinding
+import social.entourage.android.discussions.DetailConversationActivity
+import social.entourage.android.discussions.DiscussionsPresenter
+import social.entourage.android.groups.details.rules.GroupRulesActivity
 import social.entourage.android.report.DataLanguageStock
 import social.entourage.android.report.ReportModalFragment
 import social.entourage.android.report.ReportTypes
 import social.entourage.android.tools.displayDistance
-import social.entourage.android.user.UserProfileActivity
+import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.CustomAlertDialog
-import social.entourage.android.tools.utils.px
-import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.utils.Utils.enableCopyOnLongClick
-import timber.log.Timber
-import java.text.SimpleDateFormat
+import social.entourage.android.tools.utils.px
+import social.entourage.android.user.UserProfileActivity
 
 class ActionDetailFragment : Fragment(), OnMapReadyCallback {
     private var _binding: NewFragmentActionDetailBinding? = null

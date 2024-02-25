@@ -4,20 +4,14 @@ import android.net.Uri
 import android.os.Build
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.GranularRoundedCorners
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-import com.bumptech.glide.request.RequestOptions
-import kotlinx.android.synthetic.main.new_home_card.view.icon_card
 import social.entourage.android.R
-import social.entourage.android.api.model.Events
 import social.entourage.android.api.model.Help
 import social.entourage.android.api.model.Summary
 import social.entourage.android.databinding.HomeV2HelpItemLayoutBinding
-import social.entourage.android.tools.utils.px
 
 interface OnHomeV2HelpItemClickListener{
     fun onItemClick(position:Int, moderatorId:Int)

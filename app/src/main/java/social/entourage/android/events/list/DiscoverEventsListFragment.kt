@@ -2,7 +2,6 @@ package social.entourage.android.events.list
 
 import android.content.Context
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -16,18 +15,14 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.new_header_bottom_sheet.view.view
-import kotlinx.coroutines.launch
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
+import social.entourage.android.api.model.EventActionLocationFilters
+import social.entourage.android.api.model.Events
 import social.entourage.android.databinding.NewFragmentDiscoverEventsListBinding
 import social.entourage.android.events.EventFiltersActivity
 import social.entourage.android.events.EventsPresenter
-import social.entourage.android.api.model.EventActionLocationFilters
-import social.entourage.android.api.model.Events
-import social.entourage.android.api.request.HomeRequest
 import social.entourage.android.homev2.HomeEventAdapter
-import social.entourage.android.tools.utils.Utils
 import social.entourage.android.tools.log.AnalyticsEvents
 
 const val EVENTS_PER_PAGE = 20

@@ -27,7 +27,7 @@ class MembersListAdapter(
     private var reactionList: List<ReactionType>,
     private var onItemShowListener: OnItemShowListener,
 
-) : RecyclerView.Adapter<MembersListAdapter.ViewHolder>() {
+    ) : RecyclerView.Adapter<MembersListAdapter.ViewHolder>() {
 
     inner class ViewHolder(val binding: NewGroupMemberItemBinding) :
         RecyclerView.ViewHolder(binding.root)
