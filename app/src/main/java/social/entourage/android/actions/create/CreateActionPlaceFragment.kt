@@ -3,27 +3,26 @@ package social.entourage.android.actions.create
 import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
-import kotlinx.android.synthetic.main.fragment_select_place.*
-import kotlinx.android.synthetic.main.layout_view_title.view.*
 import social.entourage.android.R
 import social.entourage.android.user.edit.place.UserActionPlaceFragment
 
 class CreateActionPlaceFragment : UserActionPlaceFragment() {
+
     private val viewModel: CommunicationActionHandlerViewModel by activityViewModels()
 
     override fun setupViews() {
         super.setupViews()
-        ui_onboard_place_tv_title?.text = getString(R.string.action_create_location_title, if (viewModel.isDemand) getString(R.string.action_name_demand) else getString(R.string.action_name_contrib))
-        ui_onboard_place_tv_info?.text = getString(R.string.action_create_location_subtitle)
+        binding.uiOnboardPlaceTvTitle.text = getString(R.string.action_create_location_title, if (viewModel.isDemand) getString(R.string.action_name_demand) else getString(R.string.action_name_contrib))
+        binding.uiOnboardPlaceTvInfo.text = getString(R.string.action_create_location_subtitle)
 
-        edit_place_title_layout?.setTitle("")
+        binding.editPlaceTitleLayout.setTitle("")
 
-        ui_onboard_phone_tv_info2?.visibility = View.INVISIBLE
-        edit_place_title_layout?.visibility = View.VISIBLE
-        edit_place_title_layout?.title_action_button?.setOnClickListener {
+        binding.uiOnboardPhoneTvInfo2.visibility = View.INVISIBLE
+        binding.editPlaceTitleLayout.visibility = View.VISIBLE
+        binding.editPlaceTitleLayout.binding.titleActionButton.setOnClickListener {
             validate()
         }
-        edit_place_title_layout?.title_close_button?.setOnClickListener {
+        binding.editPlaceTitleLayout.binding.titleCloseButton.setOnClickListener {
             dismiss()
             findNavController().popBackStack()
         }
@@ -35,7 +34,7 @@ class CreateActionPlaceFragment : UserActionPlaceFragment() {
             this?.latitude = userAddress?.latitude
             this?.longitude = userAddress?.longitude
             this?.googlePlaceId = userAddress?.googlePlaceId ?: ""
-            //TODO check if palcename had a utility on back before removing it
+            //TODO check if placename had a utility on back before removing it
             //this?.placeName = userAddress?.displayAddress ?: ""
             this?.placeName = ""
         }

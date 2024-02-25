@@ -7,8 +7,6 @@ import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
-import kotlinx.android.synthetic.main.fragment_select_place.*
-import kotlinx.android.synthetic.main.layout_view_title.view.*
 import social.entourage.android.EntourageApplication
 import social.entourage.android.MainActivity
 import social.entourage.android.R
@@ -47,14 +45,14 @@ class UserEditActionZoneFragment : UserActionPlaceFragment() {
             AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_VIEW_PROFILE_ACTION_ZONE)
         }
 
-        ui_onboard_place_tv_title?.text = getString(R.string.profile_edit_zone_title)
-        ui_onboard_place_tv_info?.text = getString(R.string.profile_edit_zone_description)
+        binding.uiOnboardPlaceTvTitle.text = getString(R.string.profile_edit_zone_title)
+        binding.uiOnboardPlaceTvInfo.text = getString(R.string.profile_edit_zone_description)
 
-        edit_place_title_layout?.visibility = View.VISIBLE
-        edit_place_title_layout?.title_action_button?.setOnClickListener {
+        binding.editPlaceTitleLayout.visibility = View.VISIBLE
+        binding.editPlaceTitleLayout.binding.titleActionButton.setOnClickListener {
             sendNetwork()
         }
-        edit_place_title_layout?.title_close_button?.setOnClickListener {
+        binding.editPlaceTitleLayout.binding.titleCloseButton.setOnClickListener {
             dismiss()
             if (isAdded && view != null) {
                 findNavController().popBackStack()

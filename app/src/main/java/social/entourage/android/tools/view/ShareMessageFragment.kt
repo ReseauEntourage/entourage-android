@@ -7,15 +7,18 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_share_message.*
-import kotlinx.android.synthetic.main.layout_view_title.*
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.api.MessageSharingAPI
 import social.entourage.android.api.model.SharingEntourage
 import social.entourage.android.base.BaseDialogFragment
+import social.entourage.android.databinding.FragmentShareMessageBinding
 import social.entourage.android.entourage.ShareEntourageAdapter
 
 class ShareMessageFragment : BaseDialogFragment() {
+    private var _binding: FragmentShareMessageBinding? = null
+    val binding: FragmentShareMessageBinding get() = _binding!!
+
     private var uuid = ""
     private var isPoi = false
 
@@ -35,7 +38,8 @@ class ShareMessageFragment : BaseDialogFragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
 
-        return inflater.inflate(R.layout.fragment_share_message, container, false)
+        _binding = FragmentShareMessageBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -43,7 +47,7 @@ class ShareMessageFragment : BaseDialogFragment() {
 
         ui_button_validate_share_entourage?.visibility = View.GONE
 
-        title_close_button?.setOnClickListener {
+        binding.inviteContactsNavigationLayout.binding.titleCloseButton.setOnClickListener {
             dismiss()
         }
 
