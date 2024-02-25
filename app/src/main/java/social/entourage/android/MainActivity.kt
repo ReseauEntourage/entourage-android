@@ -17,7 +17,6 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.os.bundleOf
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
@@ -29,14 +28,10 @@ import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.UpdateAvailability
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.gson.Gson
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import social.entourage.android.actions.create.CreateActionActivity
 import social.entourage.android.api.MetaDataRepository
 import social.entourage.android.api.model.notification.PushNotificationMessage
-import social.entourage.android.api.model.notification.ReactionType
+import social.entourage.android.api.model.ReactionType
 import social.entourage.android.base.BaseSecuredActivity
 import social.entourage.android.base.location.EntLocation
 import social.entourage.android.deeplinks.UniversalLinkManager
@@ -50,7 +45,6 @@ import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.user.UserPresenter
 import social.entourage.android.user.UserProfileActivity
-import timber.log.Timber
 
 class MainActivity : BaseSecuredActivity() {
     private lateinit var navController: NavController

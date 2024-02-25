@@ -6,10 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.MutableLiveData
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import kotlinx.android.synthetic.main.new_fragment_settings_notifs.*
 import social.entourage.android.databinding.NewFragmentSettingsNotifsBinding
 import social.entourage.android.home.HomePresenter
-import social.entourage.android.api.model.InAppNotificationPermission
+import social.entourage.android.api.model.notification.InAppNotificationPermission
 
 class SettingsNotificationsFragment : BottomSheetDialogFragment() {
 

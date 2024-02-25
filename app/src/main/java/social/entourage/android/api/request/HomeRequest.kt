@@ -4,8 +4,8 @@ import com.google.gson.annotations.SerializedName
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.*
-import social.entourage.android.api.model.InAppNotification
-import social.entourage.android.api.model.InAppNotificationPermission
+import social.entourage.android.api.model.notification.InAppNotification
+import social.entourage.android.api.model.notification.InAppNotificationPermission
 import social.entourage.android.api.model.Pedago
 import social.entourage.android.api.model.Summary
 import social.entourage.android.api.model.*

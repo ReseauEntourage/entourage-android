@@ -5,33 +5,29 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
-import android.graphics.Bitmap
 import android.os.Build
 import android.os.Handler
 import android.os.Looper
 import android.text.SpannableString
 import android.text.Spanned
-import android.text.method.LinkMovementMethod
 import android.text.style.UnderlineSpan
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.graphics.drawable.toBitmap
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.google.gson.Gson
-import kotlinx.android.synthetic.main.layout_question_survey.view.ui_iv_check
 import social.entourage.android.EntourageApplication
 import social.entourage.android.MainActivity
 import social.entourage.android.R
 import social.entourage.android.api.model.Post
 import social.entourage.android.api.model.Survey
-import social.entourage.android.api.model.notification.Reaction
-import social.entourage.android.api.model.notification.ReactionType
+import social.entourage.android.api.model.Reaction
+import social.entourage.android.api.model.ReactionType
 import social.entourage.android.databinding.NewLayoutPostBinding
 import social.entourage.android.databinding.SurveyLayoutBinding
 import social.entourage.android.language.LanguageManager
@@ -42,7 +38,6 @@ import social.entourage.android.user.UserProfileActivity
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.px
 import java.text.SimpleDateFormat
-import java.util.*
 
 interface SurveyInteractionListener {
     fun onSurveyOptionClicked(postId: Int, surveyResponse: MutableList<Boolean>)
