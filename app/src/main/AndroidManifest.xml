@@ -52,7 +52,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:localeConfig="@xml/locales_config"
-        android:dataExtractionRules="@xml/data_extraction_rules"
         >
 
 
