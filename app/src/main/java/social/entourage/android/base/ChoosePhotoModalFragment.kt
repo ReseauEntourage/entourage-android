@@ -233,6 +233,7 @@ class ChoosePhotoModalFragment : BottomSheetDialogFragment() {
             try {
                 if(binding.cropView.isOffFrame()){
                     Toast.makeText(activity, R.string.user_photo_error_zoom_in, Toast.LENGTH_SHORT)
+                        .show()
                 }else{
                     binding.cropView.crop()
                 }

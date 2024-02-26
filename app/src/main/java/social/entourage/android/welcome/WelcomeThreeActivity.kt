@@ -12,10 +12,6 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
-import kotlinx.android.synthetic.main.new_contrib_item.view.*
-import kotlinx.android.synthetic.main.new_demand_item.view.*
-import kotlinx.android.synthetic.main.new_event_item.view.*
-import kotlinx.android.synthetic.main.new_event_item.view.information
 import social.entourage.android.MainActivity
 import social.entourage.android.R
 import social.entourage.android.actions.ActionsPresenter

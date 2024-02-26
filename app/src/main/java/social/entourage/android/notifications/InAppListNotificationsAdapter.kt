@@ -13,9 +13,8 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import kotlinx.android.synthetic.main.new_notif_detail.view.*
 import social.entourage.android.R
-import social.entourage.android.api.model.InAppNotification
+import social.entourage.android.api.model.notification.InAppNotification
 import social.entourage.android.tools.utils.Utils
-import timber.log.Timber
 
 interface OnItemClick {
     fun onItemClick(notif: InAppNotification, position:Int)

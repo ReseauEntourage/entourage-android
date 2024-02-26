@@ -1,4 +1,4 @@
-package social.entourage.android.api.model
+package social.entourage.android.api.model.notification
 
 import com.google.gson.annotations.SerializedName
 

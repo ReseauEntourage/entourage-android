@@ -4,7 +4,6 @@ import android.util.Log
 import androidx.collection.ArrayMap
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.google.gson.Gson
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -23,8 +22,8 @@ import social.entourage.android.events.list.EVENTS_PER_PAGE
 import social.entourage.android.home.UnreadMessages
 import social.entourage.android.api.model.Events
 import social.entourage.android.api.model.Post
-import social.entourage.android.api.model.notification.CompleteReactionsResponse
-import social.entourage.android.api.model.notification.ReactionWrapper
+import social.entourage.android.api.model.CompleteReactionsResponse
+import social.entourage.android.api.model.ReactionWrapper
 import timber.log.Timber
 import java.io.File
 import java.io.IOException

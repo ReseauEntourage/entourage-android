@@ -17,7 +17,6 @@ import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.fragment_onboarding_phase2.*
 import kotlinx.android.synthetic.main.fragment_onboarding_phase2.tv_condition_generales
 import social.entourage.android.R

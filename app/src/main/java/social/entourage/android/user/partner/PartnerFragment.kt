@@ -17,7 +17,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
-import social.entourage.android.databinding.FragmentPartnerV2Binding
+import social.entourage.android.databinding.FragmentPartnerBinding
 import social.entourage.android.api.model.Partner
 import social.entourage.android.api.request.PartnerResponse
 import social.entourage.android.base.BaseDialogFragment
@@ -29,7 +29,7 @@ class PartnerFragment : BaseDialogFragment() {
     private var partner: Partner? = null
     private var partnerId:Int? = null
 
-    private var _binding: FragmentPartnerV2Binding? = null
+    private var _binding: FragmentPartnerBinding? = null
     // This property is only valid between onCreateView and onDestroyView.
     private val binding get() = _binding!!
 
@@ -43,7 +43,7 @@ class PartnerFragment : BaseDialogFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        _binding = FragmentPartnerV2Binding.inflate(inflater, container, false)
+        _binding = FragmentPartnerBinding.inflate(inflater, container, false)
         return binding.root
     }
 
