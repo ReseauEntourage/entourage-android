@@ -143,14 +143,16 @@
         android:background="@color/light_grey"
         />
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/tv_title_i_like"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:id="@+id/tv_title_who_vote"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/separator_layout"
         android:layout_marginTop="15dp"
         style="@style/left_courant_black"
+        android:textAlignment="center"
+        android:gravity="center"
         android:text="@string/text_title_votes"
         />
 

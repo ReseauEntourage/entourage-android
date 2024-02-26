@@ -3,6 +3,7 @@ package social.entourage.android.survey
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import social.entourage.android.R
@@ -69,10 +70,10 @@ class CreateSurveyActivity: BaseActivity() {
         // Vérifie si c'est un sondage pour un groupe ou un événement et appelle la méthode correspondante
         when {
             groupId != null && groupId != 0 -> {
-                surveyPresenter.createSurveyInGroup(groupId!!, content, choices, binding.switchMultipleChoice.isActivated) // `true` pour multiple si tu veux permettre des réponses multiples
+                surveyPresenter.createSurveyInGroup(groupId!!, content, choices, binding.switchMultipleChoice.isChecked)
             }
             eventId != null && eventId != 0 -> {
-                surveyPresenter.createSurveyInEvent(eventId!!, content, choices, binding.switchMultipleChoice.isActivated)
+                surveyPresenter.createSurveyInEvent(eventId!!, content, choices, binding.switchMultipleChoice.isChecked)
             }
             else -> {
                 Toast.makeText(this, "Erreur: Identifiant de groupe ou d'événement non spécifié.", Toast.LENGTH_LONG).show()

@@ -47,6 +47,7 @@ import java.util.*
 interface SurveyInteractionListener {
     fun onSurveyOptionClicked(postId: Int, surveyResponse: MutableList<Boolean>)
     fun onDeleteSurveyClick(postId: Int, surveyResponse: MutableList<Boolean>)
+    fun showParticipantWhoVote(postId: Int)
 }
 interface ReactionInterface{
     fun onReactionClicked(postId: Post, reactionId: Int)
@@ -145,6 +146,9 @@ class PostAdapter(
                         ).format(
                             it!!
                         )
+                    }
+                    surveyHolder.binding.tvTitleWhoVote.setOnClickListener {
+                        surveyCallback.showParticipantWhoVote(post.id ?: 0)
                     }
 
                     // Création d'une copie locale de summary pour ajustements

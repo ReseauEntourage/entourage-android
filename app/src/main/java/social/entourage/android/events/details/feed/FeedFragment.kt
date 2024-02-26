@@ -66,6 +66,7 @@ import social.entourage.android.profile.myProfile.InterestsAdapter
 import social.entourage.android.report.DataLanguageStock
 import social.entourage.android.report.ReportModalFragment
 import social.entourage.android.report.ReportTypes
+import social.entourage.android.survey.SurveyPresenter
 import social.entourage.android.tools.calculateIfEventPassed
 import social.entourage.android.tools.image_viewer.ImageDialogActivity
 import social.entourage.android.tools.log.AnalyticsEvents
@@ -87,6 +88,7 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
     val binding: NewFragmentFeedEventBinding get() = _binding!!
 
     private val eventPresenter: EventsPresenter by lazy { EventsPresenter() }
+    private val surveyPresenter: SurveyPresenter by lazy { SurveyPresenter() }
     private var interestsList: ArrayList<String> = ArrayList()
     private var eventId = Const.DEFAULT_VALUE
     private var event: Events? = null
@@ -120,6 +122,8 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
         eventPresenter.isUserParticipating.observe(viewLifecycleOwner, ::handleParticipateResponse)
         eventPresenter.getAllPosts.observe(viewLifecycleOwner, ::handleResponseGetEventPosts)
         eventPresenter.getMembers.observe(viewLifecycleOwner, ::handleResponseGetMembers)
+        surveyPresenter.isSurveyVoted.observe(requireActivity(), ::handleSurveyPostResponse)
+
         handleSwipeRefresh()
         handleMembersButton()
         fragmentResult()
@@ -503,6 +507,18 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
 
     }
 
+    private fun handleSurveyPostResponse(success: Boolean) {
+        if(isAdded){
+            if (success){
+                showToast("Success sending survey")
+
+            }else{
+                showToast("Error sending survey")
+            }
+        }
+    }
+
+
     private fun openImageFragment(imageUrl:String, postId: Int) {
         val intent = Intent(requireContext(), ImageDialogActivity::class.java)
         intent.putExtra("postId", postId)
@@ -811,12 +827,14 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
     }
 
     override fun onSurveyOptionClicked(postId: Int, surveyResponse: MutableList<Boolean>) {
-        Toast.makeText(requireContext(), "Survey option clicked", Toast.LENGTH_SHORT).show()
-
+        surveyPresenter.postSurveyResponseGroup(eventId, postId, surveyResponse)
     }
 
     override fun onDeleteSurveyClick(postId: Int, surveyResponse: MutableList<Boolean>) {
         Toast.makeText(requireContext(), "Survey option deleted", Toast.LENGTH_SHORT).show()
+    }
 
+    override fun showParticipantWhoVote(postId: Int) {
+        TODO("Not yet implemented")
     }
 }

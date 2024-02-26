@@ -345,10 +345,10 @@ class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface,
     private fun handleSurveyPostResponse(success: Boolean) {
         if(isAdded){
             if (success){
-                showToast("Success sending survey")
+                //showToast("Réponse enregistrée !")
 
             }else{
-                showToast("Error sending survey")
+                showToast("Erreur lors de l'envoi du vote")
             }
         }
     }
@@ -856,7 +856,7 @@ class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface,
 
     override fun onSurveyOptionClicked(postId: Int, surveyResponse: MutableList<Boolean>) {
         val tempsActuel = System.currentTimeMillis()
-        if (tempsActuel - dernierClicTime > 1000) { // Délai d'1 seconde (1000 millisecondes)
+        if (tempsActuel - dernierClicTime > 50) { // Délai d'1 seconde (1000 millisecondes)
             dernierClicTime = tempsActuel
             surveyPresenter.postSurveyResponseGroup(groupId, postId, surveyResponse)
         } else {
@@ -867,6 +867,10 @@ class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface,
 
     override fun onDeleteSurveyClick(postId: Int, surveyResponse: MutableList<Boolean>) {
         Toast.makeText(requireContext(), "Survey option deleted", Toast.LENGTH_SHORT).show()
+    }
+
+    override fun showParticipantWhoVote(postId: Int) {
+        TODO("Not yet implemented")
     }
 }
 
