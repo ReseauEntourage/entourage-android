@@ -213,11 +213,10 @@
                                 android:text="@string/event_btn_share_title"
                                 android:textColor="@color/orange"
                                 android:background="@drawable/btn_shape_light_orange"
-                                android:drawableEnd="@drawable/share_icon"
                                 android:drawablePadding="16dp"
-                                android:drawableTint="@color/orange"
                                 app:layout_constraintEnd_toEndOf="parent"
-                                />
+                                app:drawableTint="@color/orange"
+                                app:drawableEndCompat="@drawable/share_icon" />
                         </androidx.constraintlayout.widget.ConstraintLayout>
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:layout_width="match_parent"
@@ -250,11 +249,10 @@
                                 android:text="@string/event_btn_share_title"
                                 android:textColor="@color/orange"
                                 android:background="@drawable/btn_share_more_radius_bckgrnd"
-                                android:drawableEnd="@drawable/share_icon"
                                 android:drawablePadding="16dp"
-                                android:drawableTint="@color/orange"
                                 app:layout_constraintEnd_toEndOf="parent"
-                                />
+                                app:drawableTint="@color/orange"
+                                app:drawableEndCompat="@drawable/share_icon" />
                         </androidx.constraintlayout.widget.ConstraintLayout>
 
 
