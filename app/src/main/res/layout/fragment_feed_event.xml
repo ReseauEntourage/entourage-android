@@ -372,7 +372,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="5dp"
                             android:visibility="gone"
-                            tools:text="Description du de l'événement à écrire ici Lorem ipsum
+                            tools:text="Description de l'événement à écrire ici Lorem ipsum
 Praesent pharetra ac nisi quis finibus. Curabitur
 purus dui, aliquet cursus tellus a, dictum hen." />
 

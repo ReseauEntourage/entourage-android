@@ -4,7 +4,6 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -29,11 +28,6 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
-import com.google.android.material.appbar.AppBarLayout
-import com.google.gson.Gson
-import kotlinx.android.synthetic.main.new_fragment_feed.view.arrow
-import kotlinx.android.synthetic.main.new_fragment_feed.view.empty_state_events_subtitle
-import kotlinx.android.synthetic.main.new_fragment_feed.view.subtitle
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -48,7 +42,7 @@ import social.entourage.android.api.model.Tags
 import social.entourage.android.comment.PostAdapter
 import social.entourage.android.comment.ReactionInterface
 import social.entourage.android.comment.SurveyInteractionListener
-import social.entourage.android.databinding.NewFragmentFeedBinding
+import social.entourage.android.databinding.FragmentFeedBinding
 import social.entourage.android.events.create.CreateEventActivity
 import social.entourage.android.groups.GroupModel
 import social.entourage.android.groups.GroupPresenter
@@ -78,8 +72,8 @@ const val rotationDegree = 135F
 class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface,
     SurveyInteractionListener {
 
-    private var _binding: NewFragmentFeedBinding? = null
-    val binding: NewFragmentFeedBinding get() = _binding!!
+    private var _binding: FragmentFeedBinding? = null
+    val binding: FragmentFeedBinding get() = _binding!!
     private val groupPresenter: GroupPresenter by lazy { GroupPresenter() }
     private var interestsList: ArrayList<String> = ArrayList()
     private var groupId = -1
@@ -233,7 +227,7 @@ class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface,
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        _binding = NewFragmentFeedBinding.inflate(inflater, container, false)
+        _binding = FragmentFeedBinding.inflate(inflater, container, false)
         AnalyticsEvents.logEvent(
             AnalyticsEvents.VIEW_GROUP_FEED_SHOW
         )
@@ -243,7 +237,6 @@ class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface,
     private fun setupNestedScrollViewScrollListener() {
         binding.nestSvFeedFragment.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { _, _, scrollY, _, oldScrollY ->
             if (scrollY > 0) {
-                Log.wtf("NestedScroll", "Scrolling in NestedScrollView")
                 // Ici, tu peux notifier ton RecyclerView adapter de cacher les éléments layoutReactions
                 hideReactionsInRecyclerView()
                 if (!binding.nestSvFeedFragment.canScrollVertically(1) && !isLoading) {
@@ -354,26 +347,26 @@ class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface,
     private fun handleCreatePostButton() {
         if (group?.member == true) {
             binding.createPost.show()
-            binding.eventsLayoutEmptyState.empty_state_events_subtitle.visibility = View.VISIBLE
-            binding.postsLayoutEmptyState.subtitle.visibility = View.VISIBLE
-            binding.postsLayoutEmptyState.arrow.visibility = View.VISIBLE
+            binding.emptyStateEventsSubtitle.visibility = View.VISIBLE
+            binding.subtitle.visibility = View.VISIBLE
+            binding.arrow.visibility = View.VISIBLE
         } else {
             binding.createPost.hide(true)
-            binding.eventsLayoutEmptyState.empty_state_events_subtitle.visibility = View.GONE
-            binding.postsLayoutEmptyState.subtitle.visibility = View.GONE
-            binding.postsLayoutEmptyState.arrow.visibility = View.GONE
+            binding.emptyStateEventsSubtitle.visibility = View.GONE
+            binding.subtitle.visibility = View.GONE
+            binding.arrow.visibility = View.GONE
         }
     }
 
     private fun handleImageViewAnimation() {
-        binding.appBar.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
+        binding.appBar.addOnOffsetChangedListener { appBarLayout, verticalOffset ->
             val res: Float =
                 abs(verticalOffset).toFloat() / appBarLayout.totalScrollRange
             binding.toolbarLayout.alpha = 1f - res
             binding.groupImageToolbar.alpha = res
             binding.groupNameToolbar.alpha = res
 
-        })
+        }
     }
 
     private fun createAPost(){
@@ -606,18 +599,17 @@ class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface,
         val meId = EntourageApplication.get().me()?.id
         val post = allPostsList.find { it.id == postId }
         val isFrome = meId == post?.user?.id?.toInt()
-        Log.wtf("wtf", "isFrome $isFrome")
         val fromLang = post?.contentTranslations?.fromLang
         if (fromLang != null) {
             DataLanguageStock.updatePostLanguage(fromLang)
         }
-        var description = allPostsList.find { it.id == postId }?.content ?: ""
+        val description = allPostsList.find { it.id == postId }?.content ?: ""
         val reportGroupBottomDialogFragment =
             group?.id?.let {
                 ReportModalFragment.newInstance(
                     postId,
                     it, ReportTypes.REPORT_POST,isFrome
-                ,false,false, contentCopied = description)
+                ,false, isOneToOne = false, contentCopied = description)
             }
         reportGroupBottomDialogFragment?.setCallback(this)
         reportGroupBottomDialogFragment?.show(parentFragmentManager, ReportModalFragment.TAG)
@@ -772,7 +764,7 @@ class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface,
         interestsList.clear()
         val groupInterests = group!!.interests
         tags?.interests?.forEach { interest ->
-            if (groupInterests.contains(interest.id)) interest.name?.let { it ->
+            if (groupInterests.contains(interest.id)) interest.name?.let {
                 interestsList.add(
                     it
                 )
