@@ -2702,7 +2702,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="popup_survey_btn_leave">Quitter</string>
     <string name="popup_survey_btn_cancel">Annuler</string>
     <string name="see_member_vote">Réponses au sondage</string>
-
+    <string name="activate_geoloc">Activez la localisation</string>
 
 
 </resources>
