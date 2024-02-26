@@ -1,23 +1,15 @@
 package social.entourage.android.onboarding.pre_onboarding
 
-import LanguageAdapter
-import android.app.Activity
-import android.content.Context
+import social.entourage.android.language.LanguageAdapter
 import android.content.Intent
 import android.os.Bundle
-import android.transition.TransitionManager
-import android.util.AttributeSet
-import android.view.View
-import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
-import kotlinx.android.synthetic.main.pre_onboarding_activity_layout.rv_langue
 import social.entourage.android.R
 import social.entourage.android.base.BaseActivity
 import social.entourage.android.databinding.PreOnboardingActivityLayoutBinding
 import social.entourage.android.language.LanguageItem
 import social.entourage.android.language.LanguageManager
 import social.entourage.android.language.OnLanguageClicked
-import social.entourage.android.user.UserPresenter
 import java.util.Locale
 
 class PreOnboardingLanguage:BaseActivity(), OnLanguageClicked {

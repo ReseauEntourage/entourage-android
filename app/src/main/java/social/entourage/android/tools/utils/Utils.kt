@@ -333,9 +333,10 @@ object Utils {
     fun saveBitmapToFileWithUrl(bitmap: Bitmap, uri: Uri , context: Context){
         val resolver = context.contentResolver
         val photoFile = createImageFile(context)
-        val outputStream = resolver.openOutputStream(uri)
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
-        outputStream?.close()
+        resolver.openOutputStream(uri)?.let { outputStream ->
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
+            outputStream.close()
+        }
     }
 
     @Throws(IOException::class)

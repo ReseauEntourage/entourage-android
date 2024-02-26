@@ -1,13 +1,12 @@
+package social.entourage.android.language
+
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import social.entourage.android.R
 import social.entourage.android.databinding.LanguageItemLayoutBinding
-import social.entourage.android.language.LanguageItem
-import social.entourage.android.language.OnLanguageClicked
 
 
 class LanguageAdapter(var context: Context, var callback: OnLanguageClicked) : RecyclerView.Adapter<LanguageAdapter.LanguageViewHolder>() {

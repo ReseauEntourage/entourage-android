@@ -12,7 +12,7 @@ import com.bumptech.glide.Glide
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.api.model.EntourageUser
-import social.entourage.android.api.model.notification.ReactionType
+import social.entourage.android.api.model.ReactionType
 import social.entourage.android.databinding.NewGroupMemberItemBinding
 import social.entourage.android.user.UserProfileActivity
 import social.entourage.android.tools.utils.Const
@@ -27,7 +27,7 @@ class MembersListAdapter(
     private var reactionList: List<ReactionType>,
     private var onItemShowListener: OnItemShowListener,
 
-) : RecyclerView.Adapter<MembersListAdapter.ViewHolder>() {
+    ) : RecyclerView.Adapter<MembersListAdapter.ViewHolder>() {
 
     inner class ViewHolder(val binding: NewGroupMemberItemBinding) :
         RecyclerView.ViewHolder(binding.root)

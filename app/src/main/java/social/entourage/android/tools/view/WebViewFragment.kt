@@ -273,19 +273,19 @@ class WebViewFragment : BaseDialogFragment() {
             return true
         }
 
-        override fun onFling(event1: MotionEvent, event2: MotionEvent,
+        override fun onFling(event1: MotionEvent?, event2: MotionEvent,
                              velocityX: Float, velocityY: Float): Boolean {
             // On fling down, dismiss the fragment
-            if (event2.rawY - event1.rawY > 0 && velocityY < 0 && handleFling) {
+            if (event2.rawY - (event1?.rawY ?: 0.0f) > 0 && velocityY < 0 && handleFling) {
                 dismiss()
                 return true
             }
             return false
         }
 
-        override fun onScroll(e1: MotionEvent, e2: MotionEvent, distanceX: Float, distanceY: Float): Boolean {
+        override fun onScroll(e1: MotionEvent?, e2: MotionEvent, distanceX: Float, distanceY: Float): Boolean {
             val translationY = webview_animated_layout?.translationY ?: return false
-            val deltaY = e2.rawY - e1.rawY
+            val deltaY = e2.rawY - (e1?.rawY ?: 0.0f)
             if (deltaY > 0) {
                 webview_animated_layout?.translationY = deltaY
             }

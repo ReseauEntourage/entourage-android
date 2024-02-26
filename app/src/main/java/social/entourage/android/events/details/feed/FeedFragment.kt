@@ -440,15 +440,15 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
 
         binding.postsNewRecyclerview.layoutManager = LinearLayoutManager(requireContext())
         binding.postsNewRecyclerview.adapter = PostAdapter(
-                requireContext(),
-                this,
-                this,
-                newPostsList,
-                this.event?.member,
-                ::openCommentPage,
-                ::openReportFragment,
-                ::openImageFragment)
-            (binding.postsNewRecyclerview.adapter as? PostAdapter)?.initiateList()
+            requireContext(),
+            this,
+            this,
+            newPostsList,
+            this.event?.member,
+            ::openCommentPage,
+            ::openReportFragment,
+            ::openImageFragment)
+        (binding.postsNewRecyclerview.adapter as? PostAdapter)?.initiateList()
 
 
         binding.postsOldRecyclerview.layoutManager = LinearLayoutManager(requireContext())

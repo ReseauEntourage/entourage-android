@@ -1,8 +1,6 @@
 package social.entourage.android.api.model
 
 import com.google.gson.annotations.SerializedName
-import social.entourage.android.api.model.notification.Reaction
-import social.entourage.android.api.model.notification.ReactionType
 import social.entourage.android.api.model.notification.Translation
 import java.text.SimpleDateFormat
 import java.util.*

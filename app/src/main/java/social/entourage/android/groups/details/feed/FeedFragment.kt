@@ -45,7 +45,6 @@ import social.entourage.android.api.MetaDataRepository
 import social.entourage.android.api.model.Group
 import social.entourage.android.api.model.Post
 import social.entourage.android.api.model.Tags
-import social.entourage.android.api.model.notification.Reaction
 import social.entourage.android.comment.PostAdapter
 import social.entourage.android.comment.ReactionInterface
 import social.entourage.android.comment.SurveyInteractionListener
@@ -54,7 +53,6 @@ import social.entourage.android.events.create.CreateEventActivity
 import social.entourage.android.groups.GroupModel
 import social.entourage.android.groups.GroupPresenter
 import social.entourage.android.groups.details.GroupDetailsFragment
-import social.entourage.android.groups.details.members.MembersFragment
 import social.entourage.android.groups.details.members.MembersType
 import social.entourage.android.homev2.HomeEventAdapter
 import social.entourage.android.members.MembersActivity

@@ -9,22 +9,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.GranularRoundedCorners
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-import com.bumptech.glide.request.RequestOptions
-import kotlinx.android.synthetic.main.new_contrib_item.view.distance
-import kotlinx.android.synthetic.main.new_contrib_item.view.layout_contrib
 import social.entourage.android.R
 import social.entourage.android.actions.detail.ActionDetailActivity
-import social.entourage.android.api.MetaDataRepository
 import social.entourage.android.api.model.Action
 import social.entourage.android.api.model.ActionSection
 import social.entourage.android.api.model.ActionUtils
-import social.entourage.android.api.model.Events
 import social.entourage.android.databinding.HomeV2ActionItemLayoutBinding
 import social.entourage.android.tools.displayDistance
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.utils.Const
-import social.entourage.android.tools.utils.px
 
 class HomeActionAdapter(var isContrib:Boolean): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     var actions:MutableList<Action> = mutableListOf()

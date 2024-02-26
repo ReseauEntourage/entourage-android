@@ -22,7 +22,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import kotlinx.android.synthetic.main.new_comment_item_left.*
 import social.entourage.android.R
 import social.entourage.android.api.MetaDataRepository
 import social.entourage.android.databinding.NewFragmentReportBinding

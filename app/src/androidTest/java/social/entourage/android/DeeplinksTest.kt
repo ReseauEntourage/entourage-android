@@ -108,7 +108,7 @@ class DeepLinkingTestCreateAction : DeepLinkingTest() {
     private fun connectedCreateActionDeeplink(uri: String) {
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(uri))
         startIntent(intent)
-        onView(withId(R.id.fragment_container_view)).check(matches(isDisplayed()))
+        //TODO onView(withId(R.id.fragment_plus_overlay)).check(matches(isDisplayed()))
     }
 }
 

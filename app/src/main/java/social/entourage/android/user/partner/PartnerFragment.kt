@@ -11,14 +11,13 @@ import androidx.appcompat.app.AlertDialog
 import androidx.collection.ArrayMap
 import androidx.core.content.res.ResourcesCompat
 import com.bumptech.glide.Glide
-import kotlinx.android.synthetic.main.fragment_partner_v2.*
-import kotlinx.android.synthetic.main.layout_view_title.view.*
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
+import social.entourage.android.databinding.FragmentPartnerBinding
 import social.entourage.android.api.model.Partner
 import social.entourage.android.api.request.PartnerResponse
 import social.entourage.android.base.BaseDialogFragment
@@ -30,6 +29,10 @@ class PartnerFragment : BaseDialogFragment() {
     private var partner: Partner? = null
     private var partnerId:Int? = null
 
+    private var _binding: FragmentPartnerBinding? = null
+    // This property is only valid between onCreateView and onDestroyView.
+    private val binding get() = _binding!!
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -40,7 +43,8 @@ class PartnerFragment : BaseDialogFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_partner_v2, container, false)
+        _binding = FragmentPartnerBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -52,7 +56,7 @@ class PartnerFragment : BaseDialogFragment() {
                 return
             }
             else {
-                getPartnerInfos()
+                getPartnerInfo()
             }
         }
         else {
@@ -60,7 +64,7 @@ class PartnerFragment : BaseDialogFragment() {
         }
     }
 
-    fun getPartnerInfos() {
+    private fun getPartnerInfo() {
         partnerId?.let { partnerId ->
             EntourageApplication.get().apiModule.userRequest
                     .getPartnerDetail(partnerId)
@@ -82,7 +86,7 @@ class PartnerFragment : BaseDialogFragment() {
         }
     }
 
-    fun updatePartnerFollow(isFollow:Boolean) {
+    private fun updatePartnerFollow(isFollow:Boolean) {
         val params = ArrayMap<String, Any>()
         val isFollowParam = ArrayMap<String, Any>()
         isFollowParam["partner_id"] = partner?.id.toString()
@@ -106,13 +110,13 @@ class PartnerFragment : BaseDialogFragment() {
     }
 
     fun configureViews() {
-        user_title_layout?.title_text?.text = requireActivity().resources.getString(R.string.title_association)
-        user_title_layout?.title_close_button?.setOnClickListener {dismiss()}
+        binding.userTitleLayout.binding.titleText.text = requireActivity().resources.getString(R.string.title_association)
+        binding.userTitleLayout.binding.titleCloseButton.setOnClickListener {dismiss()}
 
         partner?.let { partner ->
-            ui_asso_tv_title?.text = partner.name
-            ui_asso_tv_subtitle?.text = ""
-            ui_asso_iv_logo?.let { logoView ->
+            binding.uiAssoTvTitle.text = partner.name
+            binding.uiAssoTvSubtitle.text = ""
+            binding.uiAssoIvLogo.let { logoView ->
                 partner.largeLogoUrl?.let { url ->
                     Glide.with(this)
                             .load(Uri.parse(url))
@@ -122,80 +126,80 @@ class PartnerFragment : BaseDialogFragment() {
                 }
             }
 
-            ui_asso_tv_description?.let { description ->
+            binding.uiAssoTvDescription.let { description ->
                 description.text = partner.description
-                description.visibility = if (partner.description?.length ?: 0 > 0) View.VISIBLE else View.GONE
+                description.visibility = if ((partner.description?.length ?: 0) > 0) View.VISIBLE else View.GONE
                 DeepLinksManager.linkify(description)
             }
 
             if (partner.donationsNeeds.isNullOrEmpty() && partner.volunteersNeeds.isNullOrEmpty()) {
-                ui_asso_layout_top_needs?.visibility = View.GONE
-                ui_asso_layout_needs?.visibility = View.GONE
+                binding.uiAssoLayoutTopNeeds.visibility = View.GONE
+                binding.uiAssoLayoutNeeds.visibility = View.GONE
             }
             else {
-                ui_asso_layout_top_needs?.visibility = View.VISIBLE
-                ui_asso_layout_needs?.visibility = View.VISIBLE
+                binding.uiAssoLayoutTopNeeds.visibility = View.VISIBLE
+                binding.uiAssoLayoutNeeds.visibility = View.VISIBLE
 
                 if (partner.donationsNeeds.isNullOrEmpty()) {
-                    ui_asso_layout_top_donates?.visibility = View.GONE
-                    ui_layout_description_donates?.visibility = View.GONE
+                    binding.uiAssoLayoutTopDonates.visibility = View.GONE
+                    binding.uiLayoutDescriptionDonates.visibility = View.GONE
                 }
                 else {
-                    ui_asso_layout_top_donates?.visibility = View.VISIBLE
-                    ui_layout_description_donates?.visibility = View.VISIBLE
-                    ui_asso_tv_donates_description?.let { description->
+                    binding.uiAssoLayoutTopDonates.visibility = View.VISIBLE
+                    binding.uiLayoutDescriptionDonates.visibility = View.VISIBLE
+                    binding.uiAssoTvDonatesDescription.let { description->
                         description.text = partner.donationsNeeds
                         DeepLinksManager.linkify(description)
                     }
                 }
                 if (partner.volunteersNeeds.isNullOrEmpty()) {
-                    ui_asso_layout_top_volunteers?.visibility = View.GONE
-                    ui_layout_description_volunteers?.visibility = View.GONE
+                    binding.uiAssoLayoutTopVolunteers.visibility = View.GONE
+                    binding.uiLayoutDescriptionVolunteers.visibility = View.GONE
                 }
                 else {
-                    ui_asso_layout_top_volunteers?.visibility = View.VISIBLE
-                    ui_layout_description_volunteers?.visibility = View.VISIBLE
-                    ui_asso_tv_volunteers_description?.let { description ->
+                    binding.uiAssoLayoutTopVolunteers.visibility = View.VISIBLE
+                    binding.uiLayoutDescriptionVolunteers.visibility = View.VISIBLE
+                    binding.uiAssoTvVolunteersDescription.let { description ->
                         description.text = partner.volunteersNeeds
                         DeepLinksManager.linkify(description)
                     }
                 }
             }
-            ui_button_asso_web?.text = partner.websiteUrl
-            ui_button_asso_phone?.text = partner.phone
-            ui_button_asso_address?.text = partner.address
-            ui_button_asso_mail?.text = partner.email
+            binding.uiButtonAssoWeb.text = partner.websiteUrl
+            binding.uiButtonAssoPhone.text = partner.phone
+            binding.uiButtonAssoAddress.text = partner.address
+            binding.uiButtonAssoMail.text = partner.email
 
-            ui_layout_phone?.visibility = if (partner.phone.isNullOrEmpty()) View.GONE else View.VISIBLE
-            ui_layout_address?.visibility = if (partner.address.isNullOrEmpty()) View.GONE else View.VISIBLE
-            ui_layout_mail?.visibility = if (partner.email.isNullOrEmpty()) View.GONE else View.VISIBLE
-            ui_layout_web?.visibility = if (partner.websiteUrl.isNullOrEmpty()) View.GONE else View.VISIBLE
+            binding.uiLayoutPhone.visibility = if (partner.phone.isNullOrEmpty()) View.GONE else View.VISIBLE
+            binding.uiLayoutAddress.visibility = if (partner.address.isNullOrEmpty()) View.GONE else View.VISIBLE
+            binding.uiLayoutMail.visibility = if (partner.email.isNullOrEmpty()) View.GONE else View.VISIBLE
+            binding.uiLayoutWeb.visibility = if (partner.websiteUrl.isNullOrEmpty()) View.GONE else View.VISIBLE
 
             updateButtonFollow()
         }
 
-        ui_button_asso_address?.setOnClickListener {
+        binding.uiButtonAssoAddress.setOnClickListener {
             partner?.address?.let {  address ->
                 openLink("geo:0,0?q=$address", Intent.ACTION_VIEW)
             }
         }
-        ui_button_asso_mail?.setOnClickListener {
+        binding.uiButtonAssoMail.setOnClickListener {
             partner?.email?.let { email ->
                 openLink("mailto:$email", Intent.ACTION_SENDTO)
             }
         }
-        ui_button_asso_phone?.setOnClickListener {
+        binding.uiButtonAssoPhone.setOnClickListener {
             partner?.phone?.let { phone ->
                 openLink("tel:$phone", Intent.ACTION_DIAL)
             }
         }
-        ui_button_asso_web?.setOnClickListener {
+        binding.uiButtonAssoWeb.setOnClickListener {
             partner?.websiteUrl?.let { url ->
                 openLink(url, Intent.ACTION_VIEW)
             }
         }
 
-        ui_button_follow?.setOnClickListener {
+        binding.uiButtonFollow.setOnClickListener {
             partner?.let {
                 if (it.isFollowing) {
                     showPopInfoUnfollow()
@@ -207,12 +211,12 @@ class PartnerFragment : BaseDialogFragment() {
         }
     }
 
-    fun showPopInfoUnfollow() {
+    private fun showPopInfoUnfollow() {
         val alertDialog = AlertDialog.Builder(requireContext())
-        val _title = getString(R.string.partnerFollowTitle).format(partner?.name)
-        val _message = getString(R.string.partnerFollowMessage).format(partner?.name)
-        alertDialog.setTitle(_title)
-        alertDialog.setMessage(_message)
+        val title = getString(R.string.partnerFollowTitle).format(partner?.name)
+        val message = getString(R.string.partnerFollowMessage).format(partner?.name)
+        alertDialog.setTitle(title)
+        alertDialog.setMessage(message)
         alertDialog.setPositiveButton(R.string.partnerFollowButtonValid) { _, _ ->
             updatePartnerFollow(false)
         }
@@ -226,18 +230,18 @@ class PartnerFragment : BaseDialogFragment() {
     fun updateButtonFollow() {
         partner?.let {
             if (it.isFollowing) {
-                ui_button_follow?.text = getString(R.string.buttonFollowOnPartner)
-                ui_button_follow?.setTextColor(resources.getColor(R.color.white))
-                ui_button_follow?.background = ResourcesCompat.getDrawable(
+                binding.uiButtonFollow.text = getString(R.string.buttonFollowOnPartner)
+                binding.uiButtonFollow.setTextColor(resources.getColor(R.color.white, null))
+                binding.uiButtonFollow.background = ResourcesCompat.getDrawable(
                     resources,
                     R.drawable.bg_button_rounded_pre_onboard_orange_plain,
                     null
                 )
             }
             else {
-                ui_button_follow?.text = getString(R.string.buttonFollowOffPartner)
-                ui_button_follow?.setTextColor(resources.getColor(R.color.accent))
-                ui_button_follow?.background = ResourcesCompat.getDrawable(
+                binding.uiButtonFollow.text = getString(R.string.buttonFollowOffPartner)
+                binding.uiButtonFollow.setTextColor(resources.getColor(R.color.accent, null))
+                binding.uiButtonFollow.background = ResourcesCompat.getDrawable(
                     resources,
                     R.drawable.bg_button_rounded_pre_onboard_orange_stroke,
                     null
@@ -246,7 +250,7 @@ class PartnerFragment : BaseDialogFragment() {
         }
     }
 
-    fun openLink(url: String, action: String) {
+    private fun openLink(url: String, action: String) {
         val uri = Uri.parse(url)
         val intent = Intent(action, uri)
         try {

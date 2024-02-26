@@ -1,22 +1,14 @@
 package social.entourage.android.members
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
-import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.textfield.TextInputLayout
@@ -29,8 +21,8 @@ import social.entourage.android.events.EventsPresenter
 import social.entourage.android.groups.GroupPresenter
 import social.entourage.android.api.model.Conversation
 import social.entourage.android.api.model.EntourageUser
-import social.entourage.android.api.model.notification.CompleteReactionsResponse
-import social.entourage.android.api.model.notification.ReactionType
+import social.entourage.android.api.model.CompleteReactionsResponse
+import social.entourage.android.api.model.ReactionType
 import social.entourage.android.base.BaseActivity
 import social.entourage.android.groups.details.members.MembersListAdapter
 import social.entourage.android.groups.details.members.OnItemShowListener

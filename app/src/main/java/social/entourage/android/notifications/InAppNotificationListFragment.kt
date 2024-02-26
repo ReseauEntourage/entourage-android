@@ -2,18 +2,16 @@ package social.entourage.android.notifications
 
 import android.os.Bundle
 import android.os.CountDownTimer
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.gson.Gson
 import social.entourage.android.R
 import social.entourage.android.databinding.NewFragmentNotifsInAppListBinding
 import social.entourage.android.home.HomePresenter
-import social.entourage.android.api.model.InAppNotification
+import social.entourage.android.api.model.notification.InAppNotification
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.log.AnalyticsEvents
 

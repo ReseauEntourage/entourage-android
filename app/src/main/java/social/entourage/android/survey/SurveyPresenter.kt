@@ -27,8 +27,8 @@ import social.entourage.android.api.model.Post
 import social.entourage.android.api.model.SurveyAttributes
 import social.entourage.android.api.model.SurveyResponsesListWrapper
 import social.entourage.android.api.model.SurveyResponsesWrapper
-import social.entourage.android.api.model.notification.CompleteReactionsResponse
-import social.entourage.android.api.model.notification.ReactionWrapper
+import social.entourage.android.api.model.CompleteReactionsResponse
+import social.entourage.android.api.model.ReactionWrapper
 import social.entourage.android.groups.details.feed.CreatePostGroupActivity
 import timber.log.Timber
 import java.io.File
