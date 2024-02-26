@@ -223,6 +223,19 @@ class PostAdapter(
                         }
 
                     }
+                    if(postsList[position].status == "deleted"){
+                        surveyHolder.binding.surveyQuestion.text = context.getText(R.string.deleted_publi)
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                            surveyHolder.binding.surveyQuestion.setTextColor(context.getColor(R.color.deleted_grey))
+                        }
+                        surveyHolder.binding.surveyQuestion.visibility = View.VISIBLE
+                        surveyHolder.binding.btnReportPost.visibility = View.GONE
+                        surveyHolder.binding.choiceOne.parent.visibility = View.GONE
+                        surveyHolder.binding.choiceTwo.parent.visibility = View.GONE
+                        surveyHolder.binding.choiceThree.parent.visibility = View.GONE
+                        surveyHolder.binding.choiceFour.parent.visibility = View.GONE
+                        surveyHolder.binding.choiceFive.parent.visibility = View.GONE
+                    }
                 }
 
 
