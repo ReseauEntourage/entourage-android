@@ -130,6 +130,22 @@ class PostAdapter(
                     val localState = localSurveyResponseState.getOrPut(post.id ?: position) {
                         post.surveyResponse ?: post.survey?.choices?.map { false }?.toMutableList() ?: mutableListOf()
                     }
+                    surveyHolder.binding.btnReportPost.setOnClickListener {
+                        val userId = postsList[position].user?.id?.toInt()
+                        if (userId != null){
+                            postsList[position].id?.let { it1 -> onReport(it1,userId)
+                            }
+                        }
+                    }
+                    postsList[position].createdTime.let {
+                        var locale = LanguageManager.getLocaleFromPreferences(context)
+                        surveyHolder.binding.date.text = SimpleDateFormat(
+                            itemView.context.getString(R.string.post_date),
+                            locale
+                        ).format(
+                            it!!
+                        )
+                    }
 
                     // Création d'une copie locale de summary pour ajustements
                     val localSummary = post.survey?.summary?.toMutableList() ?: mutableListOf()

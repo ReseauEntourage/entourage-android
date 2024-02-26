@@ -45,10 +45,11 @@ class SurveyPresenter {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 if (response.isSuccessful) {
                     // Logique de gestion de la réussite
+                    isSurveyVoted.postValue(true)
                     Log.d("GroupPresenter", "Réponse au sondage postée avec succès.")
                 } else {
                     // Logique de gestion des erreurs
-                    Log.e("GroupPresenter", "Erreur lors de la publication de la réponse au sondage.")
+                    isSurveyVoted.postValue(false)
                 }
             }
 

@@ -30,6 +30,7 @@ import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
 import com.google.android.material.appbar.AppBarLayout
+import com.google.gson.Gson
 import kotlinx.android.synthetic.main.new_fragment_feed.view.arrow
 import kotlinx.android.synthetic.main.new_fragment_feed.view.empty_state_events_subtitle
 import kotlinx.android.synthetic.main.new_fragment_feed.view.subtitle
@@ -62,6 +63,7 @@ import social.entourage.android.report.DataLanguageStock
 import social.entourage.android.report.ReportModalFragment
 import social.entourage.android.report.ReportTypes
 import social.entourage.android.survey.CreateSurveyActivity
+import social.entourage.android.survey.SurveyPresenter
 import social.entourage.android.tools.image_viewer.ImageDialogActivity
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.utils.Const
@@ -91,10 +93,13 @@ class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface,
     private var page:Int = 0
     private val ITEM_PER_PAGE = 10
     private var hasShownWelcomeMessage = false
+    private var surveyPresenter: SurveyPresenter = SurveyPresenter()
 
     private var newPostsList: MutableList<Post> = ArrayList()
     private var oldPostsList: MutableList<Post> = ArrayList()
     private var allPostsList: MutableList<Post> = ArrayList()
+    private var dernierClicTime: Long = 0
+
 
     private val speedDialMenuAdapter = object : SpeedDialMenuAdapter() {
         override fun getCount(): Int = 3
@@ -181,7 +186,7 @@ class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface,
         groupPresenter.hasUserLeftGroup.observe(viewLifecycleOwner, ::handleLeftResponse)
         groupPresenter.isPostDeleted.observe(requireActivity(), ::handleDeletedResponse)
         groupPresenter.haveReacted.observe(requireActivity(), ::handleReactionGroupPost)
-
+        surveyPresenter.isSurveyVoted.observe(requireActivity(), ::handleSurveyPostResponse)
         handleFollowButton()
         handleBackButton()
         handleSettingsButton()
@@ -334,6 +339,16 @@ class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface,
                 showToast(getString(R.string.delete_success_send))
             }else{
                 showToast(getString(R.string.delete_error_send_failed))
+            }
+        }
+    }
+    private fun handleSurveyPostResponse(success: Boolean) {
+        if(isAdded){
+            if (success){
+                showToast("Success sending survey")
+
+            }else{
+                showToast("Error sending survey")
             }
         }
     }
@@ -840,7 +855,14 @@ class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface,
     }
 
     override fun onSurveyOptionClicked(postId: Int, surveyResponse: MutableList<Boolean>) {
-       Toast.makeText(requireContext(), "Survey option clicked", Toast.LENGTH_SHORT).show()
+        val tempsActuel = System.currentTimeMillis()
+        if (tempsActuel - dernierClicTime > 1000) { // Délai d'1 seconde (1000 millisecondes)
+            dernierClicTime = tempsActuel
+            surveyPresenter.postSurveyResponseGroup(groupId, postId, surveyResponse)
+        } else {
+            // Affiche un petit message pour calmer les ardeurs de l'utilisateur trop rapide
+            Toast.makeText(requireContext(), "Veuillez patienter une seconde avant de relancer un vote", Toast.LENGTH_SHORT).show()
+        }
     }
 
     override fun onDeleteSurveyClick(postId: Int, surveyResponse: MutableList<Boolean>) {
