@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Binder
+import android.os.Build
 import android.os.IBinder
 import com.google.android.gms.maps.model.LatLng
 import social.entourage.android.EntourageApplication
@@ -61,7 +62,11 @@ class EntService : Service() {
         val filter = IntentFilter()
         filter.addAction(KEY_LOCATION_PROVIDER_DISABLED)
         filter.addAction(KEY_LOCATION_PROVIDER_ENABLED)
-        registerReceiver(receiver, filter)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            registerReceiver(receiver, filter, RECEIVER_NOT_EXPORTED)
+        } else {
+            registerReceiver(receiver, filter)
+        }
         registerApiListener(loggerListener)
     }
 
