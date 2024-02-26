@@ -1,6 +1,5 @@
 package social.entourage.android.welcome
 
-import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -16,21 +15,22 @@ import social.entourage.android.MainActivity
 import social.entourage.android.R
 import social.entourage.android.actions.ActionsPresenter
 import social.entourage.android.actions.detail.ActionDetailActivity
+import social.entourage.android.actions.list.ActionListFragment
 import social.entourage.android.api.MetaDataRepository
-import social.entourage.android.api.model.*
+import social.entourage.android.api.model.Action
+import social.entourage.android.api.model.ActionSection
+import social.entourage.android.api.model.ActionSectionFilters
+import social.entourage.android.api.model.EventActionLocationFilters
+import social.entourage.android.api.model.Events
 import social.entourage.android.base.BaseActivity
 import social.entourage.android.databinding.ActivityLayoutWelcomeThreeBinding
 import social.entourage.android.events.EventsPresenter
-import social.entourage.android.events.details.feed.FeedActivity
 import social.entourage.android.events.list.EVENTS_PER_PAGE
 import social.entourage.android.language.LanguageManager
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.utils.Const
-import social.entourage.android.tools.utils.Utils
 import social.entourage.android.tools.utils.px
-import timber.log.Timber
 import java.text.SimpleDateFormat
-import java.util.*
 
 class WelcomeThreeActivity: BaseActivity() {
 
@@ -306,7 +306,7 @@ class WelcomeThreeActivity: BaseActivity() {
                 //IF NO EVENT, FILL A DEMAND LIST AND CHANGE TITLE
             }else{
                 actionsPresenter.getAllDemands(0,
-                    social.entourage.android.actions.list.EVENTS_PER_PAGE, currentFilters.travel_distance(),
+                    ActionListFragment.EVENTS_PER_PAGE, currentFilters.travel_distance(),
                     currentFilters.latitude(),currentFilters.longitude(),
                     currentSectionsFilters.getSectionsForWS())
             }
