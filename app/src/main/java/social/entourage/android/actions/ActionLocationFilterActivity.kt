@@ -21,7 +21,6 @@ import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.libraries.places.compat.ui.PlaceAutocomplete
 import com.google.android.libraries.places.widget.AutocompleteActivity
-import kotlinx.android.synthetic.main.new_header.view.*
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.RefreshController
