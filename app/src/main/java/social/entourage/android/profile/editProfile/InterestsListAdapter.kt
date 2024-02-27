@@ -5,15 +5,12 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.new_profile_edit_interest_item.view.checkBox
-import kotlinx.android.synthetic.main.new_profile_edit_interest_item.view.icon
-import kotlinx.android.synthetic.main.new_profile_edit_interest_item.view.layout
-import kotlinx.android.synthetic.main.new_profile_edit_interest_item.view.title
-import kotlinx.android.synthetic.main.new_profile_edit_interests_edittext_item.view.*
-import social.entourage.android.R
 import social.entourage.android.api.model.EventUtils
 import social.entourage.android.api.model.Interest
+import social.entourage.android.databinding.LayoutProfileEditInterestItemBinding
+import social.entourage.android.databinding.LayoutProfileEditInterestOpenItemBinding
 
 interface OnItemCheckListener {
     fun onItemCheck(item: Interest)
@@ -37,39 +34,70 @@ class InterestsListAdapter(
         return otherInterest
     }
 
-    inner class ViewHolder(val binding: View) :
-        RecyclerView.ViewHolder(binding) {
-        fun bind(interest: Interest) {
-            if (interest.isSelected) binding.title.setTypeface(
-                binding.title.typeface,
+    inner class ViewHolder(val binding: ViewDataBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+
+        fun bindInterest(interest: Interest) {
+            val bindingView = binding as LayoutProfileEditInterestItemBinding
+            if (interest.isSelected) bindingView.title.setTypeface(
+                bindingView.title.typeface,
                 android.graphics.Typeface.BOLD
             )
-            val context = binding.context
-            binding.title.text = EventUtils.showTagTranslated(context ,interest.id!!)
-            binding.checkBox.isChecked = interest.isSelected
-            binding.icon.setImageResource(interest.icon)
-            binding.layout.setOnClickListener {
+            val context = bindingView.root.context
+            bindingView.title.text = EventUtils.showTagTranslated(context ,interest.id!!)
+            bindingView.checkBox.isChecked = interest.isSelected
+            bindingView.icon.setImageResource(interest.icon)
+            bindingView.layout.setOnClickListener {
                 if (interest.isSelected) {
                     onItemClick.onItemUncheck(interest)
-                    binding.title.typeface =
+                    bindingView.title.typeface =
                         android.graphics.Typeface.create(
-                            binding.title.typeface,
+                            bindingView.title.typeface,
+                            android.graphics.Typeface.NORMAL
+                        )
+                } else {
+                    onItemClick.onItemCheck(interest)
+                    bindingView.title.setTypeface(
+                        bindingView.title.typeface,
+                        android.graphics.Typeface.BOLD
+                    )
+                }
+                interest.isSelected = !(interest.isSelected)
+                bindingView.checkBox.isChecked = !bindingView.checkBox.isChecked
+            }
+        }
+        fun bindEditInterest(interest: Interest) {
+            val bindingView = binding as LayoutProfileEditInterestOpenItemBinding
+            if (interest.isSelected) bindingView.title.setTypeface(
+                bindingView.title.typeface,
+                android.graphics.Typeface.BOLD
+            )
+            val context = bindingView.root.context
+            bindingView.title.text = EventUtils.showTagTranslated(context ,interest.id!!)
+            bindingView.checkBox.isChecked = interest.isSelected
+            bindingView.icon.setImageResource(interest.icon)
+            bindingView.layout.setOnClickListener {
+                if (interest.isSelected) {
+                    onItemClick.onItemUncheck(interest)
+                    bindingView.title.typeface =
+                        android.graphics.Typeface.create(
+                            bindingView.title.typeface,
                             android.graphics.Typeface.NORMAL
                         )
                     if (interest.id == InterestsTypes.TYPE_OTHER.label && isOtherInterestEnabled) {
-                        binding.category_name.visibility = View.GONE
-                        binding.category_name_label.visibility = View.GONE
+                        bindingView.categoryName.visibility = View.GONE
+                        bindingView.categoryNameLabel.visibility = View.GONE
                     }
                 } else {
                     onItemClick.onItemCheck(interest)
-                    binding.title.setTypeface(
-                        binding.title.typeface,
+                    bindingView.title.setTypeface(
+                        bindingView.title.typeface,
                         android.graphics.Typeface.BOLD
                     )
                     if (interest.id == InterestsTypes.TYPE_OTHER.label && isOtherInterestEnabled) {
-                        binding.category_name.visibility = View.VISIBLE
-                        binding.category_name_label.visibility = View.VISIBLE
-                        binding.category_name.addTextChangedListener(object : TextWatcher {
+                        bindingView.categoryName.visibility = View.VISIBLE
+                        bindingView.categoryNameLabel.visibility = View.VISIBLE
+                        bindingView.categoryName.addTextChangedListener(object : TextWatcher {
                             override fun beforeTextChanged(
                                 s: CharSequence,
                                 start: Int,
@@ -94,25 +122,30 @@ class InterestsListAdapter(
                     }
                 }
                 interest.isSelected = !(interest.isSelected)
-                binding.checkBox.isChecked = !binding.checkBox.isChecked
+                bindingView.checkBox.isChecked = !bindingView.checkBox.isChecked
             }
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val layout = when (viewType) {
-            InterestsTypes.TYPE_OTHER.code -> R.layout.new_profile_edit_interests_edittext_item
-            else -> R.layout.new_profile_edit_interest_item
+        val view = when (viewType) {
+            InterestsTypes.TYPE_OTHER.code -> LayoutProfileEditInterestOpenItemBinding.inflate(
+                LayoutInflater.from(parent.context), parent, false
+            )
+            else -> LayoutProfileEditInterestItemBinding.inflate(
+                LayoutInflater.from(parent.context), parent, false
+            )
         }
-        val view = LayoutInflater
-            .from(parent.context)
-            .inflate(layout, parent, false)
 
         return ViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(interestsList[position])
+        val interest = interestsList[position]
+        when (interest.id) {
+            InterestsTypes.TYPE_OTHER.label -> holder.bindEditInterest(interest)
+            else -> holder.bindInterest(interest)
+        }
     }
 
     override fun getItemCount(): Int {

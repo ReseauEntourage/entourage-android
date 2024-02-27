@@ -1,42 +1,39 @@
 package social.entourage.android.actions.list
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.result.ActivityResultLauncher
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.new_fragment_action_list.view.*
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
-import social.entourage.android.databinding.NewFragmentActionListBinding
-import social.entourage.android.actions.*
+import social.entourage.android.actions.ActionsPresenter
+import social.entourage.android.actions.CATEGORIES_FILTERS
+import social.entourage.android.actions.FILTERS
+import social.entourage.android.actions.FILTERS2
+import social.entourage.android.actions.LOCATION_FILTERS
 import social.entourage.android.api.model.Action
 import social.entourage.android.api.model.ActionSectionFilters
 import social.entourage.android.api.model.EventActionLocationFilters
+import social.entourage.android.databinding.FragmentActionListBinding
 import social.entourage.android.tools.log.AnalyticsEvents
 
-const val EVENTS_PER_PAGE = 10
-const val IS_CONTRIB = "isContrib"
 
 class ActionListFragment : Fragment() {
 
-    private var _binding: NewFragmentActionListBinding? = null
-    val binding: NewFragmentActionListBinding get() = _binding!!
+    private var _binding: FragmentActionListBinding? = null
+    val binding: FragmentActionListBinding get() = _binding!!
 
     private val actionsPresenter: ActionsPresenter by lazy { ActionsPresenter() }
     private var myId: Int? = null
-    lateinit var actionAdapter: ActionsListAdapter
+    private lateinit var actionAdapter: ActionsListAdapter
     private var page: Int = 0
 
     private var currentFilters = EventActionLocationFilters()
     private var currentSectionsFilters = ActionSectionFilters()
-
-    private var activityResultLauncher:ActivityResultLauncher<Intent>? = null
 
     private var isFromFilters = false
     private var isContrib = true
@@ -47,7 +44,7 @@ class ActionListFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = NewFragmentActionListBinding.inflate(inflater, container, false)
+        _binding = FragmentActionListBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -106,8 +103,8 @@ class ActionListFragment : Fragment() {
     }
 
     private fun initializeEmptyState() {
-        binding.emptyStateLayout.title.text = if (isContrib) getString(R.string.action_contrib_empty_state_title) else getString(R.string.action_demand_empty_state_title)
-        binding.emptyStateLayout.subtitle.text = if (isContrib) getString(R.string.action_contrib_empty_state_desc) else getString(R.string.action_demand_empty_state_desc)
+        binding.title.text = if (isContrib) getString(R.string.action_contrib_empty_state_title) else getString(R.string.action_demand_empty_state_title)
+        binding.subtitle.text = if (isContrib) getString(R.string.action_contrib_empty_state_desc) else getString(R.string.action_demand_empty_state_desc)
     }
 
     private fun handleResponseGetDemands(allDemands: MutableList<Action>?) {
@@ -201,6 +198,8 @@ class ActionListFragment : Fragment() {
 
     companion object {
         const val TAG = "ActionListFragment"
+        const val EVENTS_PER_PAGE = 10
+        const val IS_CONTRIB = "isContrib"
         fun newInstance(isContrib: Boolean): ActionListFragment {
             val fragment = ActionListFragment()
             val args = Bundle()

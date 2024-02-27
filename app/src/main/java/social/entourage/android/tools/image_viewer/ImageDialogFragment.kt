@@ -1,6 +1,5 @@
 package social.entourage.android.tools.image_viewer
 
-import android.R
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory

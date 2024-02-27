@@ -61,7 +61,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             tools:itemCount="5"
-            tools:listitem="@layout/new_profile_edit_interest_item" />
+            tools:listitem="@layout/layout_profile_edit_interest_item" />
 
     </LinearLayout>
 </layout>
