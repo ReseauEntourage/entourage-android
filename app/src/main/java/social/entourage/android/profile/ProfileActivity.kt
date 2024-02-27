@@ -1,13 +1,12 @@
 package social.entourage.android.profile
 
-import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.navigation.fragment.NavHostFragment
 import social.entourage.android.MainActivity
 import social.entourage.android.R
 import social.entourage.android.base.BaseSecuredActivity
+import social.entourage.android.databinding.ActivityProfileBinding
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.user.AvatarUploadView
 import social.entourage.android.user.edit.photo.ChooseProfilePhotoFragment
@@ -15,10 +14,12 @@ import social.entourage.android.user.edit.photo.ChooseProfilePhotoFragment
 class ProfileActivity : BaseSecuredActivity(), AvatarUploadView {
 
     val profilePresenter: ProfilePresenter by lazy { ProfilePresenter() }
+    private lateinit var binding: ActivityProfileBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.new_activity_profile)
+        binding = ActivityProfileBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         val goToEditProfile = intent.getBooleanExtra(Const.GO_TO_EDIT_PROFILE, false)
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
