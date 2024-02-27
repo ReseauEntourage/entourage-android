@@ -42,7 +42,7 @@ import java.text.SimpleDateFormat
 interface SurveyInteractionListener {
     fun onSurveyOptionClicked(postId: Int, surveyResponse: MutableList<Boolean>)
     fun onDeleteSurveyClick(postId: Int, surveyResponse: MutableList<Boolean>)
-    fun showParticipantWhoVote(postId: Int)
+    fun showParticipantWhoVote(survey:Survey, postId: Int, question:String)
 }
 interface ReactionInterface{
     fun onReactionClicked(postId: Post, reactionId: Int)
@@ -143,7 +143,7 @@ class PostAdapter(
                         )
                     }
                     surveyHolder.binding.tvTitleWhoVote.setOnClickListener {
-                        surveyCallback.showParticipantWhoVote(post.id ?: 0)
+                        surveyCallback.showParticipantWhoVote(post.survey!!, post.id!!, post.content!!)
                     }
 
                     // Création d'une copie locale de summary pour ajustements

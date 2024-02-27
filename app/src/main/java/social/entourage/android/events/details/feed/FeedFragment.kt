@@ -41,6 +41,7 @@ import social.entourage.android.api.model.EntourageUser
 import social.entourage.android.api.model.Events
 import social.entourage.android.api.model.Post
 import social.entourage.android.api.model.Status
+import social.entourage.android.api.model.Survey
 import social.entourage.android.api.model.Tags
 import social.entourage.android.api.model.toEventUi
 import social.entourage.android.comment.PostAdapter
@@ -58,6 +59,7 @@ import social.entourage.android.profile.myProfile.InterestsAdapter
 import social.entourage.android.report.DataLanguageStock
 import social.entourage.android.report.ReportModalFragment
 import social.entourage.android.report.ReportTypes
+import social.entourage.android.survey.ResponseSurveyActivity
 import social.entourage.android.survey.SurveyPresenter
 import social.entourage.android.tools.calculateIfEventPassed
 import social.entourage.android.tools.image_viewer.ImageDialogActivity
@@ -822,7 +824,15 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
         Toast.makeText(requireContext(), "Survey option deleted", Toast.LENGTH_SHORT).show()
     }
 
-    override fun showParticipantWhoVote(postId: Int) {
-        TODO("Not yet implemented")
+    override fun showParticipantWhoVote(survey: Survey, postId: Int, question:String) {
+        val intent = Intent(context, ResponseSurveyActivity::class.java).apply {
+            ResponseSurveyActivity.survey = survey
+            ResponseSurveyActivity.isGroup = false
+            ResponseSurveyActivity.itemId = eventId
+            ResponseSurveyActivity.postId = postId
+            ResponseSurveyActivity.question = question
+
+        }
+        startActivity(intent)
     }
 }

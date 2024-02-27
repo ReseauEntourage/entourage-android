@@ -1,5 +1,6 @@
 package social.entourage.android.onboarding.onboard
 
+import android.util.Log
 import android.view.View
 import social.entourage.android.R
 import social.entourage.android.user.edit.place.UserActionPlaceFragment
@@ -15,9 +16,8 @@ class OnboardingAddPlaceFragment : UserActionPlaceFragment() {
 
         binding.editPlaceTitleLayout.visibility = View.VISIBLE
         binding.editPlaceTitleLayout.binding.titleActionButton.setOnClickListener {
+            Log.wtf("wtf","validate clicked")
             validate()
-        }
-        binding.editPlaceTitleLayout.binding.titleActionButton.setOnClickListener {
             dismiss()
         }
     }

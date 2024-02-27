@@ -143,6 +143,7 @@
     <color name="grey">#707070</color>
     <color name="new_light_grey">#cdcdcd</color>
     <color name="deleted_grey">#a8a8a8</color>
+    <color name="grey_vote">#979797</color>
     <color name="bottom_sheet_background">#B5545454</color>
     <color name="orange_opacity_50">#ffcbab</color>
     <color name="new_orange_bubble">#FFCDAE</color>

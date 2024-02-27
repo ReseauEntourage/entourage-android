@@ -3,6 +3,7 @@ package social.entourage.android.user.edit.place
 import android.content.Intent
 import android.location.Geocoder
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
@@ -29,6 +30,7 @@ class UserEditActionZoneFragment : UserActionPlaceFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Log.wtf("wtf", "hello")
         arguments?.let {
             setGroupLocation = it.getBoolean("setGroupLocation")
         }

@@ -85,7 +85,10 @@
             android:exported="false" />
         <activity android:name=".members.MembersActivity"
             android:exported="false" />
-        <activity android:name=".survey.CreateSurveyActivity"/>
+        <activity android:name=".survey.CreateSurveyActivity"
+            android:exported="false"/>
+        <activity android:name=".survey.ResponseSurveyActivity"
+            android:exported="false"/>
         <activity
             android:name=".home.pedago.PedagoDetailActivity"
             android:exported="false" />

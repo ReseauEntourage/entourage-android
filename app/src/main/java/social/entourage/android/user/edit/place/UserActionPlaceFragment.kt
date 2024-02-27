@@ -6,6 +6,7 @@ import android.content.Intent
 import android.location.Geocoder
 import android.location.Location
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -67,6 +68,7 @@ open class UserActionPlaceFragment : BaseDialogFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Log.wtf("wtf", "hello")
         arguments?.let {
             userAddress = it.getSerializable(ARG_PLACE) as? User.Address
             isSdf = it.getBoolean(ARG_SDF)
@@ -86,7 +88,6 @@ open class UserActionPlaceFragment : BaseDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         setupViews()
     }
 

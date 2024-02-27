@@ -28,6 +28,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
+import kotlinx.android.synthetic.main.new_fragment_create_group_success.post
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -38,6 +39,7 @@ import social.entourage.android.R
 import social.entourage.android.api.MetaDataRepository
 import social.entourage.android.api.model.Group
 import social.entourage.android.api.model.Post
+import social.entourage.android.api.model.Survey
 import social.entourage.android.api.model.Tags
 import social.entourage.android.comment.PostAdapter
 import social.entourage.android.comment.ReactionInterface
@@ -55,6 +57,7 @@ import social.entourage.android.report.DataLanguageStock
 import social.entourage.android.report.ReportModalFragment
 import social.entourage.android.report.ReportTypes
 import social.entourage.android.survey.CreateSurveyActivity
+import social.entourage.android.survey.ResponseSurveyActivity
 import social.entourage.android.survey.SurveyPresenter
 import social.entourage.android.tools.image_viewer.ImageDialogActivity
 import social.entourage.android.tools.log.AnalyticsEvents
@@ -859,8 +862,15 @@ class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface,
         Toast.makeText(requireContext(), "Survey option deleted", Toast.LENGTH_SHORT).show()
     }
 
-    override fun showParticipantWhoVote(postId: Int) {
-        TODO("Not yet implemented")
+    override fun showParticipantWhoVote(survey: Survey, postId: Int, question:String) {
+        val intent = Intent(context, ResponseSurveyActivity::class.java).apply {
+            ResponseSurveyActivity.survey = survey
+            ResponseSurveyActivity.isGroup = true
+            ResponseSurveyActivity.itemId = groupId
+            ResponseSurveyActivity.postId = postId
+            ResponseSurveyActivity.question = question
+        }
+        startActivity(intent)
     }
 }
 
