@@ -6,7 +6,6 @@ import android.graphics.drawable.GradientDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.os.CountDownTimer
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,41 +17,32 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import kotlinx.android.synthetic.main.new_home_card.view.*
 import social.entourage.android.EntourageApplication
 import social.entourage.android.MainActivity
-import social.entourage.android.R
-import social.entourage.android.databinding.NewFragmentHomeBinding
-import social.entourage.android.guide.GDSMainActivity
 import social.entourage.android.Navigation
+import social.entourage.android.R
 import social.entourage.android.ViewPagerDefaultPageController
 import social.entourage.android.actions.ActionsPresenter
-import social.entourage.android.notifications.InAppNotificationsActivity
-import social.entourage.android.home.pedago.PedagoListActivity
 import social.entourage.android.api.model.HomeAction
 import social.entourage.android.api.model.Summary
-import social.entourage.android.api.model.SummaryAction
 import social.entourage.android.api.model.User
+import social.entourage.android.databinding.FragmentHomeBinding
 import social.entourage.android.groups.GroupPresenter
 import social.entourage.android.groups.details.feed.FeedActivity
+import social.entourage.android.guide.GDSMainActivity
+import social.entourage.android.home.pedago.PedagoListActivity
+import social.entourage.android.notifications.InAppNotificationsActivity
 import social.entourage.android.profile.ProfileActivity
-import social.entourage.android.user.UserProfileActivity
+import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.CustomAlertDialog
-import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.view.CommunicationRecoWebUrlHandlerViewModel
-import social.entourage.android.user.UserPresenter
-import social.entourage.android.welcome.WelcomeOneActivity
-import social.entourage.android.welcome.WelcomeTestActivity
-import social.entourage.android.welcome.WelcomeThreeActivity
-import social.entourage.android.welcome.WelcomeTwoActivity
-import timber.log.Timber
-import java.time.LocalDate
+import social.entourage.android.user.UserProfileActivity
 import java.util.Calendar
 
 class HomeFragment : Fragment() {
-    private var _binding: NewFragmentHomeBinding? = null
-    val binding: NewFragmentHomeBinding get() = _binding!!
+    private var _binding: FragmentHomeBinding? = null
+    val binding: FragmentHomeBinding get() = _binding!!
     private val homePresenter: HomePresenter by lazy { HomePresenter() }
     private lateinit var actionsPresenter: ActionsPresenter
     private val groupPresenter: GroupPresenter by lazy { GroupPresenter() }
@@ -67,7 +57,7 @@ class HomeFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = NewFragmentHomeBinding.inflate(inflater, container, false)
+        _binding = FragmentHomeBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -437,17 +427,17 @@ class HomeFragment : Fragment() {
     }
 
     private fun initializeHelpSection() {
-        binding.moderator.root.title.text = userSummary?.moderator?.displayName
-        binding.moderator.root.description.text = getString(R.string.moderator_subtitle)
+        binding.moderator.title.text = userSummary?.moderator?.displayName
+        binding.moderator.description.text = getString(R.string.moderator_subtitle)
         userSummary?.moderator?.imageURL?.let {
             Glide.with(requireContext())
                 .load(Uri.parse(it))
                 .placeholder(R.drawable.placeholder_user)
                 .error(R.drawable.placeholder_user)
                 .circleCrop()
-                .into(binding.moderator.root.icon_card)
+                .into(binding.moderator.iconCard)
         } ?: kotlin.run {
-            binding.moderator.root.icon_card.setImageDrawable(
+            binding.moderator.iconCard.setImageDrawable(
                 ResourcesCompat.getDrawable(resources, R.drawable.placeholder_user, null)
             )
         }
@@ -464,9 +454,9 @@ class HomeFragment : Fragment() {
             }
         }
 
-        binding.solidarityPlaces.root.title.text = getString(R.string.solidarity_places_map)
-        binding.solidarityPlaces.root.description.text = getString(R.string.solidarity_places_map_sub)
-        binding.solidarityPlaces.root.icon_card.setImageDrawable(
+        binding.solidarityPlaces.title.text = getString(R.string.solidarity_places_map)
+        binding.solidarityPlaces.description.text = getString(R.string.solidarity_places_map_sub)
+        binding.solidarityPlaces.iconCard.setImageDrawable(
             ResourcesCompat.getDrawable(resources,R.drawable.new_solidarity_map, null)
         )
 
