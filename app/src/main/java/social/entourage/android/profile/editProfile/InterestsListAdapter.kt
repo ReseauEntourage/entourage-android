@@ -36,14 +36,8 @@ class InterestsListAdapter(
 
     inner class ViewHolder(val binding: ViewDataBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(interest: Interest) {
-            when (interest.id) {
-                InterestsTypes.TYPE_OTHER.label -> bindEditInterest(interest)
-                else -> bindInterest(interest)
-            }
-        }
 
-        private fun bindInterest(interest: Interest) {
+        fun bindInterest(interest: Interest) {
             val bindingView = binding as LayoutProfileEditInterestItemBinding
             if (interest.isSelected) bindingView.title.setTypeface(
                 bindingView.title.typeface,
@@ -72,7 +66,7 @@ class InterestsListAdapter(
                 bindingView.checkBox.isChecked = !bindingView.checkBox.isChecked
             }
         }
-        private fun bindEditInterest(interest: Interest) {
+        fun bindEditInterest(interest: Interest) {
             val bindingView = binding as LayoutProfileEditInterestOpenItemBinding
             if (interest.isSelected) bindingView.title.setTypeface(
                 bindingView.title.typeface,
@@ -147,7 +141,11 @@ class InterestsListAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(interestsList[position])
+        val interest = interestsList[position]
+        when (interest.id) {
+            InterestsTypes.TYPE_OTHER.label -> holder.bindEditInterest(interest)
+            else -> holder.bindInterest(interest)
+        }
     }
 
     override fun getItemCount(): Int {
