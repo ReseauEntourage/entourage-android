@@ -1,6 +1,8 @@
 package social.entourage.android.tools.utils
 
 import android.app.Activity
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.content.ContentResolver
 import android.content.Context
 import android.content.Intent
@@ -21,6 +23,7 @@ import android.text.format.DateFormat
 import android.util.Patterns
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.widget.TextView
 import android.widget.Toast
 import com.google.android.gms.maps.model.BitmapDescriptor
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
@@ -28,6 +31,7 @@ import social.entourage.android.R
 import social.entourage.android.events.EventModel
 import social.entourage.android.events.list.SectionHeader
 import social.entourage.android.api.model.Events
+import social.entourage.android.language.LanguageManager
 import timber.log.Timber
 import java.io.File
 import java.io.FileOutputStream
@@ -44,6 +48,16 @@ import kotlin.math.max
 object Utils {
     fun showToast(context: Context, message: String) {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+    }
+
+    fun TextView.enableCopyOnLongClick(context: Context) {
+        setOnLongClickListener {
+            val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+            val clip = ClipData.newPlainText(context.getString(R.string.copied_text), text)
+            clipboard.setPrimaryClip(clip)
+            Toast.makeText(context, context.getString(R.string.copied_text), Toast.LENGTH_SHORT).show()
+            true // Indique que l'événement de long clic a été géré
+        }
     }
 
     fun hideKeyboard(activity: Activity) {
@@ -210,7 +224,7 @@ object Utils {
         }
 
         // custom regular date
-        var locale = Locale.getDefault()
+        var locale = LanguageManager.getLocaleFromPreferences(context)
         val dateStr = SimpleDateFormat(context.getString(R.string.action_date_list_formatter),
             locale).format(date)
         return if (format != null) context.getString(format,dateStr) else dateStr
@@ -304,8 +318,8 @@ object Utils {
             MediaStore.Images.Media.getBitmap(contentResolver, uri)
     }
 
-    fun saveBitmapToFile(bitmap: Bitmap, file: File?): File {
-        val photoFile = file ?: createImageFile()
+    fun saveBitmapToFile(bitmap: Bitmap, file: File?, context: Context): File {
+        val photoFile = file ?: createImageFile(context)
 
         FileOutputStream(photoFile).use { out ->
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, out)
@@ -316,16 +330,16 @@ object Utils {
 
     fun saveBitmapToFileWithUrl(bitmap: Bitmap, uri: Uri , context: Context){
         val resolver = context.contentResolver
-        val photoFile = createImageFile()
+        val photoFile = createImageFile(context)
         val outputStream = resolver.openOutputStream(uri)
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
         outputStream?.close()
     }
 
     @Throws(IOException::class)
-    private fun createImageFile(): File {
+    private fun createImageFile(context:Context): File {
         // Create an image file name
-        var locale = Locale.getDefault()
+        var locale = LanguageManager.getLocaleFromPreferences(context)
         val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss", locale).format(Date())
         val imageFileName = "ENTOURAGE_CROP_" + timeStamp + "_"
         val storageDir = Environment.getExternalStoragePublicDirectory(

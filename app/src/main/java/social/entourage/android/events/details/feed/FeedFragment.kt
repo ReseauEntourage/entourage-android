@@ -3,6 +3,7 @@ package social.entourage.android.events.details.feed
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -42,6 +43,7 @@ import social.entourage.android.api.model.Post
 import social.entourage.android.api.model.Status
 import social.entourage.android.api.model.Tags
 import social.entourage.android.api.model.toEventUi
+import social.entourage.android.comment.CommentsListAdapter
 import social.entourage.android.comment.PostAdapter
 import social.entourage.android.databinding.NewFragmentFeedEventBinding
 import social.entourage.android.events.EventsPresenter
@@ -49,7 +51,9 @@ import social.entourage.android.events.details.SettingsModalFragment
 import social.entourage.android.groups.details.feed.CallbackReportFragment
 import social.entourage.android.groups.details.feed.GroupMembersPhotosAdapter
 import social.entourage.android.groups.details.members.MembersType
+import social.entourage.android.language.LanguageManager
 import social.entourage.android.profile.myProfile.InterestsAdapter
+import social.entourage.android.report.DataLanguageStock
 import social.entourage.android.report.ReportModalFragment
 import social.entourage.android.report.ReportTypes
 import social.entourage.android.tools.calculateIfEventPassed
@@ -58,6 +62,7 @@ import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.CustomAlertDialog
 import social.entourage.android.tools.utils.Utils
+import social.entourage.android.tools.utils.Utils.enableCopyOnLongClick
 import social.entourage.android.tools.utils.px
 import social.entourage.android.tools.utils.underline
 import timber.log.Timber
@@ -80,6 +85,7 @@ class FeedFragment : Fragment(), CallbackReportFragment {
 
     private var newPostsList: MutableList<Post> = mutableListOf()
     private var oldPostsList: MutableList<Post> = mutableListOf()
+    private var allPostsList: MutableList<Post> = mutableListOf()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -139,12 +145,16 @@ class FeedFragment : Fragment(), CallbackReportFragment {
         binding.swipeRefresh.isRefreshing = false
         newPostsList.clear()
         oldPostsList.clear()
+        allPostsList.clear()
         allPosts?.let {
+            allPostsList.addAll(allPosts)
             it.forEach { post ->
                 if (post.read == true || post.read == null) oldPostsList.add(post)
                 else newPostsList.add(post)
             }
         }
+        Log.wtf("wtf", "newPostsList: " + newPostsList.size)
+        Log.wtf("wtf", "oldpostlist: " + oldPostsList.size)
 
         when {
             newPostsList.isEmpty() && oldPostsList.isEmpty() -> {
@@ -199,7 +209,7 @@ class FeedFragment : Fragment(), CallbackReportFragment {
         with(binding) {
             eventName.text = event?.title
             eventNameToolbar.text = event?.title
-
+            eventDescription.enableCopyOnLongClick(requireContext())
             if(event != null && event?.membersCount!! > 1){
                 eventMembersNumberLocation.text = String.format(
                     getString(R.string.members_number),
@@ -211,7 +221,7 @@ class FeedFragment : Fragment(), CallbackReportFragment {
                     event?.membersCount,
                 )
             }
-            var locale = Locale.getDefault()
+            var locale = LanguageManager.getLocaleFromPreferences(requireContext())
 
 
             event?.metadata?.placeLimit?.let {
@@ -383,8 +393,8 @@ class FeedFragment : Fragment(), CallbackReportFragment {
                 ::openCommentPage,
                 ::openReportFragment,
                 ::openImageFragment
-
             )
+            (adapter as? PostAdapter)?.initiateList()
         }
         binding.postsOldRecyclerview.apply {
             layoutManager = LinearLayoutManager(requireContext())
@@ -395,6 +405,7 @@ class FeedFragment : Fragment(), CallbackReportFragment {
                 ::openReportFragment,
                 ::openImageFragment
             )
+            (adapter as? PostAdapter)?.initiateList()
         }
     }
 
@@ -419,10 +430,20 @@ class FeedFragment : Fragment(), CallbackReportFragment {
         val reportGroupBottomDialogFragment =
             event?.id?.let {
                 val meId = EntourageApplication.get().me()?.id
+                val post = allPostsList.find { it.id == postId }
+                val fromLang = post?.contentTranslations?.fromLang
+                if (fromLang != null) {
+                    DataLanguageStock.updatePostLanguage(fromLang)
+                }
+                val isFrome = meId == post?.user?.id?.toInt()
+                Log.wtf("wtf", "isFrome $isFrome")
+
+                var description = allPostsList.find { it.id == postId }?.content ?: ""
+
                 ReportModalFragment.newInstance(
                     postId,
-                    it, ReportTypes.REPORT_POST_EVENT, meId == userId
-                ,false,false)
+                    it, ReportTypes.REPORT_POST_EVENT, isFrome
+                ,false,false, contentCopied = description)
             }
         reportGroupBottomDialogFragment?.setCallback(this)
         reportGroupBottomDialogFragment?.show(parentFragmentManager, ReportModalFragment.TAG)
@@ -675,5 +696,15 @@ class FeedFragment : Fragment(), CallbackReportFragment {
             delay(500)
             loadPosts()
         }
+    }
+
+    override fun onTranslatePost(id: Int) {
+        val isNewPost = newPostsList.any { it.id == id }
+        val adapter = if (isNewPost) {
+            binding.postsNewRecyclerview.adapter as? PostAdapter
+        } else {
+            binding.postsOldRecyclerview.adapter as? PostAdapter
+        }
+        adapter?.translateItem(id)
     }
 }

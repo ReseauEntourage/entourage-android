@@ -1,3 +1,5 @@
+import com.android.build.api.dsl.Lint
+import com.android.build.api.dsl.LintOptions
 import java.io.ByteArrayOutputStream
 
 plugins {
@@ -29,7 +31,7 @@ android {
 
     // App versions
     val versionMajor = 9
-    val versionMinor = 0
+    val versionMinor = 2
     val versionPatch = "git rev-list HEAD --count".runCommand().toInt()
     val versionBranchName = "git rev-parse --abbrev-ref HEAD".runCommand()
     val versionCodeInt = (versionMajor * 100 + versionMinor) * 10000 + versionPatch % 10000
@@ -74,7 +76,7 @@ android {
         applicationId = "social.entourage.android"
         resourceConfigurations += listOf("en", "fr", "de", "pl", "es","uk", "ro")
 
-        minSdk = 21 /*November 2014: Android 5.0, Lollipop*/
+        minSdk = 23 /*November 2015: Android 6.0, MarshMallow*/
         targetSdk = 33
 
         // Making either of these two values dynamic in the defaultConfig will
@@ -293,6 +295,5 @@ dependencies {
     implementation("androidx.transition:transition:1.4.1") // Remplacez 'x.x.x' par la dernière version disponible.
     implementation("androidx.core:core-splashscreen:1.0.1")
     implementation("com.google.android.play:core:1.10.0")
-
 
 }

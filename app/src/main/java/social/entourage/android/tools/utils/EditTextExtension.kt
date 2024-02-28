@@ -14,6 +14,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.TextView
 import social.entourage.android.R
+import social.entourage.android.language.LanguageManager
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -26,7 +27,7 @@ fun EditText.transformIntoDatePicker(
     isFocusableInTouchMode = false
     isClickable = true
     isFocusable = false
-    var locale = Locale.getDefault()
+    var locale = LanguageManager.getLocaleFromPreferences(context)
     val myCalendar = Calendar.getInstance()
     val datePickerOnDataSetListener =
         DatePickerDialog.OnDateSetListener { _, _, monthOfYear, dayOfMonth ->
@@ -55,7 +56,7 @@ fun EditText.transformIntoTimePicker(context: Context, format: String) {
     isFocusable = false
 
     val myCalendar = Calendar.getInstance()
-    var locale = Locale.getDefault()
+    var locale = LanguageManager.getLocaleFromPreferences(context)
     val timePickerOnDataSetListener =
         TimePickerDialog.OnTimeSetListener { _, hourOfDay, minute ->
             myCalendar.set(Calendar.HOUR_OF_DAY, hourOfDay)

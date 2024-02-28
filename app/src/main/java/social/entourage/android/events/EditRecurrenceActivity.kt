@@ -8,6 +8,7 @@ import social.entourage.android.R
 import social.entourage.android.databinding.NewActivityEditRecurrenceBinding
 import social.entourage.android.RefreshController
 import social.entourage.android.events.create.Recurrence
+import social.entourage.android.language.LanguageManager
 import social.entourage.android.tools.utils.Const
 import java.text.SimpleDateFormat
 import java.util.*
@@ -46,7 +47,7 @@ class EditRecurrenceActivity : AppCompatActivity() {
     }
 
     private fun setView() {
-        var locale = Locale.getDefault()
+        var locale = LanguageManager.getLocaleFromPreferences(this)
         val sdf = SimpleDateFormat(getString(R.string.events_date), locale)
         binding.date.text = date?.let { it1 ->
             sdf.format(

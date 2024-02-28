@@ -87,6 +87,55 @@
                         </androidx.constraintlayout.widget.ConstraintLayout>
 
                         <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/layout_cs_translate"
+                            >
+
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:id="@+id/iv_translate"
+                                android:src="@drawable/ic_translate"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                android:layout_marginStart="0dp"
+                                android:layout_marginTop="@dimen/entourage_little_margin_start"
+                                />
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/title_action_translate"
+                                android:text="@string/layout_translate_title_translation_title"
+                                app:layout_constraintStart_toEndOf="@+id/iv_translate"
+                                app:layout_constraintTop_toTopOf="@+id/iv_translate"
+                                app:layout_constraintBottom_toBottomOf="@+id/iv_translate"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                android:fontFamily="@font/nunitosans_regular"
+                                android:textSize="13sp"
+                                android:textColor="@color/grey"
+                                android:layout_marginStart="10dp"/>
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/tv_button_translate"
+                                android:text="@string/layout_translate_action_translation_button"
+                                app:layout_constraintStart_toEndOf="@+id/iv_translate"
+                                app:layout_constraintTop_toBottomOf="@+id/title_action_translate"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                android:fontFamily="@font/quicksand_bold"
+                                android:textSize="13sp"
+                                android:textColor="@color/orange"
+                                android:layout_marginStart="10dp"
+                                />
+
+
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
                             android:id="@+id/layout_top_contrib"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"

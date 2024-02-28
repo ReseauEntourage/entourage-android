@@ -16,7 +16,7 @@ import social.entourage.android.groups.GroupPresenter
 import social.entourage.android.tools.log.AnalyticsEvents
 import timber.log.Timber
 
-class MyGroupsListFragment : Fragment() {
+class MyGroupsListFragment : Fragment() , UpdateGroupInter{
 
     private var _binding: NewFragmentMyGroupsListBinding? = null
     val binding: NewFragmentMyGroupsListBinding get() = _binding!!
@@ -75,13 +75,12 @@ class MyGroupsListFragment : Fragment() {
     }
 
     private fun initializeGroups() {
-        binding.recyclerView.apply {
-            // Pagination
-            addOnScrollListener(recyclerViewOnScrollListener)
-            layoutManager = LinearLayoutManager(context)
-            adapter = GroupsListAdapter(groupsList, myId, FromScreen.MY_GROUPS)
-            (adapter as? GroupsListAdapter)?.updateGroupsList(groupsList)
-        }
+        // Pagination
+        binding.recyclerView.addOnScrollListener(recyclerViewOnScrollListener)
+        binding.recyclerView.layoutManager = LinearLayoutManager(context)
+        binding.recyclerView.adapter = GroupsListAdapter(groupsList, myId, FromScreen.MY_GROUPS,this)
+        (binding.recyclerView.adapter as? GroupsListAdapter)?.updateGroupsList(groupsList)
+
     }
 
     private fun loadGroups() {
@@ -127,5 +126,9 @@ class MyGroupsListFragment : Fragment() {
                 }
             }
         }
+    }
+
+    override fun updateGroup() {
+
     }
 }

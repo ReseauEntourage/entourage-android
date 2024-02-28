@@ -21,6 +21,7 @@ import social.entourage.android.databinding.NewEventsListHeaderBinding
 import social.entourage.android.events.details.feed.FeedActivity
 import social.entourage.android.api.model.Events
 import social.entourage.android.api.model.Status
+import social.entourage.android.language.LanguageManager
 import social.entourage.android.tools.calculateIfEventPassed
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.px
@@ -100,7 +101,7 @@ class GroupEventsListAdapter(
         }
         childViewHolder.binding.eventName.text = child.title
         child.metadata?.startsAt?.let {
-            var locale = Locale.getDefault()
+            var locale = LanguageManager.getLocaleFromPreferences(context)
             childViewHolder.binding.date.text = SimpleDateFormat(
                 childViewHolder.itemView.context.getString(R.string.event_date_time),
                 locale

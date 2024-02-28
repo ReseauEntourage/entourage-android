@@ -19,6 +19,7 @@ import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.fragment_onboarding_photo.*
 import social.entourage.android.R
 import social.entourage.android.base.BaseDialogFragment
+import social.entourage.android.language.LanguageManager
 import social.entourage.android.onboarding.onboard.OnboardingEditPhotoFragment
 import social.entourage.android.tools.log.AnalyticsEvents
 import timber.log.Timber
@@ -222,7 +223,7 @@ open class EditPhotoFragment : BaseDialogFragment(), PhotoEditInterface {
     @Throws(IOException::class)
     protected fun createImageFile(): Uri? {
         // Create an image file name
-        var locale = Locale.getDefault()
+        var locale = LanguageManager.getLocaleFromPreferences(requireContext())
         val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss", locale).format(Date())
         val imageFileName = "ENTOURAGE_" + timeStamp + "_"
         val storageDir = File(requireContext().filesDir, "images")

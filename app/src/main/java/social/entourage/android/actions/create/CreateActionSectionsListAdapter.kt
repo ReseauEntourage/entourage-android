@@ -43,9 +43,10 @@ class CreateActionSectionsListAdapter(
             else {
                 binding.title.typeface = Typeface.create(binding.title.typeface,Typeface.NORMAL)
             }
-            Log.wtf("wtf", "bind: ${category.title}")
-            binding.title.text = EventUtils.showTagTranslated( binding.context,category.title!!)
-            binding.subtitle.text = EventUtils.showSubTagTranslated( binding.context,category.title!!)
+            if(category.id != null){
+                binding.title.text = EventUtils.showTagTranslated( binding.context,category.id!!)
+                binding.subtitle.text = EventUtils.showSubTagTranslated( binding.context,category.id!!)
+            }
             binding.checkBox.isChecked = category.isSelected
             binding.icon.setImageResource(category.icon)
 

@@ -23,6 +23,7 @@ import social.entourage.android.base.BaseActivity
 import social.entourage.android.databinding.NewActivityCommentsBinding
 import social.entourage.android.deeplinks.UniversalLinkManager
 import social.entourage.android.discussions.DiscussionsPresenter
+import social.entourage.android.report.DataLanguageStock
 import social.entourage.android.report.ReportModalFragment
 import social.entourage.android.report.ReportTypes
 import social.entourage.android.report.onDissmissFragment
@@ -79,11 +80,12 @@ abstract class CommentActivity : BaseActivity(), onDissmissFragment {
         openEditTextKeyboard()
         handleBackButton()
         setSettingsIcon()
+        val postLang = comment?.contentTranslations?.fromLang ?: ""
         if (isConversation) {
-            handleReportPost(id)
+            handleReportPost(id,postLang)
         }
         else {
-            handleReportPost(postId)
+            handleReportPost(postId,postLang)
         }
 
         handleSendButtonState()
@@ -165,11 +167,11 @@ abstract class CommentActivity : BaseActivity(), onDissmissFragment {
                     addComment()
                     commentsList.remove(comment)
                 }
-                override fun onCommentReport(commentId: Int?, isForEvent: Boolean, isMe:Boolean) {
+                override fun onCommentReport(commentId: Int?, isForEvent: Boolean, isMe:Boolean,commentLang:String) {
                     if(isForEvent){
-                        commentId?.let { handleReport(it, ReportTypes.REPORT_POST_EVENT, true, isMe) }
+                        commentId?.let { handleReport(it, ReportTypes.REPORT_POST_EVENT, true, isMe, commentLang) }
                     }else{
-                        commentId?.let { handleReport(it, ReportTypes.REPORT_COMMENT , true, isMe) }
+                        commentId?.let { handleReport(it, ReportTypes.REPORT_COMMENT , true, isMe,commentLang) }
 
                     }
                 }
@@ -192,6 +194,7 @@ abstract class CommentActivity : BaseActivity(), onDissmissFragment {
                         .show(supportFragmentManager, WebViewFragment.TAG)
                 }
             })
+            (adapter as? CommentsListAdapter)?.initiateList()
         }
     }
 
@@ -245,9 +248,18 @@ abstract class CommentActivity : BaseActivity(), onDissmissFragment {
         binding.header.iconSettings.setBackgroundColor(ContextCompat.getColor(this, R.color.transparent))
     }
 
-    protected fun handleReport(id: Int, type: ReportTypes, isEventComment :Boolean, isMe:Boolean) {
+    protected fun handleReport(id: Int, type: ReportTypes, isEventComment :Boolean, isMe:Boolean, commentLang:String) {
+        val fromLang =  commentLang
+        var isNotTranslatable = false
+        if (fromLang == null || fromLang.equals("")){
+            DataLanguageStock.updatePostLanguage(fromLang)
+        }else{
+            isNotTranslatable = true
+        }
+
+        var description = comment?.content ?: ""
         val reportGroupBottomDialogFragment =
-            ReportModalFragment.newInstance(id, this.id, type, isMe ,true, this.isOne2One)
+            ReportModalFragment.newInstance(id, this.id, type, isMe ,true, this.isOne2One, contentCopied = DataLanguageStock.contentToCopy, isNotTranslatable = isNotTranslatable)
         if(isEventComment){
             reportGroupBottomDialogFragment.setEventComment()
         }
@@ -258,12 +270,12 @@ abstract class CommentActivity : BaseActivity(), onDissmissFragment {
         )
     }
 
-    protected open fun handleReportPost(id: Int) {
+    protected open fun handleReportPost(id: Int, commentLang: String) {
         binding.header.iconSettings.setOnClickListener {
             if(isEvent){
-                handleReport(id, ReportTypes.REPORT_POST_EVENT, false, false/*checkIsME*/)
+                handleReport(id, ReportTypes.REPORT_POST_EVENT, false, false/*checkIsME*/,commentLang)
             }else{
-                handleReport(id, ReportTypes.REPORT_POST, false, false/*checkIsME*/)
+                handleReport(id, ReportTypes.REPORT_POST, false, false/*checkIsME*/,commentLang)
             }
         }
     }

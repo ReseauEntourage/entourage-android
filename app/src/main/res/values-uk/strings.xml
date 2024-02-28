@@ -608,8 +608,8 @@
     <string name="action_leave_voice_message">Записати голосове повідомлення</string>
     <string name="action_voice_message_button">Почніть розпізнавання голосу</string>
     <string name="action_voice_message_not_supported">Розпізнавання голосу n\ не підтримується на вашому телефоні.</string>
-    <string name="at_km_from_me">до %d км від мене</string>
-    <string name="at_meter_from_me">до %d м від мене</string>
+    <string name="at_km_from_me">%d км від мене</string>
+    <string name="at_meter_from_me">%d м від мене</string>
     <string name="inf_hundred_meter">менше 100 м від мене</string>
     <string name="share_title_contrib">Цей внесок може вас зацікавити.</string>
     <string name="share_title_demande">Цей запит може вас зацікавити.</string>
@@ -2076,7 +2076,7 @@
 
     <string name="intro_title_1">Соціальна мережа, справді соціальна.</string>
     <string name="intro_subtitle_1">Наша місія: мобілізувати та підготувати громадян для підтримки найбільш ізольованих.</string>
-    <string name="intro_title_2">У програмі \' Entourage:</string>
+    <string name="intro_title_2">У програмі Entourage:</string>
     <string name="intro_subtitle_2">Зустрічайте схожих на вас сусідів під час заходів \ і обговорюйте дії солідарності.</string>
     <string name="intro_title_3">Антураж з вами!</string>
     <string name="intro_subtitle_3">Команди d\'амбасадорів, волонтерів і модераторів d\'Entourage супроводжують вас і направляють вас щодня.</string>
@@ -2642,6 +2642,37 @@
     <string name="terms_and_conditions_html">Натискаючи &lt;b&gt;Далі&lt;/b&gt;, ви погоджуєтеся з &lt;a href=\'https://www.entourage.social/terms/\'&gt;Умовами користування&lt;/a&gt; та &lt;a href=\'https://www.entourage.social/privacy-policy/\'&gt;Політикою конфіденційності&lt;/a&gt;</string>
     <string name="action_crete_cat_about">Шукаєте можливість запропонувати %s, яке не вписується в жодну з цих категорій? Здається, що \ не має місця в мережі, але ви завжди можете</string>
     <string name="action_create_cat_about_link"> дізнатися більше тут.</string>
+    <string name="report_modal_title_translate">Перекласти</string>
+    <string name="report_modal_subtitle_translate">Ми автоматично перекладаємо повідомлення, написані громадянами</string>
+    <string name="layout_translate_title_original">Показати оригінальну версію</string>
+    <string name="layout_translate_title_translation">Показати переклад</string>
+    <string name="layout_translate_action_translation_button">Натисніть тут, щоб показати оригінальну версію</string>
+    <string name="layout_translate_title_original_button">Показати переклад</string>
+    <string name="layout_translate_title_original_title">Ця сторінка не була перекладена.</string>
+    <string name="layout_translate_title_translation_title">Деяка інформація була перекладена автоматично.</string>
+    <string name="category_other">Інше</string>
+    <string name="category_food">Їжа</string>
+    <string name="category_housing">Житло</string>
+    <string name="category_medical">Медичне</string>
+    <string name="category_orientation">Орієнтація</string>
+    <string name="category_insertion">Реінтеграція</string>
+    <string name="category_partners">Партнери</string>
+    <string name="category_toilettes">Туалети</string>
+    <string name="category_fontaines">Фонтани</string>
+    <string name="category_douches">Душі</string>
+    <string name="category_laverlinge">Пральні</string>
+    <string name="category_self_care">Добробут &amp; Заходи</string>
+    <string name="category_vetements">Одяг &amp; Обладнання</string>
+    <string name="category_bagages">Зберігання багажу</string>
+    <string name="category_boitesdons">Бокси для пожертв &amp; Читання</string>
+    <string name="all_groups">Усі групи</string>
+    <string name="btn_create_group">Створити групу</string>
+    <string name="back_create_event_content">Якщо ви залишите форму створення події, всі введені дані будуть втрачені.</string>
+    <string name="friendly_links_title">Дружні та солідарні зв\'язки</string>
+    <string name="friendly_links_text">У Entourage основною метою є сприяння дружнім та стійким зв\'язкам. Я зобов\'язуюсь дотримуватися цього напрямку, уникаючи будь-яких романтичних чи коханих підходів чи публікацій. Таким чином, я активно сприяю підтриманню теплої та доброзичливої атмосфери для всіх.</string>
 
+    <string name="copied_text">Скопійовано до буферу обміну!</string>
+    <string name="copy_the_text">Скопіювати текст</string>
+    <string name="copy_the_text_explanation">Текст буде скопійовано до буферу обміну</string>
 
 </resources>

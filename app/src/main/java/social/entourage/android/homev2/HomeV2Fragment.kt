@@ -6,7 +6,9 @@ import android.animation.ValueAnimator
 import android.content.Context
 import android.content.Intent
 import android.content.IntentSender
+import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -17,15 +19,10 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.google.android.play.core.appupdate.AppUpdateManager
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
-import com.google.android.play.core.install.model.AppUpdateType
-import com.google.android.play.core.install.model.UpdateAvailability
-import com.google.gson.Gson
-import kotlinx.android.synthetic.main.new_fragment_edit_group.nestedScrollView
 import social.entourage.android.BuildConfig
 import social.entourage.android.EntourageApplication
 import social.entourage.android.MainActivity
@@ -41,14 +38,11 @@ import social.entourage.android.api.model.Pedago
 import social.entourage.android.api.model.Summary
 import social.entourage.android.api.model.User
 import social.entourage.android.databinding.FragmentHomeV2LayoutBinding
-import social.entourage.android.events.EventsPresenter
 import social.entourage.android.guide.GDSMainActivity
 import social.entourage.android.home.HomePresenter
 import social.entourage.android.home.pedago.OnItemClick
 import social.entourage.android.home.pedago.PedagoDetailActivity
 import social.entourage.android.home.pedago.PedagoListActivity
-import social.entourage.android.home.pedago.PedagoListFragmentDirections
-import social.entourage.android.language.LanguageManager
 import social.entourage.android.notifications.InAppNotificationsActivity
 import social.entourage.android.profile.ProfileActivity
 import social.entourage.android.tools.log.AnalyticsEvents
@@ -64,7 +58,7 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener {
     private lateinit var binding:FragmentHomeV2LayoutBinding
     private lateinit var homePresenter:HomePresenter
     private var homeGroupAdapter = HomeGroupAdapter()
-    private var homeEventAdapter = HomeEventAdapter()
+    private lateinit var homeEventAdapter:HomeEventAdapter
     private var homeActionAdapter = HomeActionAdapter(false)
     private val userPresenter: UserPresenter by lazy { UserPresenter() }
     private lateinit var homeHelpAdapter:HomeHelpAdapter
@@ -96,7 +90,7 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
+        totalchecksum = 0
         binding = FragmentHomeV2LayoutBinding.inflate(layoutInflater)
         binding.homeNestedScrollView.visibility = View.GONE
         disapearAllAtBeginning()
@@ -104,6 +98,7 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener {
         homePresenter = ViewModelProvider(requireActivity()).get(HomePresenter::class.java)
         actionsPresenter = ViewModelProvider(requireActivity()).get(ActionsPresenter::class.java)
         homeHelpAdapter = HomeHelpAdapter(this)
+        homeEventAdapter = HomeEventAdapter(requireContext())
         homePedagoAdapter = HomePedagoAdapter(object : OnItemClick {
             override fun onItemClick(pedagogicalContent: Pedago) {
                 if (pedagogicalContent.html != null && pedagogicalContent.id != null) {
@@ -115,7 +110,6 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener {
             }
         })
         AnalyticsEvents.logEvent(AnalyticsEvents.View__Home)
-
         setRecyclerViews()
         setSeeAllButtons()
         setObservations()
@@ -123,6 +117,7 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener {
         setMapButton()
         setProfileButton()
         setNestedScrollViewAnimation()
+
         return binding.root
     }
 
@@ -139,27 +134,9 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener {
         callToInitHome()
     }
 
-//    fun showUpdateApplication(){
-//        val appUpdateManager: AppUpdateManager = AppUpdateManagerFactory.create(requireContext())
-//
-//        appUpdateManager.appUpdateInfo.addOnSuccessListener { appUpdateInfo ->
-//            if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
-//                && appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)) {
-//                try {
-//                    appUpdateManager.startUpdateFlowForResult(
-//                        appUpdateInfo,
-//                        AppUpdateType.IMMEDIATE,
-//                        // Votre Activity actuelle
-//                        this,
-//                        123456)
-//                } catch (e: IntentSender.SendIntentException) {
-//                    e.printStackTrace()
-//                }
-//            }
-//        }
-//    }
 
     fun callToInitHome(){
+
         if(isAdded){
             val meId = EntourageApplication.get().me()?.id
             if(meId == null) return
@@ -173,7 +150,6 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener {
 
     private fun checkSumEventAction(){
         checksum++
-        Log.wtf("wtf", "checksum " + checksum)
         if (checksum == 2){
             if(isEventsEmpty && isActionEmpty){
                 binding.itemHz.layoutItemHz.visibility = View.VISIBLE
@@ -298,6 +274,7 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener {
             return
         }
         doTotalchecksumToDisplayHomeFirstTime()
+
         if(allGroup.size > 0 ){
             binding.btnMoreGroup.visibility = View.VISIBLE
             binding.rvHomeGroup.visibility = View.VISIBLE
@@ -458,7 +435,6 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener {
     }
     //HERE JUST RECONNECT OLD FUNCTIONS
     private fun updateNotifsCount(count: Int) {
-        Log.wtf("wtf", "notif count ? " + count)
         context?.resources?.let { resources ->
             val bgColor = if (count > 0) {
                 ResourcesCompat.getColor(resources, R.color.orange, null)

@@ -19,6 +19,7 @@ import social.entourage.android.api.MetaDataRepository
 import social.entourage.android.api.model.Tags
 import social.entourage.android.api.model.User
 import social.entourage.android.databinding.NewFragmentMyProfileBinding
+import social.entourage.android.language.LanguageManager
 import social.entourage.android.profile.ProfileFragmentDirections
 import social.entourage.android.tools.log.AnalyticsEvents
 import java.text.SimpleDateFormat
@@ -79,80 +80,82 @@ class MyProfileFragment : Fragment() {
     }
 
     private fun updateUserView() {
-        with(binding) {
-            user.about?.let {
-                if (it.isNotEmpty()) {
-                    description.visibility = View.VISIBLE
-                    description.text = it
+        if(isAdded){
+            with(binding) {
+                user.about?.let {
+                    if (it.isNotEmpty()) {
+                        description.visibility = View.VISIBLE
+                        description.text = it
+                    }
                 }
-            }
-            user.phone?.let {
-                if (it.isNotEmpty()) {
-                    phone.root.visibility = View.VISIBLE
-                    phone.content.text = it
+                user.phone?.let {
+                    if (it.isNotEmpty()) {
+                        phone.root.visibility = View.VISIBLE
+                        phone.content.text = it
+                    }
                 }
-            }
-            user.birthday?.let {
-                if (it.isNotEmpty()) {
-                    birthday.root.visibility = View.VISIBLE
-                    birthday.content.text = it
-                }else {
+                user.birthday?.let {
+                    if (it.isNotEmpty()) {
+                        birthday.root.visibility = View.VISIBLE
+                        birthday.content.text = it
+                    }else {
+                        birthday.root.visibility = View.VISIBLE
+                        birthday.content.hint = getString(R.string.placeholder_birthday_my_profile)
+                    }
+                }
+                if (user.birthday == null){
                     birthday.root.visibility = View.VISIBLE
                     birthday.content.hint = getString(R.string.placeholder_birthday_my_profile)
                 }
-            }
-            if (user.birthday == null){
-                birthday.root.visibility = View.VISIBLE
-                birthday.content.hint = getString(R.string.placeholder_birthday_my_profile)
-            }
-            user.email?.let {
-                if (it.isNotEmpty()) {
-                    email.root.visibility = View.VISIBLE
-                    email.content.text = it
-                }else {
+                user.email?.let {
+                    if (it.isNotEmpty()) {
+                        email.root.visibility = View.VISIBLE
+                        email.content.text = it
+                    }else {
+                        email.root.visibility = View.VISIBLE
+                        email.content.hint = getString(R.string.placeholder_email_my_profile)
+                    }
+                }
+                if (user.birthday == null){
                     email.root.visibility = View.VISIBLE
                     email.content.hint = getString(R.string.placeholder_email_my_profile)
                 }
-            }
-            if (user.birthday == null){
-                email.root.visibility = View.VISIBLE
-                email.content.hint = getString(R.string.placeholder_email_my_profile)
-            }
-            user.address?.displayAddress?.let {
-                if (it.isNotEmpty()) {
-                    city.root.visibility = View.VISIBLE
-                    city.content.text = it
+                user.address?.displayAddress?.let {
+                    if (it.isNotEmpty()) {
+                        city.root.visibility = View.VISIBLE
+                        city.content.text = it
+                    }
                 }
-            }
-            user.travelDistance?.let {
-                city.within.text = String.format(getString(R.string.progress_km), it)
-            }
-            user.stats?.let {
-                _binding.contribContent.text = it.neighborhoodsCount.toString()
-                _binding.eventContent.text = it.outingsCount.toString()
+                user.travelDistance?.let {
+                    city.within.text = String.format(getString(R.string.progress_km), it)
+                }
+                user.stats?.let {
+                    _binding.contribContent.text = it.neighborhoodsCount.toString()
+                    _binding.eventContent.text = it.outingsCount.toString()
 
 
-            }
-            user.roles?.let {
-                if (it.contains("ambassador")) ambassador.visibility = View.VISIBLE
-            }
-            user.createdAt?.let {
-                var locale = Locale.getDefault()
-                binding.joined.date.text = SimpleDateFormat(
-                    requireContext().getString(R.string.profile_date_format),
-                    locale
-                ).format(
-                    it
-                )
-            }
-            user.partner?.let {
-                association.visibility = View.VISIBLE
-                association.association_name.text = it.name
-                it.smallLogoUrl.let { logo ->
-                    Glide.with(requireActivity())
-                        .load(Uri.parse(logo))
-                        .circleCrop()
-                        .into(associationAvatar)
+                }
+                user.roles?.let {
+                    if (it.contains("ambassador")) ambassador.visibility = View.VISIBLE
+                }
+                user.createdAt?.let {
+                    var locale = LanguageManager.getLocaleFromPreferences(requireContext())
+                    binding.joined.date.text = SimpleDateFormat(
+                        requireContext().getString(R.string.profile_date_format),
+                        locale
+                    ).format(
+                        it
+                    )
+                }
+                user.partner?.let {
+                    association.visibility = View.VISIBLE
+                    association.association_name.text = it.name
+                    it.smallLogoUrl.let { logo ->
+                        Glide.with(requireActivity())
+                            .load(Uri.parse(logo))
+                            .circleCrop()
+                            .into(associationAvatar)
+                    }
                 }
             }
         }

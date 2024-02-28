@@ -612,8 +612,8 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="action_leave_voice_message">Enregistrez un message vocal</string>
     <string name="action_voice_message_button">Lancer la reconnaissance vocale</string>
     <string name="action_voice_message_not_supported">La reconnaissance vocale n\'est pas supportée sur votre téléphone.</string>
-    <string name="at_km_from_me">à %d km de moi</string>
-    <string name="at_meter_from_me">à %d m de moi </string>
+    <string name="at_km_from_me">%d km de moi</string>
+    <string name="at_meter_from_me">%d m de moi </string>
     <string name="inf_hundred_meter">à moins de 100m de moi</string>
     <string name="share_title_contrib"> Cette contribution pourrait vous intéresser.</string>
     <string name="share_title_demande"> Cette demande pourrait vous intéresser.</string>
@@ -2593,7 +2593,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="lang_ar">"Arabe"</string>
     <string name="lang_pl">"Polonais"</string>
 
-    <string name="translation_bottom_fragment_title">"Nous traduisons automatiquement les messages rédigés par les citoyens."</string>
+    <string name="translation_bottom_fragment_title">"Nous traduisons automatiquement les messages rédigés par les utilisateurs de l’application."</string>
     <string name="translation_bottom_fragment_main_title">"Traduction"</string>
 
     <string name="action_social_name">Temps de partage</string>
@@ -2647,7 +2647,40 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="terms_and_conditions_html">En cliquant sur &lt;b&gt;Suivant&lt;/b&gt;, vous acceptez les &lt;a href=\'https://www.entourage.social/cgu/\'&gt;Conditions Générales d\'Utilisation&lt;/a&gt; et la &lt;a href=\'https://www.entourage.social/politique-de-confidentialite/\'&gt;Politique de Confidentialité&lt;/a&gt;</string>
     <string name="action_crete_cat_about">Vous cherchez à proposer une %s qui ne rentre pas dans l\'une de ces catégories ? Il semble qu\'elle n\'ait pas sa place sur le réseau,mais vous pouvez toujours</string>
     <string name="action_create_cat_about_link"> en savoir plus par ici.</string>
+    <string name="report_modal_title_translate">Traduire</string>
+    <string name="report_modal_subtitle_translate">Nous traduisons automatiquement les messages rédigés par les utilisateurs de l’application.</string>
+    <string name="layout_translate_title_original">Afficher la version originale</string>
+    <string name="layout_translate_title_translation">Afficher la traduction</string>
 
+    <string name="layout_translate_action_translation_button">Cliquer ici pour afficher la version originale</string>
+    <string name="layout_translate_title_original_button">Afficher la traduction</string>
+    <string name="layout_translate_title_original_title">Cette page n’a pas été traduite.</string>
+    <string name="layout_translate_title_translation_title">Certaines informations ont été traduites automatiquement.</string>
+
+    <string name="category_other">Autre</string>
+    <string name="category_food">Se nourrir</string>
+    <string name="category_housing">Se loger</string>
+    <string name="category_medical">Se soigner</string>
+    <string name="category_orientation">S\'orienter</string>
+    <string name="category_insertion">Se réinsérer</string>
+    <string name="category_partners">Partenaires</string>
+    <string name="category_toilettes">Toilettes</string>
+    <string name="category_fontaines">Fontaines</string>
+    <string name="category_douches">Douches</string>
+    <string name="category_laverlinge">Laveries</string>
+    <string name="category_self_care">Bien-être &amp; activités</string>
+    <string name="category_vetements">Vêtements &amp; matériels</string>
+    <string name="category_bagages">Bagageries</string>
+    <string name="category_boitesdons">Boîtes à dons &amp; lire</string>
+    <string name="all_groups">Tous les groupes</string>
+    <string name="btn_create_group">Créer un groupe</string>
+    <string name="back_create_event_content">Si vous quittez le formulaire de création d’un événement, toutes les informations saisies seront perdues.</string>
+    <string name="friendly_links_title">Liens amicaux et solidaires</string>
+    <string name="friendly_links_text">Chez Entourage, l\'objectif principal est de favoriser les liens amicaux et durables. Je m\'engage à respecter cette orientation en évitant toute démarche ou publication à caractère romantique ou amoureux. Ainsi, je contribue activement à maintenir un environnement chaleureux et bienveillant pour tous et toutes.</string>
+
+    <string name="copied_text">Copié dans le presse-papier !</string>
+    <string name="copy_the_text">Copier le texte</string>
+    <string name="copy_the_text_explanation">Le texte sera copié dans le presse-papier</string>
 
 </resources>
 

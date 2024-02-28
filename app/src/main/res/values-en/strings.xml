@@ -195,8 +195,8 @@
     <string name="pass">Skip</string>
     <string name="create_post">Create a post</string>
     <string name="create_event">Create an event on the group</string>
-    <string name="create_event_if_no_event">Create an event</string>
-    <string name="create_event_btn_title">Create an event</string>
+    <string name="create_event_if_no_event">Create event</string>
+    <string name="create_event_btn_title">Create event</string>
     <string name="group_success_title">Your group is online!</string>
     <string name="group_success_subtitle">Congratulations, you have just created a new group. To make it more active, create the first post.</string>
     <string name="select_photo">Select a photo</string>
@@ -336,7 +336,7 @@
     <string name="my_events">I participate</string>
     <string name="canceled">- Canceled</string>
     <string name="title_btn_discover_event">Discover the events</string>
-    <string name="title_button_create_event">Create an event</string>
+    <string name="title_button_create_event">Create event</string>
     <string name="event_list_empty_state_title">You haven\'t joined an event yet</string>
     <string name="event_list_empty_state_subtitle">It\'s your chance to find out what\'s going on near you, or to create a new event!</string>
     <string name="discover_event_list_empty_state_title">No results match your search!</string>
@@ -539,8 +539,8 @@
     <string name="action_leave_voice_message">Record a voice message</string>
     <string name="action_voice_message_button">Start voice recognition</string>
     <string name="action_voice_message_not_supported">Voice recognition n\ is not supported on your phone.</string>
-    <string name="at_km_from_me">to %d km from me</string>
-    <string name="at_meter_from_me">to %d m from me</string>
+    <string name="at_km_from_me">%d km from me</string>
+    <string name="at_meter_from_me">%d m from me</string>
     <string name="inf_hundred_meter">less than 100m from me</string>
     <string name="share_title_contrib">This contribution might interest you.</string>
     <string name="share_title_demande">This request might interest you.</string>
@@ -875,13 +875,13 @@
     <string name="poi_detail_public">Audience</string>
     <string name="activity_read_poi_title">INFORMATION</string>
     <string name="poi_report_description">Add information about this location</string>
-    <string name="poi_report_button">To update</string>
+    <string name="poi_report_button">Update</string>
     <string name="poi_report_email_subject_format">J\ has updated information regarding \'%1$s\' (#%2$s)</string>
     <string name="poi_detail_open_time">Schedules</string>
     <string name="poi_detail_language">Spoken languages</string>
     <string name="poi_detail_soliguide_1">Information on this location is provided by Soliguide, solidarity cartography.</string>
     <string name="poi_detail_soliguide_2">For even more complete information available in several languages</string>
-    <string name="poi_detail_soliguide_consult">To consult</string>
+    <string name="poi_detail_soliguide_consult">Consult</string>
     <string name="map_poi_empty_popup">It looks like c\ is calm here!&amp;lt;br/&amp;gt;&amp;lt;br/&amp;gt;</string>
     <string name="map_poi_info_popup">The Solidarity Guide allows you to find out about support structures: solidarity restaurants, public showers, medical centers open to unhoused people...\n\n</string>
     <string name="map_empty_poi_recyclerV">That\'s all for the solidarity places in this radius around you</string>
@@ -1084,7 +1084,7 @@
     <string name="bt_pass">Skip</string>
     <string name="intro_title_1">The social network, truly social.</string>
     <string name="intro_subtitle_1">Our mission: to mobilize and equip citizens to support the most excluded.</string>
-    <string name="intro_title_2">On the \' Entourage app:</string>
+    <string name="intro_title_2">On the Entourage app:</string>
     <string name="intro_subtitle_2">Meet neighbors who are like you during \ events and discuss solidarity actions.</string>
     <string name="intro_title_3">Entourage with you!</string>
     <string name="intro_subtitle_3">The teams of d\'ambassadors, volunteers and moderators d\'Entourage accompany you and guide you on a daily basis.</string>
@@ -1548,8 +1548,8 @@
     <string name="welcome_one_sensib">Find our awareness content <u><font color="#F55F24">here</font></u></string>
     <string name="action_show_charte"><u>Ethical Charter</u></string>
     <string name="signal_a_problem"><u>Report a problem</u></string>
-    <string name="login_button_resend_code"><u>Request a code again</u></string>
-    <string name="login_change_phone"><u>I changed my phone number</u></string>
+    <string name="login_button_resend_code"><u>Resend code</u></string>
+    <string name="login_change_phone"><u>My phone number has changed</u></string>
     <string name="newsfeed_load_more_button"><u>Search further.</u></string>
     <string name="newsfeed_tab_events_no_items_button"><u>Find more Entourage events here</u></string>
     <string name="pre_onboard_choice_about"><u>Who is the Entourage association?</u></string>
@@ -1566,6 +1566,39 @@
 
     <string name="action_crete_cat_about">Are you looking to offer a %s that does not fit into one of these categories? It seems that \ has no place on the network,but you can always</string>
     <string name="action_create_cat_about_link"> learn more here.</string>
+    <string name="report_modal_title_translate">Translate</string>
+    <string name="report_modal_subtitle_translate">We automatically translate messages written by citizens</string>
+    <string name="layout_translate_title_original">Show original</string>
+    <string name="layout_translate_title_translation">Translate</string>
+    <string name="layout_translate_action_translation_button">Click here to show the original version</string>
+    <string name="layout_translate_title_original_button">Show translation</string>
+    <string name="layout_translate_title_original_title">This page has not been translated.</string>
+    <string name="layout_translate_title_translation_title">Some information has been automatically translated.</string>
+
+    <string name="category_other">Other</string>
+    <string name="category_food">Feed</string>
+    <string name="category_housing">Lodge</string>
+    <string name="category_medical">Medical</string>
+    <string name="category_orientation">Get oriented</string>
+    <string name="category_insertion">Reintegration</string>
+    <string name="category_partners">Partners</string>
+    <string name="category_toilettes">Toilets</string>
+    <string name="category_fontaines">Fountains</string>
+    <string name="category_douches">Showers</string>
+    <string name="category_laverlinge">Laundries</string>
+    <string name="category_self_care">Well-being &amp; Activities</string>
+    <string name="category_vetements">Clothes &amp; Equipment</string>
+    <string name="category_bagages">Luggage Storage</string>
+    <string name="category_boitesdons">Donation Boxes &amp; Reading</string>
+    <string name="all_groups">All groups</string>
+    <string name="btn_create_group">Create group</string>
+    <string name="back_create_event_content">If you leave the event creation form, all entered information will be lost.</string>
+    <string name="friendly_links_title">Friendly and Supportive Connections</string>
+    <string name="friendly_links_text">At Entourage, the main goal is to foster friendly and lasting relationships. I commit to respecting this focus by avoiding any romantic or amorous approach or publication. Thus, I actively contribute to maintaining a warm and caring environment for everyone.</string>
+
+    <string name="copied_text">Copied to clipboard!</string>
+    <string name="copy_the_text">Copy text</string>
+    <string name="copy_the_text_explanation">The text will be copied to the clipboard</string>
 
 
 </resources>

@@ -3,6 +3,9 @@ package social.entourage.android.report
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.animation.ObjectAnimator
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
 import android.content.DialogInterface
 import android.os.Build
 import android.os.Bundle
@@ -35,6 +38,7 @@ import social.entourage.android.user.UserPresenter
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.CustomAlertDialog
 import timber.log.Timber
+import social.entourage.android.report.DataLanguageStock
 
 enum class ReportTypes(val code: Int) {
     REPORT_USER(0),
@@ -49,7 +53,7 @@ enum class ReportTypes(val code: Int) {
 }
 
 
-class ReportModalFragment : BottomSheetDialogFragment() {
+class ReportModalFragment() : BottomSheetDialogFragment() {
 
     private var signalList: MutableList<TagMetaData> = ArrayList()
     private var _binding: NewFragmentReportBinding? = null
@@ -67,10 +71,12 @@ class ReportModalFragment : BottomSheetDialogFragment() {
     private var isEventComment = false
     private var callback: CallbackReportFragment? = null
     private var isFromMe: Boolean? = false
+    private var isMyLanguage: Boolean? = false
+    private var isNotTranslatable: Boolean? = false
     private var isFromConv: Boolean? = false
     private var isOneToOne: Boolean? = false
     private var dismissCallback:onDissmissFragment? = null
-
+    private var contentCopied:String? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -149,8 +155,10 @@ class ReportModalFragment : BottomSheetDialogFragment() {
 
         val animSignal= ObjectAnimator.ofFloat(binding.layoutChooseSignal, "alpha", 1.0f,0.0F)
         val animSupress = ObjectAnimator.ofFloat(binding.layoutChooseSuppress, "alpha", 1.0f,0.0F)
+        val animCopy = ObjectAnimator.ofFloat(binding.layoutChooseCopy, "alpha", 1.0f,0.0F)
         animSignal.duration = 100
         animSupress.duration = 100
+        animCopy.duration = 100
         animSignal.addListener(object : AnimatorListenerAdapter() {
             override fun onAnimationEnd(animation: Animator, isReverse: Boolean) {
                 binding.layoutChooseSignal.visibility = View.GONE
@@ -167,13 +175,59 @@ class ReportModalFragment : BottomSheetDialogFragment() {
                 setPeekHeight(0.7)
             }
         })
+        animCopy.addListener(object : AnimatorListenerAdapter() {
+            override fun onAnimationEnd(animation: Animator, isReverse: Boolean) {
+                binding.layoutChooseCopy.visibility = View.GONE
+                val view = binding.root
+                val behavior = BottomSheetBehavior.from(view.parent as View)
+                val peekheight = view.height
+                behavior.peekHeight = peekheight
+                setPeekHeight(0.7)
+            }
+        })
         animSignal.start()
         animSupress.start()
+        animCopy.start()
     }
     fun setStartView(){
         getIsFromMe()
+        getIsNotTranslatable()
+        getContentCopied()
+        getIsMyLanguage()
         getIsFromConv()
         getIsOneToOne()
+        Log.wtf("wtf", "contentCopied : $contentCopied")
+        if(contentCopied == null || contentCopied.isNullOrEmpty()){
+            Log.wtf("wtf", "coucou")
+            binding.layoutChooseCopy.visibility = View.GONE
+        }else{
+            binding.layoutChooseCopy.setOnClickListener {
+                val clipboard = context?.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                val clip = ClipData.newPlainText(requireContext().getString(R.string.copied_text), contentCopied)
+                clipboard.setPrimaryClip(clip)
+                Toast.makeText(context, context?.getString(R.string.copied_text), Toast.LENGTH_SHORT).show()
+                true
+                DataLanguageStock.deleteContentToCopy()
+                onClose()
+                dismiss()
+            }
+        }
+            binding.layoutChooseTranslate.visibility = View.VISIBLE
+        if(reportType == ReportTypes.REPORT_COMMENT.code || reportType == ReportTypes.REPORT_POST_EVENT.code){
+            binding.layoutChooseTranslate.visibility = View.VISIBLE
+        }else{
+            binding.layoutChooseTranslate.visibility = View.GONE
+        }
+        if(DataLanguageStock.postLanguage == DataLanguageStock.userLanguage || (isFromMe == true)  ){
+            binding.layoutChooseTranslate.visibility = View.GONE
+        }else{
+            binding.layoutChooseTranslate.visibility = View.VISIBLE
+        }
+        if(isNotTranslatable == true){
+            binding.layoutChooseTranslate.visibility = View.GONE
+        }
+
+
         if (reportType == ReportTypes.REPORT_GROUP.code){
             setAfterChoose()
             setView()
@@ -279,6 +333,14 @@ class ReportModalFragment : BottomSheetDialogFragment() {
             setAfterChoose()
             setView()
         }
+        binding.layoutChooseTranslate.setOnClickListener {
+            if(reportedId != null){
+                dismissCallback?.translateView(reportedId!!)
+                callback?.onTranslatePost(reportedId!!)
+            }
+            onClose()
+            dismiss()
+        }
 
     }
 
@@ -312,6 +374,7 @@ class ReportModalFragment : BottomSheetDialogFragment() {
             title = getString(R.string.report_comment)
         }
         binding.header.title = title
+
     }
 
     private fun handleReportResponse(success: Boolean) {
@@ -362,6 +425,18 @@ class ReportModalFragment : BottomSheetDialogFragment() {
     }
     fun getIsFromMe(){
         isFromMe = arguments?.getBoolean(Const.IS_FROM_ME)
+    }
+    fun getContentCopied(){
+        contentCopied = arguments?.getString(Const.CONTENT_COPIED)
+
+    }
+
+    fun getIsMyLanguage(){
+        isMyLanguage = arguments?.getBoolean(Const.IS_MY_LANGUAGE)
+    }
+    fun getIsNotTranslatable(){
+
+        isNotTranslatable = arguments?.getBoolean(Const.IS_NOT_TRANSLATABLE)
     }
     fun getIsFromConv(){
         isFromConv = arguments?.getBoolean(Const.IS_FROM_CONV)
@@ -508,12 +583,19 @@ class ReportModalFragment : BottomSheetDialogFragment() {
 
     companion object {
         const val TAG = "ReportModalFragment"
-        fun newInstance(id: Int, groupId: Int, reportType: ReportTypes , isFromMe:Boolean, isConv:Boolean, isOneToOne:Boolean): ReportModalFragment {
+        fun newInstance(id: Int, groupId: Int, reportType: ReportTypes , isFromMe:Boolean, isConv:Boolean, isOneToOne:Boolean, isMyLanguage:Boolean? = null, isNotTranslatable:Boolean? = null, contentCopied:String): ReportModalFragment {
             val fragment = ReportModalFragment()
             val args = Bundle()
             args.putInt(Const.REPORTED_ID, id)
             args.putInt(Const.GROUP_ID, groupId)
             args.putBoolean(Const.IS_FROM_ME, isFromMe)
+            args.putString(Const.CONTENT_COPIED, contentCopied)
+            if(isMyLanguage != null){
+                args.putBoolean(Const.IS_MY_LANGUAGE, isMyLanguage)
+            }
+            if(isNotTranslatable != null){
+                args.putBoolean(Const.IS_NOT_TRANSLATABLE, isNotTranslatable)
+            }
             args.putInt(Const.REPORT_TYPE, reportType.code)
             args.putInt(Const.REPORT_TYPE, reportType.code)
             args.putBoolean(Const.IS_FROM_CONV, isConv)
@@ -524,6 +606,28 @@ class ReportModalFragment : BottomSheetDialogFragment() {
     }
 }
 
+
 interface onDissmissFragment{
     fun reloadView()
+    fun translateView(id:Int)
+}
+
+public object DataLanguageStock {
+    var userLanguage: String = "default"
+    var postLanguage: String = "default"
+    var contentToCopy:String = ""
+
+    fun updateUserLanguage(language: String) {
+        userLanguage = language
+    }
+
+    fun updatePostLanguage(language: String) {
+        postLanguage = language
+    }
+    fun updateContentToCopy(content:String){
+        contentToCopy = content
+    }
+    fun deleteContentToCopy(){
+        contentToCopy = ""
+    }
 }

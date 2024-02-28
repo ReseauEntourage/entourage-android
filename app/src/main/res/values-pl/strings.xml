@@ -603,8 +603,8 @@ Przeczytają tę wiadomość, gdy tylko dołączą do grupy.</string>
     <string name="action_leave_voice_message">Nagraj wiadomość głosową</string>
     <string name="action_voice_message_button">Rozpocznij rozpoznawanie głosu</string>
     <string name="action_voice_message_not_supported">Rozpoznawanie głosu n\ nie jest obsługiwane w Twoim telefonie.</string>
-    <string name="at_km_from_me">do %d km ode mnie</string>
-    <string name="at_meter_from_me">do %d m ode mnie</string>
+    <string name="at_km_from_me">%d km ode mnie</string>
+    <string name="at_meter_from_me">%d m ode mnie</string>
     <string name="inf_hundred_meter">niecałe 100 m ode mnie</string>
     <string name="share_title_contrib">Ten wpis może Cię zainteresować.</string>
     <string name="share_title_demande">Ta prośba może Cię zainteresować.</string>
@@ -2641,6 +2641,37 @@ Przeczytają tę wiadomość, gdy tylko dołączą do grupy.</string>
     <string name="terms_and_conditions_html">Klikając &lt;b&gt;Dalej&lt;/b&gt;, akceptujesz &lt;a href=\'https://www.entourage.social/regulamin/\'&gt;Warunki korzystania&lt;/a&gt; oraz &lt;a href=\'https://www.entourage.social/polityka-prywatnosci/\'&gt;Politykę prywatności&lt;/a&gt;</string>
     <string name="action_crete_cat_about">Czy chcesz zaoferować %s, które nie pasuje do żadnej z tych kategorii? Wygląda na to, że \ nie ma miejsca w sieci, ale zawsze możesz</string>
     <string name="action_create_cat_about_link"> dowiedzieć się więcej tutaj.</string>
+    <string name="report_modal_title_translate">Tłumacz</string>
+    <string name="report_modal_subtitle_translate">Automatycznie tłumaczymy wiadomości napisane przez obywateli</string>
+    <string name="layout_translate_title_original">Wyświetl oryginalną wersję</string>
+    <string name="layout_translate_title_translation">Pokaż tłumaczenie</string>
+    <string name="layout_translate_action_translation_button">Kliknij tutaj, aby wyświetlić oryginalną wersję</string>
+    <string name="layout_translate_title_original_button">Pokaż tłumaczenie</string>
+    <string name="layout_translate_title_original_title">Ta strona nie została przetłumaczona.</string>
+    <string name="layout_translate_title_translation_title">Niektóre informacje zostały przetłumaczone automatycznie.</string>
+    <string name="category_other">Inne</string>
+    <string name="category_food">Jedzenie</string>
+    <string name="category_housing">Mieszkanie</string>
+    <string name="category_medical">Opieka medyczna</string>
+    <string name="category_orientation">Orientacja</string>
+    <string name="category_insertion">Reintegracja</string>
+    <string name="category_partners">Partnerzy</string>
+    <string name="category_toilettes">Toalety</string>
+    <string name="category_fontaines">Fontanny</string>
+    <string name="category_douches">Prysznice</string>
+    <string name="category_laverlinge">Pralnie</string>
+    <string name="category_self_care">Dobrostan &amp; Aktywności</string>
+    <string name="category_vetements">Odzież &amp; Wyposażenie</string>
+    <string name="category_bagages">Przechowalnie bagażu</string>
+    <string name="category_boitesdons">Pudła darów &amp; Czytanie</string>
+    <string name="all_groups">Wszystkie grupy</string>
+    <string name="btn_create_group">Utwórz grupę</string>
+    <string name="back_create_event_content">Jeśli opuścisz formularz tworzenia wydarzenia, wszystkie wprowadzone informacje zostaną utracone.</string>
+    <string name="friendly_links_title">Przyjazne i solidarne więzi</string>
+    <string name="friendly_links_text">W Entourage głównym celem jest wspieranie przyjaznych i trwałych relacji. Zobowiązuję się szanować tę orientację, unikając wszelkich romantycznych lub miłosnych podejść lub publikacji. W ten sposób aktywnie przyczyniam się do utrzymania ciepłej i życzliwej atmosfery dla wszystkich.</string>
 
+    <string name="copied_text">Skopiowano do schowka!</string>
+    <string name="copy_the_text">Kopiuj tekst</string>
+    <string name="copy_the_text_explanation">Tekst zostanie skopiowany do schowka</string>
 
 </resources>

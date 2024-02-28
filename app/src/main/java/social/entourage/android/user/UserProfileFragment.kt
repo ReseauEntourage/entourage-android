@@ -22,6 +22,7 @@ import social.entourage.android.discussions.DetailConversationActivity
 import social.entourage.android.discussions.DiscussionsPresenter
 import social.entourage.android.api.model.Conversation
 import social.entourage.android.api.model.User
+import social.entourage.android.language.LanguageManager
 import social.entourage.android.profile.myProfile.InterestsAdapter
 import social.entourage.android.report.ReportModalFragment
 import social.entourage.android.report.ReportTypes
@@ -102,7 +103,7 @@ class UserProfileFragment : Fragment() {
                     args.userId,
                     Const.DEFAULT_VALUE,
                     ReportTypes.REPORT_USER
-                ,false,false, false)
+                ,false,false, false, contentCopied = "" )
             reportUserBottomDialogFragment.show(parentFragmentManager, ReportModalFragment.TAG)
         }
         binding.blockUser.setOnClickListener {
@@ -165,7 +166,7 @@ class UserProfileFragment : Fragment() {
                 events.content.text = it.outingsCount.toString()
             }
             user.createdAt?.let {
-                var locale = Locale.getDefault()
+                var locale = LanguageManager.getLocaleFromPreferences(requireContext())
                 binding.joined.date.text = SimpleDateFormat(
                     requireContext().getString(R.string.profile_date_format),
                     locale

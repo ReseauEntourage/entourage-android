@@ -5,6 +5,8 @@ import com.google.gson.annotations.SerializedName
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.api.model.ActionMetadata
+import social.entourage.android.api.model.notification.Translation
+import social.entourage.android.language.LanguageManager
 import social.entourage.android.tools.utils.Utils
 import java.io.Serializable
 import java.text.SimpleDateFormat
@@ -26,8 +28,14 @@ data class Action(
     @field:SerializedName("title")
     var title: String? = null,
 
+    @SerializedName("title_translations")
+    val titleTranslations: Translation? = null,
+
     @field:SerializedName("description")
     var description: String? = null,
+
+    @SerializedName("description_translations")
+    val descriptionTranslations: Translation? = null,
 
     @field:SerializedName("image_url")
     var imageUrl: String? = null,
@@ -107,7 +115,14 @@ data class Action(
 
     fun createdDateString(context: android.content.Context) : String {
         createdAt?.let {
-            val _str = Utils.dateAsStringLitteralFromNow(it,context,null,false)
+            var locale = LanguageManager.getLocaleFromPreferences(context)
+            val _str = SimpleDateFormat(
+                context?.getString(R.string.feed_event_date),
+                locale
+            ).format(
+                it
+            )
+            //val _str = Utils.dateAsStringLitteralFromNow(it,context,null,false)
             return context.getString(R.string.action_created_by, _str)
         } ?: return  context.getString(R.string.action_created_by_)
     }

@@ -3,6 +3,8 @@ package social.entourage.android.posts
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
@@ -61,12 +63,16 @@ abstract class CreatePostActivity : AppCompatActivity() {
                 if(id == -1 && CreatePostGroupActivity.idGroupForPost != null){
                     id = CreatePostGroupActivity.idGroupForPost!!
                 }
-                startActivity(
-                    Intent(this, FeedActivity::class.java).putExtra(
-                        Const.GROUP_ID,
-                        id
+                // Créer un Handler et l'utiliser pour retarder l'intention
+                Handler(Looper.getMainLooper()).postDelayed({
+                    startActivity(
+                        Intent(this, FeedActivity::class.java).putExtra(
+                            Const.GROUP_ID,
+                            id
+                        )
                     )
-                )
+                    finish()
+                }, 2000) // 2000 ms = 2 secondes
             }
             CreatePostGroupActivity.idGroupForPost = null
             finish()

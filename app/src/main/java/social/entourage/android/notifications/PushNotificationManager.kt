@@ -306,6 +306,7 @@ object PushNotificationManager {
         }
         val builder = NotificationCompat.Builder(context, channelId)
                 .setSmallIcon(R.drawable.ic_entourage_logo_one_color)
+                .setStyle(NotificationCompat.BigTextStyle())
                 .setContentIntent(createMessagePendingIntent(pushNotificationMessage, context))
                 .setLargeIcon(BitmapFactory.decodeResource(context.resources, R.drawable.ic_entourage_logo_two_colors))
                 .setContentTitle(pushNotificationMessage.getContentTitleForCount(count, context))
@@ -430,7 +431,7 @@ object PushNotificationManager {
             PushNotificationContent.TYPE_ENTOURAGE_INVITATION,
             PushNotificationContent.TYPE_INVITATION_STATUS -> {
             }
-            else -> Timber.e("Notif has no pending intent")
+            else -> Timber.i("Notif has no pending intent")
         }
         messageIntent.action = messageType
         messageIntent.putExtras(args)

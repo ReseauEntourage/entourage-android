@@ -24,12 +24,16 @@ class TranslationBottomFragment: BottomSheetDialogFragment() {
     }
 
     fun initView() {
+        val sharedPrefs = requireActivity().getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE)
+        val isTranslatedByDefault = sharedPrefs.getBoolean("translatedByDefault", true)
+        binding.switchTranslation.isChecked = isTranslatedByDefault
         binding.validate.setOnClickListener {
             //Stock a boolean to know if the user want to translate all the app by default. On true, it will be translated.
             binding.validate.setOnClickListener {
                 val editor = requireActivity().getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE).edit()
-                editor.putBoolean("translatedByDefault", true)
+                editor.putBoolean("translatedByDefault", binding.switchTranslation.isChecked)
                 editor.apply()
+                dismiss()
             }
         }
         binding.iconCross.setOnClickListener {

@@ -159,7 +159,7 @@ class OnboardingEditPhotoFragment : DialogFragment() {
 
     private fun saveBitmap(bitmap: Bitmap) {
         crop_view?.setBitmap(bitmap)
-        photoFile = Utils.saveBitmapToFile(bitmap, photoFile)
+        photoFile = Utils.saveBitmapToFile(bitmap, photoFile, requireContext())
     }
 
     private fun updateProfilePicture() {

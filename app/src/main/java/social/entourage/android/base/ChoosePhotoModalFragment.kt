@@ -25,6 +25,7 @@ import com.takusemba.cropme.OnCropListener
 import kotlinx.android.synthetic.main.fragment_onboarding_edit_photo.*
 import social.entourage.android.R
 import social.entourage.android.databinding.NewFragmentChoosePhotoModalBinding
+import social.entourage.android.language.LanguageManager
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.utils.Utils
@@ -182,7 +183,7 @@ class ChoosePhotoModalFragment : BottomSheetDialogFragment() {
     @Throws(IOException::class)
     fun createImageFile(): Uri? {
         // Create an image file name
-        var locale = Locale.getDefault()
+        var locale = LanguageManager.getLocaleFromPreferences(requireContext())
         val timeStamp =
             SimpleDateFormat(Const.DATE_FORMAT_FILE_NAME, locale).format(Date())
         val imageFileName = "ENTOURAGE_" + timeStamp + "_"

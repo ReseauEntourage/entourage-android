@@ -8,6 +8,15 @@
     android:paddingHorizontal="20dp"
     android:paddingTop="28dp"
     android:paddingBottom="18dp">
+    <ImageButton
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:id="@+id/btn_cross"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:src="@drawable/iconcross"
+        android:background="@color/transparent"
+        android:visibility="visible"/>
 
     <TextView
         android:id="@+id/title"
@@ -59,7 +68,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="10dp"
             android:layout_marginBottom="10dp"
-            android:background="@drawable/new_alert_dialog_button_yes"
+            android:background="@drawable/btn_shape_orange_alert_dialog"
             android:padding="10dp"
             android:textAllCaps="false" />
 

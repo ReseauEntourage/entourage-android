@@ -4,6 +4,7 @@ import android.content.Intent
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -40,11 +41,13 @@ import social.entourage.android.groups.details.feed.GroupMembersPhotosAdapter
 import social.entourage.android.groups.details.members.MembersType
 import social.entourage.android.api.model.Status
 import social.entourage.android.api.model.Tags
+import social.entourage.android.language.LanguageManager
 import social.entourage.android.profile.myProfile.InterestsAdapter
 import social.entourage.android.tools.displayDistance
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.setHyperlinkClickable
 import social.entourage.android.tools.utils.*
+import social.entourage.android.tools.utils.Utils.enableCopyOnLongClick
 import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
@@ -135,7 +138,7 @@ class AboutEventFragment : Fragment(), OnMapReadyCallback {
                 }
             )
             event?.metadata?.startsAt?.let {
-                var locale = Locale.getDefault()
+                var locale = LanguageManager.getLocaleFromPreferences(requireContext())
                 binding.dateStartsAt.content.text =
                     String.format(
                         getString(R.string.date_recurrence_event),
@@ -148,7 +151,7 @@ class AboutEventFragment : Fragment(), OnMapReadyCallback {
                     )
             }
             event?.metadata?.let {
-                var locale = Locale.getDefault()
+                var locale = LanguageManager.getLocaleFromPreferences(requireContext())
                 binding.time.content.text =
                     String.format(
                         getString(R.string.start_and_end_time_event),
@@ -170,7 +173,7 @@ class AboutEventFragment : Fragment(), OnMapReadyCallback {
                     )
             }
             if (event?.updatedAt != null) {
-                var locale = Locale.getDefault()
+                var locale = LanguageManager.getLocaleFromPreferences(requireContext())
                 updatedDate.text = String.format(
                     getString(R.string.updated_at), event?.updatedAt?.let {
                         SimpleDateFormat(
@@ -182,7 +185,7 @@ class AboutEventFragment : Fragment(), OnMapReadyCallback {
                     }
                 )
             } else {
-                var locale = Locale.getDefault()
+                var locale = LanguageManager.getLocaleFromPreferences(requireContext())
                 updatedDate.text = String.format(
                     getString(R.string.created_at), event?.createdAt?.let {
                         SimpleDateFormat(
@@ -197,6 +200,7 @@ class AboutEventFragment : Fragment(), OnMapReadyCallback {
             initializeMembersPhotos()
             eventDescription.text = event?.description
             eventDescription.setHyperlinkClickable()
+            eventDescription.enableCopyOnLongClick(requireContext())
             initializeInterests()
             initializeGroups()
             if (event?.status == Status.CLOSED)
@@ -243,7 +247,7 @@ class AboutEventFragment : Fragment(), OnMapReadyCallback {
 
     private fun handleEventCanceled() {
         with(binding) {
-            var locale = Locale.getDefault()
+            var locale = LanguageManager.getLocaleFromPreferences(requireContext())
             updatedDate.text = String.format(
                 getString(R.string.canceled_at), event?.previousAt?.let {
                     SimpleDateFormat(

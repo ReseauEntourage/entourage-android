@@ -27,6 +27,7 @@ import social.entourage.android.databinding.ActivityLayoutWelcomeThreeBinding
 import social.entourage.android.events.EventsPresenter
 import social.entourage.android.events.details.feed.FeedActivity
 import social.entourage.android.events.list.EVENTS_PER_PAGE
+import social.entourage.android.language.LanguageManager
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.Utils
@@ -210,7 +211,7 @@ class WelcomeThreeActivity: BaseActivity() {
                 binding.eventExampleOne.location.text = allEvents[0].metadata?.displayAddress
                 binding.eventExampleOne.participants.text = allEvents[0].membersCount.toString()
                 allEvents[0].metadata?.startsAt?.let {
-                    var locale = Locale.getDefault()
+                    var locale = LanguageManager.getLocaleFromPreferences(this)
                     binding.eventExampleOne.date.text = SimpleDateFormat(
                         getString(R.string.event_date_time),
                         locale
@@ -243,7 +244,7 @@ class WelcomeThreeActivity: BaseActivity() {
                     binding.eventExampleThree.location.text = allEvents[2].metadata?.displayAddress
                     binding.eventExampleThree.participants.text = allEvents[2].membersCount.toString()
                     allEvents[2].metadata?.startsAt?.let {
-                        var locale = Locale.getDefault()
+                        var locale = LanguageManager.getLocaleFromPreferences(this)
                         binding.eventExampleThree.date.text = SimpleDateFormat(
                             getString(R.string.event_date_time),
                             locale
@@ -275,7 +276,7 @@ class WelcomeThreeActivity: BaseActivity() {
                     binding.eventExampleTwo.location.text = allEvents[1].metadata?.displayAddress
                     binding.eventExampleTwo.participants.text = allEvents[1].membersCount.toString()
                     allEvents[1].metadata?.startsAt?.let {
-                        var locale = Locale.getDefault()
+                        var locale = LanguageManager.getLocaleFromPreferences(this)
                         binding.eventExampleTwo.date.text = SimpleDateFormat(
                             getString(R.string.event_date_time),
                             locale

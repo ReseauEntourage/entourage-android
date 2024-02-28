@@ -1,29 +1,36 @@
 package social.entourage.android.comment
 
 import android.app.Activity
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Build
+import android.text.SpannableString
 import android.text.method.LinkMovementMethod
+import android.text.style.UnderlineSpan
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.graphics.drawable.toBitmap
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.google.gson.Gson
+import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.api.model.Post
 import social.entourage.android.databinding.NewLayoutPostBinding
+import social.entourage.android.language.LanguageManager
+import social.entourage.android.report.DataLanguageStock
 import social.entourage.android.tools.setHyperlinkClickable
 import social.entourage.android.user.UserProfileActivity
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.px
-import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -34,7 +41,30 @@ class PostAdapter(
     var onReport: (Int,Int) -> Unit,
     var onClickImage: (imageUrl:String, postId:Int) -> Unit,
     ) : RecyclerView.Adapter<PostAdapter.ViewHolder>() {
+    private val translationExceptions = mutableSetOf<Int>()
 
+    fun initiateList(){
+        val translatedByDefault = context.getSharedPreferences(
+            context.getString(R.string.preference_file_key), Context.MODE_PRIVATE
+        ).getBoolean("translatedByDefault", false)
+        if (translatedByDefault) {
+            postsList.forEach {
+                if (it.contentTranslations != null) {
+                    translationExceptions.add(it.id!!)
+                }
+            }
+        }
+        notifyDataSetChanged()
+    }
+
+    fun translateItem(postId: Int) {
+        if (translationExceptions.contains(postId)) {
+            translationExceptions.remove(postId)
+        } else {
+            translationExceptions.add(postId)
+        }
+        notifyItemChanged(postsList.indexOfFirst { it.id == postId })
+    }
     inner class ViewHolder(val binding: NewLayoutPostBinding) :
         RecyclerView.ViewHolder(binding.root)
 
@@ -50,19 +80,61 @@ class PostAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         with(holder) {
+            val meId = EntourageApplication.get().me()?.id
+
+            
             with(postsList[position]) {
-                binding.postComment.setOnClickListener {
-                    onClick(postsList[position], true)
+                Log.wtf("wtf", "hello there " + this.content)
+                binding.postMessage.setOnLongClickListener {
+                    val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                    val clip = ClipData.newPlainText(context.getString(R.string.copied_text), binding.postMessage.text)
+                    clipboard.setPrimaryClip(clip)
+                    // Afficher un petit message de confirmation, si vous voulez
+                    Toast.makeText(context, context.getString(R.string.copied_text), Toast.LENGTH_SHORT).show()
+                    true // Retourne true pour indiquer que l'événement a été géré
+                }
+
+
+                if(DataLanguageStock.userLanguage == this.contentTranslations?.fromLang || (this.user?.id == meId?.toLong()) && (this.content == "")){
+                    binding.postTranslationButton.layoutCsTranslate.visibility = View.GONE
+                }else{
+                    binding.postTranslationButton.layoutCsTranslate.visibility = View.VISIBLE
+                }
+                if(this.contentTranslations == null ){
+                    binding.postTranslationButton.layoutCsTranslate.visibility = View.GONE
+                }
+                // Déterminer si ce post spécifique doit être traduit ou non
+                val isTranslated = !translationExceptions.contains(id)
+
+                // Configurer le bouton de traduction
+                val text = if (isTranslated) {
+                    context.getString(R.string.layout_translate_title_translation)
+                } else {
+                    context.getString(R.string.layout_translate_title_original)
+                }
+                val titleButton = SpannableString(text)
+                titleButton.setSpan(UnderlineSpan(), 0, text.length, 0)
+                binding.postTranslationButton.tvTranslate.text = titleButton
+                binding.postTranslationButton.layoutCsTranslate.setOnClickListener {
+                    translateItem(id ?: this.id!!)
                 }
                 binding.postCommentsNumberLayout.setOnClickListener {
-                    onClick(postsList[position], false)
+                    onClick(this, false)
                 }
-                binding.name.text = user?.displayName
+                binding.comment.setOnClickListener {
+                    onClick(this, false)
+                }
+
+                // Configurer le contenu du post en fonction de la traduction
+                var contentToShow = content
+                if (contentTranslations != null) {
+                    contentToShow = if (isTranslated) contentTranslations.translation else contentTranslations.original
+                }
+                binding.postMessage.text = contentToShow
+
                 content?.let {
                     binding.postMessage.visibility = View.VISIBLE
-                    binding.postMessage.text = it
                     binding.postMessage.setHyperlinkClickable()
-
                 } ?: run {
                     binding.postMessage.visibility = View.GONE
                 }
@@ -84,7 +156,7 @@ class PostAdapter(
                         )
                     }
                 }
-                var locale = Locale.getDefault()
+                var locale = LanguageManager.getLocaleFromPreferences(context)
                 binding.date.text = SimpleDateFormat(
                     itemView.context.getString(R.string.post_date),
                     locale
@@ -145,7 +217,7 @@ class PostAdapter(
                 binding.name.setOnClickListener {
                     showUserDetail(binding.name.context,this.user?.userId)
                 }
-
+                binding.name.text = user?.displayName
                 binding.image.setOnClickListener {
                     showUserDetail(binding.image.context,this.user?.userId)
                 }
@@ -165,7 +237,17 @@ class PostAdapter(
                     binding.postComment.visibility = View.GONE
                     binding.btnReportPost.visibility = View.GONE
                 }else{
-                    binding.postMessage.text = content
+
+                    val isTranslated = !translationExceptions.contains(id)
+                    var contentToShow = content
+                    if(contentTranslations != null){
+                        if(isTranslated){
+                            contentToShow = contentTranslations.original
+                        }else{
+                            contentToShow = contentTranslations.translation
+                        }
+                    }
+                    binding.postMessage.text = contentToShow
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                         binding.postMessage.setTextColor(context.getColor(R.color.black))
                     }

@@ -461,7 +461,7 @@ Leerán este mensaje tan pronto como se unan al grupo.</string>
     <string name="welcome_two_text_pin_two">Habla de tus pasiones</string>
     <string name="welcome_two_text_pin_three">Destaca tus necesidades y deseos</string>
     <string name="welcome_two_text_four">¿Necesitas inspiración d\?</string>
-    <string name="welcome_two_button_title">saludar a mis vecinos</string>
+    <string name="welcome_two_button_title">Saludar a mis vecinos</string>
     <string name="welcome_card_example_card_content">Hola vecinos parisinos. Mi nombre m\ es Eric y j\. Espero conocerte en los eventos de Entourage Network.</string>
 
     <string name="welcome_four_title">Tú decides</string>
@@ -605,8 +605,8 @@ Leerán este mensaje tan pronto como se unan al grupo.</string>
     <string name="action_leave_voice_message">Grabar un mensaje de voz</string>
     <string name="action_voice_message_button">Iniciar reconocimiento de voz</string>
     <string name="action_voice_message_not_supported">El reconocimiento de voz n\ no es compatible con su teléfono.</string>
-    <string name="at_km_from_me">A %d km de mí</string>
-    <string name="at_meter_from_me">a %d m de mí</string>
+    <string name="at_km_from_me">%d km de mí</string>
+    <string name="at_meter_from_me">%d m de mí</string>
     <string name="inf_hundred_meter">a menos de 100 metros de mí</string>
     <string name="share_title_contrib">Esta contribución podría interesarte.</string>
     <string name="share_title_demande">Esta solicitud podría interesarle.</string>
@@ -2492,7 +2492,7 @@ Leerán este mensaje tan pronto como se unan al grupo.</string>
     <string name="pop_up_rugby_france_content">¡Los mejores encuentros no necesariamente ocurren en el estadio! Únete al grupo \ “Experimentemos el deporte juntos\”</string>
 
     <!-- New Home string -->
-    <string name="home_v2_title">Aplicación L\ que recrea enlaces entre vecinos</string>
+    <string name="home_v2_title">La aplicación que reúne a los vecinos</string>
 
     <string name="home_v2_title_action">Echar una mano</string>
     <string name="home_v2_subtitle_action">¡Tus vecinos te necesitan!</string>
@@ -2503,16 +2503,16 @@ Leerán este mensaje tan pronto como se unan al grupo.</string>
     <string name="home_v2_btn_more_action_contrib">Ver todas las contribuciones</string>
 
     <string name="home_v2_title_event">Participa en un evento solidario</string>
-    <string name="home_v2_subtitle_event">Mucha solidaridad cerca.</string>
+    <string name="home_v2_subtitle_event">Mucha solidaridad cerca</string>
     <string name="home_v2_btn_more_event">Ver todos los eventos</string>
     <string name="tag_other">Otro</string>
 
     <string name="home_v2_title_group">Tus grupos de vecinos</string>
-    <string name="home_v2_subtitle_group">Intercambia con tus vecinos de todos los ámbitos de la vida.</string>
+    <string name="home_v2_subtitle_group">Intercambia con tus vecinos de todos los ámbitos de la vida</string>
     <string name="home_v2_btn_more_group">Ver todos los grupos</string>
 
     <string name="home_v2_title_map">Descubra direcciones útiles</string>
-    <string name="home_v2_subtitle_map">Todas las estructuras solidarias cercanas.</string>
+    <string name="home_v2_subtitle_map">Todas las estructuras solidarias cercanas</string>
     <string name="home_v2_button_map">Mapa de lugares solidarios cerca de ti</string>
 
     <string name="home_v2_title_pedago">Todo lo que necesitas saber para actuar</string>
@@ -2624,6 +2624,38 @@ Leerán este mensaje tan pronto como se unan al grupo.</string>
     <string name="terms_and_conditions_html">Al hacer clic en &lt;b&gt;Siguiente&lt;/b&gt;, aceptas los &lt;a href=\'https://www.entourage.social/condiciones/\'&gt;Términos y Condiciones&lt;/a&gt; y la &lt;a href=\'https://www.entourage.social/politica-de-privacidad/\'&gt;Política de Privacidad&lt;/a&gt;</string>
     <string name="action_crete_cat_about">¿Estás buscando ofrecer un %s que no encaja en ninguna de estas categorías? Parece que \ no tiene lugar en la red, pero siempre puedes.</string>
     <string name="action_create_cat_about_link"> aprender más aquí.</string>
+    <string name="report_modal_title_translate">Traducir</string>
+    <string name="report_modal_subtitle_translate">Traducimos automáticamente los mensajes escritos por los ciudadanos</string>
+    <string name="layout_translate_title_original">Mostrar la versión original</string>
+    <string name="layout_translate_title_translation">Mostrar la traducción</string>
+    <string name="layout_translate_action_translation_button">Haga clic aquí para mostrar la versión original</string>
+    <string name="layout_translate_title_original_button">Mostrar traducción</string>
+    <string name="layout_translate_title_original_title">Esta página no ha sido traducida.</string>
+    <string name="layout_translate_title_translation_title">Alguna información ha sido traducida automáticamente.</string>
+    <string name="category_other">Otro</string>
+    <string name="category_food">Alimentarse</string>
+    <string name="category_housing">Alojamiento</string>
+    <string name="category_medical">Atención médica</string>
+    <string name="category_orientation">Orientación</string>
+    <string name="category_insertion">Reinserción</string>
+    <string name="category_partners">Socios</string>
+    <string name="category_toilettes">Aseos</string>
+    <string name="category_fontaines">Fuentes</string>
+    <string name="category_douches">Duchas</string>
+    <string name="category_laverlinge">Lavanderías</string>
+    <string name="category_self_care">Bienestar &amp; Actividades</string>
+    <string name="category_vetements">Ropa &amp; Materiales</string>
+    <string name="category_bagages">Consignas</string>
+    <string name="category_boitesdons">Cajas de donación &amp; Lectura</string>
+    <string name="all_groups">Todos los grupos</string>
+    <string name="btn_create_group">Crear grupo</string>
+    <string name="back_create_event_content">Si abandona el formulario de creación de un evento, toda la información ingresada se perderá.</string>
+    <string name="friendly_links_title">Vínculos amistosos y solidarios</string>
+    <string name="friendly_links_text">En Entourage, el objetivo principal es fomentar lazos amistosos y duraderos. Me comprometo a respetar esta orientación evitando cualquier enfoque o publicación de carácter romántico o amoroso. De esta manera, contribuyo activamente a mantener un ambiente cálido y acogedor para todos.</string>
+
+    <string name="copied_text">¡Copiado al portapapeles!</string>
+    <string name="copy_the_text">Copiar el texto</string>
+    <string name="copy_the_text_explanation">El texto se copiará al portapapeles</string>
 
 
 </resources>

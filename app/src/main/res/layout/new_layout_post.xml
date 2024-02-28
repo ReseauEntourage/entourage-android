@@ -77,7 +77,14 @@
                     tools:text="12.01.22" />
             </LinearLayout>
         </LinearLayout>
-
+        <include
+            android:id="@+id/post_translation_button"
+            layout="@layout/post_translation_button_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="14dp"
+            android:visibility="visible" />
         <TextView
             android:id="@+id/post_message"
             style="@style/left_courant_black"

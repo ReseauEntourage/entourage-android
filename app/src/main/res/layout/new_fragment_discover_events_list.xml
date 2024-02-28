@@ -31,7 +31,7 @@
                     />
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="2dp"
+                    android:layout_height="1dp"
                     android:id="@+id/separator"
                     android:background="@color/orange_light_separator_event"
                     app:layout_constraintTop_toBottomOf="@+id/title_section_header_event"
@@ -49,7 +49,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/separator"
                     app:layout_constraintStart_toStartOf="parent"
                     android:layout_marginStart="2dp"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="20dp"
                     />
                 <TextView
                     android:layout_width="wrap_content"
@@ -66,7 +66,7 @@
                     />
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="2dp"
+                    android:layout_height="1dp"
                     android:id="@+id/separator2"
                     android:background="@color/orange_light_separator_event"
                     app:layout_constraintTop_toBottomOf="@+id/title_section_header_event"

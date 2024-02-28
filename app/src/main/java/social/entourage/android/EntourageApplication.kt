@@ -107,6 +107,7 @@ class EntourageApplication : MultiDexApplication() {
                 editor.remove(KEY_NO_MORE_DEMAND)
                 editor.remove(isFirstTimeHome)
                 editor.putInt(KEY_NB_OF_LAUNCH, 0)
+                editor.putBoolean("translatedByDefault", true)
                 editor.apply()
 
                 removeAllPushNotifications()

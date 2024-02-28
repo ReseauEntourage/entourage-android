@@ -13,7 +13,9 @@ import social.entourage.android.R
 import social.entourage.android.comment.CommentActivity
 import social.entourage.android.api.model.Conversation
 import social.entourage.android.api.model.Post
+import social.entourage.android.comment.CommentsListAdapter
 import social.entourage.android.language.LanguageManager
+import social.entourage.android.report.DataLanguageStock
 import social.entourage.android.user.UserProfileActivity
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.log.AnalyticsEvents
@@ -69,6 +71,12 @@ class DetailConversationActivity : CommentActivity() {
         }
     }
 
+    override fun translateView(id: Int) {
+        val adapter = binding.comments.adapter as? CommentsListAdapter
+        adapter?.translateItem(id)
+    }
+
+
     private fun handleDetailConversation(conversation: Conversation?) {
         titleName = conversation?.title
         binding.header.title = titleName
@@ -110,8 +118,9 @@ class DetailConversationActivity : CommentActivity() {
         scrollAfterLayout()
     }
 
-    override fun handleReportPost(id: Int) {
+    override fun handleReportPost(id: Int,commentLang: String) {
         binding.header.iconSettings.setOnClickListener {
+            DataLanguageStock.updatePostLanguage(commentLang)
             AnalyticsEvents.logEvent(AnalyticsEvents.Message_action_param)
             SettingsDiscussionModalFragment.newInstance(
                 postAuthorID,
@@ -128,7 +137,6 @@ class DetailConversationActivity : CommentActivity() {
         // Charge la langue préférée de l'utilisateur
         val languageCode = LanguageManager.loadLanguageFromPreferences(context)
         val locale = Locale(languageCode)
-        Log.wtf("wtf", "locale: $locale")
         val _allevents = allEvents?.groupBy { it.getFormatedStr() }
         val newList = ArrayList<Post>()
         _allevents?.let {
@@ -136,7 +144,6 @@ class DetailConversationActivity : CommentActivity() {
                 val datePost = Post()
                 datePost.isDatePostOnly = true
                 // Utilise la locale chargée pour formater la date
-                Log.wtf("wtf", "datePostText: $datePost.datePostText")
                 datePost.datePostText = mappp.key.capitalize(locale)
                 newList.add(datePost)
                 for (_msg in mappp.value) {

@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import social.entourage.android.R
 import social.entourage.android.databinding.NewFragmentPedagoListBinding
 import social.entourage.android.home.HomePresenter
 import social.entourage.android.api.model.Category
@@ -53,6 +54,7 @@ class PedagoListFragment : Fragment() {
                 }
             }
         })
+        setView()
         handleBackButton()
         setFilters()
         setPedagoList()
@@ -61,6 +63,11 @@ class PedagoListFragment : Fragment() {
             viewLifecycleOwner,
             ::handleGetPedagogicalResourcesResponse
         )
+
+    }
+
+    private fun setView() {
+        binding.header.headerTitle.text = getString(R.string.all_pedago_content)
     }
 
     private fun handleGetPedagogicalResourcesResponse(pedagogicalResources: MutableList<Pedago>) {

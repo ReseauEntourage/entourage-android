@@ -1,8 +1,11 @@
 package social.entourage.android.actions.detail
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.text.SpannableString
+import android.text.style.UnderlineSpan
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -22,6 +25,8 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.gson.Gson
+import kotlinx.android.synthetic.main.new_home_card.description
 import social.entourage.android.R
 import social.entourage.android.api.MetaDataRepository
 import social.entourage.android.databinding.NewFragmentActionDetailBinding
@@ -34,6 +39,8 @@ import social.entourage.android.api.model.Action
 import social.entourage.android.api.model.ActionSection
 import social.entourage.android.api.model.ActionUtils
 import social.entourage.android.api.model.Conversation
+import social.entourage.android.language.LanguageManager
+import social.entourage.android.report.DataLanguageStock
 import social.entourage.android.report.ReportModalFragment
 import social.entourage.android.report.ReportTypes
 import social.entourage.android.tools.displayDistance
@@ -42,7 +49,9 @@ import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.CustomAlertDialog
 import social.entourage.android.tools.utils.px
 import social.entourage.android.tools.log.AnalyticsEvents
+import social.entourage.android.tools.utils.Utils.enableCopyOnLongClick
 import timber.log.Timber
+import java.text.SimpleDateFormat
 
 class ActionDetailFragment : Fragment(), OnMapReadyCallback {
     private var _binding: NewFragmentActionDetailBinding? = null
@@ -56,6 +65,7 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
     private var actionId:Int = 0
 
     private var mGoogleMap:GoogleMap? = null
+    private var isTranslated: Boolean = false
 
     var action: Action? = null
     var isDemand = false
@@ -71,11 +81,9 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
             isMine = it.getBoolean(Const.IS_ACTION_MINE)
         }
         if (com.google.android.gms.maps.MapsInitializer.initialize(requireContext()) == 0) {
+
         }
-
     }
-
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -117,6 +125,53 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
         }
     }
 
+    private fun setupTranslationButton() {
+        val sharedPrefs = requireActivity().getSharedPreferences(
+            getString(R.string.preference_file_key), Context.MODE_PRIVATE
+        )
+
+        if(DataLanguageStock.userLanguage == action?.descriptionTranslations?.fromLang){
+            binding.layoutCsTranslate.visibility = View.GONE
+        }else{
+            binding.layoutCsTranslate.visibility = View.VISIBLE
+        }
+
+
+        isTranslated = sharedPrefs.getBoolean("translatedByDefault", false)
+        updateTranslationText()
+
+        binding.tvButtonTranslate.setOnClickListener {
+            isTranslated = !isTranslated
+            updateTranslationText()
+            // Ajoute ici la logique pour actualiser le contenu selon la traduction
+        }
+    }
+
+    private fun updateTranslationText() {
+        if(isTranslated){
+            binding.titleActionTranslate.text = getString(R.string.layout_translate_title_translation_title)
+            binding.uiActionDescription.text = action?.descriptionTranslations?.translation
+            binding.uiTitleMain.text = action?.titleTranslations?.translation
+        }else{
+            binding.titleActionTranslate.text = getString(R.string.layout_translate_title_original_title)
+            binding.uiActionDescription.text = action?.descriptionTranslations?.original
+            binding.uiTitleMain.text = action?.titleTranslations?.original
+        }
+        val text = if (isTranslated) {
+            // Si la traduction est activée
+            getString(R.string.layout_translate_action_translation_button)
+        } else {
+            // Si la traduction est désactivée
+            getString(R.string.layout_translate_title_original_button)
+        }
+
+        val spannableString = SpannableString(text)
+        spannableString.setSpan(UnderlineSpan(), 0, text.length, 0)
+        binding.tvButtonTranslate.text = spannableString
+    }
+
+
+
     private fun loadAction() {
         actionsPresenter.getDetailAction(actionId,isDemand)
     }
@@ -127,9 +182,9 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
         }else{
             AnalyticsEvents.logEvent("Action__Demand__Report")
         }
-
+        var description = action?.description ?: ""
         val reportGroupBottomDialogFragment =
-            ReportModalFragment.newInstance(actionId, id, type,isMine,false, false)
+            ReportModalFragment.newInstance(actionId, id, type,isMine,false, false, contentCopied = description)
         reportGroupBottomDialogFragment.show(
             requireActivity().supportFragmentManager,
             ReportModalFragment.TAG
@@ -148,7 +203,6 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
             binding.titleSignal.visibility = View.GONE
         }
         updateViews()
-
         action?.let {
             if (it.isCancel()) {
                 mCallback?.hideIconReport()
@@ -180,11 +234,11 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
             )
         }
     }
-
     private fun initializeViews() {
         binding.layoutTopCancel.isVisible = false
         binding.layoutTopDemand.isVisible = isDemand
         binding.layoutTopContrib.isVisible = !isDemand
+        binding.uiActionDescription.enableCopyOnLongClick(requireContext())
 
         if (isMine) {
             binding.layoutActionsMy.isVisible = true
@@ -226,11 +280,12 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
         binding.uiBtDelete.setOnClickListener {
             val _title = getString(R.string.action_cancel_pop_title, if (isDemand) getString(R.string.action_name_demand) else getString(R.string.action_name_contrib))
             val _subtitle = getString(R.string.action_cancel_pop_subtitle, if (isDemand) getString(R.string.action_name_demand) else getString(R.string.action_name_contrib))
-            CustomAlertDialog.showButtonClickedWithCrossClose(requireContext(),_title,_subtitle, getString(R.string.action_cancel_pop_bt_no), getString(R.string.action_cancel_pop_bt_yes), showCross = true, {
-                showCancelActionMessage(false)
+            CustomAlertDialog.showButtonClickedWithCrossClose(requireContext(),_title,_subtitle, getString(R.string.action_cancel_pop_bt_yes), getString(R.string.action_cancel_pop_bt_no), showCross = false,
+                {
+                showCancelActionMessage(true)
             },
                 {
-                    showCancelActionMessage(true)
+                    showCancelActionMessage(false)
                 }
             )
         }
@@ -286,11 +341,12 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
                 } ?: kotlin.run {
                     binding.uiImagePlaceholder.isVisible = true
                 }
-
-                binding.uiTitleCatContrib.text = ActionUtils.showTagTranslated(requireContext(), it.sectionName!!)
+                if(it.sectionName != null){
+                    binding.uiTitleCatContrib.text = ActionUtils.showTagTranslated(requireContext(), it.sectionName!!)
+                    binding.uiTitleCatDemand.text = ActionUtils.showTagTranslated(requireContext(), it.sectionName!!)
+                }
                 binding.uiIvCatContrib.setImageDrawable(ResourcesCompat.getDrawable(resources,
                     ActionSection.getIconFromId(it.sectionName),null))
-                binding.uiTitleCatDemand.text = ActionUtils.showTagTranslated(requireContext(), it.sectionName!!)
                 binding.uiIvCatDemand.setImageDrawable(ResourcesCompat.getDrawable(resources,
                     ActionSection.getIconFromId(it.sectionName),null))
                 binding.uiActionDescription.text = action?.description
@@ -315,6 +371,7 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
                 binding.uiUserMember.text = action?.memberSinceDateString(requireContext())
                 updateMarker()
             }
+            setupTranslationButton()
         }
     }
 

@@ -1,8 +1,10 @@
 package social.entourage.android.homev2
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,13 +20,14 @@ import social.entourage.android.api.model.Events
 import social.entourage.android.api.model.Interest
 import social.entourage.android.databinding.HomeV2EventItemLayoutBinding
 import social.entourage.android.events.details.feed.FeedActivity
+import social.entourage.android.language.LanguageManager
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.px
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class HomeEventAdapter:RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class HomeEventAdapter(var context: Context):RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     var events:MutableList<Events> = mutableListOf()
 
 
@@ -82,11 +85,13 @@ class HomeEventAdapter:RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 holder.binding.tvTitleEventItem.text = it
             }
             event.metadata?.displayAddress.let {
-                holder.binding.tvPlaceHomeV2EventItem.text = it
+                Log.wtf("wtf", "address: $it")
+                val adressCondensed = it?.split(",")
+                holder.binding.tvPlaceHomeV2EventItem.text = adressCondensed?.lastOrNull() ?: it
             }
 
             event.metadata?.startsAt?.let {
-                var locale = Locale.getDefault()
+                var locale = LanguageManager.getLocaleFromPreferences(context)
                 holder.binding.tvDateHomeV2EventItem.text = SimpleDateFormat(
                     holder.itemView.context.getString(R.string.post_date),
                     locale

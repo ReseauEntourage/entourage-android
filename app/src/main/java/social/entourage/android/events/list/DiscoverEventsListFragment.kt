@@ -30,7 +30,7 @@ import social.entourage.android.api.model.Events
 import social.entourage.android.tools.utils.Utils
 import social.entourage.android.tools.log.AnalyticsEvents
 
-const val EVENTS_PER_PAGE = 10
+const val EVENTS_PER_PAGE = 200
 
 class DiscoverEventsListFragment : Fragment() {
 
@@ -77,21 +77,22 @@ class DiscoverEventsListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        AnalyticsEvents.logEvent(AnalyticsEvents.Action__Event__New)
         eventsPresenter = ViewModelProvider(requireActivity()).get(EventsPresenter::class.java)
         myId = EntourageApplication.me(activity)?.id
-        eventsAdapter = AllEventAdapterV2(myId)
-        myeventsAdapter = MyEventRVAdapter()
+        eventsAdapter = AllEventAdapterV2(myId,requireContext())
+        myeventsAdapter = MyEventRVAdapter(requireContext())
         eventsPresenter.getAllEvents.observe(viewLifecycleOwner, ::handleResponseGetEvents)
         eventsPresenter.hasChangedFilter.observe(viewLifecycleOwner, ::handleFilterChange)
         eventsPresenter.getAllMyEvents.observe(viewLifecycleOwner,::handleResponseGetMYEvents)
         initializeEvents()
         setRVScrollListener()
         handleSwipeRefresh()
+
     }
 
     override fun onResume() {
         super.onResume()
+        AnalyticsEvents.logEvent(AnalyticsEvents.View__Event__List)
         binding.progressBar.visibility = View.VISIBLE
         eventsAdapter.clearList()
         myeventsAdapter.clearList()
@@ -219,13 +220,14 @@ class DiscoverEventsListFragment : Fragment() {
     private fun updateFilters() {
         isFromFilters = true
         page = 0
-
     }
 
     private fun loadEvents() {
-        binding.swipeRefresh.isRefreshing = false
-        page++
-        eventsPresenter.getAllEvents(page, EVENTS_PER_PAGE, currentFilters.travel_distance(),currentFilters.latitude(),currentFilters.longitude(),"future")
+        if(!eventsPresenter.isLastPage){
+            binding.swipeRefresh.isRefreshing = false
+            page++
+            eventsPresenter.getAllEvents(page, EVENTS_PER_PAGE, currentFilters.travel_distance(),currentFilters.latitude(),currentFilters.longitude(),"future")
+        }
     }
     private fun loadMyEvents() {
         binding.swipeRefresh.isRefreshing = false

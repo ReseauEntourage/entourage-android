@@ -1,6 +1,7 @@
 package social.entourage.android.events.list
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.util.Log
@@ -20,13 +21,14 @@ import social.entourage.android.api.model.Events
 import social.entourage.android.api.model.Status
 import social.entourage.android.databinding.LayoutItemMyEventBinding
 import social.entourage.android.events.details.feed.FeedActivity
+import social.entourage.android.language.LanguageManager
 import social.entourage.android.tools.calculateIfEventPassed
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.px
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class MyEventRVAdapter() :RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class MyEventRVAdapter(var context: Context) :RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     var events:MutableList<Events> = mutableListOf()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyEventItemViewHolder {
@@ -69,7 +71,7 @@ class MyEventRVAdapter() :RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             }
             binding.titleMyEvent.text = event.title
             event.metadata?.startsAt?.let {
-                var locale = Locale.getDefault()
+                var locale = LanguageManager.getLocaleFromPreferences(context)
                 binding.dateMyEvent.text = SimpleDateFormat(
                     itemView.context.getString(R.string.post_date),
                     locale

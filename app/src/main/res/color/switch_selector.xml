@@ -1,0 +1,6 @@
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Couleur quand le switch est activé/on -->
+    <item android:state_checked="true" android:color="#5BA478"/>
+    <!-- Couleur par défaut (désactivé/off) -->
+    <item android:color="@color/grey"/>
+</selector>

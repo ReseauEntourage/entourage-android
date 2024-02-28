@@ -3,6 +3,7 @@ package social.entourage.android.groups.details.feed
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -46,12 +47,14 @@ import social.entourage.android.groups.GroupPresenter
 import social.entourage.android.groups.details.GroupDetailsFragment
 import social.entourage.android.groups.details.members.MembersType
 import social.entourage.android.profile.myProfile.InterestsAdapter
+import social.entourage.android.report.DataLanguageStock
 import social.entourage.android.report.ReportModalFragment
 import social.entourage.android.report.ReportTypes
 import social.entourage.android.tools.image_viewer.ImageDialogActivity
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.CustomAlertDialog
+import social.entourage.android.tools.utils.Utils.enableCopyOnLongClick
 import social.entourage.android.tools.utils.px
 import uk.co.markormesher.android_fab.SpeedDialMenuAdapter
 import uk.co.markormesher.android_fab.SpeedDialMenuItem
@@ -133,6 +136,7 @@ class FeedFragment : Fragment(),CallbackReportFragment{
 
     private var newPostsList: MutableList<Post> = ArrayList()
     private var oldPostsList: MutableList<Post> = ArrayList()
+    private var allPostsList: MutableList<Post> = ArrayList()
     private var page: Int = 0
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -194,7 +198,9 @@ class FeedFragment : Fragment(),CallbackReportFragment{
         binding.swipeRefresh.isRefreshing = false
         newPostsList.clear()
         oldPostsList.clear()
+        allPostsList.clear()
         allPosts?.let {
+            allPostsList.addAll(allPosts)
             it.forEach { post ->
                 if (post.read == true || post.read == null) oldPostsList.add(post)
                 else newPostsList.add(post)
@@ -291,8 +297,10 @@ class FeedFragment : Fragment(),CallbackReportFragment{
     }
 
     private fun updateView() {
+
         MetaDataRepository.metaData.observe(requireActivity(), ::handleMetaData)
         with(binding) {
+            groupDescription.enableCopyOnLongClick(requireContext())
             groupName.text = group?.name
             groupNameToolbar.text = group?.name
             groupMembersNumberLocation.text = String.format(
@@ -411,7 +419,7 @@ class FeedFragment : Fragment(),CallbackReportFragment{
 
     private fun showWelcomeMessage(){
         var message = getString(R.string.welcome_message_placeholder)
-        var title = getString(R.string.welcome_message_title)
+        val title = getString(R.string.welcome_message_title)
         if (group?.welcomeMessage?.isNotBlank() == true) message = group?.welcomeMessage.toString()
         CustomAlertDialog.showWelcomeAlert(
             requireContext(),
@@ -432,7 +440,7 @@ class FeedFragment : Fragment(),CallbackReportFragment{
     private fun initializeEvents() {
         binding.eventsRecyclerview.apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-            adapter = group?.futureEvents?.let { GroupEventsAdapter(it) }
+            adapter = group?.futureEvents?.let { GroupEventsAdapter(it, context) }
         }
     }
 
@@ -446,6 +454,7 @@ class FeedFragment : Fragment(),CallbackReportFragment{
                 ::openReportFragment,
                 ::openImageFragment
             )
+            (adapter as? PostAdapter)?.initiateList()
         }
         binding.postsOldRecyclerview.apply {
             layoutManager = LinearLayoutManager(requireContext())
@@ -456,6 +465,7 @@ class FeedFragment : Fragment(),CallbackReportFragment{
                 ::openReportFragment,
                 ::openImageFragment
             )
+            (adapter as? PostAdapter)?.initiateList()
         }
     }
 
@@ -477,13 +487,20 @@ class FeedFragment : Fragment(),CallbackReportFragment{
     private fun openReportFragment(postId:Int,userId:Int) {
 
         val meId = EntourageApplication.get().me()?.id
-        val isFrome = meId == userId
+        val post = allPostsList.find { it.id == postId }
+        val isFrome = meId == post?.user?.id?.toInt()
+        Log.wtf("wtf", "isFrome $isFrome")
+        val fromLang = post?.contentTranslations?.fromLang
+        if (fromLang != null) {
+            DataLanguageStock.updatePostLanguage(fromLang)
+        }
+        var description = allPostsList.find { it.id == postId }?.content ?: ""
         val reportGroupBottomDialogFragment =
             group?.id?.let {
                 ReportModalFragment.newInstance(
                     postId,
                     it, ReportTypes.REPORT_POST,isFrome
-                ,false,false)
+                ,false,false, contentCopied = description)
             }
         reportGroupBottomDialogFragment?.setCallback(this)
         reportGroupBottomDialogFragment?.show(parentFragmentManager, ReportModalFragment.TAG)
@@ -496,8 +513,6 @@ class FeedFragment : Fragment(),CallbackReportFragment{
         intent.putExtra("postId", postId)
         intent.putExtra("groupId", this.group?.id)
         startActivity(intent)
-
-
     }
 
     private fun initializeInterests() {
@@ -536,11 +551,11 @@ class FeedFragment : Fragment(),CallbackReportFragment{
             group?.let {
                 with(it) {
                     groupUI = GroupModel(
-                        groupId, name, uuid_v2,
+                        groupId, name, nameTranslations, uuid_v2,
                         members_count,
                         address?.displayAddress,
                         interests,
-                        description,
+                        description, descriptionTranslations,
                         members,
                         member,
                         EntourageApplication.me(activity)?.id == admin?.id
@@ -590,11 +605,13 @@ class FeedFragment : Fragment(),CallbackReportFragment{
                 groupUI = GroupModel(
                     groupId,
                     it.name,
+                    it.nameTranslations,
                     it.uuid_v2,
                     it.members_count,
                     it.address?.displayAddress,
                     it.interests,
                     it.description,
+                    it.descriptionTranslations,
                     it.members,
                     it.member,
                     EntourageApplication.me(activity)?.id == it.admin?.id
@@ -652,8 +669,20 @@ class FeedFragment : Fragment(),CallbackReportFragment{
             updateView()
         }
     }
+
+    override fun onTranslatePost(id: Int) {
+        val isNewPost = newPostsList.any { it.id == id }
+        val adapter = if (isNewPost) {
+            binding.postsNewRecyclerview.adapter as? PostAdapter
+        } else {
+            binding.postsOldRecyclerview.adapter as? PostAdapter
+        }
+        adapter?.translateItem(id)
+    }
+
 }
 
  interface CallbackReportFragment{
     fun onSuppressPost()
+    fun onTranslatePost(id:Int)
 }

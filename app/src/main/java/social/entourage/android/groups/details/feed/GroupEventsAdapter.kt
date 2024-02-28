@@ -1,6 +1,7 @@
 package social.entourage.android.groups.details.feed
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.view.LayoutInflater
@@ -13,12 +14,13 @@ import social.entourage.android.R
 import social.entourage.android.databinding.NewEventItemLayoutBinding
 import social.entourage.android.api.model.Events
 import social.entourage.android.events.details.feed.FeedActivity
+import social.entourage.android.language.LanguageManager
 import social.entourage.android.tools.utils.Const
 import java.text.SimpleDateFormat
 import java.util.*
 
 class GroupEventsAdapter(
-    var eventsList: List<Events>,
+    var eventsList: List<Events>, var context: Context,
 ) : RecyclerView.Adapter<GroupEventsAdapter.ViewHolder>() {
 
     inner class ViewHolder(val binding: NewEventItemLayoutBinding) :
@@ -35,7 +37,7 @@ class GroupEventsAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        var locale = Locale.getDefault()
+        var locale = LanguageManager.getLocaleFromPreferences(context)
         holder.binding.name.text = eventsList[position].title
         holder.binding.address.text = eventsList[position].metadata?.placeName
         eventsList[position].metadata?.startsAt?.let {

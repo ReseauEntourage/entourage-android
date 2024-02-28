@@ -2651,8 +2651,38 @@
     <string name="terms_and_conditions_html">بالنقر على &lt;b&gt;التالي&lt;/b&gt;، فإنك توافق على &lt;a href=\'https://www.entourage.social</string>
     <string name="action_crete_cat_about">هل تبحث عن تقديم %s لا يندرج ضمن هذه الفئات؟ يبدو أن \ ليس له مكان في الشبكة، لكن يمكنك دائمًا </string>
     <string name="action_create_cat_about_link"> معرفة المزيد هنا</string>
+    <string name="report_modal_title_translate">ترجمة</string>
+    <string name="report_modal_subtitle_translate">نترجم تلقائيًا الرسائل التي كتبها المواطنون</string>
+    <string name="layout_translate_title_original">عرض النسخة الأصلية</string>
+    <string name="layout_translate_title_translation">عرض الترجمة</string>
+    <string name="layout_translate_action_translation_button">انقر هنا لعرض النسخة الأصلية</string>
+    <string name="layout_translate_title_original_button">عرض الترجمة</string>
+    <string name="layout_translate_title_original_title">لم يتم ترجمة هذه الصفحة.</string>
+    <string name="layout_translate_title_translation_title">تمت ترجمة بعض المعلومات تلقائيًا.</string>
 
+    <string name="category_other">أخرى</string>
+    <string name="category_food">الطعام</string>
+    <string name="category_housing">السكن</string>
+    <string name="category_medical">طبي</string>
+    <string name="category_orientation">التوجيه</string>
+    <string name="category_insertion">إعادة الإدماج</string>
+    <string name="category_partners">شركاء</string>
+    <string name="category_toilettes">مراحيض</string>
+    <string name="category_fontaines">نوافير</string>
+    <string name="category_douches">دُش</string>
+    <string name="category_laverlinge">مغاسل</string>
+    <string name="category_self_care">الرفاهية &amp; الأنشطة</string>
+    <string name="category_vetements">ملابس &amp; معدات</string>
+    <string name="category_bagages">تخزين الأمتعة</string>
+    <string name="category_boitesdons">صناديق التبرعات &amp; القراءة</string>
+    <string name="all_groups">جميع المجموعات</string>
+    <string name="btn_create_group">إنشاء مجموعة</string>
+    <string name="back_create_event_content">إذا غادرت نموذج إنشاء الحدث، ستُفقد كل المعلومات التي تم إدخالها.</string>
+    <string name="friendly_links_title">روابط ودية وداعمة</string>
+    <string name="friendly_links_text">في Entourage، الهدف الرئيسي هو تعزيز الروابط الودية والمستدامة. أتعهد باحترام هذا التوجه من خلال تجنب أي نهج أو نشر ذي طابع رومانسي أو عاطفي. وبذلك، أساهم بنشاط في الحفاظ على بيئة دافئة ومرحبة للجميع.</string>
 
-
+    <string name="copied_text">تم النسخ إلى الحافظة!</string>
+    <string name="copy_the_text">انسخ النص</string>
+    <string name="copy_the_text_explanation">سيتم نسخ النص إلى الحافظة</string>
 
 </resources>

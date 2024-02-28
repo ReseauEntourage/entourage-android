@@ -8,6 +8,7 @@ import android.graphics.*
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.VectorDrawable
 import android.os.Build
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,6 +22,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
+import com.google.gson.Gson
 import io.github.armcha.autolink.MODE_URL
 import kotlinx.android.synthetic.main.new_comment_detail_post_top.view.*
 import kotlinx.android.synthetic.main.new_comment_item_date.view.*
@@ -28,6 +30,8 @@ import kotlinx.android.synthetic.main.new_comment_item_left.view.*
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.api.model.Post
+import social.entourage.android.language.LanguageManager
+import social.entourage.android.report.DataLanguageStock
 import social.entourage.android.tools.setHyperlinkClickable
 import social.entourage.android.user.UserProfileActivity
 import social.entourage.android.tools.utils.Const
@@ -44,7 +48,7 @@ enum class CommentsTypes(val code: Int) {
 
 interface OnItemClickListener {
     fun onItemClick(comment: Post)
-    fun onCommentReport(commentId: Int?, isForEvent:Boolean, isMe:Boolean)
+    fun onCommentReport(commentId: Int?, isForEvent:Boolean, isMe:Boolean, commentLang:String)
     fun onShowWeb(url:String)
 }
 
@@ -60,11 +64,34 @@ class CommentsListAdapter(
 
     var isForEvent:Boolean = false
 
-    fun setForEvent(){
-        isForEvent = true
+    fun initiateList(){
+        val translatedByDefault = context.getSharedPreferences(
+            context.getString(R.string.preference_file_key), Context.MODE_PRIVATE
+        ).getBoolean("translatedByDefault", true)
+        if (translatedByDefault) {
+            commentsList.forEach {
+                if (it.contentTranslations != null) {
+                    translationExceptions.add(it.id!!)
+                }
+            }
+        }
+        notifyDataSetChanged()
     }
 
+    fun setForEvent() {
+        isForEvent = true
+    }
+    private val translationExceptions = mutableSetOf<Int>()
 
+    fun translateItem(commentId: Int) {
+        if (translationExceptions.contains(commentId)) {
+            translationExceptions.remove(commentId)
+        } else {
+            translationExceptions.add(commentId)
+        }
+        //Log.wtf("wtf","translationExceptions : $translationExceptions")
+        notifyItemChanged(commentsList.indexOfFirst { it.id == commentId } + 1)
+    }
 
     inner class ViewHolder(val binding: View) :
         RecyclerView.ViewHolder(binding) {
@@ -76,7 +103,7 @@ class CommentsListAdapter(
                 binding.comment_post.text = comment.content
                 binding.comment_post.setHyperlinkClickable()
                 comment.createdTime?.let {
-                    var locale = Locale.getDefault()
+                    var locale = LanguageManager.getLocaleFromPreferences(context)
                     binding.publication_date_post.text = "le ${SimpleDateFormat("dd.MM.yyyy",
                         locale
                     ).format(it)}"
@@ -158,7 +185,27 @@ class CommentsListAdapter(
                     binding.comment.setTextColor(context.getColor(R.color.grey_deleted_icon))
                 }
             }else{
-                binding.comment.text = comment.content
+
+                var contentToShow = comment.content
+                val sharedPrefs = context.getSharedPreferences(context.getString(R.string.preference_file_key), Context.MODE_PRIVATE)
+                val isTranslatedByDefault = sharedPrefs.getBoolean("translatedByDefault", true)
+                val isTranslated = if (translationExceptions.contains(comment.id)) {
+                    !isTranslatedByDefault
+                } else {
+                    isTranslatedByDefault
+                }
+                if(comment.contentTranslations != null){
+                    contentToShow = if (isTranslated) {
+                        comment.contentTranslations?.translation ?: comment.content
+                    } else {
+                        comment.contentTranslations?.original ?: comment.content
+                    }
+                }
+
+
+                binding.comment.text = contentToShow
+
+
                 if(isMe){
                     binding.comment.background = context.getDrawable(R.drawable.new_comment_background_orange)
                 }else{
@@ -170,12 +217,16 @@ class CommentsListAdapter(
                 }
             }
             binding.report.setOnClickListener {
-                onItemClick.onCommentReport(comment.id, isForEvent, isMe)
+                val commentLang = comment?.contentTranslations?.fromLang ?: ""
+                DataLanguageStock.updateContentToCopy(comment.content ?: "")
+                onItemClick.onCommentReport(comment.id, isForEvent, isMe,commentLang)
             }
             //here
-            if(isMe && comment.status != "deleted" ){
+            if(comment.status != "deleted" ){
+                val commentLang = comment?.contentTranslations?.fromLang ?: ""
                 binding.comment.setOnLongClickListener {
-                    onItemClick.onCommentReport(comment.id, isForEvent, isMe)
+                    DataLanguageStock.updateContentToCopy(comment.content ?: "")
+                    onItemClick.onCommentReport(comment.id, isForEvent, isMe,commentLang)
                     return@setOnLongClickListener true
                 }
             }
@@ -184,13 +235,13 @@ class CommentsListAdapter(
                 binding.information_layout.visibility = View.VISIBLE
                 binding.error.visibility = View.GONE
                 if (isConversation) {
-                    var locale = Locale.getDefault()
+                    var locale = LanguageManager.getLocaleFromPreferences(context)
                     binding.publication_date.text = SimpleDateFormat("HH'h'mm",
                         locale
                     ).format(it)
                 }
                 else {
-                    var locale = Locale.getDefault()
+                    var locale = LanguageManager.getLocaleFromPreferences(context)
                     binding.publication_date.text = "le ${SimpleDateFormat(
                         binding.context.getString(R.string.comments_date),
                         locale

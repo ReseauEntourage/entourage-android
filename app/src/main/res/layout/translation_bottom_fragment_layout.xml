@@ -69,7 +69,9 @@
         app:layout_constraintTop_toTopOf="@+id/tv_translation"
         app:layout_constraintBottom_toBottomOf="@+id/tv_translation"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginEnd="20dp"/>
+        android:layout_marginEnd="20dp"
+        android:thumbTint="@color/switch_selector"
+        android:trackTint="@color/switch_selector"/>
     <Button
         android:id="@+id/validate"
         style="@style/h2_white"
