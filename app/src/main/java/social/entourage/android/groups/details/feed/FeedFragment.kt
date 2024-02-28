@@ -28,7 +28,6 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
-import kotlinx.android.synthetic.main.new_fragment_create_group_success.post
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
