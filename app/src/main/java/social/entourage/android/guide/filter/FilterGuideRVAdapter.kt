@@ -2,14 +2,13 @@ package social.entourage.android.guide.filter
 
 import android.content.Context
 import android.graphics.Typeface
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.layout_filter_item.view.*
-import kotlinx.android.synthetic.main.layout_filter_top.view.*
 import social.entourage.android.R
+import social.entourage.android.databinding.LayoutFilterItemBinding
+import social.entourage.android.databinding.LayoutFilterTopBinding
 
 /**
  * Created by Jr (MJ-DEVS) on 12/10/2020.
@@ -23,12 +22,9 @@ class FilterGuideRVAdapter(val context: Context, private var myDataset: ArrayLis
                            val listenerTop:(position:Int) -> Unit) :
         RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    val VIEW_TOP = 11
-    val VIEW_OTHER = 10
-
-    fun updateDatas(items: ArrayList<GuideFilterAdapter.GuideFilterItem>, isPartnerSelected:Boolean,
-                     isDonatedSelected:Boolean,
-                     isVolunteerSelected:Boolean,isAllActive:Boolean) {
+    fun updateData(items: ArrayList<GuideFilterAdapter.GuideFilterItem>, isPartnerSelected:Boolean,
+                   isDonatedSelected:Boolean,
+                   isVolunteerSelected:Boolean, isAllActive:Boolean) {
         this.myDataset = items
         this.isDonatedSelected = isDonatedSelected
         this.isVolunteerSelected = isVolunteerSelected
@@ -48,10 +44,10 @@ class FilterGuideRVAdapter(val context: Context, private var myDataset: ArrayLis
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val inflater = LayoutInflater.from(context)
         if (viewType == VIEW_TOP) {
-            val v = inflater.inflate(R.layout.layout_filter_top,parent, false)
+            val v = LayoutFilterTopBinding.inflate(inflater, parent, false)
             return ViewTopVH(v)
         }
-        val v = inflater.inflate(R.layout.layout_filter_item,parent, false)
+        val v = LayoutFilterItemBinding.inflate(inflater, parent, false)
         return ImageVH(v)
     }
 
@@ -69,18 +65,18 @@ class FilterGuideRVAdapter(val context: Context, private var myDataset: ArrayLis
         holder.bind(position - 1)
     }
 
-    inner class ImageVH(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class ImageVH(val binding: LayoutFilterItemBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(position: Int) {
             val item = myDataset[position]
 
             var isOnTxt = if(item.isChecked) " ✔" else ""
 
             if (item.isChecked && !isAllActive ) {
-                itemView.filter_item_text.setTypeface(null, Typeface.BOLD)
+                binding.filterItemText.setTypeface(null, Typeface.BOLD)
             }
             else {
                 isOnTxt = ""
-                itemView.filter_item_text.setTypeface(null, Typeface.NORMAL)
+                binding.filterItemText.setTypeface(null, Typeface.NORMAL)
             }
             val displayName = when (item.categoryType.displayName) {
                 "Other" -> context.getString(R.string.category_other)
@@ -101,12 +97,12 @@ class FilterGuideRVAdapter(val context: Context, private var myDataset: ArrayLis
                 else -> item.categoryType.displayName
             }
 
-            itemView.filter_item_text?.text = displayName + isOnTxt
+            binding.filterItemText.text = displayName + isOnTxt
 
-            itemView.filter_item_image?.setImageResource(item.categoryType.filterId)
+            binding.filterItemImage.setImageResource(item.categoryType.filterId)
 
-            itemView.filter_item_switch.visibility = View.INVISIBLE
-            itemView.filter_item_separator.visibility = View.INVISIBLE
+            binding.filterItemSwitch.visibility = View.INVISIBLE
+            binding.filterItemSeparator.visibility = View.INVISIBLE
 
             itemView.setOnClickListener {
                 listener(position)
@@ -114,46 +110,51 @@ class FilterGuideRVAdapter(val context: Context, private var myDataset: ArrayLis
         }
     }
 
-    inner class ViewTopVH(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class ViewTopVH(val binding: LayoutFilterTopBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind() {
-            itemView.ui_layout_assos?.setOnClickListener {
+            binding.uiLayoutAssos.setOnClickListener {
                 listenerTop(0)
             }
-            itemView.filter_layout_donate?.setOnClickListener {
+            binding.filterLayoutDonate.setOnClickListener {
                 listenerTop(1)
             }
-            itemView.filter_layout_volunteer?.setOnClickListener {
+            binding.filterLayoutVolunteer.setOnClickListener {
                 listenerTop(2)
             }
 
             val isOnTxt = if(isAllActive) "" else  " ✔"
 
             if (isPartnerSelected && !isAllActive) {
-                itemView.filter_item_text_partner.setTypeface(null, Typeface.BOLD)
+                binding.filterItemTextPartner.setTypeface(null, Typeface.BOLD)
             }
             else {
-                itemView.filter_item_text_partner.setTypeface(null, Typeface.NORMAL)
+                binding.filterItemTextPartner.setTypeface(null, Typeface.NORMAL)
             }
             val _addTxt = if(isPartnerSelected)  isOnTxt else ""
-            itemView.filter_item_text_partner.text = context.getString(R.string.guide_display_partners) + _addTxt
+            binding.filterItemTextPartner.text = context.getString(R.string.guide_display_partners) + _addTxt
 
             if (isVolunteerSelected&& !isAllActive) {
-                itemView.filter_item_text_volunteer.setTypeface(null, Typeface.BOLD)
+                binding.filterItemTextVolunteer.setTypeface(null, Typeface.BOLD)
             }
             else {
-                itemView.filter_item_text_volunteer.setTypeface(null, Typeface.NORMAL)
+                binding.filterItemTextVolunteer.setTypeface(null, Typeface.NORMAL)
             }
             val _addTxt1 = if(isVolunteerSelected)  isOnTxt else ""
-            itemView.filter_item_text_volunteer.text = context.getString(R.string.guide_filter_volunteer) + _addTxt1
+            binding.filterItemTextVolunteer.text = context.getString(R.string.guide_filter_volunteer) + _addTxt1
 
             if (isDonatedSelected && !isAllActive) {
-                itemView.filter_item_text_donate.setTypeface(null, Typeface.BOLD)
+                binding.filterItemTextDonate.setTypeface(null, Typeface.BOLD)
             }
             else {
-                itemView.filter_item_text_donate.setTypeface(null, Typeface.NORMAL)
+                binding.filterItemTextDonate.setTypeface(null, Typeface.NORMAL)
             }
             val _addTxt2 = if(isDonatedSelected)  isOnTxt else ""
-            itemView.filter_item_text_donate.text = context.getString(R.string.guide_filter_donate) + _addTxt2
+            binding.filterItemTextDonate.text = context.getString(R.string.guide_filter_donate) + _addTxt2
         }
+    }
+
+    companion object {
+        const val VIEW_TOP = 11
+        const val VIEW_OTHER = 10
     }
 }
