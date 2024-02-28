@@ -1,5 +1,6 @@
 package social.entourage.android.groups.details.feed
 
+import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -13,6 +14,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
+import androidx.core.widget.NestedScrollView
 import androidx.core.widget.TextViewCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
@@ -20,6 +22,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
@@ -39,13 +42,17 @@ import social.entourage.android.api.MetaDataRepository
 import social.entourage.android.api.model.Group
 import social.entourage.android.api.model.Post
 import social.entourage.android.api.model.Tags
+import social.entourage.android.api.model.notification.Reaction
 import social.entourage.android.comment.PostAdapter
+import social.entourage.android.comment.ReactionInterface
 import social.entourage.android.databinding.NewFragmentFeedBinding
 import social.entourage.android.events.create.CreateEventActivity
 import social.entourage.android.groups.GroupModel
 import social.entourage.android.groups.GroupPresenter
 import social.entourage.android.groups.details.GroupDetailsFragment
+import social.entourage.android.groups.details.members.MembersFragment
 import social.entourage.android.groups.details.members.MembersType
+import social.entourage.android.homev2.HomeEventAdapter
 import social.entourage.android.profile.myProfile.InterestsAdapter
 import social.entourage.android.report.DataLanguageStock
 import social.entourage.android.report.ReportModalFragment
@@ -63,7 +70,7 @@ import kotlin.math.abs
 
 const val rotationDegree = 135F
 
-class FeedFragment : Fragment(),CallbackReportFragment{
+class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface {
 
     private var _binding: NewFragmentFeedBinding? = null
     val binding: NewFragmentFeedBinding get() = _binding!!
@@ -149,6 +156,7 @@ class FeedFragment : Fragment(),CallbackReportFragment{
         groupPresenter.hasUserJoinedGroup.observe(viewLifecycleOwner, ::handleJoinResponse)
         groupPresenter.hasUserLeftGroup.observe(viewLifecycleOwner, ::handleLeftResponse)
         groupPresenter.isPostDeleted.observe(requireActivity(), ::handleDeletedResponse)
+        groupPresenter.haveReacted.observe(requireActivity(), ::handleReactionGroupPost)
 
         handleFollowButton()
         handleBackButton()
@@ -170,7 +178,9 @@ class FeedFragment : Fragment(),CallbackReportFragment{
                 R.color.light_beige_96
             )
         )
+        setupNestedScrollViewScrollListener()
     }
+
 
     override fun onResume() {
         super.onResume()
@@ -194,6 +204,31 @@ class FeedFragment : Fragment(),CallbackReportFragment{
         return binding.root
     }
 
+    private fun setupNestedScrollViewScrollListener() {
+        binding.nestSvFeedFragment.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { _, _, scrollY, _, _ ->
+            if (scrollY > 0) {
+                Log.wtf("NestedScroll", "Scrolling in NestedScrollView")
+                // Ici, tu peux notifier ton RecyclerView adapter de cacher les éléments layoutReactions
+                hideReactionsInRecyclerView()
+            }
+        })
+    }
+
+    private fun hideReactionsInRecyclerView() {
+        hideReactionsInView(binding.postsNewRecyclerview)
+        hideReactionsInView(binding.postsOldRecyclerview)
+    }
+
+    private fun hideReactionsInView(recyclerView: RecyclerView) {
+        val firstVisiblePosition = (recyclerView.layoutManager as? LinearLayoutManager)?.findFirstVisibleItemPosition() ?: return
+        val lastVisiblePosition = (recyclerView.layoutManager as? LinearLayoutManager)?.findLastVisibleItemPosition() ?: return
+
+        // Parcours toutes les cellules visibles
+        for (i in firstVisiblePosition..lastVisiblePosition) {
+            val viewHolder = recyclerView.findViewHolderForAdapterPosition(i) as? PostAdapter.ViewHolder
+            viewHolder?.binding?.layoutReactions?.visibility = View.GONE
+        }
+    }
     private fun handleResponseGetGroupPosts(allPosts: MutableList<Post>?) {
         binding.swipeRefresh.isRefreshing = false
         newPostsList.clear()
@@ -232,6 +267,7 @@ class FeedFragment : Fragment(),CallbackReportFragment{
             binding.postsOldRecyclerview.visibility = View.GONE
         }
     }
+
 
     private fun handleSwipeRefresh() {
         binding.swipeRefresh.setOnRefreshListener {
@@ -440,33 +476,40 @@ class FeedFragment : Fragment(),CallbackReportFragment{
     private fun initializeEvents() {
         binding.eventsRecyclerview.apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-            adapter = group?.futureEvents?.let { GroupEventsAdapter(it, context) }
+            adapter = HomeEventAdapter(context)
+            group?.futureEvents?.let {
+                (adapter as? HomeEventAdapter)?.resetData(it)
+            }
         }
     }
 
     private fun initializePosts() {
-        binding.postsNewRecyclerview.apply {
-            layoutManager = LinearLayoutManager(requireContext())
-            adapter = PostAdapter(
-                requireContext(),
-                newPostsList,
-                ::openCommentPage,
-                ::openReportFragment,
-                ::openImageFragment
-            )
-            (adapter as? PostAdapter)?.initiateList()
-        }
-        binding.postsOldRecyclerview.apply {
-            layoutManager = LinearLayoutManager(requireContext())
-            adapter = PostAdapter(
-                requireContext(),
-                oldPostsList,
-                ::openCommentPage,
-                ::openReportFragment,
-                ::openImageFragment
-            )
-            (adapter as? PostAdapter)?.initiateList()
-        }
+
+        binding.postsNewRecyclerview.layoutManager = LinearLayoutManager(requireContext())
+        binding.postsNewRecyclerview.adapter = PostAdapter(
+            requireContext(),
+            this,
+            newPostsList,
+            this.group?.member,
+            ::openCommentPage,
+            ::openReportFragment,
+            ::openImageFragment
+        )
+        (binding.postsNewRecyclerview.adapter as? PostAdapter)?.initiateList()
+
+
+        binding.postsOldRecyclerview.layoutManager = LinearLayoutManager(requireContext())
+        binding.postsOldRecyclerview.adapter = PostAdapter(
+            requireContext(),
+            this,
+            oldPostsList,
+            this.group?.member,
+            ::openCommentPage,
+            ::openReportFragment,
+            ::openImageFragment
+        )
+        (binding.postsOldRecyclerview.adapter as? PostAdapter)?.initiateList()
+
     }
 
     private fun openCommentPage(post: Post, shouldOpenKeyboard: Boolean) {
@@ -485,6 +528,17 @@ class FeedFragment : Fragment(),CallbackReportFragment{
         )
     }
     private fun openReportFragment(postId:Int,userId:Int) {
+        if(this.group?.member == false){
+            AlertDialog.Builder(context) // Utilise 'this' si c'est dans une activité, ou 'getActivity()' si c'est dans un fragment
+                .setTitle("Attention")
+                .setMessage("Vous devez rejoindre le groupe pour effectuer cette action.")
+                .setPositiveButton("Retour") { dialog, which ->
+                    // Code à exécuter lorsque le bouton "Retour" est cliqué.
+                    // Si tu ne veux rien faire, tu peux laisser ce bloc vide.
+                }
+                .show()
+            return
+        }
 
         val meId = EntourageApplication.get().me()?.id
         val post = allPostsList.find { it.id == postId }
@@ -576,6 +630,10 @@ class FeedFragment : Fragment(),CallbackReportFragment{
                 FeedFragmentDirections.actionGroupFeedToGroupMembers(groupId, MembersType.GROUP)
             findNavController().navigate(action)
         }
+    }
+
+    private fun handleReactionGroupPost(reactionId: Int) {
+
     }
 
     private fun handleGroupEventsButton() {
@@ -679,7 +737,46 @@ class FeedFragment : Fragment(),CallbackReportFragment{
         }
         adapter?.translateItem(id)
     }
+    override fun onReactionClicked(postId: Post, reactionId: Int) {
+        if(this.group?.member == false){
+            AlertDialog.Builder(context) // Utilise 'this' si c'est dans une activité, ou 'getActivity()' si c'est dans un fragment
+                .setTitle("Attention")
+                .setMessage("Vous devez rejoindre le groupe pour effectuer cette action.")
+                .setPositiveButton("Retour") { dialog, which ->
+                    // Code à exécuter lorsque le bouton "Retour" est cliqué.
+                    // Si tu ne veux rien faire, tu peux laisser ce bloc vide.
+                }
+                .show()
+            return
+        }
+        groupPresenter.reactToPost(groupId,postId.id!!, reactionId)
+    }
 
+    override fun seeMemberReaction(post: Post) {
+        MembersFragment.isFromReact = true
+        MembersFragment.postId = post.id!!
+        AnalyticsEvents.logEvent(
+            AnalyticsEvents.ACTION_GROUP_FEED_MORE_MEMBERS
+        )
+        val action =
+            FeedFragmentDirections.actionGroupFeedToGroupMembers(groupId, MembersType.GROUP)
+        findNavController().navigate(action)
+    }
+
+    override fun deleteReaction(post: Post) {
+        if(this.group?.member == false){
+            AlertDialog.Builder(context) // Utilise 'this' si c'est dans une activité, ou 'getActivity()' si c'est dans un fragment
+                .setTitle("Attention")
+                .setMessage("Vous devez rejoindre le groupe pour effectuer cette action.")
+                .setPositiveButton("Retour") { dialog, which ->
+                    // Code à exécuter lorsque le bouton "Retour" est cliqué.
+                    // Si tu ne veux rien faire, tu peux laisser ce bloc vide.
+                }
+                .show()
+            return
+        }
+        groupPresenter.deleteReactToPost(groupId, post.id!!)
+    }
 }
 
  interface CallbackReportFragment{

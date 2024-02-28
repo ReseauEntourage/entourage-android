@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,6 +17,7 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.textfield.TextInputLayout
+import social.entourage.android.MainActivity
 import social.entourage.android.R
 import social.entourage.android.databinding.NewFragmentMembersBinding
 import social.entourage.android.discussions.DetailConversationActivity
@@ -24,6 +26,8 @@ import social.entourage.android.events.EventsPresenter
 import social.entourage.android.groups.GroupPresenter
 import social.entourage.android.api.model.Conversation
 import social.entourage.android.api.model.EntourageUser
+import social.entourage.android.api.model.notification.CompleteReactionsResponse
+import social.entourage.android.api.model.notification.ReactionType
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.Utils
 import social.entourage.android.tools.log.AnalyticsEvents
@@ -46,6 +50,9 @@ open class MembersFragment : Fragment() {
 
     private val navArgs: MembersFragmentArgs by navArgs()
     private val discussionPresenter: DiscussionsPresenter by lazy { DiscussionsPresenter() }
+    private var reactionIterator:Int = 0
+    private var reactionList:MutableList<ReactionType> = mutableListOf()
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -75,27 +82,55 @@ open class MembersFragment : Fragment() {
         discussionPresenter.newConversation.observe(requireActivity(), ::handleGetConversation)
     }
 
+    override fun onResume() {
+        super.onResume()
+        if(isFromReact){
+            binding.headerTitle.text = requireContext().getString(R.string.see_member_react)
+
+        }else {
+            binding.headerTitle.text = requireContext().getString(R.string.see_members)
+
+        }
+    }
+
     private fun getMembers() {
 
         if (type == MembersType.GROUP) {
-            id?.let {
-                groupPresenter.getGroupMembers(it)
-            }
             groupPresenter.getMembers.observe(viewLifecycleOwner, ::handleResponseGetMembers)
+            groupPresenter.getMembersReactResponse.observe(viewLifecycleOwner, ::handleResponseGetMembersReact)
             groupPresenter.getMembersSearch.observe(
                 viewLifecycleOwner,
                 ::handleResponseGetMembersSearch
             )
         } else if (type == MembersType.EVENT) {
-            id?.let {
-                eventPresenter.getEventMembers(it)
-            }
             eventPresenter.getMembers.observe(viewLifecycleOwner, ::handleResponseGetMembers)
+            eventPresenter.getMembersReactResponse.observe(viewLifecycleOwner, ::handleResponseGetMembersReact)
             eventPresenter.getMembersSearch.observe(
                 viewLifecycleOwner,
                 ::handleResponseGetMembersSearch
             )
         }
+        if(isFromReact) {
+            binding.layoutSearchbar.visibility = View.GONE
+            if(type == MembersType.GROUP) {
+                groupPresenter.getReactDetails(id!!,MembersFragment.postId)
+
+            } else if(type == MembersType.EVENT) {
+                eventPresenter.getReactDetails(id!!,MembersFragment.postId)
+
+            }
+            return
+        }
+        if (type == MembersType.GROUP) {
+            id?.let {
+                groupPresenter.getGroupMembers(it)
+            }
+        } else if (type == MembersType.EVENT) {
+            id?.let {
+                eventPresenter.getEventMembers(it)
+            }
+        }
+
     }
 
     private fun handleResponseGetMembers(allMembers: MutableList<EntourageUser>?) {
@@ -105,6 +140,35 @@ open class MembersFragment : Fragment() {
         allMembers?.isEmpty()?.let { updateView(it) }
         binding.recyclerView.adapter?.notifyDataSetChanged()
     }
+    private fun handleResponseGetMembersReact(reactionsResponse: CompleteReactionsResponse) {
+        membersList.clear()
+        reactionList.clear()
+
+        reactionsResponse.user_reactions.forEach { userReaction ->
+            // Ajoute l'utilisateur
+            membersList.add(userReaction.user)
+
+            // Trouve la réaction correspondante dans MainActivity.reactionsList
+            val matchingReaction = MainActivity.reactionsList?.find { it.id == userReaction.reaction_id }
+
+            // Si une réaction correspondante est trouvée, l'utilise; sinon, crée un nouvel objet ReactionType avec des valeurs par défaut
+            val reaction = matchingReaction ?: ReactionType(
+                id = userReaction.reaction_id,
+                key = matchingReaction?.key , // Ici, tu pourrais mettre une valeur par défaut ou laisser null si aucune correspondance n'est trouvée
+                imageUrl = matchingReaction?.imageUrl // Idem pour imageUrl
+            )
+
+            reactionList.add(reaction)
+        }
+
+        updateView(membersList.isEmpty())
+        binding.progressBar.visibility = View.GONE
+        (binding.recyclerView.adapter as MembersListAdapter).resetData(membersList, reactionList)
+    }
+
+
+
+
 
     private fun handleResponseGetMembersSearch(allMembersSearch: MutableList<EntourageUser>?) {
         membersListSearch.clear()
@@ -115,7 +179,7 @@ open class MembersFragment : Fragment() {
     }
 
     private fun handleCloseButton() {
-        binding.header.iconBack.setOnClickListener {
+        binding.iconBack.setOnClickListener {
             findNavController().popBackStack()
         }
     }
@@ -126,7 +190,7 @@ open class MembersFragment : Fragment() {
             ?.let { itemDecorator.setDrawable(it) }
         binding.recyclerView.apply {
             layoutManager = LinearLayoutManager(context)
-            adapter = MembersListAdapter(membersList, object : OnItemShowListener {
+            adapter = MembersListAdapter(requireContext(),membersList,reactionList, object : OnItemShowListener {
                 override fun onShowConversation(userId: Int) {
                     discussionPresenter.createOrGetConversation(userId)
                 }
@@ -161,7 +225,7 @@ open class MembersFragment : Fragment() {
             ?.let { itemDecorator.setDrawable(it) }
         binding.searchRecyclerView.apply {
             layoutManager = LinearLayoutManager(context)
-            adapter = MembersListAdapter(membersListSearch, object : OnItemShowListener {
+            adapter = MembersListAdapter(requireContext(),membersListSearch, reactionList, object : OnItemShowListener {
                 override fun onShowConversation(userId: Int) {
                     discussionPresenter.createOrGetConversation(userId)
                 }
@@ -256,6 +320,11 @@ open class MembersFragment : Fragment() {
 
         })
     }
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+        MembersFragment.isFromReact = false
+    }
 
     private fun handleCross() {
         binding.searchBarLayout.setEndIconOnClickListener {
@@ -269,4 +338,10 @@ open class MembersFragment : Fragment() {
             Utils.hideKeyboard(requireActivity())
         }
     }
+
+    companion object {
+        var isFromReact = false
+        var postId = 0
+    }
+
 }

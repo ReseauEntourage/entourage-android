@@ -2661,5 +2661,8 @@ Sie werden diese Nachricht lesen, sobald sie der Gruppe beitreten.</string>
     <string name="copied_text">In die Zwischenablage kopiert!</string>
     <string name="copy_the_text">Text kopieren</string>
     <string name="copy_the_text_explanation">Der Text wird in die Zwischenablage kopiert</string>
+    <string name="see_member_react">Personen, die reagiert haben</string>
+    <string name="text_title_i_like">Gefällt mir</string>
+    <string name="text_title_comment">Kommentieren</string>
 
 </resources>

@@ -9,6 +9,8 @@ import social.entourage.android.api.model.EntourageUser
 import social.entourage.android.api.model.Group
 import social.entourage.android.api.model.Image
 import social.entourage.android.api.model.Post
+import social.entourage.android.api.model.notification.CompleteReactionsResponse
+import social.entourage.android.api.model.notification.ReactionWrapper
 
 class GroupImagesResponse(@field:SerializedName("neighborhood_images") val groupImages: ArrayList<Image>)
 class GroupWrapper(@field:SerializedName("neighborhood") val group: Group)
@@ -137,6 +139,32 @@ interface GroupRequest {
     fun getGroupEvents(
         @Path("neighborhood_id") groupId: Int,
     ): Call<EventsListWrapper>
+
+    @GET("neighborhoods/{neighborhood_id}/chat_messages/{post_id}/reactions")
+    fun getReactionGroupPost(
+        @Path("neighborhood_id") groupId: Int,
+        @Path("post_id") postId: Int,
+    ): Call<ResponseBody>
+
+    @GET("neighborhoods/{neighborhood_id}/chat_messages/{post_id}/reactions/users")
+    fun getDetailsReactionGroupPost(
+        @Path("neighborhood_id") groupId: Int,
+        @Path("post_id") postId: Int,
+    ): Call<CompleteReactionsResponse>
+
+    @POST("neighborhoods/{neighborhood_id}/chat_messages/{post_id}/reactions")
+    fun postReactionGroupPost(
+        @Path("neighborhood_id") groupId: Int,
+        @Path("post_id") postId: Int,
+        @Body reactionWrapper: ReactionWrapper
+    ): Call<ResponseBody>
+
+    @DELETE("neighborhoods/{neighborhood_id}/chat_messages/{post_id}/reactions")
+    fun deleteReactionGroupPost(
+        @Path("neighborhood_id") groupId: Int,
+        @Path("post_id") postId: Int,
+    ): Call<ResponseBody>
+
 
 
     @GET("neighborhoods/{neighborhood_id}/chat_messages/{post_id}")

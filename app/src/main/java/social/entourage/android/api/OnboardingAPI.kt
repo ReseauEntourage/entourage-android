@@ -43,6 +43,7 @@ class OnboardingAPI {
         user["phone"] = tempUser.phone ?: ""
         user["first_name"] = tempUser.firstName ?: ""
         user["last_name"] = tempUser.lastName ?:""
+        user["email"] = tempUser.email ?: ""
         user["newsletter_subscription"] = hasConsent
         val request = ArrayMap<String, Any>()
         request["user"] = user

@@ -199,18 +199,25 @@ class WelcomeThreeActivity: BaseActivity() {
     private fun handleResponseGetEvents(allEvents: MutableList<Events>?) {
         allEvents.let {
             Log.wtf("wtf", "size" + allEvents!!.size)
-            if(allEvents.size > 0){
+            var eventCleaned:MutableList<Events> = mutableListOf()
+            for(event in allEvents){
+                if(event.online == false){
+                    eventCleaned.add(event)
+                }
+            }
+
+            if(eventCleaned.size > 0){
                 binding.imgArtifice.visibility = View.VISIBLE
                 handleMainButtonForEvent()
                 AnalyticsEvents.logEvent("View_WelcomeOfferHelp_Day5A")
                 binding.titleWelcomeTwo.text = getString(R.string.welcome_three_title_with_event)
                 binding.tvTextOne.text = getString(R.string.welcome_three_text_one)
 
-                eventExampleOne = allEvents[0]
-                binding.eventExampleOne.eventName.text = allEvents[0].title
-                binding.eventExampleOne.location.text = allEvents[0].metadata?.displayAddress
-                binding.eventExampleOne.participants.text = allEvents[0].membersCount.toString()
-                allEvents[0].metadata?.startsAt?.let {
+                eventExampleOne = eventCleaned[0]
+                binding.eventExampleOne.eventName.text = eventCleaned[0].title
+                binding.eventExampleOne.location.text = eventCleaned[0].metadata?.displayAddress
+                binding.eventExampleOne.participants.text = eventCleaned[0].membersCount.toString()
+                eventCleaned[0].metadata?.startsAt?.let {
                     var locale = LanguageManager.getLocaleFromPreferences(this)
                     binding.eventExampleOne.date.text = SimpleDateFormat(
                         getString(R.string.event_date_time),
@@ -219,9 +226,9 @@ class WelcomeThreeActivity: BaseActivity() {
                         it
                     )
                 }
-                allEvents[0].metadata?.landscapeUrl?.let {
+                eventCleaned[0].metadata?.landscapeUrl?.let {
                     Glide.with(this)
-                        .load(Uri.parse(allEvents[0].metadata?.landscapeUrl))
+                        .load(Uri.parse(eventCleaned[0].metadata?.landscapeUrl))
                         .placeholder(R.drawable.ic_event_placeholder)
                         .error(R.drawable.ic_event_placeholder)
                         .apply(RequestOptions().override(90.px, 90.px))
@@ -237,13 +244,13 @@ class WelcomeThreeActivity: BaseActivity() {
 
                 //FILL EVENT THREE
                 binding.eventExampleOne.layout.visibility = View.VISIBLE
-                if(allEvents.size > 2){
-                    eventExampleThree = allEvents[2]
-                    binding.eventExampleThree.eventName.text = allEvents[2].title
+                if(eventCleaned.size > 2){
+                    eventExampleThree = eventCleaned[2]
+                    binding.eventExampleThree.eventName.text = eventCleaned[2].title
                     binding.eventExampleThree.layout.visibility = View.VISIBLE
-                    binding.eventExampleThree.location.text = allEvents[2].metadata?.displayAddress
-                    binding.eventExampleThree.participants.text = allEvents[2].membersCount.toString()
-                    allEvents[2].metadata?.startsAt?.let {
+                    binding.eventExampleThree.location.text = eventCleaned[2].metadata?.displayAddress
+                    binding.eventExampleThree.participants.text = eventCleaned[2].membersCount.toString()
+                    eventCleaned[2].metadata?.startsAt?.let {
                         var locale = LanguageManager.getLocaleFromPreferences(this)
                         binding.eventExampleThree.date.text = SimpleDateFormat(
                             getString(R.string.event_date_time),
@@ -252,9 +259,9 @@ class WelcomeThreeActivity: BaseActivity() {
                             it
                         )
                     }
-                    allEvents[2].metadata?.landscapeUrl?.let {
+                    eventCleaned[2].metadata?.landscapeUrl?.let {
                         Glide.with(this)
-                            .load(Uri.parse(allEvents[2].metadata?.landscapeUrl))
+                            .load(Uri.parse(eventCleaned[2].metadata?.landscapeUrl))
                             .placeholder(R.drawable.ic_event_placeholder)
                             .error(R.drawable.ic_event_placeholder)
                             .apply(RequestOptions().override(90.px, 90.px))
@@ -269,13 +276,13 @@ class WelcomeThreeActivity: BaseActivity() {
                     }
                 }
                 //FILL EVENT TWO
-                if(allEvents.size > 1){
-                    eventExampleTwo = allEvents[1]
-                    binding.eventExampleTwo.eventName.text = allEvents[1].title
+                if(eventCleaned.size > 1){
+                    eventExampleTwo = eventCleaned[1]
+                    binding.eventExampleTwo.eventName.text = eventCleaned[1].title
                     binding.eventExampleTwo.layout.visibility = View.VISIBLE
-                    binding.eventExampleTwo.location.text = allEvents[1].metadata?.displayAddress
-                    binding.eventExampleTwo.participants.text = allEvents[1].membersCount.toString()
-                    allEvents[1].metadata?.startsAt?.let {
+                    binding.eventExampleTwo.location.text = eventCleaned[1].metadata?.displayAddress
+                    binding.eventExampleTwo.participants.text = eventCleaned[1].membersCount.toString()
+                    eventCleaned[1].metadata?.startsAt?.let {
                         var locale = LanguageManager.getLocaleFromPreferences(this)
                         binding.eventExampleTwo.date.text = SimpleDateFormat(
                             getString(R.string.event_date_time),
@@ -284,9 +291,9 @@ class WelcomeThreeActivity: BaseActivity() {
                             it
                         )
                     }
-                    allEvents[1].metadata?.landscapeUrl?.let {
+                    eventCleaned[1].metadata?.landscapeUrl?.let {
                         Glide.with(this)
-                            .load(Uri.parse(allEvents[1].metadata?.landscapeUrl))
+                            .load(Uri.parse(eventCleaned[1].metadata?.landscapeUrl))
                             .placeholder(R.drawable.ic_event_placeholder)
                             .error(R.drawable.ic_event_placeholder)
                             .apply(RequestOptions().override(90.px, 90.px))

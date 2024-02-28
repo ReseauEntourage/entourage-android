@@ -36,6 +36,7 @@ import kotlinx.coroutines.withContext
 import social.entourage.android.actions.create.CreateActionActivity
 import social.entourage.android.api.MetaDataRepository
 import social.entourage.android.api.model.notification.PushNotificationMessage
+import social.entourage.android.api.model.notification.ReactionType
 import social.entourage.android.base.BaseSecuredActivity
 import social.entourage.android.base.location.EntLocation
 import social.entourage.android.deeplinks.UniversalLinkManager
@@ -346,6 +347,7 @@ class MainActivity : BaseSecuredActivity() {
 
     private fun initializeMetaData() {
         if (MetaDataRepository.metaData.value == null) MetaDataRepository.getMetaData()
+
         if (MetaDataRepository.groupImages.value == null) MetaDataRepository.getGroupImages()
         if (MetaDataRepository.eventsImages.value == null) MetaDataRepository.getEventsImages()
     }
@@ -499,6 +501,7 @@ class MainActivity : BaseSecuredActivity() {
     companion object {
         var instance: MainActivity? = null
         const val UPDATE_REQUEST_CODE = 1001 // Ou tout autre numéro que tu souhaites.
+        var reactionsList: MutableList<ReactionType>? = null
 
     }
 }

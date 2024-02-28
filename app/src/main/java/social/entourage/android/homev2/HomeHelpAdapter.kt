@@ -77,7 +77,7 @@ class HomeHelpAdapter(val callback:OnHomeV2HelpItemClickListener): RecyclerView.
                                 .into(holder.binding.ivHomeV2HelpItem)
                         } ?: run {
                             Glide.with(holder.binding.root.context)
-                                .load(R.drawable.ic_event_placeholder)
+                                .load(R.drawable.placeholder_user)
                                 .transform(CenterCrop(), GranularRoundedCorners(45F, 45F, 0F, 0F))
                                 .into(holder.binding.ivHomeV2HelpItem)
                         }

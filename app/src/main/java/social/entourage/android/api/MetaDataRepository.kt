@@ -1,10 +1,13 @@
 package social.entourage.android.api
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
+import com.google.gson.Gson
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import social.entourage.android.EntourageApplication
+import social.entourage.android.MainActivity
 import social.entourage.android.api.model.Image
 import social.entourage.android.api.model.Tags
 import social.entourage.android.api.request.EventsImagesResponse
@@ -25,10 +28,13 @@ object MetaDataRepository {
             ) {
                 if (response.isSuccessful) {
                     metaData.value = response.body()?.tags
+                    MainActivity.reactionsList = response.body()?.reactions
+
                 }
             }
 
             override fun onFailure(call: Call<MetaDataResponse>, t: Throwable) {
+
             }
         })
     }

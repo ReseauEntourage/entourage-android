@@ -156,9 +156,11 @@ class ReportModalFragment() : BottomSheetDialogFragment() {
         val animSignal= ObjectAnimator.ofFloat(binding.layoutChooseSignal, "alpha", 1.0f,0.0F)
         val animSupress = ObjectAnimator.ofFloat(binding.layoutChooseSuppress, "alpha", 1.0f,0.0F)
         val animCopy = ObjectAnimator.ofFloat(binding.layoutChooseCopy, "alpha", 1.0f,0.0F)
+        val animTranslate = ObjectAnimator.ofFloat(binding.layoutChooseTranslate, "alpha", 1.0f,0.0F)
         animSignal.duration = 100
         animSupress.duration = 100
         animCopy.duration = 100
+        animTranslate.duration = 100
         animSignal.addListener(object : AnimatorListenerAdapter() {
             override fun onAnimationEnd(animation: Animator, isReverse: Boolean) {
                 binding.layoutChooseSignal.visibility = View.GONE
@@ -185,9 +187,20 @@ class ReportModalFragment() : BottomSheetDialogFragment() {
                 setPeekHeight(0.7)
             }
         })
+        animTranslate.addListener(object : AnimatorListenerAdapter() {
+            override fun onAnimationEnd(animation: Animator, isReverse: Boolean) {
+                binding.layoutChooseTranslate.visibility = View.GONE
+                val view = binding.root
+                val behavior = BottomSheetBehavior.from(view.parent as View)
+                val peekheight = view.height
+                behavior.peekHeight = peekheight
+                setPeekHeight(0.7)
+            }
+        })
         animSignal.start()
         animSupress.start()
         animCopy.start()
+        animTranslate.start()
     }
     fun setStartView(){
         getIsFromMe()
@@ -202,6 +215,7 @@ class ReportModalFragment() : BottomSheetDialogFragment() {
             binding.layoutChooseCopy.visibility = View.GONE
         }else{
             binding.layoutChooseCopy.setOnClickListener {
+                AnalyticsEvents.logEvent(AnalyticsEvents.Clic_CopyPaste_Settings)
                 val clipboard = context?.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
                 val clip = ClipData.newPlainText(requireContext().getString(R.string.copied_text), contentCopied)
                 clipboard.setPrimaryClip(clip)
