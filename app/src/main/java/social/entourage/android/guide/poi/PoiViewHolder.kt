@@ -6,16 +6,20 @@ import android.net.Uri
 import android.view.View
 import androidx.fragment.app.findFragment
 import social.entourage.android.Constants
-import social.entourage.android.R
 import social.entourage.android.api.model.LocationPoint
 import social.entourage.android.api.model.TimestampedObject
 import social.entourage.android.api.model.guide.Poi
 import social.entourage.android.base.BaseCardViewHolder
-import social.entourage.android.databinding.LayoutPoiCardBinding // Assurez-vous que ceci correspond au nom généré.
+import social.entourage.android.databinding.LayoutPoiCardBinding
 import social.entourage.android.tools.log.AnalyticsEvents
 import timber.log.Timber
 
-class PoiViewHolder(private val binding: LayoutPoiCardBinding) : BaseCardViewHolder(binding.root) {
+/**
+ * Point of interest card view holder
+ *
+ * Created by mihaiionescu on 26/04/2017.
+ */
+class PoiViewHolder(val binding: LayoutPoiCardBinding) : BaseCardViewHolder(binding.root) {
     private var poi: Poi? = null
     var showCallButton: Boolean = true
 
@@ -55,10 +59,5 @@ class PoiViewHolder(private val binding: LayoutPoiCardBinding) : BaseCardViewHol
         binding.poiCardAddress.text = newPoi.address ?: ""
         binding.poiCardDistance.text = LocationPoint(newPoi.latitude, newPoi.longitude).distanceToCurrentLocation(Constants.DISTANCE_MAX_DISPLAY)
         binding.poiCardCallButton.visibility = if (!showCallButton || newPoi.phone.isNullOrEmpty()) View.GONE else View.VISIBLE
-    }
-
-    companion object {
-        val layoutResource: Int
-            get() = R.layout.layout_poi_card
     }
 }

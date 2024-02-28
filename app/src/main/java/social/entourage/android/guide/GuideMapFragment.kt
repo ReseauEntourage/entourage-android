@@ -4,6 +4,7 @@ import android.animation.ValueAnimator
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
+import android.graphics.Point
 import android.os.Bundle
 import android.os.IBinder
 import android.view.LayoutInflater
@@ -13,6 +14,7 @@ import androidx.appcompat.content.res.AppCompatResources
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.material.snackbar.Snackbar
 
@@ -33,15 +35,15 @@ import social.entourage.android.guide.poi.PoiRenderer
 import social.entourage.android.guide.poi.PoisAdapter
 import social.entourage.android.guide.poi.ReadPoiFragment
 import social.entourage.android.guide.poi.ReadPoiFragment.Companion.newInstance
-import social.entourage.android.tools.utils.Utils
 import social.entourage.android.service.EntService
 import social.entourage.android.tools.EntLinkMovementMethod
 import social.entourage.android.tools.log.AnalyticsEvents
+import social.entourage.android.tools.utils.Utils
 import social.entourage.android.tools.view.EntSnackbar
 import social.entourage.android.user.partner.PartnerFragment
 import timber.log.Timber
 
-class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), PoiListFragment, ApiConnectionListener,
+class GuideMapFragment : BaseMapFragment(), PoiListFragment, ApiConnectionListener,
         GoogleMap.OnMarkerClickListener, OnMapReadyCallback {
 
     // ----------------------------------
@@ -57,6 +59,7 @@ class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), PoiListFr
     private var onMapReadyCallback: OnMapReadyCallback? = null
     private val poisAdapter: PoisAdapter = PoisAdapter()
     private var mapRenderer: PoiRenderer = PoiRenderer()
+    private var toReturn: View? = null
 
     // ----------------------------------
     // LIFECYCLE
@@ -67,9 +70,13 @@ class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), PoiListFr
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentGuideMapBinding.inflate(inflater, container, false)
-        return binding.root
+        if (toReturn == null) {
+            binding= FragmentGuideMapBinding.inflate(inflater, container, false)
+            toReturn = binding.root
+        }
+        return toReturn
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initializeMap()
@@ -202,6 +209,16 @@ class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), PoiListFr
         super.onMapReady(googleMap,
                 null
         )
+        googleMap.setOnMapLongClickListener { latLng: LatLng ->
+            //only show when map is in full screen and not visible
+            if (!isFullMapShown || binding.fragmentMapLongclick.parent.visibility == View.VISIBLE) {
+                return@setOnMapLongClickListener
+            }
+            if (activity != null) {
+                AnalyticsEvents.logEvent(eventLongClick)
+                showLongClickOnMapOptions(latLng)
+            }
+        }
         initializeMapZoom()
         map?.setOnMarkerClickListener(this)
         //map?.setMinZoomPreference(MAX_ZOOM_VALUE)
@@ -437,6 +454,47 @@ class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), PoiListFr
             EntSnackbar.make(it, R.string.technical_error, Snackbar.LENGTH_LONG).show()
         }
     }
+    // ----------------------------------
+    // Long clicks on map handler
+    // ----------------------------------
+    protected open fun showLongClickOnMapOptions(latLng: LatLng) {
+        //get the click point
+        map?.let {
+            binding.fragmentMapLongclick.mapLongclickButtons?.let { buttons ->
+                buttons.measure(
+                    RelativeLayout.LayoutParams.WRAP_CONTENT,
+                    RelativeLayout.LayoutParams.WRAP_CONTENT
+                )
+                val bW = buttons.measuredWidth
+                val bH = buttons.measuredHeight
+                val lp = buttons.layoutParams as RelativeLayout.LayoutParams
+                val clickPoint = it.projection.toScreenLocation(latLng)
+                //adjust the buttons holder layout
+                val display =
+                    (requireContext().getSystemService(Context.WINDOW_SERVICE) as WindowManager).defaultDisplay
+                val screenSize = Point()
+                display.getSize(screenSize)
+
+                var marginLeft = clickPoint.x - bW / 2
+                if (marginLeft + bW > screenSize.x) {
+                    marginLeft -= bW / 2
+                }
+                if (marginLeft < 0) {
+                    marginLeft = 0
+                }
+                var marginTop = clickPoint.y - bH / 2
+                if (marginTop < 0) {
+                    marginTop = clickPoint.y
+                }
+                lp.setMargins(marginLeft, marginTop, 0, 0)
+                buttons.layoutParams = lp
+            }
+            //show the view
+            binding.fragmentMapLongclick.parent.visibility = View.VISIBLE
+        }
+    }
+
+
 
     private inner class ServiceConnection : android.content.ServiceConnection {
         private var isBound = false

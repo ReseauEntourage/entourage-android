@@ -2,21 +2,16 @@ package social.entourage.android.base.map
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
-import android.graphics.Point
 import android.location.Location
 import android.os.Bundle
 import android.provider.Settings
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import android.view.WindowManager
-import android.widget.RelativeLayout
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AlertDialog
+import androidx.fragment.app.Fragment
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.CameraPosition
@@ -25,7 +20,6 @@ import com.google.android.gms.maps.model.MapStyleOptions
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.RefreshController
-import social.entourage.android.base.BaseFragment
 import social.entourage.android.base.HeaderBaseAdapter
 import social.entourage.android.base.location.EntLocation
 import social.entourage.android.base.location.LocationUpdateListener
@@ -35,7 +29,7 @@ import social.entourage.android.databinding.LayoutMapLongclickBinding
 import social.entourage.android.tools.log.AnalyticsEvents
 import timber.log.Timber
 
-abstract class BaseMapFragment(protected var layout: Int) : BaseFragment(),
+abstract class BaseMapFragment() : Fragment(),
     LocationUpdateListener {
     private lateinit var binding: FragmentMapBinding
     protected lateinit var eventLongClick: String
@@ -47,7 +41,6 @@ abstract class BaseMapFragment(protected var layout: Int) : BaseFragment(),
     protected abstract val adapter: HeaderBaseAdapter?
 
     protected var originalMapLayoutHeight = 0
-    private var toReturn: View? = null
 
     protected val requestPermissionLauncher =
         registerForActivityResult(
@@ -126,74 +119,16 @@ abstract class BaseMapFragment(protected var layout: Int) : BaseFragment(),
         if (onGroundOverlayClickListener != null) {
             googleMap.setOnGroundOverlayClickListener(onGroundOverlayClickListener)
         }
-        googleMap.setOnMapLongClickListener { latLng: LatLng ->
-            //only show when map is in full screen and not visible
-            if (!isFullMapShown || binding.fragmentMapLongclick.parent.visibility == View.VISIBLE) {
-                return@setOnMapLongClickListener
-            }
-            if (activity != null) {
-                AnalyticsEvents.logEvent(eventLongClick)
-                showLongClickOnMapOptions(latLng)
-            }
-        }
     }
 
     // ----------------------------------
     // LIFECYCLE
     // ----------------------------------
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        binding = FragmentMapBinding.inflate(inflater, container, false)
-        return binding.root
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         previousCameraLocation =
             EntLocation.cameraPositionToLocation(null, EntLocation.lastCameraPosition)
-    }
-
-    // ----------------------------------
-    // Long clicks on map handler
-    // ----------------------------------
-    protected open fun showLongClickOnMapOptions(latLng: LatLng) {
-        //get the click point
-        map?.let {
-            binding.fragmentMapLongclick.mapLongclickButtons?.let { buttons ->
-                buttons.measure(
-                    RelativeLayout.LayoutParams.WRAP_CONTENT,
-                    RelativeLayout.LayoutParams.WRAP_CONTENT
-                )
-                val bW = buttons.measuredWidth
-                val bH = buttons.measuredHeight
-                val lp = buttons.layoutParams as RelativeLayout.LayoutParams
-                val clickPoint = it.projection.toScreenLocation(latLng)
-                //adjust the buttons holder layout
-                val display =
-                    (requireContext().getSystemService(Context.WINDOW_SERVICE) as WindowManager).defaultDisplay
-                val screenSize = Point()
-                display.getSize(screenSize)
-
-                var marginLeft = clickPoint.x - bW / 2
-                if (marginLeft + bW > screenSize.x) {
-                    marginLeft -= bW / 2
-                }
-                if (marginLeft < 0) {
-                    marginLeft = 0
-                }
-                var marginTop = clickPoint.y - bH / 2
-                if (marginTop < 0) {
-                    marginTop = clickPoint.y
-                }
-                lp.setMargins(marginLeft, marginTop, 0, 0)
-                buttons.layoutParams = lp
-            }
-            //show the view
-            binding.fragmentMapLongclick.parent.visibility = View.VISIBLE
-        }
     }
 
     fun showAllowGeolocationDialog(source: Int) {
