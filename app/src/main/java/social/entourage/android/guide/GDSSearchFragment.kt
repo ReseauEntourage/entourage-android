@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import androidx.recyclerview.widget.LinearLayoutManager
-import kotlinx.android.synthetic.main.fragment_guide_search.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -17,6 +16,7 @@ import social.entourage.android.R
 import social.entourage.android.api.model.guide.Poi
 import social.entourage.android.api.request.PoiResponse
 import social.entourage.android.base.BaseDialogFragment
+import social.entourage.android.databinding.FragmentGuideSearchBinding
 import social.entourage.android.guide.poi.PoiListFragment
 import social.entourage.android.guide.poi.ReadPoiFragment
 import social.entourage.android.tools.hideKeyboard
@@ -26,6 +26,8 @@ import social.entourage.android.user.partner.PartnerFragment
 import timber.log.Timber
 
 class GDSSearchFragment : BaseDialogFragment(), PoiListFragment {
+    private lateinit var binding: FragmentGuideSearchBinding
+
     private val MIN_CHARS_SEARCH = 3
     private var latitude: Double = 0.0
     private var longitude: Double = 0.0
@@ -48,27 +50,29 @@ class GDSSearchFragment : BaseDialogFragment(), PoiListFragment {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_guide_search, container, false)
+        binding = FragmentGuideSearchBinding.inflate(inflater, container, false)
+
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        ui_progress?.visibility = View.GONE
-        ui_bt_search_close?.visibility = View.INVISIBLE
+        binding.uiProgress?.visibility = View.GONE
+        binding.uiBtSearchClose?.visibility = View.INVISIBLE
 
-        ui_bt_back?.setOnClickListener {
-            ui_et_search?.hideKeyboard()
+        binding.uiBtBack?.setOnClickListener {
+            binding.uiEtSearch?.hideKeyboard()
             dismiss()
         }
 
-        ui_bt_search_close?.setOnClickListener {
-            ui_et_search?.setText("")
+        binding.uiBtSearchClose?.setOnClickListener {
+            binding.uiEtSearch?.setText("")
             arrayPois.clear()
             rvAdapter?.notifyDataSetChanged()
         }
 
-        ui_et_search?.setOnEditorActionListener { v, actionId, event ->
+        binding.uiEtSearch?.setOnEditorActionListener { v, actionId, event ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 sendSearch()
                 return@setOnEditorActionListener true
@@ -80,40 +84,40 @@ class GDSSearchFragment : BaseDialogFragment(), PoiListFragment {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
                 if (count > 0) {
-                    ui_bt_search_close?.visibility = View.VISIBLE
+                    binding.uiBtSearchClose?.visibility = View.VISIBLE
                 }
                 else {
-                    ui_bt_search_close?.visibility = View.INVISIBLE
+                    binding.uiBtSearchClose?.visibility = View.INVISIBLE
                 }
             }
 
             override fun afterTextChanged(s: Editable) {}
         }
 
-        ui_et_search?.addTextChangedListener(textWatcher)
+        binding.uiEtSearch?.addTextChangedListener(textWatcher)
 
         setupRecyclerView()
-        ui_et_search?.showKeyboard()
+        binding.uiEtSearch?.showKeyboard()
     }
 
     fun setupRecyclerView(){
         rvAdapter = GDSSearchAdapter(arrayPois)
-        ui_recyclerView?.setHasFixedSize(true)
+        binding.uiRecyclerView?.setHasFixedSize(true)
         val layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
 
-        ui_recyclerView?.layoutManager = layoutManager
-        ui_recyclerView?.adapter = rvAdapter
+        binding.uiRecyclerView?.layoutManager = layoutManager
+        binding.uiRecyclerView?.adapter = rvAdapter
 
     }
 
     fun sendSearch() {
-        if (ui_et_search?.text?.length ?: 0 < MIN_CHARS_SEARCH) return
+        if (binding.uiEtSearch?.text?.length ?: 0 < MIN_CHARS_SEARCH) return
         view?.hideKeyboard()
-        ui_et_search?.clearFocus()
+        binding.uiEtSearch?.clearFocus()
 
-        ui_progress?.visibility = View.VISIBLE
+        binding.uiProgress?.visibility = View.VISIBLE
         val poiRequest = EntourageApplication.get().apiModule.poiRequest
-        val call = poiRequest.retrievePoisSearch(latitude, longitude, distance, ui_et_search.text.toString(), "2")
+        val call = poiRequest.retrievePoisSearch(latitude, longitude, distance, binding.uiEtSearch.text.toString(), "2")
         call.enqueue(object : Callback<PoiResponse> {
             override fun onResponse(call: Call<PoiResponse>, response: Response<PoiResponse>) {
                 response.body()?.let {
@@ -124,13 +128,13 @@ class GDSSearchFragment : BaseDialogFragment(), PoiListFragment {
                         rvAdapter?.updateAdapter(arrayPois)
                     }
                 }
-                ui_progress?.visibility = View.GONE
+                binding.uiProgress?.visibility = View.GONE
             }
 
             override fun onFailure(call: Call<PoiResponse>, t: Throwable) {
                 arrayPois.clear()
                 rvAdapter?.notifyDataSetChanged()
-                ui_progress?.visibility = View.GONE
+                binding.uiProgress?.visibility = View.GONE
             }
         })
     }
