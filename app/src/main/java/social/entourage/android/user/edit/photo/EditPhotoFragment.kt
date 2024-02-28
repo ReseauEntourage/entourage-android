@@ -18,6 +18,7 @@ import androidx.core.content.PermissionChecker
 import com.bumptech.glide.Glide
 import social.entourage.android.R
 import social.entourage.android.base.BaseDialogFragment
+import social.entourage.android.databinding.FragmentOnboardingPhotoBinding
 import social.entourage.android.language.LanguageManager
 import social.entourage.android.onboarding.onboard.OnboardingEditPhotoFragment
 import social.entourage.android.tools.log.AnalyticsEvents
@@ -28,6 +29,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 open class EditPhotoFragment : BaseDialogFragment(), PhotoEditInterface {
+    private lateinit var binding : FragmentOnboardingPhotoBinding
     private val readMediaPermission: String = if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) Manifest.permission.READ_EXTERNAL_STORAGE else Manifest.permission.READ_MEDIA_IMAGES
     private var pickedImageUri: Uri? = null
     protected var pickedImageEditedUri: Uri? = null
@@ -123,7 +125,8 @@ open class EditPhotoFragment : BaseDialogFragment(), PhotoEditInterface {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_onboarding_photo, container, false)
+        binding = FragmentOnboardingPhotoBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -167,7 +170,7 @@ open class EditPhotoFragment : BaseDialogFragment(), PhotoEditInterface {
 
     open fun setupViews() {
 
-        import_picture?.setOnClickListener {
+        binding.importPicture.button.setOnClickListener {
             // write permission is used to store the cropped image before upload
             if (PermissionChecker.checkSelfPermission(
                     requireActivity(),
@@ -180,7 +183,7 @@ open class EditPhotoFragment : BaseDialogFragment(), PhotoEditInterface {
             }
         }
 
-        take_picture?.setOnClickListener {
+        binding.takePicture.button.setOnClickListener {
             if (PermissionChecker.checkSelfPermission(
                     requireContext(),
                     Manifest.permission.CAMERA
@@ -258,7 +261,7 @@ open class EditPhotoFragment : BaseDialogFragment(), PhotoEditInterface {
     override fun onPhotoEdited(photoURI: Uri?, photoSource: Int) {
         pickedImageEditedUri = photoURI
 
-        image_profile?.let {
+        binding.imageProfile.let {
             if (pickedImageEditedUri != null) {
                 Glide.with(this)
                     .load(pickedImageEditedUri)
