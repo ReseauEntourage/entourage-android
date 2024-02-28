@@ -21,12 +21,12 @@ class GuideFilterFragment : BaseDialogFragment() {
     val binding: FragmentGuideFilterBinding get() = _binding!!    // ----------------------------------
     // Attributes
     // ----------------------------------
-    private var items = ArrayList<GuideFilterAdapter.GuideFilterItem>()
+    private var items = ArrayList<GuideFilterItemAdapter.GuideFilterItem>()
     private var isPartnersTmpSelected = false
     private var isDonationsTmpSelected = false
     private var isVolunteersTmpSelected = false
 
-    private var adapterRV:FilterGuideRVAdapter? = null
+    private var adapterRV:GuideFilterRVAdapter? = null
     // ----------------------------------
     // Lifecycle
     // ----------------------------------
@@ -90,7 +90,7 @@ class GuideFilterFragment : BaseDialogFragment() {
         binding.uiRecyclerView.setHasFixedSize(true)
         binding.uiRecyclerView.layoutManager = linearLayoutManager
 
-        adapterRV = FilterGuideRVAdapter(requireContext(),items,
+        adapterRV = GuideFilterRVAdapter(requireContext(),items,
                 isPartnersTmpSelected,isDonationsTmpSelected,
                 isVolunteersTmpSelected, isDefaultFilters(), { position ->
 
@@ -214,7 +214,7 @@ class GuideFilterFragment : BaseDialogFragment() {
         for (i in 1 until PoiRenderer.CategoryType.values().size) {
             val categoryType = PoiRenderer.CategoryType.values()[i]
             if (categoryType != PoiRenderer.CategoryType.PARTNERS) {
-                items.add(GuideFilterAdapter.GuideFilterItem(categoryType, GuideFilter.instance.valueForCategoryId(categoryType.categoryId)))
+                items.add(GuideFilterItemAdapter.GuideFilterItem(categoryType, GuideFilter.instance.valueForCategoryId(categoryType.categoryId)))
             }
         }
     }

@@ -1,24 +1,23 @@
 package social.entourage.android.guide.filter
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
-import kotlinx.android.synthetic.main.layout_filter_item.view.*
 import social.entourage.android.R
+import social.entourage.android.databinding.LayoutFilterItemBinding
 import social.entourage.android.guide.filter.GuideFilter.Companion.instance
 import social.entourage.android.guide.poi.PoiRenderer.CategoryType
 
 /**
  * Created by mihaiionescu on 28/03/2017.
  */
-class GuideFilterAdapter(var context: Context) : BaseAdapter() {
+class GuideFilterItemAdapter(var context: Context) : BaseAdapter() {
     // ----------------------------------
     // Attributes
     // ----------------------------------
-    val items: MutableList<GuideFilterItem> = ArrayList()
+    private val items: MutableList<GuideFilterItem> = ArrayList()
 
     var isHelpOnly = false
 
@@ -41,13 +40,11 @@ class GuideFilterAdapter(var context: Context) : BaseAdapter() {
         return 0
     }
 
-    override fun getView(position: Int, view2: View?, viewGroup: ViewGroup): View {
-        var view = view2
-        val viewHolder: GuideFilterViewHolder
-        if (view == null) {
-            view = LayoutInflater.from(viewGroup.context).inflate(R.layout.layout_filter_item, viewGroup, false)
-            viewHolder = GuideFilterViewHolder(view as View)
-            view.tag = viewHolder
+    override fun getView(position: Int, view: View?, viewGroup: ViewGroup): View {
+        var binding = (view?.tag as? GuideFilterViewHolder)?.binding
+        if (binding == null) {
+            binding = LayoutFilterItemBinding.inflate(LayoutInflater.from(viewGroup.context), viewGroup, false)
+            binding.root.tag = GuideFilterViewHolder(binding)
         }
         // Populate the view
         val item = getItem(position)
@@ -73,25 +70,25 @@ class GuideFilterAdapter(var context: Context) : BaseAdapter() {
 
         val categoryType = item.categoryType
         val displayName: String = if (categoryType.categoryId == CategoryType.PARTNERS.categoryId) {
-            view.context?.getString(R.string.guide_display_partners) ?: categoryDisplayName
+            binding.root.context?.getString(R.string.guide_display_partners) ?: categoryDisplayName
         } else categoryDisplayName
-        view.filter_item_text?.text = displayName
-        view.filter_item_image?.setImageResource(categoryType.filterId)
+        binding.filterItemText.text = displayName
+        binding.filterItemImage.setImageResource(categoryType.filterId)
         // set the switch
-        view.filter_item_switch?.isChecked = item.isChecked
-        view.filter_item_switch?.tag = position
+        binding.filterItemSwitch.isChecked = item.isChecked
+        binding.filterItemSwitch.tag = position
         // separator is visible unless last element
-        view.filter_item_separator?.visibility = if (position == count - 1) View.GONE else View.VISIBLE
-        return view
+        binding.filterItemSeparator.visibility = if (position == count - 1) View.GONE else View.VISIBLE
+        return binding.root
     }
 
     // ----------------------------------
     // View Holder
     // ----------------------------------
-    inner class GuideFilterViewHolder(v: View) {
+    inner class GuideFilterViewHolder(val binding: LayoutFilterItemBinding) {
         init {
             if (!isHelpOnly) {
-                v.filter_item_switch?.setOnCheckedChangeListener { buttonView, isChecked ->
+                binding.filterItemSwitch.setOnCheckedChangeListener { buttonView, isChecked ->
                     // if no tag, exit
                     if (buttonView.tag != null) {
                         getItem(buttonView.tag as Int).isChecked = isChecked
@@ -99,7 +96,7 @@ class GuideFilterAdapter(var context: Context) : BaseAdapter() {
                 }
             }
             else {
-                v.filter_item_switch?.visibility = View.INVISIBLE
+                binding.filterItemSwitch.visibility = View.INVISIBLE
             }
         }
     }

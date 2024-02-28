@@ -13,7 +13,7 @@ import social.entourage.android.databinding.LayoutFilterTopBinding
 /**
  * Created by Jr (MJ-DEVS) on 12/10/2020.
  */
-class FilterGuideRVAdapter(val context: Context, private var myDataset: ArrayList<GuideFilterAdapter.GuideFilterItem>,
+class GuideFilterRVAdapter(val context: Context, private var myDataset: ArrayList<GuideFilterItemAdapter.GuideFilterItem>,
                            var isPartnerSelected:Boolean,
                            var isDonatedSelected:Boolean,
                            var isVolunteerSelected:Boolean,
@@ -22,7 +22,7 @@ class FilterGuideRVAdapter(val context: Context, private var myDataset: ArrayLis
                            val listenerTop:(position:Int) -> Unit) :
         RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    fun updateData(items: ArrayList<GuideFilterAdapter.GuideFilterItem>, isPartnerSelected:Boolean,
+    fun updateData(items: ArrayList<GuideFilterItemAdapter.GuideFilterItem>, isPartnerSelected:Boolean,
                    isDonatedSelected:Boolean,
                    isVolunteerSelected:Boolean, isAllActive:Boolean) {
         this.myDataset = items

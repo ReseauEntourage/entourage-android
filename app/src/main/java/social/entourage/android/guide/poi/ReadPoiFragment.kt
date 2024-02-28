@@ -17,7 +17,7 @@ import social.entourage.android.api.model.guide.Poi
 import social.entourage.android.base.BaseDialogFragment
 import social.entourage.android.base.map.OnAddressClickListener
 import social.entourage.android.databinding.FragmentGuidePoiReadBinding
-import social.entourage.android.guide.filter.GuideFilterAdapter
+import social.entourage.android.guide.filter.GuideFilterItemAdapter
 import social.entourage.android.guide.poi.PoiRenderer.CategoryType
 import social.entourage.android.guide.poi.ReadPoiPresenter.OnPhoneClickListener
 import social.entourage.android.tools.log.AnalyticsEvents
@@ -92,7 +92,7 @@ class ReadPoiFragment : BaseDialogFragment() {
     }
 
     private fun setupRVHelp() {
-        val filterAdapter = GuideFilterAdapter(requireContext())
+        val filterAdapter = GuideFilterItemAdapter(requireContext())
         filterAdapter.setHelpOnly()
         binding.guideFilterList.adapter = filterAdapter
 
