@@ -1,7 +1,6 @@
 package social.entourage.android.groups.details.feed
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
 import social.entourage.android.R
 import social.entourage.android.base.BaseActivity

@@ -103,7 +103,7 @@ class GuideFilterFragment : BaseDialogFragment() {
                 setAllFiltersOff(position)
             }
 
-            adapterRV?.updateDatas(items,isPartnersTmpSelected,isDonationsTmpSelected,isVolunteersTmpSelected,isDefaultFilters())
+            adapterRV?.updateData(items,isPartnersTmpSelected,isDonationsTmpSelected,isVolunteersTmpSelected,isDefaultFilters())
             updateButtonText()
         } ,{ positionTop ->
             when(positionTop) {
@@ -135,7 +135,7 @@ class GuideFilterFragment : BaseDialogFragment() {
                     }
                 }
             }
-            adapterRV?.updateDatas(items,isPartnersTmpSelected,isDonationsTmpSelected,isVolunteersTmpSelected,isDefaultFilters())
+            adapterRV?.updateData(items,isPartnersTmpSelected,isDonationsTmpSelected,isVolunteersTmpSelected,isDefaultFilters())
             updateButtonText()
         })
         binding.uiRecyclerView.adapter = adapterRV
