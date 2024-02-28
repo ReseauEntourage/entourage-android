@@ -6,15 +6,16 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.IBinder
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.Marker
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.fragment_guide_map.*
-import kotlinx.android.synthetic.main.layout_guide_longclick.*
+
 import social.entourage.android.Constants
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
@@ -24,6 +25,7 @@ import social.entourage.android.base.HeaderBaseAdapter
 import social.entourage.android.base.location.EntLocation
 import social.entourage.android.base.location.LocationUtils.isLocationPermissionGranted
 import social.entourage.android.base.map.BaseMapFragment
+import social.entourage.android.databinding.FragmentGuideMapBinding
 import social.entourage.android.guide.filter.GuideFilter.Companion.instance
 import social.entourage.android.guide.filter.GuideFilterFragment
 import social.entourage.android.guide.poi.PoiListFragment
@@ -45,6 +47,8 @@ class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), PoiListFr
     // ----------------------------------
     // ATTRIBUTES
     // ----------------------------------
+
+    private lateinit var binding: FragmentGuideMapBinding
     private var isAlertTextVisible: Boolean = false
     private val connection = ServiceConnection()
 
@@ -57,6 +61,15 @@ class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), PoiListFr
     // ----------------------------------
     // LIFECYCLE
     // ----------------------------------
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        binding = FragmentGuideMapBinding.inflate(inflater, container, false)
+        return binding.root
+    }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initializeMap()
@@ -86,8 +99,8 @@ class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), PoiListFr
     }
 
     fun onBackPressed(): Boolean {
-        if (fragment_map_longclick?.visibility == View.VISIBLE) {
-            fragment_map_longclick?.visibility = View.GONE
+        if (binding.fragmentMapLongclick.parent.visibility == View.VISIBLE) {
+            binding.fragmentMapLongclick.parent.visibility = View.GONE
             //fabProposePOI.setVisibility(View.VISIBLE);
             return true
         }
@@ -138,7 +151,7 @@ class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), PoiListFr
                     val previousPoiCount = it.dataItemCount
                     it.addItems(poiCollection)
                     if (previousPoiCount == 0) {
-                        fragment_guide_pois_view?.scrollToPosition(0)
+                        binding.fragmentGuidePoisView.scrollToPosition(0)
                     }
                 }
             } else {
@@ -229,20 +242,20 @@ class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), PoiListFr
 
     private fun initializeAlertBanner() {
         isAlertTextVisible = false
-        fragment_guide_alert_description?.setHtmlString(getString(R.string.guide_alert_info_text), EntLinkMovementMethod)
-        fragment_guide_alert_arrow?.setOnClickListener {onClickAlertArrow()}
-        fragment_guide_alert?.setOnClickListener {onClickAlertArrow()}
+        binding.fragmentGuideAlertDescription.setHtmlString(getString(R.string.guide_alert_info_text), EntLinkMovementMethod)
+        binding.fragmentGuideAlertArrow.setOnClickListener {onClickAlertArrow()}
+        binding.fragmentGuideAlert.setOnClickListener {onClickAlertArrow()}
     }
 
     private fun onClickAlertArrow() {
         if(!isAlertTextVisible) {
             isAlertTextVisible = true
-            fragment_guide_alert_description?.visibility = View.VISIBLE
-            fragment_guide_alert_arrow?.setImageDrawable((AppCompatResources.getDrawable(requireContext(), R.drawable.ic_expand_less_black_24dp)))
+            binding.fragmentGuideAlertDescription.visibility = View.VISIBLE
+            binding.fragmentGuideAlertArrow.setImageDrawable((AppCompatResources.getDrawable(requireContext(), R.drawable.ic_expand_less_black_24dp)))
         } else {
             isAlertTextVisible = false
-            fragment_guide_alert_description?.visibility = View.GONE
-            fragment_guide_alert_arrow?.setImageDrawable((AppCompatResources.getDrawable(requireContext(), R.drawable.ic_expand_more_black_24dp)))
+            binding.fragmentGuideAlertDescription.visibility = View.GONE
+            binding.fragmentGuideAlertArrow.setImageDrawable((AppCompatResources.getDrawable(requireContext(), R.drawable.ic_expand_more_black_24dp)))
         }
     }
 
@@ -250,13 +263,13 @@ class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), PoiListFr
     // EMPTY LIST POPUP
     // ----------------------------------
     private fun initializePopups() {
-        fragment_guide_empty_list_popup?.setOnClickListener {onEmptyListPopupClose()}
-        fragment_guide_info_popup_close?.setOnClickListener {onInfoPopupClose()}
-        fragment_guide_info_popup?.setOnClickListener {onInfoPopupClose()}
+        binding.fragmentGuideEmptyListPopup.setOnClickListener {onEmptyListPopupClose()}
+        binding.fragmentGuideInfoPopupClose.setOnClickListener {onInfoPopupClose()}
+        binding.fragmentGuideInfoPopup.setOnClickListener {onInfoPopupClose()}
         val proposePOIUrl = (activity as? GDSMainActivity)?.getLink(Constants.PROPOSE_POI_ID) ?: ""
         hideInfoPopup()
-        fragment_guide_empty_list_popup_text?.movementMethod = EntLinkMovementMethod
-        fragment_guide_empty_list_popup_text?.text = Utils.fromHtml(getString(R.string.map_poi_empty_popup, proposePOIUrl))
+        binding.fragmentGuideEmptyListPopupText.movementMethod = EntLinkMovementMethod
+        binding.fragmentGuideEmptyListPopupText.text = Utils.fromHtml(getString(R.string.map_poi_empty_popup, proposePOIUrl))
     }
 
     private fun onEmptyListPopupClose() {
@@ -270,12 +283,12 @@ class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), PoiListFr
             presenter.updatePreviousEmptyListPopupLocation(cameraPosition)
         }
         if (presenter.isShowNoPOIsPopup) {
-            fragment_guide_empty_list_popup?.visibility = View.VISIBLE
+            binding.fragmentGuideEmptyListPopup?.visibility = View.VISIBLE
         }
     }
 
     private fun hideEmptyListPopup() {
-        fragment_guide_empty_list_popup?.visibility = View.GONE
+        binding.fragmentGuideEmptyListPopup?.visibility = View.GONE
     }
 
     // ----------------------------------
@@ -288,16 +301,16 @@ class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), PoiListFr
 
     private fun showInfoPopup() {
         if (!presenter.isShowInfoPOIsPopup) {
-            fragment_guide_info_popup?.visibility = View.VISIBLE
+            binding.fragmentGuideInfoPopup?.visibility = View.VISIBLE
         }
     }
 
     private fun hideInfoPopup() {
-        fragment_guide_info_popup?.visibility = View.GONE
+        binding.fragmentGuideInfoPopup?.visibility = View.GONE
     }
 
     private val isInfoPopupVisible: Boolean
-        get() = fragment_guide_info_popup?.visibility == View.VISIBLE
+        get() = binding.fragmentGuideInfoPopup?.visibility == View.VISIBLE
 
     // ----------------------------------
     // FAB HANDLING
@@ -311,10 +324,10 @@ class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), PoiListFr
     // POI List
     // ----------------------------------
     private fun initializePOIList() {
-        fragment_guide_pois_view?.layoutManager = LinearLayoutManager(context)
+        binding.fragmentGuidePoisView?.layoutManager = LinearLayoutManager(context)
         onMapReadyCallback?.let { poisAdapter.setOnMapReadyCallback(it) }
         poisAdapter.setOnFollowButtonClickListener { onFollowGeolocation() }
-        fragment_guide_pois_view?.adapter = poisAdapter
+        binding.fragmentGuidePoisView?.adapter = poisAdapter
     }
 
     private fun togglePOIList() {
@@ -329,46 +342,46 @@ class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), PoiListFr
         if (isFullMapShown) {
             return
         }
-        ui_view_empty_list?.visibility = View.GONE
+        binding.uiViewEmptyList?.visibility = View.GONE
         isFullMapShown = true
-        fragment_guide_display_toggle?.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_list_white_24dp))
+        binding.fragmentGuideDisplayToggle?.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_list_white_24dp))
         ensureMapVisible()
-        val targetHeight = fragment_guide_main_layout?.measuredHeight ?: originalMapLayoutHeight
+        val targetHeight = binding.fragmentGuideMainLayout?.measuredHeight ?: originalMapLayoutHeight
         if (animated) {
             val anim = ValueAnimator.ofInt(originalMapLayoutHeight, targetHeight)
             anim.addUpdateListener { valueAnimator: ValueAnimator -> onAnimationUpdate(valueAnimator) }
             anim.start()
         } else {
             poisAdapter.setMapHeight(targetHeight)
-            fragment_guide_pois_view?.layoutManager?.requestLayout()
+            binding.fragmentGuidePoisView?.layoutManager?.requestLayout()
         }
     }
 
     private fun showPOIList(animated: Boolean) {
-        if (fragment_guide_main_layout == null || fragment_guide_pois_view == null || fragment_guide_display_toggle == null) {
+        if (binding.fragmentGuideMainLayout == null || binding.fragmentGuidePoisView == null || binding.fragmentGuideDisplayToggle == null) {
             return
         }
         if (!isFullMapShown) {
             return
         }
         isFullMapShown = false
-        fragment_guide_display_toggle?.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_map_white_24dp))
+        binding.fragmentGuideDisplayToggle?.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_map_white_24dp))
         hideInfoPopup()
         hideEmptyListPopup()
         if (animated) {
-            val anim = ValueAnimator.ofInt(fragment_guide_main_layout.measuredHeight, originalMapLayoutHeight)
+            val anim = ValueAnimator.ofInt(binding.fragmentGuideMainLayout.measuredHeight, originalMapLayoutHeight)
             anim.addUpdateListener { valueAnimator: ValueAnimator -> onAnimationUpdate(valueAnimator) }
             anim.start()
         } else {
             poisAdapter.setMapHeight(originalMapLayoutHeight)
-            fragment_guide_pois_view?.layoutManager?.requestLayout()
+            binding.fragmentGuidePoisView?.layoutManager?.requestLayout()
         }
 
-        ui_view_empty_list?.visibility = if (poisAdapter.dataItemCount == 0)  View.VISIBLE else View.GONE
+        binding.uiViewEmptyList?.visibility = if (poisAdapter.dataItemCount == 0)  View.VISIBLE else View.GONE
     }
 
     private fun ensureMapVisible() {
-        fragment_guide_pois_view?.scrollToPosition(0)
+        binding.fragmentGuidePoisView?.scrollToPosition(0)
     }
 
     // ----------------------------------
@@ -377,14 +390,14 @@ class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), PoiListFr
     private fun initializeFloatingButtons() {
         // Guide starts in full map mode, adjust the text accordingly
         if (context == null) return
-        fragment_guide_display_toggle?.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_list_white_24dp))
-        fragment_guide_display_toggle?.setOnClickListener {onDisplayToggle()}
-        guide_longclick_button_poi_propose?.setOnClickListener {proposePOI()}
-        button_poi_propose?.setOnClickListener {onPOIProposeClicked()}
+        binding.fragmentGuideDisplayToggle?.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_list_white_24dp))
+        binding.fragmentGuideDisplayToggle?.setOnClickListener {onDisplayToggle()}
+        binding.fragmentMapLongclick.guideLongclickButtonPoiPropose.setOnClickListener {proposePOI()}
+        binding.buttonPoiPropose?.setOnClickListener {onPOIProposeClicked()}
     }
 
     private fun initializeFilterButton() {
-        fragment_guide_filter_button?.let {
+        binding.fragmentGuideFilterButton?.let {
             it.setOnClickListener {onShowFilter()}
             it.setText(if (instance.hasFilteredCategories()) R.string.guide_filters_activated else R.string.guide_no_filter)
         }
@@ -392,7 +405,7 @@ class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), PoiListFr
 
     private fun onAnimationUpdate(valueAnimator: ValueAnimator) {
         poisAdapter.setMapHeight(valueAnimator.animatedValue as Int)
-        fragment_guide_pois_view?.layoutManager?.requestLayout()
+        binding.fragmentGuidePoisView?.layoutManager?.requestLayout()
     }
 
     companion object {
@@ -408,19 +421,19 @@ class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), PoiListFr
     }
 
     override fun onNetworkException() {
-        fragment_guide_coordinator?.let {
+        binding.fragmentGuideCoordinator?.let {
             EntSnackbar.make(it, R.string.network_error, Snackbar.LENGTH_LONG).show()
         }
     }
 
     override fun onServerException(throwable: Throwable) {
-        fragment_guide_coordinator?.let {
+        binding.fragmentGuideCoordinator?.let {
             EntSnackbar.make(it, R.string.network_error, Snackbar.LENGTH_LONG).show()
         }
     }
 
     override fun onTechnicalException(throwable: Throwable) {
-        fragment_guide_coordinator?.let {
+        binding.fragmentGuideCoordinator?.let {
             EntSnackbar.make(it, R.string.technical_error, Snackbar.LENGTH_LONG).show()
         }
     }

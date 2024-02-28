@@ -2,36 +2,28 @@ package social.entourage.android.onboarding.pre_onboarding
 
 import android.content.Context
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.layout_cell_pre_onboarding.view.*
 import social.entourage.android.R
+import social.entourage.android.databinding.LayoutCellPreOnboardingBinding // Importe le bon nom de fichier de binding généré.
 
-/**
- * Created by Jr on 15/04/2020.
- */
-class PreOnboardingRVAdapter(val context:Context,private val myDataset: ArrayList<Int>) :
-        RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class PreOnboardingRVAdapter(val context: Context, private val myDataset: ArrayList<Int>) :
+    RecyclerView.Adapter<PreOnboardingRVAdapter.ImageVH>() {
 
-   inner class ImageVH(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class ImageVH(private val binding: LayoutCellPreOnboardingBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(res: Int) {
-            itemView.ui_iv_cell_preonboard?.setImageResource(res)
+            binding.uiIvCellPreonboard.setImageResource(res) // Assure-toi d'avoir le bon ID après avoir enlevé les synthetics.
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImageVH {
-        val v = LayoutInflater.from(context)
-                .inflate(R.layout.layout_cell_pre_onboarding,parent, false)
-        return ImageVH(v)
+        val binding = LayoutCellPreOnboardingBinding.inflate(LayoutInflater.from(context), parent, false)
+        return ImageVH(binding)
     }
 
-    override fun getItemCount(): Int {
-        return myDataset.size
-    }
+    override fun getItemCount(): Int = myDataset.size
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        holder as ImageVH
+    override fun onBindViewHolder(holder: ImageVH, position: Int) {
         holder.bind(myDataset[position])
     }
 }

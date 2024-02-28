@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
-import kotlinx.android.synthetic.main.fragment_share_message.*
+
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.api.MessageSharingAPI
@@ -45,13 +45,13 @@ class ShareMessageFragment : BaseDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        ui_button_validate_share_entourage?.visibility = View.GONE
+        binding.uiButtonValidateShareEntourage?.visibility = View.GONE
 
         binding.inviteContactsNavigationLayout.binding.titleCloseButton.setOnClickListener {
             dismiss()
         }
 
-        ui_button_validate_share_entourage?.setOnClickListener {
+        binding.uiButtonValidateShareEntourage?.setOnClickListener {
             sendSharing()
         }
 
@@ -101,19 +101,19 @@ class ShareMessageFragment : BaseDialogFragment() {
                 }
             }
             if (arraySharing[position].isSelected) {
-                ui_button_validate_share_entourage.visibility = View.VISIBLE
+                binding.uiButtonValidateShareEntourage.visibility = View.VISIBLE
             }
             else {
-                ui_button_validate_share_entourage.visibility = View.GONE
+                binding.uiButtonValidateShareEntourage.visibility = View.GONE
             }
             selectedPosition = position
             adapter?.notifyDataSetChanged()
         }
 
         val linearLayoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-        ui_recyclerView_share_entourage?.setHasFixedSize(true)
-        ui_recyclerView_share_entourage?.layoutManager = linearLayoutManager
-        ui_recyclerView_share_entourage?.adapter = adapter
+        binding.uiRecyclerViewShareEntourage?.setHasFixedSize(true)
+        binding.uiRecyclerViewShareEntourage?.layoutManager = linearLayoutManager
+        binding.uiRecyclerViewShareEntourage?.adapter = adapter
     }
 
     companion object {
