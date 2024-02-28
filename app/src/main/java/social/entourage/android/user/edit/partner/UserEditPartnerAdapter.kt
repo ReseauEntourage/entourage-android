@@ -20,6 +20,7 @@ class UserEditPartnerAdapter : BaseAdapter() {
             field = value
             notifyDataSetChanged()
         }
+
     var selectedPartnerPosition = AdapterView.INVALID_POSITION
     private val onCheckedChangeListener = OnCheckedChangeListener()
 
