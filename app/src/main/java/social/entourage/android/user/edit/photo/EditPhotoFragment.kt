@@ -16,7 +16,6 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.FileProvider
 import androidx.core.content.PermissionChecker
 import com.bumptech.glide.Glide
-import kotlinx.android.synthetic.main.fragment_onboarding_photo.*
 import social.entourage.android.R
 import social.entourage.android.base.BaseDialogFragment
 import social.entourage.android.language.LanguageManager

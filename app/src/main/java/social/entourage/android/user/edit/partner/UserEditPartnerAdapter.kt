@@ -16,14 +16,12 @@ import social.entourage.android.databinding.LayoutEditPartnerBinding // Assurez-
 
 class UserEditPartnerAdapter : BaseAdapter() {
     var partnerList: List<Partner>? = null
-
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
     var selectedPartnerPosition = AdapterView.INVALID_POSITION
     private val onCheckedChangeListener = OnCheckedChangeListener()
-
-    fun setPartnerList(partnerList: List<Partner>?) {
-        this.partnerList = partnerList
-        notifyDataSetChanged()
-    }
 
     override fun getCount() = partnerList?.size ?: 0
 
