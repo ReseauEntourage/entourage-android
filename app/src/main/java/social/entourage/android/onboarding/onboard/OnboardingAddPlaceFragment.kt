@@ -16,7 +16,6 @@ class OnboardingAddPlaceFragment : UserActionPlaceFragment() {
 
         binding.editPlaceTitleLayout.visibility = View.VISIBLE
         binding.editPlaceTitleLayout.binding.titleActionButton.setOnClickListener {
-            Log.wtf("wtf","validate clicked")
             validate()
             dismiss()
         }
