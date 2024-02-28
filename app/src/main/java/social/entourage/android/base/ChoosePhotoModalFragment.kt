@@ -22,7 +22,6 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.takusemba.cropme.OnCropListener
-import kotlinx.android.synthetic.main.fragment_onboarding_edit_photo.*
 import social.entourage.android.R
 import social.entourage.android.databinding.NewFragmentChoosePhotoModalBinding
 import social.entourage.android.language.LanguageManager
@@ -118,8 +117,6 @@ class ChoosePhotoModalFragment : BottomSheetDialogFragment() {
             override fun onFailure(e: Exception) {
                 try {
                     Toast.makeText(activity, R.string.user_photo_error_no_photo, Toast.LENGTH_SHORT).show()
-                    ui_photo_edit_progressBar?.visibility = View.GONE
-                    ui_edit_photo_validate?.isEnabled = true
                 } catch (e2: IOException) {
                     Timber.w(e2)
                 }

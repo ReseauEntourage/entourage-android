@@ -22,8 +22,6 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MapStyleOptions
-import kotlinx.android.synthetic.main.fragment_map.*
-import kotlinx.android.synthetic.main.layout_map_longclick.*
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.RefreshController
@@ -32,11 +30,14 @@ import social.entourage.android.base.HeaderBaseAdapter
 import social.entourage.android.base.location.EntLocation
 import social.entourage.android.base.location.LocationUpdateListener
 import social.entourage.android.base.location.LocationUtils
+import social.entourage.android.databinding.FragmentMapBinding
+import social.entourage.android.databinding.LayoutMapLongclickBinding
 import social.entourage.android.tools.log.AnalyticsEvents
 import timber.log.Timber
 
 abstract class BaseMapFragment(protected var layout: Int) : BaseFragment(),
     LocationUpdateListener {
+    private lateinit var binding: FragmentMapBinding
     protected lateinit var eventLongClick: String
     var isFollowing = true
     protected var isFullMapShown = true
@@ -127,7 +128,7 @@ abstract class BaseMapFragment(protected var layout: Int) : BaseFragment(),
         }
         googleMap.setOnMapLongClickListener { latLng: LatLng ->
             //only show when map is in full screen and not visible
-            if (!isFullMapShown || fragment_map_longclick?.visibility == View.VISIBLE) {
+            if (!isFullMapShown || binding.fragmentMapLongclick.parent.visibility == View.VISIBLE) {
                 return@setOnMapLongClickListener
             }
             if (activity != null) {
@@ -145,10 +146,8 @@ abstract class BaseMapFragment(protected var layout: Int) : BaseFragment(),
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        if (toReturn == null) {
-            toReturn = inflater.inflate(layout, container, false)
-        }
-        return toReturn
+        binding = FragmentMapBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -163,7 +162,7 @@ abstract class BaseMapFragment(protected var layout: Int) : BaseFragment(),
     protected open fun showLongClickOnMapOptions(latLng: LatLng) {
         //get the click point
         map?.let {
-            map_longclick_buttons?.let { buttons ->
+            binding.fragmentMapLongclick.mapLongclickButtons?.let { buttons ->
                 buttons.measure(
                     RelativeLayout.LayoutParams.WRAP_CONTENT,
                     RelativeLayout.LayoutParams.WRAP_CONTENT
@@ -193,7 +192,7 @@ abstract class BaseMapFragment(protected var layout: Int) : BaseFragment(),
                 buttons.layoutParams = lp
             }
             //show the view
-            fragment_map_longclick?.visibility = View.VISIBLE
+            binding.fragmentMapLongclick.parent.visibility = View.VISIBLE
         }
     }
 
