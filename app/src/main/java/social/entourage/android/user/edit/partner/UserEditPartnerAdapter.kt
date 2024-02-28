@@ -15,7 +15,7 @@ import social.entourage.android.api.model.Partner
 import social.entourage.android.databinding.LayoutEditPartnerBinding // Assurez-vous que ceci correspond à votre nom de fichier de layout.
 
 class UserEditPartnerAdapter : BaseAdapter() {
-    private var partnerList: List<Partner>? = null
+    var partnerList: List<Partner>? = null
 
     var selectedPartnerPosition = AdapterView.INVALID_POSITION
     private val onCheckedChangeListener = OnCheckedChangeListener()
