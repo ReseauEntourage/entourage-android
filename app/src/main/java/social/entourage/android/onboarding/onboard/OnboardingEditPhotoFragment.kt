@@ -6,6 +6,7 @@ import android.graphics.PorterDuff
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -166,6 +167,7 @@ class OnboardingEditPhotoFragment : DialogFragment() {
     }
 
     private fun updateProfilePicture() {
+        Log.wtf("wtf", "updateProfilePicture listener: $mListener")
         mListener?.onPhotoEdited(Uri.fromFile(photoFile), photoSource)
         dismissAllowingStateLoss()
     }

@@ -160,9 +160,9 @@ class EditProfileFragment : Fragment(), EditProfileCallback,
 
     private fun onEditImage() {
         binding.editImage.setOnClickListener {
-            val photoFragment = ChooseProfilePhotoFragment()
-            photoFragment.editProfileCallback = this
-            photoFragment.show(parentFragmentManager, ChooseProfilePhotoFragment.TAG)
+            val intent = Intent(context, EditPhotoActivity::class.java).apply {
+            }
+            startActivity(intent)
         }
     }
 
