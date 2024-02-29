@@ -106,7 +106,7 @@ class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface,
                 )
                 1 -> SpeedDialMenuItem(
                     context,
-                    R.drawable.ic_survey_bar,
+                    R.drawable.ic_survey_creation,
                     getString(R.string.create_survey)
                 )
                 2 -> SpeedDialMenuItem(
