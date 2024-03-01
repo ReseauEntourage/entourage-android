@@ -33,7 +33,7 @@ import social.entourage.android.databinding.NewActivityActionLocationFiltersBind
 import social.entourage.android.events.list.DiscoverEventsListFragment
 import timber.log.Timber
 import java.io.IOException
-import java.util.*
+import java.util.Locale
 
 class ActionLocationFilterActivity : AppCompatActivity() {
 
@@ -324,7 +324,7 @@ class ActionLocationFilterActivity : AppCompatActivity() {
     }
 
     @SuppressLint("MissingPermission")
-    protected fun startRequestLocation() {
+    fun startRequestLocation() {
         if (LocationUtils.isLocationPermissionGranted()) {
             binding.locationName.text =  getString(R.string.onboard_place_getting_current_location)
             mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this)

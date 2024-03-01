@@ -60,7 +60,6 @@ class GuideMapFragment : Fragment(),
     LocationUpdateListener, PoiListFragment, ApiConnectionListener,
         GoogleMap.OnMarkerClickListener, OnMapReadyCallback {
     private var eventLongClick: String = AnalyticsEvents.EVENT_GUIDE_LONGPRESS
-    private var isFollowing = true
     private var isFullMapShown = true
     private var previousCameraLocation: Location? = null
     private var previousCameraZoom = 1.0f
@@ -81,7 +80,7 @@ class GuideMapFragment : Fragment(),
         }
 
     private fun centerMap(latLng: LatLng) {
-        val cameraPosition = CameraPosition(latLng, EntLocation.lastCameraPosition.zoom, 0F, 0F)
+        val cameraPosition = CameraPosition(latLng, previousCameraZoom, 0F, 0F)
         centerMap(cameraPosition)
     }
 
@@ -98,18 +97,19 @@ class GuideMapFragment : Fragment(),
     }
 
     private fun centerMap(cameraPosition: CameraPosition) {
-        if (isFollowing) {
-            map?.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
-            saveCameraPosition()
-        }
+        map?.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
+        saveCameraPosition()
     }
 
-    private fun saveCameraPosition() {}
+    private fun saveCameraPosition() {
+        map?.cameraPosition?.let {
+            EntLocation.lastCameraPosition = it
+        }
+    }
 
     private fun initializeMapZoom() {
         EntourageApplication.get().authenticationController.me?.address?.let {
             centerMap(LatLng(it.latitude, it.longitude))
-            isFollowing = false
         } ?: run {
             centerMap(EntLocation.lastCameraPosition)
         }
@@ -141,7 +141,7 @@ class GuideMapFragment : Fragment(),
                 .setPositiveButton(R.string.activate) { _: DialogInterface?, _: Int ->
                     AnalyticsEvents.logEvent(eventName)
                     try {
-                        if (LocationUtils.isLocationPermissionGranted()
+                        if (!LocationUtils.isLocationPermissionGranted()
                             || shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_COARSE_LOCATION)
                         ) {
                             requestPermissionLauncher.launch(arrayOf(
@@ -160,16 +160,6 @@ class GuideMapFragment : Fragment(),
                 .show()
         }
     }
-
-    /*fun displayGeolocationPreferences(forceDisplaySettings: Boolean) {
-        activity?.let {
-            if (forceDisplaySettings) {
-                it.startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
-            } else if (!isLocationPermissionGranted()) {
-                showAllowGeolocationDialog(GEOLOCATION_POPUP_BANNER)
-            }
-        }
-    }*/
 
     private fun onLocationPermissionGranted(isPermissionGranted: Boolean) =
         updateGeolocBanner(isPermissionGranted)
@@ -190,11 +180,11 @@ class GuideMapFragment : Fragment(),
         // Check if geolocation is enabled
         if (!LocationUtils.isLocationPermissionGranted()) {
             showAllowGeolocationDialog(GEOLOCATION_POPUP_RECENTER)
-            return
-        }
-        isFollowing = true
-        EntLocation.currentLocation?.let {
-            centerMap(LatLng(it.latitude, it.longitude))
+        } else {
+            isFollowing = true
+            centerMap(EntLocation.currentLocation?.let {
+                LatLng(it.latitude, it.longitude)
+            } ?: LatLng(0.0, 0.0))
         }
     }
 
