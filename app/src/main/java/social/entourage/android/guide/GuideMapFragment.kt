@@ -73,7 +73,7 @@ class GuideMapFragment : Fragment(),
             ActivityResultContracts.RequestMultiplePermissions()
         ) { permissions ->
             if(permissions.entries.any {
-                    it.value == true
+                    it.value
                 }) {
                 RefreshController.shouldRefreshLocationPermission = true
                 onLocationPermissionGranted(true)
@@ -300,7 +300,7 @@ class GuideMapFragment : Fragment(),
     fun putPoiOnMap(pois: List<Poi>?) {
         if (activity != null) {
             clearOldPois()
-            if (pois != null && pois.isNotEmpty()) {
+            if (!pois.isNullOrEmpty()) {
                 val poiCollection = presenter.removeRedundantPois(pois)
                 map?.let { map ->
                     poiCollection.forEach { poi ->

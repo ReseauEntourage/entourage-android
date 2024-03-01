@@ -27,10 +27,6 @@ class MapViewHolder(val binding: LayoutFeedFullMapCardBinding) : RecyclerView.Vi
         binding.layoutFeedMapCardRecenterButton.setOnClickListener(listener)
     }
 
-    fun displayGeolocStatusIcon(visible: Boolean) {
-        binding.layoutFeedMapCardRecenterButton.visibility = if (visible) View.VISIBLE else View.INVISIBLE
-    }
-
     fun setGeolocStatusIcon(active: Boolean) {
         binding.layoutFeedMapCardRecenterButton.isSelected = active
     }

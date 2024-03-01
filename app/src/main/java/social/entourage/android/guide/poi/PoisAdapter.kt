@@ -77,11 +77,6 @@ class PoisAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         mapViewHolder?.setGeolocStatusIcon(visible)
     }
 
-    fun displayGeolocStatusIcon(active: Boolean) {
-        //TODO check that we display this
-        mapViewHolder?.displayGeolocStatusIcon(active)
-    }
-
     private val positionOffset: Int
         get() = 1
 
