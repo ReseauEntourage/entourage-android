@@ -27,7 +27,7 @@ class PoiViewHolder(val binding: LayoutPoiCardBinding) : RecyclerView.ViewHolder
         bindFields()
     }
 
-    fun bindFields() {
+    private fun bindFields() {
         binding.root.setOnClickListener { view ->
             poi?.let { poi -> (view.findFragment() as? PoiListFragment)?.showPoiDetails(poi, true) }
         }

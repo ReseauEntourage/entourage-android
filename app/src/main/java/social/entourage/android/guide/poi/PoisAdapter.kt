@@ -1,15 +1,15 @@
 package social.entourage.android.guide.poi
 
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.maps.OnMapReadyCallback
-import social.entourage.android.R
 import social.entourage.android.api.model.TimestampedObject
-import social.entourage.android.api.model.feed.FeedItem
 import social.entourage.android.base.location.LocationUtils
-import social.entourage.android.guide.poi.ViewHolderFactory.ViewHolderType
-import java.util.Date
+import social.entourage.android.databinding.LayoutFeedFullMapCardBinding
+import social.entourage.android.databinding.LayoutPoiCardBinding
+import timber.log.Timber
 
 /**
  * Point of interest adapter
@@ -18,7 +18,6 @@ import java.util.Date
  */
 class PoisAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private val items: ArrayList<TimestampedObject> = ArrayList()
-    private val viewHolderFactory = ViewHolderFactory()
 
     override fun getItemCount(): Int {
         return items.size + positionOffset
@@ -27,10 +26,9 @@ class PoisAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     val dataItemCount: Int
         get() = items.size
 
-    private val mDaySections = HashMap<Date, Int>() //Move from discussionAdapter . use here to clear array before refresh - To fix date separator
+    //private val mDaySections = HashMap<Date, Int>() //Move from discussionAdapter . use here to clear array before refresh - To fix date separator
     // visibily error
     fun addItems(addItems: List<TimestampedObject>) {
-        mDaySections.clear()
         val positionStart = (if (items.size == 0) 0 else items.size - 1) + positionOffset
         for (to in addItems) {
             addCardInfo(to, false)
@@ -38,118 +36,10 @@ class PoisAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         notifyItemRangeInserted(positionStart, addItems.size)
     }
 
-    fun addCardInfo(cardInfo: TimestampedObject) {
-        addCardInfo(cardInfo, true)
-    }
-
     private fun addCardInfo(cardInfo: TimestampedObject, notifyView: Boolean) {
         items.add(cardInfo)
         if (notifyView) {
             notifyItemInserted(items.size - 1 + positionOffset)
-        }
-    }
-
-    private fun insertCardInfo(cardInfo: TimestampedObject, position: Int) {
-        //add the card
-        items.add(position, cardInfo)
-        notifyItemInserted(position + positionOffset)
-    }
-
-    @Synchronized
-    fun addCardInfoAfterTimestamp(cardInfo: TimestampedObject) {
-        //search for the insert point
-        for (i in items.indices) {
-            val timestampedObject = items[i]
-            timestampedObject.timestamp?.let { objectTimestamp ->
-                cardInfo.timestamp?.let { cardInfoTimestamp ->
-                    if (objectTimestamp.after(cardInfoTimestamp)) {
-                        //we found the insert point
-                        insertCardInfo(cardInfo, i)
-                        return
-                    }
-                }
-            }
-        }
-        //not found, add it at the end of the list
-        addCardInfo(cardInfo, true)
-    }
-
-    fun addCardInfoBeforeTimestamp(cardInfo: TimestampedObject) {
-        //search for the insert point
-        for (i in items.indices) {
-            val timestampedObject = items[i]
-            timestampedObject.timestamp?.let { objectTimestamp ->
-                cardInfo.timestamp?.let { cardInfoTimestamp ->
-                    if (objectTimestamp.before(cardInfoTimestamp)) {
-                        //we found the insert point
-                        insertCardInfo(cardInfo, i)
-                        return
-                    }
-                }
-            }
-        }
-        //not found, add it at the end of the list
-        addCardInfo(cardInfo, true)
-    }
-
-    fun getCardAt(position: Int): TimestampedObject? {
-        return if (position < 0 || position >= items.size) null else items[position]
-    }
-
-    fun findCard(card: TimestampedObject): TimestampedObject? {
-        for (timestampedObject in items) {
-            if (timestampedObject == card) {
-                return timestampedObject
-            }
-        }
-        return null
-    }
-
-    fun findCard(type: Int, id: Long): TimestampedObject? {
-        for (timestampedObject in items) {
-            if (timestampedObject.type == type && timestampedObject.id == id) {
-                return timestampedObject
-            }
-        }
-        return null
-    }
-
-    fun findCard(type: Int, uuid: String?): TimestampedObject? {
-        items.filterIsInstance<FeedItem>().forEach { timestampedObject ->
-            if (timestampedObject.type == type && timestampedObject.uuid.equals(uuid, ignoreCase = true)) {
-                return timestampedObject
-            }
-        }
-        return null
-    }
-
-    fun updateCard(card: TimestampedObject?) {
-        if (card == null) {
-            return
-        }
-        for (i in items.indices) {
-            val timestampedObject = items[i]
-            if (timestampedObject == card) {
-                card.copyLocalFields(timestampedObject)
-                items.removeAt(i)
-                items.add(i, card)
-                notifyItemChanged(i + positionOffset)
-                return
-            }
-        }
-    }
-
-    fun removeCard(card: TimestampedObject?) {
-        if (card == null) {
-            return
-        }
-        for (i in items.indices) {
-            val timestampedObject = items[i]
-            if (timestampedObject == card) {
-                items.removeAt(i)
-                notifyItemRangeRemoved(i + positionOffset, 1)
-                return
-            }
         }
     }
 
@@ -165,15 +55,12 @@ class PoisAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private var onFollowButtonClickListener: View.OnClickListener? = null
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        if (position < positionOffset) { //header position
-            if (mapViewHolder == null && holder is MapViewHolder) {
-                mapViewHolder = holder
-            }
-            //we populate with  no data
-            mapViewHolder?.populate()
-            return
+        if (getItemViewType(position) == TimestampedObject.TOP_VIEW) {
+            (holder as? MapViewHolder)?.populate()
         }
-        (holder as MapViewHolder).populate(items[position - positionOffset])
+        else {
+            (holder as? PoiViewHolder)?.populate(items[position - positionOffset])
+        }
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -199,14 +86,22 @@ class PoisAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         get() = 1
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        val cardViewHolder = viewHolderFactory.getViewHolder(parent, viewType)
-        if (viewType == TimestampedObject.TOP_VIEW) {
-            mapViewHolder = cardViewHolder
-            onMapReadyCallback?.let {cardViewHolder.setMapReadyCallback(it)}
-            cardViewHolder.setFollowButtonOnClickListener(onFollowButtonClickListener)
-            cardViewHolder.setGeolocStatusIcon(LocationUtils.isLocationPermissionGranted())
+        return if (viewType == TimestampedObject.TOP_VIEW) {
+            val binding = LayoutFeedFullMapCardBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            if(mapViewHolder!=null) {
+                Timber.e("MapViewHolder already created")
+            }
+            MapViewHolder(binding).apply {
+                mapViewHolder = this
+                onMapReadyCallback?.let {this.setMapReadyCallback(it)}
+                this.setFollowButtonOnClickListener(onFollowButtonClickListener)
+                this.setGeolocStatusIcon(LocationUtils.isLocationPermissionGranted())
+            }
         }
-        return cardViewHolder
+        else {
+            val binding = LayoutPoiCardBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            PoiViewHolder(binding)
+        }
     }
 
     fun setOnMapReadyCallback(onMapReadyCallback: OnMapReadyCallback) {
@@ -218,14 +113,6 @@ class PoisAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     }
 
     init {
-        viewHolderFactory.registerViewHolder(
-                TimestampedObject.TOP_VIEW,
-                ViewHolderType(MapViewHolder::class.java, R.layout.layout_feed_full_map_card)
-        )
-        viewHolderFactory.registerViewHolder(
-                TimestampedObject.GUIDE_POI,
-                ViewHolderType(PoiViewHolder::class.java, R.layout.layout_poi_card)
-        )
         setHasStableIds(false)
     }
 }
