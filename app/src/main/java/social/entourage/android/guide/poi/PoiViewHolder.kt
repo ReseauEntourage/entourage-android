@@ -5,11 +5,11 @@ import android.content.Intent
 import android.net.Uri
 import android.view.View
 import androidx.fragment.app.findFragment
+import androidx.recyclerview.widget.RecyclerView
 import social.entourage.android.Constants
 import social.entourage.android.api.model.LocationPoint
 import social.entourage.android.api.model.TimestampedObject
 import social.entourage.android.api.model.guide.Poi
-import social.entourage.android.base.BaseCardViewHolder
 import social.entourage.android.databinding.LayoutPoiCardBinding
 import social.entourage.android.tools.log.AnalyticsEvents
 import timber.log.Timber
@@ -19,7 +19,7 @@ import timber.log.Timber
  *
  * Created by mihaiionescu on 26/04/2017.
  */
-class PoiViewHolder(val binding: LayoutPoiCardBinding) : BaseCardViewHolder(binding.root) {
+class PoiViewHolder(val binding: LayoutPoiCardBinding) : RecyclerView.ViewHolder(binding.root) {
     private var poi: Poi? = null
     var showCallButton: Boolean = true
 
@@ -27,7 +27,7 @@ class PoiViewHolder(val binding: LayoutPoiCardBinding) : BaseCardViewHolder(bind
         bindFields()
     }
 
-    override fun bindFields() {
+    fun bindFields() {
         binding.root.setOnClickListener { view ->
             poi?.let { poi -> (view.findFragment() as? PoiListFragment)?.showPoiDetails(poi, true) }
         }
@@ -47,7 +47,7 @@ class PoiViewHolder(val binding: LayoutPoiCardBinding) : BaseCardViewHolder(bind
         }
     }
 
-    override fun populate(data: TimestampedObject) {
+    fun populate(data: TimestampedObject) {
         if (data is Poi) {
             populatePoi(data)
         }

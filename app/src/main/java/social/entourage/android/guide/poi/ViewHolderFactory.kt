@@ -1,4 +1,4 @@
-package social.entourage.android.base
+package social.entourage.android.guide.poi
 
 import android.view.LayoutInflater
 import android.view.View
@@ -18,12 +18,12 @@ class ViewHolderFactory {
         viewHolderTypeHashMap[viewType] = viewHolderType
     }
 
-    fun getViewHolder(parent: ViewGroup, viewType: Int): BaseCardViewHolder {
+    fun getViewHolder(parent: ViewGroup, viewType: Int): MapViewHolder {
         val viewHolderType = viewHolderTypeHashMap[viewType] ?:  viewHolderTypeDefault
 
         val view = LayoutInflater.from(parent.context).inflate(viewHolderType.layoutResource, parent, false)
 
-        return viewHolderType.cardViewHolderClass.getConstructor(View::class.java).newInstance(view) as BaseCardViewHolder
+        return viewHolderType.cardViewHolderClass.getConstructor(View::class.java).newInstance(view) as MapViewHolder
     }
 
     class ViewHolderType(val cardViewHolderClass: Class<*>, val layoutResource: Int)

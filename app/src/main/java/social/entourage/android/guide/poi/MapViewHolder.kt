@@ -1,18 +1,16 @@
-package social.entourage.android.base.map
+package social.entourage.android.guide.poi
 
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.maps.OnMapReadyCallback
 import social.entourage.android.api.model.TimestampedObject
-import social.entourage.android.base.BaseCardViewHolder
-import social.entourage.android.databinding.LayoutFeedHeaderMapCardBinding
+import social.entourage.android.databinding.LayoutFeedFullMapCardBinding
 
 /**
  * Created by mihaiionescu on 27/06/2017.
  */
-class MapViewHolder(val binding: LayoutFeedHeaderMapCardBinding) : BaseCardViewHolder(binding.root) {
-    override fun bindFields() {
+class MapViewHolder(val binding: LayoutFeedFullMapCardBinding) : RecyclerView.ViewHolder(binding.root) {
+    fun bindFields() {
         binding.layoutFeedMapCardMapview.layoutParams?.height = binding.root.layoutParams.height
         //Inform the map that it needs to start
         binding.layoutFeedMapCardMapview.onCreate(null)
@@ -22,7 +20,7 @@ class MapViewHolder(val binding: LayoutFeedHeaderMapCardBinding) : BaseCardViewH
         binding.layoutFeedMapCardMapview.onResume()
     }
 
-    override fun populate(data: TimestampedObject) {
+    fun populate(data: TimestampedObject) {
         binding.layoutFeedMapCardMapview.onResume()
     }
 
@@ -46,5 +44,9 @@ class MapViewHolder(val binding: LayoutFeedHeaderMapCardBinding) : BaseCardViewH
         binding.root.layoutParams.height = height
         binding.layoutFeedMapCardMapview.layoutParams?.height = height
         binding.root.forceLayout()
+    }
+
+    init {
+        bindFields()
     }
 }
