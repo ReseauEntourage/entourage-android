@@ -19,9 +19,9 @@ interface OnItemClick {
 class MyActionsListAdapter(
     private var groupsList: List<Action>,
     private var onItemClickListener: OnItemClick
-) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+) : RecyclerView.Adapter<MyActionsListAdapter.ViewHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyActionsListAdapter.ViewHolder {
         val view = LayoutMyActionItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(view)
     }
@@ -55,8 +55,8 @@ class MyActionsListAdapter(
         }
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        (holder as? ViewHolder)?.bind(groupsList[position])
+    override fun onBindViewHolder(holder: MyActionsListAdapter.ViewHolder, position: Int) {
+        holder.bind(groupsList[position])
     }
 
     override fun getItemCount(): Int {

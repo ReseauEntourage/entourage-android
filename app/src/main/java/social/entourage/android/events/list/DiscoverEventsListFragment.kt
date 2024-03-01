@@ -34,7 +34,7 @@ class DiscoverEventsListFragment : Fragment() {
 
     private lateinit var eventsPresenter: EventsPresenter
     private var myId: Int? = null
-    lateinit var eventsAdapter: AllEventAdapterV2
+    lateinit var eventsAdapter: AllEventAdapter
     lateinit var myeventsAdapter: HomeEventAdapter
     private var page: Int = 0
     private var pageMyEvent: Int = 0
@@ -74,7 +74,7 @@ class DiscoverEventsListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         eventsPresenter = ViewModelProvider(requireActivity()).get(EventsPresenter::class.java)
         myId = EntourageApplication.me(activity)?.id
-        eventsAdapter = AllEventAdapterV2(myId,requireContext())
+        eventsAdapter = AllEventAdapter(myId,requireContext())
         myeventsAdapter = HomeEventAdapter(requireContext())
         eventsPresenter.getAllEvents.observe(viewLifecycleOwner, ::handleResponseGetEvents)
         eventsPresenter.hasChangedFilter.observe(viewLifecycleOwner, ::handleFilterChange)

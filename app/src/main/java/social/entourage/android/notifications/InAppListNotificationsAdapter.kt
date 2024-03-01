@@ -25,7 +25,7 @@ class InAppListNotificationsAdapter(
 ) : RecyclerView.Adapter<InAppListNotificationsAdapter.ViewHolder>() {
 
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): InAppListNotificationsAdapter.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutNotifDetailBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(view, parent.context)
     }
