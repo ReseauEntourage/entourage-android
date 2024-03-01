@@ -408,7 +408,7 @@ class MainActivity : BaseSecuredActivity() {
 
     private fun initializeNavBar() {
         val navHostFragment = supportFragmentManager.findFragmentById(
-            R.id.nav_host_fragment_new_activity_main
+            R.id.nav_host_fragment_activity_main
         ) as NavHostFragment
         navController = navHostFragment.navController
 
@@ -441,7 +441,7 @@ class MainActivity : BaseSecuredActivity() {
             }
 
             val navController: NavController =
-            androidx.navigation.Navigation.findNavController(this, R.id.nav_host_fragment_new_activity_main)
+            androidx.navigation.Navigation.findNavController(this, R.id.nav_host_fragment_activity_main)
             NavigationUI.onNavDestinationSelected(item, navController)
         }
     }

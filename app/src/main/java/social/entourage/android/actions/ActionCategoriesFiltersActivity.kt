@@ -4,9 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
-import social.entourage.android.R
 import social.entourage.android.api.model.ActionSection
 import social.entourage.android.api.model.ActionSectionFilters
 import social.entourage.android.databinding.NewActivityActionCatFiltersBinding
@@ -17,15 +15,13 @@ class ActionCategoriesFiltersActivity : AppCompatActivity() {
 
     private lateinit var binding: NewActivityActionCatFiltersBinding
 
-    private lateinit var actionCategoryAdapter: social.entourage.android.actions.ActionCategoriesFiltersListAdapter
+    private lateinit var actionCategoryAdapter: ActionCategoriesFiltersListAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding = DataBindingUtil.setContentView(
-            this,
-            R.layout.new_activity_action_cat_filters
-        )
+        binding = NewActivityActionCatFiltersBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         currentFilters = intent.getSerializableExtra(social.entourage.android.actions.CATEGORIES_FILTERS) as? ActionSectionFilters
 
