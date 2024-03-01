@@ -22,10 +22,10 @@ interface OnItemClick {
 class InAppListNotificationsAdapter(
     var notifs: List<InAppNotification>,
     private var onItemClickListener: OnItemClick
-) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+) : RecyclerView.Adapter<InAppListNotificationsAdapter.ViewHolder>() {
 
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): InAppListNotificationsAdapter.ViewHolder {
         val view = LayoutNotifDetailBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(view, parent.context)
     }
@@ -91,8 +91,8 @@ class InAppListNotificationsAdapter(
         }
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        (holder as? ViewHolder)?.bind(notifs[position], position)
+    override fun onBindViewHolder(holder: InAppListNotificationsAdapter.ViewHolder, position: Int) {
+        holder.bind(notifs[position], position)
     }
 
     override fun getItemCount(): Int {
