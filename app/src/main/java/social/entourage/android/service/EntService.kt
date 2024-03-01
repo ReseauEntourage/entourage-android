@@ -36,11 +36,9 @@ class EntService : Service() {
     private val receiver: BroadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
             when (intent.action) {
-                KEY_LOCATION_PROVIDER_DISABLED -> {
-                    notifyListenersGpsStatusChanged(false)
-                }
+                KEY_LOCATION_PROVIDER_DISABLED,
                 KEY_LOCATION_PROVIDER_ENABLED -> {
-                    notifyListenersGpsStatusChanged(true)
+                    notifyListenersGpsStatusChanged()
                 }
             }
         }
@@ -111,8 +109,8 @@ class EntService : Service() {
         locationUpdateListeners.forEach { listener -> listener.onLocationUpdated(location) }
     }
 
-    private fun notifyListenersGpsStatusChanged(active: Boolean) {
-        locationUpdateListeners.forEach { listener -> listener.onLocationStatusUpdated(active) }
+    private fun notifyListenersGpsStatusChanged() {
+        locationUpdateListeners.forEach { listener -> listener.onLocationStatusUpdated() }
     }
 
     companion object {

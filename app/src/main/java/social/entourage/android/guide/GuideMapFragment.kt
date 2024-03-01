@@ -62,7 +62,7 @@ class GuideMapFragment : Fragment(),
     private var eventLongClick: String = AnalyticsEvents.EVENT_GUIDE_LONGPRESS
     private var isFullMapShown = true
     private var previousCameraLocation: Location? = null
-    private var previousCameraZoom = 1.0f
+    private var previousCameraZoom = 10.0f
     var map: GoogleMap? = null
 
     private var originalMapLayoutHeight = 0
@@ -84,20 +84,8 @@ class GuideMapFragment : Fragment(),
         centerMap(cameraPosition)
     }
 
-    private fun centerMapAndZoom(latLng: LatLng, zoom: Float, animated: Boolean) {
-        val cameraPosition = CameraPosition(latLng, zoom, 0F, 0F)
-        map?.let {
-            if (animated) {
-                it.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition), 300, null)
-            } else {
-                it.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
-            }
-            saveCameraPosition()
-        }
-    }
-
     private fun centerMap(cameraPosition: CameraPosition) {
-        map?.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
+        map?.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition), 300, null)
         saveCameraPosition()
     }
 
@@ -123,16 +111,10 @@ class GuideMapFragment : Fragment(),
         activity?.let {
             @StringRes var messagedId = R.string.map_error_geolocation_disabled_use_entourage
             val eventName = when (source) {
-                GEOLOCATION_POPUP_RECENTER -> {
-                    messagedId = R.string.map_error_geolocation_disabled_recenter
-                    AnalyticsEvents.EVENT_FEED_ACTIVATE_GEOLOC_RECENTER
-                }
                 GEOLOCATION_POPUP_GUIDE_RECENTER -> {
                     messagedId = R.string.map_error_geolocation_disabled_recenter
                     AnalyticsEvents.EVENT_GUIDE_ACTIVATE_GEOLOC_RECENTER
                 }
-                GEOLOCATION_POPUP_GUIDE_BANNER -> AnalyticsEvents.EVENT_GUIDE_ACTIVATE_GEOLOC_FROM_BANNER
-                GEOLOCATION_POPUP_BANNER -> AnalyticsEvents.EVENT_FEED_ACTIVATE_GEOLOC_FROM_BANNER
                 else -> AnalyticsEvents.EVENT_FEED_ACTIVATE_GEOLOC_FROM_BANNER
             }
 
@@ -162,12 +144,13 @@ class GuideMapFragment : Fragment(),
     }
 
     private fun onLocationPermissionGranted(isPermissionGranted: Boolean) =
-        updateGeolocBanner(isPermissionGranted)
+        updateGeolocBanner()
 
-    private fun updateGeolocBanner(active: Boolean) {
-        poisAdapter.setGeolocStatusIcon(LocationUtils.isLocationPermissionGranted())
+    private fun updateGeolocBanner() {
+        val granted = LocationUtils.isLocationPermissionGranted()
+        poisAdapter.setGeolocStatusIcon(granted)
         try {
-            map?.isMyLocationEnabled = LocationUtils.isLocationPermissionGranted()
+            map?.isMyLocationEnabled = granted
         } catch (ex: SecurityException) {
             Timber.w(ex)
         } catch (ex: Exception) {
@@ -179,9 +162,8 @@ class GuideMapFragment : Fragment(),
         AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_FEED_RECENTERCLICK)
         // Check if geolocation is enabled
         if (!LocationUtils.isLocationPermissionGranted()) {
-            showAllowGeolocationDialog(GEOLOCATION_POPUP_RECENTER)
+            showAllowGeolocationDialog(GEOLOCATION_POPUP_GUIDE_RECENTER)
         } else {
-            isFollowing = true
             centerMap(EntLocation.currentLocation?.let {
                 LatLng(it.latitude, it.longitude)
             } ?: LatLng(0.0, 0.0))
@@ -190,7 +172,7 @@ class GuideMapFragment : Fragment(),
 
     override fun onLocationUpdated(location: LatLng) {}
 
-    override fun onLocationStatusUpdated(active: Boolean) = updateGeolocBanner(active)
+    override fun onLocationStatusUpdated() = updateGeolocBanner()
 
     // ----------------------------------
     // ATTRIBUTES
@@ -314,7 +296,7 @@ class GuideMapFragment : Fragment(),
                     showEmptyListPopup()
                 }
                 if (poisAdapter.dataItemCount == 0) {
-                    hidePOIList(false)
+                    hidePOIList()
                 }
             }
         }
@@ -514,13 +496,13 @@ class GuideMapFragment : Fragment(),
 
     private fun togglePOIList() {
         if (isFullMapShown) {
-            showPOIList(true)
+            showPOIList()
         } else {
-            hidePOIList(true)
+            hidePOIList()
         }
     }
 
-    private fun hidePOIList(animated: Boolean) {
+    private fun hidePOIList() {
         if (isFullMapShown) {
             return
         }
@@ -529,17 +511,12 @@ class GuideMapFragment : Fragment(),
         binding.fragmentGuideDisplayToggle.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_list_white_24dp))
         ensureMapVisible()
         val targetHeight = binding.fragmentGuideMainLayout.measuredHeight
-        if (animated) {
-            val anim = ValueAnimator.ofInt(originalMapLayoutHeight, targetHeight)
-            anim.addUpdateListener { valueAnimator: ValueAnimator -> onAnimationUpdate(valueAnimator) }
-            anim.start()
-        } else {
-            poisAdapter.setMapHeight(targetHeight)
-            binding.fragmentGuidePoisView.layoutManager?.requestLayout()
-        }
+        val anim = ValueAnimator.ofInt(originalMapLayoutHeight, targetHeight)
+        anim.addUpdateListener { valueAnimator: ValueAnimator -> onAnimationUpdate(valueAnimator) }
+        anim.start()
     }
 
-    private fun showPOIList(animated: Boolean) {
+    private fun showPOIList() {
         if (!isFullMapShown) {
             return
         }
@@ -547,14 +524,9 @@ class GuideMapFragment : Fragment(),
         binding.fragmentGuideDisplayToggle.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_map_white_24dp))
         hideInfoPopup()
         hideEmptyListPopup()
-        if (animated) {
-            val anim = ValueAnimator.ofInt(binding.fragmentGuideMainLayout.measuredHeight, originalMapLayoutHeight)
-            anim.addUpdateListener { valueAnimator: ValueAnimator -> onAnimationUpdate(valueAnimator) }
-            anim.start()
-        } else {
-            poisAdapter.setMapHeight(originalMapLayoutHeight)
-            binding.fragmentGuidePoisView.layoutManager?.requestLayout()
-        }
+        val anim = ValueAnimator.ofInt(binding.fragmentGuideMainLayout.measuredHeight, originalMapLayoutHeight)
+        anim.addUpdateListener { valueAnimator: ValueAnimator -> onAnimationUpdate(valueAnimator) }
+        anim.start()
 
         binding.uiViewEmptyList.visibility = if (poisAdapter.dataItemCount == 0)  View.VISIBLE else View.GONE
     }
@@ -589,10 +561,7 @@ class GuideMapFragment : Fragment(),
 
     companion object {
         // Constants used to track the source call of the geolocation popup
-        private const val GEOLOCATION_POPUP_RECENTER = 1
-        const val GEOLOCATION_POPUP_BANNER = 2
         private const val GEOLOCATION_POPUP_GUIDE_RECENTER = 3
-        private const val GEOLOCATION_POPUP_GUIDE_BANNER = 4
         const val ZOOM_REDRAW_LIMIT = 1.1f
         const val REDRAW_LIMIT = 300
         // ----------------------------------
