@@ -5,25 +5,24 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import social.entourage.android.api.model.ActionSection
 import social.entourage.android.api.model.ActionSectionFilters
-import social.entourage.android.databinding.NewActivityActionCatFiltersBinding
+import social.entourage.android.databinding.ActivityActionCatFiltersBinding
 
 class ActionCategoriesFiltersActivity : AppCompatActivity() {
 
     private var currentFilters: ActionSectionFilters? = null
 
-    private lateinit var binding: NewActivityActionCatFiltersBinding
+    private lateinit var binding: ActivityActionCatFiltersBinding
 
     private lateinit var actionCategoryAdapter: ActionCategoriesFiltersListAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding = NewActivityActionCatFiltersBinding.inflate(layoutInflater)
+        binding = ActivityActionCatFiltersBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        currentFilters = intent.getSerializableExtra(social.entourage.android.actions.CATEGORIES_FILTERS) as? ActionSectionFilters
+        currentFilters = intent.getSerializableExtra(CATEGORIES_FILTERS) as? ActionSectionFilters
 
         setupViews()
         initializeActionCat()
@@ -39,8 +38,8 @@ class ActionCategoriesFiltersActivity : AppCompatActivity() {
     }
 
     private fun initializeActionCat() {
-        actionCategoryAdapter = social.entourage.android.actions.ActionCategoriesFiltersListAdapter(
-            currentFilters?.getSections() ?: ArrayList<ActionSection>()
+        actionCategoryAdapter = ActionCategoriesFiltersListAdapter(
+            currentFilters?.getSections() ?: ArrayList()
         )
 
         binding.recyclerView.apply {
@@ -51,7 +50,7 @@ class ActionCategoriesFiltersActivity : AppCompatActivity() {
 
     private fun onSaveFilters() {
         val intent = Intent()
-        intent.putExtra(social.entourage.android.actions.CATEGORIES_FILTERS, currentFilters)
+        intent.putExtra(CATEGORIES_FILTERS, currentFilters)
         setResult(Activity.RESULT_OK, intent)
         finish()
     }
