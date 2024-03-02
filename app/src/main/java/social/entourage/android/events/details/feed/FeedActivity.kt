@@ -9,7 +9,7 @@ import social.entourage.android.tools.utils.Const
 class FeedActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.new_activity_feed_event)
+        setContentView(R.layout.activity_feed_event)
         val id = intent.getIntExtra(Const.EVENT_ID, Const.DEFAULT_VALUE)
         val bundle = Bundle().apply {
             putInt(Const.EVENT_ID, id)

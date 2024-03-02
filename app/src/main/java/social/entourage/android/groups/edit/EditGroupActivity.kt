@@ -9,7 +9,7 @@ import social.entourage.android.tools.utils.Const
 class EditGroupActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.new_activity_edit_group)
+        setContentView(R.layout.activity_edit_group)
         val id = intent.getIntExtra(Const.GROUP_ID, Const.DEFAULT_VALUE)
         val bundle = Bundle().apply {
             putInt(Const.GROUP_ID, id)
