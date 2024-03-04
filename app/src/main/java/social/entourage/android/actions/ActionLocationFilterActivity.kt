@@ -13,7 +13,6 @@ import android.widget.SeekBar
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.databinding.DataBindingUtil
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationResult
@@ -29,11 +28,11 @@ import social.entourage.android.api.model.EventActionLocationFilters
 import social.entourage.android.api.model.EventFilterType
 import social.entourage.android.base.location.LocationProvider
 import social.entourage.android.base.location.LocationUtils
-import social.entourage.android.databinding.NewActivityActionLocationFiltersBinding
+import social.entourage.android.databinding.ActivityActionLocationFiltersBinding
 import social.entourage.android.events.list.DiscoverEventsListFragment
 import timber.log.Timber
 import java.io.IOException
-import java.util.*
+import java.util.Locale
 
 class ActionLocationFilterActivity : AppCompatActivity() {
 
@@ -62,15 +61,13 @@ class ActionLocationFilterActivity : AppCompatActivity() {
 
     private var currentFilters: EventActionLocationFilters? = null
 
-    private lateinit var binding: NewActivityActionLocationFiltersBinding
+    private lateinit var binding: ActivityActionLocationFiltersBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding = DataBindingUtil.setContentView(
-            this,
-            R.layout.new_activity_action_location_filters
-        )
+        binding =ActivityActionLocationFiltersBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         currentFilters = intent.getSerializableExtra(LOCATION_FILTERS) as? EventActionLocationFilters
 
@@ -324,7 +321,7 @@ class ActionLocationFilterActivity : AppCompatActivity() {
     }
 
     @SuppressLint("MissingPermission")
-    protected fun startRequestLocation() {
+    fun startRequestLocation() {
         if (LocationUtils.isLocationPermissionGranted()) {
             binding.locationName.text =  getString(R.string.onboard_place_getting_current_location)
             mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this)

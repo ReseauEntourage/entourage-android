@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:app="http://schemas.android.com/apk/res-auto"
-xmlns:tools="http://schemas.android.com/tools"
-tools:context=".actions.list.me.MyActionsListActivity">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_action_detail"
+    tools:context=".actions.detail.ActionDetailActivity" >
 
 <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
@@ -11,7 +12,7 @@ tools:context=".actions.list.me.MyActionsListActivity">
     android:background="@color/light_beige">
 
     <LinearLayout
-        android:id="@+id/linearLayout2"
+        android:id="@+id/action_detail_header_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -21,12 +22,11 @@ tools:context=".actions.list.me.MyActionsListActivity">
 
         <include
             android:id="@+id/header"
-            layout="@layout/new_header"
+            layout="@layout/layout_header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toTopOf="@id/recycler_view"
-            app:layout_constraintTop_toTopOf="parent"
-            app:title="@{@string/action_my_actions}" />
+            app:layout_constraintTop_toTopOf="parent" />
 
     </LinearLayout>
 
@@ -39,7 +39,7 @@ tools:context=".actions.list.me.MyActionsListActivity">
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/linearLayout2" />
+        app:layout_constraintTop_toBottomOf="@id/action_detail_header_layout" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

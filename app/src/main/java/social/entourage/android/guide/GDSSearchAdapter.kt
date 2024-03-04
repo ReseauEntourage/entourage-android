@@ -4,7 +4,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import social.entourage.android.R
 import social.entourage.android.api.model.guide.Poi
 import social.entourage.android.databinding.LayoutPoiCardBinding
 import social.entourage.android.databinding.LayoutSearchPoiEmptyBinding
@@ -29,17 +28,9 @@ class GDSSearchAdapter(var items: ArrayList<Poi>): RecyclerView.Adapter<Recycler
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
-        return when (viewType) {
-            TYPE_EMPTY -> {
-                // Utilisation de ViewBinding pour le type vide
-                val binding = LayoutSearchPoiEmptyBinding.inflate(layoutInflater, parent, false)
-                VHEmpty(binding.root)
-            }
-            else -> {
-                // Utilisation de ViewBinding pour le PoiViewHolder
-                val binding = LayoutPoiCardBinding.inflate(layoutInflater, parent, false)
-                PoiViewHolder(binding).apply { showCallButton = false }
-            }
+        return when(viewType) {
+            TYPE_EMPTY -> VHEmpty(LayoutSearchPoiEmptyBinding.inflate(layoutInflater, parent, false).root)
+            else -> PoiViewHolder(LayoutPoiCardBinding.inflate(layoutInflater, parent, false)).apply { showCallButton = false }
         }
     }
 

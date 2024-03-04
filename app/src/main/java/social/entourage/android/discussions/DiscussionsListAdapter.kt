@@ -20,9 +20,9 @@ interface OnItemClick {
 class DiscussionsListAdapter(
     private var messagesList: List<Conversation>,
     private var onItemClickListener: OnItemClick
-) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+) : RecyclerView.Adapter<DiscussionsListAdapter.ViewHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DiscussionsListAdapter.ViewHolder {
         val view = LayoutConversationHomeItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(view)
     }
@@ -91,8 +91,8 @@ class DiscussionsListAdapter(
         }
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        (holder as? ViewHolder)?.bind(messagesList[position], position)
+    override fun onBindViewHolder(holder: DiscussionsListAdapter.ViewHolder, position: Int) {
+        holder.bind(messagesList[position], position)
     }
 
     override fun getItemCount(): Int {

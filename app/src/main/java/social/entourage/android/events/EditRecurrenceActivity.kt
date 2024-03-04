@@ -3,31 +3,29 @@ package social.entourage.android.events
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.collection.ArrayMap
-import androidx.databinding.DataBindingUtil
 import social.entourage.android.R
-import social.entourage.android.databinding.NewActivityEditRecurrenceBinding
 import social.entourage.android.RefreshController
+import social.entourage.android.databinding.ActivityEditRecurrenceBinding
 import social.entourage.android.events.create.Recurrence
 import social.entourage.android.language.LanguageManager
 import social.entourage.android.tools.utils.Const
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Date
 
 class EditRecurrenceActivity : AppCompatActivity() {
-    lateinit var binding: NewActivityEditRecurrenceBinding
+    lateinit var binding: ActivityEditRecurrenceBinding
 
     var date: Date? = null
     var eventId: Int = Const.DEFAULT_VALUE
     var recurrence: Int = Const.DEFAULT_VALUE
     private val editedEvent: MutableMap<String, Any?> = mutableMapOf()
-    private val eventPresenter: social.entourage.android.events.EventsPresenter by lazy { social.entourage.android.events.EventsPresenter() }
+    private val eventPresenter: EventsPresenter by lazy { EventsPresenter() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(
-            this,
-            R.layout.new_activity_edit_recurrence
-        )
+        binding = ActivityEditRecurrenceBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
         eventId = intent.getIntExtra(Const.EVENT_ID, Const.DEFAULT_VALUE)
         recurrence = intent.getIntExtra(Const.RECURRENCE, Const.DEFAULT_VALUE)
         date = intent.getSerializableExtra(Const.EVENT_DATE) as Date?
@@ -47,7 +45,7 @@ class EditRecurrenceActivity : AppCompatActivity() {
     }
 
     private fun setView() {
-        var locale = LanguageManager.getLocaleFromPreferences(this)
+        val locale = LanguageManager.getLocaleFromPreferences(this)
         val sdf = SimpleDateFormat(getString(R.string.events_date), locale)
         binding.date.text = date?.let { it1 ->
             sdf.format(
