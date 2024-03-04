@@ -17,7 +17,7 @@
             android:id="@+id/picture"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:src="@drawable/new_contact" />
+            android:src="@drawable/placeholder_user" />
         <include
             android:id="@+id/reaction"
             layout="@layout/layout_item_reaction"

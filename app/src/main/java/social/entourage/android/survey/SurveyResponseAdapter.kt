@@ -88,6 +88,7 @@ class SurveyResponseAdapter(
                     // Utilise Glide ou Picasso pour charger l'image dans l'ImageView
                     Glide.with(holder.binding.root.context)
                         .load(responseUser.avatarUrl)
+                        .circleCrop()
                         .into(holder.binding.picture)
                 }
                 // Gérer l'affichage des rôles communautaires
