@@ -64,6 +64,7 @@ class SurveyPresenter {
         EntourageApplication.get().apiModule.surveyRequest.getSurveyResponsesForGroup(groupId, postId).enqueue(object : Callback<SurveyResponsesListWrapper> {
             override fun onResponse(call: Call<SurveyResponsesListWrapper>, response: Response<SurveyResponsesListWrapper>) {
                 if (response.isSuccessful) {
+                    surveyResponseList.postValue(response.body())
                     // Ici, tu peux mettre à jour l'UI avec la liste des réponses obtenues
                     Log.d("SurveyPresenter", "Réponses au sondage récupérées avec succès: ${response.body()?.responses}")
                 } else {

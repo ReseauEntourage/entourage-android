@@ -1,6 +1,7 @@
 package social.entourage.android.survey
 
 import android.os.Bundle
+import android.util.Log
 import androidx.recyclerview.widget.LinearLayoutManager
 import social.entourage.android.api.model.Survey
 import social.entourage.android.api.model.SurveyResponsesListWrapper
@@ -35,13 +36,23 @@ class ResponseSurveyActivity:BaseActivity() {
         if(survey != null && surveyResponses != null){
             binding.recyclerViewResponse.adapter = SurveyResponseAdapter(survey!!, surveyResponses!!)
         }
-        binding.recyclerViewResponse.layoutManager = LinearLayoutManager(this)
+        binding.recyclerViewResponse.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
     }
 
     private fun handleSurveyResponseList(surveyResponsesListWrapper: SurveyResponsesListWrapper) {
         surveyResponses = surveyResponsesListWrapper
+        // Met à jour l'adapter avec les nouvelles réponses et rafraîchit le RecyclerView
+        if(survey != null) {
+            val adapter = binding.recyclerViewResponse.adapter as? SurveyResponseAdapter
+            if (adapter == null) {
+                binding.recyclerViewResponse.adapter = SurveyResponseAdapter(survey!!, surveyResponses!!)
+            } else {
+                adapter.updateResponses(surveyResponses!!)
+            }
+        }
     }
+
 
     override fun onDestroy() {
         super.onDestroy()

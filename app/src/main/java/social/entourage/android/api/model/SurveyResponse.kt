@@ -8,13 +8,20 @@ data class SurveyResponsesWrapper(
     val responses: List<Boolean>
 )
 
+data class SurveyResponseUser(
+    @SerializedName("id") val id: Int,
+    @SerializedName("lang") val lang: String,
+    @SerializedName("display_name") val displayName: String,
+    @SerializedName("avatar_url") val avatarUrl: String?,
+    @SerializedName("community_roles") val communityRoles: List<String>
+)
+
 data class SurveyResponse(
-    @SerializedName("user_id") val userId: Int,
-    @SerializedName("response") val response: Boolean
+    val users: List<SurveyResponseUser>
 )
 
 data class SurveyResponsesListWrapper(
-    @SerializedName("survey_responses") val responses: List<SurveyResponse>
+    @SerializedName("survey_responses") val responses: List<List<SurveyResponseUser>>
 )
 
 data class ChatMessageSurvey(

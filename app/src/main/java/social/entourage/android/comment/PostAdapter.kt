@@ -84,7 +84,6 @@ class PostAdapter(
 
     override fun getItemViewType(position: Int): Int {
         val post = postsList[position]
-        Log.wtf("wtf", "eho passed survey attribute " + Gson().toJson(post.survey))
         return if (post.survey != null) TYPE_SURVEY else TYPE_POST
     }
 
