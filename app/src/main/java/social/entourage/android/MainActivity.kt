@@ -208,8 +208,7 @@ class MainActivity : BaseSecuredActivity() {
     }
 
     fun handleResponse(success: Boolean){
-        Log.wtf("wtf", "wtf is sucess : $success")
-        Log.wtf("wtf", "user " + Gson().toJson(userPresenter.user.value))
+
     }
 
     fun useIntentForRedictection(intent: Intent){

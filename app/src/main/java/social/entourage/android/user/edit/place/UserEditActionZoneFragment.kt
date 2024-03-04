@@ -14,6 +14,7 @@ import social.entourage.android.R
 import social.entourage.android.api.OnboardingAPI
 import social.entourage.android.api.model.User
 import social.entourage.android.groups.create.CommunicationHandlerViewModel
+import social.entourage.android.homev2.OnHomeV2ChangeLocationUpdate
 import social.entourage.android.tools.log.AnalyticsEvents
 import java.io.IOException
 
@@ -23,6 +24,7 @@ class UserEditActionZoneFragment : UserActionPlaceFragment() {
     private val viewModel: CommunicationHandlerViewModel by activityViewModels()
 
     private var setGroupLocation = false
+    private var listener: OnHomeV2ChangeLocationUpdate? = null
 
     //**********//**********//**********
     // Lifecycle
@@ -143,6 +145,12 @@ class UserEditActionZoneFragment : UserActionPlaceFragment() {
                                     newUser.phone = phone
                                     authenticationController.saveUser(newUser)
                                     mListener?.onUserEditActionZoneFragmentAddressSaved()
+                                    if(listener != null) {
+                                        val intent = Intent(context, MainActivity::class.java)
+                                            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK )
+                                            .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                                        requireContext().startActivity(intent)
+                                    }
                                     if (isAdded && view != null) {
                                         findNavController().popBackStack()
                                     } else {
@@ -191,12 +199,13 @@ class UserEditActionZoneFragment : UserActionPlaceFragment() {
     companion object {
         val TAG: String? = UserEditActionZoneFragment::class.java.simpleName
 
-        fun newInstance(googlePlaceAddress: User.Address?, isSecondary: Boolean) =
+        fun newInstance(googlePlaceAddress: User.Address?, isSecondary: Boolean, listener: OnHomeV2ChangeLocationUpdate) =
             UserEditActionZoneFragment().apply {
                 arguments = Bundle().apply {
                     putSerializable(ARG_PLACE, googlePlaceAddress)
                     putBoolean(ARG_2ND, isSecondary)
                 }
+                this.listener = listener
             }
     }
 }

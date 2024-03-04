@@ -460,4 +460,13 @@
                 android:layout_marginBottom="@dimen/entourage_margin_section"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/frame_layout_change_location"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:elevation="10dp"
+        android:background="@color/white"
+        android:visibility="gone"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
