@@ -2694,7 +2694,6 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="create_question_hint">Posez votre question</string>
     <string name="create_option_hint">+ Ajouter une option</string>
     <string name="create_option_title">Options</string>
-    <string name="create_option_hint">Ecrivez votre option</string>
     <string name="title_switch_mutiple_choice">Plusieurs réponses possibles</string>
     <string name="title_switch_single_choice">Sélectionnez une option</string>
     <string name="title_switch_mutiples_choices">Sélectionnez une ou plusieurs options</string>
