@@ -314,6 +314,7 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
             binding.homeTitleGroup.visibility = View.GONE
         }
         this.homeGroupAdapter.resetData(allGroup)
+         
     }
 
     fun handleEvent(allEvent: MutableList<Events>?){
