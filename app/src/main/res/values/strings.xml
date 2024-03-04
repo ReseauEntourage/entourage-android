@@ -2690,11 +2690,13 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
 
     <!--    CREATE SURVEY-->
     <string name="header_title_create_survey">Créer un sondage</string>
-    <string name="create_question_title">Ecrire votre question</string>
+    <string name="create_question_title">Question</string>
     <string name="create_question_hint">Ecrivez votre question</string>
-    <string name="create_option_title">Ecrire les options</string>
+    <string name="create_option_title">Options</string>
     <string name="create_option_hint">Ecrivez votre option</string>
     <string name="title_switch_mutiple_choice">Plusieurs réponses possibles</string>
+    <string name="title_switch_single_choice">Sélectionnez une option</string>
+    <string name="title_switch_mutiples_choices">Sélectionnez une ou plusieurs options</string>
     <string name="btn_survey_validate">Valider</string>
     <string name="btn_survey_cancel">Annuler</string>
     <string name="popup_survey_title">Attention</string>

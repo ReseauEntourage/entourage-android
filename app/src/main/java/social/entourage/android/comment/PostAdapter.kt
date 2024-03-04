@@ -121,7 +121,11 @@ class PostAdapter(
                 TYPE_SURVEY -> {
                     val surveyHolder = holder as SurveyViewHolder
                     val post = postsList[position]
-
+                    if(post.survey?.multiple == true) {
+                        surveyHolder.binding.tvSelectAnswer.text = context.getString(R.string.title_switch_mutiples_choices)
+                    }else{
+                        surveyHolder.binding.tvSelectAnswer.text = context.getString(R.string.title_switch_single_choice)
+                    }
                     val localState = localSurveyResponseState.getOrPut(post.id ?: position) {
                         post.surveyResponse ?: post.survey?.choices?.map { false }?.toMutableList() ?: mutableListOf()
                     }
@@ -179,7 +183,9 @@ class PostAdapter(
                             it.parent.visibility = View.VISIBLE
                             it.tvQuestionSurvey.text = choice
                             val isSelected = localState.getOrNull(index) ?: false
-                            it.uiIvCheck.setImageResource(if (isSelected) R.drawable.new_bg_selected_filter else R.drawable.new_bg_unselected_filter)
+
+                            //it.uiIvCheck.setImageResource(if (isSelected) R.drawable.new_bg_selected_filter else R.drawable.new_bg_unselected_filter)
+                            it.uiIvCheck.isChecked = isSelected
 
                             // Utilisation de localSummary pour l'UI
                             val choiceResponses = localSummary.getOrNull(index) ?: 0
@@ -590,30 +596,6 @@ class PostAdapter(
         }
     }
 
-    fun updateUIForAllChoices(surveyHolder: SurveyViewHolder, survey: Survey?, localState: MutableList<Boolean>) {
-        survey?.choices?.forEachIndexed { index, _ ->
-            val binding = when (index) {
-                0 -> surveyHolder.binding.choiceOne
-                1 -> surveyHolder.binding.choiceTwo
-                2 -> surveyHolder.binding.choiceThree
-                3 -> surveyHolder.binding.choiceFour
-                4 -> surveyHolder.binding.choiceFive
-                else -> null
-            }
-            binding?.let {
-                val isSelected = localState.getOrNull(index) ?: false
-                it.uiIvCheck.setImageResource(if (isSelected) R.drawable.new_bg_selected_filter else R.drawable.new_bg_unselected_filter)
-
-                // Recalcul des valeurs pour la progress bar et le nombre de votes
-                val totalResponses = localState.count { it }
-                val summary = if (isSelected) 1 else 0 // Simplification pour l'exemple, ajustez selon votre logique
-                val progress = if (totalResponses > 0) (summary * 100 / totalResponses) else 0
-
-                it.progressBar3.progress = progress
-                it.tvNumberAnswer.text = "$summary"
-            }
-        }
-    }
     private fun updateSurveyUI(surveyHolder: SurveyViewHolder, index: Int, survey: Survey, localState: MutableList<Boolean>, localSummary: List<Int>) {
         val binding = when (index) {
             0 -> surveyHolder.binding.choiceOne
@@ -626,7 +608,8 @@ class PostAdapter(
 
         binding?.let {
             val isSelected = localState.getOrNull(index) ?: false
-            it.uiIvCheck.setImageResource(if (isSelected) R.drawable.new_bg_selected_filter else R.drawable.new_bg_unselected_filter)
+            it.uiIvCheck.isChecked = isSelected
+            //it.uiIvCheck.setImageResource(if (isSelected) R.drawable.new_bg_selected_filter else R.drawable.new_bg_unselected_filter)
 
             // Utilise les totaux ajustés de localSummary pour l'affichage
             val choiceResponses = localSummary.getOrNull(index) ?: 0

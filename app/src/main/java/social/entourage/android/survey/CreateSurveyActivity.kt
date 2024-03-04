@@ -37,7 +37,7 @@ class CreateSurveyActivity: BaseActivity() {
 
     private fun initView() {
 
-        binding.editTextOption2.visibility = View.GONE
+        //binding.editTextOption2.visibility = View.GONE
         binding.editTextOption3.visibility = View.GONE
         binding.editTextOption4.visibility = View.GONE
         binding.editTextOption5.visibility = View.GONE
@@ -126,10 +126,10 @@ class CreateSurveyActivity: BaseActivity() {
             getString(R.string.popup_survey_content),
             getString(R.string.popup_survey_btn_leave),
             {
-                finish()
+
             },
             {
-                // Do nothing
+                finish()
             })
     }
 

@@ -5,13 +5,15 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/parent">
-    <ImageView
+
+    <RadioButton
         android:id="@+id/ui_iv_check"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/new_bg_unselected_filter" />
+        android:clickable="false"
+        android:text="" />
     <TextView
         android:id="@+id/tv_question_survey"
         android:layout_width="0dp"

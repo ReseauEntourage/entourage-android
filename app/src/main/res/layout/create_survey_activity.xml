@@ -47,6 +47,7 @@
         android:layout_marginStart="2dp"
         android:layout_marginEnd="2dp"
         android:layout_marginBottom="70dp"
+        android:layout_marginTop="10dp"
         >
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -69,13 +70,15 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/edit_text_question"
                 android:hint="@string/create_question_hint"
+                android:textColorHint="@color/grey_vote"
+                android:backgroundTint="@color/grey_vote"
                 app:layout_constraintTop_toBottomOf="@+id/tv_title_question"
                 app:layout_constraintStart_toStartOf="parent"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="30dp"
                 android:layout_marginEnd="30dp"
                 android:maxLength="500"
-                android:fontFamily="@font/nunitosans_regular"
+                android:fontFamily="@font/nunitosans_italic"
                 android:textSize="15sp"/>
             <TextView
                 android:layout_width="wrap_content"
@@ -86,7 +89,7 @@
                 android:fontFamily="@font/quicksand_bold"
                 android:textSize="15sp"
                 android:textColor="@color/black"
-                android:text="@string/create_question_title"
+                android:text="@string/create_option_title"
                 android:layout_marginTop="30dp"
                 android:layout_marginStart="20dp"/>
             <EditText
@@ -96,11 +99,13 @@
                 android:hint="@string/create_question_hint"
                 app:layout_constraintTop_toBottomOf="@+id/tv_title_option"
                 app:layout_constraintStart_toStartOf="parent"
+                android:textColorHint="@color/grey_vote"
+                android:backgroundTint="@color/grey_vote"
                 android:maxLength="500"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="30dp"
                 android:layout_marginEnd="30dp"
-                android:fontFamily="@font/nunitosans_regular"
+                android:fontFamily="@font/nunitosans_italic"
                 android:textSize="15sp"/>
 
             <EditText
@@ -110,11 +115,13 @@
                 android:hint="@string/create_question_hint"
                 app:layout_constraintTop_toBottomOf="@+id/edit_text_option_1"
                 android:maxLength="500"
+                android:textColorHint="@color/grey_vote"
+                android:backgroundTint="@color/grey_vote"
                 app:layout_constraintStart_toStartOf="parent"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="30dp"
                 android:layout_marginEnd="30dp"
-                android:fontFamily="@font/nunitosans_regular"
+                android:fontFamily="@font/nunitosans_italic"
                 android:textSize="15sp"/>
 
             <EditText
@@ -123,12 +130,14 @@
                 android:id="@+id/edit_text_option_3"
                 android:hint="@string/create_question_hint"
                 android:maxLength="500"
+                android:textColorHint="@color/grey_vote"
+                android:backgroundTint="@color/grey_vote"
                 app:layout_constraintTop_toBottomOf="@+id/edit_text_option_2"
                 app:layout_constraintStart_toStartOf="parent"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="30dp"
                 android:layout_marginEnd="30dp"
-                android:fontFamily="@font/nunitosans_regular"
+                android:fontFamily="@font/nunitosans_italic"
                 android:textSize="15sp"/>
 
             <EditText
@@ -137,12 +146,14 @@
                 android:id="@+id/edit_text_option_4"
                 android:hint="@string/create_question_hint"
                 android:maxLength="500"
+                android:textColorHint="@color/grey_vote"
+                android:backgroundTint="@color/grey_vote"
                 app:layout_constraintTop_toBottomOf="@+id/edit_text_option_3"
                 app:layout_constraintStart_toStartOf="parent"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="30dp"
                 android:layout_marginEnd="30dp"
-                android:fontFamily="@font/nunitosans_regular"
+                android:fontFamily="@font/nunitosans_italic"
                 android:textSize="15sp"/>
 
             <EditText
@@ -151,12 +162,14 @@
                 android:id="@+id/edit_text_option_5"
                 android:hint="@string/create_question_hint"
                 android:maxLength="500"
+                android:textColorHint="@color/grey_vote"
+                android:backgroundTint="@color/grey_vote"
                 app:layout_constraintTop_toBottomOf="@+id/edit_text_option_4"
                 app:layout_constraintStart_toStartOf="parent"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="30dp"
                 android:layout_marginEnd="30dp"
-                android:fontFamily="@font/nunitosans_regular"
+                android:fontFamily="@font/nunitosans_italic"
                 android:textSize="15sp"/>
             <TextView
                 android:layout_width="wrap_content"
@@ -200,6 +213,8 @@
         android:padding="10dp"
         android:textSize="15sp"
         android:fontFamily="@font/quicksand_bold"
+        android:textAllCaps="false"
+
         android:background="@drawable/btn_shape_orange"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/guideline"
@@ -212,11 +227,12 @@
         android:layout_gravity="end|bottom"
         android:layout_margin="15dp"
         android:text="@string/btn_survey_cancel"
-        android:textColor="@color/white"
+        android:textAllCaps="false"
+        android:textColor="@color/orange"
         android:padding="10dp"
         android:textSize="15sp"
         android:fontFamily="@font/quicksand_bold"
-        android:background="@drawable/btn_shape_orange"
+        android:background="@drawable/btn_shape_light_orange"
         app:layout_constraintEnd_toStartOf="@+id/guideline"
         app:layout_constraintBottom_toBottomOf="parent"
         android:visibility="visible"
