@@ -1,0 +1,16 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@android:id/background">
+        <shape>
+            <solid android:color="@color/beige" />
+            <corners android:radius="3dp"/> <!-- Ajoutez du piquant avec des coins arrondis -->
+        </shape>
+    </item>
+    <item android:id="@android:id/progress">
+        <clip>
+            <shape>
+                <solid android:color="@color/orange" />
+                <corners android:radius="2dp"/> <!-- Les coins arrondis pour une progression tout en douceur -->
+            </shape>
+        </clip>
+    </item>
+</layer-list>

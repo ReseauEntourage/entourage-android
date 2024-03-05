@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,8 +25,8 @@ import social.entourage.android.events.EventsPresenter
 import social.entourage.android.groups.GroupPresenter
 import social.entourage.android.api.model.Conversation
 import social.entourage.android.api.model.EntourageUser
-import social.entourage.android.api.model.notification.CompleteReactionsResponse
-import social.entourage.android.api.model.notification.ReactionType
+import social.entourage.android.api.model.CompleteReactionsResponse
+import social.entourage.android.api.model.ReactionType
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.Utils
 import social.entourage.android.tools.log.AnalyticsEvents

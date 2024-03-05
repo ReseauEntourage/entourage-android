@@ -36,6 +36,7 @@ class ApiModule {
     val homeRequest: HomeRequest
     val eventsRequest: EventsRequest
     val actionsRequest : ActionsRequest
+    val surveyRequest : SurveyRequest
     val discussionsRequest : DiscussionsRequest
     val appLinksRequest : AppLinksRequest
 
@@ -54,6 +55,7 @@ class ApiModule {
         homeRequest = providesSummaryRequest(restAdapter)
         eventsRequest = providesEventsRequest(restAdapter)
         actionsRequest = providesActionsRequest(restAdapter)
+        surveyRequest = providesSurveyRequest(restAdapter)
         discussionsRequest = providesDiscussionsRequest(restAdapter)
         appLinksRequest = providesAppLinksRequest(restAdapter)
     }
@@ -150,10 +152,14 @@ class ApiModule {
     fun providesActionsRequest(restAdapter: Retrofit): ActionsRequest {
         return restAdapter.create(ActionsRequest::class.java)
     }
+    fun providesSurveyRequest(restAdapter: Retrofit): SurveyRequest {
+        return restAdapter.create(SurveyRequest::class.java)
+    }
     fun providesDiscussionsRequest(restAdapter: Retrofit): DiscussionsRequest {
         return restAdapter.create(DiscussionsRequest::class.java)
     }
     fun providesAppLinksRequest(restAdapter: Retrofit): AppLinksRequest {
         return restAdapter.create(AppLinksRequest::class.java)
     }
+
 }

@@ -13,29 +13,26 @@ import android.widget.SeekBar
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.databinding.DataBindingUtil
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.LatLng
-import com.google.android.libraries.places.compat.AutocompleteFilter
 import com.google.android.libraries.places.compat.ui.PlaceAutocomplete
 import com.google.android.libraries.places.widget.AutocompleteActivity
-import kotlinx.android.synthetic.main.new_activity_event_filters.*
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.RefreshController
 import social.entourage.android.api.model.Address
-import social.entourage.android.base.location.LocationProvider
-import social.entourage.android.base.location.LocationUtils
-import social.entourage.android.databinding.NewActivityEventFiltersBinding
-import social.entourage.android.events.list.DiscoverEventsListFragment
 import social.entourage.android.api.model.EventActionLocationFilters
 import social.entourage.android.api.model.EventFilterType
+import social.entourage.android.base.location.LocationProvider
+import social.entourage.android.base.location.LocationUtils
+import social.entourage.android.databinding.ActivityEventFiltersBinding
+import social.entourage.android.events.list.DiscoverEventsListFragment
 import timber.log.Timber
 import java.io.IOException
-import java.util.*
+import java.util.Locale
 
 class EventFiltersActivity : AppCompatActivity() {
 
@@ -64,15 +61,13 @@ class EventFiltersActivity : AppCompatActivity() {
 
     private var currentFilters: EventActionLocationFilters? = null
 
-    private lateinit var binding: NewActivityEventFiltersBinding
+    private lateinit var binding: ActivityEventFiltersBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding = DataBindingUtil.setContentView(
-            this,
-            R.layout.new_activity_event_filters
-        )
+        binding = ActivityEventFiltersBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         currentFilters = intent.getSerializableExtra(FILTERS) as? EventActionLocationFilters
 
@@ -145,14 +140,14 @@ class EventFiltersActivity : AppCompatActivity() {
             binding.errorView.visibility = View.GONE
             when (checkedId) {
                 R.id.profile_address -> {
-                    val _address = EntourageApplication.get().me()?.address
-                    val address = Address(_address?.latitude ?: 0.0,_address?.longitude ?: 0.0,_address?.displayAddress ?: "-")
-                    currentFilters?.modifyFilter(_address?.displayAddress,address,currentFilters?.travel_distance(),
+                    val myAddress = EntourageApplication.get().me()?.address
+                    val address = Address(myAddress?.latitude ?: 0.0,myAddress?.longitude ?: 0.0,myAddress?.displayAddress ?: "-")
+                    currentFilters?.modifyFilter(myAddress?.displayAddress,address,currentFilters?.travel_distance(),
                         EventFilterType.PROFILE)
                     binding.layoutCustom.visibility = View.GONE
                     binding.layoutPlace.visibility = View.GONE
                     binding.layoutMe.visibility = View.VISIBLE
-                    binding.addressName.text = _address?.displayAddress
+                    binding.addressName.text = myAddress?.displayAddress
                     cancelGps()
                 }
                 R.id.place -> {
@@ -219,7 +214,7 @@ class EventFiltersActivity : AppCompatActivity() {
     }
 
     //Google Place
-    fun onPlaceSearch() {
+    private fun onPlaceSearch() {
         //val filter: AutocompleteFilter = AutocompleteFilter.Builder().setCountry("FR").build()
         val intent = PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_OVERLAY)
             .build(this)
@@ -228,9 +223,8 @@ class EventFiltersActivity : AppCompatActivity() {
 
     private var resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         val data: Intent? = result.data
-        val resultCode = result.resultCode
 
-        when (resultCode) {
+        when (result.resultCode) {
             AutocompleteActivity.RESULT_OK -> {
                 val place = PlaceAutocomplete.getPlace(this, data)
                 if (place == null || place.address == null) return@registerForActivityResult
@@ -300,8 +294,8 @@ class EventFiltersActivity : AppCompatActivity() {
     }
 
     fun updateLocationText(lastLocation: Location?) {
-        place_name?.text = ""
-        place_name?.hint = getString(R.string.onboard_place_placeholder)
+        binding.placeName.text = ""
+        binding.placeName.hint = getString(R.string.onboard_place_placeholder)
         lastLocation?.let {
             this.let{ activity ->
                 try {
@@ -319,8 +313,8 @@ class EventFiltersActivity : AppCompatActivity() {
 
                             val addressName = "$street$city, $cp"
                             binding.locationName.text = addressName
-                            val address = Address(it.latitude,it.longitude,addressName)
-                            currentFilters?.modifyAddress(address)
+                            val fullAddress = Address(it.latitude,it.longitude,addressName)
+                            currentFilters?.modifyAddress(fullAddress)
                             currentFilters?.modifiyShortname("$city, $cp")
                             binding.errorView.visibility = View.INVISIBLE
                         }
@@ -333,7 +327,7 @@ class EventFiltersActivity : AppCompatActivity() {
     }
 
     @SuppressLint("MissingPermission")
-    protected fun startRequestLocation() {
+    fun startRequestLocation() {
         if (LocationUtils.isLocationPermissionGranted()) {
             binding.locationName.text =  getString(R.string.onboard_place_getting_current_location)
             mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
@@ -343,7 +337,7 @@ class EventFiltersActivity : AppCompatActivity() {
                 null
             )
         } else {
-            Toast.makeText(this, "Activez la localisation", Toast.LENGTH_LONG).show()
+            Toast.makeText(this, getString(R.string.activate_geoloc), Toast.LENGTH_LONG).show()
         }
     }
 

@@ -17,10 +17,9 @@ import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.activity_login.*
-import kotlinx.android.synthetic.main.fragment_onboarding_phase2.*
-import kotlinx.android.synthetic.main.fragment_onboarding_phase2.tv_condition_generales
+
 import social.entourage.android.R
+import social.entourage.android.databinding.FragmentOnboardingPhase2Binding
 import social.entourage.android.tools.hideKeyboard
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.view.EntSnackbar
@@ -30,6 +29,7 @@ private const val ARG_PHONE = "phone"
 private const val ARG_COUNTRY = "couuntry"
 
 class OnboardingPhase2Fragment : Fragment() {
+    private lateinit var binding: FragmentOnboardingPhase2Binding
     private val TIME_BEFORE_CALL = 60
     private var callback:OnboardingStartCallback? = null
     private var countDownTimer:CountDownTimer? = null
@@ -50,7 +50,8 @@ class OnboardingPhase2Fragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_onboarding_phase2, container, false)
+        binding = FragmentOnboardingPhase2Binding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -70,9 +71,9 @@ class OnboardingPhase2Fragment : Fragment() {
         countDownTimer = object  : CountDownTimer(600000 ,1000L) {
             override fun onFinish() {
                 cancelTimer()
-                ui_onboard_bt_code_retry?.visibility = View.VISIBLE
-                ui_onboard_code_retry?.visibility = View.INVISIBLE
-                ui_onboard_code_tv_phone_mod?.visibility = View.VISIBLE
+                binding.uiOnboardBtCodeRetry?.visibility = View.VISIBLE
+                binding.uiOnboardCodeRetry?.visibility = View.INVISIBLE
+                binding.uiOnboardCodeTvPhoneMod?.visibility = View.VISIBLE
             }
 
             override fun onTick(p0: Long) {
@@ -80,19 +81,19 @@ class OnboardingPhase2Fragment : Fragment() {
                 timeOut -= 1
 
                 if (timeOut == 0) {
-                    ui_onboard_bt_code_retry?.visibility = View.VISIBLE
-                    ui_onboard_code_retry?.visibility = View.INVISIBLE
-                    ui_onboard_code_tv_phone_mod?.visibility = View.VISIBLE
+                    binding.uiOnboardBtCodeRetry.visibility = View.VISIBLE
+                    binding.uiOnboardCodeRetry.visibility = View.INVISIBLE
+                    binding.uiOnboardCodeTvPhoneMod.visibility = View.VISIBLE
                     cancelTimer()
                 }
                 else {
                     val _time = if (timeOut < 10) "00:0$timeOut" else "00:$timeOut"
                     val _retryTxt = String.format(getString(R.string.onboard_sms_wait_retry),_time)
-                    ui_onboard_code_retry?.text = _retryTxt
+                    binding.uiOnboardCodeRetry.text = _retryTxt
                 }
             }
         }
-        ui_onboard_code_retry?.text = String.format(getString(R.string.onboard_sms_wait_retry),"00:0$timeOut")
+        binding.uiOnboardCodeRetry?.text = String.format(getString(R.string.onboard_sms_wait_retry),"00:0$timeOut")
 
         countDownTimer?.start()
     }
@@ -114,13 +115,13 @@ class OnboardingPhase2Fragment : Fragment() {
     }
 
     fun setupViews() {
-        layout_main?.setOnTouchListener { view, motionEvent ->
+        binding.layoutMain.setOnTouchListener { view, motionEvent ->
             view.hideKeyboard()
             view.performClick()
             true
         }
 
-        ui_onboard_bt_code_retry?.setOnClickListener {
+        binding.uiOnboardBtCodeRetry?.setOnClickListener {
             if (timeOut > 0) {
                 AlertDialog.Builder(requireActivity())
                     .setTitle(R.string.attention_pop_title)
@@ -135,7 +136,7 @@ class OnboardingPhase2Fragment : Fragment() {
             }
         }
 
-        ui_onboard_bt_help?.setOnClickListener {
+        binding.uiOnboardBtHelp?.setOnClickListener {
             val intent = Intent(Intent.ACTION_SENDTO)
             intent.data = Uri.parse("mailto:")
             val addresses = arrayOf(getString(R.string.contact_email))
@@ -143,26 +144,26 @@ class OnboardingPhase2Fragment : Fragment() {
             try {
                 startActivity(intent)
             } catch (e: ActivityNotFoundException) {
-                layout_main?.let { EntSnackbar.make(it, R.string.error_no_email, Snackbar.LENGTH_SHORT).show()}
+                binding.layoutMain?.let { EntSnackbar.make(it, R.string.error_no_email, Snackbar.LENGTH_SHORT).show()}
             }
         }
 
-        ui_onboard_code_tv_description?.text = getString(R.string.onboard_sms_sub)
+        binding.uiOnboardCodeTvDescription?.text = getString(R.string.onboard_sms_sub)
 
-        ui_onboard_code_tv_phone?.text = country?.phoneCode + phone
+        binding.uiOnboardCodeTvPhone?.text = country?.phoneCode + phone
 
-        ui_onboard_bt_code_retry?.visibility = View.INVISIBLE
-        ui_onboard_code_retry?.visibility = View.VISIBLE
+        binding.uiOnboardBtCodeRetry?.visibility = View.INVISIBLE
+        binding.uiOnboardCodeRetry?.visibility = View.VISIBLE
 
-        ui_onboard_code_tv_phone_mod?.visibility = View.INVISIBLE
+        binding.uiOnboardCodeTvPhoneMod?.visibility = View.INVISIBLE
 
-        ui_onboard_code_tv_phone_mod?.setOnClickListener {
+        binding.uiOnboardCodeTvPhoneMod?.setOnClickListener {
             callback?.goPreviousManually()
         }
 
         val text = getString(R.string.terms_and_conditions_html)
-        tv_condition_generales.text = Html.fromHtml(text)
-        tv_condition_generales.movementMethod = LinkMovementMethod.getInstance()
+        binding.tvConditionGenerales.text = Html.fromHtml(text)
+        binding.tvConditionGenerales.movementMethod = LinkMovementMethod.getInstance()
 
 
         addTextwatcher()
@@ -191,7 +192,7 @@ class OnboardingPhase2Fragment : Fragment() {
                 }
             }
         }
-        ui_onboard_code?.addTextChangedListener(textWatcher)
+        binding.uiOnboardCode?.addTextChangedListener(textWatcher)
     }
 
     companion object {

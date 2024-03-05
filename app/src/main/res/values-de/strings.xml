@@ -2031,7 +2031,7 @@ Sie werden diese Nachricht lesen, sobald sie der Gruppe beitreten.</string>
         <item quantity="other">Neue Nachrichten von %1$s,…</item>
     </plurals>
     <plurals name="notification_text_chat_message">
-        <item quantity="zero">Sie nhaben keine neuen Nachrichten</item>
+        <item quantity="zero">Sie haben keine neuen Nachrichten</item>
         <item quantity="one">Sie haben %1$d neue Nachricht: %2$s</item>
         <item quantity="other">Sie haben %1$d neue Nachrichten</item>
     </plurals>
@@ -2202,7 +2202,7 @@ Sie werden diese Nachricht lesen, sobald sie der Gruppe beitreten.</string>
     <string name="onboard_neighbour_activity_choice_2">Participer à des\névénements</string>
     <string name="onboard_neighbour_activity_choice_3">Umgeben Sie eine einzelne Person</string>
     <string name="onboard_neighbour_activity_choice_4">Spenden Sie \nMaterialien</string>
-    <string name="onboard_neighbour_activity_choice_5">Engagieren Sie sich im im Verein</string>
+    <string name="onboard_neighbour_activity_choice_5">Engagieren Sie sich im Verein</string>
 
     <string name="onboard_place_title2_sdf">Großartig !</string>
     <string name="onboard_place_description2_sdf">Möchten Sie einen weiteren Bezirk hinzufügen?</string>

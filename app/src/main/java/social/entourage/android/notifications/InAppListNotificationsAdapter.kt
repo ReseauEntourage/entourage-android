@@ -6,16 +6,14 @@ import android.text.Spannable
 import android.text.SpannableStringBuilder
 import android.text.style.StyleSpan
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
-import kotlinx.android.synthetic.main.new_notif_detail.view.*
 import social.entourage.android.R
-import social.entourage.android.api.model.InAppNotification
+import social.entourage.android.api.model.notification.InAppNotification
+import social.entourage.android.databinding.LayoutNotifDetailBinding
 import social.entourage.android.tools.utils.Utils
-import timber.log.Timber
 
 interface OnItemClick {
     fun onItemClick(notif: InAppNotification, position:Int)
@@ -24,19 +22,16 @@ interface OnItemClick {
 class InAppListNotificationsAdapter(
     var notifs: List<InAppNotification>,
     private var onItemClickListener: OnItemClick
-) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+) : RecyclerView.Adapter<InAppListNotificationsAdapter.ViewHolder>() {
 
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-
-        val view = LayoutInflater
-            .from(parent.context)
-            .inflate(R.layout.new_notif_detail, parent, false)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val view = LayoutNotifDetailBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(view, parent.context)
     }
 
-    inner class ViewHolder(val binding: View, var context:Context) :
-        RecyclerView.ViewHolder(binding) {
+    inner class ViewHolder(val binding: LayoutNotifDetailBinding, var context:Context) :
+        RecyclerView.ViewHolder(binding.root) {
         fun bind(notif: InAppNotification, position:Int) {
 
 
@@ -73,16 +68,16 @@ class InAppListNotificationsAdapter(
             binding.date.text = notif.createdAt?.let { Utils.dateAsDurationFromNow(it,context) }
 
             notif.imageUrl?.let {
-                Glide.with(binding.image_card.context)
+                Glide.with(binding.imageCard.context)
                     .load(it)
                     .error(NotificationActionManager.setPlaceHolder(notif.instanceType))
                     .transform(CircleCrop())
-                    .into(binding.image_card)
+                    .into(binding.imageCard)
             } ?: run {
-                Glide.with(binding.image_card.context)
+                Glide.with(binding.imageCard.context)
                     .load(NotificationActionManager.setPlaceHolder(notif.instanceType))
                     .transform(CircleCrop())
-                    .into(binding.image_card)
+                    .into(binding.imageCard)
             }
 
             if (notif.isRead()) {
@@ -96,8 +91,8 @@ class InAppListNotificationsAdapter(
         }
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        (holder as? ViewHolder)?.bind(notifs[position], position)
+    override fun onBindViewHolder(holder: InAppListNotificationsAdapter.ViewHolder, position: Int) {
+        holder.bind(notifs[position], position)
     }
 
     override fun getItemCount(): Int {

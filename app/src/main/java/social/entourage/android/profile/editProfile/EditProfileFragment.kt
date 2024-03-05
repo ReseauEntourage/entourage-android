@@ -6,6 +6,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -159,9 +160,9 @@ class EditProfileFragment : Fragment(), EditProfileCallback,
 
     private fun onEditImage() {
         binding.editImage.setOnClickListener {
-            val photoFragment = ChooseProfilePhotoFragment()
-            photoFragment.editProfileCallback = this
-            photoFragment.show(parentFragmentManager, ChooseProfilePhotoFragment.TAG)
+            val intent = Intent(context, EditPhotoActivity::class.java).apply {
+            }
+            startActivity(intent)
         }
     }
 

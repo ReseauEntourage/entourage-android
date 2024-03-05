@@ -173,7 +173,6 @@ class EventUtils {
                 "marauding" -> return context.getString(R.string.interest_marauding)
                 "other" -> return context.getString(R.string.interest_other)
                 "activités manuelles"  -> return context.getString(R.string.interest_activites)
-
                 "animaux" -> return context.getString(R.string.interest_animaux)
                 "bien-être" -> return context.getString(R.string.interest_bien_etre)
                 "cuisine" -> return context.getString(R.string.interest_cuisine)

@@ -10,13 +10,15 @@ import android.telephony.TelephonyManager
 import android.util.AttributeSet
 import android.util.DisplayMetrics
 import android.util.TypedValue
+import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnClickListener
 import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
-import kotlinx.android.synthetic.main.layout_code_picker.view.*
+
 import social.entourage.android.R
+import social.entourage.android.databinding.LayoutCodePickerBinding
 import timber.log.Timber
 import java.util.*
 import kotlin.math.roundToInt
@@ -26,11 +28,12 @@ import kotlin.math.roundToInt
  * It adds Guadeloupe, Iceland, Kosovo. Removed the flags and libphoneutils library
  */
 class CountryCodePicker : RelativeLayout {
+    private lateinit var binding: LayoutCodePickerBinding
     private val localeDefaultCountry = Locale.getDefault().country
     var mBackgroundColor: Int = defaultBackgroundColor
         private set(backgroundColor) {
             field = backgroundColor
-            country_code_holder_rly?.setBackgroundColor(backgroundColor)
+            binding.countryCodeHolderRly?.setBackgroundColor(backgroundColor)
         }
     private var mDefaultCountryCode = DEFAULT_COUNTRY_CODE
     private var mDefaultCountryNameCode: String? = null
@@ -99,18 +102,22 @@ class CountryCodePicker : RelativeLayout {
     private var mSetCountryByTimeZone = true
 
     constructor(context: Context?) : super(context) {
+        binding = LayoutCodePickerBinding.inflate(LayoutInflater.from(context), this, true)
         init(null)
     }
 
     constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs) {
+        binding = LayoutCodePickerBinding.inflate(LayoutInflater.from(context), this, true)
         init(attrs)
     }
 
     constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
+        binding = LayoutCodePickerBinding.inflate(LayoutInflater.from(context), this, true)
         init(attrs)
     }
 
     constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int, defStyleRes: Int) : super(context, attrs, defStyleAttr, defStyleRes) {
+        binding = LayoutCodePickerBinding.inflate(LayoutInflater.from(context), this, true)
         init(attrs)
     }
 
@@ -133,7 +140,7 @@ class CountryCodePicker : RelativeLayout {
                 }
             }
         }
-        click_consumer_rly?.setOnClickListener(countryCodeHolderClickListener)
+        binding.clickConsumerRly?.setOnClickListener(countryCodeHolderClickListener)
     }
 
     private fun applyCustomProperty(a: TypedArray) {
@@ -193,7 +200,7 @@ class CountryCodePicker : RelativeLayout {
             // background color of view.
             mBackgroundColor = a.getColor(R.styleable.CountryCodePicker_ccp_backgroundColor, Color.TRANSPARENT)
             if (mBackgroundColor != Color.TRANSPARENT) {
-                country_code_holder_rly?.setBackgroundColor(mBackgroundColor)
+                binding.countryCodeHolderRly?.setBackgroundColor(mBackgroundColor)
             }
 
             // text font
@@ -205,7 +212,7 @@ class CountryCodePicker : RelativeLayout {
             //text size
             val textSize = a.getDimensionPixelSize(R.styleable.CountryCodePicker_ccp_textSize, 0)
             if (textSize > 0) {
-                selected_country_tv?.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize.toFloat())
+                binding.selectedCountryTv?.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize.toFloat())
                 setFlagSize(textSize)
                 setArrowSize(textSize)
             } else { //no text size specified
@@ -230,16 +237,16 @@ class CountryCodePicker : RelativeLayout {
         } catch (e: Exception) {
             Timber.e(e)
             if (isInEditMode) {
-                selected_country_tv?.text = context.getString(R.string.country_france_flag)
+                binding.selectedCountryTv?.text = context.getString(R.string.country_france_flag)
             } else {
-                selected_country_tv?.text = e.message
+                binding.selectedCountryTv?.text = e.message
             }
         } finally {
             a.recycle()
         }
     }
 
-    private fun setDefaultCountry(defaultCountry: Country) {
+        private fun setDefaultCountry(defaultCountry: Country) {
         this.defaultCountry = defaultCountry
     }
 
@@ -255,7 +262,7 @@ class CountryCodePicker : RelativeLayout {
             ) ?: return
             mSelectedCountry = newSelectedCountry
             countryCodePickerListener?.updatedCountry(newSelectedCountry)
-            selected_country_tv?.text = if (!mHideNameCode) {
+            binding.selectedCountryTv.text = if (!mHideNameCode) {
                 if (mShowFullName) {
                     if (!mHidePhoneCode) {
                         context.getString(R.string.country_full_name_and_phone_code,
@@ -399,8 +406,8 @@ class CountryCodePicker : RelativeLayout {
         get() = mTextColor
         set(contentColor) {
             mTextColor = contentColor
-            selected_country_tv?.setTextColor(mTextColor)
-            arrow_imv?.setColorFilter(mTextColor, PorterDuff.Mode.SRC_IN)
+            binding.selectedCountryTv?.setTextColor(mTextColor)
+            binding.arrowImv?.setColorFilter(mTextColor, PorterDuff.Mode.SRC_IN)
         }
 
     /**
@@ -410,7 +417,7 @@ class CountryCodePicker : RelativeLayout {
      */
     private fun setTextSize(textSize: Int) {
         if (textSize > 0) {
-            selected_country_tv?.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize.toFloat())
+            binding.selectedCountryTv?.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize.toFloat())
             setArrowSize(textSize)
             setFlagSize(textSize)
         }
@@ -423,7 +430,7 @@ class CountryCodePicker : RelativeLayout {
      */
     private fun setArrowSize(arrowSize: Int) {
         if (arrowSize > 0) {
-            arrow_imv?.let {
+            binding.arrowImv?.let {
                 val params = it.layoutParams as LayoutParams
                 params.width = arrowSize
                 params.height = arrowSize
@@ -441,7 +448,7 @@ class CountryCodePicker : RelativeLayout {
         try {
             val typeFace = Typeface.createFromAsset(context.assets, fontAssetPath)
             mTypeFace = typeFace
-            selected_country_tv?.typeface = typeFace
+            binding.selectedCountryTv?.typeface = typeFace
         } catch (e: Exception) {
             Timber.e(e)
         }
@@ -457,7 +464,7 @@ class CountryCodePicker : RelativeLayout {
         set(typeFace) {
             mTypeFace = typeFace
             try {
-                selected_country_tv?.typeface = typeFace
+                binding.selectedCountryTv?.typeface = typeFace
             } catch (e: Exception) {
                 Timber.e(e)
             }
@@ -469,13 +476,13 @@ class CountryCodePicker : RelativeLayout {
      * @param flagSize size in pixels
      */
     private fun setFlagSize(flagSize: Int) {
-        flag_imv?.layoutParams?.height = flagSize
-        flag_imv?.requestLayout()
+        binding.flagImv?.layoutParams?.height = flagSize
+        binding.flagImv?.requestLayout()
     }
 
     private fun showFlag(showFlag: Boolean) {
         mShowFlag = showFlag
-        flag_holder_lly?.visibility = if (showFlag) View.VISIBLE else View.GONE
+        binding.flagHolderLly?.visibility = if (showFlag) View.VISIBLE else View.GONE
     }
 
     override fun isClickable(): Boolean {
@@ -487,7 +494,7 @@ class CountryCodePicker : RelativeLayout {
      */
     override fun setClickable(isClickable: Boolean) {
         mIsClickable = isClickable
-        click_consumer_rly?.let {
+        binding.clickConsumerRly?.let {
             it.isClickable = isClickable
             it.isEnabled = isClickable
             it.setOnClickListener(if(isClickable) countryCodeHolderClickListener else null)

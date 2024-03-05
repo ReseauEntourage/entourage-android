@@ -223,6 +223,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="category_name_label">Décrivez en un mot la catégorie de votre groupe</string>
     <string name="pass">Passer</string>
     <string name="create_post">Créer une publication</string>
+    <string name="create_survey">Créer un sondage</string>
     <string name="create_event">Créer un événement sur le groupe</string>
     <string name="create_event_if_no_event">Créer un événement</string>
     <string name="create_event_btn_title">Créer un événement</string>
@@ -2685,6 +2686,30 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="see_member_react">Personnes ayant réagi</string>
     <string name="text_title_i_like">J\'aime</string>
     <string name="text_title_comment">Commenter</string>
+    <string name="text_title_votes">Voir les votes</string>
+
+    <!--    CREATE SURVEY-->
+    <string name="header_title_create_survey">Créer un sondage</string>
+    <string name="create_question_title">Question</string>
+    <string name="create_question_hint">Posez votre question</string>
+    <string name="create_option_hint">+ Ajouter une option</string>
+    <string name="create_option_title">Options</string>
+    <string name="title_switch_mutiple_choice">Plusieurs réponses possibles</string>
+    <string name="title_switch_single_choice">Sélectionnez une option</string>
+    <string name="title_switch_mutiples_choices">Sélectionnez une ou plusieurs options</string>
+    <string name="btn_survey_validate">Valider</string>
+    <string name="btn_survey_cancel">Annuler</string>
+    <string name="popup_survey_title">Attention</string>
+    <string name="popup_survey_content">Si vous quittez la création de sondage, toutes les informations saisies seront perdues</string>
+    <string name="popup_survey_btn_leave">Quitter</string>
+    <string name="popup_survey_btn_cancel">Annuler</string>
+    <string name="see_member_vote">Réponses au sondage</string>
+    <string name="activate_geoloc">Activez la localisation</string>
+
+
+    <string name="home_v2_no_adress_title">Améliorez votre expérience !</string>
+    <string name="home_v2_no_adress_content">Pour connaître les actions et évènements solidaires autour de chez vous, veuillez prendre un moment pour ajouter votre localité à votre profil.</string>
+    <string name="home_v2_no_adress_button">Ajouter ma localité</string>
 
 </resources>
 

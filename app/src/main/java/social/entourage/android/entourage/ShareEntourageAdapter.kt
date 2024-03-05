@@ -5,72 +5,62 @@ import android.graphics.PorterDuff
 import android.graphics.Typeface
 import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import kotlinx.android.synthetic.main.layout_cell_share_entourage.view.*
 import social.entourage.android.R
 import social.entourage.android.api.model.BaseEntourage
 import social.entourage.android.api.model.SharingEntourage
+import social.entourage.android.databinding.LayoutCellShareEntourageBinding
 import social.entourage.android.entourage.category.EntourageCategoryManager
 
-/**
- * Created by Jr (MJ-DEVS) on 09/09/2020.
- */
-class ShareEntourageAdapter(val context: Context, private val myDataset: ArrayList<SharingEntourage>, val listener:(position:Int) -> Unit) :
-        RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class ShareEntourageAdapter(private val context: Context, private val myDataset: ArrayList<SharingEntourage>, private val listener: (position: Int) -> Unit) :
+    RecyclerView.Adapter<ShareEntourageAdapter.ImageVH>() {
 
-    inner class ImageVH(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class ImageVH(val binding: LayoutCellShareEntourageBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(position: Int) {
             val sharingEntourage = myDataset[position]
 
-            itemView.ui_tv_title?.text = sharingEntourage.title
+            binding.uiTvTitle.text = sharingEntourage.title
 
             if (sharingEntourage.isSelected) {
-                val img = AppCompatResources.getDrawable(context,R.drawable.contact_selected)
-                itemView.ui_iv_select.setImageDrawable(img)
-                itemView.ui_tv_title.setTypeface(null, Typeface.BOLD)
-            }
-            else {
-                val img = AppCompatResources.getDrawable(context,R.drawable.ic_filter_rb_bg_active)
-                itemView.ui_iv_select.setImageDrawable(img)
-                itemView.ui_tv_title.setTypeface(null, Typeface.NORMAL)
+                val img = AppCompatResources.getDrawable(context, R.drawable.contact_selected)
+                binding.uiIvSelect.setImageDrawable(img)
+                binding.uiTvTitle.setTypeface(null, Typeface.BOLD)
+            } else {
+                val img = AppCompatResources.getDrawable(context, R.drawable.ic_filter_rb_bg_active)
+                binding.uiIvSelect.setImageDrawable(img)
+                binding.uiTvTitle.setTypeface(null, Typeface.NORMAL)
             }
 
-            itemView.ui_iv_avatar?.let {iconView ->
-                Glide.with(iconView.context).clear(iconView)
-                val imageUrl:String? = if (sharingEntourage.group_type == "conversation") {
-                    sharingEntourage.author?.avatarUrl
-                } else null
+            Glide.with(binding.uiIvAvatar.context).clear(binding.uiIvAvatar)
+            val imageUrl: String? = if (sharingEntourage.group_type == "conversation") sharingEntourage.author?.avatarUrl else null
 
-                if (imageUrl != null) {
-                    iconView.setImageDrawable(null)
-                    Glide.with(iconView.context)
-                            .load(imageUrl)
-                            .placeholder(R.drawable.ic_user_photo_small)
-                            .circleCrop()
-                            .into(iconView)
+            if (imageUrl != null) {
+                Glide.with(binding.uiIvAvatar.context)
+                    .load(imageUrl)
+                    .placeholder(R.drawable.ic_user_photo_small)
+                    .circleCrop()
+                    .into(binding.uiIvAvatar)
+            } else {
+                val bitDraw: Drawable? = if (sharingEntourage.category == null && sharingEntourage.group_type == BaseEntourage.GROUPTYPE_OUTING) {
+                    AppCompatResources.getDrawable(context, R.drawable.ic_event_accent_24dp)
                 } else {
-                    val bitDraw: Drawable? = if (sharingEntourage.category == null && sharingEntourage.group_type == BaseEntourage.GROUPTYPE_OUTING) {
-                        AppCompatResources.getDrawable(context,R.drawable.ic_event_accent_24dp)
-                    } else {
-                        getIcn(sharingEntourage.entourage_type,sharingEntourage.category)
-                    }
-                    iconView.setImageDrawable(bitDraw)
+                    getIcn(sharingEntourage.entourage_type, sharingEntourage.category)
                 }
+                binding.uiIvAvatar.setImageDrawable(bitDraw)
             }
 
-            itemView.setOnClickListener {
+            binding.root.setOnClickListener {
                 listener(position)
             }
         }
     }
 
-    fun getIcn(type:String,category:String?) : Drawable?  {
-        val entourageCategory = EntourageCategoryManager.findCategory(type,category)
+    private fun getIcn(type: String, category: String?): Drawable? {
+        val entourageCategory = EntourageCategoryManager.findCategory(type, category)
         AppCompatResources.getDrawable(context, entourageCategory.iconRes)?.let { categoryIcon ->
             categoryIcon.mutate()
             categoryIcon.clearColorFilter()
@@ -82,17 +72,11 @@ class ShareEntourageAdapter(val context: Context, private val myDataset: ArrayLi
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImageVH {
-        val v = LayoutInflater.from(context)
-                .inflate(R.layout.layout_cell_share_entourage,parent, false)
-        return ImageVH(v)
+        val binding = LayoutCellShareEntourageBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return ImageVH(binding)
     }
 
-    override fun getItemCount(): Int {
-        return myDataset.size
-    }
+    override fun getItemCount(): Int = myDataset.size
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        holder as ImageVH
-        holder.bind(position)
-    }
+    override fun onBindViewHolder(holder: ImageVH, position: Int) = holder.bind(position)
 }

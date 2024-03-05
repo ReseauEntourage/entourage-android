@@ -10,129 +10,83 @@ import android.widget.BaseAdapter
 import android.widget.CompoundButton
 import androidx.core.content.res.ResourcesCompat
 import com.bumptech.glide.Glide
-import kotlinx.android.synthetic.main.layout_edit_partner.view.*
 import social.entourage.android.R
 import social.entourage.android.api.model.Partner
+import social.entourage.android.databinding.LayoutEditPartnerBinding // Assurez-vous que ceci correspond à votre nom de fichier de layout.
 
-/**
- * Created by mihaiionescu on 16/01/2017.
- */
 class UserEditPartnerAdapter : BaseAdapter() {
-    class PartnerViewHolder(v: View, checkboxListener: OnCheckedChangeListener?) {
-        var partner: Partner? = null
-
-        init {
-            v.partner_checkbox?.setOnCheckedChangeListener(checkboxListener)
-            v.partner_name?.setOnClickListener {
-                if (checkboxListener != null) {
-                    v.partner_checkbox?.let {
-                        it.isChecked = !it.isChecked
-                        checkboxListener.onCheckedChanged(it, it.isChecked)
-                    }
-                }
-            }
+    var partnerList: List<Partner>? = null
+        set(value) {
+            field = value
+            notifyDataSetChanged()
         }
-    }
 
     var selectedPartnerPosition = AdapterView.INVALID_POSITION
     private val onCheckedChangeListener = OnCheckedChangeListener()
 
-    var partnerList: List<Partner>? = null
-        set(partnerList) {
-            field = partnerList
-            notifyDataSetChanged()
-        }
+    override fun getCount() = partnerList?.size ?: 0
 
-    override fun getCount(): Int {
-        return partnerList?.size ?: 0
-    }
+    override fun getItem(position: Int) = partnerList?.get(position)
 
-    override fun getView(position: Int, view: View?, viewGroup: ViewGroup): View {
-        val currentView: View
-        val viewHolder: PartnerViewHolder
-        if (view == null) {
-            currentView = LayoutInflater.from(viewGroup.context)
-                .inflate(R.layout.layout_edit_partner, viewGroup, false)
-            viewHolder = PartnerViewHolder(currentView, onCheckedChangeListener)
-            currentView.tag = viewHolder
+    override fun getItemId(position: Int) = position.toLong()
+
+    override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
+        val binding: LayoutEditPartnerBinding
+        if (convertView == null) {
+            binding = LayoutEditPartnerBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            binding.root.tag = PartnerViewHolder(binding, onCheckedChangeListener)
         } else {
-            currentView = view
-            viewHolder = currentView.tag as PartnerViewHolder
+            binding = LayoutEditPartnerBinding.bind(convertView)
         }
 
-        // Populate the view
-        val partner = getItem(position)
-        if (partner != null) {
-            currentView.partner_name?.text = partner.name
-            if (partner.isDefault) {
-                currentView.partner_name?.setTypeface(null, Typeface.BOLD)
-            } else {
-                currentView.partner_name?.setTypeface(null, Typeface.NORMAL)
-            }
-            partner.largeLogoUrl?.let { partnerLogo ->
-                currentView.partner_logo?.let {
-                    Glide.with(it.context)
-                            .load(Uri.parse(partnerLogo))
-                            .placeholder(R.drawable.partner_placeholder)
-                            .into(it)
+        val viewHolder = binding.root.tag as PartnerViewHolder
+        viewHolder.bind(getItem(position))
+
+        return binding.root
+    }
+
+    inner class PartnerViewHolder(private val binding: LayoutEditPartnerBinding, checkboxListener: OnCheckedChangeListener?) {
+        var partner: Partner? = null
+
+        init {
+            binding.partnerCheckbox.setOnCheckedChangeListener(checkboxListener)
+            binding.partnerName.setOnClickListener {
+                binding.partnerCheckbox.let {
+                    it.isChecked = !it.isChecked
+                    checkboxListener?.onCheckedChanged(it, it.isChecked)
                 }
-            } ?: run  {
-                currentView.partner_logo?.setImageDrawable(
-                    ResourcesCompat.getDrawable(currentView.resources, R.drawable.partner_placeholder, null)
-                )
             }
-
-            // set the tag to null so that oncheckedchangelistener exits when populating the view
-            currentView.partner_checkbox?.tag = null
-            // set the check state
-            currentView.partner_checkbox?.isChecked = partner.isDefault
-            // set the tag to the item position
-            currentView.partner_checkbox?.tag = position
-
-            // set the partner id
-            viewHolder.partner = partner
         }
-        return currentView
-    }
 
-    override fun getItemId(position: Int): Long {
-        return position.toLong()
-    }
-
-    override fun getItem(position: Int): Partner? {
-        partnerList?.let { list ->
-            if (position >= 0 && position < list.size) return list[position]
+        fun bind(partner: Partner?) {
+            this.partner = partner
+            partner?.let {
+                binding.partnerName.text = it.name
+                binding.partnerName.setTypeface(null, if (it.isDefault) Typeface.BOLD else Typeface.NORMAL)
+                it.largeLogoUrl?.let { logoUrl ->
+                    Glide.with(binding.partnerLogo.context).load(Uri.parse(logoUrl))
+                        .placeholder(R.drawable.partner_placeholder).into(binding.partnerLogo)
+                } ?: run {
+                    binding.partnerLogo.setImageDrawable(ResourcesCompat.getDrawable(binding.root.resources, R.drawable.partner_placeholder, null))
+                }
+                binding.partnerCheckbox.tag = null // Préparer pour la réutilisation
+                binding.partnerCheckbox.isChecked = it.isDefault
+                binding.partnerCheckbox.tag = partner // Restaurer le tag
+            }
         }
-        return null
     }
 
     inner class OnCheckedChangeListener : CompoundButton.OnCheckedChangeListener {
-        override fun onCheckedChanged(compoundButton: CompoundButton, isChecked: Boolean) {
-            // if no tag, exit
-            if (compoundButton.tag == null) {
-                return
-            }
-            // get the position
-            val position = compoundButton.tag as Int
-            // unset the previously selected partner, if different than the current
+        override fun onCheckedChanged(buttonView: CompoundButton, isChecked: Boolean) {
+            val position = buttonView.tag as? Int ?: return
             if (selectedPartnerPosition != position) {
-                getItem(selectedPartnerPosition)?.let { oldPartner->
-                    oldPartner.isDefault = false
-                }
+                getItem(selectedPartnerPosition)?.isDefault = false
             }
-
-            // save the state
-            getItem(position)?.let { partner->
-                partner.isDefault = isChecked
-                selectedPartnerPosition = when {
-                    selectedPartnerPosition != position -> position
-                    partner.isDefault -> position
-                    else -> AdapterView.INVALID_POSITION
-                }
+            getItem(position)?.let {
+                it.isDefault = isChecked
+                selectedPartnerPosition = if (selectedPartnerPosition != position || it.isDefault) position else AdapterView.INVALID_POSITION
+                notifyDataSetChanged()
             }
-
-            // refresh the list view
-            notifyDataSetChanged()
         }
     }
 }

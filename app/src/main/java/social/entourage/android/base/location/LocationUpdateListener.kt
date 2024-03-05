@@ -4,7 +4,7 @@ import com.google.android.gms.maps.model.LatLng
 
 interface LocationUpdateListener {
 
-    fun onLocationStatusUpdated(active: Boolean)
+    fun onLocationStatusUpdated()
 
     fun onLocationUpdated(location: LatLng)
 }

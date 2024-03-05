@@ -4,22 +4,17 @@ import android.content.Intent
 import android.content.res.ColorStateList
 import android.os.Bundle
 import android.text.TextUtils
-import android.util.Log
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
-import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
-import com.google.gson.Gson
 import social.entourage.android.BuildConfig
 import social.entourage.android.R
 import social.entourage.android.actions.ActionsPresenter
 import social.entourage.android.api.model.Action
-import social.entourage.android.databinding.NewActivityActionDetailBinding
-import social.entourage.android.report.ReportModalFragment
-import social.entourage.android.report.ReportTypes
+import social.entourage.android.databinding.ActivityActionDetailBinding
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.utils.Const
 
@@ -31,7 +26,7 @@ interface OnDetailActionReceive {
 
 class ActionDetailActivity : AppCompatActivity(), OnDetailActionReceive {
 
-    private lateinit var binding: NewActivityActionDetailBinding
+    private lateinit var binding: ActivityActionDetailBinding
     private lateinit var actionsPresenter: ActionsPresenter
     private var shareContent = ""
     private var shareTitle = ""
@@ -41,10 +36,8 @@ class ActionDetailActivity : AppCompatActivity(), OnDetailActionReceive {
         super.onCreate(savedInstanceState)
         actionsPresenter = ViewModelProvider(this).get(ActionsPresenter::class.java)
 
-        binding = DataBindingUtil.setContentView(
-            this,
-            R.layout.new_activity_action_detail
-        )
+        binding = ActivityActionDetailBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         val id = intent.getIntExtra(Const.ACTION_ID, 0)
         val title = intent.getStringExtra(Const.ACTION_TITLE)
@@ -94,14 +87,13 @@ class ActionDetailActivity : AppCompatActivity(), OnDetailActionReceive {
 
     private fun createDeepURL(action:Action):String{
         val deepLinksHostName = BuildConfig.DEEP_LINKS_URL
-        var actionPath = ""
+        var actionPath: String
         if(action.isDemand()){
             actionPath = "solicitations/"
             shareTitle = getString(R.string.share_title_demande)
         }else{
             actionPath = "contributions/"
             shareTitle = getString(R.string.share_title_contrib)
-
         }
         return "https://" + deepLinksHostName + "/app/" + actionPath + action.uuid_v2
     }
@@ -132,6 +124,7 @@ class ActionDetailActivity : AppCompatActivity(), OnDetailActionReceive {
                 putExtra(Intent.EXTRA_TEXT, shareTitle + "\n" + shareUrl)
 
             }
+            //TODO translate this
             startActivity(Intent.createChooser(shareIntent, "Partager l'URL via"))
         }
     }

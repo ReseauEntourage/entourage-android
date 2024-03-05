@@ -688,6 +688,9 @@ object AnalyticsEvents {
     const val   Clic_Post_List_Reactions = "Clic_Post_List_Reactions"
     const val   Clic_ListReactions_Contact = "Clic_ListReactions_Contact"
 
+    const val   view_miss_location_popup = "view_miss_location_popup"
+    const val   clic_miss_location_add = "clic_miss_location_add"
+
 
 
 

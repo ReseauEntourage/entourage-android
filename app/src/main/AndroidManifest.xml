@@ -23,9 +23,11 @@
     <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" /> <!-- Permissions -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" /> <!-- uses-permission android:name="android.permission.BLUETOOTH"/ -->
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="32" />
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" /> <!-- uses-permission android:name="android.permission.RECORD_AUDIO"/ -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:maxSdkVersion="32" /> <!-- uses-permission android:name="android.permission.RECORD_AUDIO"/ -->
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission
@@ -49,7 +51,7 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:localeConfig="@xml/locales_config">
+        android:localeConfig="@xml/locales_config"
         >
 
 
@@ -81,6 +83,12 @@
         <activity
             android:name=".welcome.WelcomeTestActivity"
             android:exported="false" />
+        <activity android:name=".members.MembersActivity"
+            android:exported="false" />
+        <activity android:name=".survey.CreateSurveyActivity"
+            android:exported="false"/>
+        <activity android:name=".survey.ResponseSurveyActivity"
+            android:exported="false"/>
         <activity
             android:name=".home.pedago.PedagoDetailActivity"
             android:exported="false" />
@@ -139,6 +147,8 @@
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".user.UserProfileActivity"
+            android:exported="false" />
+        <activity android:name=".profile.editProfile.EditPhotoActivity"
             android:exported="false" />
         <activity
             android:name=".home.pedago.PedagoListActivity"
@@ -223,10 +233,6 @@
         <activity
             android:name="com.google.android.gms.oss.licenses.OssLicensesMenuActivity"
             android:theme="@style/EntourageOSSLicenses.Theme" />
-        <activity
-            android:name=".fab_comportement.FabActivity"
-            android:theme="@style/AppTheme.FabActivity"
-            android:exported="false" />
         <activity
             android:name="com.google.android.gms.oss.licenses.OssLicensesActivity"
             android:theme="@style/EntourageOSSLicenses.Theme" />

@@ -1,6 +1,5 @@
 package social.entourage.android.tools.image_viewer
 
-import android.R
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -14,8 +13,6 @@ import android.view.WindowManager
 import android.widget.ImageView
 import androidx.fragment.app.DialogFragment
 import com.bumptech.glide.Glide
-import com.github.chrisbanes.photoview.PhotoView
-import kotlinx.android.synthetic.main.new_event_item.view.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

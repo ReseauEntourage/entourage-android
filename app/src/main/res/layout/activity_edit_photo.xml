@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <FrameLayout
+        android:id="@+id/frameLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:elevation="15dp"
+        android:visibility="gone"/>
+    <include
+        android:id="@+id/header"
+        layout="@layout/layout_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@id/scrollView"
+        app:title="@{@string/add_image}" />
+
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/header">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingHorizontal="@dimen/padding_horizontal"
+            android:paddingTop="@dimen/padding_top">
+
+            <TextView
+                android:id="@+id/title"
+                style="@style/h4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:text="@string/add_image_subtitle"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/image_profile"
+                android:layout_width="110dp"
+                android:layout_height="110dp"
+                android:layout_marginTop="50dp"
+                android:src="@drawable/new_cross" />
+        </LinearLayout>
+    </ScrollView>
+    <Button
+        android:id="@+id/button_gallery"
+        style="@style/h2_white"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/new_rounded_button_orange"
+        android:drawablePadding="10dp"
+        android:paddingHorizontal="20dp"
+        android:text="@string/import_picture"
+        android:textAllCaps="false"
+        android:layout_marginHorizontal="65dp"
+        android:layout_marginTop="100dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/scrollView"/>
+    <Button
+        android:id="@+id/button_take_picture"
+        style="@style/h2_white"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/new_rounded_button_light_orange"
+        android:drawablePadding="10dp"
+        android:paddingHorizontal="20dp"
+        android:text="@string/take_picture"
+        android:textAllCaps="false"
+        android:layout_marginTop="20dp"
+        app:layout_constraintStart_toStartOf="@+id/button_gallery"
+        app:layout_constraintEnd_toEndOf="@+id/button_gallery"
+        app:layout_constraintTop_toBottomOf="@id/button_gallery"
+        />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

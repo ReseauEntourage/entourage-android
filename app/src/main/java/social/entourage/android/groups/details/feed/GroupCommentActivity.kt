@@ -8,7 +8,6 @@ import social.entourage.android.api.model.Post
 import social.entourage.android.comment.CommentActivity
 import social.entourage.android.comment.CommentsListAdapter
 import social.entourage.android.groups.GroupPresenter
-import timber.log.Timber
 
 class GroupCommentActivity : CommentActivity() {
 
@@ -43,7 +42,7 @@ class GroupCommentActivity : CommentActivity() {
     private fun handleParentPost(currentPost: Post?) {
         this.currentParentPost = currentPost
         binding.progressBar.visibility = View.GONE
-        (binding.comments.adapter as? CommentsListAdapter)?.updateDatas(this.currentParentPost)
+        (binding.comments.adapter as? CommentsListAdapter)?.updateData(this.currentParentPost)
         scrollAfterLayout()
         updateView(commentsList.size == 0)
     }

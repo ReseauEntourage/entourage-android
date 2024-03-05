@@ -27,13 +27,14 @@ import androidx.core.view.GestureDetectorCompat
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import kotlinx.android.synthetic.main.fragment_webview.*
+
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.base.BaseDialogFragment
+import social.entourage.android.databinding.FragmentWebviewBinding
 import timber.log.Timber
 import java.lang.reflect.Executable
 import java.util.*
@@ -42,6 +43,7 @@ class WebViewFragment : BaseDialogFragment() {
     // ----------------------------------
     // ATTRIBUTES
     // ----------------------------------
+    private lateinit var binding: FragmentWebviewBinding
     private lateinit var requestedUrl: String
     @IdRes private var shareMessageRes: Int = 0
     private var gestureDetectorCompat: GestureDetectorCompat? = null
@@ -56,8 +58,9 @@ class WebViewFragment : BaseDialogFragment() {
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         super.onCreateView(inflater, container, savedInstanceState)
+        binding = FragmentWebviewBinding.inflate(inflater, container, false)
         setHasOptionsMenu(true)
-        return inflater.inflate(R.layout.fragment_webview, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -66,13 +69,13 @@ class WebViewFragment : BaseDialogFragment() {
         shareMessageRes = arguments?.getInt(SHARE_MESSAGE, 0) ?: 0
         hasToSendRead = arguments?.getBoolean(SENDGETREAD, false) ?: false
         showAnimation()
-        webview_back_button.setOnClickListener {onBackClicked()}
-        webview_more_button.setOnClickListener {toggleMenu()}
-        webview_background.setOnClickListener {dismiss()}
-        webview_menu_browser.setOnClickListener {onMenuBrowserClicked()}
-        webview_menu_copy.setOnClickListener {onMenuCopyClicked()}
-        webview_menu_share.setOnClickListener {onMenuShareClicked()}
-        webview_navigation_bar_menu_background.setOnClickListener {toggleMenu()}
+        binding.webviewBackButton.setOnClickListener {onBackClicked()}
+        binding.webviewMoreButton.setOnClickListener {toggleMenu()}
+        binding.webviewBackground.setOnClickListener {dismiss()}
+        binding.webviewMenuBrowser.setOnClickListener {onMenuBrowserClicked()}
+        binding.webviewMenuCopy.setOnClickListener {onMenuCopyClicked()}
+        binding.webviewMenuShare.setOnClickListener {onMenuShareClicked()}
+        binding.webviewNavigationBarMenuBackground.setOnClickListener {toggleMenu()}
 
         if (hasToSendRead) {
             setWebUrlRead()
@@ -83,7 +86,7 @@ class WebViewFragment : BaseDialogFragment() {
         get() = 0
 
     override fun dismiss() {
-        webview?.stopLoading()
+        binding.webview?.stopLoading()
         hideAnimation()
     }
 
@@ -109,7 +112,7 @@ class WebViewFragment : BaseDialogFragment() {
 
             override fun onAnimationRepeat(animation: Animation) {}
         })
-        webview_animated_layout?.startAnimation(bottomUpJumpAnimation)
+        binding.webviewAnimatedLayout?.startAnimation(bottomUpJumpAnimation)
     }
 
     private fun hideAnimation() {
@@ -122,19 +125,19 @@ class WebViewFragment : BaseDialogFragment() {
 
             override fun onAnimationRepeat(animation: Animation) {}
         })
-        webview_animated_layout?.startAnimation(bottomDownJumpAnimation)
+        binding.webviewAnimatedLayout?.startAnimation(bottomDownJumpAnimation)
     }
 
     private fun initialiseView() {
-        webview?.settings?.javaScriptEnabled = true
-        webview?.settings?.domStorageEnabled = true
-        webview?.webViewClient = MyBrowser()
-        webview?.loadUrl(requestedUrl)
+        binding.webview?.settings?.javaScriptEnabled = true
+        binding.webview?.settings?.domStorageEnabled = true
+        binding.webview?.webViewClient = MyBrowser()
+        binding.webview?.loadUrl(requestedUrl)
 
         // add a gesture detector to the navigation bar
         this.context?.let { context ->
             gestureDetectorCompat = GestureDetectorCompat(context, NavigationViewGestureListener())
-            webview_navigation_bar?.setOnTouchListener { _, event ->
+            binding.webviewNavigationBar.setOnTouchListener { _, event ->
                 if (gestureDetectorCompat?.onTouchEvent(event) == true || event.action != MotionEvent.ACTION_UP) true
                 else onUp(event)
             }
@@ -142,7 +145,7 @@ class WebViewFragment : BaseDialogFragment() {
     }
 
     private fun onUp(event: MotionEvent): Boolean {
-        webview_animated_layout?.translationY = 0f
+        binding.webviewAnimatedLayout?.translationY = 0f
         return true
     }
 
@@ -150,8 +153,8 @@ class WebViewFragment : BaseDialogFragment() {
     // Click handling
     // ----------------------------------
     private fun onBackClicked() {
-        if (webview?.canGoBack() == true) {
-            webview?.goBack()
+        if (binding.webview?.canGoBack() == true) {
+            binding.webview?.goBack()
         } else {
             dismiss()
         }
@@ -165,7 +168,7 @@ class WebViewFragment : BaseDialogFragment() {
     }
 
     private fun onMenuBrowserClicked() {
-        webview?.url?.let {
+        binding.webview?.url?.let {
             val browseIntent = Intent(Intent.ACTION_VIEW, Uri.parse(it))
             try {
                 startActivity(browseIntent)
@@ -177,7 +180,7 @@ class WebViewFragment : BaseDialogFragment() {
     }
 
     private fun onMenuCopyClicked() {
-        webview?.url?.let {
+        binding.webview?.url?.let {
             val clipboard = requireContext().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
             val clip = ClipData.newPlainText(it, it)
             clipboard.setPrimaryClip(clip)
@@ -187,7 +190,7 @@ class WebViewFragment : BaseDialogFragment() {
     }
 
     private fun onMenuShareClicked() {
-        webview?.url?.let { url ->
+        binding.webview?.url?.let { url ->
             val sharingIntent = getSharingIntent(requireContext(), url, shareMessageRes)
             context?.startActivity(Intent.createChooser(sharingIntent, getString(R.string.entourage_share_intent_title)))
             toggleMenu()
@@ -195,8 +198,8 @@ class WebViewFragment : BaseDialogFragment() {
     }
 
     private fun toggleMenu() {
-        webview_navigation_bar_menu?.visibility = if (webview_navigation_bar_menu?.visibility == View.VISIBLE) View.GONE else View.VISIBLE
-        webview_navigation_bar_menu_background?.visibility = if (webview_navigation_bar_menu_background?.visibility == View.VISIBLE) View.GONE else View.VISIBLE
+        binding.webviewNavigationBarMenu.visibility = if (binding.webviewNavigationBarMenu.visibility == View.VISIBLE) View.GONE else View.VISIBLE
+        binding.webviewNavigationBarMenuBackground.visibility = if (binding.webviewNavigationBarMenuBackground.visibility == View.VISIBLE) View.GONE else View.VISIBLE
     }
 
     // ----------------------------------
@@ -220,46 +223,46 @@ class WebViewFragment : BaseDialogFragment() {
                     if (host.startsWith("www.")) {
                         host = host.substring(4)
                     }
-                    webview_title?.text = if (host.isNotEmpty()) host.replaceFirstChar {
+                    binding.webviewTitle.text = if (host.isNotEmpty()) host.replaceFirstChar {
                         if (it.isLowerCase()) it.titlecase(
                             Locale.ROOT
                         ) else it.toString()
                     } else ""
 
                 } ?: run {
-                    webview_title?.text = ""
+                    binding.webviewTitle.text = ""
                 }
-                webview_progressbar?.visibility = View.VISIBLE
+                binding.webviewProgressbar.visibility = View.VISIBLE
             }
         }
 
         override fun onPageFinished(view: WebView, url: String) {
             super.onPageFinished(view, url)
-            webview_progressbar?.visibility = View.GONE
+            binding.webviewProgressbar.visibility = View.GONE
         }
 
         @TargetApi(Build.VERSION_CODES.M)
         override fun onReceivedError(view: WebView, request: WebResourceRequest, error: WebResourceError) {
             super.onReceivedError(view, request, error)
-            webview_progressbar?.visibility = View.GONE
+            binding.webviewProgressbar?.visibility = View.GONE
         }
 
         //@SuppressWarnings("deprecation")
         @Deprecated("Deprecated in Java")
         override fun onReceivedError(view: WebView, errorCode: Int, description: String, failingUrl: String) {
             super.onReceivedError(view, errorCode, description, failingUrl)
-            webview_progressbar?.visibility = View.GONE
+            binding.webviewProgressbar?.visibility = View.GONE
         }
 
         @RequiresApi(Build.VERSION_CODES.M)
         override fun onReceivedHttpError(view: WebView, request: WebResourceRequest, errorResponse: WebResourceResponse) {
             super.onReceivedHttpError(view, request, errorResponse)
-            webview_progressbar?.visibility = View.GONE
+            binding.webviewProgressbar?.visibility = View.GONE
         }
 
         override fun onReceivedSslError(view: WebView, handler: SslErrorHandler, error: SslError) {
             super.onReceivedSslError(view, handler, error)
-            webview_progressbar?.visibility = View.GONE
+            binding.webviewProgressbar?.visibility = View.GONE
         }
     }
 
@@ -273,21 +276,21 @@ class WebViewFragment : BaseDialogFragment() {
             return true
         }
 
-        override fun onFling(event1: MotionEvent, event2: MotionEvent,
+        override fun onFling(event1: MotionEvent?, event2: MotionEvent,
                              velocityX: Float, velocityY: Float): Boolean {
             // On fling down, dismiss the fragment
-            if (event2.rawY - event1.rawY > 0 && velocityY < 0 && handleFling) {
+            if (event2.rawY - (event1?.rawY ?: 0.0f) > 0 && velocityY < 0 && handleFling) {
                 dismiss()
                 return true
             }
             return false
         }
 
-        override fun onScroll(e1: MotionEvent, e2: MotionEvent, distanceX: Float, distanceY: Float): Boolean {
-            val translationY = webview_animated_layout?.translationY ?: return false
-            val deltaY = e2.rawY - e1.rawY
+        override fun onScroll(e1: MotionEvent?, e2: MotionEvent, distanceX: Float, distanceY: Float): Boolean {
+            val translationY = binding.webviewAnimatedLayout?.translationY ?: return false
+            val deltaY = e2.rawY - (e1?.rawY ?: 0.0f)
             if (deltaY > 0) {
-                webview_animated_layout?.translationY = deltaY
+                binding.webviewAnimatedLayout?.translationY = deltaY
             }
             if (translationY > deltaY) handleFling = false
             return translationY > deltaY

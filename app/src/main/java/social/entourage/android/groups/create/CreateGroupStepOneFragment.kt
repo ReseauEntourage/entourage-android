@@ -10,17 +10,16 @@ import android.widget.EditText
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
-import kotlinx.android.synthetic.main.new_edit_profile_step_one.view.*
 import social.entourage.android.R
-import social.entourage.android.databinding.NewFragmentCreateGroupStepOneBinding
-import social.entourage.android.tools.utils.Const
+import social.entourage.android.databinding.FragmentCreateGroupStepOneBinding
 import social.entourage.android.tools.log.AnalyticsEvents
+import social.entourage.android.tools.utils.Const
 import social.entourage.android.user.edit.place.UserEditActionZoneFragment
 
 class CreateGroupStepOneFragment : Fragment(), UserEditActionZoneFragment.FragmentListener {
 
-    private var _binding: NewFragmentCreateGroupStepOneBinding? = null
-    val binding: NewFragmentCreateGroupStepOneBinding get() = _binding!!
+    private var _binding: FragmentCreateGroupStepOneBinding? = null
+    val binding: FragmentCreateGroupStepOneBinding get() = _binding!!
 
     private val viewModel: CommunicationHandlerViewModel by activityViewModels()
 
@@ -28,7 +27,7 @@ class CreateGroupStepOneFragment : Fragment(), UserEditActionZoneFragment.Fragme
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = NewFragmentCreateGroupStepOneBinding.inflate(inflater, container, false)
+        _binding = FragmentCreateGroupStepOneBinding.inflate(inflater, container, false)
         AnalyticsEvents.logEvent(AnalyticsEvents.VIEW_NEW_GROUP_STEP1)
         return binding.root
     }
@@ -103,7 +102,7 @@ class CreateGroupStepOneFragment : Fragment(), UserEditActionZoneFragment.Fragme
         viewModel.resetValues()
         viewModel.clickNext.observe(viewLifecycleOwner, ::handleOnClickNext)
         viewModel.isButtonClickable.value = isGroupNameValid() && isGroupDescriptionValid()
-        binding.layout.groupLocation.location.text = viewModel.group.displayAddress
+        binding.layout.location.text = viewModel.group.displayAddress
     }
 
     fun isGroupNameValid(): Boolean {
