@@ -35,6 +35,8 @@ class LoginActivity : BaseActivity() {
     private var timeOut = TIME_BEFORE_CALL
     var isLoading = false
 
+
+
     lateinit var alertDialog: CustomProgressDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {

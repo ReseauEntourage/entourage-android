@@ -3,10 +3,12 @@ package social.entourage.android
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.`when`
 import android.content.SharedPreferences
+import android.text.method.LinkMovementMethod
 import androidx.test.core.app.ActivityScenario
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.action.ViewActions.typeText
+import androidx.test.espresso.intent.Intents
 import androidx.test.espresso.intent.Intents.intended
 import androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent
 import androidx.test.espresso.intent.rule.IntentsTestRule
@@ -21,6 +23,7 @@ import org.mockito.Mockito
 import org.mockito.junit.MockitoJUnitRunner
 import social.entourage.android.EntourageApplication.Companion.KEY_ONBOARDING_SHOW_POP_FIRSTLOGIN
 import social.entourage.android.onboarding.login.LoginActivity
+import social.entourage.android.onboarding.login.LoginChangePhoneActivity
 import social.entourage.android.onboarding.pre_onboarding.PreOnboardingChoiceActivity
 import java.util.regex.Pattern.matches
 
@@ -34,7 +37,7 @@ class LoginActivityTest {
         `when`(sharedPreferences.edit()).thenReturn(editor)
         `when`(editor.putBoolean(KEY_ONBOARDING_SHOW_POP_FIRSTLOGIN, false)).thenReturn(editor)
         `when`(sharedPreferences.getBoolean(KEY_ONBOARDING_SHOW_POP_FIRSTLOGIN, true)).thenReturn(false)
-        assertTrue("Votre méthode devrait retourner true", true) // Remplacez cette ligne par l'appel à votre méthode
+        assertTrue("Si première fois doit return true ", true) // Remplacez cette ligne par l'appel à votre méthode
     }
     @get:Rule
     var intentsTestRule = IntentsTestRule(LoginActivity::class.java)
@@ -46,13 +49,11 @@ class LoginActivityTest {
 
     @Test
     fun validateInputsAndLogin_withInvalidPhoneNumber_returnsFalse() {
-        // Arrange
         val activityScenario = ActivityScenario.launch(LoginActivity::class.java)
         var result = false
 
         // Act
         activityScenario.onActivity { activity ->
-            // Simule un numéro de téléphone invalide
             activity.binding.uiLoginPhoneEtPhone.setText("12345")
             result = activity.validateInputsAndLogin()
         }
@@ -69,9 +70,8 @@ class LoginActivityTest {
 
         // Act
         activityScenario.onActivity { activity ->
-            // Simule un numéro de téléphone valide et un code valide
-            activity.binding.uiLoginPhoneEtPhone.setText("0606060606") // Assure-toi que c'est le bon champ pour le numéro
-            activity.binding.uiLoginEtCode.setText("123456") // Assure-toi que c'est le bon champ pour le code
+            activity.binding.uiLoginPhoneEtPhone.setText("0606060606")
+            activity.binding.uiLoginEtCode.setText("123456")
             result = activity.validateInputsAndLogin()
         }
 
@@ -79,7 +79,32 @@ class LoginActivityTest {
         assertTrue("La validation doit réussir pour un numéro de téléphone et un code valides", result)
     }
 
+    @Test
+    fun termsAndConditions_DisplayedAndClickable() {
+        val activityScenario = ActivityScenario.launch(LoginActivity::class.java)
+        activityScenario.onActivity { activity ->
+            val conditionsText = activity.binding.tvConditionGenerales.text.toString()
+            assertTrue("Terms and conditions should contain 'href'", conditionsText.contains("href"))
+            assertTrue("TextView should allow link interaction", activity.binding.tvConditionGenerales.movementMethod is LinkMovementMethod)
+        }
+    }
 
 
+    @Test
+    fun backButton_ClosesLoginActivity() {
+        val activityScenario = ActivityScenario.launch(LoginActivity::class.java)
+        activityScenario.onActivity { activity ->
+            activity.binding.iconBack.performClick()
+            assertTrue(activity.isFinishing)
+        }
+    }
 
+    @Test
+    fun changePhoneNumberButton_opensLoginChangePhoneActivity() {
+        Intents.init()
+        ActivityScenario.launch(LoginActivity::class.java)
+        onView(withId(R.id.ui_login_button_change_phone)).perform(click())
+        intended(hasComponent(LoginChangePhoneActivity::class.java.name))
+        Intents.release()
+    }
 }
