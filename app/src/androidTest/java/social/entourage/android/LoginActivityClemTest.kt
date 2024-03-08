@@ -66,36 +66,38 @@ class LoginActivityTest {
         onView(withId(R.id.icon_back)).perform(click())
         intended(hasComponent(PreOnboardingChoiceActivity::class.java.name))
     }
+    @Test
+    fun backButton_ClosesLoginActivity() {
+        val activityScenario = ActivityScenario.launch(LoginActivity::class.java)
+        activityScenario.onActivity { activity ->
+            activity.binding.iconBack.performClick()
+            assertTrue(activity.isFinishing)
+        }
+    }
 
     @Test
     fun validateInputsAndLogin_withInvalidPhoneNumber_returnsFalse() {
         val activityScenario = ActivityScenario.launch(LoginActivity::class.java)
         var result = false
 
-        // Act
         activityScenario.onActivity { activity ->
             activity.binding.uiLoginPhoneEtPhone.setText("12345")
             result = activity.validateInputsAndLogin()
         }
 
-        // Assert
         assertFalse("La validation doit échouer pour un numéro de téléphone invalide", result)
     }
 
     @Test
     fun validateInputsAndLogin_withValidPhoneNumber_returnsTrue() {
-        // Arrange
         val activityScenario = ActivityScenario.launch(LoginActivity::class.java)
         var result = false
 
-        // Act
         activityScenario.onActivity { activity ->
             activity.binding.uiLoginPhoneEtPhone.setText("0606060606")
             activity.binding.uiLoginEtCode.setText("123456")
             result = activity.validateInputsAndLogin()
         }
-
-        // Assert
         assertTrue("La validation doit réussir pour un numéro de téléphone et un code valides", result)
     }
 
@@ -113,14 +115,7 @@ class LoginActivityTest {
     }
 
 
-    @Test
-    fun backButton_ClosesLoginActivity() {
-        val activityScenario = ActivityScenario.launch(LoginActivity::class.java)
-        activityScenario.onActivity { activity ->
-            activity.binding.iconBack.performClick()
-            assertTrue(activity.isFinishing)
-        }
-    }
+
 
     @Test
     fun changePhoneNumberButton_opensLoginChangePhoneActivity() {
