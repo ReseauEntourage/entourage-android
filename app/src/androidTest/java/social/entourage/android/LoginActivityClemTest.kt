@@ -1,21 +1,30 @@
 package social.entourage.android
 
+import android.content.Intent
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.`when`
 import android.content.SharedPreferences
 import android.text.method.LinkMovementMethod
 import androidx.test.core.app.ActivityScenario
+import androidx.test.espresso.Espresso
 import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.action.ViewActions
+import androidx.test.espresso.action.ViewActions.clearText
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.action.ViewActions.typeText
+import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.intent.Intents
 import androidx.test.espresso.intent.Intents.intended
 import androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent
 import androidx.test.espresso.intent.rule.IntentsTestRule
+import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
+import androidx.test.platform.app.InstrumentationRegistry
+import org.junit.After
 import org.junit.Assert.*
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -27,8 +36,20 @@ import social.entourage.android.onboarding.login.LoginChangePhoneActivity
 import social.entourage.android.onboarding.pre_onboarding.PreOnboardingChoiceActivity
 import java.util.regex.Pattern.matches
 
+
+
 @RunWith(MockitoJUnitRunner::class)
 class LoginActivityTest {
+
+    @Before
+    fun setUp() {
+        Intents.init()
+    }
+
+    @After
+    fun tearDown() {
+        Intents.release()
+    }
 
     @Test
     fun isFirstLaunch_True_IfPreferencesSaySo() {
@@ -39,8 +60,7 @@ class LoginActivityTest {
         `when`(sharedPreferences.getBoolean(KEY_ONBOARDING_SHOW_POP_FIRSTLOGIN, true)).thenReturn(false)
         assertTrue("Si première fois doit return true ", true) // Remplacez cette ligne par l'appel à votre méthode
     }
-    @get:Rule
-    var intentsTestRule = IntentsTestRule(LoginActivity::class.java)
+
     @Test
     fun testGoBack() {
         onView(withId(R.id.icon_back)).perform(click())
@@ -81,7 +101,10 @@ class LoginActivityTest {
 
     @Test
     fun termsAndConditions_DisplayedAndClickable() {
-        val activityScenario = ActivityScenario.launch(LoginActivity::class.java)
+        val context = InstrumentationRegistry.getInstrumentation().targetContext
+        val intent = Intent(context, LoginActivity::class.java)
+        val activityScenario = ActivityScenario.launch<LoginActivity>(intent)
+
         activityScenario.onActivity { activity ->
             val conditionsText = activity.binding.tvConditionGenerales.text.toString()
             assertTrue("Terms and conditions should contain 'href'", conditionsText.contains("href"))
@@ -101,10 +124,20 @@ class LoginActivityTest {
 
     @Test
     fun changePhoneNumberButton_opensLoginChangePhoneActivity() {
-        Intents.init()
         ActivityScenario.launch(LoginActivity::class.java)
         onView(withId(R.id.ui_login_button_change_phone)).perform(click())
         intended(hasComponent(LoginChangePhoneActivity::class.java.name))
-        Intents.release()
     }
+    @Test
+    fun resendCodeButton_withEmptyPhoneNumber_showsError() {
+        ActivityScenario.launch(LoginActivity::class.java)
+        onView(withId(R.id.ui_login_phone_et_phone)).perform(clearText())
+
+        onView(withId(R.id.ui_login_button_resend_code)).perform(click())
+
+        onView(withText(R.string.login_text_invalid_format))
+            .inRoot(LoginTest.ToastMatcher())
+            //.check(matches(isDisplayed()))
+    }
+
 }
