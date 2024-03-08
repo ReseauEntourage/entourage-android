@@ -225,6 +225,7 @@ dependencies {
     //implementation firebaseDependencies.values()
     implementation("com.google.firebase:firebase-analytics-ktx")
     implementation("com.google.firebase:firebase-messaging-ktx")
+    implementation("androidx.compose.ui:ui-text-android:1.6.3")
     //TODO: fix this inappmessaging lib that is blocking tests to run
     releaseImplementation("com.google.firebase:firebase-inappmessaging-display-ktx")
     implementation("com.google.firebase:firebase-crashlytics-ktx")

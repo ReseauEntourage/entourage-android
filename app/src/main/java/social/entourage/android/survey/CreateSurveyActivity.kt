@@ -2,7 +2,10 @@ package social.entourage.android.survey
 
 import android.os.Bundle
 import android.text.Editable
+import android.text.Spannable
+import android.text.SpannableString
 import android.text.TextWatcher
+import android.text.style.StyleSpan
 import android.util.Log
 import android.view.View
 import android.widget.Toast
@@ -51,6 +54,9 @@ class CreateSurveyActivity: BaseActivity() {
         binding.iconBack.setOnClickListener {
             showCancelPopUp()
         }
+        applyItalicHintToEditText()
+        binding.editTextQuestion.requestFocus()
+
     }
 
     private fun validateSurvey(){
@@ -84,11 +90,24 @@ class CreateSurveyActivity: BaseActivity() {
     private fun onSurveySent(isSent:Boolean){
         if (isSent) {
             // Afficher un message de succès si le sondage a été envoyé avec succès
-            Toast.makeText(this, "Sondage envoyé avec succès.", Toast.LENGTH_LONG).show()
+            Toast.makeText(this, "Sondage créé avec succès", Toast.LENGTH_LONG).show()
             finish()
         } else {
             // Afficher un message d'erreur si le sondage n'a pas été envoyé
             Toast.makeText(this, "Erreur lors de l'envoi du sondage.", Toast.LENGTH_LONG).show()
+        }
+    }
+
+    private fun applyItalicHintToEditText() {
+        val editTexts = listOf(binding.editTextQuestion, binding.editTextOption1, binding.editTextOption2, binding.editTextOption3, binding.editTextOption4, binding.editTextOption5)
+
+        editTexts.forEach { editText ->
+            val hint = editText.hint.toString()
+            val spannableHint = SpannableString(hint).apply {
+                setSpan(StyleSpan(android.graphics.Typeface.ITALIC), 0, hint.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+            }
+            editText.hint = spannableHint
+
         }
     }
 

@@ -2691,7 +2691,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <!--    CREATE SURVEY-->
     <string name="header_title_create_survey">Créer un sondage</string>
     <string name="create_question_title">Question</string>
-    <string name="create_question_hint">Posez votre question</string>
+    <string name="create_question_hint">Poser votre question</string>
     <string name="create_option_hint">+ Ajouter une option</string>
     <string name="create_option_title">Options</string>
     <string name="title_switch_mutiple_choice">Plusieurs réponses possibles</string>

@@ -101,7 +101,7 @@ class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface,
             when (position) {
                 0 -> SpeedDialMenuItem(
                     context,
-                    R.drawable.new_create_post,
+                    R.drawable.ic_group_feed_one,
                     getString(R.string.create_post)
                 )
                 1 -> SpeedDialMenuItem(
@@ -111,7 +111,7 @@ class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface,
                 )
                 2 -> SpeedDialMenuItem(
                     context,
-                    R.drawable.new_create_event,
+                    R.drawable.ic_group_feed_two,
                     getString(R.string.create_event)
                 )
                 else -> SpeedDialMenuItem(

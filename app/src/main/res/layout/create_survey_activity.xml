@@ -11,6 +11,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="10dp"
         android:paddingHorizontal="15dp">
 
         <ImageView
@@ -78,7 +79,8 @@
                 android:layout_marginTop="30dp"
                 android:layout_marginEnd="30dp"
                 android:maxLength="500"
-                android:fontFamily="@font/nunitosans_italic"
+                android:inputType="textCapSentences"
+                android:fontFamily="@font/nunitosans_regular"
                 android:textSize="15sp"/>
             <TextView
                 android:layout_width="wrap_content"
@@ -102,10 +104,11 @@
                 android:textColorHint="@color/grey_vote"
                 android:backgroundTint="@color/grey_vote"
                 android:maxLength="500"
+                android:inputType="textCapSentences"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="30dp"
                 android:layout_marginEnd="30dp"
-                android:fontFamily="@font/nunitosans_italic"
+                android:fontFamily="@font/nunitosans_regular"
                 android:textSize="15sp"/>
 
             <EditText
@@ -115,13 +118,14 @@
                 android:hint="@string/create_option_hint"
                 app:layout_constraintTop_toBottomOf="@+id/edit_text_option_1"
                 android:maxLength="500"
+                android:inputType="textCapSentences"
                 android:textColorHint="@color/grey_vote"
                 android:backgroundTint="@color/grey_vote"
                 app:layout_constraintStart_toStartOf="parent"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="30dp"
                 android:layout_marginEnd="30dp"
-                android:fontFamily="@font/nunitosans_italic"
+                android:fontFamily="@font/nunitosans_regular"
                 android:textSize="15sp"/>
 
             <EditText
@@ -130,6 +134,7 @@
                 android:id="@+id/edit_text_option_3"
                 android:hint="@string/create_option_hint"
                 android:maxLength="500"
+                android:inputType="textCapSentences"
                 android:textColorHint="@color/grey_vote"
                 android:backgroundTint="@color/grey_vote"
                 app:layout_constraintTop_toBottomOf="@+id/edit_text_option_2"
@@ -137,7 +142,7 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="30dp"
                 android:layout_marginEnd="30dp"
-                android:fontFamily="@font/nunitosans_italic"
+                android:fontFamily="@font/nunitosans_regular"
                 android:textSize="15sp"/>
 
             <EditText
@@ -146,6 +151,7 @@
                 android:id="@+id/edit_text_option_4"
                 android:hint="@string/create_option_hint"
                 android:maxLength="500"
+                android:inputType="textCapSentences"
                 android:textColorHint="@color/grey_vote"
                 android:backgroundTint="@color/grey_vote"
                 app:layout_constraintTop_toBottomOf="@+id/edit_text_option_3"
@@ -153,7 +159,7 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="30dp"
                 android:layout_marginEnd="30dp"
-                android:fontFamily="@font/nunitosans_italic"
+                android:fontFamily="@font/nunitosans_regular"
                 android:textSize="15sp"/>
 
             <EditText
@@ -162,6 +168,7 @@
                 android:id="@+id/edit_text_option_5"
                 android:hint="@string/create_option_hint"
                 android:maxLength="500"
+                android:inputType="textCapSentences"
                 android:textColorHint="@color/grey_vote"
                 android:backgroundTint="@color/grey_vote"
                 app:layout_constraintTop_toBottomOf="@+id/edit_text_option_4"
@@ -169,7 +176,7 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="30dp"
                 android:layout_marginEnd="30dp"
-                android:fontFamily="@font/nunitosans_italic"
+                android:fontFamily="@font/nunitosans_regular"
                 android:textSize="15sp"/>
             <TextView
                 android:layout_width="wrap_content"
@@ -205,7 +212,7 @@
     <Button
         android:id="@+id/validate_btn"
         android:layout_width="wrap_content"
-        android:layout_height="40dp"
+        android:layout_height="48dp"
         android:layout_gravity="end|bottom"
         android:layout_margin="15dp"
         android:text="@string/btn_survey_validate"
@@ -223,7 +230,7 @@
     <Button
         android:id="@+id/cancel_button"
         android:layout_width="wrap_content"
-        android:layout_height="40dp"
+        android:layout_height="48dp"
         android:layout_gravity="end|bottom"
         android:layout_margin="15dp"
         android:text="@string/btn_survey_cancel"
