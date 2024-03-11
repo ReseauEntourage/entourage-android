@@ -112,7 +112,6 @@ class DiscoverEventsListFragment : Fragment() {
     }
 
     private fun handleResponseGetEvents(allEvents: MutableList<Events>?) {
-        Log.wtf("wtf", "allEvents: $allEvents")
         if(allEvents != null && allEvents.size > 0){
             eventsAdapter.resetData(allEvents)
             updateView(false)
@@ -150,7 +149,6 @@ class DiscoverEventsListFragment : Fragment() {
             } else if (scrollY < oldScrollY) {
                 eventsPresenter.tellParentFragmentToMoveButton(true)
             }
-            Log.wtf("wtf", "isLastPage: ${eventsPresenter.isLastPage} isLoading: $isLoading")
             if (!binding.nestedScrollView.canScrollVertically(1) && !isLoading && !eventsPresenter.isLastPage) {
                 binding.progressBar.visibility = View.VISIBLE
                 loadEvents()

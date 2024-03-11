@@ -1,12 +1,14 @@
 package social.entourage.android.events.details.feed
 
 import android.app.AlertDialog
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
@@ -15,6 +17,7 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.core.widget.NestedScrollView
+import androidx.core.widget.TextViewCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.lifecycleScope
@@ -49,9 +52,12 @@ import social.entourage.android.comment.ReactionInterface
 import social.entourage.android.comment.SurveyInteractionListener
 import social.entourage.android.databinding.FragmentFeedEventBinding
 import social.entourage.android.events.EventsPresenter
+import social.entourage.android.events.create.CreateEventActivity
 import social.entourage.android.events.details.SettingsModalFragment
 import social.entourage.android.groups.details.feed.CallbackReportFragment
+import social.entourage.android.groups.details.feed.FeedFragment
 import social.entourage.android.groups.details.feed.GroupMembersPhotosAdapter
+import social.entourage.android.groups.details.feed.rotationDegree
 import social.entourage.android.groups.details.members.MembersType
 import social.entourage.android.language.LanguageManager
 import social.entourage.android.members.MembersActivity
@@ -59,6 +65,7 @@ import social.entourage.android.profile.myProfile.InterestsAdapter
 import social.entourage.android.report.DataLanguageStock
 import social.entourage.android.report.ReportModalFragment
 import social.entourage.android.report.ReportTypes
+import social.entourage.android.survey.CreateSurveyActivity
 import social.entourage.android.survey.ResponseSurveyActivity
 import social.entourage.android.survey.SurveyPresenter
 import social.entourage.android.tools.calculateIfEventPassed
@@ -70,6 +77,8 @@ import social.entourage.android.tools.utils.Utils
 import social.entourage.android.tools.utils.Utils.enableCopyOnLongClick
 import social.entourage.android.tools.utils.px
 import social.entourage.android.tools.utils.underline
+import uk.co.markormesher.android_fab.SpeedDialMenuAdapter
+import uk.co.markormesher.android_fab.SpeedDialMenuItem
 import java.text.SimpleDateFormat
 import kotlin.math.abs
 
@@ -94,6 +103,72 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
     private var newPostsList: MutableList<Post> = mutableListOf()
     private var oldPostsList: MutableList<Post> = mutableListOf()
     private var allPostsList: MutableList<Post> = mutableListOf()
+
+    private val speedDialMenuAdapter = object : SpeedDialMenuAdapter() {
+        override fun getCount(): Int = 2
+        override fun getMenuItem(context: Context, position: Int): SpeedDialMenuItem =
+            when (position) {
+                0 -> SpeedDialMenuItem(
+                    context,
+                    R.drawable.ic_group_feed_one,
+                    getString(R.string.create_post)
+                )
+                1 -> SpeedDialMenuItem(
+                    context,
+                    R.drawable.ic_survey_creation,
+                    getString(R.string.create_survey)
+                )
+                else -> SpeedDialMenuItem(
+                    context,
+                    R.drawable.new_create_event,
+                    getString(R.string.create_event)
+                )
+            }
+
+
+
+        override fun onMenuItemClick(position: Int): Boolean {
+            when (position) {
+                0 -> {
+                    AnalyticsEvents.logEvent(AnalyticsEvents.Event_detail_action_post)
+                    val intent = Intent(context, CreatePostEventActivity::class.java)
+                    intent.putExtra(Const.ID, eventId)
+                    startActivityForResult(intent, 0)
+                }
+                1 -> {
+                    AnalyticsEvents.logEvent(
+                        AnalyticsEvents.Clic_Event_Create_Poll
+                    )
+                    val intent = Intent(context, CreateSurveyActivity::class.java)
+                    FeedFragment.isFromCreation = true
+                    intent.putExtra(Const.EVENT_ID, eventId)
+                    startActivity(intent)
+                }
+
+                else -> {
+                    AnalyticsEvents.logEvent(
+                        AnalyticsEvents.ACTION_GROUP_FEED_PLUS_CLOSE
+                    )
+                }
+            }
+            return true
+        }
+
+        override fun onPrepareItemLabel(context: Context, position: Int, label: TextView) {
+            TextViewCompat.setTextAppearance(label, R.style.left_courant_bold_black)
+        }
+
+        override fun onPrepareItemCard(context: Context, position: Int, card: View) {
+            card.background = ContextCompat.getDrawable(
+                requireContext(),
+                R.drawable.new_bg_circle_orange
+            )
+        }
+
+        override fun fabRotationDegrees(): Float = rotationDegree
+    }
+
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -252,12 +327,12 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
             eventDescription.enableCopyOnLongClick(requireContext())
             if(event != null && event?.membersCount!! > 1){
                 eventMembersNumberLocation.text = String.format(
-                    getString(R.string.members_number),
+                    getString(R.string.participant_number),
                     event?.membersCount,
                 )
             }else{
                 eventMembersNumberLocation.text = String.format(
-                    getString(R.string.members_number_singular),
+                    getString(R.string.participant_number_singular),
                     event?.membersCount,
                 )
             }
@@ -668,12 +743,7 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
     }
 
     private fun handleCreatePostButtonClick() {
-        binding.createPost.setOnClickListener {
-            AnalyticsEvents.logEvent(AnalyticsEvents.Event_detail_action_post)
-            val intent = Intent(context, CreatePostEventActivity::class.java)
-            intent.putExtra(Const.ID, eventId)
-            startActivityForResult(intent, 0)
-        }
+        binding.createPost.speedDialMenuAdapter = speedDialMenuAdapter
     }
 
     private fun handleCreatePostButton() {

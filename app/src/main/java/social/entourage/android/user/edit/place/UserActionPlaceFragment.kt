@@ -68,7 +68,6 @@ open class UserActionPlaceFragment : BaseDialogFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Log.wtf("wtf", "hello")
         arguments?.let {
             userAddress = it.getSerializable(ARG_PLACE) as? User.Address
             isSdf = it.getBoolean(ARG_SDF)

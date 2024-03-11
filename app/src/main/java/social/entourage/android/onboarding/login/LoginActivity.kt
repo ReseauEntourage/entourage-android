@@ -172,7 +172,6 @@ class LoginActivity : BaseActivity() {
 
         var isValidate = true
         var message = ""
-        Log.wtf("wtf", "phone: $phoneNumber " + phoneNumber.length)
 
         if (phoneNumber.length < minimumPhoneCharacters) {
             isValidate = false
@@ -243,8 +242,7 @@ class LoginActivity : BaseActivity() {
      ********************************/
 
     fun login(phone: String, codePwd: String) {
-        Log.wtf("wtf", "phone: $phone")
-        Log.wtf("wtf", "codePwd: $codePwd")
+
         alertDialog.show(R.string.onboard_waiting_dialog)
         AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ACTION_LOGIN_SUBMIT)
         OnboardingAPI.getInstance().login(phone, codePwd) { isOK, loginResponse, error ->

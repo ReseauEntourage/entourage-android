@@ -303,11 +303,12 @@ class PostAdapter(
 
 
                         binding.btnILike.setOnClickListener {
-                            AnalyticsEvents.logEvent(
-                                AnalyticsEvents.Clic_Post_Like
-                            )
+
                             val firstReactionType = MainActivity.reactionsList?.firstOrNull()
                             if(firstReactionType != null){
+                                AnalyticsEvents.logEvent(
+                                    AnalyticsEvents.Clic_Post_Like
+                                )
                                 binding.layoutReactions.visibility =  View.GONE
                                 handleReactionClick(this, firstReactionType)
                             }

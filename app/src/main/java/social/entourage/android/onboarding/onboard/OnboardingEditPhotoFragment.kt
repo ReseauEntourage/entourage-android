@@ -167,7 +167,6 @@ class OnboardingEditPhotoFragment : DialogFragment() {
     }
 
     private fun updateProfilePicture() {
-        Log.wtf("wtf", "updateProfilePicture listener: $mListener")
         mListener?.onPhotoEdited(Uri.fromFile(photoFile), photoSource)
         dismissAllowingStateLoss()
     }

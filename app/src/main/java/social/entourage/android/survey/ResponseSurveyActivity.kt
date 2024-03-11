@@ -13,6 +13,7 @@ import social.entourage.android.databinding.ActivityResponseSurveyLayoutBinding
 import social.entourage.android.discussions.DetailConversationActivity
 import social.entourage.android.discussions.DiscussionsPresenter
 import social.entourage.android.groups.details.members.OnItemShowListener
+import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.utils.Const
 
 class ResponseSurveyActivity:BaseActivity(), OnItemShowListener {
@@ -34,7 +35,11 @@ class ResponseSurveyActivity:BaseActivity(), OnItemShowListener {
     override fun onResume() {
         super.onResume()
         if(isGroup) {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Clic_Group_Poll_See_Votes)
             surveyPresenter.getSurveyResponsesForGroup(itemId, postId)
+        }else{
+            AnalyticsEvents.logEvent(AnalyticsEvents.Clic_Event_Poll_See_Votes)
+            surveyPresenter.getSurveyResponsesForEvent(itemId, postId)
         }
     }
 
@@ -44,7 +49,7 @@ class ResponseSurveyActivity:BaseActivity(), OnItemShowListener {
             finish()
         }
         if(survey != null && surveyResponses != null){
-            binding.recyclerViewResponse.adapter = SurveyResponseAdapter(survey!!, surveyResponses!!, this)
+            binding.recyclerViewResponse.adapter = SurveyResponseAdapter(survey!!, surveyResponses!!, this, this)
         }
         binding.recyclerViewResponse.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
@@ -56,7 +61,7 @@ class ResponseSurveyActivity:BaseActivity(), OnItemShowListener {
         if(survey != null) {
             val adapter = binding.recyclerViewResponse.adapter as? SurveyResponseAdapter
             if (adapter == null) {
-                binding.recyclerViewResponse.adapter = SurveyResponseAdapter(survey!!, surveyResponses!!, this)
+                binding.recyclerViewResponse.adapter = SurveyResponseAdapter(survey!!, surveyResponses!!, this, this)
             } else {
                 adapter.updateResponses(surveyResponses!!)
             }

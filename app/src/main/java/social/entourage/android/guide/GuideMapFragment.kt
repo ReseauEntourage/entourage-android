@@ -319,7 +319,7 @@ class GuideMapFragment : Fragment(),
         // Close the overlays
         onBackPressed()
         // Open the link to propose a POI
-        (activity as? GDSMainActivity)?.showWebViewForLinkId(Constants.PROPOSE_POI_ID)
+        (activity as? GDSMainActivity)?.showWebViewForLinkId(Constants.PROPOSE_POI_ID )
     }
 
     // ----------------------------------
@@ -544,7 +544,9 @@ class GuideMapFragment : Fragment(),
         binding.fragmentGuideDisplayToggle.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_list_white_24dp))
         binding.fragmentGuideDisplayToggle.setOnClickListener {onDisplayToggle()}
         binding.fragmentMapLongclick.guideLongclickButtonPoiPropose.setOnClickListener {proposePOI()}
-        binding.buttonPoiPropose.setOnClickListener {onPOIProposeClicked()}
+        binding.buttonPoiPropose.setOnClickListener {
+            onPOIProposeClicked()
+        }
     }
 
     private fun initializeFilterButton() {

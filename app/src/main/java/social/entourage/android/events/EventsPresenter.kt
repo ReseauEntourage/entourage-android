@@ -128,9 +128,6 @@ class EventsPresenter: ViewModel() {
                     call: Call<EventsListWrapper>,
                     response: Response<EventsListWrapper>
                 ) {
-                    Log.wtf("wtf", "response: $response")
-
-
                     response.body()?.let { allEventsWrapper ->
                         if (allEventsWrapper.allEvents.size < EVENTS_PER_PAGE) isLastPage = true
                         getAllEvents.postValue(allEventsWrapper.allEvents)
@@ -139,9 +136,7 @@ class EventsPresenter: ViewModel() {
                 }
 
                 override fun onFailure(call: Call<EventsListWrapper>, t: Throwable) {
-                    Log.wtf("wtf", "eho onFailure: $t")
-                    Log.wtf("wtf", "eho onFailure: ${t.message}")
-                    Log.wtf("wtf", "eho onFailure: ${t.stackTrace}")
+
                 }
             })
     }
@@ -602,7 +597,6 @@ class EventsPresenter: ViewModel() {
                 if (response.isSuccessful) {
                     response.body()?.let {
                         getMembersReactResponse.value = it
-                        Log.wtf("wtf", "hello " + it)
                     }
                 }else{
                     Timber.e("getReactDetails: ${response.errorBody()?.string()}")

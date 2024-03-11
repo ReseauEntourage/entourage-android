@@ -130,7 +130,7 @@ class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface,
                 }
                 1 -> {
                     AnalyticsEvents.logEvent(
-                        AnalyticsEvents.ACTION_GROUP_FEED_NEW_EVENT
+                        AnalyticsEvents.Clic_Group_Create_Poll
                     )
                     val intent = Intent(context, CreateSurveyActivity::class.java)
                     isFromCreation = true

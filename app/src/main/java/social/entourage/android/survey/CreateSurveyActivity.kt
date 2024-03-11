@@ -12,6 +12,7 @@ import android.widget.Toast
 import social.entourage.android.R
 import social.entourage.android.base.BaseActivity
 import social.entourage.android.databinding.CreateSurveyActivityBinding
+import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.CustomAlertDialog
 
@@ -46,6 +47,11 @@ class CreateSurveyActivity: BaseActivity() {
         binding.editTextOption5.visibility = View.GONE
         setEditTextVisibility()
         binding.validateBtn.setOnClickListener {
+            if(groupId != null && groupId != 0){
+                AnalyticsEvents.logEvent(AnalyticsEvents.Clic_Group_Validate_Poll)
+            }else{
+                AnalyticsEvents.logEvent(AnalyticsEvents.Clic_Event_Validate_Poll)
+            }
             validateSurvey()
         }
         binding.cancelButton.setOnClickListener {

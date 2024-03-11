@@ -170,10 +170,8 @@ open class EditPhotoFragment : BaseDialogFragment(), PhotoEditInterface {
     //**********//**********//**********
 
     open fun setupViews() {
-        Log.wtf("wtf","setupViews " + binding.buttonGallery + " " + binding.buttonTakePicture + " " + binding.imageProfile)
 
         binding.buttonGallery?.setOnClickListener {
-            Log.wtf("wtf","btn gallery")
             // write permission is used to store the cropped image before upload
             if (PermissionChecker.checkSelfPermission(
                     requireActivity(),
@@ -187,7 +185,6 @@ open class EditPhotoFragment : BaseDialogFragment(), PhotoEditInterface {
         }
 
         binding.buttonTakePicture?.setOnClickListener {
-            Log.wtf("wtf","btn take picture")
             if (PermissionChecker.checkSelfPermission(
                     requireContext(),
                     Manifest.permission.CAMERA

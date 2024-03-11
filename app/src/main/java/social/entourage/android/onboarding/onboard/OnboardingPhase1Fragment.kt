@@ -97,7 +97,6 @@ class OnboardingPhase1Fragment : Fragment() {
         binding.uiOnboardEmail.addTextChangedListener(object : android.text.TextWatcher {
             override fun afterTextChanged(s: android.text.Editable?) {
                 (requireActivity() as OnboardingStartActivity).setEmail(s.toString())
-                Log.wtf("wtf","email: $s")
             }
 
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {

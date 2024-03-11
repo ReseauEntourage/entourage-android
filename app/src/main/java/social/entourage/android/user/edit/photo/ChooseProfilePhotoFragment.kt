@@ -29,7 +29,6 @@ class ChooseProfilePhotoFragment : EditPhotoFragment() {
         if (context is PhotoChooseInterface) {
             mListener = requireContext() as PhotoChooseInterface
         }
-        Log.wtf("wtf","echo")
         setBackButton()
         updateUserView()
     }

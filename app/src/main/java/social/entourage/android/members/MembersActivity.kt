@@ -83,7 +83,15 @@ open class MembersActivity : BaseActivity() {
             binding.headerTitle.text = this.getString(R.string.see_member_react)
 
         }else {
-            binding.headerTitle.text = this.getString(R.string.see_members)
+            if(type == MembersType.GROUP){
+                binding.headerTitle.text = this.getString(R.string.see_members)
+                binding.searchBar.hint = this.getString(R.string.search_member_hint)
+            }
+            else if(type == MembersType.EVENT){
+                binding.headerTitle.text = this.getString(R.string.see_participants)
+                binding.searchBar.hint = this.getString(R.string.search_participant_hint)
+            }
+
 
         }
     }

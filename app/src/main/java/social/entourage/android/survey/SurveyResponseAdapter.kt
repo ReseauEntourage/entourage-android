@@ -1,6 +1,7 @@
 package social.entourage.android.survey
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
@@ -8,6 +9,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.gson.Gson
+import com.google.gson.annotations.SerializedName
 import social.entourage.android.EntourageApplication
 import social.entourage.android.api.model.Survey
 import social.entourage.android.api.model.SurveyResponse
@@ -23,7 +25,8 @@ import social.entourage.android.user.UserProfileActivity
 class SurveyResponseAdapter(
     private val survey: Survey,
     private val responsesList: SurveyResponsesListWrapper,
-    private var onItemShowListener: OnItemShowListener
+    private var onItemShowListener: OnItemShowListener,
+    val context: Context
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     companion object {
@@ -39,16 +42,34 @@ class SurveyResponseAdapter(
     }
 
     private fun populateItems(responsesList: SurveyResponsesListWrapper) {
+        val myVoteMap = mutableMapOf<Int, Boolean>()
+        for (i in ResponseSurveyActivity.myVote.indices) {
+            myVoteMap[i] = ResponseSurveyActivity.myVote[i]
+        }
+        for (i in ResponseSurveyActivity.myVote.size until survey.choices.size) {
+            myVoteMap[i] = false
+        }
+
         survey.choices.forEachIndexed { index, choice ->
-            items.add(choice) // Ajoute le choix comme en-tête de section
+            items.add(choice)
             responsesList.responses.getOrNull(index)?.let { usersForChoice ->
                 if (usersForChoice.isNotEmpty()) {
-                    items.addAll(usersForChoice) // Ajoute tous les utilisateurs pour ce choix
+                    val alreadyVoted = usersForChoice.any { it.id == EntourageApplication.me(context)?.id }
+                    if (!alreadyVoted) {
+                        items.addAll(usersForChoice)
+                    }
+                }
+            }
+
+            if (myVoteMap[index]!!) {
+                val myUser = EntourageApplication.me(context)
+                if (myUser != null) { // Check if user is retrieved successfully
+                    items.add(SurveyResponseUser(myUser.id, "fr", myUser.displayName!!, myUser.avatarURL, myUser.roles!!.toList()))
                 }
             }
         }
-        Log.wtf("SurveyResponseAdapter", "items: " + Gson().toJson(ResponseSurveyActivity.myVote))
     }
+
 
     fun updateResponses(newResponsesList: SurveyResponsesListWrapper) {
         items.clear()

@@ -52,7 +52,6 @@ class OnboardingPhase3Fragment : Fragment(), OnboardingChoosePlaceCallback {
         super.onViewCreated(view, savedInstanceState)
 
         binding.location.setOnClickListener {
-            Log.wtf("wtf","location clicked")
             val fg = OnboardingAddPlaceFragment()
             fg.callback = this
             fg.show(parentFragmentManager,"")
@@ -123,7 +122,6 @@ class OnboardingPhase3Fragment : Fragment(), OnboardingChoosePlaceCallback {
     }
 
     override fun updatePlace(address: User.Address?) {
-        Log.wtf("wtf","updatePlace here")
         this.address = address
         binding.location.setText(address?.displayAddress)
         updateTypes()

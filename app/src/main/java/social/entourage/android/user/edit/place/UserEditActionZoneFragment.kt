@@ -32,7 +32,6 @@ class UserEditActionZoneFragment : UserActionPlaceFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Log.wtf("wtf", "hello")
         arguments?.let {
             setGroupLocation = it.getBoolean("setGroupLocation")
         }

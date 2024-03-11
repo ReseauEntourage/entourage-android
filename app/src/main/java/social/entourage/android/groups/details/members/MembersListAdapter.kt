@@ -44,8 +44,6 @@ class MembersListAdapter(
     fun resetData(membersList: List<EntourageUser>, reactionList: List<ReactionType>) {
         this.membersList = membersList
         this.reactionList = reactionList
-        Log.wtf("wtf", "wtf reactionList " + reactionList.size)
-        Log.wtf("wtf", "wtf membersList " + membersList.size)
         notifyDataSetChanged()
     }
 
@@ -53,7 +51,6 @@ class MembersListAdapter(
         with(holder) {
             with(membersList[position]) {
                 if(reactionList.isNotEmpty()) {
-                    Log.wtf("wtf", "wtf " + reactionList[position].imageUrl)
                     binding.reaction.layoutItemReactionParent.visibility = View.VISIBLE
                     Glide.with(context)
                         .load(reactionList[position].imageUrl)

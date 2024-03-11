@@ -208,9 +208,7 @@ class ReportModalFragment() : BottomSheetDialogFragment() {
         getIsMyLanguage()
         getIsFromConv()
         getIsOneToOne()
-        Log.wtf("wtf", "contentCopied : $contentCopied")
         if(contentCopied == null || contentCopied.isNullOrEmpty()){
-            Log.wtf("wtf", "coucou")
             binding.layoutChooseCopy.visibility = View.GONE
         }else{
             binding.layoutChooseCopy.setOnClickListener {

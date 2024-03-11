@@ -4,10 +4,12 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
@@ -57,6 +59,7 @@ open class MembersFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        //TODO : REMOVE THIS CLASS : REFACTORED IN MEMBERACTIVITY FOR MORE SIMPLICITY AND REUSABILITY
         _binding = NewFragmentMembersBinding.inflate(inflater, container, false)
         AnalyticsEvents.logEvent(
             AnalyticsEvents.VIEW_GROUP_MEMBER_SHOW_LIST
@@ -87,8 +90,15 @@ open class MembersFragment : Fragment() {
             binding.headerTitle.text = requireContext().getString(R.string.see_member_react)
 
         }else {
-            binding.headerTitle.text = requireContext().getString(R.string.see_members)
+            if(type == MembersType.GROUP){
+                binding.headerTitle.text = requireContext().getString(R.string.see_members)
+                binding.searchBar.hint = requireContext().getString(R.string.search_member_hint)
+            }
+            else if(type == MembersType.EVENT){
 
+                binding.headerTitle.text = requireContext().getString(R.string.see_participants)
+                binding.searchBar.hint = requireContext().getString(R.string.search_participant_hint)
+            }
         }
     }
 
