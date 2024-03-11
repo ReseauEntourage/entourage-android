@@ -32,6 +32,7 @@ import social.entourage.android.databinding.NewLayoutPostBinding
 import social.entourage.android.databinding.SurveyLayoutBinding
 import social.entourage.android.language.LanguageManager
 import social.entourage.android.report.DataLanguageStock
+import social.entourage.android.survey.ResponseSurveyActivity
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.setHyperlinkClickable
 import social.entourage.android.user.UserProfileActivity
@@ -145,7 +146,28 @@ class PostAdapter(
                             it!!
                         )
                     }
+                    surveyHolder.binding.tvAmbassador.visibility = View.VISIBLE
+                    var tagsString = ""
+                    if (post.user?.isAdmin() == true){
+                        tagsString = tagsString + context.getString(R.string.admin) + " •"
+                    }else if(post.user?.isAmbassador() == true){
+                        tagsString = tagsString + context.getString(R.string.ambassador) + " •"
+                    }else if(post.user?.partner != null ){
+                        tagsString = tagsString + post.user?.partner!!.name
+
+                    }
+                    if(tagsString.isEmpty()){
+                        surveyHolder.binding.tvAmbassador.visibility = View.GONE
+                    }else{
+                        surveyHolder.binding.tvAmbassador.visibility = View.VISIBLE
+                        if(tagsString.last().toString() == "•"){
+                            tagsString = tagsString.removeSuffix("•")
+                        }
+                        surveyHolder.binding.tvAmbassador.text = tagsString
+                    }
                     surveyHolder.binding.tvTitleWhoVote.setOnClickListener {
+                        ResponseSurveyActivity.myVote.clear() // Nettoie les anciens votes s'il s'agit d'un choix unique
+                        ResponseSurveyActivity.myVote = localState.toMutableList()
                         surveyCallback.showParticipantWhoVote(post.survey!!, post.id!!, post.content!!)
                     }
 

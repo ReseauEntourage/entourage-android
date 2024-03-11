@@ -1,22 +1,29 @@
 package social.entourage.android.survey
 
+import android.app.Activity
+import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.gson.Gson
+import social.entourage.android.EntourageApplication
 import social.entourage.android.api.model.Survey
 import social.entourage.android.api.model.SurveyResponse
 import social.entourage.android.api.model.SurveyResponseUser
 import social.entourage.android.api.model.SurveyResponsesListWrapper
 import social.entourage.android.databinding.LayoutSectionSurveyResponseItemBinding
 import social.entourage.android.databinding.LayoutVoterSurveyResponseItemBinding
+import social.entourage.android.groups.details.members.OnItemShowListener
+import social.entourage.android.tools.utils.Const
+import social.entourage.android.user.UserProfileActivity
 
 
 class SurveyResponseAdapter(
     private val survey: Survey,
-    private val responsesList: SurveyResponsesListWrapper
+    private val responsesList: SurveyResponsesListWrapper,
+    private var onItemShowListener: OnItemShowListener
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     companion object {
@@ -40,7 +47,7 @@ class SurveyResponseAdapter(
                 }
             }
         }
-        Log.wtf("SurveyResponseAdapter", "items: " + Gson().toJson(items))
+        Log.wtf("SurveyResponseAdapter", "items: " + Gson().toJson(ResponseSurveyActivity.myVote))
     }
 
     fun updateResponses(newResponsesList: SurveyResponsesListWrapper) {
@@ -91,7 +98,16 @@ class SurveyResponseAdapter(
                         .circleCrop()
                         .into(holder.binding.picture)
                 }
-                // Gérer l'affichage des rôles communautaires
+                holder.binding.layout.setOnClickListener {
+                    onItemShowListener.onShowConversation(responseUser.id)
+                }
+                val isMe = EntourageApplication.get().me()?.id == responseUser.id
+                if(isMe) {
+                    holder.binding.contact.visibility = android.view.View.GONE
+                }else {
+                    holder.binding.contact.visibility = android.view.View.VISIBLE
+                }
+
             }
         }
     }

@@ -92,6 +92,7 @@ class MembersListAdapter(
                 }
 
                 binding.layout.setOnClickListener { view ->
+
                     (view.context as? Activity)?.startActivityForResult(
                         Intent(view.context, UserProfileActivity::class.java).putExtra(
                             Const.USER_ID,
