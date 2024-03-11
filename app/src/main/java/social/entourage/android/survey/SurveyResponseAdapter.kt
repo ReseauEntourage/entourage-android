@@ -42,6 +42,7 @@ class SurveyResponseAdapter(
     }
 
     private fun populateItems(responsesList: SurveyResponsesListWrapper) {
+
         val myVoteMap = mutableMapOf<Int, Boolean>()
         for (i in ResponseSurveyActivity.myVote.indices) {
             myVoteMap[i] = ResponseSurveyActivity.myVote[i]
@@ -49,6 +50,7 @@ class SurveyResponseAdapter(
         for (i in ResponseSurveyActivity.myVote.size until survey.choices.size) {
             myVoteMap[i] = false
         }
+
 
         survey.choices.forEachIndexed { index, choice ->
             items.add(choice)
@@ -60,7 +62,6 @@ class SurveyResponseAdapter(
                     }
                 }
             }
-
             if (myVoteMap[index]!!) {
                 val myUser = EntourageApplication.me(context)
                 if (myUser != null) { // Check if user is retrieved successfully
@@ -100,13 +101,14 @@ class SurveyResponseAdapter(
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+
         when (holder) {
             is SectionViewHolder -> {
                 val section = items[position] as String
                 holder.binding.tvTitleQuestionOption.text = section
                 // Trouver l'index correct de la section dans survey.choices pour récupérer le nombre de votes
                 val sectionIndex = survey.choices.indexOf(section)
-                val voteCount = if (sectionIndex != -1) survey.summary[sectionIndex] else 0
+                var voteCount = if (sectionIndex != -1) survey.summary[sectionIndex] else 0
                 holder.binding.numberVote.text = "$voteCount vote${if (voteCount > 1) "s" else ""}"
             }
             is ItemViewHolder -> {
@@ -128,7 +130,6 @@ class SurveyResponseAdapter(
                 }else {
                     holder.binding.contact.visibility = android.view.View.VISIBLE
                 }
-
             }
         }
     }
@@ -138,3 +139,5 @@ class SurveyResponseAdapter(
 
 class SectionViewHolder(val binding: LayoutSectionSurveyResponseItemBinding) : RecyclerView.ViewHolder(binding.root)
 class ItemViewHolder(val binding: LayoutVoterSurveyResponseItemBinding) : RecyclerView.ViewHolder(binding.root)
+
+

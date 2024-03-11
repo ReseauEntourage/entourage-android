@@ -60,5 +60,5 @@ data class Survey(
     @SerializedName("multiple")
     var multiple: Boolean,
     @SerializedName("summary")
-    var summary: List<Int>
+    var summary: MutableList<Int>
 )

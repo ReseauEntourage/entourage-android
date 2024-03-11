@@ -218,6 +218,11 @@ class PostAdapter(
 
                             it.parent.setOnClickListener {
                                 val wasSelected = localState[index]
+                                if(wasSelected){
+                                    survey.summary[index] = survey.summary[index] - 1
+                                }else{
+                                    survey.summary[index] = survey.summary[index] + 1
+                                }
                                 if (survey.multiple) {
                                     // Logique pour sondages à choix multiples
                                     localState[index] = !wasSelected
