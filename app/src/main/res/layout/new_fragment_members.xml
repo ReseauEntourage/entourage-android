@@ -45,7 +45,6 @@
                 android:id="@+id/search_bar_layout"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:layout_marginTop="18dp"
                 app:endIconDrawable="@drawable/new_cross"
                 app:endIconMode="custom"
                 app:endIconTint="@color/orange"
