@@ -56,10 +56,8 @@ class SurveyResponseAdapter(
             items.add(choice)
             responsesList.responses.getOrNull(index)?.let { usersForChoice ->
                 if (usersForChoice.isNotEmpty()) {
-                    val alreadyVoted = usersForChoice.any { it.id == EntourageApplication.me(context)?.id }
-                    if (!alreadyVoted) {
-                        items.addAll(usersForChoice)
-                    }
+                    val filteredUsersForChoice = usersForChoice.filterNot { it.id == EntourageApplication.me(context)?.id }
+                    items.addAll(filteredUsersForChoice)
                 }
             }
             if (myVoteMap[index]!!) {
