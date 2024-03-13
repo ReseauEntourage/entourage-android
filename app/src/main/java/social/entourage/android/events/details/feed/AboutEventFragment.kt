@@ -123,7 +123,7 @@ class AboutEventFragment : Fragment(), OnMapReadyCallback {
             }
             binding.placesLimit.content.text =
                 String.format(getString(R.string.limited_places), event?.metadata?.placeLimit)
-            if(event?.metadata?.placeLimit == null && event?.metadata?.placeLimit == 0){
+            if(event?.metadata?.placeLimit == null || event?.metadata?.placeLimit == 0){
                 binding.placesLimit.root.isVisible = false
             }else{
                 binding.placesLimit.root.isVisible = true
