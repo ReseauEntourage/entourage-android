@@ -340,7 +340,11 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
 
 
             event?.metadata?.placeLimit?.let {
-                placesLimit.root.visibility = View.VISIBLE
+                if(it == 0){
+                    placesLimit.root.visibility = View.GONE
+                }else{
+                    placesLimit.root.visibility = View.VISIBLE
+                }
                 placesLimit.content.text = String.format(
                     getString(R.string.places_numbers),
                     it,
