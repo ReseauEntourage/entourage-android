@@ -579,10 +579,9 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
     private fun handleSurveyPostResponse(success: Boolean) {
         if(isAdded){
             if (success){
-                showToast("Success sending survey")
-
+                
             }else{
-                showToast("Error sending survey")
+                showToast("Erreur serveur, veuillez réessayer plus tard")
             }
         }
     }
@@ -891,11 +890,11 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
     }
 
     override fun onSurveyOptionClicked(postId: Int, surveyResponse: MutableList<Boolean>) {
-        surveyPresenter.postSurveyResponseGroup(eventId, postId, surveyResponse)
+        surveyPresenter.postSurveyResponseEvent(eventId, postId, surveyResponse)
     }
 
     override fun onDeleteSurveyClick(postId: Int, surveyResponse: MutableList<Boolean>) {
-        Toast.makeText(requireContext(), "Survey option deleted", Toast.LENGTH_SHORT).show()
+        //Toast.makeText(requireContext(), "Survey option deleted", Toast.LENGTH_SHORT).show()
     }
 
     override fun showParticipantWhoVote(survey: Survey, postId: Int, question:String) {

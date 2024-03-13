@@ -32,7 +32,7 @@ interface SurveyRequest {
     ): Call<ResponseBody>
 
 
-    @POST("event/{event_id}/chat_messages/{chat_message_id}/survey_responses")
+    @POST("outings/{event_id}/chat_messages/{chat_message_id}/survey_responses")
     fun postSurveyResponseEvent(
         @Path("event_id") eventId: Int,
         @Path("chat_message_id") chatMessageId: Int,
