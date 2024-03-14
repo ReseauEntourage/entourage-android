@@ -39,6 +39,7 @@ import social.entourage.android.api.model.Pedago
 import social.entourage.android.api.model.Summary
 import social.entourage.android.api.model.User
 import social.entourage.android.databinding.FragmentHomeV2LayoutBinding
+import social.entourage.android.events.create.CommunicationHandler
 import social.entourage.android.guide.GDSMainActivity
 import social.entourage.android.home.HomePresenter
 import social.entourage.android.home.pedago.OnItemClick
@@ -135,6 +136,7 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
         checksum = 0
         resetFilter()
         callToInitHome()
+        CommunicationHandler.resetValues()
 
     }
 
