@@ -6,6 +6,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.SpannableString
 import android.text.style.UnderlineSpan
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -333,6 +334,10 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
                         .into(binding.uiImageContrib)
                 } ?: kotlin.run {
                     binding.uiImagePlaceholder.isVisible = true
+                }
+                Log.wtf("wtf", "image url : ${action?.imageUrl}")
+                if(action?.imageUrl == null){
+                    binding.layoutTopContrib.isVisible = false
                 }
                 if(it.sectionName != null){
                     binding.uiTitleCatContrib.text = ActionUtils.showTagTranslated(requireContext(), it.sectionName!!)
