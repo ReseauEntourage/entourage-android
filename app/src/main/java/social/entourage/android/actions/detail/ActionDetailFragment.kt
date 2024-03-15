@@ -334,10 +334,14 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
                         .into(binding.uiImageContrib)
                 } ?: kotlin.run {
                     binding.uiImagePlaceholder.isVisible = true
+
                 }
                 Log.wtf("wtf", "image url : ${action?.imageUrl}")
                 if(action?.imageUrl == null){
                     binding.layoutTopContrib.isVisible = false
+                    binding.uiLayoutCatContribNoImage.isVisible = true
+                }else{
+                    binding.uiLayoutCatContribNoImage.isVisible = false
                 }
                 if(it.sectionName != null){
                     binding.uiTitleCatContrib.text = ActionUtils.showTagTranslated(requireContext(), it.sectionName!!)
@@ -346,6 +350,12 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
                 binding.uiIvCatContrib.setImageDrawable(ResourcesCompat.getDrawable(resources,
                     ActionSection.getIconFromId(it.sectionName),null))
                 binding.uiIvCatDemand.setImageDrawable(ResourcesCompat.getDrawable(resources,
+                    ActionSection.getIconFromId(it.sectionName),null))
+                binding.uiActionDescription.text = action?.description
+                if(it.sectionName != null){
+                    binding.uiTitleCatContribNoPhoto.text = ActionUtils.showTagTranslated(requireContext(), it.sectionName!!)
+                }
+                binding.uiIvCatContribNoPhoto.setImageDrawable(ResourcesCompat.getDrawable(resources,
                     ActionSection.getIconFromId(it.sectionName),null))
                 binding.uiActionDescription.text = action?.description
 

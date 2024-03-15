@@ -40,13 +40,55 @@
                             <TextView
                                 android:id="@+id/ui_title_main"
                                 style="@style/left_courant_bold_black"
-                                android:layout_width="match_parent"
+                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="16dp"
+                                android:layout_marginTop="20dp"
                                 android:layout_marginBottom="8dp"
                                 app:layout_constraintTop_toTopOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
                                 android:text="Title Main" />
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:id="@+id/ui_layout_cat_contrib_no_image"
+                                android:layout_width="wrap_content"
+                                android:layout_height="30dp"
+
+                                android:layout_marginEnd="4dp"
+                                android:layout_marginStart="20dp"
+                                android:background="@drawable/new_bg_rounded_button_orange_stroke"
+                                android:paddingHorizontal="4dp"
+                                android:paddingVertical="6dp"
+                                app:layout_constraintStart_toEndOf="@+id/ui_title_main"
+                                app:layout_constraintTop_toTopOf="@+id/ui_title_main"
+                                app:layout_constraintBottom_toBottomOf="@+id/ui_title_main">
+
+                                <TextView
+                                    android:id="@+id/ui_title_cat_contrib_no_photo"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginEnd="8dp"
+                                    android:ellipsize="middle"
+                                    android:fontFamily="@font/nunitosans_semibold"
+                                    android:textColor="@color/orange"
+                                    android:textSize="13sp"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    tools:text="Location" />
+
+                                <ImageView
+                                    android:id="@+id/ui_iv_cat_contrib_no_photo"
+                                    android:layout_width="20dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="8dp"
+                                    android:layout_marginEnd="4dp"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintEnd_toStartOf="@+id/ui_title_cat_contrib_no_photo"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    app:srcCompat="@drawable/ic_action_section_clothes"
+                                    app:tint="@color/orange" />
+
+                            </androidx.constraintlayout.widget.ConstraintLayout>
 
                         </androidx.constraintlayout.widget.ConstraintLayout>
 
