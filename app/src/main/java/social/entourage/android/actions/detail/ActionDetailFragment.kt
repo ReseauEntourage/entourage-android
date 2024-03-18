@@ -339,9 +339,7 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
                 Log.wtf("wtf", "image url : ${action?.imageUrl}")
                 if(action?.imageUrl == null){
                     binding.layoutTopContrib.isVisible = false
-                    binding.uiLayoutCatContribNoImage.isVisible = true
-                }else{
-                    binding.uiLayoutCatContribNoImage.isVisible = false
+                    binding.uiLayoutCatDemand.isVisible = true
                 }
                 if(it.sectionName != null){
                     binding.uiTitleCatContrib.text = ActionUtils.showTagTranslated(requireContext(), it.sectionName!!)
@@ -352,13 +350,6 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
                 binding.uiIvCatDemand.setImageDrawable(ResourcesCompat.getDrawable(resources,
                     ActionSection.getIconFromId(it.sectionName),null))
                 binding.uiActionDescription.text = action?.description
-                if(it.sectionName != null){
-                    binding.uiTitleCatContribNoPhoto.text = ActionUtils.showTagTranslated(requireContext(), it.sectionName!!)
-                }
-                binding.uiIvCatContribNoPhoto.setImageDrawable(ResourcesCompat.getDrawable(resources,
-                    ActionSection.getIconFromId(it.sectionName),null))
-                binding.uiActionDescription.text = action?.description
-
                 val _addr = action?.metadata?.displayAddress ?: "-"
                 val _addr_and_dist = _addr + " " + action?.displayDistance(requireContext())
                 binding.uiLocation.text = _addr_and_dist

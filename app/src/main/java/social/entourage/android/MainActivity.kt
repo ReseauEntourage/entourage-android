@@ -161,7 +161,8 @@ class MainActivity : BaseSecuredActivity() {
             if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
                 && appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)) {
                 try {
-                    appUpdateManager.startUpdateFlowForResult(
+                    AnalyticsEvents.logEvent(AnalyticsEvents.view_update_version)
+                appUpdateManager.startUpdateFlowForResult(
                         appUpdateInfo,
                         AppUpdateType.IMMEDIATE,
                         this, // Ton Activity.
@@ -177,8 +178,11 @@ class MainActivity : BaseSecuredActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == UPDATE_REQUEST_CODE) {
             if (resultCode != RESULT_OK) {
+                AnalyticsEvents.logEvent(AnalyticsEvents.clic_update_version_cancel)
                 Timber.tag("Update")
                     .e("La mise à jour a échoué ou a été annulée par l'utilisateur.")
+            }else{
+                AnalyticsEvents.logEvent(AnalyticsEvents.clic_update_version_validate)
             }
         }
     }
