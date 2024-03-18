@@ -40,7 +40,7 @@
                             <TextView
                                 android:id="@+id/ui_title_main"
                                 style="@style/left_courant_bold_black"
-                                android:layout_width="wrap_content"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="20dp"
                                 android:layout_marginBottom="8dp"
