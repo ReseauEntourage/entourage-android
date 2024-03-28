@@ -41,7 +41,9 @@ import social.entourage.android.api.model.User
 import social.entourage.android.databinding.FragmentHomeV2LayoutBinding
 import social.entourage.android.events.create.CommunicationHandler
 import social.entourage.android.guide.GDSMainActivity
+import social.entourage.android.home.CommunicationHandlerBadgeViewModel
 import social.entourage.android.home.HomePresenter
+import social.entourage.android.home.UnreadMessages
 import social.entourage.android.home.pedago.OnItemClick
 import social.entourage.android.home.pedago.PedagoDetailActivity
 import social.entourage.android.home.pedago.PedagoListActivity
@@ -136,8 +138,17 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
         checksum = 0
         resetFilter()
         callToInitHome()
-        CommunicationHandler.resetValues()
+        actionsPresenter.getUnreadCount()
 
+
+    }
+
+    private fun updateUnreadCount(unreadMessages: UnreadMessages?) {
+        val count:Int = unreadMessages?.unreadCount ?: 0
+        EntourageApplication.get().mainActivity?.let {
+            val viewModel = ViewModelProvider(it)[CommunicationHandlerBadgeViewModel::class.java]
+            viewModel.badgeCount.postValue(UnreadMessages(count))
+        }
     }
 
     fun noAdressPopFillAdress(){
@@ -295,7 +306,7 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
         homePresenter.getAllActions.observe(viewLifecycleOwner,::handleAction)
         homePresenter.pedagogicalContent.observe(viewLifecycleOwner,::handlePedago)
         homePresenter.notifsCount.observe(requireActivity(), ::updateNotifsCount)
-
+        actionsPresenter.unreadMessages.observe(requireActivity(), ::updateUnreadCount)
     }
 
     fun handleGroup(allGroup: MutableList<Group>?){

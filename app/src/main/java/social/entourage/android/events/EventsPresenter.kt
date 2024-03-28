@@ -39,6 +39,7 @@ class EventsPresenter: ViewModel() {
     var newEventCreated = MutableLiveData<Events?>()
     var isEventCreated = MutableLiveData<Boolean>()
     var isUserParticipating = MutableLiveData<Boolean>()
+    var isUserConfirmedParticipating = MutableLiveData<Boolean>()
     var getMembers = MutableLiveData<MutableList<EntourageUser>>()
     var getMembersReact = MutableLiveData<MutableList<EntourageUser>>()
     var getMembersSearch = MutableLiveData<MutableList<EntourageUser>>()
@@ -609,5 +610,25 @@ class EventsPresenter: ViewModel() {
         })
     }
 
+    fun confirmParticipation(eventId: Int) {
+        EntourageApplication.get().apiModule.eventsRequest.confirmParticipation(eventId)
+            .enqueue(object : Callback<ResponseBody> {
+                override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                    if (response.isSuccessful) {
+                        Log.d("EventsPresenter", "Participation confirmée avec succès.")
+                        isUserConfirmedParticipating.value = true // Supposition d'un changement d'état représentatif
+                    } else {
+                        Log.d("EventsPresenter", "Échec de la confirmation de participation.")
+                        isUserConfirmedParticipating.value = false
+                    }
+                }
+
+                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                    // Gérer l'échec de la communication avec le serveur (peut-être le réseau est avalé par un trou noir)
+                    Log.e("EventsPresenter", "Échec de l'appel réseau: ${t.message}")
+                    isUserConfirmedParticipating.value = false
+                }
+            })
+    }
 
 }

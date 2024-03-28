@@ -162,6 +162,9 @@ interface EventsRequest {
         @Body reactionWrapper: ReactionWrapper
     ): Call<ResponseBody>
 
-
+    @POST("outings/{outing_id}/users/confirm")
+    fun confirmParticipation(
+        @Path("outing_id") eventId: Int
+    ): Call<ResponseBody>
 
 }

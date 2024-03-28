@@ -30,6 +30,7 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
     private val stagingURL = "preprod.entourage.social"
     val presenter:UniversalLinkPresenter = UniversalLinkPresenter(this)
 
+
     fun handleUniversalLink(uri: Uri) {
         val pathSegments = uri.pathSegments
         uri.queryParameterNames.forEach { name ->

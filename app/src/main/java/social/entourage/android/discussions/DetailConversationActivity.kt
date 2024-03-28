@@ -78,6 +78,7 @@ class DetailConversationActivity : CommentActivity() {
 
 
     private fun handleDetailConversation(conversation: Conversation?) {
+        Log.wtf("wtf", "conversation id: ${conversation?.uuid_v2}")
         titleName = conversation?.title
         binding.header.title = titleName
 
@@ -157,5 +158,6 @@ class DetailConversationActivity : CommentActivity() {
 
     fun updateDiscussion() {
         viewModel.getDetailConversation(id)
+
     }
 }
