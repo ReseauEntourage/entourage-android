@@ -149,6 +149,7 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
             val viewModel = ViewModelProvider(it)[CommunicationHandlerBadgeViewModel::class.java]
             viewModel.badgeCount.postValue(UnreadMessages(count))
         }
+        CommunicationHandler.resetValues()
     }
 
     fun noAdressPopFillAdress(){
