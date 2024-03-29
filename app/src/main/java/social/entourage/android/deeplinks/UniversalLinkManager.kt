@@ -208,21 +208,35 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
     }
 
     override fun onRetrievedDiscussion(discussion: Conversation) {
-        (context as MainActivity).startActivityForResult(
-            Intent(context, DetailConversationActivity::class.java)
-                .putExtras(
-                    bundleOf(
-                        Const.ID to discussion.id,
-                        Const.POST_AUTHOR_ID to discussion.user?.id,
-                        Const.SHOULD_OPEN_KEYBOARD to false,
-                        Const.NAME to discussion.title,
-                        Const.IS_CONVERSATION_1TO1 to true,
-                        Const.IS_MEMBER to true,
-                        Const.IS_CONVERSATION to true,
-                        Const.HAS_TO_SHOW_MESSAGE to discussion.hasToShowFirstMessage()
-                    )
-                ), 0
-        )
+        // Créer l'intent avec les extras
+        val intent = Intent(context, DetailConversationActivity::class.java).apply {
+            putExtras(bundleOf(
+                Const.ID to discussion.id,
+                Const.POST_AUTHOR_ID to discussion.user?.id,
+                Const.SHOULD_OPEN_KEYBOARD to false,
+                Const.NAME to discussion.title,
+                Const.IS_CONVERSATION_1TO1 to true,
+                Const.IS_MEMBER to true,
+                Const.IS_CONVERSATION to true,
+                Const.HAS_TO_SHOW_MESSAGE to discussion.hasToShowFirstMessage()
+            ))
+        }
+
+        when (context) {
+            is MainActivity -> {
+                // Si le context est MainActivity, on lance l'activité normalement
+                (context as MainActivity).startActivityForResult(intent, 0)
+            }
+            is DetailConversationActivity -> {
+                // Si le context est DetailConversationActivity, on ajoute le flag et on lance une nouvelle activité
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+                (context as DetailConversationActivity).startActivity(intent)
+                context.finish() // Fermer l'activité actuelle pour éviter l'empilement des activités
+            }
+            else -> {
+                // Gérer d'autres types de contextes si nécessaire
+            }
+        }
     }
 
     override fun onErrorRetrievedDiscussion() {
