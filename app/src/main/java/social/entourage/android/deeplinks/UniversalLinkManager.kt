@@ -60,8 +60,16 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
                         //HERE GO TO DETAIL MESSAGE GROUP
                     }
                 }
-
-                pathSegments.contains("conversations") && pathSegments.contains("chat_messages") -> {
+                pathSegments.contains("conversations") || pathSegments.contains("messages") -> {
+                    if(pathSegments.size > 2){
+                        val convId = pathSegments[2]
+                        Log.wtf("wtf", "convId: $convId")
+                        presenter.getDetailConversation(convId)
+                    }else{
+                        (context as? MainActivity)?.goConv()
+                    }
+                }
+/*                pathSegments.contains("conversations") && pathSegments.contains("chat_messages") -> {
                     val convId = pathSegments[2]
                     val meId = EntourageApplication.get().me()?.id
                     (context as? Activity)?.startActivityForResult(
@@ -80,7 +88,7 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
                                 )
                             ),0
                     )
-                }
+                }*/
                 pathSegments.contains("outings") -> {
                     if (pathSegments.size > 2) {
                         val outingId = pathSegments[2]
@@ -107,14 +115,7 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
                         context.startActivity(intent)
                     }
                 }
-                pathSegments.contains("conversations") || pathSegments.contains("messages") -> {
-                    if(pathSegments.size > 2){
-                        val convId = pathSegments[2]
-                        presenter.getDetailConversation(convId)
-                    }else{
-                        (context as? MainActivity)?.goConv()
-                    }
-                }
+
                 pathSegments.contains("solicitations") -> {
                     if (pathSegments.contains("new")) {
                         val intent = Intent(context, CreateActionActivity::class.java)

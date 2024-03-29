@@ -44,6 +44,8 @@ class UniversalLinkPresenter(val callback:UniversalLinksPresenterCallback) {
                     call: Call<GroupWrapper>,
                     response: Response<GroupWrapper>
                 ) {
+                    Log.wtf("wtf", "request url: ${call.request().url}" )
+
                     if (response.isSuccessful) {
                         response.body()?.let { groupWrapper ->
                             callback.onRetrievedGroup(groupWrapper.group)
@@ -53,6 +55,7 @@ class UniversalLinkPresenter(val callback:UniversalLinksPresenterCallback) {
                         callback.onErrorRetrievedGroup()
                     }
                 }
+
 
                 override fun onFailure(call: Call<GroupWrapper>, t: Throwable) {
                 }
@@ -125,6 +128,8 @@ class UniversalLinkPresenter(val callback:UniversalLinksPresenterCallback) {
                     if(response.code() >= 400){
                         callback.onErrorRetrievedDiscussion()
                     }
+                    Log.wtf("wtf", "response code: ${response.code()}" )
+                    Log.wtf("wtf", "request url: ${call.request().url}" )
                 }
 
                 override fun onFailure(call: Call<DiscussionDetailWrapper>, t: Throwable) {
