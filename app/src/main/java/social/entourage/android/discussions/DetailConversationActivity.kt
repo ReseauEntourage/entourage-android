@@ -80,7 +80,7 @@ class DetailConversationActivity : CommentActivity() {
     private fun handleDetailConversation(conversation: Conversation?) {
         titleName = conversation?.title
         binding.header.title = titleName
-
+        Log.wtf("wtf", "conversation id: ${conversation?.uuid_v2}")
         if (conversation?.hasBlocker() == true) {
             binding.postBlocked.isVisible = true
             val _name = titleName ?: ""
