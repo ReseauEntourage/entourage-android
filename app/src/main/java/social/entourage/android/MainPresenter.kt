@@ -153,7 +153,7 @@ class MainPresenter(private val activity: MainActivity) {
                     Timber.e("updating application info error")
                 }
                 else{
-                    Timber.e("updating success")
+
                 }
             }
 

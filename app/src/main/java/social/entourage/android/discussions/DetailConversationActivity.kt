@@ -29,6 +29,7 @@ class DetailConversationActivity : CommentActivity() {
 
 
     private var hasToShowFirstMessage = false
+    private var hasSeveralpeople = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -79,8 +80,10 @@ class DetailConversationActivity : CommentActivity() {
 
     private fun handleDetailConversation(conversation: Conversation?) {
         titleName = conversation?.title
+        if(conversation?.members?.size!! > 2){
+            hasSeveralpeople = true
+        }
         binding.header.title = titleName
-        Log.wtf("wtf", "conversation id: ${conversation?.uuid_v2}")
         if (conversation?.hasBlocker() == true) {
             binding.postBlocked.isVisible = true
             val _name = titleName ?: ""
@@ -122,6 +125,11 @@ class DetailConversationActivity : CommentActivity() {
         binding.header.iconSettings.setOnClickListener {
             DataLanguageStock.updatePostLanguage(commentLang)
             AnalyticsEvents.logEvent(AnalyticsEvents.Message_action_param)
+            if(this.hasSeveralpeople){
+                SettingsDiscussionModalFragment.isSeveralPersonneInConversation = true
+            }else{
+                SettingsDiscussionModalFragment.isSeveralPersonneInConversation = false
+            }
             SettingsDiscussionModalFragment.newInstance(
                 postAuthorID,
                 id,
