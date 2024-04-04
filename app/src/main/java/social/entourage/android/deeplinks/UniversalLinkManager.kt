@@ -19,6 +19,7 @@ import social.entourage.android.api.model.Events
 import social.entourage.android.api.model.Group
 import social.entourage.android.discussions.DetailConversationActivity
 import social.entourage.android.groups.details.feed.FeedActivity
+import social.entourage.android.home.pedago.PedagoDetailActivity
 import social.entourage.android.home.pedago.PedagoListActivity
 import social.entourage.android.tools.utils.Const
 
@@ -150,19 +151,36 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
                         }
                     }
                 }
-
                 pathSegments.contains("resources") -> {
-                    if (pathSegments.size > 2) {
-                        val resourcesId = pathSegments[2]
-                        (context as MainActivity).startActivityForResult(
-                            Intent(
-                                context,
-                                PedagoListActivity::class.java
-                            ), 0
-                        )
+                    val intent = when {
+                        pathSegments.size > 2 -> {
+                            // Un ID de ressource est présent
+                            val resourcesId = pathSegments[2]
+                            PedagoDetailActivity.hashId = resourcesId
+                            Intent(context, PedagoDetailActivity::class.java).apply {
+                                // Assumons que PedagoDetailActivity attend un extra avec l'ID de la ressource
+                            }
+                        }
+                        else -> {
+                            // Aucun ID de ressource spécifié; ouvrir la liste
+                            Intent(context, PedagoListActivity::class.java)
+                        }
+                    }
+
+                    when (context) {
+                        is MainActivity -> {
+                            context.startActivityForResult(intent, 0)
+                        }
+                        is DetailConversationActivity -> {
+                            context.startActivityForResult(intent, 0)
+                        }
+                        else -> {
+                            // Logique par défaut ou gestion d'autres contextes
+                            context.startActivity(intent)
                         }
                     }
                 }
+            }
             }
         }
 

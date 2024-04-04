@@ -1,6 +1,7 @@
 package social.entourage.android.discussions
 
 import android.graphics.Typeface
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
+import com.google.gson.Gson
 import social.entourage.android.R
 import social.entourage.android.api.model.Conversation
 import social.entourage.android.databinding.LayoutConversationHomeItemBinding
@@ -58,7 +60,25 @@ class DiscussionsListAdapter(
                 binding.imagePicto.setImageResource(conversation.getPictoTypeFromSection())
             }
 
-            binding.name.text = conversation.title
+            Log.wtf("wtf", "conveersation members: ${conversation.members?.size}")
+            Log.wtf("wtf", "conversation Gson" + Gson().toJson(conversation))
+            if ((conversation.members?.size ?: 0) > 2) {
+                var namesText = ""
+                val membersToShow = conversation.members!!.take(5) // Prendre jusqu'à 5 membres
+                membersToShow.forEach { user ->
+                    namesText += "${user.displayName}, "
+                }
+                if (conversation.members!!.size > 5) {
+                    namesText = namesText.removeSuffix(", ") + "..." // Supprime la dernière virgule et l'espace, puis ajoute "..."
+                } else {
+                    namesText = namesText.removeSuffix(", ") // Supprime la dernière virgule et l'espace si moins de 6 membres
+                }
+                binding.name.text = namesText
+            } else {
+                binding.name.text = conversation.title
+            }
+
+
             if (conversation.getRolesWithPartnerFormated()?.isEmpty() == false) {
                 binding.role.isVisible = true
                 binding.role.text = conversation.getRolesWithPartnerFormated()

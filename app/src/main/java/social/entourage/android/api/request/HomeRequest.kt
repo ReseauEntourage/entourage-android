@@ -28,6 +28,8 @@ interface HomeRequest {
 
     @GET("resources/{id}")
     fun getPedagogicalResource(@Path("id") resourceId: Int): Call<PedagogicSingleResponse>
+    @GET("resources/{id}")
+    fun getPedagogicalResourceWithHash(@Path("id") resourceId: String): Call<PedagogicSingleResponse>
 
     @POST("resources/{id}/users")
     fun setPedagogicalContentAsRead(@Path("id") groupId: Int): Call<Boolean>

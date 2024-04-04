@@ -80,24 +80,34 @@ class DetailConversationActivity : CommentActivity() {
 
     private fun handleDetailConversation(conversation: Conversation?) {
         titleName = conversation?.title
-        if(conversation?.members?.size!! > 2){
-            hasSeveralpeople = true
-        }
         binding.header.title = titleName
+        val memberCount = conversation?.members?.size ?: 0
+        if(memberCount > 2){
+            var title = ""
+            val limit = minOf(memberCount, 5) // Ne dépasse pas 5 ou le nombre total de membres
+            for (k in 0 until limit) {
+                if (conversation?.members?.get(k)?.id != postAuthorID) {
+                    title += conversation?.members?.get(k)?.displayName + ", "
+                }
+            }
+            if (title.endsWith(", ")) {
+                title = title.removeSuffix(", ") + "..."
+            }
+            binding.header.title = title
+        }
         if (conversation?.hasBlocker() == true) {
             binding.postBlocked.isVisible = true
             val _name = titleName ?: ""
             if (conversation.imBlocker()) {
                 binding.commentBlocked.hint = String.format(getString(R.string.message_user_blocked_by_me),_name)
-            }
-            else {
+            } else {
                 binding.commentBlocked.hint = String.format(getString(R.string.message_user_blocked_by_other),_name)
             }
-        }
-        else {
+        } else {
             binding.postBlocked.isVisible = false
         }
     }
+
 
     fun checkAndShowPopWarning() {
         if (hasToShowFirstMessage) {
