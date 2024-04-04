@@ -17,6 +17,7 @@ import social.entourage.android.api.model.Action
 import social.entourage.android.api.model.Conversation
 import social.entourage.android.api.model.Events
 import social.entourage.android.api.model.Group
+import social.entourage.android.comment.CommentActivity
 import social.entourage.android.discussions.DetailConversationActivity
 import social.entourage.android.groups.details.feed.FeedActivity
 import social.entourage.android.home.pedago.PedagoDetailActivity
@@ -64,7 +65,6 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
                 pathSegments.contains("conversations") || pathSegments.contains("messages") -> {
                     if(pathSegments.size > 2){
                         val convId = pathSegments[2]
-                        Log.wtf("wtf", "convId: $convId")
                         presenter.getDetailConversation(convId)
                     }else{
                         (context as? MainActivity)?.goConv()
@@ -226,6 +226,7 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
     }
 
     override fun onRetrievedDiscussion(discussion: Conversation) {
+        Log.wtf("wtf", "discussion: $discussion")
         // Créer l'intent avec les extras
         val intent = Intent(context, DetailConversationActivity::class.java).apply {
             putExtras(bundleOf(
@@ -249,6 +250,12 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
                 // Si le context est DetailConversationActivity, on ajoute le flag et on lance une nouvelle activité
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
                 (context as DetailConversationActivity).startActivity(intent)
+                context.finish() // Fermer l'activité actuelle pour éviter l'empilement des activités
+            }
+            is CommentActivity -> {
+                // Si le context est DetailConversationActivity, on ajoute le flag et on lance une nouvelle activité
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+                (context as CommentActivity).startActivity(intent)
                 context.finish() // Fermer l'activité actuelle pour éviter l'empilement des activités
             }
             else -> {
