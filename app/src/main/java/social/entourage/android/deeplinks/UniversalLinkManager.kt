@@ -174,6 +174,9 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
                         is DetailConversationActivity -> {
                             context.startActivityForResult(intent, 0)
                         }
+                        is CommentActivity -> {
+                            context.startActivityForResult(intent, 0)
+                        }
                         else -> {
                             // Logique par défaut ou gestion d'autres contextes
                             context.startActivity(intent)
