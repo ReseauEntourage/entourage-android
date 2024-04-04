@@ -60,19 +60,9 @@ class DiscussionsListAdapter(
                 binding.imagePicto.setImageResource(conversation.getPictoTypeFromSection())
             }
 
-            Log.wtf("wtf", "conveersation members: ${conversation.members?.size}")
-            Log.wtf("wtf", "conversation Gson" + Gson().toJson(conversation))
-            if ((conversation.members?.size ?: 0) > 2) {
+            if (conversation.memberCount > 2) {
                 var namesText = ""
-                val membersToShow = conversation.members!!.take(5) // Prendre jusqu'à 5 membres
-                membersToShow.forEach { user ->
-                    namesText += "${user.displayName}, "
-                }
-                if (conversation.members!!.size > 5) {
-                    namesText = namesText.removeSuffix(", ") + "..." // Supprime la dernière virgule et l'espace, puis ajoute "..."
-                } else {
-                    namesText = namesText.removeSuffix(", ") // Supprime la dernière virgule et l'espace si moins de 6 membres
-                }
+                namesText = conversation.user?.displayName +  " + " + (conversation.memberCount - 1 ) + " membres"
                 binding.name.text = namesText
             } else {
                 binding.name.text = conversation.title

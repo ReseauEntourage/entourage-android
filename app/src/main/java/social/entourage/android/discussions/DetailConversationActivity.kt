@@ -84,15 +84,7 @@ class DetailConversationActivity : CommentActivity() {
         val memberCount = conversation?.members?.size ?: 0
         if(memberCount > 2){
             var title = ""
-            val limit = minOf(memberCount, 5) // Ne dépasse pas 5 ou le nombre total de membres
-            for (k in 0 until limit) {
-                if (conversation?.members?.get(k)?.id != postAuthorID) {
-                    title += conversation?.members?.get(k)?.displayName + ", "
-                }
-            }
-            if (title.endsWith(", ")) {
-                title = title.removeSuffix(", ") + "..."
-            }
+            title = conversation?.user?.displayName +  " + " + (conversation?.memberCount?.minus(1)) + " membres"
             binding.header.title = title
         }
         if (conversation?.hasBlocker() == true) {

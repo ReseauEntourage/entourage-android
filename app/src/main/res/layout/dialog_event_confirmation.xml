@@ -21,6 +21,9 @@
         app:layout_constraintTop_toBottomOf="@+id/iv_event_confirm"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        android:fontFamily="@font/quicksand_bold"
+        android:textSize="15sp"
+        android:textColor="@color/light_orange"
         />
     <TextView
         android:layout_width="wrap_content"
@@ -28,7 +31,10 @@
         android:id="@+id/tv_desc_event_confirm"
         app:layout_constraintTop_toBottomOf="@+id/tv_title_event_confirm"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        android:fontFamily="@font/nunitosans_regular"
+        android:textSize="15sp"
+        android:textColor="@color/black"/>
     <androidx.constraintlayout.widget.Guideline
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
