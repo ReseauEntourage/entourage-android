@@ -31,7 +31,7 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
 
     private val prodURL = "www.entourage.social"
     private val stagingURL = "preprod.entourage.social"
-    private var conversation: Conversation? = null
+    private var conversationId: String = ""
     val presenter:UniversalLinkPresenter = UniversalLinkPresenter(this)
 
 
@@ -67,7 +67,8 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
                 pathSegments.contains("conversations") || pathSegments.contains("messages") -> {
                     if(pathSegments.size > 2){
                         val convId = pathSegments[2]
-                        presenter.getDetailConversation(convId)
+                        this.conversationId = convId
+                        presenter.addUserToConversation(convId)
                     }else{
                         (context as? MainActivity)?.goConv()
                     }
@@ -231,13 +232,6 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
     }
 
     override fun onRetrievedDiscussion(discussion: Conversation) {
-        this.conversation = discussion
-        Log.wtf("wtf", "discussion id: ${discussion.id.toString()}")
-        discussion.uuid?.let { presenter.addUserToConversation(it) }
-    }
-
-    override fun onUserJoinedConversation() {
-        val discussion = conversation ?: return
         val intent = Intent(context, DetailConversationActivity::class.java).apply {
             putExtras(bundleOf(
                 Const.ID to discussion.id,
@@ -251,7 +245,7 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
             ))
         }
 
-        
+
         when (context) {
             is MainActivity -> {
                 // Si le context est MainActivity, on lance l'activité normalement
@@ -273,10 +267,17 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
                 // Gérer d'autres types de contextes si nécessaire
             }
         }
+        Log.wtf("wtf", "discussion id: ${discussion.id.toString()}")
+
+    }
+
+    override fun onUserJoinedConversation() {
+        presenter.getDetailConversation(this.conversationId.toString())
+
     }
 
     override fun onErrorRetrievedDiscussion() {
-        (context as MainActivity).DisplayErrorFromAppLinks(3)
+        (context as Activity).finish()
     }
 
     override fun onErrorRetrievedGroup() {

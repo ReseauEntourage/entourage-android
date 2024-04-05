@@ -125,7 +125,6 @@ class UniversalLinkPresenter(val callback:UniversalLinksPresenterCallback) {
                     response: Response<DiscussionDetailWrapper>
                 ) {
                     response.body()?.let { discussionWrapper ->
-                        Log.wtf("wtf", "discussionWrapper: ${discussionWrapper.conversation}" )
                         callback.onRetrievedDiscussion(discussionWrapper.conversation)
                     }
                     if(response.code() >= 400){
@@ -134,6 +133,7 @@ class UniversalLinkPresenter(val callback:UniversalLinksPresenterCallback) {
                 }
 
                 override fun onFailure(call: Call<DiscussionDetailWrapper>, t: Throwable) {
+
                 }
             })
     }
