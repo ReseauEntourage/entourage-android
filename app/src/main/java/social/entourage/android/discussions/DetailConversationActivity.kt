@@ -29,7 +29,7 @@ class DetailConversationActivity : CommentActivity() {
 
 
     private var hasToShowFirstMessage = false
-    private var hasSeveralpeople = false
+    var hasSeveralpeople = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -83,6 +83,7 @@ class DetailConversationActivity : CommentActivity() {
         binding.header.title = titleName
         val memberCount = conversation?.members?.size ?: 0
         if(memberCount > 2){
+            this.hasSeveralpeople = true
             var title = ""
             title = conversation?.user?.displayName +  " + " + (conversation?.memberCount?.minus(1)) + " membres"
             binding.header.title = title
@@ -109,6 +110,8 @@ class DetailConversationActivity : CommentActivity() {
             }
         }
     }
+
+
 
     override fun addComment() {
         viewModel.addComment(id, comment)

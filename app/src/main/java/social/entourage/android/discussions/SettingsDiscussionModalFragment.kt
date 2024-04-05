@@ -89,7 +89,6 @@ class SettingsDiscussionModalFragment : BottomSheetDialogFragment() {
     private fun setView() {
 
         updateInputs()
-        Log.wtf("wtf", "isSeveralPersonneInConversation" + isSeveralPersonneInConversation.toString())
 
         binding.header.title = getString(R.string.discussion_settings_title)
         if (isOneToOne) {

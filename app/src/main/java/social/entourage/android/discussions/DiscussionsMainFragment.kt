@@ -76,6 +76,8 @@ class DiscussionsMainFragment : Fragment() {
         page = 0
     }
 
+
+
     private fun handleResponseGetDiscussions(allGroups: MutableList<Conversation>?) {
         allGroups?.let {
             messagesList.clear()
