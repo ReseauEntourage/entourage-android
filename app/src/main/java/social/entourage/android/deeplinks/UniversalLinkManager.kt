@@ -251,6 +251,7 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
             ))
         }
 
+        
         when (context) {
             is MainActivity -> {
                 // Si le context est MainActivity, on lance l'activité normalement
