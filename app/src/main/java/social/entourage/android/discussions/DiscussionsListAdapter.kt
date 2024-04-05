@@ -62,7 +62,7 @@ class DiscussionsListAdapter(
 
             if (conversation.memberCount > 2) {
                 var namesText = ""
-                namesText = conversation.user?.displayName +  " + " + (conversation.memberCount - 1 ) + " membres"
+                namesText = conversation.user?.displayName +  " + " + (conversation.memberCount.minus(1) ) + " membres"
                 binding.name.text = namesText
             } else {
                 binding.name.text = conversation.title

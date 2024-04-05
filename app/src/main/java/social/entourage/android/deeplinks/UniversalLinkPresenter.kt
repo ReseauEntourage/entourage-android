@@ -1,6 +1,8 @@
 package social.entourage.android.deeplinks
 
 import android.util.Log
+import androidx.collection.ArrayMap
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -135,6 +137,25 @@ class UniversalLinkPresenter(val callback:UniversalLinksPresenterCallback) {
                 }
             })
     }
+
+    fun addUserToConversation(conversationId: String) {
+        EntourageApplication.get().apiModule.discussionsRequest.addUserToConversation(conversationId)
+            .enqueue(object : Callback<ResponseBody> {
+                override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                    if (response.isSuccessful) {
+                       callback.onUserJoinedConversation()
+                    } else {
+                        Log.wtf("wtf", "response code: ${response.code()} response message: ${response.message()}")
+                        callback.onUserErrorJoinedConversation()
+                    }
+                }
+
+                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                    Log.wtf("wtf", "error: ${t.message}")
+                    callback.onUserErrorJoinedConversation()
+                }
+            })
+    }
 }
 
 interface UniversalLinksPresenterCallback{
@@ -142,9 +163,13 @@ interface UniversalLinksPresenterCallback{
     fun onRetrievedGroup(group:Group)
     fun onRetrievedAction(action:Action, isContrib:Boolean)
     fun onRetrievedDiscussion(discussion: Conversation)
+    fun onUserJoinedConversation()
 
     fun onErrorRetrievedDiscussion()
     fun onErrorRetrievedGroup()
     fun onErrorRetrievedEvent()
     fun onErrorRetrievedAction()
+
+    fun onUserErrorJoinedConversation()
+
 }

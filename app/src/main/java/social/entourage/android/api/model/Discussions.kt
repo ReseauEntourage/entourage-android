@@ -15,6 +15,8 @@ class Conversation(
     val id: Int? = null,
     @SerializedName("uuid_v2")
     val uuid_v2: String? = null,
+    @SerializedName("uuid")
+    val uuid: String? = null,
     @SerializedName("type")
     val type: String? = null,
     @SerializedName("name")

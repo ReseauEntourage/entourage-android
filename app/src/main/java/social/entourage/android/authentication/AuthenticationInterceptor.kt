@@ -33,7 +33,6 @@ object AuthenticationInterceptor : Interceptor {
                 .url(url).build()
         val response = chain.proceed(request)
         if (response.code == 401) {
-            Log.wtf("wtf", "Unauthorized " + Gson().toJson(request))
             if (response.message.equals("Unauthorized", ignoreCase = true)) {
                 EntourageApplication.get().logOut()
             }

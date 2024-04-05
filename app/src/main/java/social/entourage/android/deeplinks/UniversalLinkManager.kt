@@ -6,6 +6,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.navigation.NavController
 import social.entourage.android.EntourageApplication
@@ -30,6 +31,7 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
 
     private val prodURL = "www.entourage.social"
     private val stagingURL = "preprod.entourage.social"
+    private var conversation: Conversation? = null
     val presenter:UniversalLinkPresenter = UniversalLinkPresenter(this)
 
 
@@ -229,8 +231,13 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
     }
 
     override fun onRetrievedDiscussion(discussion: Conversation) {
-        Log.wtf("wtf", "discussion: $discussion")
-        // Créer l'intent avec les extras
+        this.conversation = discussion
+        Log.wtf("wtf", "discussion id: ${discussion.id.toString()}")
+        discussion.uuid?.let { presenter.addUserToConversation(it) }
+    }
+
+    override fun onUserJoinedConversation() {
+        val discussion = conversation ?: return
         val intent = Intent(context, DetailConversationActivity::class.java).apply {
             putExtras(bundleOf(
                 Const.ID to discussion.id,
@@ -281,5 +288,9 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
 
     override fun onErrorRetrievedAction() {
         (context as MainActivity).DisplayErrorFromAppLinks(2)
+    }
+
+    override fun onUserErrorJoinedConversation() {
+        Toast.makeText(context, "Erreur : Vous ne pouvez pas rejoindre cette conversation pour le moment", Toast.LENGTH_SHORT).show()
     }
 }
