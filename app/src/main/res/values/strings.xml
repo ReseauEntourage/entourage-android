@@ -2718,5 +2718,13 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="popup_event_confirm_btn_confirm">Je viens</string>
     <string name="popup_event_confirm_btn_cancel">Je ne viens pas</string>
 
+
+    <string name="popup_event_confirm_title">N’oubliez pas : %s a lieu demain au %s à %s !</string>
+    <string name="popup_event_confirm_content">texte : Pour faciliter l\'organisation de l\'événement, pouvez-vous nous dire si vous serez présent demain ?</string>
+
+
+
+
+
 </resources>
 

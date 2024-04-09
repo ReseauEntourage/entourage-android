@@ -6,6 +6,7 @@ import android.content.Intent
 import android.util.Log
 import androidx.core.os.bundleOf
 import androidx.fragment.app.FragmentManager
+import social.entourage.android.MainActivity
 import social.entourage.android.Navigation
 import social.entourage.android.R
 import social.entourage.android.api.model.guide.Poi
@@ -30,8 +31,14 @@ import social.entourage.android.welcome.WelcomeTwoActivity
 object NotificationActionManager {
 
     /**/
-    fun presentAction(context:Context,supportFragmentManager: FragmentManager, instance:String, id:Int, postId:Int?, stage:String? = "") {
+    fun presentAction(context:Context,supportFragmentManager: FragmentManager, instance:String, id:Int, postId:Int?, stage:String? = "", popup:String? = "") {
         if(!stage.isNullOrEmpty()){
+            Log.wtf("wtf", "popup: $popup")
+            if(popup.equals("outing_on_day_before")){
+                if(context is MainActivity){
+                    (context as MainActivity).ifEventLastDay(id)
+                }
+            }
             if(stage.equals("h1")){
                 val intent = Intent(context, WelcomeOneActivity::class.java)
                 context.startActivity(intent)

@@ -140,8 +140,8 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
         callToInitHome()
         actionsPresenter.getUnreadCount()
 
-
     }
+
 
     private fun updateUnreadCount(unreadMessages: UnreadMessages?) {
         val count:Int = unreadMessages?.unreadCount ?: 0

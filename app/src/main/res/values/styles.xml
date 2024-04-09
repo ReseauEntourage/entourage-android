@@ -19,6 +19,7 @@
         <item name="colorOnError">@color/entourage_error</item>
         <item name="colorOnSurface">@color/primary_dark</item>
         <item name="scrimBackground">@color/mtrl_scrim_color</item>
+
         <item name="textAppearanceHeadline1">@style/TextAppearance.MaterialComponents.Headline1
         </item>
         <item name="textAppearanceHeadline2">@style/TextAppearance.MaterialComponents.Headline2
@@ -666,5 +667,8 @@
     <style name="SplashTheme" parent="AppTheme">
         <item name="android:windowBackground">@drawable/logo_v2_vertical</item>
 
+    </style>
+    <style name="RoundedDialog" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:windowBackground">@drawable/bg_rounded_dialog</item>
     </style>
 </resources>
