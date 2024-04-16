@@ -132,6 +132,8 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
         super.onViewCreated(view, savedInstanceState)
         user = EntourageApplication.me(activity) ?: return
         updateAvatar()
+        val intent = Intent(requireActivity(), EnhancedOnboarding::class.java)
+        startActivity(intent)
     }
 
     override fun onResume() {
@@ -140,8 +142,7 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
         resetFilter()
         callToInitHome()
         actionsPresenter.getUnreadCount()
-        val intent = Intent(requireActivity(), EnhancedOnboarding::class.java)
-        startActivity(intent)
+
     }
 
 

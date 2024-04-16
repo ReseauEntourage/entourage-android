@@ -35,7 +35,6 @@ class OnboardingCategorieFragment: Fragment() {
             viewModel.registerAndQuit()
         }
         binding.buttonStart.setOnClickListener {
-            viewModel.register()
             viewModel.setOnboardingFourthStep(true)}
     }
 

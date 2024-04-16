@@ -33,7 +33,6 @@ class OnboardingActionWishesFragment:Fragment() {
             viewModel.registerAndQuit()
         }
         binding.buttonStart.setOnClickListener {
-            viewModel.register()
             viewModel.setOnboardingFifthStep(true)}
     }
 

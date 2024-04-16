@@ -1,8 +1,15 @@
 package social.entourage.android.enhanced_onboarding
 
+import androidx.collection.ArrayMap
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import social.entourage.android.EntourageApplication
 import social.entourage.android.R
+import social.entourage.android.api.request.UserRequest
+import social.entourage.android.api.request.UserResponse
 
 class OnboardingViewModel : ViewModel() {
     var onboardingFirstStep = MutableLiveData<Boolean>()
@@ -11,9 +18,12 @@ class OnboardingViewModel : ViewModel() {
     var onboardingFourthStep = MutableLiveData<Boolean>()
     var onboardingFifthStep = MutableLiveData<Boolean>()
     var onboardingShouldQuit = MutableLiveData<Boolean>()
+    var hasRegistered = MutableLiveData<Boolean>()
     var interests = MutableLiveData<List<InterestForAdapter>>()
     var categories = MutableLiveData<List<InterestForAdapter>>()
     var actionsWishes = MutableLiveData<List<InterestForAdapter>>()
+    private val onboardingService : UserRequest
+        get() =  EntourageApplication.get().apiModule.userRequest //service ?: retrofit!!.create(UserRequest::class.java)
 
 
     fun registerAndQuit() {
@@ -22,8 +32,46 @@ class OnboardingViewModel : ViewModel() {
     }
 
     fun register() {
-
+        updateUserInterests { isOK, userResponse ->
+            if (isOK) {
+                hasRegistered.postValue(true)
+            }
+            else {
+                hasRegistered.postValue(false)
+            }
+        }
     }
+
+    fun updateUserInterests(listener: (isOK: Boolean, userResponse: UserResponse?) -> Unit) {
+        // Assure-toi que ces MutableLiveData ont déjà été initialisés et contiennent des données valides.
+        val interestsList = interests.value?.filter { it.isSelected }?.map { it.title } ?: listOf()
+        val categoriesList = categories.value?.filter { it.isSelected }?.map { it.title } ?: listOf()
+        val actionsWishesList = actionsWishes.value?.filter { it.isSelected }?.map { it.title } ?: listOf()
+
+        val user = ArrayMap<String, Any>().apply {
+            put("interests", interestsList)
+            put("involvements", categoriesList)
+            put("concerns", actionsWishesList)
+        }
+
+        val request = ArrayMap<String, Any>()
+        request["user"] = user
+        val call = onboardingService.updateUser(request)
+        call.enqueue(object : Callback<UserResponse> {
+            override fun onResponse(call: Call<UserResponse>, response: Response<UserResponse>) {
+                if (response.isSuccessful) {
+                    listener(true, response.body())
+                } else {
+                    listener(false, null)
+                }
+            }
+
+            override fun onFailure(call: Call<UserResponse>, t: Throwable) {
+                listener(false, null)
+            }
+        })
+    }
+
 
     fun setInterests(interestsList: List<InterestForAdapter>) {
         interests.postValue(interestsList)

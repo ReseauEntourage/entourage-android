@@ -1,6 +1,7 @@
 package social.entourage.android.enhanced_onboarding.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,6 +27,9 @@ class OnboardingCongratsFragment: Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.lottieAnimation.setAnimation(R.raw.congrats_animation)
         binding.lottieAnimation.playAnimation()
+        binding.buttonStart.setOnClickListener {
+            viewModel.registerAndQuit()
+            Log.wtf("wtf", "should quit")
+        }
     }
-
 }

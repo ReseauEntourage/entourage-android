@@ -32,7 +32,6 @@ class OnboardingInterestFragment : Fragment() {
             viewModel.registerAndQuit()
         }
         binding.buttonStart.setOnClickListener {
-            viewModel.register()
             viewModel.setOnboardingThirdStep(true)}
     }
 
