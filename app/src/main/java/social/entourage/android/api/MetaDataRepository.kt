@@ -29,6 +29,9 @@ object MetaDataRepository {
                 if (response.isSuccessful) {
                     metaData.value = response.body()?.tags
                     MainActivity.reactionsList = response.body()?.reactions
+                    MainActivity.interest = response.body()?.interests
+                    MainActivity.concerns = response.body()?.concerns
+                    MainActivity.involvements = response.body()?.involvements
 
                 }
             }

@@ -42,16 +42,72 @@ class OnboardingInterestFragment : Fragment() {
 
     private fun loadAndSendInterests() {
         val interests = listOf(
-            InterestForAdapter(R.drawable.ic_onboarding_interest_sport, getString(R.string.interest_sport), false),
-            InterestForAdapter(R.drawable.ic_onboarding_interest_name_bien_etre, getString(R.string.interest_bien_etre), false),
-            InterestForAdapter(R.drawable.ic_onboarding_interest_name_cuisine, getString(R.string.interest_cuisine), false),
-            InterestForAdapter(R.drawable.ic_onboarding_interest_name_art, getString(R.string.interest_culture), false),
-            InterestForAdapter(R.drawable.ic_onboarding_interest_name_nature, getString(R.string.interest_nature), false),
-            InterestForAdapter(R.drawable.ic_onboarding_interest_name_jeux, getString(R.string.interest_jeux), false),
-            InterestForAdapter(R.drawable.ic_onboarding_interest_name_activite_manuelle, getString(R.string.interest_activites), false),
-            InterestForAdapter(R.drawable.ic_onboarding_interest_name_autre, getString(R.string.interest_other), false)
+            InterestForAdapter(
+                icon = getIconForInterest("sport"),
+                title = getString(R.string.interest_sport),
+                isSelected = false,
+                id = "sport"
+            ),
+            InterestForAdapter(
+                icon = getIconForInterest("bien_etre"),
+                title = getString(R.string.interest_bien_etre),
+                isSelected = false,
+                id = "bien_etre"
+            ),
+            InterestForAdapter(
+                icon = getIconForInterest("cuisine"),
+                title = getString(R.string.interest_cuisine),
+                isSelected = false,
+                id = "cuisine"
+            ),
+            InterestForAdapter(
+                icon = getIconForInterest("art"),
+                title = getString(R.string.interest_culture),
+                isSelected = false,
+                id = "art"
+            ),
+            InterestForAdapter(
+                icon = getIconForInterest("nature"),
+                title = getString(R.string.interest_nature),
+                isSelected = false,
+                id = "nature"
+            ),
+            InterestForAdapter(
+                icon = getIconForInterest("jeux"),
+                title = getString(R.string.interest_jeux),
+                isSelected = false,
+                id = "jeux"
+            ),
+            InterestForAdapter(
+                icon = getIconForInterest("activite_manuelle"),
+                title = getString(R.string.interest_activites),
+                isSelected = false,
+                id = "activite_manuelle"
+            ),
+            InterestForAdapter(
+                icon = getIconForInterest("autre"),
+                title = getString(R.string.interest_other),
+                isSelected = false,
+                id = "autre"
+            )
         )
         viewModel.setInterests(interests)
+    }
+
+
+
+    fun getIconForInterest(id: String): Int {
+        return when (id) {
+            "sport" -> R.drawable.ic_onboarding_interest_sport
+            "bien_etre" -> R.drawable.ic_onboarding_interest_name_bien_etre
+            "cuisine" -> R.drawable.ic_onboarding_interest_name_cuisine
+            "art" -> R.drawable.ic_onboarding_interest_name_art
+            "nature" -> R.drawable.ic_onboarding_interest_name_nature
+            "jeux" -> R.drawable.ic_onboarding_interest_name_jeux
+            "activite_manuelle" -> R.drawable.ic_onboarding_interest_name_activite_manuelle
+            "autre" -> R.drawable.ic_onboarding_interest_name_autre
+            else -> R.drawable.ic_onboarding_interest_name_autre
+        }
     }
 
     private fun handleInterestLoad(interests: List<InterestForAdapter>) {

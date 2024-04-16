@@ -34,8 +34,10 @@ import social.entourage.android.actions.create.CreateActionActivity
 import social.entourage.android.api.MetaDataRepository
 import social.entourage.android.api.model.Events
 import social.entourage.android.api.model.ReactionType
+import social.entourage.android.api.model.Tags
 import social.entourage.android.api.model.formatEventStartTime
 import social.entourage.android.api.model.notification.PushNotificationMessage
+import social.entourage.android.api.request.userConfig
 import social.entourage.android.base.BaseSecuredActivity
 import social.entourage.android.base.location.EntLocation
 import social.entourage.android.databinding.ActivityMainBinding
@@ -551,7 +553,9 @@ class MainActivity : BaseSecuredActivity() {
         var instance: MainActivity? = null
         const val UPDATE_REQUEST_CODE = 1001 // Ou tout autre numéro que tu souhaites.
         var reactionsList: MutableList<ReactionType>? = null
-
+        var interest: MutableList<userConfig>? = null
+        var concerns: MutableList<userConfig>? = null
+        var involvements: MutableList<userConfig>? = null
     }
 }
 

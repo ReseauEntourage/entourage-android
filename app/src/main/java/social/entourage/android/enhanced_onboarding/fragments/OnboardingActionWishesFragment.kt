@@ -43,14 +43,45 @@ class OnboardingActionWishesFragment:Fragment() {
 
     private fun loadAndSendInterests() {
         val actionWishes = listOf(
-            InterestForAdapter(R.drawable.ic_onboarding_action_wish_sensibilisation, getString(R.string.onboarding_action_wish_pedago), false),
-            InterestForAdapter(R.drawable.ic_onboarding_action_wish_convivialite, getString(R.string.onboarding_action_wish_event), false),
-            InterestForAdapter(R.drawable.ic_onboarding_action_wish_coup_de_pouce, getString(R.string.onboarding_action_wish_services), false),
-            InterestForAdapter(R.drawable.ic_onboarding_action_wish_discussion, getString(R.string.onboarding_action_wish_network), false),
-
+            InterestForAdapter(
+                icon = getIconForActionWish("sensibilisation"),
+                title = getString(R.string.onboarding_action_wish_pedago),
+                isSelected = false,
+                id = "sensibilisation"
+            ),
+            InterestForAdapter(
+                icon = getIconForActionWish("convivialite"),
+                title = getString(R.string.onboarding_action_wish_event),
+                isSelected = false,
+                id = "convivialite"
+            ),
+            InterestForAdapter(
+                icon = getIconForActionWish("coup_de_pouce"),
+                title = getString(R.string.onboarding_action_wish_services),
+                isSelected = false,
+                id = "coup_de_pouce"
+            ),
+            // Ajoute d'autres souhaits d'action ici...
+            InterestForAdapter(
+                icon = getIconForActionWish("discussion"),
+                title = getString(R.string.onboarding_action_wish_network),
+                isSelected = false,
+                id = "discussion"
             )
+        )
         viewModel.setActionsWishes(actionWishes)
     }
+
+    fun getIconForActionWish(id: String): Int {
+        return when (id) {
+            "sensibilisation" -> R.drawable.ic_onboarding_action_wish_sensibilisation
+            "convivialite" -> R.drawable.ic_onboarding_action_wish_convivialite
+            "coup_de_pouce" -> R.drawable.ic_onboarding_action_wish_coup_de_pouce
+            "discussion" -> R.drawable.ic_onboarding_action_wish_discussion
+            else -> R.drawable.ic_onboarding_interest_name_autre
+        }
+    }
+
 
     private fun handleInterestLoad(interests: List<InterestForAdapter>) {
         // Vérifie si l'adapter est déjà défini

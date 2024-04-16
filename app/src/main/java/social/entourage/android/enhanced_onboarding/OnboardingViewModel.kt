@@ -44,9 +44,9 @@ class OnboardingViewModel : ViewModel() {
 
     fun updateUserInterests(listener: (isOK: Boolean, userResponse: UserResponse?) -> Unit) {
         // Assure-toi que ces MutableLiveData ont déjà été initialisés et contiennent des données valides.
-        val interestsList = interests.value?.filter { it.isSelected }?.map { it.title } ?: listOf()
-        val categoriesList = categories.value?.filter { it.isSelected }?.map { it.title } ?: listOf()
-        val actionsWishesList = actionsWishes.value?.filter { it.isSelected }?.map { it.title } ?: listOf()
+        val interestsList = interests.value?.filter { it.isSelected }?.map { it.id } ?: listOf()
+        val categoriesList = categories.value?.filter { it.isSelected }?.map { it.id } ?: listOf()
+        val actionsWishesList = actionsWishes.value?.filter { it.isSelected }?.map { it.id } ?: listOf()
 
         val user = ArrayMap<String, Any>().apply {
             put("interests", interestsList)

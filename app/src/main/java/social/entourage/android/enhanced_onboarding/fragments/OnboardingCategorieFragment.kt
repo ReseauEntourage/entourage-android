@@ -45,13 +45,38 @@ class OnboardingCategorieFragment: Fragment() {
 
     private fun loadAndSendInterests() {
         val categories = listOf(
-            InterestForAdapter(R.drawable.ic_name_moment_de_partage, getString(R.string.onboarding_category_sharing_time), false),
-            InterestForAdapter(R.drawable.ic_name_don_materiel, getString(R.string.onboarding_category_donation), false),
-            InterestForAdapter(R.drawable.ic_name_coup_de_main, getString(R.string.onboarding_category_services), false),
-
+            InterestForAdapter(
+                icon = getIconForCategory("moment_de_partage"),
+                title = getString(R.string.onboarding_category_sharing_time),
+                isSelected = false,
+                id = "moment_de_partage"
+            ),
+            InterestForAdapter(
+                icon = getIconForCategory("don_materiel"),
+                title = getString(R.string.onboarding_category_donation),
+                isSelected = false,
+                id = "don_materiel"
+            ),
+            InterestForAdapter(
+                icon = getIconForCategory("coup_de_main"),
+                title = getString(R.string.onboarding_category_services),
+                isSelected = false,
+                id = "coup_de_main"
+            )
         )
         viewModel.setcategories(categories)
     }
+
+    fun getIconForCategory(id: String): Int {
+        return when (id) {
+            "moment_de_partage" -> R.drawable.ic_name_moment_de_partage
+            "don_materiel" -> R.drawable.ic_name_don_materiel
+            "coup_de_main" -> R.drawable.ic_name_coup_de_main
+            else -> R.drawable.ic_onboarding_interest_name_autre // Une icône par défaut si aucun id ne correspond
+        }
+    }
+
+
 
     private fun handleInterestLoad(interests: List<InterestForAdapter>) {
         // Vérifie si l'adapter est déjà défini
