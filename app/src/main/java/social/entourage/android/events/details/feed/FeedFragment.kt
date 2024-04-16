@@ -834,9 +834,18 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
         }
     }
 
-    override fun onSuppressPost() {
+    override fun onSuppressPost(id: Int) {
+        binding.progressBar.visibility = View.VISIBLE
         lifecycleScope.launch {
-            delay(500)
+            delay(300)
+            val isNewPost = newPostsList.any { it.id == id }
+            val adapter = if (isNewPost) {
+                binding.postsNewRecyclerview.adapter as? PostAdapter
+            } else {
+                binding.postsOldRecyclerview.adapter as? PostAdapter
+            }
+            adapter?.deleteItem(id)
+            page--
             loadPosts()
         }
     }

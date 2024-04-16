@@ -99,6 +99,8 @@ class ReportModalFragment() : BottomSheetDialogFragment() {
         discussionsPresenter.isConversationReported.observe(requireActivity(), ::handleReportResponse)
         discussionsPresenter.isConversationDeleted.observe(requireActivity(), ::handleDeletedResponse)
         discussionsPresenter.isMessageDeleted.observe(requireActivity(),::handleDeletedResponse)
+        groupPresenter.isPostDeleted.observe(requireActivity(),::handleDeletedResponse)
+        eventPresenter.isEventDeleted.observe(requireActivity(),::handleDeletedResponse)
 
         setupViewStep1()
         handleCloseButton()
@@ -315,7 +317,6 @@ class ReportModalFragment() : BottomSheetDialogFragment() {
                         AnalyticsEvents.logEvent(logEventTitleClick)
                         deleteMessage()
                         dismissCallback?.reloadView()
-                        callback?.onSuppressPost()
                         onClose()
                         dismiss()
                     })
@@ -331,9 +332,7 @@ class ReportModalFragment() : BottomSheetDialogFragment() {
                         AnalyticsEvents.logEvent(logEventTitleClick)
                         deleteMessage()
                         dismissCallback?.reloadView()
-                        callback?.onSuppressPost()
-                        onClose()
-                        dismiss()
+
                     })
             }
         }
@@ -416,8 +415,14 @@ class ReportModalFragment() : BottomSheetDialogFragment() {
         if(isAdded){
             if (success){
                 showToast(getString(R.string.delete_success_send))
+                callback?.onSuppressPost(reportedId!!)
+                onClose()
+                dismiss()
             }else{
                 showToast(getString(R.string.delete_error_send_failed))
+                callback?.onSuppressPost(reportedId!!)
+                onClose()
+                dismiss()
             }
         }
         dismiss()

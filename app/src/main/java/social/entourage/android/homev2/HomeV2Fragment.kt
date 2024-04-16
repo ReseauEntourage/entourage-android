@@ -39,6 +39,7 @@ import social.entourage.android.api.model.Pedago
 import social.entourage.android.api.model.Summary
 import social.entourage.android.api.model.User
 import social.entourage.android.databinding.FragmentHomeV2LayoutBinding
+import social.entourage.android.enhanced_onboarding.EnhancedOnboarding
 import social.entourage.android.events.create.CommunicationHandler
 import social.entourage.android.guide.GDSMainActivity
 import social.entourage.android.home.CommunicationHandlerBadgeViewModel
@@ -139,7 +140,8 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
         resetFilter()
         callToInitHome()
         actionsPresenter.getUnreadCount()
-
+        val intent = Intent(requireActivity(), EnhancedOnboarding::class.java)
+        startActivity(intent)
     }
 
 

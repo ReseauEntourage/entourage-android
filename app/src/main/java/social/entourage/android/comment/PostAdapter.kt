@@ -54,7 +54,7 @@ class PostAdapter(
     var context:Context,
     var reactionCallback: ReactionInterface,
     var surveyCallback: SurveyInteractionListener,
-    var postsList: List<Post>,
+    var postsList: MutableList<Post>,
     var isMember: Boolean? = false,
     var onClick: (Post, Boolean) -> Unit,
     var onReport: (Int,Int) -> Unit,
@@ -88,6 +88,14 @@ class PostAdapter(
         return if (post.survey != null) TYPE_SURVEY else TYPE_POST
     }
 
+    fun deleteItem(postId: Int) {
+        val index = postsList.indexOfFirst { it.id == postId }
+        if (index != -1) { // Vérifiez que le post a été trouvé
+            postsList.removeAt(index)
+            notifyItemRemoved(index) // Notifiez que l'item a été supprimé, permet une animation
+            notifyItemRangeChanged(index, postsList.size) // Mettez à jour les positions pour le reste des éléments
+        }
+    }
     fun translateItem(postId: Int) {
         if (translationExceptions.contains(postId)) {
             translationExceptions.remove(postId)
