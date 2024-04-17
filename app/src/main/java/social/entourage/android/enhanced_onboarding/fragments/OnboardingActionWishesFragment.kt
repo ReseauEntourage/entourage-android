@@ -44,29 +44,29 @@ class OnboardingActionWishesFragment:Fragment() {
     private fun loadAndSendInterests() {
         val actionWishes = listOf(
             InterestForAdapter(
-                icon = getIconForActionWish("sensibilisation"),
+                icon = getIconForActionWish("resources"),
                 title = getString(R.string.onboarding_action_wish_pedago),
                 isSelected = false,
-                id = "sensibilisation"
+                id = "resources"
             ),
             InterestForAdapter(
-                icon = getIconForActionWish("convivialite"),
+                icon = getIconForActionWish("outings"),
                 title = getString(R.string.onboarding_action_wish_event),
                 isSelected = false,
-                id = "convivialite"
+                id = "outings"
             ),
             InterestForAdapter(
-                icon = getIconForActionWish("coup_de_pouce"),
+                icon = getIconForActionWish("actions"),
                 title = getString(R.string.onboarding_action_wish_services),
                 isSelected = false,
-                id = "coup_de_pouce"
+                id = "actions"
             ),
             // Ajoute d'autres souhaits d'action ici...
             InterestForAdapter(
-                icon = getIconForActionWish("discussion"),
+                icon = getIconForActionWish("neighborhoods"),
                 title = getString(R.string.onboarding_action_wish_network),
                 isSelected = false,
-                id = "discussion"
+                id = "neighborhoods"
             )
         )
         viewModel.setActionsWishes(actionWishes)
@@ -74,10 +74,10 @@ class OnboardingActionWishesFragment:Fragment() {
 
     fun getIconForActionWish(id: String): Int {
         return when (id) {
-            "sensibilisation" -> R.drawable.ic_onboarding_action_wish_sensibilisation
-            "convivialite" -> R.drawable.ic_onboarding_action_wish_convivialite
-            "coup_de_pouce" -> R.drawable.ic_onboarding_action_wish_coup_de_pouce
-            "discussion" -> R.drawable.ic_onboarding_action_wish_discussion
+            "resources" -> R.drawable.ic_onboarding_action_wish_sensibilisation
+            "outings" -> R.drawable.ic_onboarding_action_wish_convivialite
+            "actions" -> R.drawable.ic_onboarding_action_wish_coup_de_pouce
+            "neighborhoods" -> R.drawable.ic_onboarding_action_wish_discussion
             else -> R.drawable.ic_onboarding_interest_name_autre
         }
     }

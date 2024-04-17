@@ -50,8 +50,8 @@ class OnboardingViewModel : ViewModel() {
 
         val user = ArrayMap<String, Any>().apply {
             put("interests", interestsList)
-            put("involvements", categoriesList)
-            put("concerns", actionsWishesList)
+            put("concerns", categoriesList)
+            put("involvements", actionsWishesList)
         }
 
         val request = ArrayMap<String, Any>()
