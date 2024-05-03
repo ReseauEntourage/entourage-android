@@ -2733,18 +2733,18 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="onboarding_category_title">Mes catégories d\'entraide</string>
     <string name="onboarding_category_content">Sélectionnez les catégories d\'entraide que vous souhaitez voir en priorité.</string>
     <string name="onboarding_category_sharing_time">Temps de partage</string>
-    <string name="onboarding_category_donation">Don de matériel</string>
-    <string name="onboarding_category_services">Proposition de service</string>
+    <string name="onboarding_category_donation">Don matériel</string>
+    <string name="onboarding_category_services">Proposition de services</string>
+    <string name="onboarding_category_services_details"> (lessive, impression de documents, aide administrative…)</string>
     <string name="onboarding_action_wish_title">Comment souhaitez-vous agir au sein de la communauté Entourage ?</string>
     <string name="onboarding_action_wish_content">Eh oui, vous avez le droit de choisir plusieurs options !</string>
     <string name="onboarding_action_wish_pedago">Apprendre avec des contenus  pédagogiques</string>
     <string name="onboarding_action_wish_event">Participer à des événements de convivialité</string>
     <string name="onboarding_action_wish_services">Donner ou solliciter un coup de pouce</string>
     <string name="onboarding_action_wish_network">Rejoindre un groupe de voisins et tisser des liens</string>
-
-    <string name="onboarding_congrats_title">Votre expérience sur mesure est prête !</string>
-    <string name="onboarding_congrats_content">À partir de vos préférences et disponibilités, nous vous avons préparé une sélection d’évènements à votre image.  C’est le moment de passer à l’action !</string>
-    <string name="onboarding_congrats_leave">Parcourir les évènements</string>
+    <string name="onboarding_congrats_title">Votre expérience sur-mesure est prête !</string>
+    <string name="onboarding_congrats_content">À partir de vos préférences et disponibilités, nous vous avons préparé une sélection d\’événements à votre image.C\’est le moment de passer à l\’action !</string>
+    <string name="onboarding_congrats_leave">Parcourir les événements</string>
 
 
 

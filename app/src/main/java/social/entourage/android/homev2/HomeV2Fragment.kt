@@ -124,7 +124,9 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
         setMapButton()
         setProfileButton()
         setNestedScrollViewAnimation()
-
+        //send EnhancedOnboardingActivity
+        val intent = Intent(requireContext(), EnhancedOnboarding::class.java)
+        startActivity(intent)
         return binding.root
     }
 
@@ -132,8 +134,7 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
         super.onViewCreated(view, savedInstanceState)
         user = EntourageApplication.me(activity) ?: return
         updateAvatar()
-        val intent = Intent(requireActivity(), EnhancedOnboarding::class.java)
-        startActivity(intent)
+
     }
 
     override fun onResume() {
@@ -142,6 +143,7 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
         resetFilter()
         callToInitHome()
         actionsPresenter.getUnreadCount()
+
 
     }
 

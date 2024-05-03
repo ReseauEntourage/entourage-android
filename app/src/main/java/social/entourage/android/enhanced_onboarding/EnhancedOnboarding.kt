@@ -1,6 +1,7 @@
 package social.entourage.android.enhanced_onboarding
 
 import android.os.Bundle
+import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import social.entourage.android.base.BaseActivity
 import social.entourage.android.databinding.ActivityEnhancedOnboardingLayoutBinding
@@ -24,9 +25,13 @@ class EnhancedOnboarding:BaseActivity() {
         viewModel.onboardingFourthStep.observe(this, ::handleOnboardingFourthStep)
         viewModel.onboardingFifthStep.observe(this, ::handleOnboardingFifthStep)
         viewModel.onboardingShouldQuit.observe(this, ::handleOnboardingShouldQuit)
+        viewModel.shouldDismissBtnBack.observe(this, ::toggleBtnBack)
         setContentView(binding.root)
     }
 
+    private fun toggleBtnBack(value: Boolean) {
+        binding.btnBack.visibility = if (value) View.VISIBLE else View.GONE
+    }
     private fun handleOnboardingFirstStep(value: Boolean) {
         if (value) {
             val fragment = OnboardingPresentationFragment()
@@ -39,11 +44,27 @@ class EnhancedOnboarding:BaseActivity() {
         }
     }
 
+
     override fun onResume() {
         super.onResume()
+        binding.btnBack.setOnClickListener {
+            onBackPressed()
+        }
         viewModel.setOnboardingFirstStep(true)
     }
     private fun handleOnboardingSecondStep(value: Boolean) {
+        if (value) {
+            val fragment = OnboardingActionWishesFragment()
+            supportFragmentManager.beginTransaction().apply {
+                // Utilise l'ID directement avec binding.<ID du conteneur>.id
+                replace(binding.fragmentContainer.id, fragment)
+                addToBackStack(null) // Optionnel
+                commit()
+            }
+        }
+
+    }
+    private fun handleOnboardingThirdStep(value: Boolean) {
         if (value) {
             val fragment = OnboardingInterestFragment()
             supportFragmentManager.beginTransaction().apply {
@@ -54,20 +75,9 @@ class EnhancedOnboarding:BaseActivity() {
             }
         }
     }
-    private fun handleOnboardingThirdStep(value: Boolean) {
-        if (value) {
-            val fragment = OnboardingCategorieFragment()
-            supportFragmentManager.beginTransaction().apply {
-                // Utilise l'ID directement avec binding.<ID du conteneur>.id
-                replace(binding.fragmentContainer.id, fragment)
-                addToBackStack(null) // Optionnel
-                commit()
-            }
-        }
-    }
     private fun handleOnboardingFourthStep(value: Boolean) {
         if (value) {
-            val fragment = OnboardingActionWishesFragment()
+            val fragment = OnboardingCategorieFragment()
             supportFragmentManager.beginTransaction().apply {
                 // Utilise l'ID directement avec binding.<ID du conteneur>.id
                 replace(binding.fragmentContainer.id, fragment)

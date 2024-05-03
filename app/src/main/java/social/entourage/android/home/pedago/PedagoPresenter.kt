@@ -21,7 +21,6 @@ class PedagoPresenter: ViewModel()  {
                     call: Call<PedagogicSingleResponse>,
                     response: Response<PedagogicSingleResponse>
                 ) {
-                    Log.wtf("wtf","passed here")
                     if (response.isSuccessful) {
                         pedagolSingle.value = response.body()?.pedago
                     }else{

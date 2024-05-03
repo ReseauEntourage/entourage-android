@@ -211,7 +211,6 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
         getEvent?.let {
             event = it
             updateView()
-            Log.wtf("wtf", "event id: ${event?.id}")
         }
         handleImageViewAnimation()
     }

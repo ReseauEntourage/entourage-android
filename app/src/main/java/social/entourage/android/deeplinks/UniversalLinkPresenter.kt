@@ -46,7 +46,6 @@ class UniversalLinkPresenter(val callback:UniversalLinksPresenterCallback) {
                     call: Call<GroupWrapper>,
                     response: Response<GroupWrapper>
                 ) {
-                    Log.wtf("wtf", "request url: ${call.request().url}" )
 
                     if (response.isSuccessful) {
                         response.body()?.let { groupWrapper ->
@@ -145,13 +144,11 @@ class UniversalLinkPresenter(val callback:UniversalLinksPresenterCallback) {
                     if (response.isSuccessful) {
                        callback.onUserJoinedConversation()
                     } else {
-                        Log.wtf("wtf", "response code: ${response.code()} response message: ${response.message()}")
                         callback.onUserErrorJoinedConversation()
                     }
                 }
 
                 override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                    Log.wtf("wtf", "error: ${t.message}")
                     callback.onUserErrorJoinedConversation()
                 }
             })

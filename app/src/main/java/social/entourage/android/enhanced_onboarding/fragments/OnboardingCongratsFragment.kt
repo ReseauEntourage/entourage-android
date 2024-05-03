@@ -29,7 +29,10 @@ class OnboardingCongratsFragment: Fragment() {
         binding.lottieAnimation.playAnimation()
         binding.buttonStart.setOnClickListener {
             viewModel.registerAndQuit()
-            Log.wtf("wtf", "should quit")
         }
+    }
+    override fun onResume() {
+        super.onResume()
+        viewModel.toggleBtnBack(false)
     }
 }

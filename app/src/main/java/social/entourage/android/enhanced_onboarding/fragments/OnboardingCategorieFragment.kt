@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.new_lined_edit_text.linearLayout
+import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.databinding.FragmentOnboardingActionWishesLayoutBinding
 import social.entourage.android.databinding.FragmentOnboardingInterestsLayoutBinding
@@ -30,42 +31,61 @@ class OnboardingCategorieFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupRecyclerView()
-        loadAndSendInterests()
+        loadAndSendCategories()
         binding.buttonConfigureLater.setOnClickListener {
             viewModel.registerAndQuit()
         }
         binding.buttonStart.setOnClickListener {
-            viewModel.setOnboardingFourthStep(true)}
+            viewModel.setOnboardingFifthStep(true)}
+        binding.tvTitle.text = getString(R.string.onboarding_category_title)
+        binding.tvDescription.text = getString(R.string.onboarding_category_content)
+    }
+    override fun onResume() {
+        super.onResume()
+        viewModel.toggleBtnBack(true)
     }
 
     private fun setupRecyclerView() {
         binding.rvInterests.layoutManager = LinearLayoutManager(requireContext())
+        binding.rvInterests.isNestedScrollingEnabled = false
 
     }
 
-    private fun loadAndSendInterests() {
+    private fun loadAndSendCategories() {
+        val user = EntourageApplication.me(requireContext())  // Obtenir les données de l'utilisateur
+
         val categories = listOf(
-            InterestForAdapter(
-                icon = getIconForCategory("sharing_time"),
-                title = getString(R.string.onboarding_category_sharing_time),
-                isSelected = false,
-                id = "sharing_time"
-            ),
-            InterestForAdapter(
-                icon = getIconForCategory("material_donations"),
-                title = getString(R.string.onboarding_category_donation),
-                isSelected = false,
-                id = "material_donations"
-            ),
-            InterestForAdapter(
-                icon = getIconForCategory("services"),
-                title = getString(R.string.onboarding_category_services),
-                isSelected = false,
-                id = "services"
-            )
+            user?.concerns?.contains("sharing_time")?.let {
+                InterestForAdapter(
+                    icon = getIconForCategory("sharing_time"),
+                    title = getString(R.string.onboarding_category_sharing_time),
+                    isSelected = it,
+                    id = "sharing_time",
+                    subtitle = ""
+                )
+            },
+            user?.concerns?.contains("material_donations")?.let {
+                InterestForAdapter(
+                    icon = getIconForCategory("material_donations"),
+                    title = getString(R.string.onboarding_category_donation),
+                    isSelected = it,
+                    id = "material_donations",
+                    subtitle = ""
+                )
+            },
+            user?.concerns?.contains("services")?.let {
+                InterestForAdapter(
+                    icon = getIconForCategory("services"),
+                    title = getString(R.string.onboarding_category_services),
+                    isSelected = it,
+                    id = "services",
+                    subtitle = getString(R.string.onboarding_category_services_details)
+                )
+            }
         )
-        viewModel.setcategories(categories)
+        viewModel.setcategories(categories.filterNotNull())
     }
+
 
     fun getIconForCategory(id: String): Int {
         return when (id) {
@@ -81,7 +101,7 @@ class OnboardingCategorieFragment: Fragment() {
     private fun handleInterestLoad(interests: List<InterestForAdapter>) {
         // Vérifie si l'adapter est déjà défini
         if (binding.rvInterests.adapter == null) {
-            binding.rvInterests.adapter = OnboardingInterestsAdapter(requireContext(), interests, ::onInterestClicked)
+            binding.rvInterests.adapter = OnboardingInterestsAdapter(requireContext(), false, interests, ::onInterestClicked)
         } else {
             // Si l'adapter existe déjà, mets à jour simplement les données
             (binding.rvInterests.adapter as? OnboardingInterestsAdapter)?.let { adapter ->

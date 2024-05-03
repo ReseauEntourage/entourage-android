@@ -55,7 +55,6 @@ class PedagoDetailActivity : AppCompatActivity() {
     }
 
     fun handlePedago(pedago: Pedago){
-        Log.wtf("wtf","pedagoId: ${pedago.uuid_v2}")
         if(pedago != null){
             id = pedago.id!!
             htmlContent = pedago.html!!

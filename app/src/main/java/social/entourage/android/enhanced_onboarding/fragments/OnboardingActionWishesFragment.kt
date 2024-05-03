@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.databinding.FragmentOnboardingActionWishesLayoutBinding
 import social.entourage.android.databinding.FragmentOnboardingInterestsLayoutBinding
@@ -28,49 +29,72 @@ class OnboardingActionWishesFragment:Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupRecyclerView()
-        loadAndSendInterests()
+        loadAndSendActionWishes()
         binding.buttonConfigureLater.setOnClickListener {
             viewModel.registerAndQuit()
         }
         binding.buttonStart.setOnClickListener {
-            viewModel.setOnboardingFifthStep(true)}
+            viewModel.setOnboardingThirdStep(true)}
+        binding.tvTitle.text = getString(R.string.onboarding_action_wish_title)
+        binding.tvDescription.text = getString(R.string.onboarding_action_wish_content)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.toggleBtnBack(true)
     }
 
     private fun setupRecyclerView() {
         binding.rvInterests.layoutManager = LinearLayoutManager(requireContext())
+        binding.rvInterests.isNestedScrollingEnabled = false
+
 
     }
 
-    private fun loadAndSendInterests() {
+    private fun loadAndSendActionWishes() {
+        val user = EntourageApplication.me(requireContext())  // Obtenir les données de l'utilisateur
+
         val actionWishes = listOf(
-            InterestForAdapter(
-                icon = getIconForActionWish("resources"),
-                title = getString(R.string.onboarding_action_wish_pedago),
-                isSelected = false,
-                id = "resources"
-            ),
-            InterestForAdapter(
-                icon = getIconForActionWish("outings"),
-                title = getString(R.string.onboarding_action_wish_event),
-                isSelected = false,
-                id = "outings"
-            ),
-            InterestForAdapter(
-                icon = getIconForActionWish("actions"),
-                title = getString(R.string.onboarding_action_wish_services),
-                isSelected = false,
-                id = "actions"
-            ),
-            // Ajoute d'autres souhaits d'action ici...
-            InterestForAdapter(
-                icon = getIconForActionWish("neighborhoods"),
-                title = getString(R.string.onboarding_action_wish_network),
-                isSelected = false,
-                id = "neighborhoods"
-            )
-        )
+            user?.involvements?.contains("resources")?.let {
+                InterestForAdapter(
+                    icon = getIconForActionWish("resources"),
+                    title = getString(R.string.onboarding_action_wish_pedago),
+                    isSelected = it,
+                    id = "resources",
+                    subtitle = ""
+                )
+            },
+            user?.involvements?.contains("outings")?.let {
+                InterestForAdapter(
+                    icon = getIconForActionWish("outings"),
+                    title = getString(R.string.onboarding_action_wish_event),
+                    isSelected = it,
+                    id = "outings",
+                    subtitle = ""
+                )
+            },
+            user?.involvements?.contains("actions")?.let {
+                InterestForAdapter(
+                    icon = getIconForActionWish("actions"),
+                    title = getString(R.string.onboarding_action_wish_services),
+                    isSelected = it,
+                    id = "actions",
+                    subtitle = ""
+                )
+            },
+            user?.involvements?.contains("neighborhoods")?.let {
+                InterestForAdapter(
+                    icon = getIconForActionWish("neighborhoods"),
+                    title = getString(R.string.onboarding_action_wish_network),
+                    isSelected = it,
+                    id = "neighborhoods",
+                    subtitle = ""
+                )
+            }
+        ).filterNotNull() // Filtre pour enlever les éléments nulls si jamais `contains` renvoie null
         viewModel.setActionsWishes(actionWishes)
     }
+
 
     fun getIconForActionWish(id: String): Int {
         return when (id) {
@@ -86,7 +110,7 @@ class OnboardingActionWishesFragment:Fragment() {
     private fun handleInterestLoad(interests: List<InterestForAdapter>) {
         // Vérifie si l'adapter est déjà défini
         if (binding.rvInterests.adapter == null) {
-            binding.rvInterests.adapter = OnboardingInterestsAdapter(requireContext(), interests, ::onInterestClicked)
+            binding.rvInterests.adapter = OnboardingInterestsAdapter(requireContext(), false, interests, ::onInterestClicked)
         } else {
             // Si l'adapter existe déjà, mets à jour simplement les données
             (binding.rvInterests.adapter as? OnboardingInterestsAdapter)?.let { adapter ->
@@ -98,6 +122,7 @@ class OnboardingActionWishesFragment:Fragment() {
     private fun onInterestClicked(interest: InterestForAdapter) {
         viewModel.updateActionsWishes(interest)
     }
+
 }
 
 

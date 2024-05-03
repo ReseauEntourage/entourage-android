@@ -33,13 +33,15 @@
         android:textSize="18sp"
         android:fontFamily="@font/nunitosans_regular"
         android:textColor="@color/black"/>
+
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="400dp"
         android:id="@+id/iv_main_image"
-        android:src="@drawable/ic_onbaording_presentation_main_image"
+        android:src="@drawable/photo_enhanced_onboarding_start_with_round"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        android:elevation="0dp"
         android:layout_marginBottom="70dp"
         />
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -48,7 +50,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/iv_main_image"
         android:background="@color/white"
-        android:layout_marginTop="-20dp">
+        android:layout_marginTop="-20dp"
+        >
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -56,6 +59,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            android:elevation="0dp"
             android:padding="20dp">
 
             <Button
@@ -66,8 +70,10 @@
                 android:background="@drawable/shape_button_v9_negative"
                 android:text="@string/onboarding_presentation_btn_negative"
                 android:textColor="@color/black"
+                android:elevation="100dp"
                 android:textAllCaps="false"
                 android:textSize="14sp"
+                android:shadowColor="@color/white"
                 android:fontFamily="@font/quicksand_bold"
                 android:layout_marginEnd="4dp"
                 android:paddingVertical="10dp"/>
@@ -77,6 +83,8 @@
                 android:layout_width="0dp"
                 android:layout_height="47dp"
                 android:layout_weight="1"
+                android:elevation="100dp"
+                android:shadowColor="@color/white"
                 android:background="@drawable/shape_button_v9_positive"
                 android:text="@string/onboarding_presentation_btn_positive"
                 android:textColor="@android:color/white"
@@ -88,10 +96,6 @@
 
         </LinearLayout>
 
+
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>

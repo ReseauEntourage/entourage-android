@@ -1,5 +1,6 @@
 package social.entourage.android.enhanced_onboarding
 
+import android.util.Log
 import androidx.collection.ArrayMap
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -8,6 +9,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
+import social.entourage.android.api.model.User
 import social.entourage.android.api.request.UserRequest
 import social.entourage.android.api.request.UserResponse
 
@@ -22,13 +24,17 @@ class OnboardingViewModel : ViewModel() {
     var interests = MutableLiveData<List<InterestForAdapter>>()
     var categories = MutableLiveData<List<InterestForAdapter>>()
     var actionsWishes = MutableLiveData<List<InterestForAdapter>>()
+    var shouldDismissBtnBack = MutableLiveData<Boolean>()
     private val onboardingService : UserRequest
         get() =  EntourageApplication.get().apiModule.userRequest //service ?: retrofit!!.create(UserRequest::class.java)
-
 
     fun registerAndQuit() {
         register()
         onboardingShouldQuit.postValue(true)
+    }
+
+    fun toggleBtnBack(value: Boolean) {
+       shouldDismissBtnBack.postValue(value)
     }
 
     fun register() {
@@ -65,7 +71,6 @@ class OnboardingViewModel : ViewModel() {
                     listener(false, null)
                 }
             }
-
             override fun onFailure(call: Call<UserResponse>, t: Throwable) {
                 listener(false, null)
             }
@@ -117,6 +122,7 @@ class OnboardingViewModel : ViewModel() {
 
     fun setOnboardingFirstStep(value: Boolean) {
         onboardingFirstStep.postValue(true)
+        Log.wtf("wtf", "setOnboardingFirstStep")
     }
     fun setOnboardingSecondStep(value: Boolean) {
         onboardingSecondStep.postValue(true)
@@ -130,4 +136,5 @@ class OnboardingViewModel : ViewModel() {
     fun setOnboardingFifthStep(value: Boolean) {
         onboardingFifthStep.postValue(true)
     }
+
 }

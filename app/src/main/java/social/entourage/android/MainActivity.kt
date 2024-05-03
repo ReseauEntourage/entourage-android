@@ -107,8 +107,6 @@ class MainActivity : BaseSecuredActivity() {
         return this.fromDeepLinkGoDiscoverGroup
     }
 
-
-
     override fun onStart() {
         presenter.checkForUpdate(this)
         super.onStart()
@@ -162,6 +160,10 @@ class MainActivity : BaseSecuredActivity() {
         if(this.intent != null){
             useIntentForRedictection(this.intent)
             this.intent = null
+        }
+        if(shouldLaunchEventPopUp != 0){
+            ifEventLastDay(shouldLaunchEventPopUp)
+            shouldLaunchEventPopUp = 0
         }
     }
 
@@ -298,6 +300,8 @@ class MainActivity : BaseSecuredActivity() {
 
     private fun checkIntentAction(action: String, extras: Bundle?) {
         val pushNotificationMessage = extras?.get(PushNotificationManager.PUSH_MESSAGE) as? PushNotificationMessage
+        // spush notif message with popup info
+
         pushNotificationMessage?.content?.extra?.let { extra ->
             extra.instance?.let { instance ->
                 extra.instanceId?.let { id ->
@@ -556,6 +560,7 @@ class MainActivity : BaseSecuredActivity() {
         var interest: MutableList<userConfig>? = null
         var concerns: MutableList<userConfig>? = null
         var involvements: MutableList<userConfig>? = null
+        var shouldLaunchEventPopUp:Int = 0
     }
 }
 

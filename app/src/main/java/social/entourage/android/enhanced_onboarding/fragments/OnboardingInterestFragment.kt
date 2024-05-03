@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
+import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.databinding.FragmentOnboardingInterestsLayoutBinding
 import social.entourage.android.enhanced_onboarding.OnboardingViewModel
@@ -32,73 +33,127 @@ class OnboardingInterestFragment : Fragment() {
             viewModel.registerAndQuit()
         }
         binding.buttonStart.setOnClickListener {
-            viewModel.setOnboardingThirdStep(true)}
+            viewModel.setOnboardingFourthStep(true)}
+        binding.tvTitle.text = getString(R.string.onboarding_interest_title)
+        binding.tvDescription.text = getString(R.string.onboarding_interest_content)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.toggleBtnBack(true)
     }
 
     private fun setupRecyclerView() {
         binding.rvInterests.layoutManager = GridLayoutManager(requireContext(), 2)
-
+        binding.rvInterests.isNestedScrollingEnabled = false
     }
 
     private fun loadAndSendInterests() {
+        val user = EntourageApplication.me(requireContext())  // Obtenir les données de l'utilisateur
+
         val interests = listOf(
-            InterestForAdapter(
-                icon = getIconForInterest("sport"),
-                title = getString(R.string.interest_sport),
-                isSelected = false,
-                id = "sport"
-            ),
-            InterestForAdapter(
-                icon = getIconForInterest("bien_etre"),
-                title = getString(R.string.interest_bien_etre),
-                isSelected = false,
-                id = "bien_etre"
-            ),
-            InterestForAdapter(
-                icon = getIconForInterest("cuisine"),
-                title = getString(R.string.interest_cuisine),
-                isSelected = false,
-                id = "cuisine"
-            ),
-            InterestForAdapter(
-                icon = getIconForInterest("art"),
-                title = getString(R.string.interest_culture),
-                isSelected = false,
-                id = "art"
-            ),
-            InterestForAdapter(
-                icon = getIconForInterest("nature"),
-                title = getString(R.string.interest_nature),
-                isSelected = false,
-                id = "nature"
-            ),
-            InterestForAdapter(
-                icon = getIconForInterest("jeux"),
-                title = getString(R.string.interest_jeux),
-                isSelected = false,
-                id = "jeux"
-            ),
-            InterestForAdapter(
-                icon = getIconForInterest("activite_manuelle"),
-                title = getString(R.string.interest_activites),
-                isSelected = false,
-                id = "activite_manuelle"
-            ),
-            InterestForAdapter(
-                icon = getIconForInterest("autre"),
-                title = getString(R.string.interest_other),
-                isSelected = false,
-                id = "autre"
-            )
-        )
+            user?.interests?.contains("sport")?.let {
+                InterestForAdapter(
+                    icon = getIconForInterest("sport"),
+                    title = getString(R.string.interest_sport),
+                    isSelected = it,
+                    id = "sport",
+                    subtitle = ""
+                )
+            },
+            user?.interests?.contains("animaux")?.let {
+                InterestForAdapter(
+                    icon = getIconForInterest("animaux"),
+                    title = getString(R.string.interest_animaux),
+                    isSelected = it,
+                    id = "animaux",
+                    subtitle = ""
+                )
+            },
+            user?.interests?.contains("rencontre")?.let {
+                InterestForAdapter(
+                    icon = getIconForInterest("rencontre"),
+                    title = getString(R.string.interest_marauding),
+                    isSelected = it,
+                    id = "rencontre",
+                    subtitle = ""
+                )
+            },
+            user?.interests?.contains("bien_etre")?.let {
+                InterestForAdapter(
+                    icon = getIconForInterest("bien_etre"),
+                    title = getString(R.string.interest_bien_etre),
+                    isSelected = it,
+                    id = "bien_etre",
+                    subtitle = ""
+                )
+            },
+            user?.interests?.contains("cuisine")?.let {
+                InterestForAdapter(
+                    icon = getIconForInterest("cuisine"),
+                    title = getString(R.string.interest_cuisine),
+                    isSelected = it,
+                    id = "cuisine",
+                    subtitle = ""
+                )
+            },
+            user?.interests?.contains("art")?.let {
+                InterestForAdapter(
+                    icon = getIconForInterest("art"),
+                    title = getString(R.string.interest_culture),
+                    isSelected = it,
+                    id = "art",
+                    subtitle = ""
+                )
+            },
+            user?.interests?.contains("nature")?.let {
+                InterestForAdapter(
+                    icon = getIconForInterest("nature"),
+                    title = getString(R.string.interest_nature),
+                    isSelected = it,
+                    id = "nature",
+                    subtitle = ""
+                )
+            },
+            user?.interests?.contains("jeux")?.let {
+                InterestForAdapter(
+                    icon = getIconForInterest("jeux"),
+                    title = getString(R.string.interest_jeux),
+                    isSelected = it,
+                    id = "jeux",
+                    subtitle = ""
+                )
+            },
+            user?.interests?.contains("activite_manuelle")?.let {
+                InterestForAdapter(
+                    icon = getIconForInterest("activite_manuelle"),
+                    title = getString(R.string.interest_activites),
+                    isSelected = it,
+                    id = "activite_manuelle",
+                    subtitle = ""
+                )
+            },
+            user?.interests?.contains("autre")?.let {
+                InterestForAdapter(
+                    icon = getIconForInterest("autre"),
+                    title = getString(R.string.interest_other),
+                    isSelected = it,
+                    id = "autre",
+                    subtitle = ""
+                )
+            }
+        ).filterNotNull() // Filtre pour enlever les éléments nulls si jamais `contains` renvoie null
         viewModel.setInterests(interests)
     }
+
 
 
 
     fun getIconForInterest(id: String): Int {
         return when (id) {
             "sport" -> R.drawable.ic_onboarding_interest_sport
+            "animaux" -> R.drawable.ic_onboarding_interest_name_animaux
+            "rencontre" -> R.drawable.ic_onboarding_interest_name_rencontre_nomade
             "bien_etre" -> R.drawable.ic_onboarding_interest_name_bien_etre
             "cuisine" -> R.drawable.ic_onboarding_interest_name_cuisine
             "art" -> R.drawable.ic_onboarding_interest_name_art
@@ -113,7 +168,7 @@ class OnboardingInterestFragment : Fragment() {
     private fun handleInterestLoad(interests: List<InterestForAdapter>) {
         // Vérifie si l'adapter est déjà défini
         if (binding.rvInterests.adapter == null) {
-            binding.rvInterests.adapter = OnboardingInterestsAdapter(requireContext(), interests, ::onInterestClicked)
+            binding.rvInterests.adapter = OnboardingInterestsAdapter(requireContext(), true, interests, ::onInterestClicked)
         } else {
             // Si l'adapter existe déjà, mets à jour simplement les données
             (binding.rvInterests.adapter as? OnboardingInterestsAdapter)?.let { adapter ->
