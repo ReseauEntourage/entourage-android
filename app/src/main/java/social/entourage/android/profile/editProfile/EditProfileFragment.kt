@@ -158,11 +158,14 @@ class EditProfileFragment : Fragment(), EditProfileCallback,
             EnhancedOnboarding.isFromSettingsinterest = true
             val intent = Intent(requireContext(), EnhancedOnboarding::class.java)
             startActivity(intent)
+            requireActivity().finish()
+
         }
         binding.personnalize.layout.setOnClickListener {
             //Launch Enhanced Onboarding activity
             val intent = Intent(requireContext(), EnhancedOnboarding::class.java)
             startActivity(intent)
+            requireActivity().finish()
         }
     }
 
