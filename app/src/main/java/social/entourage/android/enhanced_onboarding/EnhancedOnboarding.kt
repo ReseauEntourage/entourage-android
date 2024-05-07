@@ -3,6 +3,7 @@ package social.entourage.android.enhanced_onboarding
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.ViewModelProvider
+import social.entourage.android.MainActivity
 import social.entourage.android.base.BaseActivity
 import social.entourage.android.databinding.ActivityEnhancedOnboardingLayoutBinding
 import social.entourage.android.enhanced_onboarding.fragments.OnboardingActionWishesFragment
@@ -48,9 +49,18 @@ class EnhancedOnboarding:BaseActivity() {
     override fun onResume() {
         super.onResume()
         binding.btnBack.setOnClickListener {
-            onBackPressed()
+            if(isFromSettingsinterest) {
+                isFromSettingsinterest = false
+                viewModel.registerAndQuit()
+            }else{
+                onBackPressed()
+            }
         }
-        viewModel.setOnboardingFirstStep(true)
+        if(isFromSettingsinterest) {
+            viewModel.setOnboardingThirdStep(true)
+        }else{
+            viewModel.setOnboardingFirstStep(true)
+        }
     }
     private fun handleOnboardingSecondStep(value: Boolean) {
         if (value) {
@@ -77,6 +87,11 @@ class EnhancedOnboarding:BaseActivity() {
     }
     private fun handleOnboardingFourthStep(value: Boolean) {
         if (value) {
+            if(isFromSettingsinterest) {
+                isFromSettingsinterest = false
+                viewModel.registerAndQuit()
+                return
+            }
             val fragment = OnboardingCategorieFragment()
             supportFragmentManager.beginTransaction().apply {
                 // Utilise l'ID directement avec binding.<ID du conteneur>.id
@@ -100,8 +115,14 @@ class EnhancedOnboarding:BaseActivity() {
 
     private fun handleOnboardingShouldQuit(value: Boolean) {
         if (value) {
+            MainActivity.shouldLaunchEvent = true
             finish()
         }
+    }
+
+    companion object {
+        var preference:String = ""
+        var isFromSettingsinterest:Boolean = false
     }
 
 }

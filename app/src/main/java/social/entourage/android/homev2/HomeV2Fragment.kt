@@ -124,9 +124,7 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
         setMapButton()
         setProfileButton()
         setNestedScrollViewAnimation()
-        //send EnhancedOnboardingActivity
-        val intent = Intent(requireContext(), EnhancedOnboarding::class.java)
-        startActivity(intent)
+
         return binding.root
     }
 
@@ -452,6 +450,7 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
     }
 
     private fun updateContributionsView(summary: Summary) {
+        EnhancedOnboarding.preference = summary.preference ?: ""
         onActionUnclosed(summary)
         handleHelps(summary)
         isContribution = summary.preference.equals("contribution")

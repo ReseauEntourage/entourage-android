@@ -165,6 +165,10 @@ class MainActivity : BaseSecuredActivity() {
             ifEventLastDay(shouldLaunchEventPopUp)
             shouldLaunchEventPopUp = 0
         }
+        if(shouldLaunchEvent){
+            shouldLaunchEvent = false
+            goEvent()
+        }
     }
 
     private fun checkForAppUpdate() {
@@ -561,6 +565,7 @@ class MainActivity : BaseSecuredActivity() {
         var concerns: MutableList<userConfig>? = null
         var involvements: MutableList<userConfig>? = null
         var shouldLaunchEventPopUp:Int = 0
+        var shouldLaunchEvent:Boolean = false
     }
 }
 

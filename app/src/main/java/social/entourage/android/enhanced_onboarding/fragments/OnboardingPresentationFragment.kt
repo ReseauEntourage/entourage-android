@@ -15,6 +15,7 @@ import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.databinding.FragmentOnboardingPresentationFragmentBinding
 import social.entourage.android.enhanced_onboarding.OnboardingViewModel
+import social.entourage.android.tools.log.AnalyticsEvents
 
 class OnboardingPresentationFragment: Fragment() {
 
@@ -33,15 +34,17 @@ class OnboardingPresentationFragment: Fragment() {
     }
 
      fun initView() {
-        val myName = EntourageApplication.get().me()?.displayName
+        val myName = EntourageApplication.get().me()?.firstName
         binding.tvTitle.text = String.format(getString(R.string.onboarding_presentation_title), myName)
         binding.buttonStart.setOnClickListener {
             viewModel.setOnboardingSecondStep(true)
         }
          binding.buttonConfigureLater.setOnClickListener {
+             AnalyticsEvents.logEvent(AnalyticsEvents.onboarding_welcome_config_later_clic)
              requireActivity().finish()
          }
          binding.buttonStart.setOnClickListener {
+             AnalyticsEvents.logEvent(AnalyticsEvents.onboarding_welcome_next_clic)
              viewModel.setOnboardingSecondStep(true)
          }
          binding.buttonConfigureLater.setOnClickListener {

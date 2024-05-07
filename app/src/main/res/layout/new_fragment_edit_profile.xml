@@ -143,10 +143,19 @@
                         layout="@layout/new_profile_settings_item"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="70dp"
+                        android:layout_marginBottom="20dp"
                         app:color="@{@android:color/black}"
                         app:icon="@{@drawable/new_description}"
                         app:label="@{@string/my_interests}" />
+                    <include
+                        android:id="@+id/personnalize"
+                        layout="@layout/new_profile_settings_item"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="70dp"
+                        app:color="@{@android:color/black}"
+                        app:icon="@{@drawable/new_description}"
+                        app:label="@{@string/my_onboarding}" />
 
                 </LinearLayout>
             </ScrollView>
@@ -162,6 +171,7 @@
             app:content="@{@string/apply_modifications}"
             app:drawable="@{@drawable/new_rounded_button_orange}"
             app:layout_constraintBottom_toBottomOf="parent" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

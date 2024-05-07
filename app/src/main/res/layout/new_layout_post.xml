@@ -108,166 +108,53 @@ Nous sommes prêt pour les beaux jours ! :-)" />
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/post_comments_number_layout"
             android:layout_width="match_parent"
-            android:layout_height="70dp"
-           >
+            android:layout_height="70dp">
+
             <Button
+                android:id="@+id/btn_reaction"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:id="@+id/btn_reaction"
                 android:background="@color/transparent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/number_reaction"
-                />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <ImageView
+                android:id="@+id/imageViewComments"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/layout_reactions"
-                app:layout_constraintStart_toStartOf="parent"
+                android:src="@drawable/new_comments"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="2dp"
-                android:background="@drawable/shape_layout_reactions"
-                android:elevation="15dp"
-                android:visibility="gone">
-
-                <ImageView
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:id="@+id/iv_react_one"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    android:layout_marginStart="22dp"
-                    android:src="@drawable/ic_pouce_orange"
-                    />
-                <ImageView
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:id="@+id/iv_react_two"
-                    app:layout_constraintStart_toEndOf="@+id/iv_react_one"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    android:layout_marginStart="36dp"
-                    android:src="@drawable/ic_pouce_orange"
-                    />
-                <ImageView
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:id="@+id/iv_react_three"
-                    app:layout_constraintStart_toEndOf="@+id/iv_react_two"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    android:layout_marginStart="36dp"
-                    android:src="@drawable/ic_pouce_orange"
-                    />
-                <ImageView
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:id="@+id/iv_react_four"
-                    app:layout_constraintStart_toEndOf="@+id/iv_react_three"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    android:layout_marginStart="36dp"
-                    android:src="@drawable/ic_pouce_orange"
-                    />
-                <ImageView
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:id="@+id/iv_react_five"
-                    app:layout_constraintStart_toEndOf="@+id/iv_react_four"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    android:layout_marginStart="36dp"
-                    android:layout_marginEnd="22dp"
-                    android:src="@drawable/ic_pouce_orange"
-                    />
+                app:layout_constraintTop_toTopOf="parent" />
 
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-
-            <include
-                android:id="@+id/reaction1"
-                layout="@layout/layout_item_reaction"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                />
-            <include
-                android:id="@+id/reaction2"
-                layout="@layout/layout_item_reaction"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:layout_marginStart="-5dp"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/reaction1"
-                />
-            <include
-                android:id="@+id/reaction3"
-                layout="@layout/layout_item_reaction"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:layout_marginStart="-5dp"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/reaction2"
-                />
-            <include
-                android:id="@+id/reaction4"
-                layout="@layout/layout_item_reaction"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:layout_marginStart="-5dp"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/reaction3"
-                />
-            <include
-                android:id="@+id/reaction5"
-                layout="@layout/layout_item_reaction"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:layout_marginStart="-5dp"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/reaction4"
-                />
             <TextView
+                android:id="@+id/number_reaction"
+                style="@style/left_courant_black"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/number_reaction"
-                app:layout_constraintStart_toEndOf="@+id/reaction5"
                 android:layout_marginStart="5dp"
-                style="@style/left_courant_black"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                android:maxLines="1"
                 android:ellipsize="none"
-                tools:text="12"
-                />
+                android:maxLines="1"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/reaction5"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="12" />
 
-             <TextView
+            <TextView
                 android:id="@+id/post_comments_number"
                 style="@style/input"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:visibility="gone"
-                tools:text="Pas de commentaires"
-                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/imageViewComments" />
+                app:layout_constraintEnd_toStartOf="@+id/imageViewComments"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Pas de commentaires" />
 
             <TextView
                 android:id="@+id/post_no_comments"
@@ -276,24 +163,130 @@ Nous sommes prêt pour les beaux jours ! :-)" />
                 android:layout_height="wrap_content"
                 android:text=""
                 android:visibility="gone"
-                app:layout_constraintEnd_toStartOf="@id/post_comments_number"
-                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                 />
+                app:layout_constraintEnd_toStartOf="@id/post_comments_number"
+                app:layout_constraintTop_toTopOf="parent" />
 
-            <ImageView
-                android:id="@+id/imageViewComments"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/layout_reactions"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/new_comments"
+                android:layout_marginBottom="2dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/shape_layout_reactions"
+                android:elevation="15dp"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/iv_react_one"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_marginStart="22dp"
+                    android:src="@drawable/ic_pouce_orange"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/iv_react_two"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_marginStart="36dp"
+                    android:src="@drawable/ic_pouce_orange"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/iv_react_one"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/iv_react_three"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_marginStart="36dp"
+                    android:src="@drawable/ic_pouce_orange"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/iv_react_two"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/iv_react_four"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_marginStart="36dp"
+                    android:src="@drawable/ic_pouce_orange"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/iv_react_three"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/iv_react_five"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_marginEnd="22dp"
+                    android:layout_marginStart="36dp"
+                    android:src="@drawable/ic_pouce_orange"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/iv_react_four"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <include
+                android:id="@+id/reaction1"
+                layout="@layout/layout_item_reaction"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                android:visibility="gone"/>
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <include
+                android:id="@+id/reaction2"
+                layout="@layout/layout_item_reaction"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginStart="-5dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/reaction1"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <include
+                android:id="@+id/reaction3"
+                layout="@layout/layout_item_reaction"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginStart="-5dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/reaction2"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <include
+                android:id="@+id/reaction4"
+                layout="@layout/layout_item_reaction"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginStart="-5dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/reaction3"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <include
+                android:id="@+id/reaction5"
+                layout="@layout/layout_item_reaction"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginStart="-5dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/reaction4"
+                app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"

@@ -27,6 +27,9 @@ class OnboardingInterestsAdapter(private val context: Context, val isFromInteres
                 binding.tvInterestTitleFromRight.visibility = View.VISIBLE
                 binding.tvInterestSubTitleFromRight.visibility = View.VISIBLE
             }
+            if(binding.tvInterestSubTitleFromRight.text.isEmpty()){
+                binding.tvInterestSubTitleFromRight.visibility = View.GONE
+            }
             updateBackground(interest.isSelected)
             binding.root.setOnClickListener {
                 onInterestClicked(interest)

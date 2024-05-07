@@ -15,6 +15,7 @@ import social.entourage.android.databinding.FragmentOnboardingActionWishesLayout
 import social.entourage.android.databinding.FragmentOnboardingInterestsLayoutBinding
 import social.entourage.android.enhanced_onboarding.InterestForAdapter
 import social.entourage.android.enhanced_onboarding.OnboardingViewModel
+import social.entourage.android.tools.log.AnalyticsEvents
 
 class OnboardingCategorieFragment: Fragment() {
 
@@ -33,9 +34,11 @@ class OnboardingCategorieFragment: Fragment() {
         setupRecyclerView()
         loadAndSendCategories()
         binding.buttonConfigureLater.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.onboarding_donations_categories_config_later_clic)
             viewModel.registerAndQuit()
         }
         binding.buttonStart.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.onboarding_donations_categories_next_clic)
             viewModel.setOnboardingFifthStep(true)}
         binding.tvTitle.text = getString(R.string.onboarding_category_title)
         binding.tvDescription.text = getString(R.string.onboarding_category_content)

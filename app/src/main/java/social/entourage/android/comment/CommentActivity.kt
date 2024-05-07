@@ -1,10 +1,12 @@
 package social.entourage.android.comment
 
+import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.view.ViewTreeObserver.OnGlobalLayoutListener
 import androidx.core.content.ContextCompat
@@ -20,6 +22,7 @@ import social.entourage.android.base.BaseActivity
 import social.entourage.android.databinding.ActivityCommentsBinding
 import social.entourage.android.deeplinks.UniversalLinkManager
 import social.entourage.android.discussions.DiscussionsPresenter
+import social.entourage.android.discussions.WebViewActivityForTest
 import social.entourage.android.report.DataLanguageStock
 import social.entourage.android.report.ReportModalFragment
 import social.entourage.android.report.ReportTypes
@@ -173,6 +176,10 @@ abstract class CommentActivity : BaseActivity(), onDissmissFragment {
                 }
 
                 override fun onShowWeb(url: String) {
+                    /*//TODO remove test Here test with launching WebViewActivityForTest activity
+                    WebViewActivityForTest.EXTRA_URL = url
+                    startActivity(Intent(context, WebViewActivityForTest::class.java))
+                    return*/
 
                     if(url.contains("www.entourage.social") || url.contains("preprod.entourage.social")){
                         val uri = Uri.parse(url)

@@ -704,6 +704,24 @@ object AnalyticsEvents {
     const val   clic_update_version_cancel = "clic_update_version_cancel"
 
 
+    // Écran de bienvenue
+    const val onboarding_welcome_config_later_clic = "onboarding_welcome_config_later_clic"
+    const val onboarding_welcome_next_clic = "onboarding_welcome_next_clic"
+
+    // Écran envies d'agir
+    const val onboarding_actions_config_later_clic = "onboarding_actions_config_later_clic"
+    const val onboarding_actions_next_clic = "onboarding_actions_next_clic"
+
+    // Écran centres d'intérêts
+    const val onboarding_interests_config_later_clic = "onboarding_interests_config_later_clic"
+    const val onboarding_interests_next_clic = "onboarding_interests_next_clic"
+
+    // Écran catégories d'entraide
+    const val onboarding_donations_categories_config_later_clic = "onboarding_donations_categories_config_later_clic"
+    const val onboarding_donations_categories_next_clic = "onboarding_donations_categories_next_clic"
+
+    // Écran de fin
+    const val onboarding_end_browse_events_clic = "onboarding_end_browse_events_clic"
 
 
 

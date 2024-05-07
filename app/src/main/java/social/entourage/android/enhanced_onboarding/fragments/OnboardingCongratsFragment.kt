@@ -11,6 +11,7 @@ import social.entourage.android.R
 import social.entourage.android.databinding.FragmentOnboardingCongratsFragmentBinding
 import social.entourage.android.databinding.FragmentOnboardingInterestsLayoutBinding
 import social.entourage.android.enhanced_onboarding.OnboardingViewModel
+import social.entourage.android.tools.log.AnalyticsEvents
 
 class OnboardingCongratsFragment: Fragment() {
 
@@ -28,6 +29,7 @@ class OnboardingCongratsFragment: Fragment() {
         binding.lottieAnimation.setAnimation(R.raw.congrats_animation)
         binding.lottieAnimation.playAnimation()
         binding.buttonStart.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.onboarding_end_browse_events_clic)
             viewModel.registerAndQuit()
         }
     }

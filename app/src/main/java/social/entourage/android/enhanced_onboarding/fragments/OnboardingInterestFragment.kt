@@ -4,14 +4,17 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.databinding.FragmentOnboardingInterestsLayoutBinding
+import social.entourage.android.enhanced_onboarding.EnhancedOnboarding
 import social.entourage.android.enhanced_onboarding.OnboardingViewModel
 import social.entourage.android.enhanced_onboarding.InterestForAdapter
+import social.entourage.android.tools.log.AnalyticsEvents
 
 class OnboardingInterestFragment : Fragment() {
 
@@ -30,12 +33,26 @@ class OnboardingInterestFragment : Fragment() {
         setupRecyclerView()
         loadAndSendInterests()
         binding.buttonConfigureLater.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.onboarding_interests_config_later_clic)
             viewModel.registerAndQuit()
         }
         binding.buttonStart.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.onboarding_interests_next_clic)
             viewModel.setOnboardingFourthStep(true)}
         binding.tvTitle.text = getString(R.string.onboarding_interest_title)
         binding.tvDescription.text = getString(R.string.onboarding_interest_content)
+        binding.parentNestedScrollView.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
+            if (scrollY == 0) {
+                viewModel.toggleBtnBack(true)
+            } else {
+                viewModel.toggleBtnBack(false)
+            }
+        })
+        if(EnhancedOnboarding.isFromSettingsinterest) {
+            binding.buttonStart.text = getString(R.string.onboarding_btn_register)
+        }else{
+            binding.buttonStart.text = getString(R.string.onboarding_btn_next)
+        }
     }
 
     override fun onResume() {
@@ -46,6 +63,7 @@ class OnboardingInterestFragment : Fragment() {
     private fun setupRecyclerView() {
         binding.rvInterests.layoutManager = GridLayoutManager(requireContext(), 2)
         binding.rvInterests.isNestedScrollingEnabled = false
+
     }
 
     private fun loadAndSendInterests() {

@@ -94,6 +94,8 @@
         <activity
             android:name=".home.pedago.PedagoDetailActivity"
             android:exported="false" />
+        <activity android:name=".discussions.WebViewActivityForTest">
+        </activity>
         <activity
             android:name=".user.languechoose.ActivityChooseLanguage"
             android:exported="false" />

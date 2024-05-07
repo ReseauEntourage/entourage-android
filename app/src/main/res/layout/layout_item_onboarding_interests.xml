@@ -14,7 +14,8 @@
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginStart="5dp"
         android:layout_marginTop="5dp"
-        app:layout_constraintBottom_toTopOf="@id/tvInterestTitle"
+        android:layout_marginBottom="5dp"
+        app:layout_constraintBottom_toTopOf="@id/separator"
         app:layout_constraintStart_toStartOf="parent">
         <ImageView
             android:id="@+id/ivInterestIcon"
@@ -22,9 +23,7 @@
             android:layout_height="60dp"
             android:background="@color/beige"
             app:layout_constraintDimensionRatio="1:1"
-           android:padding="5dp"
             android:src="@drawable/ic_onboarding_interest_name_animaux" />
-
     </androidx.cardview.widget.CardView>
     <TextView
         android:id="@+id/tvInterestTitleFromRight"
@@ -54,7 +53,12 @@
         android:textSize="15sp"
         android:text="title" />
 
-
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:id="@+id/separator"
+        app:layout_constraintTop_toBottomOf="@+id/id_card_imageview"
+        app:layout_constraintBottom_toTopOf="@+id/tvInterestTitle"/>
     <TextView
         android:id="@+id/tvInterestTitle"
         android:layout_width="wrap_content"
@@ -67,6 +71,7 @@
         android:textColor="@color/black"
         android:textSize="15sp"
         android:text="title" />
+
 
     <ImageView
         android:id="@+id/ivInterestCheck"
