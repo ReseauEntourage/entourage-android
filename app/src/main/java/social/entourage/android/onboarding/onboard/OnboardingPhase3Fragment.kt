@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment
 import social.entourage.android.R
 import social.entourage.android.api.model.User
 import social.entourage.android.databinding.FragmentOnboardingPhase3Binding
+import social.entourage.android.enhanced_onboarding.EnhancedOnboarding
 import social.entourage.android.tools.log.AnalyticsEvents
 
 private const val ARG_ENTOUR = "entour"
@@ -63,7 +64,13 @@ class OnboardingPhase3Fragment : Fragment(), OnboardingChoosePlaceCallback {
             updateTypes()
         }
         binding.uiLayoutBeentour?.setOnClickListener {
+
             isBeEntour = ! isBeEntour
+            if(isBeEntour){
+                EnhancedOnboarding.preference = "contribution"
+            }else{
+                EnhancedOnboarding.preference = ""
+            }
             changeSelections()
             updateTypes()
         }
