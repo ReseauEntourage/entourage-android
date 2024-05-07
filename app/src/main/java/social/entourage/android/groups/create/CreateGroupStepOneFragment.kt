@@ -42,7 +42,7 @@ class CreateGroupStepOneFragment : Fragment(), UserEditActionZoneFragment.Fragme
 
     private fun handleOnClickNext(onClick: Boolean) {
         if (onClick) {
-            if (isGroupNameValid() && isGroupDescriptionValid()) {
+            if (isGroupNameValid() && isGroupDescriptionValid() && isGroupLocationValid()) {
                 binding.layout.error.root.visibility = View.GONE
                 viewModel.isCondition.value = true
                 viewModel.group.name(binding.layout.groupName.text.toString())
@@ -111,6 +111,10 @@ class CreateGroupStepOneFragment : Fragment(), UserEditActionZoneFragment.Fragme
 
     fun isGroupDescriptionValid(): Boolean {
         return binding.layout.groupDescription.text.length >= Const.GROUP_DESCRIPTION_MIN_LENGTH && binding.layout.groupDescription.text.isNotBlank()
+    }
+
+    fun isGroupLocationValid(): Boolean {
+        return viewModel.group.latitude != 0.0 && viewModel.group.longitude != 0.0
     }
 
     fun canExitGroupCreation(): Boolean {

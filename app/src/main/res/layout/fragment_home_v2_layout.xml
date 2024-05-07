@@ -426,15 +426,18 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:visibility="gone"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintTop_toBottomOf="@+id/home_button_map"
+                app:layout_constraintStart_toStartOf="parent"
+                android:visibility="visible"
                 >
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/home_title_help"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/item_hz"
+                    app:layout_constraintTop_toTopOf="parent"
                     android:layout_marginTop="@dimen/entourage_margin_top"
                     android:layout_marginStart="@dimen/entourage_marginstart"
                     app:layout_constraintEnd_toEndOf="parent"

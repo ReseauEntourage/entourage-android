@@ -480,8 +480,8 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
             val help2 = Help(requireContext().getString(R.string.home_v2_help_title_two) , R.drawable.ic_home_v2_create_group)
             val help3 = Help(formattedString , R.drawable.first_help_item_illu)
             var helps:MutableList<Help> = mutableListOf()
-            helps.add(help1)
-            helps.add(help2)
+            //helps.add(help1)
+            //helps.add(help2)
             helps.add(help3)
             homeHelpAdapter.resetData(helps, summary)
         }
