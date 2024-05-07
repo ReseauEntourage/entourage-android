@@ -226,6 +226,7 @@ class WebViewFragment : BaseDialogFragment() {
                     if (host.startsWith("www.")) {
                         host = host.substring(4)
                     }
+                    Log.wtf("wtf", "host: $host")
                     binding.webviewTitle.text = if (host.isNotEmpty()) host.replaceFirstChar {
                         if (it.isLowerCase()) it.titlecase(
                             Locale.ROOT

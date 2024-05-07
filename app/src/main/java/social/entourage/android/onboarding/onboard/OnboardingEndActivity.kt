@@ -41,6 +41,7 @@ class OnboardingEndActivity : AppCompatActivity() {
                 sharedPreferences.edit()
                     .putBoolean(EntourageApplication.KEY_MIGRATION_V7_OK,true)
                     .apply()
+                MainActivity.shouldLaunchOnboarding = true
                 startActivity(Intent(this, MainActivity::class.java))
                 finish()
             }

@@ -566,6 +566,7 @@ class MainActivity : BaseSecuredActivity() {
         var involvements: MutableList<userConfig>? = null
         var shouldLaunchEventPopUp:Int = 0
         var shouldLaunchEvent:Boolean = false
+        var shouldLaunchOnboarding:Boolean = false
     }
 }
 

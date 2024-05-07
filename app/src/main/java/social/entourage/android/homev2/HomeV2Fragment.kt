@@ -132,6 +132,12 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
         super.onViewCreated(view, savedInstanceState)
         user = EntourageApplication.me(activity) ?: return
         updateAvatar()
+        if(MainActivity.shouldLaunchOnboarding){
+            MainActivity.shouldLaunchOnboarding = false
+            //launch onboarding activity
+            val intent = Intent(requireActivity(), EnhancedOnboarding::class.java)
+            startActivity(intent)
+        }
 
     }
 
