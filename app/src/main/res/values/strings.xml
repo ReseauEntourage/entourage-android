@@ -2741,7 +2741,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="onboarding_category_services">Proposition de services</string>
     <string name="onboarding_category_services_details"> (lessive, impression de documents, aide administrative…)</string>
     <string name="onboarding_action_wish_title">Comment souhaitez-vous agir au sein de la communauté Entourage ?</string>
-    <string name="onboarding_action_wish_content">Eh oui, vous avez le droit de choisir plusieurs options !</string>
+    <string name="onboarding_action_wish_content">(Eh oui, vous avez le droit de choisir plusieurs options !)</string>
     <string name="onboarding_action_wish_pedago">Apprendre avec des \ncontenus  pédagogiques</string>
     <string name="onboarding_action_wish_event">Participer à des \névénements de convivialité</string>
     <string name="onboarding_action_wish_services">Donner ou solliciter un \ncoup de pouce</string>
