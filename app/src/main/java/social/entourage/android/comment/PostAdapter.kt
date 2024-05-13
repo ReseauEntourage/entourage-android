@@ -407,7 +407,7 @@ class PostAdapter(
                                 }
                             }
                         }
-                        if(reactions?.isEmpty() == true && commentsCount == 0){
+                        if(reactions?.isEmpty() == true && commentsCount == 0 && survey.summary.isEmpty()){
                             surveyHolder.binding.postCommentsNumberLayout.visibility =  View.GONE
 
                         }else{
