@@ -60,7 +60,8 @@
         android:paddingHorizontal="20dp"
         android:fontFamily="@font/quicksand_bold"
         android:layout_marginStart="4dp"
-        android:paddingVertical="10dp"/>
+        android:paddingVertical="10dp"
+        style="?android:attr/borderlessButtonStyle"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

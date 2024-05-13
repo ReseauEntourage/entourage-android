@@ -60,7 +60,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="120dp"
             android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -82,7 +82,8 @@
                 android:elevation="0dp"
                 android:fontFamily="@font/quicksand_bold"
                 android:layout_marginEnd="4dp"
-                android:paddingVertical="10dp"/>
+                android:paddingVertical="10dp"
+                style="?android:attr/borderlessButtonStyle"/>
 
             <Button
                 android:id="@+id/button_start"
@@ -97,7 +98,8 @@
                 android:elevation="0dp"
                 android:fontFamily="@font/quicksand_bold"
                 android:layout_marginStart="4dp"
-                android:paddingVertical="10dp"/>
+                android:paddingVertical="10dp"
+                style="?android:attr/borderlessButtonStyle"/>
 
         </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>

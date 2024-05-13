@@ -1,5 +1,6 @@
 package social.entourage.android.enhanced_onboarding
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.ViewModelProvider
@@ -116,6 +117,9 @@ class EnhancedOnboarding:BaseActivity() {
     private fun handleOnboardingShouldQuit(value: Boolean) {
         if (value) {
             MainActivity.shouldLaunchEvent = true
+            val intent = Intent(this, MainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
+            startActivity(intent)
             finish()
         }
     }
