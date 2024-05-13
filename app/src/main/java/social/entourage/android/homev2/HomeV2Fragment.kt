@@ -599,7 +599,7 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
     }
 
     override fun onItemClick(position: Int, moderatorId:Int) {
-        if(position == 0){
+        if(position == 2){
             AnalyticsEvents.logEvent(AnalyticsEvents.Action_Home_CreateGroup)
             val intent = Intent(requireActivity(), PedagoDetailActivity::class.java)
             intent.putExtra(Const.ID, pedagoItemForCreateGroup?.id)
@@ -613,7 +613,7 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
             intent.putExtra(Const.HTML_CONTENT, pedagoItemForCreateEvent?.html)
             requireActivity().startActivity(intent)
         }
-        if(position == 2){
+        if(position == 0){
             AnalyticsEvents.logEvent(AnalyticsEvents.Action__Home__Moderator)
             startActivity(
                 Intent(context, UserProfileActivity::class.java).putExtra(
