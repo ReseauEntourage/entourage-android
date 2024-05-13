@@ -251,10 +251,12 @@ class PostAdapter(
                                 // Mise à jour de l'UI pour tous les choix après ajustement
                                 survey.choices.forEachIndexed { choiceIndex, _ ->
                                     updateSurveyUI(surveyHolder, choiceIndex, survey, localState, localSummary)
+
                                 }
 
                                 if (postsList[position].commentsCount != null) {
                                     val resId = if (totalResponses > 1) R.string.posts_vote_number else R.string.posts_vote_number_singular
+                                    Log.wtf("wtf", "commentsCount: ${postsList[position].commentsCount}")
                                     val commentsText = " - " + String.format(holder.itemView.context.getString(resId), totalResponses)
                                     val spannableString = SpannableString(commentsText)
                                     spannableString.setSpan(UnderlineSpan(), 0, commentsText.length, Spanned.SPAN_INCLUSIVE_INCLUSIVE)
@@ -271,6 +273,7 @@ class PostAdapter(
                                 if(totalResponses == 0 ){
                                     surveyHolder.binding.postVoteNumber.visibility = View.GONE
                                 }
+                                updateVoteNumberText(surveyHolder, localSummary)  // Appelle cette fonction pour mettre à jour le texte du nombre de votes
                             }
                         }
 
@@ -407,6 +410,8 @@ class PostAdapter(
                         if(reactions?.isEmpty() == true && commentsCount == 0){
                             surveyHolder.binding.postCommentsNumberLayout.visibility =  View.GONE
 
+                        }else{
+                            surveyHolder.binding.postCommentsNumberLayout.visibility =  View.VISIBLE
                         }
                         surveyHolder.binding.btnIComment.setOnClickListener {
                             surveyHolder.binding.layoutReactions.visibility =  View.GONE
@@ -458,7 +463,7 @@ class PostAdapter(
                             surveyHolder.binding.postVoteNumber.visibility = View.VISIBLE
                             surveyHolder.binding.postNoComments.visibility = View.GONE
                             val totalResponses = survey.summary.sum()
-                            if (commentsCount != null) {
+                            if (commentsCount != null && commentsCount != 0) {
                                 val resId = if (totalResponses > 1) R.string.posts_vote_number else R.string.posts_vote_number_singular
                                 val commentsText = " - " + String.format(holder.itemView.context.getString(resId), totalResponses)
                                 val spannableString = SpannableString(commentsText)
@@ -578,7 +583,6 @@ class PostAdapter(
                         }
 
 
-
                         // Cache toutes les vues de réaction par défaut
                         reactionViews.forEach { it.layoutItemReactionParent.visibility = View.GONE }
                         // Calcule le nombre total de réactions pour ce post
@@ -606,6 +610,8 @@ class PostAdapter(
                         if(reactions?.isEmpty() == true && commentsCount == 0){
                             binding.postCommentsNumberLayout.visibility =  View.GONE
 
+                        }else{
+                            binding.postCommentsNumberLayout.visibility =  View.VISIBLE
                         }
                         binding.btnIComment.setOnClickListener {
                             binding.layoutReactions.visibility =  View.GONE
@@ -831,6 +837,21 @@ class PostAdapter(
                 }
             }
 
+        }
+    }
+
+    fun updateVoteNumberText(surveyHolder: SurveyViewHolder, localSummary: MutableList<Int>) {
+        val totalResponses = localSummary.sum()
+        val context = surveyHolder.itemView.context
+        val resId = if (totalResponses > 1) R.string.posts_vote_number else R.string.posts_vote_number_singular
+        val commentsText = String.format(context.getString(resId), totalResponses)
+        val spannableString = SpannableString(commentsText)
+        spannableString.setSpan(UnderlineSpan(), 0, commentsText.length, Spanned.SPAN_INCLUSIVE_INCLUSIVE)
+        surveyHolder.binding.postVoteNumber.text = spannableString
+        if (totalResponses == 0) {
+            surveyHolder.binding.postVoteNumber.visibility = View.GONE
+        } else {
+            surveyHolder.binding.postVoteNumber.visibility = View.VISIBLE
         }
     }
 
