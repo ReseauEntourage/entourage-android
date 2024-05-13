@@ -55,7 +55,7 @@ class OnboardingCategorieFragment: Fragment() {
     }
 
     private fun loadAndSendCategories() {
-        val user = EntourageApplication.me(requireContext())  // Obtenir les données de l'utilisateur
+        val user = viewModel.user  // Obtenir les données de l'utilisateur
 
         val categories = listOf(
             user?.concerns?.contains("sharing_time")?.let {
@@ -116,5 +116,7 @@ class OnboardingCategorieFragment: Fragment() {
     private fun onInterestClicked(interest: InterestForAdapter) {
         viewModel.updateCategories(interest)
     }
+
+
 }
 

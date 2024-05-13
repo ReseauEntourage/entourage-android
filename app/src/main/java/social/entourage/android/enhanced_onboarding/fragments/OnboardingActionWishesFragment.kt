@@ -56,7 +56,7 @@ class OnboardingActionWishesFragment:Fragment() {
     }
 
     private fun loadAndSendActionWishes() {
-        val user = EntourageApplication.me(requireContext())  // Obtenir les données de l'utilisateur
+        val user = viewModel.user  // Obtenir les données de l'utilisateur
         if(EnhancedOnboarding.preference == "contribution") {
             val actionWishes = listOf(
 

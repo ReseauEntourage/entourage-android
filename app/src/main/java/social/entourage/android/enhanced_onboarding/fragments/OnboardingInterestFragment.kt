@@ -67,8 +67,7 @@ class OnboardingInterestFragment : Fragment() {
     }
 
     private fun loadAndSendInterests() {
-        val user = EntourageApplication.me(requireContext())  // Obtenir les données de l'utilisateur
-
+        val user = viewModel.user
         val interests = listOf(
             user?.interests?.contains("sport")?.let {
                 InterestForAdapter(

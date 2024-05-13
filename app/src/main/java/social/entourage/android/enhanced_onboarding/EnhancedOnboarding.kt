@@ -2,8 +2,10 @@ package social.entourage.android.enhanced_onboarding
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.lifecycle.ViewModelProvider
+import social.entourage.android.EntourageApplication
 import social.entourage.android.MainActivity
 import social.entourage.android.base.BaseActivity
 import social.entourage.android.databinding.ActivityEnhancedOnboardingLayoutBinding
@@ -28,6 +30,7 @@ class EnhancedOnboarding:BaseActivity() {
         viewModel.onboardingFifthStep.observe(this, ::handleOnboardingFifthStep)
         viewModel.onboardingShouldQuit.observe(this, ::handleOnboardingShouldQuit)
         viewModel.shouldDismissBtnBack.observe(this, ::toggleBtnBack)
+        viewModel.user = EntourageApplication.me(this)
         setContentView(binding.root)
     }
 
@@ -54,13 +57,35 @@ class EnhancedOnboarding:BaseActivity() {
                 isFromSettingsinterest = false
                 viewModel.registerAndQuit()
             }else{
+                viewModel.register()
                 onBackPressed()
+                viewModel.step = viewModel.step - 1
+                if(viewModel.step < 1) {
+                    viewModel.registerAndQuit()
+                }
             }
         }
         if(isFromSettingsinterest) {
             viewModel.setOnboardingThirdStep(true)
         }else{
-            viewModel.setOnboardingFirstStep(true)
+            //log all steps onboarding
+            when (viewModel.step) {
+                1 -> {
+                    viewModel.setOnboardingFirstStep(true)
+                }
+                2 -> {
+                    viewModel.setOnboardingSecondStep(true)
+                }
+                3 -> {
+                    viewModel.setOnboardingThirdStep(true)
+                }
+                4 -> {
+                    viewModel.setOnboardingFourthStep(true)
+                }
+                5 -> {
+                    viewModel.setOnboardingFifthStep(true)
+                }
+            }
         }
     }
     private fun handleOnboardingSecondStep(value: Boolean) {
