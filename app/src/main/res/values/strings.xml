@@ -2617,7 +2617,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="action_hygiene_name">Produit d\'hygiène</string>
     <string name="action_hygiene_subname">savon, protection hygiénique...</string>
 
-    <string name="interest_activites">Activités manuelles</string>
+    <string name="interest_activites">Activités /nmanuelles</string>
     <string name="interest_animaux">Animaux</string>
     <string name="interest_bien_etre">Bien-être</string>
     <string name="interest_cuisine">Cuisine</string>
@@ -2737,7 +2737,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="onboarding_category_title">Mes catégories d\'entraide</string>
     <string name="onboarding_category_content">Sélectionnez les catégories d\'entraide que vous souhaitez voir en priorité.</string>
     <string name="onboarding_category_sharing_time">Temps de partage</string>
-    <string name="onboarding_category_donation">Don matériel</string>
+    <string name="onboarding_category_donation">Dons matériels</string>
     <string name="onboarding_category_services">Proposition de services</string>
     <string name="onboarding_category_services_details"> (lessive, impression de documents, aide administrative…)</string>
     <string name="onboarding_action_wish_title">Comment souhaitez-vous agir au sein de la communauté Entourage ?</string>
@@ -2753,7 +2753,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="onboarding_action_wish_network_contrib">Rejoindre un groupe de \nvoisins et tisser des liens</string>
 
     <string name="onboarding_congrats_title">Votre expérience sur-mesure est prête !</string>
-    <string name="onboarding_congrats_content">À partir de vos préférences et disponibilités, nous vous avons préparé une sélection d\’événements à votre image.C\’est le moment de passer à l\’action !</string>
+    <string name="onboarding_congrats_content">À partir de vos préférences et disponibilités, nous vous avons préparé une sélection d\’événements à votre image. C\’est le moment de passer à l\’action !</string>
     <string name="onboarding_congrats_leave">Parcourir les événements</string>
 
 
