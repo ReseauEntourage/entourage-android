@@ -69,9 +69,9 @@ class OnboardingViewModel() : ViewModel() {
 
         // Préparer la requête pour le serveur
         val userMap = ArrayMap<String, Any>().apply {
-            put("interests", interestsList)
-            put("concerns", categoriesList)
-            put("involvements", actionsWishesList)
+            put("interests", user?.interests)
+            put("concerns", user?.concerns)
+            put("involvements", user?.involvements)
         }
         val request = ArrayMap<String, Any>()
         request["user"] = userMap
