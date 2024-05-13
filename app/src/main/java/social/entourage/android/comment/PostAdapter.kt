@@ -222,6 +222,7 @@ class PostAdapter(
                             it.parent.setOnClickListener {
                                 val wasSelected = localState[index]
                                 if(wasSelected){
+                                    surveyCallback.onDeleteSurveyClick(post.id!!, localState)
                                     survey.summary[index] = survey.summary[index] - 1
                                 }else{
                                     survey.summary[index] = survey.summary[index] + 1
@@ -234,6 +235,7 @@ class PostAdapter(
                                     } else {
                                         localSummary[index] = (localSummary.getOrNull(index)?.minus(1))?.coerceAtLeast(0) ?: 0
                                     }
+
                                 } else {
                                     // Logique pour sondages à choix unique
                                     val previouslySelectedIndex = localState.indexOf(true) // Trouve l'ancienne réponse sélectionnée
@@ -247,6 +249,7 @@ class PostAdapter(
                                     localState[index] = true // Sélectionne la nouvelle réponse
                                     localSummary[index] = localSummary.getOrNull(index)?.plus(1) ?: 1
                                 }
+                                surveyCallback.onSurveyOptionClicked(post.id!!, localState)
 
                                 // Mise à jour de l'UI pour tous les choix après ajustement
                                 survey.choices.forEachIndexed { choiceIndex, _ ->
