@@ -2382,7 +2382,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
 
     <!-- Edit profile -->
     <string name="profile_edit_zone_title">Où souhaitez-vous agir ?</string>
-    <string name="profile_edit_zone_description">Entourage est un réseau social !\nDécouvrez les initiatives solidaires de votre quartier et tissez des liens avec vos voisins</string>
+    <string name="profile_edit_zone_description">Nous vous demandons votre localité afin de vous proposer des contenus adaptés à votre localité. Soyez assuré(e) que vos informations resteront confidentielles et ne seront jamais partagées avec des tiers</string>
     <string name="profile_action_not_selected">"Mode d'action non sélectionné</string>
     <string name="profile_title_action_mode">Mon mode d’action</string>
     <string name="profile_activities">Activité(s) : %s</string>
@@ -2756,6 +2756,8 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="onboarding_congrats_title">Votre expérience sur-mesure est prête !</string>
     <string name="onboarding_congrats_content">À partir de vos préférences et disponibilités, nous vous avons préparé une sélection d\’événements à votre image. C\’est le moment de passer à l\’action !</string>
     <string name="onboarding_congrats_leave">Parcourir les événements</string>
+    <string name="onboarding_congrats_temporary_title">Votre expérience sur-mesure est (quasi) prête !</string>
+    <string name="onboarding_congrats_temporary_content">Merci d\'avoir partagé vos envies d\'agir et vos centres d\'intérêts. Nous sommes impatients de vous proposer bientôt des événements sur-mesure qui vous correspondent. \nRestez connecté(e) !</string>
 
 
 
