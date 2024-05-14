@@ -2722,8 +2722,8 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="popup_event_confirm_btn_cancel">Je ne viens pas</string>
 
 
-    <string name="popup_event_confirm_title">N’oubliez pas : %s a lieu demain au %s à %s !</string>
-    <string name="popup_event_confirm_content">texte : Pour faciliter l\'organisation de l\'événement, pouvez-vous nous dire si vous serez présent demain ?</string>
+    <string name="popup_event_confirm_title">N’oubliez pas : \"%s\" a lieu demain au %s à %s !</string>
+    <string name="popup_event_confirm_content">Pour faciliter l\'organisation de l\'événement, pouvez-vous nous dire si vous serez présent demain ?</string>
 
     <string name="onboarding_presentation_title">%s, faisons connaissance !</string>
     <string name="onboarding_presentation_content">Avant de plonger dans notre application, prenons quelques instants pour mieux te connaître. Tes centres d\'intérêts vont nous aider à te suggérer des activités et des contenus qui t\'intéresseront.</string>

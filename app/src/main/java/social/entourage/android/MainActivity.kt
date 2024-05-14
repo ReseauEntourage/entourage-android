@@ -95,7 +95,7 @@ class MainActivity : BaseSecuredActivity() {
             }
         }
         checkForAppUpdate()
-        //ifEventLastDay(136192)
+        ifEventLastDay(136192)
 
     }
 
@@ -325,7 +325,7 @@ class MainActivity : BaseSecuredActivity() {
             val context = this // Assure-toi que `this` est un Context, sinon utilise `getApplicationContext()` ou un autre contexte valide.
             val titleEvent = it.title?.take(30) ?: "Titre par défaut"
             val placeName = it.metadata?.streetAddress ?: "Lieu par défaut"
-            val startTime = it.formatEventStartTime() + "H"
+            val startTime = it.formatEventStartTime() + "h"
 
             val title = context.getString(R.string.popup_event_confirm_title, titleEvent, placeName, startTime)
             val description = context.getString(R.string.popup_event_confirm_content)
