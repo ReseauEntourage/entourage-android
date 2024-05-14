@@ -144,7 +144,7 @@ class OnboardingInterestFragment : Fragment() {
             user?.interests?.contains("activite_manuelle")?.let {
                 InterestForAdapter(
                     icon = getIconForInterest("activite_manuelle"),
-                    title = getString(R.string.interest_activites),
+                    title = getString(R.string.interest_activites_onboarding),
                     isSelected = it,
                     id = "activite_manuelle",
                     subtitle = ""
