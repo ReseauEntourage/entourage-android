@@ -87,21 +87,21 @@ class OnboardingInterestFragment : Fragment() {
                     subtitle = ""
                 )
             },
-            user?.interests?.contains("rencontre")?.let {
+            user?.interests?.contains("marauding")?.let {
                 InterestForAdapter(
                     icon = getIconForInterest("rencontre"),
                     title = getString(R.string.interest_marauding),
                     isSelected = it,
-                    id = "rencontre",
+                    id = "marauding",
                     subtitle = ""
                 )
             },
-            user?.interests?.contains("bien_etre")?.let {
+            user?.interests?.contains("bien-etre")?.let {
                 InterestForAdapter(
                     icon = getIconForInterest("bien_etre"),
                     title = getString(R.string.interest_bien_etre),
                     isSelected = it,
-                    id = "bien_etre",
+                    id = "bien-etre",
                     subtitle = ""
                 )
             },
@@ -114,12 +114,12 @@ class OnboardingInterestFragment : Fragment() {
                     subtitle = ""
                 )
             },
-            user?.interests?.contains("art")?.let {
+            user?.interests?.contains("culture")?.let {
                 InterestForAdapter(
                     icon = getIconForInterest("art"),
                     title = getString(R.string.interest_culture),
                     isSelected = it,
-                    id = "art",
+                    id = "culture",
                     subtitle = ""
                 )
             },
@@ -141,21 +141,21 @@ class OnboardingInterestFragment : Fragment() {
                     subtitle = ""
                 )
             },
-            user?.interests?.contains("activite_manuelle")?.let {
+            user?.interests?.contains("activites")?.let {
                 InterestForAdapter(
                     icon = getIconForInterest("activite_manuelle"),
                     title = getString(R.string.interest_activites_onboarding),
                     isSelected = it,
-                    id = "activite_manuelle",
+                    id = "activites",
                     subtitle = ""
                 )
             },
-            user?.interests?.contains("autre")?.let {
+            user?.interests?.contains("other")?.let {
                 InterestForAdapter(
                     icon = getIconForInterest("autre"),
                     title = getString(R.string.interest_other),
                     isSelected = it,
-                    id = "autre",
+                    id = "other",
                     subtitle = ""
                 )
             }
@@ -164,20 +164,18 @@ class OnboardingInterestFragment : Fragment() {
     }
 
 
-
-
     fun getIconForInterest(id: String): Int {
         return when (id) {
             "sport" -> R.drawable.ic_onboarding_interest_sport
             "animaux" -> R.drawable.ic_onboarding_interest_name_animaux
-            "rencontre" -> R.drawable.ic_onboarding_interest_name_rencontre_nomade
-            "bien_etre" -> R.drawable.ic_onboarding_interest_name_bien_etre
+            "marauding" -> R.drawable.ic_onboarding_interest_name_rencontre_nomade
+            "bien-etre" -> R.drawable.ic_onboarding_interest_name_bien_etre
             "cuisine" -> R.drawable.ic_onboarding_interest_name_cuisine
-            "art" -> R.drawable.ic_onboarding_interest_name_art
+            "culture" -> R.drawable.ic_onboarding_interest_name_art
             "nature" -> R.drawable.ic_onboarding_interest_name_nature
             "jeux" -> R.drawable.ic_onboarding_interest_name_jeux
-            "activite_manuelle" -> R.drawable.ic_onboarding_interest_name_activite_manuelle
-            "autre" -> R.drawable.ic_onboarding_interest_name_autre
+            "activites" -> R.drawable.ic_onboarding_interest_name_activite_manuelle
+            "other" -> R.drawable.ic_onboarding_interest_name_autre
             else -> R.drawable.ic_onboarding_interest_name_autre
         }
     }
