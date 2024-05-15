@@ -2181,6 +2181,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="onboard_photo_bt_take_gallery">Importer depuis la galerie</string>
     <string name="onboard_waiting_dialog"></string>
 
+
     <string name="take_photo_title">Ajouter une photo ?</string>
     <string name="take_photo_description">Avec une photo, c’est tout de suite plus sympa.\nMontrez-nous votre sourire le plus chaleureux.</string>
 
