@@ -101,6 +101,7 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
     private var page:Int = 1
     private val ITEM_PER_PAGE = 10
 
+
     private var newPostsList: MutableList<Post> = mutableListOf()
     private var oldPostsList: MutableList<Post> = mutableListOf()
     private var allPostsList: MutableList<Post> = mutableListOf()
