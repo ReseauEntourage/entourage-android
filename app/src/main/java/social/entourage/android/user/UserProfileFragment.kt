@@ -175,7 +175,7 @@ class UserProfileFragment : Fragment() {
                 )
             }
             user.roles?.let {
-                if (it.contains("ambassador")) pins.ambassador.visibility = View.VISIBLE
+                if (it.contains("ambassador") || it.contains("Ambassadeur") ) pins.ambassador.visibility = View.VISIBLE
                 else pins.ambassador.visibility = View.GONE
             }
             user.partner?.let {

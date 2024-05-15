@@ -138,7 +138,6 @@ class OnboardingViewModel() : ViewModel() {
     fun setOnboardingFirstStep(value: Boolean) {
         onboardingFirstStep.postValue(true)
         step = 1
-        Log.wtf("wtf", "setOnboardingFirstStep")
     }
     fun setOnboardingSecondStep(value: Boolean) {
         step = 2

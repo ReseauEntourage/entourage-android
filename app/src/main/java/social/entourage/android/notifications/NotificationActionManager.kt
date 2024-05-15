@@ -33,7 +33,6 @@ object NotificationActionManager {
 
     /**/
     fun presentAction(context:Context,supportFragmentManager: FragmentManager, instance:String, id:Int, postId:Int?, stage:String? = "", popup:String? = "" , notifContext:String? = "") {
-        Log.wtf("wtf" ,"instance: $instance, id: $id, postId: $postId, stage: $stage, popup: $popup, notifContext: $notifContext")
         if(popup.equals("outing_on_day_before")){
             if(context is MainActivity){
                 (context as MainActivity).ifEventLastDay(id)
