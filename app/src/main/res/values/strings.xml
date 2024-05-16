@@ -2617,7 +2617,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="action_hygiene_subname">savon, protection hygiénique...</string>
 
     <string name="interest_activites">Activités manuelles</string>
-    <string name="interest_activites_onboarding">Activités /nmanuelles</string>
+    <string name="interest_activites_onboarding">Activités \nmanuelles</string>
     <string name="interest_animaux">Animaux</string>
     <string name="interest_bien_etre">Bien-être</string>
     <string name="interest_cuisine">Cuisine</string>
