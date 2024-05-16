@@ -418,8 +418,7 @@ class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface,
             groupName.text = group?.name
             groupNameToolbar.text = group?.name
             groupMembersNumberLocation.text = String.format(
-                getString(R.string.members_location),
-                group?.members_count,
+                getString(R.string.members_location_temporary),
                 group?.address?.displayAddress
             )
             initializeMembersPhotos()

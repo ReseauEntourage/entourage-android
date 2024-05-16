@@ -506,6 +506,7 @@ purus dui, aliquet cursus tellus a, dictum hen." />
                 </LinearLayout>
             </androidx.core.widget.NestedScrollView>
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
         <uk.co.markormesher.android_fab.FloatingActionButton
             android:id="@+id/create_post"
             android:layout_width="wrap_content"
