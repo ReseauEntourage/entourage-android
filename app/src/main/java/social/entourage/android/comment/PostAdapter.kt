@@ -757,7 +757,6 @@ class PostAdapter(
 
                         val _post = postsList[position]
                         val member = memberList?.find { it.id.toInt() == _post.user?.id?.toInt() }
-                        Log.wtf("wtf","member " + Gson().toJson(member))
                         var tagsString = ""
                         if (member?.isAdmin() == true) {
                             tagsString += context.getString(R.string.admin) + " • "

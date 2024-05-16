@@ -263,6 +263,7 @@ class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface,
     }
 
     private fun handleResponseGetGroupMembers(allMembers: MutableList<EntourageUser>?) {
+        memberList.addAll(allMembers ?: emptyList())
         groupPresenter.getGroup(groupId)
 
     }

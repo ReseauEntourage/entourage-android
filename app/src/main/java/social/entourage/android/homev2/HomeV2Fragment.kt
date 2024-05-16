@@ -461,8 +461,8 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
         EnhancedOnboarding.preference = summary.preference ?: ""
         onActionUnclosed(summary)
         handleHelps(summary)
-
-        if(summary.preference == null || user?.address == null){
+        val me = EntourageApplication.me(activity)
+        if(summary.preference == null || me?.address == null){
             OnboardingStartActivity.FRAGMENT_NUMBER = 3
             //launch onboarding activity
             val intent = Intent(requireActivity(), OnboardingStartActivity::class.java)
