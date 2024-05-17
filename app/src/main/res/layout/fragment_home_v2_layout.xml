@@ -279,7 +279,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/home_title_map"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/btn_more_group"
+                app:layout_constraintTop_toBottomOf="@+id/item_hz"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginEnd="16dp"
                 android:layout_marginTop="@dimen/entourage_margin_section"
@@ -419,7 +419,7 @@
                 android:layout_height="wrap_content"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/btn_more_pedago"
+                app:layout_constraintTop_toBottomOf="@+id/btn_more_group"
                 android:layout_margin="20dp"
                 android:visibility="gone"
                 />
