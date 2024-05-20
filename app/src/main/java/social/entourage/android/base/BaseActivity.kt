@@ -1,10 +1,8 @@
 package social.entourage.android.base
 
 import android.app.ProgressDialog
-import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.google.gson.Gson
 import social.entourage.android.BuildConfig
@@ -13,11 +11,10 @@ import social.entourage.android.R
 import social.entourage.android.api.model.notification.PushNotificationContent
 import social.entourage.android.deeplinks.UniversalLinkManager
 import social.entourage.android.language.LanguageManager
+import social.entourage.android.report.DataLanguageStock
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.view.WebViewFragment
 import timber.log.Timber
-import java.net.URL
-import social.entourage.android.report.DataLanguageStock
 
 /**
  * Base activity which set up a scoped graph and inject it
@@ -72,11 +69,13 @@ abstract class BaseActivity : AppCompatActivity() {
     }
 
     //TODO REFACTOR THIS
-    fun fromNotifLogFirebaseEvent(){
+    private fun fromNotifLogFirebaseEvent(){
         try {
-            val notificationContent = Gson().fromJson(intent.getStringExtra("notification_content"), PushNotificationContent::class.java)
-            val notificationBoolean= intent.getBooleanExtra("notification_content_boolean", false)
-            val stage = notificationContent.extra?.stage
+            val notificationContent = intent?.getStringExtra("notification_content")?.let { extra->
+                Gson().fromJson(extra, PushNotificationContent::class.java)
+            }
+            //val notificationBoolean= intent?.getBooleanExtra("notification_content_boolean", false)
+            val stage = notificationContent?.extra?.stage
             if(stage.equals("h1")){
                 AnalyticsEvents.logEvent(AnalyticsEvents.NotificationClicked__OfferHelp__WDay1)}
             if(stage.equals("j2")){
@@ -87,38 +86,40 @@ abstract class BaseActivity : AppCompatActivity() {
                 AnalyticsEvents.logEvent(AnalyticsEvents.NotificationClicked__OfferHelp__WDay8)}
             if(stage.equals("j11")){
                 AnalyticsEvents.logEvent(AnalyticsEvents.NotificationClicked__OfferHelp__WDay11)}
-            val tracking = notificationContent.extra?.tracking
+            val tracking = notificationContent?.extra?.tracking
             if(tracking != null) {
-                if(tracking.equals("join_request_on_create")){
-                    AnalyticsEvents.logEvent(AnalyticsEvents.NotificationClicked__MemberEvent)}
-                if(tracking.equals("outing_on_update")){
-                    AnalyticsEvents.logEvent(AnalyticsEvents.NotificationClicked__ModifiedEvent)}
-                if(tracking.equals("outing_on_create")){
-                    AnalyticsEvents.logEvent(AnalyticsEvents.NotificationClicked__PostEvent)}
-                if(tracking.equals("post_on_create_to_neighborhood")){
-                    AnalyticsEvents.logEvent(AnalyticsEvents.NotificationClicked__PostGroup)}
-                if(tracking.equals("comment_on_create_to_neighborhood")){
-                    AnalyticsEvents.logEvent(AnalyticsEvents.NotificationClicked__CommentGroup)}
-                if(tracking.equals("comment_on_create_to_outing")){
-                    AnalyticsEvents.logEvent(AnalyticsEvents.NotificationClicked__CommentEvent)}
-                if(tracking.equals("outing_on_add_to_neighborhood")){
-                    AnalyticsEvents.logEvent(AnalyticsEvents.NotificationClicked__EventInGroup)}
-                if(tracking.equals("contribution_on_create")){
-                    AnalyticsEvents.logEvent(AnalyticsEvents.NotificationClicked__Contribution)}
-                if(tracking.equals("solicitation_on_create")){
-                    AnalyticsEvents.logEvent(AnalyticsEvents.NotificationClicked__Demand)}
-                if(tracking.equals("private_chat_message_on_create")){
-                    AnalyticsEvents.logEvent(AnalyticsEvents.NotificationClicked__PrivateMessage)}
-                if(tracking.equals("join_request_on_create_to_neighborhood")){
-                    AnalyticsEvents.logEvent(AnalyticsEvents.NotificationClicked__MemberGroup)}
-                if(tracking.equals("join_request_on_create_to_outing")){
-                    AnalyticsEvents.logEvent(AnalyticsEvents.NotificationClicked__MemberEvent)}
-                if(tracking.equals("outing_on_cancel")){
-                    AnalyticsEvents.logEvent(AnalyticsEvents.NotificationClicked__CanceledEvent)}
-                if(tracking.equals("post_on_create_to_outing")){
-                    AnalyticsEvents.logEvent(AnalyticsEvents.NotificationReceived__PostEvent)}
-                if(tracking.equals("public_chat_message_on_create")){
-                    AnalyticsEvents.logEvent("UNDEFINED_PUSH_TRACKING")}
+                when (tracking) {
+                    "join_request_on_create" -> {
+                        AnalyticsEvents.logEvent(AnalyticsEvents.NotificationClicked__MemberEvent)}
+                    "outing_on_update" -> {
+                        AnalyticsEvents.logEvent(AnalyticsEvents.NotificationClicked__ModifiedEvent)}
+                    "outing_on_create" -> {
+                        AnalyticsEvents.logEvent(AnalyticsEvents.NotificationClicked__PostEvent)}
+                    "post_on_create_to_neighborhood" -> {
+                        AnalyticsEvents.logEvent(AnalyticsEvents.NotificationClicked__PostGroup)}
+                    "comment_on_create_to_neighborhood" -> {
+                        AnalyticsEvents.logEvent(AnalyticsEvents.NotificationClicked__CommentGroup)}
+                    "comment_on_create_to_outing" -> {
+                        AnalyticsEvents.logEvent(AnalyticsEvents.NotificationClicked__CommentEvent)}
+                    "outing_on_add_to_neighborhood" -> {
+                        AnalyticsEvents.logEvent(AnalyticsEvents.NotificationClicked__EventInGroup)}
+                    "contribution_on_create" -> {
+                        AnalyticsEvents.logEvent(AnalyticsEvents.NotificationClicked__Contribution)}
+                    "solicitation_on_create" -> {
+                        AnalyticsEvents.logEvent(AnalyticsEvents.NotificationClicked__Demand)}
+                    "private_chat_message_on_create" -> {
+                        AnalyticsEvents.logEvent(AnalyticsEvents.NotificationClicked__PrivateMessage)}
+                    "join_request_on_create_to_neighborhood" -> {
+                        AnalyticsEvents.logEvent(AnalyticsEvents.NotificationClicked__MemberGroup)}
+                    "join_request_on_create_to_outing" -> {
+                        AnalyticsEvents.logEvent(AnalyticsEvents.NotificationClicked__MemberEvent)}
+                    "outing_on_cancel" -> {
+                        AnalyticsEvents.logEvent(AnalyticsEvents.NotificationClicked__CanceledEvent)}
+                    "post_on_create_to_outing" -> {
+                        AnalyticsEvents.logEvent(AnalyticsEvents.NotificationReceived__PostEvent)}
+                    "public_chat_message_on_create" -> {
+                        AnalyticsEvents.logEvent("UNDEFINED_PUSH_TRACKING")}
+                }
             }
 
         }catch (e:Exception){
