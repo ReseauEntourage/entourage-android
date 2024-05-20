@@ -5,7 +5,7 @@ import java.io.ByteArrayOutputStream
 plugins {
     id("com.android.application")
     kotlin("android")
-    id("kotlin-android-extensions")
+    //id("kotlin-android-extensions")
     id("com.google.firebase.crashlytics")
     id("com.google.android.gms.oss-licenses-plugin")
     //id("com.google.firebase.firebase-perf")

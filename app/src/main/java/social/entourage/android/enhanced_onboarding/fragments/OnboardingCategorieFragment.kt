@@ -6,13 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import kotlinx.android.synthetic.main.new_lined_edit_text.linearLayout
-import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.databinding.FragmentOnboardingActionWishesLayoutBinding
-import social.entourage.android.databinding.FragmentOnboardingInterestsLayoutBinding
 import social.entourage.android.enhanced_onboarding.InterestForAdapter
 import social.entourage.android.enhanced_onboarding.OnboardingViewModel
 import social.entourage.android.tools.log.AnalyticsEvents
@@ -89,8 +85,7 @@ class OnboardingCategorieFragment: Fragment() {
         viewModel.setcategories(categories.filterNotNull())
     }
 
-
-    fun getIconForCategory(id: String): Int {
+    private fun getIconForCategory(id: String): Int {
         return when (id) {
             "sharing_time" -> R.drawable.ic_name_moment_de_partage
             "material_donations" -> R.drawable.ic_name_don_materiel
@@ -99,24 +94,21 @@ class OnboardingCategorieFragment: Fragment() {
         }
     }
 
-
-
     private fun handleInterestLoad(interests: List<InterestForAdapter>) {
         // Vérifie si l'adapter est déjà défini
         if (binding.rvInterests.adapter == null) {
             binding.rvInterests.adapter = OnboardingInterestsAdapter(requireContext(), false, interests, ::onInterestClicked)
         } else {
-            // Si l'adapter existe déjà, mets à jour simplement les données
+            // Si l'adapter existe déjà, met à jour simplement les données
             (binding.rvInterests.adapter as? OnboardingInterestsAdapter)?.let { adapter ->
                 adapter.interests = interests
                 adapter.notifyDataSetChanged()
             }
         }
     }
+
     private fun onInterestClicked(interest: InterestForAdapter) {
         viewModel.updateCategories(interest)
     }
-
-
 }
 
