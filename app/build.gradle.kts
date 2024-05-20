@@ -1,5 +1,4 @@
-import com.android.build.api.dsl.Lint
-import com.android.build.api.dsl.LintOptions
+
 import java.io.ByteArrayOutputStream
 
 plugins {
@@ -197,22 +196,22 @@ android {
 
 dependencies {
     //TODO check why core-ktx:1.10  needs kotlin 1.8
-    implementation("androidx.core:core-ktx:1.9.0")
+    implementation("androidx.core:core-ktx:1.13.1")
     implementation(platform("com.squareup.okhttp3:okhttp-bom:4.10.0"))
 
     //implementation androidSupportDependencies.values()
 
     //TODO check why annotation:1.6 needs kotlin 1.8
-    implementation("androidx.annotation:annotation:1.5.0")
-    implementation("androidx.appcompat:appcompat:1.7.0-alpha03")
-    implementation("androidx.browser:browser:1.5.0")
+    implementation("androidx.annotation:annotation:1.8.0")
+    implementation("androidx.appcompat:appcompat:1.7.0-rc01")
+    implementation("androidx.browser:browser:1.8.0")
     implementation("androidx.cardview:cardview:1.0.0")
     implementation("androidx.coordinatorlayout:coordinatorlayout:1.2.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
-    implementation("androidx.fragment:fragment-ktx:1.5.7")
+    implementation("androidx.fragment:fragment-ktx:1.7.1")
     implementation("androidx.multidex:multidex:2.0.1")
-    implementation("androidx.recyclerview:recyclerview:1.3.0")
-    implementation("androidx.preference:preference-ktx:1.2.0")
+    implementation("androidx.recyclerview:recyclerview:1.3.2")
+    implementation("androidx.preference:preference-ktx:1.2.1")
 
     //implementation devDependencies.values()
     //implementation("net.danlew:android.joda:2.12.5")
@@ -221,20 +220,20 @@ dependencies {
 
 
     //https://firebase.google.com/support/release-notes/android
-    implementation(platform("com.google.firebase:firebase-bom:32.1.0"))
+    implementation(platform("com.google.firebase:firebase-bom:33.0.0"))
     //implementation firebaseDependencies.values()
-    implementation("com.google.firebase:firebase-analytics-ktx")
-    implementation("com.google.firebase:firebase-messaging-ktx")
-    implementation("androidx.compose.ui:ui-text-android:1.6.3")
+    implementation("com.google.firebase:firebase-analytics")
+    implementation("com.google.firebase:firebase-messaging")
+    implementation("androidx.compose.ui:ui-text-android:1.6.7")
     //TODO: fix this inappmessaging lib that is blocking tests to run
-    releaseImplementation("com.google.firebase:firebase-inappmessaging-display-ktx")
-    implementation("com.google.firebase:firebase-crashlytics-ktx")
-    implementation("com.google.firebase:firebase-config-ktx")
-    //implementation("com.google.firebase:firebase-perf-ktx")
+    releaseImplementation("com.google.firebase:firebase-inappmessaging-display")
+    implementation("com.google.firebase:firebase-crashlytics")
+    implementation("com.google.firebase:firebase-config")
+    //implementation("com.google.firebase:firebase-perf")
 
     //implementation gmsDependencies.values()
-    implementation("com.google.android.gms:play-services-maps:18.1.0")
-    implementation("com.google.android.gms:play-services-location:21.0.1") //v19 needs refactoring
+    implementation("com.google.android.gms:play-services-maps:18.2.0")
+    implementation("com.google.android.gms:play-services-location:21.2.0") //v19 needs refactoring
     implementation("com.google.android.libraries.places:places-compat:2.6.0")
     //https://developers.google.com/android/guides/opensource
     implementation("com.google.android.gms:play-services-oss-licenses:17.0.1")
@@ -250,7 +249,7 @@ dependencies {
     implementation("com.github.clans:fab:1.6.4")
     implementation("com.github.takusemba:cropme:2.0.8")
     implementation("com.google.maps.android:maps-utils-ktx:3.4.0")
-    implementation("com.google.android.material:material:1.9.0")
+    implementation("com.google.android.material:material:1.12.0")
     implementation("com.github.bumptech.glide:glide:4.14.2")
     implementation("me.leolin:ShortcutBadger:1.1.22@aar")
     implementation("net.yslibrary.keyboardvisibilityevent:keyboardvisibilityevent:3.0.0-RC3")
@@ -270,7 +269,7 @@ dependencies {
     androidTestImplementation("androidx.test.espresso.idling:idling-concurrent:3.5.1")
     androidTestImplementation("androidx.test.espresso:espresso-idling-resource:3.5.1")
     androidTestImplementation("androidx.test.espresso:espresso-intents:3.5.1")
-    androidTestImplementation("androidx.test.uiautomator:uiautomator:2.2.0")
+    androidTestImplementation("androidx.test.uiautomator:uiautomator:2.3.0")
 
     //androidTestImplementation("com.jakewharton.espresso:okhttp3-idling-resource:1.0.0")
     //,exclude: [group: "com.squareup.okhttp3"                    ]
@@ -282,13 +281,13 @@ dependencies {
     testImplementation("org.mockito:mockito-core:4.0.0")
     testImplementation("org.mockito.kotlin:mockito-kotlin:4.0.0")
     androidTestImplementation("org.mockito:mockito-android:4.0.0")
-    androidTestImplementation("androidx.test.ext:junit:1.1.3")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
+    androidTestImplementation("androidx.test.ext:junit:1.1.5")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
 
     implementation("com.google.android.flexbox:flexbox:3.0.0")
     // Kotlin
-    implementation("androidx.navigation:navigation-fragment-ktx:2.5.3")
-    implementation("androidx.navigation:navigation-ui-ktx:2.5.3")
+    implementation("androidx.navigation:navigation-fragment-ktx:2.7.7")
+    implementation("androidx.navigation:navigation-ui-ktx:2.7.7")
     implementation("uk.co.markormesher:android-fab:2.5.0")
     implementation("com.github.IntruderShanky:Sectioned-RecyclerView:2.1.1")
 
@@ -297,6 +296,6 @@ dependencies {
 
     //photoview to click and zoom
     implementation("com.github.chrisbanes:PhotoView:2.3.0")
-    implementation("androidx.transition:transition:1.4.1") // Remplacez 'x.x.x' par la dernière version disponible.
-    implementation("com.google.android.play:core:1.10.0")
+    implementation("androidx.transition:transition:1.5.0") // Remplacez 'x.x.x' par la dernière version disponible.
+    implementation("com.google.android.play:core:1.10.3")
 }
