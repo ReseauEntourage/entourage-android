@@ -42,6 +42,7 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
         }
         if (uri.host == stagingURL || uri.host == prodURL) {
             when {
+
                 pathSegments.contains("charte-ethique-grand-public") ->{
                     val chartIntent = Intent(Intent.ACTION_VIEW, Uri.parse(context.getString(R.string.disclaimer_link_public)))
                     context.startActivity(chartIntent)

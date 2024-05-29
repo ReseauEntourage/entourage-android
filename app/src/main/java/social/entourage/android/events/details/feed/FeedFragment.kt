@@ -186,6 +186,7 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
         super.onViewCreated(view, savedInstanceState)
         eventId = args.eventID
         myId = EntourageApplication.me(activity)?.id
+        Log.wtf("wtf", "event id: $eventId")
         eventPresenter.getEvent.observe(viewLifecycleOwner, ::handleResponseGetEvent)
         eventPresenter.isEventReported.observe(requireActivity(), ::handleDeletedResponse)
         eventPresenter.hasUserLeftEvent.observe(requireActivity(),::handleLeaveResponse)
