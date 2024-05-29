@@ -23,6 +23,7 @@ class OnboardingActionWishesFragment:Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentOnboardingActionWishesLayoutBinding.inflate(inflater, container, false)
+        AnalyticsEvents.logEvent(AnalyticsEvents.onboarding_actions_view)
         viewModel = ViewModelProvider(requireActivity()).get(OnboardingViewModel::class.java)
         viewModel.actionsWishes.observe( viewLifecycleOwner, ::handleInterestLoad)
         return binding.root

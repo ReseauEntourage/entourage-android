@@ -24,6 +24,7 @@ class OnboardingCategorieFragment: Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentOnboardingActionWishesLayoutBinding.inflate(inflater, container, false)
+        AnalyticsEvents.logEvent(AnalyticsEvents.onboarding_donations_categories_view)
         viewModel = ViewModelProvider(requireActivity()).get(OnboardingViewModel::class.java)
         viewModel.categories.observe( viewLifecycleOwner, ::handleInterestLoad)
         return binding.root

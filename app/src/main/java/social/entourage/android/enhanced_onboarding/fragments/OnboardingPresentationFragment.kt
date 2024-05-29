@@ -25,6 +25,7 @@ class OnboardingPresentationFragment: Fragment() {
         binding = FragmentOnboardingPresentationFragmentBinding.inflate(inflater, container, false)
         viewModel = ViewModelProvider(requireActivity()).get(OnboardingViewModel::class.java)
         initView()
+        AnalyticsEvents.logEvent(AnalyticsEvents.onboarding_welcome_view)
         return binding.root
     }
 
