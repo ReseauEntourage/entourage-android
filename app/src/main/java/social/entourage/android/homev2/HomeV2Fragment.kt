@@ -148,8 +148,13 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
         resetFilter()
         callToInitHome()
         actionsPresenter.getUnreadCount()
-
-
+        if(MainActivity.shouldLaunchProfile){
+            MainActivity.shouldLaunchProfile = false
+            AnalyticsEvents.logEvent(AnalyticsEvents.Action__Tab__Profil)
+            startActivityForResult(
+                Intent(context, ProfileActivity::class.java), 0
+            )
+        }
     }
 
 

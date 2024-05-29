@@ -7,6 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import kotlinx.coroutines.MainScope
+import social.entourage.android.MainActivity
 import social.entourage.android.R
 import social.entourage.android.databinding.FragmentOnboardingCongratsFragmentBinding
 import social.entourage.android.databinding.FragmentOnboardingInterestsLayoutBinding
@@ -31,6 +33,9 @@ class OnboardingCongratsFragment: Fragment() {
         binding.buttonStart.setOnClickListener {
             AnalyticsEvents.logEvent(AnalyticsEvents.onboarding_end_browse_events_clic)
             viewModel.registerAndQuit()
+        }
+        if(MainActivity.isFromProfile) {
+            binding.buttonStart.text = "Revenir au profil"
         }
     }
     override fun onResume() {

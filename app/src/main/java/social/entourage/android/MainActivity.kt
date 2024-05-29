@@ -567,6 +567,8 @@ class MainActivity : BaseSecuredActivity() {
         var shouldLaunchEventPopUp:Int = 0
         var shouldLaunchEvent:Boolean = false
         var shouldLaunchOnboarding:Boolean = false
+        var shouldLaunchProfile:Boolean = false
+        var isFromProfile:Boolean = false
     }
 }
 
