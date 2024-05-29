@@ -38,9 +38,7 @@ class DiscoverEventsListFragment : Fragment() {
     lateinit var myeventsAdapter: HomeEventAdapter
     private var page: Int = 0
     private var pageMyEvent: Int = 0
-
     private var currentFilters = EventActionLocationFilters()
-
     private var activityResultLauncher:ActivityResultLauncher<Intent>? = null
 
     private var isFromFilters = false

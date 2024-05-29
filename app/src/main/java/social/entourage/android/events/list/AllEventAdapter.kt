@@ -83,6 +83,12 @@ class AllEventAdapter(var userId: Int?, var context:Context) :
             holder.binding.location.text = event.metadata?.displayAddress
             holder.binding.participants.text = event.membersCount.toString()
 
+            if(event.member){
+                holder.binding.tvSubscribed.visibility = View.VISIBLE
+            }else{
+                holder.binding.tvSubscribed.visibility = View.GONE
+            }
+
             val participantsCount = event.membersCount ?: 0
 
             holder.binding.participants.text =
