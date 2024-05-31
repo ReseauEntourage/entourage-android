@@ -43,7 +43,7 @@
                     android:layout_margin="10dp"
                     android:padding="5dp"
                     android:background="@drawable/bg_button_signin_white_rounded"
-                    android:text="Inscrit(e)"
+                    android:text="Inscrit.e"
                     android:visibility="gone"
                     />
                 <androidx.constraintlayout.widget.ConstraintLayout
