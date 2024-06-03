@@ -75,7 +75,7 @@ class OnboardingActionWishesFragment:Fragment() {
                         icon = getIconForActionWish("actions"),
                         title = getString(R.string.onboarding_action_wish_services_contrib),
                         isSelected = it,
-                        id = "actions",
+                        id = "both_actions",
                         subtitle = ""
                     )
                 },
@@ -123,7 +123,7 @@ class OnboardingActionWishesFragment:Fragment() {
                         icon = getIconForActionWish("actions"),
                         title = getString(R.string.onboarding_action_wish_services),
                         isSelected = it,
-                        id = "actions",
+                        id = "both_actions",
                         subtitle = ""
                     )
                 },
