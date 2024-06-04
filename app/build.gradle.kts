@@ -31,7 +31,7 @@ android {
 
     // App versions
     val versionMajor = 9
-    val versionMinor = 7
+    val versionMinor = 8
     val versionPatch = "git rev-list HEAD --count".runCommand().toInt()
     val versionBranchName = "git rev-parse --abbrev-ref HEAD".runCommand()
     val versionCodeInt = (versionMajor * 100 + versionMinor) * 10000 + versionPatch % 10000
