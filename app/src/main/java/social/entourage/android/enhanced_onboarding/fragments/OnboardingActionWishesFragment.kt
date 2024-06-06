@@ -70,7 +70,7 @@ class OnboardingActionWishesFragment:Fragment() {
                         subtitle = ""
                     )
                 },
-                user?.involvements?.contains("actions")?.let {
+                user?.involvements?.contains("both_actions")?.let {
                     InterestForAdapter(
                         icon = getIconForActionWish("actions"),
                         title = getString(R.string.onboarding_action_wish_services_contrib),
