@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -84,8 +85,10 @@ class AllEventAdapter(var userId: Int?, var context:Context) :
             holder.binding.participants.text = event.membersCount.toString()
 
             if(event.author?.communityRoles != null) {
-                if(event.author?.communityRoles?.contains("Entourage") == true || event.author?.communityRoles?.contains("Ambassadeur") == true){
-
+                Log.wtf("wtf", "roles " + event.author?.communityRoles.toString())
+                Log.wtf("wtf", "roles "+ event.author?.communityRoles?.contains("Équipe Entourage"))
+                Log.wtf("wtf", "roles " + event.author?.communityRoles?.contains("Entourage"))
+                if(event.author?.communityRoles?.contains("Équipe Entourage") == true || event.author?.communityRoles?.contains("Ambassadeur") == true){
                     holder.binding.ivEntourageLogo.visibility = View.VISIBLE
                 }else{
                     holder.binding.ivEntourageLogo.visibility = View.GONE

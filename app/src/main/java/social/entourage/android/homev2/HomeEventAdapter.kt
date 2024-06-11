@@ -68,7 +68,7 @@ class HomeEventAdapter(var context: Context):RecyclerView.Adapter<HomeEventAdapt
             )
         }
         if(event.author?.communityRoles != null) {
-            if(event.author?.communityRoles?.contains("Entourage") == true || event.author?.communityRoles?.contains("Ambassadeur") == true){
+            if(event.author?.communityRoles?.contains("Équipe Entourage") == true || event.author?.communityRoles?.contains("Ambassadeur") == true){
 
                 holder.binding.ivEntourageLogo.visibility = View.VISIBLE
             }else{
