@@ -33,6 +33,7 @@ class WelcomeFiveActivity: BaseActivity() {
         }
         setContentView(binding.root)
     }
+    @Deprecated("Deprecated in kt 1.9.0")
     override fun onBackPressed() {
         super.onBackPressed()
         val intent = Intent(this, MainActivity::class.java)

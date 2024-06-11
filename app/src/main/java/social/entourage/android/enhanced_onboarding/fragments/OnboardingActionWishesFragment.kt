@@ -92,7 +92,7 @@ class OnboardingActionWishesFragment:Fragment() {
                         icon = R.drawable.ic_onboarding_interest_name_rencontre_nomade,
                         title = getString(R.string.onboarding_action_wish_pedago_contrib),
                         isSelected = it,
-                        id = "resources",
+                        id = "pois",
                         subtitle = ""
                     )
                 },

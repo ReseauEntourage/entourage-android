@@ -83,6 +83,17 @@ class AllEventAdapter(var userId: Int?, var context:Context) :
             holder.binding.location.text = event.metadata?.displayAddress
             holder.binding.participants.text = event.membersCount.toString()
 
+            if(event.author?.communityRoles != null) {
+                if(event.author?.communityRoles?.contains("Entourage") == true || event.author?.communityRoles?.contains("Ambassadeur") == true){
+
+                    holder.binding.ivEntourageLogo.visibility = View.VISIBLE
+                }else{
+                    holder.binding.ivEntourageLogo.visibility = View.GONE
+                }
+            }else{
+                holder.binding.ivEntourageLogo.visibility = View.GONE
+            }
+
             if(event.member){
                 holder.binding.tvSubscribed.visibility = View.VISIBLE
             }else{

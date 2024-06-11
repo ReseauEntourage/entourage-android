@@ -143,6 +143,7 @@ class CustomWebViewClient(
     private val universalLinkManager: UniversalLinkManager
 ) : WebViewClient() {
 
+    @Deprecated("Deprecated in kt 1.9.0")
     override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
         url?.let {
             val uri = Uri.parse(it)

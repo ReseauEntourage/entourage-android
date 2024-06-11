@@ -73,6 +73,8 @@
             android:exported="false" />
         <activity android:name=".enhanced_onboarding.EnhancedOnboarding"
             android:exported="false"/>
+        <activity android:name=".notifications.NotificationDemandActivity"
+            android:exported="false"/>
         <activity
             android:name=".welcome.WelcomeTwoActivity"
             android:exported="false" />

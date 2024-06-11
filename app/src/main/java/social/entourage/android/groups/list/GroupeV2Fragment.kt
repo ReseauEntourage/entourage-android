@@ -34,6 +34,8 @@ private lateinit var binding: GroupV2FragmentLayoutBinding
     private var checkSum = 0
     private var isLoading = false
     private var PER_PAGE = 20
+    private var addedGroupIds: MutableSet<Int> = mutableSetOf()
+    private var addedMyGroupIds: MutableSet<Int> = mutableSetOf()
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -65,7 +67,7 @@ private lateinit var binding: GroupV2FragmentLayoutBinding
         handleCreateGroupButton()
         setupScrollViewListener()
         AnalyticsEvents.logEvent(AnalyticsEvents.VIEW_GROUP_SHOW)
-
+        initView()
     }
 
     override fun onCreateView(
@@ -74,14 +76,19 @@ private lateinit var binding: GroupV2FragmentLayoutBinding
         savedInstanceState: Bundle?
     ): View? {
         binding = GroupV2FragmentLayoutBinding.inflate(inflater, container, false)
-        AnalyticsEvents.logEvent(
-            AnalyticsEvents.VIEW_GROUP_SHOW_DISCOVER
-        )
+
         return binding.root
     }
 
     override fun onResume() {
         super.onResume()
+        AnalyticsEvents.logEvent(
+            AnalyticsEvents.VIEW_GROUP_SHOW_DISCOVER
+        )
+
+    }
+
+    fun initView(){
         binding.progressBar.visibility = View.VISIBLE
         groupsList.clear()
         myGroupsList.clear()
@@ -95,16 +102,21 @@ private lateinit var binding: GroupV2FragmentLayoutBinding
     }
 
     private fun handleResponseGetGroups(allGroups: MutableList<Group>?) {
-        allGroups?.let { groupsList.addAll(it)
+        allGroups?.let {
+            val newGroups = it.filter { group -> !addedGroupIds.contains(group.id) }
+            groupsList.addAll(newGroups)
             adapterGroup.updateGroupsList(groupsList)
+            addedGroupIds.addAll(newGroups.map { group -> group.id!! })
         }
         checkingSumForEmptyView()
     }
 
     private fun handleResponseMyGetGroups(allGroups: MutableList<Group>?) {
         allGroups?.let {
-            myGroupsList.addAll(it)
+            val newGroups = it.filter { group -> !addedMyGroupIds.contains(group.id) }
+            myGroupsList.addAll(newGroups)
             adapterMyGroup.resetData(myGroupsList)
+            addedMyGroupIds.addAll(newGroups.map { group -> group.id!! })
         }
         checkingSumForEmptyView()
     }

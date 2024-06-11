@@ -31,6 +31,16 @@
                     android:src="@drawable/new_illu_header_group"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:id="@+id/iv_entourage_logo"
+                    android:src="@drawable/ic_entourage_little"
+                    app:layout_constraintStart_toStartOf="@+id/image"
+                    app:layout_constraintBottom_toBottomOf="@+id/image"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginBottom="5dp"
+                    />
                 <TextView
                     android:id="@+id/tv_subscribed"
                     android:layout_width="wrap_content"

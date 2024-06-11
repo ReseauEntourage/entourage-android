@@ -135,7 +135,7 @@ class User : Serializable {
     }
 
     fun asAuthor(): FeedItemAuthor {
-        return FeedItemAuthor(avatarURL, id, displayName, partner)
+        return FeedItemAuthor(avatarURL, id, displayName,roles, partner)
     }
 
     val arrayMapForUpdate: ArrayMap<String, Any>
