@@ -80,6 +80,7 @@ class NotificationDemandActivity : BaseActivity() {
 
     private fun redirectToNotificationSettings() {
         // Always redirect to notification settings
+        MainActivity.shouldLaunchOnboarding = true
         val intent = Intent().apply {
             action = "android.settings.APP_NOTIFICATION_SETTINGS"
             putExtra("android.provider.extra.APP_PACKAGE", packageName)
