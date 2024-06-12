@@ -42,14 +42,16 @@ class SettingsNotificationsFragment : BottomSheetDialogFragment() {
 
     private fun updateSwitch(notifsPermissions: InAppNotificationPermission?) {
         notifsPermissions?.let {
-            if (areNotificationsEnabled) {
+            if (!it.isAllChecked() || !areNotificationsEnabled) {
+                // Si les notifications du serveur ou du téléphone sont désactivées, désactivez tous les switches
+                resetAllSwitches()
+            } else {
+                // Sinon, mettez à jour les switches en fonction des permissions du serveur
                 binding.uiSwitchNotifsActions.isChecked = it.action
                 binding.uiSwitchNotifsEvents.isChecked = it.outing
                 binding.uiSwitchNotifsGroups.isChecked = it.neighborhood
                 binding.uiSwitchNotifsMessages.isChecked = it.chat_message
                 binding.uiSwitchNotifsAll.isChecked = it.isAllChecked()
-            } else {
-                resetAllSwitches()
             }
         }
     }
@@ -114,9 +116,9 @@ class SettingsNotificationsFragment : BottomSheetDialogFragment() {
     }
 
     private fun checkSwitchs() {
-        val isAllOn = binding.uiSwitchNotifsActions.isChecked &&
-                binding.uiSwitchNotifsEvents.isChecked &&
-                binding.uiSwitchNotifsGroups.isChecked &&
+        val isAllOn = binding.uiSwitchNotifsActions.isChecked ||
+                binding.uiSwitchNotifsEvents.isChecked ||
+                binding.uiSwitchNotifsGroups.isChecked ||
                 binding.uiSwitchNotifsMessages.isChecked
         binding.uiSwitchNotifsAll.isChecked = isAllOn
     }
