@@ -62,7 +62,7 @@
                 android:maxLines="2"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/star"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_weight="85"
                 tools:text="Ping pong" />
 
