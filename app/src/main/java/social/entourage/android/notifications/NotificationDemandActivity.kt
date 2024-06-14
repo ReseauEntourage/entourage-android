@@ -37,7 +37,7 @@ class NotificationDemandActivity : BaseActivity() {
         }
 
         binding.buttonConfigureLater.setOnClickListener {
-            requestNotificationPermission()
+            goMain()
         }
 
         // Check if notifications are already enabled
