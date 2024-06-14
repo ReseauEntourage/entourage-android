@@ -52,7 +52,7 @@ class NotificationDemandActivity : BaseActivity() {
                 if (isGranted) {
                     goMain()
                 } else {
-                    redirectToNotificationSettings()
+                    goMain()  // Instead of redirecting to settings, just call goMain
                 }
             }
         }
@@ -69,7 +69,7 @@ class NotificationDemandActivity : BaseActivity() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             requestPostNotificationsPermission()
         } else {
-            redirectToNotificationSettings()
+            goMain()  // Directly call goMain if the OS version is lower than TIRAMISU
         }
     }
 

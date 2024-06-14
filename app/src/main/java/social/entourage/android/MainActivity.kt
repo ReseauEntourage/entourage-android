@@ -151,7 +151,7 @@ class MainActivity : BaseSecuredActivity() {
         initializeMetaData()
         if (authenticationController.isAuthenticated) {
             //initialize the push notifications
-            initializePushNotifications()
+            //TODO reset this if NotificationDemandActivity is disabled initializePushNotifications()
             updateAnalyticsInfo()
             //TODO authenticationController.me?.unreadCount?.let { bottomBar?.updateBadgeCountForUser(it) }
         }

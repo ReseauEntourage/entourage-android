@@ -64,6 +64,21 @@ class GroupsListAdapter(
                         ), 0
                     )
                 }
+                group.unreadPostsCount.let {
+                    if (it > 0) {
+                        var numberOfPost = ""
+                        if (it > 9) {
+                            numberOfPost = "+9"
+                        }else {
+                            numberOfPost = it.toString()
+                        }
+                        holder.binding.tvNewsGroup.text = numberOfPost
+                        holder.binding.cardNewsGroup.visibility = android.view.View.VISIBLE
+                    } else {
+                        holder.binding.cardNewsGroup.visibility = android.view.View.GONE
+                    }
+                }
+
                 binding.groupName.text = this.name
                 this.members?.size?.let {
                     binding.members.text = String.format(
