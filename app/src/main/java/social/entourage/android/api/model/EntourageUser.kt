@@ -39,6 +39,9 @@ class EntourageUser : TimestampedObject(), Serializable {
     @SerializedName("community_roles")
     var communityRoles: List<String>? = null
         private set
+    @SerializedName("roles")
+    var roles: List<String>? = null
+        private set
 
     var isDisplayedAsMember = false
 
