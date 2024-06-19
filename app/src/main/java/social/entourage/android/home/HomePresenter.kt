@@ -21,6 +21,7 @@ class HomePresenter: ViewModel() {
     var getSummarySuccess = MutableLiveData<Boolean>()
     var summary = MutableLiveData<Summary>()
     var pedagogicalContent = MutableLiveData<MutableList<Pedago>>()
+    var pedagogicalInitialContent = MutableLiveData<MutableList<Pedago>>()
     var pedagolSingle = MutableLiveData<Pedago>()
 
     var unreadMessages = MutableLiveData<UnreadMessages?>()
@@ -148,6 +149,26 @@ class HomePresenter: ViewModel() {
                 }
             })
     }
+
+    fun getInitialPedagogicalResources() {
+        EntourageApplication.get().apiModule.homeRequest
+            .getInitialPedagogicalResources(true)
+            .enqueue(object : Callback<PedagogicResponse> {
+                override fun onResponse(
+                    call: Call<PedagogicResponse>,
+                    response: Response<PedagogicResponse>
+                ) {
+                    if (response.isSuccessful) {
+                        pedagogicalInitialContent.value = response.body()?.pedago
+                    }
+                }
+
+                override fun onFailure(call: Call<PedagogicResponse>, t: Throwable) {
+                    getSummarySuccess.value = false
+                }
+            })
+    }
+
 
 
 

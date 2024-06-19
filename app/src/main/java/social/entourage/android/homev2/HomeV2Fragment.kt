@@ -72,6 +72,7 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
     private val userPresenter: UserPresenter by lazy { UserPresenter() }
     private lateinit var homeHelpAdapter:HomeHelpAdapter
     private var homePedagoAdapter:HomePedagoAdapter? = null
+    private var homeInitialPedagoAdapter:HomeInitialPedagoAdapter? = null
     private var pagegroup = 0
     private var pageEvent = 0
     private var nbOfItemForHozrizontalList = 10
@@ -119,6 +120,17 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
                 }
             }
         })
+        homeInitialPedagoAdapter= HomeInitialPedagoAdapter(object : OnItemClick {
+            override fun onItemClick(pedagogicalContent: Pedago) {
+                if (pedagogicalContent.html != null && pedagogicalContent.id != null) {
+                    val intent = Intent(requireActivity(), PedagoDetailActivity::class.java)
+                    intent.putExtra(Const.ID, pedagogicalContent.id)
+                    //intent.putExtra(Const.HTML_CONTENT, pedagogicalContent.html)
+                    requireActivity().startActivity(intent)
+                }
+            }
+        })
+
         AnalyticsEvents.logEvent(AnalyticsEvents.View__Home)
         setRecyclerViews()
         setSeeAllButtons()
@@ -217,6 +229,7 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
             homePresenter.getMyGroups(pagegroup,nbOfItemForHozrizontalList,meId)
             homePresenter.getAllEvents(pageEvent,nbOfItemForHozrizontalList,currentFilters.travel_distance(),currentFilters.latitude(),currentFilters.longitude(),"future")
             homePresenter.getPedagogicalResources()
+            homePresenter.getInitialPedagogicalResources()
             homePresenter.getNotificationsCount()
             userPresenter.getUser(meId)
         }
@@ -295,6 +308,12 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
         val settingPedagolayoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         binding.rvHomePedago.adapter = homePedagoAdapter
         binding.rvHomePedago.layoutManager = settingPedagolayoutManager
+
+        //Initial Pedago RV
+        binding.rvHomeSensibilisation.adapter = homeInitialPedagoAdapter
+        binding.rvHomeSensibilisation.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        binding.rvHomeSensibilisation.setPadding(offsetInPixels, 0, 0, 0)
+
         //Help RV
         val settingHelplayoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         binding.rvHomeHelp.adapter = homeHelpAdapter
@@ -339,6 +358,7 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
         homePresenter.getAllMyGroups.observe(viewLifecycleOwner,::handleGroup)
         homePresenter.getAllActions.observe(viewLifecycleOwner,::handleAction)
         homePresenter.pedagogicalContent.observe(viewLifecycleOwner,::handlePedago)
+        homePresenter.pedagogicalInitialContent.observe(viewLifecycleOwner,::handleInitialPedago)
         homePresenter.notifsCount.observe(requireActivity(), ::updateNotifsCount)
         actionsPresenter.unreadMessages.observe(requireActivity(), ::updateUnreadCount)
     }
@@ -430,6 +450,24 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
             checkSumEventAction()
         }
         this.homeActionAdapter.resetData(allAction)
+
+    }
+
+    fun handleInitialPedago(allPedago: MutableList<Pedago>?){
+        if(allPedago == null) {
+            return
+        }
+        doTotalchecksumToDisplayHomeFirstTime()
+        if(allPedago.size > 0 ){
+            binding.rvHomeSensibilisation.visibility = View.VISIBLE
+            binding.homeSubtitleSensibilisation.visibility = View.VISIBLE
+            binding.homeTitleSensibilisation.visibility = View.VISIBLE
+        }else{
+            binding.rvHomeSensibilisation.visibility = View.GONE
+            binding.homeSubtitleSensibilisation.visibility = View.GONE
+            binding.homeTitleSensibilisation.visibility = View.GONE
+        }
+        this.homeInitialPedagoAdapter?.resetData(allPedago)
 
     }
     fun handlePedago(allPedago: MutableList<Pedago>?){

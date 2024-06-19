@@ -2563,6 +2563,9 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="home_v2_help_title_two">Comment créer un événement ?</string>
     <string name="home_v2_help_title_three">Une question ?\nContactez %s</string>
 
+    <string name="home_v2_title_sensibilisation">Se sensibiliser</string>
+    <string name="home_v2_subtitle_sensibilisation">Quelques suggestions de lecture pour commencer</string>
+
     <string name="home_v2_pedag_item_lenght_title">"%d min de lecture</string>
 
     <string name="home_v2_hz_item_title">"Tiens, ça semble un peu calme par ici…</string>
