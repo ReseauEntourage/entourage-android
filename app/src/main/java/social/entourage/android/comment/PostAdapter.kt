@@ -162,6 +162,7 @@ class PostAdapter(
                     val member = memberList?.find { it.id.toInt() == post.user?.id?.toInt() }
 
                     var tagsString = ""
+
                     if (member?.isAdmin() == true) {
                         tagsString += context.getString(R.string.admin) + " • "
                     } else if (member?.isAmbassador() == true) {
@@ -757,8 +758,8 @@ class PostAdapter(
 
                         val _post = postsList[position]
                         var tagsString = ""
-                        if (_post.user?.communityRoles?.isNotEmpty() == true) {
-                            _post.user?.communityRoles?.let { roles ->
+                        if (_post.user?.roles?.isNotEmpty() == true) {
+                            _post.user?.roles?.let { roles ->
                                 if (roles.isNotEmpty()) {
                                     val role = roles[0]
                                     tagsString += role
