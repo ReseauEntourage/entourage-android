@@ -195,7 +195,11 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
         }
         CommunicationHandler.resetValues()
     }
-
+    private fun setMarginTop(view: View, marginTop: Int) {
+        val layoutParams = view.layoutParams as ViewGroup.MarginLayoutParams
+        layoutParams.topMargin = marginTop
+        view.layoutParams = layoutParams
+    }
     /*TODO remove this code if really not needed
     fun noAdressPopFillAdress(){
         if(!locationPopupHasPop){
@@ -462,10 +466,14 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
             binding.rvHomeSensibilisation.visibility = View.VISIBLE
             binding.homeSubtitleSensibilisation.visibility = View.VISIBLE
             binding.homeTitleSensibilisation.visibility = View.VISIBLE
+            setMarginTop(binding.homeTitleAction, 16)
+
         }else{
             binding.rvHomeSensibilisation.visibility = View.GONE
             binding.homeSubtitleSensibilisation.visibility = View.GONE
             binding.homeTitleSensibilisation.visibility = View.GONE
+            setMarginTop(binding.homeTitleAction, 0)
+
         }
         this.homeInitialPedagoAdapter?.resetData(allPedago)
 
