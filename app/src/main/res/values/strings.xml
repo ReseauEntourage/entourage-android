@@ -2767,6 +2767,13 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="notif_ask_page_btn_main">Activer les notifications</string>
     <string name="notif_ask_page_btn_secondary">Pas maintenant</string>
 
+    <string name="main_filter_title">Filtres</string>
+    <string name="main_filter_btn_validate">Appliquer les filtres</string>
+    <string name="main_filter_btn_reinit">Réinitialiser</string>
+    <string name="main_filter_subtitle_group_event">Par thématique</string>
+    <string name="main_filter_subtitle_action">Par catégorie</string>
+    <string name="main_filter_title_location">Par localisation</string>
+    <string name="main_filter_title_radius">Dans un rayon de</string>
 
 
 
