@@ -44,7 +44,8 @@
                 android:paddingHorizontal="4dp"
                 android:paddingVertical="6dp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintTop_toTopOf="parent"
+                android:visibility="gone">
 
                 <ImageView
                     android:id="@+id/imageView26"

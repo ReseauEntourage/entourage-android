@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,24 +26,31 @@ import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.px
 import java.text.SimpleDateFormat
 
-class AllEventAdapter(var userId: Int?, var context:Context) :
+class AllEventAdapter(var userId: Int?, var context: Context) :
     RecyclerView.Adapter<AllEventAdapter.EventViewHolder>() {
 
     private val TYPE_EVENT = 1
-    var events:MutableList<Events> = mutableListOf()
+    var events: MutableList<Events> = mutableListOf()
+
     override fun getItemCount(): Int {
         return events.size // 2 pour les en-têtes
     }
 
-    fun resetData(events:MutableList<Events>){
+    fun resetData(events: MutableList<Events>) {
+        this.events.clear()
         this.events.addAll(events)
         notifyDataSetChanged()
-
     }
 
-    fun clearList(){
+    fun clearList() {
         this.events.clear()
         notifyDataSetChanged()
+    }
+
+    fun addData(newEvents: List<Events>) {
+        val startPosition = events.size
+        events.addAll(newEvents)
+        notifyItemRangeInserted(startPosition, newEvents.size)
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -52,12 +58,12 @@ class AllEventAdapter(var userId: Int?, var context:Context) :
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EventViewHolder {
-         val binding = NewEventItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = NewEventItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return EventViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: EventViewHolder, position: Int) {
-        if(position < events.size){
+        if (position < events.size) {
             val event = events[position]
             holder.binding.layout.setOnClickListener { view ->
                 EventsFragment.isFromDetails = true
@@ -84,22 +90,19 @@ class AllEventAdapter(var userId: Int?, var context:Context) :
             holder.binding.location.text = event.metadata?.displayAddress
             holder.binding.participants.text = event.membersCount.toString()
 
-            if(event.author?.communityRoles != null) {
-                Log.wtf("wtf", "roles " + event.author?.communityRoles.toString())
-                Log.wtf("wtf", "roles "+ event.author?.communityRoles?.contains("Équipe Entourage"))
-                Log.wtf("wtf", "roles " + event.author?.communityRoles?.contains("Entourage"))
-                if(event.author?.communityRoles?.contains("Équipe Entourage") == true || event.author?.communityRoles?.contains("Ambassadeur") == true){
+            if (event.author?.communityRoles != null) {
+                if (event.author?.communityRoles?.contains("Équipe Entourage") == true || event.author?.communityRoles?.contains("Ambassadeur") == true) {
                     holder.binding.ivEntourageLogo.visibility = View.VISIBLE
-                }else{
+                } else {
                     holder.binding.ivEntourageLogo.visibility = View.GONE
                 }
-            }else{
+            } else {
                 holder.binding.ivEntourageLogo.visibility = View.GONE
             }
 
-            if(event.member){
+            if (event.member) {
                 holder.binding.tvSubscribed.visibility = View.VISIBLE
-            }else{
+            } else {
                 holder.binding.tvSubscribed.visibility = View.GONE
             }
 
@@ -135,25 +138,29 @@ class AllEventAdapter(var userId: Int?, var context:Context) :
             holder.binding.eventName.setTextColor(
                 ContextCompat.getColor(
                     holder.binding.root.context,
-                    if (event.status == Status.CLOSED) R.color.grey else R.color.black)
+                    if (event.status == Status.CLOSED) R.color.grey else R.color.black
+                )
             )
 
-            if(event.calculateIfEventPassed()){
+            if (event.calculateIfEventPassed()) {
                 holder.binding.eventName.setTextColor(
                     ContextCompat.getColor(
                         holder.binding.root.context,
-                        R.color.grey)
+                        R.color.grey
+                    )
                 )
                 holder.binding.blackLayout.visibility = View.VISIBLE
-            }else{
+            } else {
                 holder.binding.eventName.setTextColor(
                     ContextCompat.getColor(
                         holder.binding.root.context,
-                        R.color.black)
+                        R.color.black
+                    )
                 )
                 holder.binding.blackLayout.visibility = View.GONE
             }
         }
     }
+
     class EventViewHolder(val binding: NewEventItemBinding) : RecyclerView.ViewHolder(binding.root)
 }

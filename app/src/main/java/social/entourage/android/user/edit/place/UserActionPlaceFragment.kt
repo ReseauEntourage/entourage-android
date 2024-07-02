@@ -2,6 +2,7 @@ package social.entourage.android.user.edit.place
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Intent
 import android.location.Geocoder
 import android.location.Location
@@ -16,8 +17,12 @@ import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
-import com.google.android.libraries.places.compat.ui.PlaceAutocomplete
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.libraries.places.api.Places
+import com.google.android.libraries.places.api.model.Place
+import com.google.android.libraries.places.widget.Autocomplete
 import com.google.android.libraries.places.widget.AutocompleteActivity
+import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
 import social.entourage.android.R
 import social.entourage.android.RefreshController
 import social.entourage.android.api.model.User
@@ -27,13 +32,13 @@ import social.entourage.android.base.location.LocationUtils
 import social.entourage.android.databinding.FragmentSelectPlaceBinding
 import timber.log.Timber
 import java.io.IOException
-import java.util.*
+import java.util.Locale
 
 open class UserActionPlaceFragment : BaseDialogFragment() {
     private var _binding: FragmentSelectPlaceBinding? = null
     val binding: FragmentSelectPlaceBinding get() = _binding!!
 
-    //Location
+    // Location
     private var mFusedLocationClient: FusedLocationProviderClient? = null
     private val mLocationCallback = object : LocationCallback() {
         override fun onLocationResult(locationResult: LocationResult) {
@@ -54,11 +59,9 @@ open class UserActionPlaceFragment : BaseDialogFragment() {
         registerForActivityResult(
             ActivityResultContracts.RequestMultiplePermissions()
         ) { permissions ->
-            if(permissions.entries.any {
-                    it.value == true
-                })  {
-                    RefreshController.shouldRefreshLocationPermission = true
-                    startRequestLocation()
+            if (permissions.entries.any { it.value }) {
+                RefreshController.shouldRefreshLocationPermission = true
+                startRequestLocation()
             }
         }
 
@@ -74,7 +77,8 @@ open class UserActionPlaceFragment : BaseDialogFragment() {
             isSecondaryAddress = it.getBoolean(ARG_2ND)
         }
 
-        //mFusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
+        // Initialize Places.
+        Places.initialize(requireContext(), getString(R.string.google_api_key))
     }
 
     override fun onCreateView(
@@ -100,24 +104,24 @@ open class UserActionPlaceFragment : BaseDialogFragment() {
         super.onActivityResult(requestCode, resultCode, intent)
         if (requestCode == REQUEST_LOCATION_RETURN) {
             when (resultCode) {
-                AutocompleteActivity.RESULT_OK -> {
+                Activity.RESULT_OK -> {
                     if (this.activity == null) return
-                    val place = PlaceAutocomplete.getPlace(this.activity, intent)
+                    val place = intent?.let { Autocomplete.getPlaceFromIntent(it) }
                     if (place == null || place.address == null) return
                     var address = place.address.toString()
                     val lastCommaIndex = address.lastIndexOf(',')
                     if (lastCommaIndex > 0) {
-                        //remove the last part, which is the country
+                        // remove the last part, which is the country
                         address = address.substring(0, lastCommaIndex)
                     }
                     updateFromPlace(place.id, address, place.latLng)
                 }
                 AutocompleteActivity.RESULT_ERROR -> {
                     if (this.activity == null) return
-                    updateFromPlace(null, null,null)
+                    updateFromPlace(null, null, null)
                 }
-                AutocompleteActivity.RESULT_CANCELED -> {
-                    updateFromPlace(null, null,null)
+                Activity.RESULT_CANCELED -> {
+                    updateFromPlace(null, null, null)
                 }
             }
         }
@@ -137,7 +141,6 @@ open class UserActionPlaceFragment : BaseDialogFragment() {
             onSearchCalled()
             mFusedLocationClient?.removeLocationUpdates(mLocationCallback)
             binding.uiOnboardBtLocation.visibility = View.VISIBLE
-
         }
 
         if (userAddress != null) {
@@ -150,8 +153,8 @@ open class UserActionPlaceFragment : BaseDialogFragment() {
 
     open fun updateCallback() {
         userAddress = temporaryLocation?.let { tempLocation ->
-                User.Address(tempLocation.latitude, tempLocation.longitude, temporaryAddressName)
-            } ?: temporaryAddressPlace
+            User.Address(tempLocation.latitude, tempLocation.longitude, temporaryAddressName)
+        } ?: temporaryAddressPlace
     }
 
     //**********//**********//**********
@@ -173,27 +176,15 @@ open class UserActionPlaceFragment : BaseDialogFragment() {
     @SuppressLint("MissingPermission")
     protected fun startRequestLocation() {
         if (LocationUtils.isLocationPermissionGranted()) {
-            //if(mFusedLocationClient==null) {
-                binding.uiOnboardPlaceTvLocation.text = ""
-                binding.uiOnboardPlaceTvLocation.hint =
-                    getString(R.string.onboard_place_getting_current_location)
-                mFusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
-                mFusedLocationClient?.requestLocationUpdates(
-                    LocationProvider.createLocationRequest(),
-                    mLocationCallback,
-                    null
-                )
-            /* else {
-                if(mFusedLocationClient?.lastLocation?.isComplete == false) {
-                    Toast.makeText(requireActivity(), "...", Toast.LENGTH_LONG).show()
-                    Thread.sleep(15000)
-                }
-                if(mFusedLocationClient?.lastLocation?.isComplete == true) {
-                    updateLocationText(mFusedLocationClient?.lastLocation?.result)
-                } else {
-                    Toast.makeText(requireActivity(), "En attente de localisation", Toast.LENGTH_LONG).show()
-                }
-            //}*/
+            binding.uiOnboardPlaceTvLocation.text = ""
+            binding.uiOnboardPlaceTvLocation.hint =
+                getString(R.string.onboard_place_getting_current_location)
+            mFusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
+            mFusedLocationClient?.requestLocationUpdates(
+                LocationProvider.createLocationRequest(),
+                mLocationCallback,
+                null
+            )
         } else {
             Toast.makeText(requireActivity(), "Activez la localisation", Toast.LENGTH_LONG).show()
         }
@@ -203,7 +194,7 @@ open class UserActionPlaceFragment : BaseDialogFragment() {
         binding.uiOnboardPlaceTvLocation.text = ""
         binding.uiOnboardPlaceTvLocation.hint = getString(R.string.onboard_place_placeholder)
         lastLocation?.let {
-            activity?.let{ activity ->
+            activity?.let { activity ->
                 try {
                     temporaryLocation = lastLocation
                     temporaryAddressPlace = null
@@ -235,12 +226,13 @@ open class UserActionPlaceFragment : BaseDialogFragment() {
     //**********//**********//**********
 
     open fun onSearchCalled() {
-        val intent = PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_OVERLAY)
+        val fields = listOf(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG, Place.Field.ADDRESS)
+        val intent = Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY, fields)
             .build(requireActivity())
         startActivityForResult(intent, REQUEST_LOCATION_RETURN)
     }
 
-    private fun updateFromPlace(placeId: String?, addressName: String?, latLng: com.google.android.gms.maps.model.LatLng?) {
+    private fun updateFromPlace(placeId: String?, addressName: String?, latLng: LatLng?) {
         temporaryLocation = null
         if (placeId != null && addressName != null) {
             temporaryAddressPlace = User.Address(placeId)

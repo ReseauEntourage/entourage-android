@@ -21,6 +21,7 @@
     <string name="edit">Modifier</string>
     <string name="activate">Activer</string>
     <string name="view">Voir</string>
+    <string name="google_api_key">AIzaSyBwBr8Zro0P1GJDeI4-VPOF3QpVg91q3uk</string>
 
 
     <string name="network_error">Vérifiez votre connexion\net réessayez plus tard</string>
@@ -2774,6 +2775,17 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="main_filter_subtitle_action">Par catégorie</string>
     <string name="main_filter_title_location">Par localisation</string>
     <string name="main_filter_title_radius">Dans un rayon de</string>
+    <string name="sharing_time_title">Temps de partage</string>
+    <string name="sharing_time_subtitle">café, activité...</string>
+    <string name="services_title">Service</string>
+    <string name="services_subtitle">lessive, impression de documents...</string>
+    <string name="clothes_title">Vêtement</string>
+    <string name="clothes_subtitle">chaussures, manteau...</string>
+    <string name="equipment_title">Équipement</string>
+    <string name="equipment_subtitle">téléphone, duvet...</string>
+    <string name="hygiene_title">Produit d’hygiène</string>
+    <string name="hygiene_subtitle">savon, protection hygiénique, couches...</string>
+
 
 
 

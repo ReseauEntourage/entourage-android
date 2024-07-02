@@ -23,6 +23,7 @@ import social.entourage.android.databinding.NewFragmentDiscoverEventsListBinding
 import social.entourage.android.events.EventFiltersActivity
 import social.entourage.android.events.EventsPresenter
 import social.entourage.android.homev2.HomeEventAdapter
+import social.entourage.android.main_filter.MainFilterActivity
 import social.entourage.android.tools.log.AnalyticsEvents
 
 const val EVENTS_PER_PAGE = 20
@@ -39,23 +40,25 @@ class DiscoverEventsListFragment : Fragment() {
     private var page: Int = 0
     private var pageMyEvent: Int = 0
     private var currentFilters = EventActionLocationFilters()
-    private var activityResultLauncher:ActivityResultLauncher<Intent>? = null
+    private var activityResultLauncher: ActivityResultLauncher<Intent>? = null
 
     private var isFromFilters = false
     private var isLoading = false
+    private var isFirstResumeWithFilters = true
+    private var lastFiltersHash = 0
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         activityResultLauncher = registerForActivityResult(
-            ActivityResultContracts.StartActivityForResult())
-            { result ->
-                val filters = result.data?.getSerializableExtra(EventFiltersActivity.FILTERS) as? EventActionLocationFilters
-                filters?.let {
-                    this.currentFilters = filters
-                    eventsPresenter.tellParentFragmentToupdateLocation(this.currentFilters)
-                    updateFilters()
-                }
+            ActivityResultContracts.StartActivityForResult()
+        ) { result ->
+            val filters = result.data?.getSerializableExtra(EventFiltersActivity.FILTERS) as? EventActionLocationFilters
+            filters?.let {
+                this.currentFilters = filters
+                eventsPresenter.tellParentFragmentToupdateLocation(this.currentFilters)
+                updateFilters()
             }
+        }
     }
 
     override fun onCreateView(
@@ -66,17 +69,22 @@ class DiscoverEventsListFragment : Fragment() {
         return binding.root
     }
 
-
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         eventsPresenter = ViewModelProvider(requireActivity()).get(EventsPresenter::class.java)
         myId = EntourageApplication.me(activity)?.id
-        eventsAdapter = AllEventAdapter(myId,requireContext())
+        eventsAdapter = AllEventAdapter(myId, requireContext())
         myeventsAdapter = HomeEventAdapter(requireContext())
+
+        // Observers for events
         eventsPresenter.getAllEvents.observe(viewLifecycleOwner, ::handleResponseGetEvents)
+        eventsPresenter.getFilteredEvents.observe(viewLifecycleOwner, ::handleResponseGetEvents)
+
+        // Observers for my events
+        eventsPresenter.getAllMyEvents.observe(viewLifecycleOwner, ::handleResponseGetMYEvents)
+        eventsPresenter.getFilteredMyEvents.observe(viewLifecycleOwner, ::handleResponseGetMYEvents)
+
         eventsPresenter.hasChangedFilter.observe(viewLifecycleOwner, ::handleFilterChange)
-        eventsPresenter.getAllMyEvents.observe(viewLifecycleOwner,::handleResponseGetMYEvents)
         initializeEvents()
         setRVScrollListener()
         handleSwipeRefresh()
@@ -85,16 +93,39 @@ class DiscoverEventsListFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
+        if (MainFilterActivity.savedInterests.size > 0) {
+            binding.cardFilterNumber.visibility = View.VISIBLE
+            binding.tvNumberOfFilter.text = MainFilterActivity.savedInterests.size.toString()
+        } else {
+            binding.cardFilterNumber.visibility = View.GONE
+        }
+
         AnalyticsEvents.logEvent(AnalyticsEvents.View__Event__List)
 
+        val currentFiltersHash = currentFilters.hashCode()
+        if (currentFiltersHash != lastFiltersHash) {
+            isFirstResumeWithFilters = true
+            lastFiltersHash = currentFiltersHash
+        }
 
+        if (isFirstResumeWithFilters) {
+            isFirstResumeWithFilters = false
+            if (MainFilterActivity.savedInterests.isNotEmpty()) {
+                applyFilters()
+            }
+        }
     }
 
-    fun initView(){
+    fun initView() {
         isLoading = false
         binding.progressBar.visibility = View.VISIBLE
         eventsAdapter.clearList()
         myeventsAdapter.clearList()
+        binding.layoutFilter.setOnClickListener {
+            isFirstResumeWithFilters = true
+            val intent = Intent(activity, MainFilterActivity::class.java)
+            startActivity(intent)
+        }
         eventsPresenter.isLastPage = false
         eventsPresenter.isLastPageMyEvent = false
         page = 0
@@ -103,41 +134,39 @@ class DiscoverEventsListFragment : Fragment() {
         loadMyEvents()
     }
 
-
-
     private fun handleResponseGetEvents(allEvents: MutableList<Events>?) {
-        if(allEvents != null && allEvents.size > 0){
-            eventsAdapter.resetData(allEvents)
+        if (allEvents != null && allEvents.isNotEmpty()) {
+            if (isFromFilters) {
+                eventsAdapter.resetData(allEvents)
+                isFromFilters = false
+            } else {
+                eventsAdapter.addData(allEvents)
+            }
             updateView(false)
-        }else{
+        } else {
             updateView(true)
-        }
-        if (isFromFilters) {
-            binding.recyclerView.layoutManager?.scrollToPosition(0)
-            isFromFilters = false
         }
         isLoading = false
         binding.progressBar.visibility = View.GONE
-
     }
 
-
     private fun handleResponseGetMYEvents(myEvents: MutableList<Events>?) {
-        if(myEvents != null && myEvents.size > 0 ) {
-            myeventsAdapter.resetData(myEvents!!)
+        if (myEvents != null && myEvents.isNotEmpty()) {
+            myeventsAdapter.addData(myEvents)
             binding.rvMyEvent.visibility = View.VISIBLE
             binding.separator.visibility = View.VISIBLE
             binding.titleSectionHeaderMyEvent.visibility = View.VISIBLE
-        }else{
+        } else {
             binding.rvMyEvent.visibility = View.GONE
             binding.separator.visibility = View.GONE
             binding.titleSectionHeaderMyEvent.visibility = View.GONE
         }
-
+        isLoading = false
+        binding.progressBar.visibility = View.GONE
     }
 
     fun setRVScrollListener() {
-        binding.nestedScrollView.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { v, _, scrollY, _, oldScrollY ->
+        binding.nestedScrollView.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { _, _, scrollY, _, oldScrollY ->
             if (scrollY > oldScrollY) {
                 eventsPresenter.tellParentFragmentToMoveButton(false)
             } else if (scrollY < oldScrollY) {
@@ -162,10 +191,10 @@ class DiscoverEventsListFragment : Fragment() {
         })
     }
 
-    private fun handleFilterChange(hasChangedFilter:Boolean){
-        if(hasChangedFilter){
+    private fun handleFilterChange(hasChangedFilter: Boolean) {
+        if (hasChangedFilter) {
             val intent = Intent(context, EventFiltersActivity::class.java)
-            intent.putExtra(EventFiltersActivity.FILTERS,currentFilters)
+            intent.putExtra(EventFiltersActivity.FILTERS, currentFilters)
             activityResultLauncher?.launch(intent)
             eventsPresenter.hasChangedFilter()
         }
@@ -178,16 +207,14 @@ class DiscoverEventsListFragment : Fragment() {
 
     private fun initializeEvents() {
         binding.recyclerView.apply {
-            // Pagination
             layoutManager = LinearLayoutManager(context)
             adapter = eventsAdapter
             isNestedScrollingEnabled = false
         }
         binding.rvMyEvent.apply {
-            // Pagination
             val settinglayoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             layoutManager = settinglayoutManager
-            val offsetInPixels = resources.getDimensionPixelSize(R.dimen.horizontal_offset) // Define this in your resources
+            val offsetInPixels = resources.getDimensionPixelSize(R.dimen.horizontal_offset)
             setPadding(offsetInPixels, 0, 0, 0)
             clipToPadding = false
             adapter = myeventsAdapter
@@ -197,24 +224,74 @@ class DiscoverEventsListFragment : Fragment() {
     private fun updateFilters() {
         isFromFilters = true
         page = 0
+        applyFilters()
+    }
+
+    private fun applyFilters() {
+        eventsAdapter.clearList()
+        myeventsAdapter.clearList()
+        page = 0
+        pageMyEvent = 0
+        eventsPresenter.isLastPage = false
+        eventsPresenter.isLastPageMyEvent = false
+        loadEvents()
+        loadMyEvents()
     }
 
     private fun loadEvents() {
-        if(!eventsPresenter.isLastPage && !isLoading){
+        page++
+        if (!eventsPresenter.isLastPage && !isLoading) {
             isLoading = true
-            page++
-            eventsPresenter.getAllEvents(page, EVENTS_PER_PAGE, currentFilters.travel_distance(),currentFilters.latitude(),currentFilters.longitude(),"future")
+            if (MainFilterActivity.savedInterests.isEmpty() &&
+                MainFilterActivity.savedRadius == 0 &&
+                MainFilterActivity.savedLocation == null) {
+                // Si aucun filtre n'est sélectionné, utiliser getAllEvents
+                eventsPresenter.getAllEvents(
+                    page, EVENTS_PER_PAGE,
+                    currentFilters.travel_distance(), currentFilters.latitude(), currentFilters.longitude(), "future"
+                )
+            } else {
+                // Sinon, utiliser getAllEventsWithFilter avec les filtres
+                val radius = MainFilterActivity.savedRadius.takeIf { it != 0 } ?: currentFilters.travel_distance()
+                val latitude = MainFilterActivity.savedLocation?.lat ?: currentFilters.latitude()
+                val longitude = MainFilterActivity.savedLocation?.lng ?: currentFilters.longitude()
+                eventsPresenter.getAllEventsWithFilter(
+                    page, EVENTS_PER_PAGE,
+                    MainFilterActivity.savedInterests.joinToString(","),
+                    radius, latitude, longitude, "future"
+                )
+            }
         }
     }
 
     private fun loadMyEvents() {
-        binding.swipeRefresh.isRefreshing = false
         pageMyEvent++
+        binding.swipeRefresh.isRefreshing = false
         myId = EntourageApplication.me(activity)?.id
-        if(myId != null){
-            eventsPresenter.getMyEvents(myId!!, pageMyEvent, EVENTS_PER_PAGE)
+        if (myId != null) {
+            if (MainFilterActivity.savedInterests.isEmpty() &&
+                MainFilterActivity.savedRadius == 0 &&
+                MainFilterActivity.savedLocation == null) {
+                // Si aucun filtre n'est sélectionné, utiliser getMyEvents
+                eventsPresenter.getMyEvents(
+                    myId!!,
+                    pageMyEvent, EVENTS_PER_PAGE
+                )
+            } else {
+                // Sinon, utiliser getMyEventsWithFilter avec les filtres
+                val radius = MainFilterActivity.savedRadius.takeIf { it != 0 } ?: currentFilters.travel_distance()
+                val latitude = MainFilterActivity.savedLocation?.lat ?: currentFilters.latitude()
+                val longitude = MainFilterActivity.savedLocation?.lng ?: currentFilters.longitude()
+                eventsPresenter.getMyEventsWithFilter(
+                    myId!!,
+                    pageMyEvent, EVENTS_PER_PAGE,
+                    MainFilterActivity.savedInterests.joinToString(","),
+                    radius, latitude, longitude, "future"
+                )
+            }
         }
     }
+
 
     private fun handleSwipeRefresh() {
         binding.swipeRefresh.setOnRefreshListener {

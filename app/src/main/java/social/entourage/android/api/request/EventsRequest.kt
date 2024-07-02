@@ -27,11 +27,31 @@ interface EventsRequest {
         @Query("page") page: Int,
         @Query("per") per: Int
     ): Call<EventsListWrapper>
-
+    @GET("users/{user_id}/outings")
+    fun getMyEventsWithFilter(
+        @Path("user_id") userId: Int,
+        @Query("page") page: Int,
+        @Query("per") per: Int,
+        @Query("interests[]") interests: String,
+        @Query("travel_distance") travelDistance: Int?,
+        @Query("latitude") latitude: Double?,
+        @Query("longitude") longitude: Double?,
+        @Query("period") period: String
+    ): Call<EventsListWrapper>
     @GET("outings")
     fun getAllEvents(
         @Query("page") page: Int,
         @Query("per") per: Int,
+        @Query("travel_distance") travelDistance: Int?,
+        @Query("latitude") latitude: Double?,
+        @Query("longitude") longitude: Double?,
+        @Query("period") period:String
+    ): Call<EventsListWrapper>
+    @GET("outings")
+    fun getAllEventsWithFilter(
+        @Query("page") page: Int,
+        @Query("per") per: Int,
+        @Query("interests[]") interests: String,
         @Query("travel_distance") travelDistance: Int?,
         @Query("latitude") latitude: Double?,
         @Query("longitude") longitude: Double?,

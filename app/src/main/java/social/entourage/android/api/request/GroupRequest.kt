@@ -61,6 +61,28 @@ interface GroupRequest {
     ): Call<GroupsListWrapper>
 
     @GET("neighborhoods")
+    fun getAllGroupswithFilter(
+        @Query("page") page: Int,
+        @Query("per") per: Int,
+        @Query("interests[]") interests: String,
+        @Query("travel_distance") radius: Int,
+        @Query("latitude") latitude: Double?,
+        @Query("longitude") longitude: Double?
+    ): Call<GroupsListWrapper>
+
+
+    @GET("users/{user_id}/neighborhoods")
+    fun getMyGroupswithFilter(
+        @Path("user_id") userId: Int,
+        @Query("page") page: Int,
+        @Query("per") per: Int,
+        @Query("interests[]") interests: String,
+        @Query("travel_distance") radius: Int,
+        @Query("latitude") latitude: Double?,
+        @Query("longitude") longitude: Double?
+    ): Call<GroupsListWrapper>
+
+    @GET("neighborhoods")
     fun getGroupsSearch(
         @Query("q") searchTxt: String,
     ): Call<GroupsListWrapper>

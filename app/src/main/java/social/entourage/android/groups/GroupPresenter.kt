@@ -32,9 +32,11 @@ class GroupPresenter: ViewModel() {
 
     var isGroupCreated = MutableLiveData<Boolean>()
     var getGroup = MutableLiveData<Group>()
+    var getFilteredGroups = MutableLiveData<MutableList<Group>>()
     var getAllGroups = MutableLiveData<MutableList<Group>>()
     var getGroupsSearch = MutableLiveData<MutableList<Group>>()
     var getAllMyGroups = MutableLiveData<MutableList<Group>>()
+    var getFilteredMyGroups = MutableLiveData<MutableList<Group>>()
     var getAllComments = MutableLiveData<MutableList<Post>>()
     var getMembers = MutableLiveData<MutableList<EntourageUser>>()
     var getMembersReact = MutableLiveData<MutableList<EntourageUser>>()
@@ -90,6 +92,8 @@ class GroupPresenter: ViewModel() {
             })
     }
 
+
+
     fun onDiscoverButtonChanged(){
         isChangingPage = !isChangingPage
         this.isPageHaveToChange.postValue(isChangingPage)
@@ -113,6 +117,38 @@ class GroupPresenter: ViewModel() {
                 Log.d("GroupPresenter", "onFailure: $t")
             }
         })
+    }
+
+    fun getAllGroupsWithFilter(page: Int, per: Int, interests: String, radius: Int, latitude: Double?, longitude: Double?) {
+        EntourageApplication.get().apiModule.groupRequest.getAllGroupswithFilter(page, per, interests, radius, latitude, longitude)
+            .enqueue(object : Callback<GroupsListWrapper> {
+                override fun onResponse(call: Call<GroupsListWrapper>, response: Response<GroupsListWrapper>) {
+                    response.body()?.let { allGroupsWrapper ->
+                        if (allGroupsWrapper.allGroups.size < groupPerPage) isLastPage = true
+                        getAllGroups.value = allGroupsWrapper.allGroups
+                    }
+                }
+
+                override fun onFailure(call: Call<GroupsListWrapper>, t: Throwable) {
+                    // Handle failure
+                }
+            })
+    }
+
+    fun getMyGroupsWithFilter(userId: Int, page: Int, per: Int, interests: String, radius: Int, latitude: Double?, longitude: Double?) {
+        EntourageApplication.get().apiModule.groupRequest.getMyGroupswithFilter(userId, page, per, interests, radius, latitude, longitude)
+            .enqueue(object : Callback<GroupsListWrapper> {
+                override fun onResponse(call: Call<GroupsListWrapper>, response: Response<GroupsListWrapper>) {
+                    response.body()?.let { allGroupsWrapper ->
+                        if (allGroupsWrapper.allGroups.size < groupPerPage) isLastPage = true
+                        getAllMyGroups.value = allGroupsWrapper.allGroups
+                    }
+                }
+
+                override fun onFailure(call: Call<GroupsListWrapper>, t: Throwable) {
+                    // Handle failure
+                }
+            })
     }
 
     fun deleteReactToPost(groupId: Int,postId: Int){
@@ -225,6 +261,8 @@ class GroupPresenter: ViewModel() {
                 }
             })
     }
+
+
 
     fun getGroupsSearch(searchTxt: String) {
         EntourageApplication.get().apiModule.groupRequest.getGroupsSearch(searchTxt)

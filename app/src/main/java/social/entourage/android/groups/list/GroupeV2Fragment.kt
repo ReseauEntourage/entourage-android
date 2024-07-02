@@ -3,7 +3,6 @@ package social.entourage.android.groups.list
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,15 +13,15 @@ import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.api.model.Group
 import social.entourage.android.databinding.GroupV2FragmentLayoutBinding
-import social.entourage.android.databinding.NewFragmentGroupsBinding
 import social.entourage.android.groups.GroupPresenter
 import social.entourage.android.groups.create.CreateGroupActivity
 import social.entourage.android.homev2.HomeGroupAdapter
+import social.entourage.android.main_filter.MainFilterActivity
 import social.entourage.android.tools.log.AnalyticsEvents
 
-class GroupeV2Fragment: Fragment() , UpdateGroupInter {
+class GroupeV2Fragment: Fragment(), UpdateGroupInter {
 
-private lateinit var binding: GroupV2FragmentLayoutBinding
+    private lateinit var binding: GroupV2FragmentLayoutBinding
     private lateinit var presenter: GroupPresenter
     private var groupsList: MutableList<Group> = ArrayList()
     private var myGroupsList: MutableList<Group> = ArrayList()
@@ -36,7 +35,8 @@ private lateinit var binding: GroupV2FragmentLayoutBinding
     private var PER_PAGE = 20
     private var addedGroupIds: MutableSet<Int> = mutableSetOf()
     private var addedMyGroupIds: MutableSet<Int> = mutableSetOf()
-
+    private var isFirstResumeWithFilters = true
+    private var lastFiltersHash: Int? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -45,21 +45,26 @@ private lateinit var binding: GroupV2FragmentLayoutBinding
         presenter = ViewModelProvider(requireActivity()).get(GroupPresenter::class.java)
         presenter.getAllGroups.observe(viewLifecycleOwner, ::handleResponseGetGroups)
         presenter.getAllMyGroups.observe(viewLifecycleOwner, ::handleResponseMyGetGroups)
-        adapterGroup = GroupsListAdapter(groupsList, null, FromScreen.DISCOVER, this)
-        adapterMyGroup= HomeGroupAdapter()
+        adapterGroup = GroupsListAdapter(groupsList, myId, FromScreen.DISCOVER, this)
+        adapterMyGroup = HomeGroupAdapter()
         binding.recyclerViewVertical.adapter = adapterGroup
         binding.recyclerViewHorizontal.adapter = adapterMyGroup
-        binding.recyclerViewVertical.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(
+        binding.recyclerViewVertical.layoutManager = LinearLayoutManager(
             activity,
-            androidx.recyclerview.widget.LinearLayoutManager.VERTICAL,
+            LinearLayoutManager.VERTICAL,
             false
         )
+        binding.layoutFilter.setOnClickListener {
+            isFirstResumeWithFilters = true
+            val intent = Intent(activity, MainFilterActivity::class.java)
+            startActivity(intent)
+        }
+
         binding.recyclerViewVertical.isVerticalScrollBarEnabled = false
         binding.recyclerViewHorizontal.apply {
-            // Pagination
-            val settinglayoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-            layoutManager = settinglayoutManager
-            val offsetInPixels = resources.getDimensionPixelSize(R.dimen.horizontal_offset) // Define this in your resources
+            val settingLayoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            layoutManager = settingLayoutManager
+            val offsetInPixels = resources.getDimensionPixelSize(R.dimen.horizontal_offset)
             setPadding(offsetInPixels, 0, 0, 0)
             clipToPadding = false
             isHorizontalScrollBarEnabled = false
@@ -76,7 +81,6 @@ private lateinit var binding: GroupV2FragmentLayoutBinding
         savedInstanceState: Bundle?
     ): View? {
         binding = GroupV2FragmentLayoutBinding.inflate(inflater, container, false)
-
         return binding.root
     }
 
@@ -86,9 +90,42 @@ private lateinit var binding: GroupV2FragmentLayoutBinding
             AnalyticsEvents.VIEW_GROUP_SHOW_DISCOVER
         )
 
+        val currentFiltersHash = getCurrentFiltersHash()
+        if (currentFiltersHash != lastFiltersHash) {
+            isFirstResumeWithFilters = true
+            lastFiltersHash = currentFiltersHash
+        }
+
+        if (MainFilterActivity.savedInterests.size > 0) {
+            binding.cardFilterNumber.visibility = View.VISIBLE
+            binding.tvNumberOfFilter.text = MainFilterActivity.savedInterests.size.toString()
+
+            if (isFirstResumeWithFilters) {
+                isFirstResumeWithFilters = false
+                groupsList.clear()
+                myGroupsList.clear()
+                addedGroupIds.clear()
+                addedMyGroupIds.clear()
+                adapterGroup.notifyDataSetChanged()
+                adapterMyGroup.notifyDataSetChanged()
+                page = 0
+                pageMy = 0
+                applyFilters()
+            } else {
+                loadMoreGroups()
+            }
+        } else {
+            binding.cardFilterNumber.visibility = View.GONE
+        }
     }
 
-    fun initView(){
+    private fun getCurrentFiltersHash(): Int {
+        return (MainFilterActivity.savedInterests.joinToString(",") +
+                MainFilterActivity.savedRadius +
+                MainFilterActivity.savedLocation?.name).hashCode()
+    }
+
+    private fun initView() {
         binding.progressBar.visibility = View.VISIBLE
         groupsList.clear()
         myGroupsList.clear()
@@ -98,7 +135,6 @@ private lateinit var binding: GroupV2FragmentLayoutBinding
         if (myId != null) {
             presenter.getMyGroups(pageMy, 100, myId!!)
         }
-
     }
 
     private fun handleResponseGetGroups(allGroups: MutableList<Group>?) {
@@ -123,14 +159,15 @@ private lateinit var binding: GroupV2FragmentLayoutBinding
 
     private fun checkingSumForEmptyView() {
         checkSum++
-        if(checkSum > 1){
+        if (checkSum > 1) {
             binding.emptyStateLayout.visibility = View.GONE
         }
-        if (groupsList.isEmpty()){
+        if (groupsList.isEmpty()) {
             binding.emptyStateLayout.visibility = View.VISIBLE
         }
         binding.progressBar.visibility = View.GONE
     }
+
     private fun handleCreateGroupButton() {
         binding.createGroup.setOnClickListener {
             AnalyticsEvents.logEvent(
@@ -145,6 +182,7 @@ private lateinit var binding: GroupV2FragmentLayoutBinding
             startActivityForResult(Intent(context, CreateGroupActivity::class.java), 0)
         }
     }
+
     private fun setupScrollViewListener() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             binding.nestedScrollView.setOnScrollChangeListener { _, _, scrollY, _, oldScrollY ->
@@ -152,10 +190,9 @@ private lateinit var binding: GroupV2FragmentLayoutBinding
                 binding.textViewTitleGroupes.textSize = newFontSize
                 handleButtonBehavior(scrollY <= oldScrollY)
 
-                // Vérifier si on a atteint le bas du NestedScrollView
                 if (!binding.nestedScrollView.canScrollVertically(1) && !presenter.isLastPage && !isLoading) {
                     isLoading = true
-                    page++ // Incrémente la page pour la pagination
+                    page++
                     loadMoreGroups()
                 }
             }
@@ -163,21 +200,24 @@ private lateinit var binding: GroupV2FragmentLayoutBinding
     }
 
     private fun loadMoreGroups() {
-        // Ajoute ici la logique pour charger plus de groupes
         binding.progressBar.visibility = View.VISIBLE
-        presenter.getAllGroups(page, PER_PAGE) // PER_PAGE est la quantité de groupes à charger par page
+        if (MainFilterActivity.savedInterests.isNotEmpty()) {
+            applyFilters()
+        } else {
+            presenter.getAllGroups(page, PER_PAGE)
+        }
         isLoading = false
     }
+
     private fun calculateFontSize(scrollY: Int): Float {
-        // Ici, tu peux ajuster la logique de calcul en fonction de tes besoins
-        val minSize = 15f // taille minimale du texte
-        val maxSize = 24f // taille maximale du texte
-        val scrollThreshold = 100 // ajuste cette valeur en fonction du seuil de défilement souhaité
+        val minSize = 15f
+        val maxSize = 24f
+        val scrollThreshold = 100
 
         return if (scrollY > scrollThreshold) minSize else maxSize
     }
 
-    fun handleButtonBehavior(isExtended:Boolean){
+    private fun handleButtonBehavior(isExtended: Boolean) {
         if (isExtended) {
             animateToExtendedState()
         } else {
@@ -187,7 +227,6 @@ private lateinit var binding: GroupV2FragmentLayoutBinding
 
     private fun animateToExtendedState() {
         if (binding.createGroupExpanded.visibility == View.VISIBLE) {
-            // Le bouton est déjà dans l'état étendu
             return
         }
 
@@ -201,7 +240,6 @@ private lateinit var binding: GroupV2FragmentLayoutBinding
 
     private fun animateToRetractedState() {
         if (binding.createGroup.visibility == View.VISIBLE) {
-            // Le bouton est déjà dans l'état rétracté
             return
         }
 
@@ -213,8 +251,20 @@ private lateinit var binding: GroupV2FragmentLayoutBinding
         binding.createGroupExpanded.animate().scaleX(0f).alpha(0f).setDuration(200).start()
     }
 
+    private fun applyFilters() {
+        val interests = MainFilterActivity.savedInterests.joinToString(",")
+        val radius = MainFilterActivity.savedRadius
+        val location = MainFilterActivity.savedLocation
+        val latitude = location?.lat
+        val longitude = location?.lng
+
+        presenter.getAllGroupsWithFilter(page, PER_PAGE, interests, radius, latitude, longitude)
+        myId?.let {
+            presenter.getMyGroupsWithFilter(it, pageMy, 100, interests, radius, latitude, longitude)
+        }
+    }
+
     override fun updateGroup() {
         binding.progressBar.visibility = View.GONE
     }
-
 }

@@ -734,6 +734,10 @@ object AnalyticsEvents {
     const val has_user_activated_notif = "has_user_activated_notif"
     const val has_user_disabled_notif = "has_user_disabled_notif"
 
+    const val notification_settings_page_view = "notification_settings_page_view"
+    const val notification_activate_button_clic = "notification_activate_button_clic"
+    const val notification_deactivate_button_clic = "notification_deactivate_button_clic"
+
 
 
 

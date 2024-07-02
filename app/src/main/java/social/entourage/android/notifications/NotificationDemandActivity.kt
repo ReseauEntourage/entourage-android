@@ -13,6 +13,7 @@ import social.entourage.android.MainActivity
 import social.entourage.android.api.OnboardingAPI
 import social.entourage.android.base.BaseActivity
 import social.entourage.android.databinding.ActivityNotificationDemandBinding
+import social.entourage.android.tools.log.AnalyticsEvents
 
 class NotificationDemandActivity : BaseActivity() {
 
@@ -24,6 +25,7 @@ class NotificationDemandActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityNotificationDemandBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        AnalyticsEvents.logEvent(AnalyticsEvents.notification_settings_page_view)
 
         // Initialize the permission launcher
         initializePermissionLauncher()
@@ -34,10 +36,13 @@ class NotificationDemandActivity : BaseActivity() {
         // Set up click listeners
         binding.buttonStart.setOnClickListener {
             requestNotificationPermission()
+            AnalyticsEvents.logEvent(AnalyticsEvents.notification_activate_button_clic)
+
         }
 
         binding.buttonConfigureLater.setOnClickListener {
             goMain()
+            AnalyticsEvents.logEvent(AnalyticsEvents.notification_deactivate_button_clic)
         }
 
         // Check if notifications are already enabled

@@ -192,6 +192,12 @@
             android:name=".guide.GDSMainActivity"
             android:screenOrientation="portrait" />
 
+        <activity
+            android:name=".main_filter.MainFilterActivity"
+            android:exported="false"
+            />
+
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_api_key" />

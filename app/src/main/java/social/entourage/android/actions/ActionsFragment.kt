@@ -34,6 +34,7 @@ import social.entourage.android.home.CommunicationHandlerBadgeViewModel
 import social.entourage.android.home.UnreadMessages
 import social.entourage.android.api.model.EventActionLocationFilters
 import social.entourage.android.homev2.HomeV2Fragment
+import social.entourage.android.main_filter.MainFilterActivity
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.log.AnalyticsEvents
 import uk.co.markormesher.android_fab.SpeedDialMenuAdapter
@@ -131,6 +132,7 @@ class ActionsFragment : Fragment() {
 
     private fun updateFilters() {
         isFromFilters = true
+
         binding.uiTitleLocationBt.text = currentLocationFilters.getFilterButtonString(requireContext())
 
         if (currentCategoriesFilters.getNumberOfSectionsSelected() > 0) {
@@ -181,6 +183,7 @@ class ActionsFragment : Fragment() {
         handleImageViewAnimation()
         setPage()
 
+
         val presenter = ActionsPresenter()
         presenter.unreadMessages.observe(requireActivity(), ::updateUnreadCount)
         presenter.getUnreadCount()
@@ -191,6 +194,13 @@ class ActionsFragment : Fragment() {
         if (RefreshController.shouldRefreshEventFragment) {
             initializeTab()
             RefreshController.shouldRefreshEventFragment = false
+        }
+        if (MainFilterActivity.savedInterests.size > 0) {
+            binding.cardFilterNumber.visibility = View.VISIBLE
+            binding.tvNumberOfFilter.text = MainFilterActivity.savedInterests.size.toString()
+
+        } else {
+            binding.cardFilterNumber.visibility = View.GONE
         }
     }
 
