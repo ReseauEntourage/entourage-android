@@ -56,7 +56,8 @@ android:background="@drawable/new_profile_header_orange_dark">
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 >
-                <SearchView
+                <EditText
+                    android:id="@+id/searchEditText"
                     android:layout_width="0dp"
                     android:layout_height="50dp"
                     app:layout_constraintTop_toTopOf="parent"
@@ -66,7 +67,10 @@ android:background="@drawable/new_profile_header_orange_dark">
                     android:layout_marginStart="16dp"
                     android:layout_marginEnd="8dp"
                     android:background="@drawable/bg_unselected_filter_main"
-                    />
+                    android:hint="@string/search_hint"
+                    android:padding="10dp"
+                    android:textColor="@android:color/black"
+                    android:imeOptions="actionSearch"/>
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/layout_filter"
                     android:layout_width="wrap_content"

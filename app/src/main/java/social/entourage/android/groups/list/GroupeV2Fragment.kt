@@ -3,6 +3,9 @@ package social.entourage.android.groups.list
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,7 +22,7 @@ import social.entourage.android.homev2.HomeGroupAdapter
 import social.entourage.android.main_filter.MainFilterActivity
 import social.entourage.android.tools.log.AnalyticsEvents
 
-class GroupeV2Fragment: Fragment(), UpdateGroupInter {
+class GroupeV2Fragment : Fragment(), UpdateGroupInter {
 
     private lateinit var binding: GroupV2FragmentLayoutBinding
     private lateinit var presenter: GroupPresenter
@@ -43,8 +46,25 @@ class GroupeV2Fragment: Fragment(), UpdateGroupInter {
         binding = GroupV2FragmentLayoutBinding.bind(view)
         myId = EntourageApplication.me(activity)?.id
         presenter = ViewModelProvider(requireActivity()).get(GroupPresenter::class.java)
-        presenter.getAllGroups.observe(viewLifecycleOwner, ::handleResponseGetGroups)
-        presenter.getAllMyGroups.observe(viewLifecycleOwner, ::handleResponseMyGetGroups)
+
+        // Observer pour les groupes filtrés
+        presenter.getAllGroups.observe(viewLifecycleOwner, { allGroups ->
+            handleResponseGetGroups(allGroups)
+        })
+
+        presenter.getAllMyGroups.observe(viewLifecycleOwner, { allGroups ->
+            handleResponseMyGetGroups(allGroups)
+        })
+
+        // Observer pour les résultats de recherche
+        presenter.getAllGroupSearch.observe(viewLifecycleOwner, { searchGroups ->
+            handleSearchResponseGetGroups(searchGroups)
+        })
+
+        presenter.getMyGroupSearch.observe(viewLifecycleOwner, { searchGroups ->
+            handleSearchResponseMyGetGroups(searchGroups)
+        })
+
         adapterGroup = GroupsListAdapter(groupsList, myId, FromScreen.DISCOVER, this)
         adapterMyGroup = HomeGroupAdapter()
         binding.recyclerViewVertical.adapter = adapterGroup
@@ -71,6 +91,7 @@ class GroupeV2Fragment: Fragment(), UpdateGroupInter {
         }
         handleCreateGroupButton()
         setupScrollViewListener()
+        setupSearchView()
         AnalyticsEvents.logEvent(AnalyticsEvents.VIEW_GROUP_SHOW)
         initView()
     }
@@ -110,6 +131,7 @@ class GroupeV2Fragment: Fragment(), UpdateGroupInter {
                 adapterMyGroup.notifyDataSetChanged()
                 page = 0
                 pageMy = 0
+                presenter.isLastPage = false
                 applyFilters()
             } else {
                 loadMoreGroups()
@@ -157,6 +179,24 @@ class GroupeV2Fragment: Fragment(), UpdateGroupInter {
         checkingSumForEmptyView()
     }
 
+    private fun handleSearchResponseGetGroups(searchGroups: MutableList<Group>?) {
+        searchGroups?.let {
+            groupsList.clear()
+            groupsList.addAll(it)
+            adapterGroup.updateGroupsList(groupsList)
+        }
+        checkingSumForEmptyView()
+    }
+
+    private fun handleSearchResponseMyGetGroups(searchGroups: MutableList<Group>?) {
+        searchGroups?.let {
+            myGroupsList.clear()
+            myGroupsList.addAll(it)
+            adapterMyGroup.resetData(myGroupsList)
+        }
+        checkingSumForEmptyView()
+    }
+
     private fun checkingSumForEmptyView() {
         checkSum++
         if (checkSum > 1) {
@@ -189,7 +229,6 @@ class GroupeV2Fragment: Fragment(), UpdateGroupInter {
                 val newFontSize = calculateFontSize(scrollY)
                 binding.textViewTitleGroupes.textSize = newFontSize
                 handleButtonBehavior(scrollY <= oldScrollY)
-
                 if (!binding.nestedScrollView.canScrollVertically(1) && !presenter.isLastPage && !isLoading) {
                     isLoading = true
                     page++
@@ -261,6 +300,48 @@ class GroupeV2Fragment: Fragment(), UpdateGroupInter {
         presenter.getAllGroupsWithFilter(page, PER_PAGE, interests, radius, latitude, longitude)
         myId?.let {
             presenter.getMyGroupsWithFilter(it, pageMy, 100, interests, radius, latitude, longitude)
+        }
+    }
+
+    private fun setupSearchView() {
+        binding.searchEditText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+            override fun afterTextChanged(s: Editable?) {
+                s?.let {
+                    if (it.isNotEmpty()) {
+                        searchGroups(it.toString())
+                    } else {
+                        resetGroups()
+                    }
+                }
+            }
+        })
+
+        binding.searchEditText.setOnClickListener {
+            binding.searchEditText.text.clear()
+        }
+    }
+
+    private fun searchGroups(query: String) {
+        groupsList.clear()
+        myGroupsList.clear()
+        adapterGroup.notifyDataSetChanged()
+        adapterMyGroup.notifyDataSetChanged()
+        myId?.let {
+            presenter.getMyGroupsSearch(it, query)
+        }
+        presenter.getAllGroupsWithSearchQuery(query)
+    }
+
+    private fun resetGroups() {
+        groupsList.clear()
+        myGroupsList.clear()
+        adapterGroup.notifyDataSetChanged()
+        adapterMyGroup.notifyDataSetChanged()
+        presenter.getAllGroups(page, PER_PAGE)
+        if (myId != null) {
+            presenter.getMyGroups(pageMy, 100, myId!!)
         }
     }
 

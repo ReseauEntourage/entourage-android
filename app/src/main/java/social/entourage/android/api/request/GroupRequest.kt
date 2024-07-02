@@ -198,4 +198,15 @@ interface GroupRequest {
         @Path("post_id") postId: Int,
         @Query("image_size") size:String,
     ): Call<PostWrapper>
+
+    @GET("users/{user_id}/neighborhoods")
+    fun getMyGroupsWithSearchQuery(
+        @Path("user_id") userId: Int,
+        @Query("q") query: String
+    ): Call<GroupsListWrapper>
+
+    @GET("neighborhoods")
+    fun getAllGroupsWithSearchQuery(
+        @Query("q") query: String
+    ): Call<GroupsListWrapper>
 }
