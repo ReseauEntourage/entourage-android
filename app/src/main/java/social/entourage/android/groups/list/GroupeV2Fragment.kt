@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.api.model.Group
@@ -27,10 +28,12 @@ class GroupeV2Fragment : Fragment(), UpdateGroupInter {
     private lateinit var presenter: GroupPresenter
     private var groupsList: MutableList<Group> = ArrayList()
     private var myGroupsList: MutableList<Group> = ArrayList()
+    private var searchResultsList: MutableList<Group> = ArrayList()
     private var myId: Int? = null
     private var page: Int = 0
     private var pageMy: Int = 0
     private lateinit var adapterGroup: GroupsListAdapter
+    private lateinit var adapterGroupSearch: GroupsListAdapter
     private lateinit var adapterMyGroup: HomeGroupAdapter
     private var checkSum = 0
     private var isLoading = false
@@ -39,8 +42,6 @@ class GroupeV2Fragment : Fragment(), UpdateGroupInter {
     private var addedMyGroupIds: MutableSet<Int> = mutableSetOf()
     private var isFirstResumeWithFilters = true
     private var lastFiltersHash: Int? = null
-    private var isSearching = false
-    private var currentSearchQuery: String? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -58,19 +59,22 @@ class GroupeV2Fragment : Fragment(), UpdateGroupInter {
         })
 
         // Observer pour les résultats de recherche
-        presenter.getAllGroupSearch.observe(viewLifecycleOwner, { searchGroups ->
-            handleSearchResponseGetGroups(searchGroups)
-        })
-
-        presenter.getMyGroupSearch.observe(viewLifecycleOwner, { searchGroups ->
-            handleSearchResponseMyGetGroups(searchGroups)
+        presenter.groupSearch.observe(viewLifecycleOwner, { searchResults ->
+            updateSearchResults(searchResults)
         })
 
         adapterGroup = GroupsListAdapter(groupsList, myId, FromScreen.DISCOVER, this)
+        adapterGroupSearch = GroupsListAdapter(searchResultsList, myId, FromScreen.DISCOVER, this)
         adapterMyGroup = HomeGroupAdapter()
         binding.recyclerViewVertical.adapter = adapterGroup
+        binding.rvSearch.adapter = adapterGroupSearch
         binding.recyclerViewHorizontal.adapter = adapterMyGroup
         binding.recyclerViewVertical.layoutManager = LinearLayoutManager(
+            activity,
+            LinearLayoutManager.VERTICAL,
+            false
+        )
+        binding.rvSearch.layoutManager = LinearLayoutManager(
             activity,
             LinearLayoutManager.VERTICAL,
             false
@@ -80,6 +84,7 @@ class GroupeV2Fragment : Fragment(), UpdateGroupInter {
             val intent = Intent(activity, MainFilterActivity::class.java)
             startActivity(intent)
         }
+        setupSearchView() // Call the method to setup the search view
 
         binding.recyclerViewVertical.isVerticalScrollBarEnabled = false
         binding.recyclerViewHorizontal.apply {
@@ -92,7 +97,6 @@ class GroupeV2Fragment : Fragment(), UpdateGroupInter {
         }
         handleCreateGroupButton()
         setupScrollViewListener()
-        setupSearchView()
         AnalyticsEvents.logEvent(AnalyticsEvents.VIEW_GROUP_SHOW)
         initView()
     }
@@ -111,6 +115,7 @@ class GroupeV2Fragment : Fragment(), UpdateGroupInter {
         AnalyticsEvents.logEvent(
             AnalyticsEvents.VIEW_GROUP_SHOW_DISCOVER
         )
+        binding.progressBar.visibility = View.VISIBLE
 
         val currentFiltersHash = getCurrentFiltersHash()
         if (currentFiltersHash != lastFiltersHash) {
@@ -151,6 +156,75 @@ class GroupeV2Fragment : Fragment(), UpdateGroupInter {
                 MainFilterActivity.savedLocation?.name).hashCode()
     }
 
+    private fun setupSearchView() {
+        binding.searchEditText.setOnFocusChangeListener { v, hasFocus ->
+            if (hasFocus) {
+                hideMainViews()
+                binding.rvSearch.visibility = View.VISIBLE
+            } else {
+                val query = binding.searchEditText.text.toString()
+                if (query.isEmpty()) {
+                    showMainViews()
+                    binding.rvSearch.visibility = View.GONE
+                }
+            }
+        }
+
+        // Ajouter un TextWatcher pour surveiller les changements de texte
+        binding.searchEditText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                val query = s.toString()
+                if (query.isEmpty()) {
+                    showMainViews()
+                    binding.rvSearch.visibility = View.GONE
+                } else {
+                    hideMainViews()
+                    binding.rvSearch.visibility = View.VISIBLE
+                    performSearch(query)
+                }
+            }
+
+            override fun afterTextChanged(s: Editable?) {}
+        })
+    }
+
+    private fun performSearch(query: String) {
+        presenter.page_search = 0
+        presenter.isLastPageSearch = false
+        presenter.groupSearch.value = mutableListOf()
+        searchGroups(query)
+    }
+
+    private fun searchGroups(query: String) {
+        val perPage = 20
+        presenter.getAllGroupsWithSearchQuery(query, presenter.page_search, perPage)
+        myId?.let {
+            presenter.getMyGroupsWithSearchQuery(it, query, presenter.page_search, perPage)
+        }
+    }
+
+    private fun hideMainViews() {
+        binding.recyclerViewHorizontal.visibility = View.GONE
+        binding.recyclerViewVertical.visibility = View.GONE
+        binding.textViewTitleGroupes.visibility = View.GONE
+        binding.titleAllGroups.visibility = View.GONE
+        binding.separatorAllGroups.visibility = View.GONE
+        binding.titleMyGroups.visibility = View.GONE
+        binding.separatorMyGroups.visibility = View.GONE
+    }
+
+    private fun showMainViews() {
+        binding.recyclerViewHorizontal.visibility = View.VISIBLE
+        binding.recyclerViewVertical.visibility = View.VISIBLE
+        binding.textViewTitleGroupes.visibility = View.VISIBLE
+        binding.titleAllGroups.visibility = View.VISIBLE
+        binding.separatorAllGroups.visibility = View.VISIBLE
+        binding.titleMyGroups.visibility = View.VISIBLE
+        binding.separatorMyGroups.visibility = View.VISIBLE
+    }
+
     private fun initView() {
         binding.progressBar.visibility = View.VISIBLE
         groupsList.clear()
@@ -164,61 +238,35 @@ class GroupeV2Fragment : Fragment(), UpdateGroupInter {
     }
 
     private fun handleResponseGetGroups(allGroups: MutableList<Group>?) {
-        if (!isSearching) {
-            allGroups?.let {
-                val newGroups = it.filter { group -> !addedGroupIds.contains(group.id) }
-                groupsList.addAll(newGroups)
-                adapterGroup.updateGroupsList(groupsList)
-                addedGroupIds.addAll(newGroups.map { group -> group.id!! })
-            }
-            checkingSumForEmptyView()
+        allGroups?.let {
+            val newGroups = it.filter { group -> !addedGroupIds.contains(group.id) }
+            groupsList.addAll(newGroups)
+            adapterGroup.updateGroupsList(groupsList)
+            addedGroupIds.addAll(newGroups.map { group -> group.id!! })
         }
+        checkingSumForEmptyView()
         isLoading = false
         binding.progressBar.visibility = View.GONE
     }
 
     private fun handleResponseMyGetGroups(allGroups: MutableList<Group>?) {
-        if (!isSearching) {
-            allGroups?.let {
-                val newGroups = it.filter { group -> !addedMyGroupIds.contains(group.id) }
-                myGroupsList.addAll(newGroups)
-                adapterMyGroup.resetData(myGroupsList)
-                addedMyGroupIds.addAll(newGroups.map { group -> group.id!! })
-            }
-            checkingSumForEmptyView()
-        }
-        isLoading = false
-        binding.progressBar.visibility = View.GONE
-    }
-
-    private fun handleSearchResponseGetGroups(searchGroups: MutableList<Group>?) {
-        if (isSearching) {
-            if (page == 0) {
-                groupsList.clear()
-            }
-            searchGroups?.let {
-                groupsList.addAll(it)
-            }
-            adapterGroup.updateGroupsList(groupsList)
-            checkingSumForEmptyView()
-        }
-        isLoading = false
-        binding.progressBar.visibility = View.GONE
-    }
-
-    private fun handleSearchResponseMyGetGroups(searchGroups: MutableList<Group>?) {
-        if (isSearching) {
-            if (pageMy == 0) {
-                myGroupsList.clear()
-            }
-            searchGroups?.let {
-                myGroupsList.addAll(it)
-            }
+        allGroups?.let {
+            val newGroups = it.filter { group -> !addedMyGroupIds.contains(group.id) }
+            myGroupsList.addAll(newGroups)
             adapterMyGroup.resetData(myGroupsList)
-            checkingSumForEmptyView()
+            addedMyGroupIds.addAll(newGroups.map { group -> group.id!! })
         }
+        checkingSumForEmptyView()
         isLoading = false
         binding.progressBar.visibility = View.GONE
+    }
+
+    private fun updateSearchResults(searchResults: MutableList<Group>?) {
+        searchResults?.let {
+            searchResultsList.clear()
+            searchResultsList.addAll(it)
+            adapterGroupSearch.updateGroupsList(searchResultsList)
+        }
     }
 
     private fun checkingSumForEmptyView() {
@@ -255,16 +303,22 @@ class GroupeV2Fragment : Fragment(), UpdateGroupInter {
                 handleButtonBehavior(scrollY <= oldScrollY)
                 if (!binding.nestedScrollView.canScrollVertically(1) && !presenter.isLastPage && !isLoading) {
                     isLoading = true
-                    if (isSearching) {
-                        currentSearchQuery?.let { query ->
-                            searchGroups(query, isLoadMore = true)
-                        }
-                    } else {
-                        page++
-                        loadMoreGroups()
-                    }
+                    page++
+                    loadMoreGroups()
                 }
             }
+
+            binding.rvSearch.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    super.onScrolled(recyclerView, dx, dy)
+                    if (!recyclerView.canScrollVertically(1) && !presenter.isLastPageSearch && !isLoading) {
+                        isLoading = true
+                        presenter.page_search++
+                        val query = binding.searchEditText.text.toString()
+                        searchGroups(query)
+                    }
+                }
+            })
         }
     }
 
@@ -330,62 +384,6 @@ class GroupeV2Fragment : Fragment(), UpdateGroupInter {
         presenter.getAllGroupsWithFilter(page, PER_PAGE, interests, radius, latitude, longitude)
         myId?.let {
             presenter.getMyGroupsWithFilter(it, pageMy, 100, interests, radius, latitude, longitude)
-        }
-    }
-
-    private fun setupSearchView() {
-        binding.searchEditText.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-            override fun afterTextChanged(s: Editable?) {
-                s?.let {
-                    if (it.isNotEmpty()) {
-                        isSearching = true
-                        currentSearchQuery = it.toString()
-                        searchGroups(it.toString())
-                    } else {
-                        isSearching = false
-                        currentSearchQuery = null
-                        resetGroups()
-                    }
-                }
-            }
-        })
-
-        binding.searchEditText.setOnClickListener {
-            binding.searchEditText.text.clear()
-        }
-    }
-
-    private fun searchGroups(query: String, isLoadMore: Boolean = false) {
-        if (!isLoadMore) {
-            page = 0
-            pageMy = 0
-            groupsList.clear()
-            myGroupsList.clear()
-            adapterGroup.notifyDataSetChanged()
-            adapterMyGroup.notifyDataSetChanged()
-        }
-        page++
-        pageMy++
-        myId?.let {
-            presenter.getMyGroupsWithSearchQuery(it, query, pageMy, PER_PAGE)
-        }
-        presenter.getAllGroupsWithSearchQuery(query, page, PER_PAGE)
-    }
-
-    private fun resetGroups() {
-        groupsList.clear()
-        myGroupsList.clear()
-        adapterGroup.notifyDataSetChanged()
-        adapterMyGroup.notifyDataSetChanged()
-        page = 0
-        pageMy = 0
-        loadMoreGroups()
-        myId?.let {
-            presenter.getMyGroups(
-                it, pageMy, 100
-            )
         }
     }
 

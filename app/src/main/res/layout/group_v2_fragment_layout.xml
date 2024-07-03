@@ -147,6 +147,7 @@ android:background="@drawable/new_profile_header_orange_dark">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:id="@+id/title_my_groups"
                 android:text="@string/my_groups"
                 android:textSize="15sp"
                 android:textColor="@android:color/black"
@@ -158,6 +159,7 @@ android:background="@drawable/new_profile_header_orange_dark">
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
+                android:id="@+id/separator_my_groups"
                 android:background="@color/light_orange"
                 android:layout_marginTop="10dp"
                 android:layout_marginStart="@dimen/entourage_margin_section"
@@ -177,6 +179,7 @@ android:background="@drawable/new_profile_header_orange_dark">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:id="@+id/title_all_groups"
                 android:text="@string/all_groups"
                 android:textSize="15sp"
                 android:textColor="@android:color/black"
@@ -187,6 +190,7 @@ android:background="@drawable/new_profile_header_orange_dark">
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
+                android:id="@+id/separator_all_groups"
                 android:background="@color/light_orange"
                 android:layout_marginTop="10dp"
                 android:layout_marginStart="@dimen/entourage_margin_section"
@@ -275,6 +279,15 @@ android:background="@drawable/new_profile_header_orange_dark">
                     app:layout_constraintRight_toRightOf="parent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/rv_search"
+                android:visibility="gone"
+                android:layout_marginStart="@dimen/entourage_margin_section"
+                android:layout_marginEnd="@dimen/entourage_margin_section"
+                android:layout_marginTop="20dp"/>
+
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

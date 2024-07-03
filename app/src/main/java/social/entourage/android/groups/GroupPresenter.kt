@@ -70,6 +70,9 @@ class GroupPresenter: ViewModel() {
     var getAllGroupSearch = MutableLiveData<MutableList<Group>>()
     var getMyGroupSearch = MutableLiveData<MutableList<Group>>()
 
+    var page_search = 0
+    var groupSearch = MutableLiveData<MutableList<Group>>()
+    var isLastPageSearch: Boolean = false
     fun createGroup(group: Group) {
         EntourageApplication.get().apiModule.groupRequest.createGroup(GroupWrapper(group))
             .enqueue(object : Callback<GroupWrapper> {
@@ -635,7 +638,10 @@ class GroupPresenter: ViewModel() {
             .enqueue(object : Callback<GroupsListWrapper> {
                 override fun onResponse(call: Call<GroupsListWrapper>, response: Response<GroupsListWrapper>) {
                     response.body()?.let { allGroupsWrapper ->
-                        getAllGroupSearch.value = allGroupsWrapper.allGroups
+                        val currentList = groupSearch.value ?: mutableListOf()
+                        currentList.addAll(allGroupsWrapper.allGroups)
+                        groupSearch.value = currentList
+                        if (allGroupsWrapper.allGroups.size < per) isLastPageSearch = true
                     }
                 }
 
@@ -650,7 +656,10 @@ class GroupPresenter: ViewModel() {
             .enqueue(object : Callback<GroupsListWrapper> {
                 override fun onResponse(call: Call<GroupsListWrapper>, response: Response<GroupsListWrapper>) {
                     response.body()?.let { allGroupsWrapper ->
-                        getMyGroupSearch.value = allGroupsWrapper.allGroups
+                        val currentList = groupSearch.value ?: mutableListOf()
+                        currentList.addAll(allGroupsWrapper.allGroups)
+                        groupSearch.value = currentList
+                        if (allGroupsWrapper.allGroups.size < per) isLastPageSearch = true
                     }
                 }
 

@@ -167,6 +167,7 @@ class MainFilterActivity : BaseActivity() {
     private fun fetchAutocompletePredictions(query: String) {
         val request = FindAutocompletePredictionsRequest.builder()
             .setQuery(query)
+            .setCountries("FR")
             .build()
 
         placesClient.findAutocompletePredictions(request).addOnSuccessListener { response ->
