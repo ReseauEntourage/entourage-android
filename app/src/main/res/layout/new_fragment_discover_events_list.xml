@@ -49,6 +49,8 @@
                             android:background="@drawable/bg_unselected_filter_main"
                             android:hint="@string/event_search_hint"
                             android:padding="10dp"
+                            android:inputType="text"
+                            android:imeOptions="actionSearch"
                             android:textColor="@android:color/black"/>
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:id="@+id/layout_filter"

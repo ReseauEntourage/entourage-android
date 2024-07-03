@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -117,9 +118,24 @@ class DiscoverEventsListFragment : Fragment() {
 
         if (isFirstResumeWithFilters) {
             isFirstResumeWithFilters = false
-            if (MainFilterActivity.savedInterests.isNotEmpty()) {
-                applyFilters()
-            }
+            resetDataAndApplyFilters()
+        }
+    }
+
+    private fun resetDataAndApplyFilters() {
+        eventsAdapter.clearList()
+        myeventsAdapter.clearList()
+        page = 0
+        pageMyEvent = 0
+        eventsPresenter.isLastPage = false
+        eventsPresenter.isLastPageMyEvent = false
+        if (MainFilterActivity.savedInterests.isNotEmpty() ||
+            MainFilterActivity.savedRadius != 0 ||
+            MainFilterActivity.savedLocation != null) {
+            applyFilters()
+        } else {
+            loadEvents()
+            loadMyEvents()
         }
     }
 
@@ -288,9 +304,8 @@ class DiscoverEventsListFragment : Fragment() {
         page++
         if (!eventsPresenter.isLastPage && !isLoading) {
             isLoading = true
-            if (MainFilterActivity.savedInterests.isEmpty() &&
-                MainFilterActivity.savedRadius == 0 &&
-                MainFilterActivity.savedLocation == null) {
+            Log.wtf("wtf" , "save interest : ${MainFilterActivity.savedInterests}")
+            if (MainFilterActivity.savedInterests.isEmpty()){
                 // Si aucun filtre n'est sélectionné, utiliser getAllEvents
                 eventsPresenter.getAllEvents(
                     page, EVENTS_PER_PAGE,
@@ -315,9 +330,7 @@ class DiscoverEventsListFragment : Fragment() {
         binding.swipeRefresh.isRefreshing = false
         myId = EntourageApplication.me(activity)?.id
         if (myId != null) {
-            if (MainFilterActivity.savedInterests.isEmpty() &&
-                MainFilterActivity.savedRadius == 0 &&
-                MainFilterActivity.savedLocation == null) {
+            if (MainFilterActivity.savedInterests.isEmpty()) {
                 // Si aucun filtre n'est sélectionné, utiliser getMyEvents
                 eventsPresenter.getMyEvents(
                     myId!!,
