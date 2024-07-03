@@ -179,14 +179,21 @@ class GroupeV2Fragment : Fragment(), UpdateGroupInter {
                 if (query.isEmpty()) {
                     showMainViews()
                     binding.rvSearch.visibility = View.GONE
+                }
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                val query = s.toString()
+                if (query.isEmpty()) {
+                    showMainViews()
+                    binding.rvSearch.visibility = View.GONE
                 } else {
                     hideMainViews()
+                    binding.progressBar.visibility = View.VISIBLE
                     binding.rvSearch.visibility = View.VISIBLE
                     performSearch(query)
                 }
             }
-
-            override fun afterTextChanged(s: Editable?) {}
         })
     }
 
@@ -266,6 +273,8 @@ class GroupeV2Fragment : Fragment(), UpdateGroupInter {
             searchResultsList.clear()
             searchResultsList.addAll(it)
             adapterGroupSearch.updateGroupsList(searchResultsList)
+            binding.progressBar.visibility = View.GONE
+
         }
     }
 
