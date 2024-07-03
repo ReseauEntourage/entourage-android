@@ -692,12 +692,18 @@ class EventsPresenter : ViewModel() {
                 }
             })
     }
-    fun getAllEventsWithSearchQuery(query: String) {
-        EntourageApplication.get().apiModule.eventsRequest.getAllEventsWithSearchQuery(query)
+    fun getAllEventsWithSearchQuery(query: String, page: Int, per: Int) {
+        EntourageApplication.get().apiModule.eventsRequest.getAllEventsWithSearchQuery(query, page, per)
             .enqueue(object : Callback<EventsListWrapper> {
                 override fun onResponse(call: Call<EventsListWrapper>, response: Response<EventsListWrapper>) {
                     response.body()?.let { allEventsWrapper ->
-                        allEventsSearch.value = allEventsWrapper.allEvents
+                        if (page == 1) {
+                            allEventsSearch.value = allEventsWrapper.allEvents
+                        } else {
+                            val currentList = allEventsSearch.value ?: mutableListOf()
+                            currentList.addAll(allEventsWrapper.allEvents)
+                            allEventsSearch.value = currentList
+                        }
                     }
                 }
 
@@ -707,13 +713,18 @@ class EventsPresenter : ViewModel() {
             })
     }
 
-    fun getMyEventsWithSearchQuery(userId: Int, query: String) {
-        EntourageApplication.get().apiModule.eventsRequest.getMyEventsWithSearchQuery(userId, query)
+    fun getMyEventsWithSearchQuery(userId: Int, query: String, page: Int, per: Int) {
+        EntourageApplication.get().apiModule.eventsRequest.getMyEventsWithSearchQuery(userId, query, page, per)
             .enqueue(object : Callback<EventsListWrapper> {
                 override fun onResponse(call: Call<EventsListWrapper>, response: Response<EventsListWrapper>) {
                     response.body()?.let { allEventsWrapper ->
-                        Log.wtf("wtf","all event size ${allEventsWrapper.allEvents.size}")
-                        myEventsSearch.value = allEventsWrapper.allEvents
+                        if (page == 1) {
+                            myEventsSearch.value = allEventsWrapper.allEvents
+                        } else {
+                            val currentList = myEventsSearch.value ?: mutableListOf()
+                            currentList.addAll(allEventsWrapper.allEvents)
+                            myEventsSearch.value = currentList
+                        }
                     }
                 }
 

@@ -297,22 +297,6 @@ class GroupPresenter: ViewModel() {
             })
     }
 
-    fun getMyGroupsSearch(userId: Int, searchTxt: String) {
-        EntourageApplication.get().apiModule.groupRequest.getMyGroupsWithSearchQuery(userId, searchTxt)
-            .enqueue(object : Callback<GroupsListWrapper> {
-                override fun onResponse(
-                    call: Call<GroupsListWrapper>,
-                    response: Response<GroupsListWrapper>
-                ) {
-                    response.body()?.let { allGroupsWrapper ->
-                        getMyGroupSearch.value = allGroupsWrapper.allGroups
-                    }
-                }
-
-                override fun onFailure(call: Call<GroupsListWrapper>, t: Throwable) {
-                }
-            })
-    }
 
     fun joinGroup(groupId: Int) {
         EntourageApplication.get().apiModule.groupRequest.joinGroup(groupId)
@@ -646,8 +630,8 @@ class GroupPresenter: ViewModel() {
             })
     }
 
-    fun getAllGroupsWithSearchQuery(query: String) {
-        EntourageApplication.get().apiModule.groupRequest.getAllGroupsWithSearchQuery(query)
+    fun getAllGroupsWithSearchQuery(query: String, page: Int, per: Int) {
+        EntourageApplication.get().apiModule.groupRequest.getAllGroupsWithSearchQuery(query, page, per)
             .enqueue(object : Callback<GroupsListWrapper> {
                 override fun onResponse(call: Call<GroupsListWrapper>, response: Response<GroupsListWrapper>) {
                     response.body()?.let { allGroupsWrapper ->
@@ -661,8 +645,8 @@ class GroupPresenter: ViewModel() {
             })
     }
 
-    fun getMyGroupsWithSearchQuery(userId: Int, query: String) {
-        EntourageApplication.get().apiModule.groupRequest.getMyGroupsWithSearchQuery(userId, query)
+    fun getMyGroupsWithSearchQuery(userId: Int, query: String, page: Int, per: Int) {
+        EntourageApplication.get().apiModule.groupRequest.getMyGroupsWithSearchQuery(userId, query, page, per)
             .enqueue(object : Callback<GroupsListWrapper> {
                 override fun onResponse(call: Call<GroupsListWrapper>, response: Response<GroupsListWrapper>) {
                     response.body()?.let { allGroupsWrapper ->

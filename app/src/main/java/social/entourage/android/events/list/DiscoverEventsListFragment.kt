@@ -50,6 +50,7 @@ class DiscoverEventsListFragment : Fragment() {
     private var lastFiltersHash = 0
     private var isSearching = false
     private var currentSearchQuery: String? = null
+    private var isLoadMoreSearchResults = false
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -173,10 +174,10 @@ class DiscoverEventsListFragment : Fragment() {
     }
 
     private fun handleResponseSearchEvents(allEvents: MutableList<Events>?) {
-        if (isSearching) {
-            eventsAdapter.resetData(allEvents ?: mutableListOf())
-        } else {
+        if (isLoadMoreSearchResults) {
             eventsAdapter.addData(allEvents ?: mutableListOf())
+        } else {
+            eventsAdapter.resetData(allEvents ?: mutableListOf())
         }
         updateView(allEvents.isNullOrEmpty())
         isLoading = false
@@ -184,10 +185,10 @@ class DiscoverEventsListFragment : Fragment() {
     }
 
     private fun handleResponseSearchMyEvents(myEvents: MutableList<Events>?) {
-        if (isSearching) {
-            myeventsAdapter.resetData(myEvents ?: mutableListOf())
-        } else {
+        if (isLoadMoreSearchResults) {
             myeventsAdapter.addData(myEvents ?: mutableListOf())
+        } else {
+            myeventsAdapter.resetData(myEvents ?: mutableListOf())
         }
         updateView(myEvents.isNullOrEmpty())
         isLoading = false
@@ -386,6 +387,9 @@ class DiscoverEventsListFragment : Fragment() {
             pageMyEvent = 0
             eventsAdapter.clearList()
             myeventsAdapter.clearList()
+            isLoadMoreSearchResults = false
+        } else {
+            isLoadMoreSearchResults = true
         }
         page++
         pageMyEvent++

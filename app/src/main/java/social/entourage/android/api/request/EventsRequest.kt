@@ -188,13 +188,17 @@ interface EventsRequest {
     ): Call<ResponseBody>
     @GET("outings")
     fun getAllEventsWithSearchQuery(
-        @Query("q") query: String
+        @Query("q") query: String,
+        @Query("page") page: Int,
+        @Query("per") per: Int
     ): Call<EventsListWrapper>
 
     @GET("users/{user_id}/outings")
     fun getMyEventsWithSearchQuery(
         @Path("user_id") userId: Int,
-        @Query("q") query: String
+        @Query("q") query: String,
+        @Query("page") page: Int,
+        @Query("per") per: Int
     ): Call<EventsListWrapper>
 
 }
