@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -394,9 +393,9 @@ class DiscoverEventsListFragment : Fragment() {
         page++
         pageMyEvent++
         myId?.let {
-            eventsPresenter.getMyEventsWithSearchQuery(it, query)
+            eventsPresenter.getMyEventsWithSearchQuery(it, query, pageMyEvent, EVENTS_PER_PAGE)
         }
-        eventsPresenter.getAllEventsWithSearchQuery(query)
+        eventsPresenter.getAllEventsWithSearchQuery(query, page, EVENTS_PER_PAGE)
     }
 
     private fun resetEvents() {

@@ -366,9 +366,9 @@ class GroupeV2Fragment : Fragment(), UpdateGroupInter {
         page++
         pageMy++
         myId?.let {
-            presenter.getMyGroupsWithSearchQuery(it, query)
+            presenter.getMyGroupsWithSearchQuery(it, query, pageMy, PER_PAGE)
         }
-        presenter.getAllGroupsWithSearchQuery(query)
+        presenter.getAllGroupsWithSearchQuery(query, page, PER_PAGE)
     }
 
     private fun resetGroups() {
