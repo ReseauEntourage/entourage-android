@@ -104,8 +104,10 @@ class DiscoverEventsListFragment : Fragment() {
         if (MainFilterActivity.savedInterests.size > 0) {
             binding.cardFilterNumber.visibility = View.VISIBLE
             binding.tvNumberOfFilter.text = MainFilterActivity.savedInterests.size.toString()
+            binding.layoutFilter.background = resources.getDrawable(R.drawable.bg_selected_filter_main)
         } else {
             binding.cardFilterNumber.visibility = View.GONE
+            binding.layoutFilter.background = resources.getDrawable(R.drawable.bg_unselected_filter_main)
         }
 
         AnalyticsEvents.logEvent(AnalyticsEvents.View__Event__List)

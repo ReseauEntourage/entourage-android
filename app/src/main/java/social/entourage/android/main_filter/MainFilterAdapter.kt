@@ -17,19 +17,23 @@ class MainFilterAdapter(
         fun bind(item: MainFilterInterestForAdapter) {
             binding.tvInterestTitleFromRight.text = item.title
             binding.tvInterestSubTitleFromRight.text = item.subtitle
-            updateBackground(item.isSelected)
+            updateBackgroundAndTextStyle(item.isSelected)
 
             binding.root.setOnClickListener {
                 item.isSelected = !item.isSelected
-                updateBackground(item.isSelected)
+                updateBackgroundAndTextStyle(item.isSelected)
                 onItemClicked(item)
             }
         }
 
-        private fun updateBackground(isSelected: Boolean) {
+        private fun updateBackgroundAndTextStyle(isSelected: Boolean) {
             val backgroundResource = if (isSelected) R.drawable.shape_border_orange else R.drawable.shape_grey_border
             binding.root.setBackgroundResource(backgroundResource)
             binding.ivInterestCheck.setImageResource(if (isSelected) R.drawable.ic_onboarding_check else R.drawable.ic_onboarding_uncheck)
+
+            val typeface = if (isSelected) android.graphics.Typeface.BOLD else android.graphics.Typeface.NORMAL
+            binding.tvInterestTitleFromRight.setTypeface(null, typeface)
+            binding.tvInterestSubTitleFromRight.setTypeface(null, typeface)
         }
     }
 

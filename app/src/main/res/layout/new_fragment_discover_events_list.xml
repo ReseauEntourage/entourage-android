@@ -46,6 +46,7 @@
                             app:layout_constraintEnd_toStartOf="@+id/layout_filter"
                             android:layout_marginStart="16dp"
                             android:layout_marginEnd="8dp"
+                            android:textSize="15sp"
                             android:background="@drawable/bg_unselected_filter_main"
                             android:hint="@string/event_search_hint"
                             android:padding="10dp"
