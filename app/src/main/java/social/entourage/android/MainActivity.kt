@@ -323,6 +323,8 @@ class MainActivity : BaseSecuredActivity() {
 
     private fun handleEventResponse(event: Events?) {
         event?.let {
+            AnalyticsEvents.logEvent(AnalyticsEvents.popup_event_last_day_view)
+
             val context = this // Assure-toi que `this` est un Context, sinon utilise `getApplicationContext()` ou un autre contexte valide.
             val titleEvent = it.title?.take(30) ?: "Titre par défaut"
             val placeName = it.metadata?.displayAddress ?: "Lieu par défaut"
@@ -334,11 +336,13 @@ class MainActivity : BaseSecuredActivity() {
             val eventConfirmationDialogFragment = EventConfirmationDialogFragment.newInstance(title, description).apply {
                 listener = object : EventConfirmationDialogFragment.EventConfirmationListener {
                     override fun onConfirmParticipation() {
+                        AnalyticsEvents.logEvent(AnalyticsEvents.popup_event_last_day_accept)
                         eventPresenter.confirmParticipation(it.id ?: 0)
                         Toast.makeText(context, "Merci d’avoir répondu, à bientôt !", Toast.LENGTH_LONG).show()
                     }
 
                     override fun onDeclineParticipation() {
+                        AnalyticsEvents.logEvent(AnalyticsEvents.popup_event_last_day_decline)
                         eventPresenter.leaveEvent(it.id ?: 0)
                         Toast.makeText(context, "Merci d’avoir répondu, à bientôt !", Toast.LENGTH_LONG).show()
                     }

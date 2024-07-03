@@ -47,7 +47,7 @@
                             android:layout_marginStart="16dp"
                             android:layout_marginEnd="8dp"
                             android:background="@drawable/bg_unselected_filter_main"
-                            android:hint="@string/search_hint"
+                            android:hint="@string/event_search_hint"
                             android:padding="10dp"
                             android:textColor="@android:color/black"/>
                         <androidx.constraintlayout.widget.ConstraintLayout

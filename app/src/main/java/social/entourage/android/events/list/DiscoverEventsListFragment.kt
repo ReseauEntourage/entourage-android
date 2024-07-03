@@ -3,6 +3,8 @@ package social.entourage.android.events.list
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -46,6 +48,8 @@ class DiscoverEventsListFragment : Fragment() {
     private var isLoading = false
     private var isFirstResumeWithFilters = true
     private var lastFiltersHash = 0
+    private var isSearching = false
+    private var currentSearchQuery: String? = null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -79,15 +83,18 @@ class DiscoverEventsListFragment : Fragment() {
         // Observers for events
         eventsPresenter.getAllEvents.observe(viewLifecycleOwner, ::handleResponseGetEvents)
         eventsPresenter.getFilteredEvents.observe(viewLifecycleOwner, ::handleResponseGetEvents)
+        eventsPresenter.allEventsSearch.observe(viewLifecycleOwner, ::handleResponseSearchEvents)
 
         // Observers for my events
         eventsPresenter.getAllMyEvents.observe(viewLifecycleOwner, ::handleResponseGetMYEvents)
         eventsPresenter.getFilteredMyEvents.observe(viewLifecycleOwner, ::handleResponseGetMYEvents)
+        eventsPresenter.myEventsSearch.observe(viewLifecycleOwner, ::handleResponseSearchMyEvents)
 
         eventsPresenter.hasChangedFilter.observe(viewLifecycleOwner, ::handleFilterChange)
         initializeEvents()
         setRVScrollListener()
         handleSwipeRefresh()
+        setupSearchView()
         initView()
     }
 
@@ -165,6 +172,28 @@ class DiscoverEventsListFragment : Fragment() {
         binding.progressBar.visibility = View.GONE
     }
 
+    private fun handleResponseSearchEvents(allEvents: MutableList<Events>?) {
+        if (isSearching) {
+            eventsAdapter.resetData(allEvents ?: mutableListOf())
+        } else {
+            eventsAdapter.addData(allEvents ?: mutableListOf())
+        }
+        updateView(allEvents.isNullOrEmpty())
+        isLoading = false
+        binding.progressBar.visibility = View.GONE
+    }
+
+    private fun handleResponseSearchMyEvents(myEvents: MutableList<Events>?) {
+        if (isSearching) {
+            myeventsAdapter.resetData(myEvents ?: mutableListOf())
+        } else {
+            myeventsAdapter.addData(myEvents ?: mutableListOf())
+        }
+        updateView(myEvents.isNullOrEmpty())
+        isLoading = false
+        binding.progressBar.visibility = View.GONE
+    }
+
     fun setRVScrollListener() {
         binding.nestedScrollView.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { _, _, scrollY, _, oldScrollY ->
             if (scrollY > oldScrollY) {
@@ -172,9 +201,17 @@ class DiscoverEventsListFragment : Fragment() {
             } else if (scrollY < oldScrollY) {
                 eventsPresenter.tellParentFragmentToMoveButton(true)
             }
-            if (!binding.nestedScrollView.canScrollVertically(1) && !isLoading && !eventsPresenter.isLastPage) {
+            if (!binding.nestedScrollView.canScrollVertically(1) && !isLoading) {
                 binding.progressBar.visibility = View.VISIBLE
-                loadEvents()
+                if (isSearching) {
+                    currentSearchQuery?.let { query ->
+                        searchEvents(query, isLoadMore = true)
+                    }
+                } else {
+                    if (!eventsPresenter.isLastPage) {
+                        loadEvents()
+                    }
+                }
             }
         })
 
@@ -184,8 +221,17 @@ class DiscoverEventsListFragment : Fragment() {
                 val layoutManager = recyclerView.layoutManager as LinearLayoutManager
                 val totalItemCount = layoutManager.itemCount
                 val lastVisibleItemPosition = layoutManager.findLastVisibleItemPosition()
-                if (totalItemCount <= (lastVisibleItemPosition + 2) && !isLoading && !eventsPresenter.isLastPageMyEvent) {
-                    loadMyEvents()
+                if (totalItemCount <= (lastVisibleItemPosition + 2) && !isLoading) {
+                    binding.progressBar.visibility = View.VISIBLE
+                    if (isSearching) {
+                        currentSearchQuery?.let { query ->
+                            searchEvents(query, isLoadMore = true)
+                        }
+                    } else {
+                        if (!eventsPresenter.isLastPageMyEvent) {
+                            loadMyEvents()
+                        }
+                    }
                 }
             }
         })
@@ -292,7 +338,6 @@ class DiscoverEventsListFragment : Fragment() {
         }
     }
 
-
     private fun handleSwipeRefresh() {
         binding.swipeRefresh.setOnRefreshListener {
             binding.progressBar.visibility = View.VISIBLE
@@ -302,8 +347,64 @@ class DiscoverEventsListFragment : Fragment() {
             eventsPresenter.isLastPageMyEvent = false
             page = 0
             pageMyEvent = 0
-            loadEvents()
-            loadMyEvents()
+            if (isSearching && currentSearchQuery != null) {
+                searchEvents(currentSearchQuery!!)
+            } else {
+                loadEvents()
+                loadMyEvents()
+            }
+        }
+    }
+
+    private fun setupSearchView() {
+        binding.searchEditText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+            override fun afterTextChanged(s: Editable?) {
+                s?.let {
+                    if (it.isNotEmpty()) {
+                        isSearching = true
+                        currentSearchQuery = it.toString()
+                        searchEvents(it.toString())
+                    } else {
+                        isSearching = false
+                        currentSearchQuery = null
+                        resetEvents()
+                    }
+                }
+            }
+        })
+
+        binding.searchEditText.setOnClickListener {
+            binding.searchEditText.text.clear()
+        }
+    }
+
+    private fun searchEvents(query: String, isLoadMore: Boolean = false) {
+        if (!isLoadMore) {
+            page = 0
+            pageMyEvent = 0
+            eventsAdapter.clearList()
+            myeventsAdapter.clearList()
+        }
+        page++
+        pageMyEvent++
+        myId?.let {
+            eventsPresenter.getMyEventsWithSearchQuery(it, query)
+        }
+        eventsPresenter.getAllEventsWithSearchQuery(query)
+    }
+
+    private fun resetEvents() {
+        eventsAdapter.clearList()
+        myeventsAdapter.clearList()
+        page = 0
+        pageMyEvent = 0
+        loadEvents()
+        myId?.let {
+            eventsPresenter.getMyEvents(
+                it, pageMyEvent, EVENTS_PER_PAGE
+            )
         }
     }
 }

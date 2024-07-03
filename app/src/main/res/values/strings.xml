@@ -2787,6 +2787,8 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="hygiene_subtitle">savon, protection hygiénique, couches...</string>
 
 
+    <string name="group_search_hint">Rechercher un groupe</string>
+    <string name="event_search_hint">Rechercher un événement</string>
 
 
 </resources>

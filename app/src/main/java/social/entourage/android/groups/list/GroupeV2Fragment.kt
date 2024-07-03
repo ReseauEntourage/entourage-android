@@ -5,7 +5,6 @@ import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -40,6 +39,8 @@ class GroupeV2Fragment : Fragment(), UpdateGroupInter {
     private var addedMyGroupIds: MutableSet<Int> = mutableSetOf()
     private var isFirstResumeWithFilters = true
     private var lastFiltersHash: Int? = null
+    private var isSearching = false
+    private var currentSearchQuery: String? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -160,41 +161,61 @@ class GroupeV2Fragment : Fragment(), UpdateGroupInter {
     }
 
     private fun handleResponseGetGroups(allGroups: MutableList<Group>?) {
-        allGroups?.let {
-            val newGroups = it.filter { group -> !addedGroupIds.contains(group.id) }
-            groupsList.addAll(newGroups)
-            adapterGroup.updateGroupsList(groupsList)
-            addedGroupIds.addAll(newGroups.map { group -> group.id!! })
+        if (!isSearching) {
+            allGroups?.let {
+                val newGroups = it.filter { group -> !addedGroupIds.contains(group.id) }
+                groupsList.addAll(newGroups)
+                adapterGroup.updateGroupsList(groupsList)
+                addedGroupIds.addAll(newGroups.map { group -> group.id!! })
+            }
+            checkingSumForEmptyView()
         }
-        checkingSumForEmptyView()
+        isLoading = false
+        binding.progressBar.visibility = View.GONE
     }
 
     private fun handleResponseMyGetGroups(allGroups: MutableList<Group>?) {
-        allGroups?.let {
-            val newGroups = it.filter { group -> !addedMyGroupIds.contains(group.id) }
-            myGroupsList.addAll(newGroups)
-            adapterMyGroup.resetData(myGroupsList)
-            addedMyGroupIds.addAll(newGroups.map { group -> group.id!! })
+        if (!isSearching) {
+            allGroups?.let {
+                val newGroups = it.filter { group -> !addedMyGroupIds.contains(group.id) }
+                myGroupsList.addAll(newGroups)
+                adapterMyGroup.resetData(myGroupsList)
+                addedMyGroupIds.addAll(newGroups.map { group -> group.id!! })
+            }
+            checkingSumForEmptyView()
         }
-        checkingSumForEmptyView()
+        isLoading = false
+        binding.progressBar.visibility = View.GONE
     }
 
     private fun handleSearchResponseGetGroups(searchGroups: MutableList<Group>?) {
-        searchGroups?.let {
-            groupsList.clear()
-            groupsList.addAll(it)
+        if (isSearching) {
+            if (page == 0) {
+                groupsList.clear()
+            }
+            searchGroups?.let {
+                groupsList.addAll(it)
+            }
             adapterGroup.updateGroupsList(groupsList)
+            checkingSumForEmptyView()
         }
-        checkingSumForEmptyView()
+        isLoading = false
+        binding.progressBar.visibility = View.GONE
     }
 
     private fun handleSearchResponseMyGetGroups(searchGroups: MutableList<Group>?) {
-        searchGroups?.let {
-            myGroupsList.clear()
-            myGroupsList.addAll(it)
+        if (isSearching) {
+            if (pageMy == 0) {
+                myGroupsList.clear()
+            }
+            searchGroups?.let {
+                myGroupsList.addAll(it)
+            }
             adapterMyGroup.resetData(myGroupsList)
+            checkingSumForEmptyView()
         }
-        checkingSumForEmptyView()
+        isLoading = false
+        binding.progressBar.visibility = View.GONE
     }
 
     private fun checkingSumForEmptyView() {
@@ -231,8 +252,14 @@ class GroupeV2Fragment : Fragment(), UpdateGroupInter {
                 handleButtonBehavior(scrollY <= oldScrollY)
                 if (!binding.nestedScrollView.canScrollVertically(1) && !presenter.isLastPage && !isLoading) {
                     isLoading = true
-                    page++
-                    loadMoreGroups()
+                    if (isSearching) {
+                        currentSearchQuery?.let { query ->
+                            searchGroups(query, isLoadMore = true)
+                        }
+                    } else {
+                        page++
+                        loadMoreGroups()
+                    }
                 }
             }
         }
@@ -310,8 +337,12 @@ class GroupeV2Fragment : Fragment(), UpdateGroupInter {
             override fun afterTextChanged(s: Editable?) {
                 s?.let {
                     if (it.isNotEmpty()) {
+                        isSearching = true
+                        currentSearchQuery = it.toString()
                         searchGroups(it.toString())
                     } else {
+                        isSearching = false
+                        currentSearchQuery = null
                         resetGroups()
                     }
                 }
@@ -323,11 +354,17 @@ class GroupeV2Fragment : Fragment(), UpdateGroupInter {
         }
     }
 
-    private fun searchGroups(query: String) {
-        groupsList.clear()
-        myGroupsList.clear()
-        adapterGroup.notifyDataSetChanged()
-        adapterMyGroup.notifyDataSetChanged()
+    private fun searchGroups(query: String, isLoadMore: Boolean = false) {
+        if (!isLoadMore) {
+            page = 0
+            pageMy = 0
+            groupsList.clear()
+            myGroupsList.clear()
+            adapterGroup.notifyDataSetChanged()
+            adapterMyGroup.notifyDataSetChanged()
+        }
+        page++
+        pageMy++
         myId?.let {
             presenter.getMyGroupsSearch(it, query)
         }
@@ -339,9 +376,13 @@ class GroupeV2Fragment : Fragment(), UpdateGroupInter {
         myGroupsList.clear()
         adapterGroup.notifyDataSetChanged()
         adapterMyGroup.notifyDataSetChanged()
-        presenter.getAllGroups(page, PER_PAGE)
-        if (myId != null) {
-            presenter.getMyGroups(pageMy, 100, myId!!)
+        page = 0
+        pageMy = 0
+        loadMoreGroups()
+        myId?.let {
+            presenter.getMyGroups(
+                it, pageMy, 100
+            )
         }
     }
 

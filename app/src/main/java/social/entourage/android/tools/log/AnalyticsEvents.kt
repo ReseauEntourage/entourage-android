@@ -739,6 +739,11 @@ object AnalyticsEvents {
     const val notification_deactivate_button_clic = "notification_deactivate_button_clic"
 
 
+    const val popup_event_last_day_view = "popup_event_last_day_view"
+    const val popup_event_last_day_accept = "popup_event_last_day_accept"
+    const val popup_event_last_day_decline = "popup_event_last_day_decline"
+
+
 
 
 

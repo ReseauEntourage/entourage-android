@@ -186,5 +186,15 @@ interface EventsRequest {
     fun confirmParticipation(
         @Path("outing_id") eventId: Int
     ): Call<ResponseBody>
+    @GET("outings")
+    fun getAllEventsWithSearchQuery(
+        @Query("q") query: String
+    ): Call<EventsListWrapper>
+
+    @GET("users/{user_id}/outings")
+    fun getMyEventsWithSearchQuery(
+        @Path("user_id") userId: Int,
+        @Query("q") query: String
+    ): Call<EventsListWrapper>
 
 }

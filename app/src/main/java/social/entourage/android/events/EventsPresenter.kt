@@ -51,7 +51,9 @@ class EventsPresenter : ViewModel() {
     var hasChangedFilterLocationForParentFragment = MutableLiveData<EventActionLocationFilters>()
     var isCreateButtonExtended = MutableLiveData<Boolean>()
     var getMembersReactResponse = MutableLiveData<CompleteReactionsResponse>()
-
+    var allEventsSearch = MutableLiveData<MutableList<Events>>()
+    var myEventsSearch = MutableLiveData<MutableList<Events>>()
+    
     var hasUserLeftEvent = MutableLiveData<Boolean>()
     var eventCanceled = MutableLiveData<Boolean>()
 
@@ -687,6 +689,36 @@ class EventsPresenter : ViewModel() {
                 override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                     Log.e("EventsPresenter", "Échec de l'appel réseau: ${t.message}")
                     isUserConfirmedParticipating.value = false
+                }
+            })
+    }
+    fun getAllEventsWithSearchQuery(query: String) {
+        EntourageApplication.get().apiModule.eventsRequest.getAllEventsWithSearchQuery(query)
+            .enqueue(object : Callback<EventsListWrapper> {
+                override fun onResponse(call: Call<EventsListWrapper>, response: Response<EventsListWrapper>) {
+                    response.body()?.let { allEventsWrapper ->
+                        allEventsSearch.value = allEventsWrapper.allEvents
+                    }
+                }
+
+                override fun onFailure(call: Call<EventsListWrapper>, t: Throwable) {
+                    // Gérer l'échec
+                }
+            })
+    }
+
+    fun getMyEventsWithSearchQuery(userId: Int, query: String) {
+        EntourageApplication.get().apiModule.eventsRequest.getMyEventsWithSearchQuery(userId, query)
+            .enqueue(object : Callback<EventsListWrapper> {
+                override fun onResponse(call: Call<EventsListWrapper>, response: Response<EventsListWrapper>) {
+                    response.body()?.let { allEventsWrapper ->
+                        Log.wtf("wtf","all event size ${allEventsWrapper.allEvents.size}")
+                        myEventsSearch.value = allEventsWrapper.allEvents
+                    }
+                }
+
+                override fun onFailure(call: Call<EventsListWrapper>, t: Throwable) {
+                    // Gérer l'échec
                 }
             })
     }
