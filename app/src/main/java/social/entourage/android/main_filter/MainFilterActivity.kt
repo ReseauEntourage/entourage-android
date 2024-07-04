@@ -23,6 +23,11 @@ import social.entourage.android.R
 import social.entourage.android.base.BaseActivity
 import social.entourage.android.databinding.ActivityMainFilterBinding
 
+enum class MainFilterMode {
+    ACTION,
+    GROUP
+}
+
 class MainFilterActivity : BaseActivity() {
 
     private lateinit var binding: ActivityMainFilterBinding
@@ -30,10 +35,11 @@ class MainFilterActivity : BaseActivity() {
     private lateinit var placesClient: PlacesClient
 
     companion object {
-        var savedInterests = mutableListOf<String>()
+        var savedGroupInterests = mutableListOf<String>()
+        var savedActionInterests = mutableListOf<String>()
         var savedRadius = 0
         var savedLocation: PlaceDetails? = null
-
+        var mod: MainFilterMode = MainFilterMode.GROUP
         data class PlaceDetails(val name: String, val lat: Double, val lng: Double)
     }
 
@@ -51,8 +57,7 @@ class MainFilterActivity : BaseActivity() {
         placesClient = Places.createClient(this)
 
         loadSavedFilters()
-        val interests = loadInterests()
-        setupRecyclerView(interests)
+        setupRecyclerView(loadInterestsOrActions())
         setupSeekBar()
         setupLocationAutoComplete()
         setupButtons()
@@ -60,9 +65,12 @@ class MainFilterActivity : BaseActivity() {
     }
 
     private fun loadSavedFilters() {
-        if (savedInterests.isNotEmpty()) {
-            selectedInterests = savedInterests.toMutableList()
+        if (mod == MainFilterMode.GROUP && savedGroupInterests.isNotEmpty()) {
+            selectedInterests = savedGroupInterests.toMutableList()
+        } else if (mod == MainFilterMode.ACTION && savedActionInterests.isNotEmpty()) {
+            selectedInterests = savedActionInterests.toMutableList()
         }
+
         if (savedRadius != 0) {
             selectedRadius = savedRadius
             binding.seekbar.progress = selectedRadius
@@ -73,6 +81,7 @@ class MainFilterActivity : BaseActivity() {
             binding.seekbar.progress = selectedRadius
             binding.tvRadius.text = "$selectedRadius km"
         }
+
         savedLocation?.let {
             selectedLocation = it.name
             binding.autoCompleteCityName.setText(it.name)
@@ -83,6 +92,14 @@ class MainFilterActivity : BaseActivity() {
                 selectedLocation = address.displayAddress
                 binding.autoCompleteCityName.setText(address.displayAddress)
             }
+        }
+    }
+
+    private fun loadInterestsOrActions(): List<MainFilterInterestForAdapter> {
+        return if (mod == MainFilterMode.ACTION) {
+            loadActions()
+        } else {
+            loadInterests()
         }
     }
 
@@ -101,8 +118,18 @@ class MainFilterActivity : BaseActivity() {
         )
     }
 
-    private fun setupRecyclerView(interests: List<MainFilterInterestForAdapter>) {
-        interestsAdapter = MainFilterAdapter(this, interests) { interest ->
+    private fun loadActions(): List<MainFilterInterestForAdapter> {
+        return listOf(
+            MainFilterInterestForAdapter("temps_de_partage", "Temps de partage", "café, activité...", selectedInterests.contains("temps_de_partage")),
+            MainFilterInterestForAdapter("service", "Service", "lessive, impression de documents...", selectedInterests.contains("service")),
+            MainFilterInterestForAdapter("vetement", "Vêtement", "chaussures, manteau...", selectedInterests.contains("vetement")),
+            MainFilterInterestForAdapter("equipement", "Équipement", "téléphone, duvet...", selectedInterests.contains("equipement")),
+            MainFilterInterestForAdapter("produit_d'hygiene", "Produit d'hygiène", "savon, protection hygiénique, couches...", selectedInterests.contains("produit_d'hygiene"))
+        )
+    }
+
+    private fun setupRecyclerView(items: List<MainFilterInterestForAdapter>) {
+        interestsAdapter = MainFilterAdapter(this, items) { interest ->
             if (interest.isSelected) {
                 selectedInterests.add(interest.id)
             } else {
@@ -211,18 +238,26 @@ class MainFilterActivity : BaseActivity() {
         selectedRadius = 0
         selectedLocation = ""
         // Reset UI elements
-        interestsAdapter.resetItems(loadInterests())
+        interestsAdapter.resetItems(loadInterestsOrActions())
         binding.seekbar.progress = 0
         binding.tvRadius.text = "0 km"
         binding.autoCompleteCityName.setText("")
         updateFilterCount(0)
-        savedInterests.clear()
+        if (mod == MainFilterMode.GROUP) {
+            savedGroupInterests.clear()
+        } else {
+            savedActionInterests.clear()
+        }
         savedRadius = 0
         savedLocation = null
     }
 
     private fun applyFilters() {
-        savedInterests = selectedInterests
+        if (mod == MainFilterMode.GROUP) {
+            savedGroupInterests = selectedInterests
+        } else {
+            savedActionInterests = selectedInterests
+        }
         savedRadius = selectedRadius
         // savedLocation is already set in fetchPlaceDetails
         finish()

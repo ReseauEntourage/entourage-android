@@ -108,4 +108,24 @@ interface ActionsRequest {
         @Body params: DemandCancelWrapper
     ): Call<DemandWrapper>
 
+    @GET("contributions")
+    fun getAllActionsContribWithFilter(
+        @Query("page") page: Int,
+        @Query("per") per: Int,
+        @Query("sections[]") sections: String?,
+        @Query("travel_distance") travelDistance: Int?,
+        @Query("latitude") latitude: Double?,
+        @Query("longitude") longitude: Double?,
+    ): Call<ContribsListWrapper>
+
+    @GET("solicitations")
+    fun getAllActionsDemandWithFilter(
+        @Query("page") page: Int,
+        @Query("per") per: Int,
+        @Query("sections[]") sections: String?,
+        @Query("travel_distance") travelDistance: Int?,
+        @Query("latitude") latitude: Double?,
+        @Query("longitude") longitude: Double?,
+    ): Call<DemandsListWrapper>
+
 }

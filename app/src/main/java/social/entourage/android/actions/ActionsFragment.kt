@@ -35,6 +35,7 @@ import social.entourage.android.home.UnreadMessages
 import social.entourage.android.api.model.EventActionLocationFilters
 import social.entourage.android.homev2.HomeV2Fragment
 import social.entourage.android.main_filter.MainFilterActivity
+import social.entourage.android.main_filter.MainFilterMode
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.log.AnalyticsEvents
 import uk.co.markormesher.android_fab.SpeedDialMenuAdapter
@@ -195,12 +196,15 @@ class ActionsFragment : Fragment() {
             initializeTab()
             RefreshController.shouldRefreshEventFragment = false
         }
-        if (MainFilterActivity.savedInterests.size > 0) {
+        if (MainFilterActivity.savedActionInterests.size > 0) {
             binding.cardFilterNumber.visibility = View.VISIBLE
-            binding.tvNumberOfFilter.text = MainFilterActivity.savedInterests.size.toString()
+            binding.tvNumberOfFilter.text = MainFilterActivity.savedActionInterests.size.toString()
+            binding.layoutFilter.background = resources.getDrawable(R.drawable.bg_selected_filter_main)
 
         } else {
             binding.cardFilterNumber.visibility = View.GONE
+            binding.layoutFilter.background = resources.getDrawable(R.drawable.bg_unselected_filter_main)
+
         }
     }
 
@@ -241,6 +245,11 @@ class ActionsFragment : Fragment() {
             AnalyticsEvents.logEvent(AnalyticsEvents.Help_view_myactions)
             val intent = Intent(context, MyActionsListActivity::class.java)
             startActivityForResult(intent, 0)
+        }
+        binding.layoutFilter.setOnClickListener {
+            MainFilterActivity.mod = MainFilterMode.ACTION
+            val intent = Intent(activity, MainFilterActivity::class.java)
+            startActivity(intent)
         }
     }
 

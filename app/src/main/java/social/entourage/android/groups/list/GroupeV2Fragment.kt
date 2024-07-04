@@ -20,6 +20,7 @@ import social.entourage.android.groups.GroupPresenter
 import social.entourage.android.groups.create.CreateGroupActivity
 import social.entourage.android.homev2.HomeGroupAdapter
 import social.entourage.android.main_filter.MainFilterActivity
+import social.entourage.android.main_filter.MainFilterMode
 import social.entourage.android.tools.log.AnalyticsEvents
 
 class GroupeV2Fragment : Fragment(), UpdateGroupInter {
@@ -81,6 +82,7 @@ class GroupeV2Fragment : Fragment(), UpdateGroupInter {
         )
         binding.layoutFilter.setOnClickListener {
             isFirstResumeWithFilters = true
+            MainFilterActivity.mod = MainFilterMode.GROUP
             val intent = Intent(activity, MainFilterActivity::class.java)
             startActivity(intent)
         }
@@ -123,9 +125,9 @@ class GroupeV2Fragment : Fragment(), UpdateGroupInter {
             lastFiltersHash = currentFiltersHash
         }
 
-        if (MainFilterActivity.savedInterests.size > 0) {
+        if (MainFilterActivity.savedGroupInterests.size > 0) {
             binding.cardFilterNumber.visibility = View.VISIBLE
-            binding.tvNumberOfFilter.text = MainFilterActivity.savedInterests.size.toString()
+            binding.tvNumberOfFilter.text = MainFilterActivity.savedGroupInterests.size.toString()
             binding.layoutFilter.background = resources.getDrawable(R.drawable.bg_selected_filter_main)
 
             if (isFirstResumeWithFilters) {
@@ -151,7 +153,7 @@ class GroupeV2Fragment : Fragment(), UpdateGroupInter {
     }
 
     private fun getCurrentFiltersHash(): Int {
-        return (MainFilterActivity.savedInterests.joinToString(",") +
+        return (MainFilterActivity.savedGroupInterests.joinToString(",") +
                 MainFilterActivity.savedRadius +
                 MainFilterActivity.savedLocation?.name).hashCode()
     }
@@ -333,7 +335,7 @@ class GroupeV2Fragment : Fragment(), UpdateGroupInter {
 
     private fun loadMoreGroups() {
         binding.progressBar.visibility = View.VISIBLE
-        if (MainFilterActivity.savedInterests.isNotEmpty()) {
+        if (MainFilterActivity.savedGroupInterests.isNotEmpty()) {
             applyFilters()
         } else {
             presenter.getAllGroups(page, PER_PAGE)
@@ -384,7 +386,7 @@ class GroupeV2Fragment : Fragment(), UpdateGroupInter {
     }
 
     private fun applyFilters() {
-        val interests = MainFilterActivity.savedInterests.joinToString(",")
+        val interests = MainFilterActivity.savedGroupInterests.joinToString(",")
         val radius = MainFilterActivity.savedRadius
         val location = MainFilterActivity.savedLocation
         val latitude = location?.lat

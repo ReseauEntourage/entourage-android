@@ -457,4 +457,31 @@ class ActionsPresenter : ViewModel() {
                 }
             })
     }
+
+    fun getAllContribsWithFilter(page: Int, per: Int, distance: Int?, latitude: Double?, longitude: Double?, sections: String?) {
+        EntourageApplication.get().apiModule.actionsRequest.getAllActionsContribWithFilter(page, per, sections, distance, latitude, longitude)
+            .enqueue(object : Callback<ContribsListWrapper> {
+                override fun onResponse(call: Call<ContribsListWrapper>, response: Response<ContribsListWrapper>) {
+                    response.body()?.let { allActionsWrapper ->
+                        if (allActionsWrapper.allActions.size < EVENTS_PER_PAGE) isLastPage = true
+                        getAllActions.value = allActionsWrapper.allActions
+                    }
+                }
+                override fun onFailure(call: Call<ContribsListWrapper>, t: Throwable) {}
+            })
+    }
+
+    fun getAllDemandsWithFilter(page: Int, per: Int, distance: Int?, latitude: Double?, longitude: Double?, sections: String?) {
+        EntourageApplication.get().apiModule.actionsRequest.getAllActionsDemandWithFilter(page, per, sections, distance, latitude, longitude)
+            .enqueue(object : Callback<DemandsListWrapper> {
+                override fun onResponse(call: Call<DemandsListWrapper>, response: Response<DemandsListWrapper>) {
+                    response.body()?.let { allActionsWrapper ->
+                        if (allActionsWrapper.allActions.size < EVENTS_PER_PAGE) isLastPage = true
+                        getAllActions.value = allActionsWrapper.allActions
+                    }
+                }
+                override fun onFailure(call: Call<DemandsListWrapper>, t: Throwable) {}
+            })
+    }
+
 }

@@ -26,6 +26,7 @@ import social.entourage.android.events.EventFiltersActivity
 import social.entourage.android.events.EventsPresenter
 import social.entourage.android.homev2.HomeEventAdapter
 import social.entourage.android.main_filter.MainFilterActivity
+import social.entourage.android.main_filter.MainFilterMode
 import social.entourage.android.tools.log.AnalyticsEvents
 
 const val EVENTS_PER_PAGE = 20
@@ -103,9 +104,9 @@ class DiscoverEventsListFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        if (MainFilterActivity.savedInterests.size > 0) {
+        if (MainFilterActivity.savedGroupInterests.size > 0) {
             binding.cardFilterNumber.visibility = View.VISIBLE
-            binding.tvNumberOfFilter.text = MainFilterActivity.savedInterests.size.toString()
+            binding.tvNumberOfFilter.text = MainFilterActivity.savedGroupInterests.size.toString()
             binding.layoutFilter.background = resources.getDrawable(R.drawable.bg_selected_filter_main)
         } else {
             binding.cardFilterNumber.visibility = View.GONE
@@ -133,7 +134,7 @@ class DiscoverEventsListFragment : Fragment() {
         pageMyEvent = 0
         eventsPresenter.isLastPage = false
         eventsPresenter.isLastPageMyEvent = false
-        if (MainFilterActivity.savedInterests.isNotEmpty() ||
+        if (MainFilterActivity.savedGroupInterests.isNotEmpty() ||
             MainFilterActivity.savedRadius != 0 ||
             MainFilterActivity.savedLocation != null) {
             applyFilters()
@@ -150,6 +151,7 @@ class DiscoverEventsListFragment : Fragment() {
         myeventsAdapter.clearList()
         binding.layoutFilter.setOnClickListener {
             isFirstResumeWithFilters = true
+            MainFilterActivity.mod = MainFilterMode.GROUP
             val intent = Intent(activity, MainFilterActivity::class.java)
             startActivity(intent)
         }
@@ -302,8 +304,8 @@ class DiscoverEventsListFragment : Fragment() {
         page++
         if (!eventsPresenter.isLastPage && !isLoading) {
             isLoading = true
-            Log.wtf("wtf" , "save interest : ${MainFilterActivity.savedInterests}")
-            if (MainFilterActivity.savedInterests.isEmpty()){
+            Log.wtf("wtf" , "save interest : ${MainFilterActivity.savedGroupInterests}")
+            if (MainFilterActivity.savedGroupInterests.isEmpty()){
                 // Si aucun filtre n'est sélectionné, utiliser getAllEvents
                 eventsPresenter.getAllEvents(
                     page, EVENTS_PER_PAGE,
@@ -316,7 +318,7 @@ class DiscoverEventsListFragment : Fragment() {
                 val longitude = MainFilterActivity.savedLocation?.lng ?: currentFilters.longitude()
                 eventsPresenter.getAllEventsWithFilter(
                     page, EVENTS_PER_PAGE,
-                    MainFilterActivity.savedInterests.joinToString(","),
+                    MainFilterActivity.savedGroupInterests.joinToString(","),
                     radius, latitude, longitude, "future"
                 )
             }
@@ -328,7 +330,7 @@ class DiscoverEventsListFragment : Fragment() {
         binding.swipeRefresh.isRefreshing = false
         myId = EntourageApplication.me(activity)?.id
         if (myId != null) {
-            if (MainFilterActivity.savedInterests.isEmpty()) {
+            if (MainFilterActivity.savedGroupInterests.isEmpty()) {
                 // Si aucun filtre n'est sélectionné, utiliser getMyEvents
                 eventsPresenter.getMyEvents(
                     myId!!,
@@ -342,7 +344,7 @@ class DiscoverEventsListFragment : Fragment() {
                 eventsPresenter.getMyEventsWithFilter(
                     myId!!,
                     pageMyEvent, EVENTS_PER_PAGE,
-                    MainFilterActivity.savedInterests.joinToString(","),
+                    MainFilterActivity.savedGroupInterests.joinToString(","),
                     radius, latitude, longitude, "future"
                 )
             }
@@ -429,7 +431,7 @@ class DiscoverEventsListFragment : Fragment() {
         page++
         eventsPresenter.getAllEventsWithSearchQuery(query, page, EVENTS_PER_PAGE)
     }
-    
+
     private fun hideMainViews() {
         binding.recyclerView.visibility = View.GONE
         binding.rvMyEvent.visibility = View.GONE

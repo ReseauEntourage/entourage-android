@@ -126,6 +126,7 @@ android:background="@drawable/new_profile_header_orange_dark">
                         app:layout_constraintBottom_toBottomOf="parent"
                         android:layout_marginStart="10dp"
                         android:layout_marginEnd="10dp"
+                        android:visibility="gone"
                         android:background="@drawable/bg_main_filter_item_number_shape">
                         <TextView
                             android:layout_width="20dp"
@@ -152,6 +153,7 @@ android:background="@drawable/new_profile_header_orange_dark">
                 android:textSize="15sp"
                 android:textColor="@android:color/black"
                 android:fontFamily="@font/quicksand_bold"
+                android:layout_marginTop="10dp"
                 android:layout_marginStart="@dimen/entourage_margin_section"
                 android:layout_marginEnd="@dimen/entourage_margin_section"
 

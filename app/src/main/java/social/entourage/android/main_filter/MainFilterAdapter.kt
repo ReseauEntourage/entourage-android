@@ -2,6 +2,7 @@ package social.entourage.android.main_filter
 
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import social.entourage.android.R
@@ -17,23 +18,28 @@ class MainFilterAdapter(
         fun bind(item: MainFilterInterestForAdapter) {
             binding.tvInterestTitleFromRight.text = item.title
             binding.tvInterestSubTitleFromRight.text = item.subtitle
-            updateBackgroundAndTextStyle(item.isSelected)
+            binding.tvInterestSubTitleFromRight.visibility = if (item.subtitle.isNotEmpty()) View.VISIBLE else View.GONE
+            updateBackgroundAndTextStyle(item)
 
             binding.root.setOnClickListener {
                 item.isSelected = !item.isSelected
-                updateBackgroundAndTextStyle(item.isSelected)
+                updateBackgroundAndTextStyle(item)
                 onItemClicked(item)
             }
         }
 
-        private fun updateBackgroundAndTextStyle(isSelected: Boolean) {
-            val backgroundResource = if (isSelected) R.drawable.shape_border_orange else R.drawable.shape_grey_border
+        private fun updateBackgroundAndTextStyle(item: MainFilterInterestForAdapter) {
+            val backgroundResource = if (item.isSelected) R.drawable.shape_border_orange else R.drawable.shape_grey_border
             binding.root.setBackgroundResource(backgroundResource)
-            binding.ivInterestCheck.setImageResource(if (isSelected) R.drawable.ic_onboarding_check else R.drawable.ic_onboarding_uncheck)
+            binding.ivInterestCheck.setImageResource(if (item.isSelected) R.drawable.ic_onboarding_check else R.drawable.ic_onboarding_uncheck)
 
-            val typeface = if (isSelected) android.graphics.Typeface.BOLD else android.graphics.Typeface.NORMAL
-            binding.tvInterestTitleFromRight.setTypeface(null, typeface)
-            binding.tvInterestSubTitleFromRight.setTypeface(null, typeface)
+            if (item.subtitle.isNotEmpty()) {
+                binding.tvInterestTitleFromRight.setTypeface(null, android.graphics.Typeface.BOLD)
+                binding.tvInterestSubTitleFromRight.setTypeface(null, android.graphics.Typeface.NORMAL)
+            } else {
+                val typeface = if (item.isSelected) android.graphics.Typeface.BOLD else android.graphics.Typeface.NORMAL
+                binding.tvInterestTitleFromRight.setTypeface(null, typeface)
+            }
         }
     }
 
