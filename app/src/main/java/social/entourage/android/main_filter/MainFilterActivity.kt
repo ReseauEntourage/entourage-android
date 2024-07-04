@@ -40,6 +40,7 @@ class MainFilterActivity : BaseActivity() {
         var savedRadius = 0
         var savedLocation: PlaceDetails? = null
         var mod: MainFilterMode = MainFilterMode.GROUP
+        var hasToReloadAction = false
         data class PlaceDetails(val name: String, val lat: Double, val lng: Double)
     }
 
@@ -231,6 +232,9 @@ class MainFilterActivity : BaseActivity() {
         }
         binding.buttonStart.setOnClickListener {
             applyFilters()
+        }
+        binding.iconBack.setOnClickListener {
+            finish()
         }
     }
 

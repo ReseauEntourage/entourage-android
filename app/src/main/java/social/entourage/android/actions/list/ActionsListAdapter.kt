@@ -23,16 +23,22 @@ import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.px
 
 class ActionsListAdapter(
-    private var groupsList: List<Action>,
     var userId: Int?,
     private val isContrib:Boolean,
     var context: Context
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     val TYPE_CONTRIB = 0
     val TYPE_DEMAND = 1
-
+    var groupsList: MutableList<Action> = mutableListOf()
+    var isModContrib = false
+    fun resetData(groupsList: MutableList<Action>, isContrib: Boolean) {
+        this.isModContrib = isContrib
+        this.groupsList.clear()
+        this.groupsList.addAll(groupsList)
+        notifyDataSetChanged()
+    }
     override fun getItemViewType(position: Int): Int {
-        return  if (isContrib) TYPE_CONTRIB else TYPE_DEMAND
+        return  if (isModContrib) TYPE_CONTRIB else TYPE_DEMAND
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {

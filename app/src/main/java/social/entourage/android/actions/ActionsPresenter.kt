@@ -45,6 +45,7 @@ class ActionsPresenter : ViewModel() {
     val searchQuery = MutableLiveData<String>()
     val actionSearch = MutableLiveData<MutableList<Action>>()
     var isLastPageSearch = false
+    var isContrib = false
     fun onSearchQueryChanged(query: String) {
         searchQuery.value = query
     }
@@ -469,7 +470,6 @@ class ActionsPresenter : ViewModel() {
                 override fun onResponse(call: Call<ContribsListWrapper>, response: Response<ContribsListWrapper>) {
                     response.body()?.let { allActionsWrapper ->
                         if (allActionsWrapper.allActions.size < EVENTS_PER_PAGE) isLastPage = true
-                        Log.d(ActionListFragment.TAG, "Fetching contributions with filters")
                         getAllActions.value = allActionsWrapper.allActions
                     }
                 }
@@ -494,9 +494,7 @@ class ActionsPresenter : ViewModel() {
             .enqueue(object : Callback<ContribsListWrapper> {
                 override fun onResponse(call: Call<ContribsListWrapper>, response: Response<ContribsListWrapper>) {
                     response.body()?.let { allActionsWrapper ->
-                        val currentList = actionSearch.value ?: mutableListOf()
-                        currentList.addAll(allActionsWrapper.allActions)
-                        actionSearch.value = currentList
+                        getAllActions.value = allActionsWrapper.allActions
                         if (allActionsWrapper.allActions.size < per) isLastPageSearch = true
                     }
                 }
@@ -512,9 +510,7 @@ class ActionsPresenter : ViewModel() {
             .enqueue(object : Callback<DemandsListWrapper> {
                 override fun onResponse(call: Call<DemandsListWrapper>, response: Response<DemandsListWrapper>) {
                     response.body()?.let { allActionsWrapper ->
-                        val currentList = actionSearch.value ?: mutableListOf()
-                        currentList.addAll(allActionsWrapper.allActions)
-                        actionSearch.value = currentList
+                        getAllActions.value = allActionsWrapper.allActions
                         if (allActionsWrapper.allActions.size < per) isLastPageSearch = true
                     }
                 }

@@ -54,13 +54,13 @@ const val FILTERS2 = "filters2"
 
 class ActionsFragment : Fragment() {
 
-    private var _binding:NewFragmentActionsBinding? = null
+    private var _binding: NewFragmentActionsBinding? = null
     val binding: NewFragmentActionsBinding get() = _binding!!
 
     private var activityResultLauncher: ActivityResultLauncher<Intent>? = null
 
     private var isFromFilters = false
-    private lateinit var presenter:ActionsPresenter
+    private lateinit var presenter: ActionsPresenter
 
     private var currentLocationFilters = EventActionLocationFilters()
     private var currentCategoriesFilters = ActionSectionFilters()
@@ -103,7 +103,7 @@ class ActionsFragment : Fragment() {
             return true
         }
 
-        override fun onPrepareItemLabel(context: Context, position: Int, label: TextView) {
+            override fun onPrepareItemLabel(context: Context, position: Int, label: TextView) {
             TextViewCompat.setTextAppearance(label, R.style.left_courant_bold_black)
         }
 
@@ -135,30 +135,8 @@ class ActionsFragment : Fragment() {
     }
 
     private fun updateFilters() {
-        isFromFilters = true
 
-        binding.uiTitleLocationBt.text = currentLocationFilters.getFilterButtonString(requireContext())
-
-        if (currentCategoriesFilters.getNumberOfSectionsSelected() > 0) {
-            binding.uiNbCategoryBt.text = "${currentCategoriesFilters.getNumberOfSectionsSelected()}"
-            binding.uiNbCategoryBt.visibility = View.VISIBLE
-        }
-        else {
-            binding.uiNbCategoryBt.visibility = View.GONE
-        }
-
-        reload()
     }
-
-    private fun reload() {
-        val bundle = bundleOf()
-        bundle.putSerializable(LOCATION_FILTERS,currentLocationFilters)
-        bundle.putSerializable(CATEGORIES_FILTERS,currentCategoriesFilters)
-        //Use to pass datas to child Fragment - Fragment Listener only work for 1 child fragment, need to pass multiples fragment results ;)
-        childFragmentManager.setFragmentResult(FILTERS, bundle)
-        childFragmentManager.setFragmentResult(FILTERS2, bundle)
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         presenter = ViewModelProvider(requireActivity()).get(ActionsPresenter::class.java)
@@ -169,35 +147,36 @@ class ActionsFragment : Fragment() {
         }
         isDemand = !HomeV2Fragment.isContribProfile
         ViewPagerDefaultPageController.shouldSelectActionDemand = isDemand
-        binding.searchEditText.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-
-            }
-            override fun afterTextChanged(s: Editable?) {
-                presenter.onSearchQueryChanged(s.toString())
-            }
-        })
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = NewFragmentActionsBinding.inflate(inflater,container,false)
+        _binding = NewFragmentActionsBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        // Ajout du TextWatcher ici pour garantir que _binding est initialisé
+        binding.searchEditText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+
+            override fun afterTextChanged(s: Editable?) {
+                presenter.onSearchQueryChanged(s.toString())
+            }
+        })
+
         createAction()
         initializeViews()
         initializeTab()
         initializeFilters()
         handleImageViewAnimation()
         setPage()
-
 
         presenter.unreadMessages.observe(requireActivity(), ::updateUnreadCount)
         presenter.getUnreadCount()
@@ -213,11 +192,9 @@ class ActionsFragment : Fragment() {
             binding.cardFilterNumber.visibility = View.VISIBLE
             binding.tvNumberOfFilter.text = MainFilterActivity.savedActionInterests.size.toString()
             binding.layoutFilter.background = resources.getDrawable(R.drawable.bg_selected_filter_main)
-
         } else {
             binding.cardFilterNumber.visibility = View.GONE
             binding.layoutFilter.background = resources.getDrawable(R.drawable.bg_unselected_filter_main)
-
         }
     }
 
@@ -238,18 +215,16 @@ class ActionsFragment : Fragment() {
         binding.tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 if (tab?.position == 0) {
+                    presenter.isContrib = true
                     AnalyticsEvents.logEvent(AnalyticsEvents.Help_view_contrib)
-                }
-                else {
+                } else {
+                    presenter.isContrib = false
                     AnalyticsEvents.logEvent(AnalyticsEvents.Help_view_demand)
                 }
             }
 
-            override fun onTabUnselected(tab: TabLayout.Tab?) {
-            }
-
-            override fun onTabReselected(tab: TabLayout.Tab?) {
-            }
+            override fun onTabUnselected(tab: TabLayout.Tab?) {}
+            override fun onTabReselected(tab: TabLayout.Tab?) {}
         })
     }
 
@@ -261,6 +236,7 @@ class ActionsFragment : Fragment() {
         }
         binding.layoutFilter.setOnClickListener {
             MainFilterActivity.mod = MainFilterMode.ACTION
+            MainFilterActivity.hasToReloadAction = true
             val intent = Intent(activity, MainFilterActivity::class.java)
             startActivity(intent)
         }
@@ -270,14 +246,14 @@ class ActionsFragment : Fragment() {
         binding.uiLayoutLocationBt.setOnClickListener {
             AnalyticsEvents.logEvent(AnalyticsEvents.Help_action_location)
             val intent = Intent(context, ActionLocationFilterActivity::class.java)
-            intent.putExtra(LOCATION_FILTERS,currentLocationFilters)
+            intent.putExtra(LOCATION_FILTERS, currentLocationFilters)
             activityResultLauncher?.launch(intent)
         }
 
         binding.uiLayoutCategoryBt.setOnClickListener {
             AnalyticsEvents.logEvent(AnalyticsEvents.Help_action_filters)
             val intent = Intent(context, social.entourage.android.actions.ActionCategoriesFiltersActivity::class.java)
-            intent.putExtra(CATEGORIES_FILTERS,currentCategoriesFilters)
+            intent.putExtra(CATEGORIES_FILTERS, currentCategoriesFilters)
             activityResultLauncher?.launch(intent)
         }
 
@@ -287,8 +263,7 @@ class ActionsFragment : Fragment() {
         if (currentCategoriesFilters.getNumberOfSectionsSelected() > 0) {
             binding.uiNbCategoryBt.text = "${currentCategoriesFilters.getNumberOfSectionsSelected()}"
             binding.uiNbCategoryBt.visibility = View.VISIBLE
-        }
-        else {
+        } else {
             binding.uiNbCategoryBt.visibility = View.GONE
         }
     }
@@ -304,7 +279,7 @@ class ActionsFragment : Fragment() {
     }
 
     private fun updateUnreadCount(unreadMessages: UnreadMessages?) {
-        val count:Int = unreadMessages?.unreadCount ?: 0
+        val count: Int = unreadMessages?.unreadCount ?: 0
         EntourageApplication.get().mainActivity?.let {
             val viewModel = ViewModelProvider(it)[CommunicationHandlerBadgeViewModel::class.java]
             viewModel.badgeCount.postValue(UnreadMessages(count))
@@ -313,8 +288,7 @@ class ActionsFragment : Fragment() {
 
     private fun handleImageViewAnimation() {
         binding.appBar.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
-            val res: Float =
-                abs(verticalOffset).toFloat() / appBarLayout.totalScrollRange
+            val res: Float = abs(verticalOffset).toFloat() / appBarLayout.totalScrollRange
             binding.img.alpha = 1f - res
         })
     }
