@@ -2,11 +2,13 @@ package social.entourage.android.actions.list
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import social.entourage.android.EntourageApplication
@@ -29,7 +31,7 @@ class ActionListFragment : Fragment() {
     private var _binding: FragmentActionListBinding? = null
     val binding: FragmentActionListBinding get() = _binding!!
 
-    private val actionsPresenter: ActionsPresenter by lazy { ActionsPresenter() }
+    private lateinit var actionsPresenter: ActionsPresenter
     private var myId: Int? = null
     private lateinit var actionAdapter: ActionsListAdapter
     private var page: Int = 0
@@ -59,6 +61,7 @@ class ActionListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        actionsPresenter = ViewModelProvider(requireActivity()).get(ActionsPresenter::class.java)
 
         // Initialisation des variables
         savedInterests = MainFilterActivity.savedActionInterests
@@ -67,8 +70,9 @@ class ActionListFragment : Fragment() {
 
         // Ajout d'observateurs pour les filtres
         actionsPresenter.getAllActions.observe(viewLifecycleOwner, ::handleResponseGetDemands)
-
-
+        actionsPresenter.searchQuery.observe(viewLifecycleOwner, { query ->
+            handleSearchQuery(query)
+        })
         isContrib = arguments?.getBoolean(IS_CONTRIB, false) ?: false
 
         myId = EntourageApplication.me(activity)?.id
@@ -90,6 +94,7 @@ class ActionListFragment : Fragment() {
         super.onResume()
         binding.progressBar.visibility = View.VISIBLE
 
+
         val currentFiltersHash = getCurrentFiltersHash()
         if (currentFiltersHash != lastFiltersHash) {
             isFirstResumeWithFilters = true
@@ -97,7 +102,6 @@ class ActionListFragment : Fragment() {
         }
 
         if (MainFilterActivity.savedActionInterests.isNotEmpty()) {
-
             if (isFirstResumeWithFilters) {
                 isFirstResumeWithFilters = false
                 allActions.clear()
@@ -117,6 +121,15 @@ class ActionListFragment : Fragment() {
         return (MainFilterActivity.savedActionInterests.joinToString(",") +
                 MainFilterActivity.savedRadius +
                 MainFilterActivity.savedLocation?.name).hashCode()
+    }
+
+    private fun handleSearchQuery(query: String) {
+        // Logique pour gérer la chaîne de recherche et charger les actions
+        if (isContrib) {
+            //actionsPresenter.getAllContribsWithSearch(page, EVENTS_PER_PAGE, query, currentFilters.travel_distance(), currentFilters.latitude(), currentFilters.longitude(), null)
+        } else {
+            //actionsPresenter.getAllDemandsWithSearch(page, EVENTS_PER_PAGE, query, currentFilters.travel_distance(), currentFilters.latitude(), currentFilters.longitude(), null)
+        }
     }
 
     private fun initializeEmptyState() {
@@ -174,15 +187,17 @@ class ActionListFragment : Fragment() {
         val latitude = location?.lat
         val longitude = location?.lng
 
+        Log.d(TAG, "applyFilters: interests=$interests, radius=$radius, latitude=$latitude, longitude=$longitude")
+
         if (isContrib) {
             if (interests.isEmpty() && radius == 0 && latitude == null && longitude == null) {
-                actionsPresenter.getAllContribs(page, EVENTS_PER_PAGE, null, null, null, null)
+                actionsPresenter.getAllContribs(page, EVENTS_PER_PAGE, currentFilters.travel_distance(), currentFilters.latitude(), currentFilters.longitude(), null)
             } else {
                 actionsPresenter.getAllContribsWithFilter(page, EVENTS_PER_PAGE, radius, latitude, longitude, interests)
             }
         } else {
             if (interests.isEmpty() && radius == 0 && latitude == null && longitude == null) {
-                actionsPresenter.getAllDemands(page, EVENTS_PER_PAGE, null, null, null, null)
+                actionsPresenter.getAllDemands(page, EVENTS_PER_PAGE, currentFilters.travel_distance(), currentFilters.latitude(), currentFilters.longitude(), null)
             } else {
                 actionsPresenter.getAllDemandsWithFilter(page, EVENTS_PER_PAGE, radius, latitude, longitude, interests)
             }

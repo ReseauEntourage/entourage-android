@@ -90,6 +90,7 @@ class MainFilterActivity : BaseActivity() {
             val address = user?.address
             if (address != null) {
                 selectedLocation = address.displayAddress
+                savedLocation = PlaceDetails(address.displayAddress, address.latitude, address.longitude)
                 binding.autoCompleteCityName.setText(address.displayAddress)
             }
         }
@@ -113,7 +114,7 @@ class MainFilterActivity : BaseActivity() {
             MainFilterInterestForAdapter("culture", getString(R.string.interest_culture), "", selectedInterests.contains("culture")),
             MainFilterInterestForAdapter("nature", getString(R.string.interest_nature), "", selectedInterests.contains("nature")),
             MainFilterInterestForAdapter("jeux", getString(R.string.interest_jeux), "", selectedInterests.contains("jeux")),
-            MainFilterInterestForAdapter("activites", getString(R.string.interest_activites_onboarding), "", selectedInterests.contains("activites")),
+            MainFilterInterestForAdapter("activites", getString(R.string.interest_activites_main_filter), "", selectedInterests.contains("activites")),
             MainFilterInterestForAdapter("other", getString(R.string.interest_other), "", selectedInterests.contains("other"))
         )
     }
@@ -123,8 +124,8 @@ class MainFilterActivity : BaseActivity() {
             MainFilterInterestForAdapter("temps_de_partage", "Temps de partage", "café, activité...", selectedInterests.contains("temps_de_partage")),
             MainFilterInterestForAdapter("service", "Service", "lessive, impression de documents...", selectedInterests.contains("service")),
             MainFilterInterestForAdapter("vetement", "Vêtement", "chaussures, manteau...", selectedInterests.contains("vetement")),
-            MainFilterInterestForAdapter("equipement", "Équipement", "téléphone, duvet...", selectedInterests.contains("equipement")),
-            MainFilterInterestForAdapter("produit_d'hygiene", "Produit d'hygiène", "savon, protection hygiénique, couches...", selectedInterests.contains("produit_d'hygiene"))
+            MainFilterInterestForAdapter("equipment ", "Équipement", "téléphone, duvet...", selectedInterests.contains("equipement")),
+            MainFilterInterestForAdapter("produit_d'hygiene", "Produit d'hygiène", "savon, protection hygiénique,...", selectedInterests.contains("produit_d'hygiene"))
         )
     }
 

@@ -64,7 +64,7 @@ interface GroupRequest {
     fun getAllGroupswithFilter(
         @Query("page") page: Int,
         @Query("per") per: Int,
-        @Query("interests[]") interests: String,
+        @Query("interest_list") interests: String,
         @Query("travel_distance") radius: Int,
         @Query("latitude") latitude: Double?,
         @Query("longitude") longitude: Double?

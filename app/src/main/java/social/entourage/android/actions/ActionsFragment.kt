@@ -3,6 +3,8 @@ package social.entourage.android.actions
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -58,6 +60,7 @@ class ActionsFragment : Fragment() {
     private var activityResultLauncher: ActivityResultLauncher<Intent>? = null
 
     private var isFromFilters = false
+    private lateinit var presenter:ActionsPresenter
 
     private var currentLocationFilters = EventActionLocationFilters()
     private var currentCategoriesFilters = ActionSectionFilters()
@@ -158,6 +161,7 @@ class ActionsFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        presenter = ViewModelProvider(requireActivity()).get(ActionsPresenter::class.java)
 
         var isDemand = false
         arguments?.let {
@@ -165,6 +169,16 @@ class ActionsFragment : Fragment() {
         }
         isDemand = !HomeV2Fragment.isContribProfile
         ViewPagerDefaultPageController.shouldSelectActionDemand = isDemand
+        binding.searchEditText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+
+            }
+            override fun afterTextChanged(s: Editable?) {
+                presenter.onSearchQueryChanged(s.toString())
+            }
+        })
     }
 
     override fun onCreateView(
@@ -185,7 +199,6 @@ class ActionsFragment : Fragment() {
         setPage()
 
 
-        val presenter = ActionsPresenter()
         presenter.unreadMessages.observe(requireActivity(), ::updateUnreadCount)
         presenter.getUnreadCount()
     }

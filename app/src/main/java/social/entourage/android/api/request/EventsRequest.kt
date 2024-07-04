@@ -32,7 +32,7 @@ interface EventsRequest {
         @Path("user_id") userId: Int,
         @Query("page") page: Int,
         @Query("per") per: Int,
-        @Query("interests[]") interests: String,
+        @Query("interest_list") interests: String,
         @Query("travel_distance") travelDistance: Int?,
         @Query("latitude") latitude: Double?,
         @Query("longitude") longitude: Double?,

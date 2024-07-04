@@ -2,6 +2,7 @@ package social.entourage.android.actions
 
 import android.content.Context
 import android.net.Uri
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -13,6 +14,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import social.entourage.android.EntourageApplication
+import social.entourage.android.actions.list.ActionListFragment
 import social.entourage.android.api.request.*
 import social.entourage.android.home.UnreadMessages
 import social.entourage.android.api.model.Action
@@ -40,9 +42,12 @@ class ActionsPresenter : ViewModel() {
 
     var unreadMessages = MutableLiveData<UnreadMessages?>()
 
-    /*
-        Gets
-     */
+    val searchQuery = MutableLiveData<String>()
+    val actionSearch = MutableLiveData<MutableList<Action>>()
+    var isLastPageSearch = false
+    fun onSearchQueryChanged(query: String) {
+        searchQuery.value = query
+    }
 
     fun getAllContribs(page: Int, per: Int,distance:Int?,latitude:Double?,longitude:Double?,sections: String?) {
         EntourageApplication.get().apiModule.actionsRequest.getAllActionsContrib(page,per,sections,distance,latitude,longitude)
@@ -464,6 +469,7 @@ class ActionsPresenter : ViewModel() {
                 override fun onResponse(call: Call<ContribsListWrapper>, response: Response<ContribsListWrapper>) {
                     response.body()?.let { allActionsWrapper ->
                         if (allActionsWrapper.allActions.size < EVENTS_PER_PAGE) isLastPage = true
+                        Log.d(ActionListFragment.TAG, "Fetching contributions with filters")
                         getAllActions.value = allActionsWrapper.allActions
                     }
                 }
@@ -481,6 +487,41 @@ class ActionsPresenter : ViewModel() {
                     }
                 }
                 override fun onFailure(call: Call<DemandsListWrapper>, t: Throwable) {}
+            })
+    }
+    fun getAllContribsWithSearchQuery(query: String, page: Int, per: Int) {
+        EntourageApplication.get().apiModule.actionsRequest.getAllContribsWithSearchQuery(query, page, per)
+            .enqueue(object : Callback<ContribsListWrapper> {
+                override fun onResponse(call: Call<ContribsListWrapper>, response: Response<ContribsListWrapper>) {
+                    response.body()?.let { allActionsWrapper ->
+                        val currentList = actionSearch.value ?: mutableListOf()
+                        currentList.addAll(allActionsWrapper.allActions)
+                        actionSearch.value = currentList
+                        if (allActionsWrapper.allActions.size < per) isLastPageSearch = true
+                    }
+                }
+
+                override fun onFailure(call: Call<ContribsListWrapper>, t: Throwable) {
+                    // Gérer l'échec
+                }
+            })
+    }
+
+    fun getAllDemandsWithSearchQuery(query: String, page: Int, per: Int) {
+        EntourageApplication.get().apiModule.actionsRequest.getAllDemandsWithSearchQuery(query, page, per)
+            .enqueue(object : Callback<DemandsListWrapper> {
+                override fun onResponse(call: Call<DemandsListWrapper>, response: Response<DemandsListWrapper>) {
+                    response.body()?.let { allActionsWrapper ->
+                        val currentList = actionSearch.value ?: mutableListOf()
+                        currentList.addAll(allActionsWrapper.allActions)
+                        actionSearch.value = currentList
+                        if (allActionsWrapper.allActions.size < per) isLastPageSearch = true
+                    }
+                }
+
+                override fun onFailure(call: Call<DemandsListWrapper>, t: Throwable) {
+                    // Gérer l'échec
+                }
             })
     }
 

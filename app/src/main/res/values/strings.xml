@@ -2623,6 +2623,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
 
     <string name="interest_activites">Activités manuelles</string>
     <string name="interest_activites_onboarding">Activités \nmanuelles</string>
+    <string name="interest_activites_main_filter">Activités manuelles</string>
     <string name="interest_animaux">Animaux</string>
     <string name="interest_bien_etre">Bien-être</string>
     <string name="interest_cuisine">Cuisine</string>
@@ -2789,6 +2790,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
 
     <string name="group_search_hint">Rechercher un groupe</string>
     <string name="event_search_hint">Rechercher un événement</string>
+    <string name="action_search_hint">Rechercher une action</string>
 
 
 </resources>

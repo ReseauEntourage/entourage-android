@@ -235,20 +235,37 @@
                             tools:text="1" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
+                    <EditText
+                        android:id="@+id/searchEditText"
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/layout_filter"
+                        android:fontFamily="@font/nunitosans_regular"
+                        android:layout_marginStart="28dp"
+                        android:layout_marginEnd="8dp"
+                        android:textSize="15sp"
+                        android:background="@drawable/bg_unselected_filter_main"
+                        android:hint="@string/action_search_hint"
+                        android:padding="10dp"
+                        android:layout_marginTop="10dp"
+                        android:inputType="text"
+                        android:textColor="@android:color/black"
+                        android:imeOptions="actionSearch"/>
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/layout_filter"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
-                        android:layout_marginBottom="8dp"
+                        android:layout_height="40dp"
                         android:background="@drawable/bg_unselected_filter_main"
                         android:paddingHorizontal="4dp"
                         android:paddingVertical="6dp"
-                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintBottom_toBottomOf="@+id/searchEditText"
                         app:layout_constraintEnd_toEndOf="parent"
                         android:layout_marginStart="16dp"
                         android:layout_marginEnd="16dp"
-                        app:layout_constraintTop_toTopOf="parent">
+                        app:layout_constraintTop_toTopOf="@+id/searchEditText">
 
                         <TextView
                             android:id="@+id/ui_title_location_bt_new"
@@ -315,6 +332,7 @@
             android:background="@color/light_beige"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
             app:userInputEnabled="@{false}" />
+
 
         <uk.co.markormesher.android_fab.FloatingActionButton
             android:id="@+id/create_action"
