@@ -46,6 +46,7 @@ class EventsFragment : Fragment() {
     private var activityResultLauncher: ActivityResultLauncher<Intent>? = null
     private var isFromFilters = false
 
+
     //TODO title same size as
     val binding: NewFragmentEventsBinding get() = _binding!!
     private lateinit var eventsPresenter: EventsPresenter
@@ -93,6 +94,7 @@ class EventsFragment : Fragment() {
         eventsPresenter.haveToChangePage.observe(requireActivity(),::handlePageChange)
         eventsPresenter.haveToCreateEvent.observe(requireActivity(),::handleLaunchCreateEvent)
         eventsPresenter.isCreateButtonExtended.observe(requireActivity(),::handleButtonBehavior)
+        eventsPresenter.hasToHideButton.observe(requireActivity(),::handleShowHideButton)
         eventsPresenter.hasChangedFilterLocationForParentFragment.observe(requireActivity(),::handleFilterTitleAfterChange)
         eventsPresenter.getUnreadCount()
     }
@@ -116,6 +118,13 @@ class EventsFragment : Fragment() {
         isFromFilters = true
         binding.uiTitleLocationBt.text = currentFilters.getFilterButtonString(requireContext())
 
+    }
+    private fun handleShowHideButton(hideButton:Boolean){
+        if(hideButton){
+            binding.createEventExpanded.visibility = View.GONE
+            binding.createEventRetracted.visibility = View.GONE
+        }else{
+            binding.createEventExpanded.visibility = View.VISIBLE }
     }
     fun initView(){
 

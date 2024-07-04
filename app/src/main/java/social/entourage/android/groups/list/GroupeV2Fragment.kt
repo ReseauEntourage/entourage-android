@@ -222,6 +222,9 @@ class GroupeV2Fragment : Fragment(), UpdateGroupInter {
         binding.separatorAllGroups.visibility = View.GONE
         binding.titleMyGroups.visibility = View.GONE
         binding.separatorMyGroups.visibility = View.GONE
+        binding.createGroupExpanded.visibility = View.GONE
+        binding.createGroup.visibility = View.GONE
+        binding.layoutFilter.visibility = View.GONE
     }
 
     private fun showMainViews() {
@@ -232,6 +235,9 @@ class GroupeV2Fragment : Fragment(), UpdateGroupInter {
         binding.separatorAllGroups.visibility = View.VISIBLE
         binding.titleMyGroups.visibility = View.VISIBLE
         binding.separatorMyGroups.visibility = View.VISIBLE
+        binding.layoutFilter.visibility = View.VISIBLE
+        binding.createGroupExpanded.visibility = View.VISIBLE
+
     }
 
     private fun initView() {

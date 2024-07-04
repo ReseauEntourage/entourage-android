@@ -168,6 +168,11 @@ class ActionsFragment : Fragment() {
 
             override fun afterTextChanged(s: Editable?) {
                 presenter.onSearchQueryChanged(s.toString())
+                if (!s.toString().isEmpty()) {
+                    hideFilter()
+                }else {
+                    showFilter()
+                }
             }
         })
 
@@ -196,6 +201,16 @@ class ActionsFragment : Fragment() {
             binding.cardFilterNumber.visibility = View.GONE
             binding.layoutFilter.background = resources.getDrawable(R.drawable.bg_unselected_filter_main)
         }
+    }
+
+    fun hideFilter() {
+        binding.layoutFilter.visibility = View.GONE
+        binding.createAction.visibility = View.GONE
+    }
+
+    fun showFilter() {
+        binding.layoutFilter.visibility = View.VISIBLE
+        binding.createAction.visibility = View.VISIBLE
     }
 
     private fun initializeTab() {

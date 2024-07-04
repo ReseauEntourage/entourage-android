@@ -440,6 +440,8 @@ class DiscoverEventsListFragment : Fragment() {
         binding.separator.visibility = View.GONE
         binding.separator2.visibility = View.GONE
         binding.rvSearch.visibility = View.VISIBLE
+        binding.layoutFilter.visibility = View.GONE
+        eventsPresenter.hideButton()
     }
 
     private fun showMainViews() {
@@ -450,5 +452,7 @@ class DiscoverEventsListFragment : Fragment() {
         binding.separator.visibility = View.VISIBLE
         binding.separator2.visibility = View.VISIBLE
         binding.rvSearch.visibility = View.GONE
+        binding.layoutFilter.visibility = View.VISIBLE
+        eventsPresenter.showButton()
     }
 }

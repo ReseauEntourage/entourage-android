@@ -70,12 +70,21 @@ class EventsPresenter : ViewModel() {
     var isLastPageMyEvent: Boolean = false
 
     var isSendingCreatePost = false
+    var hasToHideButton = MutableLiveData<Boolean>()
 
     var unreadMessages = MutableLiveData<UnreadMessages?>()
 
     fun changePage() {
         haveChanged = !haveChanged
         haveToChangePage.postValue(haveChanged)
+    }
+
+    fun hideButton() {
+        hasToHideButton.postValue(true)
+    }
+
+    fun showButton() {
+        hasToHideButton.postValue(false)
     }
 
     fun launchCreateEvent() {
