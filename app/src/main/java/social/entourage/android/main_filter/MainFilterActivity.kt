@@ -122,11 +122,11 @@ class MainFilterActivity : BaseActivity() {
 
     private fun loadActions(): List<MainFilterInterestForAdapter> {
         return listOf(
-            MainFilterInterestForAdapter("temps_de_partage", "Temps de partage", "café, activité...", selectedInterests.contains("temps_de_partage")),
-            MainFilterInterestForAdapter("service", "Service", "lessive, impression de documents...", selectedInterests.contains("service")),
-            MainFilterInterestForAdapter("vetement", "Vêtement", "chaussures, manteau...", selectedInterests.contains("vetement")),
+            MainFilterInterestForAdapter("social", "Temps de partage", "café, activité...", selectedInterests.contains("temps_de_partage")),
+            MainFilterInterestForAdapter("services", "Service", "lessive, impression de documents...", selectedInterests.contains("service")),
+            MainFilterInterestForAdapter("clothes", "Vêtement", "chaussures, manteau...", selectedInterests.contains("vetement")),
             MainFilterInterestForAdapter("equipment ", "Équipement", "téléphone, duvet...", selectedInterests.contains("equipement")),
-            MainFilterInterestForAdapter("produit_d'hygiene", "Produit d'hygiène", "savon, protection hygiénique,...", selectedInterests.contains("produit_d'hygiene"))
+            MainFilterInterestForAdapter("hygiene", "Produit d'hygiène", "savon, protection hygiénique,...", selectedInterests.contains("produit_d'hygiene"))
         )
     }
 
