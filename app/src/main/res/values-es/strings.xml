@@ -514,7 +514,7 @@ Leerán este mensaje tan pronto como se unan al grupo.</string>
     <string name="entourage_info_text_join_rejected">\u0020 rechazado</string>
     <string name="entourage_info_text_join_cancelled_entourage">canceló su solicitud para unirse al grupo</string>
     <string name="entourage_info_text_join_quited_entourage">dejó el grupo</string>
-    <string name="entourage_info_text_join_html">&lt;font color=\"#F55F24\"&gt;%1$s &lt;/font&gt;%2$s</string>
+    <string name="entourage_info_text_join_html">&lt;font color=\"#FF9739\"&gt;%1$s &lt;/font&gt;%2$s</string>
     <string name="entourage_info_error_chat_message">Mensaje no enviado</string>
     <string name="entourage_info_options_stop">Incluir</string>
     <string name="entourage_info_options_cancel_event">Cancelar el evento \</string>
@@ -1602,7 +1602,7 @@ Leerán este mensaje tan pronto como se unan al grupo.</string>
     <!-- Entourage Notifications -->
     <string name="entourage_info_text_join_accepted">\u0020se unió al grupo.</string>
     <string name="entourage_join_request_received_nomsg">A %1$s le gustaría unirse a tu acción.</string>
-    <string name="entourage_join_request_received_message_html">&lt;font color=\"#F55F24\"&gt;%1$s &lt;/font&gt;desea unirse a tu grupo</string>
+    <string name="entourage_join_request_received_message_html">&lt;font color=\"#FF9739\"&gt;%1$s &lt;/font&gt;desea unirse a tu grupo</string>
     <string name="entourage_join_request_received_message_short">quiere unirse a tu grupo.</string>
     <!-- Join Request -->
     <string name="entourage_join_request_success">Petición aceptada</string>
@@ -2604,7 +2604,7 @@ Leerán este mensaje tan pronto como se unan al grupo.</string>
     <string name="posts_comment_number"><u>%s comentarios</u></string>
     <string name="posts_comment_number_singular"><u>%s comentario</u></string>
     <string name="show_more_lined"><u>Ver más</u></string>
-    <string name="welcome_one_sensib">Encuentra nuestro contenido de sensibilización <u><font color="#F55F24">aquí</font></u></string>
+    <string name="welcome_one_sensib">Encuentra nuestro contenido de sensibilización <u><font color="#FF9739">aquí</font></u></string>
     <string name="action_show_charte"><u>Carta ética</u></string>
     <string name="signal_a_problem"><u>Reportar un problema</u></string>
     <string name="login_button_resend_code"><u>Solicitar un código de nuevo</u></string>

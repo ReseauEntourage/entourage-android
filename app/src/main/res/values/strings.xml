@@ -529,7 +529,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="entourage_info_text_join_rejected">\u0020 rejeté</string>
     <string name="entourage_info_text_join_cancelled_entourage">a annulé sa demande de rejoindre le groupe</string>
     <string name="entourage_info_text_join_quited_entourage">a quitté le groupe</string>
-    <string name="entourage_info_text_join_html"><![CDATA[<font color=\"#F55F24\">%1$s </font>%2$s]]></string>
+    <string name="entourage_info_text_join_html"><![CDATA[<font color=\"#FF9739\">%1$s </font>%2$s]]></string>
     <string name="entourage_info_error_chat_message">Message non envoyé</string>
     <string name="entourage_info_options_stop">Clôturer</string>
     <string name="entourage_info_options_cancel_event">Annuler l\'événement</string>
@@ -1635,7 +1635,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <!-- Entourage Notifications -->
     <string name="entourage_info_text_join_accepted">\u0020a rejoint le groupe.</string>
     <string name="entourage_join_request_received_nomsg">%1$s souhaite rejoindre votre action.</string>
-    <string name="entourage_join_request_received_message_html"><![CDATA[<font color=\"#F55F24\">%1$s </font>souhaite rejoindre votre groupe]]></string>
+    <string name="entourage_join_request_received_message_html"><![CDATA[<font color=\"#FF9739\">%1$s </font>souhaite rejoindre votre groupe]]></string>
     <string name="entourage_join_request_received_message_short">veut rejoindre votre groupe.</string>
     <!-- Join Request -->
     <string name="entourage_join_request_success">Demande acceptée</string>
@@ -2641,7 +2641,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="posts_vote_number"><u>%s votes</u></string>
     <string name="posts_vote_number_singular"><u>%s vote</u></string>
     <string name="show_more_lined"><u>Voir plus</u></string>
-    <string name="welcome_one_sensib">Retrouvez nos contenus de sensibilisation <u><font color="#F55F24">ici</font></u></string>
+    <string name="welcome_one_sensib">Retrouvez nos contenus de sensibilisation <u><font color="#FF9739">ici</font></u></string>
     <string name="action_show_charte"><u>Charte éthique</u></string>
     <string name="signal_a_problem"><u>Signaler un problème</u></string>
     <string name="login_button_resend_code"><u>Redemander un code</u></string>

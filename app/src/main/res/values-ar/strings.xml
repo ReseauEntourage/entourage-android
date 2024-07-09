@@ -519,7 +519,7 @@
     <string name="entourage_info_text_join_rejected">تم رفض \u0020</string>
     <string name="entourage_info_text_join_cancelled_entourage">ألغى طلبه للانضمام إلى المجموعة</string>
     <string name="entourage_info_text_join_quited_entourage">غادر المجموعة</string>
-    <string name="entourage_info_text_join_html">&lt;font color=\"#F55F24\"&gt;%1$s &lt;/font&gt;%2$s</string>
+    <string name="entourage_info_text_join_html">&lt;font color=\"#FF9739\"&gt;%1$s &lt;/font&gt;%2$s</string>
     <string name="entourage_info_error_chat_message">لم يتم إرسال الرسالة</string>
     <string name="entourage_info_options_stop">لإحاطة</string>
     <string name="entourage_info_options_cancel_event">قم بإلغاء حدث \</string>
@@ -1605,7 +1605,7 @@
     <!-- Entourage Notifications -->
     <string name="entourage_info_text_join_accepted">\u0020انضم إلى المجموعة.</string>
     <string name="entourage_join_request_received_nomsg">%1$s يرغب في الانضمام إلى تحركك.</string>
-    <string name="entourage_join_request_received_message_html">&lt;font color=\"#F55F24\"&gt;%1$s &lt;/font&gt;يرغب في الانضمام إلى مجموعتك</string>
+    <string name="entourage_join_request_received_message_html">&lt;font color=\"#FF9739\"&gt;%1$s &lt;/font&gt;يرغب في الانضمام إلى مجموعتك</string>
     <string name="entourage_join_request_received_message_short">يريد الانضمام إلى مجموعتك.</string>
     <!-- Join Request -->
     <string name="entourage_join_request_success">تم قبول الطلب</string>
@@ -2631,7 +2631,7 @@
     <string name="posts_comment_number"><u>%s تعليقات</u></string>
     <string name="posts_comment_number_singular"><u>%s تعليق</u></string>
     <string name="show_more_lined"><u>عرض المزيد</u></string>
-    <string name="welcome_one_sensib">ابحث عن محتوانا التوعوي <u><font color="#F55F24">هنا</font></u></string>
+    <string name="welcome_one_sensib">ابحث عن محتوانا التوعوي <u><font color="#FF9739">هنا</font></u></string>
     <string name="action_show_charte"><u>ميثاق أخلاقي</u></string>
     <string name="signal_a_problem"><u>الإبلاغ عن مشكلة</u></string>
     <string name="login_button_resend_code"><u>طلب الرمز مرة أخرى</u></string>
