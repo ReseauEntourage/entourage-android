@@ -50,9 +50,12 @@
                             android:textSize="15sp"
                             android:fontFamily="@font/nunitosans_regular"
                             android:background="@drawable/bg_unselected_filter_main"
+                            android:drawableStart="@drawable/ic_arrow_left_black"
+                            android:drawableEnd="@drawable/ic_cross_orange"
                             android:hint="@string/event_search_hint"
                             android:padding="10dp"
                             android:inputType="text"
+
                             android:imeOptions="actionSearch"
                             android:textColor="@android:color/black"/>
                         <androidx.constraintlayout.widget.ConstraintLayout

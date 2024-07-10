@@ -1,13 +1,18 @@
 package social.entourage.android.groups.list
 
 import android.content.Intent
+import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
+import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.DrawableCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -49,6 +54,18 @@ class GroupeV2Fragment : Fragment(), UpdateGroupInter {
         binding = GroupV2FragmentLayoutBinding.bind(view)
         myId = EntourageApplication.me(activity)?.id
         presenter = ViewModelProvider(requireActivity()).get(GroupPresenter::class.java)
+
+        // Ajout de la gestion du bouton de retour
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if (binding.searchEditText.hasFocus()) {
+                    binding.searchEditText.clearFocus()
+                } else {
+                    isEnabled = false
+                    requireActivity().onBackPressedDispatcher.onBackPressed()
+                }
+            }
+        })
 
         // Observer pour les groupes filtrés
         presenter.getAllGroups.observe(viewLifecycleOwner, { allGroups ->
@@ -158,18 +175,48 @@ class GroupeV2Fragment : Fragment(), UpdateGroupInter {
                 MainFilterActivity.savedLocation?.name).hashCode()
     }
 
+    private fun tintDrawable(drawable: Drawable?, color: Int) {
+        drawable?.let {
+            DrawableCompat.setTint(DrawableCompat.wrap(it), color)
+        }
+    }
+
     private fun setupSearchView() {
+        val clearDrawable = ContextCompat.getDrawable(requireContext(), R.drawable.ic_cross_orange)
+        val backDrawable = ContextCompat.getDrawable(requireContext(), R.drawable.ic_arrow_left_black)
+
+        val color = ContextCompat.getColor(requireContext(), android.R.color.black)
+        tintDrawable(clearDrawable, color)
+        tintDrawable(backDrawable, color)
+
         binding.searchEditText.setOnFocusChangeListener { v, hasFocus ->
             if (hasFocus) {
                 hideMainViews()
                 binding.rvSearch.visibility = View.VISIBLE
+                binding.searchEditText.setCompoundDrawablesWithIntrinsicBounds(backDrawable, null, clearDrawable, null)
             } else {
                 val query = binding.searchEditText.text.toString()
                 if (query.isEmpty()) {
                     showMainViews()
                     binding.rvSearch.visibility = View.GONE
+                    binding.searchEditText.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null)
                 }
             }
+        }
+
+        binding.searchEditText.setOnTouchListener { v, event ->
+            if (event.action == MotionEvent.ACTION_UP) {
+                val clearIcon = binding.searchEditText.compoundDrawables[2]
+                val backIcon = binding.searchEditText.compoundDrawables[0]
+                if (clearIcon != null && event.rawX >= (binding.searchEditText.right - clearIcon.bounds.width())) {
+                    binding.searchEditText.text.clear()
+                    return@setOnTouchListener true
+                } else if (backIcon != null && event.rawX <= (binding.searchEditText.left + backIcon.bounds.width())) {
+                    binding.searchEditText.clearFocus()
+                    return@setOnTouchListener true
+                }
+            }
+            false
         }
 
         // Ajouter un TextWatcher pour surveiller les changements de texte
@@ -178,21 +225,14 @@ class GroupeV2Fragment : Fragment(), UpdateGroupInter {
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 val query = s.toString()
-                if (query.isEmpty()) {
-                    showMainViews()
-                    binding.rvSearch.visibility = View.GONE
-                }
+
             }
 
             override fun afterTextChanged(s: Editable?) {
                 val query = s.toString()
                 if (query.isEmpty()) {
-                    showMainViews()
-                    binding.rvSearch.visibility = View.GONE
+
                 } else {
-                    hideMainViews()
-                    binding.progressBar.visibility = View.VISIBLE
-                    binding.rvSearch.visibility = View.VISIBLE
                     performSearch(query)
                 }
             }
@@ -215,6 +255,10 @@ class GroupeV2Fragment : Fragment(), UpdateGroupInter {
     }
 
     private fun hideMainViews() {
+        val layoutParams = binding.searchEditText.layoutParams as ViewGroup.MarginLayoutParams
+        layoutParams.marginEnd = 70
+        binding.searchEditText.layoutParams = layoutParams
+
         binding.recyclerViewHorizontal.visibility = View.GONE
         binding.recyclerViewVertical.visibility = View.GONE
         binding.textViewTitleGroupes.visibility = View.GONE
@@ -228,6 +272,10 @@ class GroupeV2Fragment : Fragment(), UpdateGroupInter {
     }
 
     private fun showMainViews() {
+        val layoutParams = binding.searchEditText.layoutParams as ViewGroup.MarginLayoutParams
+        layoutParams.marginEnd = 8
+        binding.searchEditText.layoutParams = layoutParams
+
         binding.recyclerViewHorizontal.visibility = View.VISIBLE
         binding.recyclerViewVertical.visibility = View.VISIBLE
         binding.textViewTitleGroupes.visibility = View.VISIBLE
@@ -237,11 +285,11 @@ class GroupeV2Fragment : Fragment(), UpdateGroupInter {
         binding.separatorMyGroups.visibility = View.VISIBLE
         binding.layoutFilter.visibility = View.VISIBLE
         binding.createGroupExpanded.visibility = View.VISIBLE
-
     }
 
     private fun initView() {
         binding.progressBar.visibility = View.VISIBLE
+        binding.searchEditText.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null)
         groupsList.clear()
         myGroupsList.clear()
         presenter.isLastPage = false
