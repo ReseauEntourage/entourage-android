@@ -40,7 +40,8 @@ abstract class BaseActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        fromNotifLogFirebaseEvent()
+        //TODO rest to track notif
+        //fromNotifLogFirebaseEvent()
 
     }
 
