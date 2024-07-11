@@ -176,8 +176,7 @@ class DiscoverEventsListFragment : Fragment() {
         eventsPresenter.isLastPageMyEvent = false
         page = 0
         pageMyEvent = 0
-        loadEvents()
-        loadMyEvents()
+
     }
 
     private fun handleResponseGetEvents(allEvents: MutableList<Events>?) {
