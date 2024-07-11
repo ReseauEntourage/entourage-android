@@ -8,7 +8,7 @@ import social.entourage.android.actions.ActionsPresenter
 
 class ActionsViewPagerAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycle) :
     FragmentStateAdapter(fragmentManager, lifecycle) {
-    private val NB_TABS = 2
+    private val NB_TABS = 5
 
     override fun getItemCount(): Int {
         return NB_TABS

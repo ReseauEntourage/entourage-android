@@ -109,7 +109,7 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:tabBackground="@drawable/new_tab_indicator_color"
                     app:tabIndicatorColor="@color/orange"
-                    app:tabMode="fixed"
+                    app:tabMode="scrollable"
                     app:tabRippleColor="@null"
                     app:tabSelectedTextColor="@color/orange"
                     app:tabTextAppearance="@style/tab_text">
