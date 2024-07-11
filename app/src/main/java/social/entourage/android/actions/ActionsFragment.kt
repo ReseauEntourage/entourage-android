@@ -222,7 +222,7 @@ class ActionsFragment : Fragment() {
         val tabs = arrayOf(
             requireContext().getString(R.string.actions_tab_contribs),
             requireContext().getString(R.string.actions_tab_demands),
-            "Mes annonces",
+            "Mes annonces"
 
         )
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
