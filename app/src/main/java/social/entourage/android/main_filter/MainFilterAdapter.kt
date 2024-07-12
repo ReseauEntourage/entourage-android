@@ -1,9 +1,11 @@
 package social.entourage.android.main_filter
 
 import android.content.Context
+import android.graphics.Typeface
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.RecyclerView
 import social.entourage.android.R
 import social.entourage.android.databinding.ItemMainFilterBinding
@@ -13,6 +15,9 @@ class MainFilterAdapter(
     private var items: List<MainFilterInterestForAdapter>,
     private val onItemClicked: (MainFilterInterestForAdapter) -> Unit
 ) : RecyclerView.Adapter<MainFilterAdapter.FilterViewHolder>() {
+
+    private val quicksandBold: Typeface? = ResourcesCompat.getFont(context, R.font.quicksand_bold)
+    private val nunitosansRegular: Typeface? = ResourcesCompat.getFont(context, R.font.nunitosans_regular)
 
     inner class FilterViewHolder(val binding: ItemMainFilterBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: MainFilterInterestForAdapter) {
@@ -34,11 +39,11 @@ class MainFilterAdapter(
             binding.ivInterestCheck.setImageResource(if (item.isSelected) R.drawable.ic_onboarding_check else R.drawable.ic_onboarding_uncheck)
 
             if (item.subtitle.isNotEmpty()) {
-                binding.tvInterestTitleFromRight.setTypeface(null, android.graphics.Typeface.BOLD)
-                binding.tvInterestSubTitleFromRight.setTypeface(null, android.graphics.Typeface.NORMAL)
+                binding.tvInterestTitleFromRight.typeface = quicksandBold
+                binding.tvInterestSubTitleFromRight.typeface = nunitosansRegular
             } else {
-                val typeface = if (item.isSelected) android.graphics.Typeface.BOLD else android.graphics.Typeface.NORMAL
-                binding.tvInterestTitleFromRight.setTypeface(null, typeface)
+                val typeface = if (item.isSelected) quicksandBold else nunitosansRegular
+                binding.tvInterestTitleFromRight.typeface = typeface
             }
         }
     }

@@ -221,9 +221,7 @@ class ActionsFragment : Fragment() {
         val tabLayout = binding.tabLayout
         val tabs = arrayOf(
             requireContext().getString(R.string.actions_tab_contribs),
-            requireContext().getString(R.string.actions_tab_demands),
-            "Mes actions",
-            "Mes demandes",
+            requireContext().getString(R.string.actions_tab_demands)
 
 
         )

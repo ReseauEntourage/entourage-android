@@ -2,15 +2,19 @@ package social.entourage.android.main_filter
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Rect
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
+import android.view.ViewGroup
+import android.view.ViewTreeObserver
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.ScrollView
 import android.widget.SeekBar
+import androidx.core.widget.NestedScrollView
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.AutocompletePrediction
@@ -63,6 +67,38 @@ class MainFilterActivity : BaseActivity() {
         setupLocationAutoComplete()
         setupButtons()
         updateFilterCount(selectedInterests.size) // Initialiser le compteur avec le nombre d'intérêts sélectionnés
+
+        // Ajouter un listener pour détecter les changements de layout (comme l'ouverture du clavier)
+        addKeyboardListener()
+    }
+
+    private fun addKeyboardListener() {
+        val rootView = binding.root
+        rootView.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+            override fun onGlobalLayout() {
+                val rect = Rect()
+                rootView.getWindowVisibleDisplayFrame(rect)
+                val screenHeight = rootView.height
+                val keypadHeight = screenHeight - rect.bottom
+
+                if (keypadHeight > screenHeight * 0.15) { // si le clavier est visible
+                    val params = binding.rvMainFilter.layoutParams as ViewGroup.MarginLayoutParams
+                    params.height = screenHeight - keypadHeight - binding.autoCompleteCityName.height
+                    binding.rvMainFilter.layoutParams = params
+                    scrollToView(binding.autoCompleteCityName)
+                } else {
+                    val params = binding.rvMainFilter.layoutParams as ViewGroup.MarginLayoutParams
+                    params.height = ViewGroup.LayoutParams.MATCH_PARENT
+                    binding.rvMainFilter.layoutParams = params
+                }
+            }
+        })
+    }
+
+    private fun scrollToView(view: View) {
+        binding.scrollView.post {
+            binding.scrollView.smoothScrollTo(0, view.bottom)
+        }
     }
 
     private fun loadSavedFilters() {
@@ -183,10 +219,7 @@ class MainFilterActivity : BaseActivity() {
         // Add focus change listener to scroll to the view when it gains focus
         autoCompleteTextView.onFocusChangeListener = View.OnFocusChangeListener { v, hasFocus ->
             if (hasFocus) {
-                val scrollView = findViewById<ScrollView>(R.id.scrollView)
-                scrollView.post {
-                    scrollView.smoothScrollTo(0, v.top)
-                }
+                scrollToView(v)
             }
         }
     }
@@ -219,6 +252,7 @@ class MainFilterActivity : BaseActivity() {
             selectedLocation = place.name ?: ""
             binding.autoCompleteCityName.setText(selectedLocation)
             val autoCompleteTextView = binding.autoCompleteCityName as AutoCompleteTextView
+            autoCompleteTextView.setSelection(autoCompleteTextView.text.length) // Placer le curseur à la fin
             autoCompleteTextView.dismissDropDown()
             savedLocation = PlaceDetails(place.name!!, place.latLng!!.latitude, place.latLng!!.longitude)
         }.addOnFailureListener { exception ->
