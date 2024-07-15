@@ -516,7 +516,7 @@ class MainActivity : BaseSecuredActivity() {
         badge.isVisible = true
         badge.maxCharacterCount = 2
         badge.verticalOffsetWithText = 10
-        badge.backgroundColor = resources.getColor(R.color.light_orange)
+        badge.backgroundColor = resources.getColor(R.color.tomato)
         badge.badgeTextColor = resources.getColor(R.color.white)
         if (count == 0) {
             bottomNavigationView.removeBadge(R.id.navigation_messages)

@@ -53,12 +53,15 @@ class DiscoverEventsListFragment : Fragment() {
 
     private var isFromFilters = false
     private var isLoading = false
-    private var isFirstResumeWithFilters = true
     private var lastFiltersHash = 0
     private var isSearching = false
     private var currentSearchQuery: String? = null
     private var isLoadMoreSearchResults = false
     private var searchResultsList: MutableList<Events> = mutableListOf()
+
+    companion object {
+        var isFirstResumeWithFilters = true
+    }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -94,7 +97,7 @@ class DiscoverEventsListFragment : Fragment() {
         eventsPresenter.getAllEvents.observe(viewLifecycleOwner, ::handleResponseGetEvents)
         eventsPresenter.getFilteredEvents.observe(viewLifecycleOwner, ::handleResponseGetEvents)
         eventsPresenter.allEventsSearch.observe(viewLifecycleOwner, ::handleResponseSearchEvents)
-
+        eventsPresenter.passSearchMod.observe(viewLifecycleOwner, ::handleSearchMode)
         // Observers for my events
         eventsPresenter.getAllMyEvents.observe(viewLifecycleOwner, ::handleResponseGetMYEvents)
         eventsPresenter.getFilteredMyEvents.observe(viewLifecycleOwner, ::handleResponseGetMYEvents)
@@ -120,15 +123,6 @@ class DiscoverEventsListFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        if (MainFilterActivity.savedGroupInterests.size > 0) {
-            binding.cardFilterNumber.visibility = View.VISIBLE
-            binding.tvNumberOfFilter.text = MainFilterActivity.savedGroupInterests.size.toString()
-            binding.layoutFilter.background = resources.getDrawable(R.drawable.bg_selected_filter_main)
-        } else {
-            binding.cardFilterNumber.visibility = View.GONE
-            binding.layoutFilter.background = resources.getDrawable(R.drawable.bg_unselected_filter_main)
-        }
-
         AnalyticsEvents.logEvent(AnalyticsEvents.View__Event__List)
 
         val currentFiltersHash = currentFilters.hashCode()
@@ -140,6 +134,14 @@ class DiscoverEventsListFragment : Fragment() {
         if (isFirstResumeWithFilters) {
             isFirstResumeWithFilters = false
             resetDataAndApplyFilters()
+        }
+    }
+
+    fun handleSearchMode(searchMod:Boolean) {
+        if (searchMod) {
+            showMainViews()
+        }else {
+            hideMainViews()
         }
     }
 
@@ -160,18 +162,14 @@ class DiscoverEventsListFragment : Fragment() {
         }
     }
 
+
+
     fun initView() {
         isLoading = false
         binding.progressBar.visibility = View.VISIBLE
         binding.searchEditText.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null)
         eventsAdapter.clearList()
         myeventsAdapter.clearList()
-        binding.layoutFilter.setOnClickListener {
-            isFirstResumeWithFilters = true
-            MainFilterActivity.mod = MainFilterMode.GROUP
-            val intent = Intent(activity, MainFilterActivity::class.java)
-            startActivity(intent)
-        }
         eventsPresenter.isLastPage = false
         eventsPresenter.isLastPageMyEvent = false
         page = 0
@@ -475,9 +473,8 @@ class DiscoverEventsListFragment : Fragment() {
 
     private fun hideMainViews() {
         val layoutParams = binding.searchEditText.layoutParams as ViewGroup.MarginLayoutParams
-        layoutParams.marginEnd = 70
         binding.searchEditText.layoutParams = layoutParams
-
+        binding.csLayoutSearch.visibility = View.VISIBLE
         binding.recyclerView.visibility = View.GONE
         binding.rvMyEvent.visibility = View.GONE
         binding.titleSectionHeaderMyEvent.visibility = View.GONE
@@ -485,15 +482,13 @@ class DiscoverEventsListFragment : Fragment() {
         binding.separator.visibility = View.GONE
         binding.separator2.visibility = View.GONE
         binding.rvSearch.visibility = View.VISIBLE
-        binding.layoutFilter.visibility = View.GONE
         eventsPresenter.hideButton()
     }
 
     private fun showMainViews() {
         val layoutParams = binding.searchEditText.layoutParams as ViewGroup.MarginLayoutParams
-        layoutParams.marginEnd = 8
         binding.searchEditText.layoutParams = layoutParams
-
+        binding.csLayoutSearch.visibility = View.GONE
         binding.recyclerView.visibility = View.VISIBLE
         binding.rvMyEvent.visibility = View.VISIBLE
         binding.titleSectionHeaderMyEvent.visibility = View.VISIBLE
@@ -501,7 +496,6 @@ class DiscoverEventsListFragment : Fragment() {
         binding.separator.visibility = View.VISIBLE
         binding.separator2.visibility = View.VISIBLE
         binding.rvSearch.visibility = View.GONE
-        binding.layoutFilter.visibility = View.VISIBLE
         eventsPresenter.showButton()
     }
 }

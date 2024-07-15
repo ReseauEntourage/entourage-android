@@ -14,6 +14,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -32,6 +33,8 @@ import social.entourage.android.events.list.DiscoverEventsListFragment
 import social.entourage.android.events.list.EventsViewPagerAdapter
 import social.entourage.android.home.CommunicationHandlerBadgeViewModel
 import social.entourage.android.home.UnreadMessages
+import social.entourage.android.main_filter.MainFilterActivity
+import social.entourage.android.main_filter.MainFilterMode
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.log.AnalyticsEvents
 import timber.log.Timber
@@ -97,6 +100,8 @@ class EventsFragment : Fragment() {
         eventsPresenter.hasToHideButton.observe(requireActivity(),::handleShowHideButton)
         eventsPresenter.hasChangedFilterLocationForParentFragment.observe(requireActivity(),::handleFilterTitleAfterChange)
         eventsPresenter.getUnreadCount()
+        handleFilterButton()
+        handleSearchButton()
     }
 
     override fun onResume() {
@@ -112,8 +117,41 @@ class EventsFragment : Fragment() {
             RefreshController.shouldRefreshEventFragment = false
         }
         initView()
+        if (MainFilterActivity.savedGroupInterests.size > 0) {
+            binding.cardFilterNumber.visibility = View.VISIBLE
+            binding.tvNumberOfFilter.text = MainFilterActivity.savedGroupInterests.size.toString()
+            binding.uiLayoutFilter.background = ContextCompat.getDrawable(requireContext(), R.drawable.bg_selected_filter) // Ajoute un fond orange rond
+            binding.uiBellFilter.setColorFilter(ContextCompat.getColor(requireContext(), R.color.white), android.graphics.PorterDuff.Mode.SRC_IN) // Applique une tint blanche
+        } else {
+            binding.cardFilterNumber.visibility = View.GONE
+            binding.uiLayoutFilter.background = ContextCompat.getDrawable(requireContext(), R.drawable.bg_unselected_filter) // Remet le fond en blanc rond
+            binding.uiBellFilter.setColorFilter(ContextCompat.getColor(requireContext(), R.color.orange), android.graphics.PorterDuff.Mode.SRC_IN) // Applique une tint orange
+        }
+        resetSearchButtonState()
 
     }
+
+    private fun handleFilterButton() {
+       binding.uiLayoutFilter.setOnClickListener {
+           DiscoverEventsListFragment.isFirstResumeWithFilters = true
+           MainFilterActivity.mod = MainFilterMode.GROUP
+           val intent = Intent(activity, MainFilterActivity::class.java)
+           startActivity(intent)
+       }
+    }
+
+    private fun handleSearchButton(){
+        binding.uiLayoutSearch.setOnClickListener {
+            this.eventsPresenter.changeSearchMode()
+        }
+    }
+
+    private fun resetSearchButtonState() {
+        binding.uiLayoutSearch.background = ContextCompat.getDrawable(requireContext(), R.drawable.bg_unselected_filter) // Remet le fond en blanc rond
+        binding.uiBellSearch.setColorFilter(ContextCompat.getColor(requireContext(), R.color.orange), android.graphics.PorterDuff.Mode.SRC_IN) // Applique une tint noire par défaut
+    }
+
+
     private fun updateFilters() {
         isFromFilters = true
         binding.uiTitleLocationBt.text = currentFilters.getFilterButtonString(requireContext())

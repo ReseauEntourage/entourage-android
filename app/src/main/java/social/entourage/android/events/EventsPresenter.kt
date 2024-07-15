@@ -62,6 +62,8 @@ class EventsPresenter : ViewModel() {
     var commentPosted = MutableLiveData<Post?>()
     var haveToChangePage = MutableLiveData<Boolean>()
     var haveToCreateEvent = MutableLiveData<Boolean>()
+    var passSearchMod = MutableLiveData<Boolean>()
+    var isSearchMode = false
     var haveChanged = false
     var havelaunchedCreation = false
 
@@ -78,6 +80,12 @@ class EventsPresenter : ViewModel() {
         haveChanged = !haveChanged
         haveToChangePage.postValue(haveChanged)
     }
+
+    fun changeSearchMode() {
+        isSearchMode = !isSearchMode
+        passSearchMod.postValue(isSearchMode)
+    }
+
 
     fun hideButton() {
         hasToHideButton.postValue(true)

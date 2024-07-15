@@ -98,7 +98,7 @@ class GroupeV2Fragment : Fragment(), UpdateGroupInter {
             LinearLayoutManager.VERTICAL,
             false
         )
-        binding.layoutFilter.setOnClickListener {
+        binding.uiLayoutFilter.setOnClickListener {
             isFirstResumeWithFilters = true
             MainFilterActivity.mod = MainFilterMode.GROUP
             val intent = Intent(activity, MainFilterActivity::class.java)
@@ -119,6 +119,11 @@ class GroupeV2Fragment : Fragment(), UpdateGroupInter {
         setupScrollViewListener()
         AnalyticsEvents.logEvent(AnalyticsEvents.VIEW_GROUP_SHOW)
         initView()
+
+        // Ajout de la gestion du clic sur uiLayoutSearch
+        binding.uiLayoutSearch.setOnClickListener {
+            handleSearchButton()
+        }
     }
 
     override fun onCreateView(
@@ -161,13 +166,25 @@ class GroupeV2Fragment : Fragment(), UpdateGroupInter {
         if (MainFilterActivity.savedGroupInterests.size > 0) {
             binding.cardFilterNumber.visibility = View.VISIBLE
             binding.tvNumberOfFilter.text = MainFilterActivity.savedGroupInterests.size.toString()
-            binding.layoutFilter.background = resources.getDrawable(R.drawable.bg_selected_filter_main)
-
+            binding.uiLayoutFilter.background = ContextCompat.getDrawable(requireContext(), R.drawable.bg_selected_filter) // Ajoute un fond orange rond
+            binding.uiBellFilter.setColorFilter(ContextCompat.getColor(requireContext(), R.color.white), android.graphics.PorterDuff.Mode.SRC_IN) // Applique une tint blanche
         } else {
             binding.cardFilterNumber.visibility = View.GONE
-            binding.layoutFilter.background = resources.getDrawable(R.drawable.bg_unselected_filter_main)
-
+            binding.uiLayoutFilter.background = ContextCompat.getDrawable(requireContext(), R.drawable.bg_unselected_filter) // Remet le fond en blanc rond
+            binding.uiBellFilter.setColorFilter(ContextCompat.getColor(requireContext(), R.color.orange), android.graphics.PorterDuff.Mode.SRC_IN) // Applique une tint orange
         }
+        resetSearchButtonState()
+    }
+
+    private fun handleSearchButton() {
+        binding.uiLayoutSearch.background = ContextCompat.getDrawable(requireContext(), R.drawable.bg_selected_filter) // Ajoute un fond orange rond
+        binding.uiBellSearch.setColorFilter(ContextCompat.getColor(requireContext(), R.color.white), android.graphics.PorterDuff.Mode.SRC_IN) // Applique une tint blanche
+        hideMainViews()
+    }
+
+    private fun resetSearchButtonState() {
+        binding.uiLayoutSearch.background = ContextCompat.getDrawable(requireContext(), R.drawable.bg_unselected_filter) // Remet le fond en blanc rond
+        binding.uiBellSearch.setColorFilter(ContextCompat.getColor(requireContext(), R.color.orange), android.graphics.PorterDuff.Mode.SRC_IN) // Applique une tint noire par défaut
     }
 
     private fun getCurrentFiltersHash(): Int {
@@ -201,6 +218,7 @@ class GroupeV2Fragment : Fragment(), UpdateGroupInter {
                     showMainViews()
                     binding.rvSearch.visibility = View.GONE
                     binding.searchEditText.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null)
+                    resetSearchButtonState()
                 }
             }
         }
@@ -226,13 +244,12 @@ class GroupeV2Fragment : Fragment(), UpdateGroupInter {
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 val query = s.toString()
-
             }
 
             override fun afterTextChanged(s: Editable?) {
                 val query = s.toString()
                 if (query.isEmpty()) {
-
+                    // Reset or clear search results
                 } else {
                     performSearch(query)
                 }
@@ -256,9 +273,7 @@ class GroupeV2Fragment : Fragment(), UpdateGroupInter {
     }
 
     private fun hideMainViews() {
-        val layoutParams = binding.searchEditText.layoutParams as ViewGroup.MarginLayoutParams
-        layoutParams.marginEnd = 70
-        binding.searchEditText.layoutParams = layoutParams
+        binding.csLayoutSearch.visibility = View.VISIBLE
         binding.recyclerViewHorizontal.visibility = View.GONE
         binding.recyclerViewVertical.visibility = View.GONE
         binding.textViewTitleGroupes.visibility = View.GONE
@@ -268,13 +283,11 @@ class GroupeV2Fragment : Fragment(), UpdateGroupInter {
         binding.separatorMyGroups.visibility = View.GONE
         binding.createGroupExpanded.visibility = View.GONE
         binding.createGroup.visibility = View.GONE
-        binding.layoutFilter.visibility = View.GONE
+        binding.uiLayoutFilter.visibility = View.GONE
     }
 
     private fun showMainViews() {
-        val layoutParams = binding.searchEditText.layoutParams as ViewGroup.MarginLayoutParams
-        layoutParams.marginEnd = 8
-        binding.searchEditText.layoutParams = layoutParams
+        binding.csLayoutSearch.visibility = View.GONE
         binding.recyclerViewHorizontal.visibility = View.VISIBLE
         binding.recyclerViewVertical.visibility = View.VISIBLE
         binding.textViewTitleGroupes.visibility = View.VISIBLE
@@ -282,8 +295,9 @@ class GroupeV2Fragment : Fragment(), UpdateGroupInter {
         binding.separatorAllGroups.visibility = View.VISIBLE
         binding.titleMyGroups.visibility = View.VISIBLE
         binding.separatorMyGroups.visibility = View.VISIBLE
-        binding.layoutFilter.visibility = View.VISIBLE
+        binding.uiLayoutFilter.visibility = View.VISIBLE
         binding.createGroupExpanded.visibility = View.VISIBLE
+        resetSearchButtonState()
     }
 
     private fun initView() {
@@ -317,10 +331,10 @@ class GroupeV2Fragment : Fragment(), UpdateGroupInter {
             myGroupsList.addAll(newGroups)
             adapterMyGroup.resetData(myGroupsList)
             addedMyGroupIds.addAll(newGroups.map { group -> group.id!! })
-            if(myGroupsList.size == 0) {
+            if (myGroupsList.size == 0) {
                 binding.titleMyGroups.visibility = View.GONE
                 binding.separatorMyGroups.visibility = View.GONE
-            }else {
+            } else {
                 binding.titleMyGroups.visibility = View.VISIBLE
                 binding.separatorMyGroups.visibility = View.VISIBLE
             }
@@ -336,7 +350,6 @@ class GroupeV2Fragment : Fragment(), UpdateGroupInter {
             searchResultsList.addAll(it)
             adapterGroupSearch.updateGroupsList(searchResultsList)
             binding.progressBar.visibility = View.GONE
-
         }
     }
 
