@@ -117,6 +117,7 @@ android:background="@drawable/new_profile_header_orange_dark">
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/cs_layout_search"
+                android:visibility="gone"
                 >
                 <EditText
                     android:id="@+id/searchEditText"
