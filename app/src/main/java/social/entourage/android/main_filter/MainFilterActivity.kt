@@ -10,6 +10,7 @@ import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewTreeObserver
+import android.view.WindowManager
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.ScrollView
@@ -55,6 +56,8 @@ class MainFilterActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        window.clearFlags(WindowManager.LayoutParams.FLAG_SECURE)
+
         binding = ActivityMainFilterBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -286,14 +289,16 @@ class MainFilterActivity : BaseActivity() {
     }
 
     private fun resetFilters() {
+        val user = EntourageApplication.me(this)
         selectedInterests.clear()
-        selectedRadius = 0
-        selectedLocation = ""
+        savedLocation = user?.address?.let { PlaceDetails(it.displayAddress, it.latitude, it.longitude) }
+        selectedRadius = user?.travelDistance ?: 0
+        selectedLocation = user?.address?.displayAddress ?: ""
         // Reset UI elements
         interestsAdapter.resetItems(loadInterestsOrActions())
-        binding.seekbar.progress = 0
-        binding.tvRadius.text = "0 km"
-        binding.autoCompleteCityName.setText("")
+        binding.seekbar.progress = user?.travelDistance ?: 0
+        binding.tvRadius.text = user?.travelDistance.toString() ?: "0 km"
+        binding.autoCompleteCityName.setText(user?.address?.displayAddress?: "")
         updateFilterCount(0)
         if (mod == MainFilterMode.GROUP) {
             savedGroupInterests.clear()

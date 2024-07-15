@@ -120,12 +120,10 @@ class EventsFragment : Fragment() {
         if (MainFilterActivity.savedGroupInterests.size > 0) {
             binding.cardFilterNumber.visibility = View.VISIBLE
             binding.tvNumberOfFilter.text = MainFilterActivity.savedGroupInterests.size.toString()
-            binding.uiLayoutFilter.background = ContextCompat.getDrawable(requireContext(), R.drawable.bg_selected_filter) // Ajoute un fond orange rond
-            binding.uiBellFilter.setColorFilter(ContextCompat.getColor(requireContext(), R.color.white), android.graphics.PorterDuff.Mode.SRC_IN) // Applique une tint blanche
+
         } else {
             binding.cardFilterNumber.visibility = View.GONE
-            binding.uiLayoutFilter.background = ContextCompat.getDrawable(requireContext(), R.drawable.bg_unselected_filter) // Remet le fond en blanc rond
-            binding.uiBellFilter.setColorFilter(ContextCompat.getColor(requireContext(), R.color.orange), android.graphics.PorterDuff.Mode.SRC_IN) // Applique une tint orange
+
         }
         resetSearchButtonState()
 
@@ -136,6 +134,7 @@ class EventsFragment : Fragment() {
            DiscoverEventsListFragment.isFirstResumeWithFilters = true
            MainFilterActivity.mod = MainFilterMode.GROUP
            val intent = Intent(activity, MainFilterActivity::class.java)
+
            startActivity(intent)
        }
     }
@@ -147,6 +146,8 @@ class EventsFragment : Fragment() {
     }
 
     private fun resetSearchButtonState() {
+        binding.uiLayoutFilter.background = ContextCompat.getDrawable(requireContext(), R.drawable.bg_unselected_filter) // Remet le fond en blanc rond
+        binding.uiBellFilter.setColorFilter(ContextCompat.getColor(requireContext(), R.color.orange), android.graphics.PorterDuff.Mode.SRC_IN) // Applique une tint noire par défaut
         binding.uiLayoutSearch.background = ContextCompat.getDrawable(requireContext(), R.drawable.bg_unselected_filter) // Remet le fond en blanc rond
         binding.uiBellSearch.setColorFilter(ContextCompat.getColor(requireContext(), R.color.orange), android.graphics.PorterDuff.Mode.SRC_IN) // Applique une tint noire par défaut
     }

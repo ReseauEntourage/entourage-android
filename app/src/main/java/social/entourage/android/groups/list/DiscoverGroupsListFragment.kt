@@ -75,6 +75,7 @@ class DiscoverGroupsListFragment : Fragment() , UpdateGroupInter {
 
     private fun handleResponseGetGroups(allGroups: MutableList<Group>?) {
         //groupsList.clear()
+        binding.progressBar.visibility = View.GONE
         allGroups?.let { groupsList.addAll(it)
         }
         binding.progressBar.visibility = View.GONE
@@ -86,11 +87,12 @@ class DiscoverGroupsListFragment : Fragment() , UpdateGroupInter {
 
     private fun handleResponseGetGroupsSearch(allGroupsSearch: MutableList<Group>?) {
         groupsListSearch.clear()
+        binding.progressBar.visibility = View.GONE
         allGroupsSearch?.let { groupsListSearch.addAll(it) }
         allGroupsSearch?.isEmpty()?.let {
             updateViewSearch(it) }
         (binding.searchRecyclerView.adapter as? GroupsListAdapter)?.updateGroupsList(groupsListSearch)
-        binding.progressBar.visibility = View.GONE
+
     }
 
     private fun updateView(isListEmpty: Boolean) {

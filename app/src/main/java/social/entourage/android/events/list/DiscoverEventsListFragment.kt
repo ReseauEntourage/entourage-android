@@ -273,7 +273,7 @@ class DiscoverEventsListFragment : Fragment() {
 
     private fun updateView(isListEmpty: Boolean) {
         binding.emptyStateLayout.isVisible = isListEmpty
-        binding.recyclerView.isVisible = !isListEmpty
+        binding.recyclerView.isVisible = !isListEmpty && !isSearching
     }
 
     private fun initializeEvents() {
@@ -318,7 +318,6 @@ class DiscoverEventsListFragment : Fragment() {
         page++
         if (!eventsPresenter.isLastPage && !isLoading) {
             isLoading = true
-            Log.wtf("wtf" , "save interest : ${MainFilterActivity.savedGroupInterests}")
             if (MainFilterActivity.savedGroupInterests.isEmpty()){
                 // Si aucun filtre n'est sélectionné, utiliser getAllEvents
                 eventsPresenter.getAllEvents(
@@ -347,7 +346,8 @@ class DiscoverEventsListFragment : Fragment() {
             val radius = MainFilterActivity.savedRadius.takeIf { it != 0 } ?: currentFilters.travel_distance()
             val latitude = MainFilterActivity.savedLocation?.lat ?: currentFilters.latitude()
             val longitude = MainFilterActivity.savedLocation?.lng ?: currentFilters.longitude()
-            if (MainFilterActivity.savedGroupInterests.isEmpty()) {
+            if (!MainFilterActivity.hasFilter) {
+                Log.wtf("wtf","here")
                 // Si aucun filtre n'est sélectionné, utiliser getMyEvents
                 eventsPresenter.getMyEvents(
                     myId!!,
@@ -358,6 +358,7 @@ class DiscoverEventsListFragment : Fragment() {
                 val radius = MainFilterActivity.savedRadius.takeIf { it != 0 } ?: currentFilters.travel_distance()
                 val latitude = MainFilterActivity.savedLocation?.lat ?: currentFilters.latitude()
                 val longitude = MainFilterActivity.savedLocation?.lng ?: currentFilters.longitude()
+                Log.wtf("wtf","there")
                 eventsPresenter.getMyEventsWithFilter(
                     myId!!,
                     pageMyEvent, EVENTS_PER_PAGE,
@@ -459,6 +460,7 @@ class DiscoverEventsListFragment : Fragment() {
     }
 
     private fun searchEvents(query: String, isLoadMore: Boolean = false) {
+        binding.progressBar.visibility = View.VISIBLE
         if (!isLoadMore) {
             page = 0
             searchResultsList.clear()

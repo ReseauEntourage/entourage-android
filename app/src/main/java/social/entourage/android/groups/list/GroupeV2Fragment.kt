@@ -166,8 +166,8 @@ class GroupeV2Fragment : Fragment(), UpdateGroupInter {
         if (MainFilterActivity.savedGroupInterests.size > 0) {
             binding.cardFilterNumber.visibility = View.VISIBLE
             binding.tvNumberOfFilter.text = MainFilterActivity.savedGroupInterests.size.toString()
-            binding.uiLayoutFilter.background = ContextCompat.getDrawable(requireContext(), R.drawable.bg_selected_filter) // Ajoute un fond orange rond
-            binding.uiBellFilter.setColorFilter(ContextCompat.getColor(requireContext(), R.color.white), android.graphics.PorterDuff.Mode.SRC_IN) // Applique une tint blanche
+            binding.uiLayoutFilter.background = ContextCompat.getDrawable(requireContext(), R.drawable.bg_unselected_filter) // Ajoute un fond orange rond
+            binding.uiBellFilter.setColorFilter(ContextCompat.getColor(requireContext(), R.color.orange), android.graphics.PorterDuff.Mode.SRC_IN) // Applique une tint blanche
         } else {
             binding.cardFilterNumber.visibility = View.GONE
             binding.uiLayoutFilter.background = ContextCompat.getDrawable(requireContext(), R.drawable.bg_unselected_filter) // Remet le fond en blanc rond
@@ -179,7 +179,7 @@ class GroupeV2Fragment : Fragment(), UpdateGroupInter {
     private fun handleSearchButton() {
         binding.uiLayoutSearch.background = ContextCompat.getDrawable(requireContext(), R.drawable.bg_selected_filter) // Ajoute un fond orange rond
         binding.uiBellSearch.setColorFilter(ContextCompat.getColor(requireContext(), R.color.white), android.graphics.PorterDuff.Mode.SRC_IN) // Applique une tint blanche
-        hideMainViews()
+        showMainViews()
     }
 
     private fun resetSearchButtonState() {

@@ -715,13 +715,7 @@ class EventsPresenter : ViewModel() {
             .enqueue(object : Callback<EventsListWrapper> {
                 override fun onResponse(call: Call<EventsListWrapper>, response: Response<EventsListWrapper>) {
                     response.body()?.let { allEventsWrapper ->
-                        if (page == 1) {
-                            allEventsSearch.value = allEventsWrapper.allEvents
-                        } else {
-                            val currentList = allEventsSearch.value ?: mutableListOf()
-                            currentList.addAll(allEventsWrapper.allEvents)
-                            allEventsSearch.value = currentList
-                        }
+                        allEventsSearch.value = allEventsWrapper.allEvents
                     }
                 }
 
