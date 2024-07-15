@@ -6,6 +6,7 @@ import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -141,27 +142,27 @@ class GroupeV2Fragment : Fragment(), UpdateGroupInter {
             isFirstResumeWithFilters = true
             lastFiltersHash = currentFiltersHash
         }
-
+        if (isFirstResumeWithFilters) {
+            Log.wtf("wtf", "isFirstResumeWithFilters" + isFirstResumeWithFilters)
+            isFirstResumeWithFilters = false
+            groupsList.clear()
+            myGroupsList.clear()
+            addedGroupIds.clear()
+            addedMyGroupIds.clear()
+            adapterGroup.notifyDataSetChanged()
+            adapterMyGroup.notifyDataSetChanged()
+            page = 0
+            pageMy = 0
+            presenter.isLastPage = false
+            applyFilters()
+        } else {
+            loadMoreGroups()
+        }
         if (MainFilterActivity.savedGroupInterests.size > 0) {
             binding.cardFilterNumber.visibility = View.VISIBLE
             binding.tvNumberOfFilter.text = MainFilterActivity.savedGroupInterests.size.toString()
             binding.layoutFilter.background = resources.getDrawable(R.drawable.bg_selected_filter_main)
 
-            if (isFirstResumeWithFilters) {
-                isFirstResumeWithFilters = false
-                groupsList.clear()
-                myGroupsList.clear()
-                addedGroupIds.clear()
-                addedMyGroupIds.clear()
-                adapterGroup.notifyDataSetChanged()
-                adapterMyGroup.notifyDataSetChanged()
-                page = 0
-                pageMy = 0
-                presenter.isLastPage = false
-                applyFilters()
-            } else {
-                loadMoreGroups()
-            }
         } else {
             binding.cardFilterNumber.visibility = View.GONE
             binding.layoutFilter.background = resources.getDrawable(R.drawable.bg_unselected_filter_main)
@@ -316,6 +317,13 @@ class GroupeV2Fragment : Fragment(), UpdateGroupInter {
             myGroupsList.addAll(newGroups)
             adapterMyGroup.resetData(myGroupsList)
             addedMyGroupIds.addAll(newGroups.map { group -> group.id!! })
+            if(myGroupsList.size == 0) {
+                binding.titleMyGroups.visibility = View.GONE
+                binding.separatorMyGroups.visibility = View.GONE
+            }else {
+                binding.titleMyGroups.visibility = View.VISIBLE
+                binding.separatorMyGroups.visibility = View.VISIBLE
+            }
         }
         checkingSumForEmptyView()
         isLoading = false

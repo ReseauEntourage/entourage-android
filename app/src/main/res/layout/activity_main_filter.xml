@@ -78,7 +78,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/rv_main_filter"
             android:textColor="@color/black"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="45dp"
             android:layout_marginStart="16dp"/>
 
         <androidx.constraintlayout.widget.ConstraintLayout
