@@ -25,7 +25,10 @@ interface EventsRequest {
     fun getMyEvents(
         @Path("user_id") userId: Int,
         @Query("page") page: Int,
-        @Query("per") per: Int
+        @Query("per") per: Int,
+        @Query("travel_distance") travelDistance: Int?,
+        @Query("latitude") latitude: Double?,
+        @Query("longitude") longitude: Double?,
     ): Call<EventsListWrapper>
     @GET("users/{user_id}/outings")
     fun getMyEventsWithFilter(

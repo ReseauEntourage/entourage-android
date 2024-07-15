@@ -45,6 +45,7 @@ class MainFilterActivity : BaseActivity() {
         var savedLocation: PlaceDetails? = null
         var mod: MainFilterMode = MainFilterMode.GROUP
         var hasToReloadAction = false
+        var hasFilter = false
         data class PlaceDetails(val name: String, val lat: Double, val lng: Double)
     }
 
@@ -102,13 +103,17 @@ class MainFilterActivity : BaseActivity() {
     }
 
     private fun loadSavedFilters() {
+        hasFilter = false
         if (mod == MainFilterMode.GROUP && savedGroupInterests.isNotEmpty()) {
             selectedInterests = savedGroupInterests.toMutableList()
+            hasFilter = true
         } else if (mod == MainFilterMode.ACTION && savedActionInterests.isNotEmpty()) {
             selectedInterests = savedActionInterests.toMutableList()
+            hasFilter = true
         }
 
         if (savedRadius != 0) {
+            hasFilter = true
             selectedRadius = savedRadius
             binding.seekbar.progress = selectedRadius
             binding.tvRadius.text = "$selectedRadius km"
@@ -122,6 +127,7 @@ class MainFilterActivity : BaseActivity() {
         savedLocation?.let {
             selectedLocation = it.name
             binding.autoCompleteCityName.setText(it.name)
+            hasFilter = true
         } ?: run {
             val user = EntourageApplication.me(this)
             val address = user?.address
@@ -181,6 +187,9 @@ class MainFilterActivity : BaseActivity() {
 
     private fun updateFilterCount(count: Int) {
         binding.tvNumberOfFilter.text = count.toString()
+        if(count > 0){
+            hasFilter = true
+        }
     }
 
     private fun setupSeekBar() {
@@ -188,6 +197,7 @@ class MainFilterActivity : BaseActivity() {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
                 selectedRadius = progress
                 binding.tvRadius.text = "$progress km"
+                hasFilter = true
             }
 
             override fun onStartTrackingTouch(seekBar: SeekBar?) {}
@@ -208,12 +218,15 @@ class MainFilterActivity : BaseActivity() {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                if (!s.isNullOrEmpty()) {
-                    fetchAutocompletePredictions(s.toString())
-                }
+
             }
 
-            override fun afterTextChanged(s: Editable?) {}
+            override fun afterTextChanged(s: Editable?) {
+                if (!s.isNullOrEmpty()) {
+                    fetchAutocompletePredictions(s.toString())
+                    hasFilter = true
+                }
+            }
         })
 
         // Add focus change listener to scroll to the view when it gains focus

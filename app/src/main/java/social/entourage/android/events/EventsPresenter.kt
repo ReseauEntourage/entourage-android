@@ -112,8 +112,9 @@ class EventsPresenter : ViewModel() {
         isCreateButtonExtended.postValue(isExtended)
     }
 
-    fun getMyEvents(userId: Int, page: Int, per: Int) {
-        EntourageApplication.get().apiModule.eventsRequest.getMyEvents(userId, page, per)
+    fun getMyEvents(userId: Int, page: Int, per: Int,travelDistance: Int?,
+                    latitude: Double?, longitude: Double?) {
+        EntourageApplication.get().apiModule.eventsRequest.getMyEvents(userId, page, per, travelDistance, latitude, longitude)
             .enqueue(object : Callback<EventsListWrapper> {
                 override fun onResponse(
                     call: Call<EventsListWrapper>,

@@ -325,7 +325,7 @@ class DiscoverEventsListFragment : Fragment() {
                 // Si aucun filtre n'est sélectionné, utiliser getAllEvents
                 eventsPresenter.getAllEvents(
                     page, EVENTS_PER_PAGE,
-                    currentFilters.travel_distance(), currentFilters.latitude(), currentFilters.longitude(), "future"
+                    MainFilterActivity.savedRadius.takeIf { it != 0 } ?: currentFilters.travel_distance(), MainFilterActivity.savedLocation?.lat ?: currentFilters.latitude(), MainFilterActivity.savedLocation?.lng ?: currentFilters.longitude(), "future"
                 )
             } else {
                 // Sinon, utiliser getAllEventsWithFilter avec les filtres
@@ -346,11 +346,14 @@ class DiscoverEventsListFragment : Fragment() {
         binding.swipeRefresh.isRefreshing = false
         myId = EntourageApplication.me(activity)?.id
         if (myId != null) {
+            val radius = MainFilterActivity.savedRadius.takeIf { it != 0 } ?: currentFilters.travel_distance()
+            val latitude = MainFilterActivity.savedLocation?.lat ?: currentFilters.latitude()
+            val longitude = MainFilterActivity.savedLocation?.lng ?: currentFilters.longitude()
             if (MainFilterActivity.savedGroupInterests.isEmpty()) {
                 // Si aucun filtre n'est sélectionné, utiliser getMyEvents
                 eventsPresenter.getMyEvents(
                     myId!!,
-                    pageMyEvent, EVENTS_PER_PAGE
+                    pageMyEvent, EVENTS_PER_PAGE,radius, latitude, longitude
                 )
             } else {
                 // Sinon, utiliser getMyEventsWithFilter avec les filtres

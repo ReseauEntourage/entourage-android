@@ -258,7 +258,6 @@ class GroupeV2Fragment : Fragment(), UpdateGroupInter {
         val layoutParams = binding.searchEditText.layoutParams as ViewGroup.MarginLayoutParams
         layoutParams.marginEnd = 70
         binding.searchEditText.layoutParams = layoutParams
-
         binding.recyclerViewHorizontal.visibility = View.GONE
         binding.recyclerViewVertical.visibility = View.GONE
         binding.textViewTitleGroupes.visibility = View.GONE
@@ -275,7 +274,6 @@ class GroupeV2Fragment : Fragment(), UpdateGroupInter {
         val layoutParams = binding.searchEditText.layoutParams as ViewGroup.MarginLayoutParams
         layoutParams.marginEnd = 8
         binding.searchEditText.layoutParams = layoutParams
-
         binding.recyclerViewHorizontal.visibility = View.VISIBLE
         binding.recyclerViewVertical.visibility = View.VISIBLE
         binding.textViewTitleGroupes.visibility = View.VISIBLE
