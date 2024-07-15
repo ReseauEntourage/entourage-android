@@ -179,7 +179,7 @@ class GroupeV2Fragment : Fragment(), UpdateGroupInter {
     private fun handleSearchButton() {
         binding.uiLayoutSearch.background = ContextCompat.getDrawable(requireContext(), R.drawable.bg_selected_filter) // Ajoute un fond orange rond
         binding.uiBellSearch.setColorFilter(ContextCompat.getColor(requireContext(), R.color.white), android.graphics.PorterDuff.Mode.SRC_IN) // Applique une tint blanche
-        showMainViews()
+        hideMainViews()
     }
 
     private fun resetSearchButtonState() {
@@ -284,6 +284,8 @@ class GroupeV2Fragment : Fragment(), UpdateGroupInter {
         binding.createGroupExpanded.visibility = View.GONE
         binding.createGroup.visibility = View.GONE
         binding.uiLayoutFilter.visibility = View.GONE
+        binding.uiLayoutSearch.visibility = View.GONE
+
     }
 
     private fun showMainViews() {
@@ -297,6 +299,7 @@ class GroupeV2Fragment : Fragment(), UpdateGroupInter {
         binding.separatorMyGroups.visibility = View.VISIBLE
         binding.uiLayoutFilter.visibility = View.VISIBLE
         binding.createGroupExpanded.visibility = View.VISIBLE
+        binding.uiLayoutSearch.visibility = View.VISIBLE
         resetSearchButtonState()
     }
 
