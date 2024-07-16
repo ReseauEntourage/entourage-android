@@ -152,7 +152,7 @@ class ActionListFragment : Fragment() {
     companion object {
         val EVENTS_PER_PAGE: Int = 20
         const val IS_CONTRIB = "isContrib"
-        fun newInstance(isContrib: Boolean): ActionListFragment {
+        fun newInstance(isContrib: Boolean , ismine: Boolean): ActionListFragment {
             val fragment = ActionListFragment()
             val args = Bundle()
             args.putBoolean(IS_CONTRIB, isContrib)

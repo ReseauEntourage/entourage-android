@@ -175,12 +175,14 @@ class MainFilterActivity : BaseActivity() {
     }
 
     private fun loadActions(): List<MainFilterInterestForAdapter> {
+        //LOG WTF des selectedInterests
+        Log.wtf("wtf", "wtf" + selectedInterests.toString())
         return listOf(
-            MainFilterInterestForAdapter("social", "Temps de partage", "café, activité...", selectedInterests.contains("temps_de_partage")),
-            MainFilterInterestForAdapter("services", "Service", "lessive, impression de documents...", selectedInterests.contains("service")),
-            MainFilterInterestForAdapter("clothes", "Vêtement", "chaussures, manteau...", selectedInterests.contains("vetement")),
-            MainFilterInterestForAdapter("equipment ", "Équipement", "téléphone, duvet...", selectedInterests.contains("equipement")),
-            MainFilterInterestForAdapter("hygiene", "Produit d'hygiène", "savon, protection hygiénique,...", selectedInterests.contains("produit_d'hygiene"))
+            MainFilterInterestForAdapter("social", "Temps de partage", "café, activité...", selectedInterests.contains("social")),
+            MainFilterInterestForAdapter("services", "Service", "lessive, impression de documents...", selectedInterests.contains("services")),
+            MainFilterInterestForAdapter("clothes", "Vêtement", "chaussures, manteau...", selectedInterests.contains("clothes")),
+            MainFilterInterestForAdapter("equipment", "Équipement", "téléphone, duvet...", selectedInterests.contains("equipment")),
+            MainFilterInterestForAdapter("hygiene", "Produit d'hygiène", "savon, protection hygiénique,...", selectedInterests.contains("hygiene"))
         )
     }
 

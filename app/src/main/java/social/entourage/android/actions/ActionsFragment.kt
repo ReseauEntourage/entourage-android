@@ -2,18 +2,23 @@ package social.entourage.android.actions
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.os.bundleOf
 import androidx.core.view.doOnPreDraw
 import androidx.core.widget.TextViewCompat
@@ -23,6 +28,7 @@ import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import social.entourage.android.EntourageApplication
+import social.entourage.android.MainActivity
 import social.entourage.android.R
 import social.entourage.android.databinding.NewFragmentActionsBinding
 import social.entourage.android.RefreshController
@@ -175,14 +181,25 @@ class ActionsFragment : Fragment() {
                 }
             }
         })
-
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if (binding.searchEditText.hasFocus()) {
+                    binding.searchEditText.clearFocus()
+                    hideKeyboard(binding.searchEditText)  // Masquer le clavier
+                    (requireActivity() as MainActivity).showBottomBar()
+                } else {
+                    isEnabled = false
+                    requireActivity().onBackPressedDispatcher.onBackPressed()
+                }
+            }
+        })
         createAction()
         initializeViews()
         initializeTab()
         initializeFilters()
         handleImageViewAnimation()
         setPage()
-
+        handleSearchButton()
         presenter.unreadMessages.observe(requireActivity(), ::updateUnreadCount)
         presenter.getUnreadCount()
     }
@@ -196,23 +213,45 @@ class ActionsFragment : Fragment() {
         if (MainFilterActivity.savedActionInterests.size > 0) {
             binding.cardFilterNumber.visibility = View.VISIBLE
             binding.tvNumberOfFilter.text = MainFilterActivity.savedActionInterests.size.toString()
-            binding.layoutFilter.background = resources.getDrawable(R.drawable.bg_selected_filter_main)
+            binding.uiLayoutFilter.background = resources.getDrawable(R.drawable.bg_unselected_filter)
+            binding.uiLayoutSearch.background = resources.getDrawable(R.drawable.bg_unselected_filter)
         } else {
             binding.cardFilterNumber.visibility = View.GONE
-            binding.layoutFilter.background = resources.getDrawable(R.drawable.bg_unselected_filter_main)
+            binding.uiLayoutFilter.background = resources.getDrawable(R.drawable.bg_unselected_filter)
+            binding.uiLayoutSearch.background = resources.getDrawable(R.drawable.bg_unselected_filter)
+        }
+    }
+
+    fun handleSearchButton(){
+        binding.uiLayoutSearch.setOnClickListener {
+            binding.collapsingToolbar.visibility = View.GONE
+            binding.searchEditText.visibility = View.VISIBLE
         }
     }
 
     fun hideFilter() {
-        binding.layoutFilter.visibility = View.GONE
+        binding.uiLayoutFilter.visibility = View.GONE
         binding.createAction.visibility = View.GONE
     }
 
     fun showFilter() {
-        binding.layoutFilter.visibility = View.VISIBLE
+        binding.uiLayoutFilter.visibility = View.VISIBLE
         binding.createAction.visibility = View.VISIBLE
     }
 
+    private fun hideKeyboard(view: View) {
+        val inputMethodManager = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
+        view.clearFocus()
+        binding.searchEditText.visibility = View.GONE
+        binding.collapsingToolbar.visibility = View.VISIBLE
+
+    }
+    private fun tintDrawable(drawable: Drawable?, color: Int) {
+        drawable?.let {
+            DrawableCompat.setTint(DrawableCompat.wrap(it), color)
+        }
+    }
     private fun initializeTab() {
         val viewPager = binding.viewPager
         val adapter = ActionsViewPagerAdapter(childFragmentManager, lifecycle)
@@ -221,9 +260,8 @@ class ActionsFragment : Fragment() {
         val tabLayout = binding.tabLayout
         val tabs = arrayOf(
             requireContext().getString(R.string.actions_tab_contribs),
-            requireContext().getString(R.string.actions_tab_demands)
-
-
+            requireContext().getString(R.string.actions_tab_demands),
+            requireContext().getString(R.string.actions_tab_mygroup),
         )
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             tab.text = tabs[position]
@@ -233,29 +271,78 @@ class ActionsFragment : Fragment() {
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 if (tab?.position == 0) {
                     presenter.isContrib = true
+                    presenter.isMine = false
+                    binding.uiLayoutSearch.visibility = View.VISIBLE
+                    binding.uiLayoutFilter.visibility = View.VISIBLE
                     AnalyticsEvents.logEvent(AnalyticsEvents.Help_view_contrib)
-                } else {
+                } else  if (tab?.position == 1) {
                     presenter.isContrib = false
+                    presenter.isMine = false
+                    binding.uiLayoutSearch.visibility = View.VISIBLE
+                    binding.uiLayoutFilter.visibility = View.VISIBLE
                     AnalyticsEvents.logEvent(AnalyticsEvents.Help_view_demand)
+                }else{
+                    binding.uiLayoutSearch.visibility = View.GONE
+                    binding.uiLayoutFilter.visibility = View.GONE
+                    AnalyticsEvents.logEvent(AnalyticsEvents.Help_view_myactions)
+                    presenter.isMine = true
                 }
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab?) {}
             override fun onTabReselected(tab: TabLayout.Tab?) {}
         })
+
+
     }
 
     private fun initializeViews() {
         binding.uiButtonMyActions.setOnClickListener {
+
             AnalyticsEvents.logEvent(AnalyticsEvents.Help_view_myactions)
             val intent = Intent(context, MyActionsListActivity::class.java)
             startActivityForResult(intent, 0)
         }
-        binding.layoutFilter.setOnClickListener {
+        binding.uiLayoutFilter.setOnClickListener {
             MainFilterActivity.mod = MainFilterMode.ACTION
             MainFilterActivity.hasToReloadAction = true
             val intent = Intent(activity, MainFilterActivity::class.java)
             startActivity(intent)
+        }
+        binding.searchEditText.setOnTouchListener { v, event ->
+            if (event.action == MotionEvent.ACTION_UP) {
+                val clearIcon = binding.searchEditText.compoundDrawables[2]
+                val backIcon = binding.searchEditText.compoundDrawables[0]
+                if (clearIcon != null && event.rawX >= (binding.searchEditText.right - clearIcon.bounds.width())) {
+                    binding.searchEditText.text.clear()
+                    return@setOnTouchListener true
+                } else if (backIcon != null && event.rawX <= (binding.searchEditText.left + backIcon.bounds.width())) {
+                    binding.searchEditText.text.clear()
+                    binding.searchEditText.clearFocus()
+                    return@setOnTouchListener true
+                }
+            }
+            false
+        }
+        val clearDrawable = ContextCompat.getDrawable(requireContext(), R.drawable.ic_cross_orange)
+        val backDrawable = ContextCompat.getDrawable(requireContext(), R.drawable.ic_arrow_left_black)
+
+        val color = ContextCompat.getColor(requireContext(), android.R.color.black)
+        tintDrawable(clearDrawable, color)
+        tintDrawable(backDrawable, color)
+        binding.searchEditText.setOnFocusChangeListener { v, hasFocus ->
+            if (hasFocus) {
+                binding.searchEditText.setCompoundDrawablesWithIntrinsicBounds(backDrawable, null, clearDrawable, null)
+                (requireActivity() as MainActivity).hideBottomBar()
+            } else {
+                hideKeyboard(v)  // Masquer le clavier lorsque le focus est perdu
+                val query = binding.searchEditText.text.toString()
+                if (query.isEmpty()) {
+                    binding.searchEditText.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null)
+                    (requireActivity() as MainActivity).showBottomBar()
+
+                }
+            }
         }
     }
 

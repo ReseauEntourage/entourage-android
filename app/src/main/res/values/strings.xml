@@ -632,7 +632,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="actions_title">Entraide</string>
     <string name="actions_tab_contribs">Contributions</string>
     <string name="actions_tab_demands">Demandes</string>
-
+    <string name="actions_tab_mygroup">Mes annonces</string>
     <string name="action_date_list">%s</string>
 
     <string name="action_bt_my_actions">Mes annonces</string>

@@ -46,6 +46,7 @@ class ActionsPresenter : ViewModel() {
     val actionSearch = MutableLiveData<MutableList<Action>>()
     var isLastPageSearch = false
     var isContrib = false
+    var isMine = false
     fun onSearchQueryChanged(query: String) {
         searchQuery.value = query
     }
