@@ -129,7 +129,9 @@ class DiscoverEventsListFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         AnalyticsEvents.logEvent(AnalyticsEvents.View__Event__List)
-
+        if(!isSearching){
+            showMainViews()
+        }
         val currentFiltersHash = currentFilters.hashCode()
         if (currentFiltersHash != lastFiltersHash) {
             isFirstResumeWithFilters = true
@@ -200,7 +202,10 @@ class DiscoverEventsListFragment : Fragment() {
 
     private fun handleResponseGetMYEvents(myEvents: MutableList<Events>?) {
         if (myEvents != null && myEvents.isNotEmpty()) {
-            myeventsAdapter.addData(myEvents)
+            val existingEventIds = myeventsAdapter.getEventIds() // Assurez-vous que votre adaptateur a cette méthode
+            val newEvents = myEvents.filter { it.id !in existingEventIds }
+            myeventsAdapter.addData(newEvents)
+
             binding.rvMyEvent.visibility = View.VISIBLE
             binding.separator.visibility = View.VISIBLE
             binding.titleSectionHeaderMyEvent.visibility = View.VISIBLE

@@ -61,6 +61,9 @@ class HomeEventAdapter(
     override fun getItemCount(): Int {
         return events.size
     }
+    fun getEventIds(): Set<Int> {
+        return events.mapNotNull { it.id }.toSet()
+    }
 
     override fun onBindViewHolder(holder: EventViewHolder, position: Int) {
         val event = events[position]
