@@ -113,10 +113,11 @@ class DiscoverEventsListFragment : Fragment() {
 
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                if (binding.searchEditText.hasFocus()) {
+                if (isSearching) {
                     binding.searchEditText.clearFocus()
                     hideKeyboard(binding.searchEditText)  // Masquer le clavier et retirer le focus
                     (requireActivity() as MainActivity).showBottomBar()
+                    showMainViews()
                 } else {
                     isEnabled = false
                     requireActivity().onBackPressedDispatcher.onBackPressed()
@@ -146,6 +147,7 @@ class DiscoverEventsListFragment : Fragment() {
 
     fun handleSearchMode(searchMod:Boolean) {
         if (searchMod) {
+            isSearching = true
             hideMainViews()
         }else {
             showMainViews()
@@ -224,7 +226,6 @@ class DiscoverEventsListFragment : Fragment() {
         } else {
             adapterSearch.resetData(allEvents ?: mutableListOf())
         }
-        updateView(allEvents.isNullOrEmpty())
         isLoading = false
         binding.progressBar.visibility = View.GONE
     }
@@ -274,6 +275,8 @@ class DiscoverEventsListFragment : Fragment() {
     }
 
     private fun hideKeyboard(view: View) {
+        binding.searchEditText.text.clear()
+        binding.searchEditText.clearFocus()
         val inputMethodManager = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
         view.clearFocus()
@@ -451,6 +454,8 @@ class DiscoverEventsListFragment : Fragment() {
                     hideKeyboard(v)  // Masquer le clavier et retirer le focus
                     binding.searchEditText.text.clear()
                     binding.searchEditText.clearFocus()
+                    isSearching = false
+                    showMainViews()
                     return@setOnTouchListener true
                 }
             }
