@@ -62,10 +62,12 @@ class EventsPresenter : ViewModel() {
     var commentPosted = MutableLiveData<Post?>()
     var haveToChangePage = MutableLiveData<Boolean>()
     var haveToCreateEvent = MutableLiveData<Boolean>()
+    var shouldChangeTopView = MutableLiveData<Boolean>()
     var passSearchMod = MutableLiveData<Boolean>()
     var isSearchMode = false
     var haveChanged = false
     var havelaunchedCreation = false
+
 
     var isLoading: Boolean = false
     var isLastPage: Boolean = false
@@ -79,6 +81,10 @@ class EventsPresenter : ViewModel() {
     fun changePage() {
         haveChanged = !haveChanged
         haveToChangePage.postValue(haveChanged)
+    }
+
+    fun changeTopView(shouldHide: Boolean) {
+        shouldChangeTopView.postValue(shouldHide)
     }
 
     fun changeSearchMode() {

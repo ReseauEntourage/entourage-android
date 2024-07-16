@@ -89,6 +89,7 @@ class EventsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setSearchAndFilterButtons()
         eventsPresenter = ViewModelProvider(requireActivity()).get(EventsPresenter::class.java)
         createEvent()
         initializeTab()
@@ -98,6 +99,7 @@ class EventsFragment : Fragment() {
         eventsPresenter.haveToCreateEvent.observe(requireActivity(),::handleLaunchCreateEvent)
         eventsPresenter.isCreateButtonExtended.observe(requireActivity(),::handleButtonBehavior)
         eventsPresenter.hasToHideButton.observe(requireActivity(),::handleShowHideButton)
+        eventsPresenter.shouldChangeTopView.observe(requireActivity(),::handleTopTitle)
         eventsPresenter.hasChangedFilterLocationForParentFragment.observe(requireActivity(),::handleFilterTitleAfterChange)
         eventsPresenter.getUnreadCount()
         handleFilterButton()
@@ -127,6 +129,23 @@ class EventsFragment : Fragment() {
         }
         resetSearchButtonState()
 
+    }
+
+    fun handleTopTitle(hideTitle:Boolean){
+        if(hideTitle){
+            binding.topEventLayout.visibility = View.GONE
+        }else{
+            binding.topEventLayout.visibility = View.VISIBLE
+        }
+    }
+
+    fun setSearchAndFilterButtons(){
+        binding.uiLayoutSearch.background = ContextCompat.getDrawable(requireContext(), R.drawable.bg_unselected_filter) // Ajoute un fond orange rond
+        binding.uiBellSearch.setColorFilter(ContextCompat.getColor(requireContext(), R.color.orange), android.graphics.PorterDuff.Mode.SRC_IN)
+        binding.uiLayoutFilter.background = ContextCompat.getDrawable(requireContext(), R.drawable.bg_unselected_filter) // Remet le fond en blanc rond
+        binding.uiBellFilter.setColorFilter(ContextCompat.getColor(requireContext(), R.color.orange), android.graphics.PorterDuff.Mode.SRC_IN)
+        binding.uiLayoutFilter.visibility = View.VISIBLE
+        binding.uiLayoutSearch.visibility = View.VISIBLE
     }
 
     private fun handleFilterButton() {
