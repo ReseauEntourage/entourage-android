@@ -56,6 +56,7 @@ class GroupeV2Fragment : Fragment(), UpdateGroupInter {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = GroupV2FragmentLayoutBinding.bind(view)
+        setSearchAndFilterButtons()
         myId = EntourageApplication.me(activity)?.id
         presenter = ViewModelProvider(requireActivity()).get(GroupPresenter::class.java)
 
@@ -65,6 +66,7 @@ class GroupeV2Fragment : Fragment(), UpdateGroupInter {
                 if (binding.searchEditText.hasFocus()) {
                     binding.searchEditText.clearFocus()
                     hideKeyboard(binding.searchEditText)  // Masquer le clavier
+                    (requireActivity() as MainActivity).showBottomBar()
                 } else {
                     isEnabled = false
                     requireActivity().onBackPressedDispatcher.onBackPressed()
@@ -128,7 +130,7 @@ class GroupeV2Fragment : Fragment(), UpdateGroupInter {
         binding.uiLayoutSearch.setOnClickListener {
             handleSearchButton()
         }
-
+        setSearchAndFilterButtons()
     }
 
     override fun onCreateView(
@@ -179,6 +181,15 @@ class GroupeV2Fragment : Fragment(), UpdateGroupInter {
             binding.uiBellFilter.setColorFilter(ContextCompat.getColor(requireContext(), R.color.orange), android.graphics.PorterDuff.Mode.SRC_IN) // Applique une tint orange
         }
         resetSearchButtonState()
+    }
+
+    fun setSearchAndFilterButtons(){
+        binding.uiLayoutSearch.background = ContextCompat.getDrawable(requireContext(), R.drawable.bg_unselected_filter) // Ajoute un fond orange rond
+        binding.uiBellSearch.setColorFilter(ContextCompat.getColor(requireContext(), R.color.orange), android.graphics.PorterDuff.Mode.SRC_IN)
+        binding.uiLayoutFilter.background = ContextCompat.getDrawable(requireContext(), R.drawable.bg_unselected_filter) // Remet le fond en blanc rond
+        binding.uiBellFilter.setColorFilter(ContextCompat.getColor(requireContext(), R.color.orange), android.graphics.PorterDuff.Mode.SRC_IN)
+        binding.uiLayoutFilter.visibility = View.VISIBLE
+        binding.uiLayoutSearch.visibility = View.VISIBLE
     }
 
     private fun handleSearchButton() {
@@ -317,6 +328,7 @@ class GroupeV2Fragment : Fragment(), UpdateGroupInter {
         binding.uiLayoutSearch.visibility = View.VISIBLE
         (requireActivity() as MainActivity).showBottomBar()
         resetSearchButtonState()
+        view?.clearFocus()
     }
 
     private fun initView() {

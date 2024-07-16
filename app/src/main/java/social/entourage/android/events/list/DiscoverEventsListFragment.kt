@@ -116,6 +116,7 @@ class DiscoverEventsListFragment : Fragment() {
                 if (binding.searchEditText.hasFocus()) {
                     binding.searchEditText.clearFocus()
                     hideKeyboard(binding.searchEditText)  // Masquer le clavier et retirer le focus
+                    (requireActivity() as MainActivity).showBottomBar()
                 } else {
                     isEnabled = false
                     requireActivity().onBackPressedDispatcher.onBackPressed()
@@ -143,9 +144,9 @@ class DiscoverEventsListFragment : Fragment() {
 
     fun handleSearchMode(searchMod:Boolean) {
         if (searchMod) {
-            showMainViews()
-        }else {
             hideMainViews()
+        }else {
+            showMainViews()
         }
     }
 
@@ -381,6 +382,8 @@ class DiscoverEventsListFragment : Fragment() {
         }
     }
 
+
+
     private fun handleSwipeRefresh() {
         binding.swipeRefresh.setOnRefreshListener {
             binding.progressBar.visibility = View.VISIBLE
@@ -502,6 +505,8 @@ class DiscoverEventsListFragment : Fragment() {
         binding.rvSearch.visibility = View.VISIBLE
         eventsPresenter.hideButton()
         (requireActivity() as MainActivity).hideBottomBar()
+
+        eventsPresenter.changeTopView(true)
     }
 
     private fun showMainViews() {
@@ -517,5 +522,7 @@ class DiscoverEventsListFragment : Fragment() {
         binding.rvSearch.visibility = View.GONE
         (requireActivity() as MainActivity).showBottomBar()
         eventsPresenter.showButton()
+        eventsPresenter.changeTopView(false)
+        view?.clearFocus()
     }
 }
