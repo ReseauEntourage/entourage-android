@@ -1,6 +1,7 @@
 package social.entourage.android.main_filter
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.graphics.Rect
 import android.os.Bundle
@@ -48,6 +49,14 @@ class MainFilterActivity : BaseActivity() {
         var hasToReloadAction = false
         var hasFilter = false
         data class PlaceDetails(val name: String, val lat: Double, val lng: Double)
+        fun resetAllFilters(context: Context) {
+            val user = EntourageApplication.me(context)
+            savedGroupInterests.clear()
+            savedActionInterests.clear()
+            savedRadius = user?.travelDistance ?: 0
+            savedLocation = user?.address?.let { PlaceDetails(it.displayAddress, it.latitude, it.longitude) }
+            hasFilter = false
+        }
     }
 
     private var selectedInterests = mutableListOf<String>()
@@ -288,7 +297,7 @@ class MainFilterActivity : BaseActivity() {
         }
     }
 
-    private fun resetFilters() {
+     fun resetFilters() {
         val user = EntourageApplication.me(this)
         selectedInterests.clear()
         savedLocation = user?.address?.let { PlaceDetails(it.displayAddress, it.latitude, it.longitude) }

@@ -50,6 +50,7 @@ import social.entourage.android.home.CommunicationHandlerBadgeViewModel
 import social.entourage.android.home.UnreadMessages
 import social.entourage.android.homev2.EventConfirmationDialogFragment
 import social.entourage.android.language.LanguageManager
+import social.entourage.android.main_filter.MainFilterActivity
 import social.entourage.android.notifications.NotificationActionManager
 import social.entourage.android.notifications.PushNotificationManager
 import social.entourage.android.tools.log.AnalyticsEvents
@@ -178,6 +179,9 @@ class MainActivity : BaseSecuredActivity() {
         if(shouldLaunchEvent){
             shouldLaunchEvent = false
             goEvent()
+        }
+        FirebaseMessaging.getInstance().token.addOnSuccessListener { token ->
+            Log.wtf("wtf", "token: $token")
         }
     }
 
@@ -450,7 +454,6 @@ class MainActivity : BaseSecuredActivity() {
 
     fun goHome(){
         navController.navigate(R.id.navigation_home)
-
     }
 
     fun goGroup(){
@@ -462,6 +465,7 @@ class MainActivity : BaseSecuredActivity() {
 
     fun goEvent(){
         navController.navigate(R.id.navigation_events)
+        MainFilterActivity.resetAllFilters(this)
 
     }
 
@@ -506,9 +510,11 @@ class MainActivity : BaseSecuredActivity() {
                 }
                 R.id.navigation_groups -> {
                     AnalyticsEvents.logEvent(AnalyticsEvents.Action_Tabbar_groups)
+                    MainFilterActivity.resetAllFilters(this)
                 }
                 R.id.navigation_events -> {
                     AnalyticsEvents.logEvent(AnalyticsEvents.Action_Tabbar_events)
+                    MainFilterActivity.resetAllFilters(this)
                 }
             }
 
