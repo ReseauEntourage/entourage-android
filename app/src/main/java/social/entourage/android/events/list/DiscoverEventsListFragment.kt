@@ -230,6 +230,9 @@ class DiscoverEventsListFragment : Fragment() {
     }
 
     private fun setRVScrollListener() {
+        if(eventsPresenter.isLastPage || eventsPresenter.isLastPageMyEvent){
+            binding.progressBar.visibility = View.GONE
+        }
         binding.nestedScrollView.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { _, _, scrollY, _, oldScrollY ->
             if (scrollY > oldScrollY) {
                 eventsPresenter.tellParentFragmentToMoveButton(false)
@@ -237,7 +240,6 @@ class DiscoverEventsListFragment : Fragment() {
                 eventsPresenter.tellParentFragmentToMoveButton(true)
             }
             if (!binding.nestedScrollView.canScrollVertically(1) && !isLoading) {
-                binding.progressBar.visibility = View.VISIBLE
                 if (isSearching) {
                     currentSearchQuery?.let { query ->
                         searchEvents(query, isLoadMore = true)
@@ -257,7 +259,6 @@ class DiscoverEventsListFragment : Fragment() {
                 val totalItemCount = layoutManager.itemCount
                 val lastVisibleItemPosition = layoutManager.findLastVisibleItemPosition()
                 if (totalItemCount <= (lastVisibleItemPosition + 2) && !isLoading) {
-                    binding.progressBar.visibility = View.VISIBLE
                     if (isSearching) {
                         currentSearchQuery?.let { query ->
                             searchEvents(query, isLoadMore = true)
@@ -334,6 +335,7 @@ class DiscoverEventsListFragment : Fragment() {
 
     private fun loadEvents() {
         page++
+        binding.progressBar.visibility = View.VISIBLE
         if (!eventsPresenter.isLastPage && !isLoading) {
             isLoading = true
             if (MainFilterActivity.savedGroupInterests.isEmpty()){
@@ -358,6 +360,7 @@ class DiscoverEventsListFragment : Fragment() {
 
     private fun loadMyEvents() {
         pageMyEvent++
+        binding.progressBar.visibility = View.VISIBLE
         binding.swipeRefresh.isRefreshing = false
         myId = EntourageApplication.me(activity)?.id
         if (myId != null) {
