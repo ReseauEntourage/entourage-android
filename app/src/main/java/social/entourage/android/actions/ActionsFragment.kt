@@ -297,12 +297,6 @@ class ActionsFragment : Fragment() {
     }
 
     private fun initializeViews() {
-        binding.uiButtonMyActions.setOnClickListener {
-
-            AnalyticsEvents.logEvent(AnalyticsEvents.Help_view_myactions)
-            val intent = Intent(context, MyActionsListActivity::class.java)
-            startActivityForResult(intent, 0)
-        }
         binding.uiLayoutFilter.setOnClickListener {
             MainFilterActivity.mod = MainFilterMode.ACTION
             MainFilterActivity.hasToReloadAction = true
