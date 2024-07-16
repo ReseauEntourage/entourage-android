@@ -114,9 +114,11 @@ class DiscoverEventsListFragment : Fragment() {
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 if (isSearching) {
+                    isSearching = false
                     binding.searchEditText.clearFocus()
                     hideKeyboard(binding.searchEditText)  // Masquer le clavier et retirer le focus
                     (requireActivity() as MainActivity).showBottomBar()
+                    eventsPresenter.changeSearchMode()
                     showMainViews()
                 } else {
                     isEnabled = false
@@ -130,6 +132,7 @@ class DiscoverEventsListFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         AnalyticsEvents.logEvent(AnalyticsEvents.View__Event__List)
+        Log.wtf("wtf","isSearching: $isSearching")
         if(!isSearching){
             showMainViews()
         }
@@ -150,6 +153,7 @@ class DiscoverEventsListFragment : Fragment() {
             isSearching = true
             hideMainViews()
         }else {
+            isSearching = false
             showMainViews()
         }
     }
@@ -275,8 +279,6 @@ class DiscoverEventsListFragment : Fragment() {
     }
 
     private fun hideKeyboard(view: View) {
-        binding.searchEditText.text.clear()
-        binding.searchEditText.clearFocus()
         val inputMethodManager = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
         view.clearFocus()
@@ -455,6 +457,7 @@ class DiscoverEventsListFragment : Fragment() {
                     binding.searchEditText.text.clear()
                     binding.searchEditText.clearFocus()
                     isSearching = false
+                    eventsPresenter.changeSearchMode()
                     showMainViews()
                     return@setOnTouchListener true
                 }
