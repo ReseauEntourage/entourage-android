@@ -56,7 +56,7 @@ class EventsPresenter : ViewModel() {
     
     var hasUserLeftEvent = MutableLiveData<Boolean>()
     var eventCanceled = MutableLiveData<Boolean>()
-
+    var textSizeChange = MutableLiveData<Float>()
     var isEventUpdated = MutableLiveData<Boolean>()
     var hasPost = MutableLiveData<Boolean>()
     var commentPosted = MutableLiveData<Post?>()
@@ -83,6 +83,9 @@ class EventsPresenter : ViewModel() {
         haveToChangePage.postValue(haveChanged)
     }
 
+    fun changeTextSize(size: Float) {
+        textSizeChange.postValue(size)
+    }
     fun changeTopView(shouldHide: Boolean) {
         shouldChangeTopView.postValue(shouldHide)
     }

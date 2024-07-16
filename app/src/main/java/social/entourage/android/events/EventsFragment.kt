@@ -100,6 +100,7 @@ class EventsFragment : Fragment() {
         eventsPresenter.isCreateButtonExtended.observe(requireActivity(),::handleButtonBehavior)
         eventsPresenter.hasToHideButton.observe(requireActivity(),::handleShowHideButton)
         eventsPresenter.shouldChangeTopView.observe(requireActivity(),::handleTopTitle)
+        eventsPresenter.textSizeChange.observe(requireActivity(),::handleTextSize)
         eventsPresenter.hasChangedFilterLocationForParentFragment.observe(requireActivity(),::handleFilterTitleAfterChange)
         eventsPresenter.getUnreadCount()
         handleFilterButton()
@@ -211,6 +212,11 @@ class EventsFragment : Fragment() {
         } else {
             animateToRetractedState()
         }
+    }
+
+    fun handleTextSize(size:Float){
+        Log.wtf("wtf", "size: $size")
+        binding.uiTitleEvents.textSize = size
     }
 
     private fun animateToExtendedState() {

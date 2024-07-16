@@ -233,14 +233,23 @@ class DiscoverEventsListFragment : Fragment() {
         isLoading = false
         binding.progressBar.visibility = View.GONE
     }
+    private fun calculateFontSize(scrollY: Int): Float {
+        val minFontSize = 16f
+        val maxFontSize = 24f
+        val scrollRange = 200
+        return (maxFontSize - minFontSize) * (scrollRange - Math.min(scrollY, scrollRange)) / scrollRange + minFontSize
+    }
 
     private fun setRVScrollListener() {
         if(eventsPresenter.isLastPage || eventsPresenter.isLastPageMyEvent){
             binding.progressBar.visibility = View.GONE
         }
         binding.nestedScrollView.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { _, _, scrollY, _, oldScrollY ->
+            val newFontSize = calculateFontSize(scrollY)
+            eventsPresenter.changeTextSize(newFontSize)
             if (scrollY > oldScrollY) {
                 eventsPresenter.tellParentFragmentToMoveButton(false)
+
             } else if (scrollY < oldScrollY) {
                 eventsPresenter.tellParentFragmentToMoveButton(true)
             }

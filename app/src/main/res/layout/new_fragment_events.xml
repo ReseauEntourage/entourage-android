@@ -25,6 +25,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:id="@+id/ui_title_events"
                 android:textSize="@dimen/header_title"
                 android:fontFamily="@font/quicksand_bold"
                 android:textColor="@color/white"
