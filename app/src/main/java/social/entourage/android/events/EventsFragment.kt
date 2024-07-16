@@ -145,6 +145,8 @@ class EventsFragment : Fragment() {
         }
     }
 
+
+
     private fun resetSearchButtonState() {
         binding.uiLayoutFilter.background = ContextCompat.getDrawable(requireContext(), R.drawable.bg_unselected_filter) // Remet le fond en blanc rond
         binding.uiBellFilter.setColorFilter(ContextCompat.getColor(requireContext(), R.color.orange), android.graphics.PorterDuff.Mode.SRC_IN) // Applique une tint noire par défaut

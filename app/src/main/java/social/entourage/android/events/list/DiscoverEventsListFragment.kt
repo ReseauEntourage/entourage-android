@@ -11,6 +11,7 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -23,6 +24,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import social.entourage.android.EntourageApplication
+import social.entourage.android.MainActivity
 import social.entourage.android.R
 import social.entourage.android.api.model.EventActionLocationFilters
 import social.entourage.android.api.model.Events
@@ -113,12 +115,14 @@ class DiscoverEventsListFragment : Fragment() {
             override fun handleOnBackPressed() {
                 if (binding.searchEditText.hasFocus()) {
                     binding.searchEditText.clearFocus()
+                    hideKeyboard(binding.searchEditText)  // Masquer le clavier et retirer le focus
                 } else {
                     isEnabled = false
                     requireActivity().onBackPressedDispatcher.onBackPressed()
                 }
             }
         })
+
     }
 
     override fun onResume() {
@@ -261,6 +265,14 @@ class DiscoverEventsListFragment : Fragment() {
             }
         })
     }
+
+    private fun hideKeyboard(view: View) {
+        val inputMethodManager = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
+        view.clearFocus()
+
+    }
+
 
     private fun handleFilterChange(hasChangedFilter: Boolean) {
         if (hasChangedFilter) {
@@ -407,6 +419,7 @@ class DiscoverEventsListFragment : Fragment() {
                 binding.rvSearch.visibility = View.VISIBLE
                 binding.searchEditText.setCompoundDrawablesWithIntrinsicBounds(backDrawable, null, clearDrawable, null)
             } else {
+                hideKeyboard(v)  // Masquer le clavier et retirer le focus lorsque le focus est perdu
                 val query = binding.searchEditText.text.toString()
                 if (query.isEmpty()) {
                     showMainViews()
@@ -424,12 +437,15 @@ class DiscoverEventsListFragment : Fragment() {
                     binding.searchEditText.text.clear()
                     return@setOnTouchListener true
                 } else if (backIcon != null && event.rawX <= (binding.searchEditText.left + backIcon.bounds.width())) {
+                    hideKeyboard(v)  // Masquer le clavier et retirer le focus
+                    binding.searchEditText.text.clear()
                     binding.searchEditText.clearFocus()
                     return@setOnTouchListener true
                 }
             }
             false
         }
+
 
         // Ajouter un TextWatcher pour surveiller les changements de texte
         binding.searchEditText.addTextChangedListener(object : TextWatcher {
@@ -485,6 +501,7 @@ class DiscoverEventsListFragment : Fragment() {
         binding.separator2.visibility = View.GONE
         binding.rvSearch.visibility = View.VISIBLE
         eventsPresenter.hideButton()
+        (requireActivity() as MainActivity).hideBottomBar()
     }
 
     private fun showMainViews() {
@@ -498,6 +515,7 @@ class DiscoverEventsListFragment : Fragment() {
         binding.separator.visibility = View.VISIBLE
         binding.separator2.visibility = View.VISIBLE
         binding.rvSearch.visibility = View.GONE
+        (requireActivity() as MainActivity).showBottomBar()
         eventsPresenter.showButton()
     }
 }

@@ -1,5 +1,6 @@
 package social.entourage.android.groups.list
 
+import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.Drawable
 import android.os.Build
@@ -11,6 +12,7 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
@@ -19,6 +21,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import social.entourage.android.EntourageApplication
+import social.entourage.android.MainActivity
 import social.entourage.android.R
 import social.entourage.android.api.model.Group
 import social.entourage.android.databinding.GroupV2FragmentLayoutBinding
@@ -61,6 +64,7 @@ class GroupeV2Fragment : Fragment(), UpdateGroupInter {
             override fun handleOnBackPressed() {
                 if (binding.searchEditText.hasFocus()) {
                     binding.searchEditText.clearFocus()
+                    hideKeyboard(binding.searchEditText)  // Masquer le clavier
                 } else {
                     isEnabled = false
                     requireActivity().onBackPressedDispatcher.onBackPressed()
@@ -124,6 +128,7 @@ class GroupeV2Fragment : Fragment(), UpdateGroupInter {
         binding.uiLayoutSearch.setOnClickListener {
             handleSearchButton()
         }
+
     }
 
     override fun onCreateView(
@@ -177,7 +182,7 @@ class GroupeV2Fragment : Fragment(), UpdateGroupInter {
     }
 
     private fun handleSearchButton() {
-        binding.uiLayoutSearch.background = ContextCompat.getDrawable(requireContext(), R.drawable.bg_selected_filter) // Ajoute un fond orange rond
+        binding.uiLayoutSearch.background = ContextCompat.getDrawable(requireContext(), R.drawable.bg_unselected_filter) // Ajoute un fond orange rond
         binding.uiBellSearch.setColorFilter(ContextCompat.getColor(requireContext(), R.color.white), android.graphics.PorterDuff.Mode.SRC_IN) // Applique une tint blanche
         hideMainViews()
     }
@@ -191,6 +196,13 @@ class GroupeV2Fragment : Fragment(), UpdateGroupInter {
         return (MainFilterActivity.savedGroupInterests.joinToString(",") +
                 MainFilterActivity.savedRadius +
                 MainFilterActivity.savedLocation?.name).hashCode()
+    }
+
+    private fun hideKeyboard(view: View) {
+        val inputMethodManager = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
+        view.clearFocus()
+
     }
 
     private fun tintDrawable(drawable: Drawable?, color: Int) {
@@ -213,6 +225,7 @@ class GroupeV2Fragment : Fragment(), UpdateGroupInter {
                 binding.rvSearch.visibility = View.VISIBLE
                 binding.searchEditText.setCompoundDrawablesWithIntrinsicBounds(backDrawable, null, clearDrawable, null)
             } else {
+                hideKeyboard(v)  // Masquer le clavier lorsque le focus est perdu
                 val query = binding.searchEditText.text.toString()
                 if (query.isEmpty()) {
                     showMainViews()
@@ -223,6 +236,7 @@ class GroupeV2Fragment : Fragment(), UpdateGroupInter {
             }
         }
 
+
         binding.searchEditText.setOnTouchListener { v, event ->
             if (event.action == MotionEvent.ACTION_UP) {
                 val clearIcon = binding.searchEditText.compoundDrawables[2]
@@ -231,6 +245,7 @@ class GroupeV2Fragment : Fragment(), UpdateGroupInter {
                     binding.searchEditText.text.clear()
                     return@setOnTouchListener true
                 } else if (backIcon != null && event.rawX <= (binding.searchEditText.left + backIcon.bounds.width())) {
+                    binding.searchEditText.text.clear()
                     binding.searchEditText.clearFocus()
                     return@setOnTouchListener true
                 }
@@ -285,7 +300,7 @@ class GroupeV2Fragment : Fragment(), UpdateGroupInter {
         binding.createGroup.visibility = View.GONE
         binding.uiLayoutFilter.visibility = View.GONE
         binding.uiLayoutSearch.visibility = View.GONE
-
+        (requireActivity() as MainActivity).hideBottomBar()
     }
 
     private fun showMainViews() {
@@ -300,6 +315,7 @@ class GroupeV2Fragment : Fragment(), UpdateGroupInter {
         binding.uiLayoutFilter.visibility = View.VISIBLE
         binding.createGroupExpanded.visibility = View.VISIBLE
         binding.uiLayoutSearch.visibility = View.VISIBLE
+        (requireActivity() as MainActivity).showBottomBar()
         resetSearchButtonState()
     }
 
