@@ -101,6 +101,8 @@ class MainActivity : BaseSecuredActivity() {
         //ifEventLastDay(136592)
     }
 
+
+
     fun hideBottomBar() {
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.nav_view)
         bottomNavigationView.visibility = View.GONE
@@ -180,9 +182,7 @@ class MainActivity : BaseSecuredActivity() {
             shouldLaunchEvent = false
             goEvent()
         }
-        FirebaseMessaging.getInstance().token.addOnSuccessListener { token ->
-            Log.wtf("wtf", "token: $token")
-        }
+
     }
 
     private fun checkForAppUpdate() {
