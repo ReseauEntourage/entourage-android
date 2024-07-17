@@ -234,6 +234,7 @@ class ActionsFragment : Fragment() {
 
     fun handleSearchButton(){
         binding.uiLayoutSearch.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.actions_searchbar_clic)
             binding.collapsingToolbar.visibility = View.GONE
             binding.searchEditText.visibility = View.VISIBLE
             isSearching = true
@@ -313,6 +314,7 @@ class ActionsFragment : Fragment() {
 
     private fun initializeViews() {
         binding.uiLayoutFilter.setOnClickListener {
+
             MainFilterActivity.mod = MainFilterMode.ACTION
             MainFilterActivity.hasToReloadAction = true
             val intent = Intent(activity, MainFilterActivity::class.java)
