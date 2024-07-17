@@ -244,13 +244,11 @@ class ActionsFragment : Fragment() {
     fun hideFilter() {
         binding.uiLayoutFilter.visibility = View.GONE
         binding.createAction.visibility = View.GONE
-        binding.cardFilterNumber.visibility = View.GONE
     }
 
     fun showFilter() {
         binding.uiLayoutFilter.visibility = View.VISIBLE
         binding.createAction.visibility = View.VISIBLE
-        binding.cardFilterNumber.visibility = View.VISIBLE
     }
 
     private fun hideKeyboard(view: View) {
@@ -288,13 +286,18 @@ class ActionsFragment : Fragment() {
                     presenter.isMine = false
                     binding.uiLayoutSearch.visibility = View.VISIBLE
                     binding.uiLayoutFilter.visibility = View.VISIBLE
+                    if(MainFilterActivity.savedActionInterests.isNotEmpty()){
+                        binding.cardFilterNumber.visibility = View.VISIBLE
+                    }
                     AnalyticsEvents.logEvent(AnalyticsEvents.Help_view_contrib)
                 } else  if (tab?.position == 1) {
                     presenter.isContrib = false
                     presenter.isMine = false
                     binding.uiLayoutSearch.visibility = View.VISIBLE
                     binding.uiLayoutFilter.visibility = View.VISIBLE
-                    binding.cardFilterNumber.visibility = View.VISIBLE
+                    if(MainFilterActivity.savedActionInterests.isNotEmpty()){
+                        binding.cardFilterNumber.visibility = View.VISIBLE
+                    }
                     AnalyticsEvents.logEvent(AnalyticsEvents.Help_view_demand)
                 }else{
                     binding.uiLayoutSearch.visibility = View.GONE
