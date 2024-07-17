@@ -28,10 +28,12 @@ import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.base.BaseActivity
 import social.entourage.android.databinding.ActivityMainFilterBinding
+import social.entourage.android.tools.log.AnalyticsEvents
 
 enum class MainFilterMode {
     ACTION,
-    GROUP
+    GROUP,
+    EVENT
 }
 
 class MainFilterActivity : BaseActivity() {
@@ -85,6 +87,15 @@ class MainFilterActivity : BaseActivity() {
         addKeyboardListener()
     }
 
+    override fun onResume() {
+        super.onResume()
+        if(mod == MainFilterMode.ACTION ){
+            binding.tvSubtitleItems.text = getString(R.string.main_filter_subtitle_action)
+        }else{
+            binding.tvSubtitleItems.text = getString(R.string.main_filter_subtitle_group_event)
+        }
+    }
+
     private fun addKeyboardListener() {
         val rootView = binding.root
         rootView.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
@@ -116,7 +127,7 @@ class MainFilterActivity : BaseActivity() {
 
     private fun loadSavedFilters() {
         hasFilter = false
-        if (mod == MainFilterMode.GROUP && savedGroupInterests.isNotEmpty()) {
+        if ((mod == MainFilterMode.GROUP || mod == MainFilterMode.EVENT) && savedGroupInterests.isNotEmpty()) {
             selectedInterests = savedGroupInterests.toMutableList()
             hasFilter = true
         } else if (mod == MainFilterMode.ACTION && savedActionInterests.isNotEmpty()) {
@@ -178,11 +189,11 @@ class MainFilterActivity : BaseActivity() {
         //LOG WTF des selectedInterests
         Log.wtf("wtf", "wtf" + selectedInterests.toString())
         return listOf(
-            MainFilterInterestForAdapter("social", "Temps de partage", "café, activité...", selectedInterests.contains("social")),
-            MainFilterInterestForAdapter("services", "Service", "lessive, impression de documents...", selectedInterests.contains("services")),
-            MainFilterInterestForAdapter("clothes", "Vêtement", "chaussures, manteau...", selectedInterests.contains("clothes")),
-            MainFilterInterestForAdapter("equipment", "Équipement", "téléphone, duvet...", selectedInterests.contains("equipment")),
-            MainFilterInterestForAdapter("hygiene", "Produit d'hygiène", "savon, protection hygiénique,...", selectedInterests.contains("hygiene"))
+            MainFilterInterestForAdapter("social", "Temps de partage", "(café, activité...)", selectedInterests.contains("social")),
+            MainFilterInterestForAdapter("services", "Service", "(lessive, impression de documents...)", selectedInterests.contains("services")),
+            MainFilterInterestForAdapter("clothes", "Vêtement", "(chaussures, manteau...)", selectedInterests.contains("clothes")),
+            MainFilterInterestForAdapter("equipment", "Équipement", "(téléphone, duvet...)", selectedInterests.contains("equipment")),
+            MainFilterInterestForAdapter("hygiene", "Produit d'hygiène", "(savon, protections hygiéniques,...)", selectedInterests.contains("hygiene"))
         )
     }
 
@@ -311,7 +322,7 @@ class MainFilterActivity : BaseActivity() {
         binding.tvRadius.text = user?.travelDistance.toString() ?: "0 km"
         binding.autoCompleteCityName.setText(user?.address?.displayAddress?: "")
         updateFilterCount(0)
-        if (mod == MainFilterMode.GROUP) {
+        if (mod == MainFilterMode.GROUP || mod == MainFilterMode.EVENT) {
             savedGroupInterests.clear()
         } else {
             savedActionInterests.clear()
@@ -321,7 +332,18 @@ class MainFilterActivity : BaseActivity() {
     }
 
     private fun applyFilters() {
-        if (mod == MainFilterMode.GROUP) {
+        when (mod) {
+            MainFilterMode.GROUP -> {
+                AnalyticsEvents.logEvent(AnalyticsEvents.groups_filter_apply_clic)
+            }
+            MainFilterMode.EVENT -> {
+                AnalyticsEvents.logEvent(AnalyticsEvents.events_filter_apply_clic)
+            }
+            MainFilterMode.ACTION -> {
+                AnalyticsEvents.logEvent(AnalyticsEvents.actions_filter_apply_clic)
+            }
+        }
+        if (mod == MainFilterMode.GROUP|| mod == MainFilterMode.EVENT) {
             savedGroupInterests = selectedInterests
         } else {
             savedActionInterests = selectedInterests

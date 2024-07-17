@@ -152,7 +152,7 @@ class EventsFragment : Fragment() {
     private fun handleFilterButton() {
        binding.uiLayoutFilter.setOnClickListener {
            DiscoverEventsListFragment.isFirstResumeWithFilters = true
-           MainFilterActivity.mod = MainFilterMode.GROUP
+           MainFilterActivity.mod = MainFilterMode.EVENT
            val intent = Intent(activity, MainFilterActivity::class.java)
 
            startActivity(intent)
@@ -161,6 +161,7 @@ class EventsFragment : Fragment() {
 
     private fun handleSearchButton(){
         binding.uiLayoutSearch.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.events_searchbar_clic)
             this.eventsPresenter.changeSearchMode()
         }
     }

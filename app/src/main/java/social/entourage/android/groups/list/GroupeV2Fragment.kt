@@ -131,6 +131,7 @@ class GroupeV2Fragment : Fragment(), UpdateGroupInter {
 
         // Ajout de la gestion du clic sur uiLayoutSearch
         binding.uiLayoutSearch.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.groups_searchbar_clic)
             handleSearchButton()
             isSearching = true
         }

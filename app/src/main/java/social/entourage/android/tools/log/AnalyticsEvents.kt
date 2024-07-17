@@ -743,7 +743,15 @@ object AnalyticsEvents {
     const val popup_event_last_day_accept = "popup_event_last_day_accept"
     const val popup_event_last_day_decline = "popup_event_last_day_decline"
 
+    const val actions_filter_apply_clic = "actions_filter_apply_clic"
+    const val groups_filter_apply_clic = "groups_filter_apply_clic"
+    const val events_filter_apply_clic = "events_filter_apply_clic"
 
+    const val actions_searchbar_clic = "actions_searchbar_clic"
+    const val groups_searchbar_clic = "groups_searchbar_clic"
+    const val events_searchbar_clic = "events_searchbar_clic"
+
+    const val filter_tag_item_ = "filter_tag_item_"
 
 
 

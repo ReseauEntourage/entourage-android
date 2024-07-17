@@ -9,6 +9,7 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.RecyclerView
 import social.entourage.android.R
 import social.entourage.android.databinding.ItemMainFilterBinding
+import social.entourage.android.tools.log.AnalyticsEvents
 
 class MainFilterAdapter(
     private val context: Context,
@@ -28,6 +29,16 @@ class MainFilterAdapter(
 
             binding.root.setOnClickListener {
                 item.isSelected = !item.isSelected
+                if (item.isSelected) {
+                    when (MainFilterActivity.mod){
+                        MainFilterMode.ACTION -> AnalyticsEvents.logEvent("action_"+ AnalyticsEvents.filter_tag_item_ + item.id)
+
+                        MainFilterMode.GROUP -> AnalyticsEvents.logEvent("group_"+ AnalyticsEvents.filter_tag_item_ + item.id)
+
+                        MainFilterMode.EVENT -> AnalyticsEvents.logEvent("event_"+ AnalyticsEvents.filter_tag_item_ + item.id)
+
+                    }
+                }
                 updateBackgroundAndTextStyle(item)
                 onItemClicked(item)
             }
