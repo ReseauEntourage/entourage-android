@@ -52,6 +52,7 @@ class GroupeV2Fragment : Fragment(), UpdateGroupInter {
     private var addedMyGroupIds: MutableSet<Int> = mutableSetOf()
     private var isFirstResumeWithFilters = true
     private var lastFiltersHash: Int? = null
+    private var isSearching = false
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -63,10 +64,12 @@ class GroupeV2Fragment : Fragment(), UpdateGroupInter {
         // Ajout de la gestion du bouton de retour
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                if (binding.searchEditText.hasFocus()) {
+                if (isSearching) {
+                    isSearching = false
                     binding.searchEditText.clearFocus()
                     hideKeyboard(binding.searchEditText)  // Masquer le clavier
                     (requireActivity() as MainActivity).showBottomBar()
+                    showMainViews()
                 } else {
                     isEnabled = false
                     requireActivity().onBackPressedDispatcher.onBackPressed()
@@ -129,6 +132,7 @@ class GroupeV2Fragment : Fragment(), UpdateGroupInter {
         // Ajout de la gestion du clic sur uiLayoutSearch
         binding.uiLayoutSearch.setOnClickListener {
             handleSearchButton()
+            isSearching = true
         }
         setSearchAndFilterButtons()
     }
@@ -258,6 +262,8 @@ class GroupeV2Fragment : Fragment(), UpdateGroupInter {
                 } else if (backIcon != null && event.rawX <= (binding.searchEditText.left + backIcon.bounds.width())) {
                     binding.searchEditText.text.clear()
                     binding.searchEditText.clearFocus()
+                    isSearching = false
+                    showMainViews()
                     return@setOnTouchListener true
                 }
             }
@@ -439,7 +445,7 @@ class GroupeV2Fragment : Fragment(), UpdateGroupInter {
 
     private fun loadMoreGroups() {
         binding.progressBar.visibility = View.VISIBLE
-        if (MainFilterActivity.savedGroupInterests.isNotEmpty()) {
+        if (!MainFilterActivity.hasFilter) {
             applyFilters()
         } else {
             presenter.getAllGroups(page, PER_PAGE)

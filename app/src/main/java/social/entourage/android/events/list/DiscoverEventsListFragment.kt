@@ -352,7 +352,7 @@ class DiscoverEventsListFragment : Fragment() {
         binding.progressBar.visibility = View.VISIBLE
         if (!eventsPresenter.isLastPage && !isLoading) {
             isLoading = true
-            if (MainFilterActivity.savedGroupInterests.isEmpty()){
+            if (!MainFilterActivity.hasFilter){
                 // Si aucun filtre n'est sélectionné, utiliser getAllEvents
                 eventsPresenter.getAllEvents(
                     page, EVENTS_PER_PAGE,

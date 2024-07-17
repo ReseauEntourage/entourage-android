@@ -22,29 +22,17 @@
                 android:id="@+id/collapsing_toolbar"
                 android:animateLayoutChanges="true"
                 android:fitsSystemWindows="true"
+                android:paddingTop="15dp"
                 app:collapsedTitleTextAppearance="@style/h1_collapsed"
                 app:expandedTitleTextAppearance="@style/h1"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed"
+                android:layout_marginStart="-10dp"
                 app:title="@string/actions_title">
-
-                <ImageView
-                    android:id="@+id/img"
-                    android:layout_width="wrap_content"
-                    android:layout_height="80dp"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="15dp"
-                    android:layout_marginEnd="0dp"
-                    android:fitsSystemWindows="true"
-                    android:paddingStart="40dp"
-                    android:paddingTop="30dp"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/new_ic_top_action"
-                    android:visibility="invisible"/>
 
                 <androidx.appcompat.widget.Toolbar
                     android:id="@+id/toolbar"
                     android:layout_width="wrap_content"
-                    android:layout_height="52dp"
+                    android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
                     app:layout_collapseMode="pin"
                     app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
@@ -57,8 +45,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical|end"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginEnd="20dp"
+                    android:layout_marginTop="0dp"
+                    android:layout_marginEnd="16dp"
                     android:layout_marginBottom="10dp"
                     app:layout_collapseMode="pin"
                     app:layout_scrollFlags="noScroll">
@@ -69,8 +57,8 @@
                         android:background="@drawable/bg_partner_logo"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        android:layout_marginTop="16dp"
-                        android:layout_marginEnd="@dimen/entourage_margin_end">
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="8dp">
 
                         <ImageView
                             android:id="@+id/ui_bell_filter"
@@ -90,7 +78,7 @@
                         android:background="@drawable/bg_partner_logo"
                         app:layout_constraintEnd_toStartOf="@+id/ui_layout_filter"
                         app:layout_constraintTop_toTopOf="parent"
-                        android:layout_marginTop="16dp"
+                        android:layout_marginTop="10dp"
                         android:layout_marginEnd="8dp">
                         <ImageView
                             android:id="@+id/ui_bell_search"
@@ -142,17 +130,16 @@
                     android:id="@+id/tabLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="25dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:tabBackground="@drawable/new_tab_indicator_color"
                     app:tabIndicatorColor="@color/orange"
-                    app:tabMode="scrollable"
+                    app:tabGravity="fill"
+                    app:tabMode="fixed"
                     app:tabRippleColor="@null"
                     app:tabSelectedTextColor="@color/orange"
-                    app:tabTextAppearance="@style/tab_text">
-                </com.google.android.material.tabs.TabLayout>
+                    app:tabTextAppearance="@style/tab_text" />
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

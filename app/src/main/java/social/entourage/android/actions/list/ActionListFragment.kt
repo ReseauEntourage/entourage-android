@@ -87,7 +87,7 @@ class ActionListFragment : Fragment() {
                 Log.d("ActionListFragment", "isSearching demand")
                 actionsPresenter.getAllDemandsWithSearchQuery(query, page, EVENTS_PER_PAGE)
             }
-        }else if(MainFilterActivity.savedActionInterests.isNotEmpty()){
+        }else if(MainFilterActivity.hasFilter){
             val sections = MainFilterActivity.savedActionInterests.joinToString(",")
             if(isContrib){
                 Log.d("ActionListFragment", "sections contrib")

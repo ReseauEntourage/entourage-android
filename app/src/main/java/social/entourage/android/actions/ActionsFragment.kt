@@ -66,6 +66,7 @@ class ActionsFragment : Fragment() {
     private var activityResultLauncher: ActivityResultLauncher<Intent>? = null
 
     private var isFromFilters = false
+    private var isSearching = false
     private lateinit var presenter: ActionsPresenter
 
     private var currentLocationFilters = EventActionLocationFilters()
@@ -146,7 +147,6 @@ class ActionsFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         presenter = ViewModelProvider(requireActivity()).get(ActionsPresenter::class.java)
-
         var isDemand = false
         arguments?.let {
             isDemand = it.getBoolean(Const.IS_ACTION_DEMAND, false)
@@ -160,6 +160,7 @@ class ActionsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = NewFragmentActionsBinding.inflate(inflater, container, false)
+        setSearchAndFilterButtons()
         return binding.root
     }
 
@@ -183,7 +184,8 @@ class ActionsFragment : Fragment() {
         })
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                if (binding.searchEditText.hasFocus()) {
+                if (isSearching) {
+                    isSearching = false
                     binding.searchEditText.clearFocus()
                     hideKeyboard(binding.searchEditText)  // Masquer le clavier
                     (requireActivity() as MainActivity).showBottomBar()
@@ -197,7 +199,6 @@ class ActionsFragment : Fragment() {
         initializeViews()
         initializeTab()
         initializeFilters()
-        handleImageViewAnimation()
         setPage()
         handleSearchButton()
         presenter.unreadMessages.observe(requireActivity(), ::updateUnreadCount)
@@ -222,21 +223,33 @@ class ActionsFragment : Fragment() {
         }
     }
 
+    fun setSearchAndFilterButtons(){
+        binding.uiLayoutSearch.background = ContextCompat.getDrawable(requireContext(), R.drawable.bg_unselected_filter) // Ajoute un fond orange rond
+        binding.uiBellSearch.setColorFilter(ContextCompat.getColor(requireContext(), R.color.orange), android.graphics.PorterDuff.Mode.SRC_IN)
+        binding.uiLayoutFilter.background = ContextCompat.getDrawable(requireContext(), R.drawable.bg_unselected_filter) // Remet le fond en blanc rond
+        binding.uiBellFilter.setColorFilter(ContextCompat.getColor(requireContext(), R.color.orange), android.graphics.PorterDuff.Mode.SRC_IN)
+        binding.uiLayoutFilter.visibility = View.VISIBLE
+        binding.uiLayoutSearch.visibility = View.VISIBLE
+    }
+
     fun handleSearchButton(){
         binding.uiLayoutSearch.setOnClickListener {
             binding.collapsingToolbar.visibility = View.GONE
             binding.searchEditText.visibility = View.VISIBLE
+            isSearching = true
         }
     }
 
     fun hideFilter() {
         binding.uiLayoutFilter.visibility = View.GONE
         binding.createAction.visibility = View.GONE
+        binding.cardFilterNumber.visibility = View.GONE
     }
 
     fun showFilter() {
         binding.uiLayoutFilter.visibility = View.VISIBLE
         binding.createAction.visibility = View.VISIBLE
+        binding.cardFilterNumber.visibility = View.VISIBLE
     }
 
     private fun hideKeyboard(view: View) {
@@ -280,10 +293,12 @@ class ActionsFragment : Fragment() {
                     presenter.isMine = false
                     binding.uiLayoutSearch.visibility = View.VISIBLE
                     binding.uiLayoutFilter.visibility = View.VISIBLE
+                    binding.cardFilterNumber.visibility = View.VISIBLE
                     AnalyticsEvents.logEvent(AnalyticsEvents.Help_view_demand)
                 }else{
                     binding.uiLayoutSearch.visibility = View.GONE
                     binding.uiLayoutFilter.visibility = View.GONE
+                    binding.cardFilterNumber.visibility = View.GONE
                     AnalyticsEvents.logEvent(AnalyticsEvents.Help_view_myactions)
                     presenter.isMine = true
                 }
@@ -313,6 +328,8 @@ class ActionsFragment : Fragment() {
                 } else if (backIcon != null && event.rawX <= (binding.searchEditText.left + backIcon.bounds.width())) {
                     binding.searchEditText.text.clear()
                     binding.searchEditText.clearFocus()
+                    isSearching = false
+
                     return@setOnTouchListener true
                 }
             }
@@ -384,12 +401,7 @@ class ActionsFragment : Fragment() {
         }
     }
 
-    private fun handleImageViewAnimation() {
-        binding.appBar.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
-            val res: Float = abs(verticalOffset).toFloat() / appBarLayout.totalScrollRange
-            binding.img.alpha = 1f - res
-        })
-    }
+
 
     private fun createAction() {
         binding.createAction.setContentCoverColour(0xeeffffff.toInt())
