@@ -1,6 +1,7 @@
 package social.entourage.android.main_filter
 
 import android.app.Activity
+import android.app.ActivityManager
 import android.content.Context
 import android.content.Intent
 import android.graphics.Rect
@@ -352,4 +353,5 @@ class MainFilterActivity : BaseActivity() {
         // savedLocation is already set in fetchPlaceDetails
         finish()
     }
+
 }

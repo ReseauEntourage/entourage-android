@@ -69,7 +69,10 @@ class PreOnboardingStartActivity : AppCompatActivity() {
 
         if (EntourageApplication.get().authenticationController.isAuthenticated) {
             EntourageApplication.get().sharedPreferences.edit().putBoolean(EntourageApplication.KEY_MIGRATION_V7_OK,true).apply()
-            startActivity(Intent(this, MainActivity::class.java))
+            val intent = Intent(this, MainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
+            startActivity(intent)
+
             finish()
             return
         }

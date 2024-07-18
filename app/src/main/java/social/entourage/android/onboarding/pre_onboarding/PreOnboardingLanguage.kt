@@ -74,7 +74,7 @@ class PreOnboardingLanguage:BaseActivity(), OnLanguageClicked {
 
     private fun handleNextButton(){
         binding.validate.setOnClickListener {
-            startActivity(Intent(this, PreOnboardingStartActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
+            startActivity(Intent(this, PreOnboardingStartActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK))
         }
     }
 }
