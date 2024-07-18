@@ -576,7 +576,7 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
     private fun updateNotifsCount(count: Int) {
         context?.resources?.let { resources ->
             val bgColor = if (count > 0) {
-                ResourcesCompat.getColor(resources, R.color.tomato, null)
+                ResourcesCompat.getColor(resources, R.color.orange, null)
             } else {
                 ResourcesCompat.getColor(resources, R.color.partner_logo_background, null)
             }
