@@ -224,6 +224,7 @@ dependencies {
     implementation("com.google.firebase:firebase-analytics")
     implementation("com.google.firebase:firebase-messaging")
     implementation("androidx.compose.ui:ui-text-android:1.6.3")
+    implementation("com.google.android.play:app-update-ktx:2.1.0")
     //TODO: fix this inappmessaging lib that is blocking tests to run
     releaseImplementation("com.google.firebase:firebase-inappmessaging-display")
     implementation("com.google.firebase:firebase-crashlytics")
@@ -298,5 +299,11 @@ dependencies {
     //photoview to click and zoom
     implementation("com.github.chrisbanes:PhotoView:2.3.0")
     implementation("androidx.transition:transition:1.4.1") // Remplacez 'x.x.x' par la dernière version disponible.
-    implementation("com.google.android.play:core:1.10.0")
+
+    implementation("com.google.android.play:asset-delivery:2.2.2")
+    implementation("com.google.android.play:asset-delivery-ktx:2.2.2")
+    implementation("com.google.android.play:feature-delivery:2.1.0")
+    implementation("com.google.android.play:feature-delivery-ktx:2.1.0")
+    implementation("com.google.android.play:review:2.0.1")
+    implementation("com.google.android.play:review-ktx:2.0.1")
 }

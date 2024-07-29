@@ -30,6 +30,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.UpdateAvailability
+
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.gson.Gson
 import social.entourage.android.actions.create.CreateActionActivity
