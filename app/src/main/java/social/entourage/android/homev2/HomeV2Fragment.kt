@@ -174,7 +174,18 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
                 Intent(context, ProfileActivity::class.java), 0
             )
         }
+        checkNotifAndSendToken()
+    }
 
+    private fun checkNotifAndSendToken(){
+        val notificationManager = NotificationManagerCompat.from(requireContext())
+        val areNotificationsEnabled = notificationManager.areNotificationsEnabled()
+        if (areNotificationsEnabled) {
+            sendtoken()
+
+        } else {
+
+        }
     }
 
     private fun checkNotificationStatus() {
@@ -182,7 +193,6 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
         val areNotificationsEnabled = notificationManager.areNotificationsEnabled()
         if (areNotificationsEnabled) {
             AnalyticsEvents.logEvent(AnalyticsEvents.has_user_activated_notif)
-            sendtoken()
 
         } else {
             AnalyticsEvents.logEvent(AnalyticsEvents.has_user_disabled_notif)

@@ -98,7 +98,7 @@ class MainActivity : BaseSecuredActivity() {
             }
         }
         checkForAppUpdate()
-        //ifEventLastDay(136592)
+        //ifEventLastDay(591022)
     }
 
 
