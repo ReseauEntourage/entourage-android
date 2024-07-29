@@ -193,6 +193,8 @@ android {
     namespace = "social.entourage.android"
 }
 
+
+
 dependencies {
     //TODO check why core-ktx:1.10  needs kotlin 1.8
     implementation("androidx.core:core-ktx:1.9.0")
