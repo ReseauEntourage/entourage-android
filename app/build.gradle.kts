@@ -295,7 +295,6 @@ dependencies {
     implementation("com.github.IntruderShanky:Sectioned-RecyclerView:2.1.1")
 
     implementation("com.airbnb.android:lottie:5.2.0")
-    implementation("com.github.armcha:AutoLinkTextViewV2:3.0.0")
 
     //photoview to click and zoom
     implementation("com.github.chrisbanes:PhotoView:2.3.0")
@@ -309,4 +308,5 @@ dependencies {
     implementation("com.google.android.play:review-ktx:2.0.1")
 
     implementation("com.leinardi.android:speed-dial:3.2.0")
+
 }
