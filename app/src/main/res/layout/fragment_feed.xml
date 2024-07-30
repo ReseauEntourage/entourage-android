@@ -507,14 +507,14 @@ purus dui, aliquet cursus tellus a, dictum hen." />
             </androidx.core.widget.NestedScrollView>
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-        <uk.co.markormesher.android_fab.FloatingActionButton
+        <com.leinardi.android.speeddial.SpeedDialView
             android:id="@+id/create_post"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end|bottom"
-            app:buttonBackgroundColour="@color/orange"
-            app:buttonIcon="@drawable/new_fab_plus"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintRight_toRightOf="parent" />
+            android:layout_margin="16dp"
+            app:sdMainFabClosedSrc="@drawable/new_fab_plus"
+            app:sdMainFabOpenedSrc="@drawable/new_fab_plus" />
+
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

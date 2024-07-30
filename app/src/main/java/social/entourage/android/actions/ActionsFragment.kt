@@ -27,6 +27,8 @@ import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
+import com.leinardi.android.speeddial.SpeedDialActionItem
+import com.leinardi.android.speeddial.SpeedDialView
 import social.entourage.android.EntourageApplication
 import social.entourage.android.MainActivity
 import social.entourage.android.R
@@ -46,8 +48,6 @@ import social.entourage.android.main_filter.MainFilterActivity
 import social.entourage.android.main_filter.MainFilterMode
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.log.AnalyticsEvents
-import uk.co.markormesher.android_fab.SpeedDialMenuAdapter
-import uk.co.markormesher.android_fab.SpeedDialMenuItem
 import kotlin.math.abs
 
 const val CONTRIBUTIONS_TAB = 0
@@ -72,58 +72,6 @@ class ActionsFragment : Fragment() {
     private var currentLocationFilters = EventActionLocationFilters()
     private var currentCategoriesFilters = ActionSectionFilters()
 
-    private val speedDialMenuAdapter = object : SpeedDialMenuAdapter() {
-        override fun getCount(): Int = 2
-
-        override fun getMenuItem(context: Context, position: Int): SpeedDialMenuItem =
-            when (position) {
-                0 -> SpeedDialMenuItem(
-                    context,
-                    R.drawable.new_ic_create_demand,
-                    getString(R.string.action_menu_create_demand)
-                )
-                1 -> SpeedDialMenuItem(
-                    context,
-                    R.drawable.new_ic_create_contrib,
-                    getString(R.string.action_menu_create_contrib)
-                )
-                else -> SpeedDialMenuItem(
-                    context,
-                    R.drawable.new_ic_create_demand,
-                    getString(R.string.action_menu_create_demand)
-                )
-            }
-
-        override fun onMenuItemClick(position: Int): Boolean {
-            when (position) {
-                0 -> {
-                    val intent = Intent(context, CreateActionActivity::class.java)
-                    intent.putExtra(Const.IS_ACTION_DEMAND, true)
-                    startActivityForResult(intent, 0)
-                }
-                1 -> {
-                    val intent = Intent(context, CreateActionActivity::class.java)
-                    intent.putExtra(Const.IS_ACTION_DEMAND, false)
-                    startActivityForResult(intent, 0)
-                }
-            }
-            return true
-        }
-
-            override fun onPrepareItemLabel(context: Context, position: Int, label: TextView) {
-            TextViewCompat.setTextAppearance(label, R.style.left_courant_bold_black)
-        }
-
-        override fun onPrepareItemCard(context: Context, position: Int, card: View) {
-            card.background = ContextCompat.getDrawable(
-                requireContext(),
-                R.drawable.new_bg_circle_orange
-            )
-        }
-
-        override fun fabRotationDegrees(): Float = rotationDegree
-    }
-
     override fun onAttach(context: Context) {
         super.onAttach(context)
         activityResultLauncher = registerForActivityResult(
@@ -142,8 +90,9 @@ class ActionsFragment : Fragment() {
     }
 
     private fun updateFilters() {
-
+        // Implémentation de mise à jour des filtres
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         presenter = ViewModelProvider(requireActivity()).get(ActionsPresenter::class.java)
@@ -177,7 +126,7 @@ class ActionsFragment : Fragment() {
                 presenter.onSearchQueryChanged(s.toString())
                 if (!s.toString().isEmpty()) {
                     hideFilter()
-                }else {
+                } else {
                     showFilter()
                 }
             }
@@ -223,7 +172,7 @@ class ActionsFragment : Fragment() {
         }
     }
 
-    fun setSearchAndFilterButtons(){
+    fun setSearchAndFilterButtons() {
         binding.uiLayoutSearch.background = ContextCompat.getDrawable(requireContext(), R.drawable.bg_unselected_filter) // Ajoute un fond orange rond
         binding.uiBellSearch.setColorFilter(ContextCompat.getColor(requireContext(), R.color.orange), android.graphics.PorterDuff.Mode.SRC_IN)
         binding.uiLayoutFilter.background = ContextCompat.getDrawable(requireContext(), R.drawable.bg_unselected_filter) // Remet le fond en blanc rond
@@ -232,7 +181,7 @@ class ActionsFragment : Fragment() {
         binding.uiLayoutSearch.visibility = View.VISIBLE
     }
 
-    fun handleSearchButton(){
+    fun handleSearchButton() {
         binding.uiLayoutSearch.setOnClickListener {
             AnalyticsEvents.logEvent(AnalyticsEvents.actions_searchbar_clic)
             binding.collapsingToolbar.visibility = View.GONE
@@ -257,13 +206,14 @@ class ActionsFragment : Fragment() {
         view.clearFocus()
         binding.searchEditText.visibility = View.GONE
         binding.collapsingToolbar.visibility = View.VISIBLE
-
     }
+
     private fun tintDrawable(drawable: Drawable?, color: Int) {
         drawable?.let {
             DrawableCompat.setTint(DrawableCompat.wrap(it), color)
         }
     }
+
     private fun initializeTab() {
         val viewPager = binding.viewPager
         val adapter = ActionsViewPagerAdapter(childFragmentManager, lifecycle)
@@ -286,20 +236,20 @@ class ActionsFragment : Fragment() {
                     presenter.isMine = false
                     binding.uiLayoutSearch.visibility = View.VISIBLE
                     binding.uiLayoutFilter.visibility = View.VISIBLE
-                    if(MainFilterActivity.savedActionInterests.isNotEmpty()){
+                    if (MainFilterActivity.savedActionInterests.isNotEmpty()) {
                         binding.cardFilterNumber.visibility = View.VISIBLE
                     }
                     AnalyticsEvents.logEvent(AnalyticsEvents.Help_view_contrib)
-                } else  if (tab?.position == 1) {
+                } else if (tab?.position == 1) {
                     presenter.isContrib = false
                     presenter.isMine = false
                     binding.uiLayoutSearch.visibility = View.VISIBLE
                     binding.uiLayoutFilter.visibility = View.VISIBLE
-                    if(MainFilterActivity.savedActionInterests.isNotEmpty()){
+                    if (MainFilterActivity.savedActionInterests.isNotEmpty()) {
                         binding.cardFilterNumber.visibility = View.VISIBLE
                     }
                     AnalyticsEvents.logEvent(AnalyticsEvents.Help_view_demand)
-                }else{
+                } else {
                     binding.uiLayoutSearch.visibility = View.GONE
                     binding.uiLayoutFilter.visibility = View.GONE
                     binding.cardFilterNumber.visibility = View.GONE
@@ -311,13 +261,10 @@ class ActionsFragment : Fragment() {
             override fun onTabUnselected(tab: TabLayout.Tab?) {}
             override fun onTabReselected(tab: TabLayout.Tab?) {}
         })
-
-
     }
 
     private fun initializeViews() {
         binding.uiLayoutFilter.setOnClickListener {
-
             MainFilterActivity.mod = MainFilterMode.ACTION
             MainFilterActivity.hasToReloadAction = true
             val intent = Intent(activity, MainFilterActivity::class.java)
@@ -356,7 +303,6 @@ class ActionsFragment : Fragment() {
                 if (query.isEmpty()) {
                     binding.searchEditText.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null)
                     (requireActivity() as MainActivity).showBottomBar()
-
                 }
             }
         }
@@ -406,13 +352,42 @@ class ActionsFragment : Fragment() {
         }
     }
 
-
-
     private fun createAction() {
-        binding.createAction.setContentCoverColour(0xeeffffff.toInt())
-        binding.createAction.speedDialMenuAdapter = speedDialMenuAdapter
-        binding.createAction.setOnClickListener {
-            AnalyticsEvents.logEvent(AnalyticsEvents.Help_action_create)
+        val speedDialView: SpeedDialView = binding.createAction
+        speedDialView.addActionItem(
+            SpeedDialActionItem.Builder(R.id.fab_create_demand, R.drawable.new_ic_create_demand)
+                .setFabBackgroundColor(ContextCompat.getColor(requireContext(), R.color.orange))
+                .setFabImageTintColor(ContextCompat.getColor(requireContext(), R.color.white))
+                .setLabel(getString(R.string.action_menu_create_demand))
+                .setLabelColor(ContextCompat.getColor(requireContext(), R.color.white))
+                .setLabelBackgroundColor(ContextCompat.getColor(requireContext(), R.color.orange))
+                .create()
+        )
+        speedDialView.addActionItem(
+            SpeedDialActionItem.Builder(R.id.fab_create_contrib, R.drawable.new_ic_create_contrib)
+                .setFabBackgroundColor(ContextCompat.getColor(requireContext(), R.color.orange))
+                .setFabImageTintColor(ContextCompat.getColor(requireContext(), R.color.white))
+                .setLabel(getString(R.string.action_menu_create_contrib))
+                .setLabelColor(ContextCompat.getColor(requireContext(), R.color.white))
+                .setLabelBackgroundColor(ContextCompat.getColor(requireContext(), R.color.orange))
+                .create()
+        )
+        speedDialView.setOnActionSelectedListener { actionItem ->
+            when (actionItem.id) {
+                R.id.fab_create_demand -> {
+                    val intent = Intent(context, CreateActionActivity::class.java)
+                    intent.putExtra(Const.IS_ACTION_DEMAND, true)
+                    startActivityForResult(intent, 0)
+                    true
+                }
+                R.id.fab_create_contrib -> {
+                    val intent = Intent(context, CreateActionActivity::class.java)
+                    intent.putExtra(Const.IS_ACTION_DEMAND, false)
+                    startActivityForResult(intent, 0)
+                    true
+                }
+                else -> false
+            }
         }
     }
 }

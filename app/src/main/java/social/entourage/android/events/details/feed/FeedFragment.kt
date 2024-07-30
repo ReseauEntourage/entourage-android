@@ -32,6 +32,8 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
+import com.leinardi.android.speeddial.SpeedDialActionItem
+import com.leinardi.android.speeddial.SpeedDialView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -40,6 +42,7 @@ import social.entourage.android.BuildConfig
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.RefreshController
+import social.entourage.android.actions.create.CreateActionActivity
 import social.entourage.android.api.MetaDataRepository
 import social.entourage.android.api.model.EntourageUser
 import social.entourage.android.api.model.Events
@@ -78,8 +81,6 @@ import social.entourage.android.tools.utils.Utils
 import social.entourage.android.tools.utils.Utils.enableCopyOnLongClick
 import social.entourage.android.tools.utils.px
 import social.entourage.android.tools.utils.underline
-import uk.co.markormesher.android_fab.SpeedDialMenuAdapter
-import uk.co.markormesher.android_fab.SpeedDialMenuItem
 import java.text.SimpleDateFormat
 import kotlin.math.abs
 
@@ -106,70 +107,6 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
     private var oldPostsList: MutableList<Post> = mutableListOf()
     private var allPostsList: MutableList<Post> = mutableListOf()
     private var memberList: MutableList<EntourageUser> = mutableListOf()
-
-    private val speedDialMenuAdapter = object : SpeedDialMenuAdapter() {
-        override fun getCount(): Int = 2
-        override fun getMenuItem(context: Context, position: Int): SpeedDialMenuItem =
-            when (position) {
-                0 -> SpeedDialMenuItem(
-                    context,
-                    R.drawable.ic_group_feed_one,
-                    getString(R.string.create_post)
-                )
-                1 -> SpeedDialMenuItem(
-                    context,
-                    R.drawable.ic_survey_creation,
-                    getString(R.string.create_survey)
-                )
-                else -> SpeedDialMenuItem(
-                    context,
-                    R.drawable.new_create_event,
-                    getString(R.string.create_event)
-                )
-            }
-
-
-
-        override fun onMenuItemClick(position: Int): Boolean {
-            when (position) {
-                0 -> {
-                    AnalyticsEvents.logEvent(AnalyticsEvents.Event_detail_action_post)
-                    val intent = Intent(context, CreatePostEventActivity::class.java)
-                    intent.putExtra(Const.ID, eventId)
-                    startActivityForResult(intent, 0)
-                }
-                1 -> {
-                    AnalyticsEvents.logEvent(
-                        AnalyticsEvents.Clic_Event_Create_Poll
-                    )
-                    val intent = Intent(context, CreateSurveyActivity::class.java)
-                    FeedFragment.isFromCreation = true
-                    intent.putExtra(Const.EVENT_ID, eventId)
-                    startActivity(intent)
-                }
-
-                else -> {
-                    AnalyticsEvents.logEvent(
-                        AnalyticsEvents.ACTION_GROUP_FEED_PLUS_CLOSE
-                    )
-                }
-            }
-            return true
-        }
-
-        override fun onPrepareItemLabel(context: Context, position: Int, label: TextView) {
-            TextViewCompat.setTextAppearance(label, R.style.left_courant_bold_black)
-        }
-
-        override fun onPrepareItemCard(context: Context, position: Int, card: View) {
-            card.background = ContextCompat.getDrawable(
-                requireContext(),
-                R.drawable.new_bg_circle_orange
-            )
-        }
-
-        override fun fabRotationDegrees(): Float = rotationDegree
-    }
 
 
 
@@ -452,8 +389,7 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
             }
         }
         updateButtonJoin()
-        handleCreatePostButton()
-        handleCreatePostButtonClick()
+        createPost()
         openGoogleMaps()
         initializePosts()
     }
@@ -727,7 +663,7 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
             event?.let {event ->
                 event.member = !event.member
                 updateButtonJoin()
-                handleCreatePostButton()
+                //handleCreatePostButton()
                 binding.participate.hide()
                 eventPresenter.getEvent(eventId)
                 if (event.metadata?.placeLimit != null && event.metadata.placeLimit != 0) {
@@ -745,7 +681,7 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
         event?.let {event ->
             event.member = !event.member
             updateButtonJoin()
-            handleCreatePostButton()
+            //handleCreatePostButton()
             binding.participate.show()
             eventPresenter.getEvent(eventId)
         }
@@ -760,19 +696,47 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
         )
     }
 
-    private fun handleCreatePostButtonClick() {
-        binding.createPost.speedDialMenuAdapter = speedDialMenuAdapter
-    }
-
-    private fun handleCreatePostButton() {
-        if (event?.member == false) {
-            binding.createPost.hide(true)
-            binding.subtitle.visibility = View.VISIBLE
-            binding.arrow.visibility = View.VISIBLE
-        } else {
-            binding.createPost.show()
-            binding.subtitle.visibility = View.GONE
-            binding.arrow.visibility = View.GONE
+    private fun createPost() {
+        val speedDialView: SpeedDialView = binding.createPost
+        speedDialView.addActionItem(
+            SpeedDialActionItem.Builder(R.id.fab_create_post, R.drawable.ic_group_feed_one)
+                .setFabBackgroundColor(ContextCompat.getColor(requireContext(), R.color.orange))
+                .setFabImageTintColor(ContextCompat.getColor(requireContext(), R.color.white))
+                .setLabel(getString(R.string.create_post))
+                .setLabelColor(ContextCompat.getColor(requireContext(), R.color.white))
+                .setLabelBackgroundColor(ContextCompat.getColor(requireContext(), R.color.orange))
+                .create()
+        )
+        speedDialView.addActionItem(
+            SpeedDialActionItem.Builder(R.id.fab_create_survey, R.drawable.ic_survey_creation)
+                .setFabBackgroundColor(ContextCompat.getColor(requireContext(), R.color.orange))
+                .setFabImageTintColor(ContextCompat.getColor(requireContext(), R.color.white))
+                .setLabel(getString(R.string.create_survey))
+                .setLabelColor(ContextCompat.getColor(requireContext(), R.color.white))
+                .setLabelBackgroundColor(ContextCompat.getColor(requireContext(), R.color.orange))
+                .create()
+        )
+        speedDialView.setOnActionSelectedListener { actionItem ->
+            when (actionItem.id) {
+                R.id.fab_create_post -> {
+                    AnalyticsEvents.logEvent(AnalyticsEvents.Event_detail_action_post)
+                    val intent = Intent(context, CreatePostEventActivity::class.java)
+                    intent.putExtra(Const.ID, eventId)
+                    startActivityForResult(intent, 0)
+                    true
+                }
+                R.id.fab_create_survey -> {
+                    AnalyticsEvents.logEvent(
+                        AnalyticsEvents.Clic_Event_Create_Poll
+                    )
+                    val intent = Intent(context, CreateSurveyActivity::class.java)
+                    FeedFragment.isFromCreation = true
+                    intent.putExtra(Const.EVENT_ID, eventId)
+                    startActivity(intent)
+                    true
+                }
+                else -> false
+            }
         }
     }
 

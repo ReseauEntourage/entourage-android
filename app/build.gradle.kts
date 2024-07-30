@@ -292,7 +292,6 @@ dependencies {
     // Kotlin
     implementation("androidx.navigation:navigation-fragment-ktx:2.5.3")
     implementation("androidx.navigation:navigation-ui-ktx:2.5.3")
-    implementation("uk.co.markormesher:android-fab:2.5.0")
     implementation("com.github.IntruderShanky:Sectioned-RecyclerView:2.1.1")
 
     implementation("com.airbnb.android:lottie:5.2.0")
@@ -308,4 +307,6 @@ dependencies {
     implementation("com.google.android.play:feature-delivery-ktx:2.1.0")
     implementation("com.google.android.play:review:2.0.1")
     implementation("com.google.android.play:review-ktx:2.0.1")
+
+    implementation("com.leinardi.android:speed-dial:3.2.0")
 }
