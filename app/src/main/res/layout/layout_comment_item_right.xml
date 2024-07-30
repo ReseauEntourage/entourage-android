@@ -28,6 +28,7 @@
         android:paddingHorizontal="12dp"
         android:paddingVertical="14dp"
         android:autoLink="web"
+        android:linksClickable="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/image"
         app:layout_constraintHorizontal_bias="1"

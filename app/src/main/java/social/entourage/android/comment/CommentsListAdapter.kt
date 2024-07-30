@@ -102,6 +102,8 @@ class CommentsListAdapter(
             if (binding.comment.text != null) {
                 Linkify.addLinks(binding.comment, Linkify.WEB_URLS)
                 binding.comment.movementMethod = LinkMovementMethod.getInstance()
+                binding.comment.setHyperlinkClickable()
+
             }
 
             val isMe = comment.user?.userId == EntourageApplication.get().me()?.id
@@ -249,6 +251,7 @@ class CommentsListAdapter(
             if (binding.comment.text != null) {
                 Linkify.addLinks(binding.comment, Linkify.WEB_URLS)
                 binding.comment.movementMethod = LinkMovementMethod.getInstance()
+                binding.comment.setHyperlinkClickable()
             }
 
             val isMe = comment.user?.userId == EntourageApplication.get().me()?.id

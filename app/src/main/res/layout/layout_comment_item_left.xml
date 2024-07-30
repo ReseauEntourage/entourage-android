@@ -25,6 +25,8 @@
         android:background="@drawable/new_comment_background_beige"
         android:paddingHorizontal="12dp"
         android:paddingVertical="14dp"
+        android:autoLink="web"
+        android:linksClickable="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0"
