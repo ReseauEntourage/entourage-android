@@ -272,6 +272,9 @@ class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface,
         getGroup?.let {
             groupId = it.id!!
             group = it
+            if (group?.national == true) {
+                group?.address?.displayAddress = ""
+            }
             updateView()
         }
     }
