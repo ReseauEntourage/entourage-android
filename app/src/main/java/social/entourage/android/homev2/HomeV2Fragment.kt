@@ -200,7 +200,7 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
             return
         }
 
-        if (count >= 3) {
+        if (count >= 2) {
             // L'utilisateur n'a pas encore refusé, et le compteur a atteint le seuil
             val dialog = DiscussionTestDialogFragment()
             dialog.show(requireActivity().supportFragmentManager, "DiscussionDialog")
