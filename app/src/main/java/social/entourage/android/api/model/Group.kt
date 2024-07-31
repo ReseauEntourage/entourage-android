@@ -43,6 +43,8 @@ data class Group(
     var members_count: Int? = null,
     @SerializedName("member")
     var member: Boolean = false,
+    @SerializedName("national")
+    var national: Boolean = false,
     @SerializedName("future_outings")
     var futureEvents: MutableList<Events>? = mutableListOf(),
     @SerializedName("latitude")
