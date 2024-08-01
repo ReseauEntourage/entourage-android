@@ -57,7 +57,9 @@
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_new_notif_off"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="@+id/icon_back"
+                app:layout_constraintBottom_toBottomOf="@+id/icon_back"
+                />
 
             <View
                 android:id="@+id/divider"
