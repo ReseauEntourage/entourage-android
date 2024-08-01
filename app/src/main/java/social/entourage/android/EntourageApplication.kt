@@ -110,10 +110,6 @@ class EntourageApplication : MultiDexApplication() {
                 editor.putInt(KEY_NB_OF_LAUNCH, 0)
                 editor.putBoolean("translatedByDefault", true)
                 editor.apply()
-                sharedPreferences.edit().putInt("COUNT_DISCUSSION_ASK",0).apply()
-                sharedPreferences.edit().putBoolean("DISCUSSION_INTERESTED", false).apply()
-                sharedPreferences.edit().putBoolean("USER_REFUSED_POPUP", false).apply()
-
                 removeAllPushNotifications()
                 AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_LOGOUT)
                 mainActivity?.let {
