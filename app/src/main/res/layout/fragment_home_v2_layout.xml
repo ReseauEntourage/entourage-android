@@ -122,8 +122,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-
-
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -157,8 +155,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/home_subtitle_sensibilisation"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toTopOf="@+id/home_title_action"/>
-
+                />
 
         <TextView
             android:layout_width="0dp"
