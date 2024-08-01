@@ -33,13 +33,11 @@ class DiscussionTestDialogFragment : DialogFragment() {
 
         binding.closeButton.setOnClickListener {
             AnalyticsEvents.logEvent(AnalyticsEvents.discussion_plural_deny)
-
             handleUserResponse(false)
             dismiss()
         }
         binding.btnNotInterested.setOnClickListener {
             AnalyticsEvents.logEvent(AnalyticsEvents.discussion_plural_deny)
-
             handleUserResponse(false)
             dismiss()
         }

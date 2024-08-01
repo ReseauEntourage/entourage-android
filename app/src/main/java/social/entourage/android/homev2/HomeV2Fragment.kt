@@ -610,27 +610,34 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
             homeHelpAdapter.resetData(helps, summary)
         }
     }
-    //HERE JUST RECONNECT OLD FUNCTIONS
+
     private fun updateNotifsCount(count: Int) {
-        context?.resources?.let { resources ->
-            val bgColor = if (count > 0) {
-                ResourcesCompat.getColor(resources, R.color.orange, null)
-            } else {
-                ResourcesCompat.getColor(resources, R.color.partner_logo_background, null)
+        if (count > 0) {
+            // Set the notification number text
+            if(count > 9){
+                binding.tvNumberOfFilter.text = "9+"
+            }else{
+                binding.tvNumberOfFilter.text = count.toString()
             }
+            // Make the notification number layout visible
+            binding.cardNotifNumber.visibility = View.VISIBLE
+        } else {
+            // Hide the notification number layout if there are no notifications
+            binding.cardNotifNumber.visibility = View.INVISIBLE
+        }
 
-            val shapeDrawable = binding.uiLayoutNotif.background as? GradientDrawable
-            shapeDrawable?.setColor(bgColor)
-
+        // Optionally, you can maintain the default notification icon without change
+        context?.resources?.let { resources ->
             binding.uiBellNotif.setImageDrawable(
                 ResourcesCompat.getDrawable(
                     resources,
-                    if (count > 0) R.drawable.ic_white_notif_on else R.drawable.ic_new_notif_off,
+                    R.drawable.ic_new_notif_off, // Assuming this is your default notification icon
                     null
                 )
             )
         }
     }
+
 
     private fun updateAvatar() {
         with(binding) {
