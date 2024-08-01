@@ -144,7 +144,7 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
         setProfileButton()
         setNestedScrollViewAnimation()
         checkNotificationStatus()
-
+        increaseCounter()
         return binding.root
     }
 
@@ -175,7 +175,6 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
             )
         }
         checkNotifAndSendToken()
-        checkAndShowDiscussionDialog()
     }
 
     private fun checkNotifAndSendToken(){
@@ -189,12 +188,17 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
         }
     }
 
+    fun increaseCounter(){
+        val sharedPreferences = requireActivity().getSharedPreferences("userPref", Context.MODE_PRIVATE)
+        var count = sharedPreferences.getInt("COUNT_DISCUSSION_ASK", 0)
+        sharedPreferences.edit().putInt("COUNT_DISCUSSION_ASK", ++count).apply()
+    }
+
     fun checkAndShowDiscussionDialog() {
-        val sharedPreferences = requireActivity().getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
+        val sharedPreferences = requireActivity().getSharedPreferences("userPref", Context.MODE_PRIVATE)
         val isInterested = sharedPreferences.getBoolean("DISCUSSION_INTERESTED", false)
         val userRefused = sharedPreferences.getBoolean("USER_REFUSED_POPUP", false)
         var count = sharedPreferences.getInt("COUNT_DISCUSSION_ASK", 0)
-
         if (userRefused || isInterested) {
             // L'utilisateur a refusé ou a déjà accepté, ne pas montrer la popup
             return
@@ -204,9 +208,6 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
             // L'utilisateur n'a pas encore refusé, et le compteur a atteint le seuil
             val dialog = DiscussionTestDialogFragment()
             dialog.show(requireActivity().supportFragmentManager, "DiscussionDialog")
-        } else {
-            // Incrémenter le compteur et ne pas afficher le dialogue
-            sharedPreferences.edit().putInt("COUNT_DISCUSSION_ASK", ++count).apply()
         }
     }
 
@@ -580,6 +581,9 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
             startActivity(intent)
         }
         isContribution = summary.preference.equals("contribution")
+        if(!isContribution){
+            checkAndShowDiscussionDialog()
+        }
         isContribProfile = isContribution
         if(isContribution){
             if(!homeActionAdapter.getIsContrib()){

@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.compose.ui.graphics.Color
 import androidx.fragment.app.DialogFragment
 import social.entourage.android.R
@@ -45,20 +46,22 @@ class DiscussionTestDialogFragment : DialogFragment() {
 
         binding.validateBtn.setOnClickListener {
             AnalyticsEvents.logEvent(AnalyticsEvents.discussion_plural_accept)
-
             handleUserResponse(true)
+            Toast.makeText(context, getString(R.string.toast_message_participate), Toast.LENGTH_LONG).show()
             dismiss()
         }
     }
 
     private fun handleUserResponse(isInterested: Boolean) {
-        val sharedPreferences = context?.getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
+        val sharedPreferences = context?.getSharedPreferences("userPref", Context.MODE_PRIVATE)
         sharedPreferences?.edit()?.putBoolean("DISCUSSION_INTERESTED", isInterested)?.apply()
         if (!isInterested) {
             // Enregistrer un marqueur pour bloquer définitivement la popup si l'utilisateur refuse
             sharedPreferences?.edit()?.putBoolean("USER_REFUSED_POPUP", true)?.apply()
         }
     }
+
+
 
     override fun onStart() {
         super.onStart()
