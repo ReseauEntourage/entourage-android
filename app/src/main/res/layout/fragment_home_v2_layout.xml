@@ -86,7 +86,7 @@
             android:layout_height="17dp"
             android:id="@+id/tv_number_of_filter"
             android:textAlignment="center"
-            android:textSize="12sp"
+            android:textSize="11sp"
             android:layout_marginTop="-0dp"
             android:fontFamily="@font/quicksand_bold"
             android:text="9+"
