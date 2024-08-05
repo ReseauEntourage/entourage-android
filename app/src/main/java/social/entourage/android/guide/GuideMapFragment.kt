@@ -269,6 +269,8 @@ class GuideMapFragment : Fragment(),
 
     // Méthode pour afficher les clusters et POIs
     fun putClustersAndPoisOnMap(clustersAndPois: List<ClusterPoi>) {
+        val poisToAdd = mutableListOf<Poi>() // Liste pour stocker les POIs à ajouter à l'adaptateur
+
         clustersAndPois.forEach { item ->
             val position = LatLng(item.latitude, item.longitude)
             when (item.type) {
@@ -283,13 +285,22 @@ class GuideMapFragment : Fragment(),
                 }
                 "poi" -> {
                     // Utiliser le PoiRenderer pour les POIs
-                    mapRenderer.getMarkerOptions(item.toPoi(), requireContext())?.let { markerOptions ->
+                    val poi = item.toPoi()
+                    mapRenderer.getMarkerOptions(poi, requireContext())?.let { markerOptions ->
                         map?.addMarker(markerOptions)?.apply {
-                            this.tag = item.toPoi()
+                            this.tag = poi
                         }
                     }
+                    // Ajouter le POI à la liste des POIs à ajouter à l'adaptateur
+                    poisToAdd.add(poi)
                 }
             }
+        }
+
+        // Ajouter les POIs à l'adaptateur
+        if (poisToAdd.isNotEmpty()) {
+            poisAdapter.removeAll()
+            poisAdapter.addItems(poisToAdd)
         }
     }
 
