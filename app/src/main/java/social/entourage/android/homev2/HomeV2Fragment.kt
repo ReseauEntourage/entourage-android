@@ -98,6 +98,7 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
     private lateinit var actionsPresenter: ActionsPresenter
     private var locationPopupHasPop = false
 
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -195,20 +196,25 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
     }
 
     fun checkAndShowDiscussionDialog() {
-        if(isAdded){
+        if (isAdded) {
             val sharedPreferences = requireActivity().getSharedPreferences("userPref", Context.MODE_PRIVATE)
             val isInterested = sharedPreferences.getBoolean("DISCUSSION_INTERESTED", false)
             val userRefused = sharedPreferences.getBoolean("USER_REFUSED_POPUP", false)
-            var count = sharedPreferences.getInt("COUNT_DISCUSSION_ASK", 0)
+            val count = sharedPreferences.getInt("COUNT_DISCUSSION_ASK", 0)
+
             if (userRefused || isInterested) {
                 // L'utilisateur a refusé ou a déjà accepté, ne pas montrer la popup
                 return
             }
 
-            if (count >= 2) {
+            // Check if the dialog is already being shown
+            val fragmentManager = requireActivity().supportFragmentManager
+            val existingDialog = fragmentManager.findFragmentByTag("DiscussionDialog")
+
+            if (count >= 2 && existingDialog == null) {
                 // L'utilisateur n'a pas encore refusé, et le compteur a atteint le seuil
                 val dialog = DiscussionTestDialogFragment()
-                dialog.show(requireActivity().supportFragmentManager, "DiscussionDialog")
+                dialog.show(fragmentManager, "DiscussionDialog")
             }
         }
     }
