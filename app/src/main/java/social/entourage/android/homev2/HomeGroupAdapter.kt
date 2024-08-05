@@ -59,7 +59,7 @@ class HomeGroupAdapter: RecyclerView.Adapter<HomeGroupAdapter.GroupViewHolder>()
             if (it > 0) {
                 var numberOfPost = ""
                 if (it > 9) {
-                    numberOfPost = "+9"
+                    numberOfPost = "9+"
                 }else {
                     numberOfPost = it.toString()
                 }
