@@ -216,7 +216,6 @@ class EventsFragment : Fragment() {
     }
 
     fun handleTextSize(size:Float){
-        Log.wtf("wtf", "size: $size")
         binding.uiTitleEvents.textSize = size
     }
 

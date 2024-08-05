@@ -160,7 +160,6 @@ class GroupeV2Fragment : Fragment(), UpdateGroupInter {
             lastFiltersHash = currentFiltersHash
         }
         if (isFirstResumeWithFilters) {
-            Log.wtf("wtf", "isFirstResumeWithFilters" + isFirstResumeWithFilters)
             isFirstResumeWithFilters = false
             groupsList.clear()
             myGroupsList.clear()

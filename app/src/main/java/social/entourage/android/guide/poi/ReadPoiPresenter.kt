@@ -32,16 +32,13 @@ class ReadPoiPresenter(private val fragment: ReadPoiFragment) {
                     if (response.isSuccessful) {
                         poi.isSoliguide = poi.source == "soliguide"
                         displayPoi(poi)
-                        Log.wtf("wtf" , "poi retrieved but gone")
                         return
                     }
                 }
-                Log.wtf("wtf" , "no poi retrieved")
                 fragment.noData()
             }
 
             override fun onFailure(call: Call<PoiDetailResponse>, t: Throwable) {
-                Log.wtf("wtf" , "failure " + t.message)
                 fragment.noData()
             }
         })

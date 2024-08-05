@@ -210,7 +210,6 @@ class EventsPresenter : ViewModel() {
                 response: Response<EventsListWrapper>
             ) {
                 response.body()?.let { allEventsWrapper ->
-                    Log.wtf("wtf","hello here")
                     if (allEventsWrapper.allEvents.size < EVENTS_PER_PAGE) isLastPage = true
                     getFilteredEvents.postValue(allEventsWrapper.allEvents)
                 }

@@ -758,10 +758,23 @@ class GuideMapFragment : Fragment(),
         }
     }
 
-    override fun onMarkerClick(poiMarker: Marker): Boolean {
-        (poiMarker.tag as? Poi)?.let { poi ->
-            showPoiDetails(poi, false)
+    override fun onMarkerClick(marker: Marker): Boolean {
+        val poi = marker.tag as? Poi
+        val cluster = marker.title?.startsWith("Cluster") == true
+
+        if (cluster) {
+            val currentZoom = map?.cameraPosition?.zoom ?: 10f
+            map?.animateCamera(
+                CameraUpdateFactory.newLatLngZoom(marker.position, currentZoom + 2f) // Zoom in on the cluster
+            )
+            return true
         }
+
+        poi?.let {
+            showPoiDetails(it, false)
+        }
+
         return true
     }
+
 }

@@ -188,7 +188,6 @@ class MainFilterActivity : BaseActivity() {
 
     private fun loadActions(): List<MainFilterInterestForAdapter> {
         //LOG WTF des selectedInterests
-        Log.wtf("wtf", "wtf" + selectedInterests.toString())
         return listOf(
             MainFilterInterestForAdapter("social", "Temps de partage", "(café, activité...)", selectedInterests.contains("social")),
             MainFilterInterestForAdapter("services", "Service", "(lessive, impression de documents...)", selectedInterests.contains("services")),
