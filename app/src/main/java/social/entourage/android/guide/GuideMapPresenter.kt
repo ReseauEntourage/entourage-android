@@ -118,7 +118,7 @@ class GuideMapPresenter (private val fragment: GuideMapFragment) {
 
     private fun retrieveClustersAndPois(currentPosition: CameraPosition, mapDistance: Float) {
         val location = currentPosition.target
-        val distance: Double = mapDistance.toDouble()
+        val distance: Double = mapDistance.toDouble() / 2
 
         val call = poiRequest.retrieveClustersAndPois(location.latitude, location.longitude, distance)
         call.enqueue(object : Callback<ClusterPoiResponse> {
