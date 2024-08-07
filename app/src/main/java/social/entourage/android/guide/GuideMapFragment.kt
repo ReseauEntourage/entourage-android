@@ -352,7 +352,7 @@ class GuideMapFragment : Fragment(),
         map?.clear()
         presenter.clear()
         poisAdapter.removeAll()
-        presenter.updatePoisNearby(map)
+        presenter.updatePoisAndClusters(map)
     }
 
     // ----------------------------------

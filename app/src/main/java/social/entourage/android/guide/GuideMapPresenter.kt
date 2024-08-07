@@ -120,7 +120,7 @@ class GuideMapPresenter (private val fragment: GuideMapFragment) {
         val location = currentPosition.target
         val distance: Double = mapDistance.toDouble() / 2
 
-        val call = poiRequest.retrieveClustersAndPois(location.latitude, location.longitude, distance)
+        val call = poiRequest.retrieveClustersAndPois(location.latitude, location.longitude, distance, GuideFilter.instance.requestedCategories,GuideFilter.instance.requestedPartnerFilters)
         call.enqueue(object : Callback<ClusterPoiResponse> {
             override fun onResponse(call: Call<ClusterPoiResponse>, response: Response<ClusterPoiResponse>) {
                 response.body()?.let {
