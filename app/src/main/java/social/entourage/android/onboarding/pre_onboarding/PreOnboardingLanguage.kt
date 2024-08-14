@@ -38,7 +38,7 @@ class PreOnboardingLanguage:BaseActivity(), OnLanguageClicked {
             //Français - anglais - arabe - ukrainien - espagnol - allemand - roumain - polonais
             LanguageItem("Français", isSelected = LanguageManager.mapLanguageToCode("Français") == selectedLanguageCode),
             LanguageItem("English", isSelected = LanguageManager.mapLanguageToCode("English") == selectedLanguageCode),
-            //LanguageItem("العربية", isSelected = LanguageManager.mapLanguageToCode("العربية") == selectedLanguageCode),
+            LanguageItem("العربية", isSelected = LanguageManager.mapLanguageToCode("العربية") == selectedLanguageCode),
             LanguageItem("Українська", isSelected = LanguageManager.mapLanguageToCode("Українська") == selectedLanguageCode),
             LanguageItem("Español", isSelected = LanguageManager.mapLanguageToCode("Español") == selectedLanguageCode),
             LanguageItem("Deutsch", isSelected = LanguageManager.mapLanguageToCode("Deutsch") == selectedLanguageCode),

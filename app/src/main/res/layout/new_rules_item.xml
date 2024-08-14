@@ -11,7 +11,7 @@
         android:layout_width="34dp"
         android:layout_height="34dp"
         android:src="@drawable/new_round_group"
-        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -21,8 +21,8 @@
         android:layout_height="wrap_content"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="@id/position_bg"
-        app:layout_constraintLeft_toLeftOf="@id/position_bg"
-        app:layout_constraintRight_toRightOf="@id/position_bg"
+        app:layout_constraintStart_toStartOf="@id/position_bg"
+        app:layout_constraintEnd_toEndOf="@id/position_bg"
         app:layout_constraintTop_toTopOf="@id/position_bg"
         tools:text="01." />
 
@@ -55,8 +55,8 @@
         android:layout_marginTop="20dp"
         android:background="@color/light_orange"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/content" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

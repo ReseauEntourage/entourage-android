@@ -52,8 +52,8 @@
             android:gravity="center"
             android:text="@string/zero"
             app:layout_constraintBottom_toTopOf="@id/label"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_chainStyle="packed"
             tools:text="259" />
@@ -64,8 +64,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="top"
             android:src="@{icon}"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:src="@drawable/new_icon_home_empty_groupes" />
 
@@ -78,8 +78,8 @@
             android:maxLines="3"
             android:text="@{label}"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/value"
             app:layout_constraintVertical_chainStyle="packed"
             tools:text="Participation à des événements" />
@@ -92,8 +92,8 @@
             android:gravity="center"
             android:maxLines="4"
             android:text="@{emptyLabel}"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/icon_empty"
             tools:text="Participation à des événements" />
 

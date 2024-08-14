@@ -72,7 +72,7 @@ android {
             "deepLinksScheme" to deepLinksSchemeProd
         )
         applicationId = "social.entourage.android"
-        resourceConfigurations += listOf("en", "fr", "de", "pl", "es","uk", "ro")
+        resourceConfigurations += listOf("en", "fr", "de", "pl", "es","uk", "ro", "ar")
 
         minSdk = 23 /*November 2015: Android 6.0, MarshMallow*/
         targetSdk = 34
@@ -196,13 +196,11 @@ android {
 
 
 dependencies {
-    //TODO check why core-ktx:1.10  needs kotlin 1.8
     implementation("androidx.core:core-ktx:1.13.1")
     implementation(platform("com.squareup.okhttp3:okhttp-bom:4.10.0"))
 
     //implementation androidSupportDependencies.values()
 
-    //TODO check why annotation:1.6 needs kotlin 1.8
     implementation("androidx.annotation:annotation:1.8.1")
     implementation("androidx.appcompat:appcompat:1.7.0")
     implementation("androidx.browser:browser:1.8.0")

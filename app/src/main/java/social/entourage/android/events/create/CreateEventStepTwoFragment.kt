@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import social.entourage.android.R
@@ -27,6 +28,7 @@ class CreateEventStepTwoFragment : Fragment() {
         setView()
         handleNextButtonState()
         setRecurrence()
+        adjustTextViewsForRTL(binding.layout.root)
         if (CommunicationHandler.eventEdited == null) {
             AnalyticsEvents.logEvent(AnalyticsEvents.Event_create_2)
         }
@@ -46,6 +48,23 @@ class CreateEventStepTwoFragment : Fragment() {
             getString(R.string.events_date),
             minDate = Date()
         )
+    }
+
+    private fun adjustTextViewsForRTL(view: View) {
+        val isRTL = resources.configuration.layoutDirection == View.LAYOUT_DIRECTION_RTL
+
+        if (isRTL) {
+            if (view is ViewGroup) {
+                for (i in 0 until view.childCount) {
+                    val child = view.getChildAt(i)
+                    adjustTextViewsForRTL(child) // Récursion pour parcourir toutes les sous-vues
+                }
+            } else if (view is TextView) {
+                // Ajuster la gravité et la direction du texte pour RTL
+                view.gravity = View.TEXT_ALIGNMENT_VIEW_END
+                view.textDirection = View.TEXT_DIRECTION_RTL
+            }
+        }
     }
 
     private fun handleNextButtonState() {

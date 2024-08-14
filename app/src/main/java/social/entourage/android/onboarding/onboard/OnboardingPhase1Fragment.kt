@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import androidx.fragment.app.Fragment
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent
 import social.entourage.android.R
@@ -14,6 +15,7 @@ import social.entourage.android.tools.isValidEmail
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.view.countrycodepicker.Country
 import social.entourage.android.tools.view.countrycodepicker.CountryCodePickerListener
+import java.util.Locale
 
 private const val ARG_FIRST = "firstN"
 private const val ARG_LAST = "lastN"
@@ -72,8 +74,37 @@ class OnboardingPhase1Fragment : Fragment() {
         callback = null
     }
 
+    private fun setEditTextAlignmentBasedOnLocale() {
+        val locale = Locale.getDefault()
+
+        // Configuration de l'alignement pour chaque EditText
+        val editTexts = listOf(
+            binding.uiOnboardNamesEtFirstname,
+            binding.uiOnboardNamesEtLastname,
+            binding.uiOnboardPhoneEtPhone,
+            binding.uiOnboardEmail
+        )
+
+        for (editText in editTexts) {
+            setEditTextGravity(editText, locale)
+        }
+    }
+
+    private fun setEditTextGravity(editText: EditText?, locale: Locale) {
+        editText?.let {
+            if (locale.language == "ar") {
+                it.gravity = android.view.Gravity.CENTER_VERTICAL or android.view.Gravity.END
+                it.textAlignment = View.TEXT_ALIGNMENT_VIEW_END
+            } else {
+                it.gravity = android.view.Gravity.CENTER_VERTICAL or android.view.Gravity.START
+                it.textAlignment = View.TEXT_ALIGNMENT_VIEW_START
+            }
+        }
+    }
+
     fun setupViews() {
         //Listen to keyboard visibility
+        setEditTextAlignmentBasedOnLocale()
         activity?.let {
             KeyboardVisibilityEvent.setEventListener(it) { isOpen ->
                 if (isOpen)

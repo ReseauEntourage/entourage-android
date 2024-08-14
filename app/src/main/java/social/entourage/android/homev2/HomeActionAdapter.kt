@@ -3,7 +3,9 @@ package social.entourage.android.homev2
 import android.app.Activity
 import android.content.Intent
 import android.net.Uri
+import android.view.Gravity
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -46,7 +48,45 @@ class HomeActionAdapter(private var isContrib:Boolean): RecyclerView.Adapter<Hom
 
     override fun onBindViewHolder(holder: ActionViewHolder, position: Int) {
         val action = actions[position]
+        // Vérification de la langue
+        val isArabic = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+            holder.binding.root.resources.configuration.locales[0].language == "ar"
+        } else {
+            holder.binding.root.resources.configuration.locale.language == "ar"
+        }
 
+        // Appliquer les propriétés en fonction de la langue pour les TextView
+        if (isArabic) {
+            holder.binding.tvActionItemTitle.layoutDirection = View.LAYOUT_DIRECTION_RTL
+            holder.binding.tvActionItemTitle.gravity = Gravity.END
+            holder.binding.tvActionItemTitle.textAlignment = View.TEXT_ALIGNMENT_VIEW_START
+            holder.binding.tvActionItemTitle.textDirection = View.TEXT_DIRECTION_RTL
+
+            holder.binding.tvActionItemSubtitle.layoutDirection = View.LAYOUT_DIRECTION_RTL
+            holder.binding.tvActionItemSubtitle.gravity = Gravity.END
+            holder.binding.tvActionItemSubtitle.textAlignment = View.TEXT_ALIGNMENT_VIEW_START
+            holder.binding.tvActionItemSubtitle.textDirection = View.TEXT_DIRECTION_RTL
+
+            holder.binding.tvActionItemDistance.layoutDirection = View.LAYOUT_DIRECTION_RTL
+            holder.binding.tvActionItemDistance.gravity = Gravity.END
+            holder.binding.tvActionItemDistance.textAlignment = View.TEXT_ALIGNMENT_VIEW_START
+            holder.binding.tvActionItemDistance.textDirection = View.TEXT_DIRECTION_RTL
+        } else {
+            holder.binding.tvActionItemTitle.layoutDirection = View.LAYOUT_DIRECTION_LTR
+            holder.binding.tvActionItemTitle.gravity = Gravity.START
+            holder.binding.tvActionItemTitle.textAlignment = View.TEXT_ALIGNMENT_VIEW_START
+            holder.binding.tvActionItemTitle.textDirection = View.TEXT_DIRECTION_LTR
+
+            holder.binding.tvActionItemSubtitle.layoutDirection = View.LAYOUT_DIRECTION_LTR
+            holder.binding.tvActionItemSubtitle.gravity = Gravity.START
+            holder.binding.tvActionItemSubtitle.textAlignment = View.TEXT_ALIGNMENT_VIEW_START
+            holder.binding.tvActionItemSubtitle.textDirection = View.TEXT_DIRECTION_LTR
+
+            holder.binding.tvActionItemDistance.layoutDirection = View.LAYOUT_DIRECTION_LTR
+            holder.binding.tvActionItemDistance.gravity = Gravity.START
+            holder.binding.tvActionItemDistance.textAlignment = View.TEXT_ALIGNMENT_VIEW_START
+            holder.binding.tvActionItemDistance.textDirection = View.TEXT_DIRECTION_LTR
+        }
 
         holder.binding.layout.setOnClickListener { view ->
             if(isContrib){

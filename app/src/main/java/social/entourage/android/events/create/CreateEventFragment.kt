@@ -1,7 +1,12 @@
 package social.entourage.android.events.create
 
+import android.graphics.Bitmap
+import android.graphics.Canvas
 import android.graphics.Color
+import android.graphics.Matrix
+import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.ColorDrawable
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -196,6 +201,20 @@ class CreateEventFragment : Fragment() {
     }
 
     private fun setView() {
+        // Check if the current layout direction is RTL
+        val isRTL = resources.configuration.layoutDirection == View.LAYOUT_DIRECTION_RTL
+
+        val originalDrawable = ContextCompat.getDrawable(requireContext(), R.drawable.new_profile_header_orange)
+
+        if (isRTL && originalDrawable != null) {
+            // Create a mirrored version of the drawable
+            val mirroredDrawable = mirrorDrawable(originalDrawable)
+            binding.createEventLayout.background = mirroredDrawable
+        } else {
+            // Use the default background for LTR languages
+            binding.createEventLayout.background = originalDrawable
+        }
+
         binding.header.title =
             getString(if (CommunicationHandler.eventEdited != null) R.string.edit_event else R.string.new_event)
     }
@@ -216,6 +235,34 @@ class CreateEventFragment : Fragment() {
                 findNavController().navigate(action)
             }
         }
+    }
+    private fun mirrorDrawable(drawable: Drawable): Drawable {
+        val matrix = Matrix().apply {
+            preScale(-1f, 1f)
+        }
+
+        val mirroredBitmap = drawableToBitmap(drawable).let {
+            Bitmap.createBitmap(it, 0, 0, it.width, it.height, matrix, true)
+        }
+
+        return BitmapDrawable(resources, mirroredBitmap)
+    }
+
+    private fun drawableToBitmap(drawable: Drawable): Bitmap {
+        if (drawable is BitmapDrawable) {
+            return drawable.bitmap
+        }
+
+        val bitmap = Bitmap.createBitmap(
+            drawable.intrinsicWidth,
+            drawable.intrinsicHeight,
+            Bitmap.Config.ARGB_8888
+        )
+        val canvas = Canvas(bitmap)
+        drawable.setBounds(0, 0, canvas.width, canvas.height)
+        drawable.draw(canvas)
+
+        return bitmap
     }
 
     private fun handleNextButtonState() {

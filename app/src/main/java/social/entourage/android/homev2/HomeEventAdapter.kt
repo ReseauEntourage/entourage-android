@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.util.Log
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -68,6 +69,56 @@ class HomeEventAdapter(
 
     override fun onBindViewHolder(holder: EventViewHolder, position: Int) {
         val event = events[position]
+
+        // Vérification de la langue
+        val isArabic = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+            holder.binding.root.resources.configuration.locales[0].language == "ar"
+        } else {
+            holder.binding.root.resources.configuration.locale.language == "ar"
+        }
+
+        // Appliquer les propriétés en fonction de la langue pour les TextView
+        if (isArabic) {
+            holder.binding.tvTitleEventItem.layoutDirection = View.LAYOUT_DIRECTION_RTL
+            holder.binding.tvTitleEventItem.gravity = Gravity.END
+            holder.binding.tvTitleEventItem.textAlignment = View.TEXT_ALIGNMENT_VIEW_START
+            holder.binding.tvTitleEventItem.textDirection = View.TEXT_DIRECTION_RTL
+
+            holder.binding.tvPlaceHomeV2EventItem.layoutDirection = View.LAYOUT_DIRECTION_RTL
+            holder.binding.tvPlaceHomeV2EventItem.gravity = Gravity.END
+            holder.binding.tvPlaceHomeV2EventItem.textAlignment = View.TEXT_ALIGNMENT_VIEW_START
+            holder.binding.tvPlaceHomeV2EventItem.textDirection = View.TEXT_DIRECTION_RTL
+
+            holder.binding.tvDateHomeV2EventItem.layoutDirection = View.LAYOUT_DIRECTION_RTL
+            holder.binding.tvDateHomeV2EventItem.gravity = Gravity.END
+            holder.binding.tvDateHomeV2EventItem.textAlignment = View.TEXT_ALIGNMENT_VIEW_START
+            holder.binding.tvDateHomeV2EventItem.textDirection = View.TEXT_DIRECTION_RTL
+
+            holder.binding.tvTagHomeV2EventItem.layoutDirection = View.LAYOUT_DIRECTION_RTL
+            holder.binding.tvTagHomeV2EventItem.gravity = Gravity.END
+            holder.binding.tvTagHomeV2EventItem.textAlignment = View.TEXT_ALIGNMENT_VIEW_START
+            holder.binding.tvTagHomeV2EventItem.textDirection = View.TEXT_DIRECTION_RTL
+        } else {
+            holder.binding.tvTitleEventItem.layoutDirection = View.LAYOUT_DIRECTION_LTR
+            holder.binding.tvTitleEventItem.gravity = Gravity.START
+            holder.binding.tvTitleEventItem.textAlignment = View.TEXT_ALIGNMENT_VIEW_START
+            holder.binding.tvTitleEventItem.textDirection = View.TEXT_DIRECTION_LTR
+
+            holder.binding.tvPlaceHomeV2EventItem.layoutDirection = View.LAYOUT_DIRECTION_LTR
+            holder.binding.tvPlaceHomeV2EventItem.gravity = Gravity.START
+            holder.binding.tvPlaceHomeV2EventItem.textAlignment = View.TEXT_ALIGNMENT_VIEW_START
+            holder.binding.tvPlaceHomeV2EventItem.textDirection = View.TEXT_DIRECTION_LTR
+
+            holder.binding.tvDateHomeV2EventItem.layoutDirection = View.LAYOUT_DIRECTION_LTR
+            holder.binding.tvDateHomeV2EventItem.gravity = Gravity.START
+            holder.binding.tvDateHomeV2EventItem.textAlignment = View.TEXT_ALIGNMENT_VIEW_START
+            holder.binding.tvDateHomeV2EventItem.textDirection = View.TEXT_DIRECTION_LTR
+
+            holder.binding.tvTagHomeV2EventItem.layoutDirection = View.LAYOUT_DIRECTION_LTR
+            holder.binding.tvTagHomeV2EventItem.gravity = Gravity.START
+            holder.binding.tvTagHomeV2EventItem.textAlignment = View.TEXT_ALIGNMENT_VIEW_START
+            holder.binding.tvTagHomeV2EventItem.textDirection = View.TEXT_DIRECTION_LTR
+        }
         holder.binding.layoutItemHomeEvent.setOnClickListener { view ->
             EventsFragment.isFromDetails = true
             AnalyticsEvents.logEvent(AnalyticsEvents.Action_Home_Event_Detail)

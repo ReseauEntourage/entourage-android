@@ -196,7 +196,7 @@
                     android:layout_marginTop="20dp"
                     android:paddingHorizontal="@dimen/padding_horizontal"
                     android:text="@string/why_reporting"
-                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/header" />
 
                 <TextView
@@ -207,7 +207,7 @@
                     android:layout_marginBottom="20dp"
                     android:paddingHorizontal="@dimen/padding_horizontal"
                     android:text="@string/mandatory"
-                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/title" />
 
                 <View
@@ -216,8 +216,8 @@
                     android:layout_height="1px"
                     android:layout_marginTop="10dp"
                     android:background="@color/light_orange"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/mandatory" />
 
                 <androidx.recyclerview.widget.RecyclerView
@@ -227,8 +227,8 @@
                     android:clipToPadding="false"
                     android:paddingBottom="0dp"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/divider"
                     tools:itemCount="5"
                     tools:listitem="@layout/new_report_user_item" />
@@ -244,8 +244,8 @@
                     android:paddingTop="0dp"
                     android:visibility="gone"
                     app:layout_constraintHorizontal_weight="0.8"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/divider"
                     tools:text="content" />
 
@@ -266,8 +266,8 @@
             android:text="@string/new_next"
             android:textAllCaps="false"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             android:visibility="gone"/>
 
         <Button
@@ -284,7 +284,7 @@
             android:textAllCaps="false"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
              />
 
         <Button
@@ -301,7 +301,7 @@
             android:textAllCaps="false"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

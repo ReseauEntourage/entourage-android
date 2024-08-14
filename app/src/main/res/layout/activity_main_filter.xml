@@ -31,7 +31,7 @@
             android:elevation="1dp"
             android:padding="10dp"
             android:src="@drawable/ic_back_onboarding"
-            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView

@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import social.entourage.android.R
@@ -42,6 +43,7 @@ class CreateEventStepFourFragment : Fragment() {
         if (CommunicationHandler.eventEdited == null) {
             AnalyticsEvents.logEvent(AnalyticsEvents.Event_create_4)
         }
+        adjustTextViewsForRTL(binding.layout.root)
     }
 
     private fun handleMetaData(tags: Tags?) {
@@ -61,6 +63,23 @@ class CreateEventStepFourFragment : Fragment() {
             }
         }
         binding.layout.recyclerView.adapter?.notifyDataSetChanged()
+    }
+
+    private fun adjustTextViewsForRTL(view: View) {
+        val isRTL = resources.configuration.layoutDirection == View.LAYOUT_DIRECTION_RTL
+
+        if (isRTL) {
+            if (view is ViewGroup) {
+                for (i in 0 until view.childCount) {
+                    val child = view.getChildAt(i)
+                    adjustTextViewsForRTL(child) // Récursion pour parcourir toutes les sous-vues
+                }
+            } else if (view is TextView) {
+                // Ajuster la gravité et la direction du texte pour RTL
+                view.gravity = View.TEXT_ALIGNMENT_VIEW_END
+                view.textDirection = View.TEXT_DIRECTION_RTL
+            }
+        }
     }
 
     private fun initializeInterests() {

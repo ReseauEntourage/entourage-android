@@ -37,8 +37,8 @@
                         android:adjustViewBounds="true"
                         android:cropToPadding="true"
                         android:src="@drawable/new_group_illu"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
@@ -72,7 +72,7 @@
                 android:elevation="1dp"
                 android:padding="10dp"
                 android:src="@drawable/new_back"
-                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
@@ -99,7 +99,7 @@
                 android:layout_height="40dp"
                 android:padding="10dp"
                 android:src="@drawable/new_settings"
-                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
         </LinearLayout>
@@ -283,8 +283,8 @@ purus dui, aliquet cursus tellus a, dictum hen." />
                             android:layout_gravity="center_horizontal"
                             android:layout_marginTop="20dp"
                             android:visibility="gone"
-                            app:layout_constraintLeft_toLeftOf="parent"
-                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/description"
                             tools:itemCount="5"
                             tools:listitem="@layout/new_profile_interest_item" />
@@ -332,8 +332,8 @@ purus dui, aliquet cursus tellus a, dictum hen." />
                         android:orientation="horizontal"
                         android:padding="28dp"
                         android:visibility="gone"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/events">
 
                         <ImageView
@@ -372,8 +372,8 @@ purus dui, aliquet cursus tellus a, dictum hen." />
                         android:background="@color/beige"
                         android:paddingLeft="18dp"
                         android:visibility="gone"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/events"
                         tools:listitem="@layout/new_event_item_layout" />
 
@@ -397,8 +397,8 @@ purus dui, aliquet cursus tellus a, dictum hen." />
                         android:orientation="vertical"
                         android:padding="28dp"
                         android:visibility="gone"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/posts">
 
                         <ImageView
@@ -408,8 +408,8 @@ purus dui, aliquet cursus tellus a, dictum hen." />
                             android:layout_gravity="center"
                             android:src="@drawable/new_illu_header_group"
                             app:layout_constraintBottom_toTopOf="@+id/title"
-                            app:layout_constraintLeft_toLeftOf="parent"
-                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 
                         <ImageView
@@ -419,7 +419,7 @@ purus dui, aliquet cursus tellus a, dictum hen." />
                             android:layout_marginBottom="-15dp"
                             android:src="@drawable/new_group_stars"
                             app:layout_constraintBottom_toTopOf="@id/title"
-                            app:layout_constraintLeft_toLeftOf="parent" />
+                            app:layout_constraintStart_toStartOf="parent" />
 
                         <TextView
                             android:id="@+id/title"
@@ -430,7 +430,7 @@ purus dui, aliquet cursus tellus a, dictum hen." />
                             android:layout_marginTop="10dp"
                             android:text="@string/group_posts_empty_state_title"
                             app:layout_constraintBottom_toTopOf="@id/title"
-                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/image" />
 
                         <TextView
@@ -442,7 +442,7 @@ purus dui, aliquet cursus tellus a, dictum hen." />
                             android:layout_marginTop="10dp"
                             android:gravity="start"
                             android:text="@string/group_posts_empty_state_subtitle"
-                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/title" />
 
                         <ImageView
@@ -453,7 +453,7 @@ purus dui, aliquet cursus tellus a, dictum hen." />
                             android:layout_marginTop="17dp"
                             android:src="@drawable/new_arrow_create_group"
                             app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintRight_toRightOf="parent" />
+                            app:layout_constraintEnd_toEndOf="parent" />
                     </LinearLayout>
 
                     <include

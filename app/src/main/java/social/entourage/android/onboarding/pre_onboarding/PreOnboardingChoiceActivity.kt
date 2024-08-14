@@ -57,7 +57,7 @@ class PreOnboardingChoiceActivity : BaseActivity() {
         finish()
     }
 
-    private fun setImage(){
+    private fun setImage() {
         binding.uiLogo2.setImageDrawable(getDrawable(R.drawable.logo_entourage_rvb_horizontal))
 
         val width = 500  // Remplace par la largeur souhaitée en pixels
@@ -72,7 +72,19 @@ class PreOnboardingChoiceActivity : BaseActivity() {
         binding.uiLogo2.scaleType = ImageView.ScaleType.FIT_START
         binding.uiLogo2.layoutParams = params
 
+        // Vérifie si la langue est en mode RTL (comme l'arabe)
+        val isRtl = resources.configuration.layoutDirection == android.view.View.LAYOUT_DIRECTION_RTL
+        if (isRtl) {
+            // Applique un miroir horizontal à l'image
+            binding.uiLogo2.scaleX = -1f
+            binding.imageMosaic.scaleX = -1f
+        } else {
+            // Réinitialise la transformation si ce n'est pas en RTL
+            binding.uiLogo2.scaleX = 1f
+            binding.imageMosaic.scaleX = 1f
+        }
     }
+
 
     override fun onResume() {
         super.onResume()

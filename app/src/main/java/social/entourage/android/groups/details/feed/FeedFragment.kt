@@ -87,6 +87,7 @@ class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface,
     private lateinit var groupUI: GroupModel
     private var myId: Int? = null
     private val args: FeedFragmentArgs by navArgs()
+
     private var isLoading = false
     private var page:Int = 0
     private val ITEM_PER_PAGE = 10

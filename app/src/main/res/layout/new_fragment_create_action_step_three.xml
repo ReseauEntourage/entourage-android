@@ -65,8 +65,8 @@
                     android:layout_marginTop="10dp"
                     android:gravity="center"
                     android:orientation="horizontal"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
 
                     <ImageView
@@ -95,8 +95,8 @@
                             android:layout_height="1dp"
                             android:background="@color/light_orange_opacity_50"
                             app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintLeft_toLeftOf="parent"
-                            app:layout_constraintRight_toRightOf="parent" />
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent" />
                     </LinearLayout>
                 </LinearLayout>
 

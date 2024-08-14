@@ -3,16 +3,25 @@ package social.entourage.android.onboarding.pre_onboarding
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.RecyclerView
 import social.entourage.android.R
-import social.entourage.android.databinding.LayoutCellPreOnboardingBinding // Importe le bon nom de fichier de binding généré.
+import social.entourage.android.databinding.LayoutCellPreOnboardingBinding
 
 class PreOnboardingRVAdapter(val context: Context, private val myDataset: ArrayList<Int>) :
     RecyclerView.Adapter<PreOnboardingRVAdapter.ImageVH>() {
 
     inner class ImageVH(private val binding: LayoutCellPreOnboardingBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(res: Int) {
-            binding.uiIvCellPreonboard.setImageResource(res) // Assure-toi d'avoir le bon ID après avoir enlevé les synthetics.
+            binding.uiIvCellPreonboard.setImageResource(res)
+
+            // Vérifie si l'interface est en RTL
+            val isRtl = itemView.resources.configuration.layoutDirection == ViewCompat.LAYOUT_DIRECTION_RTL
+            if (isRtl) {
+                binding.uiIvCellPreonboard.scaleX = -1f // Applique un effet miroir horizontal en RTL
+            } else {
+                binding.uiIvCellPreonboard.scaleX = 1f // Réinitialise la transformation si non-RTL
+            }
         }
     }
 

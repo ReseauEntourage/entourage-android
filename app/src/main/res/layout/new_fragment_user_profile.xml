@@ -17,8 +17,8 @@
             android:background="@drawable/new_shadow"
             android:elevation="1dp"
             app:layout_constraintBottom_toTopOf="@id/scrollView"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/scrollView" />
 
         <ImageView
@@ -30,7 +30,7 @@
             android:layout_marginBottom="20dp"
             android:padding="10dp"
             android:src="@drawable/new_back_white"
-            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:src="@drawable/new_back_white" />
 
@@ -86,8 +86,8 @@
                     android:layout_marginTop="30dp"
                     app:content="@{@string/write_message}"
                     app:drawable="@{@drawable/new_rounded_button_orange}"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/scrollView" />
 
                 <TextView
@@ -105,8 +105,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginTop="12dp"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/my_activity" />
 
                 <LinearLayout
@@ -124,7 +124,7 @@
                         android:layout_marginEnd="10dp"
                         android:layout_weight="1"
                         app:label="@{@string/contributions_group}"
-                        app:layout_constraintLeft_toLeftOf="parent" />
+                        app:layout_constraintStart_toStartOf="parent" />
 
                     <include
                         android:id="@+id/events"
@@ -148,8 +148,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/description"
                     tools:itemCount="5"
                     tools:listitem="@layout/new_profile_interest_item" />

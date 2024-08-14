@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import com.bumptech.glide.Glide
@@ -44,9 +45,26 @@ class CreateEventStepOneFragment : Fragment() {
         handleChoosePhoto()
         onFragmentResult()
         handleNextButtonState()
-
+        adjustTextViewsForRTL(binding.layout.root)
         if (CommunicationHandler.eventEdited == null) {
             AnalyticsEvents.logEvent(AnalyticsEvents.Event_create_1)
+        }
+    }
+
+    private fun adjustTextViewsForRTL(view: View) {
+        val isRTL = resources.configuration.layoutDirection == View.LAYOUT_DIRECTION_RTL
+
+        if (isRTL) {
+            if (view is ViewGroup) {
+                for (i in 0 until view.childCount) {
+                    val child = view.getChildAt(i)
+                    adjustTextViewsForRTL(child) // Récursion pour parcourir toutes les sous-vues
+                }
+            } else if (view is TextView) {
+                // Ajuster la gravité et la direction du texte pour RTL
+                view.gravity = View.TEXT_ALIGNMENT_VIEW_END
+                view.textDirection = View.TEXT_DIRECTION_RTL
+            }
         }
     }
 

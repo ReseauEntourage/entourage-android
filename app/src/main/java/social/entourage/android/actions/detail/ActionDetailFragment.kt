@@ -3,10 +3,12 @@ package social.entourage.android.actions.detail
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.text.SpannableString
 import android.text.style.UnderlineSpan
 import android.util.Log
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -318,6 +320,28 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
 
     private fun updateViews() {
         action?.let {
+            var isArabic = false
+             isArabic = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                resources.configuration.locales[0].language == "ar"
+            } else {
+                resources.configuration.locale.language == "ar"
+            }
+            if (isArabic) {
+                binding.uiUserName.layoutDirection = View.LAYOUT_DIRECTION_RTL
+                binding.uiLocation.layoutDirection = View.LAYOUT_DIRECTION_RTL
+                binding.uiUserName.gravity = Gravity.END
+                binding.uiLocation.gravity = Gravity.END
+                binding.uiUserName.textAlignment = View.TEXT_ALIGNMENT_VIEW_START
+                binding.uiLocation.textAlignment = View.TEXT_ALIGNMENT_VIEW_START
+            } else {
+                binding.uiUserName.layoutDirection = View.LAYOUT_DIRECTION_LTR
+                binding.uiLocation.layoutDirection = View.LAYOUT_DIRECTION_LTR
+                binding.uiUserName.gravity = Gravity.START
+                binding.uiLocation.gravity = Gravity.START
+                binding.uiUserName.textAlignment = View.TEXT_ALIGNMENT_VIEW_START
+                binding.uiLocation.textAlignment = View.TEXT_ALIGNMENT_VIEW_START
+            }
+
             binding.uiTitleMain.text = it.title
             if (it.isCancel()) {
                 showCancelView()

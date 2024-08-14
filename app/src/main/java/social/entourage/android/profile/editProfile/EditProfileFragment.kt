@@ -7,10 +7,12 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SeekBar
+import android.widget.TextView
 import androidx.collection.ArrayMap
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
@@ -199,16 +201,35 @@ class EditProfileFragment : Fragment(), EditProfileCallback,
     }
 
     private fun updateUserView() {
-        if(isAdded){
+        if (isAdded) {
             val user = EntourageApplication.me(activity) ?: return
+
+            // Vérification de la langue
+            val isArabic = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                resources.configuration.locales[0].language == "ar"
+            } else {
+                resources.configuration.locale.language == "ar"
+            }
+
             with(binding) {
+                // Configuration des champs en fonction de la langue
+                configureTextViewForRTL(firstname.content, isArabic)
+                configureTextViewForRTL(lastname.content, isArabic)
+                configureTextViewForRTL(description.content, isArabic)
+                configureTextViewForRTL(birthday.content, isArabic)
+                configureTextViewForRTL(phone.content, isArabic)
+                configureTextViewForRTL(email.content, isArabic)
+                configureTextViewForRTL(cityAction.content, isArabic)
+                configureTextViewForRTL(description.counter,isArabic)
                 firstname.content.setText(user.firstName)
                 lastname.content.setText(user.lastName)
-                if(descriptionRegistered.equals("")){
+
+                if (descriptionRegistered.isEmpty()) {
                     description.content.setText(user.about)
-                }else{
+                } else {
                     description.content.setText(descriptionRegistered)
                 }
+
                 birthday.content.transformIntoDatePicker(
                     requireContext(),
                     getString(R.string.birthday_date_format)
@@ -239,6 +260,20 @@ class EditProfileFragment : Fragment(), EditProfileCallback,
                     imageProfile.setImageResource(R.drawable.placeholder_user)
                 }
             }
+        }
+    }
+
+    private fun configureTextViewForRTL(textView: TextView, isArabic: Boolean) {
+        if (isArabic) {
+            textView.layoutDirection = View.LAYOUT_DIRECTION_RTL
+            textView.gravity = Gravity.END
+            textView.textAlignment = View.TEXT_ALIGNMENT_VIEW_START
+            textView.textDirection = View.TEXT_DIRECTION_RTL
+        } else {
+            textView.layoutDirection = View.LAYOUT_DIRECTION_LTR
+            textView.gravity = Gravity.START
+            textView.textAlignment = View.TEXT_ALIGNMENT_VIEW_START
+            textView.textDirection = View.TEXT_DIRECTION_LTR
         }
     }
 
