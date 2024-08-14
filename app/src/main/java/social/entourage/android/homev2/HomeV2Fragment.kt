@@ -226,6 +226,12 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
         val areNotificationsEnabled = notificationManager.areNotificationsEnabled()
         if (areNotificationsEnabled) {
             AnalyticsEvents.logEvent(AnalyticsEvents.has_user_activated_notif)
+            FirebaseMessaging.getInstance().token.addOnSuccessListener { token ->
+                AnalyticsEvents.logEvent(AnalyticsEvents.user_have_notif_and_token)
+            }
+            FirebaseMessaging.getInstance().token.addOnFailureListener {
+                AnalyticsEvents.logEvent(AnalyticsEvents.user_have_notif_and_no_token)
+            }
 
         } else {
             AnalyticsEvents.logEvent(AnalyticsEvents.has_user_disabled_notif)

@@ -757,6 +757,9 @@ object AnalyticsEvents {
     const val discussion_plural_deny = "discussion_plural_deny"
     const val discussion_plural_view = "discussion_plural_view"
 
+    const val user_have_notif_and_token = "user_have_notif_and_token"
+    const val user_have_notif_and_no_token = "user_have_notif_and_no_token"
+
 
 
     // EVENT NOTIF PUSH
