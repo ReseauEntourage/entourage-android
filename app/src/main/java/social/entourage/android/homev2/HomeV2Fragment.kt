@@ -235,7 +235,7 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
 
         } else {
             AnalyticsEvents.logEvent(AnalyticsEvents.has_user_disabled_notif)
-
+            mainPresenter.updateApplicationInfo("")
         }
     }
 
