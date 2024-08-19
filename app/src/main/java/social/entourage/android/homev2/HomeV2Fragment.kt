@@ -41,6 +41,7 @@ import social.entourage.android.api.model.Help
 import social.entourage.android.api.model.Pedago
 import social.entourage.android.api.model.Summary
 import social.entourage.android.api.model.User
+import social.entourage.android.api.model.notification.PushNotificationMessage
 import social.entourage.android.databinding.FragmentHomeV2LayoutBinding
 import social.entourage.android.enhanced_onboarding.EnhancedOnboarding
 import social.entourage.android.events.create.CommunicationHandler
@@ -52,7 +53,9 @@ import social.entourage.android.home.pedago.OnItemClick
 import social.entourage.android.home.pedago.PedagoDetailActivity
 import social.entourage.android.home.pedago.PedagoListActivity
 import social.entourage.android.notifications.InAppNotificationsActivity
+import social.entourage.android.notifications.MockNotificationGenerator
 import social.entourage.android.notifications.NotificationDemandActivity
+import social.entourage.android.notifications.PushNotificationManager
 import social.entourage.android.onboarding.onboard.OnboardingStartActivity
 import social.entourage.android.profile.ProfileActivity
 import social.entourage.android.tools.log.AnalyticsEvents
@@ -176,6 +179,11 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
             )
         }
         checkNotifAndSendToken()
+
+        binding.ivLogoHome.setOnLongClickListener {
+            MockNotificationGenerator.createAllMockNotifications(requireContext())
+            true
+        }
     }
 
     private fun checkNotifAndSendToken(){
@@ -769,6 +777,8 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
             )
         }
     }
+
+
     private fun onActionUnclosed(summary: Summary){
         if(summary.unclosedAction != null){
             if(summary.unclosedAction!!.actionType == "solicitation"){
@@ -837,6 +847,7 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
                 )
             }
         }
+
     }
     companion object {
         var isContribProfile = false

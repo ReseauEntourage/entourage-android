@@ -70,7 +70,7 @@ object NotificationActionManager {
                 val intent = Intent(context, WelcomeThreeActivity::class.java)
                 context.startActivity(intent)
             }
-            if(stage.equals("j!")){
+            if(stage.equals("j8")){
                 val intent = Intent(context, WelcomeFourActivity::class.java)
                 context.startActivity(intent)
             }
