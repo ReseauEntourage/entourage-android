@@ -26,10 +26,8 @@ class UniversalLinkManagerPreprodTest {
         val intent = Intent(Intent.ACTION_VIEW, uri).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK // S'assurer que l'intent ouvre une nouvelle activité
         }
-
         // Démarrer l'activité en utilisant le contexte
         context.startActivity(intent)
-
         // Attendre 2 secondes pour observer le résultat
         pauseForTwoSeconds()
     }
@@ -40,7 +38,6 @@ class UniversalLinkManagerPreprodTest {
         val intent = Intent(Intent.ACTION_VIEW, uri).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK
         }
-
         context.startActivity(intent)
         pauseForTwoSeconds()
     }
@@ -51,7 +48,15 @@ class UniversalLinkManagerPreprodTest {
         val intent = Intent(Intent.ACTION_VIEW, uri).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK
         }
-
+        context.startActivity(intent)
+        pauseForTwoSeconds()
+    }
+    @Test
+    fun testGroupListLink() {
+        val uri = Uri.parse("https://preprod.entourage.social/app/groups")
+        val intent = Intent(Intent.ACTION_VIEW, uri).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        }
         context.startActivity(intent)
         pauseForTwoSeconds()
     }
@@ -62,7 +67,6 @@ class UniversalLinkManagerPreprodTest {
         val intent = Intent(Intent.ACTION_VIEW, uri).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK
         }
-
         context.startActivity(intent)
         pauseForTwoSeconds()
     }
@@ -73,7 +77,6 @@ class UniversalLinkManagerPreprodTest {
         val intent = Intent(Intent.ACTION_VIEW, uri).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK
         }
-
         context.startActivity(intent)
         pauseForTwoSeconds()
     }
@@ -84,7 +87,6 @@ class UniversalLinkManagerPreprodTest {
         val intent = Intent(Intent.ACTION_VIEW, uri).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK
         }
-
         context.startActivity(intent)
         pauseForTwoSeconds()
     }
@@ -95,7 +97,6 @@ class UniversalLinkManagerPreprodTest {
         val intent = Intent(Intent.ACTION_VIEW, uri).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK
         }
-
         context.startActivity(intent)
         pauseForTwoSeconds()
     }
@@ -106,7 +107,6 @@ class UniversalLinkManagerPreprodTest {
         val intent = Intent(Intent.ACTION_VIEW, uri).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK
         }
-
         context.startActivity(intent)
         pauseForTwoSeconds()
     }
@@ -128,7 +128,6 @@ class UniversalLinkManagerPreprodTest {
         val intent = Intent(Intent.ACTION_VIEW, uri).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK
         }
-
         context.startActivity(intent)
         pauseForTwoSeconds()
     }
@@ -150,7 +149,6 @@ class UniversalLinkManagerPreprodTest {
         val intent = Intent(Intent.ACTION_VIEW, uri).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK
         }
-
         context.startActivity(intent)
         pauseForTwoSeconds()
     }
