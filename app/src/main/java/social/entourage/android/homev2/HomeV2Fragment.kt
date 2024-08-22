@@ -179,7 +179,6 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
             )
         }
         checkNotifAndSendToken()
-
         binding.ivLogoHome.setOnLongClickListener {
             MockNotificationGenerator.createAllMockNotifications(requireContext())
             true
@@ -249,6 +248,7 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
 
     fun sendtoken(){
         FirebaseMessaging.getInstance().token.addOnSuccessListener { token ->
+            Log.wtf("TOKEN", token)
             mainPresenter.updateApplicationInfo(token)
         }
     }
