@@ -210,32 +210,36 @@ abstract class CommentActivity : BaseActivity(), onDissmissFragment {
                 binding.comment.isEnabled = false
                 binding.progressBar.visibility = View.VISIBLE
 
-                // Simulate the delay of 2 seconds (2000 milliseconds)
+                // Create the user and post objects as before
+                val user = EntourageUser().apply {
+                    userId = EntourageApplication.me(this@CommentActivity)?.id ?: 0
+                    avatarURLAsString = EntourageApplication.me(this@CommentActivity)?.avatarURL
+                }
+
+                comment = Post(
+                    idInternal = UUID.randomUUID(),
+                    content = message,
+                    postId = postId,
+                    user = user
+                )
+
+                // Send the comment
+                addComment()
+
+                // Simulate a delay of 2 seconds (2000 milliseconds)
                 binding.comment.postDelayed({
                     // Re-enable the button and hide the progress bar
                     binding.comment.isEnabled = true
                     binding.progressBar.visibility = View.GONE
+                }, 2000)
 
-                    // Create the user and post objects as before
-                    val user = EntourageUser()
-                    user.userId = EntourageApplication.me(this)?.id!!
-                    user.avatarURLAsString = EntourageApplication.me(this)?.avatarURL
-                    comment =
-                        Post(
-                            idInternal = UUID.randomUUID(),
-                            content = message,
-                            postId = postId,
-                            user = user
-                        )
-                    addComment()
-
-                    // Clear the input field and hide the keyboard
-                    binding.commentMessage.text.clear()
-                    Utils.hideKeyboard(this)
-                }, 2000) // Delay of 2 seconds
+                // Clear the input field and hide the keyboard
+                binding.commentMessage.text.clear()
+                Utils.hideKeyboard(this)
             }
         }
     }
+
 
 
     private fun handleBackButton() {
