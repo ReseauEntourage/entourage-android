@@ -1,5 +1,6 @@
 package social.entourage.android.events.details.feed
 
+import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
@@ -83,6 +84,10 @@ import social.entourage.android.tools.utils.px
 import social.entourage.android.tools.utils.underline
 import java.text.SimpleDateFormat
 import kotlin.math.abs
+import com.google.android.play.core.review.ReviewManagerFactory
+import com.google.android.play.core.review.ReviewManager
+import com.google.android.play.core.review.testing.FakeReviewManager
+
 
 class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
     SurveyInteractionListener {
@@ -628,8 +633,24 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
         eventPresenter.getEvent(eventId)
     }
 
+    fun requestInAppReview(context: Context) {
+    val manager = ReviewManagerFactory.create(context)
+        val request = manager.requestReviewFlow()
+        request.addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                val flow = manager.launchReviewFlow(context as Activity, task.result)
+                flow.addOnCompleteListener {
+                }
+            } else {
+            }
+        }
+    }
+
+
+
     private fun handleParticipateButton() {
         binding.join.setOnClickListener {
+            requestInAppReview(requireContext())
             if (event?.member==false){
                 eventPresenter.participate(eventId)
             }else{
