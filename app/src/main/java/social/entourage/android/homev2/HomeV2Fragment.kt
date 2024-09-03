@@ -637,9 +637,7 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
             startActivity(intent)
         }
         isContribution = summary.preference.equals("contribution")
-        if(!isContribution){
-            checkAndShowDiscussionDialog()
-        }
+
         isContribProfile = isContribution
         if(isContribution){
             if(!homeActionAdapter.getIsContrib()){
