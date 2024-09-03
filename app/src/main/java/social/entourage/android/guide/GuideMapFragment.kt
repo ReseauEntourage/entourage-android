@@ -26,6 +26,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -309,16 +310,20 @@ class GuideMapFragment : Fragment(),
         val bitmap = Bitmap.createBitmap(iconSize, iconSize, Bitmap.Config.ARGB_8888)
         val canvas = Canvas(bitmap)
 
+        // Récupérer les couleurs à partir des ressources
+        val orangeSecondaryLocal = ContextCompat.getColor(requireContext(), R.color.orange_secondary_local)
+        val orangeTextMapLocal = ContextCompat.getColor(requireContext(), R.color.orange_text_map_local)
+
         // Dessiner le fond de l'icône (un cercle par exemple)
         val paint = Paint().apply {
-            color = Color.BLUE
+            color = orangeSecondaryLocal  // Utiliser la couleur orange_secondary_local
             isAntiAlias = true
         }
         val radius = iconSize / 2f
         canvas.drawCircle(radius, radius, radius, paint)
 
         // Dessiner le texte (nombre de POIs)
-        paint.color = Color.WHITE
+        paint.color = orangeTextMapLocal  // Utiliser la couleur orange_text_map_local
         paint.textSize = 40f
         paint.textAlign = Paint.Align.CENTER
 
@@ -328,6 +333,7 @@ class GuideMapFragment : Fragment(),
 
         return BitmapDescriptorFactory.fromBitmap(bitmap)
     }
+
 
     // Convertir ClusterPoi en Poi pour l'utiliser avec PoiRenderer
     private fun ClusterPoi.toPoi(): Poi {
