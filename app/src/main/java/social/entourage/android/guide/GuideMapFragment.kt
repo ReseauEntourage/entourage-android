@@ -312,7 +312,7 @@ class GuideMapFragment : Fragment(),
 
         // Récupérer les couleurs à partir des ressources
         val orangeSecondaryLocal = ContextCompat.getColor(requireContext(), R.color.orange_secondary_local)
-        val orangeTextMapLocal = ContextCompat.getColor(requireContext(), R.color.orange_text_map_local)
+        val orangeTextMapLocal = ContextCompat.getColor(requireContext(), R.color.orange_entourage)
 
         // Dessiner le fond de l'icône (un cercle par exemple)
         val paint = Paint().apply {
