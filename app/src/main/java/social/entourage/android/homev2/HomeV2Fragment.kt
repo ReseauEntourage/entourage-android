@@ -14,6 +14,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.animation.doOnEnd
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.res.ResourcesCompat
@@ -42,6 +43,7 @@ import social.entourage.android.api.model.Pedago
 import social.entourage.android.api.model.Summary
 import social.entourage.android.api.model.User
 import social.entourage.android.api.model.notification.PushNotificationMessage
+import social.entourage.android.base.BaseActivity
 import social.entourage.android.databinding.FragmentHomeV2LayoutBinding
 import social.entourage.android.enhanced_onboarding.EnhancedOnboarding
 import social.entourage.android.events.create.CommunicationHandler
@@ -183,6 +185,7 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
             MockNotificationGenerator.createAllMockNotifications(requireContext())
             true
         }
+        showPopupBienCommun()
     }
 
     private fun checkNotifAndSendToken(){
@@ -252,6 +255,34 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
             mainPresenter.updateApplicationInfo(token)
         }
     }
+
+    fun showPopupBienCommun() {
+        // Accéder aux SharedPreferences en utilisant la clé personnalisée
+        val sharedPreferences = requireContext().getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE)
+
+        // Vérifier si le popup a déjà été affiché
+        val hasShownPopup = sharedPreferences.getBoolean("has_shown_biencommun_popup", false)
+
+        if (!hasShownPopup) {
+            val bienCommunDialogFragment = PopupBienCommun.newInstance().apply {
+                AnalyticsEvents.logEvent(AnalyticsEvents.popup_biencommun)
+                listener = object : PopupBienCommun.BienCommunConfirmationListener {
+                    override fun onConfirmParticipation() {
+                        AnalyticsEvents.logEvent(AnalyticsEvents.popup_biencommun_vote)
+                        Toast.makeText(context, "Merci d’avoir voté, à bientôt !", Toast.LENGTH_LONG).show()
+                        (requireActivity() as BaseActivity).showWebView("https://bit.ly/3Z2tOB5")
+                    }
+                }
+            }
+
+            // Afficher le popup
+            bienCommunDialogFragment.show(requireActivity().supportFragmentManager, "PopupBienCommun")
+
+            // Mettre à jour SharedPreferences pour indiquer que le popup a été affiché
+            sharedPreferences.edit().putBoolean("has_shown_biencommun_popup", true).apply()
+        }
+    }
+
 
     private fun updateUnreadCount(unreadMessages: UnreadMessages?) {
         val count:Int = unreadMessages?.unreadCount ?: 0

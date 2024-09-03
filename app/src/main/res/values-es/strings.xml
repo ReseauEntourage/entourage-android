@@ -2752,5 +2752,7 @@ Leerán este mensaje tan pronto como se unan al grupo.</string>
     <string name="see_participants">Participantes</string>
     <string name="comments_title">Comentarios</string>
     <string name="participant_number">%s participantes</string>
+    <string name="popup_nightgood_vote">Votar</string>
+    <string name="popup_nightgood_text">Para ayudar a 60 personas en situación precaria a unirse a un club deportivo, solo hace falta un clic. ¡El tuyo!</string>
 
 </resources>

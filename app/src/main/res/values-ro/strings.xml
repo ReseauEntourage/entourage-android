@@ -2763,5 +2763,7 @@ Ei vor citi acest mesaj imediat ce se vor alătura grupului.</string>
     <string name="members_location_temporary">%s</string>
     <string name="see_participants">Participanți</string>
     <string name="participant_number">%s participanți</string>
+    <string name="popup_nightgood_vote">Votați</string>
+    <string name="popup_nightgood_text">Pentru a ajuta 60 de persoane aflate în situații precare să se alăture unui club sportiv, este suficient un singur clic. Al tău!</string>
 
 </resources>

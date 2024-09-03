@@ -2677,5 +2677,7 @@
     <string name="see_member_react">Люди, які відреагували</string>
     <string name="text_title_i_like">Подобається</string>
     <string name="text_title_comment">Коментувати</string>
+    <string name="popup_nightgood_vote">Голосувати</string>
+    <string name="popup_nightgood_text">Щоб допомогти 60 людям у скрутному становищі приєднатися до спортивного клубу, достатньо одного кліку. Вашого!</string>
 
 </resources>

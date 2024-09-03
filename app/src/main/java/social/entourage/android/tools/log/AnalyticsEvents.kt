@@ -759,6 +759,8 @@ object AnalyticsEvents {
 
     const val user_have_notif_and_token = "user_have_notif_and_token"
     const val user_have_notif_and_no_token = "user_have_notif_and_no_token"
+    const val popup_biencommun = "popup_biencommun"
+    const val popup_biencommun_vote = "popup_biencommun_vote"
 
 
 

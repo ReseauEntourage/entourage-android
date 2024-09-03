@@ -2790,6 +2790,8 @@
     <string name="members_location_temporary">%s</string>
     <string name="see_participants">المشاركون</string>
     <string name="participant_number">%s مشاركون</string>
+    <string name="popup_nightgood_vote">تصويت</string>
+    <string name="popup_nightgood_text">للمساعدة في انضمام 60 شخصًا في وضع غير مستقر إلى نادٍ رياضي، يكفي نقرة واحدة. نقرتك!</string>
 
 
 </resources>
