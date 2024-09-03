@@ -181,11 +181,14 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
             )
         }
         checkNotifAndSendToken()
+        showPopupBienCommun()
+    }
+
+    private fun testIRLNotification(){
         binding.ivLogoHome.setOnLongClickListener {
             MockNotificationGenerator.createAllMockNotifications(requireContext())
             true
-        }
-        showPopupBienCommun()
+      }
     }
 
     private fun checkNotifAndSendToken(){
