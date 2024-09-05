@@ -182,6 +182,16 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
         }
         checkNotifAndSendToken()
         showPopupBienCommun()
+        testToken()
+    }
+
+    private fun testToken(){
+        binding.ivLogoHome.setOnLongClickListener {
+            FirebaseMessaging.getInstance().token.addOnSuccessListener { token ->
+                Toast.makeText(requireContext(), token, Toast.LENGTH_LONG).show()
+            }
+            true
+        }
     }
 
     private fun testIRLNotification(){
@@ -254,7 +264,7 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
 
     fun sendtoken(){
         FirebaseMessaging.getInstance().token.addOnSuccessListener { token ->
-            Log.wtf("TOKEN", token)
+            Log.wtf("wtf token", token)
             mainPresenter.updateApplicationInfo(token)
         }
     }
