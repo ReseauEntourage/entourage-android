@@ -182,7 +182,7 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
         }
         checkNotifAndSendToken()
         showPopupBienCommun()
-        testToken()
+        testIRLNotification()
     }
 
     private fun testToken(){
