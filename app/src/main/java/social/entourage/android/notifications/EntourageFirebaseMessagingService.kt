@@ -37,6 +37,7 @@ class EntourageFirebaseMessagingService : FirebaseMessagingService() {
     private fun handleNow(remoteMessage: RemoteMessage) {
         PushNotificationManager.getPushNotificationMessageFromRemoteMessage(remoteMessage, this)?.let { message ->
             PushNotificationManager.handlePushNotification(message, this)
+            Log.wtf("wtf" , "received notif")
         }
     }
 

@@ -3,6 +3,8 @@ package social.entourage.android.homev2
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.animation.ValueAnimator
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
 import android.content.IntentSender
@@ -182,17 +184,24 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
         }
         checkNotifAndSendToken()
         showPopupBienCommun()
-        testIRLNotification()
+        testToken()
     }
 
-    private fun testToken(){
+    private fun testToken() {
         binding.ivLogoHome.setOnLongClickListener {
             FirebaseMessaging.getInstance().token.addOnSuccessListener { token ->
-                Toast.makeText(requireContext(), token, Toast.LENGTH_LONG).show()
+                // Copier le token dans le presse-papiers
+                val clipboard = requireContext().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                val clip = ClipData.newPlainText("FCM Token", token)
+                clipboard.setPrimaryClip(clip)
+
+                // Afficher le Toast
+                Toast.makeText(requireContext(), "Token copié dans le presse-papiers", Toast.LENGTH_LONG).show()
             }
             true
         }
     }
+
 
     private fun testIRLNotification(){
         binding.ivLogoHome.setOnLongClickListener {
