@@ -63,19 +63,16 @@
         tools:src="@drawable/ic_action_section_equipment"/>
 
     <TextView
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/tv_action_item_distance"
         app:layout_constraintTop_toTopOf="@+id/iv_action_item_equipment"
         app:layout_constraintBottom_toBottomOf="@+id/iv_action_item_equipment"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/tv_action_item_subtitle"
         android:layout_marginEnd="@dimen/entourage_margin_end"
-
         android:fontFamily="@font/nunitosans_regular"
         android:textSize="@dimen/entourage_font_very_small"
         android:textColor="@color/grey"
-        android:textAlignment="textEnd"
         tools:text="à 6km de moi"
         />
 
