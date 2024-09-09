@@ -287,9 +287,11 @@ class GuideMapFragment : Fragment(),
                 "poi" -> {
                     // Utiliser le PoiRenderer pour les POIs
                     val poi = item.toPoi()
-                    mapRenderer.getMarkerOptions(poi, requireContext())?.let { markerOptions ->
-                        map?.addMarker(markerOptions)?.apply {
-                            this.tag = poi
+                    context?.let { safeContext ->  // Vérification du contexte
+                        mapRenderer.getMarkerOptions(poi, safeContext)?.let { markerOptions ->
+                            map?.addMarker(markerOptions)?.apply {
+                                this.tag = poi
+                            }
                         }
                     }
                     // Ajouter le POI à la liste des POIs à ajouter à l'adaptateur
@@ -304,6 +306,7 @@ class GuideMapFragment : Fragment(),
             poisAdapter.addItems(poisToAdd)
         }
     }
+
 
     private fun createClusterIcon(poiCount: Int): BitmapDescriptor {
         val iconSize = 100  // Taille de l'icône
