@@ -69,6 +69,7 @@ import social.entourage.android.tools.view.WebViewFragment
 import social.entourage.android.user.UserPresenter
 import social.entourage.android.user.UserProfileActivity
 import social.entourage.android.user.edit.place.UserEditActionZoneFragment
+import timber.log.Timber
 
 class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeLocationUpdate {
 
@@ -183,7 +184,6 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
             )
         }
         checkNotifAndSendToken()
-        showPopupBienCommun()
         testToken()
     }
 
@@ -261,10 +261,10 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
             FirebaseMessaging.getInstance().token.addOnSuccessListener { token ->
                 AnalyticsEvents.logEvent(AnalyticsEvents.user_have_notif_and_token)
             }
-            FirebaseMessaging.getInstance().token.addOnFailureListener {
-                AnalyticsEvents.logEvent(AnalyticsEvents.user_have_notif_and_no_token)
+            FirebaseMessaging.getInstance().token.addOnFailureListener { exception ->
+                Timber.e("FCM Token", "Failed to retrieve token", exception)
+                AnalyticsEvents.logEvent(AnalyticsEvents.user_have_notif_and_no_token + "_" + user?.id)
             }
-
         } else {
             AnalyticsEvents.logEvent(AnalyticsEvents.has_user_disabled_notif)
             mainPresenter.updateApplicationInfo("")
@@ -646,6 +646,7 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
     }
 
     private fun updateContributionsView(summary: Summary) {
+        if (!isAdded) return
         EnhancedOnboarding.preference = summary.preference ?: ""
         onActionUnclosed(summary)
         handleHelps(summary)
