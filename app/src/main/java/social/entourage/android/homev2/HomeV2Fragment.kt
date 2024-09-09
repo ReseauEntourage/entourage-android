@@ -475,16 +475,17 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
         }
     }
 
-    fun setObservations(){
-        homePresenter.summary.observe(requireActivity(), ::updateContributionsView)
-        homePresenter.getAllEvents.observe(viewLifecycleOwner,::handleEvent)
-        homePresenter.getAllMyGroups.observe(viewLifecycleOwner,::handleGroup)
-        homePresenter.getAllActions.observe(viewLifecycleOwner,::handleAction)
-        homePresenter.pedagogicalContent.observe(viewLifecycleOwner,::handlePedago)
-        homePresenter.pedagogicalInitialContent.observe(viewLifecycleOwner,::handleInitialPedago)
-        homePresenter.notifsCount.observe(requireActivity(), ::updateNotifsCount)
-        actionsPresenter.unreadMessages.observe(requireActivity(), ::updateUnreadCount)
+    fun setObservations() {
+        homePresenter.summary.observe(viewLifecycleOwner, ::updateContributionsView)
+        homePresenter.getAllEvents.observe(viewLifecycleOwner, ::handleEvent)
+        homePresenter.getAllMyGroups.observe(viewLifecycleOwner, ::handleGroup)
+        homePresenter.getAllActions.observe(viewLifecycleOwner, ::handleAction)
+        homePresenter.pedagogicalContent.observe(viewLifecycleOwner, ::handlePedago)
+        homePresenter.pedagogicalInitialContent.observe(viewLifecycleOwner, ::handleInitialPedago)
+        homePresenter.notifsCount.observe(viewLifecycleOwner, ::updateNotifsCount)
+        actionsPresenter.unreadMessages.observe(viewLifecycleOwner, ::updateUnreadCount)
     }
+
 
     fun handleGroup(allGroup: MutableList<Group>?){
         if(allGroup == null){
