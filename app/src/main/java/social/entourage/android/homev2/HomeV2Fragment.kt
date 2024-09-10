@@ -184,7 +184,6 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
             )
         }
         checkNotifAndSendToken()
-        testToken()
     }
 
     private fun testToken() {

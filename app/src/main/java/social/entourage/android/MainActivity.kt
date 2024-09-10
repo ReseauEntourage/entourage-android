@@ -319,6 +319,8 @@ class MainActivity : BaseSecuredActivity() {
     }
 
     private fun checkIntentAction(action: String, extras: Bundle?) {
+        Log.wtf("wtf", "notif content " + extras.toString())
+        Log.wtf("wtf", "notif content " + Gson().toJson(action))
         val pushNotificationMessage = extras?.get(PushNotificationManager.PUSH_MESSAGE) as? PushNotificationMessage
         // spush notif message with popup info
 
