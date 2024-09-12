@@ -1216,7 +1216,7 @@
     <string name="member_type_organization">Marauder</string>
     <string name="role_ambassador">Ambassador</string>
     <string name="role_admin">Ambassador</string>
-    <string name="disclaimer_link_public">https://blog.entourage.social/charte-ethique-grand-public/</string>
+    <string name="disclaimer_link_public">https://www.entourage.social/blog/charte-ethique-entourage-local/</string>
     <string name="market_url">market://details?id=%s</string>
     <string name="playstore_url">https://play.google.com/store/apps/details?id=%s</string>
     <string name="facebook_url">https://www.facebook.com/EntourageReseauCivique</string>

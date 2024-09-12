@@ -113,14 +113,20 @@ class HelpAboutFragment : BottomSheetDialogFragment() {
     }
 
     private fun onFAQClicked() {
-        (activity as? ProfileActivity)?.showWebViewForLinkId(Constants.FAQ_LINK_ID)
+        val FAQIntent =
+            Intent(
+                Intent.ACTION_VIEW,
+                Uri.parse(getString(R.string.faq_link_public))
+            )
+        launchActivity(FAQIntent)
+
     }
 
     private fun onAmbassadorClicked() {
         val ambassadorIntent =
             Intent(
                 Intent.ACTION_VIEW,
-                Uri.parse((activity as? ProfileActivity)?.getLink(Constants.AMBASSADOR_ID))
+                Uri.parse(getString(R.string.ambassadeur_link_public))
             )
         launchActivity(ambassadorIntent)
 
