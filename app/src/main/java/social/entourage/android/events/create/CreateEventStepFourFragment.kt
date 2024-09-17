@@ -47,7 +47,6 @@ class CreateEventStepFourFragment : Fragment() {
     }
 
     private fun handleMetaData(tags: Tags?) {
-        Log.wtf("wtf", "tags: $tags")
         interestsList.clear()
         val eventInterests = CommunicationHandler.eventEdited?.interests
         tags?.interests?.forEach { interest ->

@@ -757,15 +757,11 @@ object AnalyticsEvents {
     const val discussion_plural_deny = "discussion_plural_deny"
     const val discussion_plural_view = "discussion_plural_view"
 
+    //TODO DELETE USER HAVE NOTIF AND BIENCOMMUN
     const val user_have_notif_and_token = "user_have_notif_and_token"
     const val user_have_notif_and_no_token = "user_have_notif_and_no_token"
     const val popup_biencommun = "popup_biencommun"
     const val popup_biencommun_vote = "popup_biencommun_vote"
-
-
-
-    // EVENT NOTIF PUSH
-
 
 
     val TAG: String? = AnalyticsEvents::class.java.simpleName
@@ -790,8 +786,6 @@ object AnalyticsEvents {
             logEvent(EntourageEvents.EVENT_GEOLOCATION_POPUP_ACCEPT);
         }
          */
-        FirebaseCrashlytics.getInstance().setUserId(user.id.toString())
-
         val mFirebaseAnalytics = get().firebase
         mFirebaseAnalytics.setUserId(user.id.toString())
         mFirebaseAnalytics.setUserProperty("EntourageUserType", "Public")

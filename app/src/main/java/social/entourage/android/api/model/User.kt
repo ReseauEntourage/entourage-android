@@ -68,6 +68,9 @@ class User : Serializable {
     @SerializedName("travel_distance")
     var travelDistance: Int? = null
 
+    @SerializedName("willing_to_engage_locally")
+    var willingToEngageLocally: Boolean? = null
+
     @SerializedName("created_at")
     var createdAt: Date? = null
 

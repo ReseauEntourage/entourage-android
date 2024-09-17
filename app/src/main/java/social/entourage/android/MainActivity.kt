@@ -343,7 +343,6 @@ class MainActivity : BaseSecuredActivity() {
                     }
                 }
             } else {
-                Log.wtf("wtf notif", "content null")
             }
         } ?: Log.wtf("wtf notif", "extras null")
         intent = null
