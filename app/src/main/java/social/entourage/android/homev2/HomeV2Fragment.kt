@@ -210,16 +210,38 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
       }
     }
 
-    private fun checkNotifAndSendToken(){
+    private fun checkNotifAndSendToken() {
         val notificationManager = NotificationManagerCompat.from(requireContext())
         val areNotificationsEnabled = notificationManager.areNotificationsEnabled()
-        if (areNotificationsEnabled) {
-            sendtoken()
+        val sharedPreferences = requireActivity().getSharedPreferences("userPref", Context.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
 
+        // Récupérer le compteur actuel de connexions
+        var connectionCount = sharedPreferences.getInt("connectionCount", 0)
+
+        if (areNotificationsEnabled) {
+            sendToken()
+
+            // Réinitialiser le compteur de connexions si les notifications sont activées
+            connectionCount = 0
+            editor.putInt("connectionCount", connectionCount)
+            editor.apply()
         } else {
             deleteToken()
+
+            // Incrémenter le compteur de connexions
+            connectionCount++
+            editor.putInt("connectionCount", connectionCount)
+            editor.apply()
+
+            // Afficher la vue d'autorisation la 2e et la 10e fois
+            if (connectionCount == 2 || connectionCount == 10) {
+                val intent = Intent(requireContext(), NotificationDemandActivity::class.java)
+                this.startActivity(intent)
+            }
         }
     }
+
 
     fun increaseCounter(){
         val sharedPreferences = requireActivity().getSharedPreferences("userPref", Context.MODE_PRIVATE)
@@ -263,7 +285,7 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
         }
     }
 
-    fun sendtoken(){
+    fun sendToken(){
         FirebaseMessaging.getInstance().token.addOnSuccessListener { token ->
             Log.wtf("wtf token", token)
             mainPresenter.updateApplicationInfo(token)
