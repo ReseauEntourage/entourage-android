@@ -154,6 +154,7 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
         setNestedScrollViewAnimation()
         checkNotificationStatus()
         increaseCounter()
+        checkNotifAndSendToken()
         return binding.root
     }
 
@@ -183,7 +184,6 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
                 Intent(context, ProfileActivity::class.java), 0
             )
         }
-        checkNotifAndSendToken()
         sendUserDiscussionStatus()
     }
 
