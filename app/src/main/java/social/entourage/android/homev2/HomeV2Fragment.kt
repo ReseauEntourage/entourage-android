@@ -235,7 +235,7 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
             editor.apply()
 
             // Afficher la vue d'autorisation la 2e et la 10e fois
-            if (connectionCount == 2 || connectionCount == 10) {
+            if (connectionCount == 5 || connectionCount == 10) {
                 val intent = Intent(requireContext(), NotificationDemandActivity::class.java)
                 this.startActivity(intent)
             }
