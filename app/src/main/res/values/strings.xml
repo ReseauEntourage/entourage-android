@@ -2773,7 +2773,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="main_filter_title_location">Par localisation</string>
     <string name="main_filter_title_radius">Dans un rayon de</string>
     <string name="sharing_time_title">Temps de partage</string>
-    <string name="sharing_time_subtitle">café, activité...</string>
+    <string name="sharing_time_subtitle">(café, activité, rencontre...)</string>
     <string name="services_title">Service</string>
     <string name="services_subtitle">lessive, impression de documents...</string>
     <string name="clothes_title">Vêtement</string>
