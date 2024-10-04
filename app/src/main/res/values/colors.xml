@@ -21,7 +21,8 @@
     <color name="grey_dark">#3d3d3d</color>
     <color name="orange_light_separator_event">#FF9C5D</color>
     <color name="orange_onboarding_item_selected_border">#80FF9C5D</color>
-
+    <color name="organizer_background">#FEF5EB</color>
+    <color name="organizer_text">#FFA500</color>
 
     <!-- Backgrounds -->
     <color name="background">@color/primary</color>

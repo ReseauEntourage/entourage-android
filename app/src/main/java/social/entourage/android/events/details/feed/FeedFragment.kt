@@ -87,6 +87,7 @@ import kotlin.math.abs
 import com.google.android.play.core.review.ReviewManagerFactory
 import com.google.android.play.core.review.ReviewManager
 import com.google.android.play.core.review.testing.FakeReviewManager
+import timber.log.Timber
 
 
 class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
@@ -651,19 +652,60 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
     private fun handleParticipateButton() {
         binding.join.setOnClickListener {
             requestInAppReview(requireContext())
-            if (event?.member==false){
-                eventPresenter.participate(eventId)
+            val meUser = EntourageApplication.me(activity)
+            Timber.wtf("wtf role " + meUser?.roles)
+            if(meUser?.roles?.contains("Ambassadeur") == true){
+                CustomAlertDialog.showAmbassadorWithTwoButton(requireContext(),
+                    onNo = {
+                        if (event?.member==false){
+                            eventPresenter.joinAsOrganizer(eventId)
+                        }else{
+                            eventPresenter.leaveEvent(eventId)
+                        }
+                    }, onYes = {
+                        if (event?.member==false){
+                            eventPresenter.participate(eventId)
+                        }else{
+                            eventPresenter.leaveEvent(eventId)
+                        }
+                    })
             }else{
-                eventPresenter.leaveEvent(eventId)
+                if (event?.member==false){
+                    eventPresenter.participate(eventId)
+                }else{
+                    eventPresenter.leaveEvent(eventId)
+                }
             }
         }
         binding.participate.setOnClickListener {
-            AnalyticsEvents.logEvent(AnalyticsEvents.Event_detail_action_participate)
-            if (event?.member==false){
-                eventPresenter.participate(eventId)
+            val meUser = EntourageApplication.me(activity)
+            Timber.wtf("wtf", "role ? ${meUser?.roles}")
+            if(meUser?.roles?.contains("Ambassadeur") == true){
+                CustomAlertDialog.showAmbassadorWithTwoButton(requireContext(),
+                    onNo = {
+                        if (event?.member==false){
+                            eventPresenter.joinAsOrganizer(eventId)
+                        }else{
+                            eventPresenter.leaveEvent(eventId)
+                        }
+                }, onYes = {
+                    AnalyticsEvents.logEvent(AnalyticsEvents.Event_detail_action_participate)
+                    if (event?.member==false){
+                        eventPresenter.participate(eventId)
+                    }else{
+                        eventPresenter.leaveEvent(eventId)
+                    }
+                })
+
             }else{
-                eventPresenter.leaveEvent(eventId)
+                AnalyticsEvents.logEvent(AnalyticsEvents.Event_detail_action_participate)
+                if (event?.member==false){
+                    eventPresenter.participate(eventId)
+                }else{
+                    eventPresenter.leaveEvent(eventId)
+                }
             }
+
         }
     }
 

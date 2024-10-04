@@ -346,6 +346,27 @@ class EventsPresenter : ViewModel() {
             })
     }
 
+    fun joinAsOrganizer(eventId: Int) {
+        val roleBody = JoinRoleBody(role = "organizer")
+        EntourageApplication.get().apiModule.eventsRequest.joinAsOrganizer(eventId, roleBody)
+            .enqueue(object : Callback<EntourageUserResponse> {
+                override fun onResponse(
+                    call: Call<EntourageUserResponse>,
+                    response: Response<EntourageUserResponse>
+                ) {
+                    isUserParticipating.value =
+                        response.isSuccessful && response.body()?.user != null
+                    RefreshController.shouldRefreshEventFragment =
+                        response.isSuccessful && response.body()?.user != null
+                }
+
+                override fun onFailure(call: Call<EntourageUserResponse>, t: Throwable) {
+                    isUserParticipating.value = false
+                }
+            })
+    }
+
+
     fun leaveEvent(eventId: Int) {
         EntourageApplication.get().apiModule.eventsRequest.leaveEvent(eventId)
             .enqueue(object : Callback<EntourageUserResponse> {
@@ -754,3 +775,8 @@ class EventsPresenter : ViewModel() {
             })
     }
 }
+
+
+data class JoinRoleBody(
+    val role: String
+)

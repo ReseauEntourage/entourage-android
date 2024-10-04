@@ -2544,7 +2544,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
 
     <string name="home_v2_title_map">Découvrir des adresses utiles</string>
     <string name="home_v2_subtitle_map">Toutes les structures solidaires à proximité</string>
-    <string name="home_v2_button_map">Carte des lieux solidaires près de vous</string>
+    <string name="home_v2_button_map">Découvrir la carte</string>
 
     <string name="home_v2_title_pedago">Tout savoir pour passer à l‘action</string>
     <string name="home_v2_subtitle_pedago">Combattre la précarité, c’est comme tout, ça s’apprend !</string>
@@ -2815,7 +2815,11 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="popup_nightgood_vote">Voter</string>
     <string name="popup_nightgood_text">Pour permettre à 60 personnes en précarité d\'intégrer un club de sport, il suffit d\'un clic. Le vôtre !</string>
 
-
+    <string name="popup_ambassador_title">Participez-vous en tant qu’organisateur ou en tant que participant ?</string>
+    <string name="popup_ambassador_subtitle">Si vous êtes organisateur, les participants pourront vous identifier plus facilement</string>
+    <string name="popup_ambassador_button_orga">Organisateur</string>
+    <string name="popup_ambassador_button_participant">Participant</string>
+    <string name="organizer_label">- Organisateur</string>
 
 </resources>
 

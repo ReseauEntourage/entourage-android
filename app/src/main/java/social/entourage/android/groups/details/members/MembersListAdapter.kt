@@ -3,10 +3,14 @@ package social.entourage.android.groups.details.members
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.style.ForegroundColorSpan
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import social.entourage.android.EntourageApplication
@@ -50,34 +54,59 @@ class MembersListAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         with(holder) {
             with(membersList[position]) {
-                if(reactionList.isNotEmpty()) {
+                // Vérifier si le membre a le rôle "organizer"
+                if (groupRole == "organizer") {
+                    // Changer la couleur du fond du layout
+                    binding.layout.background = ContextCompat.getDrawable(context, R.drawable.background_organizer)
+
+                    // Créer un SpannableString pour ajouter "- Organisateur" en orange
+                    val nameText = displayName
+                    val organizerText = " - Organisateur"
+                    val spannable = SpannableString(nameText + organizerText)
+                    spannable.setSpan(
+                        ForegroundColorSpan(ContextCompat.getColor(context, R.color.organizer_text)),
+                        nameText?.length ?: 0, // Start of " - Organisateur"
+                        spannable.length, // End of the text
+                        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                    )
+
+                    binding.name.text = spannable
+                } else {
+                    // Réinitialiser la couleur du fond et du texte pour les autres membres
+                    binding.layout.setBackgroundColor(ContextCompat.getColor(context, android.R.color.transparent))
+                    binding.name.text = displayName
+                    binding.name.setTextColor(ContextCompat.getColor(context, R.color.black))
+                }
+
+                // Vérifier si le membre a une réaction et l'afficher
+                if (reactionList.isNotEmpty()) {
                     binding.reaction.layoutItemReactionParent.visibility = View.VISIBLE
                     Glide.with(context)
                         .load(reactionList[position].imageUrl)
                         .into(binding.reaction.image)
-                }
-                else {
+                } else {
                     binding.reaction.layoutItemReactionParent.visibility = View.GONE
                 }
+
+                // Vérifier si le membre est l'utilisateur actuel pour masquer le bouton "Contact"
                 val isMe = EntourageApplication.get().me()?.id == userId
                 binding.contact.visibility = if (isMe) View.INVISIBLE else View.VISIBLE
-                if(membersList[position].confirmedAt != null) {
-                    binding.name.text = displayName + " - Participation confirmée"
-                }
-                else {
-                    binding.name.text = displayName
+
+                // Ajouter un label si la participation est confirmée
+                if (membersList[position].confirmedAt != null) {
+                    binding.name.text = "${binding.name.text} - Participation confirmée"
                 }
 
+                // Gérer les rôles de la communauté
                 val roles = getCommunityRoleWithPartnerFormated()
-
                 if (roles != null) {
                     binding.ambassador.visibility = View.VISIBLE
                     binding.ambassador.text = roles
-                }
-                else {
+                } else {
                     binding.ambassador.visibility = View.GONE
                 }
 
+                // Charger l'avatar ou afficher le placeholder par défaut
                 avatarURLAsString?.let { avatarURL ->
                     Glide.with(holder.itemView.context)
                         .load(avatarURL)
@@ -85,28 +114,31 @@ class MembersListAdapter(
                         .error(R.drawable.placeholder_user)
                         .circleCrop()
                         .into(binding.picture)
-                } ?: kotlin.run {
+                } ?: run {
                     Glide.with(holder.itemView.context)
                         .load(R.drawable.placeholder_user)
                         .circleCrop()
                         .into(binding.picture)
                 }
 
+                // Gestion du clic pour afficher le profil de l'utilisateur
                 binding.layout.setOnClickListener { view ->
-
                     (view.context as? Activity)?.startActivityForResult(
                         Intent(view.context, UserProfileActivity::class.java).putExtra(
                             Const.USER_ID,
                             this.userId
-                    ), 0)
+                        ), 0
+                    )
                 }
 
+                // Gestion du clic pour initier une conversation
                 binding.contact.setOnClickListener {
                     onItemShowListener.onShowConversation(userId)
                 }
             }
         }
     }
+
 
     override fun getItemCount(): Int {
         return membersList.size
