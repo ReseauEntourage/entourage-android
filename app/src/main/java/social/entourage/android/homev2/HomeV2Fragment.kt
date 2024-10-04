@@ -235,7 +235,7 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
             editor.apply()
 
             // Afficher la vue d'autorisation la 2e et la 10e fois
-            if (connectionCount == 5 || connectionCount == 10) {
+            if (connectionCount == 2 || connectionCount == 5 || connectionCount == 10) {
                 val intent = Intent(requireContext(), NotificationDemandActivity::class.java)
                 this.startActivity(intent)
             }
@@ -248,7 +248,6 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
         var count = sharedPreferences.getInt("COUNT_DISCUSSION_ASK", 0)
         sharedPreferences.edit().putInt("COUNT_DISCUSSION_ASK", ++count).apply()
         //toast the count
-        Toast.makeText(requireContext(), "Count : $count", Toast.LENGTH_SHORT).show()
     }
 
     fun sendUserDiscussionStatus() {
