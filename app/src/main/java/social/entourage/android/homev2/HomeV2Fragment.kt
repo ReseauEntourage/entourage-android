@@ -247,6 +247,8 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
         val sharedPreferences = requireActivity().getSharedPreferences("userPref", Context.MODE_PRIVATE)
         var count = sharedPreferences.getInt("COUNT_DISCUSSION_ASK", 0)
         sharedPreferences.edit().putInt("COUNT_DISCUSSION_ASK", ++count).apply()
+        //toast the count
+        Toast.makeText(requireContext(), "Count : $count", Toast.LENGTH_SHORT).show()
     }
 
     fun sendUserDiscussionStatus() {
