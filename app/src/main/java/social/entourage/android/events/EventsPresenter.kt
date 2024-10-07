@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.collection.ArrayMap
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.google.gson.annotations.SerializedName
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -778,5 +779,6 @@ class EventsPresenter : ViewModel() {
 
 
 data class JoinRoleBody(
+    @field:SerializedName("role")
     val role: String
 )

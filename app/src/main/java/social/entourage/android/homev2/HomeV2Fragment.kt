@@ -155,6 +155,7 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
         checkNotificationStatus()
         increaseCounter()
         checkNotifAndSendToken()
+
         return binding.root
     }
 
@@ -184,7 +185,16 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
                 Intent(context, ProfileActivity::class.java), 0
             )
         }
+        testNotifDemandePage()
         sendUserDiscussionStatus()
+    }
+
+    private fun testNotifDemandePage(){
+        binding.ivLogoHome.setOnLongClickListener {
+            val intent = Intent(requireContext(), NotificationDemandActivity::class.java)
+            this.startActivity(intent)
+            true
+        }
     }
 
     private fun testToken() {
