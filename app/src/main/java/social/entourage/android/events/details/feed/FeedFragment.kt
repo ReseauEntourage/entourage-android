@@ -346,7 +346,7 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
                 )
             }
             event?.author.let {author->
-                binding.organizer.content.text = String.format(getString(R.string.event_organisez_by), author?.userName)
+                //binding.organizer.content.text = String.format(getString(R.string.event_organisez_by), author?.userName)
                 author?.partner.let { partner->
                     if(!partner?.name.isNullOrEmpty()){
                         binding.tvAssociation.text = String.format(getString(R.string.event_organisez_asso),partner?.name)
@@ -622,7 +622,16 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
         if (allMembers != null) {
             this.memberList.clear()
             this.memberList.addAll(allMembers)
+            var numberOrganizer = 0
+            var nameOrganizers = ""
             for(member in allMembers){
+                Timber.wtf("wtf role " + member.groupRole + "name " + nameOrganizers)
+                if(member.groupRole == "organizer"){
+                    numberOrganizer += 1
+                    if(numberOrganizer < 3){
+                        nameOrganizers += ", " + member.displayName
+                    }
+                }
                 if(member.id.toInt() == event?.author?.userID){
                     if(member.communityRoles?.contains("Équipe Entourage") == true || member.communityRoles?.contains("Ambassadeur") == true){
                         binding.tvAssociation.text = getString(R.string.event_organisez_entourage)
@@ -630,7 +639,14 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
                     }
                 }
             }
+            nameOrganizers.removePrefix(", ")
+            if(numberOrganizer > 2 ){
+                nameOrganizers += " + " + (numberOrganizer - 2).toString()
+            }
+            binding.organizer.content.text = String.format(getString(R.string.event_organisez_by), nameOrganizers)
+
         }
+
         eventPresenter.getEvent(eventId)
     }
 
