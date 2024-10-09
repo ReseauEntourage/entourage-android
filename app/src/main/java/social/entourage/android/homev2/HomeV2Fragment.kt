@@ -155,7 +155,7 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
         checkNotificationStatus()
         increaseCounter()
         checkNotifAndSendToken()
-
+        adjustChevronForRTL()
         return binding.root
     }
 
@@ -218,6 +218,22 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
             MockNotificationGenerator.createAllMockNotifications(requireContext())
             true
       }
+    }
+
+    fun adjustChevronForRTL() {
+        val isRTL = resources.configuration.layoutDirection == View.LAYOUT_DIRECTION_RTL
+
+        if (isRTL) {
+            binding.chevron1.scaleX = -1f
+            binding.chevron2.scaleX = -1f
+            binding.chevron3.scaleX = -1f
+            binding.chevron4.scaleX = -1f
+        } else {
+            binding.chevron1.scaleX = 1f
+            binding.chevron2.scaleX = 1f
+            binding.chevron3.scaleX = 1f
+            binding.chevron4.scaleX = 1f
+        }
     }
 
     private fun checkNotifAndSendToken() {

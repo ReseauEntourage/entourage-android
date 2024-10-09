@@ -27,7 +27,7 @@
             android:clickable="false"
             android:paddingHorizontal="@dimen/padding_horizontal"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toRightOf="@id/title"
+            app:layout_constraintStart_toEndOf="@id/title"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintWidth_percent="0.15" />

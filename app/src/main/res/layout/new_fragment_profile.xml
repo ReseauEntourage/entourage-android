@@ -34,7 +34,7 @@
             android:layout_marginStart="10dp"
             android:maxLines="2"
             app:layout_constraintBottom_toTopOf="@id/tab"
-            app:layout_constraintLeft_toRightOf="@id/image_profile"
+            app:layout_constraintStart_toEndOf="@id/image_profile"
             app:layout_constraintRight_toLeftOf="@id/edit_profile"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="John" />
@@ -46,7 +46,7 @@
             android:layout_marginStart="15dp"
             android:elevation="1dp"
             app:layout_constraintBottom_toTopOf="@id/tab"
-            app:layout_constraintLeft_toRightOf="@id/icon_back"
+            app:layout_constraintStart_toEndOf="@id/icon_back"
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
