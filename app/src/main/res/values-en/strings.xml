@@ -149,8 +149,8 @@
     <string name="write_description_hint">Meet neighbors from the 18th</string>
     <string name="add_location">Add a place</string>
     <string name="add_location_hint">Address, city or department</string>
-    <string name="mandatory">- required</string>
-    <string name="optional">- optional</string>
+    <string name="mandatory"> required</string>
+    <string name="optional"> optional</string>
     <string name="step">Step</string>
     <string name="stepOne">01.</string>
     <string name="stepThree">03.</string>
@@ -582,12 +582,12 @@
     <string name="AtKm">TO %s km from me</string>
     <string name="action_create_demand_title">New request</string>
     <string name="action_create_contrib_title">New contribution</string>
-    <string name="action_create_title">Action title</string>
+    <string name="action_create_title">Action title •</string>
     <string name="action_create_subtitle">Give a short and explicit name to your %s</string>
     <string name="action_create_title_hint">Name your %s</string>
-    <string name="action_create_description">Description</string>
+    <string name="action_create_description">Description •</string>
     <string name="action_create_description_hint">Describe your proposed %s in detail</string>
-    <string name="action_create_add_photo">Photo</string>
+    <string name="action_create_add_photo">Photo •</string>
     <string name="action_name_demand">request</string>
     <string name="action_name_contrib">contribution</string>
     <string name="action_name_Demand">Request</string>

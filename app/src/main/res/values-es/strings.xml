@@ -665,12 +665,12 @@ Leerán este mensaje tan pronto como se unan al grupo.</string>
     <!-- Action create -->
     <string name="action_create_demand_title">Nueva solicitud</string>
     <string name="action_create_contrib_title">Nueva contribución</string>
-    <string name="action_create_title">Título de la acción \</string>
+    <string name="action_create_title">Título de la acción •</string>
     <string name="action_create_subtitle">Dale un nombre corto y explícito a tu %s</string>
     <string name="action_create_title_hint">Nombra tu %s</string>
-    <string name="action_create_description">Descripción</string>
+    <string name="action_create_description">Descripción •</string>
     <string name="action_create_description_hint">Describe detalladamente el %s que ofreces</string>
-    <string name="action_create_add_photo">Foto</string>
+    <string name="action_create_add_photo">Foto •</string>
 
     <string name="action_name_demand">pedido</string>
     <string name="action_name_contrib">contribución</string>

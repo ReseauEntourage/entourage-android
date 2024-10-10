@@ -649,7 +649,7 @@
     <string name="action_create_title_hint">قم بتسمية %s</string>
     <string name="action_create_description">وصف</string>
     <string name="action_create_description_hint">صف بالتفصيل %s الذي تقدمه</string>
-    <string name="action_create_add_photo">صورة</string>
+    <string name="action_create_add_photo">• صورة</string>
 
     <string name="action_name_demand">طلب</string>
     <string name="action_name_contrib">مساهمة</string>
