@@ -2821,5 +2821,28 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="popup_ambassador_button_participant">Participant</string>
     <string name="organizer_label">- Organisateur</string>
 
+    <string name="demand_social_title">Exemple : Balade dans le parc</string>
+    <string name="demand_social_description">Exemple : Je propose une balade dans le parc ce week-end pour discuter et se détendre.</string>
+    <string name="demand_services_title">Exemple : Besoin d\'imprimer des documents</string>
+    <string name="demand_services_description">Exemple : Je dois imprimer quelques pages pour un rendez-vous. Quelqu\'un pourrait-il m\'aider ?</string>
+    <string name="demand_clothes_title">Exemple : Cherche manteau d\'hiver</string>
+    <string name="demand_clothes_description">Exemple : Je suis à la recherche d\'un manteau chaud en taille M pour cet hiver.</string>
+    <string name="demand_equipment_title">Exemple : Besoin d\'un duvet</string>
+    <string name="demand_equipment_description">Exemple : Je cherche un duvet pour dormir dehors cet hiver. Si quelqu\'un en a un à donner, ce serait d\'une grande aide.</string>
+    <string name="demand_hygiene_title">Exemple : Besoin de savon</string>
+    <string name="demand_hygiene_description">Exemple : Je cherche du savon ou du gel douche. Si quelqu\'un en a en surplus, je suis preneur.</string>
+
+    <string name="contrib_social_title">Exemple : Café et discussion</string>
+    <string name="contrib_social_description">Exemple : Je cherche quelqu\'un avec qui partager un café cette semaine dans le quartier.</string>
+    <string name="contrib_services_title">Exemple : Aide pour une lessive</string>
+    <string name="contrib_services_description">Exemple : Je propose de laver du linge pour quelqu\'un qui en aurait besoin.</string>
+    <string name="contrib_clothes_title">Exemple : Chaussures de sport à donner</string>
+    <string name="contrib_clothes_description">Exemple : Je donne une paire de chaussures de sport en bon état, taille 42.</string>
+    <string name="contrib_equipment_title">Exemple : Téléphone portable à donner</string>
+    <string name="contrib_equipment_description">Exemple : Je donne un ancien téléphone portable fonctionnel. Idéal pour quelqu\'un qui en aurait besoin.</string>
+    <string name="contrib_hygiene_title">Exemple : Produits hygiéniques à donner</string>
+    <string name="contrib_hygiene_description">Exemple : Je donne plusieurs paquets de protections hygiéniques.</string>
+
+
 </resources>
 

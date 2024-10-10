@@ -40,25 +40,22 @@ class CreateActionStepOneFragment : Fragment() {
         handleNextButtonState()
         handleChoosePhoto()
         initializeDescriptionCounter()
-
         setupViewWithEdit()
 
-        binding.actionName.hint = getString(R.string.action_create_title_hint,
-            if (viewModel.isDemand) getString(R.string.action_name_demand)
-            else getString(R.string.action_name_contrib))
-        binding.actionDescription.hint = getString(R.string.action_create_description_hint,
-            if (viewModel.isDemand) getString(R.string.action_name_demand)
-            else getString(R.string.action_name_contrib))
+        // Définir les placeholders pour le titre et la description
+        val (titlePlaceholder, descriptionPlaceholder) = viewModel.getPlaceholdersForActionType(requireContext())
+        binding.actionName.hint = titlePlaceholder
+        binding.actionDescription.hint = descriptionPlaceholder
 
         if (viewModel.actionEdited == null) {
             if (viewModel.isDemand) {
                 AnalyticsEvents.logEvent(AnalyticsEvents.Help_create_demand_1)
-            }
-            else {
+            } else {
                 AnalyticsEvents.logEvent(AnalyticsEvents.Help_create_contrib_1)
             }
         }
     }
+
 
     private fun handleOnClickNext(onClick: Boolean) {
         if (onClick) {
@@ -140,6 +137,7 @@ class CreateActionStepOneFragment : Fragment() {
 
         if (viewModel.isDemand) {
             binding.uiLayoutAddPhoto.visibility = View.GONE
+
         }
         else {
             getResult()
