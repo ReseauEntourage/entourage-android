@@ -2114,10 +2114,10 @@
     <string name="onboard_welcome_title_phase3">У захваті від %s!</string>
 
     <string name="onboard_phase3_entour_desc">Крім зустрічей з людьми, як ви хочете зробити внесок у спільноту Entourage?</string>
-    <string name="onboard_phase3_entour_title">Об&amp;apos;ємний</string>
-    <string name="onboard_phase3_entour_subtitle">Запропонуйте допомогу...</string>
-    <string name="onboard_phase3_be_entour_title">Бути оточеним</string>
-    <string name="onboard_phase3_be_entour_subtitle">Зверніться по допомогу, знайдіть соціальні структури навколо мене...</string>
+    <string name="onboard_phase3_entour_title">Підтримати інших</string>
+    <string name="onboard_phase3_entour_subtitle">Я хотів би надати підтримку своїм сусідам, які цього потребуют</string>
+    <string name="onboard_phase3_be_entour_title">Отримати підтримку</string>
+    <string name="onboard_phase3_be_entour_subtitle">Я перебуваю в уразливій ситуації та шукаю підтримки.</string>
     <string name="onboard_phase3_place_title">Який ваш район?</string>
     <string name="onboard_phase3_asso_title">Я асоціація</string>
 

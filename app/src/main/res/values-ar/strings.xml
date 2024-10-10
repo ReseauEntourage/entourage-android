@@ -2094,10 +2094,10 @@
     <string name="onboard_welcome_title_phase3">أنا سعيد بنسبة %s!</string>
 
     <string name="onboard_phase3_entour_desc">بالإضافة إلى مقابلة الأشخاص، كيف تريد المساهمة في مجتمع Entourage؟</string>
-    <string name="onboard_phase3_entour_title">محيطي</string>
-    <string name="onboard_phase3_entour_subtitle">تقديم المساعدة...</string>
-    <string name="onboard_phase3_be_entour_title">كن محاطًا</string>
-    <string name="onboard_phase3_be_entour_subtitle">أطلب المساعدة، وأعثر على الهياكل الاجتماعية من حولي...</string>
+    <string name="onboard_phase3_entour_title">دعم الآخرين</string>
+    <string name="onboard_phase3_entour_subtitle">أرغب في تقديم الدعم لجيراني الذين يحتاجون إليه.</string>
+    <string name="onboard_phase3_be_entour_title">تلقي الدعم</string>
+    <string name="onboard_phase3_be_entour_subtitle">أنا في وضع ضعيف وأبحث عن الدعم.</string>
     <string name="onboard_phase3_place_title">ما هو حيك؟</string>
     <string name="onboard_phase3_asso_title">أنا جمعية</string>
 

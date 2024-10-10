@@ -2101,10 +2101,10 @@ Leerán este mensaje tan pronto como se unan al grupo.</string>
     <string name="onboard_welcome_title_phase3">¡Encantado con %s!</string>
 
     <string name="onboard_phase3_entour_desc">Además de conocer gente, ¿cómo quieres contribuir a la comunidad Entourage?</string>
-    <string name="onboard_phase3_entour_title">Rodear</string>
-    <string name="onboard_phase3_entour_subtitle">Ofrecer ayuda...</string>
-    <string name="onboard_phase3_be_entour_title">Estar rodeado</string>
-    <string name="onboard_phase3_be_entour_subtitle">Pedir ayuda, encontrar las estructuras sociales que me rodean...</string>
+    <string name="onboard_phase3_entour_title">Apoyar a otros</string>
+    <string name="onboard_phase3_entour_subtitle">Me gustaría ofrecer apoyo a mis vecinos que lo necesitan.</string>
+    <string name="onboard_phase3_be_entour_title">Recibir apoyo</string>
+    <string name="onboard_phase3_be_entour_subtitle">Estoy en una situación vulnerable y busco apoyo.</string>
     <string name="onboard_phase3_place_title">¿Cuál es tu barrio?</string>
     <string name="onboard_phase3_asso_title">soy una asociacion</string>
 

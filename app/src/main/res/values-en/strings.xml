@@ -1117,10 +1117,10 @@
     <string name="onboard_code_placeholder">0</string>
     <string name="onboard_welcome_title_phase3">Delighted %s!</string>
     <string name="onboard_phase3_entour_desc">Beyond meeting new people, how would you like to contribute to the Entourage community?</string>
-    <string name="onboard_phase3_entour_title">Surround</string>
-    <string name="onboard_phase3_entour_subtitle">Proposing help...</string>
-    <string name="onboard_phase3_be_entour_title">Be surrounded</string>
-    <string name="onboard_phase3_be_entour_subtitle">Ask for help, find the social structures around me...</string>
+    <string name="onboard_phase3_entour_title">Support Others</string>
+    <string name="onboard_phase3_entour_subtitle">I would like to offer support to my neighbors in need.</string>
+    <string name="onboard_phase3_be_entour_title">Receive support</string>
+    <string name="onboard_phase3_be_entour_subtitle">I am in a vulnerable situation and seeking support.</string>
     <string name="onboard_phase3_place_title">In which area do you live?</string>
     <string name="onboard_phase3_asso_title">I am an association</string>
     <string name="onboard_end_title">Welcome to the Entourage Community</string>
@@ -1692,7 +1692,7 @@
     <string name="interest_activites_main_filter">Manual activities</string>
     <string name="posts_vote_number"><u>%s votes</u></string>
     <string name="posts_vote_number_singular"><u>%s vote</u></string>
-    <string name="my_onboarding">Personalize my account</string>
+    <string name="my_onboarding">Customise my profile</string>
     <string name="actions_tab_mygroup">My listings</string>
     <string name="create_survey">Create a survey</string>
     <string name="participant_number_singular">%s participant</string>
