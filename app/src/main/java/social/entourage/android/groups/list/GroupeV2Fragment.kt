@@ -375,61 +375,44 @@ class GroupeV2Fragment : Fragment(), UpdateGroupInter {
         isLoading = false
         binding.progressBar.visibility = View.GONE
     }
-
-
+    
     private fun handleResponseMyGetGroups(allGroups: MutableList<Group>?) {
         if (allGroups == null || allGroups.isEmpty()) {
             isLoading = false
             binding.progressBar.visibility = View.GONE
             return
         }
-
         allGroups.let {
             val newGroups = it.filter { group -> !addedMyGroupIds.contains(group.id) }
-            val initialSize = myGroupsList.size
             myGroupsList.addAll(newGroups)
+            adapterMyGroup.resetData(myGroupsList)
             addedMyGroupIds.addAll(newGroups.map { group -> group.id!! })
-
-            // Protection : vérifie la cohérence des tailles avant de notifier
-            if (myGroupsList.size >= initialSize + newGroups.size) {
-                adapterMyGroup.notifyItemRangeInserted(initialSize, newGroups.size)
-            } else {
-                adapterMyGroup.notifyDataSetChanged() // Protection redondante
-            }
-
-            // Gestion de la visibilité des sections de mes groupes
-            if (myGroupsList.isEmpty()) {
+            if (myGroupsList.size == 0) {
                 binding.titleMyGroups.visibility = View.GONE
                 binding.separatorMyGroups.visibility = View.GONE
             } else {
                 binding.titleMyGroups.visibility = View.VISIBLE
                 binding.separatorMyGroups.visibility = View.VISIBLE
             }
+            adapterGroupSearch.notifyDataSetChanged()
         }
-
         checkingSumForEmptyView()
         isLoading = false
         binding.progressBar.visibility = View.GONE
     }
-
 
     private fun updateSearchResults(searchResults: MutableList<Group>?) {
         if (searchResults == null || searchResults.isEmpty()) {
             binding.progressBar.visibility = View.GONE
             return
         }
-
-        searchResultsList.clear()
-        searchResultsList.addAll(searchResults)
-
-        // Protection : vérifie la cohérence des tailles avant de notifier
-        if (searchResultsList.size == searchResults.size) {
-            adapterGroupSearch.notifyItemRangeInserted(0, searchResults.size)
-        } else {
-            adapterGroupSearch.notifyDataSetChanged() // Protection redondante
+        searchResults.let {
+            searchResultsList.clear()
+            searchResultsList.addAll(it)
+            adapterGroupSearch.updateGroupsList(searchResultsList)
+            binding.progressBar.visibility = View.GONE
+            adapterGroupSearch.notifyDataSetChanged()
         }
-
-        binding.progressBar.visibility = View.GONE
     }
 
 
@@ -485,20 +468,17 @@ class GroupeV2Fragment : Fragment(), UpdateGroupInter {
             })
         }
     }
+
     private fun loadMoreGroups() {
         binding.progressBar.visibility = View.VISIBLE
-
-        // Vérifie si des filtres sont appliqués
         if (!MainFilterActivity.hasFilter) {
             applyFilters()
         } else {
             presenter.getAllGroups(page, PER_PAGE)
         }
-
-        // Protection : ne permet pas de déclencher plusieurs chargements en même temps
         isLoading = false
-        binding.progressBar.visibility = View.GONE
     }
+
     private fun calculateFontSize(scrollY: Int): Float {
         val minSize = 15f
         val maxSize = 24f
