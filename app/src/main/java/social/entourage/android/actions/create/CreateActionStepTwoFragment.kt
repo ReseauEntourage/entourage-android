@@ -16,6 +16,7 @@ import social.entourage.android.R
 import social.entourage.android.databinding.NewFragmentCreateActionStepTwoBinding
 import social.entourage.android.tools.utils.Utils
 import social.entourage.android.tools.log.AnalyticsEvents
+import timber.log.Timber
 
 class CreateActionStepTwoFragment : Fragment() {
 

@@ -2756,5 +2756,7 @@ Sie werden diese Nachricht lesen, sobald sie der Gruppe beitreten.</string>
     <string name="members_location_temporary">%s</string>
     <string name="see_participants">Teilnehmer</string>
     <string name="participant_number">%s Teilnehmer</string>
+    <string name="share_request_group">Möchten Sie Ihre Anfrage in Ihrer %steilen?</string>
+    <string name="share_request_description">Sie haben die Möglichkeit, Ihre Anfrage in der Nachbarschaftsgruppe Ihrer Stadt zu teilen, um die Sichtbarkeit zu erhöhen</string>
 
 </resources>

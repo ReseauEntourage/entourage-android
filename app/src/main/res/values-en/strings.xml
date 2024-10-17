@@ -1704,6 +1704,8 @@
     <string name="popup_nightgood_text">To help 60 people in precarious situations join a sports club, just one click is enough. Yours!</string>
 
 
+    <string name="share_request_group">Would you like to share your request in your %s?</string>
+    <string name="share_request_description">You have the option to share your request in your city\'s neighborhood group to improve its visibility</string>
 
 
 

@@ -2755,4 +2755,7 @@ Leerán este mensaje tan pronto como se unan al grupo.</string>
     <string name="popup_nightgood_vote">Votar</string>
     <string name="popup_nightgood_text">Para ayudar a 60 personas en situación precaria a unirse a un club deportivo, solo hace falta un clic. ¡El tuyo!</string>
 
+    <string name="share_request_group">¿Le gustaría compartir su solicitud en su %s?</string>
+    <string name="share_request_description">Tiene la posibilidad de compartir su solicitud en el grupo de vecinos de su ciudad para mejorar su visibilidad</string>
+
 </resources>

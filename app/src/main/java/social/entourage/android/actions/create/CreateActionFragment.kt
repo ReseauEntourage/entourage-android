@@ -23,6 +23,7 @@ import social.entourage.android.tools.utils.Utils
 import social.entourage.android.tools.utils.nextPage
 import social.entourage.android.tools.utils.previousPage
 import social.entourage.android.tools.log.AnalyticsEvents
+import timber.log.Timber
 
 class CreateActionFragment : Fragment() {
 
@@ -141,9 +142,18 @@ class CreateActionFragment : Fragment() {
             tab.view.isClickable = false
         }.attach()
         viewPager?.currentItem = currentPos ?: 0
+        var btnTitle = ""
+        val isSharingTimeSelected = viewModel.sectionsList.value?.first()?.isSelected == true
+        //check first if section list if sharing time
+        if(currentPos == NB_TABS - 2 && !isSharingTimeSelected){
+            btnTitle =  getString(R.string.create)
+        }else if(currentPos == NB_TABS - 1){
+           btnTitle =  getString(R.string.create)
+        }else{
+            btnTitle =  getString(R.string.new_next)
+        }
 
-        binding.next.text = getString(if (currentPos == NB_TABS - 1) R.string.create else R.string.new_next)
-
+        binding.next.text = btnTitle
         setNextClickListener()
         setPreviousClickListener()
         handleNextButtonState()
@@ -177,14 +187,12 @@ class CreateActionFragment : Fragment() {
 
     private fun handleButtonState(isButtonActive: Boolean?) {
         val isActive = isButtonActive ?: false // Si isButtonActive est null, considérez-le comme false.
-
         val background = ContextCompat.getDrawable(
             requireContext(),
             if (isActive) R.drawable.new_rounded_button_light_orange else R.drawable.new_bg_rounded_inactive_button_light_orange
         )
         binding.next.background = background
     }
-
 
     private fun setPreviousClickListener() {
         binding.previous.setOnClickListener {
@@ -197,26 +205,24 @@ class CreateActionFragment : Fragment() {
     }
 
     private fun handleIsCondition(isCondition: Boolean) {
-
         if (isCondition) {
-            if (viewPager?.currentItem == NB_TABS - 1) {
+            val isSharingTimeSelected = viewModel.sectionsList.value?.first()?.isSelected == true
+            if (viewPager?.currentItem == NB_TABS - 1 || (viewPager?.currentItem == NB_TABS - 2 && !isSharingTimeSelected) ) {
                 if (viewModel.actionEdited != null) {
                     if (isAlreadySend) return
                     isAlreadySend = true
                     updateAction()
                     return
                 }
-
                 if (viewModel.isButtonClickable.value == true) {
                     if (isAlreadySend) return
                     isAlreadySend = true
                     viewModel.prepareCreateAction()
-                    actionPresenter.createAction(viewModel.action, isDemand, viewModel.imageURI, requireContext())
+                    actionPresenter.createAction(viewModel.action, isDemand, viewModel.imageURI, requireContext(),viewModel.autoPostAtCreate)
                 }
                 else {
                     viewModel.clickNext.value = true
                 }
-
             } else {
                 viewPager?.nextPage(true)
                 if ((viewPager?.currentItem ?: 0) > 0) binding.previous.visibility = View.VISIBLE
@@ -227,7 +233,7 @@ class CreateActionFragment : Fragment() {
 
     private fun updateAction() {
         viewModel.prepareUpdateAction()
-        actionPresenter.updateAction(viewModel.actionEdited, viewModel.action, isDemand,viewModel.imageURI,requireContext())
+        actionPresenter.updateAction(viewModel.actionEdited, viewModel.action, isDemand,viewModel.imageURI,requireContext(),viewModel.autoPostAtCreate)
     }
 
     private fun onBackButton() {
@@ -247,15 +253,18 @@ class CreateActionFragment : Fragment() {
 
     private fun handleValidate() {
         binding.next.setOnClickListener {
-            if (binding.viewPager.currentItem == NB_TABS - 1) {
-                viewModel.isCondition.value = true
+            val isSharingTimeSelected = viewModel.sectionsList.value?.first()?.isSelected == true
+            Timber.wtf("wtf isSharingTimeSelected $isSharingTimeSelected")
+            if (viewPager?.currentItem == NB_TABS - 2 && !isSharingTimeSelected) {
+                viewModel.isCondition.postValue(true)
+            } else if (binding.viewPager.currentItem == NB_TABS - 1) {
+                viewModel.isCondition.postValue(true)
             }
             else {
                 viewModel.clickNext.value = true
             }
         }
     }
-
     override fun onDestroy() {
         super.onDestroy()
         viewModel.resetValues()

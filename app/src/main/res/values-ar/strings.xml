@@ -2793,5 +2793,7 @@
     <string name="popup_nightgood_vote">تصويت</string>
     <string name="popup_nightgood_text">للمساعدة في انضمام 60 شخصًا في وضع غير مستقر إلى نادٍ رياضي، يكفي نقرة واحدة. نقرتك!</string>
 
+    <string name="share_request_group">هل ترغب في مشاركة طلبك في %s؟</string>
+    <string name="share_request_description">لديك خيار مشاركة طلبك في مجموعة الجيران في مدينتك لتحسين ظهوره</string>
 
 </resources>

@@ -2770,5 +2770,7 @@ Przeczytają tę wiadomość, gdy tylko dołączą do grupy.</string>
     <string name="participant_number">%s uczestników</string>
     <string name="popup_nightgood_vote">Głosować</string>
     <string name="popup_nightgood_text">Aby pomóc 60 osobom w trudnej sytuacji dołączyć do klubu sportowego, wystarczy jedno kliknięcie. Twoje!</string>
+    <string name="share_request_group">Czy chcesz udostępnić swoje zgłoszenie w swojej %s?</string>
+    <string name="share_request_description">Masz możliwość udostępnienia swojego zgłoszenia w grupie sąsiadów swojego miasta, aby poprawić jego widoczność</string>
 
 </resources>

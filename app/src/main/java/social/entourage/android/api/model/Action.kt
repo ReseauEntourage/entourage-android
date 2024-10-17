@@ -58,6 +58,9 @@ data class Action(
     @field:SerializedName("action_type")
     var actionType: String? = null,
 
+    @field:SerializedName("auto_post_at_create")
+    var autoPostAtCreate: Boolean? = null,
+
     @field:SerializedName("created_at")
     val createdAt: Date? = null,
     @field:SerializedName("status_changed_at")
