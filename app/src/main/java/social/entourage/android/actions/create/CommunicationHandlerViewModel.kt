@@ -86,7 +86,6 @@ class CommunicationActionHandlerViewModel : ViewModel() {
             action.title = null
         }
         action.autoPostAtCreate = this.autoPostAtCreate
-
         if (action.description == actionEdited?.description) {
             action.description = null
         }
