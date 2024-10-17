@@ -42,10 +42,7 @@ class CreateActionStepOneFragment : Fragment() {
         initializeDescriptionCounter()
         setupViewWithEdit()
 
-        // Définir les placeholders pour le titre et la description
-        val (titlePlaceholder, descriptionPlaceholder) = viewModel.getPlaceholdersForActionType(requireContext())
-        binding.actionName.hint = titlePlaceholder
-        binding.actionDescription.hint = descriptionPlaceholder
+
 
         if (viewModel.actionEdited == null) {
             if (viewModel.isDemand) {
@@ -85,6 +82,9 @@ class CreateActionStepOneFragment : Fragment() {
 
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
                 viewModel.isButtonClickable.value = isActionNameValid() && isActionDescriptionValid()
+                viewModel.action.title = binding.actionName.text.toString()
+                viewModel.action.description = binding.actionDescription.text.toString()
+
             }
 
             override fun afterTextChanged(s: Editable) {
@@ -117,6 +117,10 @@ class CreateActionStepOneFragment : Fragment() {
         viewModel.resetValues()
         viewModel.clickNext.observe(viewLifecycleOwner, ::handleOnClickNext)
         viewModel.isButtonClickable.value = isActionNameValid() && isActionDescriptionValid()
+        // Définir les placeholders pour le titre et la description
+        val (titlePlaceholder, descriptionPlaceholder) = viewModel.getPlaceholdersForActionType(requireContext())
+        binding.actionName.hint = titlePlaceholder
+        binding.actionDescription.hint = descriptionPlaceholder
     }
 
     fun isActionNameValid(): Boolean {

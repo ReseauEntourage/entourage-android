@@ -683,7 +683,7 @@
     <!-- pop back create-->
     <string name="back_create_action_title">Увага</string>
     <string name="back_create_action_content">Якщо ви вийдете з форми створення %s, уся введена інформація буде втрачена.</string>
-    <string name="action_create_cat_choose_category">Виберіть категорію, яка найкраще описує ваш %s.</string>
+    <string name="action_create_cat_choose_category">Виберіть категорію, яка найкраще описує ваш %s</string>
     <string name="action_create_location_title">Знайдіть %s</string>
     <string name="action_create_location_subtitle">Ваше точне місцезнаходження не повідомлятиметься, ви можете вказати місцезнаходження, відмінне від зони дії вашого профілю.</string>
 

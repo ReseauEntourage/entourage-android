@@ -680,7 +680,7 @@ Ei vor citi acest mesaj imediat ce se vor alătura grupului.</string>
     <string name="back_create_action_content">Dacă părăsiți formularul de creare %s, toate informațiile introduse se vor pierde.</string>
 
 
-    <string name="action_create_cat_choose_category">Selectați categoria care descrie cel mai bine %s.</string>
+    <string name="action_create_cat_choose_category">Selectați categoria care descrie cel mai bine %s</string>
     <string name="action_create_location_title">Găsiți %s</string>
     <string name="action_create_location_subtitle">Locația dvs. exactă nu va fi partajată, puteți pune o altă locație decât zona de acțiune a profilului dvs.</string>
 

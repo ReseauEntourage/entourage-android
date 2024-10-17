@@ -74,6 +74,7 @@
     <!--New-->
     <dimen name="profile_name">20sp</dimen>
     <dimen name="profile_labels">13sp</dimen>
+    <dimen name="profile_legend">11sp</dimen>
     <dimen name="version_number">9sp</dimen>
     <dimen name="profile_description">15sp</dimen>
     <dimen name="button_create_group">18sp</dimen>

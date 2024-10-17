@@ -467,19 +467,19 @@
 
     <style name="edit_image">
         <item name="android:textSize">@dimen/profile_titles</item>
-        <item name="android:fontFamily">@font/nunitosans_regular</item>
+        <item name="android:fontFamily">@font/quicksand_bold</item>
         <item name="android:textColor">@color/orange</item>
     </style>
 
     <style name="header_create_group">
         <item name="android:textSize">@dimen/header_title</item>
-        <item name="android:fontFamily">@font/nunitosans_bold</item>
+        <item name="android:fontFamily">@font/quicksand_bold</item>
         <item name="android:textColor">@android:color/black</item>
     </style>
 
     <style name="header_create_group_orange">
         <item name="android:textSize">@dimen/header_title</item>
-        <item name="android:fontFamily">@font/nunitosans_bold</item>
+        <item name="android:fontFamily">@font/quicksand_bold</item>
         <item name="android:textColor">@color/light_orange</item>
     </style>
 
@@ -496,9 +496,9 @@
     </style>
 
     <style name="left_legend">
-        <item name="android:textSize">@dimen/profile_labels</item>
-        <item name="android:fontFamily">@font/nunitosans_light</item>
-        <item name="android:textColor">@android:color/black</item>
+        <item name="android:textSize">@dimen/profile_legend</item>
+        <item name="android:fontFamily">@font/nunitosans_regular</item>
+        <item name="android:textColor">@color/grey</item>
     </style>
 
     <style name="left_legend_grey">

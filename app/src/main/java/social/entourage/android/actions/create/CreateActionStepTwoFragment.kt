@@ -1,9 +1,14 @@
 package social.entourage.android.actions.create
 
 import android.os.Bundle
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.SpannableStringBuilder
+import android.text.style.TextAppearanceSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -29,9 +34,51 @@ class CreateActionStepTwoFragment : Fragment() {
         }
         initializeInterests()
         setupViewWithEdit()
-        binding.title.setText(getString(R.string.action_create_cat_choose_category,
+        setTitle()
+
+
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = NewFragmentCreateActionStepTwoBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    private fun setTitle(){
+        val titlePrefix = getString(R.string.action_create_cat_choose_category,
             if (viewModel.isDemand) getString(R.string.action_name_demand)
-            else getString(R.string.action_name_contrib)))
+            else getString(R.string.action_name_contrib))
+
+        val mandatoryText = getString(R.string.mandatory)
+        // Créer un SpannableStringBuilder pour combiner les styles
+        val spannableTitle = SpannableStringBuilder()
+
+        // Appliquer le style pour la partie prefix avec la puce
+        val prefixSpannable = SpannableString(titlePrefix + " • ")
+        prefixSpannable.setSpan(
+            TextAppearanceSpan(context, R.style.left_h2),
+            0, prefixSpannable.length,
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+
+        // Appliquer le style pour la partie mandatory
+        val mandatorySpannable = SpannableString(mandatoryText)
+        mandatorySpannable.setSpan(
+            TextAppearanceSpan(context, R.style.left_legend),
+            0, mandatorySpannable.length,
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+
+        // Ajouter les deux parties au SpannableStringBuilder
+        spannableTitle.append(prefixSpannable)
+        spannableTitle.append(mandatorySpannable)
+
+        // Appliquer le Spannable au TextView
+        binding.title.setText(spannableTitle, TextView.BufferType.SPANNABLE)
+
 
         if (viewModel.actionEdited == null) {
             if (viewModel.isDemand) {
@@ -41,14 +88,6 @@ class CreateActionStepTwoFragment : Fragment() {
                 AnalyticsEvents.logEvent(AnalyticsEvents.Help_create_contrib_2)
             }
         }
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = NewFragmentCreateActionStepTwoBinding.inflate(inflater, container, false)
-        return binding.root
     }
 
     private fun initializeInterests() {

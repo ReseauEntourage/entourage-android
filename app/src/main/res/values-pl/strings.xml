@@ -678,7 +678,7 @@ Przeczytają tę wiadomość, gdy tylko dołączą do grupy.</string>
     <string name="back_create_action_title">Uwaga</string>
     <string name="back_create_action_content">Jeśli wyjdziesz z formularza tworzenia %s, wszystkie wprowadzone informacje zostaną utracone.</string>
 
-    <string name="action_create_cat_choose_category">Wybierz kategorię, która najlepiej opisuje Twojego %s.</string>
+    <string name="action_create_cat_choose_category">Wybierz kategorię, która najlepiej opisuje Twojego %s</string>
     <string name="action_create_location_title">Znajdź swój %s</string>
     <string name="action_create_location_subtitle">Twoja dokładna lokalizacja nie będzie udostępniana, możesz podać lokalizację inną niż obszar działania Twojego profilu.</string>
 

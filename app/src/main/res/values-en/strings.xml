@@ -594,7 +594,7 @@
     <string name="action_name_Contrib">Contribution</string>
     <string name="back_create_action_title">Attention</string>
     <string name="back_create_action_content">If you exit the %s creation form, all information entered will be lost.</string>
-    <string name="action_create_cat_choose_category">Select the category that best describes your %s.</string>
+    <string name="action_create_cat_choose_category">Select the category that best describes your %s</string>
     <string name="action_create_location_title">Locate your %s</string>
     <string name="action_create_location_subtitle">Your precise location will not be shared, you can put a location other than the area of ​​action of your profile.</string>
     <string name="action_create_success_title">Your %s\nhas been successfully created!</string>
