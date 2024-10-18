@@ -173,6 +173,29 @@ class GroupPresenter: ViewModel() {
         })
     }
 
+    fun getDefaultGroup() {
+        EntourageApplication.get().apiModule.groupRequest.getDefautGroups()
+            .enqueue(object : Callback<GroupWrapper> {
+                override fun onResponse(
+                    call: Call<GroupWrapper>,
+                    response: Response<GroupWrapper>
+                ) {
+                    if (response.isSuccessful) {
+                        response.body()?.let { groupWrapper ->
+                            getGroup.value = groupWrapper.group
+                        }
+                    } else {
+                        Timber.e("getDefaultGroup: ${response.errorBody()?.string()}")
+                    }
+                }
+
+                override fun onFailure(call: Call<GroupWrapper>, t: Throwable) {
+                    Timber.e("getDefaultGroup onFailure: $t")
+                }
+            })
+    }
+
+
     fun getReactDetails(groupId:Int, postId:Int){
         EntourageApplication.get().apiModule.groupRequest.getDetailsReactionGroupPost(groupId,postId).enqueue(object : Callback<CompleteReactionsResponse> {
             override fun onResponse(

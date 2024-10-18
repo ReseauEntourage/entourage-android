@@ -9,6 +9,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
@@ -18,6 +19,8 @@ import social.entourage.android.databinding.NewFragmentCreateActionBinding
 import social.entourage.android.RefreshController
 import social.entourage.android.actions.ActionsPresenter
 import social.entourage.android.api.model.Action
+import social.entourage.android.api.model.Group
+import social.entourage.android.groups.GroupPresenter
 import social.entourage.android.tools.utils.CustomAlertDialog
 import social.entourage.android.tools.utils.Utils
 import social.entourage.android.tools.utils.nextPage
@@ -32,10 +35,12 @@ class CreateActionFragment : Fragment() {
     private val viewModel: CommunicationActionHandlerViewModel by activityViewModels()
     private var viewPager: ViewPager2? = null
     private val actionPresenter: ActionsPresenter by lazy { ActionsPresenter() }
+    private lateinit var groupPresenter: GroupPresenter
 
     private var isDemand = false
     private var actionEdited: Action? = null
     private var isAlreadySend = false
+    private var hasADefaultGroup = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -92,6 +97,11 @@ class CreateActionFragment : Fragment() {
 
         actionPresenter.isActionUpdated.observe(viewLifecycleOwner, ::isActionUpdated)
         actionPresenter.newActionCreated.observe(viewLifecycleOwner, ::handleCreateActionResponse)
+        groupPresenter = ViewModelProvider(requireActivity()).get(GroupPresenter::class.java)
+        groupPresenter.getGroup.observe(viewLifecycleOwner, { group ->
+            handleResponseGetGroups(group)
+        })
+        groupPresenter.getDefaultGroup()
     }
 
     private fun handleCreateActionResponse(actionCreated: Action?) {
@@ -145,7 +155,7 @@ class CreateActionFragment : Fragment() {
         var btnTitle = ""
         val isSharingTimeSelected = viewModel.sectionsList.value?.first()?.isSelected == true
         //check first if section list if sharing time
-        if(currentPos == NB_TABS - 2 && !isSharingTimeSelected){
+        if(currentPos == NB_TABS - 2 && !isSharingTimeSelected && hasADefaultGroup){
             btnTitle =  getString(R.string.create)
         }else if(currentPos == NB_TABS - 1){
            btnTitle =  getString(R.string.create)
@@ -207,7 +217,7 @@ class CreateActionFragment : Fragment() {
     private fun handleIsCondition(isCondition: Boolean) {
         if (isCondition) {
             val isSharingTimeSelected = viewModel.sectionsList.value?.first()?.isSelected == true
-            if (viewPager?.currentItem == NB_TABS - 1 || (viewPager?.currentItem == NB_TABS - 2 && !isSharingTimeSelected) ) {
+            if (viewPager?.currentItem == NB_TABS - 1 || (viewPager?.currentItem == NB_TABS - 2 && !isSharingTimeSelected && hasADefaultGroup) ) {
                 if (viewModel.actionEdited != null) {
                     if (isAlreadySend) return
                     isAlreadySend = true
@@ -251,11 +261,19 @@ class CreateActionFragment : Fragment() {
         }
     }
 
+    private fun handleResponseGetGroups(groups: Group) {
+        if (groups == null ) {
+            hasADefaultGroup = false
+        }else{
+            hasADefaultGroup = true
+        }
+    }
+
     private fun handleValidate() {
         binding.next.setOnClickListener {
             val isSharingTimeSelected = viewModel.sectionsList.value?.first()?.isSelected == true
             Timber.wtf("wtf isSharingTimeSelected $isSharingTimeSelected")
-            if (viewPager?.currentItem == NB_TABS - 2 && !isSharingTimeSelected) {
+            if (viewPager?.currentItem == NB_TABS - 2 && !isSharingTimeSelected && hasADefaultGroup) {
                 viewModel.isCondition.postValue(true)
             } else if (binding.viewPager.currentItem == NB_TABS - 1) {
                 viewModel.isCondition.postValue(true)

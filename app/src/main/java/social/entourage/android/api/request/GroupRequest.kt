@@ -94,6 +94,11 @@ interface GroupRequest {
         @Query("per") per: Int,
     ): Call<GroupsListWrapper>
 
+    @GET("users/me/neighborhoods/default")
+    fun getDefautGroups(
+
+    ): Call<GroupWrapper>
+
     @GET("users/{user_id}/neighborhoods")
     fun getMyGroups(
         @Path("user_id") userId: Int

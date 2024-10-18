@@ -27,13 +27,11 @@ class CreateActionStepFourFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         groupPresenter = ViewModelProvider(requireActivity()).get(GroupPresenter::class.java)
-        groupPresenter.getAllMyGroups.observe(viewLifecycleOwner, { allGroups ->
-            handleResponseGetGroups(allGroups)
+        groupPresenter.getGroup.observe(viewLifecycleOwner, { group ->
+            handleResponseGetGroups(group)
         })
-        val myId = EntourageApplication.me(activity)?.id
-        myId?.let {
-            groupPresenter.getMyGroups(0,30,it)
-        }
+        groupPresenter.getDefaultGroup()
+
     }
 
     override fun onCreateView(
@@ -74,15 +72,12 @@ class CreateActionStepFourFragment : Fragment() {
         }
     }
 
-    private fun handleResponseGetGroups(allGroups: MutableList<Group>?) {
-        if (allGroups == null || allGroups.isEmpty()) {
+    private fun handleResponseGetGroups(groups:Group) {
+        if (groups == null ) {
             return
         }
-        allGroups.let {
-            val firstGroup = allGroups.first()
-            binding.title.text = String.format(getString(R.string.share_request_group), firstGroup.name)
+        groups.let {
+            binding.title.text = String.format(getString(R.string.share_request_group), it.name)
         }
-
     }
-
 }

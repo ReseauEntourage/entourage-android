@@ -35,7 +35,7 @@
         <TextView
             android:id="@+id/subtitle"
             style="@style/left_courant_orange"
-            android:textSize="11sp"
+            android:textSize="13sp"
             android:textColor="@color/grey"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
