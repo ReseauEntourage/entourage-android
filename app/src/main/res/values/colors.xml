@@ -132,6 +132,7 @@
     <color name="beige_clair">#FFF5EB</color>
     <color name="orange">#FF9739</color>
     <color name="light_orange">#ff9c5d</color>
+    <color name="light_orange_50">#80FF9C5D</color>
     <color name="light_orange_opacity_50">#80ff9c5d</color>
     <color name="light_orange_opacity_15">#26ff9c5d</color>
     <color name="light_orange_inactive_button">#FBBFA7</color>

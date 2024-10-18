@@ -516,6 +516,12 @@ class PostAdapter(
                     }
 
                     with(postsList[position]) {
+                        if(this.autoPostFrom != null){
+                            binding.layoutActionInPubli.visibility = View.VISIBLE
+                        }else{
+                            binding.layoutActionInPubli.visibility = View.GONE
+                        }
+
                         if(this.reactionId == null ){
                             binding.ivILike.setImageDrawable(context.getDrawable(R.drawable.ic_pouce_grey))
                             binding.tvTitleILike.setTextColor(context.getColor(R.color.black))

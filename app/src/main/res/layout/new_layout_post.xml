@@ -8,7 +8,42 @@
     android:layout_marginVertical="8dp"
     android:background="@drawable/new_bg_rounded_beige"
     android:elevation="1dp"
-    android:padding="18dp">
+   >
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:id="@+id/layout_action_in_publi"
+        android:background="@drawable/shape_action_in_publi_top"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:visibility="gone"
+        >
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/img_action_in_publi"
+            android:src="@drawable/contrib_top_post_icon"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="20dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tv_action_in_publi"
+            android:fontFamily="@font/quicksand_bold"
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/img_action_in_publi"
+            android:layout_marginStart="10dp"
+            android:text="@string/sharing_time_title"
+            />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -16,7 +51,8 @@
         android:orientation="vertical"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/layout_action_in_publi"
+        android:padding="18dp">
 
         <LinearLayout
             android:id="@+id/author_information"

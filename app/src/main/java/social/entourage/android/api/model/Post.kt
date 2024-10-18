@@ -39,6 +39,8 @@ class Post(
     val survey: Survey? = null,
     @SerializedName("survey_response")
     var surveyResponse: MutableList<Boolean>? = mutableListOf(),
+    @SerializedName("auto_post_from")
+    val autoPostFrom: AutoPostFrom? = null,
 ) {
     var datePostText = ""
     var isDatePostOnly = false
@@ -61,4 +63,11 @@ data class Survey(
     var multiple: Boolean,
     @SerializedName("summary")
     var summary: MutableList<Int>
+)
+
+data class AutoPostFrom(
+    @SerializedName("instance_type")
+    val instanceType: String, // ou Entourage, selon ce que tu as besoin de représenter
+    @SerializedName("instance_id")
+    val instanceId: Int
 )
