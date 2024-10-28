@@ -30,8 +30,9 @@ class CommunicationActionHandlerViewModel : ViewModel() {
 
     var keyImageUpload:String? = null
 
+    //TODO : check if tag can be null in metadataRepository
     fun prepareCreateAction() {
-        sectionsList.value?.first { it.isSelected }?.let {
+        sectionsList.value?.firstOrNull { it.isSelected }?.let {
             action.sectionName = it.id
         }
 
@@ -70,7 +71,7 @@ class CommunicationActionHandlerViewModel : ViewModel() {
     }
 
     fun prepareUpdateAction() {
-        sectionsList.value?.first { it.isSelected }?.let {
+        sectionsList.value?.firstOrNull { it.isSelected }?.let {
             action.sectionName = it.id
         }
 
