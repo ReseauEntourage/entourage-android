@@ -821,14 +821,14 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
             AnalyticsEvents.logEvent(AnalyticsEvents.Action_Home_CreateGroup)
             val intent = Intent(requireActivity(), PedagoDetailActivity::class.java)
             intent.putExtra(Const.ID, pedagoItemForCreateGroup?.id)
-            intent.putExtra(Const.HTML_CONTENT, pedagoItemForCreateGroup?.html)
+            PedagoDetailActivity.setHtmlContent(pedagoItemForCreateGroup?.html!!)
             requireActivity().startActivity(intent)
         }
         if(position == 1){
             AnalyticsEvents.logEvent(AnalyticsEvents.Action_Home_CreateEvent)
             val intent = Intent(requireActivity(), PedagoDetailActivity::class.java)
             intent.putExtra(Const.ID, pedagoItemForCreateEvent?.id)
-            intent.putExtra(Const.HTML_CONTENT, pedagoItemForCreateEvent?.html)
+            PedagoDetailActivity.setHtmlContent(pedagoItemForCreateEvent?.html!!)
             requireActivity().startActivity(intent)
         }
         if(position == 0){

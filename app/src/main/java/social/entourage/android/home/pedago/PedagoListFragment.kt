@@ -71,6 +71,7 @@ class PedagoListFragment : Fragment() {
     }
 
     private fun handleGetPedagogicalResourcesResponse(pedagogicalResources: MutableList<Pedago>) {
+        //logHtmlSizes(pedagogicalResources)
         childListAct.clear()
         childListUnderstand.clear()
         childListInspire.clear()
@@ -88,6 +89,13 @@ class PedagoListFragment : Fragment() {
         sections.add(SectionHeader(childListInspire, getString(Category.INSPIRE.id)))
         applyFilter(selectedFilter)
         pedagoAdapter.notifyDataChanged(sections)
+    }
+
+    private fun logHtmlSizes(pedagogicalResources: MutableList<Pedago>) {
+        pedagogicalResources.forEach { pedago ->
+            val htmlSize = pedago.html?.length ?: 0
+            Timber.wtf("Pedago ID: ${pedago.id}, HTML content size: $htmlSize bytes")
+        }
     }
 
     private fun applyFilter(filter: Category) {

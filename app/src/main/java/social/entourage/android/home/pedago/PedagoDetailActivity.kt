@@ -22,7 +22,8 @@ class PedagoDetailActivity : AppCompatActivity() {
         setContentView(R.layout.activity_pedago_detail)
 
         id = intent.getIntExtra(Const.ID, Const.DEFAULT_VALUE)
-        htmlContent = intent.getStringExtra(Const.HTML_CONTENT).toString()
+        val htmlContent = Companion.getHtmlContent()
+        //htmlContent = intent.getStringExtra(Const.HTML_CONTENT).toString()
         isFromNotif = intent.getBooleanExtra(Const.IS_FROM_NOTIF,false)
         pedagoPresenter.pedagolSingle.observe(this, ::handlePedago)
         pedagoPresenter.hasNoReturn.observe(this, ::handlePedago)
@@ -39,8 +40,9 @@ class PedagoDetailActivity : AppCompatActivity() {
 
     fun showFragment(){
         val bundle = Bundle().apply {
+            PedagoDetailActivity.setHtmlContent(htmlContent)
             putInt(Const.ID, id)
-            putString(Const.HTML_CONTENT,htmlContent)
+            //putString(Const.HTML_CONTENT,htmlContent)
             putBoolean(Const.IS_FROM_NOTIF,isFromNotif)
         }
         val navHostFragment =
@@ -77,5 +79,13 @@ class PedagoDetailActivity : AppCompatActivity() {
 
     companion object {
         var hashId = ""
+        private var htmlContent: String = ""
+        fun setHtmlContent(content: String) {
+            htmlContent = content
+        }
+        fun getHtmlContent(): String {
+            return htmlContent
+        }
+
     }
 }
