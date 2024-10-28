@@ -46,8 +46,9 @@ class PedagoListFragment : Fragment() {
         pedagoAdapter = PedagoListAdapter(requireContext(), sections, object : OnItemClick {
             override fun onItemClick(pedagogicalContent: Pedago) {
                 if (pedagogicalContent.html != null && pedagogicalContent.id != null) {
-                    val action =
-                        PedagoListFragmentDirections.actionPedagogicalListFragmentToPedagogicalDetailsFragment(
+                    PedagoDetailActivity.setPedagoId(pedagogicalContent.id)
+                    PedagoDetailActivity.setHtmlContent(pedagogicalContent.html)
+                    val action = PedagoListFragmentDirections.actionPedagogicalListFragmentToPedagogicalDetailsFragment(
                             pedagogicalContent.html, pedagogicalContent.id,false
                         )
                     findNavController().navigate(action)

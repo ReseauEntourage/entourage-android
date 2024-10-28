@@ -72,6 +72,7 @@ class CreateActionSectionsListAdapter(
                     setSpan(object : ClickableSpan() {
                         override fun onClick(widget: View) {
                             val intent = Intent(_ctx, PedagoDetailActivity::class.java)
+                            PedagoDetailActivity.setPedagoId(BuildConfig.PEDAGO_ACTION_SECTION_ID)
                             intent.putExtra(Const.ID, BuildConfig.PEDAGO_ACTION_SECTION_ID)
                             _ctx.startActivity(intent)
                         }

@@ -141,6 +141,7 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
                 if (pedagogicalContent.html != null && pedagogicalContent.id != null) {
                     val intent = Intent(requireActivity(), PedagoDetailActivity::class.java)
                     intent.putExtra(Const.ID, pedagogicalContent.id)
+                    PedagoDetailActivity.setPedagoId(pedagogicalContent.id)
                     //intent.putExtra(Const.HTML_CONTENT, pedagogicalContent.html)
                     requireActivity().startActivity(intent)
                 }
@@ -151,6 +152,7 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
                 if (pedagogicalContent.html != null && pedagogicalContent.id != null) {
                     val intent = Intent(requireActivity(), PedagoDetailActivity::class.java)
                     intent.putExtra(Const.ID, pedagogicalContent.id)
+                    PedagoDetailActivity.setPedagoId(pedagogicalContent.id)
                     //intent.putExtra(Const.HTML_CONTENT, pedagogicalContent.html)
                     requireActivity().startActivity(intent)
                 }
@@ -821,6 +823,7 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
             AnalyticsEvents.logEvent(AnalyticsEvents.Action_Home_CreateGroup)
             val intent = Intent(requireActivity(), PedagoDetailActivity::class.java)
             intent.putExtra(Const.ID, pedagoItemForCreateGroup?.id)
+            PedagoDetailActivity.setPedagoId(pedagoItemForCreateGroup?.id!!)
             PedagoDetailActivity.setHtmlContent(pedagoItemForCreateGroup?.html!!)
             requireActivity().startActivity(intent)
         }
@@ -828,6 +831,7 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
             AnalyticsEvents.logEvent(AnalyticsEvents.Action_Home_CreateEvent)
             val intent = Intent(requireActivity(), PedagoDetailActivity::class.java)
             intent.putExtra(Const.ID, pedagoItemForCreateEvent?.id)
+            PedagoDetailActivity.setPedagoId(pedagoItemForCreateEvent?.id!!)
             PedagoDetailActivity.setHtmlContent(pedagoItemForCreateEvent?.html!!)
             requireActivity().startActivity(intent)
         }
