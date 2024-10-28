@@ -201,6 +201,7 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
             )
         }
         //testNotifDemandePage()
+        testToken()
         sendUserDiscussionStatus()
     }
 
