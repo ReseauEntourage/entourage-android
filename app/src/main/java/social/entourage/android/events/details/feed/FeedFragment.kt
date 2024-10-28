@@ -184,8 +184,11 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
     }
 
     private fun hideReactionsInView(recyclerView: RecyclerView) {
-        val firstVisiblePosition = (recyclerView.layoutManager as? LinearLayoutManager)?.findFirstVisibleItemPosition() ?: return
-        val lastVisiblePosition = (recyclerView.layoutManager as? LinearLayoutManager)?.findLastVisibleItemPosition() ?: return
+        val layoutManager = recyclerView.layoutManager as? LinearLayoutManager ?: return
+        val firstVisiblePosition = layoutManager.findFirstVisibleItemPosition()
+        val lastVisiblePosition = layoutManager.findLastVisibleItemPosition()
+
+        if (firstVisiblePosition == -1 || lastVisiblePosition == -1) return
 
         // Parcours toutes les cellules visibles
         for (i in firstVisiblePosition..lastVisiblePosition) {
@@ -193,6 +196,7 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
             viewHolder?.binding?.layoutReactions?.visibility = View.GONE
         }
     }
+
 
     private fun handleImageViewAnimation() {
         binding.appBar.addOnOffsetChangedListener { appBarLayout, verticalOffset ->
