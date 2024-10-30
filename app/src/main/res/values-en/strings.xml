@@ -1706,14 +1706,13 @@
     <string name="popup_ambassador_button_participant">Participant</string>
     <string name="organizer_label">- Organizer</string>
     <string name="animateur_label">- Facilitator</string>
+    <string name="share_request_group">Would you like to share your %s in your group %s?</string>
+    <string name="share_request_description">You have the option to share your %s in your city’s neighborhood group to increase its visibility</string>
 
 
     <string name="popup_nightgood_vote">Vote</string>
     <string name="popup_nightgood_text">To help 60 people in precarious situations join a sports club, just one click is enough. Yours!</string>
 
-
-    <string name="share_request_group">Would you like to share your request in your %s?</string>
-    <string name="share_request_description">You have the option to share your request in your city\'s neighborhood group to improve its visibility</string>
 
 
 

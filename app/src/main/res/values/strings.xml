@@ -2819,8 +2819,8 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="popup_ambassador_subtitle">Si vous êtes animateur, les participants pourront vous identifier plus facilement</string>
     <string name="popup_ambassador_button_orga">Animateur</string>
     <string name="popup_ambassador_button_participant">Participant</string>
-    <string name="organizer_label">- Organisateur</string>
-    <string name="animateur_label">- Animateur</string>
+    <string name="organizer_label"> - Organisateur</string>
+    <string name="animateur_label"> - Animateur</string>
 
     <string name="demand_social_title">Exemple : Balade dans le parc</string>
     <string name="demand_social_description">Exemple : Je propose une balade dans le parc ce week-end pour discuter et se détendre.</string>
@@ -2844,8 +2844,8 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="contrib_hygiene_title">Exemple : Produits hygiéniques à donner</string>
     <string name="contrib_hygiene_description">Exemple : Je donne plusieurs paquets de protections hygiéniques.</string>
 
-    <string name="share_request_group">Souhaitez-vous partager votre demande dans votre groupe %s ?</string>
-    <string name="share_request_description">Vous avez la possibilité de partager votre demande dans le groupe de voisin de votre ville pour améliorer sa visibilité</string>
+    <string name="share_request_group">Souhaitez-vous partager votre %s dans votre groupe %s ?</string>
+    <string name="share_request_description">Vous avez la possibilité de partager votre %s dans le groupe de voisin de votre ville pour améliorer sa visibilité</string>
 
 
 </resources>

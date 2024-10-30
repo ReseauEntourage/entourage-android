@@ -2761,9 +2761,8 @@ Leerán este mensaje tan pronto como se unan al grupo.</string>
     <string name="popup_ambassador_button_participant">Participante</string>
     <string name="organizer_label">- Organizador</string>
     <string name="animateur_label">- Facilitador</string>
+    <string name="share_request_group">¿Desea compartir su %s en su grupo %s?</string>
+    <string name="share_request_description">Tiene la opción de compartir su %s en el grupo de vecinos de su ciudad para mejorar su visibilidad</string>
 
-
-    <string name="share_request_group">¿Le gustaría compartir su solicitud en su %s?</string>
-    <string name="share_request_description">Tiene la posibilidad de compartir su solicitud en el grupo de vecinos de su ciudad para mejorar su visibilidad</string>
 
 </resources>

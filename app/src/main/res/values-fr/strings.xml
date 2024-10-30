@@ -2796,15 +2796,15 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="popup_ambassador_subtitle">Si vous êtes animateur, les participants pourront vous identifier plus facilement</string>
     <string name="popup_ambassador_button_orga">Animateur</string>
     <string name="popup_ambassador_button_participant">Participant</string>
-    <string name="organizer_label">- Organisateur</string>
-    <string name="animateur_label">- Animateur</string>
+    <string name="organizer_label"> - Organisateur</string>
+    <string name="animateur_label"> - Animateur</string>
 
 
     <string name="popup_nightgood_vote">Voter</string>
     <string name="popup_nightgood_text">Pour permettre à 60 personnes en précarité d\'intégrer un club de sport, il suffit d\'un clic. Le vôtre !</string>
 
-    <string name="share_request_group">Souhaitez-vous partager votre demande dans votre groupe %s ?</string>
-    <string name="share_request_description">Vous avez la possibilité de partager votre demande dans le groupe de voisin de votre ville pour améliorer sa visibilité</string>
+    <string name="share_request_group">Souhaitez-vous partager votre %s dans votre groupe %s ?</string>
+    <string name="share_request_description">Vous avez la possibilité de partager votre %s dans le groupe de voisin de votre ville pour améliorer sa visibilité</string>
 
 </resources>
 

@@ -22,6 +22,7 @@ class CreateActionStepFourFragment : Fragment() {
     private val viewModel: CommunicationActionHandlerViewModel by activityViewModels()
     private var wantToShareInGroup:Boolean = false
     private lateinit var groupPresenter: GroupPresenter
+    private val actionCreateViewModel: CommunicationActionHandlerViewModel by activityViewModels()
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -77,7 +78,13 @@ class CreateActionStepFourFragment : Fragment() {
             return
         }
         groups.let {
-            binding.title.text = String.format(getString(R.string.share_request_group), it.name)
+            if(actionCreateViewModel.isDemand){
+                binding.title.text = String.format(getString(R.string.share_request_group),getString(R.string.action_name_demand), it.name)
+                binding.infos.text = String.format(getString(R.string.share_request_description),getString(R.string.action_name_demand))
+            }else{
+                binding.title.text = String.format(getString(R.string.share_request_group),getString(R.string.action_name_contrib), it.name)
+                binding.infos.text = String.format(getString(R.string.share_request_description),getString(R.string.action_name_contrib))
+            }
         }
     }
 }
