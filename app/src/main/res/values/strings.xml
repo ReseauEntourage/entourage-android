@@ -2845,7 +2845,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="contrib_hygiene_description">Exemple : Je donne plusieurs paquets de protections hygiéniques.</string>
 
     <string name="share_request_group">Souhaitez-vous partager votre %s dans votre groupe %s ?</string>
-    <string name="share_request_description">Vous avez la possibilité de partager votre %s dans le groupe de voisin de votre ville pour améliorer sa visibilité</string>
+    <string name="share_request_description">Vous avez la possibilité de partager votre %s dans le groupe de voisins de votre ville pour améliorer sa visibilité</string>
 
 
 </resources>
