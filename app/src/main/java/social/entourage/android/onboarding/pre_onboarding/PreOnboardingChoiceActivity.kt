@@ -76,11 +76,9 @@ class PreOnboardingChoiceActivity : BaseActivity() {
         val isRtl = resources.configuration.layoutDirection == android.view.View.LAYOUT_DIRECTION_RTL
         if (isRtl) {
             // Applique un miroir horizontal à l'image
-            binding.uiLogo2.scaleX = -1f
             binding.imageMosaic.scaleX = -1f
         } else {
             // Réinitialise la transformation si ce n'est pas en RTL
-            binding.uiLogo2.scaleX = 1f
             binding.imageMosaic.scaleX = 1f
         }
     }
