@@ -208,7 +208,7 @@ abstract class CommentActivity : BaseActivity(), onDissmissFragment {
             if (!message.isNullOrBlank() && !message.isNullOrEmpty()) {
                 // Disable the send button and show the progress bar
                 binding.comment.isEnabled = false
-                binding.progressBar.visibility = View.VISIBLE
+                binding.progressBar.visibility = View.GONE
 
                 // Create the user and post objects as before
                 val user = EntourageUser().apply {

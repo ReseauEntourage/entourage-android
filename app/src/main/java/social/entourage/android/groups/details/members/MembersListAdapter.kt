@@ -62,7 +62,7 @@ class MembersListAdapter(
                     binding.layout.background = ContextCompat.getDrawable(context, R.drawable.background_organizer)
 
                     // Obtenir le label approprié à partir des ressources
-                    val roleLabel = if (isMe) {
+                    val roleLabel = if (!isMe) {
                         context.getString(R.string.organizer_label)
                     } else {
                         context.getString(R.string.animateur_label)
