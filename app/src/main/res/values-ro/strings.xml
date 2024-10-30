@@ -2768,4 +2768,12 @@ Ei vor citi acest mesaj imediat ce se vor alătura grupului.</string>
     <string name="share_request_group">Doriți să partajați cererea dvs. în %s?</string>
     <string name="share_request_description">Aveți posibilitatea să partajați cererea dvs. în grupul de vecini din orașul dvs. pentru a-i îmbunătăți vizibilitatea</string>
 
+    <string name="popup_ambassador_title">Participați ca facilitator sau ca participant?</string>
+    <string name="popup_ambassador_subtitle">Dacă sunteți facilitator, participanții vă vor putea identifica mai ușor</string>
+    <string name="popup_ambassador_button_orga">Facilitator</string>
+    <string name="popup_ambassador_button_participant">Participant</string>
+    <string name="organizer_label">- Organizator</string>
+    <string name="animateur_label">- Facilitator</string>
+
+
 </resources>

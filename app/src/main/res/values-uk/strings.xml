@@ -2682,4 +2682,12 @@
     <string name="share_request_group">Ви хочете поділитися своєю заявкою у вашій %s?</string>
     <string name="share_request_description">Ви маєте можливість поділитися своєю заявкою у групі сусідів вашого міста, щоб покращити її видимість</string>
 
+    <string name="popup_ambassador_title">Ви берете участь як ведучий чи як учасник?</string>
+    <string name="popup_ambassador_subtitle">Якщо ви ведучий, учасники зможуть вас легше ідентифікувати</string>
+    <string name="popup_ambassador_button_orga">Ведучий</string>
+    <string name="popup_ambassador_button_participant">Учасник</string>
+    <string name="organizer_label">- Організатор</string>
+    <string name="animateur_label">- Ведучий</string>
+
+
 </resources>
