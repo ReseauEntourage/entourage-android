@@ -120,6 +120,7 @@ class EventsFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         showBubbleCase()
+        showCustomBubble(binding.uiLayoutFilter)
 
         if (isFromDetails == true){
             isFromDetails = false
@@ -337,7 +338,6 @@ class EventsFragment : Fragment() {
     private fun handleLaunchCreateEvent(haveToLaunchCreateEvent:Boolean){
         if(haveToLaunchCreateEvent){
             AnalyticsEvents.logEvent(AnalyticsEvents.Action__Event__LocationFilter)
-
             startActivityForResult(
                 Intent(context, CreateEventActivity::class.java),
                 0

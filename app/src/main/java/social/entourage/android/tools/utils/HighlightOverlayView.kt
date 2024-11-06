@@ -4,9 +4,8 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
-import android.graphics.PorterDuff
 import android.graphics.PorterDuffXfermode
-import android.graphics.RectF
+import android.graphics.PorterDuff
 import android.view.View
 import android.widget.FrameLayout
 
@@ -20,6 +19,7 @@ class HighlightOverlayView(context: Context, private val targetView: View) : Fra
         backgroundPaint.color = Color.parseColor("#80000000") // Noir semi-transparent
 
         // Peinture pour effacer (créer le trou)
+        eraserPaint.isAntiAlias = true
         eraserPaint.xfermode = PorterDuffXfermode(PorterDuff.Mode.CLEAR)
         setLayerType(LAYER_TYPE_HARDWARE, null) // Nécessaire pour utiliser l'effacement
     }
@@ -32,16 +32,15 @@ class HighlightOverlayView(context: Context, private val targetView: View) : Fra
         val location = IntArray(2)
         targetView.getLocationOnScreen(location)
 
-        // Calculer la position de 'targetView' dans les coordonnées de l'overlay
-        val rect = RectF(
-            location[0].toFloat(),
-            location[1].toFloat() - getStatusBarHeight(), // Ajuster pour la barre de statut
-            (location[0] + targetView.width).toFloat(),
-            (location[1] + targetView.height).toFloat() - getStatusBarHeight()
-        )
+        // Calculer les coordonnées du centre du 'targetView' dans les coordonnées de l'overlay
+        val centerX = location[0] + targetView.width / 2f
+        val centerY = location[1] + targetView.height / 2f - getStatusBarHeight()
 
-        // Effacer le rectangle au-dessus de 'targetView'
-        canvas.drawRect(rect, eraserPaint)
+        // Calculer le rayon du cercle (ajustez le facteur selon vos besoins)
+        val radius = (Math.max(targetView.width, targetView.height) / 2f) * 1.2f // Augmentez 1.2f pour un cercle plus grand
+
+        // Effacer le cercle au-dessus de 'targetView'
+        canvas.drawCircle(centerX, centerY, radius, eraserPaint)
 
         // Dessiner le reste des enfants (par exemple, votre bubble layout)
         super.dispatchDraw(canvas)
