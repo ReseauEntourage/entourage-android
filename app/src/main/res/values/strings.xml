@@ -2871,6 +2871,8 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="share_request_group">Souhaitez-vous partager votre %s dans votre groupe %s ?</string>
     <string name="share_request_description">Vous avez la possibilité de partager votre %s dans le groupe de voisins de votre ville pour améliorer sa visibilité</string>
 
+    <string name="bubble_title">Des filtres ont été appliqués en fonction de vos préférences. Cliquez ici pour les modifier.</string>
+    <string name="bubble_button">J\'ai compris</string>
 
 
 
