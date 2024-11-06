@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+<!-- Selected State -->
+<item android:state_checked="true" android:drawable="@color/light_orange" />
+<!-- Unselected State -->
+<item android:drawable="@android:color/white" />
+</selector>

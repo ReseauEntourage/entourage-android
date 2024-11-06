@@ -2874,7 +2874,24 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="bubble_title">Des filtres ont été appliqués en fonction de vos préférences. Cliquez ici pour les modifier.</string>
     <string name="bubble_button">J\'ai compris</string>
 
+    <!-- Enhanced Onboarding Time Disponibility -->
 
+    <string name="enhanced_onboarding_time_disponibility_title">Mes disponibilités</string>
+    <string name="enhanced_onboarding_time_disponibility_description">Précisez vos disponibilités pour que l\'on puisse vous suggérer des événements adaptés.</string>
+    <string name="enhanced_onboarding_time_disponibility_days_label">Mes jours</string>
+    <string name="enhanced_onboarding_time_disponibility_day_monday">Lundi</string>
+    <string name="enhanced_onboarding_time_disponibility_day_tuesday">Mardi</string>
+    <string name="enhanced_onboarding_time_disponibility_day_wednesday">Mercredi</string>
+    <string name="enhanced_onboarding_time_disponibility_day_thursday">Jeudi</string>
+    <string name="enhanced_onboarding_time_disponibility_day_friday">Vendredi</string>
+    <string name="enhanced_onboarding_time_disponibility_day_saturday">Samedi</string>
+    <string name="enhanced_onboarding_time_disponibility_day_sunday">Dimanche</string>
+    <string name="enhanced_onboarding_time_disponibility_time_slots_label">Mes tranches horaires</string>
+    <string name="enhanced_onboarding_time_disponibility_time_morning">Matin</string>
+    <string name="enhanced_onboarding_time_disponibility_time_afternoon">Après-midi</string>
+    <string name="enhanced_onboarding_time_disponibility_time_evening">Soir</string>
+    <string name="enhanced_onboarding_time_disponibility_btn_finish_later">Terminer plus tard</string>
+    <string name="enhanced_onboarding_time_disponibility_btn_next">Suivant</string>
 
 </resources>
 
