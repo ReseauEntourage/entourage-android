@@ -46,6 +46,7 @@ class MainFilterActivity : BaseActivity() {
     companion object {
         var savedGroupInterests = mutableListOf<String>()
         var savedActionInterests = mutableListOf<String>()
+        var savedGroupInterestsFromOnboarding = mutableListOf<String>()
         var savedRadius = 0
         var savedLocation: PlaceDetails? = null
         var mod: MainFilterMode = MainFilterMode.GROUP

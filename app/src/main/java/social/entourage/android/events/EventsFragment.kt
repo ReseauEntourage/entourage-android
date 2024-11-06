@@ -5,6 +5,7 @@ import android.animation.AnimatorListenerAdapter
 import android.animation.ValueAnimator
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.transition.AutoTransition
 import android.transition.TransitionManager
@@ -22,7 +23,11 @@ import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
+import com.nmssalman.bubbleshowcasenew.BubbleShowCase
+import com.nmssalman.bubbleshowcasenew.BubbleShowCaseBuilder
+import com.nmssalman.bubbleshowcasenew.BubbleShowCaseListener
 import social.entourage.android.EntourageApplication
+import social.entourage.android.MainActivity
 import social.entourage.android.R
 import social.entourage.android.databinding.NewFragmentEventsBinding
 import social.entourage.android.RefreshController
@@ -109,6 +114,8 @@ class EventsFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
+        showBubbleCase()
+
         if (isFromDetails == true){
             isFromDetails = false
         }else{
@@ -129,6 +136,46 @@ class EventsFragment : Fragment() {
 
         }
         resetSearchButtonState()
+
+    }
+
+    fun showCustomBubble(targetView: View) {
+
+    }
+
+    fun showBubbleCase(){
+
+       /* if(MainActivity.shouldLaunchEvent == true){
+            MainActivity.shouldLaunchEvent = false
+            MainFilterActivity.savedGroupInterests = MainFilterActivity.savedGroupInterestsFromOnboarding
+            val bubbleShowCase = BubbleShowCaseBuilder(requireActivity())
+                .title("Des filtres ont été appliqués en fonction de vos préférences")
+                .description("\n J'ai compris") // Texte simulant le bouton
+                .targetView(binding.uiLayoutFilter)
+                .backgroundColor(Color.WHITE)
+                .textColor(Color.BLACK)
+                .listener(object : BubbleShowCaseListener{ //Listener for user actions
+                    override fun onTargetClick(bubbleShowCase: BubbleShowCase) {
+                        //Called when the user clicks the target
+                        bubbleShowCase.dismiss()
+                    }
+                    override fun onCloseActionImageClick(bubbleShowCase: BubbleShowCase) {
+                        //Called when the user clicks the close button
+                        bubbleShowCase.dismiss()
+                    }
+                    override fun onBubbleClick(bubbleShowCase: BubbleShowCase) {
+                        //Called when the user clicks on the bubble
+                        bubbleShowCase.dismiss()
+                    }
+
+                    override fun onBackgroundDimClick(bubbleShowCase: BubbleShowCase) {
+                        //Called when the user clicks on the background dim
+                        bubbleShowCase.dismiss()
+                    }
+                })
+            bubbleShowCase.show()
+
+        }*/
 
     }
 

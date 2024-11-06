@@ -139,7 +139,26 @@ class EnhancedOnboarding:BaseActivity() {
 
     private fun handleOnboardingShouldQuit(value: Boolean) {
         if (value) {
-            MainActivity.shouldLaunchEvent = true
+            when(viewModel.selectedCategory){
+                "both_actions" -> {
+                    MainActivity.shouldLaunchActionCreation = true
+                }
+                "event" -> {
+                    MainActivity.shouldLaunchEvent = true
+                }
+                "no-event" -> {
+                    MainActivity.shouldLaunchActionCreation = true
+                }
+                "resources" -> {
+                    MainActivity.shouldLaunchQuizz = true
+                }
+                "neighborhoods" -> {
+                    MainActivity.shouldLaunchWelcomeGroup = true
+                }
+                else -> {
+
+                }
+            }
             if(isFromSettingsinterest){
                 isFromSettingsinterest = false
                 MainActivity.shouldLaunchEvent = false

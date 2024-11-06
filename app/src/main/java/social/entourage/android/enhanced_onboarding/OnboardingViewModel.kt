@@ -27,13 +27,16 @@ class OnboardingViewModel() : ViewModel() {
     var actionsWishes = MutableLiveData<List<InterestForAdapter>>()
     var shouldDismissBtnBack = MutableLiveData<Boolean>()
     var user:User? = null
+    var selectedCategory: String? = null
+
 
     private val onboardingService : UserRequest
         get() =  EntourageApplication.get().apiModule.userRequest //service ?: retrofit!!.create(UserRequest::class.java)
 
-    fun registerAndQuit() {
+    fun registerAndQuit(category: String? = null) {
         register()
         onboardingShouldQuit.postValue(true)
+        selectedCategory = category // nouvelle variable pour garder la catégorie
     }
 
     fun toggleBtnBack(value: Boolean) {

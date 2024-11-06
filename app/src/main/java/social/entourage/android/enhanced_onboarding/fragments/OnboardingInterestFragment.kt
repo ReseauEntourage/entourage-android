@@ -14,6 +14,7 @@ import social.entourage.android.databinding.FragmentOnboardingInterestsLayoutBin
 import social.entourage.android.enhanced_onboarding.EnhancedOnboarding
 import social.entourage.android.enhanced_onboarding.OnboardingViewModel
 import social.entourage.android.enhanced_onboarding.InterestForAdapter
+import social.entourage.android.main_filter.MainFilterActivity
 import social.entourage.android.tools.log.AnalyticsEvents
 
 class OnboardingInterestFragment : Fragment() {
@@ -195,6 +196,7 @@ class OnboardingInterestFragment : Fragment() {
     }
     private fun onInterestClicked(interest: InterestForAdapter) {
         viewModel.updateInterest(interest)
+        MainFilterActivity.savedGroupInterestsFromOnboarding = viewModel.interests.value?.filter { it.isSelected }?.map { it.id }?.toMutableList() ?: mutableListOf()
     }
 }
 

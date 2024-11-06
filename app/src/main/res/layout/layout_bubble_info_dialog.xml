@@ -1,0 +1,28 @@
+<!-- bubble_layout.xml -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/bubbleLayout"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/bubble_background"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/bubbleTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Votre titre ici"
+        android:textColor="@android:color/black"
+        android:textSize="18sp"
+        android:fontFamily="@font/quicksand_bold"/>
+
+    <TextView
+        android:id="@+id/bubbleButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Jai compris"
+        android:textColor="@android:color/black"
+        android:textSize="18sp"
+        android:fontFamily="@font/nunitosans_regular"/>
+
+</LinearLayout>

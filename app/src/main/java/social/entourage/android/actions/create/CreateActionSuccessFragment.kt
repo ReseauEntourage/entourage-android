@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import com.google.android.play.core.review.ReviewManagerFactory
+import social.entourage.android.MainActivity
 import social.entourage.android.R
 import social.entourage.android.databinding.NewFragmentCreateActionSuccessBinding
 import social.entourage.android.RefreshController
@@ -46,8 +47,12 @@ class CreateActionSuccessFragment : Fragment() {
 
     private fun handleFinishButton() {
         binding.post.setOnClickListener {
-            requireActivity().finish()
             RefreshController.shouldRefreshFragment = true
+            val intent = Intent(context, MainActivity::class.java)
+                .addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+            requireContext().startActivity(intent)
+            requireActivity().finish()
+
 
         }
     }

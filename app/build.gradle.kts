@@ -74,7 +74,7 @@ android {
         applicationId = "social.entourage.android"
         resourceConfigurations += listOf("en", "fr", "de", "pl", "es","uk", "ro", "ar")
 
-        minSdk = 23 /*November 2015: Android 6.0, MarshMallow*/
+        minSdk = 24 /*November 2015: Android 6.0, MarshMallow*/
         targetSdk = 34
 
         // Making either of these two values dynamic in the defaultConfig will
@@ -305,7 +305,7 @@ dependencies {
     implementation("com.google.android.play:feature-delivery-ktx:2.1.0")
     implementation("com.google.android.play:review:2.0.1")
     implementation("com.google.android.play:review-ktx:2.0.1")
-
+    implementation("com.github.nmssalman:bubbleshowcase:1.0")
     implementation("com.leinardi.android:speed-dial:3.2.0")
 
 }

@@ -15,6 +15,7 @@ import social.entourage.android.enhanced_onboarding.EnhancedOnboarding
 import social.entourage.android.enhanced_onboarding.InterestForAdapter
 import social.entourage.android.enhanced_onboarding.OnboardingViewModel
 import social.entourage.android.tools.log.AnalyticsEvents
+import timber.log.Timber
 
 class OnboardingActionWishesFragment:Fragment() {
 
@@ -118,7 +119,7 @@ class OnboardingActionWishesFragment:Fragment() {
                         subtitle = ""
                     )
                 },
-                user?.involvements?.contains("actions")?.let {
+                user?.involvements?.contains("both_actions")?.let {
                     InterestForAdapter(
                         icon = getIconForActionWish("actions"),
                         title = getString(R.string.onboarding_action_wish_services),
