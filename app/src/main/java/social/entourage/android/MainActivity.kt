@@ -189,7 +189,7 @@ class MainActivity : BaseSecuredActivity() {
         if(shouldLaunchActionCreation){
             shouldLaunchActionCreation = false
             val intent = Intent(this, CreateActionActivity::class.java)
-            intent.putExtra(Const.IS_ACTION_DEMAND, true)
+            intent.putExtra(Const.IS_ACTION_DEMAND, false)
             this.startActivity(intent)
         }
         if(shouldLaunchQuizz){

@@ -67,7 +67,9 @@ class OnboardingCongratsFragment: Fragment() {
 
     private fun handleResponseGetEvents(allEvents: MutableList<Events>?) {
         if(allEvents != null) {
-            haveEvent = allEvents.isNotEmpty()
+            //create a list of event beeing not online
+            val allEventsFiltered = allEvents.filter { it.online == false }
+            haveEvent = allEventsFiltered.isNotEmpty()
             configureOnboardingView()
             if(MainActivity.isFromProfile) {
                 binding.buttonStart.text = "Revenir au profil"

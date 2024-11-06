@@ -38,7 +38,7 @@ class WelcomeTwoActivity: BaseActivity() {
         setContentView(binding.root)
     }
     fun getGroup(){
-        groupPresenter.getInitialGroup()
+        groupPresenter.getDefaultGroup()
     }
     private fun handleResponseGetGroup(getGroup: Group?) {
         getGroup?.let {

@@ -146,7 +146,7 @@ class EnhancedOnboarding:BaseActivity() {
                 "event" -> {
                     MainActivity.shouldLaunchEvent = true
                 }
-                "no-event" -> {
+                "no_event" -> {
                     MainActivity.shouldLaunchActionCreation = true
                 }
                 "resources" -> {

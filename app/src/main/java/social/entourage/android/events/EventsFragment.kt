@@ -120,8 +120,6 @@ class EventsFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         showBubbleCase()
-        showCustomBubble(binding.uiLayoutFilter)
-
         if (isFromDetails == true){
             isFromDetails = false
         }else{
@@ -142,7 +140,6 @@ class EventsFragment : Fragment() {
 
         }
         resetSearchButtonState()
-
     }
 
     fun showCustomBubble(targetView: View) {
@@ -177,7 +174,7 @@ class EventsFragment : Fragment() {
 
         // Positionner le bubbleView
         bubbleView.x = 0f
-        bubbleView.y = y.toFloat() + 10
+        bubbleView.y = 150f
 
         // Ajouter le bubbleView à l'overlay
         overlayView.addView(bubbleView)
