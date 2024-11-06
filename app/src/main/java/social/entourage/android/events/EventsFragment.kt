@@ -141,7 +141,6 @@ class EventsFragment : Fragment() {
 
         }
         resetSearchButtonState()
-        showCustomBubble(binding.uiLayoutFilter)
 
     }
 
@@ -204,40 +203,13 @@ class EventsFragment : Fragment() {
     }
 
 
-    fun showBubbleCase(){
+    private fun showBubbleCase(){
 
-       /* if(MainActivity.shouldLaunchEvent == true){
+       if(MainActivity.shouldLaunchEvent == true){
             MainActivity.shouldLaunchEvent = false
             MainFilterActivity.savedGroupInterests = MainFilterActivity.savedGroupInterestsFromOnboarding
-            val bubbleShowCase = BubbleShowCaseBuilder(requireActivity())
-                .title("Des filtres ont été appliqués en fonction de vos préférences")
-                .description("\n J'ai compris") // Texte simulant le bouton
-                .targetView(binding.uiLayoutFilter)
-                .backgroundColor(Color.WHITE)
-                .textColor(Color.BLACK)
-                .listener(object : BubbleShowCaseListener{ //Listener for user actions
-                    override fun onTargetClick(bubbleShowCase: BubbleShowCase) {
-                        //Called when the user clicks the target
-                        bubbleShowCase.dismiss()
-                    }
-                    override fun onCloseActionImageClick(bubbleShowCase: BubbleShowCase) {
-                        //Called when the user clicks the close button
-                        bubbleShowCase.dismiss()
-                    }
-                    override fun onBubbleClick(bubbleShowCase: BubbleShowCase) {
-                        //Called when the user clicks on the bubble
-                        bubbleShowCase.dismiss()
-                    }
-
-                    override fun onBackgroundDimClick(bubbleShowCase: BubbleShowCase) {
-                        //Called when the user clicks on the background dim
-                        bubbleShowCase.dismiss()
-                    }
-                })
-            bubbleShowCase.show()
-
-        }*/
-
+           showCustomBubble(binding.uiLayoutFilter)
+       }
     }
 
     fun handleTopTitle(hideTitle:Boolean){
