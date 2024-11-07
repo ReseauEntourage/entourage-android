@@ -87,7 +87,8 @@ class OnboardingDisponibilityFragment : Fragment() {
                 val chip = group.getChildAt(i) as? Chip
                 chip?.let {
                     it.setTypeface(null, if (it.isChecked) Typeface.BOLD else Typeface.NORMAL)
-                    it.setChipIconVisible(it.isChecked) // Affiche ou masque l'icône selon l'état du chip
+                    //it.setChipIconVisible(it.isChecked) // Affiche ou masque l'icône selon l'état du chip
+                    it.setChipIconVisible(false)
                 }
             }
             // Mettre à jour le ViewModel avec les jours sélectionnés
@@ -112,7 +113,8 @@ class OnboardingDisponibilityFragment : Fragment() {
                 val chip = group.getChildAt(i) as? Chip
                 chip?.let {
                     it.setTypeface(null, if (it.isChecked) Typeface.BOLD else Typeface.NORMAL)
-                    it.setChipIconVisible(it.isChecked) // Affiche ou masque l'icône selon l'état du chip
+                    //it.setChipIconVisible(it.isChecked) // Affiche ou masque l'icône selon l'état du chip
+                    it.setChipIconVisible(false) // Affiche ou masque l'icône selon l'état du chip
                 }
             }
             // Mettre à jour le ViewModel avec les tranches horaires sélectionnées
