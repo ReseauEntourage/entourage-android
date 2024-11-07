@@ -63,7 +63,7 @@ class CreateGroupSuccessFragment : Fragment() {
             val intent = Intent(context, CreatePostGroupActivity::class.java)
             intent.putExtra(Const.GROUP_ID, args.groupID)
             intent.putExtra(Const.FROM_CREATE_GROUP, true)
-            startActivityForResult(intent, 0)
+            startActivity(intent)
             requireActivity().finish()
             RefreshController.shouldRefreshFragment = true
         }
