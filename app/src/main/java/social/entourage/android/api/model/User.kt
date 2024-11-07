@@ -42,6 +42,9 @@ class User : Serializable {
     @SerializedName("avatar_url")
     var avatarURL: String?
 
+    @SerializedName("availability")
+    var availability: ArrayMap<String, List<String>> = ArrayMap()
+
     @SerializedName("firebase_properties")
     val firebaseProperties: UserFirebaseProperties? = null
     var about: String? = ""

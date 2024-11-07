@@ -65,14 +65,14 @@ class WelcomeTwoActivity: BaseActivity() {
                     this.group?.id,)
                 intent.putExtra("fromWelcomeActivity", true)
                 startActivity(intent)
-                finish()
+                this.finish()
             }else{
                 val intent = Intent(this, MainActivity::class.java)
                 intent.putExtra("fromWelcomeActivity", true)
                 intent.putExtra("goMyGroup", true)
                 intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
                 startActivity(intent)
-                finish()
+                this.finish()
             }
         }
     }

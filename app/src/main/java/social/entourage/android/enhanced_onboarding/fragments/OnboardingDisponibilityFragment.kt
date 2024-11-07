@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import social.entourage.android.R
+import social.entourage.android.api.model.User
 import social.entourage.android.databinding.FragmentEnhancedOnboardingTimeDisponibilityLayoutBinding
 import social.entourage.android.enhanced_onboarding.OnboardingViewModel
 import social.entourage.android.tools.log.AnalyticsEvents
@@ -41,7 +42,42 @@ class OnboardingDisponibilityFragment : Fragment() {
         }
         binding.tvTitle.text = getString(R.string.enhanced_onboarding_time_disponibility_title)
         binding.tvDescription.text = getString(R.string.enhanced_onboarding_time_disponibility_description)
+        if(viewModel.user != null){
+            populateAvailability(viewModel.user!!)
+        }
     }
+
+    private fun populateAvailability(user: User) {
+        // Définir une map pour faire correspondre les jours de la semaine aux IDs de chips
+        val dayChipMap = mapOf(
+            "1" to binding.chipMonday,
+            "2" to binding.chipTuesday,
+            "3" to binding.chipWednesday,
+            "4" to binding.chipThursday,
+            "5" to binding.chipFriday,
+            "6" to binding.chipSaturday,
+            "7" to binding.chipSunday
+        )
+
+        // Définir une map pour faire correspondre les créneaux horaires aux IDs de chips
+        val timeSlotChipMap = mapOf(
+            "09:00-12:00" to binding.chipMorning,
+            "14:00-18:00" to binding.chipAfternoon,
+            "18:00-21:00" to binding.chipEvening
+        )
+
+        // Parcourir les disponibilités de l'utilisateur et cocher les chips correspondants
+        user.availability.forEach { (day, timeSlots) ->
+            // Cocher le chip correspondant au jour
+            dayChipMap[day]?.isChecked = true
+
+            // Cocher les chips correspondants aux créneaux horaires
+            timeSlots.forEach { timeSlot ->
+                timeSlotChipMap[timeSlot]?.isChecked = true
+            }
+        }
+    }
+
 
     private fun setupChipGroups() {
         // Configure les jours de la semaine
