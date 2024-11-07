@@ -1,6 +1,7 @@
 package social.entourage.android.enhanced_onboarding.fragments
 
 import android.content.res.ColorStateList
+import android.graphics.Typeface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -82,16 +83,24 @@ class OnboardingDisponibilityFragment : Fragment() {
     private fun setupChipGroups() {
         // Configure les jours de la semaine
         binding.chipGroupDays.setOnCheckedStateChangeListener { group, checkedIds ->
-            val selectedDays = mutableListOf<String>()
-            checkedIds.forEach { id ->
+            for (i in 0 until group.childCount) {
+                val chip = group.getChildAt(i) as? Chip
+                chip?.let {
+                    it.setTypeface(null, if (it.isChecked) Typeface.BOLD else Typeface.NORMAL)
+                    it.setChipIconVisible(it.isChecked) // Affiche ou masque l'icône selon l'état du chip
+                }
+            }
+            // Mettre à jour le ViewModel avec les jours sélectionnés
+            val selectedDays = checkedIds.mapNotNull { id ->
                 when (id) {
-                    R.id.chipMonday -> selectedDays.add("Lundi")
-                    R.id.chipTuesday -> selectedDays.add("Mardi")
-                    R.id.chipWednesday -> selectedDays.add("Mercredi")
-                    R.id.chipThursday -> selectedDays.add("Jeudi")
-                    R.id.chipFriday -> selectedDays.add("Vendredi")
-                    R.id.chipSaturday -> selectedDays.add("Samedi")
-                    R.id.chipSunday -> selectedDays.add("Dimanche")
+                    R.id.chipMonday -> "Lundi"
+                    R.id.chipTuesday -> "Mardi"
+                    R.id.chipWednesday -> "Mercredi"
+                    R.id.chipThursday -> "Jeudi"
+                    R.id.chipFriday -> "Vendredi"
+                    R.id.chipSaturday -> "Samedi"
+                    R.id.chipSunday -> "Dimanche"
+                    else -> null
                 }
             }
             viewModel.updateSelectedDays(selectedDays)
@@ -99,17 +108,28 @@ class OnboardingDisponibilityFragment : Fragment() {
 
         // Configure les tranches horaires
         binding.chipGroupTimeSlots.setOnCheckedStateChangeListener { group, checkedIds ->
-            val selectedTimeSlots = mutableListOf<String>()
-            checkedIds.forEach { id ->
+            for (i in 0 until group.childCount) {
+                val chip = group.getChildAt(i) as? Chip
+                chip?.let {
+                    it.setTypeface(null, if (it.isChecked) Typeface.BOLD else Typeface.NORMAL)
+                    it.setChipIconVisible(it.isChecked) // Affiche ou masque l'icône selon l'état du chip
+                }
+            }
+            // Mettre à jour le ViewModel avec les tranches horaires sélectionnées
+            val selectedTimeSlots = checkedIds.mapNotNull { id ->
                 when (id) {
-                    R.id.chipMorning -> selectedTimeSlots.add("Matin")
-                    R.id.chipAfternoon -> selectedTimeSlots.add("Après-midi")
-                    R.id.chipEvening -> selectedTimeSlots.add("Soir")
+                    R.id.chipMorning -> "Matin"
+                    R.id.chipAfternoon -> "Après-midi"
+                    R.id.chipEvening -> "Soir"
+                    else -> null
                 }
             }
             viewModel.updateSelectedTimeSlots(selectedTimeSlots)
         }
     }
+
+
+
 
 
 
