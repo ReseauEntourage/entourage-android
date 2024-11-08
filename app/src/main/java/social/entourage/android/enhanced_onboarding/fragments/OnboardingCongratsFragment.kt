@@ -8,12 +8,14 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import kotlinx.coroutines.MainScope
+import social.entourage.android.EntourageApplication
 import social.entourage.android.MainActivity
 import social.entourage.android.R
 import social.entourage.android.api.model.EventActionLocationFilters
 import social.entourage.android.api.model.Events
 import social.entourage.android.databinding.FragmentOnboardingCongratsFragmentBinding
 import social.entourage.android.databinding.FragmentOnboardingInterestsLayoutBinding
+import social.entourage.android.enhanced_onboarding.EnhancedOnboarding
 import social.entourage.android.enhanced_onboarding.OnboardingViewModel
 import social.entourage.android.events.EventsPresenter
 import social.entourage.android.events.list.EVENTS_PER_PAGE
@@ -52,6 +54,7 @@ class OnboardingCongratsFragment: Fragment() {
                 MainActivity.shouldLaunchQuizz = false
                 MainActivity.shouldLaunchActionCreation = false
             }
+            AnalyticsEvents.logEvent(AnalyticsEvents.onboarding_end_congrats_clic_on_ + category)
             viewModel.registerAndQuit(category)
         }
         eventsPresenter = ViewModelProvider(this).get(EventsPresenter::class.java)
@@ -81,9 +84,19 @@ class OnboardingCongratsFragment: Fragment() {
 
     private fun configureOnboardingView() {
         val categoriesList = viewModel.actionsWishes.value?.filter { it.isSelected }?.map { it.id } ?: listOf()
-        var titleRes = R.string.onboarding_ready_action_title
-        var contentRes = R.string.onboarding_ready_action_content
-        var buttonTextRes = R.string.onboarding_ready_action_button
+        var titleRes = R.string.onboarding_congrats_title
+        var contentRes = R.string.onboarding_congrats_content
+        var buttonTextRes = R.string.onboarding_congrats_leave
+        Timber.wtf("wtf categoriesList $categoriesList")
+        Timber.wtf("wtf EnhancedOnboarding.preference ${EnhancedOnboarding.preference}")
+
+        if(categoriesList.isEmpty() || EnhancedOnboarding.preference != "contribution") {
+            binding.tvTitle.setText(titleRes)
+            binding.tvDescription.setText(contentRes)
+            binding.buttonStart.setText(buttonTextRes)
+            category = "event"
+            return
+        }
         when {
             categoriesList.containsAll(listOf("resources", "outings", "both_actions", "neighborhoods")) -> {
                 titleRes = R.string.onboarding_start_action_title

@@ -12,6 +12,7 @@ import social.entourage.android.R
 import social.entourage.android.api.model.User
 import social.entourage.android.api.request.UserRequest
 import social.entourage.android.api.request.UserResponse
+import timber.log.Timber
 
 class OnboardingViewModel() : ViewModel() {
     var onboardingFirstStep = MutableLiveData<Boolean>()
@@ -40,8 +41,8 @@ class OnboardingViewModel() : ViewModel() {
 
     fun registerAndQuit(category: String? = null) {
         register()
-        onboardingShouldQuit.postValue(true)
         selectedCategory = category
+        onboardingShouldQuit.postValue(true)
     }
 
     fun toggleBtnBack(value: Boolean) {
@@ -55,14 +56,13 @@ class OnboardingViewModel() : ViewModel() {
     }
 
     fun updateUserInterests(listener: (isOK: Boolean, userResponse: UserResponse?) -> Unit) {
-        // Préparez les listes à partir des choix de l'utilisateur
         val interestsList = interests.value?.filter { it.isSelected }?.map { it.id } ?: listOf()
         val categoriesList = categories.value?.filter { it.isSelected }?.map { it.id } ?: listOf()
         val actionsWishesList = actionsWishes.value?.filter { it.isSelected }?.map { it.id } ?: listOf()
+        val updatedInterests = interestsList.toSet()
+        val updatedConcerns = categoriesList.toSet()
+        val updatedInvolvements = actionsWishesList.toSet()
 
-        val updatedInterests = user?.interests?.toSet()?.plus(interestsList) ?: interestsList.toSet()
-        val updatedConcerns = user?.concerns?.toSet()?.plus(categoriesList) ?: categoriesList.toSet()
-        val updatedInvolvements = user?.involvements?.toSet()?.plus(actionsWishesList) ?: actionsWishesList.toSet()
 
         // Mettre à jour l'utilisateur localement
         user?.interests = ArrayList(updatedInterests)
@@ -109,6 +109,7 @@ class OnboardingViewModel() : ViewModel() {
             }
 
             override fun onFailure(call: Call<UserResponse>, t: Throwable) {
+                Timber.wtf("wtf onFailure updateUserInterests " + t.message)
                 listener(false, null)
             }
         })
