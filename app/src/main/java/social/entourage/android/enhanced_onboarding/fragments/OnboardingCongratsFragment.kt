@@ -89,77 +89,58 @@ class OnboardingCongratsFragment: Fragment() {
         var buttonTextRes = R.string.onboarding_congrats_leave
         Timber.wtf("wtf categoriesList $categoriesList")
         Timber.wtf("wtf EnhancedOnboarding.preference ${EnhancedOnboarding.preference}")
-
-        if(categoriesList.isEmpty() || EnhancedOnboarding.preference != "contribution") {
+        // Condition par défaut : si la liste est vide ou que la préférence n'est pas "contribution"
+        if (categoriesList.isEmpty() || EnhancedOnboarding.preference == "contribution") {
             binding.tvTitle.setText(titleRes)
             binding.tvDescription.setText(contentRes)
             binding.buttonStart.setText(buttonTextRes)
             category = "event"
-            return
         }
-        when {
-            categoriesList.containsAll(listOf("resources", "outings", "both_actions", "neighborhoods")) -> {
-                titleRes = R.string.onboarding_start_action_title
-                contentRes = R.string.onboarding_start_action_content
-                buttonTextRes = R.string.onboarding_start_action_button
-                // Configurer la vue avec les ressources sélectionnées
-                binding.tvTitle.setText(titleRes)
-                binding.tvDescription.setText(contentRes)
-                binding.buttonStart.setText(buttonTextRes)
-                category = "both_actions"
-                return
-            }
-            categoriesList.contains("both_actions")  -> {
-                titleRes = R.string.onboarding_start_action_title
-                contentRes = R.string.onboarding_start_action_content
-                buttonTextRes = R.string.onboarding_start_action_button
-                binding.tvTitle.setText(titleRes)
-                binding.tvDescription.setText(contentRes)
-                binding.buttonStart.setText(buttonTextRes)
-                category = "both_actions"
-                return
-            }
-            categoriesList.contains("outings") && haveEvent -> {
+        // Priorité 1 : Présence de "both_actions" dans la liste
+        else if (categoriesList.contains("both_actions")) {
+            titleRes = R.string.onboarding_start_action_title
+            contentRes = R.string.onboarding_start_action_content
+            buttonTextRes = R.string.onboarding_start_action_button
+            binding.tvTitle.setText(titleRes)
+            binding.tvDescription.setText(contentRes)
+            binding.buttonStart.setText(buttonTextRes)
+            category = "both_actions"
+        }
+        // Priorité 2 : Présence de "outings" avec distinction entre "event" et "no_event" via `haveEvent`
+        else if (categoriesList.contains("outings")) {
+            if (haveEvent) {
                 titleRes = R.string.onboarding_experience_event_title
                 contentRes = R.string.onboarding_experience_event_content
                 buttonTextRes = R.string.onboarding_experience_event_button
-                // Configurer la vue avec les ressources sélectionnées
-                binding.tvTitle.setText(titleRes)
-                binding.tvDescription.setText(contentRes)
-                binding.buttonStart.setText(buttonTextRes)
                 category = "event"
-                return
-            }
-            categoriesList.contains("outings") && !haveEvent -> {
+            } else {
                 titleRes = R.string.onboarding_no_event_title
                 contentRes = R.string.onboarding_no_event_content
                 buttonTextRes = R.string.onboarding_no_event_button
-                binding.tvTitle.setText(titleRes)
-                binding.tvDescription.setText(contentRes)
-                binding.buttonStart.setText(buttonTextRes)
                 category = "no_event"
-                return
             }
-            categoriesList.contains("resources") -> {
-                titleRes = R.string.onboarding_experience_resource_title
-                contentRes = R.string.onboarding_experience_resource_content
-                buttonTextRes = R.string.onboarding_experience_resource_button
-                binding.tvTitle.setText(titleRes)
-                binding.tvDescription.setText(contentRes)
-                binding.buttonStart.setText(buttonTextRes)
-                category = "resources"
-                return
-            }
-            categoriesList.contains("neighborhoods") -> {
-                titleRes = R.string.onboarding_ready_action_title
-                contentRes = R.string.onboarding_ready_action_content
-                buttonTextRes = R.string.onboarding_ready_action_button
-                binding.tvTitle.setText(titleRes)
-                binding.tvDescription.setText(contentRes)
-                binding.buttonStart.setText(buttonTextRes)
-                category = "neighborhoods"
-                return
-            }
+            binding.tvTitle.setText(titleRes)
+            binding.tvDescription.setText(contentRes)
+            binding.buttonStart.setText(buttonTextRes)
+        }
+        // Priorité 3 : Présence de "resources" dans la liste
+        else if (categoriesList.contains("resources")) {
+            titleRes = R.string.onboarding_experience_resource_title
+            contentRes = R.string.onboarding_experience_resource_content
+            buttonTextRes = R.string.onboarding_experience_resource_button
+            binding.tvTitle.setText(titleRes)
+            binding.tvDescription.setText(contentRes)
+            binding.buttonStart.setText(buttonTextRes)
+         }
+        // Priorité 4 : Présence de "neighborhoods" dans la liste
+        else if (categoriesList.contains("neighborhoods")) {
+            titleRes = R.string.onboarding_ready_action_title
+            contentRes = R.string.onboarding_ready_action_content
+            buttonTextRes = R.string.onboarding_ready_action_button
+            binding.tvTitle.setText(titleRes)
+            binding.tvDescription.setText(contentRes)
+            binding.buttonStart.setText(buttonTextRes)
+            category = "neighborhoods"
         }
     }
 }
