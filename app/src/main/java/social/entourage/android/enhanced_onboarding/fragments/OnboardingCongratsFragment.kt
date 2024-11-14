@@ -131,6 +131,7 @@ class OnboardingCongratsFragment: Fragment() {
             binding.tvTitle.setText(titleRes)
             binding.tvDescription.setText(contentRes)
             binding.buttonStart.setText(buttonTextRes)
+            category = "resources"
          }
         // Priorité 4 : Présence de "neighborhoods" dans la liste
         else if (categoriesList.contains("neighborhoods")) {
