@@ -16,6 +16,7 @@ import social.entourage.android.enhanced_onboarding.OnboardingViewModel
 import social.entourage.android.enhanced_onboarding.InterestForAdapter
 import social.entourage.android.main_filter.MainFilterActivity
 import social.entourage.android.tools.log.AnalyticsEvents
+import timber.log.Timber
 
 class OnboardingInterestFragment : Fragment() {
 
@@ -196,7 +197,13 @@ class OnboardingInterestFragment : Fragment() {
     }
     private fun onInterestClicked(interest: InterestForAdapter) {
         viewModel.updateInterest(interest)
-        MainFilterActivity.savedGroupInterestsFromOnboarding = viewModel.interests.value?.filter { it.isSelected }?.map { it.id }?.toMutableList() ?: mutableListOf()
+        if (interest.isSelected) {
+            // Si déjà sélectionné, on retire l'ID
+            MainFilterActivity.savedGroupInterestsFromOnboarding.remove(interest.id)
+        } else {
+            // Sinon, on ajoute l'ID
+            MainFilterActivity.savedGroupInterestsFromOnboarding.add(interest.id)
+        }
     }
 }
 
