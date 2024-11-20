@@ -658,6 +658,7 @@ object AnalyticsEvents {
 
     //NEW EVENT
     const val   View__Home = "View__Home"
+    const val   home_activate_firebase_message = "home_activate_firebase_message"
     const val   Action__Home__Notif = "Action__Home__Notif"
     const val   Action__Tab__Profil = "Action__Tab__Profil"
     const val   Action_Home_Demand_Detail = "Action_Home_Demand_Detail"

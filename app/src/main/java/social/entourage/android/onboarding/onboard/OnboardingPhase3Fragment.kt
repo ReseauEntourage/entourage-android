@@ -82,6 +82,7 @@ class OnboardingPhase3Fragment : Fragment(), OnboardingChoosePlaceCallback {
 
         changeSelections()
         AnalyticsEvents.logEvent(AnalyticsEvents.Onboard_profile)
+        EnhancedOnboarding.shouldNotDisplayCampain = true
     }
 
     override fun onAttach(context: Context) {

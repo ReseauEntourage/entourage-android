@@ -172,5 +172,6 @@ class EnhancedOnboarding : BaseActivity() {
     companion object {
         var preference: String = ""
         var isFromSettingsinterest: Boolean = false
+        var shouldNotDisplayCampain:Boolean = false
     }
 }
