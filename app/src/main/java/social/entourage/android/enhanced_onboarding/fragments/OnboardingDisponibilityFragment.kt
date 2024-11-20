@@ -34,11 +34,11 @@ class OnboardingDisponibilityFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setupChipGroups()
         binding.buttonConfigureLater.setOnClickListener {
-            AnalyticsEvents.logEvent(AnalyticsEvents.onboarding_disponibility_configure_later_click)
+            AnalyticsEvents.logEvent(AnalyticsEvents.onboarding_disponibility_configure_later_clic)
             viewModel.registerAndQuit()
         }
         binding.buttonNext.setOnClickListener {
-            AnalyticsEvents.logEvent(AnalyticsEvents.onboarding_disponibility_next_click)
+            AnalyticsEvents.logEvent(AnalyticsEvents.onboarding_disponibility_next_clic)
             viewModel.setOnboardingFifthStep(true)
         }
         binding.tvTitle.text = getString(R.string.enhanced_onboarding_time_disponibility_title)

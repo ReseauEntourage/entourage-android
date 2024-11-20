@@ -733,8 +733,8 @@ object AnalyticsEvents {
     const val onboarding_end_view = "onboarding_end_view"
 
     const val onboarding_disponibility_view = "onboarding_disponibility_view"
-    const val onboarding_disponibility_configure_later_click = "onboarding_disponibility_configure_later_click"
-    const val onboarding_disponibility_next_click = "onboarding_disponibility_next_click"
+    const val onboarding_disponibility_configure_later_clic = "onboarding_disponibility_configure_later_clic"
+    const val onboarding_disponibility_next_clic = "onboarding_disponibility_next_clic"
 
     const val has_user_activated_notif = "has_user_activated_notif"
     const val has_user_disabled_notif = "has_user_disabled_notif"
