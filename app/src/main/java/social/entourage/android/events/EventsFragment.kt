@@ -101,6 +101,7 @@ class EventsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setSearchAndFilterButtons()
         eventsPresenter = ViewModelProvider(requireActivity()).get(EventsPresenter::class.java)
+        showBubbleCase()
         createEvent()
         initializeTab()
         setPage()
@@ -119,7 +120,6 @@ class EventsFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        showBubbleCase()
         if (isFromDetails == true){
             isFromDetails = false
         }else{
@@ -206,6 +206,9 @@ class EventsFragment : Fragment() {
        if(MainActivity.shouldLaunchEvent == true){
             MainActivity.shouldLaunchEvent = false
             MainFilterActivity.savedGroupInterests = MainFilterActivity.savedGroupInterestsFromOnboarding
+           if(MainFilterActivity.savedGroupInterestsFromOnboarding.size > 0){
+               MainFilterActivity.hasFilter = true
+           }
            showCustomBubble(binding.uiLayoutFilter)
        }
     }

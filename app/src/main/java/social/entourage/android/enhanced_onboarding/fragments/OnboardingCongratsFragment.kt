@@ -19,6 +19,7 @@ import social.entourage.android.enhanced_onboarding.EnhancedOnboarding
 import social.entourage.android.enhanced_onboarding.OnboardingViewModel
 import social.entourage.android.events.EventsPresenter
 import social.entourage.android.events.list.EVENTS_PER_PAGE
+import social.entourage.android.main_filter.MainFilterActivity
 import social.entourage.android.tools.log.AnalyticsEvents
 import timber.log.Timber
 
@@ -58,8 +59,15 @@ class OnboardingCongratsFragment: Fragment() {
             viewModel.registerAndQuit(category)
         }
         eventsPresenter = ViewModelProvider(this).get(EventsPresenter::class.java)
-        eventsPresenter.getAllEvents.observe(requireActivity(), ::handleResponseGetEvents)
-        eventsPresenter.getAllEvents(0, EVENTS_PER_PAGE, currentFilters.travel_distance(),currentFilters.latitude(),currentFilters.longitude(),"future")
+        eventsPresenter.getFilteredEvents.observe(requireActivity(), ::handleResponseGetEvents)
+        eventsPresenter.getAllEventsWithFilter(
+            0,
+            EVENTS_PER_PAGE,
+            MainFilterActivity.savedGroupInterestsFromOnboarding.joinToString(","),
+            currentFilters.travel_distance(),
+            currentFilters.latitude(),
+            currentFilters.longitude(),
+            "future")
 
     }
     override fun onResume() {
