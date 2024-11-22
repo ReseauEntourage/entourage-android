@@ -27,9 +27,7 @@ import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
-import com.nmssalman.bubbleshowcasenew.BubbleShowCase
-import com.nmssalman.bubbleshowcasenew.BubbleShowCaseBuilder
-import com.nmssalman.bubbleshowcasenew.BubbleShowCaseListener
+
 import social.entourage.android.EntourageApplication
 import social.entourage.android.MainActivity
 import social.entourage.android.R
