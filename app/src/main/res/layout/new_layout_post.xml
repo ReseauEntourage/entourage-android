@@ -206,7 +206,7 @@ Nous sommes prêt pour les beaux jours ! :-)" />
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/layout_reactions"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="55dp"
                 android:layout_marginBottom="2dp"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/shape_layout_reactions"
