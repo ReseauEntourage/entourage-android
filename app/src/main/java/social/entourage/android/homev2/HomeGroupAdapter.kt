@@ -46,6 +46,7 @@ class HomeGroupAdapter: RecyclerView.Adapter<HomeGroupAdapter.GroupViewHolder>()
         val group = groups[position]
         holder.binding.layout.setOnClickListener {view ->
             AnalyticsEvents.logEvent(AnalyticsEvents.Action_Home_Group_Detail)
+            group.unreadPostsCount = 0
             holder.binding.cardNewsGroup.visibility = View.INVISIBLE
             (view.context as? Activity)?.startActivityForResult(
                 Intent(view.context, FeedActivity::class.java).putExtra(
