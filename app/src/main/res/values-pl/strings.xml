@@ -223,7 +223,7 @@ Przeczytają tę wiadomość, gdy tylko dołączą do grupy.</string>
     <string name="category_name_label">Opisz kategorię swojej grupy jednym słowem</string>
     <string name="pass">Przechodzić</string>
     <string name="create_post">Utwórz post</string>
-    <string name="create_event">Utwórz wydarzenie w grupie</string>
+    <string name="create_event">Utwórz wydarzenie</string>
     <string name="create_event_if_no_event">Utwórz wydarzenie</string>
     <string name="create_event_btn_title">Utwórz wydarzenie</string>
     <string name="group_success_title">Twoja grupa \n jest online!</string>

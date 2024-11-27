@@ -848,32 +848,34 @@ class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface,
 
 
     private fun createPost() {
+
         val speedDialView: SpeedDialView = binding.createPost
+
         speedDialView.addActionItem(
             SpeedDialActionItem.Builder(R.id.fab_create_event, R.drawable.ic_group_feed_two)
-                .setFabBackgroundColor(ContextCompat.getColor(requireContext(), R.color.orange))
-                .setFabImageTintColor(ContextCompat.getColor(requireContext(), R.color.white))
+                .setFabBackgroundColor(ContextCompat.getColor(requireContext(), R.color.white))
+                .setFabImageTintColor(ContextCompat.getColor(requireContext(), R.color.orange))
                 .setLabel(getString(R.string.create_event))
-                .setLabelColor(ContextCompat.getColor(requireContext(), R.color.white))
-                .setLabelBackgroundColor(ContextCompat.getColor(requireContext(), R.color.orange))
+                .setLabelColor(ContextCompat.getColor(requireContext(), R.color.orange))
+                .setLabelBackgroundColor(ContextCompat.getColor(requireContext(), R.color.white))
                 .create()
         )
         speedDialView.addActionItem(
             SpeedDialActionItem.Builder(R.id.fab_create_post, R.drawable.ic_group_feed_one)
-                .setFabBackgroundColor(ContextCompat.getColor(requireContext(), R.color.orange))
-                .setFabImageTintColor(ContextCompat.getColor(requireContext(), R.color.white))
+                .setFabBackgroundColor(ContextCompat.getColor(requireContext(), R.color.white))
+                .setFabImageTintColor(ContextCompat.getColor(requireContext(), R.color.orange))
                 .setLabel(getString(R.string.create_post))
-                .setLabelColor(ContextCompat.getColor(requireContext(), R.color.white))
-                .setLabelBackgroundColor(ContextCompat.getColor(requireContext(), R.color.orange))
+                .setLabelColor(ContextCompat.getColor(requireContext(), R.color.orange))
+                .setLabelBackgroundColor(ContextCompat.getColor(requireContext(), R.color.white))
                 .create()
         )
         speedDialView.addActionItem(
             SpeedDialActionItem.Builder(R.id.fab_create_survey, R.drawable.ic_survey_creation)
-                .setFabBackgroundColor(ContextCompat.getColor(requireContext(), R.color.orange))
-                .setFabImageTintColor(ContextCompat.getColor(requireContext(), R.color.white))
+                .setFabBackgroundColor(ContextCompat.getColor(requireContext(), R.color.white))
+                .setFabImageTintColor(ContextCompat.getColor(requireContext(), R.color.orange))
                 .setLabel(getString(R.string.create_survey))
-                .setLabelColor(ContextCompat.getColor(requireContext(), R.color.white))
-                .setLabelBackgroundColor(ContextCompat.getColor(requireContext(), R.color.orange))
+                .setLabelColor(ContextCompat.getColor(requireContext(), R.color.orange))
+                .setLabelBackgroundColor(ContextCompat.getColor(requireContext(), R.color.white))
                 .create()
         )
         speedDialView.setOnActionSelectedListener { actionItem ->
@@ -906,6 +908,17 @@ class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface,
                 else -> false
             }
         }
+        speedDialView.setOnChangeListener(object : SpeedDialView.OnChangeListener {
+            override fun onMainActionSelected(): Boolean {
+                // Vous pouvez ici ajouter une action sur le bouton principal
+                return false // Retourner false pour garder le comportement par défaut
+            }
+
+            override fun onToggleChanged(isOpen: Boolean) {
+                // Gérer la visibilité de l'overlayView
+                binding.overlayView.visibility = if (isOpen) View.VISIBLE else View.GONE
+            }
+        })
     }
     fun requestInAppReview(context: Context) {
         val manager = ReviewManagerFactory.create(context)

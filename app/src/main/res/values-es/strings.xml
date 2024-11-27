@@ -223,7 +223,7 @@ Leerán este mensaje tan pronto como se unan al grupo.</string>
     <string name="category_name_label">Describe la categoría de tu grupo en una palabra</string>
     <string name="pass">Gastar</string>
     <string name="create_post">Crear una publicación</string>
-    <string name="create_event">Crear un evento en el grupo</string>
+    <string name="create_event">Crear un evento</string>
     <string name="create_event_if_no_event">Crear un evento</string>
     <string name="create_event_btn_title">Crear un evento</string>
     <string name="group_success_title">¡Tu grupo \n está en línea!</string>

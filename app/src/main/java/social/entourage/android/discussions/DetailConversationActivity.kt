@@ -79,9 +79,19 @@ class DetailConversationActivity : CommentActivity() {
 
 
     private fun handleDetailConversation(conversation: Conversation?) {
+        for(message in conversation?.message!!){
+            message.userRole.let {
+                if(it?.contains("Équipe Entourage")!!){
+                    hasToShowFirstMessage = false
+                }
+            }
+        }
         titleName = conversation?.title
         binding.header.title = titleName
         val memberCount = conversation?.members?.size ?: 0
+        for(member in conversation?.members!!){
+
+        }
         if(memberCount > 2){
             this.hasSeveralpeople = true
             var title = ""
@@ -104,6 +114,7 @@ class DetailConversationActivity : CommentActivity() {
 
     fun checkAndShowPopWarning() {
         if (hasToShowFirstMessage) {
+            //TODO rule to makes it always gone
             binding.layoutInfoNewDiscussion.isVisible = true
             binding.uiIvCloseNew.setOnClickListener {
                 binding.layoutInfoNewDiscussion.visibility = View.GONE

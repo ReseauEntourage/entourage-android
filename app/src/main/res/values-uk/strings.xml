@@ -223,7 +223,7 @@
     <string name="category_name_label">Опишіть категорію своєї групи одним словом</string>
     <string name="pass">Пас</string>
     <string name="create_post">Створити пост</string>
-    <string name="create_event">Створіть подію в групі</string>
+    <string name="create_event">Створіть подію</string>
     <string name="create_event_if_no_event">Створіть подію</string>
     <string name="create_event_btn_title">Створіть подію</string>
     <string name="group_success_title">Ваша група \n онлайн!</string>

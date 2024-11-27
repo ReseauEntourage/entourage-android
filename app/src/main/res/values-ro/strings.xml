@@ -223,7 +223,7 @@ Ei vor citi acest mesaj imediat ce se vor alătura grupului.</string>
     <string name="category_name_label">Descrieți categoria grupului dvs. într-un singur cuvânt</string>
     <string name="pass">Trece</string>
     <string name="create_post">Creați o postare</string>
-    <string name="create_event">Creați un eveniment în grup</string>
+    <string name="create_event">Creați un eveniment</string>
     <string name="create_event_if_no_event">Creați un eveniment</string>
     <string name="create_event_btn_title">Creați un eveniment</string>
     <string name="group_success_title">Grupul dvs. \n este online!</string>

@@ -768,6 +768,7 @@ object AnalyticsEvents {
     const val user_have_notif_and_no_token = "user_have_notif_and_no_token"
     const val popup_biencommun = "popup_biencommun"
     const val popup_biencommun_vote = "popup_biencommun_vote"
+    const val add_to_calendar_yes_clicked = "add_to_calendar_yes_clicked"
 
 
     val TAG: String? = AnalyticsEvents::class.java.simpleName

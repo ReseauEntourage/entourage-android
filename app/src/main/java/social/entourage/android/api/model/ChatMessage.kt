@@ -18,7 +18,7 @@ class ChatMessage (var content: String) : TimestampedObject(), Serializable {
     var creationDate = Date()
 
     @Expose(serialize = false)
-    private val user: User? = null
+     private val user: User? = null
 
     @Expose(serialize = false, deserialize = false)
     var isMe = false
@@ -30,6 +30,9 @@ class ChatMessage (var content: String) : TimestampedObject(), Serializable {
 
     val userId: Int
         get() = user?.id ?: 0
+
+    val userRole: ArrayList<String>?
+        get() = user?.roles
 
     val userAvatarURL: String?
         get() = user?.avatarURL

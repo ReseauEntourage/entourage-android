@@ -194,7 +194,7 @@
     <string name="category_name_label">Describe your group category in one word</string>
     <string name="pass">Skip</string>
     <string name="create_post">Create a post</string>
-    <string name="create_event">Create an event on the group</string>
+    <string name="create_event">Create an event</string>
     <string name="create_event_if_no_event">Create event</string>
     <string name="create_event_btn_title">Create event</string>
     <string name="group_success_title">Your group is online!</string>
