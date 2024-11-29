@@ -12,17 +12,19 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
-        android:background="@drawable/new_rounded_background_interests"
+        android:background="@drawable/home_v2_item_event_tag_layout_shape"
         android:gravity="center"
         android:orientation="vertical"
         android:paddingHorizontal="15dp">
 
         <TextView
             android:id="@+id/content"
-            style="@style/profile_interest"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="5dp"
+            android:textColor="@color/orange"
+            android:textSize="13sp"
+            android:fontFamily="@font/quicksand_bold"
             android:text="@{label}" />
 
     </LinearLayout>
