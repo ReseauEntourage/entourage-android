@@ -6,10 +6,14 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.text.Spannable
+import android.text.SpannableStringBuilder
+import android.text.style.ForegroundColorSpan
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
@@ -44,6 +48,8 @@ import social.entourage.android.R
 import social.entourage.android.api.MetaDataRepository
 import social.entourage.android.api.model.EntourageUser
 import social.entourage.android.api.model.Group
+import social.entourage.android.api.model.GroupUtils
+import social.entourage.android.api.model.Interest
 import social.entourage.android.api.model.Post
 import social.entourage.android.api.model.Survey
 import social.entourage.android.api.model.Tags
@@ -70,8 +76,10 @@ import social.entourage.android.tools.image_viewer.ImageDialogActivity
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.CustomAlertDialog
+import social.entourage.android.tools.utils.CustomTypefaceSpan
 import social.entourage.android.tools.utils.Utils.enableCopyOnLongClick
 import social.entourage.android.tools.utils.px
+import timber.log.Timber
 import kotlin.math.abs
 
 
@@ -216,6 +224,141 @@ class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface,
         }
     }
 
+    private fun setupMoreTextView() {
+        val description = group?.description ?: return
+        val limit = 150
+        val isTruncated = description.length > limit
+        val truncatedText = if (isTruncated) description.substring(0, limit) else description
+        val spannable = SpannableStringBuilder()
+
+        val regularFont = ResourcesCompat.getFont(requireContext(), R.font.nunitosans_regular)
+        val boldFont = ResourcesCompat.getFont(requireContext(), R.font.quicksand_bold)
+
+        // Ajouter le texte (tronqué ou non) en gris avec police Nunitosans Regular
+        spannable.append(truncatedText)
+        spannable.setSpan(
+            ForegroundColorSpan(ContextCompat.getColor(requireContext(), R.color.grey)),
+            0,
+            truncatedText.length,
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+        spannable.setSpan(
+            CustomTypefaceSpan(regularFont),
+            0,
+            truncatedText.length,
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+
+        // Ajouter "Voir plus" en orange avec police Quicksand Bold
+        val seeMoreText = if (isTruncated) " Voir plus" else " Voir plus"
+        spannable.append(seeMoreText)
+        spannable.setSpan(
+            ForegroundColorSpan(ContextCompat.getColor(requireContext(), R.color.orange)),
+            spannable.length - seeMoreText.length,
+            spannable.length,
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+        spannable.setSpan(
+            CustomTypefaceSpan(boldFont),
+            spannable.length - seeMoreText.length,
+            spannable.length,
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+
+        binding.tvKnowMore.text = spannable
+        binding.tvKnowMore.visibility = View.VISIBLE
+
+        // Gérer le clic pour afficher/déplier le texte
+        binding.tvKnowMore.setOnClickListener {
+            AnalyticsEvents.logEvent(
+                AnalyticsEvents.ACTION_GROUP_FEED_MORE_DESCRIPTION
+            )
+            if (binding.tvKnowMore.tag == "expanded") {
+                // Réinitialiser au texte tronqué avec "Voir plus"
+                setupMoreTextView()
+                binding.tvKnowMore.tag = "collapsed"
+                binding.tagsContainer.visibility = View.GONE // Masquer les tags
+            } else {
+                // Afficher tout le texte avec "Voir moins"
+                val fullSpannable = SpannableStringBuilder(description)
+                fullSpannable.setSpan(
+                    ForegroundColorSpan(ContextCompat.getColor(requireContext(), R.color.grey)),
+                    0,
+                    description.length,
+                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                )
+                fullSpannable.setSpan(
+                    CustomTypefaceSpan(regularFont),
+                    0,
+                    description.length,
+                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                )
+
+                // Ajouter "Voir moins" à la fin
+                val seeLessText = " Voir moins"
+                fullSpannable.append(seeLessText)
+                fullSpannable.setSpan(
+                    ForegroundColorSpan(ContextCompat.getColor(requireContext(), R.color.orange)),
+                    fullSpannable.length - seeLessText.length,
+                    fullSpannable.length,
+                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                )
+                fullSpannable.setSpan(
+                    CustomTypefaceSpan(boldFont),
+                    fullSpannable.length - seeLessText.length,
+                    fullSpannable.length,
+                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                )
+
+                binding.tvKnowMore.text = fullSpannable
+                binding.tvKnowMore.tag = "expanded"
+                addTags() // Afficher les tags
+            }
+        }
+    }
+
+
+
+
+    private fun addTags() {
+        val interests = group?.interests ?: return
+        val context = requireContext()
+        val flexboxLayout = binding.tagsContainer
+        flexboxLayout.removeAllViews() // Nettoyer les tags existants
+        Timber.wtf("wtf interest $interests")
+        interests.forEach { interest ->
+            val tagView = LayoutInflater.from(context).inflate(R.layout.tag_item_layout, flexboxLayout, false)
+            val tagTextView = tagView.findViewById<TextView>(R.id.tv_tag_home_v2_event_item)
+            val tagImageView = tagView.findViewById<ImageView>(R.id.iv_tag_home_v2_event_item)
+
+            // Configure le texte et l'icône
+            tagTextView.text = GroupUtils.showTagTranslated(context, interest).replaceFirstChar { it.uppercaseChar() }
+            tagImageView.visibility = if (interest == "other") View.GONE else View.VISIBLE
+
+            when (interest) {
+                Interest.animals -> tagImageView.setImageResource(R.drawable.new_animals)
+                Interest.wellBeing -> tagImageView.setImageResource(R.drawable.new_wellbeing)
+                Interest.cooking -> tagImageView.setImageResource(R.drawable.new_cooking)
+                Interest.culture -> tagImageView.setImageResource(R.drawable.new_art)
+                Interest.games -> tagImageView.setImageResource(R.drawable.new_games)
+                Interest.nature -> tagImageView.setImageResource(R.drawable.new_nature)
+                Interest.sport -> tagImageView.setImageResource(R.drawable.new_sport)
+                Interest.activities -> tagImageView.setImageResource(R.drawable.new_drawing)
+                Interest.marauding -> tagImageView.setImageResource(R.drawable.new_encounters)
+                else -> tagImageView.setImageResource(R.drawable.new_others)
+            }
+
+            flexboxLayout.addView(tagView)
+        }
+        Timber.wtf("wtf tag addend : " + flexboxLayout.childCount)
+        Timber.wtf("wtf tag visibility : " + flexboxLayout.visibility)
+        Timber.wtf("wtf tag height : " + flexboxLayout.height)
+        flexboxLayout.visibility = View.VISIBLE
+    }
+
+
+
+
     private fun handleResponseGetGroupPosts(allPosts: MutableList<Post>?) {
         CoroutineScope(Dispatchers.Main).launch {
             binding.swipeRefresh.isRefreshing = false
@@ -346,7 +489,6 @@ class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface,
     }
 
     private fun updateView() {
-
         MetaDataRepository.metaData.observe(requireActivity(), ::handleMetaData)
         with(binding) {
             groupDescription.enableCopyOnLongClick(requireContext())
@@ -357,18 +499,17 @@ class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface,
                 group?.address?.displayAddress
             )
             initializeMembersPhotos()
+            more.visibility = View.VISIBLE
+            binding.btnShare.visibility = View.VISIBLE
+            join.visibility = View.GONE
+            toKnow.visibility = View.GONE
+            groupDescription.visibility = View.GONE
             if (group?.member == true) {
-                more.visibility = View.VISIBLE
                 join.visibility = View.GONE
-                toKnow.visibility = View.GONE
-                groupDescription.visibility = View.GONE
+
             } else {
                 join.visibility = View.VISIBLE
-                toKnow.visibility = View.VISIBLE
-                groupDescription.visibility = View.VISIBLE
-                groupDescription.text = group?.description
-                more.visibility = View.GONE
-                initializeInterests()
+
             }
             if (group?.futureEvents?.isEmpty() == true) {
                 binding.eventsLayoutEmptyState.visibility = View.VISIBLE
@@ -380,7 +521,6 @@ class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface,
             }
             binding.seeMoreEvents.isVisible = group?.futureEvents?.isNotEmpty() == true
             binding.arrowEvents.isVisible = group?.futureEvents?.isNotEmpty() == true
-
 
             Glide.with(requireActivity())
                 .load(group?.imageUrl)
@@ -394,12 +534,15 @@ class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface,
                 .error(R.drawable.new_group_illu)
                 .transform(CenterCrop(), RoundedCorners(8.px))
                 .into(groupImageToolbar)
-        }
 
+            // Appelle la méthode pour configurer "en savoir plus"
+            setupMoreTextView()
+        }
         updateButtonJoin()
         initializePosts()
         handleCreatePostButton()
     }
+
 
     private fun updateButtonJoin() {
         val isMember = group?.member == true
@@ -591,20 +734,6 @@ class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface,
         startActivity(intent)
     }
 
-    private fun initializeInterests() {
-        if (interestsList.isEmpty()) binding.interests.visibility = View.GONE
-        else {
-            binding.interests.visibility = View.VISIBLE
-            binding.interests.apply {
-                val layoutManagerFlex = FlexboxLayoutManager(context)
-                layoutManagerFlex.flexDirection = FlexDirection.ROW
-                layoutManagerFlex.justifyContent = JustifyContent.CENTER
-                layoutManager = layoutManagerFlex
-                adapter = InterestsAdapter(interestsList)
-            }
-        }
-    }
-
     private fun loadPosts() {
         page++
         groupPresenter.getGroupPosts(groupId, page, ITEM_PER_PAGE)
@@ -682,39 +811,7 @@ class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface,
         return "https://" + deepLinksHostName + "/app/neighborhoods/" + group?.uuid_v2
     }
     private fun handleAboutButton() {
-        binding.more.setOnClickListener {
-            AnalyticsEvents.logEvent(
-                AnalyticsEvents.ACTION_GROUP_FEED_MORE_DESCRIPTION
-            )
-            group?.let {
-                groupUI = GroupModel(
-                    groupId,
-                    it.name,
-                    it.nameTranslations,
-                    it.uuid_v2,
-                    it.members_count,
-                    it.address?.displayAddress,
-                    it.interests,
-                    it.description,
-                    it.descriptionTranslations,
-                    it.members,
-                    it.member,
-                    EntourageApplication.me(activity)?.id == it.admin?.id
-                )
-                val action = FeedFragmentDirections.actionGroupFeedToGroupAbout(groupUI)
-                findNavController().navigate(action)
-            }
-        }
         binding.btnShare.setOnClickListener {
-            AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_GROUPOPTION_SHARE)
-            val shareTitle = getString(R.string.share_title_group)
-            val shareIntent = Intent(Intent.ACTION_SEND).apply {
-                type = "text/plain"
-                putExtra(Intent.EXTRA_TEXT, shareTitle + "\n" + group?.name + ": " + "\n" + createShareUrl())
-            }
-            startActivity(Intent.createChooser(shareIntent, "Partager l'URL via"))
-        }
-        binding.bigBtnShare.setOnClickListener {
             AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_GROUPOPTION_SHARE)
             val shareTitle = getString(R.string.share_title_group)
             val shareIntent = Intent(Intent.ACTION_SEND).apply {
@@ -737,7 +834,6 @@ class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface,
                 )
             }
         }
-        binding.interests.adapter?.notifyDataSetChanged()
     }
 
     private fun onFragmentResult() {
@@ -853,29 +949,29 @@ class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface,
 
         speedDialView.addActionItem(
             SpeedDialActionItem.Builder(R.id.fab_create_event, R.drawable.ic_group_feed_two)
-                .setFabBackgroundColor(ContextCompat.getColor(requireContext(), R.color.white))
-                .setFabImageTintColor(ContextCompat.getColor(requireContext(), R.color.orange))
+                .setFabBackgroundColor(ContextCompat.getColor(requireContext(), R.color.orange))
+                .setFabImageTintColor(ContextCompat.getColor(requireContext(), R.color.white))
                 .setLabel(getString(R.string.create_event))
-                .setLabelColor(ContextCompat.getColor(requireContext(), R.color.orange))
-                .setLabelBackgroundColor(ContextCompat.getColor(requireContext(), R.color.white))
+                .setLabelColor(ContextCompat.getColor(requireContext(), R.color.white))
+                .setLabelBackgroundColor(ContextCompat.getColor(requireContext(), R.color.orange))
                 .create()
         )
         speedDialView.addActionItem(
             SpeedDialActionItem.Builder(R.id.fab_create_post, R.drawable.ic_group_feed_one)
-                .setFabBackgroundColor(ContextCompat.getColor(requireContext(), R.color.white))
-                .setFabImageTintColor(ContextCompat.getColor(requireContext(), R.color.orange))
+                .setFabBackgroundColor(ContextCompat.getColor(requireContext(), R.color.orange))
+                .setFabImageTintColor(ContextCompat.getColor(requireContext(), R.color.white))
                 .setLabel(getString(R.string.create_post))
-                .setLabelColor(ContextCompat.getColor(requireContext(), R.color.orange))
-                .setLabelBackgroundColor(ContextCompat.getColor(requireContext(), R.color.white))
+                .setLabelColor(ContextCompat.getColor(requireContext(), R.color.white))
+                .setLabelBackgroundColor(ContextCompat.getColor(requireContext(), R.color.orange))
                 .create()
         )
         speedDialView.addActionItem(
             SpeedDialActionItem.Builder(R.id.fab_create_survey, R.drawable.ic_survey_creation)
-                .setFabBackgroundColor(ContextCompat.getColor(requireContext(), R.color.white))
-                .setFabImageTintColor(ContextCompat.getColor(requireContext(), R.color.orange))
+                .setFabBackgroundColor(ContextCompat.getColor(requireContext(), R.color.orange))
+                .setFabImageTintColor(ContextCompat.getColor(requireContext(), R.color.white))
                 .setLabel(getString(R.string.create_survey))
-                .setLabelColor(ContextCompat.getColor(requireContext(), R.color.orange))
-                .setLabelBackgroundColor(ContextCompat.getColor(requireContext(), R.color.white))
+                .setLabelColor(ContextCompat.getColor(requireContext(), R.color.white))
+                .setLabelBackgroundColor(ContextCompat.getColor(requireContext(), R.color.orange))
                 .create()
         )
         speedDialView.setOnActionSelectedListener { actionItem ->
