@@ -27,24 +27,29 @@
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toTopOf="@+id/ui_button_about"
         app:layout_constraintTop_toBottomOf="@+id/ui_tv_title2">
-
-        <Button
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="46dp"
             android:id="@+id/ui_button_login"
-            style="@style/h2_orange"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:textSize="15sp"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:fontFamily="@font/nunitosans_bold"
+            android:text="@string/pre_onboard_choice_login"
+            android:textColor="@color/black"
+            android:background="@drawable/shape_button_v9_negative"
+            android:visibility="visible"
             android:layout_marginStart="32dp"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="8dp"
-            android:background="@drawable/new_bg_rounded_orange_opacity_50"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
-            android:text="@string/pre_onboard_choice_login"
-            android:textAllCaps="false"
-            android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ui_button_signup" />
+            app:layout_constraintTop_toBottomOf="@+id/ui_button_signup"
+            />
+
 
         <Button
             android:id="@+id/ui_button_signup"

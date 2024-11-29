@@ -72,19 +72,25 @@
         app:layout_constraintStart_toStartOf="@+id/ui_tv_title"
         app:layout_constraintTop_toBottomOf="@+id/ui_tv_title" />
 
-    <Button
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="46dp"
         android:id="@+id/ui_button_previous"
-        style="@style/h2_orange"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_weight="0.3"
-        android:background="@drawable/new_bg_rounded_orange_opacity_50"
+        android:gravity="center"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:textSize="15sp"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:fontFamily="@font/nunitosans_bold"
         android:text="@string/bt_previous"
-        android:textAllCaps="false"
+        android:textColor="@color/black"
+        android:background="@drawable/shape_button_v9_negative"
         android:visibility="visible"
+        android:layout_marginStart="32dp"
         app:layout_constraintBottom_toBottomOf="@+id/ui_button_next"
         app:layout_constraintStart_toStartOf="parent" />
+
 
     <Button
         android:id="@+id/ui_button_next"
