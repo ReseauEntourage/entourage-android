@@ -232,7 +232,7 @@ class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface,
         val spannable = SpannableStringBuilder()
 
         val regularFont = ResourcesCompat.getFont(requireContext(), R.font.nunitosans_regular)
-        val boldFont = ResourcesCompat.getFont(requireContext(), R.font.quicksand_bold)
+        val boldFont = ResourcesCompat.getFont(requireContext(), R.font.nunitosans_bold)
 
         // Ajouter le texte (tronqué ou non) en gris avec police Nunitosans Regular
         spannable.append(truncatedText)
@@ -249,8 +249,8 @@ class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface,
             Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
         )
 
-        // Ajouter "Voir plus" en orange avec police Quicksand Bold
-        val seeMoreText = if (isTruncated) " Voir plus" else " Voir plus"
+        // Ajouter "\nVoir plus" ou "\nVoir moins" en orange, souligné, avec police Nunitosans Bold
+        val seeMoreText = if (isTruncated) "\nVoir plus" else "\nVoir plus"
         spannable.append(seeMoreText)
         spannable.setSpan(
             ForegroundColorSpan(ContextCompat.getColor(requireContext(), R.color.orange)),
@@ -260,6 +260,12 @@ class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface,
         )
         spannable.setSpan(
             CustomTypefaceSpan(boldFont),
+            spannable.length - seeMoreText.length,
+            spannable.length,
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+        spannable.setSpan(
+            android.text.style.UnderlineSpan(),
             spannable.length - seeMoreText.length,
             spannable.length,
             Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
@@ -279,7 +285,7 @@ class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface,
                 binding.tvKnowMore.tag = "collapsed"
                 binding.tagsContainer.visibility = View.GONE // Masquer les tags
             } else {
-                // Afficher tout le texte avec "Voir moins"
+                // Afficher tout le texte avec "\nVoir moins"
                 val fullSpannable = SpannableStringBuilder(description)
                 fullSpannable.setSpan(
                     ForegroundColorSpan(ContextCompat.getColor(requireContext(), R.color.grey)),
@@ -294,8 +300,8 @@ class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface,
                     Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
                 )
 
-                // Ajouter "Voir moins" à la fin
-                val seeLessText = " Voir moins"
+                // Ajouter "\nVoir moins" à la fin
+                val seeLessText = "\nVoir moins"
                 fullSpannable.append(seeLessText)
                 fullSpannable.setSpan(
                     ForegroundColorSpan(ContextCompat.getColor(requireContext(), R.color.orange)),
@@ -305,6 +311,12 @@ class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface,
                 )
                 fullSpannable.setSpan(
                     CustomTypefaceSpan(boldFont),
+                    fullSpannable.length - seeLessText.length,
+                    fullSpannable.length,
+                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                )
+                fullSpannable.setSpan(
+                    android.text.style.UnderlineSpan(),
                     fullSpannable.length - seeLessText.length,
                     fullSpannable.length,
                     Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
