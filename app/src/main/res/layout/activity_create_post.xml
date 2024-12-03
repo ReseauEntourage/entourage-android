@@ -61,6 +61,7 @@
                         android:layout_marginTop="30dp"
                         android:backgroundTint="@color/light_orange_opacity_50"
                         android:hint="@string/write_your_message"
+                        android:inputType="textCapSentences"
                         android:maxLines="4"
                         android:paddingTop="0dp"
                         app:layout_constraintTop_toBottomOf="@id/group_message_welcome_title" />

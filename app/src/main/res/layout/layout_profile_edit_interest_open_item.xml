@@ -70,6 +70,7 @@
             style="@style/input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:inputType="textCapSentences"
             android:layout_marginStart="-4dp"
             android:layout_marginBottom="15dp"
             android:paddingTop="0dp"

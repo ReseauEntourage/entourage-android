@@ -63,6 +63,7 @@
                 android:layout_marginStart="-4dp"
                 android:paddingTop="0dp"
                 android:layout_marginTop="5dp"
+                android:inputType="textCapSentences"
                 android:backgroundTint="@color/light_orange_opacity_50"
                 android:hint="@{hint}"
                 tools:text="content" />

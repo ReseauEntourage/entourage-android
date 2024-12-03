@@ -243,6 +243,7 @@
                     android:backgroundTint="@color/light_orange_opacity_50"
                     android:paddingTop="0dp"
                     android:visibility="gone"
+                    android:inputType="textCapSentences"
                     app:layout_constraintHorizontal_weight="0.8"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
