@@ -43,7 +43,7 @@
                     android:drawablePadding="8dp"
                     android:hint="@string/discussion_settings_search"
                     android:imeOptions="actionSearch"
-                    android:inputType="text"
+                    android:inputType="textCapSentences"
                     android:paddingStart="16dp"
                     app:drawableStartCompat="@drawable/new_search" />
             </com.google.android.material.textfield.TextInputLayout>
