@@ -162,6 +162,8 @@ class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface,
             activity?.intent= Intent(activity, FeedActivity::class.java) // Réinitialise l'intent
 
         }
+        binding.createPost.close()
+        binding.overlayView.visibility = View.GONE
     }
 
 

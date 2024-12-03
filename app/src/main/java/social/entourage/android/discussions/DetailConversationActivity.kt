@@ -54,7 +54,6 @@ class DetailConversationActivity : CommentActivity() {
                     ), 0)
             }
         }
-        checkAndShowPopWarning()
 
         viewModel.detailConversation.observe(this, ::handleDetailConversation)
         viewModel.getDetailConversation(id)
@@ -86,6 +85,7 @@ class DetailConversationActivity : CommentActivity() {
                 }
             }
         }
+        checkAndShowPopWarning()
         titleName = conversation?.title
         binding.header.title = titleName
         val memberCount = conversation?.members?.size ?: 0
@@ -121,8 +121,6 @@ class DetailConversationActivity : CommentActivity() {
             }
         }
     }
-
-
 
     override fun addComment() {
         viewModel.addComment(id, comment)

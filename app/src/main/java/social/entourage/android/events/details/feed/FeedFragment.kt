@@ -155,6 +155,8 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
 
 
 
+
+
     private fun handleResponseGetEvent(getEvent: Events?) {
         getEvent?.let {
             event = it
@@ -577,7 +579,8 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
         oldPostsList.clear()
         allPostsList.clear()
         loadPosts()
-
+        binding.createPost.close()
+        binding.overlayView.visibility = View.GONE
     }
 
 
@@ -820,6 +823,17 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
                 else -> false
             }
         }
+        speedDialView.setOnChangeListener(object : SpeedDialView.OnChangeListener {
+            override fun onMainActionSelected(): Boolean {
+                // Vous pouvez ici ajouter une action sur le bouton principal
+                return false // Retourner false pour garder le comportement par défaut
+            }
+
+            override fun onToggleChanged(isOpen: Boolean) {
+                // Gérer la visibilité de l'overlayView
+                binding.overlayView.visibility = if (isOpen) View.VISIBLE else View.GONE
+            }
+        })
     }
 
     private fun handleMetaData(tags: Tags?) {
