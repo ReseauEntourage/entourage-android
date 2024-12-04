@@ -508,7 +508,7 @@ purus dui, aliquet cursus tellus a, dictum hen." />
                 android:minWidth="120dp"
                 android:paddingStart="16dp"
                 android:fontFamily="@font/quicksand_bold"
-                android:textSize="13sp"
+                android:textSize="15sp"
                 android:paddingEnd="16dp"
                 android:text="@string/action_detail_bt_cancel"
                 android:textAllCaps="false"
