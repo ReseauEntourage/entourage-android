@@ -120,7 +120,6 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
         } catch (e: ClassCastException) {
         }
     }
-
     private fun setupTranslationButton() {
         val sharedPrefs = requireActivity().getSharedPreferences(
             getString(R.string.preference_file_key), Context.MODE_PRIVATE
