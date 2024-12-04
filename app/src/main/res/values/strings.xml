@@ -2893,5 +2893,8 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="enhanced_onboarding_time_disponibility_btn_finish_later">Terminer plus tard</string>
     <string name="enhanced_onboarding_time_disponibility_btn_next">Suivant</string>
 
+    <string name="see_more">Voir plus</string>
+    <string name="see_less">Voir moins</string>
+
 </resources>
 

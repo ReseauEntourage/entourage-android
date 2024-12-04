@@ -166,7 +166,6 @@ class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface,
         binding.overlayView.visibility = View.GONE
     }
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
@@ -230,13 +229,12 @@ class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface,
         val description = group?.description ?: return
         val limit = 150
         val isTruncated = description.length > limit
-        val truncatedText = if (isTruncated) description.substring(0, limit) else description
+        val truncatedText = if (isTruncated) description.substring(0, limit) + "..." else description
         val spannable = SpannableStringBuilder()
 
         val regularFont = ResourcesCompat.getFont(requireContext(), R.font.nunitosans_regular)
-        val boldFont = ResourcesCompat.getFont(requireContext(), R.font.nunitosans_bold)
 
-        // Ajouter le texte (tronqué ou non) en gris avec police Nunitosans Regular
+        // Ajouter le texte tronqué ou complet en gris avec police Nunitosans Regular
         spannable.append(truncatedText)
         spannable.setSpan(
             ForegroundColorSpan(ContextCompat.getColor(requireContext(), R.color.grey)),
@@ -251,43 +249,13 @@ class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface,
             Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
         )
 
-        // Ajouter "\nVoir plus" ou "\nVoir moins" en orange, souligné, avec police Nunitosans Bold
-        val seeMoreText = if (isTruncated) "\nVoir plus" else "\nVoir plus"
-        spannable.append(seeMoreText)
-        spannable.setSpan(
-            ForegroundColorSpan(ContextCompat.getColor(requireContext(), R.color.orange)),
-            spannable.length - seeMoreText.length,
-            spannable.length,
-            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-        )
-        spannable.setSpan(
-            CustomTypefaceSpan(boldFont),
-            spannable.length - seeMoreText.length,
-            spannable.length,
-            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-        )
-        spannable.setSpan(
-            android.text.style.UnderlineSpan(),
-            spannable.length - seeMoreText.length,
-            spannable.length,
-            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-        )
-
         binding.tvKnowMore.text = spannable
         binding.tvKnowMore.visibility = View.VISIBLE
-
-        // Gérer le clic pour afficher/déplier le texte
-        binding.tvKnowMore.setOnClickListener {
-            AnalyticsEvents.logEvent(
-                AnalyticsEvents.ACTION_GROUP_FEED_MORE_DESCRIPTION
-            )
-            if (binding.tvKnowMore.tag == "expanded") {
-                // Réinitialiser au texte tronqué avec "Voir plus"
-                setupMoreTextView()
-                binding.tvKnowMore.tag = "collapsed"
-                binding.tagsContainer.visibility = View.GONE // Masquer les tags
-            } else {
-                // Afficher tout le texte avec "\nVoir moins"
+        binding.btnMoreDesc.paintFlags = binding.btnMoreDesc.paintFlags or android.graphics.Paint.UNDERLINE_TEXT_FLAG
+        binding.btnMoreDesc.setOnClickListener {
+            if (isTruncated && binding.tagsContainer.visibility == View.GONE) {
+                // Afficher tout le texte et les tags
+                binding.btnMoreDesc.text = getString(R.string.see_less)
                 val fullSpannable = SpannableStringBuilder(description)
                 fullSpannable.setSpan(
                     ForegroundColorSpan(ContextCompat.getColor(requireContext(), R.color.grey)),
@@ -302,38 +270,26 @@ class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface,
                     Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
                 )
 
-                // Ajouter "\nVoir moins" à la fin
-                val seeLessText = "\nVoir moins"
-                fullSpannable.append(seeLessText)
-                fullSpannable.setSpan(
-                    ForegroundColorSpan(ContextCompat.getColor(requireContext(), R.color.orange)),
-                    fullSpannable.length - seeLessText.length,
-                    fullSpannable.length,
-                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-                )
-                fullSpannable.setSpan(
-                    CustomTypefaceSpan(boldFont),
-                    fullSpannable.length - seeLessText.length,
-                    fullSpannable.length,
-                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-                )
-                fullSpannable.setSpan(
-                    android.text.style.UnderlineSpan(),
-                    fullSpannable.length - seeLessText.length,
-                    fullSpannable.length,
-                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-                )
-
                 binding.tvKnowMore.text = fullSpannable
-                binding.tvKnowMore.tag = "expanded"
                 addTags() // Afficher les tags
+                binding.tagsContainer.visibility = View.VISIBLE
+            } else {
+                // Revenir au texte tronqué et masquer les tags
+                binding.btnMoreDesc.text = getString(R.string.see_more)
+                binding.tvKnowMore.text = spannable
+                binding.tagsContainer.visibility = View.GONE
             }
         }
+
+
+        // Afficher les tags par défaut si le texte n'est pas tronqué
+        if (!isTruncated) {
+            binding.tagsContainer.visibility = View.VISIBLE
+            addTags()
+        } else {
+            binding.tagsContainer.visibility = View.GONE
+        }
     }
-
-
-
-
     private fun addTags() {
         val interests = group?.interests ?: return
         val context = requireContext()
@@ -361,7 +317,6 @@ class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface,
                 Interest.marauding -> tagImageView.setImageResource(R.drawable.new_encounters)
                 else -> tagImageView.setImageResource(R.drawable.new_others)
             }
-
             flexboxLayout.addView(tagView)
         }
         Timber.wtf("wtf tag addend : " + flexboxLayout.childCount)
