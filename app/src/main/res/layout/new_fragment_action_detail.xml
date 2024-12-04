@@ -197,6 +197,8 @@
                                     app:layout_constraintBottom_toBottomOf="parent"
                                     app:layout_constraintEnd_toEndOf="parent"
                                     app:layout_constraintTop_toTopOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    android:layout_marginStart="8dp"
                                     tools:text="Location" />
 
                                 <ImageView
@@ -210,7 +212,8 @@
                                     app:layout_constraintStart_toStartOf="parent"
                                     app:layout_constraintTop_toTopOf="parent"
                                     app:srcCompat="@drawable/ic_action_section_clothes"
-                                    app:tint="@color/orange" />
+                                    app:tint="@color/orange"
+                                    android:visibility="gone"/>
 
                             </androidx.constraintlayout.widget.ConstraintLayout>
                         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -242,9 +245,11 @@
                                     android:fontFamily="@font/quicksand_bold"
                                     android:textColor="@color/orange"
                                     android:textSize="13sp"
+                                    android:layout_marginStart="8dp"
                                     app:layout_constraintBottom_toBottomOf="parent"
                                     app:layout_constraintEnd_toEndOf="parent"
                                     app:layout_constraintTop_toTopOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
                                     tools:text="Location" />
 
                                 <ImageView
@@ -258,7 +263,8 @@
                                     app:layout_constraintStart_toStartOf="parent"
                                     app:layout_constraintTop_toTopOf="parent"
                                     app:srcCompat="@drawable/ic_action_section_clothes"
-                                    app:tint="@color/orange" />
+                                    app:tint="@color/orange"
+                                    android:visibility="gone"/>
 
                             </androidx.constraintlayout.widget.ConstraintLayout>
                         </androidx.constraintlayout.widget.ConstraintLayout>

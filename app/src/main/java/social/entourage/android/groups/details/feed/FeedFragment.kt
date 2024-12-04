@@ -347,7 +347,7 @@ class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface,
 
             // Configure le texte et l'icône
             tagTextView.text = GroupUtils.showTagTranslated(context, interest).replaceFirstChar { it.uppercaseChar() }
-            tagImageView.visibility = if (interest == "other") View.GONE else View.VISIBLE
+            tagImageView.visibility = if (interest == "other") View.GONE else View.GONE
 
             when (interest) {
                 Interest.animals -> tagImageView.setImageResource(R.drawable.new_animals)

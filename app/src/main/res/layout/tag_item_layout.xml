@@ -23,7 +23,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:tint="@color/orange"
         android:visibility="gone"
-        tools:src="@drawable/home_v2_second_help_item_illu" />
+        tools:src="@drawable/home_v2_second_help_item_illu"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
@@ -36,7 +36,7 @@
         android:layout_marginStart="@dimen/entourage_little_margin_five"
         android:layout_marginBottom="3dp"
         android:textColor="@color/orange"
-        android:textSize="13sp"
+        android:textSize="12sp"
         android:fontFamily="@font/quicksand_bold"
         tools:text="Sport"
         />
