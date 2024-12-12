@@ -9,9 +9,9 @@
     app:layout_constraintTop_toBottomOf="@+id/iv_event_item"
     app:layout_constraintStart_toStartOf="parent"
     android:layout_marginTop="@dimen/entourage_little_margin_top"
-    android:layout_marginStart="@dimen/entourage_little_margin_start"
-    android:paddingStart="4dp"
-    android:paddingEnd="4dp">
+    android:layout_marginStart="0dp"
+    android:paddingStart="0dp"
+    android:paddingEnd="0dp">
 
     <ImageView
         android:id="@+id/iv_tag_home_v2_event_item"

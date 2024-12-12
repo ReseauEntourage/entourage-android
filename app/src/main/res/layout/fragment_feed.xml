@@ -233,7 +233,7 @@
                                 android:id="@+id/tags_container"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:padding="4dp"
+                                android:padding="0dp"
                                 app:flexWrap="wrap"
                                 app:justifyContent="flex_start"
                                 app:layout_constraintTop_toBottomOf="@+id/tv_know_more"
