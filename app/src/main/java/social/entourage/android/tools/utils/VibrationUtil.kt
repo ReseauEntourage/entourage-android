@@ -8,7 +8,7 @@ import android.os.VibratorManager
 
 object VibrationUtil {
 
-    fun vibrate(context: Context, duration: Long = 50) {
+    fun vibrate(context: Context, duration: Long = 20) {
         val vibrator = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             // Pour Android 12 (API 31) et versions ultérieures
             val vibratorManager = context.getSystemService(Context.VIBRATOR_MANAGER_SERVICE) as VibratorManager

@@ -40,6 +40,7 @@ import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.setHyperlinkClickable
 import social.entourage.android.user.UserProfileActivity
 import social.entourage.android.tools.utils.Const
+import social.entourage.android.tools.utils.VibrationUtil
 import social.entourage.android.tools.utils.px
 import java.text.SimpleDateFormat
 
@@ -568,7 +569,7 @@ class PostAdapter(
 
 
                         binding.btnILike.setOnClickListener {
-
+                            VibrationUtil.vibrate(context)
                             val firstReactionType = MainActivity.reactionsList?.firstOrNull()
                             if(firstReactionType != null){
                                 AnalyticsEvents.logEvent(
