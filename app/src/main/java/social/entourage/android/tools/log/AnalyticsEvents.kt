@@ -449,6 +449,8 @@ object AnalyticsEvents {
     const val ACTION_GROUP_FEED_NEW_POST_ADD_PIC = "Action__GroupFeed__NewPost_AddPic"
     const val ACTION_GROUP_FEED_NEW_POST_VALIDATE_PIC = "Action__GroupFeed__NewPost_ValidatePic"
     const val ACTION_GROUP_FEED_NEW_POST_VALIDATE = "Action__GroupFeed__NewPost_Validate"
+    const val ACTION_GROUP_SEE_MORE_DESC = "Action__GroupFeed__SeeMoreDesc"
+
 
     //GROUPES - OPTIONS
 

@@ -232,7 +232,6 @@ class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface,
         val isTruncated = description.length > limit
         val truncatedText = if (isTruncated) description.substring(0, limit) + "..." else description
         val spannable = SpannableStringBuilder()
-
         val regularFont = ResourcesCompat.getFont(requireContext(), R.font.nunitosans_regular)
 
         // Ajouter le texte tronqué ou complet en gris avec police Nunitosans Regular
@@ -254,7 +253,9 @@ class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface,
         binding.tvKnowMore.visibility = View.VISIBLE
         binding.btnMoreDesc.paintFlags = binding.btnMoreDesc.paintFlags or android.graphics.Paint.UNDERLINE_TEXT_FLAG
         binding.btnMoreDesc.setOnClickListener {
-
+            AnalyticsEvents.logEvent(
+                AnalyticsEvents.ACTION_GROUP_SEE_MORE_DESC
+            )
             if (binding.tagsContainer.visibility == View.GONE) {
                 // Afficher tout le texte et les tags
                 binding.btnMoreDesc.text = getString(R.string.see_less)
@@ -281,6 +282,11 @@ class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface,
                 binding.tvKnowMore.text = spannable
                 binding.tagsContainer.visibility = View.GONE
             }
+        }
+        if(!isTruncated){
+            addTags()
+            binding.btnMoreDesc.visibility = View.GONE
+            binding.tagsContainer.visibility = View.VISIBLE
         }
     }
     private fun addTags() {
