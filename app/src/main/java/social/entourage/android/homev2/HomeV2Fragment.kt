@@ -63,6 +63,7 @@ import social.entourage.android.notifications.NotificationDemandActivity
 import social.entourage.android.notifications.PushNotificationManager
 import social.entourage.android.onboarding.onboard.OnboardingStartActivity
 import social.entourage.android.profile.ProfileActivity
+import social.entourage.android.profile.ProfileFullActivity
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.CustomAlertDialog
@@ -203,7 +204,7 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
             MainActivity.shouldLaunchProfile = false
             AnalyticsEvents.logEvent(AnalyticsEvents.Action__Tab__Profil)
             startActivityForResult(
-                Intent(context, ProfileActivity::class.java), 0
+                Intent(context, ProfileFullActivity::class.java), 0
             )
         }
         //testNotifDemandePage()
@@ -769,6 +770,7 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
             AnalyticsEvents.logEvent(AnalyticsEvents.Action__Tab__Profil)
             startActivityForResult(
                 Intent(context, ProfileActivity::class.java), 0
+                //Intent(context, ProfileFullActivity::class.java), 0
             )
         }
 

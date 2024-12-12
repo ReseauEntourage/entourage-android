@@ -71,8 +71,6 @@
             android:fontFamily="@font/quicksand_bold"
             tools:text="Sport"
             />
-
-        
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <TextView

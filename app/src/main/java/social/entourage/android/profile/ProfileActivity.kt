@@ -56,4 +56,5 @@ class ProfileActivity : BaseSecuredActivity(), AvatarUploadView {
         super.onStop()
         MainActivity.instance?.recreate()
     }
+
 }

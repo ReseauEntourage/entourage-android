@@ -671,7 +671,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
 
     <string name="action_member_since">Membre depuis %s</string>
     <string name="action_created_at_by">"Créé le %s par</string>
-    <string name="action_created_by">"Créé %s par</string>
+    <string name="action_created_by">"Créé le %s par</string>
     <string name="action_created_by_">"Créé par</string>
 
     <string name="atKm">%s, à %s km de moi</string>
@@ -2895,6 +2895,35 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
 
     <string name="see_more">Voir plus</string>
     <string name="see_less">Voir moins</string>
+
+
+    <!-- Profile Full Page  -->
+
+    <string name="preferences_section_title">Mes préférences</string>
+    <string name="preferences_interest_title">Mes centres d\'intérêt</string>
+    <string name="preferences_interest_subtitle">Jeux, Maraudes sociales, Sport</string>
+    <string name="preferences_action_title">Mes envies d\'agir</string>
+    <string name="preferences_action_subtitle">EntrAides (Temps de partage, Dons matériels), Événements, Groupes</string>
+    <string name="preferences_availability_title">Mes disponibilités</string>
+    <string name="preferences_availability_subtitle">Jours : Lundi, Mardi\nHoraires : Après-midi</string>
+
+    <!-- Section Paramètres -->
+    <string name="settings_section_title">Paramètres</string>
+    <string name="settings_language_title">Langue</string>
+    <string name="settings_language_subtitle">Français - traduction auto active</string>
+    <string name="settings_notifications_title">Notifications</string>
+    <string name="settings_notifications_subtitle">Activité(s) : message, groupe, événement, dons et service</string>
+    <string name="settings_help_title">Aide et à propos</string>
+    <string name="settings_help_subtitle">Charte éthique, FAQ, CGU, etc.</string>
+    <string name="settings_unblock_contacts_title">Débloquer des contacts</string>
+    <string name="settings_unblock_contacts_subtitle">Aucun contact bloqué</string>
+    <string name="settings_feedback_title">Suggestion sur l\'application ?</string>
+    <string name="settings_share_title">Partager l\'application</string>
+    <string name="settings_password_title">Changer de mot de passe</string>
+
+    <!-- Boutons -->
+    <string name="logout_button">Se déconnecter</string>
+    <string name="delete_account_button">Supprimer mon compte</string>
 
 </resources>
 

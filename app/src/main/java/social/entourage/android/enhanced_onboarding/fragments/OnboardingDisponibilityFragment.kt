@@ -61,6 +61,7 @@ class OnboardingDisponibilityFragment : Fragment() {
         )
 
         // Définir une map pour faire correspondre les créneaux horaires aux IDs de chips
+        
         val timeSlotChipMap = mapOf(
             "09:00-12:00" to binding.chipMorning,
             "14:00-18:00" to binding.chipAfternoon,

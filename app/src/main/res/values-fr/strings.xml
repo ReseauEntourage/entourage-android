@@ -666,7 +666,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
 
     <string name="action_member_since">Membre depuis %s</string>
     <string name="action_created_at_by">"Créé le %s par</string>
-    <string name="action_created_by">"Créé %s par</string>
+    <string name="action_created_by">"Créé le %s par</string>
     <string name="action_created_by_">"Créé par</string>
 
     <string name="atKm">%s, à %s km de moi</string>
