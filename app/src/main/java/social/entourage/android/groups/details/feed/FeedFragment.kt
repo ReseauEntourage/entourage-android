@@ -254,7 +254,8 @@ class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface,
         binding.tvKnowMore.visibility = View.VISIBLE
         binding.btnMoreDesc.paintFlags = binding.btnMoreDesc.paintFlags or android.graphics.Paint.UNDERLINE_TEXT_FLAG
         binding.btnMoreDesc.setOnClickListener {
-            if (isTruncated && binding.tagsContainer.visibility == View.GONE) {
+
+            if (binding.tagsContainer.visibility == View.GONE) {
                 // Afficher tout le texte et les tags
                 binding.btnMoreDesc.text = getString(R.string.see_less)
                 val fullSpannable = SpannableStringBuilder(description)
@@ -280,15 +281,6 @@ class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface,
                 binding.tvKnowMore.text = spannable
                 binding.tagsContainer.visibility = View.GONE
             }
-        }
-
-
-        // Afficher les tags par défaut si le texte n'est pas tronqué
-        if (!isTruncated) {
-            binding.tagsContainer.visibility = View.VISIBLE
-            addTags()
-        } else {
-            binding.tagsContainer.visibility = View.GONE
         }
     }
     private fun addTags() {
