@@ -4,6 +4,10 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Matrix
 import android.graphics.PorterDuff
+import android.os.Build
+import android.os.VibrationEffect
+import android.os.Vibrator
+import android.os.VibratorManager
 import android.text.SpannableString
 import android.text.Spanned
 import android.text.style.URLSpan
@@ -163,3 +167,4 @@ fun Action.displayDistance(context:Context):String{
         }
     return ""
 }
+

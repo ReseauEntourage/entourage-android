@@ -78,6 +78,7 @@ import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.CustomAlertDialog
 import social.entourage.android.tools.utils.CustomTypefaceSpan
 import social.entourage.android.tools.utils.Utils.enableCopyOnLongClick
+import social.entourage.android.tools.utils.VibrationUtil
 import social.entourage.android.tools.utils.px
 import timber.log.Timber
 import kotlin.math.abs
@@ -471,6 +472,7 @@ class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface,
             more.visibility = View.VISIBLE
             binding.btnShare.visibility = View.VISIBLE
             join.visibility = View.GONE
+            VibrationUtil.vibrate(requireContext())
             toKnow.visibility = View.GONE
             groupDescription.visibility = View.GONE
             if (group?.member == true) {
