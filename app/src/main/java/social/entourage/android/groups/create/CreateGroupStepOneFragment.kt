@@ -92,8 +92,6 @@ class CreateGroupStepOneFragment : Fragment(), UserEditActionZoneFragment.Fragme
                     getString(R.string.description_counter),
                     s.length.toString()
                 )
-                VibrationUtil.vibrate(requireContext())
-
             }
 
             override fun afterTextChanged(s: Editable) {}

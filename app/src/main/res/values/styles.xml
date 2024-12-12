@@ -435,6 +435,12 @@
         <item name="android:fontFamily">@font/nunitosans_bold</item>
         <item name="android:textColor">@color/orange</item>
     </style>
+    <style name="h3_orange">
+        <item name="android:textSize">@dimen/profile_description</item>
+        <item name="android:fontFamily">@font/quicksand_bold</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
 
     <style name="selected_filter">
         <item name="android:textSize">@dimen/profile_labels</item>

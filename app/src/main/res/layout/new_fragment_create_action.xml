@@ -70,7 +70,9 @@
 
             <Button
                 android:id="@+id/previous"
-                style="@style/h2_orange"
+                android:fontFamily="@font/quicksand_bold"
+                android:textColor="@color/black"
+                android:textSize="15sp"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.3"
