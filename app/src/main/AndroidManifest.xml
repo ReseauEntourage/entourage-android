@@ -277,6 +277,10 @@
             android:name=".profile.ProfileFullActivity"
             android:windowSoftInputMode="adjustPan" />
 
+        <activity
+            android:name=".profile.EditProfileActivity"
+            android:windowSoftInputMode="adjustPan" />
+
         <service
             android:name=".service.EntService"
             android:exported="false" />

@@ -182,7 +182,7 @@ class EditProfileFragment : Fragment(), EditProfileCallback,
     }
 
     private fun onEditActionZone() {
-        binding.cityAction.layout.setOnClickListener {
+        binding.cityAction.setOnClickListener {
             val action =
                 EditProfileFragmentDirections.actionEditProfileFragmentToEditActionZoneFragment(
                     false
@@ -219,7 +219,7 @@ class EditProfileFragment : Fragment(), EditProfileCallback,
                 configureTextViewForRTL(birthday.content, isArabic)
                 configureTextViewForRTL(phone.content, isArabic)
                 configureTextViewForRTL(email.content, isArabic)
-                configureTextViewForRTL(cityAction.content, isArabic)
+                configureTextViewForRTL(cityAction, isArabic)
                 configureTextViewForRTL(description.counter,isArabic)
                 firstname.content.setText(user.firstName)
                 lastname.content.setText(user.lastName)
@@ -244,7 +244,7 @@ class EditProfileFragment : Fragment(), EditProfileCallback,
                 )
                 phone.divider.visibility = View.GONE
                 email.content.setText(user.email)
-                cityAction.content.text = user.address?.displayAddress
+                cityAction.text = Editable.Factory.getInstance().newEditable(user.address?.displayAddress ?: "")
                 seekBarLayout.seekbar.progress = user.travelDistance ?: 0
                 validate.button.setOnClickListener { onSaveProfile() }
                 seekBarLayout.seekbar.post {

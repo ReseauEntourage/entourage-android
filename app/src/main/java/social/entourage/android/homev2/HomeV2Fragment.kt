@@ -769,8 +769,8 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
         binding.avatar.setOnClickListener {
             AnalyticsEvents.logEvent(AnalyticsEvents.Action__Tab__Profil)
             startActivityForResult(
-                Intent(context, ProfileActivity::class.java), 0
-                //Intent(context, ProfileFullActivity::class.java), 0
+                //Intent(context, ProfileActivity::class.java), 0
+                Intent(context, ProfileFullActivity::class.java), 0
             )
         }
 

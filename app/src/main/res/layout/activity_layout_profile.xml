@@ -36,6 +36,17 @@
         android:background="@color/transparent"
         android:elevation="2dp"
         />
+    <ImageView
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:id="@+id/btn_modify_photo_profile"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_profile"
+        app:layout_constraintEnd_toEndOf="@+id/iv_profile"
+        android:background="@color/transparent"
+        android:elevation="2dp"
+        android:src="@drawable/ic_modify_photo_profile_full"
+        android:layout_marginEnd="-15dp"
+        />
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -53,19 +64,20 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
             <TextView
+                android:id="@+id/tv_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/tv_name"
+                android:layout_marginTop="50dp"
                 android:fontFamily="@font/quicksand_bold"
-                android:textSize="15sp"
-                android:textColor="@color/black"
                 android:textAlignment="center"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                android:textColor="@color/black"
+                android:textSize="15sp"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginTop="85dp"
-                tools:text="Name"/>
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Name" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="wrap_content"
@@ -308,4 +320,12 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
 
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/container_fragment"
+        android:background="@color/white"
+        android:elevation="10dp"
+        android:visibility="gone"
+        />
 </androidx.constraintlayout.widget.ConstraintLayout>

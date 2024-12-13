@@ -123,7 +123,7 @@ class EnhancedOnboarding : BaseActivity() {
                 "resources" -> MainActivity.shouldLaunchQuizz = true
                 "neighborhoods" -> MainActivity.shouldLaunchWelcomeGroup = true
             }
-            if (isFromSettingsinterest) {
+            if (isFromSettingsinterest  || isFromSettingsDisponibility || isFromSettingsWishes) {
                 isFromSettingsinterest = false
                 MainActivity.shouldLaunchEvent = false
                 MainActivity.shouldLaunchProfile = true
@@ -143,7 +143,7 @@ class EnhancedOnboarding : BaseActivity() {
     override fun onResume() {
         super.onResume()
         binding.btnBack.setOnClickListener {
-            if (isFromSettingsinterest) {
+            if (isFromSettingsinterest || isFromSettingsDisponibility || isFromSettingsWishes) {
                 viewModel.registerAndQuit()
             } else {
                 viewModel.register()
@@ -157,6 +157,10 @@ class EnhancedOnboarding : BaseActivity() {
 
         if (isFromSettingsinterest) {
             viewModel.setOnboardingThirdStep(true)
+        }else if (isFromSettingsDisponibility) {
+            viewModel.onboardingDisponibilityStep.postValue(true)
+        }else if (isFromSettingsWishes) {
+            viewModel.setOnboardingSecondStep(true)
         } else {
             when (viewModel.step) {
                 1 -> viewModel.setOnboardingFirstStep(true)
@@ -172,6 +176,8 @@ class EnhancedOnboarding : BaseActivity() {
     companion object {
         var preference: String = ""
         var isFromSettingsinterest: Boolean = false
+        var isFromSettingsDisponibility: Boolean = false
+        var isFromSettingsWishes: Boolean = false
         var shouldNotDisplayCampain:Boolean = false
     }
 }
