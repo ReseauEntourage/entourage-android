@@ -15,6 +15,7 @@ class VideoCallActivity : AppCompatActivity() {
     private lateinit var firebaseDatabase: DatabaseReference
     private lateinit var eglBase: EglBase
     private var videoCapturer: VideoCapturer? = null
+    private var connectedUserId: String? = null
 
     private val ICE_SERVERS = listOf(
         PeerConnection.IceServer.builder("stun:stun.l.google.com:19302").createIceServer()
@@ -31,19 +32,20 @@ class VideoCallActivity : AppCompatActivity() {
         eglBase = EglBase.create()
         initializePeerConnectionFactory()
         initializeSurfaceViews()
+
+        // Initialiser Firebase
         initializeFirebase()
 
-        // **IMPORTANT : Initialiser peerConnection en premier**
-        setupPeerConnection()
-
-        // Ensuite démarrer la vidéo locale
-        startLocalVideo()
-
-        // Enfin écouter les messages et envoyer une offre
-        listenForRemoteMessages()
-        sendOffer()
+        // Trouver le premier utilisateur "alive" et établir une connexion
+        findAvailableUser { userId ->
+            if (userId != null) {
+                connectedUserId = userId
+                connectToUser(userId)
+            } else {
+                Log.d(TAG, "Aucun utilisateur disponible pour l'instant.")
+            }
+        }
     }
-
 
     private fun initializePeerConnectionFactory() {
         PeerConnectionFactory.initialize(
@@ -66,31 +68,73 @@ class VideoCallActivity : AppCompatActivity() {
     }
 
     private fun initializeFirebase() {
-        firebaseDatabase = FirebaseDatabase.getInstance().reference.child("signaling")
+        firebaseDatabase = FirebaseDatabase.getInstance().reference
+    }
+
+    private fun findAvailableUser(onUserFound: (String?) -> Unit) {
+        firebaseDatabase.child("users").addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                var availableUserId: String? = null
+                for (userSnapshot in snapshot.children) {
+                    val userId = userSnapshot.key ?: continue
+                    val isAlive = userSnapshot.child("isAlive").getValue(Boolean::class.java) ?: false
+                    val isBusy = userSnapshot.child("isBusy").getValue(Boolean::class.java) ?: true
+
+                    if (isAlive && !isBusy) {
+                        availableUserId = userId
+                        break
+                    }
+                }
+                onUserFound(availableUserId)
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Log.e(TAG, "Erreur lors de la recherche d'un utilisateur disponible : ${error.message}")
+                onUserFound(null)
+            }
+        })
+    }
+
+    private fun connectToUser(userId: String) {
+        markUserBusy(userId)
+
+        // Configurer la PeerConnection et démarrer la vidéo
+        setupPeerConnection()
+        startLocalVideo()
+
+        // Initialiser Firebase pour cet utilisateur spécifique
+        firebaseDatabase = FirebaseDatabase.getInstance().reference.child("signaling").child(userId)
+
+        // Écouter les messages et envoyer une offre
+        listenForRemoteMessages()
+        sendOffer()
+    }
+
+    private fun markUserBusy(userId: String) {
+        firebaseDatabase.child("users").child(userId).child("isBusy").setValue(true)
+    }
+
+    private fun releaseUser(userId: String) {
+        firebaseDatabase.child("users").child(userId).child("isBusy").setValue(false)
     }
 
     private fun startLocalVideo() {
         val surfaceTextureHelper = SurfaceTextureHelper.create("CaptureThread", eglBase.eglBaseContext)
         videoCapturer = createVideoCapturer()
 
-        // Créer la source vidéo
         val videoSource = peerConnectionFactory.createVideoSource(videoCapturer!!.isScreencast)
         videoCapturer?.initialize(surfaceTextureHelper, this, videoSource.capturerObserver)
         videoCapturer?.startCapture(640, 480, 30)
 
-        // Créer une piste vidéo
         val localVideoTrack = peerConnectionFactory.createVideoTrack("localVideoTrack", videoSource)
         localVideoTrack.addSink(binding.localView)
 
-        // Créer une source audio et une piste audio
         val audioSource = peerConnectionFactory.createAudioSource(MediaConstraints())
         val localAudioTrack = peerConnectionFactory.createAudioTrack("localAudioTrack", audioSource)
 
-        // Ajouter les pistes vidéo et audio à la PeerConnection
         peerConnection.addTrack(localVideoTrack, listOf("streamId"))
         peerConnection.addTrack(localAudioTrack, listOf("streamId"))
     }
-
 
     private fun setupPeerConnection() {
         val rtcConfig = PeerConnection.RTCConfiguration(ICE_SERVERS)
@@ -100,7 +144,18 @@ class VideoCallActivity : AppCompatActivity() {
                 sendIceCandidate(candidate)
             }
 
-            override fun onIceCandidatesRemoved(p0: Array<out IceCandidate>?) {}
+            override fun onIceCandidatesRemoved(p0: Array<out IceCandidate>?) {
+                
+            }
+
+            override fun onIceConnectionChange(state: PeerConnection.IceConnectionState) {
+                if (state == PeerConnection.IceConnectionState.FAILED ||
+                    state == PeerConnection.IceConnectionState.DISCONNECTED
+                ) {
+                    Log.d(TAG, "Connexion perdue, tentative de reconnexion...")
+                    attemptReconnect()
+                }
+            }
 
             override fun onAddStream(stream: MediaStream) {
                 runOnUiThread {
@@ -108,14 +163,19 @@ class VideoCallActivity : AppCompatActivity() {
                 }
             }
 
+            override fun onTrack(transceiver: RtpTransceiver) {
+                val remoteVideoTrack = transceiver.receiver.track() as? VideoTrack
+                runOnUiThread {
+                    remoteVideoTrack?.addSink(binding.remoteView)
+                }
+            }
+
             override fun onSignalingChange(state: PeerConnection.SignalingState) {}
-            override fun onIceConnectionChange(state: PeerConnection.IceConnectionState) {}
             override fun onIceConnectionReceivingChange(receiving: Boolean) {}
             override fun onIceGatheringChange(state: PeerConnection.IceGatheringState) {}
             override fun onRemoveStream(stream: MediaStream) {}
             override fun onDataChannel(channel: DataChannel) {}
             override fun onRenegotiationNeeded() {}
-            override fun onTrack(transceiver: RtpTransceiver) {}
         }
 
         peerConnection = peerConnectionFactory.createPeerConnection(rtcConfig, observer)!!
@@ -144,13 +204,13 @@ class VideoCallActivity : AppCompatActivity() {
                 offer?.let {
                     val sdp = SessionDescription(SessionDescription.Type.OFFER, it)
                     peerConnection.setRemoteDescription(object : SdpObserver {
-                        override fun onCreateSuccess(p0: SessionDescription?) {}
                         override fun onSetSuccess() {
                             sendAnswer()
                         }
 
+                        override fun onSetFailure(error: String?) {}
+                        override fun onCreateSuccess(p0: SessionDescription?) {}
                         override fun onCreateFailure(p0: String?) {}
-                        override fun onSetFailure(p0: String?) {}
                     }, sdp)
                 }
             }
@@ -187,6 +247,12 @@ class VideoCallActivity : AppCompatActivity() {
         } ?: throw IllegalStateException("No front-facing camera found")
     }
 
+    private fun attemptReconnect() {
+        peerConnection.restartIce()
+        sendOffer()
+        Log.d(TAG, "Tentative de reconnexion initiée.")
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         videoCapturer?.stopCapture()
@@ -194,5 +260,7 @@ class VideoCallActivity : AppCompatActivity() {
         binding.localView.release()
         binding.remoteView.release()
         eglBase.release()
+
+        connectedUserId?.let { releaseUser(it) }
     }
 }
