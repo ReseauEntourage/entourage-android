@@ -1,9 +1,17 @@
 package social.entourage.android.profile
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
+import android.animation.ValueAnimator
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.os.VibrationEffect
 import android.view.View
+import android.view.ViewGroup
+import android.widget.FrameLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import social.entourage.android.EntourageApplication
@@ -18,6 +26,7 @@ import social.entourage.android.tools.utils.VibrationUtil
 import social.entourage.android.user.UserPresenter
 import timber.log.Timber
 import java.text.SimpleDateFormat
+import kotlin.random.Random
 
 class ProfileFullActivity : BaseActivity() {
 
@@ -36,6 +45,7 @@ class ProfileFullActivity : BaseActivity() {
         setModifyButton()
         setScrollEffects()
         setBackButton()
+        setConfettiView()
         setContentView(binding.root)
     }
 
@@ -44,6 +54,12 @@ class ProfileFullActivity : BaseActivity() {
         userPresenter.user.observe(this, ::updateUser)
         updateUserView()
 
+    }
+
+    private fun setConfettiView() {
+        binding.layoutAchievement.setOnClickListener { view ->
+            showConfetti(view)
+        }
     }
 
     private fun updateUser(user:User){
@@ -215,6 +231,7 @@ class ProfileFullActivity : BaseActivity() {
 
             }
 
+
             // Icônes (toujours visibles dans cet exemple)
             binding.iconContrib.setImageResource(R.drawable.icon_navbar_groupe_inactif)
             binding.iconEvent.setImageResource(R.drawable.icon_navbar_calendrier_inactif)
@@ -295,4 +312,94 @@ class ProfileFullActivity : BaseActivity() {
             }
         }
     }
+
+    private fun showConfetti(view: View) {
+        // Récupérer le parent pour ajouter les confettis
+        val parentView = view.rootView as ViewGroup
+
+        // Définir la position initiale des confettis (autour du clic)
+        val location = IntArray(2)
+        view.getLocationOnScreen(location)
+        val x = location[0] + view.width / 2
+        val y = location[1] + view.height / 2
+
+        // Générer plusieurs petites vues
+        for (i in 0..100) {
+            val confetti = createConfettiView(view)
+            confetti.translationX = x.toFloat() + Random.nextInt(-50, 50)
+            confetti.translationY = y.toFloat() + Random.nextInt(-50, 50)
+            parentView.addView(confetti)
+
+            // Animer chaque confetti
+            animateConfetti(confetti, parentView)
+        }
+    }
+
+    private fun createConfettiView(view: View): View {
+        // Créer une petite vue colorée
+        val confetti = View(view.context)
+        confetti.layoutParams = FrameLayout.LayoutParams(20, 20)
+        confetti.setBackgroundColor(generateRandomColor())
+        return confetti
+    }
+
+    private fun generateRandomColor(): Int {
+        // Générer une couleur aléatoire
+        val colors = listOf(
+            Color.RED, Color.BLUE, Color.YELLOW, Color.GREEN, Color.MAGENTA, Color.CYAN
+        )
+        return colors.random()
+    }
+
+    private fun animateConfetti(confetti: View, parentView: ViewGroup) {
+        // Initial position
+        val startY = confetti.translationY
+        val startX = confetti.translationX
+
+        // Generate random explosion height
+        val peakY = startY - Random.nextInt(200, 500) // Upward burst
+        val peakX = startX + Random.nextInt(-200, 200) // Random horizontal spread
+
+        // Phase 1: Explosion upwards
+        val explosionAnimator = ValueAnimator.ofFloat(0f, 1f).apply {
+            duration = 400L // Explosion duration
+            addUpdateListener { animation ->
+                val progress = animation.animatedValue as Float
+                confetti.translationY = startY + (peakY - startY) * progress
+                confetti.translationX = startX + (peakX - startX) * progress
+            }
+        }
+
+        // Phase 2: Free fall
+        val endY = startY + Random.nextInt(300, 800) // Random fall
+        val endX = peakX + Random.nextInt(-200, 200) // Final spread
+
+        val fallAnimator = ValueAnimator.ofFloat(0f, 1f).apply {
+            duration = Random.nextLong(1000, 2000) // Fall duration
+            addUpdateListener { animation ->
+                val progress = animation.animatedValue as Float
+                confetti.translationY = peakY + (endY - peakY) * progress
+                confetti.translationX = peakX + (endX - peakX) * progress
+                confetti.alpha = 1 - progress // Fade out confetti
+            }
+        }
+
+        // Smooth transition: Explosion to fall
+        explosionAnimator.addListener(object : AnimatorListenerAdapter() {
+            override fun onAnimationEnd(animation: Animator) {
+                fallAnimator.start() // Start fall after explosion
+            }
+        })
+
+        // Remove confetti after fall
+        fallAnimator.addListener(object : AnimatorListenerAdapter() {
+            override fun onAnimationEnd(animation: Animator) {
+                parentView.removeView(confetti) // Remove view
+            }
+        })
+
+        // Start explosion
+        explosionAnimator.start()
+    }
+
 }

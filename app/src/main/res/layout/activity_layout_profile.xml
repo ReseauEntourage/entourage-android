@@ -173,7 +173,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/layout_achievement"
-                android:background="@color/beige"
+                android:background="@drawable/rounded_bcknd_beige_profile_achievement"
                 app:layout_constraintTop_toBottomOf="@+id/button_modify"
                 app:layout_constraintStart_toStartOf="parent"
                 android:padding="10dp"
