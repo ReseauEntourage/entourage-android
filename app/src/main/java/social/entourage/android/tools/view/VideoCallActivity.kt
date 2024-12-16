@@ -23,25 +23,24 @@ class VideoCallActivity : AppCompatActivity() {
     private var videoCapturer: VideoCapturer? = null
     private var connectedUserId: String? = null
 
+    // Identifiant local de l'utilisateur. On le déclare "hostUser" par exemple.
+    private val localUserId = "hostUser"
+
     private val ICE_SERVERS = listOf(
         PeerConnection.IceServer.builder("stun:stun.l.google.com:19302").createIceServer()
     )
 
-    private val TAG = "WebRTC"
     private val CAMERA_PERMISSION_REQUEST = 1001
-
     private val retryHandler = Handler(Looper.getMainLooper())
     private val retryInterval = 5000L // 5 secondes
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Initialiser ViewBinding
         binding = ActivityVideoCallBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        Timber.wtf("wtf onCreate - Vue initialisée")
+        Timber.wtf("onCreate - Vue initialisée")
 
-        // Vérifier les permissions
         if (!checkPermissions()) {
             requestPermissions()
         } else {
@@ -51,14 +50,28 @@ class VideoCallActivity : AppCompatActivity() {
 
     private fun initializeEverything() {
         eglBase = EglBase.create()
-        Timber.wtf("wtf EglBase initialisé")
+        Timber.wtf("EglBase initialisé")
 
         initializePeerConnectionFactory()
         initializeSurfaceViews()
         initializeFirebase()
 
-        // Démarrer la recherche utilisateur
-        startFindingUser()
+        setupPeerConnection()
+        startLocalVideo()
+        Timber.wtf("Capture vidéo locale et audio démarrées immédiatement")
+
+        // On déclare notre utilisateur local dans la base
+        firebaseDatabase.child("users").child(localUserId)
+            .setValue(mapOf("isAlive" to true, "isBusy" to false))
+            .addOnSuccessListener {
+                Timber.wtf("Utilisateur $localUserId créé/activé dans Firebase")
+
+                // Maintenant qu'on existe, on essaie de trouver un autre utilisateur
+                startFindingUser()
+            }
+            .addOnFailureListener { e ->
+                Timber.wtf("Échec de création d'utilisateur $localUserId : ${e.message}")
+            }
     }
 
     private fun checkPermissions(): Boolean {
@@ -83,9 +96,9 @@ class VideoCallActivity : AppCompatActivity() {
         if (requestCode == CAMERA_PERMISSION_REQUEST) {
             if (grantResults.all { it == PackageManager.PERMISSION_GRANTED }) {
                 initializeEverything()
-                Timber.wtf("wtf Permissions accordées")
+                Timber.wtf("Permissions accordées")
             } else {
-                Timber.wtf("wtf Permissions non accordées, impossible d'afficher la caméra")
+                Timber.wtf("Permissions non accordées, impossible d'afficher la caméra")
             }
         } else {
             super.onRequestPermissionsResult(requestCode, permissions, grantResults)
@@ -102,14 +115,14 @@ class VideoCallActivity : AppCompatActivity() {
             .setVideoEncoderFactory(
                 DefaultVideoEncoderFactory(
                     eglBase.eglBaseContext,
-                    /*enableIntelVp8Encoder=*/true,
-                    /*enableH264HighProfile=*/true
+                    true,
+                    true
                 )
             )
             .setVideoDecoderFactory(DefaultVideoDecoderFactory(eglBase.eglBaseContext))
             .createPeerConnectionFactory()
 
-        Timber.wtf("wtf PeerConnectionFactory initialisée")
+        Timber.wtf("PeerConnectionFactory initialisée")
     }
 
     private fun initializeSurfaceViews() {
@@ -123,25 +136,42 @@ class VideoCallActivity : AppCompatActivity() {
         binding.remoteView.setEnableHardwareScaler(true)
         binding.remoteView.setMirror(false)
 
-        Timber.wtf("wtf SurfaceViews initialisées")
+        Timber.wtf("SurfaceViews initialisées")
     }
 
     private fun initializeFirebase() {
         firebaseDatabase = FirebaseDatabase.getInstance().reference
-        Timber.wtf("wtf Référence Firebase initialisée")
+        Timber.wtf("Référence Firebase initialisée")
+
+        // Test d'écriture simple
+        firebaseDatabase.child("testWrite").setValue("HelloWorld")
+            .addOnSuccessListener { Timber.wtf("Écriture test réussie") }
+            .addOnFailureListener { e -> Timber.wtf("Échec écriture test : ${e.message}") }
     }
 
     private fun startFindingUser() {
         findAvailableUser { userId ->
             if (userId != null) {
-                Timber.wtf("wtf Utilisateur disponible trouvé : $userId")
+                // On a trouvé un autre utilisateur, on se connecte à lui
+                Timber.wtf("Utilisateur disponible trouvé : $userId")
                 connectedUserId = userId
                 connectToUser(userId)
             } else {
-                Timber.wtf("wtf Aucun utilisateur disponible, on réessaye dans 5 secondes...")
-                retryHandler.postDelayed({
-                    startFindingUser()
-                }, retryInterval)
+                // Aucun autre utilisateur trouvé. On est donc seul.
+                // On se met en "host" : c'est-à-dire qu'on reste dispo
+                // et on envoie une offre "dans le vide".
+                Timber.wtf("Aucun utilisateur disponible, on devient host (en attente d'un autre)")
+
+                // Ici on crée un noeud signaling avec notre propre userId
+                firebaseDatabase = firebaseDatabase.child("signaling").child(localUserId)
+                Timber.wtf("Référence Firebase pour signaling initialisée: ${firebaseDatabase.toString()}")
+
+                // On envoie une offre immédiatement. Ainsi, si quelqu'un se connecte plus tard,
+                // il recevra cette offre et pourra y répondre.
+                sendOffer()
+
+                // On écoute également les messages entrants au cas où quelqu'un répond.
+                listenForRemoteMessages()
             }
         }
     }
@@ -149,12 +179,20 @@ class VideoCallActivity : AppCompatActivity() {
     private fun findAvailableUser(onUserFound: (String?) -> Unit) {
         firebaseDatabase.child("users").addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
+                if (!snapshot.exists()) {
+                    Timber.wtf("Aucun noeud 'users' trouvé dans la base")
+                } else {
+                    Timber.wtf("Nombre d'utilisateurs trouvés : ${snapshot.childrenCount}")
+                }
+
                 var availableUserId: String? = null
                 for (userSnapshot in snapshot.children) {
                     val userId = userSnapshot.key ?: continue
+                    if (userId == localUserId) continue // On ignore nous-même
                     val isAlive = userSnapshot.child("isAlive").getValue(Boolean::class.java) ?: false
                     val isBusy = userSnapshot.child("isBusy").getValue(Boolean::class.java) ?: true
 
+                    Timber.wtf("Utilisateur $userId: isAlive=$isAlive, isBusy=$isBusy")
                     if (isAlive && !isBusy) {
                         availableUserId = userId
                         break
@@ -164,7 +202,7 @@ class VideoCallActivity : AppCompatActivity() {
             }
 
             override fun onCancelled(error: DatabaseError) {
-                Timber.wtf("wtf Erreur Firebase lors de la recherche d'utilisateur : ${error.message}")
+                Timber.wtf("Erreur Firebase lors de la recherche d'utilisateur : ${error.message}")
                 onUserFound(null)
             }
         })
@@ -172,16 +210,11 @@ class VideoCallActivity : AppCompatActivity() {
 
     private fun connectToUser(userId: String) {
         markUserBusy(userId)
-        Timber.wtf("wtf Marqué utilisateur $userId comme occupé")
+        Timber.wtf("Marqué utilisateur $userId comme occupé")
 
-        setupPeerConnection()
-        Timber.wtf("wtf PeerConnection configurée")
-
-        startLocalVideo()
-        Timber.wtf("wtf Capture vidéo locale démarrée")
-
-        firebaseDatabase = FirebaseDatabase.getInstance().reference.child("signaling").child(userId)
-        Timber.wtf("wtf Référence Firebase pour signaling initialisée")
+        // Maintenant qu'on s'est connecté à cet utilisateur, on passe sur son noeud signaling
+        firebaseDatabase = firebaseDatabase.child("signaling").child(userId)
+        Timber.wtf("Référence Firebase pour signaling initialisée: ${firebaseDatabase.toString()}")
 
         listenForRemoteMessages()
         sendOffer()
@@ -192,8 +225,11 @@ class VideoCallActivity : AppCompatActivity() {
         firebaseDatabase.child("offer").addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val offer = snapshot.value as String?
-                offer?.let {
-                    val sdp = SessionDescription(SessionDescription.Type.OFFER, it)
+                if (offer == null) {
+                    Timber.wtf("Aucune offre reçue")
+                } else {
+                    Timber.wtf("Offre reçue : $offer")
+                    val sdp = SessionDescription(SessionDescription.Type.OFFER, offer)
                     peerConnection?.setRemoteDescription(object : SdpObserver {
                         override fun onCreateSuccess(p0: SessionDescription?) {}
                         override fun onSetSuccess() {
@@ -206,7 +242,7 @@ class VideoCallActivity : AppCompatActivity() {
             }
 
             override fun onCancelled(error: DatabaseError) {
-                Timber.wtf("wtf Erreur lors de l'écoute des offres : ${error.message}")
+                Timber.wtf("Erreur lors de l'écoute des offres : ${error.message}")
             }
         })
 
@@ -214,8 +250,11 @@ class VideoCallActivity : AppCompatActivity() {
         firebaseDatabase.child("answer").addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val answer = snapshot.value as String?
-                answer?.let {
-                    val sdp = SessionDescription(SessionDescription.Type.ANSWER, it)
+                if (answer == null) {
+                    Timber.wtf("Aucune réponse reçue")
+                } else {
+                    Timber.wtf("Réponse reçue : $answer")
+                    val sdp = SessionDescription(SessionDescription.Type.ANSWER, answer)
                     peerConnection?.setRemoteDescription(object : SdpObserver {
                         override fun onCreateSuccess(p0: SessionDescription?) {}
                         override fun onSetSuccess() {
@@ -235,14 +274,21 @@ class VideoCallActivity : AppCompatActivity() {
         // Écoute des candidats ICE
         firebaseDatabase.child("iceCandidates").addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                val iceCandidateData = snapshot.value as? Map<String, Any> ?: return
-                val sdpMid = iceCandidateData["sdpMid"] as? String ?: return
-                val sdpMLineIndex = (iceCandidateData["sdpMLineIndex"] as? Long)?.toInt() ?: -1
-                val candidateStr = iceCandidateData["candidate"] as? String ?: return
+                if (!snapshot.exists()) {
+                    Timber.wtf("Aucun ICE candidate reçu")
+                    return
+                }
 
-                val candidate = IceCandidate(sdpMid, sdpMLineIndex, candidateStr)
-                peerConnection?.addIceCandidate(candidate)
-                Timber.wtf("Candidat ICE ajouté : ${candidate.sdp}")
+                for (child in snapshot.children) {
+                    val iceCandidateData = child.value as? Map<String, Any> ?: continue
+                    val sdpMid = iceCandidateData["sdpMid"] as? String ?: continue
+                    val sdpMLineIndex = (iceCandidateData["sdpMLineIndex"] as? Long)?.toInt() ?: -1
+                    val candidateStr = iceCandidateData["candidate"] as? String ?: continue
+
+                    val candidate = IceCandidate(sdpMid, sdpMLineIndex, candidateStr)
+                    peerConnection?.addIceCandidate(candidate)
+                    Timber.wtf("Candidat ICE ajouté : ${candidate.sdp}")
+                }
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -258,7 +304,12 @@ class VideoCallActivity : AppCompatActivity() {
                 peerConnection?.setLocalDescription(this, sessionDescription)
                 Timber.wtf("Réponse SDP créée et définie")
                 firebaseDatabase.child("answer").setValue(sessionDescription.description)
-                Timber.wtf("Réponse SDP envoyée : ${sessionDescription.description}")
+                    .addOnSuccessListener {
+                        Timber.wtf("Réponse SDP envoyée avec succès : ${sessionDescription.description}")
+                    }
+                    .addOnFailureListener { e ->
+                        Timber.wtf("Échec de l'envoi de la réponse SDP : ${e.message}")
+                    }
             }
 
             override fun onSetSuccess() {}
@@ -271,17 +322,29 @@ class VideoCallActivity : AppCompatActivity() {
     }
 
     private fun markUserBusy(userId: String) {
-        FirebaseDatabase.getInstance().reference.child("users").child(userId).child("isBusy").setValue(true)
-        Timber.wtf("Utilisateur $userId marqué comme occupé")
+        FirebaseDatabase.getInstance().reference
+            .child("users").child(userId).child("isBusy").setValue(true)
+            .addOnSuccessListener {
+                Timber.wtf("Utilisateur $userId marqué comme occupé (écriture réussie)")
+            }
+            .addOnFailureListener { e ->
+                Timber.wtf("Échec d'écriture isBusy=true pour $userId : ${e.message}")
+            }
     }
 
     private fun releaseUser(userId: String) {
-        FirebaseDatabase.getInstance().reference.child("users").child(userId).child("isBusy").setValue(false)
-        Timber.wtf("Utilisateur $userId libéré")
+        FirebaseDatabase.getInstance().reference
+            .child("users").child(userId).child("isBusy").setValue(false)
+            .addOnSuccessListener {
+                Timber.wtf("Utilisateur $userId libéré (écriture réussie)")
+            }
+            .addOnFailureListener { e ->
+                Timber.wtf("Échec d'écriture isBusy=false pour $userId : ${e.message}")
+            }
     }
 
     private fun startLocalVideo() {
-        Timber.wtf("Début de la capture vidéo locale")
+        Timber.wtf("Début de la capture vidéo locale et audio")
         val surfaceTextureHelper = SurfaceTextureHelper.create("CaptureThread", eglBase.eglBaseContext)
         videoCapturer = createVideoCapturer()
 
@@ -319,7 +382,12 @@ class VideoCallActivity : AppCompatActivity() {
             "candidate" to candidate.sdp
         )
         firebaseDatabase.child("iceCandidates").push().setValue(map)
-        Timber.wtf("Candidat ICE envoyé : ${candidate.sdp}")
+            .addOnSuccessListener {
+                Timber.wtf("Candidat ICE envoyé avec succès : ${candidate.sdp}")
+            }
+            .addOnFailureListener { e ->
+                Timber.wtf("Échec d'envoi ICE candidate : ${e.message}")
+            }
     }
 
     private fun setupPeerConnection() {
@@ -365,7 +433,12 @@ class VideoCallActivity : AppCompatActivity() {
             override fun onCreateSuccess(sessionDescription: SessionDescription) {
                 peerConnection?.setLocalDescription(this, sessionDescription)
                 firebaseDatabase.child("offer").setValue(sessionDescription.description)
-                Timber.wtf("Offre SDP envoyée : ${sessionDescription.description}")
+                    .addOnSuccessListener {
+                        Timber.wtf("Offre SDP envoyée avec succès : ${sessionDescription.description}")
+                    }
+                    .addOnFailureListener { e ->
+                        Timber.wtf("Échec de l'envoi de l'offre SDP : ${e.message}")
+                    }
             }
 
             override fun onSetSuccess() {}
@@ -384,7 +457,6 @@ class VideoCallActivity : AppCompatActivity() {
     }
 
     private fun createVideoCapturer(): VideoCapturer? {
-        // Utilisation de Camera1Enumerator pour une meilleure compatibilité
         val enumerator = Camera1Enumerator(false)
         for (deviceName in enumerator.deviceNames) {
             if (enumerator.isFrontFacing(deviceName)) {
