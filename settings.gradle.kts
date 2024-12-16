@@ -13,7 +13,10 @@ dependencyResolutionManagement {
         mavenCentral()
         gradlePluginPortal()
         maven( url="https://jitpack.io" )
+        maven(url = "https://github.com/jitsi/jitsi-maven-repository/raw/master/releases")
     }
 }
+
+
 
 include(":app")

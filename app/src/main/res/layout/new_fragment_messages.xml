@@ -36,6 +36,16 @@
                     android:fitsSystemWindows="true"
                     android:src="@drawable/new_top_icn_discussion" />
 
+                <Button
+                    android:layout_width="150dp"
+                    android:layout_height="50dp"
+                    android:id="@+id/button_call"
+                    android:text="Rejoindre la conversation"
+                    android:layout_gravity="end"
+                    android:background="@color/orange"
+                    android:textColor="@color/white"
+                    />
+
                 <androidx.appcompat.widget.Toolbar
                     android:id="@+id/toolbar"
                     android:layout_width="wrap_content"
