@@ -33,8 +33,6 @@ import kotlin.math.abs
 import android.provider.Settings
 import social.entourage.android.notifications.NotificationDemandActivity
 import android.graphics.Typeface
-import social.entourage.android.api.model.notification.InAppNotificationPermission
-import social.entourage.android.home.HomePresenter
 
 const val messagesPerPage = 25
 
@@ -44,7 +42,6 @@ class DiscussionsMainFragment : Fragment() {
     private var page: Int = 0
     private var _binding: NewFragmentMessagesBinding? = null
     val binding: NewFragmentMessagesBinding get() = _binding!!
-    private val homePresenter: HomePresenter by lazy { HomePresenter() }
 
     private var messagesList: MutableList<Conversation> = ArrayList()
 
@@ -67,9 +64,12 @@ class DiscussionsMainFragment : Fragment() {
         initializeRV()
         handleSwipeRefresh()
         discussionsPresenter.getAllMessages.observe(viewLifecycleOwner, ::handleResponseGetDiscussions)
+        checkNotificationsState()
+
         handleImageViewAnimation()
+
         discussionsPresenter.unreadMessages.observe(requireActivity(), ::updateUnreadCount)
-        homePresenter.notificationsPermission.observe(requireActivity(), ::updateNotifLayout)
+
         AnalyticsEvents.logEvent(AnalyticsEvents.Message_view)
     }
 
@@ -80,8 +80,6 @@ class DiscussionsMainFragment : Fragment() {
             RefreshController.shouldRefreshFragment = false
             isFromRefresh = true
         }
-        homePresenter.getNotificationsPermissions()
-
         discussionsPresenter.getUnreadCount()
         binding.buttonCall.setOnClickListener {
             val intent = Intent(requireContext(), VideoCallActivity::class.java)
@@ -95,26 +93,7 @@ class DiscussionsMainFragment : Fragment() {
         page = 0
     }
 
-    private fun updateNotifLayout(notifsPermissions: InAppNotificationPermission?) {
-        notifsPermissions?.let {
-            Timber.wtf("wtf notifsPermissions: ${notifsPermissions.isAllChecked()}")
-            if (!it.isAllChecked()) {
-                binding.layoutAskNotif.visibility = View.VISIBLE
-                binding.tvAskNotif.text = getString(R.string.notifications_disabled_message)
-                setStyledText()
-                binding.layoutAskNotif.setOnClickListener {
-                    val intent = Intent(requireContext(), NotificationDemandActivity::class.java)
-                    this.startActivity(intent)
-                }
-            } else {
-                binding.layoutAskNotif.visibility = View.GONE
-            }
-            checkNotificationsState(it.isAllChecked())
-        }
-
-    }
-
-    private fun checkNotificationsState(areBackNotifEabled:Boolean) {
+    private fun checkNotificationsState() {
         val notificationManager =
             requireContext().getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         val areNotificationsEnabled = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -126,7 +105,7 @@ class DiscussionsMainFragment : Fragment() {
             ) == 1
         }
 
-        if (!areNotificationsEnabled || !areBackNotifEabled) {
+        if (!areNotificationsEnabled) {
             binding.layoutAskNotif.visibility = View.VISIBLE
             binding.tvAskNotif.text = getString(R.string.notifications_disabled_message)
             setStyledText()

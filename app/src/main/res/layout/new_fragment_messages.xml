@@ -93,8 +93,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     android:layout_marginStart="25dp"
                     android:layout_marginEnd="20dp"
-                    android:layout_marginBottom="10dp"
-                    android:visibility="gone">
+                    android:layout_marginVertical="10dp">
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
