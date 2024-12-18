@@ -1,7 +1,14 @@
 package social.entourage.android.discussions
 
+import android.app.NotificationManager
+import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
+import android.text.SpannableString
+import android.text.Spanned
+import android.text.style.StyleSpan
+import android.text.style.UnderlineSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +19,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.appbar.AppBarLayout
 import social.entourage.android.EntourageApplication
+import social.entourage.android.R
 import social.entourage.android.databinding.NewFragmentMessagesBinding
 import social.entourage.android.RefreshController
 import social.entourage.android.home.CommunicationHandlerBadgeViewModel
@@ -22,6 +30,9 @@ import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.view.VideoCallActivity
 import timber.log.Timber
 import kotlin.math.abs
+import android.provider.Settings
+import social.entourage.android.notifications.NotificationDemandActivity
+import android.graphics.Typeface
 
 const val messagesPerPage = 25
 
@@ -53,6 +64,7 @@ class DiscussionsMainFragment : Fragment() {
         initializeRV()
         handleSwipeRefresh()
         discussionsPresenter.getAllMessages.observe(viewLifecycleOwner, ::handleResponseGetDiscussions)
+        checkNotificationsState()
 
         handleImageViewAnimation()
 
@@ -81,7 +93,48 @@ class DiscussionsMainFragment : Fragment() {
         page = 0
     }
 
+    private fun checkNotificationsState() {
+        val notificationManager =
+            requireContext().getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        val areNotificationsEnabled = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            notificationManager.areNotificationsEnabled()
+        } else {
+            Settings.Secure.getInt(
+                requireContext().contentResolver,
+                "notification_sound", 1
+            ) == 1
+        }
 
+        if (!areNotificationsEnabled) {
+            binding.layoutAskNotif.visibility = View.VISIBLE
+            binding.tvAskNotif.text = getString(R.string.notifications_disabled_message)
+            setStyledText()
+            binding.layoutAskNotif.setOnClickListener {
+                val intent = Intent(requireContext(), NotificationDemandActivity::class.java)
+                this.startActivity(intent)
+            }
+        } else {
+            binding.layoutAskNotif.visibility = View.GONE
+        }
+    }
+
+    private fun setStyledText() {
+        val fullText = getString(R.string.notifications_disabled_message)
+        val boldText = getString(R.string.enable_notifications)
+
+        val spannableString = SpannableString(fullText)
+        val startIndex = fullText.indexOf(boldText)
+        val endIndex = startIndex + boldText.length
+
+        if (startIndex != -1) {
+            // Style : souligné
+            spannableString.setSpan(UnderlineSpan(), startIndex, endIndex, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+            // Style : gras
+            spannableString.setSpan(StyleSpan(Typeface.BOLD), startIndex, endIndex, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        }
+
+        binding.tvAskNotif.text = spannableString
+    }
 
     private fun handleResponseGetDiscussions(allGroups: MutableList<Conversation>?) {
         allGroups?.let {
