@@ -161,6 +161,10 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
         getEvent?.let {
             event = it
             updateView()
+            if(shouldAddToAgenda){
+                shouldAddToAgenda = false
+                Utils.showAddToCalendarPopUp(requireContext(), it.toEventUi(requireContext()))
+            }
         }
         handleImageViewAnimation()
     }
@@ -991,5 +995,10 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
 
         }
         startActivity(intent)
+    }
+
+
+    companion object {
+        var shouldAddToAgenda = false
     }
 }

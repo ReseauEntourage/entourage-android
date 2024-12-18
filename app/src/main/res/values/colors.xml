@@ -130,6 +130,7 @@
     <color name="light_beige">#fffcfa</color>
     <color name="light_beige_96">#F5fffcfa</color>
     <color name="beige">#ffeadc</color>
+    <color name="beige_darker">#FFDEBB</color>
     <color name="beige_clair">#FFF5EB</color>
     <color name="orange">#FF9739</color>
     <color name="light_orange">#ff9c5d</color>

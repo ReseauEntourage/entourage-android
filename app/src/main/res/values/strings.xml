@@ -2924,6 +2924,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <!-- Boutons -->
     <string name="logout_button">Se déconnecter</string>
     <string name="delete_account_button">Supprimer mon compte</string>
-
+    <string name="notifications_disabled_message">Vos notifications sont désactivées.\nActivez-les pour ne rien manquer</string>
+    <string name="enable_notifications">Activez-les pour ne rien manquer</string>
 </resources>
 

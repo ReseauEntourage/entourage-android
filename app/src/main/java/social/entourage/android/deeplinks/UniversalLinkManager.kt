@@ -20,6 +20,7 @@ import social.entourage.android.api.model.Events
 import social.entourage.android.api.model.Group
 import social.entourage.android.comment.CommentActivity
 import social.entourage.android.discussions.DetailConversationActivity
+import social.entourage.android.events.details.feed.FeedFragment
 import social.entourage.android.groups.details.feed.FeedActivity
 import social.entourage.android.guide.GDSMainActivity
 import social.entourage.android.home.pedago.PedagoDetailActivity
@@ -95,6 +96,11 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
                     )
                 }*/
                 pathSegments.contains("outings") -> {
+                    if (pathSegments.size > 3) {
+                        val outingId = pathSegments[2]
+                        FeedFragment.shouldAddToAgenda = true
+                        presenter.getEvent(outingId)
+                    }
                     if (pathSegments.size > 2) {
                         val outingId = pathSegments[2]
                         presenter.getEvent(outingId)
