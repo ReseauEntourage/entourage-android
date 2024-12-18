@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.provider.CalendarContract
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -88,6 +89,7 @@ import com.google.android.play.core.review.ReviewManagerFactory
 import com.google.android.play.core.review.ReviewManager
 import com.google.android.play.core.review.testing.FakeReviewManager
 import timber.log.Timber
+import java.util.Calendar
 
 
 class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
@@ -163,7 +165,28 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
             updateView()
             if(shouldAddToAgenda){
                 shouldAddToAgenda = false
-                Utils.showAddToCalendarPopUp(requireContext(), it.toEventUi(requireContext()))
+                val startMillis: Long = Calendar.getInstance().run {
+                    time = it.metadata?.startsAt ?: time
+                    timeInMillis
+                }
+                val endMillis: Long = Calendar.getInstance().run {
+                    time = it.metadata?.endsAt ?: time
+                    timeInMillis
+                }
+                val intent = Intent(Intent.ACTION_INSERT)
+                    .setData(CalendarContract.Events.CONTENT_URI)
+                    .putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, startMillis)
+                    .putExtra(CalendarContract.EXTRA_EVENT_END_TIME, endMillis)
+                    .putExtra(CalendarContract.Events.TITLE, it.title)
+                    .putExtra(
+                        CalendarContract.Events.EVENT_LOCATION,
+                        it.metadata?.displayAddress
+                    )
+                    .putExtra(
+                        CalendarContract.Events.AVAILABILITY,
+                        CalendarContract.Events.AVAILABILITY_BUSY
+                    )
+                requireContext().startActivity(intent)
             }
         }
         handleImageViewAnimation()

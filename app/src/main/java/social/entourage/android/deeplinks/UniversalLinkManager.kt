@@ -101,7 +101,7 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
                         FeedFragment.shouldAddToAgenda = true
                         presenter.getEvent(outingId)
                     }
-                    if (pathSegments.size > 2) {
+                    else if (pathSegments.size > 2) {
                         val outingId = pathSegments[2]
                         presenter.getEvent(outingId)
 
@@ -207,10 +207,10 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
             Intent(
                 context,
                 social.entourage.android.events.details.feed.FeedActivity::class.java
-            ).putExtra(
-                Const.EVENT_ID,
-                event.id
-            ), 0
+            ).apply {
+                putExtra(Const.EVENT_ID, event.id)
+                addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+            }, 0
         )
     }
 
