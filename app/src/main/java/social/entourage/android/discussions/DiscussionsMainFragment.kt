@@ -60,16 +60,11 @@ class DiscussionsMainFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.progressBar.visibility = View.VISIBLE
-
         initializeRV()
         handleSwipeRefresh()
         discussionsPresenter.getAllMessages.observe(viewLifecycleOwner, ::handleResponseGetDiscussions)
-        checkNotificationsState()
-
         handleImageViewAnimation()
-
         discussionsPresenter.unreadMessages.observe(requireActivity(), ::updateUnreadCount)
-
         AnalyticsEvents.logEvent(AnalyticsEvents.Message_view)
     }
 
@@ -85,6 +80,8 @@ class DiscussionsMainFragment : Fragment() {
             val intent = Intent(requireContext(), VideoCallActivity::class.java)
             startActivity(intent)
         }
+        checkNotificationsState()
+
     }
 
     override fun onStop() {
