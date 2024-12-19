@@ -5,14 +5,17 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import social.entourage.android.R
 import social.entourage.android.databinding.TranslationBottomFragmentLayoutBinding
+import social.entourage.android.profile.settings.ProfilFullViewModel
 
 class TranslationBottomFragment: BottomSheetDialogFragment() {
 
     private lateinit var binding:TranslationBottomFragmentLayoutBinding
+    private lateinit var profilFullViewModel: ProfilFullViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -21,6 +24,7 @@ class TranslationBottomFragment: BottomSheetDialogFragment() {
     ): View? {
         binding = TranslationBottomFragmentLayoutBinding.inflate(layoutInflater)
         setStyle(STYLE_NORMAL, R.style.FullScreenDialog)
+        profilFullViewModel = ViewModelProvider(requireActivity()).get(ProfilFullViewModel::class.java)
         initView()
         return binding.root
     }
@@ -45,13 +49,11 @@ class TranslationBottomFragment: BottomSheetDialogFragment() {
         val isTranslatedByDefault = sharedPrefs.getBoolean("translatedByDefault", true)
         binding.switchTranslation.isChecked = isTranslatedByDefault
         binding.validate.setOnClickListener {
-            //Stock a boolean to know if the user want to translate all the app by default. On true, it will be translated.
-            binding.validate.setOnClickListener {
-                val editor = requireActivity().getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE).edit()
-                editor.putBoolean("translatedByDefault", binding.switchTranslation.isChecked)
-                editor.apply()
-                dismiss()
-            }
+            val editor = requireActivity().getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE).edit()
+            editor.putBoolean("translatedByDefault", binding.switchTranslation.isChecked)
+            editor.apply()
+            profilFullViewModel.updateProfile()
+            dismiss()
         }
         binding.iconCross.setOnClickListener {
             dismiss()

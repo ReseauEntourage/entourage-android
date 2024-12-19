@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.view.isVisible
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -19,6 +20,7 @@ class UnblockUsersFragment : BottomSheetDialogFragment() {
 
     private var _binding: NewFragmentUnblockUsersBinding? = null
     val binding: NewFragmentUnblockUsersBinding get() = _binding!!
+    private lateinit var profilFullViewModel: ProfilFullViewModel
 
     private val discussionsPresenter: DiscussionsPresenter by lazy { DiscussionsPresenter() }
 
@@ -35,6 +37,7 @@ class UnblockUsersFragment : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setStyle(STYLE_NORMAL, R.style.FullScreenBottomSheetDialog)
+        profilFullViewModel = ViewModelProvider(requireActivity()).get(ProfilFullViewModel::class.java)
         initializeRv()
         handleCloseButton()
         setValidateButton()
@@ -164,6 +167,7 @@ class UnblockUsersFragment : BottomSheetDialogFragment() {
 
     private fun handleCloseButton() {
         binding.header.iconCross.setOnClickListener {
+            profilFullViewModel.updateProfile()
             dismiss()
         }
     }

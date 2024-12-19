@@ -33,18 +33,22 @@ import social.entourage.android.home.HomePresenter
 import social.entourage.android.language.LanguageManager
 import social.entourage.android.profile.editProfile.EditPhotoActivity
 import social.entourage.android.profile.editProfile.EditProfileFragment
+import social.entourage.android.profile.settings.ProfilFullViewModel
 import social.entourage.android.tools.utils.VibrationUtil
 import social.entourage.android.user.UserPresenter
 import timber.log.Timber
 import java.text.SimpleDateFormat
 import kotlin.random.Random
 
-class ProfileFullActivity : BaseActivity() {
+
+
+class ProfileFullActivity : BaseActivity()  {
 
     private lateinit var binding: ActivityLayoutProfileBinding
     private lateinit var user: User
     private val userPresenter: UserPresenter by lazy { UserPresenter() }
     private val homePresenter: HomePresenter by lazy { HomePresenter() }
+    private lateinit var profilFullViewModel:ProfilFullViewModel
     private val discussionsPresenter: DiscussionsPresenter by lazy { DiscussionsPresenter() }
 
     var notifSubTitle = ""
@@ -53,11 +57,12 @@ class ProfileFullActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLayoutProfileBinding.inflate(layoutInflater)
+        profilFullViewModel = ViewModelProvider(this).get(ProfilFullViewModel::class.java)
         user = EntourageApplication.me(this) ?: return
         userPresenter.user.observe(this, ::updateUser)
         homePresenter.notificationsPermission.observe(this, ::updateNotifParam)
         discussionsPresenter.getBlockedUsers.observe(this,::handleResponseBlocked)
-
+        profilFullViewModel.hasToUpdate.observe(this, :: updateProfile)
         initializeStats()
         updateUserView()
         setButtonListeners()
@@ -70,6 +75,7 @@ class ProfileFullActivity : BaseActivity() {
 
     override fun onResume() {
         super.onResume()
+
         userPresenter.getUser(user.id)
         EnhancedOnboarding.isFromSettingsWishes = false
         EnhancedOnboarding.isFromSettingsDisponibility = false
@@ -121,6 +127,8 @@ class ProfileFullActivity : BaseActivity() {
     }
 
     private fun updateUser(user:User){
+        notifSubTitle = ""
+        notifBlocked = ""
         this.user = user
         discussionsPresenter.getBlockedUsers()
 
@@ -577,6 +585,9 @@ class ProfileFullActivity : BaseActivity() {
         explosionAnimator.start()
     }
 
-
-
+    fun updateProfile(hasToUpdate:Boolean){
+        if(hasToUpdate){
+            userPresenter.getUser(user.id)
+        }
+    }
 }

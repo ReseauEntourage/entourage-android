@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.app.NotificationManagerCompat
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import social.entourage.android.R
@@ -20,6 +21,7 @@ class SettingsNotificationsFragment : BottomSheetDialogFragment() {
 
     private var _binding: NewFragmentSettingsNotifsBinding? = null
     val binding: NewFragmentSettingsNotifsBinding get() = _binding!!
+    private lateinit var profilFullViewModel: ProfilFullViewModel
 
     private val homePresenter: HomePresenter by lazy { HomePresenter() }
     var notificationsPermission = MutableLiveData<InAppNotificationPermission?>()
@@ -36,6 +38,7 @@ class SettingsNotificationsFragment : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setStyle(STYLE_NORMAL, R.style.FullScreenBottomSheetDialog)
+        profilFullViewModel = ViewModelProvider(requireActivity()).get(ProfilFullViewModel::class.java)
         areNotificationsEnabled = areNotificationsEnabled(requireContext())
         populate()
         handleCloseButton()
@@ -72,6 +75,7 @@ class SettingsNotificationsFragment : BottomSheetDialogFragment() {
                 binding.uiSwitchNotifsAll.isChecked = it.isAllChecked()
             }
         }
+
     }
 
     private fun areNotificationsEnabled(context: Context): Boolean {
@@ -129,6 +133,7 @@ class SettingsNotificationsFragment : BottomSheetDialogFragment() {
             homePresenter.notificationsPermission.value?.outing = binding.uiSwitchNotifsEvents.isChecked
             homePresenter.notificationsPermission.value?.chat_message = binding.uiSwitchNotifsMessages.isChecked
             homePresenter.updateNotificationsPermissions()
+            profilFullViewModel.updateProfile()
             dismiss()
         }
     }
