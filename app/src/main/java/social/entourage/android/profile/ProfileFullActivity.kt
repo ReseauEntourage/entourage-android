@@ -239,8 +239,6 @@ class ProfileFullActivity : BaseActivity() {
             } else {
 
             }
-
-
             // Icônes (toujours visibles dans cet exemple)
             binding.iconContrib.setImageResource(R.drawable.icon_navbar_groupe_inactif)
             binding.iconEvent.setImageResource(R.drawable.icon_navbar_calendrier_inactif)
@@ -256,10 +254,13 @@ class ProfileFullActivity : BaseActivity() {
             }
             if(roles.contains("Ambassadeur")){
                 binding.tvTagHomeV2EventItem.text = getString(R.string.ambassador)
+                binding.ivAssoBadge.visibility = View.GONE
             }else if(roles.contains("Équipe Entourage")){
                 binding.tvTagHomeV2EventItem.text = user?.partner?.name
+                binding.ivAssoBadge.visibility = View.VISIBLE
             }else if(roles.contains("Association")){
                 binding.tvTagHomeV2EventItem.text = user.partner?.name
+                binding.ivAssoBadge.visibility = View.VISIBLE
             }
         }
         // Date d'inscription
@@ -331,6 +332,17 @@ class ProfileFullActivity : BaseActivity() {
                 } ?: run {
                     photoView.setImageResource(R.drawable.placeholder_user)
                 }
+            }
+            ivAssoBadge.let { photoView ->
+                val imgUrl = user.partner?.smallLogoUrl
+                Glide.with(binding.ivProfile)
+                    .load(imgUrl)
+                    .placeholder(R.drawable.placeholder_user)
+                    .error(R.drawable.placeholder_user)
+                    .circleCrop()
+                    .into(photoView)
+            } ?: run {
+                binding.ivProfile.setImageResource(R.drawable.placeholder_user)
             }
         }
     }

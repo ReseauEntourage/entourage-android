@@ -298,24 +298,22 @@ class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface,
         interests.forEach { interest ->
             val tagView = LayoutInflater.from(context).inflate(R.layout.tag_item_layout, flexboxLayout, false)
             val tagTextView = tagView.findViewById<TextView>(R.id.tv_tag_home_v2_event_item)
-            val tagImageView = tagView.findViewById<ImageView>(R.id.iv_tag_home_v2_event_item)
 
             // Configure le texte et l'icône
             tagTextView.text = GroupUtils.showTagTranslated(context, interest).replaceFirstChar { it.uppercaseChar() }
-            tagImageView.visibility = if (interest == "other") View.GONE else View.GONE
 
-            when (interest) {
-                Interest.animals -> tagImageView.setImageResource(R.drawable.new_animals)
-                Interest.wellBeing -> tagImageView.setImageResource(R.drawable.new_wellbeing)
-                Interest.cooking -> tagImageView.setImageResource(R.drawable.new_cooking)
-                Interest.culture -> tagImageView.setImageResource(R.drawable.new_art)
-                Interest.games -> tagImageView.setImageResource(R.drawable.new_games)
-                Interest.nature -> tagImageView.setImageResource(R.drawable.new_nature)
-                Interest.sport -> tagImageView.setImageResource(R.drawable.new_sport)
-                Interest.activities -> tagImageView.setImageResource(R.drawable.new_drawing)
-                Interest.marauding -> tagImageView.setImageResource(R.drawable.new_encounters)
-                else -> tagImageView.setImageResource(R.drawable.new_others)
-            }
+//            when (interest) {
+//                Interest.animals -> tagImageView.setImageResource(R.drawable.new_animals)
+//                Interest.wellBeing -> tagImageView.setImageResource(R.drawable.new_wellbeing)
+//                Interest.cooking -> tagImageView.setImageResource(R.drawable.new_cooking)
+//                Interest.culture -> tagImageView.setImageResource(R.drawable.new_art)
+//                Interest.games -> tagImageView.setImageResource(R.drawable.new_games)
+//                Interest.nature -> tagImageView.setImageResource(R.drawable.new_nature)
+//                Interest.sport -> tagImageView.setImageResource(R.drawable.new_sport)
+//                Interest.activities -> tagImageView.setImageResource(R.drawable.new_drawing)
+//                Interest.marauding -> tagImageView.setImageResource(R.drawable.new_encounters)
+//                else -> tagImageView.setImageResource(R.drawable.new_others)
+//            }
             flexboxLayout.addView(tagView)
         }
         Timber.wtf("wtf tag addend : " + flexboxLayout.childCount)
