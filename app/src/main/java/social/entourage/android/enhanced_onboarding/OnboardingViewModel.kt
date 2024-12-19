@@ -110,7 +110,6 @@ class OnboardingViewModel() : ViewModel() {
         }
         val request = ArrayMap<String, Any>()
         request["user"] = userMap
-
         val call = onboardingService.updateUser(request)
         call.enqueue(object : Callback<UserResponse> {
             override fun onResponse(call: Call<UserResponse>, response: Response<UserResponse>) {
