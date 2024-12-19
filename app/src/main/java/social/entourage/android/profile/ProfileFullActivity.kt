@@ -3,6 +3,7 @@ package social.entourage.android.profile
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.animation.ValueAnimator
+import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
@@ -259,6 +260,24 @@ class ProfileFullActivity : BaseActivity() {
                 subtitle = currentLanguageName
             )
         )
+
+        // Vérifier si la traduction automatique est activée
+        val sharedPrefs = getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE)
+        val isTranslatedByDefault = sharedPrefs.getBoolean("translatedByDefault", true)
+        val translationSubtitle = if (isTranslatedByDefault) {
+            getString(R.string.translation_auto_enabled)
+        } else {
+            getString(R.string.translation_auto_disabled)
+        }
+
+        items.add(
+            ProfileSectionItem.Item(
+                iconRes = R.drawable.ic_profile_language, // Utilisez la même icône que pour la langue
+                title = getString(R.string.translation_auto_title),
+                subtitle = translationSubtitle
+            )
+        )
+
 
         items.add(
             ProfileSectionItem.Item(

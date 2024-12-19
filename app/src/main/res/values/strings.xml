@@ -2938,5 +2938,12 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="notifications_messages">messages</string>
     <string name="no_notifications_active">aucune notification active</string>
 
+
+
+    <string name="translation_auto_title">Trad auto</string>
+    <string name="translation_auto_enabled">Activée</string>
+    <string name="translation_auto_disabled">Désactivée</string>
+
+
 </resources>
 

@@ -15,6 +15,7 @@ import social.entourage.android.databinding.SettingItemSeparatorBinding
 import social.entourage.android.databinding.SettingsItemUserSectionBinding
 import social.entourage.android.enhanced_onboarding.EnhancedOnboarding
 import social.entourage.android.language.LanguageBottomFragment
+import social.entourage.android.language.TranslationBottomFragment
 import social.entourage.android.tools.utils.CustomAlertDialog
 import social.entourage.android.tools.view.WebViewFragment
 import social.entourage.android.profile.editProfile.EditPasswordFragment
@@ -106,6 +107,9 @@ class SettingProfileFullAdapter(
                     context.getString(R.string.settings_language_title) -> {
                         LanguageBottomFragment.newInstance().show(parentFragmentManager, LanguageBottomFragment.TAG)
                     }
+                    context.getString(R.string.translation_auto_title) -> {
+                        TranslationBottomFragment.newInstance().show(parentFragmentManager, TranslationBottomFragment.TAG)
+                    }
                     context.getString(R.string.settings_notifications_title) -> {
                         SettingsNotificationsFragment.newInstance()
                             .show(parentFragmentManager, SettingsNotificationsFragment.TAG)
@@ -114,6 +118,7 @@ class SettingProfileFullAdapter(
                         WebViewFragment.newInstance(context.getString(R.string.url_app_suggest), 0, true)
                             .show(parentFragmentManager, WebViewFragment.TAG)
                     }
+
                     context.getString(R.string.settings_password_title) -> {
                         EditPasswordFragment().show(parentFragmentManager, EditPasswordFragment.TAG)
                     }
