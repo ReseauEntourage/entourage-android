@@ -21,6 +21,7 @@ import social.entourage.android.profile.editProfile.EditPasswordFragment
 import social.entourage.android.profile.settings.HelpAboutFragment
 import social.entourage.android.profile.settings.SettingsNotificationsFragment
 import social.entourage.android.profile.settings.UnblockUsersFragment
+import social.entourage.android.tools.utils.VibrationUtil
 
 class SettingProfileFullAdapter(
     private val items: List<ProfileSectionItem>,
@@ -95,6 +96,7 @@ class SettingProfileFullAdapter(
 
             // Handle Clicks
             binding.root.setOnClickListener {
+                VibrationUtil.vibrate(context)
                 when (item.title) {
                     context.getString(R.string.settings_language_title) -> {
                         LanguageBottomFragment.newInstance().show(parentFragmentManager, LanguageBottomFragment.TAG)

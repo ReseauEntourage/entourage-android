@@ -247,7 +247,12 @@ class ProfileFullActivity : BaseActivity() {
         // Rôles
         user?.roles?.let { roles ->
             Timber.wtf("wtf roles $roles")
-            binding.tvTagHomeV2EventItem.visibility = if (roles.contains("Ambassadeur") || roles.contains("Équipe Entourage") || roles.contains("Association")) {
+            binding.tagUser.visibility = if (roles.contains("Ambassadeur") || roles.contains("Équipe Entourage") || roles.contains("Association")) {
+                View.VISIBLE
+            } else {
+                View.GONE
+            }
+            binding.ivAssoBadge.visibility = if (roles.contains("Équipe Entourage") || roles.contains("Association")) {
                 View.VISIBLE
             } else {
                 View.GONE
