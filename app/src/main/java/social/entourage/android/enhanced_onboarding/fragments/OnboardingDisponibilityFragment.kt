@@ -14,6 +14,7 @@ import com.google.android.material.chip.ChipGroup
 import social.entourage.android.R
 import social.entourage.android.api.model.User
 import social.entourage.android.databinding.FragmentEnhancedOnboardingTimeDisponibilityLayoutBinding
+import social.entourage.android.enhanced_onboarding.EnhancedOnboarding
 import social.entourage.android.enhanced_onboarding.OnboardingViewModel
 import social.entourage.android.tools.log.AnalyticsEvents
 import timber.log.Timber
@@ -39,13 +40,16 @@ class OnboardingDisponibilityFragment : Fragment() {
         }
         binding.buttonNext.setOnClickListener {
             AnalyticsEvents.logEvent(AnalyticsEvents.onboarding_disponibility_next_clic)
-            viewModel.setOnboardingFifthStep(true)
+            if(EnhancedOnboarding.isFromSettingsDisponibility) {
+                viewModel.registerAndQuit()
+            }else{
+                viewModel.setOnboardingFifthStep(true)
+            }
         }
         binding.tvTitle.text = getString(R.string.enhanced_onboarding_time_disponibility_title)
         binding.tvDescription.text = getString(R.string.enhanced_onboarding_time_disponibility_description)
-        if(viewModel.user != null){
-            populateAvailability(viewModel.user!!)
-        }
+
+
     }
 
     private fun populateAvailability(user: User) {
@@ -131,13 +135,16 @@ class OnboardingDisponibilityFragment : Fragment() {
         }
     }
 
-
-
-
-
-
     override fun onResume() {
         super.onResume()
         viewModel.toggleBtnBack(true)
+        if(EnhancedOnboarding.isFromSettingsDisponibility) {
+            binding.buttonNext.text = getString(R.string.onboarding_btn_register)
+        }else{
+            binding.buttonNext.text = getString(R.string.onboarding_btn_next)
+        }
+        if(viewModel.user != null){
+            populateAvailability(viewModel.user!!)
+        }
     }
 }

@@ -13,6 +13,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import social.entourage.android.EntourageApplication
@@ -20,6 +21,8 @@ import social.entourage.android.R
 import social.entourage.android.api.model.User
 import social.entourage.android.base.BaseActivity
 import social.entourage.android.databinding.ActivityLayoutProfileBinding
+import social.entourage.android.enhanced_onboarding.EnhancedOnboarding
+import social.entourage.android.enhanced_onboarding.OnboardingViewModel
 import social.entourage.android.language.LanguageManager
 import social.entourage.android.profile.editProfile.EditPhotoActivity
 import social.entourage.android.profile.editProfile.EditProfileFragment
@@ -54,6 +57,9 @@ class ProfileFullActivity : BaseActivity() {
     override fun onResume() {
         super.onResume()
         userPresenter.getUser(user.id)
+        EnhancedOnboarding.isFromSettingsWishes = false
+        EnhancedOnboarding.isFromSettingsDisponibility = false
+        EnhancedOnboarding.isFromSettingsinterest = false
 
     }
 
@@ -417,5 +423,7 @@ class ProfileFullActivity : BaseActivity() {
         // Start explosion
         explosionAnimator.start()
     }
+
+
 
 }

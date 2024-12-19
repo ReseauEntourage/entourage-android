@@ -41,7 +41,12 @@ class OnboardingInterestFragment : Fragment() {
         }
         binding.buttonStart.setOnClickListener {
             AnalyticsEvents.logEvent(AnalyticsEvents.onboarding_interests_next_clic)
-            viewModel.setOnboardingFourthStep(true)}
+            if(EnhancedOnboarding.isFromSettingsinterest) {
+                viewModel.registerAndQuit()
+            }else{
+                viewModel.setOnboardingFourthStep(true)
+            }
+        }
         binding.tvTitle.text = getString(R.string.onboarding_interest_title)
         binding.tvDescription.text = getString(R.string.onboarding_interest_content)
         binding.parentNestedScrollView.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
@@ -60,6 +65,7 @@ class OnboardingInterestFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
+        loadAndSendInterests()
         viewModel.toggleBtnBack(true)
     }
 
@@ -71,6 +77,7 @@ class OnboardingInterestFragment : Fragment() {
 
     private fun loadAndSendInterests() {
         val user = viewModel.user
+        Timber.wtf("wtf" + user?.interests)
         val interests = listOf(
             user?.interests?.contains("sport")?.let {
                 InterestForAdapter(

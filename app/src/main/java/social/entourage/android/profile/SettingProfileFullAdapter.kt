@@ -82,6 +82,9 @@ class SettingProfileFullAdapter(
             binding.tvTitleUserSection.text = item.title
             binding.tvSubtitleUserSection.text = item.subtitle
             binding.ivArrowUserSection.setImageResource(R.drawable.arrow_right_orange)
+            if(item.subtitle == "") {
+                binding.tvSubtitleUserSection.visibility = android.view.View.GONE
+            }
 
             //Deconnexion et suppression en orange
             if (item.title == context.getString(R.string.delete_account_button) || item.title == context.getString(R.string.logout_button)) {
@@ -153,6 +156,15 @@ class SettingProfileFullAdapter(
                         val intent = Intent(context, EnhancedOnboarding::class.java)
                         context.startActivity(intent)
 
+                    }
+                    //share
+                    context.getString(R.string.settings_share_title) -> {
+                        val intent = Intent(Intent.ACTION_SEND)
+                        val msgBody = context.getString(R.string.share_app)
+                        intent.putExtra(Intent.EXTRA_TEXT, msgBody)
+                        intent.type = "text/plain"
+                        val shareIntent = Intent.createChooser(intent, null)
+                        context.startActivity(shareIntent)
                     }
 
                     else -> {

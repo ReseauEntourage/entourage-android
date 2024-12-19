@@ -69,6 +69,7 @@ class OnboardingViewModel() : ViewModel() {
         user?.concerns = ArrayList(updatedConcerns)
         user?.involvements = ArrayList(updatedInvolvements)
 
+
         // Construire la structure availability en mappant les jours et horaires
         val dayMapping = mapOf(
             "Lundi" to "1",
@@ -94,10 +95,18 @@ class OnboardingViewModel() : ViewModel() {
 
         // Préparer la requête pour le serveur
         val userMap = ArrayMap<String, Any>().apply {
-            put("interests", user?.interests)
-            put("concerns", user?.concerns)
-            put("involvements", user?.involvements)
-            put("availability", availability) // Ajout de la structure availability
+            if(user?.interests != null && user?.interests!!.isNotEmpty()) {
+                put("interests", user?.interests)
+            }
+            if(user?.concerns != null && user?.concerns!!.isNotEmpty()) {
+                put("concerns", user?.concerns)
+            }
+            if(user?.involvements != null && user?.involvements!!.isNotEmpty()) {
+                put("involvements", user?.involvements)
+            }
+            if (availability.isNotEmpty()){
+                put("availability", availability)
+            }
         }
         val request = ArrayMap<String, Any>()
         request["user"] = userMap
