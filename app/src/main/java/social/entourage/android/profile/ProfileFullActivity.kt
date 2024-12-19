@@ -59,6 +59,7 @@ class ProfileFullActivity : BaseActivity() {
 
     private fun setConfettiView() {
         binding.layoutAchievement.setOnClickListener { view ->
+            VibrationUtil.vibrate(this)
             showConfetti(view)
         }
     }
