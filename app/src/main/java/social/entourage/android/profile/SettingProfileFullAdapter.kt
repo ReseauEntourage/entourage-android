@@ -93,6 +93,11 @@ class SettingProfileFullAdapter(
                 binding.tvSubtitleUserSection.setTextColor(ContextCompat.getColor(context, R.color.orange))
                 binding.ivArrowUserSection.setColorFilter(ContextCompat.getColor(context, R.color.orange))
             }
+            if (context.resources.configuration.locale.language == "ar") {
+                binding.ivArrowUserSection.scaleX = -1f // Miroir horizontal
+            } else {
+                binding.ivArrowUserSection.scaleX = 1f // Orientation normale
+            }
 
             // Handle Clicks
             binding.root.setOnClickListener {

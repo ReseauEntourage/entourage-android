@@ -21,9 +21,11 @@ import social.entourage.android.R
 import social.entourage.android.api.model.ActionUtils
 import social.entourage.android.api.model.EventUtils
 import social.entourage.android.api.model.User
+import social.entourage.android.api.model.UserBlockedUser
 import social.entourage.android.api.model.notification.InAppNotificationPermission
 import social.entourage.android.base.BaseActivity
 import social.entourage.android.databinding.ActivityLayoutProfileBinding
+import social.entourage.android.discussions.DiscussionsPresenter
 import social.entourage.android.enhanced_onboarding.EnhancedOnboarding
 import social.entourage.android.enhanced_onboarding.OnboardingViewModel
 import social.entourage.android.home.HomePresenter
@@ -42,7 +44,10 @@ class ProfileFullActivity : BaseActivity() {
     private lateinit var user: User
     private val userPresenter: UserPresenter by lazy { UserPresenter() }
     private val homePresenter: HomePresenter by lazy { HomePresenter() }
+    private val discussionsPresenter: DiscussionsPresenter by lazy { DiscussionsPresenter() }
+
     var notifSubTitle = ""
+    var notifBlocked = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,6 +55,8 @@ class ProfileFullActivity : BaseActivity() {
         user = EntourageApplication.me(this) ?: return
         userPresenter.user.observe(this, ::updateUser)
         homePresenter.notificationsPermission.observe(this, ::updateNotifParam)
+        discussionsPresenter.getBlockedUsers.observe(this,::handleResponseBlocked)
+
         initializeStats()
         updateUserView()
         setButtonListeners()
@@ -68,6 +75,16 @@ class ProfileFullActivity : BaseActivity() {
         EnhancedOnboarding.isFromSettingsinterest = false
 
     }
+    private fun handleResponseBlocked(blockedUsers:MutableList<UserBlockedUser>?) {
+        if(blockedUsers.isNullOrEmpty()){
+            notifBlocked = getString(R.string.settings_unblock_contacts_subtitle)
+        }else{
+            notifBlocked = getString(R.string.settings_number_blocked_contacts_subtitle) + blockedUsers.size
+        }
+        homePresenter.getNotificationsPermissions()
+
+    }
+
 
     private fun updateNotifParam(notifsPermissions: InAppNotificationPermission?) {
         notifsPermissions?.let {
@@ -104,7 +121,7 @@ class ProfileFullActivity : BaseActivity() {
 
     private fun updateUser(user:User){
         this.user = user
-        homePresenter.getNotificationsPermissions()
+        discussionsPresenter.getBlockedUsers()
 
     }
 
