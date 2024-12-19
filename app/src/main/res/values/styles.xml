@@ -598,6 +598,16 @@
         <item name="android:popupAnimationStyle">@style/MyDialogAnimation</item>
     </style>
 
+    <style name="FullScreenBottomSheetDialog" parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/FullScreenBottomSheet</item>
+    </style>
+
+    <style name="FullScreenBottomSheet" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="behavior_peekHeight">0dp</item>
+        <item name="android:background">@android:color/transparent</item>
+    </style>
 
     <style name="MyDialogAnimation">
         <item name="android:windowEnterAnimation">@anim/bottom_up</item>

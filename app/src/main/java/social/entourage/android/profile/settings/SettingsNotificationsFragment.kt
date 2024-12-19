@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.app.NotificationManagerCompat
 import androidx.lifecycle.MutableLiveData
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import social.entourage.android.R
 import social.entourage.android.databinding.NewFragmentSettingsNotifsBinding
@@ -34,12 +35,27 @@ class SettingsNotificationsFragment : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setStyle(STYLE_NORMAL, R.style.FullScreenDialog)
+        setStyle(STYLE_NORMAL, R.style.FullScreenBottomSheetDialog)
         areNotificationsEnabled = areNotificationsEnabled(requireContext())
         populate()
         handleCloseButton()
         homePresenter.notificationsPermission.observe(requireActivity(), ::updateSwitch)
         homePresenter.getNotificationsPermissions()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        setFullScreenBehavior()
+    }
+
+    private fun setFullScreenBehavior() {
+        val dialog = dialog ?: return
+        val bottomSheet = dialog.findViewById<View>(com.google.android.material.R.id.design_bottom_sheet) as? ViewGroup
+        bottomSheet?.layoutParams?.height = ViewGroup.LayoutParams.MATCH_PARENT
+
+        val behavior = BottomSheetBehavior.from(bottomSheet!!)
+        behavior.state = BottomSheetBehavior.STATE_EXPANDED
+        behavior.skipCollapsed = true
     }
 
     private fun updateSwitch(notifsPermissions: InAppNotificationPermission?) {
