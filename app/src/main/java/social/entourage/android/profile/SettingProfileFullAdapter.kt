@@ -7,6 +7,7 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
@@ -81,6 +82,13 @@ class SettingProfileFullAdapter(
             binding.tvTitleUserSection.text = item.title
             binding.tvSubtitleUserSection.text = item.subtitle
             binding.ivArrowUserSection.setImageResource(R.drawable.arrow_right_orange)
+
+            //Deconnexion et suppression en orange
+            if (item.title == context.getString(R.string.delete_account_button) || item.title == context.getString(R.string.logout_button)) {
+                binding.tvTitleUserSection.setTextColor(ContextCompat.getColor(context, R.color.orange))
+                binding.tvSubtitleUserSection.setTextColor(ContextCompat.getColor(context, R.color.orange))
+                binding.ivArrowUserSection.setColorFilter(ContextCompat.getColor(context, R.color.orange))
+            }
 
             // Handle Clicks
             binding.root.setOnClickListener {

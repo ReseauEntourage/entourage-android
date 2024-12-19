@@ -12,6 +12,7 @@ import android.os.VibrationEffect
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import social.entourage.android.EntourageApplication
@@ -38,6 +39,7 @@ class ProfileFullActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityLayoutProfileBinding.inflate(layoutInflater)
         user = EntourageApplication.me(this) ?: return
+        userPresenter.user.observe(this, ::updateUser)
         setupRecyclerView()
         initializeStats()
         updateUserView()
@@ -51,8 +53,7 @@ class ProfileFullActivity : BaseActivity() {
 
     override fun onResume() {
         super.onResume()
-        userPresenter.user.observe(this, ::updateUser)
-        updateUserView()
+        userPresenter.getUser(user.id)
 
     }
 
@@ -65,6 +66,7 @@ class ProfileFullActivity : BaseActivity() {
     private fun updateUser(user:User){
         this.user = user
         updateUserView()
+        initializeStats()
     }
 
     private fun setButtonListeners() {
@@ -239,10 +241,18 @@ class ProfileFullActivity : BaseActivity() {
 
         // Rôles
         user?.roles?.let { roles ->
-            binding.tvTagHomeV2EventItem.visibility = if (roles.contains("ambassador")) {
+            Timber.wtf("wtf roles $roles")
+            binding.tvTagHomeV2EventItem.visibility = if (roles.contains("Ambassadeur") || roles.contains("Équipe Entourage") || roles.contains("Association")) {
                 View.VISIBLE
             } else {
                 View.GONE
+            }
+            if(roles.contains("Ambassadeur")){
+                binding.tvTagHomeV2EventItem.text = getString(R.string.ambassador)
+            }else if(roles.contains("Équipe Entourage")){
+                binding.tvTagHomeV2EventItem.text = user?.partner?.name
+            }else if(roles.contains("Association")){
+                binding.tvTagHomeV2EventItem.text = user.partner?.name
             }
         }
         // Date d'inscription
@@ -285,12 +295,17 @@ class ProfileFullActivity : BaseActivity() {
         user?.about?.let { about ->
             if (about.isNotBlank()) {
                 binding.tvDescription.text = about
+                binding.tvDescription.setTextColor(ContextCompat.getColor(this, R.color.black)) // Couleur normale
                 binding.tvDescription.visibility = View.VISIBLE
             } else {
-                binding.tvDescription.visibility = View.GONE
+                binding.tvDescription.text = this.getString(R.string.placeholder_description_profile)
+                binding.tvDescription.setTextColor(ContextCompat.getColor(this, R.color.grey)) // Placeholder en gris
+                binding.tvDescription.visibility = View.VISIBLE
             }
         } ?: run {
-            binding.tvDescription.visibility = View.GONE
+            binding.tvDescription.text = this.getString(R.string.placeholder_description_profile)
+            binding.tvDescription.setTextColor(ContextCompat.getColor(this, R.color.grey)) // Placeholder en gris
+            binding.tvDescription.visibility = View.VISIBLE
         }
     }
 

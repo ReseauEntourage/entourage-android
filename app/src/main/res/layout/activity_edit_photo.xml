@@ -48,6 +48,14 @@
                 android:layout_height="110dp"
                 android:layout_marginTop="50dp"
                 android:src="@drawable/new_cross" />
+
+            <ProgressBar
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:id="@+id/progressBar"
+                android:visibility="gone"
+                />
+
         </LinearLayout>
     </ScrollView>
     <Button

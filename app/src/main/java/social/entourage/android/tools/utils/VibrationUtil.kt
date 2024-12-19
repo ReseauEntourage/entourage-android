@@ -21,7 +21,7 @@ object VibrationUtil {
 
         if (vibrator.hasVibrator()) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                vibrator.vibrate(VibrationEffect.createOneShot(duration, VibrationEffect.DEFAULT_AMPLITUDE))
+                vibrator.vibrate(VibrationEffect.createOneShot(duration, VibrationEffect.EFFECT_TICK))
             } else {
                 @Suppress("DEPRECATION")
                 vibrator.vibrate(duration)

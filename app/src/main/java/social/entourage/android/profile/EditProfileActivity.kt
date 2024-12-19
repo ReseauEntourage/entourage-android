@@ -18,7 +18,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.collection.ArrayMap
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
-import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.AutocompletePrediction
@@ -35,22 +34,17 @@ import social.entourage.android.base.BaseActivity
 import social.entourage.android.databinding.NewFragmentEditProfileBinding
 import social.entourage.android.enhanced_onboarding.EnhancedOnboarding
 import social.entourage.android.main_filter.MainFilterActivity
-import social.entourage.android.main_filter.MainFilterActivity.Companion
 import social.entourage.android.main_filter.MainFilterActivity.Companion.PlaceDetails
 import social.entourage.android.profile.editProfile.EditPhotoActivity
 import social.entourage.android.profile.editProfile.EditProfilePresenter
-import social.entourage.android.tools.utils.Const
+import social.entourage.android.tools.isValidEmail
 import social.entourage.android.tools.utils.transformIntoDatePicker
 import social.entourage.android.tools.utils.trimEnd
-import social.entourage.android.tools.isValidEmail
-import social.entourage.android.user.AvatarUpdatePresenter
 import social.entourage.android.user.AvatarUploadPresenter
 import social.entourage.android.user.AvatarUploadRepository
 import social.entourage.android.user.AvatarUploadView
-import social.entourage.android.user.edit.photo.PhotoChooseInterface
 import social.entourage.android.user.languechoose.ActivityChooseLanguage
 import timber.log.Timber
-import java.io.File
 
 class EditProfileActivity : BaseActivity(), AvatarUploadView {
 
@@ -58,52 +52,136 @@ class EditProfileActivity : BaseActivity(), AvatarUploadView {
     private lateinit var avatarUploadPresenter: AvatarUploadPresenter
     private val editProfilePresenter: EditProfilePresenter by lazy { EditProfilePresenter() }
     val profilePresenter: ProfilePresenter by lazy { ProfilePresenter() }
+
     private lateinit var placesClient: PlacesClient
 
     private val paddingRight = 20
     private val paddingRightLimit = 60
     private val progressLimit = 96
     private var descriptionRegistered = ""
-    var savedLocation: PlaceDetails? = null
+    private var savedLocation: PlaceDetails? = null
+
+    // Mémorisation des prédictions pour l'autocomplete
+    private var autocompletePredictions: List<AutocompletePrediction> = listOf()
+    private var autocompleteAdapter: ArrayAdapter<String>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = NewFragmentEditProfileBinding.inflate(layoutInflater)
-        initializeSeekBar()
-        onEditInterests()
-        onEditImage()
-        handleLanguageButton()
-        onEditActionZone()
-        initializeDescriptionCounter()
-        setBackButton()
-        updateUserView()
-        adjustPaddingForKeyboard()
-        Places.initialize(applicationContext, getString(R.string.google_api_key))
-        placesClient = Places.createClient(this)
-        avatarUploadPresenter = AvatarUploadPresenter(
-            this, // Puisque EditPhotoActivity implémente AvatarUploadView
-            AvatarUploadRepository(),
-            profilePresenter
-        )
-        setAddress()
         setContentView(binding.root)
 
+        initPlacesClient()
+        initAvatarPresenter()
+        initUI()
+        updateUserView()
+        adjustPaddingForKeyboard()
+        editProfilePresenter.isUserUpdated.observe(this, ::hasUserBeenUpdated)
     }
 
     override fun onResume() {
         super.onResume()
-
+        // Eventuellement recharger des infos si besoin
     }
 
-    private fun setAddress(){
+    // --------------------------
+    // Initialisations
+    // --------------------------
+
+    private fun initPlacesClient() {
+        Places.initialize(applicationContext, getString(R.string.google_api_key))
+        placesClient = Places.createClient(this)
+    }
+
+    private fun initAvatarPresenter() {
+        avatarUploadPresenter = AvatarUploadPresenter(
+            this,
+            AvatarUploadRepository(),
+            profilePresenter
+        )
+    }
+
+    private fun initUI() {
+        initializeSeekBar()
+        initializeDescriptionCounter()
+
+        setupEditImageButton()
+        setupLanguageButton()
+        setupInterestsButtons()
+        setupActionZoneAutocomplete()
+
+        setBackButton()
+        setAddressFromCurrentUser() // Récupérer l'adresse utilisateur enregistrée
+        setupValidateButton()
+    }
+
+    private fun setAddressFromCurrentUser() {
         val user = EntourageApplication.me(this)
-        val address = user?.address
-        if (address != null) {
-            savedLocation = PlaceDetails(address.displayAddress, address.latitude, address.longitude)
+        user?.address?.let {
+            savedLocation = PlaceDetails(it.displayAddress, it.latitude, it.longitude)
         }
     }
 
-    private fun handleLanguageButton() {
+    private fun hasUserBeenUpdated(isUpdated: Boolean) {
+        if (isUpdated) {
+            registerAddress()
+
+        } else {
+            Toast.makeText(this, "Erreur lors de l'enregistrement", Toast.LENGTH_LONG).show()
+        }
+    }
+
+    // --------------------------
+    // Setup UI Elements
+    // --------------------------
+
+    private fun initializeSeekBar() {
+        binding.seekBarLayout.seekbar.setOnSeekBarChangeListener(object :
+            SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                val progressValue = if (progress == 0) 1 else progress
+                setProgressThumbPosition(progressValue)
+            }
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {}
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {}
+        })
+    }
+
+    private fun setProgressThumbPosition(progress: Int) {
+        binding.seekBarLayout.tvTrickleIndicator.text =
+            String.format(getString(R.string.progress_km), progress.toString())
+        val bounds = binding.seekBarLayout.seekbar.thumb.bounds
+        val offset = if (progress > progressLimit) paddingRightLimit else paddingRight
+        binding.seekBarLayout.tvTrickleIndicator.x =
+            (binding.seekBarLayout.seekbar.left + bounds.left - offset).toFloat()
+    }
+
+    private fun initializeDescriptionCounter() {
+        binding.description.content.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+                updateDescriptionCounter(s.length)
+            }
+            override fun afterTextChanged(s: Editable) {}
+        })
+        updateDescriptionCounter(binding.description.content.text?.length ?: 0)
+    }
+
+    private fun updateDescriptionCounter(length: Int) {
+        binding.description.counter.text = String.format(
+            getString(R.string.description_counter),
+            length.toString()
+        )
+        descriptionRegistered = binding.description.content.text.toString()
+    }
+
+    private fun setupEditImageButton() {
+        binding.editImage.setOnClickListener {
+            startActivity(Intent(this, EditPhotoActivity::class.java))
+        }
+    }
+
+    private fun setupLanguageButton() {
+        // Bouton langues désactivé pour l'instant
         binding.language.layout.setOnClickListener {
             val intent = Intent(this, ActivityChooseLanguage::class.java)
             startActivity(intent)
@@ -111,164 +189,48 @@ class EditProfileActivity : BaseActivity(), AvatarUploadView {
         binding.language.layout.visibility = View.GONE
     }
 
-    private fun createAddressFromSavedLocation(): User.Address? {
-        return savedLocation?.let {
-            User.Address(it.lat, it.lng, it.name)
-        }
-    }
-
-    private fun registerAdress(){
-        if(createAddressFromSavedLocation() != null){
-            OnboardingAPI.getInstance()
-                .updateAddress(createAddressFromSavedLocation()!!, false) { isOK, userResponse ->
-                    if (isOK) {
-                        userResponse?.user?.let { newUser ->
-                            this.let {
-                                Toast.makeText(
-                                    it,
-                                    R.string.user_action_zone_send_ok,
-                                    Toast.LENGTH_LONG
-                                ).show()
-                            }
-                        }
-                    }
-                }
-        }
-
-    }
-
-    private fun setProgressThumb(progress: Int) {
-        binding.seekBarLayout.tvTrickleIndicator.text =
-            String.format(getString(R.string.progress_km), progress.toString())
-        val bounds: Rect = binding.seekBarLayout.seekbar.thumb.dirtyBounds
-        val paddingRight = if (progress > progressLimit) paddingRightLimit else paddingRight
-        binding.seekBarLayout.tvTrickleIndicator.x =
-            (binding.seekBarLayout.seekbar.left + bounds.left - paddingRight).toFloat()
-    }
-
-    private fun initializeSeekBar() {
-        binding.seekBarLayout.seekbar.setOnSeekBarChangeListener(object :
-            SeekBar.OnSeekBarChangeListener {
-            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-                val progressValue = if (progress == 0) 1 else progress
-                setProgressThumb(progressValue)
-            }
-
-            override fun onStartTrackingTouch(seekBar: SeekBar?) {}
-
-            override fun onStopTrackingTouch(seekBar: SeekBar?) {}
-        })
-    }
-
-    private fun initializeDescriptionCounter() {
-        binding.description.counter.text = String.format(
-            getString(R.string.description_counter),
-            binding.description.content.text?.length.toString()
-        )
-        binding.description.content.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
-
-            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                binding.description.counter.text = String.format(
-                    getString(R.string.description_counter),
-                    s.length.toString()
-                )
-                descriptionRegistered = binding.description.content.text.toString()
-            }
-
-            override fun afterTextChanged(s: Editable) {}
-        })
-    }
-
-    private fun onEditInterests() {
+    private fun setupInterestsButtons() {
+        // Ouvrir l'écran d'onboarding amélioré pour l'édition des intérêts
         binding.interests.layout.setOnClickListener {
             EnhancedOnboarding.isFromSettingsinterest = true
-            val intent = Intent(this, EnhancedOnboarding::class.java)
-            startActivity(intent)
+            startActivity(Intent(this, EnhancedOnboarding::class.java))
             finish()
         }
+
+        // Personnaliser le onboarding
         binding.personnalize.layout.setOnClickListener {
             MainActivity.isFromProfile = true
-            val intent = Intent(this, EnhancedOnboarding::class.java)
-            startActivity(intent)
+            startActivity(Intent(this, EnhancedOnboarding::class.java))
             finish()
         }
     }
 
-    private fun onEditImage() {
-        binding.editImage.setOnClickListener {
-            val intent = Intent(this, EditPhotoActivity::class.java)
-            startActivity(intent)
+    private fun setupActionZoneAutocomplete() {
+        val autoCompleteTextView = binding.cityAction
+
+        // Adapter vide au départ
+        autocompleteAdapter = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line)
+        autoCompleteTextView.setAdapter(autocompleteAdapter)
+        autoCompleteTextView.threshold = 1
+
+        // Listener sur la sélection d'un item
+        autoCompleteTextView.setOnItemClickListener { parent, _, position, _ ->
+            val selectedPrediction = autocompletePredictions[position]
+            fetchPlaceDetails(selectedPrediction.placeId)
+            autoCompleteTextView.dismissDropDown()
         }
-    }
 
-    private fun onEditActionZone() {
-        binding.cityAction.setOnClickListener {
-            val autoCompleteTextView = binding.cityAction as AutoCompleteTextView
-            autoCompleteTextView.threshold = 1 // Nombre minimum de caractères avant de commencer la recherche
-            autoCompleteTextView.setAdapter(ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line))
-            autoCompleteTextView.setOnItemClickListener { parent, _, position, _ ->
-                val selectedPrediction = autocompletePredictions[position]
-                fetchPlaceDetails(selectedPrediction.placeId)
-                autoCompleteTextView.dismissDropDown()
-            }
-            autoCompleteTextView.addTextChangedListener(object : TextWatcher {
-                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-
-                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-
-                override fun afterTextChanged(s: Editable?) {
-                    if (!s.isNullOrEmpty()) {
-                        fetchAutocompletePredictions(s.toString())
-                    }
+        // TextWatcher pour déclencher la recherche
+        autoCompleteTextView.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+            override fun afterTextChanged(s: Editable?) {
+                val query = s?.toString()?.trim()
+                if (!query.isNullOrEmpty()) {
+                    fetchAutocompletePredictions(query)
                 }
-            })
-        }
-    }
-
-    private fun clearFocusFromEditTexts() {
-        binding.root.clearFocus() // Supprime le focus de la vue racine
-    }
-
-    private fun hideKeyboard(view: View) {
-        val imm = getSystemService(INPUT_METHOD_SERVICE) as android.view.inputmethod.InputMethodManager
-        imm.hideSoftInputFromWindow(view.windowToken, 0)
-    }
-
-    private var autocompletePredictions: List<AutocompletePrediction> = listOf()
-
-    private fun fetchAutocompletePredictions(query: String) {
-        val request = FindAutocompletePredictionsRequest.builder()
-            .setQuery(query)
-            .setCountries("FR") // Limitez les résultats à la France
-            .build()
-
-        placesClient.findAutocompletePredictions(request).addOnSuccessListener { response ->
-            autocompletePredictions = response.autocompletePredictions
-            val suggestions = autocompletePredictions.map { it.getFullText(null).toString() }
-            val adapter = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, suggestions)
-            (binding.cityAction as AutoCompleteTextView).setAdapter(adapter)
-            adapter.notifyDataSetChanged()
-        }.addOnFailureListener { exception ->
-            Timber.e("PlaceAutocomplete Error: ${exception.message}")
-        }
-    }
-
-    private fun fetchPlaceDetails(placeId: String) {
-        val placeFields = listOf(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG, Place.Field.ADDRESS)
-        val request = FetchPlaceRequest.builder(placeId, placeFields).build()
-
-        placesClient.fetchPlace(request).addOnSuccessListener { response ->
-            val place = response.place
-            binding.cityAction.setText(place.name) // Met à jour le champ avec le nom sélectionné
-            savedLocation = PlaceDetails(
-                place.name!!,
-                place.latLng!!.latitude,
-                place.latLng!!.longitude
-            )
-        }.addOnFailureListener { exception ->
-            Timber.e("PlaceDetails Error: ${exception.message}")
-        }
+            }
+        })
     }
 
     private fun setBackButton() {
@@ -277,19 +239,29 @@ class EditProfileActivity : BaseActivity(), AvatarUploadView {
         }
     }
 
+    private fun setupValidateButton() {
+        binding.validate.button.setOnClickListener {
+            onSaveProfile()
+        }
+    }
+
+    // --------------------------
+    // Mise à jour de l'UI avec les données de l'utilisateur
+    // --------------------------
+
     private fun updateUserView() {
         val user = EntourageApplication.me(this) ?: return
-
         val isArabic = resources.configuration.locales[0].language == "ar"
 
         with(binding) {
-            configureTextViewForRTL(firstname.content, isArabic)
-            configureTextViewForRTL(lastname.content, isArabic)
-            configureTextViewForRTL(description.content, isArabic)
-            configureTextViewForRTL(birthday.content, isArabic)
-            configureTextViewForRTL(phone.content, isArabic)
-            configureTextViewForRTL(email.content, isArabic)
-            configureTextViewForRTL(cityAction, isArabic)
+            // Configuration RTL si nécessaire
+            configureTextDirection(isArabic, firstname.content)
+            configureTextDirection(isArabic, lastname.content)
+            configureTextDirection(isArabic, description.content)
+            configureTextDirection(isArabic, birthday.content)
+            configureTextDirection(isArabic, phone.content)
+            configureTextDirection(isArabic, email.content)
+            configureTextDirection(isArabic, cityAction)
 
             firstname.content.setText(user.firstName)
             lastname.content.setText(user.lastName)
@@ -305,17 +277,15 @@ class EditProfileActivity : BaseActivity(), AvatarUploadView {
                 getString(R.string.birthday_date_format)
             )
             birthday.content.setText(user.birthday)
-            phone.content.text = user.phone
+
+            phone.content.setText(user.phone)
             phone.content.setTextColor(ContextCompat.getColor(this@EditProfileActivity, R.color.dark_grey_opacity_40))
             email.content.setText(user.email)
-            cityAction.text = Editable.Factory.getInstance().newEditable(user.address?.displayAddress ?: "")
-            seekBarLayout.seekbar.progress = user.travelDistance ?: 0
+            cityAction.setText(user.address?.displayAddress ?: "")
 
-            validate.button.setOnClickListener {
-                onSaveProfile()
-            }
+            seekBarLayout.seekbar.progress = user.travelDistance ?: 0
             seekBarLayout.seekbar.post {
-                user.travelDistance?.let { setProgressThumb(it) }
+                user.travelDistance?.let { setProgressThumbPosition(it) }
             }
 
             user.avatarURL?.let { avatarURL ->
@@ -330,7 +300,7 @@ class EditProfileActivity : BaseActivity(), AvatarUploadView {
         }
     }
 
-    private fun configureTextViewForRTL(textView: TextView, isArabic: Boolean) {
+    private fun configureTextDirection(isArabic: Boolean, textView: TextView) {
         if (isArabic) {
             textView.layoutDirection = View.LAYOUT_DIRECTION_RTL
             textView.gravity = Gravity.END
@@ -344,26 +314,128 @@ class EditProfileActivity : BaseActivity(), AvatarUploadView {
         }
     }
 
+    // --------------------------
+    // Gestion de l'autocomplete Places
+    // --------------------------
+
+    private fun fetchAutocompletePredictions(query: String) {
+        val request = FindAutocompletePredictionsRequest.builder()
+            .setQuery(query)
+            .setCountries("FR") // Limite à la France
+            .build()
+
+        placesClient.findAutocompletePredictions(request)
+            .addOnSuccessListener { response ->
+                autocompletePredictions = response.autocompletePredictions
+                val suggestions = autocompletePredictions.map { it.getFullText(null).toString() }
+                updateAutocompleteSuggestions(suggestions)
+            }
+            .addOnFailureListener { exception ->
+                Timber.e("PlaceAutocomplete Error: ${exception.message}")
+            }
+    }
+
+    private fun updateAutocompleteSuggestions(suggestions: List<String>) {
+        autocompleteAdapter?.clear()
+        autocompleteAdapter?.addAll(suggestions)
+        autocompleteAdapter?.notifyDataSetChanged()
+        // Montre le menu déroulant
+        binding.cityAction.showDropDown()
+    }
+
+    private fun fetchPlaceDetails(placeId: String) {
+        val placeFields = listOf(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG, Place.Field.ADDRESS)
+        val request = FetchPlaceRequest.builder(placeId, placeFields).build()
+
+        placesClient.fetchPlace(request).addOnSuccessListener { response ->
+            val place = response.place
+            binding.cityAction.setText(place.name ?: "")
+            savedLocation = place.latLng?.let {
+                PlaceDetails(
+                    place.name ?: "",
+                    it.latitude,
+                    it.longitude
+                )
+            }
+        }.addOnFailureListener { exception ->
+            Timber.e("PlaceDetails Error: ${exception.message}")
+        }
+    }
+
+    // --------------------------
+    // Sauvegarde du profil
+    // --------------------------
+
     private fun onSaveProfile() {
-        val firstname = binding.firstname.content.text.trimEnd()
-        val lastname = binding.lastname.content.text.trimEnd()
-        val about = binding.description.content.text?.trimEnd()
-        val email = binding.email.content.text.trimEnd()
-        val birthday = binding.birthday.content.text.trimEnd()
-        val travelDistance = binding.seekBarLayout.seekbar.progress
         if (checkError()) {
             val editedUser: ArrayMap<String, Any> = ArrayMap()
+            val firstname = binding.firstname.content.text.trimEnd()
+            val lastname = binding.lastname.content.text.trimEnd()
+            val about = binding.description.content.text?.trimEnd()
+            val email = binding.email.content.text.trimEnd()
+            val birthday = binding.birthday.content.text.trimEnd()
+            val travelDistance = binding.seekBarLayout.seekbar.progress
+
             editedUser["first_name"] = firstname
             editedUser["last_name"] = lastname
-            editedUser["about"] = about
+            editedUser["about"] = about ?: ""
             editedUser["email"] = email
             editedUser["birthday"] = birthday
             editedUser["travel_distance"] = travelDistance
             editProfilePresenter.updateUser(editedUser)
         }
-        registerAdress()
-        this.finish()
     }
+
+    private fun registerAddress() {
+        val address = createAddressFromSavedLocation() ?: return
+        OnboardingAPI.getInstance().updateAddress(address, false) { isOK, userResponse ->
+            if (isOK) {
+                userResponse?.user?.let {
+                    Toast.makeText(
+                        this,
+                        R.string.user_action_zone_send_ok,
+                        Toast.LENGTH_LONG
+                    ).show()
+                    EntourageApplication.me(this)?.address = it.address
+                    finish()
+                }
+            }
+        }
+    }
+
+    private fun createAddressFromSavedLocation(): User.Address? {
+        return savedLocation?.let {
+            User.Address(it.lat, it.lng, it.name)
+        }
+    }
+
+    // --------------------------
+    // Vérification des champs
+    // --------------------------
+
+    private fun checkError(): Boolean {
+        val isLastnameCorrect = binding.lastname.content.text.trimEnd().length > 2
+        val isEmailCorrect = binding.email.content.text.trimEnd().isValidEmail()
+
+        // Gestion de l'affichage des erreurs
+        updateErrorUI(binding.lastname, isLastnameCorrect, getString(R.string.error_lastname))
+        updateErrorUI(binding.email, isEmailCorrect, getString(R.string.error_email))
+
+        return isLastnameCorrect && isEmailCorrect
+    }
+
+    private fun updateErrorUI(itemLayout: social.entourage.android.databinding.NewProfileEditItemBinding, isCorrect: Boolean, errorMsg: String) {
+        itemLayout.error.root.visibility = if (isCorrect) View.GONE else View.VISIBLE
+        itemLayout.error.errorMessage.text = errorMsg
+        DrawableCompat.setTint(
+            itemLayout.content.background,
+            ContextCompat.getColor(this, if (isCorrect) R.color.light_orange_opacity_50 else R.color.red)
+        )
+    }
+
+    // --------------------------
+    // Gestion du clavier et du padding
+    // --------------------------
 
     private fun adjustPaddingForKeyboard() {
         val rootView = binding.root
@@ -374,44 +446,20 @@ class EditProfileActivity : BaseActivity(), AvatarUploadView {
                 val screenHeight = rootView.height
                 val keypadHeight = screenHeight - rect.bottom
 
-                // Si le clavier est visible
                 if (keypadHeight > screenHeight * 0.15) {
-                    // Ajouter un padding au bas du ScrollView
+                    // Clavier visible
                     binding.scrollView.setPadding(0, 0, 0, keypadHeight)
-
                 } else {
-                    // Réinitialiser le padding lorsque le clavier est fermé
+                    // Clavier fermé
                     binding.scrollView.setPadding(0, 0, 0, 0)
                 }
             }
         })
     }
 
-
-    private fun checkError(): Boolean {
-        val isLastnameCorrect = binding.lastname.content.text.trimEnd().length > 2
-        val isEmailCorrect = binding.email.content.text.trimEnd().isValidEmail()
-
-        with(binding.lastname) {
-            error.root.visibility = if (isLastnameCorrect) View.GONE else View.VISIBLE
-            error.errorMessage.text = getString(R.string.error_lastname)
-            DrawableCompat.setTint(
-                content.background,
-                ContextCompat.getColor(this@EditProfileActivity, if (isLastnameCorrect) R.color.light_orange_opacity_50 else R.color.red)
-            )
-        }
-
-        with(binding.email) {
-            error.root.visibility = if (isEmailCorrect) View.GONE else View.VISIBLE
-            error.errorMessage.text = getString(R.string.error_email)
-            DrawableCompat.setTint(
-                content.background,
-                ContextCompat.getColor(this@EditProfileActivity, if (isEmailCorrect) R.color.light_orange_opacity_50 else R.color.red)
-            )
-        }
-        return isLastnameCorrect && isEmailCorrect
-    }
-
+    // --------------------------
+    // AvatarUploadView Impl
+    // --------------------------
 
     override fun onUploadError() {
         Timber.e("Error uploading photo")

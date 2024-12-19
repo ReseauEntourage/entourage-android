@@ -218,9 +218,17 @@ class EditPhotoActivity : BaseActivity(), PhotoEditInterface, AvatarUploadView {
             binding.imageProfile.setImageResource(R.drawable.ic_user_photo_small)
         }
     }
+
     private fun setBackButton() {
         binding.header.iconBack.setOnClickListener {
-            finish()
+            binding.progressBar.visibility = View.VISIBLE
+
+            // Crée un Handler pour exécuter le finish() après 2 secondes
+            val delayMillis = 2000L
+            binding.header.iconBack.postDelayed({
+                binding.progressBar.visibility = View.GONE
+                finish()
+            }, delayMillis)
         }
     }
 
