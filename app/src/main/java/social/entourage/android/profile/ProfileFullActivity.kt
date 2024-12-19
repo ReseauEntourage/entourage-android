@@ -18,11 +18,15 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
+import social.entourage.android.api.model.ActionUtils
+import social.entourage.android.api.model.EventUtils
 import social.entourage.android.api.model.User
+import social.entourage.android.api.model.notification.InAppNotificationPermission
 import social.entourage.android.base.BaseActivity
 import social.entourage.android.databinding.ActivityLayoutProfileBinding
 import social.entourage.android.enhanced_onboarding.EnhancedOnboarding
 import social.entourage.android.enhanced_onboarding.OnboardingViewModel
+import social.entourage.android.home.HomePresenter
 import social.entourage.android.language.LanguageManager
 import social.entourage.android.profile.editProfile.EditPhotoActivity
 import social.entourage.android.profile.editProfile.EditProfileFragment
@@ -37,13 +41,15 @@ class ProfileFullActivity : BaseActivity() {
     private lateinit var binding: ActivityLayoutProfileBinding
     private lateinit var user: User
     private val userPresenter: UserPresenter by lazy { UserPresenter() }
+    private val homePresenter: HomePresenter by lazy { HomePresenter() }
+    var notifSubTitle = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLayoutProfileBinding.inflate(layoutInflater)
         user = EntourageApplication.me(this) ?: return
         userPresenter.user.observe(this, ::updateUser)
-        setupRecyclerView()
+        homePresenter.notificationsPermission.observe(this, ::updateNotifParam)
         initializeStats()
         updateUserView()
         setButtonListeners()
@@ -63,6 +69,32 @@ class ProfileFullActivity : BaseActivity() {
 
     }
 
+    private fun updateNotifParam(notifsPermissions: InAppNotificationPermission?) {
+        notifsPermissions?.let {
+            if(it.action){
+                notifSubTitle += getString(R.string.notifications_actions) + ", "
+            }
+            if(it.outing){
+                notifSubTitle += getString(R.string.notifications_events) + ", "
+            }
+            if(it.neighborhood){
+                notifSubTitle += getString(R.string.notifications_groups) + ", "
+            }
+            if(it.chat_message){
+                notifSubTitle += getString(R.string.notifications_messages) + ", "
+            }
+        }
+        if (notifSubTitle.isNotEmpty()) {
+            notifSubTitle = notifSubTitle.substring(0, notifSubTitle.length - 2)
+            notifSubTitle = getString(R.string.settings_notifications_subtitle) + notifSubTitle
+        }else{
+            notifSubTitle = getString(R.string.no_notifications_active)
+        }
+        setupRecyclerView()
+        updateUserView()
+        initializeStats()
+    }
+
     private fun setConfettiView() {
         binding.layoutAchievement.setOnClickListener { view ->
             VibrationUtil.vibrate(this)
@@ -72,8 +104,8 @@ class ProfileFullActivity : BaseActivity() {
 
     private fun updateUser(user:User){
         this.user = user
-        updateUserView()
-        initializeStats()
+        homePresenter.getNotificationsPermissions()
+
     }
 
     private fun setButtonListeners() {
@@ -124,43 +156,98 @@ class ProfileFullActivity : BaseActivity() {
         // Section: Mes préférences
         items.add(ProfileSectionItem.Separator(getString(R.string.preferences_section_title)))
 
+        // Intérêts
+        val interestsText = if (user.interests.isNotEmpty()) {
+            user.interests.joinToString(", ") { interest ->
+                EventUtils.showTagTranslated(this, interest)
+            }
+        } else {
+            getString(R.string.no_data_available)
+        }
         items.add(
             ProfileSectionItem.Item(
                 iconRes = R.drawable.ic_profile_interests,
                 title = getString(R.string.preferences_interest_title),
-                subtitle = getString(R.string.preferences_interest_subtitle)
+                subtitle = interestsText
             )
         )
+
+        // Involvements
+        val involvementsText = if (user.involvements.isNotEmpty()) {
+            user.involvements.joinToString(", ") { involvement ->
+                when (involvement.lowercase()) {
+                    "outings" -> getString(R.string.onboarding_action_wish_event)
+                    "both_actions" -> getString(R.string.onboarding_action_wish_services)
+                    "neighborhoods" -> getString(R.string.onboarding_action_wish_network)
+                    "resources" -> getString(R.string.onboarding_action_wish_pedago)
+                    else -> getString(R.string.interest_other)
+                }
+            }
+        } else {
+            getString(R.string.no_data_available)
+        }
         items.add(
             ProfileSectionItem.Item(
                 iconRes = R.drawable.ic_profile_action,
                 title = getString(R.string.preferences_action_title),
-                subtitle = getString(R.string.preferences_action_subtitle)
+                subtitle = involvementsText
             )
         )
+
+        // Disponibilité
+        val daysMap = mapOf(
+            "1" to getString(R.string.enhanced_onboarding_time_disponibility_day_monday),
+            "2" to getString(R.string.enhanced_onboarding_time_disponibility_day_tuesday),
+            "3" to getString(R.string.enhanced_onboarding_time_disponibility_day_wednesday),
+            "4" to getString(R.string.enhanced_onboarding_time_disponibility_day_thursday),
+            "5" to getString(R.string.enhanced_onboarding_time_disponibility_day_friday),
+            "6" to getString(R.string.enhanced_onboarding_time_disponibility_day_saturday),
+            "7" to getString(R.string.enhanced_onboarding_time_disponibility_day_sunday)
+        )
+        val timeSlotsMap = mapOf(
+            "09:00-12:00" to getString(R.string.enhanced_onboarding_time_disponibility_time_morning),
+            "14:00-18:00" to getString(R.string.enhanced_onboarding_time_disponibility_time_afternoon),
+            "18:00-21:00" to getString(R.string.enhanced_onboarding_time_disponibility_time_evening)
+        )
+        val availabilityText = if (user.availability.isNotEmpty()) {
+            user.availability.entries.joinToString(" ; ") { (day, times) ->
+                val dayName = daysMap[day] ?: day
+                val timeSlots = times.joinToString(", ") { time ->
+                    timeSlotsMap[time] ?: time
+                }
+                "$dayName : $timeSlots"
+            }
+        } else {
+            getString(R.string.no_data_available)
+        }
         items.add(
             ProfileSectionItem.Item(
                 iconRes = R.drawable.ic_profile_availability,
                 title = getString(R.string.preferences_availability_title),
-                subtitle = getString(R.string.preferences_availability_subtitle)
+                subtitle = availabilityText
             )
         )
 
         // Section: Paramètres
         items.add(ProfileSectionItem.Separator(getString(R.string.settings_section_title)))
 
+        // Langue : Texte conditionnel en fonction de la langue actuelle
+        val currentLanguageCode = LanguageManager.loadLanguageFromPreferences(this)
+        val currentLanguageName = LanguageManager.languageMap.entries.firstOrNull { it.value == currentLanguageCode }?.key
+            ?: getString(R.string.unknown_language) // Texte par défaut si le code langue est inconnu
         items.add(
             ProfileSectionItem.Item(
                 iconRes = R.drawable.ic_profile_language,
                 title = getString(R.string.settings_language_title),
-                subtitle = getString(R.string.settings_language_subtitle)
+                subtitle = currentLanguageName
             )
         )
+
         items.add(
             ProfileSectionItem.Item(
                 iconRes = R.drawable.ic_profile_notifications,
                 title = getString(R.string.settings_notifications_title),
-                subtitle = getString(R.string.settings_notifications_subtitle)
+                subtitle = notifSubTitle
             )
         )
         items.add(
@@ -218,6 +305,8 @@ class ProfileFullActivity : BaseActivity() {
         binding.rvSectionProfile.layoutManager = LinearLayoutManager(this)
         binding.rvSectionProfile.adapter = adapter
     }
+
+
 
     private fun initializeStats() {
         user?.stats?.let { stats ->
@@ -292,10 +381,21 @@ class ProfileFullActivity : BaseActivity() {
             binding.tvMail.visibility = View.GONE
         }
 
+        user?.phone.let { phone ->
+            if (phone?.isNotBlank()!!) {
+                binding.tvPhone.text = phone
+                binding.tvPhone.visibility = View.VISIBLE
+            } else {
+                binding.tvPhone.visibility = View.GONE
+            }
+        } ?: run {
+            binding.tvPhone.visibility = View.GONE
+        }
+
         // Adresse et distance
         user?.address?.let { address ->
             if (address.displayAddress.isNotBlank() && user.travelDistance != null) {
-                binding.tvZone.text = "${address.displayAddress} - ${user.travelDistance} km"
+                binding.tvZone.text = "${address.displayAddress} - Rayon de ${user.travelDistance} km"
                 binding.tvZone.visibility = View.VISIBLE
             } else {
                 binding.tvZone.visibility = View.GONE

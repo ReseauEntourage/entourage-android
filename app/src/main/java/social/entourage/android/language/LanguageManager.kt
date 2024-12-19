@@ -8,7 +8,7 @@ object LanguageManager {
     private const val PREFS_NAME = "language_prefs"
     private const val KEY_SELECTED_LANGUAGE = "selected_language"
 
-    private val languageMap = mapOf(
+    val languageMap = mapOf(
         "Français" to "fr",
         "English" to "en",
         "Deutsch" to "de",

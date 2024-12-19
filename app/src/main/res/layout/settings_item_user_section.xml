@@ -37,7 +37,7 @@
         android:id="@+id/tv_subtitle_user_section"
         app:layout_constraintStart_toEndOf="@+id/iv_user_section"
         app:layout_constraintTop_toBottomOf="@+id/tv_title_user_section"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/iv_arrow_user_section"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
         android:layout_marginTop="5dp"

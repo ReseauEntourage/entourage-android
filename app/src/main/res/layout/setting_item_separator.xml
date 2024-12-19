@@ -15,7 +15,7 @@
         android:fontFamily="@font/quicksand_bold"
         android:textColor="@color/black"
         tool:text="Title"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="30dp"
         android:layout_marginHorizontal="10dp"
         />
 

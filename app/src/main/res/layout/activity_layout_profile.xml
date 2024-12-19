@@ -127,6 +127,20 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginTop="10dp"
                 tools:text="Paris - Rayon de 20km "/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/tv_phone"
+                android:fontFamily="@font/nunitosans_regular"
+                android:textSize="13sp"
+                android:textColor="@color/black"
+                android:textAlignment="center"
+                app:layout_constraintTop_toBottomOf="@+id/tv_zone"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="10dp"
+                tools:text="0601886036"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -135,7 +149,7 @@
                 android:textSize="13sp"
                 android:textColor="@color/black"
                 android:textAlignment="center"
-                app:layout_constraintTop_toBottomOf="@+id/tv_zone"
+                app:layout_constraintTop_toBottomOf="@+id/tv_phone"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginTop="10dp"

@@ -2912,7 +2912,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="settings_language_title">Langue</string>
     <string name="settings_language_subtitle">Français - traduction auto active</string>
     <string name="settings_notifications_title">Notifications</string>
-    <string name="settings_notifications_subtitle">Activité(s) : message, groupe, événement, dons et service</string>
+    <string name="settings_notifications_subtitle">Activées(s) : </string>
     <string name="settings_help_title">Aide et à propos</string>
     <string name="settings_help_subtitle">Charte éthique, FAQ, CGU, etc.</string>
     <string name="settings_unblock_contacts_title">Débloquer des contacts</string>
@@ -2921,6 +2921,8 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="settings_share_title">Partager l\'application</string>
     <string name="settings_password_title">Changer de mot de passe</string>
     <string name="placeholder_description_profile">Description non renseignée</string>
+    <string name="no_data_available">Non renseigné</string>
+    <string name="unknown_language">language non reconnu</string>
 
 
     <!-- Boutons -->
@@ -2929,6 +2931,11 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="notifications_disabled_message">Vos notifications sont désactivées.\nActivez-les pour ne rien manquer</string>
     <string name="enable_notifications">Activez-les pour ne rien manquer</string>
 
+    <string name="notifications_actions">actions</string>
+    <string name="notifications_events">événements</string>
+    <string name="notifications_groups">groupes</string>
+    <string name="notifications_messages">messages</string>
+    <string name="no_notifications_active">aucune notification active</string>
 
 </resources>
 
