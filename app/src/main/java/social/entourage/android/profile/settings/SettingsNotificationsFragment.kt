@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import androidx.core.app.NotificationManagerCompat
 import androidx.lifecycle.MutableLiveData
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import social.entourage.android.R
 import social.entourage.android.databinding.NewFragmentSettingsNotifsBinding
 import social.entourage.android.home.HomePresenter
 import social.entourage.android.api.model.notification.InAppNotificationPermission
@@ -33,6 +34,7 @@ class SettingsNotificationsFragment : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setStyle(STYLE_NORMAL, R.style.FullScreenDialog)
         areNotificationsEnabled = areNotificationsEnabled(requireContext())
         populate()
         handleCloseButton()

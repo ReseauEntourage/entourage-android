@@ -33,6 +33,7 @@ class HelpAboutFragment : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setStyle(STYLE_NORMAL, R.style.FullScreenDialog)
         initializeView()
         populate()
         handleCloseButton()

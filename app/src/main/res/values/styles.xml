@@ -598,6 +598,7 @@
         <item name="android:popupAnimationStyle">@style/MyDialogAnimation</item>
     </style>
 
+
     <style name="MyDialogAnimation">
         <item name="android:windowEnterAnimation">@anim/bottom_up</item>
         <item name="android:windowExitAnimation">@anim/bottom_down</item>

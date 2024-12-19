@@ -29,6 +29,7 @@ class LanguageBottomFragment : BottomSheetDialogFragment(), OnLanguageClicked {
         savedInstanceState: Bundle?
     ): View {
         binding = BottomFragmentLanguageFragmentBinding.inflate(inflater, container, false)
+        setStyle(STYLE_NORMAL, R.style.FullScreenDialog)
 
         fillArray()
         handleValidateCLick()

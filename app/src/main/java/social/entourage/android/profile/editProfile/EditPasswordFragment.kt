@@ -39,6 +39,7 @@ class EditPasswordFragment()  : BaseDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_SCREEN_09_4)
+        setStyle(STYLE_NORMAL, R.style.FullScreenDialog)
         configureView()
     }
 
