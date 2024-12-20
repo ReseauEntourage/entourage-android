@@ -99,9 +99,12 @@ class SettingProfileFullAdapter(
             } else {
                 binding.ivArrowUserSection.scaleX = 1f // Orientation normale
             }
-
+            if(ProfileFullActivity.isMe == false){
+                binding.ivArrowUserSection.visibility = android.view.View.GONE
+            }
             // Handle Clicks
             binding.root.setOnClickListener {
+
                 if(ProfileFullActivity.isMe){
                     VibrationUtil.vibrate(context)
                     when (item.title) {

@@ -144,6 +144,11 @@ class ProfileFullActivity : BaseActivity()  {
             val intent = Intent(this, EditProfileActivity::class.java)
             startActivity(intent)
         }
+        if(isMe){
+            binding.buttonModify.visibility = View.VISIBLE
+        }else{
+            binding.buttonModify.visibility = View.GONE
+        }
     }
 
     private fun setModifyButton() {
@@ -151,6 +156,11 @@ class ProfileFullActivity : BaseActivity()  {
             VibrationUtil.vibrate(this)
             val intent = Intent(this, EditPhotoActivity::class.java)
             startActivity(intent)
+        }
+        if(isMe){
+            binding.btnModifyPhotoProfile.visibility = View.VISIBLE
+        }else{
+            binding.btnModifyPhotoProfile.visibility = View.GONE
         }
     }
 
