@@ -333,9 +333,29 @@
                 app:layout_constraintTop_toBottomOf="@+id/layout_achievement"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"/>
+               />
+            <TextView
+                android:id="@+id/app_version"
+                style="@style/version_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="50dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/rv_section_profile"
+                tools:text="V8.1" />
 
-
+            <TextView
+                android:id="@+id/app_debug_info"
+                style="@style/version_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/app_version"
+                app:layout_constraintBottom_toBottomOf="parent"
+                tools:text="V8.1" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>

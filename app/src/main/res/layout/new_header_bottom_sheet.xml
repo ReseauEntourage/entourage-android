@@ -41,6 +41,7 @@
             app:layout_constraintTop_toBottomOf="@id/view"
             tools:src="@drawable/new_back" />
 
+
         <TextView
             android:id="@+id/title_name"
             style="@style/h2"

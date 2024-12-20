@@ -17,6 +17,7 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
+import social.entourage.android.BuildConfig
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.api.model.ActionUtils
@@ -517,6 +518,20 @@ class ProfileFullActivity : BaseActivity()  {
             binding.tvDescription.text = this.getString(R.string.placeholder_description_profile)
             binding.tvDescription.setTextColor(ContextCompat.getColor(this, R.color.grey)) // Placeholder en gris
             binding.tvDescription.visibility = View.VISIBLE
+        }
+        binding.appVersion.text =
+            getString(R.string.about_version_format, BuildConfig.VERSION_FULL_NAME)
+        if (!BuildConfig.DEBUG) {
+            binding.appDebugInfo.visibility = View.INVISIBLE
+        } else {
+            binding.appDebugInfo.visibility = View.VISIBLE
+            binding.appDebugInfo.text = getString(
+                R.string.about_debug_info_format, BuildConfig.VERSION_DISPLAY_BRANCH_NAME,
+                EntourageApplication.get().sharedPreferences.getString(
+                    EntourageApplication.KEY_REGISTRATION_ID,
+                    null
+                )
+            )
         }
     }
 
