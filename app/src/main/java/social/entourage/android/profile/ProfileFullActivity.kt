@@ -57,6 +57,7 @@ class ProfileFullActivity : BaseActivity()  {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLayoutProfileBinding.inflate(layoutInflater)
+        binding.containerProfile.visibility = View.GONE
         profilFullViewModel = ViewModelProvider(this).get(ProfilFullViewModel::class.java)
         user = EntourageApplication.me(this) ?: return
         userPresenter.user.observe(this, ::updateUser)
@@ -75,8 +76,11 @@ class ProfileFullActivity : BaseActivity()  {
 
     override fun onResume() {
         super.onResume()
-
-        userPresenter.getUser(user.id)
+        if(isMe){
+            userPresenter.getUser(user.id)
+        }else{
+            userPresenter.getUser(userId)
+        }
         EnhancedOnboarding.isFromSettingsWishes = false
         EnhancedOnboarding.isFromSettingsDisponibility = false
         EnhancedOnboarding.isFromSettingsinterest = false
@@ -89,9 +93,7 @@ class ProfileFullActivity : BaseActivity()  {
             notifBlocked = getString(R.string.settings_number_blocked_contacts_subtitle) + blockedUsers.size
         }
         homePresenter.getNotificationsPermissions()
-
     }
-
 
     private fun updateNotifParam(notifsPermissions: InAppNotificationPermission?) {
         notifsPermissions?.let {
@@ -117,6 +119,7 @@ class ProfileFullActivity : BaseActivity()  {
         setupRecyclerView()
         updateUserView()
         initializeStats()
+        binding.containerProfile.visibility = View.VISIBLE
     }
 
     private fun setConfettiView() {
@@ -127,6 +130,7 @@ class ProfileFullActivity : BaseActivity()  {
     }
 
     private fun updateUser(user:User){
+        Timber.wtf("wtf user $user")
         notifSubTitle = ""
         notifBlocked = ""
         this.user = user
@@ -167,7 +171,6 @@ class ProfileFullActivity : BaseActivity()  {
             }
         }
     }
-
     private fun setBackButton(){
 
         binding.iconBack.setOnClickListener{
@@ -178,7 +181,6 @@ class ProfileFullActivity : BaseActivity()  {
 
     private fun setupRecyclerView() {
         val items = mutableListOf<ProfileSectionItem>()
-
         // Section: Mes préférences
         items.add(ProfileSectionItem.Separator(getString(R.string.preferences_section_title)))
 
@@ -254,95 +256,100 @@ class ProfileFullActivity : BaseActivity()  {
             )
         )
 
-        // Section: Paramètres
-        items.add(ProfileSectionItem.Separator(getString(R.string.settings_section_title)))
+        if(isMe){
+            // Section: Paramètres
+            items.add(ProfileSectionItem.Separator(getString(R.string.settings_section_title)))
 
-        // Langue : Texte conditionnel en fonction de la langue actuelle
-        val currentLanguageCode = LanguageManager.loadLanguageFromPreferences(this)
-        val currentLanguageName = LanguageManager.languageMap.entries.firstOrNull { it.value == currentLanguageCode }?.key
-            ?: getString(R.string.unknown_language) // Texte par défaut si le code langue est inconnu
-        items.add(
-            ProfileSectionItem.Item(
-                iconRes = R.drawable.ic_profile_language,
-                title = getString(R.string.settings_language_title),
-                subtitle = currentLanguageName
+            // Langue : Texte conditionnel en fonction de la langue actuelle
+            val currentLanguageCode = LanguageManager.loadLanguageFromPreferences(this)
+            val currentLanguageName = LanguageManager.languageMap.entries.firstOrNull { it.value == currentLanguageCode }?.key
+                ?: getString(R.string.unknown_language) // Texte par défaut si le code langue est inconnu
+            items.add(
+                ProfileSectionItem.Item(
+                    iconRes = R.drawable.ic_profile_language,
+                    title = getString(R.string.settings_language_title),
+                    subtitle = currentLanguageName
+                )
             )
-        )
 
-        // Vérifier si la traduction automatique est activée
-        val sharedPrefs = getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE)
-        val isTranslatedByDefault = sharedPrefs.getBoolean("translatedByDefault", true)
-        val translationSubtitle = if (isTranslatedByDefault) {
-            getString(R.string.translation_auto_enabled)
-        } else {
-            getString(R.string.translation_auto_disabled)
+            // Vérifier si la traduction automatique est activée
+            val sharedPrefs = getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE)
+            val isTranslatedByDefault = sharedPrefs.getBoolean("translatedByDefault", true)
+            val translationSubtitle = if (isTranslatedByDefault) {
+                getString(R.string.translation_auto_enabled)
+            } else {
+                getString(R.string.translation_auto_disabled)
+            }
+
+            items.add(
+                ProfileSectionItem.Item(
+                    iconRes = R.drawable.ic_profile_language, // Utilisez la même icône que pour la langue
+                    title = getString(R.string.translation_auto_title),
+                    subtitle = translationSubtitle
+                )
+            )
+
+
+            items.add(
+                ProfileSectionItem.Item(
+                    iconRes = R.drawable.ic_profile_notifications,
+                    title = getString(R.string.settings_notifications_title),
+                    subtitle = notifSubTitle
+                )
+            )
+            items.add(
+                ProfileSectionItem.Item(
+                    iconRes = R.drawable.ic_profile_help,
+                    title = getString(R.string.settings_help_title),
+                    subtitle = getString(R.string.settings_help_subtitle)
+                )
+            )
+            items.add(
+                ProfileSectionItem.Item(
+                    iconRes = R.drawable.ic_profile_unblock_contacts,
+                    title = getString(R.string.settings_unblock_contacts_title),
+                    subtitle = getString(R.string.settings_unblock_contacts_subtitle)
+                )
+            )
+            items.add(
+                ProfileSectionItem.Item(
+                    iconRes = R.drawable.ic_profile_feedback,
+                    title = getString(R.string.settings_feedback_title),
+                    subtitle = ""
+                )
+            )
+            items.add(
+                ProfileSectionItem.Item(
+                    iconRes = R.drawable.ic_profile_share,
+                    title = getString(R.string.settings_share_title),
+                    subtitle = ""
+                )
+            )
+            items.add(
+                ProfileSectionItem.Item(
+                    iconRes = R.drawable.ic_profile_change_password,
+                    title = getString(R.string.settings_password_title),
+                    subtitle = ""
+                )
+            )
+            items.add(
+                ProfileSectionItem.Item(
+                    iconRes = R.drawable.ic_profile_logout,
+                    title = getString(R.string.logout_button),
+                    subtitle = ""
+                )
+            )
+            items.add(
+                ProfileSectionItem.Item(
+                    iconRes = R.drawable.ic_profile_delete_account,
+                    title = getString(R.string.delete_account_button),
+                    subtitle = ""
+                )
+            )
+
         }
 
-        items.add(
-            ProfileSectionItem.Item(
-                iconRes = R.drawable.ic_profile_language, // Utilisez la même icône que pour la langue
-                title = getString(R.string.translation_auto_title),
-                subtitle = translationSubtitle
-            )
-        )
 
-
-        items.add(
-            ProfileSectionItem.Item(
-                iconRes = R.drawable.ic_profile_notifications,
-                title = getString(R.string.settings_notifications_title),
-                subtitle = notifSubTitle
-            )
-        )
-        items.add(
-            ProfileSectionItem.Item(
-                iconRes = R.drawable.ic_profile_help,
-                title = getString(R.string.settings_help_title),
-                subtitle = getString(R.string.settings_help_subtitle)
-            )
-        )
-        items.add(
-            ProfileSectionItem.Item(
-                iconRes = R.drawable.ic_profile_unblock_contacts,
-                title = getString(R.string.settings_unblock_contacts_title),
-                subtitle = getString(R.string.settings_unblock_contacts_subtitle)
-            )
-        )
-        items.add(
-            ProfileSectionItem.Item(
-                iconRes = R.drawable.ic_profile_feedback,
-                title = getString(R.string.settings_feedback_title),
-                subtitle = ""
-            )
-        )
-        items.add(
-            ProfileSectionItem.Item(
-                iconRes = R.drawable.ic_profile_share,
-                title = getString(R.string.settings_share_title),
-                subtitle = ""
-            )
-        )
-        items.add(
-            ProfileSectionItem.Item(
-                iconRes = R.drawable.ic_profile_change_password,
-                title = getString(R.string.settings_password_title),
-                subtitle = ""
-            )
-        )
-        items.add(
-            ProfileSectionItem.Item(
-                iconRes = R.drawable.ic_profile_logout,
-                title = getString(R.string.logout_button),
-                subtitle = ""
-            )
-        )
-        items.add(
-            ProfileSectionItem.Item(
-                iconRes = R.drawable.ic_profile_delete_account,
-                title = getString(R.string.delete_account_button),
-                subtitle = ""
-            )
-        )
 
         // Initialize Adapter
         val adapter = SettingProfileFullAdapter(items, this, this.supportFragmentManager)
@@ -353,6 +360,9 @@ class ProfileFullActivity : BaseActivity()  {
 
 
     private fun initializeStats() {
+        if(user == null){
+            return
+        }
         user?.stats?.let { stats ->
             // Contributions
             if (stats.neighborhoodsCount > 0) {
@@ -414,39 +424,52 @@ class ProfileFullActivity : BaseActivity()  {
         }
 
         // Email
-        user?.email?.let { email ->
-            if (email.isNotBlank()) {
-                binding.tvMail.text = email
-                binding.tvMail.visibility = View.VISIBLE
-            } else {
+        if(isMe){
+            user?.email?.let { email ->
+                if (email.isNotBlank()) {
+                    binding.tvMail.text = email
+                    binding.tvMail.visibility = View.VISIBLE
+                } else {
+                    binding.tvMail.visibility = View.GONE
+                }
+            } ?: run {
                 binding.tvMail.visibility = View.GONE
             }
-        } ?: run {
-            binding.tvMail.visibility = View.GONE
-        }
 
-        user?.phone.let { phone ->
-            if (phone?.isNotBlank()!!) {
-                binding.tvPhone.text = phone
-                binding.tvPhone.visibility = View.VISIBLE
-            } else {
+
+            user?.phone.let { phone ->
+                if (phone?.isNotBlank()!!) {
+                    binding.tvPhone.text = phone
+                    binding.tvPhone.visibility = View.VISIBLE
+                } else {
+                    binding.tvPhone.visibility = View.GONE
+                }
+            } ?: run {
                 binding.tvPhone.visibility = View.GONE
             }
-        } ?: run {
-            binding.tvPhone.visibility = View.GONE
-        }
 
-        // Adresse et distance
-        user?.address?.let { address ->
-            if (address.displayAddress.isNotBlank() && user.travelDistance != null) {
-                binding.tvZone.text = "${address.displayAddress} - Rayon de ${user.travelDistance} km"
-                binding.tvZone.visibility = View.VISIBLE
-            } else {
+            // Adresse et distance
+            user?.address?.let { address ->
+                if (address.displayAddress.isNotBlank() && user.travelDistance != null) {
+                    binding.tvZone.text = "${address.displayAddress} - Rayon de ${user.travelDistance} km"
+                    binding.tvZone.visibility = View.VISIBLE
+                } else {
+                    binding.tvZone.visibility = View.GONE
+                }
+            } ?: run {
                 binding.tvZone.visibility = View.GONE
             }
-        } ?: run {
-            binding.tvZone.visibility = View.GONE
+        }else{
+            binding.tvMail.visibility = View.GONE
+            binding.tvPhone.visibility = View.GONE
+            user?.address?.let { address ->
+                binding.tvZone.text = address.displayAddress
+            }
+            if(user.address == null) {
+                binding.tvZone.visibility = View.GONE
+            }
         }
+
 
         // À propos
         user?.about?.let { about ->
@@ -590,4 +613,10 @@ class ProfileFullActivity : BaseActivity()  {
             userPresenter.getUser(user.id)
         }
     }
+
+    companion object {
+        var isMe:Boolean = false
+        var userId:Int = 0
+    }
+
 }

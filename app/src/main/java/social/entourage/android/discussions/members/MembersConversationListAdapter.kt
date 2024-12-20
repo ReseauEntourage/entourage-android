@@ -11,6 +11,7 @@ import social.entourage.android.R
 import social.entourage.android.api.model.GroupMember
 import social.entourage.android.databinding.NewGroupMemberItemBinding
 import social.entourage.android.groups.details.members.OnItemShowListener
+import social.entourage.android.profile.ProfileFullActivity
 import social.entourage.android.user.UserProfileActivity
 import social.entourage.android.tools.utils.Const
 
@@ -70,8 +71,10 @@ class MembersConversationListAdapter(
                 }
 
                 binding.layout.setOnClickListener { view ->
+                    ProfileFullActivity.isMe = false
+                    ProfileFullActivity.userId = this.id!!
                     view.context.startActivity(
-                        Intent(view.context, UserProfileActivity::class.java).putExtra(
+                        Intent(view.context, ProfileFullActivity::class.java).putExtra(
                             Const.USER_ID,
                             this.id
                         )

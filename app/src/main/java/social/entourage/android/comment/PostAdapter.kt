@@ -34,6 +34,7 @@ import social.entourage.android.api.model.User
 import social.entourage.android.databinding.NewLayoutPostBinding
 import social.entourage.android.databinding.SurveyLayoutBinding
 import social.entourage.android.language.LanguageManager
+import social.entourage.android.profile.ProfileFullActivity
 import social.entourage.android.report.DataLanguageStock
 import social.entourage.android.survey.ResponseSurveyActivity
 import social.entourage.android.tools.log.AnalyticsEvents
@@ -1069,8 +1070,10 @@ class PostAdapter(
         }
     }
     private fun showUserDetail(context:Context,userId:Int?) {
+        ProfileFullActivity.isMe = false
+        ProfileFullActivity.userId = userId!!
         (context as? Activity)?.startActivityForResult(
-            Intent(context, UserProfileActivity::class.java).putExtra(
+            Intent(context, ProfileFullActivity::class.java).putExtra(
                 Const.USER_ID,
                 userId
             ), 0

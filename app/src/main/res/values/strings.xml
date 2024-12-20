@@ -128,7 +128,7 @@
     <string name="donation">Faire un don</string>
     <string name="faq">FAQ</string>
     <string name="share">Partager l’application</string>
-    <string name="suggest">Une suggestion sur l’application ?</string>
+    <string name="suggest">Partager une idée</string>
     <string name="feedback">Noter l’app sur les stores</string>
     <string name="cgu">Conditions générales d’utilisation</string>
     <string name="confidentiality">Politique de Confidentialité</string>
@@ -2927,7 +2927,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="settings_unblock_contacts_title">Débloquer des contacts</string>
     <string name="settings_unblock_contacts_subtitle">Aucun contact bloqué</string>
     <string name="settings_number_blocked_contacts_subtitle">Contact bloqués : </string>
-    <string name="settings_feedback_title">Suggestion sur l\'application ?</string>
+    <string name="settings_feedback_title">Partager une idée</string>
     <string name="settings_share_title">Partager l\'application</string>
     <string name="settings_password_title">Changer de mot de passe</string>
 

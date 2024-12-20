@@ -202,6 +202,7 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
         actionsPresenter.getUnreadCount()
         if(MainActivity.shouldLaunchProfile){
             MainActivity.shouldLaunchProfile = false
+            ProfileFullActivity.isMe = true
             AnalyticsEvents.logEvent(AnalyticsEvents.Action__Tab__Profil)
             startActivityForResult(
                 Intent(context, ProfileFullActivity::class.java), 0
@@ -768,6 +769,7 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
     private fun setProfileButton(){
         binding.avatar.setOnClickListener {
             AnalyticsEvents.logEvent(AnalyticsEvents.Action__Tab__Profil)
+            ProfileFullActivity.isMe = true
             startActivityForResult(
                 //Intent(context, ProfileActivity::class.java), 0
                 Intent(context, ProfileFullActivity::class.java), 0
@@ -846,8 +848,9 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
         }
         if(position == 0){
             AnalyticsEvents.logEvent(AnalyticsEvents.Action__Home__Moderator)
+            ProfileFullActivity.isMe = true
             startActivity(
-                Intent(context, UserProfileActivity::class.java).putExtra(
+                Intent(context, ProfileFullActivity::class.java).putExtra(
                     Const.USER_ID,
                     moderatorId
                 )

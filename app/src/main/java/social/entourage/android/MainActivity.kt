@@ -55,6 +55,7 @@ import social.entourage.android.language.LanguageManager
 import social.entourage.android.main_filter.MainFilterActivity
 import social.entourage.android.notifications.NotificationActionManager
 import social.entourage.android.notifications.PushNotificationManager
+import social.entourage.android.profile.ProfileFullActivity
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.view.WebViewFragment
@@ -577,7 +578,8 @@ class MainActivity : BaseSecuredActivity() {
 
     fun showProfile() {
         AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_PROFILE_MODPROFIL)
-        startActivityForResult(Intent(this, UserProfileActivity::class.java), 0)
+        ProfileFullActivity.isMe = true
+        startActivityForResult(Intent(this, ProfileFullActivity::class.java), 0)
     }
 
     fun showFeed() {

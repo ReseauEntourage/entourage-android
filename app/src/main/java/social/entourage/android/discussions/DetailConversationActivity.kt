@@ -15,6 +15,7 @@ import social.entourage.android.api.model.Conversation
 import social.entourage.android.api.model.Post
 import social.entourage.android.comment.CommentsListAdapter
 import social.entourage.android.language.LanguageManager
+import social.entourage.android.profile.ProfileFullActivity
 import social.entourage.android.report.DataLanguageStock
 import social.entourage.android.user.UserProfileActivity
 import social.entourage.android.tools.utils.Const
@@ -48,8 +49,10 @@ class DetailConversationActivity : CommentActivity() {
         binding.header.title = titleName
         if (isOne2One) {
             binding.header.headerTitle.setOnClickListener {
+                ProfileFullActivity.isMe = false
+                ProfileFullActivity.userId = postAuthorID
                 startActivityForResult(
-                    Intent(this, UserProfileActivity::class.java).putExtra(
+                    Intent(this, ProfileFullActivity::class.java).putExtra(
                         Const.USER_ID, postAuthorID
                     ), 0)
             }

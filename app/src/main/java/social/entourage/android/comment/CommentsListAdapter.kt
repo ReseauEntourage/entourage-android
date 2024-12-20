@@ -27,6 +27,7 @@ import social.entourage.android.databinding.LayoutCommentItemDateBinding
 import social.entourage.android.databinding.LayoutCommentItemLeftBinding
 import social.entourage.android.databinding.LayoutCommentItemRightBinding
 import social.entourage.android.language.LanguageManager
+import social.entourage.android.profile.ProfileFullActivity
 import social.entourage.android.report.DataLanguageStock
 import social.entourage.android.tools.setHyperlinkClickable
 import social.entourage.android.tools.utils.Const
@@ -214,8 +215,10 @@ class CommentsListAdapter(
             }
             binding.image.setOnClickListener {
                 if (comment.user != null) {
+                    ProfileFullActivity.isMe = false
+                    ProfileFullActivity.userId = comment.user?.userId!!
                     (binding.image.context as? Activity)?.startActivityForResult(
-                        Intent(binding.image.context, UserProfileActivity::class.java).putExtra(
+                        Intent(binding.image.context, ProfileFullActivity::class.java).putExtra(
                             Const.USER_ID,
                             comment.user?.userId
                         ), 0
@@ -229,8 +232,10 @@ class CommentsListAdapter(
                 binding.report.visibility = View.VISIBLE
                 binding.image.setOnClickListener { view ->
                     if (comment.user != null) {
+                        ProfileFullActivity.isMe = false
+                        ProfileFullActivity.userId = comment.user?.userId!!
                         (view.context as? Activity)?.startActivityForResult(
-                            Intent(view.context, UserProfileActivity::class.java).putExtra(
+                            Intent(view.context, ProfileFullActivity::class.java).putExtra(
                                 Const.USER_ID,
                                 comment.user?.userId
                             ), 0
@@ -369,8 +374,10 @@ class CommentsListAdapter(
                 binding.report.visibility = View.VISIBLE
                 binding.image.setOnClickListener { view ->
                     if (comment.user != null) {
+                        ProfileFullActivity.isMe = false
+                        ProfileFullActivity.userId = comment.user?.userId!!
                         (view.context as? Activity)?.startActivityForResult(
-                            Intent(view.context, UserProfileActivity::class.java).putExtra(
+                            Intent(view.context, ProfileFullActivity::class.java).putExtra(
                                 Const.USER_ID,
                                 comment.user?.userId
                             ), 0

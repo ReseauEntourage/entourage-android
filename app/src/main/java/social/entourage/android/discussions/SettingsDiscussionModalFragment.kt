@@ -14,6 +14,7 @@ import social.entourage.android.databinding.NewFragmentSettingsDiscussionModalBi
 import social.entourage.android.RefreshController
 import social.entourage.android.discussions.members.MembersConversationFragment
 import social.entourage.android.api.model.Conversation
+import social.entourage.android.profile.ProfileFullActivity
 import social.entourage.android.report.ReportModalFragment
 import social.entourage.android.report.ReportTypes
 import social.entourage.android.user.UserProfileActivity
@@ -132,8 +133,10 @@ class SettingsDiscussionModalFragment : BottomSheetDialogFragment() {
     private fun handleButtons() {
         binding.profile.layout.setOnClickListener {
             if (isOneToOne) {
+                ProfileFullActivity.isMe = false
+                ProfileFullActivity.userId = userId!!
                 startActivityForResult(
-                    Intent(requireContext(), UserProfileActivity::class.java).putExtra(
+                    Intent(requireContext(), ProfileFullActivity::class.java).putExtra(
                         Const.USER_ID, userId
                     ), 0)
             }

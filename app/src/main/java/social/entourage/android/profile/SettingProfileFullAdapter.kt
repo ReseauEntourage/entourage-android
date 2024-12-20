@@ -102,85 +102,87 @@ class SettingProfileFullAdapter(
 
             // Handle Clicks
             binding.root.setOnClickListener {
-                VibrationUtil.vibrate(context)
-                when (item.title) {
-                    context.getString(R.string.settings_language_title) -> {
-                        LanguageBottomFragment.newInstance().show(parentFragmentManager, LanguageBottomFragment.TAG)
-                    }
-                    context.getString(R.string.translation_auto_title) -> {
-                        TranslationBottomFragment.newInstance().show(parentFragmentManager, TranslationBottomFragment.TAG)
-                    }
-                    context.getString(R.string.settings_notifications_title) -> {
-                        SettingsNotificationsFragment.newInstance()
-                            .show(parentFragmentManager, SettingsNotificationsFragment.TAG)
-                    }
-                    context.getString(R.string.settings_feedback_title) -> {
-                        WebViewFragment.newInstance(context.getString(R.string.url_app_suggest), 0, true)
-                            .show(parentFragmentManager, WebViewFragment.TAG)
-                    }
-
-                    context.getString(R.string.settings_password_title) -> {
-                        EditPasswordFragment().show(parentFragmentManager, EditPasswordFragment.TAG)
-                    }
-                    context.getString(R.string.settings_unblock_contacts_title) -> {
-                        UnblockUsersFragment.newInstance()
-                            .show(parentFragmentManager, UnblockUsersFragment.TAG)
-                    }
-
-                    context.getString(R.string.settings_help_title) -> {
-                        HelpAboutFragment.newInstance().show(parentFragmentManager, HelpAboutFragment.TAG)
-                    }
-                    context.getString(R.string.delete_account_button) -> {
-                        CustomAlertDialog.showWithCancelFirst(
-                            context,
-                            context.getString(R.string.delete_account_dialog_title),
-                            context.getString(R.string.delete_account_dialog_content),
-                            context.getString(R.string.delete)
-                        ) {
-                            EntourageApplication.get().logOut()
-                            (context as Activity).finish()
+                if(ProfileFullActivity.isMe){
+                    VibrationUtil.vibrate(context)
+                    when (item.title) {
+                        context.getString(R.string.settings_language_title) -> {
+                            LanguageBottomFragment.newInstance().show(parentFragmentManager, LanguageBottomFragment.TAG)
                         }
-                    }
-                    context.getString(R.string.logout_button) -> {
-                        CustomAlertDialog.showWithCancelFirst(
-                            context,
-                            context.getString(R.string.sign_out_dialog_title),
-                            context.getString(R.string.sign_out_dialog_content),
-                            context.getString(R.string.signing_out)
-                        ) {
-                            EntourageApplication.get().logOut()
-                            (context as Activity).finish()
+                        context.getString(R.string.translation_auto_title) -> {
+                            TranslationBottomFragment.newInstance().show(parentFragmentManager, TranslationBottomFragment.TAG)
                         }
-                    }
-                    context.getString(R.string.preferences_interest_title) -> {
-                        EnhancedOnboarding.isFromSettingsinterest = true
-                        val intent = Intent(context, EnhancedOnboarding::class.java)
-                        context.startActivity(intent)
-                    }
-                    context.getString(R.string.preferences_availability_title) -> {
-                        EnhancedOnboarding.isFromSettingsDisponibility = true
-                        val intent = Intent(context, EnhancedOnboarding::class.java)
-                        context.startActivity(intent)
+                        context.getString(R.string.settings_notifications_title) -> {
+                            SettingsNotificationsFragment.newInstance()
+                                .show(parentFragmentManager, SettingsNotificationsFragment.TAG)
+                        }
+                        context.getString(R.string.settings_feedback_title) -> {
+                            WebViewFragment.newInstance(context.getString(R.string.url_app_suggest), 0, true)
+                                .show(parentFragmentManager, WebViewFragment.TAG)
+                        }
 
-                    }
-                    context.getString(R.string.preferences_action_title) -> {
-                        EnhancedOnboarding.isFromSettingsWishes = true
-                        val intent = Intent(context, EnhancedOnboarding::class.java)
-                        context.startActivity(intent)
+                        context.getString(R.string.settings_password_title) -> {
+                            EditPasswordFragment().show(parentFragmentManager, EditPasswordFragment.TAG)
+                        }
+                        context.getString(R.string.settings_unblock_contacts_title) -> {
+                            UnblockUsersFragment.newInstance()
+                                .show(parentFragmentManager, UnblockUsersFragment.TAG)
+                        }
 
-                    }
-                    //share
-                    context.getString(R.string.settings_share_title) -> {
-                        val intent = Intent(Intent.ACTION_SEND)
-                        val msgBody = context.getString(R.string.share_app)
-                        intent.putExtra(Intent.EXTRA_TEXT, msgBody)
-                        intent.type = "text/plain"
-                        val shareIntent = Intent.createChooser(intent, null)
-                        context.startActivity(shareIntent)
-                    }
+                        context.getString(R.string.settings_help_title) -> {
+                            HelpAboutFragment.newInstance().show(parentFragmentManager, HelpAboutFragment.TAG)
+                        }
+                        context.getString(R.string.delete_account_button) -> {
+                            CustomAlertDialog.showWithCancelFirst(
+                                context,
+                                context.getString(R.string.delete_account_dialog_title),
+                                context.getString(R.string.delete_account_dialog_content),
+                                context.getString(R.string.delete)
+                            ) {
+                                EntourageApplication.get().logOut()
+                                (context as Activity).finish()
+                            }
+                        }
+                        context.getString(R.string.logout_button) -> {
+                            CustomAlertDialog.showWithCancelFirst(
+                                context,
+                                context.getString(R.string.sign_out_dialog_title),
+                                context.getString(R.string.sign_out_dialog_content),
+                                context.getString(R.string.signing_out)
+                            ) {
+                                EntourageApplication.get().logOut()
+                                (context as Activity).finish()
+                            }
+                        }
+                        context.getString(R.string.preferences_interest_title) -> {
+                            EnhancedOnboarding.isFromSettingsinterest = true
+                            val intent = Intent(context, EnhancedOnboarding::class.java)
+                            context.startActivity(intent)
+                        }
+                        context.getString(R.string.preferences_availability_title) -> {
+                            EnhancedOnboarding.isFromSettingsDisponibility = true
+                            val intent = Intent(context, EnhancedOnboarding::class.java)
+                            context.startActivity(intent)
 
-                    else -> {
-                        Toast.makeText(context, "Unknown action", Toast.LENGTH_SHORT).show()
+                        }
+                        context.getString(R.string.preferences_action_title) -> {
+                            EnhancedOnboarding.isFromSettingsWishes = true
+                            val intent = Intent(context, EnhancedOnboarding::class.java)
+                            context.startActivity(intent)
+
+                        }
+                        //share
+                        context.getString(R.string.settings_share_title) -> {
+                            val intent = Intent(Intent.ACTION_SEND)
+                            val msgBody = context.getString(R.string.share_app)
+                            intent.putExtra(Intent.EXTRA_TEXT, msgBody)
+                            intent.type = "text/plain"
+                            val shareIntent = Intent.createChooser(intent, null)
+                            context.startActivity(shareIntent)
+                        }
+
+                        else -> {
+                            Toast.makeText(context, "Unknown action", Toast.LENGTH_SHORT).show()
+                        }
                     }
                 }
             }
