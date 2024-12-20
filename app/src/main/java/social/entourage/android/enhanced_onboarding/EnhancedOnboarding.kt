@@ -3,6 +3,7 @@ package social.entourage.android.enhanced_onboarding
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import androidx.activity.OnBackPressedCallback
 import androidx.lifecycle.ViewModelProvider
 import social.entourage.android.EntourageApplication
 import social.entourage.android.MainActivity
@@ -56,6 +57,20 @@ class EnhancedOnboarding : BaseActivity() {
                 }
             }
         }
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if (isFromSettingsinterest || isFromSettingsDisponibility || isFromSettingsWishes || isFromSettingsActionCategorie) {
+                    viewModel.registerAndQuit()
+                } else {
+                    viewModel.register()
+                    onBackPressed()
+                    viewModel.step -= 1
+                    if (viewModel.step < 1) {
+                        viewModel.registerAndQuit()
+                    }
+                }
+            }
+        })
 
         if (isFromSettingsinterest) {
             viewModel.setOnboardingThirdStep(true)
@@ -188,6 +203,8 @@ class EnhancedOnboarding : BaseActivity() {
             finish()
         }
     }
+
+
 
 
 

@@ -1,5 +1,6 @@
 package social.entourage.android.language
 
+import android.content.Context
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -28,10 +29,29 @@ class LanguageActivitySettings : AppCompatActivity(), OnLanguageClicked {
         adapter.setData(languages)
         binding.rvLangue.layoutManager = LinearLayoutManager(this)
         binding.rvLangue.adapter = adapter
+
+        initTranslationSwitch()
+    }
+
+    private fun initTranslationSwitch() {
+        val sharedPrefs = getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE)
+        val isTranslatedByDefault = sharedPrefs.getBoolean("translatedByDefault", true)
+        binding.switchTranslation.isChecked = isTranslatedByDefault
     }
 
     private fun handleValidateClick() {
         binding.validate.setOnClickListener {
+            // Sauvegarde de l'état du switch
+            val editor = getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE).edit()
+            editor.putBoolean("translatedByDefault", binding.switchTranslation.isChecked)
+            editor.apply()
+
+            // Mettre à jour le profil / logique si nécessaire
+            // val id = EntourageApplication.me(this)?.id
+            // if (id != null) {
+            //     userPresenter.updateTranslationSettings(id, binding.switchTranslation.isChecked)
+            // }
+
             // On ferme l'Activity
             finish()
         }
@@ -53,26 +73,22 @@ class LanguageActivitySettings : AppCompatActivity(), OnLanguageClicked {
 
     override fun onLangChanged(langItem: LanguageItem) {
         val langCode = LanguageManager.mapLanguageToCode(langItem.lang)
-
         LanguageManager.saveLanguageToPreferences(this, langCode)
         LanguageManager.setLocale(this, langCode)
+
         val id = EntourageApplication.me(this)?.id
         if (id != null) {
             userPresenter.updateLanguage(id, langCode)
         }
 
-        // Mettre à jour la sélection dans l'adapter
         languages.forEachIndexed { index, item ->
             if (item.lang == langItem.lang) {
                 adapter.onItemChanged(index)
             }
         }
 
-        // Mise à jour de l'interface après le changement de langue
         binding.titleName.text = getString(R.string.select_language)
         binding.validate.text = getString(R.string.validate)
-
-        // On recrée l'Activity pour appliquer les changements de langue
         recreate()
     }
 
@@ -86,3 +102,4 @@ class LanguageActivitySettings : AppCompatActivity(), OnLanguageClicked {
         const val TAG = "LanguageActivity"
     }
 }
+
