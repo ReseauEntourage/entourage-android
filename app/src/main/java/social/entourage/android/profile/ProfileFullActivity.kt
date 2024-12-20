@@ -125,8 +125,8 @@ class ProfileFullActivity : BaseActivity()  {
 
     private fun setConfettiView() {
         binding.layoutAchievement.setOnClickListener { view ->
-            VibrationUtil.vibrate(this)
-            showConfetti(view)
+            //VibrationUtil.vibrate(this)
+            //showConfetti(view)
         }
     }
 
@@ -382,9 +382,6 @@ class ProfileFullActivity : BaseActivity()  {
             )
 
         }
-
-
-
         // Initialize Adapter
         val adapter = SettingProfileFullAdapter(items, this, this.supportFragmentManager)
         binding.rvSectionProfile.layoutManager = LinearLayoutManager(this)

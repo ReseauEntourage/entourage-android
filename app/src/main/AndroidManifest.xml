@@ -90,6 +90,10 @@
         <activity
             android:name=".welcome.WelcomeTwoActivity"
             android:exported="false" />
+        <activity android:name="social.entourage.android.language.LanguageActivitySettings"/>
+        <activity android:name="social.entourage.android.profile.settings.SettingsNotificationsActivity"/>
+        <activity android:name="social.entourage.android.profile.editProfile.EditPasswordActivity"/>
+        <activity android:name="social.entourage.android.profile.settings.HelpAboutActivity"/>
         <activity
             android:name=".welcome.WelcomeThreeActivity"
             android:exported="false" />

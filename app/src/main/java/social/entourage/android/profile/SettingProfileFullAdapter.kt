@@ -14,12 +14,16 @@ import social.entourage.android.R
 import social.entourage.android.databinding.SettingItemSeparatorBinding
 import social.entourage.android.databinding.SettingsItemUserSectionBinding
 import social.entourage.android.enhanced_onboarding.EnhancedOnboarding
+import social.entourage.android.language.LanguageActivitySettings
 import social.entourage.android.language.LanguageBottomFragment
 import social.entourage.android.language.TranslationBottomFragment
+import social.entourage.android.profile.editProfile.EditPasswordActivity
 import social.entourage.android.tools.utils.CustomAlertDialog
 import social.entourage.android.tools.view.WebViewFragment
 import social.entourage.android.profile.editProfile.EditPasswordFragment
+import social.entourage.android.profile.settings.HelpAboutActivity
 import social.entourage.android.profile.settings.HelpAboutFragment
+import social.entourage.android.profile.settings.SettingsNotificationsActivity
 import social.entourage.android.profile.settings.SettingsNotificationsFragment
 import social.entourage.android.profile.settings.UnblockUsersFragment
 import social.entourage.android.tools.utils.VibrationUtil
@@ -109,14 +113,14 @@ class SettingProfileFullAdapter(
                     VibrationUtil.vibrate(context)
                     when (item.title) {
                         context.getString(R.string.settings_language_title) -> {
-                            LanguageBottomFragment.newInstance().show(parentFragmentManager, LanguageBottomFragment.TAG)
-                        }
+                            val intent = Intent(context, LanguageActivitySettings::class.java)
+                            context.startActivity(intent)                        }
                         context.getString(R.string.translation_auto_title) -> {
                             TranslationBottomFragment.newInstance().show(parentFragmentManager, TranslationBottomFragment.TAG)
                         }
                         context.getString(R.string.settings_notifications_title) -> {
-                            SettingsNotificationsFragment.newInstance()
-                                .show(parentFragmentManager, SettingsNotificationsFragment.TAG)
+                            val intent = Intent(context, SettingsNotificationsActivity::class.java)
+                            context.startActivity(intent)
                         }
                         context.getString(R.string.settings_feedback_title) -> {
                             WebViewFragment.newInstance(context.getString(R.string.url_app_suggest), 0, true)
@@ -124,15 +128,16 @@ class SettingProfileFullAdapter(
                         }
 
                         context.getString(R.string.settings_password_title) -> {
-                            EditPasswordFragment().show(parentFragmentManager, EditPasswordFragment.TAG)
+                            val intent = Intent(context, EditPasswordActivity::class.java)
+                            context.startActivity(intent)
                         }
                         context.getString(R.string.settings_unblock_contacts_title) -> {
-                            UnblockUsersFragment.newInstance()
-                                .show(parentFragmentManager, UnblockUsersFragment.TAG)
+                            val intent = Intent(context, EditPasswordActivity::class.java)
+                            context.startActivity(intent)
                         }
-
                         context.getString(R.string.settings_help_title) -> {
-                            HelpAboutFragment.newInstance().show(parentFragmentManager, HelpAboutFragment.TAG)
+                            val intent = Intent(context, HelpAboutActivity::class.java)
+                            context.startActivity(intent)
                         }
                         context.getString(R.string.delete_account_button) -> {
                             CustomAlertDialog.showWithCancelFirst(
