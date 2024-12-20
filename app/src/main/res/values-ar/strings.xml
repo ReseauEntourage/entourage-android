@@ -2831,6 +2831,7 @@
     <string name="preferences_action_subtitle">المساعدة المتبادلة (مشاركة الوقت، التبرعات المادية)، الفعاليات، المجموعات</string>
     <string name="preferences_availability_title">توفرني</string>
     <string name="preferences_availability_subtitle">الأيام: الإثنين، الثلاثاء\nالأوقات: بعد الظهر</string>
+    <string name="preferences_action_categories_title">فئات عملي</string>
 
     <string name="settings_section_title">الإعدادات</string>
     <string name="settings_language_title">اللغة</string>

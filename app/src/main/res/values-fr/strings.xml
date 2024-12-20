@@ -2837,6 +2837,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="preferences_action_subtitle">Entraides (Temps de partage, Dons matériels), Événements, Groupes</string>
     <string name="preferences_availability_title">Mes disponibilités</string>
     <string name="preferences_availability_subtitle">Jours : Lundi, Mardi\nHoraires : Après-midi</string>
+    <string name="preferences_action_categories_title">Mes catégories d\'action</string>
 
     <!-- Settings -->
     <string name="settings_section_title">Paramètres</string>

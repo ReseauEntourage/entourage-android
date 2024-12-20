@@ -1742,6 +1742,7 @@
     <string name="preferences_action_subtitle">Mutual aid (Sharing time, Material donations), Events, Groups</string>
     <string name="preferences_availability_title">My availability</string>
     <string name="preferences_availability_subtitle">Days: Monday, Tuesday\nTimes: Afternoon</string>
+    <string name="preferences_action_categories_title">My action categories</string>
 
     <string name="settings_section_title">Settings</string>
     <string name="settings_language_title">Language</string>

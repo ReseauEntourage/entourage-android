@@ -84,6 +84,7 @@ class ProfileFullActivity : BaseActivity()  {
         EnhancedOnboarding.isFromSettingsWishes = false
         EnhancedOnboarding.isFromSettingsDisponibility = false
         EnhancedOnboarding.isFromSettingsinterest = false
+        EnhancedOnboarding.isFromSettingsActionCategorie = false
 
     }
     private fun handleResponseBlocked(blockedUsers:MutableList<UserBlockedUser>?) {
@@ -229,6 +230,29 @@ class ProfileFullActivity : BaseActivity()  {
                 iconRes = R.drawable.ic_profile_action,
                 title = getString(R.string.preferences_action_title),
                 subtitle = involvementsText
+            )
+        )
+
+        val categoriesMap = mapOf(
+            "sharing_time" to getString(R.string.onboarding_category_sharing_time),
+            "material_donations" to getString(R.string.onboarding_category_donation),
+            "services" to getString(R.string.onboarding_category_services)
+        )
+
+        val categoriesText = if (user.concerns.isNotEmpty()) {
+            user.concerns.joinToString(", ") { concern ->
+                // On tente d'abord de traduire la catégorie, sinon on met un texte générique
+                categoriesMap[concern] ?: getString(R.string.interest_other)
+            }
+        } else {
+            getString(R.string.no_data_available)
+        }
+
+        items.add(
+            ProfileSectionItem.Item(
+                iconRes = R.drawable.ic_name_don_materiel, // Icône souhaitée
+                title = getString(R.string.preferences_action_categories_title), // Titre souhaité
+                subtitle = categoriesText // Sous-titre construit à partir des données user
             )
         )
 

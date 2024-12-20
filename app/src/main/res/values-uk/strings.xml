@@ -2717,6 +2717,7 @@
     <string name="preferences_action_subtitle">Взаємодопомога (Поділ часу, Матеріальні пожертви), Події, Групи</string>
     <string name="preferences_availability_title">Моя доступність</string>
     <string name="preferences_availability_subtitle">Дні: Понеділок, Вівторок\nЧас: Після обіду</string>
+    <string name="preferences_action_categories_title">Мої категорії дій</string>
 
     <string name="settings_section_title">Налаштування</string>
     <string name="settings_language_title">Мова</string>

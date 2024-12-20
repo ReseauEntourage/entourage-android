@@ -171,6 +171,11 @@ class SettingProfileFullAdapter(
                             EnhancedOnboarding.isFromSettingsWishes = true
                             val intent = Intent(context, EnhancedOnboarding::class.java)
                             context.startActivity(intent)
+                        }
+                        context.getString(R.string.preferences_action_categories_title) -> {
+                            EnhancedOnboarding.isFromSettingsActionCategorie = true
+                            val intent = Intent(context, EnhancedOnboarding::class.java)
+                            context.startActivity(intent)
 
                         }
                         //share

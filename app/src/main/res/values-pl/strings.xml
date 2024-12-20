@@ -2808,6 +2808,7 @@ Przeczytają tę wiadomość, gdy tylko dołączą do grupy.</string>
     <string name="preferences_action_subtitle">Pomoc wzajemna (dzielenie czasu, darowizny materialne), Wydarzenia, Grupy</string>
     <string name="preferences_availability_title">Moja dostępność</string>
     <string name="preferences_availability_subtitle">Dni: Poniedziałek, Wtorek\nGodziny: Popołudnie</string>
+    <string name="preferences_action_categories_title">Moje kategorie działań</string>
 
     <string name="settings_section_title">Ustawienia</string>
     <string name="settings_language_title">Język</string>

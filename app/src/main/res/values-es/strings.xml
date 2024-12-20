@@ -2792,6 +2792,7 @@ Leerán este mensaje tan pronto como se unan al grupo.</string>
     <string name="preferences_action_subtitle">Ayuda mutua (Tiempo compartido, Donaciones materiales), Eventos, Grupos</string>
     <string name="preferences_availability_title">Mi disponibilidad</string>
     <string name="preferences_availability_subtitle">Días: Lunes, Martes\nHorarios: Tarde</string>
+    <string name="preferences_action_categories_title">Mis categorías de acción</string>
 
     <string name="settings_section_title">Configuración</string>
     <string name="settings_language_title">Idioma</string>

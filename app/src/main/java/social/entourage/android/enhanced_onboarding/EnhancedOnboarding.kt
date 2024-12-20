@@ -45,7 +45,7 @@ class EnhancedOnboarding : BaseActivity() {
         super.onResume()
         userPresenter.getUser(viewModel.user?.id ?: 0)
         binding.btnBack.setOnClickListener {
-            if (isFromSettingsinterest || isFromSettingsDisponibility || isFromSettingsWishes) {
+            if (isFromSettingsinterest || isFromSettingsDisponibility || isFromSettingsWishes || isFromSettingsActionCategorie) {
                 viewModel.registerAndQuit()
             } else {
                 viewModel.register()
@@ -63,6 +63,8 @@ class EnhancedOnboarding : BaseActivity() {
             viewModel.onboardingDisponibilityStep.postValue(true)
         }else if (isFromSettingsWishes) {
             viewModel.setOnboardingSecondStep(true)
+        }else if(isFromSettingsActionCategorie){
+            viewModel.setOnboardingFourthStep(true)
         } else {
             when (viewModel.step) {
                 1 -> viewModel.setOnboardingFirstStep(true)
@@ -170,7 +172,7 @@ class EnhancedOnboarding : BaseActivity() {
                 "resources" -> MainActivity.shouldLaunchQuizz = true
                 "neighborhoods" -> MainActivity.shouldLaunchWelcomeGroup = true
             }
-            if (isFromSettingsinterest  || isFromSettingsDisponibility || isFromSettingsWishes) {
+            if (isFromSettingsinterest  || isFromSettingsDisponibility || isFromSettingsWishes || isFromSettingsActionCategorie) {
                 isFromSettingsinterest = false
                 MainActivity.shouldLaunchEvent = false
                 MainActivity.shouldLaunchProfile = true
@@ -194,6 +196,7 @@ class EnhancedOnboarding : BaseActivity() {
         var isFromSettingsinterest: Boolean = false
         var isFromSettingsDisponibility: Boolean = false
         var isFromSettingsWishes: Boolean = false
+        var isFromSettingsActionCategorie: Boolean = false
         var shouldNotDisplayCampain:Boolean = false
     }
 }

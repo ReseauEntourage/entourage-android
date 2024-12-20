@@ -2804,6 +2804,7 @@ Ei vor citi acest mesaj imediat ce se vor alătura grupului.</string>
     <string name="preferences_action_subtitle">Ajutor reciproc (Timp împărtășit, Donații materiale), Evenimente, Grupuri</string>
     <string name="preferences_availability_title">Disponibilitatea mea</string>
     <string name="preferences_availability_subtitle">Zile: Luni, Marți\nIntervale: După-amiază</string>
+    <string name="preferences_action_categories_title">Categoriile mele de acțiune</string>
 
     <string name="settings_section_title">Setări</string>
     <string name="settings_language_title">Limbă</string>
