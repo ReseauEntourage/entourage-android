@@ -57,7 +57,8 @@ class OnboardingInterestFragment : Fragment() {
             }
         })
         if(EnhancedOnboarding.isFromSettingsinterest) {
-            binding.buttonStart.text = getString(R.string.onboarding_btn_register)
+            binding.buttonStart.text = getString(R.string.validate)
+            binding.buttonConfigureLater.text = getString(R.string.cancel)
         }else{
             binding.buttonStart.text = getString(R.string.onboarding_btn_next)
         }

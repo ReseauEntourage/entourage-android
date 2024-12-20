@@ -2924,7 +2924,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="settings_language_title">Langue</string>
     <string name="settings_language_subtitle">Français - traduction auto active</string>
     <string name="settings_notifications_title">Notifications</string>
-    <string name="settings_notifications_subtitle">Activées(s) : </string>
+    <string name="settings_notifications_subtitle">Activés : </string>
     <string name="settings_help_title">Aide et à propos</string>
     <string name="settings_help_subtitle">Charte éthique, FAQ, CGU, etc.</string>
     <string name="settings_unblock_contacts_title">Débloquer des contacts</string>
@@ -2939,7 +2939,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="notifications_events">événements</string>
     <string name="notifications_groups">groupes</string>
     <string name="notifications_messages">messages</string>
-    <string name="no_notifications_active">aucune notification active</string>
+    <string name="no_notifications_active">Désactivé</string>
 
 
 

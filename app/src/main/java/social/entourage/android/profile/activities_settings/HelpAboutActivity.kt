@@ -60,8 +60,6 @@ class HelpAboutActivity : BaseActivity() {
     }
 
     private fun onPrivacyClicked() {
-        // À l'origine, le fragment faisait appel à ProfileActivity.
-        // Ici, on ouvre directement le lien de la politique de confidentialité.
         val privacyUrl = getString(R.string.privacy_policy_url)
         openLink(privacyUrl)
     }

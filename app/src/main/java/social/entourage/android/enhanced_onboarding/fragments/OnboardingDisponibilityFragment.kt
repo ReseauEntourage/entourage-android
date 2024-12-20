@@ -139,7 +139,8 @@ class OnboardingDisponibilityFragment : Fragment() {
         super.onResume()
         viewModel.toggleBtnBack(true)
         if(EnhancedOnboarding.isFromSettingsDisponibility) {
-            binding.buttonNext.text = getString(R.string.onboarding_btn_register)
+            binding.buttonNext.text = getString(R.string.validate)
+            binding.buttonConfigureLater.text = getString(R.string.cancel)
         }else{
             binding.buttonNext.text = getString(R.string.onboarding_btn_next)
         }

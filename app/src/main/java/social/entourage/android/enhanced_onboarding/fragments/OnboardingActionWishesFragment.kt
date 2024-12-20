@@ -54,7 +54,8 @@ class OnboardingActionWishesFragment:Fragment() {
         super.onResume()
         viewModel.toggleBtnBack(true)
         if(EnhancedOnboarding.isFromSettingsWishes) {
-            binding.buttonStart.text = getString(R.string.onboarding_btn_register)
+            binding.buttonStart.text = getString(R.string.validate)
+            binding.buttonConfigureLater.text = getString(R.string.cancel)
         }else{
             binding.buttonStart.text = getString(R.string.onboarding_btn_next)
         }
