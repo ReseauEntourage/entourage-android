@@ -20,11 +20,9 @@ class LanguageActivitySettings : AppCompatActivity(), OnLanguageClicked {
         super.onCreate(savedInstanceState)
         binding = BottomFragmentLanguageFragmentBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         fillArray()
         handleValidateClick()
         handleCrossButton()
-
         adapter = LanguageAdapter(this, this)
         adapter.setData(languages)
         binding.rvLangue.layoutManager = LinearLayoutManager(this)

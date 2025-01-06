@@ -17,6 +17,7 @@ import social.entourage.android.enhanced_onboarding.EnhancedOnboarding
 import social.entourage.android.language.LanguageActivitySettings
 import social.entourage.android.language.LanguageBottomFragment
 import social.entourage.android.language.TranslationBottomFragment
+import social.entourage.android.profile.activities_settings.UnblockUsersActivity
 import social.entourage.android.profile.editProfile.EditPasswordActivity
 import social.entourage.android.tools.utils.CustomAlertDialog
 import social.entourage.android.tools.view.WebViewFragment
@@ -132,7 +133,7 @@ class SettingProfileFullAdapter(
                             context.startActivity(intent)
                         }
                         context.getString(R.string.settings_unblock_contacts_title) -> {
-                            val intent = Intent(context, EditPasswordActivity::class.java)
+                            val intent = Intent(context, UnblockUsersActivity::class.java)
                             context.startActivity(intent)
                         }
                         context.getString(R.string.settings_help_title) -> {

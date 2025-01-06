@@ -2837,14 +2837,14 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="preferences_action_subtitle">Entraides (Temps de partage, Dons matériels), Événements, Groupes</string>
     <string name="preferences_availability_title">Mes disponibilités</string>
     <string name="preferences_availability_subtitle">Jours : Lundi, Mardi\nHoraires : Après-midi</string>
-    <string name="preferences_action_categories_title">Mes catégories d\'action</string>
+    <string name="preferences_action_categories_title">Mes catégories d\'entraide</string>
 
     <!-- Settings -->
     <string name="settings_section_title">Paramètres</string>
     <string name="settings_language_title">Langue</string>
     <string name="settings_language_subtitle">Français - traduction auto active</string>
     <string name="settings_notifications_title">Notifications</string>
-    <string name="settings_notifications_subtitle">Activés : </string>
+    <string name="settings_notifications_subtitle">Activé : </string>
     <string name="settings_help_title">Aide et à propos</string>
     <string name="settings_help_subtitle">Charte éthique, FAQ, CGU, etc.</string>
     <string name="settings_unblock_contacts_title">Débloquer des contacts</string>

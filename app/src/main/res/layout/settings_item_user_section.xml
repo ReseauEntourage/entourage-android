@@ -13,6 +13,7 @@
         app:layout_constraintBottom_toBottomOf="@+id/tv_title_user_section"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginStart="10dp"
+        android:background="@drawable/bg_beige_round_15"
         tool:src="@drawable/ic_user_asso"
         />
 

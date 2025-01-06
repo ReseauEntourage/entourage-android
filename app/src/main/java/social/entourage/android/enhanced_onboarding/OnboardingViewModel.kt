@@ -40,21 +40,25 @@ class OnboardingViewModel() : ViewModel() {
         get() = EntourageApplication.get().apiModule.userRequest
 
     fun registerAndQuit(category: String? = null) {
-        register()
-        selectedCategory = category
-        onboardingShouldQuit.postValue(true)
+        register { isOK ->
+            if (isOK) {
+                selectedCategory = category
+                onboardingShouldQuit.postValue(true)
+            }
+            else {
+                // Gérer le cas d'erreur si besoin
+            }
+        }
     }
-
+    fun register(onRegisterComplete: (Boolean) -> Unit = {}) {
+        updateUserInterests { isOK, userResponse ->
+            hasRegistered.postValue(isOK)
+            onRegisterComplete(isOK)
+        }
+    }
     fun toggleBtnBack(value: Boolean) {
         shouldDismissBtnBack.postValue(value)
     }
-
-    fun register() {
-        updateUserInterests { isOK, userResponse ->
-            hasRegistered.postValue(isOK)
-        }
-    }
-
     fun updateUserInterests(listener: (isOK: Boolean, userResponse: UserResponse?) -> Unit) {
         val interestsList = interests.value?.filter { it.isSelected }?.map { it.id } ?: listOf()
         val categoriesList = categories.value?.filter { it.isSelected }?.map { it.id } ?: listOf()
@@ -63,12 +67,18 @@ class OnboardingViewModel() : ViewModel() {
         val updatedConcerns = categoriesList.toSet()
         val updatedInvolvements = actionsWishesList.toSet()
 
-
         // Mettre à jour l'utilisateur localement
-        user?.interests = ArrayList(updatedInterests)
-        user?.concerns = ArrayList(updatedConcerns)
-        user?.involvements = ArrayList(updatedInvolvements)
-
+        if (EnhancedOnboarding.isFromSettingsinterest){
+            user?.interests = ArrayList(updatedInterests)
+        }else if (EnhancedOnboarding.isFromSettingsActionCategorie){
+            user?.concerns = ArrayList(updatedConcerns)
+        }else if (EnhancedOnboarding.isFromSettingsWishes){
+            user?.involvements = ArrayList(updatedInvolvements)
+        }else{
+            user?.interests = ArrayList(updatedInterests)
+            user?.concerns = ArrayList(updatedConcerns)
+            user?.involvements = ArrayList(updatedInvolvements)
+        }
 
         // Construire la structure availability en mappant les jours et horaires
         val dayMapping = mapOf(
@@ -95,13 +105,13 @@ class OnboardingViewModel() : ViewModel() {
 
         // Préparer la requête pour le serveur
         val userMap = ArrayMap<String, Any>().apply {
-            if(user?.interests != null && user?.interests!!.isNotEmpty()) {
+            if(user?.interests != null) {
                 put("interests", user?.interests)
             }
-            if(user?.concerns != null && user?.concerns!!.isNotEmpty()) {
+            if(user?.concerns != null) {
                 put("concerns", user?.concerns)
             }
-            if(user?.involvements != null && user?.involvements!!.isNotEmpty()) {
+            if(user?.involvements != null) {
                 put("involvements", user?.involvements)
             }
             if (availability.isNotEmpty()){

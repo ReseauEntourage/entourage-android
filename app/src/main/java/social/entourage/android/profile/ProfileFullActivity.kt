@@ -193,10 +193,21 @@ class ProfileFullActivity : BaseActivity()  {
 
     private fun setupRecyclerView() {
         val items = mutableListOf<ProfileSectionItem>()
-        // Section: Mes préférences
-        items.add(ProfileSectionItem.Separator(getString(R.string.preferences_section_title)))
 
-        // Intérêts
+        // -- 1) Titre de la section préférences : "Mes préférences" ou "Ses préférences"
+        val preferencesTitleRes = if (isMe) {
+            R.string.preferences_section_title
+        } else {
+            R.string.preferences_section_title_others
+        }
+        items.add(ProfileSectionItem.Separator(getString(preferencesTitleRes)))
+
+        // -- 2) Intérêts : "Mes centres d'intérêt" ou "Ses centres d'intérêt"
+        val interestsTitleRes = if (isMe) {
+            R.string.preferences_interest_title
+        } else {
+            R.string.preferences_interest_title_others
+        }
         val interestsText = if (user.interests.isNotEmpty()) {
             user.interests.joinToString(", ") { interest ->
                 EventUtils.showTagTranslated(this, interest)
@@ -207,20 +218,25 @@ class ProfileFullActivity : BaseActivity()  {
         items.add(
             ProfileSectionItem.Item(
                 iconRes = R.drawable.ic_profile_interests,
-                title = getString(R.string.preferences_interest_title),
+                title = getString(interestsTitleRes),
                 subtitle = interestsText
             )
         )
 
-        // Involvements
+        // -- 3) Envies d'agir : "Mes envies d'agir" ou "Ses envies d'agir"
+        val actionTitleRes = if (isMe) {
+            R.string.preferences_action_title
+        } else {
+            R.string.preferences_action_title_others
+        }
         val involvementsText = if (user.involvements.isNotEmpty()) {
             user.involvements.joinToString(", ") { involvement ->
                 when (involvement.lowercase()) {
-                    "outings" -> getString(R.string.onboarding_action_wish_event)
-                    "both_actions" -> getString(R.string.onboarding_action_wish_services)
+                    "outings"       -> getString(R.string.onboarding_action_wish_event)
+                    "both_actions"  -> getString(R.string.onboarding_action_wish_services)
                     "neighborhoods" -> getString(R.string.onboarding_action_wish_network)
-                    "resources" -> getString(R.string.onboarding_action_wish_pedago)
-                    else -> getString(R.string.interest_other)
+                    "resources"     -> getString(R.string.onboarding_action_wish_pedago)
+                    else            -> getString(R.string.interest_other)
                 }
             }
         } else {
@@ -229,34 +245,43 @@ class ProfileFullActivity : BaseActivity()  {
         items.add(
             ProfileSectionItem.Item(
                 iconRes = R.drawable.ic_profile_action,
-                title = getString(R.string.preferences_action_title),
+                title = getString(actionTitleRes),
                 subtitle = involvementsText
             )
         )
 
+        // -- 4) Catégories d'entraide : "Mes catégories d'entraide" ou "Ses catégories d'entraide"
+        val categoriesTitleRes = if (isMe) {
+            R.string.preferences_action_categories_title
+        } else {
+            R.string.preferences_action_categories_title_others
+        }
         val categoriesMap = mapOf(
-            "sharing_time" to getString(R.string.onboarding_category_sharing_time),
+            "sharing_time"       to getString(R.string.onboarding_category_sharing_time),
             "material_donations" to getString(R.string.onboarding_category_donation),
-            "services" to getString(R.string.onboarding_category_services)
+            "services"           to getString(R.string.onboarding_category_services)
         )
-
         val categoriesText = if (user.concerns.isNotEmpty()) {
             user.concerns.joinToString(", ") { concern ->
-                // On tente d'abord de traduire la catégorie, sinon on met un texte générique
                 categoriesMap[concern] ?: getString(R.string.interest_other)
             }
         } else {
             getString(R.string.no_data_available)
         }
-
         items.add(
             ProfileSectionItem.Item(
-                iconRes = R.drawable.ic_name_don_materiel, // Icône souhaitée
-                title = getString(R.string.preferences_action_categories_title), // Titre souhaité
-                subtitle = categoriesText // Sous-titre construit à partir des données user
+                iconRes = R.drawable.ic_name_don_materiel,
+                title = getString(categoriesTitleRes),
+                subtitle = categoriesText
             )
         )
 
+        // -- 5) Disponibilités : "Mes disponibilités" ou "Ses disponibilités"
+        val availabilityTitleRes = if (isMe) {
+            R.string.preferences_availability_title
+        } else {
+            R.string.preferences_availability_title_others
+        }
         // Disponibilité
         val daysMap = mapOf(
             "1" to getString(R.string.enhanced_onboarding_time_disponibility_day_monday),
@@ -286,19 +311,21 @@ class ProfileFullActivity : BaseActivity()  {
         items.add(
             ProfileSectionItem.Item(
                 iconRes = R.drawable.ic_profile_availability,
-                title = getString(R.string.preferences_availability_title),
+                title = getString(availabilityTitleRes),
                 subtitle = availabilityText
             )
         )
 
-        if(isMe){
-            // Section: Paramètres
+        // -- 6) Section Paramètres (seulement si c'est mon profil)
+        if (isMe) {
             items.add(ProfileSectionItem.Separator(getString(R.string.settings_section_title)))
 
-            // Langue : Texte conditionnel en fonction de la langue actuelle
+            // Langue
             val currentLanguageCode = LanguageManager.loadLanguageFromPreferences(this)
-            val currentLanguageName = LanguageManager.languageMap.entries.firstOrNull { it.value == currentLanguageCode }?.key
-                ?: getString(R.string.unknown_language) // Texte par défaut si le code langue est inconnu
+            val currentLanguageName = LanguageManager.languageMap.entries.firstOrNull {
+                it.value == currentLanguageCode
+            }?.key ?: getString(R.string.unknown_language)
+
             items.add(
                 ProfileSectionItem.Item(
                     iconRes = R.drawable.ic_profile_language,
@@ -315,16 +342,9 @@ class ProfileFullActivity : BaseActivity()  {
             } else {
                 getString(R.string.translation_auto_disabled)
             }
+            // (Si tu l’utilises quelque part, tu peux l’ajouter à la liste...)
 
-            items.add(
-                ProfileSectionItem.Item(
-                    iconRes = R.drawable.ic_profile_language, // Utilisez la même icône que pour la langue
-                    title = getString(R.string.translation_auto_title),
-                    subtitle = translationSubtitle
-                )
-            )
-
-
+            // Notifications
             items.add(
                 ProfileSectionItem.Item(
                     iconRes = R.drawable.ic_profile_notifications,
@@ -332,6 +352,8 @@ class ProfileFullActivity : BaseActivity()  {
                     subtitle = notifSubTitle
                 )
             )
+
+            // Aide
             items.add(
                 ProfileSectionItem.Item(
                     iconRes = R.drawable.ic_profile_help,
@@ -339,6 +361,8 @@ class ProfileFullActivity : BaseActivity()  {
                     subtitle = getString(R.string.settings_help_subtitle)
                 )
             )
+
+            // Déblocage
             items.add(
                 ProfileSectionItem.Item(
                     iconRes = R.drawable.ic_profile_unblock_contacts,
@@ -346,6 +370,8 @@ class ProfileFullActivity : BaseActivity()  {
                     subtitle = getString(R.string.settings_unblock_contacts_subtitle)
                 )
             )
+
+            // Feedback
             items.add(
                 ProfileSectionItem.Item(
                     iconRes = R.drawable.ic_profile_feedback,
@@ -353,6 +379,8 @@ class ProfileFullActivity : BaseActivity()  {
                     subtitle = ""
                 )
             )
+
+            // Partage
             items.add(
                 ProfileSectionItem.Item(
                     iconRes = R.drawable.ic_profile_share,
@@ -360,6 +388,8 @@ class ProfileFullActivity : BaseActivity()  {
                     subtitle = ""
                 )
             )
+
+            // Changer mot de passe
             items.add(
                 ProfileSectionItem.Item(
                     iconRes = R.drawable.ic_profile_change_password,
@@ -367,6 +397,8 @@ class ProfileFullActivity : BaseActivity()  {
                     subtitle = ""
                 )
             )
+
+            // Déconnexion
             items.add(
                 ProfileSectionItem.Item(
                     iconRes = R.drawable.ic_profile_logout,
@@ -374,6 +406,8 @@ class ProfileFullActivity : BaseActivity()  {
                     subtitle = ""
                 )
             )
+
+            // Suppression de compte
             items.add(
                 ProfileSectionItem.Item(
                     iconRes = R.drawable.ic_profile_delete_account,
@@ -381,9 +415,9 @@ class ProfileFullActivity : BaseActivity()  {
                     subtitle = ""
                 )
             )
-
         }
-        // Initialize Adapter
+
+        // -- 7) Initialisation de l'adapter
         val adapter = SettingProfileFullAdapter(items, this, this.supportFragmentManager)
         binding.rvSectionProfile.layoutManager = LinearLayoutManager(this)
         binding.rvSectionProfile.adapter = adapter
@@ -391,9 +425,15 @@ class ProfileFullActivity : BaseActivity()  {
 
 
 
+
     private fun initializeStats() {
         if(user == null){
             return
+        }
+        if(isMe){
+            binding.myActivityTv.text = getString(R.string.my_activity)
+        }else{
+            binding.myActivityTv.text = getString(R.string.his_activity)
         }
         user?.stats?.let { stats ->
             // Contributions
