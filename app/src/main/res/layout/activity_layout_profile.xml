@@ -27,6 +27,17 @@
         app:layout_constraintBottom_toTopOf="@+id/profile_nested_scroll_view"
        />
     <ImageView
+        android:id="@+id/icon_option"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="20dp"
+        android:padding="10dp"
+        android:src="@drawable/ic_option_profile"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/profile_nested_scroll_view"
+        />
+    <ImageView
         android:layout_width="110dp"
         android:layout_height="110dp"
         android:id="@+id/iv_profile"

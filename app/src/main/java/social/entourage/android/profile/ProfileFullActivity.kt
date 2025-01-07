@@ -65,10 +65,13 @@ class ProfileFullActivity : BaseActivity()  {
         homePresenter.notificationsPermission.observe(this, ::updateNotifParam)
         discussionsPresenter.getBlockedUsers.observe(this,::handleResponseBlocked)
         profilFullViewModel.hasToUpdate.observe(this, :: updateProfile)
+        discussionsPresenter.getBlockedUsers()
+
         initializeStats()
         updateUserView()
         setButtonListeners()
         setModifyButton()
+        setSignalButton()
         setScrollEffects()
         setBackButton()
         setConfettiView()
@@ -82,6 +85,7 @@ class ProfileFullActivity : BaseActivity()  {
         }else{
             userPresenter.getUser(userId)
         }
+        discussionsPresenter.getBlockedUsers()
         EnhancedOnboarding.isFromSettingsWishes = false
         EnhancedOnboarding.isFromSettingsDisponibility = false
         EnhancedOnboarding.isFromSettingsinterest = false
@@ -164,6 +168,21 @@ class ProfileFullActivity : BaseActivity()  {
         }else{
             binding.btnModifyPhotoProfile.visibility = View.GONE
         }
+    }
+
+    private fun setSignalButton(){
+        if(isMe){
+            binding.iconOption.visibility = View.GONE
+        }else{
+            binding.iconOption.visibility = View.VISIBLE
+            binding.iconOption.setOnClickListener {
+                VibrationUtil.vibrate(this)
+                val bottomSheet = UserOptionsBottomSheet()
+                UserOptionsBottomSheet.user = user
+                bottomSheet.show(supportFragmentManager, "UserOptionsBottomSheet")
+            }
+        }
+
     }
 
     private fun setScrollEffects() {
@@ -367,7 +386,7 @@ class ProfileFullActivity : BaseActivity()  {
                 ProfileSectionItem.Item(
                     iconRes = R.drawable.ic_profile_unblock_contacts,
                     title = getString(R.string.settings_unblock_contacts_title),
-                    subtitle = getString(R.string.settings_unblock_contacts_subtitle)
+                    subtitle = notifBlocked
                 )
             )
 
