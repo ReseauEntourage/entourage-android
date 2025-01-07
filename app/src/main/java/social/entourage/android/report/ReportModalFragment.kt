@@ -106,7 +106,10 @@ class ReportModalFragment() : BottomSheetDialogFragment() {
         handleCloseButton()
         setStartView()
 
-
+        if(reportType == ReportTypes.REPORT_USER.code){
+            setAfterChoose()
+            setView()
+        }
         //Use to force refresh layout
         setPeekHeight(0.7)
     }
@@ -210,6 +213,7 @@ class ReportModalFragment() : BottomSheetDialogFragment() {
         getIsMyLanguage()
         getIsFromConv()
         getIsOneToOne()
+        Timber.wtf("wtf reporttype $reportType")
         if(contentCopied == null || contentCopied.isNullOrEmpty()){
             binding.layoutChooseCopy.visibility = View.GONE
         }else{
@@ -239,7 +243,6 @@ class ReportModalFragment() : BottomSheetDialogFragment() {
         if(isNotTranslatable == true){
             binding.layoutChooseTranslate.visibility = View.GONE
         }
-
 
         if (reportType == ReportTypes.REPORT_GROUP.code){
             setAfterChoose()
@@ -351,7 +354,7 @@ class ReportModalFragment() : BottomSheetDialogFragment() {
             onClose()
             dismiss()
         }
-
+        Timber.wtf("wtf passed here")
     }
 
     override fun onCancel(dialog: DialogInterface) {
@@ -500,8 +503,8 @@ class ReportModalFragment() : BottomSheetDialogFragment() {
         binding.back.setOnClickListener {
             setupViewStep1()
         }
-        binding.send.setOnClickListener {
 
+        binding.send.setOnClickListener {
             reportedId?.let { id ->
                 when (reportType) {
                     ReportTypes.REPORT_USER.code -> userPresenter.sendReport(
