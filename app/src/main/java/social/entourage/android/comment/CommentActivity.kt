@@ -59,7 +59,7 @@ abstract class CommentActivity : BaseActivity(), onDissmissFragment {
     var currentParentPost: Post? = null
     private val universalLinkManager = UniversalLinkManager(this)
     private lateinit var popupWindow: PopupWindow
-    private val userList = listOf("Alice", "Bob", "Charlie", "Diana")
+    private val userList = listOf("Alice", "Gwen", "Nico", "Clément")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
