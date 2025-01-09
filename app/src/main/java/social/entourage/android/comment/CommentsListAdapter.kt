@@ -148,7 +148,6 @@ class CommentsListAdapter(
                 }
 
                 binding.comment.text = contentToShow
-                binding.comment.text = applyMentionColor(contentToShow ?: "")
 
                 if (isMe) {
                     binding.comment.background = context.getDrawable(R.drawable.new_comment_background_orange)
@@ -302,7 +301,6 @@ class CommentsListAdapter(
                 }
 
                 binding.comment.text = contentToShow
-                binding.comment.text = applyMentionColor(contentToShow ?: "")
 
                 if (isMe) {
                     binding.comment.background = context.getDrawable(R.drawable.new_comment_background_orange)
@@ -392,24 +390,6 @@ class CommentsListAdapter(
                 binding.authorName.setTextColor(binding.authorName.context.resources.getColor(R.color.light_orange))
                 binding.publicationDate.setTextColor(binding.publicationDate.context.resources.getColor(R.color.light_orange))
             }
-        }
-
-        private fun applyMentionColor(text: String): CharSequence {
-            val spannable = android.text.SpannableString(text)
-            val mentionRegex = "@\\w+".toRegex()
-            val matches = mentionRegex.findAll(text)
-
-            for (match in matches) {
-                val start = match.range.first
-                val end = match.range.last + 1
-                spannable.setSpan(
-                    android.text.style.ForegroundColorSpan(ContextCompat.getColor(context, R.color.bright_blue)), // Remplacez par votre couleur bleue
-                    start,
-                    end,
-                    android.text.Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-                )
-            }
-            return spannable
         }
 
         fun bindDetails(comment: Post) {

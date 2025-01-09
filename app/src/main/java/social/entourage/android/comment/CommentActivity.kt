@@ -7,16 +7,13 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewTreeObserver.OnGlobalLayoutListener
-import android.widget.PopupWindow
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.api.model.EntourageUser
@@ -44,7 +41,7 @@ abstract class CommentActivity : BaseActivity(), onDissmissFragment {
     var postId = Const.DEFAULT_VALUE
     protected var postAuthorID = Const.DEFAULT_VALUE
     protected var isMember = false
-    protected var titleName: String? = null
+    protected var titleName:String? = null
     var commentsList: MutableList<Post> = mutableListOf()
     var shouldOpenKeyboard = false
     var messagesFailed: MutableList<Post?> = mutableListOf()
@@ -53,13 +50,12 @@ abstract class CommentActivity : BaseActivity(), onDissmissFragment {
     lateinit var viewModel: DiscussionsPresenter
     var haveReloadFromDelete = false
 
+
     protected var isOne2One = false
     protected var isConversation = false
     protected var isFromNotif = false
-    var currentParentPost: Post? = null
+    var currentParentPost:Post? = null
     private val universalLinkManager = UniversalLinkManager(this)
-    private lateinit var popupWindow: PopupWindow
-    private val userList = listOf("Alice", "Bob", "Charlie", "Diana")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -77,30 +73,27 @@ abstract class CommentActivity : BaseActivity(), onDissmissFragment {
         isFromNotif = intent.getBooleanExtra(Const.IS_FROM_NOTIF, false)
         isConversation = intent.getBooleanExtra(Const.IS_CONVERSATION, false)
         shouldOpenKeyboard = intent.getBooleanExtra(Const.SHOULD_OPEN_KEYBOARD, false)
-        viewModel.isMessageDeleted.observe(this, ::handleMessageDeleted)
-
+        viewModel.isMessageDeleted.observe(this,::handleMessageDeleted)
         initializeComments()
         handleCommentAction()
         openEditTextKeyboard()
         handleBackButton()
         setSettingsIcon()
-
         val postLang = comment?.contentTranslations?.fromLang ?: ""
         if (isConversation) {
-            handleReportPost(id, postLang)
-        } else {
-            handleReportPost(postId, postLang)
+            handleReportPost(id,postLang)
+        }
+        else {
+            handleReportPost(postId,postLang)
         }
 
         handleSendButtonState()
-        handleMentionDetection()
     }
 
-    fun setIsEventTrue() {
+    fun setIsEventTrue(){
         this.isEvent = true
     }
-
-    fun setIsEventFalse() {
+    fun setIsEventFalse(){
         this.isEvent = false
     }
 
@@ -123,8 +116,8 @@ abstract class CommentActivity : BaseActivity(), onDissmissFragment {
                 })
     }
 
-    private fun handleMessageDeleted(isMessageDeleted: Boolean) {
-        if (isMessageDeleted) {
+    private fun handleMessageDeleted(isMessageDeleted:Boolean){
+        if(isMessageDeleted){
         }
     }
 
@@ -148,7 +141,7 @@ abstract class CommentActivity : BaseActivity(), onDissmissFragment {
             binding.comments.visibility = View.VISIBLE
             binding.comments.adapter?.notifyDataSetChanged()
         }
-        if (isFromNotif) {
+        if (isFromNotif){
             isMember = true
         }
         if (isMember) {
@@ -168,48 +161,43 @@ abstract class CommentActivity : BaseActivity(), onDissmissFragment {
         binding.comments.apply {
             layoutManager = LinearLayoutManager(context)
             val meId = EntourageApplication.get().me()?.id ?: postAuthorID
-            adapter = CommentsListAdapter(
-                context,
-                commentsList,
-                meId,
-                isOne2One,
-                isConversation,
-                currentParentPost,
-                object : OnItemClickListener {
-                    override fun onItemClick(comment: Post) {
-                        addComment()
-                        commentsList.remove(comment)
-                    }
+            adapter = CommentsListAdapter(context, commentsList, meId,isOne2One,isConversation,currentParentPost, object : OnItemClickListener {
+                override fun onItemClick(comment: Post) {
+                    addComment()
+                    commentsList.remove(comment)
+                }
+                override fun onCommentReport(commentId: Int?, isForEvent: Boolean, isMe:Boolean,commentLang:String) {
+                    if(isForEvent){
+                        commentId?.let { handleReport(it, ReportTypes.REPORT_POST_EVENT, true, isMe, commentLang) }
+                    }else{
+                        commentId?.let { handleReport(it, ReportTypes.REPORT_COMMENT , true, isMe,commentLang) }
 
-                    override fun onCommentReport(commentId: Int?, isForEvent: Boolean, isMe: Boolean, commentLang: String) {
-                        if (isForEvent) {
-                            commentId?.let {
-                                handleReport(it, ReportTypes.REPORT_POST_EVENT, true, isMe, commentLang)
-                            }
-                        } else {
-                            commentId?.let {
-                                handleReport(it, ReportTypes.REPORT_COMMENT, true, isMe, commentLang)
-                            }
-                        }
                     }
+                }
 
-                    override fun onShowWeb(url: String) {
-                        if (url.contains("www.entourage.social") || url.contains("preprod.entourage.social")) {
-                            val uri = Uri.parse(url)
-                            universalLinkManager.handleUniversalLink(uri)
-                            return
-                        }
-                        var urlNew = url
-                        if (url.contains("http:")) {
-                            urlNew = url.replace("http", "https")
-                        }
-                        if (!url.contains("http:") && !url.contains("https:")) {
-                            urlNew = "https://$url"
-                        }
-                        WebViewFragment.newInstance(urlNew, 0, true)
-                            .show(supportFragmentManager, WebViewFragment.TAG)
+                override fun onShowWeb(url: String) {
+                    /*//TODO remove test Here test with launching WebViewActivityForTest activity
+                    WebViewActivityForTest.EXTRA_URL = url
+                    startActivity(Intent(context, WebViewActivityForTest::class.java))
+                    return*/
+
+                    if(url.contains("www.entourage.social") || url.contains("preprod.entourage.social")){
+                        val uri = Uri.parse(url)
+                        universalLinkManager.handleUniversalLink(uri)
+                        return
                     }
-                })
+                    var urlNew = url
+                    if (url.contains("http:")) {
+                        urlNew = url.replace("http","https")
+                    }
+                    //TODO CORRECTION CHARTE LIST
+                    if (!url.contains("http:") && !url.contains("https:")) {
+                        urlNew = "https://$url"
+                    }
+                    WebViewFragment.newInstance(urlNew, 0, true)
+                        .show(supportFragmentManager, WebViewFragment.TAG)
+                }
+            })
             (adapter as? CommentsListAdapter)?.initiateList()
         }
     }
@@ -217,10 +205,12 @@ abstract class CommentActivity : BaseActivity(), onDissmissFragment {
     private fun handleCommentAction() {
         binding.comment.setOnClickListener {
             val message = binding.commentMessage.text.toString()
-            if (!message.isNullOrBlank()) {
+            if (!message.isNullOrBlank() && !message.isNullOrEmpty()) {
+                // Disable the send button and show the progress bar
                 binding.comment.isEnabled = false
                 binding.progressBar.visibility = View.GONE
 
+                // Create the user and post objects as before
                 val user = EntourageUser().apply {
                     userId = EntourageApplication.me(this@CommentActivity)?.id ?: 0
                     avatarURLAsString = EntourageApplication.me(this@CommentActivity)?.avatarURL
@@ -233,106 +223,39 @@ abstract class CommentActivity : BaseActivity(), onDissmissFragment {
                     user = user
                 )
 
+                // Send the comment
                 addComment()
 
+                // Simulate a delay of 2 seconds (2000 milliseconds)
                 binding.comment.postDelayed({
+                    // Re-enable the button and hide the progress bar
                     binding.comment.isEnabled = true
                     binding.progressBar.visibility = View.GONE
                 }, 2000)
 
+                // Clear the input field and hide the keyboard
                 binding.commentMessage.text.clear()
                 Utils.hideKeyboard(this)
             }
         }
     }
 
-    private fun handleMentionDetection() {
-        binding.commentMessage.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                s?.let {
-                    val text = it.toString()
-                    val mentionIndex = text.lastIndexOf("@")
-                    if (mentionIndex != -1) {
-                        val mentionText = text.substring(mentionIndex + 1)
-                        // Affiche la popup même si le texte est vide après "@"
-                        showMentionSuggestions(mentionText)
-                    } else {
-                        dismissPopup()
-                    }
-                }
-            }
 
-            override fun afterTextChanged(s: Editable?) {}
-        })
-    }
-
-    private fun showMentionSuggestions(query: String) {
-        val filteredList = userList.filter { it.startsWith(query, ignoreCase = true) }
-
-        if (filteredList.isEmpty()) {
-            dismissPopup()
-            return
-        }
-
-        val inflater = LayoutInflater.from(this)
-        val recyclerView = RecyclerView(this).apply {
-            layoutManager = LinearLayoutManager(this@CommentActivity)
-            adapter = MentionAdapter(filteredList) { selectedUser ->
-                replaceMentionInEditText(selectedUser)
-                dismissPopup()
-            }
-            setBackgroundColor(ContextCompat.getColor(this@CommentActivity, R.color.beige)) // Set background color to beige
-        }
-
-        popupWindow = PopupWindow(
-            recyclerView,
-            binding.commentMessage.width,
-            RecyclerView.LayoutParams.WRAP_CONTENT,
-            true
-        ).apply {
-            isFocusable = false // Keeps EditText focus when PopupWindow is displayed
-        }
-
-        if (!popupWindow.isShowing) {
-            val location = IntArray(2)
-            binding.commentMessage.getLocationOnScreen(location)
-            val popupHeight = 300 // Example fixed height for the popup
-            val xOffset = location[0]
-            val yOffset = location[1] - popupHeight - 150
-            popupWindow.showAtLocation(binding.commentMessage, 0, xOffset, yOffset)
+    private fun handleBackButton() {
+        binding.header.iconBack.setOnClickListener {
+            finish()
         }
     }
-
-    private fun replaceMentionInEditText(selectedUser: String) {
-        val cursorPosition = binding.commentMessage.selectionStart
-        val text = binding.commentMessage.text.toString()
-        val mentionIndex = text.lastIndexOf("@")
-        if (mentionIndex != -1) {
-            val newText = text.substring(0, mentionIndex) + "@$selectedUser " + text.substring(cursorPosition)
-            binding.commentMessage.setText(newText)
-            binding.commentMessage.setSelection(mentionIndex + selectedUser.length + 2) // Adjust cursor position
-        }
-    }
-
-    private fun dismissPopup() {
-        if (::popupWindow.isInitialized && popupWindow.isShowing) {
-            popupWindow.dismiss()
-        }
-    }
-
 
     private fun handleSendButtonState() {
         binding.commentMessage.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-
-            override fun afterTextChanged(s: Editable?) {
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
+            override fun afterTextChanged(s: Editable) {
                 binding.comment.background = ResourcesCompat.getDrawable(
                     resources,
-                    if (s.isNullOrEmpty()) R.drawable.new_bg_rounded_inactive_button_light_orange
+                    if (s.isEmpty() || s.isBlank()) R.drawable.new_bg_rounded_inactive_button_light_orange
                     else R.drawable.new_circle_orange_button_fill,
                     null
                 )
@@ -348,25 +271,19 @@ abstract class CommentActivity : BaseActivity(), onDissmissFragment {
         binding.header.iconSettings.setBackgroundColor(ContextCompat.getColor(this, R.color.transparent))
     }
 
-    private fun handleBackButton() {
-        binding.header.iconBack.setOnClickListener {
-            finish()
-        }
-    }
-
-    protected fun handleReport(id: Int, type: ReportTypes, isEventComment: Boolean, isMe: Boolean, commentLang: String) {
-        val fromLang = commentLang
+    protected fun handleReport(id: Int, type: ReportTypes, isEventComment :Boolean, isMe:Boolean, commentLang:String) {
+        val fromLang =  commentLang
         var isNotTranslatable = false
-        if (fromLang == null || fromLang.equals("")) {
+        if (fromLang == null || fromLang.equals("")){
             DataLanguageStock.updatePostLanguage(fromLang)
-        } else {
+        }else{
             isNotTranslatable = true
         }
 
-        val description = comment?.content ?: ""
+        var description = comment?.content ?: ""
         val reportGroupBottomDialogFragment =
-            ReportModalFragment.newInstance(id, this.id, type, isMe, true, this.isOne2One, contentCopied = DataLanguageStock.contentToCopy, isNotTranslatable = isNotTranslatable)
-        if (isEventComment) {
+            ReportModalFragment.newInstance(id, this.id, type, isMe ,true, this.isOne2One, contentCopied = DataLanguageStock.contentToCopy, isNotTranslatable = isNotTranslatable)
+        if(isEventComment){
             reportGroupBottomDialogFragment.setEventComment()
         }
         reportGroupBottomDialogFragment.setDismissCallback(this)
@@ -378,10 +295,10 @@ abstract class CommentActivity : BaseActivity(), onDissmissFragment {
 
     protected open fun handleReportPost(id: Int, commentLang: String) {
         binding.header.iconSettings.setOnClickListener {
-            if (isEvent) {
-                handleReport(id, ReportTypes.REPORT_POST_EVENT, false, false, commentLang)
-            } else {
-                handleReport(id, ReportTypes.REPORT_POST, false, false, commentLang)
+            if(isEvent){
+                handleReport(id, ReportTypes.REPORT_POST_EVENT, false, false/*checkIsME*/,commentLang)
+            }else{
+                handleReport(id, ReportTypes.REPORT_POST, false, false/*checkIsME*/,commentLang)
             }
         }
     }
