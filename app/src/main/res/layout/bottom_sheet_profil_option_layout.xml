@@ -6,48 +6,68 @@
     android:layout_height="wrap_content"
     android:padding="16dp">
 
+    <!-- Séparateur horizontal -->
     <View
+        android:id="@+id/view"
         android:layout_width="150dp"
         android:layout_height="2dp"
-        android:id="@+id/view"
         android:background="@color/grey_middle"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        />
+        app:layout_constraintEnd_toEndOf="parent" />
 
+    <!-- ImageView pour "report user" -->
+    <ImageView
+        android:id="@+id/report_user_image"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="16dp"
+        android:src="@drawable/ic_profile_option_report"
+        app:layout_constraintTop_toBottomOf="@+id/view"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <!-- Texte pour "report user" -->
     <TextView
         android:id="@+id/report_user"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:drawableStart="@drawable/ic_profile_option_report"
-        android:drawablePadding="8dp"
+        android:layout_marginStart="10dp"
+        android:fontFamily="@font/quicksand_bold"
         android:gravity="center_vertical"
         android:padding="12dp"
         android:text="@string/report_user"
-        android:textSize="15sp"
-        android:fontFamily="@font/quicksand_bold"
         android:textColor="@color/black"
-        app:layout_constraintTop_toBottomOf="@+id/view"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="16dp"/>
+        android:textSize="15sp"
+        app:layout_constraintTop_toTopOf="@+id/report_user_image"
+        app:layout_constraintBottom_toBottomOf="@+id/report_user_image"
+        app:layout_constraintStart_toEndOf="@+id/report_user_image"
+         />
 
+    <!-- ImageView pour "block user" -->
+    <ImageView
+        android:id="@+id/block_user_image"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="12dp"
+        android:src="@drawable/ic_profile_option_block"
+        app:layout_constraintTop_toBottomOf="@+id/report_user_image"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <!-- Texte pour "block user" -->
     <TextView
         android:id="@+id/block_user"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:drawableStart="@drawable/ic_profile_option_block"
-        android:drawablePadding="8dp"
+        android:layout_marginStart="10dp"
+        android:fontFamily="@font/quicksand_bold"
         android:gravity="center_vertical"
         android:padding="12dp"
         android:text="@string/params_block_user_conv_pop_title"
-        android:textSize="15sp"
-        android:fontFamily="@font/quicksand_bold"
         android:textColor="@color/black"
-        app:layout_constraintTop_toBottomOf="@id/report_user"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="12dp"/>
+        android:textSize="15sp"
+        app:layout_constraintTop_toTopOf="@+id/block_user_image"
+        app:layout_constraintBottom_toBottomOf="@+id/block_user_image"
+        app:layout_constraintStart_toEndOf="@+id/block_user_image"
+         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

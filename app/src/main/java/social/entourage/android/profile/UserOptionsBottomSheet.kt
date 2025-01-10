@@ -63,6 +63,36 @@ class UserOptionsBottomSheet : BottomSheetDialogFragment() {
                 }
             )
         }
+
+        binding.blockUserImage.setOnClickListener {
+            val desc = String.format(
+                getString(R.string.params_block_user_conv_pop_message),
+                user?.displayName ?: "cet utilisateur"
+            )
+            CustomAlertDialog.showButtonClickedWithCrossClose(
+                requireContext(),
+                getString(R.string.params_block_user_conv_pop_title),
+                desc,
+                getString(R.string.params_block_user_conv_pop_bt_cancel),
+                getString(R.string.params_block_user_conv_pop_bt_quit), showCross = false, onNo = {}, onYes = {
+                    //TODO: la suite
+                    user.let {
+                        discussionPresenter.blockUser(it?.id ?: 0)
+                        dismiss()
+                    }
+                }
+            )
+        }
+        binding.reportUserImage.setOnClickListener {
+            val reportUserBottomDialogFragment =
+                ReportModalFragment.newInstance(
+                    user?.id ?: 0,
+                    Const.DEFAULT_VALUE,
+                    ReportTypes.REPORT_USER
+                    ,false,false, false, contentCopied = "" )
+            reportUserBottomDialogFragment.show(parentFragmentManager, ReportModalFragment.TAG)
+            dismiss()
+        }
     }
 
     override fun onDestroyView() {
