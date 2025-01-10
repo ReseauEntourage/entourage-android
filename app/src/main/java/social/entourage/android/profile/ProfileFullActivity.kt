@@ -103,6 +103,7 @@ class ProfileFullActivity : BaseActivity()  {
 
     private fun updateNotifParam(notifsPermissions: InAppNotificationPermission?) {
         notifsPermissions?.let {
+            notifSubTitle = ""
             if(it.action){
                 notifSubTitle += getString(R.string.notifications_actions) + ", "
             }
