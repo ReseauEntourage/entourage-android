@@ -5,8 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="16dp">
-
-    <!-- Séparateur horizontal -->
     <View
         android:id="@+id/view"
         android:layout_width="150dp"
@@ -15,8 +13,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
-
-    <!-- ImageView pour "report user" -->
     <ImageView
         android:id="@+id/report_user_image"
         android:layout_width="30dp"
@@ -25,8 +21,6 @@
         android:src="@drawable/ic_profile_option_report"
         app:layout_constraintTop_toBottomOf="@+id/view"
         app:layout_constraintStart_toStartOf="parent" />
-
-    <!-- Texte pour "report user" -->
     <TextView
         android:id="@+id/report_user"
         android:layout_width="wrap_content"
@@ -42,8 +36,6 @@
         app:layout_constraintBottom_toBottomOf="@+id/report_user_image"
         app:layout_constraintStart_toEndOf="@+id/report_user_image"
          />
-
-    <!-- ImageView pour "block user" -->
     <ImageView
         android:id="@+id/block_user_image"
         android:layout_width="30dp"
@@ -53,8 +45,6 @@
         app:layout_constraintTop_toBottomOf="@+id/report_user_image"
         android:layout_marginBottom="30dp"
         app:layout_constraintStart_toStartOf="parent" />
-
-    <!-- Texte pour "block user" -->
     <TextView
         android:id="@+id/block_user"
         android:layout_width="wrap_content"
