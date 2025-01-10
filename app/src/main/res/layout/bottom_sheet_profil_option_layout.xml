@@ -48,9 +48,10 @@
         android:id="@+id/block_user_image"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="30dp"
         android:src="@drawable/ic_profile_option_block"
         app:layout_constraintTop_toBottomOf="@+id/report_user_image"
+        android:layout_marginBottom="30dp"
         app:layout_constraintStart_toStartOf="parent" />
 
     <!-- Texte pour "block user" -->

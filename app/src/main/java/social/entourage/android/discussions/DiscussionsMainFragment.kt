@@ -107,6 +107,7 @@ class DiscussionsMainFragment : Fragment() {
             binding.tvAskNotif.text = getString(R.string.notifications_disabled_message)
             setStyledText()
             binding.layoutAskNotif.setOnClickListener {
+                binding.layoutAskNotif.visibility = View.GONE
                 val intent = Intent(requireContext(), NotificationDemandActivity::class.java)
                 this.startActivity(intent)
             }
