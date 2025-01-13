@@ -367,23 +367,58 @@ class EditProfileActivity : BaseActivity(), AvatarUploadView {
     // --------------------------
 
     private fun onSaveProfile() {
-        if (checkError()) {
-            val editedUser: ArrayMap<String, Any> = ArrayMap()
-            val firstname = binding.firstname.content.text.trimEnd()
-            val lastname = binding.lastname.content.text.trimEnd()
-            val about = binding.description.content.text?.trimEnd()
-            val email = binding.email.content.text.trimEnd()
-            val birthday = binding.birthday.content.text.trimEnd()
-            val travelDistance = binding.seekBarLayout.seekbar.progress
-
-            editedUser["first_name"] = firstname
-            editedUser["last_name"] = lastname
-            editedUser["about"] = about ?: ""
+        val firstname = binding.firstname.content.text.trimEnd()
+        val lastname = binding.lastname.content.text.trimEnd()
+        val about = binding.description.content.text?.trimEnd()
+        val email = binding.email.content.text.trimEnd()
+        val birthday = binding.birthday.content.text.trimEnd()
+        val travelDistance = binding.seekBarLayout.seekbar.progress
+        val editedUser: ArrayMap<String, Any> = ArrayMap()
+        editedUser["first_name"] = firstname
+        editedUser["about"] = about
+        if(checkEmail()){
             editedUser["email"] = email
-            editedUser["birthday"] = birthday
-            editedUser["travel_distance"] = travelDistance
-            editProfilePresenter.updateUser(editedUser)
         }
+        if(checkLastName()){
+            editedUser["last_name"] = lastname
+        }
+        editedUser["birthday"] = birthday
+        editedUser["travel_distance"] = travelDistance
+        editProfilePresenter.updateUser(editedUser)
+
+    }
+
+    private fun checkEmail(): Boolean {
+        val isEmailCorrect = binding.email.content.text.trimEnd().isValidEmail()
+        with(binding.email) {
+            error.root.visibility = if (isEmailCorrect) View.GONE else View.VISIBLE
+            error.errorMessage.text = getString(R.string.error_email)
+            DrawableCompat.setTint(
+                content.background,
+                ContextCompat.getColor(
+                    this@EditProfileActivity, // ou juste 'this' si vous êtes dans la même Activity
+                    if (isEmailCorrect) R.color.light_orange_opacity_50 else R.color.red
+                )
+            )
+        }
+        return isEmailCorrect
+    }
+
+    private fun checkLastName():Boolean{
+        val isLastnameCorrect = binding.lastname.content.text.trimEnd().length > 2
+
+        with(binding.lastname) {
+            error.root.visibility = if (isLastnameCorrect) View.GONE else View.VISIBLE
+            error.errorMessage.text = getString(R.string.error_lastname)
+            DrawableCompat.setTint(
+                content.background,
+                ContextCompat.getColor(
+                    this@EditProfileActivity,
+                    if (isLastnameCorrect) R.color.light_orange_opacity_50 else R.color.red
+                )
+            )
+        }
+        return isLastnameCorrect
     }
 
     private fun registerAddress() {
