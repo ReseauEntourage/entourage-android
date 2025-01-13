@@ -367,28 +367,29 @@ class EditProfileActivity : BaseActivity(), AvatarUploadView {
     // --------------------------
 
     private fun onSaveProfile() {
-        val firstname = binding.firstname.content.text.trimEnd()
-        val lastname = binding.lastname.content.text.trimEnd()
-        val about = binding.description.content.text?.trimEnd()
-        val email = binding.email.content.text.trimEnd()
-        val birthday = binding.birthday.content.text.trimEnd()
-        val travelDistance = binding.seekBarLayout.seekbar.progress
-        val editedUser: ArrayMap<String, Any> = ArrayMap()
-        editedUser["first_name"] = firstname
-        editedUser["about"] = about
-        if(checkEmail()){
+        if(checkEmail() && checkLastName()){
+            val firstname = binding.firstname.content.text.trimEnd()
+            val lastname = binding.lastname.content.text.trimEnd()
+            val about = binding.description.content.text?.trimEnd()
+            val email = binding.email.content.text.trimEnd()
+            val birthday = binding.birthday.content.text.trimEnd()
+            val travelDistance = binding.seekBarLayout.seekbar.progress
+            val editedUser: ArrayMap<String, Any> = ArrayMap()
+            editedUser["first_name"] = firstname
+            editedUser["about"] = about
             editedUser["email"] = email
-        }
-        if(checkLastName()){
             editedUser["last_name"] = lastname
-        }
-        editedUser["birthday"] = birthday
-        editedUser["travel_distance"] = travelDistance
-        editProfilePresenter.updateUser(editedUser)
 
+            editedUser["birthday"] = birthday
+            editedUser["travel_distance"] = travelDistance
+            editProfilePresenter.updateUser(editedUser)
+        }
     }
 
     private fun checkEmail(): Boolean {
+        if(binding.email.content.text.isEmpty()){
+            return true
+        }
         val isEmailCorrect = binding.email.content.text.trimEnd().isValidEmail()
         with(binding.email) {
             error.root.visibility = if (isEmailCorrect) View.GONE else View.VISIBLE
@@ -405,8 +406,10 @@ class EditProfileActivity : BaseActivity(), AvatarUploadView {
     }
 
     private fun checkLastName():Boolean{
+        if(binding.lastname.content.text.isEmpty()){
+            return true
+        }
         val isLastnameCorrect = binding.lastname.content.text.trimEnd().length > 2
-
         with(binding.lastname) {
             error.root.visibility = if (isLastnameCorrect) View.GONE else View.VISIBLE
             error.errorMessage.text = getString(R.string.error_lastname)
