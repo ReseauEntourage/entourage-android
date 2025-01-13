@@ -406,9 +406,6 @@ class EditProfileActivity : BaseActivity(), AvatarUploadView {
     }
 
     private fun checkLastName():Boolean{
-        if(binding.lastname.content.text.isEmpty()){
-            return true
-        }
         val isLastnameCorrect = binding.lastname.content.text.trimEnd().length > 2
         with(binding.lastname) {
             error.root.visibility = if (isLastnameCorrect) View.GONE else View.VISIBLE
