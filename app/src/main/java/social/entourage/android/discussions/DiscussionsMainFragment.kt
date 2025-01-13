@@ -108,6 +108,7 @@ class DiscussionsMainFragment : Fragment() {
             setStyledText()
             binding.layoutAskNotif.setOnClickListener {
                 binding.layoutAskNotif.visibility = View.GONE
+                NotificationDemandActivity.comeFromSettings = true
                 val intent = Intent(requireContext(), NotificationDemandActivity::class.java)
                 this.startActivity(intent)
             }
