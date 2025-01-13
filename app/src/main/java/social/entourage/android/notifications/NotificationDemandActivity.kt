@@ -115,7 +115,7 @@ class NotificationDemandActivity : BaseActivity() {
                 MainActivity.shouldLaunchOnboarding = true
                 if(comeFromSettings) {
                     comeFromSettings = false
-                    MainActivity.shouldLaunchOnboarding = true
+                    MainActivity.shouldLaunchOnboarding = false
                 }
                 startActivity(Intent(this, MainActivity::class.java))
                 finish()
