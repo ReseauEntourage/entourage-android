@@ -9,12 +9,12 @@ import android.text.TextWatcher
 import android.view.Gravity
 import android.view.View
 import android.view.ViewTreeObserver
+import android.view.inputmethod.InputMethodManager
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.SeekBar
 import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.collection.ArrayMap
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
@@ -75,6 +75,7 @@ class EditProfileActivity : BaseActivity(), AvatarUploadView {
         initUI()
         updateUserView()
         adjustPaddingForKeyboard()
+
         editProfilePresenter.isUserUpdated.observe(this, ::hasUserBeenUpdated)
     }
 
@@ -124,7 +125,6 @@ class EditProfileActivity : BaseActivity(), AvatarUploadView {
     private fun hasUserBeenUpdated(isUpdated: Boolean) {
         if (isUpdated) {
             registerAddress()
-
         } else {
             Toast.makeText(this, "Erreur lors de l'enregistrement", Toast.LENGTH_LONG).show()
         }
@@ -205,28 +205,52 @@ class EditProfileActivity : BaseActivity(), AvatarUploadView {
         }
     }
 
+    /**
+     * Configure la zone d'action pour l'autocomplete d'adresses.
+     * - Ajoute un TextWatcher qui fetch des prédictions Google Places si le champ a du texte
+     * - Au clic sur une suggestion, on set la valeur, on enlève le focus et on ferme le clavier
+     */
     private fun setupActionZoneAutocomplete() {
         val autoCompleteTextView = binding.cityAction
 
-        // Adapter vide au départ
+        // 1) Créer un Adapter vide au départ
         autocompleteAdapter = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line)
         autoCompleteTextView.setAdapter(autocompleteAdapter)
         autoCompleteTextView.threshold = 1
 
-        // Listener sur la sélection d'un item
+        // 2) Listener sur la sélection d'un item (clic suggestion)
         autoCompleteTextView.setOnItemClickListener { parent, _, position, _ ->
             val selectedPrediction = autocompletePredictions[position]
             fetchPlaceDetails(selectedPrediction.placeId)
+
+            // On ferme la liste de suggestions
             autoCompleteTextView.dismissDropDown()
+
+            // Retire le focus
+            autoCompleteTextView.clearFocus()
+
+            // Ferme le clavier
+            val imm = getSystemService(INPUT_METHOD_SERVICE) as? InputMethodManager
+            imm?.hideSoftInputFromWindow(autoCompleteTextView.windowToken, 0)
         }
 
-        // TextWatcher pour déclencher la recherche
+        // 3) TextWatcher pour déclencher la recherche quand l'utilisateur tape
         autoCompleteTextView.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
             override fun afterTextChanged(s: Editable?) {
+                // Ne fetch que si on a le focus + du texte
+                if (!autoCompleteTextView.hasFocus()) {
+                    // Champ plus focus => on ferme la dropDown si besoin
+                    autoCompleteTextView.dismissDropDown()
+                    return
+                }
                 val query = s?.toString()?.trim()
-                if (!query.isNullOrEmpty()) {
+                if (query.isNullOrEmpty()) {
+                    // Si vide, on ferme la dropdown
+                    autoCompleteTextView.dismissDropDown()
+                } else {
+                    // Sinon, on fetch les prédictions
                     fetchAutocompletePredictions(query)
                 }
             }
@@ -339,8 +363,11 @@ class EditProfileActivity : BaseActivity(), AvatarUploadView {
         autocompleteAdapter?.clear()
         autocompleteAdapter?.addAll(suggestions)
         autocompleteAdapter?.notifyDataSetChanged()
-        // Montre le menu déroulant
-        binding.cityAction.showDropDown()
+
+        // Montre le menu déroulant SEULEMENT si le champ a encore le focus
+        if (binding.cityAction.hasFocus()) {
+            binding.cityAction.showDropDown()
+        }
     }
 
     private fun fetchPlaceDetails(placeId: String) {
@@ -349,7 +376,9 @@ class EditProfileActivity : BaseActivity(), AvatarUploadView {
 
         placesClient.fetchPlace(request).addOnSuccessListener { response ->
             val place = response.place
-            binding.cityAction.setText(place.name ?: "")
+            // setText(...) avec "filter = false" => pour ne pas relancer la filtration automatique
+            binding.cityAction.setText(place.name ?: "", false)
+
             savedLocation = place.latLng?.let {
                 PlaceDetails(
                     place.name ?: "",
@@ -397,7 +426,7 @@ class EditProfileActivity : BaseActivity(), AvatarUploadView {
             DrawableCompat.setTint(
                 content.background,
                 ContextCompat.getColor(
-                    this@EditProfileActivity, // ou juste 'this' si vous êtes dans la même Activity
+                    this@EditProfileActivity,
                     if (isEmailCorrect) R.color.light_orange_opacity_50 else R.color.red
                 )
             )
@@ -459,7 +488,11 @@ class EditProfileActivity : BaseActivity(), AvatarUploadView {
         return isLastnameCorrect && isEmailCorrect
     }
 
-    private fun updateErrorUI(itemLayout: social.entourage.android.databinding.NewProfileEditItemBinding, isCorrect: Boolean, errorMsg: String) {
+    private fun updateErrorUI(
+        itemLayout: social.entourage.android.databinding.NewProfileEditItemBinding,
+        isCorrect: Boolean,
+        errorMsg: String
+    ) {
         itemLayout.error.root.visibility = if (isCorrect) View.GONE else View.VISIBLE
         itemLayout.error.errorMessage.text = errorMsg
         DrawableCompat.setTint(
