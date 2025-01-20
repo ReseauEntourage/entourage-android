@@ -17,6 +17,7 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
+import com.google.gson.Gson
 import social.entourage.android.BuildConfig
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
@@ -137,7 +138,7 @@ class ProfileFullActivity : BaseActivity()  {
     }
 
     private fun updateUser(user:User){
-        Timber.wtf("wtf user $user")
+        Timber.wtf("wtf user " + Gson().toJson(user))
         notifSubTitle = ""
         notifBlocked = ""
         this.user = user
@@ -163,6 +164,8 @@ class ProfileFullActivity : BaseActivity()  {
             VibrationUtil.vibrate(this)
             val intent = Intent(this, EditPhotoActivity::class.java)
             startActivity(intent)
+
+            
         }
         if(isMe){
             binding.btnModifyPhotoProfile.visibility = View.VISIBLE
@@ -448,8 +451,10 @@ class ProfileFullActivity : BaseActivity()  {
 
     private fun initializeStats() {
         if(user == null){
+
             return
         }
+
         if(isMe){
             binding.myActivityTv.text = getString(R.string.my_activity)
         }else{
