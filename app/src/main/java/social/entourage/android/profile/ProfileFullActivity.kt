@@ -67,7 +67,7 @@ class ProfileFullActivity : BaseActivity()  {
         discussionsPresenter.getBlockedUsers.observe(this,::handleResponseBlocked)
         profilFullViewModel.hasToUpdate.observe(this, :: updateProfile)
         discussionsPresenter.getBlockedUsers()
-
+        binding.progressBar.visibility = View.VISIBLE
         initializeStats()
         updateUserView()
         setButtonListeners()
@@ -81,6 +81,7 @@ class ProfileFullActivity : BaseActivity()  {
 
     override fun onResume() {
         super.onResume()
+        binding.progressBar.visibility = View.VISIBLE
         if(isMe){
             userPresenter.getUser(user.id)
         }else{
@@ -138,7 +139,6 @@ class ProfileFullActivity : BaseActivity()  {
     }
 
     private fun updateUser(user:User){
-        Timber.wtf("wtf user " + Gson().toJson(user))
         notifSubTitle = ""
         notifBlocked = ""
         this.user = user
@@ -598,6 +598,8 @@ class ProfileFullActivity : BaseActivity()  {
                 )
             )
         }
+        binding.progressBar.visibility = View.GONE
+
     }
 
 
