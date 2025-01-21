@@ -18,6 +18,7 @@ import social.entourage.android.discussions.DetailConversationActivity
 import social.entourage.android.api.model.ActionSummary
 import social.entourage.android.api.model.HomeActionParams
 import social.entourage.android.api.model.HomeType
+import social.entourage.android.profile.ProfileFullActivity
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.welcome.WelcomeFiveActivity
@@ -187,6 +188,8 @@ object NotificationActionManager {
 
     private fun showUser(context:Context,supportFragmentManager: FragmentManager, id: Int) {
         val params = HomeActionParams()
+        ProfileFullActivity.userId = id
+        ProfileFullActivity.isMe = false
         params.id = id
         Navigation.navigate(context,supportFragmentManager,
             HomeType.USER,

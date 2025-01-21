@@ -848,7 +848,8 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
         }
         if(position == 0){
             AnalyticsEvents.logEvent(AnalyticsEvents.Action__Home__Moderator)
-            ProfileFullActivity.isMe = true
+            ProfileFullActivity.isMe = false
+            ProfileFullActivity.userId = moderatorId
             startActivity(
                 Intent(context, ProfileFullActivity::class.java).putExtra(
                     Const.USER_ID,
