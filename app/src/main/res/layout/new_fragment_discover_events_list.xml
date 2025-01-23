@@ -56,7 +56,7 @@
                             android:drawableEnd="@drawable/ic_cross_orange"
                             android:hint="@string/event_search_hint"
                             android:padding="10dp"
-                            android:inputType="textCapSentences"
+                            android:inputType="textCapSentences|textMultiLine"
                             android:imeOptions="actionSearch"
                             android:textColor="@android:color/black"/>
 

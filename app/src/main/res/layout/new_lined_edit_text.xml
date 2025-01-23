@@ -65,7 +65,7 @@
                 android:maxLength="200"
                 android:layout_marginTop="5dp"
                 android:paddingTop="0dp"
-                android:inputType="textCapSentences"
+                android:inputType="textCapSentences|textMultiLine"
                 tools:text="content" />
 
         </LinearLayout>

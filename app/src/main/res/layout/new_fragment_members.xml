@@ -59,7 +59,7 @@
                     android:drawablePadding="8dp"
                     android:hint="@string/search_member_hint"
                     android:imeOptions="actionSearch"
-                    android:inputType="textCapSentences"
+                    android:inputType="textCapSentences|textMultiLine"
                     android:paddingStart="16dp"
                     app:drawableStartCompat="@drawable/new_search" />
 

@@ -277,7 +277,7 @@
                         android:hint="@string/action_search_hint"
                         android:padding="10dp"
                         android:layout_marginTop="10dp"
-                        android:inputType="textCapSentences"
+                        android:inputType="textCapSentences|textMultiLine"
                         android:drawableStart="@drawable/ic_arrow_left_black"
                         android:drawableEnd="@drawable/ic_cross_orange"
                         android:textColor="@android:color/black"

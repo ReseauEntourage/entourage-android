@@ -49,7 +49,7 @@
         android:hint="@string/action_create_title_hint"
         android:maxLines="4"
         android:paddingTop="0dp"
-        android:inputType="textCapSentences"
+        android:inputType="textCapSentences|textMultiLine"
         app:layout_constraintTop_toBottomOf="@+id/subcontent"
         tools:layout_editor_absoluteX="22dp"
         tools:text="content" />
