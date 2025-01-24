@@ -289,9 +289,9 @@ class PostAdapter(
                         }
 
                     }
-                    if(postsList[position].status == "deleted" || postsList[position].status == "offensive"){
+                    if(postsList[position].status == "deleted" || postsList[position].status == "offensive" || postsList[position].status == "offensible"){
                         surveyHolder.binding.surveyQuestion.text = context.getText(R.string.deleted_publi)
-                        if(postsList[position].status == "offensive"){
+                        if(postsList[position].status == "offensive" || postsList[position].status == "offensible"){
                             surveyHolder.binding.surveyQuestion.text = context.getText(R.string.offensive_message)
                         }
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -837,9 +837,9 @@ class PostAdapter(
                                 }
                             }
                         }
-                        if(status == "deleted" || status == "offensive"){
+                        if(status == "deleted" || status == "offensive" || status == "offensible"){
                             binding.postMessage.text = context.getText(R.string.deleted_publi)
-                            if(status == "offensive"){
+                            if(status == "offensive" || status == "offensible"){
                                 binding.postMessage.text = context.getText(R.string.offensive_message)
                             }
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
