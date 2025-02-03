@@ -3,7 +3,6 @@ package social.entourage.android.discussions
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
@@ -17,17 +16,14 @@ import social.entourage.android.comment.CommentsListAdapter
 import social.entourage.android.language.LanguageManager
 import social.entourage.android.profile.ProfileFullActivity
 import social.entourage.android.report.DataLanguageStock
-import social.entourage.android.user.UserProfileActivity
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.log.AnalyticsEvents
-import timber.log.Timber
 import java.util.*
 
 /**
  * Created by - on 15/11/2022.
  */
 class DetailConversationActivity : CommentActivity() {
-
 
     private var hasToShowFirstMessage = false
     var hasSeveralpeople = false
@@ -42,11 +38,11 @@ class DetailConversationActivity : CommentActivity() {
 
         viewModel.getPostComments(id)
 
-
         binding.header.iconSettings.setImageDrawable(resources.getDrawable(R.drawable.new_settings))
         binding.header.cardIconSetting.setBackgroundColor(ContextCompat.getColor(this, R.color.transparent))
         binding.header.iconSettings.setBackgroundColor(ContextCompat.getColor(this, R.color.transparent))
         binding.header.title = titleName
+
         if (isOne2One) {
             binding.header.headerTitle.setOnClickListener {
                 ProfileFullActivity.isMe = false
@@ -54,7 +50,9 @@ class DetailConversationActivity : CommentActivity() {
                 startActivityForResult(
                     Intent(this, ProfileFullActivity::class.java).putExtra(
                         Const.USER_ID, postAuthorID
-                    ), 0)
+                    ),
+                    0
+                )
             }
         }
 
@@ -79,45 +77,57 @@ class DetailConversationActivity : CommentActivity() {
         adapter?.translateItem(id)
     }
 
-
     private fun handleDetailConversation(conversation: Conversation?) {
-        for(message in conversation?.message!!){
-            message.userRole.let {
-                if(it?.contains("Équipe Entourage")!!){
+        // Parcourt la liste des messages de manière sécurisée
+        conversation?.message?.forEach { message ->
+            message.userRole?.let { role ->
+                if (role.contains("Équipe Entourage")) {
                     hasToShowFirstMessage = false
                 }
             }
         }
-        checkAndShowPopWarning()
-        titleName = conversation?.title
-        binding.header.title = titleName
-        val memberCount = conversation?.members?.size ?: 0
-        for(member in conversation?.members!!){
 
+        checkAndShowPopWarning()
+
+        // Met à jour le titre en vérifiant si conversation?.title n'est pas null
+        titleName = conversation?.title ?: titleName
+        binding.header.title = titleName
+
+        val members = conversation?.members
+        val memberCount = members?.size ?: 0
+
+        // Si besoin, traiter chaque membre (boucle actuellement vide)
+        members?.forEach { member ->
+            // Traitement éventuel pour chaque membre
         }
-        if(memberCount > 2){
+
+        if (memberCount > 2) {
             this.hasSeveralpeople = true
-            var title = ""
-            title = conversation?.user?.displayName +  " + " + (conversation?.memberCount?.minus(1)) + " membres"
-            binding.header.title = title
+            val displayName = conversation?.user?.displayName ?: ""
+            // On utilise conversation?.memberCount si disponible, sinon on se base sur memberCount
+            val convMemberCount = conversation?.memberCount ?: memberCount
+            binding.header.title = "$displayName + ${convMemberCount - 1} membres"
         }
+
         if (conversation?.hasBlocker() == true) {
-            binding.postBlocked.isVisible = true
-            val _name = titleName ?: ""
-            if (conversation.imBlocker()) {
-                binding.commentBlocked.hint = String.format(getString(R.string.message_user_blocked_by_me),_name)
-            } else {
-                binding.commentBlocked.hint = String.format(getString(R.string.message_user_blocked_by_other),_name)
+            // Ici, conversation est non-null (sinon la condition ne serait pas vraie)
+            conversation.let { conv ->
+                binding.postBlocked.isVisible = true
+                val _name = titleName ?: ""
+                binding.commentBlocked.hint = if (conv.imBlocker()) {
+                    String.format(getString(R.string.message_user_blocked_by_me), _name)
+                } else {
+                    String.format(getString(R.string.message_user_blocked_by_other), _name)
+                }
             }
         } else {
             binding.postBlocked.isVisible = false
         }
     }
 
-
     fun checkAndShowPopWarning() {
         if (hasToShowFirstMessage) {
-            //TODO rule to makes it always gone
+            // Affiche le layout d'information si nécessaire
             binding.layoutInfoNewDiscussion.isVisible = true
             binding.uiIvCloseNew.setOnClickListener {
                 binding.layoutInfoNewDiscussion.visibility = View.GONE
@@ -138,50 +148,40 @@ class DetailConversationActivity : CommentActivity() {
         scrollAfterLayout()
     }
 
-    override fun handleReportPost(id: Int,commentLang: String) {
+    override fun handleReportPost(id: Int, commentLang: String) {
         binding.header.iconSettings.setOnClickListener {
             DataLanguageStock.updatePostLanguage(commentLang)
             AnalyticsEvents.logEvent(AnalyticsEvents.Message_action_param)
-            if(this.hasSeveralpeople){
-                SettingsDiscussionModalFragment.isSeveralPersonneInConversation = true
-            }else{
-                SettingsDiscussionModalFragment.isSeveralPersonneInConversation = false
-            }
+            SettingsDiscussionModalFragment.isSeveralPersonneInConversation = this.hasSeveralpeople
             SettingsDiscussionModalFragment.newInstance(
                 postAuthorID,
                 id,
                 isOne2One,
                 titleName,
                 viewModel.detailConversation.value?.imBlocker()
-            )
-                .show(supportFragmentManager, SettingsDiscussionModalFragment.TAG)
+            ).show(supportFragmentManager, SettingsDiscussionModalFragment.TAG)
         }
     }
 
-    fun sortAndExtractDays(allEvents: MutableList<Post>?, context: Context) : MutableList<Post>? {
+    fun sortAndExtractDays(allEvents: MutableList<Post>?, context: Context): MutableList<Post>? {
         // Charge la langue préférée de l'utilisateur
         val languageCode = LanguageManager.loadLanguageFromPreferences(context)
         val locale = Locale(languageCode)
-        val _allevents = allEvents?.groupBy { it.getFormatedStr() }
+        val groupedEvents = allEvents?.groupBy { it.getFormatedStr() }
         val newList = ArrayList<Post>()
-        _allevents?.let {
-            for (mappp in _allevents) {
-                val datePost = Post()
-                datePost.isDatePostOnly = true
+        groupedEvents?.forEach { (formattedStr, posts) ->
+            val datePost = Post().apply {
+                isDatePostOnly = true
                 // Utilise la locale chargée pour formater la date
-                datePost.datePostText = mappp.key.capitalize(locale)
-                newList.add(datePost)
-                for (_msg in mappp.value) {
-                    newList.add(_msg)
-                }
+                datePostText = formattedStr.capitalize(locale)
             }
+            newList.add(datePost)
+            newList.addAll(posts)
         }
         return newList
     }
 
-
     fun updateDiscussion() {
         viewModel.getDetailConversation(id)
-
     }
 }
