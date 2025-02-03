@@ -1,3 +1,7 @@
+//UNCOMMENT FOR VIDEO CALL FEATURE
+
+
+/*
 package social.entourage.android.tools.wrtcclient
 
 import android.content.Context
@@ -65,3 +69,4 @@ class WebRTCClient(
         peerConnection = peerConnectionFactory.createPeerConnection(iceServers, observer)
     }
 }
+*/

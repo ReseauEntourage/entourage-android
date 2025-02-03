@@ -306,7 +306,9 @@ dependencies {
     implementation("com.google.android.play:review:2.0.1")
     implementation("com.google.android.play:review-ktx:2.0.1")
     implementation("com.leinardi.android:speed-dial:3.2.0")
-    implementation("com.dafruits:webrtc:123.0.0")
     implementation("com.google.firebase:firebase-database:20.0.6")
+
+    //UNCOMMENT FOR VIDEO CALL FEATURE
+    //implementation("com.dafruits:webrtc:123.0.0")
 
 }

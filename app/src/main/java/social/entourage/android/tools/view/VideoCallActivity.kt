@@ -1,3 +1,6 @@
+//UNCOMMENT FOR VIDEO CALL FEATURE
+
+/*
 package social.entourage.android.tools.view
 
 import android.Manifest
@@ -399,3 +402,4 @@ class VideoCallActivity : AppCompatActivity() {
         Timber.wtf("Activité détruite, ressources libérées")
     }
 }
+*/

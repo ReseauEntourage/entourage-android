@@ -27,7 +27,6 @@ import social.entourage.android.home.UnreadMessages
 import social.entourage.android.api.model.Conversation
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.log.AnalyticsEvents
-import social.entourage.android.tools.view.VideoCallActivity
 import timber.log.Timber
 import kotlin.math.abs
 import android.provider.Settings
@@ -76,10 +75,11 @@ class DiscussionsMainFragment : Fragment() {
             isFromRefresh = true
         }
         discussionsPresenter.getUnreadCount()
-        binding.buttonCall.setOnClickListener {
+        //UNCOMMENT FOR VIDEO CALL FEATURE
+/*        binding.buttonCall.setOnClickListener {
             val intent = Intent(requireContext(), VideoCallActivity::class.java)
             startActivity(intent)
-        }
+        }*/
         checkNotificationsState()
 
     }
