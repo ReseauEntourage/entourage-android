@@ -82,15 +82,15 @@ import social.entourage.android.tools.utils.VibrationUtil
 import social.entourage.android.tools.utils.px
 import timber.log.Timber
 import kotlin.math.abs
-
+import kotlin.math.max
 
 const val rotationDegree = 135F
 
-class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface,
-    SurveyInteractionListener {
+class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface, SurveyInteractionListener {
 
     private var _binding: FragmentFeedBinding? = null
     val binding: FragmentFeedBinding get() = _binding!!
+
     private val groupPresenter: GroupPresenter by lazy { GroupPresenter() }
     private var interestsList: ArrayList<String> = ArrayList()
     private var groupId = -1
@@ -100,7 +100,7 @@ class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface,
     private val args: FeedFragmentArgs by navArgs()
 
     private var isLoading = false
-    private var page:Int = 0
+    private var page: Int = 0
     private val ITEM_PER_PAGE = 10
     private var hasShownWelcomeMessage = false
     private var surveyPresenter: SurveyPresenter = SurveyPresenter()
@@ -109,8 +109,29 @@ class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface,
     private var oldPostsList: MutableList<Post> = ArrayList()
     private var allPostsList: MutableList<Post> = ArrayList()
     private var memberList: MutableList<EntourageUser> = mutableListOf()
+
+    // Added: pour éviter double-clics
+    private var lastClickBack: Long = 0
+    private var lastClickEvents: Long = 0
+    private var lastClickPlus: Long = 0
+
     private var dernierClicTime: Long = 0
 
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentFeedBinding.inflate(inflater, container, false)
+        AnalyticsEvents.logEvent(AnalyticsEvents.VIEW_GROUP_FEED_SHOW)
+        return binding.root
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        // Added: libérer le binding pour éviter tout accès hors cycle de vie
+        _binding = null
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -118,7 +139,9 @@ class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface,
         myId = EntourageApplication.me(activity)?.id
 
         getPrincipalMember()
-        //groupPresenter.getMembers.observe(viewLifecycleOwner, ::handleResponseGetGroupMembers)
+
+        // Observers
+        // groupPresenter.getMembers.observe(viewLifecycleOwner, ::handleResponseGetGroupMembers)
         groupPresenter.getGroup.observe(viewLifecycleOwner, ::handleResponseGetGroup)
         groupPresenter.getAllPosts.observe(viewLifecycleOwner, ::handleResponseGetGroupPosts)
         groupPresenter.hasUserJoinedGroup.observe(viewLifecycleOwner, ::handleJoinResponse)
@@ -126,6 +149,7 @@ class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface,
         groupPresenter.isPostDeleted.observe(requireActivity(), ::handleDeletedResponse)
         groupPresenter.haveReacted.observe(requireActivity(), ::handleReactionGroupPost)
         surveyPresenter.isSurveyVoted.observe(requireActivity(), ::handleSurveyPostResponse)
+
         handleFollowButton()
         handleBackButton()
         handleSettingsButton()
@@ -136,7 +160,11 @@ class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface,
         handleSwipeRefresh()
         onFragmentResult()
 
+        // Added: prévenir le double-clic éventuel sur l'icône (si nécessaire)
         binding.createPost.setOnClickListener {
+            val currentTime = System.currentTimeMillis()
+            if (currentTime - lastClickPlus < 300) return@setOnClickListener
+            lastClickPlus = currentTime
             AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_GROUP_FEED_PLUS)
         }
 
@@ -145,10 +173,9 @@ class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface,
         loadPosts()
     }
 
-
     override fun onResume() {
         super.onResume()
-        if(isFromCreation) {
+        if (isFromCreation) {
             isFromCreation = false
             page = 0
             oldPostsList.clear()
@@ -160,50 +187,30 @@ class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface,
         val fromWelcomeActivity = activity?.intent?.getBooleanExtra("fromWelcomeActivity", false)
         if (fromWelcomeActivity == true) {
             createAPost()
-            activity?.intent= Intent(activity, FeedActivity::class.java) // Réinitialise l'intent
-
+            // Réinitialise l'intent
+            activity?.intent = Intent(activity, FeedActivity::class.java)
         }
         binding.createPost.close()
         binding.overlayView.visibility = View.GONE
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?,
-    ): View {
-        _binding = FragmentFeedBinding.inflate(inflater, container, false)
-        AnalyticsEvents.logEvent(
-            AnalyticsEvents.VIEW_GROUP_FEED_SHOW
-        )
-        return binding.root
-    }
+    // ============================
+    //   PARTIE SCROLL / LOADING
+    // ============================
 
     private fun setupNestedScrollViewScrollListener() {
-        binding.nestSvFeedFragment.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { _, _, scrollY, _, oldScrollY ->
-            if (scrollY > 0) {
-                // Ici, tu peux notifier ton RecyclerView adapter de cacher les éléments layoutReactions
-                hideReactionsInRecyclerView()
-                if (!binding.nestSvFeedFragment.canScrollVertically(1) && !isLoading) {
-                    isLoading = true
-
-                    binding.progressBar.visibility = View.VISIBLE
-                    loadPosts()
+        binding.nestSvFeedFragment.setOnScrollChangeListener(
+            NestedScrollView.OnScrollChangeListener { _, _, scrollY, _, _ ->
+                if (scrollY > 0) {
+                    hideReactionsInRecyclerView()
+                    if (!binding.nestSvFeedFragment.canScrollVertically(1) && !isLoading) {
+                        isLoading = true
+                        binding.progressBar.visibility = View.VISIBLE
+                        loadPosts()
+                    }
                 }
             }
-        })
-    }
-
-    private fun getPrincipalMember(){
-//        groupPresenter.getGroupMembers(groupId)
-        groupPresenter.getGroup(groupId)
-
-
-    }
-
-    private fun handleResponseGetGroupMembers(allMembers: MutableList<EntourageUser>?) {
-        memberList.addAll(allMembers ?: emptyList())
-        groupPresenter.getGroup(groupId)
-
+        )
     }
 
     private fun hideReactionsInRecyclerView() {
@@ -216,140 +223,168 @@ class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface,
         val firstVisiblePosition = layoutManager.findFirstVisibleItemPosition()
         val lastVisiblePosition = layoutManager.findLastVisibleItemPosition()
 
-        // Vérifie que les positions visibles sont valides
-        if (firstVisiblePosition == -1 || lastVisiblePosition == -1) return
+        // Added: vérification supplémentaire
+        if (
+            firstVisiblePosition == RecyclerView.NO_POSITION ||
+            lastVisiblePosition == RecyclerView.NO_POSITION ||
+            firstVisiblePosition > lastVisiblePosition
+        ) return
 
         // Parcours toutes les cellules visibles
         for (i in firstVisiblePosition..lastVisiblePosition) {
-            val viewHolder = recyclerView.findViewHolderForAdapterPosition(i) as? PostAdapter.ViewHolder
+            val viewHolder =
+                recyclerView.findViewHolderForAdapterPosition(i) as? PostAdapter.ViewHolder
             viewHolder?.binding?.layoutReactions?.visibility = View.GONE
         }
     }
 
-    private fun setupMoreTextView() {
-        val description = group?.description ?: return
-        val limit = 150
-        val isTruncated = description.length > limit
-        val truncatedText = if (isTruncated) description.substring(0, limit) + "..." else description
-        val spannable = SpannableStringBuilder()
-        val regularFont = ResourcesCompat.getFont(requireContext(), R.font.nunitosans_regular)
+    // ============================
+    //   PARTIE GROUP / MEMBERS
+    // ============================
 
-        // Ajouter le texte tronqué ou complet en gris avec police Nunitosans Regular
-        spannable.append(truncatedText)
-        spannable.setSpan(
-            ForegroundColorSpan(ContextCompat.getColor(requireContext(), R.color.grey)),
-            0,
-            truncatedText.length,
-            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-        )
-        spannable.setSpan(
-            CustomTypefaceSpan(regularFont),
-            0,
-            truncatedText.length,
-            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-        )
+    private fun getPrincipalMember() {
+        // groupPresenter.getGroupMembers(groupId)
+        groupPresenter.getGroup(groupId)
+    }
 
-        binding.tvKnowMore.text = spannable
-        binding.tvKnowMore.visibility = View.VISIBLE
-        binding.btnMoreDesc.paintFlags = binding.btnMoreDesc.paintFlags or android.graphics.Paint.UNDERLINE_TEXT_FLAG
-        binding.btnMoreDesc.setOnClickListener {
-            AnalyticsEvents.logEvent(
-                AnalyticsEvents.ACTION_GROUP_SEE_MORE_DESC
-            )
-            if (binding.tagsContainer.visibility == View.GONE) {
-                // Afficher tout le texte et les tags
-                binding.btnMoreDesc.text = getString(R.string.see_less)
-                val fullSpannable = SpannableStringBuilder(description)
-                fullSpannable.setSpan(
-                    ForegroundColorSpan(ContextCompat.getColor(requireContext(), R.color.grey)),
-                    0,
-                    description.length,
-                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-                )
-                fullSpannable.setSpan(
-                    CustomTypefaceSpan(regularFont),
-                    0,
-                    description.length,
-                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-                )
+    private fun handleResponseGetGroupMembers(allMembers: MutableList<EntourageUser>?) {
+        memberList.addAll(allMembers ?: emptyList())
+        groupPresenter.getGroup(groupId)
+    }
 
-                binding.tvKnowMore.text = fullSpannable
-                addTags() // Afficher les tags
-                binding.tagsContainer.visibility = View.VISIBLE
-            } else {
-                // Revenir au texte tronqué et masquer les tags
-                binding.btnMoreDesc.text = getString(R.string.see_more)
-                binding.tvKnowMore.text = spannable
-                binding.tagsContainer.visibility = View.GONE
+    private fun handleResponseGetGroup(getGroup: Group?) {
+        getGroup?.let {
+            groupId = it.id!!
+            group = it
+            if (group?.national == true) {
+                group?.address?.displayAddress = ""
+            }
+            updateView()
+        }
+    }
+
+    private fun initializeMembersPhotos() {
+        binding.recyclerView.apply {
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            adapter = group?.members?.let { GroupMembersPhotosAdapter(it) }
+        }
+    }
+
+    // ============================
+    //   PARTIE EVENTS
+    // ============================
+
+    private fun initializeEvents() {
+        binding.eventsRecyclerview.apply {
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            adapter = HomeEventAdapter(context)
+            group?.futureEvents?.let {
+                (adapter as? HomeEventAdapter)?.resetData(it)
             }
         }
-        if(!isTruncated){
-            addTags()
-            binding.btnMoreDesc.visibility = View.GONE
-            binding.tagsContainer.visibility = View.VISIBLE
-        }
-    }
-    private fun addTags() {
-        val interests = group?.interests ?: return
-        val context = requireContext()
-        val flexboxLayout = binding.tagsContainer
-        flexboxLayout.removeAllViews() // Nettoyer les tags existants
-        Timber.wtf("wtf interest $interests")
-        interests.forEach { interest ->
-            val tagView = LayoutInflater.from(context).inflate(R.layout.tag_item_layout, flexboxLayout, false)
-            val tagTextView = tagView.findViewById<TextView>(R.id.tv_tag_home_v2_event_item)
-
-            // Configure le texte et l'icône
-            tagTextView.text = GroupUtils.showTagTranslated(context, interest).replaceFirstChar { it.uppercaseChar() }
-
-//            when (interest) {
-//                Interest.animals -> tagImageView.setImageResource(R.drawable.new_animals)
-//                Interest.wellBeing -> tagImageView.setImageResource(R.drawable.new_wellbeing)
-//                Interest.cooking -> tagImageView.setImageResource(R.drawable.new_cooking)
-//                Interest.culture -> tagImageView.setImageResource(R.drawable.new_art)
-//                Interest.games -> tagImageView.setImageResource(R.drawable.new_games)
-//                Interest.nature -> tagImageView.setImageResource(R.drawable.new_nature)
-//                Interest.sport -> tagImageView.setImageResource(R.drawable.new_sport)
-//                Interest.activities -> tagImageView.setImageResource(R.drawable.new_drawing)
-//                Interest.marauding -> tagImageView.setImageResource(R.drawable.new_encounters)
-//                else -> tagImageView.setImageResource(R.drawable.new_others)
-//            }
-            flexboxLayout.addView(tagView)
-        }
-        Timber.wtf("wtf tag addend : " + flexboxLayout.childCount)
-        Timber.wtf("wtf tag visibility : " + flexboxLayout.visibility)
-        Timber.wtf("wtf tag height : " + flexboxLayout.height)
-        flexboxLayout.visibility = View.VISIBLE
     }
 
+    private fun handleGroupEventsButton() {
+        binding.seeMoreEvents.setOnClickListener {
+            // Added: prévention double-clic
+            val currentTime = System.currentTimeMillis()
+            if (currentTime - lastClickEvents < 300) return@setOnClickListener
+            lastClickEvents = currentTime
 
+            group?.name?.let { name ->
+                // Vérifier si le fragment est toujours attaché
+                if (isAdded && !requireActivity().isFinishing) {
+                    val action =
+                        FeedFragmentDirections.actionGroupFeedToGroupEventsList(
+                            groupId,
+                            name,
+                            group?.member == true
+                        )
+                    findNavController().navigate(action)
+                }
+            }
+        }
+    }
 
+    // ============================
+    //   PARTIE POSTS
+    // ============================
+
+    private fun initializePosts() {
+        binding.postsNewRecyclerview.layoutManager = LinearLayoutManager(requireContext())
+        binding.postsNewRecyclerview.adapter = PostAdapter(
+            requireContext(),
+            this,
+            this,
+            newPostsList,
+            this.group?.member,
+            ::openCommentPage,
+            ::openReportFragment,
+            ::openImageFragment,
+            memberList
+        ).also { it.initiateList() }
+
+        binding.postsOldRecyclerview.layoutManager = LinearLayoutManager(requireContext())
+        binding.postsOldRecyclerview.adapter = PostAdapter(
+            requireContext(),
+            this,
+            this,
+            oldPostsList,
+            this.group?.member,
+            ::openCommentPage,
+            ::openReportFragment,
+            ::openImageFragment,
+            memberList
+        ).also { it.initiateList() }
+    }
+
+    private fun openCommentPage(post: Post, shouldOpenKeyboard: Boolean) {
+        // Vérifier qu'on est attaché
+        if (!isAdded) return
+        startActivityForResult(
+            Intent(context, GroupCommentActivity::class.java).putExtras(
+                bundleOf(
+                    Const.ID to group?.id,
+                    Const.POST_ID to post.id,
+                    Const.POST_AUTHOR_ID to post.user?.userId,
+                    Const.SHOULD_OPEN_KEYBOARD to shouldOpenKeyboard,
+                    Const.IS_MEMBER to group?.member,
+                    Const.NAME to group?.name
+                )
+            ),
+            0
+        )
+    }
+
+    private fun loadPosts() {
+        page++
+        groupPresenter.getGroupPosts(groupId, page, ITEM_PER_PAGE)
+    }
 
     private fun handleResponseGetGroupPosts(allPosts: MutableList<Post>?) {
         CoroutineScope(Dispatchers.Main).launch {
             binding.swipeRefresh.isRefreshing = false
             binding.progressBar.visibility = View.GONE
             isLoading = false
+
             allPosts?.let {
                 allPostsList.addAll(allPosts)
 
                 it.forEach { post ->
-                    if (post.read == true || post.read == null) oldPostsList.add(post)
-                    else newPostsList.add(post)
-                }
-            }
-            //allPosts?.let { newPostsList.addAll(it) }
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                newPostsList.removeIf { post ->
-                    post.status == "deleted"
+                    if (post.read == true || post.read == null) {
+                        oldPostsList.add(post)
+                    } else {
+                        newPostsList.add(post)
+                    }
                 }
             }
 
+            // Filtrer les posts supprimés
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                oldPostsList.removeIf { post ->
-                    post.status == "deleted"
-                }
+                newPostsList.removeIf { post -> post.status == "deleted" }
+                oldPostsList.removeIf { post -> post.status == "deleted" }
             }
+
             if (newPostsList.isEmpty() && oldPostsList.isEmpty()) {
                 binding.postsLayoutEmptyState.visibility = View.VISIBLE
                 binding.postsNewRecyclerview.visibility = View.GONE
@@ -366,8 +401,10 @@ class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface,
             }
 
             if (oldPostsList.isNotEmpty()) {
+                // Si on a des newPosts, on affiche le bloc « Anciens messages »
                 if (newPostsList.isNotEmpty()) binding.postsOld.root.visibility = View.VISIBLE
                 else binding.postsOld.root.visibility = View.GONE
+
                 binding.postsOldRecyclerview.visibility = View.VISIBLE
                 binding.postsLayoutEmptyState.visibility = View.GONE
                 binding.postsOldRecyclerview.adapter?.notifyDataSetChanged()
@@ -377,178 +414,181 @@ class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface,
         }
     }
 
+    // ============================
+    //   PARTIE SURVEY
+    // ============================
 
-    private fun handleSwipeRefresh() {
-        binding.swipeRefresh.setOnRefreshListener {
-            groupPresenter.getGroup(groupId)
-            page = 0
+    override fun onSurveyOptionClicked(postId: Int, surveyResponse: MutableList<Boolean>) {
+        val tempsActuel = System.currentTimeMillis()
+        // Added: petit antispam
+        if (tempsActuel - dernierClicTime > 50) {
+            dernierClicTime = tempsActuel
+            surveyPresenter.postSurveyResponseGroup(groupId, postId, surveyResponse)
+        } else {
+            Toast.makeText(
+                requireContext(),
+                "Veuillez patienter avant de relancer un vote",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+    }
+
+    override fun onDeleteSurveyClick(postId: Int, surveyResponse: MutableList<Boolean>) {
+        Toast.makeText(requireContext(), "Survey option deleted", Toast.LENGTH_SHORT).show()
+    }
+
+    override fun showParticipantWhoVote(survey: Survey, postId: Int, question: String) {
+        if (!isAdded) return
+        val intent = Intent(context, ResponseSurveyActivity::class.java).apply {
+            ResponseSurveyActivity.survey = survey
+            ResponseSurveyActivity.isGroup = true
+            ResponseSurveyActivity.itemId = groupId
+            ResponseSurveyActivity.postId = postId
+            ResponseSurveyActivity.question = question
+        }
+        startActivity(intent)
+    }
+
+    // ============================
+    //   PARTIE REPORT
+    // ============================
+
+    private fun openReportFragment(postId: Int, userId: Int) {
+        if (this.group?.member == false) {
+            AlertDialog.Builder(context)
+                .setTitle("Attention")
+                .setMessage("Vous devez rejoindre le groupe pour effectuer cette action.")
+                .setPositiveButton("Retour") { dialog, _ ->
+                    // Rien
+                }
+                .show()
+            return
+        }
+
+        val meId = EntourageApplication.get().me()?.id
+        val post = allPostsList.find { it.id == postId }
+        val isFrome = meId == post?.user?.id?.toInt()
+        val fromLang = post?.contentTranslations?.fromLang
+        if (fromLang != null) {
+            DataLanguageStock.updatePostLanguage(fromLang)
+        }
+        val description = allPostsList.find { it.id == postId }?.content ?: ""
+
+        val reportGroupBottomDialogFragment =
+            group?.id?.let {
+                ReportModalFragment.newInstance(
+                    postId,
+                    it,
+                    ReportTypes.REPORT_POST,
+                    isFrome,
+                    false,
+                    isOneToOne = false,
+                    contentCopied = description
+                )
+            }
+        // Vérifier qu'on est attaché avant d'afficher un DialogFragment
+        if (isAdded && reportGroupBottomDialogFragment != null) {
+            reportGroupBottomDialogFragment.setCallback(this)
+            reportGroupBottomDialogFragment.show(parentFragmentManager, ReportModalFragment.TAG)
+        }
+    }
+
+    // ============================
+    //   PARTIE IMAGES
+    // ============================
+
+    private fun openImageFragment(imageUrl: String, postId: Int) {
+        if (!isAdded) return
+        val intent = Intent(requireContext(), ImageDialogActivity::class.java)
+        intent.putExtra("postId", postId)
+        intent.putExtra("groupId", this.group?.id)
+        startActivity(intent)
+    }
+
+    // ============================
+    //   PARTIE BLINDAGE - CallbackReportFragment
+    // ============================
+
+    override fun onSuppressPost(id: Int) {
+        binding.progressBar.visibility = View.VISIBLE
+        lifecycleScope.launch {
+            delay(300)
+            val isNewPost = newPostsList.any { it.id == id }
+            val adapter = if (isNewPost) {
+                binding.postsNewRecyclerview.adapter as? PostAdapter
+            } else {
+                binding.postsOldRecyclerview.adapter as? PostAdapter
+            }
+            adapter?.deleteItem(id)
+
+            // Added: sécu pour éviter page < 0
+            page = max(0, page - 1)
             loadPosts()
         }
     }
 
-    private fun handleResponseGetGroup(getGroup: Group?) {
-        getGroup?.let {
-            groupId = it.id!!
-            group = it
-            if (group?.national == true) {
-                group?.address?.displayAddress = ""
-            }
-            updateView()
-        }
-    }
-    private fun showToast(message: String) {
-        Toast.makeText(activity, message, Toast.LENGTH_SHORT).show()
-    }
-
-    private fun handleDeletedResponse(success: Boolean) {
-        if(isAdded){
-            if (success){
-                showToast(getString(R.string.delete_success_send))
-            }else{
-                showToast(getString(R.string.delete_error_send_failed))
-            }
-        }
-    }
-    private fun handleSurveyPostResponse(success: Boolean) {
-        if(isAdded){
-            if (success){
-                //showToast("Réponse enregistrée !")
-
-            }else{
-                showToast("Erreur lors de l'envoi du vote")
-            }
-        }
-    }
-
-    private fun handleCreatePostButton() {
-        if (group?.member == true) {
-            binding.createPost.show()
-            binding.emptyStateEventsSubtitle.visibility = View.VISIBLE
-            binding.subtitle.visibility = View.VISIBLE
-            binding.arrow.visibility = View.VISIBLE
+    override fun onTranslatePost(id: Int) {
+        val isNewPost = newPostsList.any { it.id == id }
+        val adapter = if (isNewPost) {
+            binding.postsNewRecyclerview.adapter as? PostAdapter
         } else {
-            binding.emptyStateEventsSubtitle.visibility = View.GONE
-            binding.subtitle.visibility = View.GONE
-            binding.arrow.visibility = View.GONE
+            binding.postsOldRecyclerview.adapter as? PostAdapter
         }
+        adapter?.translateItem(id)
     }
 
-    private fun handleImageViewAnimation() {
-        binding.appBar.addOnOffsetChangedListener { appBarLayout, verticalOffset ->
-            val res: Float =
-                abs(verticalOffset).toFloat() / appBarLayout.totalScrollRange
-            binding.toolbarLayout.alpha = 1f - res
-            binding.groupImageToolbar.alpha = res
-            binding.groupNameToolbar.alpha = res
+    // ============================
+    //   PARTIE REACTIONS
+    // ============================
 
+    override fun onReactionClicked(postId: Post, reactionId: Int) {
+        requestInAppReview(requireContext())
+        if (this.group?.member == false) {
+            AlertDialog.Builder(context)
+                .setTitle("Attention")
+                .setMessage("Vous devez rejoindre le groupe pour effectuer cette action.")
+                .setPositiveButton("Retour") { _, _ -> }
+                .show()
+            return
         }
+        groupPresenter.reactToPost(groupId, postId.id!!, reactionId)
     }
 
-    private fun createAPost(){
-        isFromCreation = true
-        AnalyticsEvents.logEvent(
-            AnalyticsEvents.ACTION_GROUP_FEED_NEW_POST
-        )
-        val intent = Intent(context, CreatePostGroupActivity::class.java)
-        intent.putExtra(Const.ID, groupId)
-        startActivityForResult(intent, 0)
-    }
+    override fun seeMemberReaction(post: Post) {
+        MembersActivity.isFromReact = true
+        MembersActivity.postId = post.id!!
+        AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_GROUP_FEED_MORE_MEMBERS)
 
-    private fun updateView() {
-        MetaDataRepository.metaData.observe(requireActivity(), ::handleMetaData)
-        with(binding) {
-            groupDescription.enableCopyOnLongClick(requireContext())
-            groupName.text = group?.name
-            groupNameToolbar.text = group?.name
-            groupMembersNumberLocation.text = String.format(
-                getString(R.string.members_location_temporary),
-                group?.address?.displayAddress
-            )
-            initializeMembersPhotos()
-            more.visibility = View.VISIBLE
-            binding.btnShare.visibility = View.VISIBLE
-            join.visibility = View.GONE
-            VibrationUtil.vibrate(requireContext())
-            toKnow.visibility = View.GONE
-            groupDescription.visibility = View.GONE
-            if (group?.member == true) {
-                join.visibility = View.GONE
-
-            } else {
-                join.visibility = View.VISIBLE
-
-            }
-            if (group?.futureEvents?.isEmpty() == true) {
-                binding.eventsLayoutEmptyState.visibility = View.VISIBLE
-                binding.eventsRecyclerview.visibility = View.GONE
-            } else {
-                binding.eventsRecyclerview.visibility = View.VISIBLE
-                binding.eventsLayoutEmptyState.visibility = View.GONE
-                initializeEvents()
-            }
-            binding.seeMoreEvents.isVisible = group?.futureEvents?.isNotEmpty() == true
-            binding.arrowEvents.isVisible = group?.futureEvents?.isNotEmpty() == true
-
-            Glide.with(requireActivity())
-                .load(group?.imageUrl)
-                .error(R.drawable.new_group_illu)
-                .centerCrop()
-                .into(groupImage)
-
-            Glide.with(requireActivity())
-                .load(group?.imageUrl)
-                .placeholder(R.drawable.new_group_illu)
-                .error(R.drawable.new_group_illu)
-                .transform(CenterCrop(), RoundedCorners(8.px))
-                .into(groupImageToolbar)
-
-            // Appelle la méthode pour configurer "en savoir plus"
-            setupMoreTextView()
+        if (!isAdded) return
+        val intent = Intent(context, MembersActivity::class.java).apply {
+            putExtra("ID", groupId)
+            putExtra("TYPE", MembersType.GROUP.code)
         }
-        updateButtonJoin()
-        initializePosts()
-        handleCreatePostButton()
+        startActivity(intent)
     }
 
-
-    private fun updateButtonJoin() {
-        val isMember = group?.member == true
-        val label =
-            getString(if (isMember) R.string.member else R.string.join)
-        val textColor = ContextCompat.getColor(
-            requireContext(),
-            if (isMember) R.color.orange else R.color.white
-        )
-        val background = ResourcesCompat.getDrawable(
-            resources,
-            if (isMember) R.drawable.new_bg_rounded_button_orange_stroke else R.drawable.new_bg_rounded_button_orange_fill,
-            null
-        )
-        val rightDrawable = ResourcesCompat.getDrawable(
-            resources,
-            if (isMember) R.drawable.new_check else R.drawable.new_plus_white,
-            null
-        )
-        binding.join.text = label
-        binding.join.setTextColor(textColor)
-        binding.join.background = background
-        binding.join.setCompoundDrawablesWithIntrinsicBounds(
-            null,
-            null,
-            rightDrawable,
-            null
-        )
-
+    override fun deleteReaction(post: Post) {
+        if (this.group?.member == false) {
+            AlertDialog.Builder(context)
+                .setTitle("Attention")
+                .setMessage("Vous devez rejoindre le groupe pour effectuer cette action.")
+                .setPositiveButton("Retour") { _, _ -> }
+                .show()
+            return
+        }
+        groupPresenter.deleteReactToPost(groupId, post.id!!)
     }
+
+    // ============================
+    //   PARTIE UI (join, share, back, etc.)
+    // ============================
 
     private fun handleFollowButton() {
         binding.join.setOnClickListener {
-            AnalyticsEvents.logEvent(
-                AnalyticsEvents.ACTION_GROUP_FEED_JOIN
-            )
-            if (!(group?.member == true)){
+            AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_GROUP_FEED_JOIN)
+            if (group?.member != true) {
                 groupPresenter.joinGroup(groupId)
-            }else{
+            } else {
                 groupPresenter.leaveGroup(groupId)
             }
         }
@@ -565,6 +605,7 @@ class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface,
             }
         }
     }
+
     private fun handleLeftResponse(hasJoined: Boolean) {
         hasShownWelcomeMessage = false
         group?.let {
@@ -573,168 +614,65 @@ class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface,
                 updateButtonJoin()
                 groupPresenter.getGroup(groupId)
                 handleCreatePostButton()
-
             }
         }
     }
 
-    private fun showWelcomeMessage(){
-        if(hasShownWelcomeMessage){
-            return
-        }
+    private fun showWelcomeMessage() {
+        if (hasShownWelcomeMessage) return
         hasShownWelcomeMessage = true
         var message = getString(R.string.welcome_message_placeholder)
         val title = getString(R.string.welcome_message_title)
         if (group?.welcomeMessage?.isNotBlank() == true) message = group?.welcomeMessage.toString()
+
+        // Vérifier qu’on est attaché
+        if (!isAdded || requireActivity().isFinishing) return
+
         CustomAlertDialog.showWelcomeAlert(
             requireContext(),
             title,
             message,
-            getString(R.string.welcome_message_btn_title)){
-                this.createAPost()
+            getString(R.string.welcome_message_btn_title)
+        ) {
+            this.createAPost()
         }
-    }
-
-    private fun initializeMembersPhotos() {
-        binding.recyclerView.apply {
-            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-            adapter = group?.members?.let { GroupMembersPhotosAdapter(it) }
-        }
-    }
-
-    private fun initializeEvents() {
-        binding.eventsRecyclerview.apply {
-            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-            adapter = HomeEventAdapter(context)
-            group?.futureEvents?.let {
-                (adapter as? HomeEventAdapter)?.resetData(it)
-            }
-        }
-    }
-
-    private fun initializePosts() {
-
-        binding.postsNewRecyclerview.layoutManager = LinearLayoutManager(requireContext())
-        binding.postsNewRecyclerview.adapter = PostAdapter(
-            requireContext(),
-            this,
-            this,
-            newPostsList,
-            this.group?.member,
-            ::openCommentPage,
-            ::openReportFragment,
-            ::openImageFragment,
-            memberList
-        )
-        (binding.postsNewRecyclerview.adapter as? PostAdapter)?.initiateList()
-
-
-        binding.postsOldRecyclerview.layoutManager = LinearLayoutManager(requireContext())
-        binding.postsOldRecyclerview.adapter = PostAdapter(
-            requireContext(),
-            this,
-            this,
-            oldPostsList,
-            this.group?.member,
-            ::openCommentPage,
-            ::openReportFragment,
-            ::openImageFragment,
-            memberList
-        )
-        (binding.postsOldRecyclerview.adapter as? PostAdapter)?.initiateList()
-
-    }
-
-    private fun openCommentPage(post: Post, shouldOpenKeyboard: Boolean) {
-        startActivityForResult(
-            Intent(context, GroupCommentActivity::class.java)
-                .putExtras(
-                    bundleOf(
-                        Const.ID to group?.id,
-                        Const.POST_ID to post.id,
-                        Const.POST_AUTHOR_ID to post.user?.userId,
-                        Const.SHOULD_OPEN_KEYBOARD to shouldOpenKeyboard,
-                        Const.IS_MEMBER to group?.member,
-                        Const.NAME to group?.name
-                    )
-                ), 0
-        )
-    }
-    private fun openReportFragment(postId:Int,userId:Int) {
-        if(this.group?.member == false){
-            AlertDialog.Builder(context) // Utilise 'this' si c'est dans une activité, ou 'getActivity()' si c'est dans un fragment
-                .setTitle("Attention")
-                .setMessage("Vous devez rejoindre le groupe pour effectuer cette action.")
-                .setPositiveButton("Retour") { dialog, which ->
-                    // Code à exécuter lorsque le bouton "Retour" est cliqué.
-                    // Si tu ne veux rien faire, tu peux laisser ce bloc vide.
-                }
-                .show()
-            return
-        }
-
-        val meId = EntourageApplication.get().me()?.id
-        val post = allPostsList.find { it.id == postId }
-        val isFrome = meId == post?.user?.id?.toInt()
-        val fromLang = post?.contentTranslations?.fromLang
-        if (fromLang != null) {
-            DataLanguageStock.updatePostLanguage(fromLang)
-        }
-        val description = allPostsList.find { it.id == postId }?.content ?: ""
-        val reportGroupBottomDialogFragment =
-            group?.id?.let {
-                ReportModalFragment.newInstance(
-                    postId,
-                    it, ReportTypes.REPORT_POST,isFrome
-                ,false, isOneToOne = false, contentCopied = description)
-            }
-        reportGroupBottomDialogFragment?.setCallback(this)
-        reportGroupBottomDialogFragment?.show(parentFragmentManager, ReportModalFragment.TAG)
-
-    }
-
-
-    private fun openImageFragment(imageUrl:String, postId: Int) {
-        val intent = Intent(requireContext(), ImageDialogActivity::class.java)
-        intent.putExtra("postId", postId)
-        intent.putExtra("groupId", this.group?.id)
-        startActivity(intent)
-    }
-
-    private fun loadPosts() {
-        page++
-        groupPresenter.getGroupPosts(groupId, page, ITEM_PER_PAGE)
-
     }
 
     private fun handleBackButton() {
         binding.iconBack.setOnClickListener {
-            AnalyticsEvents.logEvent(
-                AnalyticsEvents.ACTION_GROUP_FEED_BACK_ARROW
-            )
-            requireActivity().finish()
+            // Added: prévention double-clic
+            val currentTime = System.currentTimeMillis()
+            if (currentTime - lastClickBack < 300) return@setOnClickListener
+            lastClickBack = currentTime
+
+            AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_GROUP_FEED_BACK_ARROW)
+            if (isAdded && !requireActivity().isFinishing) {
+                requireActivity().finish()
+            }
         }
     }
 
     private fun handleSettingsButton() {
         binding.iconSettings.setOnClickListener {
-            AnalyticsEvents.logEvent(
-                AnalyticsEvents.ACTION_GROUP_FEED_OPTION
-            )
-
+            AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_GROUP_FEED_OPTION)
             group?.let {
                 with(it) {
                     groupUI = GroupModel(
-                        groupId, name, nameTranslations, uuid_v2,
+                        groupId,
+                        name,
+                        nameTranslations,
+                        uuid_v2,
                         members_count,
                         address?.displayAddress,
                         interests,
-                        description, descriptionTranslations,
+                        description,
+                        descriptionTranslations,
                         members,
                         member,
                         EntourageApplication.me(activity)?.id == admin?.id
                     )
                 }
+                if (!isAdded) return@setOnClickListener
                 GroupDetailsFragment.newInstance(groupUI)
                     .show(parentFragmentManager, GroupDetailsFragment.TAG)
             }
@@ -743,62 +681,143 @@ class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface,
 
     private fun handleMembersButton() {
         binding.members.setOnClickListener {
-            AnalyticsEvents.logEvent(
-                AnalyticsEvents.ACTION_GROUP_FEED_MORE_MEMBERS
-            )
+            AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_GROUP_FEED_MORE_MEMBERS)
+            if (!isAdded) return@setOnClickListener
             val intent = Intent(context, MembersActivity::class.java).apply {
-                // Passage des arguments nécessaires
-                putExtra("ID", groupId) // Assure-toi que 'groupId' est un Int
-                putExtra("TYPE", MembersType.GROUP.code) // Utilise 'code' pour passer l'enum comme un Int
+                putExtra("ID", groupId)
+                putExtra("TYPE", MembersType.GROUP.code)
             }
             startActivity(intent)
         }
     }
 
-    private fun handleReactionGroupPost(reactionId: Int) {
-
-    }
-
-    private fun handleGroupEventsButton() {
-        binding.seeMoreEvents.setOnClickListener {
-            group?.name?.let { name ->
-                val action =
-                    FeedFragmentDirections.actionGroupFeedToGroupEventsList(
-                        groupId,
-                        name,
-                        group?.member == true
-                    )
-                findNavController().navigate(action)
-            }
-        }
-    }
-
-    private fun createShareUrl():String{
-        val deepLinksHostName = BuildConfig.DEEP_LINKS_URL
-        return "https://" + deepLinksHostName + "/app/neighborhoods/" + group?.uuid_v2
-    }
     private fun handleAboutButton() {
         binding.btnShare.setOnClickListener {
             AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_GROUPOPTION_SHARE)
             val shareTitle = getString(R.string.share_title_group)
             val shareIntent = Intent(Intent.ACTION_SEND).apply {
                 type = "text/plain"
-                putExtra(Intent.EXTRA_TEXT, shareTitle + "\n" + group?.name + ": " + "\n" + createShareUrl())
+                putExtra(
+                    Intent.EXTRA_TEXT,
+                    shareTitle + "\n" + group?.name + ": " + "\n" + createShareUrl()
+                )
             }
+            if (!isAdded) return@setOnClickListener
             startActivity(Intent.createChooser(shareIntent, "Partager l'URL via"))
+        }
+    }
+
+    private fun createShareUrl(): String {
+        val deepLinksHostName = BuildConfig.DEEP_LINKS_URL
+        return "https://$deepLinksHostName/app/neighborhoods/${group?.uuid_v2}"
+    }
+
+    // ============================
+    //   PARTIE DESCRIPTION / TAGS
+    // ============================
+
+    private fun setupMoreTextView() {
+        val description = group?.description ?: return
+        val limit = 150
+        val isTruncated = description.length > limit
+        val truncatedText = if (isTruncated) description.substring(0, limit) + "..." else description
+        val spannable = SpannableStringBuilder()
+        val regularFont = ResourcesCompat.getFont(requireContext(), R.font.nunitosans_regular)
+
+        spannable.append(truncatedText)
+        spannable.setSpan(
+            ForegroundColorSpan(ContextCompat.getColor(requireContext(), R.color.grey)),
+            0,
+            truncatedText.length,
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+        spannable.setSpan(
+            CustomTypefaceSpan(regularFont),
+            0,
+            truncatedText.length,
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+
+        binding.tvKnowMore.text = spannable
+        binding.tvKnowMore.visibility = View.VISIBLE
+        binding.btnMoreDesc.paintFlags =
+            binding.btnMoreDesc.paintFlags or android.graphics.Paint.UNDERLINE_TEXT_FLAG
+        binding.btnMoreDesc.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_GROUP_SEE_MORE_DESC)
+            if (binding.tagsContainer.visibility == View.GONE) {
+                binding.btnMoreDesc.text = getString(R.string.see_less)
+                val fullSpannable = SpannableStringBuilder(description)
+                fullSpannable.setSpan(
+                    ForegroundColorSpan(ContextCompat.getColor(requireContext(), R.color.grey)),
+                    0,
+                    description.length,
+                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                )
+                fullSpannable.setSpan(
+                    CustomTypefaceSpan(regularFont),
+                    0,
+                    description.length,
+                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                )
+                binding.tvKnowMore.text = fullSpannable
+                addTags()
+                binding.tagsContainer.visibility = View.VISIBLE
+            } else {
+                binding.btnMoreDesc.text = getString(R.string.see_more)
+                binding.tvKnowMore.text = spannable
+                binding.tagsContainer.visibility = View.GONE
+            }
+        }
+
+        if (!isTruncated) {
+            addTags()
+            binding.btnMoreDesc.visibility = View.GONE
+            binding.tagsContainer.visibility = View.VISIBLE
+        }
+    }
+
+    private fun addTags() {
+        val interests = group?.interests ?: return
+        val context = requireContext()
+        val flexboxLayout = binding.tagsContainer
+        flexboxLayout.removeAllViews()
+        Timber.wtf("wtf interest $interests")
+        interests.forEach { interest ->
+            val tagView = LayoutInflater.from(context).inflate(
+                R.layout.tag_item_layout,
+                flexboxLayout,
+                false
+            )
+            val tagTextView = tagView.findViewById<TextView>(R.id.tv_tag_home_v2_event_item)
+            tagTextView.text =
+                GroupUtils.showTagTranslated(context, interest).replaceFirstChar { it.uppercaseChar() }
+            flexboxLayout.addView(tagView)
+        }
+        Timber.wtf("wtf tag addend : ${flexboxLayout.childCount}")
+        Timber.wtf("wtf tag visibility : ${flexboxLayout.visibility}")
+        Timber.wtf("wtf tag height : ${flexboxLayout.height}")
+        flexboxLayout.visibility = View.VISIBLE
+    }
+
+    // ============================
+    //   PARTIE MISC
+    // ============================
+
+    private fun handleSwipeRefresh() {
+        binding.swipeRefresh.setOnRefreshListener {
+            groupPresenter.getGroup(groupId)
+            page = 0
+            loadPosts()
         }
     }
 
     private fun handleMetaData(tags: Tags?) {
         if (group == null) return
-
         interestsList.clear()
         val groupInterests = group!!.interests
         tags?.interests?.forEach { interest ->
-            if (groupInterests.contains(interest.id)) interest.name?.let {
-                interestsList.add(
-                    it
-                )
+            if (groupInterests.contains(interest.id)) {
+                interest.name?.let { interestsList.add(it) }
             }
         }
     }
@@ -810,108 +829,124 @@ class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface,
         }
     }
 
-    override fun onSuppressPost(id: Int) {
-        binding.progressBar.visibility = View.VISIBLE
-        lifecycleScope.launch {
-            delay(300)
-            val isNewPost = newPostsList.any { it.id == id }
-            val adapter = if (isNewPost) {
-                binding.postsNewRecyclerview.adapter as? PostAdapter
+    private fun createAPost() {
+        isFromCreation = true
+        AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_GROUP_FEED_NEW_POST)
+        val intent = Intent(context, CreatePostGroupActivity::class.java)
+        intent.putExtra(Const.ID, groupId)
+        if (!isAdded) return
+        startActivityForResult(intent, 0)
+    }
+
+    private fun handleCreatePostButton() {
+        if (group?.member == true) {
+            binding.createPost.show()
+            binding.emptyStateEventsSubtitle.visibility = View.VISIBLE
+            binding.subtitle.visibility = View.VISIBLE
+            binding.arrow.visibility = View.VISIBLE
+        } else {
+            binding.emptyStateEventsSubtitle.visibility = View.GONE
+            binding.subtitle.visibility = View.GONE
+            binding.arrow.visibility = View.GONE
+        }
+    }
+
+    private fun updateView() {
+        MetaDataRepository.metaData.observe(viewLifecycleOwner, ::handleMetaData)
+
+        with(binding) {
+            groupDescription.enableCopyOnLongClick(requireContext())
+            groupName.text = group?.name
+            groupNameToolbar.text = group?.name
+            groupMembersNumberLocation.text = String.format(
+                getString(R.string.members_location_temporary),
+                group?.address?.displayAddress
+            )
+            initializeMembersPhotos()
+            more.visibility = View.VISIBLE
+            btnShare.visibility = View.VISIBLE
+            join.visibility = View.GONE
+            VibrationUtil.vibrate(requireContext())
+            toKnow.visibility = View.GONE
+            groupDescription.visibility = View.GONE
+
+            if (group?.member == true) {
+                join.visibility = View.GONE
             } else {
-                binding.postsOldRecyclerview.adapter as? PostAdapter
+                join.visibility = View.VISIBLE
             }
-            adapter?.deleteItem(id)
-            page--
-            loadPosts()
+
+            if (group?.futureEvents?.isEmpty() == true) {
+                eventsLayoutEmptyState.visibility = View.VISIBLE
+                eventsRecyclerview.visibility = View.GONE
+            } else {
+                eventsRecyclerview.visibility = View.VISIBLE
+                eventsLayoutEmptyState.visibility = View.GONE
+                initializeEvents()
+            }
+
+            seeMoreEvents.isVisible = group?.futureEvents?.isNotEmpty() == true
+            arrowEvents.isVisible = group?.futureEvents?.isNotEmpty() == true
+
+            Glide.with(requireActivity())
+                .load(group?.imageUrl)
+                .error(R.drawable.new_group_illu)
+                .centerCrop()
+                .into(groupImage)
+
+            Glide.with(requireActivity())
+                .load(group?.imageUrl)
+                .placeholder(R.drawable.new_group_illu)
+                .error(R.drawable.new_group_illu)
+                .transform(CenterCrop(), RoundedCorners(8.px))
+                .into(groupImageToolbar)
+
+            setupMoreTextView()
         }
+
+        updateButtonJoin()
+        initializePosts()
+        handleCreatePostButton()
     }
 
-    override fun onTranslatePost(id: Int) {
-        val isNewPost = newPostsList.any { it.id == id }
-        val adapter = if (isNewPost) {
-            binding.postsNewRecyclerview.adapter as? PostAdapter
-        } else {
-            binding.postsOldRecyclerview.adapter as? PostAdapter
-        }
-        adapter?.translateItem(id)
-    }
-    override fun onReactionClicked(postId: Post, reactionId: Int) {
-        requestInAppReview(requireContext())
-        if(this.group?.member == false){
-            AlertDialog.Builder(context) // Utilise 'this' si c'est dans une activité, ou 'getActivity()' si c'est dans un fragment
-                .setTitle("Attention")
-                .setMessage("Vous devez rejoindre le groupe pour effectuer cette action.")
-                .setPositiveButton("Retour") { dialog, which ->
-                    // Code à exécuter lorsque le bouton "Retour" est cliqué.
-                    // Si tu ne veux rien faire, tu peux laisser ce bloc vide.
-                }
-                .show()
-            return
-        }
-        groupPresenter.reactToPost(groupId,postId.id!!, reactionId)
-    }
-
-    override fun seeMemberReaction(post: Post) {
-        MembersActivity.isFromReact = true
-        MembersActivity.postId = post.id!!
-        AnalyticsEvents.logEvent(
-            AnalyticsEvents.ACTION_GROUP_FEED_MORE_MEMBERS
+    private fun updateButtonJoin() {
+        val isMember = group?.member == true
+        val label = getString(if (isMember) R.string.member else R.string.join)
+        val textColor = ContextCompat.getColor(
+            requireContext(),
+            if (isMember) R.color.orange else R.color.white
         )
-        val intent = Intent(context, MembersActivity::class.java).apply {
-            // Passage des arguments nécessaires
-            putExtra("ID", groupId) // Assure-toi que 'groupId' est un Int
-            putExtra("TYPE", MembersType.GROUP.code) // Utilise 'code' pour passer l'enum comme un Int
-        }
-        startActivity(intent)
+        val background = ResourcesCompat.getDrawable(
+            resources,
+            if (isMember) R.drawable.new_bg_rounded_button_orange_stroke
+            else R.drawable.new_bg_rounded_button_orange_fill,
+            null
+        )
+        val rightDrawable = ResourcesCompat.getDrawable(
+            resources,
+            if (isMember) R.drawable.new_check else R.drawable.new_plus_white,
+            null
+        )
+        binding.join.text = label
+        binding.join.setTextColor(textColor)
+        binding.join.background = background
+        binding.join.setCompoundDrawablesWithIntrinsicBounds(null, null, rightDrawable, null)
     }
 
-    override fun deleteReaction(post: Post) {
-        if(this.group?.member == false){
-            AlertDialog.Builder(context) // Utilise 'this' si c'est dans une activité, ou 'getActivity()' si c'est dans un fragment
-                .setTitle("Attention")
-                .setMessage("Vous devez rejoindre le groupe pour effectuer cette action.")
-                .setPositiveButton("Retour") { dialog, which ->
-                    // Code à exécuter lorsque le bouton "Retour" est cliqué.
-                    // Si tu ne veux rien faire, tu peux laisser ce bloc vide.
-                }
-                .show()
-            return
-        }
-        groupPresenter.deleteReactToPost(groupId, post.id!!)
-    }
-    companion object {
-        var isFromCreation = false
-    }
-
-    override fun onSurveyOptionClicked(postId: Int, surveyResponse: MutableList<Boolean>) {
-        val tempsActuel = System.currentTimeMillis()
-        if (tempsActuel - dernierClicTime > 50) { // Délai d'1 seconde (1000 millisecondes)
-            dernierClicTime = tempsActuel
-            surveyPresenter.postSurveyResponseGroup(groupId, postId, surveyResponse)
-        } else {
-            // Affiche un petit message pour calmer les ardeurs de l'utilisateur trop rapide
-            Toast.makeText(requireContext(), "Veuillez patienter une seconde avant de relancer un vote", Toast.LENGTH_SHORT).show()
+    private fun handleImageViewAnimation() {
+        binding.appBar.addOnOffsetChangedListener { appBarLayout, verticalOffset ->
+            val res: Float = abs(verticalOffset).toFloat() / appBarLayout.totalScrollRange
+            binding.toolbarLayout.alpha = 1f - res
+            binding.groupImageToolbar.alpha = res
+            binding.groupNameToolbar.alpha = res
         }
     }
 
-    override fun onDeleteSurveyClick(postId: Int, surveyResponse: MutableList<Boolean>) {
-        Toast.makeText(requireContext(), "Survey option deleted", Toast.LENGTH_SHORT).show()
-    }
-
-    override fun showParticipantWhoVote(survey: Survey, postId: Int, question:String) {
-        val intent = Intent(context, ResponseSurveyActivity::class.java).apply {
-            ResponseSurveyActivity.survey = survey
-            ResponseSurveyActivity.isGroup = true
-            ResponseSurveyActivity.itemId = groupId
-            ResponseSurveyActivity.postId = postId
-            ResponseSurveyActivity.question = question
-        }
-        startActivity(intent)
-    }
-
+    // ============================
+    //   PARTIE CREATE POST (FAB)
+    // ============================
 
     private fun createPost() {
-
         val speedDialView: SpeedDialView = binding.createPost
 
         speedDialView.addActionItem(
@@ -941,15 +976,17 @@ class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface,
                 .setLabelBackgroundColor(ContextCompat.getColor(requireContext(), R.color.orange))
                 .create()
         )
+
         speedDialView.setOnActionSelectedListener { actionItem ->
+            // Vérifier qu'on est encore attaché
+            if (!isAdded || requireActivity().isFinishing) return@setOnActionSelectedListener false
+
             when (actionItem.id) {
                 R.id.fab_create_event -> {
-                    AnalyticsEvents.logEvent(
-                        AnalyticsEvents.ACTION_GROUP_FEED_NEW_EVENT
-                    )
+                    AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_GROUP_FEED_NEW_EVENT)
                     val intent = Intent(context, CreateEventActivity::class.java)
                     intent.putExtra(Const.GROUP_ID, groupId)
-                    startActivityForResult(intent,0)
+                    startActivityForResult(intent, 0)
                     true
                 }
                 R.id.fab_create_post -> {
@@ -958,9 +995,7 @@ class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface,
                     true
                 }
                 R.id.fab_create_survey -> {
-                    AnalyticsEvents.logEvent(
-                        AnalyticsEvents.Clic_Group_Create_Poll
-                    )
+                    AnalyticsEvents.logEvent(AnalyticsEvents.Clic_Group_Create_Poll)
                     requestInAppReview(requireContext())
                     val intent = Intent(context, CreateSurveyActivity::class.java)
                     isFromCreation = true
@@ -971,10 +1006,11 @@ class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface,
                 else -> false
             }
         }
+
         speedDialView.setOnChangeListener(object : SpeedDialView.OnChangeListener {
             override fun onMainActionSelected(): Boolean {
-                // Vous pouvez ici ajouter une action sur le bouton principal
-                return false // Retourner false pour garder le comportement par défaut
+                // Action sur le bouton principal (si besoin)
+                return false
             }
 
             override fun onToggleChanged(isOpen: Boolean) {
@@ -983,6 +1019,7 @@ class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface,
             }
         })
     }
+
     fun requestInAppReview(context: Context) {
         val manager = ReviewManagerFactory.create(context)
         val request = manager.requestReviewFlow()
@@ -990,15 +1027,52 @@ class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface,
             if (task.isSuccessful) {
                 val flow = manager.launchReviewFlow(context as Activity, task.result)
                 flow.addOnCompleteListener {
+                    // Rien de spécial
                 }
             } else {
+                // Erreur, on ne fait rien
             }
         }
     }
 
+    // ============================
+    //   PARTIE DIVERS
+    // ============================
+
+    private fun showToast(message: String) {
+        Toast.makeText(activity, message, Toast.LENGTH_SHORT).show()
+    }
+
+    private fun handleDeletedResponse(success: Boolean) {
+        if (isAdded) {
+            if (success) {
+                showToast(getString(R.string.delete_success_send))
+            } else {
+                showToast(getString(R.string.delete_error_send_failed))
+            }
+        }
+    }
+
+    private fun handleSurveyPostResponse(success: Boolean) {
+        if (isAdded) {
+            if (success) {
+                // showToast("Réponse enregistrée !")
+            } else {
+                showToast("Erreur lors de l'envoi du vote")
+            }
+        }
+    }
+
+    private fun handleReactionGroupPost(reactionId: Int) {
+        // Rien d'implémenté ici
+    }
+
+    companion object {
+        var isFromCreation = false
+    }
 }
 
- interface CallbackReportFragment{
+interface CallbackReportFragment {
     fun onSuppressPost(id: Int)
-    fun onTranslatePost(id:Int)
+    fun onTranslatePost(id: Int)
 }
