@@ -199,7 +199,7 @@
                 <Button
                     android:id="@+id/button_modify"
                     style="?android:attr/borderlessButtonStyle"
-                    android:layout_width="120dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="47dp"
                     android:layout_weight="1"
                     android:layout_marginTop="20dp"
@@ -207,6 +207,7 @@
                     android:elevation="0dp"
                     android:fontFamily="@font/quicksand_bold"
                     android:paddingVertical="10dp"
+                    android:paddingHorizontal="10dp"
                     android:text="@string/edit"
                     android:textAllCaps="false"
                     android:textColor="@android:color/white"

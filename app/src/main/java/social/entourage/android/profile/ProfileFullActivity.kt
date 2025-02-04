@@ -14,6 +14,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.core.content.ContextCompat
+import androidx.core.os.bundleOf
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
@@ -22,12 +23,14 @@ import social.entourage.android.BuildConfig
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.api.model.ActionUtils
+import social.entourage.android.api.model.Conversation
 import social.entourage.android.api.model.EventUtils
 import social.entourage.android.api.model.User
 import social.entourage.android.api.model.UserBlockedUser
 import social.entourage.android.api.model.notification.InAppNotificationPermission
 import social.entourage.android.base.BaseActivity
 import social.entourage.android.databinding.ActivityLayoutProfileBinding
+import social.entourage.android.discussions.DetailConversationActivity
 import social.entourage.android.discussions.DiscussionsPresenter
 import social.entourage.android.enhanced_onboarding.EnhancedOnboarding
 import social.entourage.android.enhanced_onboarding.OnboardingViewModel
@@ -36,6 +39,7 @@ import social.entourage.android.language.LanguageManager
 import social.entourage.android.profile.editProfile.EditPhotoActivity
 import social.entourage.android.profile.editProfile.EditProfileFragment
 import social.entourage.android.profile.settings.ProfilFullViewModel
+import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.VibrationUtil
 import social.entourage.android.user.UserPresenter
 import timber.log.Timber
@@ -66,6 +70,7 @@ class ProfileFullActivity : BaseActivity()  {
         homePresenter.notificationsPermission.observe(this, ::updateNotifParam)
         discussionsPresenter.getBlockedUsers.observe(this,::handleResponseBlocked)
         profilFullViewModel.hasToUpdate.observe(this, :: updateProfile)
+        discussionsPresenter.newConversation.observe(this, ::handleGetConversation)
         discussionsPresenter.getBlockedUsers()
         binding.progressBar.visibility = View.VISIBLE
         initializeStats()
@@ -101,6 +106,26 @@ class ProfileFullActivity : BaseActivity()  {
             notifBlocked = getString(R.string.settings_number_blocked_contacts_subtitle) + blockedUsers.size
         }
         homePresenter.getNotificationsPermissions()
+    }
+
+    private fun handleGetConversation(conversation: Conversation?) {
+        conversation?.let {
+            startActivityForResult(
+                Intent(this, DetailConversationActivity::class.java)
+                    .putExtras(
+                        bundleOf(
+                            Const.ID to conversation.id,
+                            Const.POST_AUTHOR_ID to conversation.user?.id,
+                            Const.SHOULD_OPEN_KEYBOARD to false,
+                            Const.NAME to conversation.title,
+                            Const.IS_CONVERSATION_1TO1 to true,
+                            Const.IS_MEMBER to true,
+                            Const.IS_CONVERSATION to true,
+                            Const.HAS_TO_SHOW_MESSAGE to conversation.hasToShowFirstMessage()
+                        )
+                    ), 0
+            )
+        }
     }
 
     private fun updateNotifParam(notifsPermissions: InAppNotificationPermission?) {
@@ -148,14 +173,22 @@ class ProfileFullActivity : BaseActivity()  {
 
     private fun setButtonListeners() {
         binding.buttonModify.setOnClickListener {
-            VibrationUtil.vibrate(this)
-            val intent = Intent(this, EditProfileActivity::class.java)
-            startActivity(intent)
+            if(isMe){
+                VibrationUtil.vibrate(this)
+                val intent = Intent(this, EditProfileActivity::class.java)
+                startActivity(intent)
+            }else{
+                VibrationUtil.vibrate(this)
+                discussionsPresenter.createOrGetConversation(userId)
+            }
+
         }
         if(isMe){
             binding.buttonModify.visibility = View.VISIBLE
+            binding.buttonModify.text = getString(R.string.edit)
         }else{
-            binding.buttonModify.visibility = View.GONE
+            binding.buttonModify.visibility = View.VISIBLE
+            binding.buttonModify.text = getString(R.string.profil_full_send_message)
         }
     }
 

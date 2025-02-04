@@ -2939,21 +2939,17 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="settings_feedback_title">Partager une idée</string>
     <string name="settings_share_title">Partager l\'application</string>
     <string name="settings_password_title">Changer de mot de passe</string>
-
-
     <string name="notifications_actions">actions</string>
     <string name="notifications_events">événements</string>
     <string name="notifications_groups">groupes</string>
     <string name="notifications_messages">messages</string>
     <string name="no_notifications_active">Désactivé</string>
 
-
-
     <string name="translation_auto_title">Trad auto</string>
     <string name="translation_auto_enabled">Activée</string>
     <string name="translation_auto_disabled">Désactivée</string>
-
     <string name="offensive_message">Ce contenu a été supprimé car il ne respecte pas notre charte.</string>
+    <string name="profil_full_send_message">Envoyer un message</string>
 
 
 </resources>
