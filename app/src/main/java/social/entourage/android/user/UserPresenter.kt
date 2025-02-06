@@ -23,7 +23,7 @@ class UserPresenter {
     var isLanguageChanged = MutableLiveData<Boolean>()
 
 
-    fun getUser(userId: Int) {
+    fun getUser(userId: String) {
         EntourageApplication.get().apiModule.userRequest.getUser(userId)
             .enqueue(object : Callback<UserResponse> {
                 override fun onResponse(

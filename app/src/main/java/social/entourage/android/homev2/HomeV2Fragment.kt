@@ -375,7 +375,7 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
             homePresenter.getPedagogicalResources()
             homePresenter.getInitialPedagogicalResources()
             homePresenter.getNotificationsCount()
-            userPresenter.getUser(meId)
+            userPresenter.getUser(meId.toString())
         }
     }
 
@@ -849,7 +849,7 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
         if(position == 0){
             AnalyticsEvents.logEvent(AnalyticsEvents.Action__Home__Moderator)
             ProfileFullActivity.isMe = false
-            ProfileFullActivity.userId = moderatorId
+            ProfileFullActivity.userId = moderatorId.toString()
             startActivity(
                 Intent(context, ProfileFullActivity::class.java).putExtra(
                     Const.USER_ID,

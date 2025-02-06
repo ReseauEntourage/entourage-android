@@ -2,12 +2,15 @@
 <layout xmlns:tools="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id= "@+id/activity_comments" >
+    android:id="@+id/activity_comments" >
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <!--
+        1) Layout principal contenant header, liste de commentaires, etc.
+        -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -82,6 +85,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/ui_title_new" />
+
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.recyclerview.widget.RecyclerView
@@ -95,6 +99,9 @@
 
         </LinearLayout>
 
+        <!--
+        2) Vue "empty_state" (message vide)
+        -->
         <LinearLayout
             android:id="@+id/empty_state"
             android:layout_width="match_parent"
@@ -138,6 +145,9 @@
 
         </LinearLayout>
 
+        <!--
+        3) Barre "je dois être membre pour commenter"
+        -->
         <TextView
             android:id="@+id/should_be_member"
             style="@style/left_legend"
@@ -149,6 +159,9 @@
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent" />
 
+        <!--
+        4) Bloc pour poster un commentaire
+        -->
         <LinearLayout
             android:id="@+id/post_comment"
             android:layout_width="match_parent"
@@ -186,6 +199,9 @@
 
         </LinearLayout>
 
+        <!--
+        5) Bloc "post_blocked" si commentaire bloqué
+        -->
         <LinearLayout
             android:id="@+id/post_blocked"
             android:layout_width="match_parent"
@@ -214,5 +230,28 @@
                 android:textColorHint="@color/grey"/>
 
         </LinearLayout>
+
+        <!--
+        6) Container pour les suggestions (mentions), caché par défaut.
+            On le place juste AU-DESSUS du bloc "post_comment".
+        -->
+        <FrameLayout
+            android:id="@+id/mentionSuggestionsContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:background="@color/beige"
+            app:layout_constraintBottom_toTopOf="@+id/post_comment"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/mentionSuggestionsRecycler"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:clipToPadding="false"/>
+        </FrameLayout>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

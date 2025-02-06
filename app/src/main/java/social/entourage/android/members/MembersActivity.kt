@@ -197,7 +197,7 @@ open class MembersActivity : BaseActivity() {
             adapter = MembersListAdapter(context,membersList,reactionList, object :
                 OnItemShowListener {
                 override fun onShowConversation(userId: Int) {
-                    discussionPresenter.createOrGetConversation(userId)
+                    discussionPresenter.createOrGetConversation(userId.toString())
                 }
             })
             addItemDecoration(itemDecorator)
@@ -233,7 +233,7 @@ open class MembersActivity : BaseActivity() {
             layoutManager = LinearLayoutManager(context)
             adapter = MembersListAdapter(context,membersListSearch, reactionList, object : OnItemShowListener {
                 override fun onShowConversation(userId: Int) {
-                    discussionPresenter.createOrGetConversation(userId)
+                    discussionPresenter.createOrGetConversation(userId.toString())
                 }
             })
             addItemDecoration(itemDecorator)

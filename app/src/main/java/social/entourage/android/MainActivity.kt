@@ -245,7 +245,7 @@ class MainActivity : BaseSecuredActivity() {
         updateLanguage()
         val id = EntourageApplication.me(this)?.id
          if (id != null) {
-             userPresenter.getUser(id)
+             userPresenter.getUser(id.toString())
          }
         if(id != null){
             userPresenter.updateLanguage(id, LanguageManager.loadLanguageFromPreferences(this))

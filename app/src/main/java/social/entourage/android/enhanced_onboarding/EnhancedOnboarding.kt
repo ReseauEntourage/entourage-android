@@ -24,7 +24,7 @@ class EnhancedOnboarding : BaseActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityEnhancedOnboardingLayoutBinding.inflate(layoutInflater)
         viewModel = ViewModelProvider(this).get(OnboardingViewModel::class.java)
-        userPresenter.getUser(viewModel.user?.id ?: 0)
+        userPresenter.getUser(viewModel.user?.id.toString())
         viewModel.user = EntourageApplication.me(this)
         Timber.wtf("wtf" + viewModel.user?.interests)
         // Observateurs pour chaque étape
@@ -44,7 +44,7 @@ class EnhancedOnboarding : BaseActivity() {
 
     override fun onResume() {
         super.onResume()
-        userPresenter.getUser(viewModel.user?.id ?: 0)
+        userPresenter.getUser(viewModel.user?.id.toString())
         binding.btnBack.setOnClickListener {
             if (isFromSettingsinterest || isFromSettingsDisponibility || isFromSettingsWishes || isFromSettingsActionCategorie) {
                 viewModel.registerAndQuit()

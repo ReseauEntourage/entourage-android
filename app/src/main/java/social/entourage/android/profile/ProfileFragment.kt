@@ -81,7 +81,7 @@ class ProfileFragment : Fragment() {
     fun getUser() {
         val user = EntourageApplication.me(activity) ?: return
         val userRequest = EntourageApplication.get().apiModule.userRequest
-        userRequest.getUser(user.id).enqueue(object : Callback<UserResponse> {
+        userRequest.getUser(user.id.toString()).enqueue(object : Callback<UserResponse> {
             override fun onResponse(call: Call<UserResponse>, response: Response<UserResponse>) {
                 if (response.isSuccessful) {
                     response.body()?.user?.let {

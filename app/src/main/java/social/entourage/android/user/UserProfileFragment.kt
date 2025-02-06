@@ -55,7 +55,7 @@ class UserProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val userId = args.userId
-        userPresenter.getUser(userId)
+        userPresenter.getUser(userId.toString())
         initializeInterests()
         setBackButton()
         userPresenter.isGetUserSuccess.observe(requireActivity(), ::handleResponse)
@@ -65,7 +65,7 @@ class UserProfileFragment : Fragment() {
         discussionPresenter.newConversation.observe(requireActivity(), ::handleGetConversation)
 
         binding.message.root.setOnClickListener {
-            discussionPresenter.createOrGetConversation(userId)
+            discussionPresenter.createOrGetConversation(userId.toString())
         }
     }
 

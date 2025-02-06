@@ -188,7 +188,7 @@ object NotificationActionManager {
 
     private fun showUser(context:Context,supportFragmentManager: FragmentManager, id: Int) {
         val params = HomeActionParams()
-        ProfileFullActivity.userId = id
+        ProfileFullActivity.userId = id.toString()
         ProfileFullActivity.isMe = false
         params.id = id
         Navigation.navigate(context,supportFragmentManager,

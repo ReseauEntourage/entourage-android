@@ -219,7 +219,7 @@ class CommentsListAdapter(
             binding.image.setOnClickListener {
                 if (comment.user != null) {
                     ProfileFullActivity.isMe = false
-                    ProfileFullActivity.userId = comment.user?.userId!!
+                    ProfileFullActivity.userId = comment.user?.userId.toString()
                     (binding.image.context as? Activity)?.startActivityForResult(
                         Intent(binding.image.context, ProfileFullActivity::class.java).putExtra(
                             Const.USER_ID,
@@ -236,7 +236,7 @@ class CommentsListAdapter(
                 binding.image.setOnClickListener { view ->
                     if (comment.user != null) {
                         ProfileFullActivity.isMe = false
-                        ProfileFullActivity.userId = comment.user?.userId!!
+                        ProfileFullActivity.userId = comment.user?.userId.toString()
                         (view.context as? Activity)?.startActivityForResult(
                             Intent(view.context, ProfileFullActivity::class.java).putExtra(
                                 Const.USER_ID,
@@ -381,7 +381,7 @@ class CommentsListAdapter(
                 binding.image.setOnClickListener { view ->
                     if (comment.user != null) {
                         ProfileFullActivity.isMe = false
-                        ProfileFullActivity.userId = comment.user?.userId!!
+                        ProfileFullActivity.userId = comment.user?.userId.toString()
                         (view.context as? Activity)?.startActivityForResult(
                             Intent(view.context, ProfileFullActivity::class.java).putExtra(
                                 Const.USER_ID,

@@ -88,7 +88,7 @@ class ProfileFullActivity : BaseActivity()  {
         super.onResume()
         binding.progressBar.visibility = View.VISIBLE
         if(isMe){
-            userPresenter.getUser(user.id)
+            userPresenter.getUser(user.id.toString())
         }else{
             userPresenter.getUser(userId)
         }
@@ -756,13 +756,13 @@ class ProfileFullActivity : BaseActivity()  {
 
     fun updateProfile(hasToUpdate:Boolean){
         if(hasToUpdate){
-            userPresenter.getUser(user.id)
+            userPresenter.getUser(user.id.toString())
         }
     }
 
     companion object {
         var isMe:Boolean = false
-        var userId:Int = 0
+        var userId:String = ""
     }
 
 }

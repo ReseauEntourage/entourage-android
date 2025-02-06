@@ -46,7 +46,7 @@ class DetailConversationActivity : CommentActivity() {
         if (isOne2One) {
             binding.header.headerTitle.setOnClickListener {
                 ProfileFullActivity.isMe = false
-                ProfileFullActivity.userId = postAuthorID
+                ProfileFullActivity.userId = postAuthorID.toString()
                 startActivityForResult(
                     Intent(this, ProfileFullActivity::class.java).putExtra(
                         Const.USER_ID, postAuthorID

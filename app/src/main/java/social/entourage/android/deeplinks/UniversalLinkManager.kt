@@ -25,7 +25,9 @@ import social.entourage.android.groups.details.feed.FeedActivity
 import social.entourage.android.guide.GDSMainActivity
 import social.entourage.android.home.pedago.PedagoDetailActivity
 import social.entourage.android.home.pedago.PedagoListActivity
+import social.entourage.android.profile.ProfileFullActivity
 import social.entourage.android.tools.utils.Const
+import timber.log.Timber
 
 class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback {
     /*private const val prodURL = "https://www.entourage.social"
@@ -42,8 +44,21 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
         uri.queryParameterNames.forEach { name ->
             val value = uri.getQueryParameter(name)
         }
+        for (segment in pathSegments) {
+            Log.wtf("wtf", "Segment: $segment")
+        }
         if (uri.host == stagingURL || uri.host == prodURL) {
             when {
+
+                pathSegments.contains("user") -> {
+                    if (pathSegments.size > 2) {
+                        val userId = pathSegments[2]
+                        ProfileFullActivity.isMe = true
+                        ProfileFullActivity.userId = userId
+                        val intent = Intent(context, ProfileFullActivity::class.java)
+                        context.startActivity(intent)
+                    }
+                }
 
                 pathSegments.contains("charte-ethique-entourage") ->{
                     val chartIntent = Intent(Intent.ACTION_VIEW, Uri.parse(context.getString(R.string.disclaimer_link_public)))
