@@ -95,8 +95,6 @@ class OnboardingCongratsFragment: Fragment() {
         var titleRes = R.string.onboarding_congrats_title
         var contentRes = R.string.onboarding_congrats_content
         var buttonTextRes = R.string.onboarding_congrats_leave
-        Timber.wtf("wtf categoriesList $categoriesList")
-        Timber.wtf("wtf EnhancedOnboarding.preference ${EnhancedOnboarding.preference}")
         // Condition par défaut : si la liste est vide ou que la préférence n'est pas "contribution"
         if (categoriesList.isEmpty() || EnhancedOnboarding.preference == "contribution") {
             binding.tvTitle.setText(titleRes)

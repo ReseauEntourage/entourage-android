@@ -126,7 +126,6 @@ abstract class CommentActivity : BaseActivity(), onDissmissFragment {
     protected fun handleCommentPosted(post: Post?) {
         post?.let {
             commentsList.add(post)
-            Timber.wtf("wtf post added " + Gson().toJson(post))
         } ?: run {
             messagesFailed.add(comment)
             comment?.let { commentsList.add(it) }

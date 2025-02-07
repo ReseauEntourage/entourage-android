@@ -760,7 +760,6 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
     }
     private fun updateUser(user:User){
         this.user = user
-        Timber.wtf("wtf user want discussion ? " + user.willingToEngageLocally)
         updateAvatar()
 
     }

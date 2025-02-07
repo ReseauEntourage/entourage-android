@@ -786,7 +786,6 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface, Surv
         val context = requireContext()
         val flexboxLayout = binding.tagsContainer
         flexboxLayout.removeAllViews()
-        Timber.wtf("wtf interest $interests")
         interests.forEach { interest ->
             val tagView = LayoutInflater.from(context).inflate(
                 R.layout.tag_item_layout,
@@ -798,9 +797,6 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface, Surv
                 GroupUtils.showTagTranslated(context, interest).replaceFirstChar { it.uppercaseChar() }
             flexboxLayout.addView(tagView)
         }
-        Timber.wtf("wtf tag addend : ${flexboxLayout.childCount}")
-        Timber.wtf("wtf tag visibility : ${flexboxLayout.visibility}")
-        Timber.wtf("wtf tag height : ${flexboxLayout.height}")
         flexboxLayout.visibility = View.VISIBLE
     }
 

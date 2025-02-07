@@ -272,7 +272,6 @@ class CreateActionFragment : Fragment() {
     private fun handleValidate() {
         binding.next.setOnClickListener {
             val isSharingTimeSelected = viewModel.sectionsList.value?.first()?.isSelected == true
-            Timber.wtf("wtf isSharingTimeSelected $isSharingTimeSelected")
             if (viewPager?.currentItem == NB_TABS - 2 && !isSharingTimeSelected && hasADefaultGroup) {
                 viewModel.isCondition.postValue(true)
             } else if (binding.viewPager.currentItem == NB_TABS - 1) {

@@ -520,7 +520,6 @@ class ProfileFullActivity : BaseActivity()  {
 
         // Rôles
         user?.roles?.let { roles ->
-            Timber.wtf("wtf roles $roles")
             binding.tagUser.visibility = if (roles.contains("Ambassadeur") || roles.contains("Équipe Entourage") || roles.contains("Association")) {
                 View.VISIBLE
             } else {

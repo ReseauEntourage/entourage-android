@@ -27,7 +27,6 @@ class EnhancedOnboarding : BaseActivity() {
         viewModel = ViewModelProvider(this).get(OnboardingViewModel::class.java)
         userPresenter.getUser(viewModel.user?.id.toString())
         viewModel.user = EntourageApplication.me(this)
-        Timber.wtf("wtf" + viewModel.user?.interests)
         // Observateurs pour chaque étape
         viewModel.onboardingFirstStep.observe(this, ::handleOnboardingFirstStep)
         viewModel.onboardingSecondStep.observe(this, ::handleOnboardingSecondStep)

@@ -662,7 +662,6 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
             var numberOrganizer = 0
             var nameOrganizers = ""
             for(member in allMembers){
-                Timber.wtf("wtf role " + member.groupRole + "name " + nameOrganizers)
                 if(member.groupRole == "organizer"){
                     numberOrganizer += 1
                     if(numberOrganizer < 3){
@@ -706,7 +705,6 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
         binding.join.setOnClickListener {
             requestInAppReview(requireContext())
             val meUser = EntourageApplication.me(activity)
-            Timber.wtf("wtf role " + meUser?.roles)
             if(meUser?.roles?.contains("Ambassadeur") == true){
                 CustomAlertDialog.showAmbassadorWithTwoButton(requireContext(),
                     onNo = {
@@ -732,7 +730,6 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
         }
         binding.participate.setOnClickListener {
             val meUser = EntourageApplication.me(activity)
-            Timber.wtf("wtf", "role ? ${meUser?.roles}")
             if(meUser?.roles?.contains("Ambassadeur") == true){
                 CustomAlertDialog.showAmbassadorWithTwoButton(requireContext(),
                     onNo = {

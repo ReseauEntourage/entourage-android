@@ -175,7 +175,6 @@ class EventCommentActivity : CommentActivity() {
         val filtered = allMembers.filter {
             it.displayName?.contains(query, ignoreCase = true) == true
         }.take(5)
-        Timber.wtf("filterAndShowMentions: query=$query, found=${filtered.size}")
         showMentionSuggestions(filtered)
     }
 
@@ -197,7 +196,6 @@ class EventCommentActivity : CommentActivity() {
      * Insère la mention au format HTML (<a href="...">@Nom</a>) dans l'EditText.
      */
     fun insertMentionIntoEditText(user: EntourageUser) {
-        Timber.wtf("insertMentionIntoEditText: user=${user.displayName}")
         val cursorPos = binding.commentMessage.selectionStart
         val editable = binding.commentMessage.editableText ?: return
         if (lastMentionStartIndex < 0) return

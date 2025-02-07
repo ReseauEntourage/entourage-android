@@ -7,8 +7,10 @@ import android.content.Intent
 import android.graphics.*
 import android.graphics.drawable.VectorDrawable
 import android.os.Build
-import android.text.Html
+import android.text.*
 import android.text.method.LinkMovementMethod
+import android.text.style.ClickableSpan
+import android.text.style.URLSpan
 import android.text.util.Linkify
 import android.view.LayoutInflater
 import android.view.View
@@ -31,7 +33,6 @@ import social.entourage.android.report.DataLanguageStock
 import social.entourage.android.tools.setHyperlinkClickable
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.px
-import social.entourage.android.user.UserProfileActivity
 import timber.log.Timber
 import java.text.SimpleDateFormat
 
@@ -45,7 +46,7 @@ enum class CommentsTypes(val code: Int) {
 interface OnItemClickListener {
     fun onItemClick(comment: Post)
     fun onCommentReport(commentId: Int?, isForEvent: Boolean, isMe: Boolean, commentLang: String)
-    fun onShowWeb(url: String)
+    fun onShowWeb(url: String) // si tu veux ouvrir un navigateur ou gérer autrement
 }
 
 class CommentsListAdapter(
@@ -131,26 +132,34 @@ class CommentsListAdapter(
                 return
             }
 
-            // On parse TOUT le temps en HTML + Linkify
             if (contentToShow.isNullOrEmpty()) contentToShow = ""
+
+            // On parse le HTML
             val spanned = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 Html.fromHtml(contentToShow, Html.FROM_HTML_MODE_LEGACY)
             } else {
                 Html.fromHtml(contentToShow)
             }
-            bindingLeft.comment.text = spanned
 
-            // Rendre cliquable (balises <a> + URL brutes)
+            // On remplace les URLSpan par des ClickableSpan (pour gérer le clic deep link)
+            val clickableSpannable = makeLinksClickable(spanned)
+
+            // On assigne le texte final
+            bindingLeft.comment.text = clickableSpannable
             bindingLeft.comment.movementMethod = LinkMovementMethod.getInstance()
-            Linkify.addLinks(bindingLeft.comment, Linkify.WEB_URLS)
+            bindingLeft.comment.linksClickable = true
 
             // Couleur de fond (orange si c'est moi, sinon beige)
             bindingLeft.comment.background = if (isMe) {
-                context.getDrawable(R.drawable.new_comment_background_orange)
+                ContextCompat.getDrawable(context, R.drawable.new_comment_background_orange)
             } else {
-                context.getDrawable(R.drawable.new_comment_background_beige)
+                ContextCompat.getDrawable(context, R.drawable.new_comment_background_beige)
             }
-            bindingLeft.comment.setTextColor(context.getColor(R.color.black))
+
+            // Couleur du texte normal
+            bindingLeft.comment.setTextColor(ContextCompat.getColor(context, R.color.black))
+            // Couleur des liens
+            bindingLeft.comment.setLinkTextColor(ContextCompat.getColor(context, R.color.bright_blue))
 
             // Bouton "report" + long clic => signale
             handleReportLogicLeft(bindingLeft, comment, isMe)
@@ -164,10 +173,10 @@ class CommentsListAdapter(
             // Si isConversation => couleur orange pour userName + date
             if (isConversation) {
                 bindingLeft.authorName.setTextColor(
-                    context.getColor(R.color.light_orange)
+                    ContextCompat.getColor(context, R.color.light_orange)
                 )
                 bindingLeft.publicationDate.setTextColor(
-                    context.getColor(R.color.light_orange)
+                    ContextCompat.getColor(context, R.color.light_orange)
                 )
             }
         }
@@ -193,8 +202,6 @@ class CommentsListAdapter(
 
             // Récupère la chaîne final
             var contentToShow = getFinalContent(comment, isTranslated)
-            Timber.wtf("contentToShow " + contentToShow)
-            Timber.wtf("comment " + comment.toString())
 
             // Gère statuts "deleted"/"offensif"
             if (comment.status in listOf("deleted", "offensive", "offensible")) {
@@ -202,25 +209,35 @@ class CommentsListAdapter(
                 return
             }
 
-            // On parse en HTML + Linkify
             if (contentToShow.isNullOrEmpty()) contentToShow = ""
+            Timber.wtf("contentToShow $contentToShow")
+
+            // On parse en HTML
             val spanned = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 Html.fromHtml(contentToShow, Html.FROM_HTML_MODE_LEGACY)
             } else {
                 Html.fromHtml(contentToShow)
             }
-            bindingRight.comment.text = spanned
 
+            // Remplacement des URLSpan par des ClickableSpan
+            val clickableSpannable = makeLinksClickable(spanned)
+
+            // On assigne le texte final
+            bindingRight.comment.text = clickableSpannable
             bindingRight.comment.movementMethod = LinkMovementMethod.getInstance()
-            Linkify.addLinks(bindingRight.comment, Linkify.WEB_URLS)
+            bindingRight.comment.linksClickable = true
 
             // Couleur de fond
             bindingRight.comment.background = if (isMe) {
-                context.getDrawable(R.drawable.new_comment_background_orange)
+                ContextCompat.getDrawable(context, R.drawable.new_comment_background_orange)
             } else {
-                context.getDrawable(R.drawable.new_comment_background_beige)
+                ContextCompat.getDrawable(context, R.drawable.new_comment_background_beige)
             }
-            bindingRight.comment.setTextColor(context.getColor(R.color.black))
+
+            // Couleur du texte normal
+            bindingRight.comment.setTextColor(ContextCompat.getColor(context, R.color.black))
+            // Couleur des liens
+            bindingRight.comment.setLinkTextColor(ContextCompat.getColor(context, R.color.bright_blue))
 
             // Bouton "report" + long clic => signale
             handleReportLogicRight(bindingRight, comment, isMe)
@@ -234,10 +251,10 @@ class CommentsListAdapter(
             // Couleurs conversation
             if (isConversation) {
                 bindingRight.authorName.setTextColor(
-                    context.getColor(R.color.light_orange)
+                    ContextCompat.getColor(context, R.color.light_orange)
                 )
                 bindingRight.publicationDate.setTextColor(
-                    context.getColor(R.color.light_orange)
+                    ContextCompat.getColor(context, R.color.light_orange)
                 )
             }
         }
@@ -256,10 +273,8 @@ class CommentsListAdapter(
 
             comment.createdTime?.let {
                 val locale = LanguageManager.getLocaleFromPreferences(context)
-                bindingDetail.publicationDatePost.text = "le " + SimpleDateFormat(
-                    "dd.MM.yyyy",
-                    locale
-                ).format(it)
+                bindingDetail.publicationDatePost.text =
+                    "le " + SimpleDateFormat("dd.MM.yyyy", locale).format(it)
             }
 
             comment.imageUrl?.let { avatarURL ->
@@ -309,7 +324,7 @@ class CommentsListAdapter(
             vectorDrawable.draw(canvas)
             val grayDrawable = vectorDrawable.mutate()
             grayDrawable.setColorFilter(
-                context.getColor(R.color.grey_deleted_icon),
+                ContextCompat.getColor(context, R.color.grey_deleted_icon),
                 PorterDuff.Mode.SRC_IN
             )
             grayDrawable.setBounds(8, 0, scaledDrawable.width - 8, scaledDrawable.height)
@@ -324,8 +339,9 @@ class CommentsListAdapter(
             if (comment.status in listOf("offensive", "offensible")) {
                 binding.comment.text = context.getString(R.string.offensive_message)
             }
-            binding.comment.background = context.getDrawable(R.drawable.new_comment_background_grey)
-            binding.comment.setTextColor(context.getColor(R.color.grey_deleted_icon))
+            binding.comment.background =
+                ContextCompat.getDrawable(context, R.drawable.new_comment_background_grey)
+            binding.comment.setTextColor(ContextCompat.getColor(context, R.color.grey_deleted_icon))
         }
 
         private fun handleDeletedOrOffensiveRight(
@@ -343,7 +359,7 @@ class CommentsListAdapter(
             vectorDrawable.draw(canvas)
             val grayDrawable = vectorDrawable.mutate()
             grayDrawable.setColorFilter(
-                context.getColor(R.color.grey_deleted_icon),
+                ContextCompat.getColor(context, R.color.grey_deleted_icon),
                 PorterDuff.Mode.SRC_IN
             )
             grayDrawable.setBounds(8, 0, scaledDrawable.width - 8, scaledDrawable.height)
@@ -358,8 +374,9 @@ class CommentsListAdapter(
             if (comment.status in listOf("offensive", "offensible")) {
                 binding.comment.text = context.getString(R.string.offensive_message)
             }
-            binding.comment.background = context.getDrawable(R.drawable.new_comment_background_grey)
-            binding.comment.setTextColor(context.getColor(R.color.grey_deleted_icon))
+            binding.comment.background =
+                ContextCompat.getDrawable(context, R.drawable.new_comment_background_grey)
+            binding.comment.setTextColor(ContextCompat.getColor(context, R.color.grey_deleted_icon))
         }
 
         private fun handleReportLogicLeft(
@@ -615,47 +632,87 @@ class CommentsListAdapter(
     }
 
     // --------------------------------------------------------------------------------------------
-    // Fonction utilitaire : renvoie la chaîne la plus adaptée (HTML vs normal, original vs traduction)
+    // Fonction utilitaire pour renvoyer la chaîne la plus adaptée (HTML ou normal,
+    // original ou traduction). On en profite pour nettoyer les <p> qui rajoutent
+    // des sauts de ligne non désirés.
     // --------------------------------------------------------------------------------------------
-    /**
-     * Si isTranslated = false => on veut l'original
-     *   => on tente d'abord contentHtml, sinon content
-     * Si isTranslated = true => on veut la traduction
-     *   => on tente d'abord contentTranslationsHtml?.translation, sinon contentTranslations?.translation
-     */
     private fun getFinalContent(comment: Post, isTranslated: Boolean): String {
         Timber.d("getFinalContent => isTranslated=$isTranslated contentHtml='${comment.contentHtml}' content='${comment.content}'")
 
-        if (!isTranslated) {
+        // 1) On choisit la source
+        val baseString = if (!isTranslated) {
+            // On veut l'original
             if (!comment.contentHtml.isNullOrBlank()) {
-                Timber.d("getFinalContent→ returning contentHtml")
-                return comment.contentHtml
-            } else if (!comment.content.isNullOrBlank()) {
-                Timber.d("getFinalContent→ returning content")
-                return comment.content
+                comment.contentHtml
             } else {
-                Timber.d("getFinalContent→ returning empty")
-                return ""
+                comment.content
             }
         } else {
+            // On veut la traduction
             val htmlTranslation = comment.contentTranslationsHtml?.translation
-            Timber.d("getFinalContent => htmlTranslation='$htmlTranslation'")
             if (!htmlTranslation.isNullOrBlank()) {
-                Timber.d("getFinalContent→ returning contentTranslationsHtml.translation")
-                return htmlTranslation
+                htmlTranslation
             } else {
                 val normalTranslation = comment.contentTranslations?.translation
-                Timber.d("getFinalContent => normalTranslation='$normalTranslation'")
                 if (!normalTranslation.isNullOrBlank()) {
-                    Timber.d("getFinalContent→ returning contentTranslations.translation")
-                    return normalTranslation
+                    normalTranslation
                 } else {
-                    Timber.d("getFinalContent→ returning empty")
-                    return comment.content ?: ""
+                    // fallback
+                    comment.content
                 }
             }
-        }
+        } ?: ""
+
+        // 2) On supprime/transforme les <p> qui ajoutent des sauts de ligne
+        val finalString = fixHtmlSpacing(baseString)
+        return finalString
     }
 
+    // --------------------------------------------------------------------------------------------
+    // Remplace les balises <p> ... </p> pour éviter les énormes sauts de ligne.
+    // Ici on les supprime purement et simplement.
+    // --------------------------------------------------------------------------------------------
+    private fun fixHtmlSpacing(html: String): String {
+        // Retire entièrement les <p ...> et </p>
+        val withoutOpeningP = html.replace(Regex("<p[^>]*>"), "")
+        val withoutClosingP = withoutOpeningP.replace("</p>", "")
+        return withoutClosingP
+    }
 
+    // --------------------------------------------------------------------------------------------
+    // Convertit un Spanned contenant des URLSpan en un SpannableStringBuilder contenant
+    // des ClickableSpan. Ainsi on peut gérer soi-même les clics (ex: deeplink in-app).
+    // --------------------------------------------------------------------------------------------
+    private fun makeLinksClickable(spanned: Spanned): Spannable {
+        val urlSpans = spanned.getSpans(0, spanned.length, URLSpan::class.java)
+        if (urlSpans.isEmpty()) {
+            // Pas de lien -> on renvoie le spanned d'origine
+            return spanned as Spannable
+        }
+        val sb = SpannableStringBuilder(spanned)
+        for (span in urlSpans) {
+            val start = sb.getSpanStart(span)
+            val end = sb.getSpanEnd(span)
+            val flags = sb.getSpanFlags(span)
+            val url = span.url
+            // On enlève l'URLSpan d'origine
+            sb.removeSpan(span)
+            // On met un ClickableSpan perso
+            sb.setSpan(object : ClickableSpan() {
+                override fun onClick(widget: View) {
+                    // TODO: gère toi-même ce que tu veux faire sur le clic
+                    // Par ex. si c'est un lien vers un profil user => extraits l'ID
+                    // et ouvre la bonne Activity in-app. Ou appelle onShowWeb(url).
+                    onItemClick.onShowWeb(url)
+                }
+
+                // Optionnel : personnalise l'apparence du lien (souligné, etc.)
+                override fun updateDrawState(ds: TextPaint) {
+                    super.updateDrawState(ds)
+                    ds.isUnderlineText = true // si tu veux souligner
+                }
+            }, start, end, flags)
+        }
+        return sb
+    }
 }

@@ -39,7 +39,6 @@ class GroupCommentActivity : CommentActivity() {
 
         // Charge les commentaires du groupe
         groupPresenter.getPostComments(id, postId)
-        Timber.wtf("wtf id: $id, postId: $postId")
 
         // Récupération des membres du groupe (pour la mention)
         groupPresenter.getMembers.observe(this) { members ->
@@ -103,7 +102,6 @@ class GroupCommentActivity : CommentActivity() {
         )
 
         // 6) Envoi au Presenter => addComment(groupId, comment)
-        Timber.wtf("wtf => groupId=$id, postId=$postId, comment=$comment")
         groupPresenter.addComment(id, comment)
 
         // 7) Nettoyage de l'EditText
@@ -152,7 +150,6 @@ class GroupCommentActivity : CommentActivity() {
     // Détection du "@" pour la fonctionnalité mention
     // ---------------------------------------------------------------------------
     private fun setupMentionTextWatcher() {
-        Timber.wtf("wtf passed here setupMentionTextWatcher")
 
         binding.commentMessage.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
@@ -188,7 +185,6 @@ class GroupCommentActivity : CommentActivity() {
         val filtered = allMembers.filter {
             it.displayName?.contains(query, ignoreCase = true) == true
         }.take(5)
-        Timber.wtf("wtf passed here filterAndShowMentions")
 
         showMentionSuggestions(filtered)
     }
@@ -199,7 +195,6 @@ class GroupCommentActivity : CommentActivity() {
             return
         }
         binding.mentionSuggestionsContainer.visibility = View.VISIBLE
-        Timber.wtf("wtf passed here showMentionSuggestions")
 
         val adapter = MentionAdapter(members) { user ->
             insertMentionIntoEditText(user)
@@ -215,7 +210,6 @@ class GroupCommentActivity : CommentActivity() {
      * Insère la mention au format <a href="...">@Nom</a> dans l'EditText
      */
     fun insertMentionIntoEditText(user: EntourageUser) {
-        Timber.wtf("wtf passed here insertMentionIntoEditText")
         val cursorPos = binding.commentMessage.selectionStart
         val editable = binding.commentMessage.editableText ?: return
 

@@ -95,7 +95,6 @@ class PedagoListFragment : Fragment() {
     private fun logHtmlSizes(pedagogicalResources: MutableList<Pedago>) {
         pedagogicalResources.forEach { pedago ->
             val htmlSize = pedago.html?.length ?: 0
-            Timber.wtf("Pedago ID: ${pedago.id}, HTML content size: $htmlSize bytes")
         }
     }
 
