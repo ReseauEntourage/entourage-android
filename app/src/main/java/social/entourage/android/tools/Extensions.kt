@@ -14,6 +14,7 @@ import android.text.SpannableString
 import android.text.Spanned
 import android.text.method.LinkMovementMethod
 import android.text.style.URLSpan
+import android.text.util.Linkify
 import android.util.Patterns
 import android.view.View
 import android.view.inputmethod.InputMethodManager
@@ -36,33 +37,53 @@ import kotlin.math.roundToInt
  * Created by Jr (MJ-DEVS) on 04/05/2020.
  */
 
+// Votre fonction customisée qui remplace les URLSpan par des URLSpan personnalisés
 fun TextView.setHyperlinkClickable() {
     val pattern = Patterns.WEB_URL
-    val matcher = pattern.matcher(this.text)
-    if (matcher.find()) {
+    val matcher = pattern.matcher(text)
+    val spannableString = SpannableString(text)
+    while (matcher.find()) {
         val url = matcher.group()
-        val spannableString = SpannableString(text)
-        spannableString.setSpan(URLSpan(url), matcher.start(), matcher.end(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-        this.setText(spannableString, TextView.BufferType.SPANNABLE)
-        this.movementMethod = EntLinkMovementMethod
-        this.setOnClickListener {
-            (this.context as? BaseActivity)?.showWebView(url)
-        }
+        // On crée un span personnalisé qui redirige vers votre méthode showWebView
+        spannableString.setSpan(object : android.text.style.URLSpan(url) {
+            override fun onClick(widget: android.view.View) {
+                // Remplacez cette ligne par votre logique (ici, on appelle showWebView de BaseActivity)
+                (widget.context as? BaseActivity)?.showWebView(url)
+            }
+        }, matcher.start(), matcher.end(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
     }
-}
-fun TextView.displayHtml(html: String) {
-    // Convertit le HTML en Spanned (les balises <a> deviennent des URLSpan)
-    text = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-        Html.fromHtml(html, Html.FROM_HTML_MODE_LEGACY)
-    } else {
-        Html.fromHtml(html)
-    }
-    // Active les liens cliquables
-    movementMethod = LinkMovementMethod.getInstance()
+    // On réaffecte le texte avec les spans personnalisés
+    setText(spannableString, TextView.BufferType.SPANNABLE)
+    movementMethod = LinkMovementMethod.getInstance()  // ou votre EntLinkMovementMethod si nécessaire
     linksClickable = true
-    // Facultatif : force la couleur des liens en bleu
     setLinkTextColor(Color.BLUE)
 }
+
+fun TextView.displayHtml(textContent: String) {
+    var processedText = textContent
+    // Si le texte ne contient pas déjà une balise <a> (cas des URL brutes),
+    // on transforme chaque URL en lien HTML
+    if (!processedText.contains("<a", ignoreCase = true)) {
+        val matcher = Patterns.WEB_URL.matcher(processedText)
+        val sb = StringBuffer()
+        while (matcher.find()) {
+            val url = matcher.group()
+            // On entoure l'URL d'une balise <a>
+            matcher.appendReplacement(sb, "<a href=\"$url\">$url</a>")
+        }
+        matcher.appendTail(sb)
+        processedText = sb.toString()
+    }
+    // On convertit le texte traité en HTML
+    text = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+        Html.fromHtml(processedText, Html.FROM_HTML_MODE_LEGACY)
+    } else {
+        Html.fromHtml(processedText)
+    }
+    // On appelle ensuite notre fonction qui remplace les URLSpan par nos URLSpan personnalisés
+    setHyperlinkClickable()
+}
+
 
 fun ImageButton.disable() {
     Timber.d("Call disable")
