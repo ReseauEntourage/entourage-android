@@ -145,6 +145,7 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
                     PedagoDetailActivity.setPedagoId(pedagogicalContent.id)
                     //intent.putExtra(Const.HTML_CONTENT, pedagogicalContent.html)
                     requireActivity().startActivity(intent)
+                    requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
                 }
             }
         })
@@ -156,6 +157,7 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
                     PedagoDetailActivity.setPedagoId(pedagogicalContent.id)
                     //intent.putExtra(Const.HTML_CONTENT, pedagogicalContent.html)
                     requireActivity().startActivity(intent)
+                    requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
                 }
             }
         })
@@ -190,6 +192,7 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
             //launch onboarding activity
             val intent = Intent(requireActivity(), EnhancedOnboarding::class.java)
             startActivity(intent)
+            requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
         }
 
     }
@@ -217,6 +220,7 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
         binding.ivLogoHome.setOnLongClickListener {
             val intent = Intent(requireContext(), NotificationDemandActivity::class.java)
             this.startActivity(intent)
+            requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
             true
         }
     }
@@ -288,6 +292,7 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
             if (connectionCount == 2 || connectionCount == 5 || connectionCount == 10) {
                 val intent = Intent(requireContext(), NotificationDemandActivity::class.java)
                 this.startActivity(intent)
+                requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
             }
         }
     }
@@ -484,6 +489,7 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
             AnalyticsEvents.logEvent(AnalyticsEvents.Action__Home__Pedago)
             val intent = Intent(requireActivity(), PedagoListActivity::class.java)
             requireContext().startActivity(intent)
+            requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
         }
     }
 
@@ -677,6 +683,7 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
             //launch onboarding activity
             val intent = Intent(requireActivity(), OnboardingStartActivity::class.java)
             startActivity(intent)
+            requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
         }
         isContribution = summary.preference.equals("contribution")
 
@@ -837,6 +844,7 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
             PedagoDetailActivity.setPedagoId(pedagoItemForCreateGroup?.id!!)
             PedagoDetailActivity.setHtmlContent(pedagoItemForCreateGroup?.html!!)
             requireActivity().startActivity(intent)
+            requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
         }
         if(position == 1){
             AnalyticsEvents.logEvent(AnalyticsEvents.Action_Home_CreateEvent)
@@ -845,6 +853,7 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
             PedagoDetailActivity.setPedagoId(pedagoItemForCreateEvent?.id!!)
             PedagoDetailActivity.setHtmlContent(pedagoItemForCreateEvent?.html!!)
             requireActivity().startActivity(intent)
+            requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
         }
         if(position == 0){
             AnalyticsEvents.logEvent(AnalyticsEvents.Action__Home__Moderator)

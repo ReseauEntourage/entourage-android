@@ -14,6 +14,7 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.gson.Gson
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.api.model.EntourageUser
@@ -32,6 +33,7 @@ import social.entourage.android.tools.utils.Utils
 import social.entourage.android.tools.utils.focusAndShowKeyboard
 import social.entourage.android.tools.utils.scrollToPositionSmooth
 import social.entourage.android.tools.view.WebViewFragment
+import timber.log.Timber
 import java.util.UUID
 
 abstract class CommentActivity : BaseActivity(), onDissmissFragment {
@@ -124,6 +126,7 @@ abstract class CommentActivity : BaseActivity(), onDissmissFragment {
     protected fun handleCommentPosted(post: Post?) {
         post?.let {
             commentsList.add(post)
+            Timber.wtf("wtf post added " + Gson().toJson(post))
         } ?: run {
             messagesFailed.add(comment)
             comment?.let { commentsList.add(it) }

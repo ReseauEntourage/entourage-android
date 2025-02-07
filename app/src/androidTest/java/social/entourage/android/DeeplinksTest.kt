@@ -36,6 +36,7 @@ open class DeepLinkingTest {
     protected fun startIntent(intent: Intent) {
         activityTestRule.scenario.onActivity {
             it.startActivity(intent)
+
         }
 
         try {

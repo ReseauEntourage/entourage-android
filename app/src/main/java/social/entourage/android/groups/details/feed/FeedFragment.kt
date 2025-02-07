@@ -447,6 +447,7 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface, Surv
             ResponseSurveyActivity.question = question
         }
         startActivity(intent)
+        requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
     }
 
     // ============================
@@ -503,6 +504,7 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface, Surv
         intent.putExtra("postId", postId)
         intent.putExtra("groupId", this.group?.id)
         startActivity(intent)
+        requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
     }
 
     // ============================
@@ -565,6 +567,8 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface, Surv
             putExtra("TYPE", MembersType.GROUP.code)
         }
         startActivity(intent)
+        requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+
     }
 
     override fun deleteReaction(post: Post) {
@@ -688,6 +692,7 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface, Surv
                 putExtra("TYPE", MembersType.GROUP.code)
             }
             startActivity(intent)
+            requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
         }
     }
 
@@ -1001,6 +1006,7 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface, Surv
                     isFromCreation = true
                     intent.putExtra(Const.GROUP_ID, groupId)
                     startActivity(intent)
+                    requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
                     true
                 }
                 else -> false

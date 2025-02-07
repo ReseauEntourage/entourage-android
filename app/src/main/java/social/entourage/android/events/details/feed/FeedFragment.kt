@@ -187,6 +187,7 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
                         CalendarContract.Events.AVAILABILITY_BUSY
                     )
                 requireContext().startActivity(intent)
+
             }
         }
         handleImageViewAnimation()
@@ -297,6 +298,7 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
                     String.format(getString(R.string.geoUri), event?.metadata?.displayAddress)
                 val intent = Intent(Intent.ACTION_VIEW, Uri.parse(geoUri))
                 startActivity(intent)
+                requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
             }
         }
     }
@@ -578,6 +580,7 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
         intent.putExtra("postId", postId)
         intent.putExtra("eventId", this.event?.id)
         startActivity(intent)
+        requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
     }
 
     private fun fragmentResult() {
@@ -767,6 +770,7 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
                 putExtra("TYPE", MembersType.EVENT.code) // Utilise 'code' pour passer l'enum comme un Int
             }
             startActivity(intent)
+            requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
         }
     }
 
@@ -845,6 +849,7 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
                     FeedFragment.isFromCreation = true
                     intent.putExtra(Const.EVENT_ID, eventId)
                     startActivity(intent)
+                    requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
                     true
                 }
                 else -> false
@@ -983,6 +988,7 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
             putExtra("TYPE", MembersType.EVENT.code) // Utilise 'code' pour passer l'enum comme un Int
         }
         startActivity(intent)
+        requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
     }
 
     override fun deleteReaction(post: Post) {
@@ -1018,6 +1024,7 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
 
         }
         startActivity(intent)
+        requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
     }
 
 

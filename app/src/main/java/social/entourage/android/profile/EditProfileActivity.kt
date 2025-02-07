@@ -185,6 +185,7 @@ class EditProfileActivity : BaseActivity(), AvatarUploadView {
         binding.language.layout.setOnClickListener {
             val intent = Intent(this, ActivityChooseLanguage::class.java)
             startActivity(intent)
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
         }
         binding.language.layout.visibility = View.GONE
     }

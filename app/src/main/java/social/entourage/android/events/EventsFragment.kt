@@ -3,6 +3,7 @@ package social.entourage.android.events
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.animation.ValueAnimator
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.res.Resources
@@ -233,8 +234,9 @@ class EventsFragment : Fragment() {
            DiscoverEventsListFragment.isFirstResumeWithFilters = true
            MainFilterActivity.mod = MainFilterMode.EVENT
            val intent = Intent(activity, MainFilterActivity::class.java)
-
            startActivity(intent)
+           requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+
        }
     }
 

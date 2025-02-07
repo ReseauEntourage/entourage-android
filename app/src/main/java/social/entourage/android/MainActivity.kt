@@ -192,6 +192,7 @@ class MainActivity : BaseSecuredActivity() {
             val intent = Intent(this, CreateActionActivity::class.java)
             intent.putExtra(Const.IS_ACTION_DEMAND, false)
             this.startActivity(intent)
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
         }
         if(shouldLaunchQuizz){
             shouldLaunchQuizz = false
@@ -203,6 +204,7 @@ class MainActivity : BaseSecuredActivity() {
             shouldLaunchWelcomeGroup = false
             val intent = Intent(this, WelcomeTwoActivity::class.java)
             this.startActivity(intent)
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
         }
 
     }
@@ -611,6 +613,7 @@ class MainActivity : BaseSecuredActivity() {
     fun showGuideMap() {
         val intent = Intent(this, GDSMainActivity::class.java)
         startActivity(intent)
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
     }
 
     fun deleteApplicationInfo(listener:() -> Unit) {

@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
+import social.entourage.android.R
 import social.entourage.android.databinding.NewFragmentCreateGroupSuccessBinding
 import social.entourage.android.RefreshController
 import social.entourage.android.groups.details.feed.CreatePostGroupActivity
@@ -64,6 +65,7 @@ class CreateGroupSuccessFragment : Fragment() {
             intent.putExtra(Const.GROUP_ID, args.groupID)
             intent.putExtra(Const.FROM_CREATE_GROUP, true)
             startActivity(intent)
+            requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
             requireActivity().finish()
             RefreshController.shouldRefreshFragment = true
         }

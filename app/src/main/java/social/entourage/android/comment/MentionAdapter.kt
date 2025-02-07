@@ -10,6 +10,7 @@ import com.bumptech.glide.Glide
 import social.entourage.android.R
 import social.entourage.android.api.model.EntourageUser
 import social.entourage.android.events.details.feed.EventCommentActivity
+import social.entourage.android.groups.details.feed.GroupCommentActivity
 
 /**
  * Adapter pour afficher la liste de suggestions de mention (@) sous forme de RecyclerView.
@@ -44,8 +45,14 @@ class MentionAdapter(
             Glide.with(itemView).load(user.avatarURLAsString).into(avatarImageView)
             // Gestion du clic
             itemView.setOnClickListener {
-                // On remonte l'EntourageUser par callback
-                (itemView.context as? EventCommentActivity)?.insertMentionIntoEditText(user)
+                val ctx = itemView.context
+                when(ctx) {
+                    is EventCommentActivity -> ctx.insertMentionIntoEditText(user)
+                    is GroupCommentActivity -> ctx.insertMentionIntoEditText(user)
+                    else -> {
+                        // rien
+                    }
+                }
             }
         }
     }

@@ -113,6 +113,7 @@ class LoginActivity : BaseActivity() {
         binding.uiLoginButtonChangePhone.setOnClickListener {
             val intent = Intent(this, LoginChangePhoneActivity::class.java)
             startActivity(intent)
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
         }
         val text = getString(R.string.terms_and_conditions_html)
         binding.tvConditionGenerales.text = Html.fromHtml(text)
@@ -174,6 +175,7 @@ class LoginActivity : BaseActivity() {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         }
         startActivity(intent)
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
 
     }
 

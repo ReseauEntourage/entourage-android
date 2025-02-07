@@ -177,6 +177,7 @@ class ProfileFullActivity : BaseActivity()  {
                 VibrationUtil.vibrate(this)
                 val intent = Intent(this, EditProfileActivity::class.java)
                 startActivity(intent)
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
             }else{
                 VibrationUtil.vibrate(this)
                 discussionsPresenter.createOrGetConversation(userId)

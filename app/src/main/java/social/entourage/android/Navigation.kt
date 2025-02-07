@@ -42,6 +42,7 @@ object Navigation {
     ) {
         getNavigateIntent(context, fragmentManager, homeType, action, params)?.let { intent ->
             context.startActivity(intent)
+
         }
     }
 

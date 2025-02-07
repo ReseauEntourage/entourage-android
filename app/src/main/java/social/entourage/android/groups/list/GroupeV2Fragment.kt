@@ -112,6 +112,7 @@ class GroupeV2Fragment : Fragment(), UpdateGroupInter {
             MainFilterActivity.mod = MainFilterMode.GROUP
             val intent = Intent(activity, MainFilterActivity::class.java)
             startActivity(intent)
+            requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
         }
         setupSearchView() // Call the method to setup the search view
 
