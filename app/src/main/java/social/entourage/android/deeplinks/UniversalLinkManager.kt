@@ -53,7 +53,7 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
                 pathSegments.contains("user") -> {
                     if (pathSegments.size > 2) {
                         val userId = pathSegments[2]
-                        ProfileFullActivity.isMe = true
+                        ProfileFullActivity.isMe = false
                         ProfileFullActivity.userId = userId
                         val intent = Intent(context, ProfileFullActivity::class.java)
                         context.startActivity(intent)

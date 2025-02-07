@@ -22,7 +22,7 @@ class MentionAdapter(
 ) : RecyclerView.Adapter<MentionAdapter.MentionViewHolder>() {
 
     // Limite à 7 utilisateurs maximum
-    override fun getItemCount(): Int = minOf(7, users.size)
+    override fun getItemCount(): Int = minOf(3, users.size)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MentionViewHolder {
         val view = LayoutInflater.from(parent.context)
