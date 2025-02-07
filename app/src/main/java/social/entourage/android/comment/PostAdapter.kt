@@ -8,17 +8,17 @@ import android.content.Intent
 import android.os.Build
 import android.os.Handler
 import android.os.Looper
-import android.text.Html
-import android.text.SpannableString
-import android.text.Spanned
+import android.text.*
 import android.text.method.LinkMovementMethod
+import android.text.style.ClickableSpan
+import android.text.style.URLSpan
 import android.text.style.UnderlineSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.Toast
-import androidx.core.text.HtmlCompat
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
@@ -55,8 +55,7 @@ interface ReactionInterface {
 
 /**
  * Adapter pour afficher soit un "Post" (TYPE_POST),
- * soit un "Survey" (TYPE_SURVEY), en tenant compte
- * de la logique de traduction & contentHtml.
+ * soit un "Survey" (TYPE_SURVEY).
  */
 class PostAdapter(
     var context: Context,
@@ -155,14 +154,13 @@ class PostAdapter(
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (getItemViewType(position)) {
 
-            // ------------------------------------------------------------------------------
+            // --------------------------------------------------------------------------
             // TYPE_SURVEY
-            // ------------------------------------------------------------------------------
+            // --------------------------------------------------------------------------
             TYPE_SURVEY -> {
                 val surveyHolder = holder as SurveyViewHolder
                 val post = postsList[position]
 
-                // Logique affichage Survey
                 if (post.survey?.multiple == true) {
                     surveyHolder.binding.tvSelectAnswer.text =
                         context.getString(R.string.title_switch_mutiples_choices)
@@ -177,7 +175,6 @@ class PostAdapter(
                         ?: mutableListOf()
                 }
 
-                // Bouton "report post"
                 surveyHolder.binding.btnReportPost.setOnClickListener {
                     val userId = post.user?.id?.toInt()
                     if (userId != null) {
@@ -194,7 +191,7 @@ class PostAdapter(
                     ).format(it)
                 }
 
-                // Tag "ambassador" etc.
+                // Tag "ambassador"/"admin"/partner
                 surveyHolder.binding.tvAmbassador.visibility = View.VISIBLE
                 val member = memberList?.find { it.id.toInt() == post.user?.id?.toInt() }
                 var tagsString = ""
@@ -226,11 +223,10 @@ class PostAdapter(
                     .circleCrop()
                     .into(surveyHolder.binding.image)
 
-                // La question
-                surveyHolder.binding.surveyQuestion.text =
-                    post.content ?: "Question non disponible"
+                // Question
+                surveyHolder.binding.surveyQuestion.text = post.content ?: "Question non disponible"
 
-                // Gère la liste des "choices" + actions
+                // Gère la liste "choices"
                 val survey = post.survey ?: return
                 val choicesViews = listOf(
                     surveyHolder.binding.choiceOne,
@@ -245,6 +241,7 @@ class PostAdapter(
                     }
                 }
 
+                // On set la data pour chaque choice
                 survey.choices.forEachIndexed { index, choice ->
                     val bindingChoice = when (index) {
                         0 -> surveyHolder.binding.choiceOne
@@ -254,7 +251,6 @@ class PostAdapter(
                         4 -> surveyHolder.binding.choiceFive
                         else -> null
                     }
-
                     bindingChoice?.let { c ->
                         c.parent.visibility = View.VISIBLE
                         c.tvQuestionSurvey.text = choice
@@ -262,10 +258,12 @@ class PostAdapter(
                         c.uiIvCheck.isChecked = isSelected
                         val choiceResponses = localSummary.getOrNull(index) ?: 0
                         val totalResponses = localSummary.sum()
-                        val progress = if (totalResponses > 0) (choiceResponses * 100 / totalResponses) else 0
+                        val progress =
+                            if (totalResponses > 0) (choiceResponses * 100 / totalResponses) else 0
                         c.progressBar3.progress = progress
                         c.tvNumberAnswer.text = "$choiceResponses"
 
+                        // Clic sur un choix
                         c.parent.setOnClickListener {
                             val wasSelected = localState[index]
                             if (wasSelected) {
@@ -277,19 +275,23 @@ class PostAdapter(
                             if (survey.multiple) {
                                 localState[index] = !wasSelected
                                 if (localState[index]) {
-                                    localSummary[index] = localSummary.getOrNull(index)?.plus(1) ?: 1
+                                    localSummary[index] =
+                                        localSummary.getOrNull(index)?.plus(1) ?: 1
                                 } else {
-                                    localSummary[index] = (localSummary.getOrNull(index)?.minus(1))?.coerceAtLeast(0) ?: 0
+                                    localSummary[index] = (localSummary.getOrNull(index)?.minus(1))
+                                        ?.coerceAtLeast(0) ?: 0
                                 }
                             } else {
                                 val previouslySelectedIndex = localState.indexOf(true)
                                 if (previouslySelectedIndex != -1) {
-                                    localSummary[previouslySelectedIndex] = (localSummary[previouslySelectedIndex] - 1).coerceAtLeast(0)
+                                    localSummary[previouslySelectedIndex] =
+                                        (localSummary[previouslySelectedIndex] - 1).coerceAtLeast(0)
                                     localState[previouslySelectedIndex] = false
                                 }
                                 localState.fill(false)
                                 localState[index] = true
-                                localSummary[index] = localSummary.getOrNull(index)?.plus(1) ?: 1
+                                localSummary[index] =
+                                    localSummary.getOrNull(index)?.plus(1) ?: 1
                             }
                             surveyCallback.onSurveyOptionClicked(post.id!!, localState)
                             survey.choices.forEachIndexed { choiceIndex, _ ->
@@ -301,6 +303,7 @@ class PostAdapter(
                                     localSummary
                                 )
                             }
+
                             val totalResp = localSummary.sum()
                             if (post.commentsCount != null) {
                                 val resId = if (totalResp > 1) R.string.posts_vote_number else R.string.posts_vote_number_singular
@@ -339,14 +342,18 @@ class PostAdapter(
                     }
                 }
 
-                // Statut "deleted" / "offensive"
+                // Statuts "deleted"/"offensive"
                 if (post.status in listOf("deleted", "offensive", "offensible")) {
-                    surveyHolder.binding.surveyQuestion.text = context.getText(R.string.deleted_publi)
+                    surveyHolder.binding.surveyQuestion.text =
+                        context.getText(R.string.deleted_publi)
                     if (post.status in listOf("offensive", "offensible")) {
-                        surveyHolder.binding.surveyQuestion.text = context.getText(R.string.offensive_message)
+                        surveyHolder.binding.surveyQuestion.text =
+                            context.getText(R.string.offensive_message)
                     }
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        surveyHolder.binding.surveyQuestion.setTextColor(context.getColor(R.color.deleted_grey))
+                        surveyHolder.binding.surveyQuestion.setTextColor(
+                            context.getColor(R.color.deleted_grey)
+                        )
                     }
                     surveyHolder.binding.surveyQuestion.visibility = View.VISIBLE
                     surveyHolder.binding.btnReportPost.visibility = View.GONE
@@ -357,7 +364,7 @@ class PostAdapter(
                     surveyHolder.binding.choiceFive.parent.visibility = View.GONE
                 }
 
-                // btn "like" + iComment + etc.
+                // Boutons iLike/comment
                 surveyHolder.binding.tvTitleILike.setText(context.getText(R.string.text_title_i_like))
                 surveyHolder.binding.tvIComment.setText(context.getText(R.string.text_title_comment))
 
@@ -391,17 +398,23 @@ class PostAdapter(
                         surveyHolder.binding.ivILike.setImageDrawable(
                             context.getDrawable(R.drawable.ic_pouce_grey)
                         )
-                        surveyHolder.binding.tvTitleILike.setTextColor(context.getColor(R.color.black))
+                        surveyHolder.binding.tvTitleILike.setTextColor(
+                            context.getColor(R.color.black)
+                        )
                     } else if (reactionId != 0) {
                         surveyHolder.binding.ivILike.setImageDrawable(
                             context.getDrawable(R.drawable.ic_pouce_orange)
                         )
-                        surveyHolder.binding.tvTitleILike.setTextColor(context.getColor(R.color.orange))
+                        surveyHolder.binding.tvTitleILike.setTextColor(
+                            context.getColor(R.color.orange)
+                        )
                     } else {
                         surveyHolder.binding.ivILike.setImageDrawable(
                             context.getDrawable(R.drawable.ic_pouce_grey)
                         )
-                        surveyHolder.binding.tvTitleILike.setTextColor(context.getColor(R.color.black))
+                        surveyHolder.binding.tvTitleILike.setTextColor(
+                            context.getColor(R.color.black)
+                        )
                     }
                     surveyHolder.binding.btnILike.setOnClickListener {
                         val firstReactionType = MainActivity.reactionsList?.firstOrNull()
@@ -411,6 +424,7 @@ class PostAdapter(
                             handleReactionClick(this, firstReactionType)
                         }
                     }
+
                     val reactionImageViews = listOf(
                         surveyHolder.binding.ivReactOne,
                         surveyHolder.binding.ivReactTwo,
@@ -467,7 +481,6 @@ class PostAdapter(
                     surveyHolder.binding.numberReaction.visibility =
                         if (totalReactionsCount > 0) View.VISIBLE else View.GONE
 
-                    // iComment, etc.
                     if (reactions.isNullOrEmpty() && commentsCount == 0 && survey.summary.isEmpty()) {
                         surveyHolder.binding.postCommentsNumberLayout.visibility = View.GONE
                     } else {
@@ -491,13 +504,19 @@ class PostAdapter(
                         surveyHolder.binding.postCommentsNumber.visibility = View.VISIBLE
                         surveyHolder.binding.postNoComments.visibility = View.GONE
                         if (commentsCount != null) {
-                            val resId = if (commentsCount > 1) R.string.posts_comment_number else R.string.posts_comment_number_singular
+                            val resId =
+                                if (commentsCount > 1) R.string.posts_comment_number else R.string.posts_comment_number_singular
                             val commentsText = String.format(
                                 surveyHolder.itemView.context.getString(resId),
                                 commentsCount
                             )
                             val spannableString = SpannableString(commentsText)
-                            spannableString.setSpan(UnderlineSpan(), 0, commentsText.length, Spanned.SPAN_INCLUSIVE_INCLUSIVE)
+                            spannableString.setSpan(
+                                UnderlineSpan(),
+                                0,
+                                commentsText.length,
+                                Spanned.SPAN_INCLUSIVE_INCLUSIVE
+                            )
                             surveyHolder.binding.postCommentsNumber.text = spannableString
                         } else {
                             surveyHolder.binding.postCommentsNumber.text = ""
@@ -525,7 +544,8 @@ class PostAdapter(
                         surveyHolder.binding.postNoComments.visibility = View.GONE
                         val totalResponses = survey.summary.sum()
                         if (commentsCount != null && commentsCount != 0) {
-                            val resId = if (totalResponses > 1) R.string.posts_vote_number else R.string.posts_vote_number_singular
+                            val resId =
+                                if (totalResponses > 1) R.string.posts_vote_number else R.string.posts_vote_number_singular
                             val commentsText = " - " + String.format(
                                 surveyHolder.itemView.context.getString(resId),
                                 totalResponses
@@ -539,7 +559,8 @@ class PostAdapter(
                             )
                             surveyHolder.binding.postVoteNumber.text = spannableString
                         } else {
-                            val resId = if (totalResponses > 1) R.string.posts_vote_number else R.string.posts_vote_number_singular
+                            val resId =
+                                if (totalResponses > 1) R.string.posts_vote_number else R.string.posts_vote_number_singular
                             val commentsText = String.format(
                                 surveyHolder.itemView.context.getString(resId),
                                 totalResponses
@@ -560,9 +581,9 @@ class PostAdapter(
                 }
             }
 
-            // ------------------------------------------------------------------------------
+            // --------------------------------------------------------------------------
             // TYPE_POST
-            // ------------------------------------------------------------------------------
+            // --------------------------------------------------------------------------
             TYPE_POST -> {
                 val binding = (holder as ViewHolder).binding
                 val meId = EntourageApplication.get().me()?.id
@@ -593,6 +614,7 @@ class PostAdapter(
 
                 val post = postsList[position]
                 with(post) {
+                    // autoPostFrom
                     if (this.autoPostFrom != null) {
                         binding.layoutActionInPubli.visibility = View.VISIBLE
                     } else {
@@ -601,14 +623,26 @@ class PostAdapter(
 
                     // Gère la reactionId
                     if (this.reactionId == null) {
-                        binding.ivILike.setImageDrawable(context.getDrawable(R.drawable.ic_pouce_grey))
-                        binding.tvTitleILike.setTextColor(context.getColor(R.color.black))
+                        binding.ivILike.setImageDrawable(
+                            context.getDrawable(R.drawable.ic_pouce_grey)
+                        )
+                        binding.tvTitleILike.setTextColor(
+                            context.getColor(R.color.black)
+                        )
                     } else if (this.reactionId != 0) {
-                        binding.ivILike.setImageDrawable(context.getDrawable(R.drawable.ic_pouce_orange))
-                        binding.tvTitleILike.setTextColor(context.getColor(R.color.orange))
+                        binding.ivILike.setImageDrawable(
+                            context.getDrawable(R.drawable.ic_pouce_orange)
+                        )
+                        binding.tvTitleILike.setTextColor(
+                            context.getColor(R.color.orange)
+                        )
                     } else {
-                        binding.ivILike.setImageDrawable(context.getDrawable(R.drawable.ic_pouce_grey))
-                        binding.tvTitleILike.setTextColor(context.getColor(R.color.black))
+                        binding.ivILike.setImageDrawable(
+                            context.getDrawable(R.drawable.ic_pouce_grey)
+                        )
+                        binding.tvTitleILike.setTextColor(
+                            context.getColor(R.color.black)
+                        )
                     }
 
                     binding.btnILike.setOnClickListener {
@@ -669,7 +703,6 @@ class PostAdapter(
                             }
                         }
                     }
-
                     reactionViews.forEach { it.layoutItemReactionParent.visibility = View.GONE }
                     val totalReactionsCount = reactions?.sumOf { it.reactionsCount } ?: 0
                     binding.numberReaction.text = totalReactionsCount.toString()
@@ -705,9 +738,14 @@ class PostAdapter(
                         true
                     }
 
-                    // Gère "Traduction" => (content vs contentTranslations)
-                    // => contentHtml vs content si pas vide
-                    // => contentTranslationsHtml vs contentTranslations si isTranslated
+                    // ---------------- GESTION TRADUCTION (TOGGLE) ----------------
+                    val sp = context.getSharedPreferences(
+                        context.getString(R.string.preference_file_key),
+                        Context.MODE_PRIVATE
+                    )
+                    val translatedByDefault = sp.getBoolean("translatedByDefault", false)
+
+                    // Est-ce que ce post est "en mode traduite" ou non ?
                     val isTranslated = !translationExceptions.contains(id)
                     val textTrans = if (isTranslated) {
                         context.getString(R.string.layout_translate_title_translation)
@@ -718,21 +756,39 @@ class PostAdapter(
                     titleButton.setSpan(UnderlineSpan(), 0, textTrans.length, 0)
                     binding.postTranslationButton.tvTranslate.text = titleButton
 
-                    if (DataLanguageStock.userLanguage == this@with.contentTranslations?.fromLang
-                        || (this@with.user?.id == meId?.toLong()) && (this@with.content == "")
-                    ) {
+                    // Gérer l'apparition du bouton "Traduction" :
+                    //  1) S'il n'y a pas de contentTranslations => pas de bouton
+                    //  2) Si userLanguage == contentTranslations.fromLang => pas besoin
+                    //  3) Si "translatedByDefault" est activé => on masque le bouton
+                    val hasTranslation = this@with.contentTranslations?.translation?.isNotBlank() == true
+                    val sameLang =
+                        (DataLanguageStock.userLanguage == this@with.contentTranslations?.fromLang)
+
+                    if (!hasTranslation) {
+                        // Pas de traduction => on cache
                         binding.postTranslationButton.layoutCsTranslate.visibility = View.GONE
                     } else {
-                        binding.postTranslationButton.layoutCsTranslate.visibility = View.VISIBLE
+                        if (sameLang) {
+                            // Si c'est la même langue => inutile
+                            binding.postTranslationButton.layoutCsTranslate.visibility = View.GONE
+                        } else {
+                            // Si "auto-translation" => on cache le bouton
+                            if (translatedByDefault) {
+                                binding.postTranslationButton.layoutCsTranslate.visibility = View.GONE
+                            } else {
+                                // Sinon, on affiche le bouton
+                                binding.postTranslationButton.layoutCsTranslate.visibility = View.VISIBLE
+                            }
+                        }
                     }
-                    if (this@with.contentTranslations == null) {
-                        binding.postTranslationButton.layoutCsTranslate.visibility = View.GONE
-                    }
+
+                    // Au clic : toggler la traduction
                     binding.postTranslationButton.layoutCsTranslate.setOnClickListener {
                         translateItem(id ?: this@with.id!!)
                         binding.layoutReactions.visibility = View.GONE
                     }
 
+                    // Ouvre la liste de commentaires
                     binding.imageViewComments.setOnClickListener {
                         onClick(this@with, false)
                         binding.layoutReactions.visibility = View.GONE
@@ -742,6 +798,7 @@ class PostAdapter(
                         binding.layoutReactions.visibility = View.GONE
                     }
 
+                    // hasComments
                     val noCommentsText = ""
                     val spannableNoCommentsText = SpannableString(noCommentsText)
                     spannableNoCommentsText.setSpan(
@@ -757,22 +814,31 @@ class PostAdapter(
                         binding.layoutReactions.visibility = View.GONE
                     }
 
-                    // --------------- GESTION DU CONTENU HTML ---------------
+                    // --------------- GESTION DU CONTENU HTML + LIENS ---------------
                     var finalContent = getFinalContentForPost(this@with, isTranslated)
                     if (finalContent.isNullOrEmpty()) finalContent = ""
 
-                    // On parse en HTML + LinkMovementMethod
+                    // On supprime les <p> qui ajoutent des sauts de ligne
+                    finalContent = fixHtmlSpacing(finalContent)
+
+                    // On parse en HTML
                     val spanned = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                         Html.fromHtml(finalContent, Html.FROM_HTML_MODE_LEGACY)
                     } else {
                         Html.fromHtml(finalContent)
                     }
-                    binding.postMessage.text = spanned
+                    // Rends les liens (URLSpan) en ClickableSpan custom
+                    val clickableSpannable = makeLinksClickable(spanned)
+
+                    binding.postMessage.text = clickableSpannable
                     binding.postMessage.movementMethod = LinkMovementMethod.getInstance()
+                    // Couleur des liens (sinon ils restent noirs)
+                    binding.postMessage.setLinkTextColor(
+                        ContextCompat.getColor(context, R.color.bright_blue)
+                    )
 
-                    // -------------------------------------------------------
+                    // ---------------------------------------------------------------
 
-                    // hasComments
                     if (hasComments == false) {
                         binding.postNoComments.visibility = View.GONE
                         binding.postCommentsNumber.visibility = View.GONE
@@ -780,7 +846,8 @@ class PostAdapter(
                         binding.postCommentsNumber.visibility = View.VISIBLE
                         binding.postNoComments.visibility = View.GONE
                         if (commentsCount != null) {
-                            val resId = if (commentsCount > 1) R.string.posts_comment_number else R.string.posts_comment_number_singular
+                            val resId =
+                                if (commentsCount > 1) R.string.posts_comment_number else R.string.posts_comment_number_singular
                             val commentsText = String.format(
                                 binding.root.context.getString(resId),
                                 commentsCount
@@ -797,6 +864,7 @@ class PostAdapter(
                             binding.postCommentsNumber.text = ""
                         }
                     }
+
                     // Date
                     val locale = LanguageManager.getLocaleFromPreferences(context)
                     binding.date.text = SimpleDateFormat(
@@ -838,8 +906,8 @@ class PostAdapter(
                             .into(binding.image)
                     }
 
+                    // Rôles (admin, ambassador, etc.)
                     binding.tvAmbassador.visibility = View.VISIBLE
-
                     val _post = this@with
                     var tagsString2 = ""
                     if (_post.user?.roles?.isNotEmpty() == true) {
@@ -875,6 +943,8 @@ class PostAdapter(
                             id?.let { it1 -> onReport(it1, userId) }
                         }
                     }
+
+                    // Statut "deleted"/"offensive"
                     if (status in listOf("deleted", "offensive", "offensible")) {
                         binding.postMessage.text = context.getText(R.string.deleted_publi)
                         if (status in listOf("offensive", "offensible")) {
@@ -889,7 +959,6 @@ class PostAdapter(
                         binding.separatorLayout.visibility = View.GONE
                         reactionImageViews.forEach { it.visibility = View.GONE }
                         binding.numberReaction.visibility = View.GONE
-
                     } else {
                         binding.btnsLayout.visibility = View.VISIBLE
                         binding.separatorLayout.visibility = View.VISIBLE
@@ -926,7 +995,7 @@ class PostAdapter(
     }
 
     // --------------------------------------------------------------------------------------------
-    // Affichage d'un sondage
+    // Gestion Survey
     // --------------------------------------------------------------------------------------------
     fun updateVoteNumberText(
         surveyHolder: SurveyViewHolder,
@@ -1102,7 +1171,7 @@ class PostAdapter(
     }
 
     // --------------------------------------------------------------------------------------------
-    // Ouvre le detail user
+    // Ouvre le détail d'un user
     // --------------------------------------------------------------------------------------------
     private fun showUserDetail(context: Context, userId: Int?) {
         ProfileFullActivity.isMe = false
@@ -1116,7 +1185,7 @@ class PostAdapter(
     }
 
     // --------------------------------------------------------------------------------------------
-    // Renvoie la chaîne finale (original vs traduction) en tenant compte de contentHtml, etc.
+    // Renvoie la chaîne finale (original vs traduction)
     // --------------------------------------------------------------------------------------------
     private fun getFinalContentForPost(post: Post, isTranslated: Boolean): String {
         return if (!isTranslated) {
@@ -1134,5 +1203,55 @@ class PostAdapter(
                     ?.takeIf { it.isNotBlank() }
                 ?: ""
         }
+    }
+
+    // --------------------------------------------------------------------------------------------
+    // Supprime les <p> et </p> qui provoquent des sauts de ligne inattendus
+    // --------------------------------------------------------------------------------------------
+    private fun fixHtmlSpacing(html: String): String {
+        val withoutOpeningP = html.replace(Regex("<p[^>]*>"), "")
+        val withoutClosingP = withoutOpeningP.replace("</p>", "")
+        return withoutClosingP
+    }
+
+    // --------------------------------------------------------------------------------------------
+    // Convertit un Spanned (avec URLSpan) en un SpannableStringBuilder (avec ClickableSpan)
+    // pour gérer soi-même le clic (deeplink, navigateur, etc.).
+    // --------------------------------------------------------------------------------------------
+    private fun makeLinksClickable(spanned: Spanned): Spannable {
+        val urlSpans = spanned.getSpans(0, spanned.length, URLSpan::class.java)
+        if (urlSpans.isEmpty()) {
+            // Pas de lien -> on renvoie le spanned d'origine
+            return spanned as Spannable
+        }
+        val sb = SpannableStringBuilder(spanned)
+        for (span in urlSpans) {
+            val start = sb.getSpanStart(span)
+            val end = sb.getSpanEnd(span)
+            val flags = sb.getSpanFlags(span)
+            val url = span.url
+            // Retirer l'URLSpan
+            sb.removeSpan(span)
+
+            // Ajouter un ClickableSpan custom
+            sb.setSpan(object : ClickableSpan() {
+                override fun onClick(widget: View) {
+                    // ICI : gère le clic. Ex:
+                    // -> Ouvrir un écran in-app selon l'URL
+                    // -> Ouvrir un navigateur
+                    // -> etc.
+                    // Pour un deep link, parse 'url' et fais ce qu'il faut.
+                    Toast.makeText(widget.context, "Lien cliqué : $url", Toast.LENGTH_SHORT).show()
+                    // Ex : si on veut juste l'ouvrir dans un browser :
+                    // onShowWeb(url)
+                }
+
+                override fun updateDrawState(ds: TextPaint) {
+                    super.updateDrawState(ds)
+                    ds.isUnderlineText = true // si tu veux un soulignement
+                }
+            }, start, end, flags)
+        }
+        return sb
     }
 }

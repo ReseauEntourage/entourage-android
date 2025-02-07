@@ -7,6 +7,7 @@ import social.entourage.android.posts.CreatePostActivity
 import java.io.File
 
 class CreatePostGroupActivity : CreatePostActivity() {
+
     private val groupPresenter: GroupPresenter by lazy { GroupPresenter() }
 
     companion object {
@@ -15,9 +16,24 @@ class CreatePostGroupActivity : CreatePostActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        groupPresenter.hasPost.observe(this, ::handlePost)
+
+        // Observe la réussite de la création de post
+        groupPresenter.hasPost.observe(this) { hasPost ->
+            handlePost(hasPost)
+        }
+
+        // Observe la liste des membres pour les mentions
+        groupPresenter.getMembers.observe(this) { members ->
+            setAllMembers(members)
+        }
+
+        // Lance la récupération des membres
+        if (groupId != -1) {
+            groupPresenter.getGroupMembers(groupId)
+        }
     }
 
+    // Publication d'un post avec image
     override fun addPostWithImage(file: File) {
         groupPresenter.addPost(
             binding.message.text.toString(),
@@ -26,6 +42,7 @@ class CreatePostGroupActivity : CreatePostActivity() {
         )
     }
 
+    // Publication d'un post sans image
     override fun addPostWithoutImage(request: ArrayMap<String, Any>) {
         groupPresenter.addPost(groupId, request)
     }

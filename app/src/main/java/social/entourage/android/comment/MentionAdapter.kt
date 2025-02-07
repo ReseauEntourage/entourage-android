@@ -14,7 +14,7 @@ import social.entourage.android.api.model.EntourageUser
 
 /**
  * Adapter pour afficher la liste de suggestions de mention (@) sous forme de RecyclerView.
- * La liste est limitée à 7 éléments.
+ * La liste est limitée à 3 éléments.
  */
 class MentionAdapter(
     private var users: List<EntourageUser>,
