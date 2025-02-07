@@ -101,7 +101,7 @@ abstract class CreatePostActivity : AppCompatActivity() {
                 if (id == -1 && CreatePostGroupActivity.idGroupForPost != null) {
                     id = CreatePostGroupActivity.idGroupForPost!!
                 }
-                // Petit délai avant de relancer éventuellement une autre activité
+                // Petit délai avant de relancer éventuellement une autre activity
                 Handler(Looper.getMainLooper()).postDelayed({
                     // Exemple : StartActivity(FeedActivity) si besoin
                     // startActivity(Intent(this, FeedActivity::class.java).putExtra(Const.GROUP_ID, id))
@@ -128,8 +128,12 @@ abstract class CreatePostActivity : AppCompatActivity() {
     }
 
     private fun choosePhoto() {
-        val choosePhotoModalFragment = social.entourage.android.base.ChoosePhotoModalFragment.newInstance()
-        choosePhotoModalFragment.show(supportFragmentManager, social.entourage.android.base.ChoosePhotoModalFragment.TAG)
+        val choosePhotoModalFragment =
+            social.entourage.android.base.ChoosePhotoModalFragment.newInstance()
+        choosePhotoModalFragment.show(
+            supportFragmentManager,
+            social.entourage.android.base.ChoosePhotoModalFragment.TAG
+        )
     }
 
     private fun handleDeleteImageButton() {
@@ -181,7 +185,18 @@ abstract class CreatePostActivity : AppCompatActivity() {
             // Cas 1 : pas d’image, uniquement du texte
             if (imageURI == null && isMessageValid()) {
                 val messageChat = ArrayMap<String, Any>()
-                messageChat["content"] = binding.message.text.toString()
+
+                // -------------------------------------
+                // CORRECTION : utiliser Html.toHtml() pour conserver le HTML
+                // -------------------------------------
+                val messageToSend = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    Html.toHtml(binding.message.text, Html.TO_HTML_PARAGRAPH_LINES_INDIVIDUAL)
+                } else {
+                    @Suppress("DEPRECATION")
+                    Html.toHtml(binding.message.text)
+                }
+
+                messageChat["content"] = messageToSend
                 val request = ArrayMap<String, Any>()
                 request["chat_message"] = messageChat
                 addPostWithoutImage(request)
@@ -196,9 +211,10 @@ abstract class CreatePostActivity : AppCompatActivity() {
         }
     }
 
-    // --------------------------------------------------------------------
-    // Méthodes abstraites à implémenter par les classes filles
-    // --------------------------------------------------------------------
+    /**
+     * Méthodes abstraites à implémenter par les classes filles
+     * pour poster AVEC ou SANS image.
+     */
     abstract fun addPostWithImage(file: File)
     abstract fun addPostWithoutImage(request: ArrayMap<String, Any>)
 
@@ -293,7 +309,6 @@ abstract class CreatePostActivity : AppCompatActivity() {
     private fun hideMentionSuggestions() {
         binding.mentionSuggestionsContainer.visibility = View.GONE
     }
-
 
     private fun insertMentionIntoEditText(user: EntourageUser) {
         val cursorPos = binding.message.selectionStart

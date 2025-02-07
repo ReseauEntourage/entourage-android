@@ -658,7 +658,7 @@ class CommentsListAdapter(
                     normalTranslation
                 } else {
                     // fallback
-                    comment.content
+                    comment.contentHtml
                 }
             }
         } ?: ""

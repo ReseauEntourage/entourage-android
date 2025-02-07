@@ -2,14 +2,17 @@ package social.entourage.android.tools
 
 import android.content.Context
 import android.graphics.Bitmap
+import android.graphics.Color
 import android.graphics.Matrix
 import android.graphics.PorterDuff
 import android.os.Build
 import android.os.VibrationEffect
 import android.os.Vibrator
 import android.os.VibratorManager
+import android.text.Html
 import android.text.SpannableString
 import android.text.Spanned
+import android.text.method.LinkMovementMethod
 import android.text.style.URLSpan
 import android.util.Patterns
 import android.view.View
@@ -47,7 +50,19 @@ fun TextView.setHyperlinkClickable() {
         }
     }
 }
-
+fun TextView.displayHtml(html: String) {
+    // Convertit le HTML en Spanned (les balises <a> deviennent des URLSpan)
+    text = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+        Html.fromHtml(html, Html.FROM_HTML_MODE_LEGACY)
+    } else {
+        Html.fromHtml(html)
+    }
+    // Active les liens cliquables
+    movementMethod = LinkMovementMethod.getInstance()
+    linksClickable = true
+    // Facultatif : force la couleur des liens en bleu
+    setLinkTextColor(Color.BLUE)
+}
 
 fun ImageButton.disable() {
     Timber.d("Call disable")
