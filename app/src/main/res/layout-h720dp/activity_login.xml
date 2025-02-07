@@ -1,241 +1,240 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/new_profile_header_orange">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/new_profile_header_orange">
+        android:layout_height="wrap_content"
+        android:minHeight="60dp"
+        android:paddingHorizontal="15dp"
+        android:paddingBottom="@dimen/entourage_padding_10"
+        app:layout_constraintBottom_toTopOf="@+id/onboard_login_mainlayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/layout"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:paddingHorizontal="15dp"
-            app:layout_constraintEnd_toEndOf="parent"
+        <ImageView
+            android:id="@+id/icon_back"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:padding="10dp"
+            android:src="@drawable/new_back_white"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/onboard_login_mainlayout">
+            tools:src="@drawable/new_back_white" />
 
-            <ImageView
-                android:id="@+id/icon_back"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:padding="10dp"
-                android:src="@drawable/new_back_white"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:src="@drawable/new_back_white" />
+        <TextView
+            android:id="@+id/ui_header_title"
+            style="@style/h1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="24dp"
+            android:maxLines="2"
+            android:text="@string/login_title"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/icon_back"
+            app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/ui_header_title"
-                style="@style/h1"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="24dp"
-                android:maxLines="2"
-                android:text="@string/login_title"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/icon_back"
-                app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/onboard_login_mainlayout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginHorizontal="7dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/new_bg_rounded_beige"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        app:layout_constraintBottom_toTopOf="@+id/ui_login_button_signup"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/layout">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/onboard_login_mainlayout"
+            android:id="@+id/constraintLayout17"
             android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginHorizontal="7dp"
-            android:layout_marginBottom="16dp"
-            android:background="@drawable/new_bg_rounded_beige"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            app:layout_constraintBottom_toTopOf="@+id/ui_login_button_signup"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/layout">
+            app:layout_constraintTop_toTopOf="parent">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/constraintLayout17"
+            <social.entourage.android.tools.view.countrycodepicker.CountryCodePicker
+                android:id="@+id/ui_login_phone_ccp_code"
+                style="@style/input"
+                android:layout_width="40dp"
+                android:layout_height="32dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="5dp"
+                android:backgroundTint="@color/light_orange_opacity_50"
+                android:gravity="center_horizontal|center_vertical"
+                app:ccp_alternative_layout="false"
+                app:ccp_backgroundColor="@color/partner_logo_transparent"
+                app:ccp_defaultNameCode="FR"
+                app:ccp_hideNameCode="true"
+                app:ccp_hidePhoneCode="true"
+                app:ccp_selectionDialogShowSearch="false"
+                app:ccp_showFlag="false"
+                app:ccp_textColor="@color/pre_onboard_black"
+                app:ccp_textSize="14sp"
+                app:layout_constraintStart_toEndOf="@+id/imageView40"
+                app:layout_constraintTop_toBottomOf="@+id/textView7" />
+
+            <EditText
+                android:id="@+id/ui_login_phone_et_phone"
+                style="@style/input"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
+                android:autofillHints="phoneNumber"
+                android:backgroundTint="@color/light_orange_opacity_50"
+                android:hint="@string/login_phone_placeholder"
+                android:inputType="phone"
+                android:maxLines="1"
+                android:paddingTop="0dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintStart_toEndOf="@+id/ui_login_phone_ccp_code"
+                app:layout_constraintTop_toTopOf="@+id/ui_login_phone_ccp_code" />
 
-                <social.entourage.android.tools.view.countrycodepicker.CountryCodePicker
-                    android:id="@+id/ui_login_phone_ccp_code"
-                    style="@style/input"
-                    android:layout_width="40dp"
-                    android:layout_height="32dp"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="5dp"
-                    android:backgroundTint="@color/light_orange_opacity_50"
-                    android:gravity="center_horizontal|center_vertical"
-                    app:ccp_alternative_layout="false"
-                    app:ccp_backgroundColor="@color/partner_logo_transparent"
-                    app:ccp_defaultNameCode="FR"
-                    app:ccp_hideNameCode="true"
-                    app:ccp_hidePhoneCode="true"
-                    app:ccp_selectionDialogShowSearch="false"
-                    app:ccp_showFlag="false"
-                    app:ccp_textColor="@color/pre_onboard_black"
-                    app:ccp_textSize="14sp"
-                    app:layout_constraintStart_toEndOf="@+id/imageView40"
-                    app:layout_constraintTop_toBottomOf="@+id/textView7" />
+            <EditText
+                android:id="@+id/ui_login_et_code"
+                style="@style/input"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="5dp"
+                android:autofillHints="password"
+                android:backgroundTint="@color/light_orange_opacity_50"
+                android:hint="@string/login_placeholder_code"
+                android:inputType="numberPassword"
+                android:maxLines="1"
+                android:paddingTop="0dp"
+                app:layout_constraintEnd_toEndOf="@+id/ui_login_phone_et_phone"
+                app:layout_constraintStart_toStartOf="@+id/textView3"
+                app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
-                <EditText
-                    android:id="@+id/ui_login_phone_et_phone"
-                    style="@style/input"
-                    android:layout_width="0dp"
-                    android:layout_height="40dp"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginEnd="16dp"
-                    android:autofillHints="phoneNumber"
-                    android:backgroundTint="@color/light_orange_opacity_50"
-                    android:hint="@string/login_phone_placeholder"
-                    android:inputType="phone"
-                    android:maxLines="1"
-                    android:paddingTop="0dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/ui_login_phone_ccp_code"
-                    app:layout_constraintTop_toTopOf="@+id/ui_login_phone_ccp_code" />
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="@string/login_label_code"
+                android:textColor="@color/onboard_black_36"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@+id/imageView40"
+                app:layout_constraintTop_toBottomOf="@+id/ui_login_phone_ccp_code" />
 
-                <EditText
-                    android:id="@+id/ui_login_et_code"
-                    style="@style/input"
-                    android:layout_width="0dp"
-                    android:layout_height="40dp"
-                    android:layout_marginTop="5dp"
-                    android:autofillHints="password"
-                    android:backgroundTint="@color/light_orange_opacity_50"
-                    android:hint="@string/login_placeholder_code"
-                    android:inputType="numberPassword"
-                    android:maxLines="1"
-                    android:paddingTop="0dp"
-                    app:layout_constraintEnd_toEndOf="@+id/ui_login_phone_et_phone"
-                    app:layout_constraintStart_toStartOf="@+id/textView3"
-                    app:layout_constraintTop_toBottomOf="@+id/textView3" />
+            <TextView
+                android:id="@+id/textView7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:text="@string/login_label_country"
+                android:textColor="@color/pre_onboard_black"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@+id/ui_login_phone_ccp_code"
+                app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
-                    android:id="@+id/textView3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:text="@string/login_label_code"
-                    android:textColor="@color/onboard_black_36"
-                    android:textStyle="bold"
-                    app:layout_constraintStart_toStartOf="@+id/imageView40"
-                    app:layout_constraintTop_toBottomOf="@+id/ui_login_phone_ccp_code" />
-
-                <TextView
-                    android:id="@+id/textView7"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="30dp"
-                    android:text="@string/login_label_country"
-                    android:textColor="@color/pre_onboard_black"
-                    android:textStyle="bold"
-                    app:layout_constraintStart_toStartOf="@+id/ui_login_phone_ccp_code"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/textView9"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/login_label_phone"
-                    android:textColor="@color/onboard_black_36"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="@+id/textView7"
-                    app:layout_constraintStart_toStartOf="@+id/ui_login_phone_et_phone"
-                    app:layout_constraintTop_toTopOf="@+id/textView7" />
-
-                <Button
-                    android:id="@+id/ui_login_button_resend_code"
-                    android:layout_width="wrap_content"
-                    android:layout_height="30dp"
-                    android:layout_marginTop="16dp"
-                    android:background="@color/transparent"
-                    android:fontFamily="@font/nunitosans_regular"
-                    android:paddingStart="16dp"
-                    android:paddingEnd="16dp"
-                    android:text="@string/login_button_resend_code"
-                    android:textAllCaps="false"
-                    android:textColor="@color/pre_onboard_orange"
-                    android:textSize="13sp"
-                    app:layout_constraintEnd_toEndOf="@+id/ui_login_et_code"
-                    app:layout_constraintStart_toStartOf="@+id/ui_login_et_code"
-                    app:layout_constraintTop_toBottomOf="@+id/ui_login_et_code" />
-
-                <ImageView
-                    android:id="@+id/imageView40"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    app:layout_constraintBottom_toBottomOf="@+id/ui_login_phone_ccp_code"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/ui_login_phone_ccp_code"
-                    app:srcCompat="@drawable/new_phone" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:id="@+id/textView9"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/login_label_phone"
+                android:textColor="@color/onboard_black_36"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@+id/textView7"
+                app:layout_constraintStart_toStartOf="@+id/ui_login_phone_et_phone"
+                app:layout_constraintTop_toTopOf="@+id/textView7" />
 
             <Button
-                android:id="@+id/ui_login_button_change_phone"
+                android:id="@+id/ui_login_button_resend_code"
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
-                android:layout_marginBottom="8dp"
+                android:layout_marginTop="16dp"
                 android:background="@color/transparent"
                 android:fontFamily="@font/nunitosans_regular"
                 android:paddingStart="16dp"
                 android:paddingEnd="16dp"
-                android:text="@string/login_change_phone"
+                android:text="@string/login_button_resend_code"
                 android:textAllCaps="false"
-                android:textColor="@color/grey"
+                android:textColor="@color/pre_onboard_orange"
                 android:textSize="13sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/constraintLayout17" />
+                app:layout_constraintEnd_toEndOf="@+id/ui_login_et_code"
+                app:layout_constraintStart_toStartOf="@+id/ui_login_et_code"
+                app:layout_constraintTop_toBottomOf="@+id/ui_login_et_code" />
+
+            <ImageView
+                android:id="@+id/imageView40"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                app:layout_constraintBottom_toBottomOf="@+id/ui_login_phone_ccp_code"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/ui_login_phone_ccp_code"
+                app:srcCompat="@drawable/new_phone" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <Button
-            android:id="@+id/ui_login_button_signup"
-            style="@style/h2_white"
+            android:id="@+id/ui_login_button_change_phone"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="30dp"
             android:layout_marginBottom="8dp"
-            android:background="@drawable/new_bg_rounded_button_orange_fill"
+            android:background="@color/transparent"
+            android:fontFamily="@font/nunitosans_regular"
             android:paddingStart="16dp"
             android:paddingEnd="16dp"
-            android:text="@string/login_button_connect"
+            android:text="@string/login_change_phone"
             android:textAllCaps="false"
-            app:layout_constraintTop_toBottomOf="@+id/onboard_login_mainlayout"
-            app:layout_constraintBottom_toTopOf="@+id/tv_condition_generales"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/tv_condition_generales"
-            android:textSize="10sp"
-            android:maxLines="3"
             android:textColor="@color/grey"
-            android:fontFamily="@font/nunitosans_regular"
-            android:textAlignment="center"
-            app:layout_constraintTop_toBottomOf="@+id/ui_login_button_signup"
+            android:textSize="13sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginStart="32dp"
-            android:layout_marginEnd="32dp"
-            android:layout_marginBottom="16dp"
-            android:layout_marginTop="8dp"/>
-
-
+            app:layout_constraintStart_toStartOf="@+id/constraintLayout17" />
     </androidx.constraintlayout.widget.ConstraintLayout>
-</layout>
+
+    <Button
+        android:id="@+id/ui_login_button_signup"
+        style="@style/h2_white"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/new_bg_rounded_button_orange_fill"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:text="@string/login_button_connect"
+        android:textAllCaps="false"
+        app:layout_constraintBottom_toTopOf="@+id/tv_condition_generales"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/onboard_login_mainlayout" />
+
+    <TextView
+        android:id="@+id/tv_condition_generales"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="16dp"
+        android:fontFamily="@font/nunitosans_regular"
+        android:maxLines="3"
+        android:textAlignment="center"
+        android:textColor="@color/grey"
+        android:textSize="10sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ui_login_button_signup" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

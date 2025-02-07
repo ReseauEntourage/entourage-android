@@ -1,12 +1,15 @@
 package social.entourage.android.onboarding.pre_onboarding
 
-import social.entourage.android.language.LanguageAdapter
 import android.content.Intent
 import android.os.Bundle
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updatePadding
 import androidx.recyclerview.widget.LinearLayoutManager
 import social.entourage.android.R
 import social.entourage.android.base.BaseActivity
 import social.entourage.android.databinding.PreOnboardingActivityLayoutBinding
+import social.entourage.android.language.LanguageAdapter
 import social.entourage.android.language.LanguageItem
 import social.entourage.android.language.LanguageManager
 import social.entourage.android.language.OnLanguageClicked
@@ -28,24 +31,33 @@ class PreOnboardingLanguage:BaseActivity(), OnLanguageClicked {
         binding.rvLangue.layoutManager = LinearLayoutManager(this)
         binding.rvLangue.adapter = adapter
         setContentView(binding.root)
+
+        // Listen for WindowInsets
+        ViewCompat.setOnApplyWindowInsetsListener(binding.layoutTitle) { view, windowInsets ->
+            // Get the insets for the statusBars() type:
+            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.statusBars())
+            view.updatePadding(
+                top = insets.top
+            )
+            // Return the original insets so they aren’t consumed
+            windowInsets
+        }
     }
     private fun fillArray() {
         val phoneLanguageCode = Locale.getDefault().language
         LanguageManager.saveLanguageToPreferences(this,phoneLanguageCode)
-        val selectedLanguageCode = phoneLanguageCode
 
         languages = mutableListOf(
             //Français - anglais - arabe - ukrainien - espagnol - allemand - roumain - polonais
-            LanguageItem("Français", isSelected = LanguageManager.mapLanguageToCode("Français") == selectedLanguageCode),
-            LanguageItem("English", isSelected = LanguageManager.mapLanguageToCode("English") == selectedLanguageCode),
-            LanguageItem("العربية", isSelected = LanguageManager.mapLanguageToCode("العربية") == selectedLanguageCode),
-            LanguageItem("Українська", isSelected = LanguageManager.mapLanguageToCode("Українська") == selectedLanguageCode),
-            LanguageItem("Español", isSelected = LanguageManager.mapLanguageToCode("Español") == selectedLanguageCode),
-            LanguageItem("Deutsch", isSelected = LanguageManager.mapLanguageToCode("Deutsch") == selectedLanguageCode),
-            LanguageItem("Română", isSelected = LanguageManager.mapLanguageToCode("Română") == selectedLanguageCode),
-            LanguageItem("Polski", isSelected = LanguageManager.mapLanguageToCode("Polski") == selectedLanguageCode)
-
-            )
+            LanguageItem("Français", isSelected = LanguageManager.mapLanguageToCode("Français") == phoneLanguageCode),
+            LanguageItem("English", isSelected = LanguageManager.mapLanguageToCode("English") == phoneLanguageCode),
+            LanguageItem("العربية", isSelected = LanguageManager.mapLanguageToCode("العربية") == phoneLanguageCode),
+            LanguageItem("Українська", isSelected = LanguageManager.mapLanguageToCode("Українська") == phoneLanguageCode),
+            LanguageItem("Español", isSelected = LanguageManager.mapLanguageToCode("Español") == phoneLanguageCode),
+            LanguageItem("Deutsch", isSelected = LanguageManager.mapLanguageToCode("Deutsch") == phoneLanguageCode),
+            LanguageItem("Română", isSelected = LanguageManager.mapLanguageToCode("Română") == phoneLanguageCode),
+            LanguageItem("Polski", isSelected = LanguageManager.mapLanguageToCode("Polski") == phoneLanguageCode)
+        )
     }
 
 
@@ -69,7 +81,6 @@ class PreOnboardingLanguage:BaseActivity(), OnLanguageClicked {
         binding.titleLanguage.text = getString(R.string.welcome_user)
         //Modify button width
         binding.validate.text = getString(R.string.new_next)
-
     }
 
     private fun handleNextButton(){

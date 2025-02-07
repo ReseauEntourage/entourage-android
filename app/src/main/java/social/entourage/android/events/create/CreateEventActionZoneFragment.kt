@@ -1,6 +1,9 @@
 package social.entourage.android.events.create
 
 import android.view.View
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updatePadding
 import androidx.navigation.fragment.findNavController
 import social.entourage.android.R
 import social.entourage.android.user.edit.place.UserActionPlaceFragment
@@ -21,6 +24,16 @@ class CreateEventActionZoneFragment : UserActionPlaceFragment() {
             findNavController().popBackStack()
         }
         binding.editPlaceTitleLayout.binding.titleText.text = ""
+
+        ViewCompat.setOnApplyWindowInsetsListener(binding.editPlaceTitleLayout) { view, windowInsets ->
+            // Get the insets for the statusBars() type:
+            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.statusBars())
+            view.updatePadding(
+                top = insets.top
+            )
+            // Return the original insets so they aren’t consumed
+            windowInsets
+        }
     }
 
     private fun validate() {

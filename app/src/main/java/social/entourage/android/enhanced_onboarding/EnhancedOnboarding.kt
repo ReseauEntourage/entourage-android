@@ -11,9 +11,13 @@ import social.entourage.android.R
 import social.entourage.android.api.model.User
 import social.entourage.android.base.BaseActivity
 import social.entourage.android.databinding.ActivityEnhancedOnboardingLayoutBinding
-import social.entourage.android.enhanced_onboarding.fragments.*
+import social.entourage.android.enhanced_onboarding.fragments.OnboardingActionWishesFragment
+import social.entourage.android.enhanced_onboarding.fragments.OnboardingCategorieFragment
+import social.entourage.android.enhanced_onboarding.fragments.OnboardingCongratsFragment
+import social.entourage.android.enhanced_onboarding.fragments.OnboardingDisponibilityFragment
+import social.entourage.android.enhanced_onboarding.fragments.OnboardingInterestFragment
+import social.entourage.android.enhanced_onboarding.fragments.OnboardingPresentationFragment
 import social.entourage.android.user.UserPresenter
-import timber.log.Timber
 
 class EnhancedOnboarding : BaseActivity() {
 

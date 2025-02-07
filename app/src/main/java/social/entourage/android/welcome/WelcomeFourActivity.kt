@@ -12,7 +12,6 @@ class WelcomeFourActivity: BaseActivity() {
 
     private lateinit var binding: ActivityLayoutWelcomeFourBinding
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.updateLanguage()
         super.onCreate(savedInstanceState)

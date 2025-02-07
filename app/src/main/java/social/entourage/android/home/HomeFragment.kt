@@ -1,18 +1,11 @@
-package social.entourage.android.homev2
+package social.entourage.android.home
 
-import android.animation.Animator
-import android.animation.AnimatorListenerAdapter
 import android.animation.ValueAnimator
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
-import android.content.IntentSender
-import android.graphics.Color
-import android.graphics.drawable.GradientDrawable
-import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,15 +14,15 @@ import androidx.activity.addCallback
 import androidx.core.animation.doOnEnd
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updatePadding
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
-import com.google.android.play.core.appupdate.AppUpdateManager
-import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 import com.google.firebase.messaging.FirebaseMessaging
-import com.google.gson.Gson
 import social.entourage.android.BuildConfig
 import social.entourage.android.EntourageApplication
 import social.entourage.android.MainActivity
@@ -45,46 +38,41 @@ import social.entourage.android.api.model.Help
 import social.entourage.android.api.model.Pedago
 import social.entourage.android.api.model.Summary
 import social.entourage.android.api.model.User
-import social.entourage.android.api.model.notification.PushNotificationMessage
-import social.entourage.android.base.BaseActivity
-import social.entourage.android.databinding.FragmentHomeV2LayoutBinding
+import social.entourage.android.databinding.FragmentHomeBinding
 import social.entourage.android.enhanced_onboarding.EnhancedOnboarding
 import social.entourage.android.events.create.CommunicationHandler
 import social.entourage.android.guide.GDSMainActivity
-import social.entourage.android.home.CommunicationHandlerBadgeViewModel
-import social.entourage.android.home.HomePresenter
-import social.entourage.android.home.UnreadMessages
 import social.entourage.android.home.pedago.OnItemClick
 import social.entourage.android.home.pedago.PedagoDetailActivity
 import social.entourage.android.home.pedago.PedagoListActivity
+import social.entourage.android.homev2.HomeActionAdapter
+import social.entourage.android.homev2.HomeEventAdapter
+import social.entourage.android.homev2.HomeGroupAdapter
+import social.entourage.android.homev2.HomeInitialPedagoAdapter
+import social.entourage.android.homev2.HomePedagoAdapter
 import social.entourage.android.notifications.InAppNotificationsActivity
-import social.entourage.android.notifications.MockNotificationGenerator
 import social.entourage.android.notifications.NotificationDemandActivity
-import social.entourage.android.notifications.PushNotificationManager
 import social.entourage.android.onboarding.onboard.OnboardingStartActivity
-import social.entourage.android.profile.ProfileActivity
 import social.entourage.android.profile.ProfileFullActivity
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.CustomAlertDialog
 import social.entourage.android.tools.view.WebViewFragment
 import social.entourage.android.user.UserPresenter
-import social.entourage.android.user.UserProfileActivity
-import social.entourage.android.user.edit.place.UserEditActionZoneFragment
 import timber.log.Timber
 
-class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeLocationUpdate {
+class HomeFragment: Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocationUpdate {
 
     //VAR
-    private lateinit var binding:FragmentHomeV2LayoutBinding
+    private lateinit var binding:FragmentHomeBinding
     private lateinit var homePresenter:HomePresenter
     private var homeGroupAdapter = HomeGroupAdapter()
-    private lateinit var homeEventAdapter:HomeEventAdapter
+    private lateinit var homeEventAdapter: HomeEventAdapter
     private var homeActionAdapter = HomeActionAdapter(false)
     private val userPresenter: UserPresenter by lazy { UserPresenter() }
-    private lateinit var homeHelpAdapter:HomeHelpAdapter
-    private var homePedagoAdapter:HomePedagoAdapter? = null
-    private var homeInitialPedagoAdapter:HomeInitialPedagoAdapter? = null
+    private lateinit var homeHelpAdapter: HomeHelpAdapter
+    private var homePedagoAdapter: HomePedagoAdapter? = null
+    private var homeInitialPedagoAdapter: HomeInitialPedagoAdapter? = null
     private lateinit var  mainPresenter: MainPresenter
     private var pagegroup = 0
     private var pageEvent = 0
@@ -95,8 +83,8 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
     private var user: User? = null
     private val NEW_MARGIN = 10
     private val DEFAULT_MARGIN = 80
-    private val NEW_MARGIN_LOGO = 10
-    private val DEFAULT_MARGIN_LOGO = 30
+    //private val NEW_MARGIN_LOGO = 10
+    //private val DEFAULT_MARGIN_LOGO = 30
     private var isAnimating = false
     private var pedagoItemForCreateEvent:Pedago? = null
     private var pedagoItemForCreateGroup:Pedago? = null
@@ -106,7 +94,6 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
     private var isActionEmpty = false
     private var isContribution = false
     private lateinit var actionsPresenter: ActionsPresenter
-    private var locationPopupHasPop = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -125,10 +112,9 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         totalchecksum = 0
-        binding = FragmentHomeV2LayoutBinding.inflate(layoutInflater)
-        binding.homeNestedScrollView.visibility = View.GONE
+        binding = FragmentHomeBinding.inflate(layoutInflater)
         disapearAllAtBeginning()
         mainPresenter = MainPresenter(requireActivity() as MainActivity)
         userPresenter.user.observe(viewLifecycleOwner, ::updateUser)
@@ -180,6 +166,16 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
         increaseCounter()
         checkNotifAndSendToken()
         adjustChevronForRTL()
+        // Listen for WindowInsets
+        ViewCompat.setOnApplyWindowInsetsListener(binding.homeHeader) { view, windowInsets ->
+            // Get the insets for the statusBars() type:
+            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.statusBars())
+            view.updatePadding(
+                top = insets.top
+            )
+            // Return the original insets so they aren’t consumed
+            windowInsets
+        }
         return binding.root
     }
 
@@ -216,14 +212,14 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
         sendUserDiscussionStatus()
     }
 
-    private fun testNotifDemandePage(){
+    /*private fun testNotifDemandePage(){
         binding.ivLogoHome.setOnLongClickListener {
             val intent = Intent(requireContext(), NotificationDemandActivity::class.java)
             this.startActivity(intent)
             requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
             true
         }
-    }
+    }*/
 
     private fun testToken() {
         binding.ivLogoHome.setOnLongClickListener {
@@ -240,15 +236,14 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
         }
     }
 
-
-    private fun testIRLNotification(){
+    /*private fun testIRLNotification(){
         binding.ivLogoHome.setOnLongClickListener {
             MockNotificationGenerator.createAllMockNotifications(requireContext())
             true
       }
-    }
+    }*/
 
-    fun adjustChevronForRTL() {
+    private fun adjustChevronForRTL() {
         val isRTL = resources.configuration.layoutDirection == View.LAYOUT_DIRECTION_RTL
 
         if (isRTL) {
@@ -298,20 +293,20 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
     }
 
 
-    fun increaseCounter(){
+    private fun increaseCounter(){
         val sharedPreferences = requireActivity().getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE)
         var count = sharedPreferences.getInt("COUNT_DISCUSSION_ASK", 0)
         sharedPreferences.edit().putInt("COUNT_DISCUSSION_ASK", ++count).apply()
         //toast the count
     }
 
-    fun sendUserDiscussionStatus() {
+    private fun sendUserDiscussionStatus() {
         if (isAdded) {
             val sharedPreferences = requireActivity().getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE)
             //Add true in cookie DiscussionInterested
             val isInterested = sharedPreferences.getBoolean("DISCUSSION_INTERESTED", false)
             val userRefused = sharedPreferences.getBoolean("USER_REFUSED_POPUP", false)
-            val count = sharedPreferences.getInt("COUNT_DISCUSSION_ASK", 0)
+            //val count = sharedPreferences.getInt("COUNT_DISCUSSION_ASK", 0)
 
             if (userRefused) {
                 // L'utilisateur a refusé, on ne fait rien
@@ -328,7 +323,7 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
         val areNotificationsEnabled = notificationManager.areNotificationsEnabled()
         if (areNotificationsEnabled) {
             AnalyticsEvents.logEvent(AnalyticsEvents.has_user_activated_notif)
-            FirebaseMessaging.getInstance().token.addOnSuccessListener { token ->
+            FirebaseMessaging.getInstance().token.addOnSuccessListener { _ ->
                 AnalyticsEvents.logEvent(AnalyticsEvents.user_have_notif_and_token)
             }
             FirebaseMessaging.getInstance().token.addOnFailureListener { exception ->
@@ -341,20 +336,18 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
         }
     }
 
-    fun sendToken(){
+    private fun sendToken(){
         FirebaseMessaging.getInstance().token.addOnSuccessListener { token ->
-            Log.wtf("wtf token", token)
+            Timber.wtf("wtf token", token)
             mainPresenter.updateApplicationInfo(token)
         }
     }
-    fun deleteToken(){
+
+    private fun deleteToken(){
        mainPresenter.deleteApplicationInfo {
 
        }
     }
-
-
-
 
     private fun updateUnreadCount(unreadMessages: UnreadMessages?) {
         val count:Int = unreadMessages?.unreadCount ?: 0
@@ -364,23 +357,30 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
         }
         CommunicationHandler.resetValues()
     }
+
     private fun setMarginTop(view: View, marginTop: Int) {
         val layoutParams = view.layoutParams as ViewGroup.MarginLayoutParams
         layoutParams.topMargin = marginTop
         view.layoutParams = layoutParams
     }
 
-    fun callToInitHome(){
-
+    private fun callToInitHome(){
         if(isAdded){
-            val meId = EntourageApplication.get().me()?.id
-            if(meId == null) return
-            homePresenter.getMyGroups(pagegroup,nbOfItemForHozrizontalList,meId)
-            homePresenter.getAllEvents(pageEvent,nbOfItemForHozrizontalList,currentFilters.travel_distance(),currentFilters.latitude(),currentFilters.longitude(),"future")
-            homePresenter.getPedagogicalResources()
-            homePresenter.getInitialPedagogicalResources()
-            homePresenter.getNotificationsCount()
-            userPresenter.getUser(meId.toString())
+            EntourageApplication.get().me()?.id?.let { meId ->
+                homePresenter.getMyGroups(pagegroup, nbOfItemForHozrizontalList, meId)
+                homePresenter.getAllEvents(
+                    pageEvent,
+                    nbOfItemForHozrizontalList,
+                    currentFilters.travel_distance(),
+                    currentFilters.latitude(),
+                    currentFilters.longitude(),
+                    "future"
+                )
+                homePresenter.getPedagogicalResources()
+                homePresenter.getInitialPedagogicalResources()
+                homePresenter.getNotificationsCount()
+                userPresenter.getUser(meId.toString())
+            }
         }
     }
 
@@ -404,16 +404,19 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
         totalchecksum++
         if(totalchecksum == 5){
             binding.homeNestedScrollView.visibility = View.VISIBLE
+            binding.homeHeader.visibility = View.VISIBLE
             binding.progressBar.visibility = View.GONE
         }
     }
 
-    fun resetFilter(){
+    private fun resetFilter(){
         currentFilters = EventActionLocationFilters()
         currentSectionsFilters = ActionSectionFilters()
     }
 
-    fun disapearAllAtBeginning(){
+    private fun disapearAllAtBeginning(){
+        binding.homeNestedScrollView.visibility = View.GONE
+        binding.homeHeader.visibility = View.GONE
         binding.btnMoreGroup.visibility = View.GONE
         binding.rvHomeGroup.visibility = View.GONE
         binding.homeSubtitleGroup.visibility = View.GONE
@@ -470,7 +473,7 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
 
     }
 
-    fun setSeeAllButtons(){
+    private fun setSeeAllButtons(){
         val mainActivity = (requireActivity() as? MainActivity)
         binding.btnMoreGroup.setOnClickListener {
             AnalyticsEvents.logEvent(AnalyticsEvents.Action_Home_Group_All)
@@ -493,7 +496,7 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
         }
     }
 
-    fun setNotifButton(){
+    private fun setNotifButton(){
         binding.uiLayoutNotif.setOnClickListener {
             AnalyticsEvents.logEvent(AnalyticsEvents.Action__Home__Notif)
             val intent = Intent(requireContext(), InAppNotificationsActivity::class.java)
@@ -502,7 +505,7 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
         }
     }
 
-    fun setObservations() {
+    private fun setObservations() {
         homePresenter.summary.observe(viewLifecycleOwner, ::updateContributionsView)
         homePresenter.getAllEvents.observe(viewLifecycleOwner, ::handleEvent)
         homePresenter.getAllMyGroups.observe(viewLifecycleOwner, ::handleGroup)
@@ -542,7 +545,7 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
         doTotalchecksumToDisplayHomeFirstTime()
 
         if(allEvent.size > 0 ){
-            var _offline_events:MutableList<Events> = mutableListOf()
+            val _offline_events:MutableList<Events> = mutableListOf()
             for(event in allEvent){
                 if(event.online == false){
                     _offline_events.add(event)
@@ -641,7 +644,7 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
             binding.homeSubtitlePedago.visibility = View.GONE
             binding.homeTitlePedago.visibility = View.GONE
         }
-        var pedagos:MutableList<Pedago> = mutableListOf()
+        val pedagos:MutableList<Pedago> = mutableListOf()
         for(pedago in allPedago){
             if (pedagos.size > 1){
                 break
@@ -656,8 +659,8 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
         for(pedago in allPedago) {
 
             pedago.id?.let { id ->
-                val createEventId: Int = BuildConfig.PEDAGO_CREATE_EVENT_ID.toInt()
-                val createGroupId: Int = BuildConfig.PEDAGO_CREATE_GROUP_ID.toInt()
+                val createEventId: Int = BuildConfig.PEDAGO_CREATE_EVENT_ID
+                val createGroupId: Int = BuildConfig.PEDAGO_CREATE_GROUP_ID
                 if(id == createEventId) {
                     this.pedagoItemForCreateEvent = pedago
                 }
@@ -699,14 +702,14 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
         }
     }
 
-    fun handleHelps(summary: Summary){
+    private fun handleHelps(summary: Summary){
         if(isAdded){
             doTotalchecksumToDisplayHomeFirstTime()
             val formattedString = requireContext().getString(R.string.home_v2_help_title_three, summary.moderator?.displayName)
-            val help1 = Help(requireContext().getString(R.string.home_v2_help_title_one) , R.drawable.first_help_item_illu)
-            val help2 = Help(requireContext().getString(R.string.home_v2_help_title_two) , R.drawable.ic_home_v2_create_group)
+            //val help1 = Help(requireContext().getString(R.string.home_v2_help_title_one) , R.drawable.first_help_item_illu)
+            //val help2 = Help(requireContext().getString(R.string.home_v2_help_title_two) , R.drawable.ic_home_v2_create_group)
             val help3 = Help(formattedString , R.drawable.first_help_item_illu)
-            var helps:MutableList<Help> = mutableListOf()
+            val helps:MutableList<Help> = mutableListOf()
             //helps.add(help1)
             //helps.add(help2)
             helps.add(help3)
@@ -869,71 +872,80 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
 
 
     private fun onActionUnclosed(summary: Summary){
-        if(summary.unclosedAction != null){
-            if(summary.unclosedAction!!.actionType == "solicitation"){
+        summary.unclosedAction?.let { unclosedAction ->
+            if(unclosedAction.actionType == "solicitation"){
                 AnalyticsEvents.logEvent(AnalyticsEvents.View__StateDemandPop__Day10)
-                val contentText = summary.unclosedAction!!.title
-                CustomAlertDialog.showForLastActionOneDemand(
-                    requireContext(),
-                    getString(R.string.custom_dialog_action_title_one_demand),
-                    contentText!!,
-                    getString(R.string.custom_dialog_action_content_one_demande),
-                    getString(R.string.yes),
-                    onNo = {
-                        AnalyticsEvents.logEvent(AnalyticsEvents.Clic__StateDemandPop__No__Day10)
-                        AnalyticsEvents.logEvent(AnalyticsEvents.View__StateDemandPop__No__Day10)
-                        CustomAlertDialog.showForLastActionTwo(requireContext(),
-                            getString(R.string.custom_dialog_action_title_two),
-                            getString(R.string.custom_dialog_action_content_two_demande),
-                            getString(R.string.custom_dialog_action_two_button_contrib),
-                            onYes = {
-                                (activity as MainActivity).goContrib()
-                                AnalyticsEvents.logEvent(AnalyticsEvents.Clic__SeeDemand__Day10)
-                            })
-                    },
-                    onYes = {
-                        AnalyticsEvents.logEvent(AnalyticsEvents.Clic__StateDemandPop__Yes__Day10)
-                        AnalyticsEvents.logEvent(AnalyticsEvents.View__DeleteDemandPop__Day10)
-                        actionsPresenter.cancelAction(summary.unclosedAction!!.id!!,true,true, "")
-                        CustomAlertDialog.showForLastActionThree(requireContext(),
-                            getString(R.string.custom_dialog_action_title_three),
-                            getString(R.string.custom_dialog_action_content_three_demande))
-
-                    }
-                )
+                unclosedAction.title?.let { contentText ->
+                    CustomAlertDialog.showForLastActionOneDemand(
+                        requireContext(),
+                        getString(R.string.custom_dialog_action_title_one_demand),
+                        contentText,
+                        getString(R.string.custom_dialog_action_content_one_demande),
+                        getString(R.string.yes),
+                        onNo = {
+                            AnalyticsEvents.logEvent(AnalyticsEvents.Clic__StateDemandPop__No__Day10)
+                            AnalyticsEvents.logEvent(AnalyticsEvents.View__StateDemandPop__No__Day10)
+                            CustomAlertDialog.showForLastActionTwo(requireContext(),
+                                getString(R.string.custom_dialog_action_title_two),
+                                getString(R.string.custom_dialog_action_content_two_demande),
+                                getString(R.string.custom_dialog_action_two_button_contrib),
+                                onYes = {
+                                    (activity as MainActivity).goContrib()
+                                    AnalyticsEvents.logEvent(AnalyticsEvents.Clic__SeeDemand__Day10)
+                                })
+                        },
+                        onYes = {
+                            AnalyticsEvents.logEvent(AnalyticsEvents.Clic__StateDemandPop__Yes__Day10)
+                            AnalyticsEvents.logEvent(AnalyticsEvents.View__DeleteDemandPop__Day10)
+                            unclosedAction.id?.let { id ->
+                                actionsPresenter.cancelAction(id, true, true, "")
+                                CustomAlertDialog.showForLastActionThree(
+                                    requireContext(),
+                                    getString(R.string.custom_dialog_action_title_three),
+                                    getString(R.string.custom_dialog_action_content_three_demande)
+                                )
+                            }
+                        }
+                    )
+                }
             }
-            if(summary.unclosedAction!!.actionType == "contribution"){
+            if(unclosedAction.actionType == "contribution"){
                 AnalyticsEvents.logEvent(AnalyticsEvents.View__StateContribPop__Day10)
-                val contentText = summary.unclosedAction!!.title
-                CustomAlertDialog.showForLastActionOneContrib(
-                    requireContext(),
-                    getString(R.string.custom_dialog_action_title_one_contrib),
-                    contentText!!,
-                    getString(R.string.custom_dialog_action_content_one_contrib),
-                    getString(R.string.yes),
-                    onNo = {
-                        AnalyticsEvents.logEvent(AnalyticsEvents.Clic__StateContribPop__No__Day10)
-                        AnalyticsEvents.logEvent(AnalyticsEvents.View__StateContribPop__No__Day10)
-                        CustomAlertDialog.showForLastActionTwo(requireContext(),
-                            getString(R.string.custom_dialog_action_title_two),
-                            getString(R.string.custom_dialog_action_content_two_contrib),
-                            getString(R.string.custom_dialog_action_two_button_demand),
-                            onYes = {
-                                (activity as MainActivity).goDemand()
-                                AnalyticsEvents.logEvent(AnalyticsEvents.Clic__SeeContrib__Day10)
+                unclosedAction.title?.let { contentText ->
+                    CustomAlertDialog.showForLastActionOneContrib(
+                        requireContext(),
+                        getString(R.string.custom_dialog_action_title_one_contrib),
+                        contentText,
+                        getString(R.string.custom_dialog_action_content_one_contrib),
+                        getString(R.string.yes),
+                        onNo = {
+                            AnalyticsEvents.logEvent(AnalyticsEvents.Clic__StateContribPop__No__Day10)
+                            AnalyticsEvents.logEvent(AnalyticsEvents.View__StateContribPop__No__Day10)
+                            CustomAlertDialog.showForLastActionTwo(requireContext(),
+                                getString(R.string.custom_dialog_action_title_two),
+                                getString(R.string.custom_dialog_action_content_two_contrib),
+                                getString(R.string.custom_dialog_action_two_button_demand),
+                                onYes = {
+                                    (activity as MainActivity).goDemand()
+                                    AnalyticsEvents.logEvent(AnalyticsEvents.Clic__SeeContrib__Day10)
 
-                            })
+                                })
 
-                    },
-                    onYes = {
-                        AnalyticsEvents.logEvent(AnalyticsEvents.Clic__StateContribPop__Yes__Day10)
-                        AnalyticsEvents.logEvent(AnalyticsEvents.View__DeleteContribPop__Day10)
-                        actionsPresenter.cancelAction(summary.unclosedAction!!.id!!,false,true, "")
-                        CustomAlertDialog.showForLastActionThree(requireContext(),
-                            getString(R.string.custom_dialog_action_title_three),
-                            getString(R.string.custom_dialog_action_content_three_contrib))
-                    }
-                )
+                        },
+                        onYes = {
+                            AnalyticsEvents.logEvent(AnalyticsEvents.Clic__StateContribPop__Yes__Day10)
+                            AnalyticsEvents.logEvent(AnalyticsEvents.View__DeleteContribPop__Day10)
+                            unclosedAction.id?.let {id
+                                actionsPresenter.cancelAction(id, false, true, "")
+                                CustomAlertDialog.showForLastActionThree(
+                                    requireContext(),
+                                    getString(R.string.custom_dialog_action_title_three),
+                                    getString(R.string.custom_dialog_action_content_three_contrib)
+                                )
+                            }
+                        }
+                    )
+                }
             }
         }
 
@@ -942,12 +954,12 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
         var isContribProfile = false
     }
 
-    override fun onHomeV2ChangeLocationUpdateClearFragment() {
+    override fun onHomeChangeLocationUpdateClearFragment() {
         binding.frameLayoutChangeLocation.visibility = View.GONE
         callToInitHome()
     }
 }
 
-interface OnHomeV2ChangeLocationUpdate{
-    fun onHomeV2ChangeLocationUpdateClearFragment()
+interface OnHomeChangeLocationUpdate{
+    fun onHomeChangeLocationUpdateClearFragment()
 }

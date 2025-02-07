@@ -10,6 +10,9 @@ import android.view.ViewGroup
 import android.widget.EditText
 import androidx.collection.ArrayMap
 import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.navArgs
@@ -18,24 +21,24 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import social.entourage.android.R
-import social.entourage.android.api.MetaDataRepository
-import social.entourage.android.databinding.NewFragmentEditGroupBinding
 import social.entourage.android.RefreshController
+import social.entourage.android.api.MetaDataRepository
 import social.entourage.android.api.model.Group
 import social.entourage.android.api.model.Image
 import social.entourage.android.api.model.Interest
 import social.entourage.android.api.model.Tags
+import social.entourage.android.databinding.NewFragmentEditGroupBinding
 import social.entourage.android.groups.GroupPresenter
 import social.entourage.android.groups.choosePhoto.ChooseGalleryPhotoModalFragment
 import social.entourage.android.groups.choosePhoto.ImagesType
 import social.entourage.android.groups.details.feed.FeedFragmentArgs
 import social.entourage.android.profile.editProfile.InterestsListAdapter
 import social.entourage.android.profile.editProfile.OnItemCheckListener
+import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.Utils
 import social.entourage.android.tools.utils.px
 import social.entourage.android.tools.utils.trimEnd
-import social.entourage.android.tools.log.AnalyticsEvents
 
 class EditGroupFragment : Fragment() {
 
@@ -79,6 +82,16 @@ class EditGroupFragment : Fragment() {
         AnalyticsEvents.logEvent(
             AnalyticsEvents.VIEW_GROUP_OPTION_EDITION
         )
+
+        ViewCompat.setOnApplyWindowInsetsListener(binding.header.layout) { view, windowInsets ->
+            // Get the insets for the statusBars() type:
+            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.statusBars())
+            view.updatePadding(
+                top = insets.top
+            )
+            // Return the original insets so they aren’t consumed
+            windowInsets
+        }
         return binding.root
     }
 

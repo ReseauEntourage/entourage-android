@@ -20,7 +20,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:animateLayoutChanges="true"
-                android:fitsSystemWindows="true"
                 app:collapsedTitleTextAppearance="@style/h1_collapsed"
                 app:expandedTitleTextAppearance="@style/h1"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed"
@@ -33,7 +32,6 @@
                     android:layout_gravity="end"
                     android:layout_marginTop="15dp"
                     android:layout_marginEnd="32dp"
-                    android:fitsSystemWindows="true"
                     android:src="@drawable/new_top_icn_discussion" />
 
                 <Button

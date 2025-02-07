@@ -13,6 +13,9 @@ import android.widget.SeekBar
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updatePadding
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationResult
@@ -101,6 +104,16 @@ class ActionLocationFilterActivity : AppCompatActivity() {
         binding.header.iconBack.setOnClickListener {
             setResult(Activity.RESULT_CANCELED)
             finish()
+        }
+
+        ViewCompat.setOnApplyWindowInsetsListener(binding.header.layout) { view, windowInsets ->
+            // Get the insets for the statusBars() type:
+            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.statusBars())
+            view.updatePadding(
+                top = insets.top
+            )
+            // Return the original insets so they aren’t consumed
+            windowInsets
         }
     }
 

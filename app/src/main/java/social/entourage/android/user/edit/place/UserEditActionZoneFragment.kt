@@ -3,9 +3,11 @@ package social.entourage.android.user.edit.place
 import android.content.Intent
 import android.location.Geocoder
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updatePadding
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import social.entourage.android.EntourageApplication
@@ -14,7 +16,7 @@ import social.entourage.android.R
 import social.entourage.android.api.OnboardingAPI
 import social.entourage.android.api.model.User
 import social.entourage.android.groups.create.CommunicationHandlerViewModel
-import social.entourage.android.homev2.OnHomeV2ChangeLocationUpdate
+import social.entourage.android.home.OnHomeChangeLocationUpdate
 import social.entourage.android.tools.log.AnalyticsEvents
 import java.io.IOException
 
@@ -24,7 +26,7 @@ class UserEditActionZoneFragment : UserActionPlaceFragment() {
     private val viewModel: CommunicationHandlerViewModel by activityViewModels()
 
     private var setGroupLocation = false
-    private var listener: OnHomeV2ChangeLocationUpdate? = null
+    private var listener: OnHomeChangeLocationUpdate? = null
 
     //**********//**********//**********
     // Lifecycle
@@ -65,7 +67,16 @@ class UserEditActionZoneFragment : UserActionPlaceFragment() {
                 intent.putExtra("goDemand", true)
                 requireContext().startActivity(intent)
             }
+        }
 
+        ViewCompat.setOnApplyWindowInsetsListener(binding.editPlaceTitleLayout) { view, windowInsets ->
+            // Get the insets for the statusBars() type:
+            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.statusBars())
+            view.updatePadding(
+                top = insets.top
+            )
+            // Return the original insets so they aren’t consumed
+            windowInsets
         }
     }
 
@@ -198,7 +209,7 @@ class UserEditActionZoneFragment : UserActionPlaceFragment() {
     companion object {
         val TAG: String? = UserEditActionZoneFragment::class.java.simpleName
 
-        fun newInstance(googlePlaceAddress: User.Address?, isSecondary: Boolean, listener: OnHomeV2ChangeLocationUpdate) =
+        fun newInstance(googlePlaceAddress: User.Address?, isSecondary: Boolean, listener: OnHomeChangeLocationUpdate) =
             UserEditActionZoneFragment().apply {
                 arguments = Bundle().apply {
                     putSerializable(ARG_PLACE, googlePlaceAddress)

@@ -8,14 +8,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/root_layout"
+        android:background="@drawable/new_profile_header_yellow"
         >
 
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/new_profile_header_yellow"
-            android:scaleType="center"/>
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -35,7 +30,10 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                android:layout_margin="16dp"/>
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="21dp"
+                android:layout_marginStart="32dp"/>
+
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/ui_layout_filter"
                 android:layout_width="36dp"
@@ -139,6 +137,7 @@
                     android:text="@string/location" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
+
         <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"

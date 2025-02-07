@@ -3,7 +3,10 @@ package social.entourage.android.profile.activities_settings
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
+import androidx.core.view.updatePadding
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import social.entourage.android.R
@@ -27,6 +30,16 @@ class UnblockUsersActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = NewFragmentUnblockUsersBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        ViewCompat.setOnApplyWindowInsetsListener(binding.header.layout) { view, windowInsets ->
+            // Get the insets for the statusBars() type:
+            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.statusBars())
+            view.updatePadding(
+                top = insets.top
+            )
+            // Return the original insets so they aren’t consumed
+            windowInsets
+        }
         binding.header.view.isVisible = false
         profilFullViewModel = ViewModelProvider(this).get(ProfilFullViewModel::class.java)
         initializeRecyclerView()

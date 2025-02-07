@@ -6,13 +6,11 @@
 
     <fragment
         android:id="@+id/groups_fragment"
-        android:name="social.entourage.android.groups.list.GroupeV2Fragment" />
+        android:name="social.entourage.android.groups.GroupsFragment" />
 
     <fragment
         android:id="@+id/create_group_fragment"
-        android:name="social.entourage.android.groups.create.CreateGroupFragment">
-
-    </fragment>
+        android:name="social.entourage.android.groups.create.CreateGroupFragment" />
 
     <fragment
         android:id="@+id/create_group_success_fragment"

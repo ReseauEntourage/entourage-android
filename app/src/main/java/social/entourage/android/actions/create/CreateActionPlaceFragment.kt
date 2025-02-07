@@ -1,6 +1,9 @@
 package social.entourage.android.actions.create
 
 import android.view.View
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updatePadding
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import social.entourage.android.R
@@ -25,6 +28,16 @@ class CreateActionPlaceFragment : UserActionPlaceFragment() {
         binding.editPlaceTitleLayout.binding.titleCloseButton.setOnClickListener {
             dismiss()
             findNavController().popBackStack()
+        }
+
+        ViewCompat.setOnApplyWindowInsetsListener(binding.editPlaceTitleLayout) { view, windowInsets ->
+            // Get the insets for the statusBars() type:
+            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.statusBars())
+            view.updatePadding(
+                top = insets.top
+            )
+            // Return the original insets so they aren’t consumed
+            windowInsets
         }
     }
 

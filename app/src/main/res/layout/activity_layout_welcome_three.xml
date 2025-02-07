@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/beige"
+    android:fitsSystemWindows="true"
     xmlns:tools="http://schemas.android.com/tools">
     <ImageView
         android:layout_width="match_parent"

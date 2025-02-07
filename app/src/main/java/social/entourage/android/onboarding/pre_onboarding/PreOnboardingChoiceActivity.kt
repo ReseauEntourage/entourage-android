@@ -3,16 +3,18 @@ package social.entourage.android.onboarding.pre_onboarding
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.widget.ImageView
-import android.widget.LinearLayout
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updatePadding
 import social.entourage.android.R
 import social.entourage.android.base.BaseActivity
+import social.entourage.android.databinding.ActivityPreOnboardingChoiceBinding
 import social.entourage.android.onboarding.login.LoginActivity
 import social.entourage.android.onboarding.onboard.OnboardingStartActivity
 import social.entourage.android.tools.log.AnalyticsEvents
-import social.entourage.android.databinding.ActivityPreOnboardingChoiceBinding
 
 class PreOnboardingChoiceActivity : BaseActivity() {
 
@@ -47,8 +49,17 @@ class PreOnboardingChoiceActivity : BaseActivity() {
         }
 
         AnalyticsEvents.logEvent(AnalyticsEvents.PreOnboard_view_choice)
+        // Listen for WindowInsets
+        ViewCompat.setOnApplyWindowInsetsListener(binding.logos) { view, windowInsets ->
+            // Get the insets for the statusBars() type:
+            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.statusBars())
+            view.updatePadding(
+                top = insets.top
+            )
+            // Return the original insets so they aren’t consumed
+            windowInsets
+        }
     }
-
 
     private fun goLogin() {
         AnalyticsEvents.logEvent(AnalyticsEvents.PreOnboard_action_signin)
@@ -58,7 +69,7 @@ class PreOnboardingChoiceActivity : BaseActivity() {
     }
 
     private fun setImage() {
-        binding.uiLogo2.setImageDrawable(getDrawable(R.drawable.logo_entourage_rvb_horizontal))
+        binding.uiLogo2.setImageDrawable(AppCompatResources.getDrawable(this, R.drawable.logo_entourage_rvb_horizontal))
 
         val width = 500  // Remplace par la largeur souhaitée en pixels
         val height = 250 // Remplace par la hauteur souhaitée en pixels
@@ -81,10 +92,5 @@ class PreOnboardingChoiceActivity : BaseActivity() {
             // Réinitialise la transformation si ce n'est pas en RTL
             binding.imageMosaic.scaleX = 1f
         }
-    }
-
-
-    override fun onResume() {
-        super.onResume()
     }
 }
