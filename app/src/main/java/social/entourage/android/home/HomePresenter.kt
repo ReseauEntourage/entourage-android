@@ -133,7 +133,7 @@ class HomePresenter: ViewModel() {
 
     fun getPedagogicalResources() {
         EntourageApplication.get().apiModule.homeRequest
-            .getPedagogicalResources(true)
+            .getPedagogicalResources(false)
             .enqueue(object : Callback<PedagogicResponse> {
                 override fun onResponse(
                     call: Call<PedagogicResponse>,
