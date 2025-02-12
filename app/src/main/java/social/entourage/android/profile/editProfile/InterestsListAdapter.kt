@@ -47,7 +47,6 @@ class InterestsListAdapter(
             bindingView.title.text = EventUtils.showTagTranslated(context ,interest.id!!)
             bindingView.checkBox.isChecked = interest.isSelected
             bindingView.icon.setImageResource(interest.icon)
-
             bindingView.layout.setOnClickListener {
                 if (interest.isSelected) {
                     onItemClick.onItemUncheck(interest)
@@ -144,7 +143,8 @@ class InterestsListAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val interest = interestsList[position]
         when (interest.id) {
-            InterestsTypes.TYPE_OTHER.label -> holder.bindEditInterest(interest)
+            //InterestsTypes.TYPE_OTHER.label -> holder.bindEditInterest(interest)
+            InterestsTypes.TYPE_OTHER.label -> holder.bindInterest(interest)
             else -> holder.bindInterest(interest)
         }
     }
@@ -155,7 +155,8 @@ class InterestsListAdapter(
 
     override fun getItemViewType(position: Int): Int {
         return when (interestsList[position].id) {
-            InterestsTypes.TYPE_OTHER.label -> InterestsTypes.TYPE_OTHER.code
+            //InterestsTypes.TYPE_OTHER.label -> InterestsTypes.TYPE_OTHER.code
+            InterestsTypes.TYPE_OTHER.label -> InterestsTypes.TYPE_INTEREST.code
             else -> InterestsTypes.TYPE_INTEREST.code
         }
     }
