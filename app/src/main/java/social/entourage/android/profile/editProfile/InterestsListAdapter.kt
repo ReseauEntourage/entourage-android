@@ -47,6 +47,7 @@ class InterestsListAdapter(
             bindingView.title.text = EventUtils.showTagTranslated(context ,interest.id!!)
             bindingView.checkBox.isChecked = interest.isSelected
             bindingView.icon.setImageResource(interest.icon)
+
             bindingView.layout.setOnClickListener {
                 if (interest.isSelected) {
                     onItemClick.onItemUncheck(interest)
