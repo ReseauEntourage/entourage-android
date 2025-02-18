@@ -20,6 +20,7 @@
             tools:src="@drawable/new_group_illu" />
 
         <LinearLayout
+            android:id="@+id/header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="24dp"
@@ -87,7 +88,6 @@
                 android:layout_height="154dp"
                 android:animateLayoutChanges="true"
                 android:elevation="0dp"
-                android:fitsSystemWindows="true"
                 app:collapsedTitleTextAppearance="@style/h1_collapsed"
                 app:expandedTitleTextAppearance="@style/h1"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed">
@@ -527,12 +527,14 @@ purus dui, aliquet cursus tellus a, dictum hen." />
             android:layout_margin="16dp"
             app:sdMainFabClosedSrc="@drawable/new_fab_plus"
             app:sdMainFabOpenedSrc="@drawable/new_fab_plus" />
+
         <View
             android:id="@+id/overlay_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="#CCFFFFFF"
             android:visibility="gone" />
+
         <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
             android:id="@+id/participate"
             style="@style/h2_white"
