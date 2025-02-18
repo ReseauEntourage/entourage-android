@@ -153,7 +153,7 @@
             android:name=".groups.details.feed.GroupCommentActivity"
             android:exported="false" />
         <activity
-            android:name=".events.details.feed.FeedActivity"
+            android:name=".events.details.feed.EventFeedActivity"
             android:exported="false" />
         <activity
             android:name=".tools.image_viewer.ImageDialogActivity"
@@ -181,7 +181,7 @@
             android:name=".groups.details.rules.GroupRulesActivity"
             android:exported="false" />
         <activity
-            android:name=".groups.details.feed.FeedActivity"
+            android:name=".groups.details.feed.GroupFeedActivity"
             android:exported="false" />
         <activity
             android:name=".groups.edit.EditGroupActivity"
