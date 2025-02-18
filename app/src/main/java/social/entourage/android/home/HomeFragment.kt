@@ -789,9 +789,7 @@ class HomeFragment: Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocatio
 
     private fun setNestedScrollViewAnimation() {
         binding.homeNestedScrollView.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { _, _, scrollY, _, oldScrollY ->
-            val layoutParamsProfile = binding.avatar.layoutParams as ViewGroup.MarginLayoutParams
-            val layoutParamsNotif = binding.uiLayoutNotif.layoutParams as ViewGroup.MarginLayoutParams
-            val layoutParamsLogo = binding.ivLogoHome.layoutParams as ViewGroup.MarginLayoutParams
+            val layoutParamsHomeHeader = binding.homeHeader.layoutParams as ViewGroup.MarginLayoutParams
 
             if (isAnimating) {
                 return@OnScrollChangeListener // Ne faites rien si une animation est déjà en cours
@@ -800,34 +798,26 @@ class HomeFragment: Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocatio
             if (scrollY == 0) {
                 isAnimating = false
                 // Réinitialisez les valeurs ici si scrollY revient à 0
-                layoutParamsProfile.topMargin = DEFAULT_MARGIN
-                layoutParamsNotif.topMargin = DEFAULT_MARGIN
-                layoutParamsLogo.topMargin = DEFAULT_MARGIN
-                binding.avatar.layoutParams = layoutParamsProfile
-                binding.uiLayoutNotif.layoutParams = layoutParamsNotif
-                binding.ivLogoHome.layoutParams = layoutParamsLogo
+                layoutParamsHomeHeader.topMargin = DEFAULT_MARGIN
+                binding.homeHeader.layoutParams = layoutParamsHomeHeader
                 binding.homeTitle.visibility = View.VISIBLE
             } else if (scrollY > 50 && oldScrollY <= 50) {
                 isAnimating = true
-                startAnimation(layoutParamsProfile, layoutParamsNotif, layoutParamsLogo, View.GONE)
+                startAnimation(layoutParamsHomeHeader, View.GONE)
             } else if (scrollY <= 50 && oldScrollY > 50) {
                 isAnimating = true
-                startAnimation(layoutParamsProfile, layoutParamsNotif, layoutParamsLogo, View.VISIBLE)
+                startAnimation(layoutParamsHomeHeader, View.VISIBLE)
             }
         })
     }
 
-    private fun startAnimation(layoutParamsProfile: ViewGroup.MarginLayoutParams, layoutParamsNotif: ViewGroup.MarginLayoutParams, layoutParamsLogo: ViewGroup.MarginLayoutParams, titleVisibility: Int) {
-        val animator = ValueAnimator.ofInt(layoutParamsProfile.topMargin, if (titleVisibility == View.GONE) NEW_MARGIN else DEFAULT_MARGIN).apply {
+    private fun startAnimation(layoutParamsHomeHeader: ViewGroup.MarginLayoutParams, titleVisibility: Int) {
+        val animator = ValueAnimator.ofInt(layoutParamsHomeHeader.topMargin, if (titleVisibility == View.GONE) NEW_MARGIN else DEFAULT_MARGIN).apply {
             duration = 100
             addUpdateListener { animation ->
                 val animatedValue = animation.animatedValue as Int
-                layoutParamsProfile.topMargin = animatedValue
-                layoutParamsNotif.topMargin = animatedValue
-                layoutParamsLogo.topMargin = animatedValue
-                binding.avatar.layoutParams = layoutParamsProfile
-                binding.uiLayoutNotif.layoutParams = layoutParamsNotif
-                binding.ivLogoHome.layoutParams = layoutParamsLogo
+                layoutParamsHomeHeader.topMargin = animatedValue
+                binding.homeHeader.layoutParams = layoutParamsHomeHeader
                 binding.homeTitle.visibility = titleVisibility
             }
             doOnEnd {
