@@ -1,5 +1,6 @@
 package social.entourage.android.events.details.feed
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
@@ -89,6 +90,7 @@ import kotlin.math.abs
 class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
     SurveyInteractionListener {
 
+    private var initialSwipeTopMargin: Int = 0
     private var _binding: FragmentFeedEventBinding? = null
     val binding: FragmentFeedEventBinding get() = _binding!!
 
@@ -104,13 +106,10 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
     private var page:Int = 1
     private val ITEM_PER_PAGE = 10
 
-
     private var newPostsList: MutableList<Post> = mutableListOf()
     private var oldPostsList: MutableList<Post> = mutableListOf()
     private var allPostsList: MutableList<Post> = mutableListOf()
     private var memberList: MutableList<EntourageUser> = mutableListOf()
-
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -228,8 +227,7 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
 
     private fun handleImageViewAnimation() {
         binding.appBar.addOnOffsetChangedListener { appBarLayout, verticalOffset ->
-            val res: Float =
-                abs(verticalOffset).toFloat() / appBarLayout.totalScrollRange
+            val res: Float =abs(verticalOffset).toFloat() / appBarLayout.totalScrollRange
             binding.toolbarLayout.alpha = 1f - res
             binding.eventImageToolbar.alpha = res
             binding.eventNameToolbar.alpha = res
@@ -237,6 +235,14 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
                 res == 1F && event?.member == false && event?.status == Status.OPEN
 
             binding.eventImage.alpha = 1f - res
+            //change topmargin when collapsing and no image is shown
+            val lp = binding.swipeRefresh.layoutParams as ViewGroup.MarginLayoutParams
+            if (res != 0F) {
+                lp.topMargin = 0
+            } else {
+                lp.topMargin = initialSwipeTopMargin
+            }
+            binding.swipeRefresh.layoutParams = lp
         }
     }
 
@@ -289,6 +295,7 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
         }
     }
 
+    @SuppressLint("StringFormatInvalid")
     private fun openGoogleMaps() {
         if (event?.online != true) {
             binding.location.root.setOnClickListener {
@@ -301,6 +308,7 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
         }
     }
 
+    @SuppressLint("StringFormatMatches")
     private fun updateView() {
 
         MetaDataRepository.metaData.observe(requireActivity(), ::handleMetaData)
@@ -446,8 +454,10 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
             allPostsList.clear()
             loadPosts()
         }
+        initialSwipeTopMargin = (binding.swipeRefresh.layoutParams as ViewGroup.MarginLayoutParams).topMargin
     }
 
+    @SuppressLint("StringFormatInvalid")
     private fun openMap() {
         val geoUri =
             String.format(getString(R.string.geoUri), event?.metadata?.displayAddress)
