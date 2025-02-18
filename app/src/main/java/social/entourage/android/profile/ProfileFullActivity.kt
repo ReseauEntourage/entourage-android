@@ -7,22 +7,20 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
-import android.os.VibrationEffect
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updatePadding
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
-import com.google.gson.Gson
 import social.entourage.android.BuildConfig
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
-import social.entourage.android.api.model.ActionUtils
 import social.entourage.android.api.model.Conversation
 import social.entourage.android.api.model.EventUtils
 import social.entourage.android.api.model.User
@@ -33,19 +31,15 @@ import social.entourage.android.databinding.ActivityLayoutProfileBinding
 import social.entourage.android.discussions.DetailConversationActivity
 import social.entourage.android.discussions.DiscussionsPresenter
 import social.entourage.android.enhanced_onboarding.EnhancedOnboarding
-import social.entourage.android.enhanced_onboarding.OnboardingViewModel
 import social.entourage.android.home.HomePresenter
 import social.entourage.android.language.LanguageManager
 import social.entourage.android.profile.editProfile.EditPhotoActivity
-import social.entourage.android.profile.editProfile.EditProfileFragment
 import social.entourage.android.profile.settings.ProfilFullViewModel
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.VibrationUtil
 import social.entourage.android.user.UserPresenter
-import timber.log.Timber
 import java.text.SimpleDateFormat
 import kotlin.random.Random
-
 
 
 class ProfileFullActivity : BaseActivity()  {
@@ -82,6 +76,16 @@ class ProfileFullActivity : BaseActivity()  {
         setBackButton()
         setConfettiView()
         setContentView(binding.root)
+        // Listen for WindowInsets
+        ViewCompat.setOnApplyWindowInsetsListener(binding.profileContent) { view, windowInsets ->
+            // Get the insets for the statusBars() type:
+            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.statusBars())
+            view.updatePadding(
+                top = insets.top
+            )
+            // Return the original insets so they aren’t consumed
+            windowInsets
+        }
     }
 
     override fun onResume() {
