@@ -13,11 +13,10 @@ import com.bumptech.glide.load.resource.bitmap.GranularRoundedCorners
 import social.entourage.android.R
 import social.entourage.android.databinding.NewEventItemLayoutBinding
 import social.entourage.android.api.model.Events
-import social.entourage.android.events.details.feed.FeedActivity
+import social.entourage.android.events.details.feed.EventFeedActivity
 import social.entourage.android.language.LanguageManager
 import social.entourage.android.tools.utils.Const
 import java.text.SimpleDateFormat
-import java.util.*
 
 class GroupEventsAdapter(
     var eventsList: List<Events>, var context: Context,
@@ -59,7 +58,7 @@ class GroupEventsAdapter(
             (view.context as? Activity)?.startActivityForResult(
                 Intent(
                     view.context,
-                    FeedActivity::class.java
+                    EventFeedActivity::class.java
                 ).putExtra(
                     Const.EVENT_ID,
                     eventsList[position].id

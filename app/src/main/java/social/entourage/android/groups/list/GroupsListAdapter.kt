@@ -14,7 +14,7 @@ import com.bumptech.glide.request.RequestOptions
 import social.entourage.android.R
 import social.entourage.android.api.model.Group
 import social.entourage.android.databinding.NewGroupItemBinding
-import social.entourage.android.groups.details.feed.FeedActivity
+import social.entourage.android.groups.details.feed.GroupFeedActivity
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.px
 import social.entourage.android.tools.log.AnalyticsEvents
@@ -58,7 +58,7 @@ class GroupsListAdapter(
                 binding.layout.setOnClickListener {view ->
                     handleAnalytics()
                     (view.context as? Activity)?.startActivityForResult(
-                        Intent(view.context, FeedActivity::class.java).putExtra(
+                        Intent(view.context, GroupFeedActivity::class.java).putExtra(
                             Const.GROUP_ID,
                             groupsList[position].id
                         ), 0

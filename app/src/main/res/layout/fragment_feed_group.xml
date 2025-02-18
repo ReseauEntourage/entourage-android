@@ -7,62 +7,27 @@
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:id="@+id/coordinator_layout"
         android:background="@color/beige">
 
-        <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/appBar"
+        <ImageView
+            android:id="@+id/group_image"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/transparent"
-            app:elevation="0dp">
-
-            <com.google.android.material.appbar.CollapsingToolbarLayout
-                android:id="@+id/toolbar_layout"
-                android:layout_width="match_parent"
-                android:layout_height="120dp"
-                android:animateLayoutChanges="true"
-                android:fitsSystemWindows="true"
-                app:collapsedTitleTextAppearance="@style/h1_collapsed"
-                app:expandedTitleTextAppearance="@style/h1"
-                app:layout_scrollFlags="scroll|exitUntilCollapsed">
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <ImageView
-                        android:id="@+id/group_image"
-                        android:layout_width="match_parent"
-                        android:layout_height="120dp"
-                        android:adjustViewBounds="true"
-                        android:cropToPadding="true"
-                        android:src="@drawable/new_group_illu"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <androidx.appcompat.widget.Toolbar
-                    android:layout_width="0dp"
-                    android:layout_height="70dp"
-                    android:background="@color/transparent"
-                    app:layout_collapseMode="pin"
-                    app:layout_scrollFlags="scroll|enterAlways"
-                    app:liftOnScroll="false">
-
-                </androidx.appcompat.widget.Toolbar>
-
-            </com.google.android.material.appbar.CollapsingToolbarLayout>
-
-        </com.google.android.material.appbar.AppBarLayout>
+            android:layout_height="120dp"
+            android:adjustViewBounds="true"
+            android:cropToPadding="true"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:src="@drawable/new_group_illu" />
 
         <LinearLayout
-            android:id="@+id/layout_title"
+            android:id="@+id/toolbar_header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="24dp"
             android:layout_marginTop="4dp"
+            android:elevation="1dp"
             android:gravity="center_vertical">
 
             <ImageView
@@ -77,8 +42,8 @@
 
             <ImageView
                 android:id="@+id/group_image_toolbar"
-                android:layout_width="45dp"
-                android:layout_height="45dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="15dp"
                 android:src="@drawable/new_group_illu_toolbar" />
@@ -86,9 +51,10 @@
             <TextView
                 android:id="@+id/group_name_toolbar"
                 style="@style/h2"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:layout_marginEnd="5dp"
                 android:ellipsize="end"
                 android:maxLines="2"
                 tools:text="Dansons ensemble" />
@@ -98,11 +64,42 @@
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:padding="10dp"
+                android:elevation="1dp"
                 android:src="@drawable/new_settings"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
         </LinearLayout>
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/transparent"
+            app:elevation="0dp">
+
+            <com.google.android.material.appbar.CollapsingToolbarLayout
+                android:id="@+id/toolbar_layout"
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:animateLayoutChanges="true"
+                app:collapsedTitleTextAppearance="@style/h1_collapsed"
+                app:expandedTitleTextAppearance="@style/h1"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed">
+
+                <androidx.appcompat.widget.Toolbar
+                    android:layout_width="0dp"
+                    android:layout_height="100dp"
+                    android:background="@color/transparent"
+                    app:layout_collapseMode="pin"
+                    app:layout_scrollFlags="scroll|enterAlways"
+                    app:liftOnScroll="false">
+
+                </androidx.appcompat.widget.Toolbar>
+
+            </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+        </com.google.android.material.appbar.AppBarLayout>
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/swipe_refresh"
@@ -491,12 +488,14 @@ purus dui, aliquet cursus tellus a, dictum hen." />
                 </LinearLayout>
             </androidx.core.widget.NestedScrollView>
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
         <View
             android:id="@+id/overlay_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="#CCFFFFFF"
             android:visibility="gone" />
+
         <com.leinardi.android.speeddial.SpeedDialView
             android:id="@+id/create_post"
             android:layout_width="wrap_content"

@@ -7,20 +7,20 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.provider.CalendarContract
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.getColor
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.os.bundleOf
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
+import androidx.core.view.updatePadding
 import androidx.core.widget.NestedScrollView
-import androidx.core.widget.TextViewCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.lifecycleScope
@@ -34,6 +34,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
+import com.google.android.play.core.review.ReviewManagerFactory
 import com.leinardi.android.speeddial.SpeedDialActionItem
 import com.leinardi.android.speeddial.SpeedDialView
 import kotlinx.coroutines.CoroutineScope
@@ -44,7 +45,6 @@ import social.entourage.android.BuildConfig
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.RefreshController
-import social.entourage.android.actions.create.CreateActionActivity
 import social.entourage.android.api.MetaDataRepository
 import social.entourage.android.api.model.EntourageUser
 import social.entourage.android.api.model.Events
@@ -58,12 +58,10 @@ import social.entourage.android.comment.ReactionInterface
 import social.entourage.android.comment.SurveyInteractionListener
 import social.entourage.android.databinding.FragmentFeedEventBinding
 import social.entourage.android.events.EventsPresenter
-import social.entourage.android.events.create.CreateEventActivity
 import social.entourage.android.events.details.SettingsModalFragment
 import social.entourage.android.groups.details.feed.CallbackReportFragment
 import social.entourage.android.groups.details.feed.FeedFragment
 import social.entourage.android.groups.details.feed.GroupMembersPhotosAdapter
-import social.entourage.android.groups.details.feed.rotationDegree
 import social.entourage.android.groups.details.members.MembersType
 import social.entourage.android.language.LanguageManager
 import social.entourage.android.members.MembersActivity
@@ -84,15 +82,11 @@ import social.entourage.android.tools.utils.Utils.enableCopyOnLongClick
 import social.entourage.android.tools.utils.px
 import social.entourage.android.tools.utils.underline
 import java.text.SimpleDateFormat
-import kotlin.math.abs
-import com.google.android.play.core.review.ReviewManagerFactory
-import com.google.android.play.core.review.ReviewManager
-import com.google.android.play.core.review.testing.FakeReviewManager
-import timber.log.Timber
 import java.util.Calendar
+import kotlin.math.abs
 
 
-class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
+class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
     SurveyInteractionListener {
 
     private var _binding: FragmentFeedEventBinding? = null
@@ -104,7 +98,7 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
     private var eventId = Const.DEFAULT_VALUE
     private var event: Events? = null
     private var myId: Int? = null
-    private val args: FeedFragmentArgs by navArgs()
+    private val args: EventFeedFragmentArgs by navArgs()
     private var shouldShowPopUp = true
     private var isLoading = false
     private var page:Int = 1
@@ -123,7 +117,16 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentFeedEventBinding.inflate(inflater, container, false)
-
+        // Listen for WindowInsets
+        ViewCompat.setOnApplyWindowInsetsListener(binding.header) { view, windowInsets ->
+            // Get the insets for the statusBars() type:
+            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.statusBars())
+            view.updatePadding(
+                top = insets.top
+            )
+            // Return the original insets so they aren’t consumed
+            windowInsets
+        }
         return binding.root
     }
 
@@ -153,11 +156,6 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
         setupNestedScrollViewScrollListener()
 
     }
-
-
-
-
-
 
     private fun handleResponseGetEvent(getEvent: Events?) {
         getEvent?.let {
@@ -619,7 +617,7 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
             event?.let { event ->
                 val eventUI = event.toEventUi(requireContext())
                 val action =
-                    FeedFragmentDirections.actionEventFeedToEventAbout(
+                    EventFeedFragmentDirections.actionEventFeedToEventAbout(
                         eventUI
                     )
                 findNavController().navigate(action)

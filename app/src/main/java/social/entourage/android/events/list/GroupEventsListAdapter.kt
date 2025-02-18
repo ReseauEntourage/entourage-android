@@ -18,16 +18,14 @@ import com.intrusoft.sectionedrecyclerview.SectionRecyclerViewAdapter
 import social.entourage.android.R
 import social.entourage.android.databinding.NewEventItemBinding
 import social.entourage.android.databinding.NewEventsListHeaderBinding
-import social.entourage.android.events.details.feed.FeedActivity
+import social.entourage.android.events.details.feed.EventFeedActivity
 import social.entourage.android.api.model.Events
 import social.entourage.android.api.model.Status
 import social.entourage.android.language.LanguageManager
 import social.entourage.android.tools.calculateIfEventPassed
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.px
-import timber.log.Timber
 import java.text.SimpleDateFormat
-import java.util.*
 
 class GroupEventsListAdapter(
     context: Context,
@@ -92,7 +90,7 @@ class GroupEventsListAdapter(
             (view.context as? Activity)?.startActivityForResult(
                 Intent(
                     view.context,
-                    FeedActivity::class.java
+                    EventFeedActivity::class.java
                 ).putExtra(
                     Const.EVENT_ID,
                     child.id

@@ -13,7 +13,7 @@ import com.bumptech.glide.load.resource.bitmap.GranularRoundedCorners
 import social.entourage.android.R
 import social.entourage.android.api.model.Group
 import social.entourage.android.databinding.HomeV2GroupItemLayoutBinding
-import social.entourage.android.groups.details.feed.FeedActivity
+import social.entourage.android.groups.details.feed.GroupFeedActivity
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.utils.Const
 
@@ -49,7 +49,7 @@ class HomeGroupAdapter: RecyclerView.Adapter<HomeGroupAdapter.GroupViewHolder>()
             group.unreadPostsCount = 0
             holder.binding.cardNewsGroup.visibility = View.INVISIBLE
             (view.context as? Activity)?.startActivityForResult(
-                Intent(view.context, FeedActivity::class.java).putExtra(
+                Intent(view.context, GroupFeedActivity::class.java).putExtra(
                     Const.GROUP_ID,
                     group.id
                 ), 0

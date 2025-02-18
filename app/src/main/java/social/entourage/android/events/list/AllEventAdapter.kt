@@ -19,7 +19,7 @@ import social.entourage.android.api.model.Events
 import social.entourage.android.api.model.Status
 import social.entourage.android.databinding.NewEventItemBinding
 import social.entourage.android.events.EventsFragment
-import social.entourage.android.events.details.feed.FeedActivity
+import social.entourage.android.events.details.feed.EventFeedActivity
 import social.entourage.android.language.LanguageManager
 import social.entourage.android.tools.calculateIfEventPassed
 import social.entourage.android.tools.utils.Const
@@ -70,7 +70,7 @@ class AllEventAdapter(var userId: Int?, var context: Context) :
                 (view.context as? Activity)?.startActivityForResult(
                     Intent(
                         view.context,
-                        FeedActivity::class.java
+                        EventFeedActivity::class.java
                     ).putExtra(
                         Const.EVENT_ID,
                         event.id

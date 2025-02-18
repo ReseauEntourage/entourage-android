@@ -1,19 +1,17 @@
 package social.entourage.android.welcome
 
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.text.style.BulletSpan
-import android.util.Log
 import social.entourage.android.MainActivity
 import social.entourage.android.R
 import social.entourage.android.api.model.Group
 import social.entourage.android.base.BaseActivity
 import social.entourage.android.databinding.ActivityLayoutWelcomeTwoBinding
 import social.entourage.android.groups.GroupPresenter
-import social.entourage.android.groups.details.feed.FeedActivity
+import social.entourage.android.groups.details.feed.GroupFeedActivity
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.utils.Const
 
@@ -60,7 +58,7 @@ class WelcomeTwoActivity: BaseActivity() {
         binding.buttonSayHello.setOnClickListener {
             AnalyticsEvents.logEvent(AnalyticsEvents.Action_WelcomeOfferHelp_Day2)
             if(isGroupExisting){
-                val intent = Intent(this, FeedActivity::class.java)
+                val intent = Intent(this, GroupFeedActivity::class.java)
                 intent.putExtra(Const.GROUP_ID,
                     this.group?.id,)
                 intent.putExtra("fromWelcomeActivity", true)

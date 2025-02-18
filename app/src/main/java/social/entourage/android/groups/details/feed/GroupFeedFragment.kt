@@ -9,19 +9,19 @@ import android.os.Bundle
 import android.text.Spannable
 import android.text.SpannableStringBuilder
 import android.text.style.ForegroundColorSpan
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.os.bundleOf
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
+import androidx.core.view.updatePadding
 import androidx.core.widget.NestedScrollView
-import androidx.core.widget.TextViewCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.lifecycleScope
@@ -32,9 +32,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-import com.google.android.flexbox.FlexDirection
-import com.google.android.flexbox.FlexboxLayoutManager
-import com.google.android.flexbox.JustifyContent
 import com.google.android.play.core.review.ReviewManagerFactory
 import com.leinardi.android.speeddial.SpeedDialActionItem
 import com.leinardi.android.speeddial.SpeedDialView
@@ -49,23 +46,20 @@ import social.entourage.android.api.MetaDataRepository
 import social.entourage.android.api.model.EntourageUser
 import social.entourage.android.api.model.Group
 import social.entourage.android.api.model.GroupUtils
-import social.entourage.android.api.model.Interest
 import social.entourage.android.api.model.Post
 import social.entourage.android.api.model.Survey
 import social.entourage.android.api.model.Tags
 import social.entourage.android.comment.PostAdapter
 import social.entourage.android.comment.ReactionInterface
 import social.entourage.android.comment.SurveyInteractionListener
-import social.entourage.android.databinding.FragmentFeedBinding
+import social.entourage.android.databinding.FragmentFeedGroupBinding
 import social.entourage.android.events.create.CreateEventActivity
-import social.entourage.android.events.details.feed.CreatePostEventActivity
 import social.entourage.android.groups.GroupModel
 import social.entourage.android.groups.GroupPresenter
 import social.entourage.android.groups.details.GroupDetailsFragment
 import social.entourage.android.groups.details.members.MembersType
 import social.entourage.android.homev2.HomeEventAdapter
 import social.entourage.android.members.MembersActivity
-import social.entourage.android.profile.myProfile.InterestsAdapter
 import social.entourage.android.report.DataLanguageStock
 import social.entourage.android.report.ReportModalFragment
 import social.entourage.android.report.ReportTypes
@@ -80,7 +74,6 @@ import social.entourage.android.tools.utils.CustomTypefaceSpan
 import social.entourage.android.tools.utils.Utils.enableCopyOnLongClick
 import social.entourage.android.tools.utils.VibrationUtil
 import social.entourage.android.tools.utils.px
-import timber.log.Timber
 import kotlin.math.abs
 import kotlin.math.max
 
@@ -88,8 +81,8 @@ const val rotationDegree = 135F
 
 class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface, SurveyInteractionListener {
 
-    private var _binding: FragmentFeedBinding? = null
-    val binding: FragmentFeedBinding get() = _binding!!
+    private var _binding: FragmentFeedGroupBinding? = null
+    val binding: FragmentFeedGroupBinding get() = _binding!!
 
     private val groupPresenter: GroupPresenter by lazy { GroupPresenter() }
     private var interestsList: ArrayList<String> = ArrayList()
@@ -122,8 +115,18 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface, Surv
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentFeedBinding.inflate(inflater, container, false)
+        _binding = FragmentFeedGroupBinding.inflate(inflater, container, false)
         AnalyticsEvents.logEvent(AnalyticsEvents.VIEW_GROUP_FEED_SHOW)
+        // Listen for WindowInsets
+        ViewCompat.setOnApplyWindowInsetsListener(binding.toolbarHeader) { view, windowInsets ->
+            // Get the insets for the statusBars() type:
+            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.statusBars())
+            view.updatePadding(
+                top = insets.top
+            )
+            // Return the original insets so they aren’t consumed
+            windowInsets
+        }
         return binding.root
     }
 
@@ -188,7 +191,7 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface, Surv
         if (fromWelcomeActivity == true) {
             createAPost()
             // Réinitialise l'intent
-            activity?.intent = Intent(activity, FeedActivity::class.java)
+            activity?.intent = Intent(activity, GroupFeedActivity::class.java)
         }
         binding.createPost.close()
         binding.overlayView.visibility = View.GONE

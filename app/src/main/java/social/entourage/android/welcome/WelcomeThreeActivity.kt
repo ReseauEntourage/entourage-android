@@ -73,7 +73,7 @@ class WelcomeThreeActivity: BaseActivity() {
 
         binding.eventExampleOne.layout.setOnClickListener {
             AnalyticsEvents.logEvent("Action_WelcomeOfferHelp_Day5ACard")
-            val intent = Intent(this, social.entourage.android.events.details.feed.FeedActivity::class.java)
+            val intent = Intent(this, social.entourage.android.events.details.feed.EventFeedActivity::class.java)
             intent.putExtra(
                 Const.EVENT_ID,
                 eventExampleOne?.id
@@ -85,7 +85,7 @@ class WelcomeThreeActivity: BaseActivity() {
         }
         binding.eventExampleTwo.layout.setOnClickListener {
             AnalyticsEvents.logEvent("Action_WelcomeOfferHelp_Day5ACard")
-            val intent = Intent(this, social.entourage.android.events.details.feed.FeedActivity::class.java)
+            val intent = Intent(this, social.entourage.android.events.details.feed.EventFeedActivity::class.java)
             intent.putExtra(
                 Const.EVENT_ID,
                 eventExampleTwo?.id
@@ -96,7 +96,7 @@ class WelcomeThreeActivity: BaseActivity() {
         }
         binding.eventExampleThree.layout.setOnClickListener {
             AnalyticsEvents.logEvent("Action_WelcomeOfferHelp_Day5ACard")
-            val intent = Intent(this, social.entourage.android.events.details.feed.FeedActivity::class.java)
+            val intent = Intent(this, social.entourage.android.events.details.feed.EventFeedActivity::class.java)
             intent.putExtra(
                 Const.EVENT_ID,
                 eventExampleThree?.id

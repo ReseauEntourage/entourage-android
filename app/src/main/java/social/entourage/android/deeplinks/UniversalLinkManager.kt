@@ -4,12 +4,9 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.core.os.bundleOf
-import androidx.navigation.NavController
-import social.entourage.android.EntourageApplication
 import social.entourage.android.MainActivity
 import social.entourage.android.R
 import social.entourage.android.actions.create.CreateActionActivity
@@ -20,14 +17,13 @@ import social.entourage.android.api.model.Events
 import social.entourage.android.api.model.Group
 import social.entourage.android.comment.CommentActivity
 import social.entourage.android.discussions.DetailConversationActivity
-import social.entourage.android.events.details.feed.FeedFragment
-import social.entourage.android.groups.details.feed.FeedActivity
+import social.entourage.android.events.details.feed.EventFeedFragment
+import social.entourage.android.groups.details.feed.GroupFeedActivity
 import social.entourage.android.guide.GDSMainActivity
 import social.entourage.android.home.pedago.PedagoDetailActivity
 import social.entourage.android.home.pedago.PedagoListActivity
 import social.entourage.android.profile.ProfileFullActivity
 import social.entourage.android.tools.utils.Const
-import timber.log.Timber
 
 class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback {
     /*private const val prodURL = "https://www.entourage.social"
@@ -115,7 +111,7 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
                 pathSegments.contains("outings") -> {
                     if (pathSegments.size > 3) {
                         val outingId = pathSegments[2]
-                        FeedFragment.shouldAddToAgenda = true
+                        EventFeedFragment.shouldAddToAgenda = true
                         presenter.getEvent(outingId)
                     }
                     else if (pathSegments.size > 2) {
@@ -233,7 +229,7 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
         (context as? Activity)?.startActivityForResult(
             Intent(
                 context,
-                social.entourage.android.events.details.feed.FeedActivity::class.java
+                social.entourage.android.events.details.feed.EventFeedActivity::class.java
             ).apply {
                 putExtra(Const.EVENT_ID, event.id)
                 addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
@@ -243,7 +239,7 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
 
     override fun onRetrievedGroup(group: Group) {
         (context as? Activity)?.startActivityForResult(
-            Intent(context, FeedActivity::class.java).putExtra(
+            Intent(context, GroupFeedActivity::class.java).putExtra(
                 Const.GROUP_ID,
                 group.id
             ), 0

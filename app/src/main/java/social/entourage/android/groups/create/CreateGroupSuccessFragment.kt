@@ -14,7 +14,7 @@ import social.entourage.android.R
 import social.entourage.android.RefreshController
 import social.entourage.android.databinding.NewFragmentCreateGroupSuccessBinding
 import social.entourage.android.groups.details.feed.CreatePostGroupActivity
-import social.entourage.android.groups.details.feed.FeedActivity
+import social.entourage.android.groups.details.feed.GroupFeedActivity
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.utils.Const
 
@@ -58,7 +58,7 @@ class CreateGroupSuccessFragment : Fragment() {
                 AnalyticsEvents.ACTION_NEW_GROUP_CONFIRMATION_SKIP
             )
             startActivity(
-                Intent(requireContext(), FeedActivity::class.java).putExtra(
+                Intent(requireContext(), GroupFeedActivity::class.java).putExtra(
                     Const.GROUP_ID,
                     args.groupID
                 )
