@@ -4,29 +4,26 @@ import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Build
 import android.os.Bundle
-import android.text.Html
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.TextPaint
 import android.text.style.MetricAffectingSpan
-import android.text.style.RelativeSizeSpan
 import android.text.style.TypefaceSpan
-import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.webkit.WebChromeClient
-import android.webkit.WebSettings
-import android.webkit.WebViewClient
-import social.entourage.android.base.BaseActivity
-import social.entourage.android.databinding.ActivityLayoutWelcomeOneBinding
-import social.entourage.android.home.pedago.PedagoContentDetailsFragment
 import android.webkit.WebView
+import android.webkit.WebViewClient
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updatePadding
 import social.entourage.android.MainActivity
 import social.entourage.android.R
+import social.entourage.android.base.BaseActivity
+import social.entourage.android.databinding.ActivityLayoutWelcomeOneBinding
 import social.entourage.android.home.pedago.PedagoListActivity
 import social.entourage.android.tools.log.AnalyticsEvents
 import java.lang.ref.WeakReference
@@ -52,6 +49,16 @@ class WelcomeOneActivity:BaseActivity(), OnVideoLoaCallback {
         AnalyticsEvents.logEvent("View_WelcomeOfferHelp_Day1")
 
         setContentView(binding.root)
+        // Listen for WindowInsets
+        ViewCompat.setOnApplyWindowInsetsListener(binding.layoutContent) { view, windowInsets ->
+            // Get the insets for the statusBars() type:
+            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.statusBars())
+            view.updatePadding(
+                top = insets.top
+            )
+            // Return the original insets so they aren’t consumed
+            windowInsets
+        }
     }
 
     fun setTitle(){
