@@ -8,6 +8,7 @@ import androidx.core.text.HtmlCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.coroutines.launch
+import social.entourage.android.BuildConfig
 import social.entourage.android.EntourageApplication
 import social.entourage.android.api.model.EntourageUser
 import social.entourage.android.api.model.Post
@@ -24,7 +25,6 @@ import java.util.UUID
 class GroupCommentActivity : CommentActivity() {
 
     private val groupPresenter: GroupPresenter by lazy { GroupPresenter() }
-    private var allMembers: List<EntourageUser> = emptyList()
 
     // Retient l'index du dernier '@' tapé. -1 => pas de mention en cours
     private var lastMentionStartIndex = -1
@@ -40,11 +40,15 @@ class GroupCommentActivity : CommentActivity() {
         // Charge les commentaires du groupe
         groupPresenter.getPostComments(id, postId)
 
-        // Récupération des membres du groupe (pour la mention)
-        groupPresenter.getMembers.observe(this) { members ->
-            allMembers = members
+        // --- Observateur pour la recherche de membres (mention) ---
+        // Dès que la requête "searchGroupMembers" a un résultat, on met à jour l'affichage
+        groupPresenter.getMembersSearch.observe(this) { members ->
+            if (members.isEmpty()) {
+                hideMentionSuggestions()
+            } else {
+                showMentionSuggestions(members)
+            }
         }
-        groupPresenter.getGroupMembers(id)
 
         // LayoutManager pour la liste de suggestions (mentions)
         binding.mentionSuggestionsRecycler.layoutManager = LinearLayoutManager(this)
@@ -147,10 +151,9 @@ class GroupCommentActivity : CommentActivity() {
     }
 
     // ---------------------------------------------------------------------------
-    // Détection du "@" pour la fonctionnalité mention
+    // Détection du "@" pour la fonctionnalité mention => on appelle l'API
     // ---------------------------------------------------------------------------
     private fun setupMentionTextWatcher() {
-
         binding.commentMessage.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun afterTextChanged(s: Editable?) {}
@@ -167,11 +170,8 @@ class GroupCommentActivity : CommentActivity() {
                     val mentionQuery = substring.substring(lastAt + 1, cursorPos)
                     lastMentionStartIndex = lastAt
 
-                    if (mentionQuery.isEmpty()) {
-                        showMentionSuggestions(allMembers)
-                    } else {
-                        filterAndShowMentions(mentionQuery)
-                    }
+                    // Si mentionQuery est vide => on recherche tous les membres, sinon on filtre côté API
+                    groupPresenter.searchGroupMembers(id, mentionQuery)
                 } else {
                     hideMentionSuggestions()
                     lastMentionStartIndex = -1
@@ -180,20 +180,7 @@ class GroupCommentActivity : CommentActivity() {
         })
     }
 
-    private fun filterAndShowMentions(query: String) {
-        // Filtre dans allMembers => max 5
-        val filtered = allMembers.filter {
-            it.displayName?.contains(query, ignoreCase = true) == true
-        }.take(5)
-
-        showMentionSuggestions(filtered)
-    }
-
     private fun showMentionSuggestions(members: List<EntourageUser>) {
-        if (members.isEmpty()) {
-            hideMentionSuggestions()
-            return
-        }
         binding.mentionSuggestionsContainer.visibility = View.VISIBLE
 
         val adapter = MentionAdapter(members) { user ->
@@ -215,8 +202,13 @@ class GroupCommentActivity : CommentActivity() {
 
         if (lastMentionStartIndex < 0) return
 
-        val mentionHtml =
-            """<a href="https://preprod.entourage.social/app/user/${user.userId}">@${user.displayName}</a>"""
+        val baseUrl = if (!BuildConfig.DEBUG) {
+            "https://www.entourage.social"
+        } else {
+            "https://preprod.entourage.social"
+        }
+
+        val mentionHtml = """<a href="$baseUrl/app/user/${user.userId}">@${user.displayName}</a>"""
         val mentionSpanned = HtmlCompat.fromHtml(mentionHtml, HtmlCompat.FROM_HTML_MODE_LEGACY)
 
         // On remplace la partie depuis '@' jusqu'à la position du curseur

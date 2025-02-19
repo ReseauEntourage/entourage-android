@@ -18,24 +18,28 @@ class CreatePostEventActivity : CreatePostActivity() {
             handlePost(hasPost)
         }
 
-        // Observe la liste des membres (pour mentions)
-        eventPresenter.getMembers.observe(this) { members ->
-            setAllMembers(members)
+        // 1) Observe le résultat de la recherche mention
+        eventPresenter.getMembersSearch.observe(this) { members ->
+            updateMentionList(members)
         }
 
-        // Lance la récupération des membres
+        // Récupération initiale des membres (optionnel)
         if (groupId != -1) {
             eventPresenter.getEventMembers(groupId)
         }
     }
 
+    // --------------------------------------------------------------------------------
+    // Logique mention : on redéfinit onMentionQuery
+    // --------------------------------------------------------------------------------
+    override fun onMentionQuery(query: String) {
+        // Appelle la route de recherche mention pour les events
+        eventPresenter.searchEventMembers(groupId, query)
+    }
+
     // Publication d'un post avec image
     override fun addPostWithImage(file: File) {
-        eventPresenter.addPost(
-            binding.message.text.toString(),
-            file,
-            groupId
-        )
+        eventPresenter.addPost(binding.message.text.toString(), file, groupId)
     }
 
     // Publication d'un post sans image

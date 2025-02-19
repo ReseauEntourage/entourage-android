@@ -22,15 +22,27 @@ class CreatePostGroupActivity : CreatePostActivity() {
             handlePost(hasPost)
         }
 
-        // Observe la liste des membres pour les mentions
-        groupPresenter.getMembers.observe(this) { members ->
-            setAllMembers(members)
+        // 1) Observe le résultat distant pour les mentions
+        groupPresenter.getMembersSearch.observe(this) { members ->
+            // On met à jour la liste => c'est la méthode de CreatePostActivity
+            updateMentionList(members)
         }
 
-        // Lance la récupération des membres
+        // Lance la récupération basique des membres si besoin
+        // (optionnel si on veut par ex. connaître le total,
+        //  mais la mention passera par la recherche ci-dessus)
         if (groupId != -1) {
             groupPresenter.getGroupMembers(groupId)
         }
+    }
+
+    // --------------------------------------------------------------------------------
+    // Logique mention : on redéfinit la méthode abstraite onMentionQuery
+    // --------------------------------------------------------------------------------
+    override fun onMentionQuery(query: String) {
+        // Appelle la route de recherche asynchrone du groupPresenter
+        // (query vide => tous les membres, si le back l'autorise)
+        groupPresenter.searchGroupMembers(groupId, query)
     }
 
     // Publication d'un post avec image

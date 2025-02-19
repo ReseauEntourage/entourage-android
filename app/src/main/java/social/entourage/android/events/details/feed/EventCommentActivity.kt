@@ -5,12 +5,12 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.Html
 import android.text.TextWatcher
-import android.text.method.LinkMovementMethod
 import android.view.View
 import androidx.core.text.HtmlCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.coroutines.launch
+import social.entourage.android.BuildConfig
 import social.entourage.android.EntourageApplication
 import social.entourage.android.api.model.EntourageUser
 import social.entourage.android.api.model.Post
@@ -26,12 +26,11 @@ import java.util.UUID
 class EventCommentActivity : CommentActivity() {
 
     private val eventPresenter: EventsPresenter by lazy { EventsPresenter() }
-    private var allMembers: List<EntourageUser> = emptyList()
 
-    // Pour retenir l'index du dernier '@' tapé (initialisé à -1)
+    // Retient l'index du dernier '@' tapé. -1 => pas de mention en cours
     private var lastMentionStartIndex = -1
 
-    // On crée UNIQUEMENT le MentionAdapter (pour ne pas le recréer à chaque filtrage)
+    // Adapter qui affichera les suggestions de mention
     private val mentionAdapter: MentionAdapter by lazy {
         MentionAdapter(emptyList()) { user ->
             insertMentionIntoEditText(user)
@@ -41,58 +40,65 @@ class EventCommentActivity : CommentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Observers pour récupérer commentaires, post parent, etc.
+        // Observe la liste de commentaires
         eventPresenter.getAllComments.observe(this, ::handleGetPostComments)
         eventPresenter.commentPosted.observe(this, ::handleCommentPosted)
         eventPresenter.getCurrentParentPost.observe(this, ::handleParentPost)
 
-        // Charge les commentaires pour l'événement
+        // Récupère les commentaires existants
         eventPresenter.getPostComments(id, postId)
 
-        // Charge la liste des membres (pour la mention)
-        eventPresenter.getMembers.observe(this) { members ->
-            allMembers = members
+        // 1) Observe le résultat distant de la recherche mention
+        eventPresenter.getMembersSearch.observe(this) { members ->
+            if (members.isEmpty()) {
+                hideMentionSuggestions()
+            } else {
+                showMentionSuggestions(members)
+            }
         }
-        eventPresenter.getEventMembers(id)
 
-        // Configure la RecyclerView des suggestions de mention
+        // 2) Configure la recyclerView pour les suggestions
         binding.mentionSuggestionsRecycler.layoutManager = LinearLayoutManager(this)
         binding.mentionSuggestionsRecycler.adapter = mentionAdapter
 
-        // Configure l'adapter des commentaires (si déjà assigné, on peut aussi appeler setForEvent)
-        setAdapterForEvent()
+        // 3) Marque qu'il s'agit d'un Event
+        super.setIsEventTrue()
 
-        // Mise en place de la détection du caractère '@'
+        // 4) Ajoute un TextWatcher pour détecter les '@'
         setupMentionTextWatcher()
 
-        // Indique qu'il s'agit d'un événement
-        super.setIsEventTrue()
+        // 5) Configure l'adapter de commentaires pour l'événement
+        setAdapterForEvent()
     }
 
-    // --- Publication de commentaire ---
+    // ---------------------------------------------------------------------------
+    // Publication du commentaire
+    // ---------------------------------------------------------------------------
     override fun addComment() {
         // 1) Récupère le contenu (Spanned) de l'EditText
         val spannedText = binding.commentMessage.editableText
 
-        // 2) Convertit ce contenu en HTML pour conserver les balises <a> s'il y en a
-        val fullHtml = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
+        // 2) Convertit ce contenu en HTML pour conserver <a href="..."> si présent
+        val fullHtml = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             Html.toHtml(spannedText, Html.FROM_HTML_MODE_LEGACY)
-        else
+        } else {
             Html.toHtml(spannedText)
+        }
 
-        // 3) Vérifie la présence d'une balise <a href="...">
+        // 3) Vérifie s'il y a une balise <a href="...">
         val hasLink = fullHtml.contains("<a href=")
 
-        // 4) Détermine le contenu final à envoyer
+        // 4) Choix final : HTML ou texte brut
         val finalContent = if (hasLink) fullHtml else spannedText.toString()
 
-        // 5) Construit le Post en renseignant l'utilisateur et le postId
+        // 5) Construit le Post
         val currentUserId = EntourageApplication.me(this)?.id ?: 0
         val currentUserAvatar = EntourageApplication.me(this)?.avatarURL
         val user = EntourageUser().apply {
             userId = currentUserId
             avatarURLAsString = currentUserAvatar
         }
+
         comment = Post(
             idInternal = UUID.randomUUID(),
             content = finalContent,
@@ -101,9 +107,11 @@ class EventCommentActivity : CommentActivity() {
         )
 
         Timber.d("Envoi commentaire => eventId=$id, postId=$postId, content=$finalContent")
+
+        // 6) Envoie au presenter
         eventPresenter.addComment(id, comment)
 
-        // 7) Nettoyage de l'EditText et du clavier
+        // 7) Nettoyage
         binding.commentMessage.text.clear()
         Utils.hideKeyboard(this)
     }
@@ -116,14 +124,20 @@ class EventCommentActivity : CommentActivity() {
     }
 
     override fun translateView(id: Int) {
-        (binding.comments.adapter as? CommentsListAdapter)?.translateItem(id)
+        val adapter = binding.comments.adapter as? CommentsListAdapter
+        adapter?.translateItem(id)
     }
 
-    // --- Gestion de l'adapter / données ---
+    // ---------------------------------------------------------------------------
+    // Gestion de l'adapter
+    // ---------------------------------------------------------------------------
     private fun setAdapterForEvent() {
         (binding.comments.adapter as? CommentsListAdapter)?.setForEvent()
     }
 
+    // ---------------------------------------------------------------------------
+    // Gestion du post parent
+    // ---------------------------------------------------------------------------
     private fun handleParentPost(currentPost: Post?) {
         this.currentParentPost = currentPost
         binding.progressBar.visibility = View.GONE
@@ -136,6 +150,7 @@ class EventCommentActivity : CommentActivity() {
         commentsList.clear()
         allComments?.let { commentsList.addAll(it) }
         updateView(commentsList.isEmpty())
+
         if (currentParentPost == null) {
             eventPresenter.getCurrentParentPost(id, postId)
             return
@@ -144,24 +159,27 @@ class EventCommentActivity : CommentActivity() {
         scrollAfterLayout()
     }
 
-    // --- Logique de mention "@"
+    // ---------------------------------------------------------------------------
+    // Détection du "@"
+    // ---------------------------------------------------------------------------
     private fun setupMentionTextWatcher() {
         binding.commentMessage.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun afterTextChanged(s: Editable?) {}
+
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 if (s == null) return
                 val cursorPos = binding.commentMessage.selectionStart
                 val substring = s.subSequence(0, cursorPos)
                 val lastAt = substring.lastIndexOf('@')
+
                 if (lastAt >= 0) {
                     val mentionQuery = substring.substring(lastAt + 1, cursorPos)
                     lastMentionStartIndex = lastAt
-                    if (mentionQuery.isEmpty()) {
-                        showMentionSuggestions(allMembers)
-                    } else {
-                        filterAndShowMentions(mentionQuery)
-                    }
+
+                    // On appelle la recherche distante
+                    // - Si mentionQuery est vide => on peut envoyer query = "" pour tout récupérer
+                    eventPresenter.searchEventMembers(id, mentionQuery)
                 } else {
                     hideMentionSuggestions()
                     lastMentionStartIndex = -1
@@ -170,21 +188,8 @@ class EventCommentActivity : CommentActivity() {
         })
     }
 
-    private fun filterAndShowMentions(query: String) {
-        // On limite à 5 suggestions
-        val filtered = allMembers.filter {
-            it.displayName?.contains(query, ignoreCase = true) == true
-        }.take(5)
-        showMentionSuggestions(filtered)
-    }
-
     private fun showMentionSuggestions(members: List<EntourageUser>) {
-        if (members.isEmpty()) {
-            hideMentionSuggestions()
-            return
-        }
         binding.mentionSuggestionsContainer.visibility = View.VISIBLE
-        // On met à jour la liste du mentionAdapter (il s'agit d'une mise à jour fluide)
         mentionAdapter.updateList(members)
     }
 
@@ -193,16 +198,28 @@ class EventCommentActivity : CommentActivity() {
     }
 
     /**
-     * Insère la mention au format HTML (<a href="...">@Nom</a>) dans l'EditText.
+     * Insère la mention au format <a href="...">@Nom</a> dans l'EditText
      */
     fun insertMentionIntoEditText(user: EntourageUser) {
         val cursorPos = binding.commentMessage.selectionStart
         val editable = binding.commentMessage.editableText ?: return
         if (lastMentionStartIndex < 0) return
-        val mentionHtml = """<a href="https://preprod.entourage.social/app/user/${user.userId}">@${user.displayName}</a>"""
+
+        val baseUrl = if (!BuildConfig.DEBUG) {
+            "https://www.entourage.social"
+        } else {
+            "https://preprod.entourage.social"
+        }
+
+        val mentionHtml = """<a href="$baseUrl/app/user/${user.userId}">@${user.displayName}</a>"""
         val mentionSpanned = HtmlCompat.fromHtml(mentionHtml, HtmlCompat.FROM_HTML_MODE_LEGACY)
+
+        // Remplace la partie depuis '@' jusqu'au curseur
         editable.replace(lastMentionStartIndex, cursorPos, mentionSpanned)
+
+        // Positionne le curseur juste après la mention
         binding.commentMessage.setSelection(lastMentionStartIndex + mentionSpanned.length)
+
         hideMentionSuggestions()
         lastMentionStartIndex = -1
     }

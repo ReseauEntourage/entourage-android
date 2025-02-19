@@ -150,6 +150,28 @@ class EventsPresenter : ViewModel() {
             })
     }
 
+    fun searchEventMembers(eventId: Int, query: String) {
+        EntourageApplication.get().apiModule.eventsRequest
+            .getMembersSearch(eventId, query)
+            .enqueue(object : Callback<MembersWrapper> {
+                override fun onResponse(
+                    call: Call<MembersWrapper>,
+                    response: Response<MembersWrapper>
+                ) {
+                    if (response.isSuccessful) {
+                        val result = response.body()?.users ?: mutableListOf()
+                        getMembersSearch.value = result
+                    } else {
+                        getMembersSearch.value = mutableListOf()
+                    }
+                }
+
+                override fun onFailure(call: Call<MembersWrapper>, t: Throwable) {
+                    getMembersSearch.value = mutableListOf()
+                }
+            })
+    }
+
     fun getMyEventsWithFilter(
         userId: Int, page: Int, per: Int, interests: String, travelDistance: Int?,
         latitude: Double?, longitude: Double?, period: String

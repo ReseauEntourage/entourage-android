@@ -14,6 +14,7 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.coroutines.launch
+import social.entourage.android.BuildConfig
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.api.model.Conversation
@@ -360,7 +361,13 @@ class DetailConversationActivity : CommentActivity() {
         if (lastMentionStartIndex < 0) return
 
         // L’URL ici est un exemple, à adapter selon votre logique
-        val mentionHtml = """<a href="https://preprod.entourage.social/app/user/${user.userId}">@${user.displayName}</a>"""
+        val baseUrl = if (!BuildConfig.DEBUG) {
+            "https://www.entourage.social"
+        } else {
+            "https://preprod.entourage.social"
+        }
+
+        val mentionHtml = """<a href="$baseUrl/app/user/${user.userId}">@${user.displayName}</a>"""
         val mentionSpanned = HtmlCompat.fromHtml(mentionHtml, HtmlCompat.FROM_HTML_MODE_LEGACY)
 
         // On remplace depuis '@' jusqu'au curseur par la mention

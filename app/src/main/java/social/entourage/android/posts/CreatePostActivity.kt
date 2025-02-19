@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import social.entourage.android.BuildConfig
 import social.entourage.android.R
 import social.entourage.android.api.model.EntourageUser
 import social.entourage.android.comment.MentionAdapter
@@ -40,31 +41,25 @@ abstract class CreatePostActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityCreatePostBinding
 
-    // ID du "groupe" ou de l'"événement" (selon l’écran) récupéré via l’Intent
+    // ID du "groupe" ou "événement" récupéré via l’Intent
     protected var groupId = Const.DEFAULT_VALUE
 
-    // Doit-on fermer l’Activity après création ?
+    // Doit-on fermer l’Activity après la création ?
     private var shouldClose = false
 
     // URI de l’image choisie (s’il y en a une)
     var imageURI: Uri? = null
 
-    // --------------------------------------------------------------------
-    // LOGIQUE DE MENTION
-    // --------------------------------------------------------------------
-    private var allMembers: List<EntourageUser> = emptyList()
+    // Détection mention: index du dernier '@' tapé
     private var lastMentionStartIndex = -1
 
-    // Adapter qui gère l’affichage des suggestions de mention
+    // Adapter pour afficher les suggestions de mentions
     private val mentionAdapter: MentionAdapter by lazy {
         MentionAdapter(emptyList()) { user ->
             insertMentionIntoEditText(user)
         }
     }
 
-    // --------------------------------------------------------------------
-    // cycle de vie
-    // --------------------------------------------------------------------
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -84,26 +79,42 @@ abstract class CreatePostActivity : AppCompatActivity() {
         handleBackButton()
         handleMessageChangedTextListener()
 
-        // Configure le RecyclerView pour les suggestions @
+        // Mise en place du RecyclerView pour les suggestions de mention
         binding.mentionSuggestionsRecycler.layoutManager = LinearLayoutManager(this)
         binding.mentionSuggestionsRecycler.adapter = mentionAdapter
 
-        // Active la détection du '@' dans le champ "message"
+        // Ecoute du '@' dans l'EditText
         setupMentionTextWatcher()
 
+        // Gérer l'affichage du header selon les insets
         ViewCompat.setOnApplyWindowInsetsListener(binding.header.layout) { view, windowInsets ->
-            // Get the insets for the statusBars() type:
             val insets = windowInsets.getInsets(WindowInsetsCompat.Type.statusBars())
-            view.updatePadding(
-                top = insets.top
-            )
-            // Return the original insets so they aren’t consumed
+            view.updatePadding(top = insets.top)
             windowInsets
         }
     }
 
+    /**
+     * Méthode abstraite : appelée quand on a détecté un "@" + la suite du texte `query`.
+     * Les classes filles (CreatePostGroupActivity / CreatePostEventActivity)
+     * doivent appeler leur Presenter (searchGroupMembers / searchEventMembersRemote).
+     */
+    protected abstract fun onMentionQuery(query: String)
+
+    /**
+     * Méthode appelée par la classe fille pour mettre à jour la liste des suggestions
+     * quand on reçoit le résultat asynchrone du Presenter.
+     */
+    fun updateMentionList(members: List<EntourageUser>) {
+        if (members.isEmpty()) {
+            hideMentionSuggestions()
+        } else {
+            showMentionSuggestions(members)
+        }
+    }
+
     // --------------------------------------------------------------------
-    // Méthode utilitaire pour les classes filles : si hasPost = true, on termine.
+    // Pour finaliser le post (hasPost=true => on ferme)
     // --------------------------------------------------------------------
     protected fun handlePost(hasPost: Boolean) {
         if (hasPost) {
@@ -112,10 +123,8 @@ abstract class CreatePostActivity : AppCompatActivity() {
                 if (id == -1 && CreatePostGroupActivity.idGroupForPost != null) {
                     id = CreatePostGroupActivity.idGroupForPost!!
                 }
-                // Petit délai avant de relancer éventuellement une autre activity
                 Handler(Looper.getMainLooper()).postDelayed({
-                    // Exemple : StartActivity(FeedActivity) si besoin
-                    // startActivity(Intent(this, FeedActivity::class.java).putExtra(Const.GROUP_ID, id))
+                    // On pourrait éventuellement lancer une autre activité, etc.
                     finish()
                 }, 2000)
             }
@@ -125,7 +134,7 @@ abstract class CreatePostActivity : AppCompatActivity() {
     }
 
     // --------------------------------------------------------------------
-    // Récupération ou suppression d'une image
+    // Choix photo
     // --------------------------------------------------------------------
     private fun handleAddPhotoButton() {
         binding.addPhotoLayout.setOnClickListener {
@@ -156,10 +165,9 @@ abstract class CreatePostActivity : AppCompatActivity() {
     }
 
     // --------------------------------------------------------------------
-    // UI setup
+    // UI
     // --------------------------------------------------------------------
     private fun setView() {
-        // On modifie simplement l’icône du bouton de validation
         binding.validate.button.setCompoundDrawablesWithIntrinsicBounds(
             null,
             null,
@@ -169,7 +177,7 @@ abstract class CreatePostActivity : AppCompatActivity() {
     }
 
     // --------------------------------------------------------------------
-    // Récupération du résultat de la modal ChoosePhotoModalFragment
+    // Résultat du ChoosePhotoModalFragment
     // --------------------------------------------------------------------
     private fun getResult() {
         supportFragmentManager.setFragmentResultListener(Const.REQUEST_KEY_CHOOSE_PHOTO, this) { _, bundle ->
@@ -193,26 +201,21 @@ abstract class CreatePostActivity : AppCompatActivity() {
         binding.validate.button.setOnClickListener {
             AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_GROUP_FEED_NEW_POST_VALIDATE)
 
-            // Cas 1 : pas d’image, uniquement du texte
+            // Cas 1 : pas d'image, uniquement texte
             if (imageURI == null && isMessageValid()) {
                 val messageChat = ArrayMap<String, Any>()
-
-                // -------------------------------------
-                // CORRECTION : utiliser Html.toHtml() pour conserver le HTML
-                // -------------------------------------
                 val messageToSend = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                     Html.toHtml(binding.message.text, Html.TO_HTML_PARAGRAPH_LINES_INDIVIDUAL)
                 } else {
                     @Suppress("DEPRECATION")
                     Html.toHtml(binding.message.text)
                 }
-
                 messageChat["content"] = messageToSend
                 val request = ArrayMap<String, Any>()
                 request["chat_message"] = messageChat
                 addPostWithoutImage(request)
             }
-            // Cas 2 : présence d’une image
+            // Cas 2 : il y a une image
             else if (imageURI != null) {
                 imageURI?.let { uri ->
                     val file = Utils.getFile(this, uri)
@@ -222,10 +225,6 @@ abstract class CreatePostActivity : AppCompatActivity() {
         }
     }
 
-    /**
-     * Méthodes abstraites à implémenter par les classes filles
-     * pour poster AVEC ou SANS image.
-     */
     abstract fun addPostWithImage(file: File)
     abstract fun addPostWithoutImage(request: ArrayMap<String, Any>)
 
@@ -239,7 +238,7 @@ abstract class CreatePostActivity : AppCompatActivity() {
     }
 
     // --------------------------------------------------------------------
-    // EditText "message": si on tape du texte, on active ou non le bouton
+    // EditText
     // --------------------------------------------------------------------
     private fun handleMessageChangedTextListener() {
         binding.message.addTextChangedListener(object : TextWatcher {
@@ -265,19 +264,13 @@ abstract class CreatePostActivity : AppCompatActivity() {
     }
 
     // --------------------------------------------------------------------
-    // MISE À DISPOSITION D'UNE FONCTION POUR RECEVOIR LES MEMBRES
-    // --------------------------------------------------------------------
-    protected fun setAllMembers(members: List<EntourageUser>) {
-        this.allMembers = members
-    }
-
-    // --------------------------------------------------------------------
-    // LOGIQUE DE MENTION
+    // LOGIQUE DE MENTION : on appelle onMentionQuery(query)
     // --------------------------------------------------------------------
     private fun setupMentionTextWatcher() {
         binding.message.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun afterTextChanged(s: Editable?) {}
+
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 if (s == null) return
                 val cursorPos = binding.message.selectionStart
@@ -287,12 +280,8 @@ abstract class CreatePostActivity : AppCompatActivity() {
                 if (lastAt >= 0) {
                     val mentionQuery = substring.substring(lastAt + 1, cursorPos)
                     lastMentionStartIndex = lastAt
-
-                    if (mentionQuery.isEmpty()) {
-                        showMentionSuggestions(allMembers)
-                    } else {
-                        filterAndShowMentions(mentionQuery)
-                    }
+                    // On délègue la recherche mention à la classe fille
+                    onMentionQuery(mentionQuery)
                 } else {
                     hideMentionSuggestions()
                     lastMentionStartIndex = -1
@@ -301,18 +290,9 @@ abstract class CreatePostActivity : AppCompatActivity() {
         })
     }
 
-    private fun filterAndShowMentions(query: String) {
-        val filtered = allMembers.filter {
-            it.displayName?.contains(query, ignoreCase = true) == true
-        }.take(5)
-        showMentionSuggestions(filtered)
-    }
-
+    // On laisse le parent gérer l'affichage / masquage,
+    // la mise à jour de mentionAdapter est déclenchée par updateMentionList(members).
     private fun showMentionSuggestions(members: List<EntourageUser>) {
-        if (members.isEmpty()) {
-            hideMentionSuggestions()
-            return
-        }
         binding.mentionSuggestionsContainer.visibility = View.VISIBLE
         mentionAdapter.updateList(members)
     }
@@ -326,13 +306,20 @@ abstract class CreatePostActivity : AppCompatActivity() {
         val editable = binding.message.editableText ?: return
         if (lastMentionStartIndex < 0) return
 
-        val mentionHtml = """<a href="https://preprod.entourage.social/app/user/${user.userId}">@${user.displayName}</a>"""
+        val baseUrl = if (!BuildConfig.DEBUG) {
+            "https://www.entourage.social"
+        } else {
+            "https://preprod.entourage.social"
+        }
+
+        val mentionHtml = """<a href="$baseUrl/app/user/${user.userId}">@${user.displayName}</a>"""
         val mentionSpanned = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             Html.fromHtml(mentionHtml, Html.FROM_HTML_MODE_LEGACY)
         } else {
             @Suppress("DEPRECATION")
             Html.fromHtml(mentionHtml)
         }
+
         editable.replace(lastMentionStartIndex, cursorPos, mentionSpanned)
         binding.message.setSelection(lastMentionStartIndex + mentionSpanned.length)
         hideMentionSuggestions()
