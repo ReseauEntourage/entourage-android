@@ -367,7 +367,7 @@ class DetailConversationActivity : CommentActivity() {
             "https://preprod.entourage.social"
         }
 
-        val mentionHtml = """<a href="$baseUrl/app/user/${user.userId}">@${user.displayName}</a>"""
+        val mentionHtml = """<a href="$baseUrl/app/users/${user.userId}">@${user.displayName}</a>"""
         val mentionSpanned = HtmlCompat.fromHtml(mentionHtml, HtmlCompat.FROM_HTML_MODE_LEGACY)
 
         // On remplace depuis '@' jusqu'au curseur par la mention

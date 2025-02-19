@@ -46,6 +46,17 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
         if (uri.host == stagingURL || uri.host == prodURL) {
             when {
 
+                pathSegments.contains("users") -> {
+                    if (pathSegments.size > 2) {
+                        val userId = pathSegments[2]
+                        ProfileFullActivity.isMe = false
+                        ProfileFullActivity.userId = userId
+                        val intent = Intent(context, ProfileFullActivity::class.java)
+                        context.startActivity(intent)
+                        (context as Activity).overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+
+                    }
+                }
                 pathSegments.contains("user") -> {
                     if (pathSegments.size > 2) {
                         val userId = pathSegments[2]

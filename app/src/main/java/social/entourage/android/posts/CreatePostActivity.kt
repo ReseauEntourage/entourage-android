@@ -312,7 +312,7 @@ abstract class CreatePostActivity : AppCompatActivity() {
             "https://preprod.entourage.social"
         }
 
-        val mentionHtml = """<a href="$baseUrl/app/user/${user.userId}">@${user.displayName}</a>"""
+        val mentionHtml = """<a href="$baseUrl/app/users/${user.userId}">@${user.displayName}</a>"""
         val mentionSpanned = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             Html.fromHtml(mentionHtml, Html.FROM_HTML_MODE_LEGACY)
         } else {
