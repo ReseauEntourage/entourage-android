@@ -18,10 +18,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.getColor
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.os.bundleOf
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
-import androidx.core.view.updatePadding
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
@@ -84,6 +81,7 @@ import social.entourage.android.survey.SurveyPresenter
 import social.entourage.android.tools.calculateIfEventPassed
 import social.entourage.android.tools.image_viewer.ImageDialogActivity
 import social.entourage.android.tools.log.AnalyticsEvents
+import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.CustomAlertDialog
 import social.entourage.android.tools.utils.Utils
@@ -122,16 +120,7 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentFeedEventBinding.inflate(inflater, container, false)
-        // Listen for WindowInsets
-        ViewCompat.setOnApplyWindowInsetsListener(binding.header) { view, windowInsets ->
-            // Get the insets for the statusBars() type:
-            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.statusBars())
-            view.updatePadding(
-                top = insets.top
-            )
-            // Return the original insets so they aren’t consumed
-            windowInsets
-        }
+        updatePaddingTopForEdgeToEdge(binding.header)
         reduceButtonSizeImage()
         return binding.root
     }
