@@ -191,11 +191,41 @@ class EventsFragment : Fragment() {
        }
     }
 
-    fun handleTopTitle(hideTitle:Boolean){
-        if(hideTitle){
-            binding.topEventLayout.visibility = View.GONE
-        }else{
-            binding.topEventLayout.visibility = View.VISIBLE
+    fun handleTopTitle(hideTitle: Boolean) {
+        // On force le post() pour être sûr que la vue est mesurée
+        binding.topEventLayout.post {
+            if (hideTitle) {
+                // ANIMATION DE DISPARITION
+                // 1. On anime la vue vers le haut (négatif)
+                binding.topEventLayout.animate()
+                    .translationY(-binding.topEventLayout.height.toFloat())
+                    .setDuration(300) // durée en ms, ajustez selon vos goûts
+                    .withEndAction {
+                        // 2. Une fois l'animation terminée, on la cache définitivement
+                        binding.topEventLayout.visibility = View.GONE
+                        // 3. On réinitialise la position pour éviter des comportements inattendus
+                        binding.topEventLayout.translationY = 0f
+
+                        // Montre la spaceView si nécessaire
+                        binding.spaceView.visibility = View.VISIBLE
+                    }
+                    .start()
+
+            } else {
+                // ANIMATION D’APPARITION
+                // 1. On place la vue juste au-dessus de sa position habituelle
+                binding.topEventLayout.visibility = View.VISIBLE
+                // Cache la spaceView
+                binding.spaceView.visibility = View.GONE
+                // Position initiale hors de l'écran
+                binding.topEventLayout.translationY = -binding.topEventLayout.height.toFloat()
+
+                // 2. On fait glisser la vue vers le bas (position 0)
+                binding.topEventLayout.animate()
+                    .translationY(0f)
+                    .setDuration(300)
+                    .start()
+            }
         }
     }
 
