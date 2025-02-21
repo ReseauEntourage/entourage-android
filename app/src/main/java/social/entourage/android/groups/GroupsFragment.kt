@@ -1,5 +1,6 @@
 package social.entourage.android.groups
 
+import android.animation.ValueAnimator
 import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.Drawable
@@ -12,6 +13,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import androidx.activity.OnBackPressedCallback
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.view.ViewCompat
@@ -318,6 +320,25 @@ class GroupsFragment : Fragment(), UpdateGroupInter {
         }
     }
 
+    private fun animateNestedScrollViewMarginTo(targetMarginPx: Int, duration: Long = 300) {
+        val layoutParams = binding.nestedScrollView.layoutParams as CoordinatorLayout.LayoutParams
+        val startMargin = layoutParams.topMargin
+
+        ValueAnimator.ofInt(startMargin, targetMarginPx).apply {
+            addUpdateListener { animator ->
+                val animatedValue = animator.animatedValue as Int
+                layoutParams.topMargin = animatedValue
+                binding.nestedScrollView.layoutParams = layoutParams
+            }
+            this.duration = duration
+            start()
+        }
+    }
+    fun Int.dpToPx(context: Context): Int {
+        return (this * context.resources.displayMetrics.density).toInt()
+    }
+
+
     private fun hideMainViews() {
         binding.csLayoutSearch.visibility = View.VISIBLE
         binding.recyclerViewHorizontal.visibility = View.GONE
@@ -332,6 +353,10 @@ class GroupsFragment : Fragment(), UpdateGroupInter {
         binding.uiLayoutFilter.visibility = View.GONE
         binding.uiLayoutSearch.visibility = View.GONE
         (requireActivity() as MainActivity).hideBottomBar()
+
+        // On modifie la marge top de la NestedScrollView
+        val offsetPx = 80.dpToPx(requireContext())
+        animateNestedScrollViewMarginTo(-offsetPx)
     }
 
     private fun showMainViews() {
@@ -349,6 +374,9 @@ class GroupsFragment : Fragment(), UpdateGroupInter {
         (requireActivity() as MainActivity).showBottomBar()
         resetSearchButtonState()
         view?.clearFocus()
+
+        // On remet la marge top à 0
+        animateNestedScrollViewMarginTo(0)
     }
 
     private fun initView() {
