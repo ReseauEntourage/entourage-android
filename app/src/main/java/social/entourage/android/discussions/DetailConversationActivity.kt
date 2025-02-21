@@ -360,12 +360,8 @@ class DetailConversationActivity : CommentActivity() {
         val editable = binding.commentMessage.editableText ?: return
         if (lastMentionStartIndex < 0) return
 
-        // L’URL ici est un exemple, à adapter selon votre logique
-        val baseUrl = if (!BuildConfig.DEBUG) {
-            "https://www.entourage.social"
-        } else {
-            "https://preprod.entourage.social"
-        }
+        val baseUrl = BuildConfig.ENTOURAGE_URL
+
 
         val mentionHtml = """<a href="$baseUrl/app/users/${user.userId}">@${user.displayName}</a>"""
         val mentionSpanned = HtmlCompat.fromHtml(mentionHtml, HtmlCompat.FROM_HTML_MODE_LEGACY)

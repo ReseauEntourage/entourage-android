@@ -306,11 +306,8 @@ abstract class CreatePostActivity : AppCompatActivity() {
         val editable = binding.message.editableText ?: return
         if (lastMentionStartIndex < 0) return
 
-        val baseUrl = if (!BuildConfig.DEBUG) {
-            "https://www.entourage.social"
-        } else {
-            "https://preprod.entourage.social"
-        }
+        val baseUrl = BuildConfig.ENTOURAGE_URL
+
 
         val mentionHtml = """<a href="$baseUrl/app/users/${user.userId}">@${user.displayName}</a>"""
         val mentionSpanned = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
