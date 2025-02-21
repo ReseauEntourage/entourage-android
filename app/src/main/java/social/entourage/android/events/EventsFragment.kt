@@ -190,44 +190,53 @@ class EventsFragment : Fragment() {
            showCustomBubble(binding.uiLayoutFilter)
        }
     }
-
-    fun handleTopTitle(hideTitle: Boolean) {
-        // On force le post() pour être sûr que la vue est mesurée
-        binding.topEventLayout.post {
-            if (hideTitle) {
-                // ANIMATION DE DISPARITION
-                // 1. On anime la vue vers le haut (négatif)
-                binding.topEventLayout.animate()
-                    .translationY(-binding.topEventLayout.height.toFloat())
-                    .setDuration(300) // durée en ms, ajustez selon vos goûts
-                    .withEndAction {
-                        // 2. Une fois l'animation terminée, on la cache définitivement
-                        binding.topEventLayout.visibility = View.GONE
-                        // 3. On réinitialise la position pour éviter des comportements inattendus
-                        binding.topEventLayout.translationY = 0f
-
-                        // Montre la spaceView si nécessaire
-                        binding.spaceView.visibility = View.VISIBLE
-                    }
-                    .start()
-
-            } else {
-                // ANIMATION D’APPARITION
-                // 1. On place la vue juste au-dessus de sa position habituelle
-                binding.topEventLayout.visibility = View.VISIBLE
-                // Cache la spaceView
-                binding.spaceView.visibility = View.GONE
-                // Position initiale hors de l'écran
-                binding.topEventLayout.translationY = -binding.topEventLayout.height.toFloat()
-
-                // 2. On fait glisser la vue vers le bas (position 0)
-                binding.topEventLayout.animate()
-                    .translationY(0f)
-                    .setDuration(300)
-                    .start()
-            }
-        }
+    fun Int.dpToPx(context: Context): Int {
+        return (this * context.resources.displayMetrics.density).toInt()
     }
+    fun handleTopTitle(hideTitle: Boolean) {
+        val constraintSet = androidx.constraintlayout.widget.ConstraintSet()
+        constraintSet.clone(binding.rootLayout)
+
+        // Convertit 20dp en pixels
+        val marginPx = 35.dpToPx(requireContext())
+
+        if (hideTitle) {
+            // 1. Écrase la hauteur de top_event_layout
+            constraintSet.constrainHeight(R.id.top_event_layout, 0)
+
+            // 2. Connecte le coordinator au parent (root_layout) avec une marge top de 20dp
+            constraintSet.clear(R.id.coordinator, androidx.constraintlayout.widget.ConstraintSet.TOP)
+            constraintSet.connect(
+                R.id.coordinator,
+                androidx.constraintlayout.widget.ConstraintSet.TOP,
+                R.id.root_layout,
+                androidx.constraintlayout.widget.ConstraintSet.TOP,
+                marginPx // <-- LA MARGE
+            )
+
+        } else {
+            // 1. Remet la hauteur en wrap_content
+            constraintSet.constrainHeight(
+                R.id.top_event_layout,
+                androidx.constraintlayout.widget.ConstraintSet.WRAP_CONTENT
+            )
+
+            // 2. Connecte le coordinator SOUS top_event_layout, sans marge
+            constraintSet.clear(R.id.coordinator, androidx.constraintlayout.widget.ConstraintSet.TOP)
+            constraintSet.connect(
+                R.id.coordinator,
+                androidx.constraintlayout.widget.ConstraintSet.TOP,
+                R.id.top_event_layout,
+                androidx.constraintlayout.widget.ConstraintSet.BOTTOM
+            )
+        }
+
+        // Lance l’animation de transition
+        androidx.transition.TransitionManager.beginDelayedTransition(binding.rootLayout)
+        constraintSet.applyTo(binding.rootLayout)
+    }
+
+
 
     fun setSearchAndFilterButtons(){
         binding.uiLayoutSearch.background = ContextCompat.getDrawable(requireContext(), R.drawable.bg_unselected_filter) // Ajoute un fond orange rond
