@@ -4,6 +4,8 @@ import android.os.Build
 import android.os.Bundle
 import android.text.*
 import android.view.View
+import android.view.ViewTreeObserver
+import android.view.animation.AccelerateDecelerateInterpolator
 import androidx.core.text.HtmlCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -179,6 +181,48 @@ class GroupCommentActivity : CommentActivity() {
             }
         })
     }
+    private fun animateMentionSuggestions(show: Boolean) {
+        val container = binding.mentionSuggestionsContainer
+
+        // Si la hauteur est nulle, attendre la fin du layout
+        if (container.height == 0) {
+            container.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+                override fun onGlobalLayout() {
+                    container.viewTreeObserver.removeOnGlobalLayoutListener(this)
+                    animateMentionSuggestions(show)
+                }
+            })
+            return
+        }
+
+        val targetHeight = container.height.toFloat()
+
+        if (show) {
+            // Prépare la vue pour l'apparition
+            container.apply {
+                visibility = View.VISIBLE
+                alpha = 0f
+                translationY = targetHeight
+            }
+            // Animation d'apparition : slide up + fondu
+            container.animate()
+                .translationY(0f)
+                .alpha(1f)
+                .setDuration(300)
+                .setInterpolator(AccelerateDecelerateInterpolator())
+                .start()
+        } else {
+            // Animation de disparition : slide down + fondu
+            container.animate()
+                .translationY(targetHeight)
+                .alpha(0f)
+                .setDuration(300)
+                .setInterpolator(AccelerateDecelerateInterpolator())
+                .withEndAction { container.visibility = View.GONE }
+                .start()
+        }
+    }
+
 
     private fun showMentionSuggestions(members: List<EntourageUser>) {
         binding.mentionSuggestionsContainer.visibility = View.VISIBLE
@@ -187,11 +231,22 @@ class GroupCommentActivity : CommentActivity() {
             insertMentionIntoEditText(user)
         }
         binding.mentionSuggestionsRecycler.adapter = adapter
+        animateMentionSuggestions(true)
+
     }
 
     private fun hideMentionSuggestions() {
-        binding.mentionSuggestionsContainer.visibility = View.GONE
+        animateMentionSuggestions(false)
     }
+
+    private fun smoothScrollCommentsToBottom() {
+        binding.comments.adapter?.let { adapter ->
+            if (adapter.itemCount > 0) {
+                binding.comments.smoothScrollToPosition(adapter.itemCount - 1)
+            }
+        }
+    }
+
 
     /**
      * Insère la mention au format <a href="...">@Nom</a> dans l'EditText
@@ -216,5 +271,7 @@ class GroupCommentActivity : CommentActivity() {
 
         hideMentionSuggestions()
         lastMentionStartIndex = -1
+        smoothScrollCommentsToBottom()
+
     }
 }

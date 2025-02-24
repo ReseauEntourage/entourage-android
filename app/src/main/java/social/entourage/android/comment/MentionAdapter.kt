@@ -49,9 +49,7 @@ class MentionAdapter(
         fun bind(user: EntourageUser, position: Int, onItemClick: (EntourageUser) -> Unit) {
             // Affiche le nom de l'utilisateur
             nameTextView.text = user.displayName ?: "Utilisateur ${user.userId}"
-            // Alterne le fond selon la position (ligne paire ou impaire)
-            val isEven = position % 2 == 0
-            val bgColorRes = if (isEven) R.color.beige else R.color.beige_clair
+            val bgColorRes = R.color.beige_clair
             itemView.setBackgroundColor(ContextCompat.getColor(itemView.context, bgColorRes))
             // Charge l'avatar en utilisant Glide avec transformation de cercle et placeholder
             Glide.with(itemView)
@@ -62,6 +60,8 @@ class MentionAdapter(
                 .into(avatarImageView)
             // Gestion du clic : appelle le callback
             itemView.setOnClickListener {
+                val bgColorRes = R.color.beige
+                itemView.setBackgroundColor(ContextCompat.getColor(itemView.context, bgColorRes))
                 onItemClick(user)
             }
         }

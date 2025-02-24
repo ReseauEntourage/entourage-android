@@ -6,6 +6,7 @@ import android.text.Editable
 import android.text.Html
 import android.text.TextWatcher
 import android.view.View
+import android.view.animation.AccelerateDecelerateInterpolator
 import androidx.core.text.HtmlCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -70,6 +71,44 @@ class EventCommentActivity : CommentActivity() {
         // 5) Configure l'adapter de commentaires pour l'événement
         setAdapterForEvent()
     }
+
+    private fun animateMentionSuggestions(show: Boolean) {
+        val container = binding.mentionSuggestionsContainer
+
+        // Si la vue n'est pas visible, la rendre visible temporairement pour qu'elle soit mesurée
+        if (container.visibility != View.VISIBLE) {
+            container.visibility = View.INVISIBLE
+            container.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
+        }
+
+        val targetHeight = container.measuredHeight
+
+        if (show) {
+            // Prépare la vue pour l'animation : elle commence en bas et est invisible
+            container.apply {
+                visibility = View.VISIBLE
+                alpha = 0f
+                translationY = targetHeight.toFloat()
+            }
+            // Animation d'apparition
+            container.animate()
+                .translationY(0f)
+                .alpha(1f)
+                .setDuration(300)
+                .setInterpolator(AccelerateDecelerateInterpolator())
+                .start()
+        } else {
+            // Animation de sortie vers le bas
+            container.animate()
+                .translationY(targetHeight.toFloat())
+                .alpha(0f)
+                .setDuration(300)
+                .setInterpolator(AccelerateDecelerateInterpolator())
+                .withEndAction { container.visibility = View.GONE }
+                .start()
+        }
+    }
+
 
     // ---------------------------------------------------------------------------
     // Publication du commentaire
@@ -189,13 +228,23 @@ class EventCommentActivity : CommentActivity() {
     }
 
     private fun showMentionSuggestions(members: List<EntourageUser>) {
-        binding.mentionSuggestionsContainer.visibility = View.VISIBLE
         mentionAdapter.updateList(members)
+        animateMentionSuggestions(true)
+
     }
 
     private fun hideMentionSuggestions() {
-        binding.mentionSuggestionsContainer.visibility = View.GONE
+        animateMentionSuggestions(false)
     }
+
+    private fun smoothScrollCommentsToBottom() {
+        binding.comments.adapter?.let { adapter ->
+            if (adapter.itemCount > 0) {
+                binding.comments.smoothScrollToPosition(adapter.itemCount - 1)
+            }
+        }
+    }
+
 
     /**
      * Insère la mention au format <a href="...">@Nom</a> dans l'EditText
@@ -219,5 +268,7 @@ class EventCommentActivity : CommentActivity() {
 
         hideMentionSuggestions()
         lastMentionStartIndex = -1
+        smoothScrollCommentsToBottom()
+
     }
 }

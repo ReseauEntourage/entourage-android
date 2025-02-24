@@ -194,6 +194,10 @@ class EventsFragment : Fragment() {
         return (this * context.resources.displayMetrics.density).toInt()
     }
     fun handleTopTitle(hideTitle: Boolean) {
+        if (!isAdded) {
+            // Le fragment n'est pas attaché, on ne tente pas de mettre à jour l'UI
+            return
+        }
         val constraintSet = androidx.constraintlayout.widget.ConstraintSet()
         constraintSet.clone(binding.rootLayout)
 
