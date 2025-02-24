@@ -9,6 +9,8 @@ import android.text.Editable
 import android.text.Html
 import android.text.TextWatcher
 import android.view.View
+import android.view.ViewTreeObserver
+import android.view.animation.AccelerateDecelerateInterpolator
 import androidx.appcompat.app.AppCompatActivity
 import androidx.collection.ArrayMap
 import androidx.core.content.ContextCompat
@@ -176,6 +178,57 @@ abstract class CreatePostActivity : AppCompatActivity() {
         )
     }
 
+    private fun forceMeasureViewHeight(view: View): Int {
+        val originalVisibility = view.visibility
+        if (originalVisibility == View.GONE) {
+            view.visibility = View.INVISIBLE
+        }
+        val parentWidth = (view.parent as? View)?.width ?: 0
+        val widthMeasureSpec = View.MeasureSpec.makeMeasureSpec(parentWidth, View.MeasureSpec.EXACTLY)
+        val heightMeasureSpec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
+        view.measure(widthMeasureSpec, heightMeasureSpec)
+        val measuredHeight = view.measuredHeight
+        view.visibility = originalVisibility
+        return measuredHeight
+    }
+
+    /**
+     * Anime l'apparition/disparition du conteneur de suggestions de mentions depuis le haut.
+     * Lors de l'apparition, le container démarre en translationY négative (hors écran) et glisse vers sa position.
+     * Lors de la disparition, il repart vers le haut et disparaît.
+     */
+    private fun animateMentionSuggestionsFromTop(show: Boolean) {
+        val container = binding.mentionSuggestionsContainer
+        // Si la hauteur est nulle, on force la mesure
+        val containerHeight = if (container.height > 0) {
+            container.height.toFloat()
+        } else {
+            forceMeasureViewHeight(container).toFloat()
+        }
+
+        if (show) {
+            container.apply {
+                visibility = View.VISIBLE
+                alpha = 0f
+                translationY = -containerHeight
+            }
+            container.animate()
+                .translationY(0f)
+                .alpha(1f)
+                .setDuration(300)
+                .setInterpolator(AccelerateDecelerateInterpolator())
+                .start()
+        } else {
+            container.animate()
+                .translationY(-containerHeight)
+                .alpha(0f)
+                .setDuration(300)
+                .setInterpolator(AccelerateDecelerateInterpolator())
+                .withEndAction { container.visibility = View.GONE }
+                .start()
+        }
+    }
+
     // --------------------------------------------------------------------
     // Résultat du ChoosePhotoModalFragment
     // --------------------------------------------------------------------
@@ -293,12 +346,12 @@ abstract class CreatePostActivity : AppCompatActivity() {
     // On laisse le parent gérer l'affichage / masquage,
     // la mise à jour de mentionAdapter est déclenchée par updateMentionList(members).
     private fun showMentionSuggestions(members: List<EntourageUser>) {
-        binding.mentionSuggestionsContainer.visibility = View.VISIBLE
         mentionAdapter.updateList(members)
+        animateMentionSuggestionsFromTop(true)
     }
 
     private fun hideMentionSuggestions() {
-        binding.mentionSuggestionsContainer.visibility = View.GONE
+        animateMentionSuggestionsFromTop(false)
     }
 
     private fun insertMentionIntoEditText(user: EntourageUser) {
