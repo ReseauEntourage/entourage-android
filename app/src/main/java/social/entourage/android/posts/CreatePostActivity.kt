@@ -23,6 +23,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import social.entourage.android.BuildConfig
+import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.api.model.EntourageUser
 import social.entourage.android.comment.MentionAdapter
@@ -346,10 +347,14 @@ abstract class CreatePostActivity : AppCompatActivity() {
     // On laisse le parent gérer l'affichage / masquage,
     // la mise à jour de mentionAdapter est déclenchée par updateMentionList(members).
     private fun showMentionSuggestions(members: List<EntourageUser>) {
-        mentionAdapter.updateList(members)
+        // Récupérer l'utilisateur courant
+        val me = EntourageApplication.me(this)
+        // Filtrer la liste pour retirer l'utilisateur courant
+        val filteredMembers = members.filter { it.id != me?.id?.toLong() }
+
+        mentionAdapter.updateList(filteredMembers)
         animateMentionSuggestionsFromTop(true)
     }
-
     private fun hideMentionSuggestions() {
         animateMentionSuggestionsFromTop(false)
     }

@@ -337,16 +337,21 @@ class DetailConversationActivity : CommentActivity() {
         }
         binding.mentionSuggestionsContainer.visibility = View.VISIBLE
 
-        // Conversion GroupMember -> EntourageUser
-        val entourageUsers = members.map { gm ->
-            EntourageUser().apply {
-                userId = gm.id?:0
-                displayName = gm.displayName
-                avatarURLAsString = gm.avatarUrl
+        // Récupérer l'utilisateur courant
+        val me = EntourageApplication.me(this)
+        // Filtrer les membres pour retirer l'utilisateur courant avant la conversion
+        val entourageUsers = members
+            .filter { gm -> gm.id != me?.id } // ou gm.id != me.id, selon votre implémentation
+            .map { gm ->
+                EntourageUser().apply {
+                    userId = gm.id ?: 0
+                    displayName = gm.displayName
+                    avatarURLAsString = gm.avatarUrl
+                }
             }
-        }
         mentionAdapter.updateList(entourageUsers)
     }
+
 
     private fun hideMentionSuggestions() {
         binding.mentionSuggestionsContainer.visibility = View.GONE

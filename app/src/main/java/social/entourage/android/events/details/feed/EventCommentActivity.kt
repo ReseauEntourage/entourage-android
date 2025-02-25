@@ -228,10 +228,15 @@ class EventCommentActivity : CommentActivity() {
     }
 
     private fun showMentionSuggestions(members: List<EntourageUser>) {
-        mentionAdapter.updateList(members)
-        animateMentionSuggestions(true)
+        // Récupérer l'utilisateur courant
+        val me = EntourageApplication.me(this)
+        // Filtrer la liste pour retirer l'utilisateur courant
+        val filteredMembers = members.filter { it.id != me?.id?.toLong() }
 
+        mentionAdapter.updateList(filteredMembers)
+        animateMentionSuggestions(true)
     }
+
 
     private fun hideMentionSuggestions() {
         animateMentionSuggestions(false)

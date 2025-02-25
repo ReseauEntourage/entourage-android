@@ -225,14 +225,18 @@ class GroupCommentActivity : CommentActivity() {
 
 
     private fun showMentionSuggestions(members: List<EntourageUser>) {
+        // Récupérer l'utilisateur courant
+        val me = EntourageApplication.me(this)
+        // Filtrer la liste pour retirer l'utilisateur courant
+        val filteredMembers = members.filter { it.id != me?.id?.toLong() }
+
         binding.mentionSuggestionsContainer.visibility = View.VISIBLE
 
-        val adapter = MentionAdapter(members) { user ->
+        val adapter = MentionAdapter(filteredMembers) { user ->
             insertMentionIntoEditText(user)
         }
         binding.mentionSuggestionsRecycler.adapter = adapter
         animateMentionSuggestions(true)
-
     }
 
     private fun hideMentionSuggestions() {

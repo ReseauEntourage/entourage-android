@@ -2951,6 +2951,10 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="offensive_message">Ce contenu a été supprimé car il ne respecte pas notre charte.</string>
     <string name="profil_full_send_message">Envoyer un message</string>
 
+    <string name="add_to_agenda">Ajouter à l\agenda</string>
+    <string name="share_and_join_event">Participer et rejoindre la conversation</string>
+    <string name="see_conversation_event">Voir la conversation</string>
+
 
 </resources>
 
