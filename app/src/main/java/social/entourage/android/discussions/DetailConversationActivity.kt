@@ -365,7 +365,7 @@ class DetailConversationActivity : CommentActivity() {
         val editable = binding.commentMessage.editableText ?: return
         if (lastMentionStartIndex < 0) return
 
-        var baseUrl = BuildConfig.DEEP_LINKS_URL
+        var baseUrl = "https://" + BuildConfig.DEEP_LINKS_URL
         baseUrl = baseUrl.removeSuffix("/")
 
 
