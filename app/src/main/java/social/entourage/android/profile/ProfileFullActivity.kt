@@ -240,7 +240,9 @@ class ProfileFullActivity : BaseActivity()  {
                 binding.btnModifyPhotoProfile.visibility = View.GONE
             } else {
                 binding.ivProfile.visibility = View.VISIBLE
-                binding.btnModifyPhotoProfile.visibility = View.VISIBLE
+                if(isMe){
+                    binding.btnModifyPhotoProfile.visibility = View.VISIBLE
+                }
             }
         }
     }
