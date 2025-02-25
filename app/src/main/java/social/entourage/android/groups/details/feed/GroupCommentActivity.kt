@@ -261,8 +261,8 @@ class GroupCommentActivity : CommentActivity() {
 
         if (lastMentionStartIndex < 0) return
 
-        val baseUrl = BuildConfig.ENTOURAGE_URL
-
+        var baseUrl = "https://" + BuildConfig.DEEP_LINKS_URL
+        baseUrl = baseUrl.removeSuffix("/")
 
         val mentionHtml = """<a href="$baseUrl/app/users/${user.userId}">@${user.displayName}</a>"""
         val mentionSpanned = HtmlCompat.fromHtml(mentionHtml, HtmlCompat.FROM_HTML_MODE_LEGACY)
