@@ -19,7 +19,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginBottom="68dp"
+            android:layout_marginBottom="20dp"
             android:animateLayoutChanges="true"
             android:background="@color/light_beige"
             android:orientation="vertical"
@@ -112,6 +112,7 @@
             android:background="@color/white"
             android:gravity="center"
             android:orientation="vertical"
+
             android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
