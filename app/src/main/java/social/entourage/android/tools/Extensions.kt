@@ -39,25 +39,26 @@ import kotlin.math.roundToInt
 
 // Votre fonction customisée qui remplace les URLSpan par des URLSpan personnalisés
 fun TextView.setHyperlinkClickable() {
-    val pattern = Patterns.WEB_URL
-    val matcher = pattern.matcher(text)
-    val spannableString = SpannableString(text)
-    while (matcher.find()) {
-        val url = matcher.group()
-        // On crée un span personnalisé qui redirige vers votre méthode showWebView
-        spannableString.setSpan(object : android.text.style.URLSpan(url) {
-            override fun onClick(widget: android.view.View) {
-                // Remplacez cette ligne par votre logique (ici, on appelle showWebView de BaseActivity)
-                (widget.context as? BaseActivity)?.showWebView(url)
+    val spannable = SpannableString(text)
+    // Récupérer tous les URLSpan existants
+    val spans = spannable.getSpans(0, spannable.length, URLSpan::class.java)
+    spans.forEach { span ->
+        val start = spannable.getSpanStart(span)
+        val end = spannable.getSpanEnd(span)
+        spannable.removeSpan(span)
+        // Ajout d'un span personnalisé qui appelle showWebView
+        spannable.setSpan(object : URLSpan(span.url) {
+            override fun onClick(widget: View) {
+                (widget.context as? BaseActivity)?.showWebView(span.url)
             }
-        }, matcher.start(), matcher.end(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        }, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
     }
-    // On réaffecte le texte avec les spans personnalisés
-    setText(spannableString, TextView.BufferType.SPANNABLE)
-    movementMethod = LinkMovementMethod.getInstance()  // ou votre EntLinkMovementMethod si nécessaire
+    setText(spannable, TextView.BufferType.SPANNABLE)
+    movementMethod = LinkMovementMethod.getInstance()
     linksClickable = true
     setLinkTextColor(Color.BLUE)
 }
+
 
 fun TextView.displayHtml(textContent: String) {
     var processedText = textContent
