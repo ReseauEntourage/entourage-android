@@ -367,8 +367,10 @@ abstract class CreatePostActivity : AppCompatActivity() {
         var baseUrl = "https://" + BuildConfig.DEEP_LINKS_URL
         baseUrl = baseUrl.removeSuffix("/")
 
+        // Nettoyer le displayName pour ne conserver que des lettres (Unicode inclus)
+        val cleanedDisplayName = user.displayName?.replace(Regex("[^\\p{L}]"), "")  + ". "
 
-        val mentionHtml = """<a href="$baseUrl/app/users/${user.userId}">@${user.displayName}</a>"""
+        val mentionHtml = """<a href="$baseUrl/app/users/${user.userId}">@${cleanedDisplayName}</a>"""
         val mentionSpanned = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             Html.fromHtml(mentionHtml, Html.FROM_HTML_MODE_LEGACY)
         } else {
@@ -381,4 +383,5 @@ abstract class CreatePostActivity : AppCompatActivity() {
         hideMentionSuggestions()
         lastMentionStartIndex = -1
     }
+
 }

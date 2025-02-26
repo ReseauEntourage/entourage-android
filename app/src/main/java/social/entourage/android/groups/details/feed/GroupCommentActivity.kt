@@ -264,18 +264,21 @@ class GroupCommentActivity : CommentActivity() {
         var baseUrl = "https://" + BuildConfig.DEEP_LINKS_URL
         baseUrl = baseUrl.removeSuffix("/")
 
-        val mentionHtml = """<a href="$baseUrl/app/users/${user.userId}">@${user.displayName}</a>"""
+        // Nettoyer le displayName pour ne conserver que les lettres
+        val cleanedDisplayName = user.displayName?.replace(Regex("[^\\p{L}]"), "")  + ". "
+
+        val mentionHtml = """<a href="$baseUrl/app/users/${user.userId}">@${cleanedDisplayName}</a>"""
         val mentionSpanned = HtmlCompat.fromHtml(mentionHtml, HtmlCompat.FROM_HTML_MODE_LEGACY)
 
-        // On remplace la partie depuis '@' jusqu'à la position du curseur
+        // Remplacer le texte entre '@' et la position du curseur par la mention nettoyée
         editable.replace(lastMentionStartIndex, cursorPos, mentionSpanned)
 
-        // On positionne le curseur juste après la mention
+        // Positionner le curseur juste après la mention
         binding.commentMessage.setSelection(lastMentionStartIndex + mentionSpanned.length)
 
         hideMentionSuggestions()
         lastMentionStartIndex = -1
         smoothScrollCommentsToBottom()
-
     }
+
 }

@@ -262,8 +262,10 @@ class EventCommentActivity : CommentActivity() {
         var baseUrl = "https://" + BuildConfig.DEEP_LINKS_URL
         baseUrl = baseUrl.removeSuffix("/")
 
+        // Nettoyer le displayName pour ne conserver que des lettres (Unicode inclus)
+        val cleanedDisplayName = user.displayName?.replace(Regex("[^\\p{L}]"), "") + ". "
 
-        val mentionHtml = """<a href="$baseUrl/app/users/${user.userId}">@${user.displayName}</a>"""
+        val mentionHtml = """<a href="$baseUrl/app/users/${user.userId}">@${cleanedDisplayName}</a>"""
         val mentionSpanned = HtmlCompat.fromHtml(mentionHtml, HtmlCompat.FROM_HTML_MODE_LEGACY)
 
         // Remplace la partie depuis '@' jusqu'au curseur
@@ -275,6 +277,6 @@ class EventCommentActivity : CommentActivity() {
         hideMentionSuggestions()
         lastMentionStartIndex = -1
         smoothScrollCommentsToBottom()
-
     }
+
 }
