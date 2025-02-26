@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.text.Spannable
 import android.text.SpannableStringBuilder
 import android.text.style.ForegroundColorSpan
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -249,6 +250,11 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface, Surv
         // groupPresenter.getGroupMembers(groupId)
         groupPresenter.getGroup(groupId)
     }
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.d("BACK_STACK", "FeedActivity a été détruite !")
+    }
+
 
     private fun handleResponseGetGroupMembers(allMembers: MutableList<EntourageUser>?) {
         memberList.addAll(allMembers ?: emptyList())

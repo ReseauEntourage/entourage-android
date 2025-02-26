@@ -247,7 +247,6 @@ class ProfileFullActivity : BaseActivity()  {
         }
     }
     private fun setBackButton(){
-
         binding.iconBack.setOnClickListener{
             VibrationUtil.vibrate(this)
             this.finish()
@@ -765,6 +764,7 @@ class ProfileFullActivity : BaseActivity()  {
             userPresenter.getUser(user.id.toString())
         }
     }
+
 
     companion object {
         var isMe:Boolean = false

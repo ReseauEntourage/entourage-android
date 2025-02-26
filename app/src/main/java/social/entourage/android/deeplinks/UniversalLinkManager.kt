@@ -24,6 +24,7 @@ import social.entourage.android.home.pedago.PedagoDetailActivity
 import social.entourage.android.home.pedago.PedagoListActivity
 import social.entourage.android.profile.ProfileFullActivity
 import social.entourage.android.tools.utils.Const
+import timber.log.Timber
 
 class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback {
     /*private const val prodURL = "https://www.entourage.social"
@@ -44,8 +45,8 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
             Log.wtf("wtf", "Segment: $segment")
         }
         if (uri.host == stagingURL || uri.host == prodURL) {
+            Timber.d("Universal link: $uri")
             when {
-
                 pathSegments.contains("users") -> {
                     if (pathSegments.size > 2) {
                         val userId = pathSegments[2]

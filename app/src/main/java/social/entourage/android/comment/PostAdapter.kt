@@ -1074,10 +1074,10 @@ class PostAdapter(
         ProfileFullActivity.isMe = false
         userId?.let {
             ProfileFullActivity.userId = it.toString()
-            (context as? Activity)?.startActivityForResult(
+            (context as? Activity)?.startActivity(
                 Intent(context, ProfileFullActivity::class.java)
-                    .putExtra(Const.USER_ID, it),
-                0
+                    .putExtra(Const.USER_ID, it)
+                    .addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
             )
         }
     }
