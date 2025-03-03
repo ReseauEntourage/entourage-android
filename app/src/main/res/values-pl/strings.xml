@@ -2864,5 +2864,6 @@ Przeczytają tę wiadomość, gdy tylko dołączą do grupy.</string>
     <string name="add_to_agenda">Dodaj do kalendarza</string>
     <string name="share_and_join_event">Dołącz i weź udział w rozmowie</string>
     <string name="see_conversation_event">Zobacz rozmowę</string>
+    <string name="child_rules">Standardy ochrony dzieci</string>
 
 </resources>

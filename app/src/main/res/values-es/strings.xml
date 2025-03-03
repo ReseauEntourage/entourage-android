@@ -2848,5 +2848,6 @@ Leerán este mensaje tan pronto como se unan al grupo.</string>
     <string name="add_to_agenda">Añadir a la agenda</string>
     <string name="share_and_join_event">Participar y unirse a la conversación</string>
     <string name="see_conversation_event">Ver la conversación</string>
+    <string name="child_rules">Normas de protección infantil</string>
 
 </resources>

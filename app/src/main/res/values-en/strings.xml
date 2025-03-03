@@ -1798,5 +1798,6 @@
     <string name="add_to_agenda">Add to agenda</string>
     <string name="share_and_join_event">Join and participate in the conversation</string>
     <string name="see_conversation_event">See the conversation</string>
+    <string name="child_rules">Child protection standards</string>
 
 </resources>

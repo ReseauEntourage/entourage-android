@@ -15,7 +15,7 @@
 
             <include
                 android:id="@+id/header"
-                layout="@layout/new_header_bottom_sheet"
+                layout="@layout/header_help_about_activity"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintBottom_toTopOf="@id/title"
@@ -90,6 +90,13 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:label="@{@string/confidentiality}" />
+
+                    <include
+                        android:id="@+id/child_rules"
+                        layout="@layout/new_about_item"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:label="@{@string/child_rules}" />
 
                     <include
                         android:id="@+id/licence"

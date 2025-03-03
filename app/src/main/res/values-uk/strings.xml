@@ -2773,5 +2773,6 @@
     <string name="add_to_agenda">Додати до календаря</string>
     <string name="share_and_join_event">Приєднатися та взяти участь у розмові</string>
     <string name="see_conversation_event">Переглянути розмову</string>
+    <string name="child_rules">Стандарти захисту дітей</string>
 
 </resources>

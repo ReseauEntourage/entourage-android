@@ -132,6 +132,7 @@
     <string name="feedback">Noter l’app sur les stores</string>
     <string name="cgu">Conditions générales d’utilisation</string>
     <string name="confidentiality">Politique de Confidentialité</string>
+    <string name="child_rules">Normes de protection des enfants</string>
     <string name="licence">Licence open-source</string>
     <string name="cancel">Annuler</string>
     <string name="delete">Supprimer</string>
@@ -2267,6 +2268,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="website_url">https://www.entourage.social</string>
     <string name="more_events_url">https://www.facebook.com/EntourageReseauCivique/events/</string>
     <string name="privacy_policy_url">https://site.entourage.social/politique-de-confidentialite</string>
+    <string name="child_rule_url">https://site.entourage.social/normes-de-protection-des-enfants</string>
     <string name="donate_default_link">https://entourage.iraiser.eu/~share?cid=44</string>
 
     <string name="contact_email">app@entourage.social</string>
@@ -2954,6 +2956,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="add_to_agenda">Ajouter à l\agenda</string>
     <string name="share_and_join_event">Participer et rejoindre la conversation</string>
     <string name="see_conversation_event">Voir la conversation</string>
+
 
 
 </resources>
