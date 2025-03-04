@@ -673,12 +673,18 @@ class CommentsListAdapter(
     // Ici on les supprime purement et simplement.
     // --------------------------------------------------------------------------------------------
     private fun fixHtmlSpacing(html: String): String {
-        // Retire entièrement les <p ...> et </p>
-        val withoutOpeningP = html.replace(Regex("<p[^>]*>"), "")
-        val withoutClosingP = withoutOpeningP.replace("</p>", "")
-        return withoutClosingP
+        Timber.wtf("wtf fixHtmlSpacing $html")
+        var result = html
+        result = result.replaceFirst("^\\n+", "").replaceFirst("\\n+$", "")
+        result = result.replace(Regex("\\s+$"), "")
+        result = result.replace(Regex("<p[^>]*>"), "").replace(Regex("</p>"), "")
+        result = result.replace("\n", "<br>")
+        result = result.replaceFirst("^(<br>\\s*)+", "").replaceFirst("(<br>\\s*)+$", "")
+        result = result.replace(Regex("(<br>\\s*)+"), "<br>")
+        result = result.trim()
+        return result
     }
-
+    
     // --------------------------------------------------------------------------------------------
     // Convertit un Spanned contenant des URLSpan en un SpannableStringBuilder contenant
     // des ClickableSpan. Ainsi on peut gérer soi-même les clics (ex: deeplink in-app).
