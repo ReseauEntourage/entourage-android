@@ -14,6 +14,7 @@ import com.google.gson.Gson
 import social.entourage.android.R
 import social.entourage.android.api.model.Conversation
 import social.entourage.android.databinding.LayoutConversationHomeItemBinding
+import timber.log.Timber
 
 interface OnItemClick {
     fun onItemClick(position: Int)
@@ -52,12 +53,34 @@ class DiscussionsListAdapter(
                 }
             }
             else {
-                binding.imagePicto.isVisible = true
-                Glide.with(binding.image.context)
-                    .load(R.drawable.new_circle_fill_beige)
-                    .transform(CenterCrop(), CircleCrop())
-                    .into(binding.image)
-                binding.imagePicto.setImageResource(conversation.getPictoTypeFromSection())
+                conversation.type?.let { type ->
+                    if (type == "outing") {
+                        Timber.d("type : $type")
+                        if (conversation.imageUrl.isNullOrBlank()) {
+                            Glide.with(binding.image.context)
+                                .load(R.drawable.placeholder_my_event)
+                                .into(binding.image)
+                        } else {
+                            Glide.with(binding.image.context)
+                                .load(conversation.imageUrl)
+                                .error(R.drawable.placeholder_my_event) // Si l'URL est invalide, charger le placeholder
+                                .into(binding.image)
+                        }
+                    }else{
+                        conversation.user?.imageUrl?.let {
+                            Glide.with(binding.image.context)
+                                .load(it)
+                                .error(R.drawable.placeholder_user)
+                                .transform(CenterCrop(), CircleCrop())
+                                .into(binding.image)
+                        } ?: run {
+                            Glide.with(binding.image.context)
+                                .load(R.drawable.placeholder_user)
+                                .transform(CenterCrop(), CircleCrop())
+                                .into(binding.image)
+                        }
+                    }
+                }
             }
 
             if (conversation.memberCount > 2) {

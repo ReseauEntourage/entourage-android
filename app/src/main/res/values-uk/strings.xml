@@ -2774,5 +2774,7 @@
     <string name="share_and_join_event">Приєднатися та взяти участь у розмові</string>
     <string name="see_conversation_event">Переглянути розмову</string>
     <string name="child_rules">Стандарти захисту дітей</string>
-
+    <string name="filter_all">Усі</string>
+    <string name="filter_discussions">Обговорення</string>
+    <string name="filter_events">Події</string>
 </resources>

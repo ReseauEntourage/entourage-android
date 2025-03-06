@@ -921,6 +921,11 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface, Surv
 
     private fun updateButtonJoin() {
         val isMember = group?.member == true
+        if(!isMember){
+            binding.createPost.visibility = View.GONE
+        }else{
+            binding.createPost.visibility = View.VISIBLE
+        }
         val label = getString(if (isMember) R.string.member else R.string.join)
         val textColor = ContextCompat.getColor(
             requireContext(),

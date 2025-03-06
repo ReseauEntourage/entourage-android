@@ -21,6 +21,8 @@ class Conversation(
     val type: String? = null,
     @SerializedName("name")
     var title: String? = null,
+    @SerializedName("image_url")
+    var imageUrl: String? = null,
 
     @SerializedName("last_message")
     var lastMessage: LastMessage? = null,

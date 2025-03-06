@@ -2895,6 +2895,9 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="share_and_join_event">Participer et rejoindre la conversation</string>
     <string name="see_conversation_event">Voir la conversation</string>
     <string name="child_rules">Normes de protection des enfants</string>
+    <string name="filter_all">Toutes</string>
+    <string name="filter_discussions">Discussions</string>
+    <string name="filter_events">Événements</string>
 
 </resources>
 

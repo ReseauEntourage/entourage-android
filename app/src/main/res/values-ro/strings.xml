@@ -2861,5 +2861,7 @@ Ei vor citi acest mesaj imediat ce se vor alătura grupului.</string>
     <string name="share_and_join_event">Participă și alătură-te conversației</string>
     <string name="see_conversation_event">Vezi conversația</string>
     <string name="child_rules">Standardele de protecție a copiilor</string>
-
+    <string name="filter_all">Toate</string>
+    <string name="filter_discussions">Discuții</string>
+    <string name="filter_events">Evenimente</string>
 </resources>

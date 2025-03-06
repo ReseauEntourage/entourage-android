@@ -2851,5 +2851,7 @@ Sie werden diese Nachricht lesen, sobald sie der Gruppe beitreten.</string>
     <string name="share_and_join_event">Teilnehmen und der Unterhaltung beitreten</string>
     <string name="see_conversation_event">Gespräch ansehen</string>
     <string name="child_rules">Kinderschutzstandards</string>
-
+    <string name="filter_all">Alle</string>
+    <string name="filter_discussions">Diskussionen</string>
+    <string name="filter_events">Veranstaltungen</string>
 </resources>

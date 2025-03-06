@@ -2849,5 +2849,7 @@ Leerán este mensaje tan pronto como se unan al grupo.</string>
     <string name="share_and_join_event">Participar y unirse a la conversación</string>
     <string name="see_conversation_event">Ver la conversación</string>
     <string name="child_rules">Normas de protección infantil</string>
-
+    <string name="filter_all">Todas</string>
+    <string name="filter_discussions">Discusiones</string>
+    <string name="filter_events">Eventos</string>
 </resources>

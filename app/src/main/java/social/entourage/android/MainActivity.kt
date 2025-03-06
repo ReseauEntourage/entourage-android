@@ -372,8 +372,6 @@ class MainActivity : BaseSecuredActivity() {
         intent = null
     }
 
-
-
     fun ifEventLastDay(eventId:Int){
         eventPresenter.getEvent(eventId)
     }

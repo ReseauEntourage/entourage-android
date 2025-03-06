@@ -1799,5 +1799,7 @@
     <string name="share_and_join_event">Join and participate in the conversation</string>
     <string name="see_conversation_event">See the conversation</string>
     <string name="child_rules">Child protection standards</string>
-
+    <string name="filter_all">All</string>
+    <string name="filter_discussions">Discussions</string>
+    <string name="filter_events">Events</string>
 </resources>

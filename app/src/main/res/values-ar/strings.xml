@@ -2888,5 +2888,8 @@
     <string name="share_and_join_event">انضم وشارك في المحادثة</string>
     <string name="see_conversation_event">مشاهدة المحادثة</string>
     <string name="child_rules">معايير حماية الأطفال</string>
+    <string name="filter_all">جميع</string>
+    <string name="filter_discussions">المناقشات</string>
+    <string name="filter_events">الفعاليات</string>
 
 </resources>

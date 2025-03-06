@@ -294,4 +294,67 @@ class DiscussionsPresenter:ViewModel() {
             })
     }
 
+    fun fetchAllConversations(page: Int, per: Int) {
+        isLoading = true
+        EntourageApplication.get().apiModule.discussionsRequest.getAllConversations(page, per)
+            .enqueue(object : Callback<DiscussionsListWrapper> {
+                override fun onResponse(
+                    call: Call<DiscussionsListWrapper>,
+                    response: Response<DiscussionsListWrapper>
+                ) {
+                    response.body()?.let { wrapper ->
+                        if (wrapper.allConversations.size < per) isLastPage = true
+                        getAllMessages.value = wrapper.allConversations
+                    }
+                    isLoading = false
+                }
+
+                override fun onFailure(call: Call<DiscussionsListWrapper>, t: Throwable) {
+                    isLoading = false
+                }
+            })
+    }
+
+    fun fetchPrivateConversations(page: Int, per: Int) {
+        isLoading = true
+        EntourageApplication.get().apiModule.discussionsRequest.getPrivateConversations(page, per)
+            .enqueue(object : Callback<DiscussionsListWrapper> {
+                override fun onResponse(
+                    call: Call<DiscussionsListWrapper>,
+                    response: Response<DiscussionsListWrapper>
+                ) {
+                    response.body()?.let { wrapper ->
+                        if (wrapper.allConversations.size < per) isLastPage = true
+                        getAllMessages.value = wrapper.allConversations
+                    }
+                    isLoading = false
+                }
+
+                override fun onFailure(call: Call<DiscussionsListWrapper>, t: Throwable) {
+                    isLoading = false
+                }
+            })
+    }
+
+    fun fetchOutingConversations(page: Int, per: Int) {
+        isLoading = true
+        EntourageApplication.get().apiModule.discussionsRequest.getOutingConversations(page, per)
+            .enqueue(object : Callback<DiscussionsListWrapper> {
+                override fun onResponse(
+                    call: Call<DiscussionsListWrapper>,
+                    response: Response<DiscussionsListWrapper>
+                ) {
+                    response.body()?.let { wrapper ->
+                        if (wrapper.allConversations.size < per) isLastPage = true
+                        getAllMessages.value = wrapper.allConversations
+                    }
+                    isLoading = false
+                }
+
+                override fun onFailure(call: Call<DiscussionsListWrapper>, t: Throwable) {
+                    isLoading = false
+                }
+            })
+    }
+
 }
