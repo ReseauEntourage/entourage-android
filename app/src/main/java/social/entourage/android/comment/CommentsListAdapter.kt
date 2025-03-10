@@ -673,7 +673,6 @@ class CommentsListAdapter(
     // Ici on les supprime purement et simplement.
     // --------------------------------------------------------------------------------------------
     private fun fixHtmlSpacing(html: String): String {
-        Timber.wtf("wtf fixHtmlSpacing $html")
         var result = html
         result = result.replaceFirst("^\\n+", "").replaceFirst("\\n+$", "")
         result = result.replace(Regex("\\s+$"), "")

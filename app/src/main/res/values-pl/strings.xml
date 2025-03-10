@@ -2868,4 +2868,6 @@ Przeczytają tę wiadomość, gdy tylko dołączą do grupy.</string>
     <string name="filter_all">Wszystkie</string>
     <string name="filter_discussions">Dyskusje</string>
     <string name="filter_events">Wydarzenia</string>
+    <string name="title_button_see_event">Znajdź wszystkie informacje o wydarzeniu tutaj</string>
+
 </resources>

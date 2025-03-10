@@ -198,7 +198,7 @@ class MainActivity : BaseSecuredActivity() {
         }
         if(shouldLaunchQuizz){
             shouldLaunchQuizz = false
-            val urlString = "https://kahoot.it/challenge/0354666?challenge-id=45371e80-fe50-4be5-afec-b37e3d50ede2_1729004998521"
+            val urlString = "https://kahoot.it/challenge/45371e80-fe50-4be5-afec-b37e3d50ede2_1733228323615"
             WebViewFragment.newInstance(urlString, 0, true)
                 .show(supportFragmentManager, WebViewFragment.TAG)
         }
@@ -373,7 +373,7 @@ class MainActivity : BaseSecuredActivity() {
     }
 
     fun ifEventLastDay(eventId:Int){
-        eventPresenter.getEvent(eventId)
+        eventPresenter.getEvent(eventId.toString())
     }
 
     private fun handleEventResponse(event: Events?) {

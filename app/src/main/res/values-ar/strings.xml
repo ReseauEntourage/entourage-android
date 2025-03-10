@@ -2891,5 +2891,6 @@
     <string name="filter_all">جميع</string>
     <string name="filter_discussions">المناقشات</string>
     <string name="filter_events">الفعاليات</string>
+    <string name="title_button_see_event">ابحث عن جميع معلومات الحدث هنا</string>
 
 </resources>

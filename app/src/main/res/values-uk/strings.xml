@@ -2777,4 +2777,6 @@
     <string name="filter_all">Усі</string>
     <string name="filter_discussions">Обговорення</string>
     <string name="filter_events">Події</string>
+    <string name="title_button_see_event">Знайдіть усю інформацію про подію тут</string>
+
 </resources>

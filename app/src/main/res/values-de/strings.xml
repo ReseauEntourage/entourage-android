@@ -2854,4 +2854,7 @@ Sie werden diese Nachricht lesen, sobald sie der Gruppe beitreten.</string>
     <string name="filter_all">Alle</string>
     <string name="filter_discussions">Diskussionen</string>
     <string name="filter_events">Veranstaltungen</string>
+    <string name="title_button_see_event">Finden Sie hier alle Informationen zur Veranstaltung</string>
+
+
 </resources>

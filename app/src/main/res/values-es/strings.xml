@@ -2852,4 +2852,6 @@ Leerán este mensaje tan pronto como se unan al grupo.</string>
     <string name="filter_all">Todas</string>
     <string name="filter_discussions">Discusiones</string>
     <string name="filter_events">Eventos</string>
+    <string name="title_button_see_event">Encuentra toda la información del evento aquí</string>
+
 </resources>

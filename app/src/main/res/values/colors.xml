@@ -24,6 +24,7 @@
     <color name="orange_onboarding_item_selected_border">#80FF9C5D</color>
     <color name="organizer_background">#FEF5EB</color>
     <color name="organizer_text">#FFA500</color>
+    <color name="blue_button_see_event">#0F355B</color>
 
     <!-- Backgrounds -->
     <color name="background">@color/primary</color>

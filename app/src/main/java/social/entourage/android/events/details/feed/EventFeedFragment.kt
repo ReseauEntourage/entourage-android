@@ -64,6 +64,7 @@ import social.entourage.android.comment.PostAdapter
 import social.entourage.android.comment.ReactionInterface
 import social.entourage.android.comment.SurveyInteractionListener
 import social.entourage.android.databinding.FragmentFeedEventBinding
+import social.entourage.android.discussions.DetailConversationActivity
 import social.entourage.android.events.EventsPresenter
 import social.entourage.android.events.details.SettingsModalFragment
 import social.entourage.android.groups.details.feed.CallbackReportFragment
@@ -154,10 +155,29 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
         AnalyticsEvents.logEvent(AnalyticsEvents.Event_detail_main)
         binding.mapView.onCreate(savedInstanceState)
         binding.mapView.getMapAsync(this)
+        initDisussionButton()
     }
     override fun onStart() {
         super.onStart()
         binding.mapView.onStart()
+    }
+
+    fun initDisussionButton() {
+        binding.buttonJoin.setOnClickListener {
+            startActivity(
+                Intent(context, DetailConversationActivity::class.java)
+                    .putExtras(
+                        bundleOf(
+                            Const.ID to event?.id,
+                            Const.SHOULD_OPEN_KEYBOARD to false,
+                            Const.IS_CONVERSATION_1TO1 to true,
+                            Const.IS_MEMBER to true,
+                            Const.IS_CONVERSATION to true,
+
+                        )
+                    )
+            )
+        }
     }
 
 
@@ -203,6 +223,11 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
         if(latitude == 0.0 && longitude == 0.0){
             binding.mapView.visibility = View.GONE
             return
+        }
+        if(event?.member == true) {
+           binding.participateView.visibility = View.VISIBLE
+        }else{
+            binding.participateView.visibility = View.GONE
         }
         val latLng = LatLng(latitude, longitude)
         // Mise à jour de la carte
@@ -446,7 +471,7 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
     private fun fragmentResult() {
         setFragmentResultListener(Const.REQUEST_KEY_SHOULD_REFRESH) { _, bundle ->
             val shouldRefresh = bundle.getBoolean(Const.SHOULD_REFRESH)
-            if (shouldRefresh) eventPresenter.getEvent(eventId)
+            if (shouldRefresh) eventPresenter.getEvent(eventId.toString())
         }
     }
 
@@ -465,7 +490,7 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
     override fun onResume() {
         super.onResume()
         binding.mapView.onResume()
-        if (RefreshController.shouldRefreshEventFragment) eventPresenter.getEvent(eventId)
+        if (RefreshController.shouldRefreshEventFragment) eventPresenter.getEvent(eventId.toString())
 
     }
 
@@ -546,7 +571,7 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
 
         }
 
-        eventPresenter.getEvent(eventId)
+        eventPresenter.getEvent(eventId.toString())
     }
 
     fun requestInAppReview(context: Context) {
@@ -609,7 +634,7 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
             event?.let {event ->
                 event.member = !event.member
                 //handleCreatePostButton()
-                eventPresenter.getEvent(eventId)
+                eventPresenter.getEvent(eventId.toString())
                 if (event.metadata?.placeLimit != null && event.metadata.placeLimit != 0) {
                     showLimitPlacePopUp()
                 } else {
@@ -626,7 +651,7 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
         event?.let {event ->
             event.member = !event.member
             //handleCreatePostButton()
-            eventPresenter.getEvent(eventId)
+            eventPresenter.getEvent(eventId.toString())
         }
     }
 
@@ -674,7 +699,7 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
 
     private fun onFragmentResult() {
         setFragmentResultListener(Const.REQUEST_KEY_SHOULD_REFRESH) { _, bundle ->
-            if (bundle.getBoolean(Const.SHOULD_REFRESH)) eventPresenter.getEvent(eventId)
+            if (bundle.getBoolean(Const.SHOULD_REFRESH)) eventPresenter.getEvent(eventId.toString())
         }
     }
 

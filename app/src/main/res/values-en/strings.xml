@@ -1802,4 +1802,6 @@
     <string name="filter_all">All</string>
     <string name="filter_discussions">Discussions</string>
     <string name="filter_events">Events</string>
+    <string name="title_button_see_event">Find all event information here</string>
+
 </resources>

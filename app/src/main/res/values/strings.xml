@@ -2960,6 +2960,10 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="filter_discussions">Discussions</string>
     <string name="filter_events">Événements</string>
 
+    <string name="title_button_see_event">Retrouvez toutes les informations de l’événement Ici</string>
+
+
+
 
 </resources>
 
