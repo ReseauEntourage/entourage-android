@@ -33,6 +33,7 @@ import social.entourage.android.home.UnreadMessages
 import social.entourage.android.notifications.NotificationDemandActivity
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.utils.Const
+import social.entourage.android.tools.utils.VibrationUtil
 import kotlin.math.abs
 
 enum class FilterMode {
@@ -188,6 +189,7 @@ class DiscussionsMainFragment : Fragment() {
 
     private fun showDetail(position:Int) {
         val conversation = messagesList[position]
+        VibrationUtil.vibrate(requireContext())
 
         startActivity(
             Intent(context, DetailConversationActivity::class.java)

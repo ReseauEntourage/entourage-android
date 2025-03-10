@@ -36,6 +36,7 @@ class DiscussionsListAdapter(
 
             binding.layout.setOnClickListener {
                 onItemClickListener.onItemClick(position)
+
             }
             if (conversation.isOneToOne()) {
                 binding.imagePicto.isVisible = false

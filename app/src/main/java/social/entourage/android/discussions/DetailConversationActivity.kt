@@ -34,6 +34,7 @@ import social.entourage.android.report.DataLanguageStock
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.Utils
+import social.entourage.android.tools.utils.VibrationUtil
 import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -204,7 +205,8 @@ class DetailConversationActivity : CommentActivity() {
     private fun handleGetEvent(event: Events?) {
         event?.let {
            binding.btnSeeEvent.setOnClickListener {
-                val intent = Intent(this, EventFeedActivity::class.java)
+               VibrationUtil.vibrate(this)
+               val intent = Intent(this, EventFeedActivity::class.java)
                 intent.putExtra(Const.EVENT_ID,event.id)
                intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
                 startActivity(intent)

@@ -87,6 +87,7 @@ import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.CustomAlertDialog
 import social.entourage.android.tools.utils.Utils
 import social.entourage.android.tools.utils.Utils.enableCopyOnLongClick
+import social.entourage.android.tools.utils.VibrationUtil
 import social.entourage.android.tools.utils.px
 import social.entourage.android.tools.utils.underline
 import timber.log.Timber
@@ -164,6 +165,7 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
 
     fun initDisussionButton() {
         binding.buttonJoin.setOnClickListener {
+            VibrationUtil.vibrate(requireContext())
             startActivity(
                 Intent(context, DetailConversationActivity::class.java)
                     .addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
