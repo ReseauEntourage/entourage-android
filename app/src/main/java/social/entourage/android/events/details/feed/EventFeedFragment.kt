@@ -166,6 +166,7 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
         binding.buttonJoin.setOnClickListener {
             startActivity(
                 Intent(context, DetailConversationActivity::class.java)
+                    .addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
                     .putExtras(
                         bundleOf(
                             Const.ID to event?.id,

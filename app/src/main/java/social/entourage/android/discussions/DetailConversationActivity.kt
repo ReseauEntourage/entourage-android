@@ -206,6 +206,7 @@ class DetailConversationActivity : CommentActivity() {
            binding.btnSeeEvent.setOnClickListener {
                 val intent = Intent(this, EventFeedActivity::class.java)
                 intent.putExtra(Const.EVENT_ID,event.id)
+               intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
                 startActivity(intent)
            }
             if (event.metadata?.portraitThumbnailUrl.isNullOrBlank()) {
