@@ -227,6 +227,7 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
             binding.mapView.visibility = View.GONE
             return
         }
+        Timber.wtf("wtf event is member " + event?.member)
         if(event?.member == true) {
            binding.participateView.visibility = View.VISIBLE
         }else{
@@ -493,7 +494,7 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
     override fun onResume() {
         super.onResume()
         binding.mapView.onResume()
-        if (RefreshController.shouldRefreshEventFragment) eventPresenter.getEvent(eventId.toString())
+        eventPresenter.getEvent(eventId.toString())
 
     }
 

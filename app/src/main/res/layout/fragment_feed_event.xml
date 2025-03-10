@@ -181,6 +181,8 @@
                             android:background="@drawable/bg_green_light_radius_32"
                             app:drawableTint="@color/green"
                             android:drawablePadding="-50dp"
+                            android:visibility="gone"
+                            tools:visibility="visible"
                             app:drawableEndCompat="@drawable/new_check" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
