@@ -112,7 +112,7 @@ class SettingsDiscussionModalFragment : BottomSheetDialogFragment() {
     }
 
     private fun updateInputs() {
-        if (isOneToOne || isCreator) {
+        if (isCreator) {
             binding.quit.layout.isVisible = false
         }
         else {

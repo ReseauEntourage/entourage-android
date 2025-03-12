@@ -26,6 +26,7 @@ import social.entourage.android.api.model.Post
 import social.entourage.android.comment.CommentActivity
 import social.entourage.android.comment.CommentsListAdapter
 import social.entourage.android.comment.MentionAdapter
+import social.entourage.android.discussions.members.MembersConversationFragment
 import social.entourage.android.events.EventsPresenter
 import social.entourage.android.events.details.feed.EventFeedActivity
 import social.entourage.android.language.LanguageManager
@@ -103,17 +104,7 @@ class DetailConversationActivity : CommentActivity() {
         binding.header.iconSettings.setBackgroundColor(ContextCompat.getColor(this, R.color.transparent))
 
         // Ouvrir le profil auteur si conversation 1-to-1
-        if (isOne2One) {
-            binding.header.headerTitle.setOnClickListener {
-                ProfileFullActivity.isMe = false
-                ProfileFullActivity.userId = postAuthorID.toString()
-                startActivityForResult(
-                    Intent(this, ProfileFullActivity::class.java)
-                        .putExtra(Const.USER_ID, postAuthorID),
-                    0
-                )
-            }
-        }
+
 
         // Mise en place de la RecyclerView pour les suggestions de mention
         binding.mentionSuggestionsRecycler.layoutManager = LinearLayoutManager(this)
@@ -151,6 +142,21 @@ class DetailConversationActivity : CommentActivity() {
         if(conversation.memberCount > 2){
             Timber.wtf("wtf conversation member count " + conversation.memberCount)
             this.isOne2One = false
+        }
+        if (isOne2One) {
+            binding.header.headerTitle.setOnClickListener {
+                ProfileFullActivity.isMe = false
+                ProfileFullActivity.userId = postAuthorID.toString()
+                startActivityForResult(
+                    Intent(this, ProfileFullActivity::class.java)
+                        .putExtra(Const.USER_ID, postAuthorID),
+                    0
+                )
+            }
+        }else{
+            binding.header.headerTitle.setOnClickListener {
+                MembersConversationFragment.newInstance(this.id).show(supportFragmentManager, "")
+            }
         }
         if(conversation.type == "outing"){
             binding.layoutEventConv.visibility = View.VISIBLE
@@ -208,7 +214,14 @@ class DetailConversationActivity : CommentActivity() {
 
     private fun handleGetEvent(event: Events?) {
         event?.let {
-           binding.btnSeeEvent.setOnClickListener {
+            binding.header.headerTitle.setOnClickListener {
+                VibrationUtil.vibrate(this)
+                val intent = Intent(this, EventFeedActivity::class.java)
+                intent.putExtra(Const.EVENT_ID,event.id)
+                intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+                startActivity(intent)
+            }
+            binding.btnSeeEvent.setOnClickListener {
                VibrationUtil.vibrate(this)
                val intent = Intent(this, EventFeedActivity::class.java)
                 intent.putExtra(Const.EVENT_ID,event.id)

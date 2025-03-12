@@ -178,8 +178,6 @@ class CreateEventStepTwoFragment : Fragment() {
         }
         with(CommunicationHandler.eventEdited) {
             this?.let {
-                binding.layout.recurrenceTitle.root.isVisible = this.recurrence == null
-                binding.layout.recurrence.isVisible = this.recurrence == null
                 var locale = LanguageManager.getLocaleFromPreferences(requireContext())
                 val sdfDate = SimpleDateFormat(getString(R.string.events_date), locale)
                 val sdfTime = SimpleDateFormat(getString(R.string.events_time), locale)

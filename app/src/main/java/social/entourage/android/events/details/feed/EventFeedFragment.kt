@@ -156,32 +156,12 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
         AnalyticsEvents.logEvent(AnalyticsEvents.Event_detail_main)
         binding.mapView.onCreate(savedInstanceState)
         binding.mapView.getMapAsync(this)
-        initDisussionButton()
     }
     override fun onStart() {
         super.onStart()
         binding.mapView.onStart()
     }
 
-    fun initDisussionButton() {
-        binding.buttonJoin.setOnClickListener {
-            VibrationUtil.vibrate(requireContext())
-            startActivity(
-                Intent(context, DetailConversationActivity::class.java)
-                    .addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
-                    .putExtras(
-                        bundleOf(
-                            Const.ID to event?.id,
-                            Const.SHOULD_OPEN_KEYBOARD to false,
-                            Const.IS_CONVERSATION_1TO1 to true,
-                            Const.IS_MEMBER to true,
-                            Const.IS_CONVERSATION to true,
-
-                        )
-                    )
-            )
-        }
-    }
 
 
     override fun onPause() {
@@ -648,6 +628,21 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
                     shouldShowPopUp = false
                 }
             }
+            VibrationUtil.vibrate(requireContext())
+            startActivity(
+                Intent(context, DetailConversationActivity::class.java)
+                    .addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+                    .putExtras(
+                        bundleOf(
+                            Const.ID to event?.id,
+                            Const.SHOULD_OPEN_KEYBOARD to false,
+                            Const.IS_CONVERSATION_1TO1 to true,
+                            Const.IS_MEMBER to true,
+                            Const.IS_CONVERSATION to true,
+
+                            )
+                    )
+            )
         }
     }
 
