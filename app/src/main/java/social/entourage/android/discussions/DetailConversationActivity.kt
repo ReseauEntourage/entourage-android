@@ -148,6 +148,10 @@ class DetailConversationActivity : CommentActivity() {
     // -----------------------------------------------------------------------------------
     private fun handleDetailConversation(conversation: Conversation?) {
         conversation ?: return
+        if(conversation.memberCount > 2){
+            Timber.wtf("wtf conversation member count " + conversation.memberCount)
+            this.isOne2One = false
+        }
         if(conversation.type == "outing"){
             binding.layoutEventConv.visibility = View.VISIBLE
             binding.layoutInfoNewDiscussion.visibility = View.GONE

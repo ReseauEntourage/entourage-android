@@ -94,7 +94,6 @@ class SettingsDiscussionModalFragment : BottomSheetDialogFragment() {
         binding.header.title = getString(R.string.discussion_settings_title)
         if (isOneToOne) {
             binding.profile.label = getString(R.string.discussion_settings_profil) //discussion_settings_members
-
             binding.layoutBlock.isVisible = !imBlocker
             binding.block.text = getString(R.string.discussion_block_title)
             binding.blockSub.text = String.format(getString(R.string.discussion_block_subtitle),username)

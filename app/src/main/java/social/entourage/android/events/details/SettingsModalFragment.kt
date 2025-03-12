@@ -105,6 +105,10 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
             cancel.text = getString(R.string.cancel_event)
             leave.text = getString(R.string.leave_event)
             editRecurrence.label = getString(R.string.modify_recurrence)
+            val me = EntourageApplication.me(requireContext())
+            if (me?.roles?.isEmpty() == true) {
+                editRecurrence.root.isVisible = false
+            }
         }
     }
 
