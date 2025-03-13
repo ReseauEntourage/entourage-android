@@ -558,6 +558,24 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
         eventPresenter.getEvent(eventId.toString())
     }
 
+    fun goDiscussion(){
+        VibrationUtil.vibrate(requireContext())
+        startActivity(
+            Intent(context, DetailConversationActivity::class.java)
+                .addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+                .putExtras(
+                    bundleOf(
+                        Const.ID to event?.id,
+                        Const.SHOULD_OPEN_KEYBOARD to false,
+                        Const.IS_CONVERSATION_1TO1 to true,
+                        Const.IS_MEMBER to true,
+                        Const.IS_CONVERSATION to true,
+
+                        )
+                )
+        )
+    }
+
     fun requestInAppReview(context: Context) {
         val manager = ReviewManagerFactory.create(context)
         val request = manager.requestReviewFlow()
@@ -581,20 +599,20 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
                         if (event?.member==false){
                             eventPresenter.joinAsOrganizer(eventId)
                         }else{
-                            eventPresenter.leaveEvent(eventId)
+                            goDiscussion()
                         }
                     }, onYes = {
                         if (event?.member==false){
                             eventPresenter.participate(eventId)
                         }else{
-                            eventPresenter.leaveEvent(eventId)
+                            goDiscussion()
                         }
                     })
             }else{
                 if (event?.member==false){
                     eventPresenter.participate(eventId)
                 }else{
-                    eventPresenter.leaveEvent(eventId)
+                    goDiscussion()
                 }
             }
         }
@@ -628,22 +646,9 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
                     shouldShowPopUp = false
                 }
             }
-            VibrationUtil.vibrate(requireContext())
-            startActivity(
-                Intent(context, DetailConversationActivity::class.java)
-                    .addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
-                    .putExtras(
-                        bundleOf(
-                            Const.ID to event?.id,
-                            Const.SHOULD_OPEN_KEYBOARD to false,
-                            Const.IS_CONVERSATION_1TO1 to true,
-                            Const.IS_MEMBER to true,
-                            Const.IS_CONVERSATION to true,
-
-                            )
-                    )
-            )
+            goDiscussion()
         }
+
     }
 
     private fun handleLeaveResponse(isParticipating: Boolean) {
