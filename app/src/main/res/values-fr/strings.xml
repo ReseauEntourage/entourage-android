@@ -394,7 +394,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="feed_event_date">"dd MMMM yyyy"</string>
     <string name="feed_event_time">HH\'h\'mm</string>
     <string name="participate">Participer</string>
-    <string name="participating">Participe</string>
+    <string name="participating">je participe</string>
     <string name="geoUri">http://maps.google.com/maps?q=loc:%s</string>
     <string name="event_settings">Paramètres de l\'événement</string>
     <string name="event_notification_all">Toute l\'activité de l\'événement</string>

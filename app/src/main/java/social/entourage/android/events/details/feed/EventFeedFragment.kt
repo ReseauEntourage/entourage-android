@@ -368,6 +368,11 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
                 )
             }
         }
+        if(event?.member == true){
+            binding.buttonJoin.text = getString(R.string.see_conversation_event)
+        }else{
+            binding.buttonJoin.text = getString(R.string.share_and_join_event)
+        }
         openGoogleMaps()
     }
 
