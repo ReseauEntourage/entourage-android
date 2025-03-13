@@ -594,18 +594,17 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
             requestInAppReview(requireContext())
             val meUser = EntourageApplication.me(activity)
             if(meUser?.roles?.contains("Ambassadeur") == true){
+                if(event?.member==true){
+                    goDiscussion()
+                }
                 CustomAlertDialog.showAmbassadorWithTwoButton(requireContext(),
                     onNo = {
                         if (event?.member==false){
                             eventPresenter.joinAsOrganizer(eventId)
-                        }else{
-                            goDiscussion()
                         }
                     }, onYes = {
                         if (event?.member==false){
                             eventPresenter.participate(eventId)
-                        }else{
-                            goDiscussion()
                         }
                     })
             }else{
