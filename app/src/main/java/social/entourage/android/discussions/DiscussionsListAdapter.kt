@@ -14,6 +14,7 @@ import com.google.gson.Gson
 import social.entourage.android.R
 import social.entourage.android.api.model.Conversation
 import social.entourage.android.databinding.LayoutConversationHomeItemBinding
+import social.entourage.android.tools.utils.Utils
 import timber.log.Timber
 
 interface OnItemClick {
@@ -86,7 +87,7 @@ class DiscussionsListAdapter(
 
             if (conversation.memberCount > 2) {
                 var namesText = ""
-                namesText = conversation.user?.displayName +  " + " + (conversation.memberCount.minus(1) ) + " membres"
+                namesText = conversation.members?.get(0)?.displayName +", " + conversation.members?.get(1)?.displayName + "..."
                 binding.name.text = namesText
             } else {
                 binding.name.text = conversation.title
@@ -95,8 +96,7 @@ class DiscussionsListAdapter(
             if(conversation.type == "outing"){
                binding.name.text = conversation.title
             }
-
-
+            
             if (conversation.getRolesWithPartnerFormated()?.isEmpty() == false) {
                 binding.role.isVisible = true
                 binding.role.text = conversation.getRolesWithPartnerFormated()

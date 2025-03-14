@@ -244,6 +244,7 @@ class DetailConversationActivity : CommentActivity() {
             binding.header.headerSubtitle.visibility = View.VISIBLE
             binding.header.headerTitle.text = event.title
             binding.header.headerSubtitle.text = formatDate(event.metadata?.startsAt.toString())
+            binding.emptyState.visibility = View.GONE
         }
     }
     fun formatDate(inputDate: String): String {
