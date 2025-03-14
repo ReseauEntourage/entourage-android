@@ -96,6 +96,8 @@ class DiscussionsListAdapter(
             if(conversation.type == "outing"){
                binding.name.text = conversation.title
                 binding.date.visibility = View.GONE
+            }else{
+                binding.date.visibility = View.VISIBLE
             }
 
             if (conversation.getRolesWithPartnerFormated()?.isEmpty() == false) {
