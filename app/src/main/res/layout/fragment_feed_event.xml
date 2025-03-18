@@ -340,9 +340,10 @@
                                         app:layout_constraintStart_toStartOf="parent"
                                         app:layout_constraintTop_toTopOf="parent"
                                         android:text="@string/event_btn_share_title"
+                                        android:textSize="15sp"
                                         android:textColor="@color/black"
                                         android:background="@drawable/shape_button_v9_negative"
-                                        android:drawablePadding="16dp"
+                                        android:drawablePadding="10dp"
                                         app:drawableTint="@color/black"
                                         app:drawableEndCompat="@drawable/share_icon" />
                                 </androidx.constraintlayout.widget.ConstraintLayout>
@@ -363,10 +364,11 @@
                                         android:fontFamily="@font/quicksand_bold"
                                         app:layout_constraintStart_toStartOf="parent"
                                         app:layout_constraintTop_toTopOf="parent"
+                                        android:textSize="15sp"
                                         android:text="@string/add_to_agenda"
                                         android:textColor="@color/black"
                                         android:background="@drawable/shape_button_v9_negative"
-                                        android:drawablePadding="16dp"
+                                        android:drawablePadding="10dp"
                                         app:drawableTint="@color/black"
                                         app:drawableEndCompat="@drawable/new_calendar" />
                                 </androidx.constraintlayout.widget.ConstraintLayout>

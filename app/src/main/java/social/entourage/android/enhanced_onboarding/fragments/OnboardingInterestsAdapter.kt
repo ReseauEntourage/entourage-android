@@ -22,7 +22,7 @@ class OnboardingInterestsAdapter(private val context: Context, val isFromInteres
                 binding.tvInterestSubTitleFromRight.visibility = View.GONE
             }else{
                 binding.tvInterestTitleFromRight.text = interest.title
-                binding.tvInterestSubTitleFromRight.text = interest.subtitle
+                 binding.tvInterestSubTitleFromRight.text = interest.subtitle
                 binding.tvInterestTitle.visibility = View.GONE
                 binding.tvInterestTitleFromRight.visibility = View.VISIBLE
                 binding.tvInterestSubTitleFromRight.visibility = View.VISIBLE
