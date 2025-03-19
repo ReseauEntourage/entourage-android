@@ -106,13 +106,10 @@ class SettingsDiscussionModalFragment : BottomSheetDialogFragment() {
         if(isSeveralPersonneInConversation){
             binding.layoutBlock.isVisible = false
         }
-        else{
-            binding.layoutBlock.isVisible = true
-        }
     }
 
     private fun updateInputs() {
-        if (isCreator) {
+        if (isCreator || isOneToOne) {
             binding.quit.layout.isVisible = false
         }
         else {

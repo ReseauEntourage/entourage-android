@@ -22,6 +22,7 @@ enum class UserTypeSelection(val pos: Int) {
     NEIGHBOUR(1),
     ALONE(2),
     ASSOS(3),
+    BOTH(4),
     NONE(0);
 
     fun getGoalString(): String {
@@ -30,6 +31,7 @@ enum class UserTypeSelection(val pos: Int) {
             ALONE -> User.USER_GOAL_ALONE
             ASSOS -> User.USER_GOAL_ASSO
             NONE -> User.USER_GOAL_NONE
+            BOTH ->  User.USER_GOAL_BOTH
         }
     }
 }

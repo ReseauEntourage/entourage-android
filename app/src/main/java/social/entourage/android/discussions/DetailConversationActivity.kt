@@ -81,7 +81,7 @@ class DetailConversationActivity : CommentActivity() {
 
         // Récupération éventuelle de certains extras
         hasToShowFirstMessage = intent.getBooleanExtra(Const.HAS_TO_SHOW_MESSAGE, false)
-
+        binding.emptyState.visibility = View.GONE
         // Observateurs sur le Presenter
         with(discussionsPresenter) {
             // Observateur : liste des commentaires
@@ -213,6 +213,7 @@ class DetailConversationActivity : CommentActivity() {
     }
 
     private fun handleGetEvent(event: Events?) {
+        binding.emptyState.visibility = View.GONE
         event?.let {
             binding.header.headerTitle.setOnClickListener {
                 VibrationUtil.vibrate(this)

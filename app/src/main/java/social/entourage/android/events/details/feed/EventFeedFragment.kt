@@ -8,6 +8,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.provider.CalendarContract
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -131,6 +132,7 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
             // Return the original insets so they aren’t consumed
             windowInsets
         }
+        reduceButtonSizeImage()
         return binding.root
     }
 
@@ -160,6 +162,31 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
     override fun onStart() {
         super.onStart()
         binding.mapView.onStart()
+    }
+
+    fun reduceButtonSizeImage(){
+        // Pour le bouton de partage
+        binding.bigBtnShare.post {
+            val shareDrawable = ContextCompat.getDrawable(requireContext(), R.drawable.share_icon)
+            shareDrawable?.let {
+                val sizeInPx = TypedValue.applyDimension(
+                    TypedValue.COMPLEX_UNIT_DIP, 14f, resources.displayMetrics
+                ).toInt()
+                it.setBounds(0, 0, sizeInPx, sizeInPx)
+                binding.bigBtnShare.setCompoundDrawablesRelative(null, null, it, null)
+            }
+        }
+        binding.btnAddCalendar.post {
+            val calendarDrawable = ContextCompat.getDrawable(requireContext(), R.drawable.new_calendar)
+            calendarDrawable?.let {
+                val sizeInPx = TypedValue.applyDimension(
+                    TypedValue.COMPLEX_UNIT_DIP, 14f, resources.displayMetrics
+                ).toInt()
+                it.setBounds(0, 0, sizeInPx, sizeInPx)
+                binding.btnAddCalendar.setCompoundDrawablesRelative(null, null, it, null)
+            }
+        }
+
     }
 
 
@@ -207,11 +234,12 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
             binding.mapView.visibility = View.GONE
             return
         }
-        Timber.wtf("wtf event is member " + event?.member)
         if(event?.member == true) {
            binding.participateView.visibility = View.VISIBLE
+           binding.btnAddCalendar.visibility = View.VISIBLE
         }else{
             binding.participateView.visibility = View.GONE
+            binding.btnAddCalendar.visibility = View.GONE
         }
         val latLng = LatLng(latitude, longitude)
         // Mise à jour de la carte
@@ -508,7 +536,6 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
                     CalendarContract.Events.AVAILABILITY_BUSY
                 )
             requireContext().startActivity(intent)
-
         }
 
         binding.bigBtnShare.setOnClickListener {
@@ -573,6 +600,7 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
                         Const.ID to event?.id,
                         Const.SHOULD_OPEN_KEYBOARD to false,
                         Const.IS_CONVERSATION_1TO1 to true,
+                        Const.IS_CONVERSATION_1TO1 to false,
                         Const.IS_MEMBER to true,
                         Const.IS_CONVERSATION to true,
 
@@ -645,12 +673,13 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
                     showLimitPlacePopUp()
                 } else {
                     if (shouldShowPopUp){
-                        Utils.showAddToCalendarPopUp(requireContext(), event.toEventUi(requireContext()))
+                        goDiscussion()
+                    }else{
+                        goDiscussion()
                     }
                     shouldShowPopUp = false
                 }
             }
-            goDiscussion()
         }
 
     }
@@ -669,7 +698,10 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
             getString(R.string.event_limited_places_title),
             getString(R.string.event_limited_places_subtitle),
             getString(R.string.button_OK)
-        )
+        ) {
+            goDiscussion()
+        }
+
     }
 
     private fun handleMetaData(tags: Tags?) {
