@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.google.gson.Gson
 import social.entourage.android.R
 import social.entourage.android.api.model.Conversation
@@ -61,10 +62,12 @@ class DiscussionsListAdapter(
                         if (conversation.imageUrl.isNullOrBlank()) {
                             Glide.with(binding.image.context)
                                 .load(R.drawable.placeholder_my_event)
+                                .transform(CenterCrop(),RoundedCorners(10)) // Ajout des arrondis de 5dp
                                 .into(binding.image)
                         } else {
                             Glide.with(binding.image.context)
                                 .load(conversation.imageUrl)
+                                .transform(CenterCrop(),RoundedCorners(10)) // Ajout des arrondis de 5dp
                                 .error(R.drawable.placeholder_my_event) // Si l'URL est invalide, charger le placeholder
                                 .into(binding.image)
                         }

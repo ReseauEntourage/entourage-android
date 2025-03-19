@@ -109,7 +109,7 @@ class SettingsDiscussionModalFragment : BottomSheetDialogFragment() {
     }
 
     private fun updateInputs() {
-        if (isCreator || isOneToOne) {
+        if (isCreator || isOneToOne || isEvent ) {
             binding.quit.layout.isVisible = false
         }
         else {
@@ -202,6 +202,7 @@ class SettingsDiscussionModalFragment : BottomSheetDialogFragment() {
         private const val ARG_BLOCKED = "imBlocker"
         const val TAG = "SettingsDiscussionModalFragment"
         var isSeveralPersonneInConversation = false
+        var isEvent = false
         fun newInstance(userId:Int?,conversationId:Int?,isOneToOne:Boolean, username:String?,imBlocker:Boolean? = null): SettingsDiscussionModalFragment {
             val fragment = SettingsDiscussionModalFragment()
             val args = Bundle()

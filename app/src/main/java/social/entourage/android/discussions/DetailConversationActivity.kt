@@ -14,6 +14,7 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import kotlinx.coroutines.launch
 import social.entourage.android.BuildConfig
 import social.entourage.android.EntourageApplication
@@ -165,6 +166,7 @@ class DetailConversationActivity : CommentActivity() {
         }else{
             binding.layoutEventConv.visibility = View.GONE
             binding.header.headerSubtitle.visibility = View.GONE
+            SettingsDiscussionModalFragment.isEvent = false
         }
 
         // Parcourt la liste de messages pour détecter l'éventuel rôle "Équipe Entourage"
@@ -215,6 +217,7 @@ class DetailConversationActivity : CommentActivity() {
     private fun handleGetEvent(event: Events?) {
         binding.emptyState.visibility = View.GONE
         event?.let {
+            SettingsDiscussionModalFragment.isEvent = true
             binding.header.headerTitle.setOnClickListener {
                 VibrationUtil.vibrate(this)
                 val intent = Intent(this, EventFeedActivity::class.java)
@@ -238,6 +241,7 @@ class DetailConversationActivity : CommentActivity() {
                 binding.header.ivEvent.visibility = View.VISIBLE
                 Glide.with(this)
                     .load(event.metadata?.portraitThumbnailUrl)
+                    .transform(RoundedCorners(5)) // Ajout des arrondis de 5dp
                     .error(R.drawable.placeholder_my_event) // Si l'URL est invalide, charger le placeholder
                     .into(binding.header.ivEvent)
             }
