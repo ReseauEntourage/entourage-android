@@ -59,7 +59,7 @@ import social.entourage.android.groups.GroupModel
 import social.entourage.android.groups.GroupPresenter
 import social.entourage.android.groups.details.GroupDetailsFragment
 import social.entourage.android.groups.details.members.MembersType
-import social.entourage.android.homev2.HomeEventAdapter
+import social.entourage.android.home.HomeEventAdapter
 import social.entourage.android.members.MembersActivity
 import social.entourage.android.report.DataLanguageStock
 import social.entourage.android.report.ReportModalFragment

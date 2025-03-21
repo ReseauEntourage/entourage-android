@@ -1,13 +1,11 @@
-package social.entourage.android.homev2
+package social.entourage.android.home
 
 import android.content.Context
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.compose.ui.graphics.Color
 import androidx.fragment.app.DialogFragment
 import social.entourage.android.R
 import social.entourage.android.databinding.DialogDiscussionMainTestBinding

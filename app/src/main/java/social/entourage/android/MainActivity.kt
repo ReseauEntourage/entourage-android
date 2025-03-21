@@ -50,7 +50,7 @@ import social.entourage.android.events.EventsPresenter
 import social.entourage.android.guide.GDSMainActivity
 import social.entourage.android.home.CommunicationHandlerBadgeViewModel
 import social.entourage.android.home.UnreadMessages
-import social.entourage.android.homev2.EventConfirmationDialogFragment
+import social.entourage.android.home.EventConfirmationDialogFragment
 import social.entourage.android.language.LanguageManager
 import social.entourage.android.main_filter.MainFilterActivity
 import social.entourage.android.notifications.NotificationActionManager
