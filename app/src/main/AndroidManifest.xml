@@ -76,9 +76,6 @@
             android:name=".onboarding.onboard.OnboardingEndActivity"
             android:exported="false" />
         <activity
-            android:name=".tools.view.VideoCallActivity"
-            android:exported="false" />
-        <activity
             android:name=".welcome.WelcomeOneActivity"
             android:exported="false" />
         <activity android:name=".enhanced_onboarding.EnhancedOnboarding"
@@ -228,6 +225,16 @@
         <meta-data
             android:name="google_analytics_adid_collection_enabled"
             android:value="false" />
+
+        <receiver android:name=".widgets.WidgetMainProvider" android:exported="true">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_main_info" />
+        </receiver>
 
 
         <activity

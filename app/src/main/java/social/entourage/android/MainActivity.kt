@@ -278,6 +278,12 @@ class MainActivity : BaseSecuredActivity() {
         intent.action?.let { action ->
             checkIntentAction(action, intent.extras)
         }
+        val isFromWidget = intent.getBooleanExtra("isFromWidget", false)
+        Log.wtf("wtf" , "isFromWidget : $isFromWidget")
+        if (isFromWidget) {
+            goEvent()
+            return
+        }
         val fromWelcomeActivity = intent.getBooleanExtra("fromWelcomeActivity", false)
         val fromWelcomeActivityThreeEvent = intent.getBooleanExtra("fromWelcomeActivityThreeEvent", false)
         val fromWelcomeActivityThreeDemand = intent.getBooleanExtra("fromWelcomeActivityThreeDemand", false)
