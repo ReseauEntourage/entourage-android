@@ -11,7 +11,7 @@ import kotlinx.serialization.*
 import kotlinx.serialization.json.*
 
 object MistralApi {
-    private const val API_KEY = "T3oOFBoCWMyZjc70PjbDweDrUxXMP11H"
+    private const val API_KEY = ""
     private const val URL = "https://api.mistral.ai/v1/chat/completions"
 
     private val client = HttpClient {

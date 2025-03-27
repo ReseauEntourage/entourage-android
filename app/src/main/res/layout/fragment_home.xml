@@ -20,6 +20,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:lottie_rawRes="@raw/chatbot_anim"
+        android:visibility="gone"
         />
 
     <ProgressBar
