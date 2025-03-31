@@ -6,6 +6,7 @@ import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.Html
+import android.text.TextUtils
 import android.text.TextWatcher
 import android.view.View
 import androidx.core.content.ContextCompat
@@ -193,6 +194,18 @@ class DetailConversationActivity : CommentActivity() {
             val convMemberCount = conversation.memberCount
             binding.header.title = "$displayName + ${convMemberCount - 1} membres"
         }
+        if (conversation.memberCount > 2 && conversation.members != null) {
+            val names = conversation.members
+                .take(5) // prendre les 3 premiers
+                .mapNotNull { it?.displayName } // éviter les nulls
+                .map {
+                    if (it.length > 2) it.dropLast(2) else it
+                }
+            val namesText = names.joinToString(",")
+            binding.header.title = namesText
+        } else {
+            binding.header.title = conversation.title
+        }
 
         // Bloqueurs ?
         if (conversation.hasBlocker()) {
@@ -241,7 +254,7 @@ class DetailConversationActivity : CommentActivity() {
                 binding.header.ivEvent.visibility = View.VISIBLE
                 Glide.with(this)
                     .load(event.metadata?.portraitThumbnailUrl)
-                    .transform(RoundedCorners(5)) // Ajout des arrondis de 5dp
+                    .transform(RoundedCorners(10)) // Ajout des arrondis de 5dp
                     .error(R.drawable.placeholder_my_event) // Si l'URL est invalide, charger le placeholder
                     .into(binding.header.ivEvent)
             }

@@ -28,7 +28,7 @@
                 android:fontFamily="@font/nunitosans_regular"
                 android:text="@string/onboard_phase3_entour_desc"
                 android:textColor="@color/pre_onboard_black"
-                android:textSize="13sp"
+                android:textSize="15sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/ui_onboard_consent_check"

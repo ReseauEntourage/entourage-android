@@ -1,6 +1,7 @@
 package social.entourage.android.discussions
 
 import android.graphics.Typeface
+import android.text.TextUtils
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -88,10 +89,21 @@ class DiscussionsListAdapter(
                 }
             }
 
-            if (conversation.memberCount > 2) {
-                var namesText = ""
-                namesText = conversation.members?.get(0)?.displayName +", " + conversation.members?.get(1)?.displayName + "..."
-                binding.name.text = namesText
+            if (conversation.memberCount > 2 && conversation.members != null) {
+                val names = conversation.members
+                    .take(5) // prendre les 3 premiers
+                    .mapNotNull { it?.displayName } // éviter les nulls
+                    .map {
+                        if (it.length > 2) it.dropLast(2) else it
+                    }
+
+                val namesText = names.joinToString(",")
+
+                binding.name.apply {
+                    text = namesText
+                    isSingleLine = true
+                    ellipsize = TextUtils.TruncateAt.END
+                }
             } else {
                 binding.name.text = conversation.title
             }
