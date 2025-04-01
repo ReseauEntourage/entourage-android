@@ -97,10 +97,10 @@ class DiscussionsListAdapter(
                     .take(5) // prendre les 5 premiers autres membres
                     .mapNotNull { it?.displayName } // éviter les nulls
                     .map {
-                        if (it.length > 2) it.dropLast(2) else it
+                        if (it.length > 2) it.dropLast(3) else it
                     }
                 Timber.wtf("wtf ${Gson().toJson(names)}")
-                val namesText = names.joinToString(",")
+                val namesText = names.joinToString(", ")
                 binding.name.apply {
                     text = namesText
                     isSingleLine = true
