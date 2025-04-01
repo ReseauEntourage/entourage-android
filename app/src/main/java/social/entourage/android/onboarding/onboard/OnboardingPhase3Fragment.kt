@@ -133,7 +133,7 @@ class OnboardingPhase3Fragment : Fragment(), OnboardingChoosePlaceCallback {
             updateTypes()
         }
     }
-    
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         callback = (activity as? OnboardingStartCallback)

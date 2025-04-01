@@ -91,8 +91,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
                         android:text="@string/onboard_phase3_place_title"
+                        android:fontFamily="@font/nunitosans_bold"
                         android:textColor="@color/onboard_black_36"
-                        android:textStyle="bold"
                         app:layout_constraintStart_toEndOf="@+id/image"
                         app:layout_constraintTop_toTopOf="parent" />
 
