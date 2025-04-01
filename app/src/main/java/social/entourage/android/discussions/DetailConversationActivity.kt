@@ -195,12 +195,15 @@ class DetailConversationActivity : CommentActivity() {
             binding.header.title = "$displayName + ${convMemberCount - 1} membres"
         }
         if (conversation.memberCount > 2 && conversation.members != null) {
+            val currentUserId = EntourageApplication.get().me()?.id
             val names = conversation.members
-                .take(5) // prendre les 3 premiers
+                .filter { it?.id != currentUserId } // exclure le current user
+                .take(5) // prendre les 5 premiers autres membres
                 .mapNotNull { it?.displayName } // éviter les nulls
                 .map {
                     if (it.length > 2) it.dropLast(2) else it
                 }
+
             val namesText = names.joinToString(",")
             binding.header.title = namesText
         } else {

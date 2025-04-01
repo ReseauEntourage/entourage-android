@@ -13,6 +13,7 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.google.gson.Gson
+import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.api.model.Conversation
 import social.entourage.android.databinding.LayoutConversationHomeItemBinding
@@ -90,15 +91,16 @@ class DiscussionsListAdapter(
             }
 
             if (conversation.memberCount > 2 && conversation.members != null) {
+                val currentUserId = EntourageApplication.get().me()?.id
                 val names = conversation.members
-                    .take(5) // prendre les 3 premiers
+                    .filter { it?.id != currentUserId } // exclure le current user
+                    .take(5) // prendre les 5 premiers autres membres
                     .mapNotNull { it?.displayName } // éviter les nulls
                     .map {
                         if (it.length > 2) it.dropLast(2) else it
                     }
-
+                Timber.wtf("wtf ${Gson().toJson(names)}")
                 val namesText = names.joinToString(",")
-
                 binding.name.apply {
                     text = namesText
                     isSingleLine = true

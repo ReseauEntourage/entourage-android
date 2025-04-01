@@ -59,28 +59,6 @@ class OnboardingPhase3Fragment : Fragment(), OnboardingChoosePlaceCallback {
             fg.show(parentFragmentManager,"")
         }
 
-        binding.uiLayoutEntour.view.setOnClickListener {
-            isEntour = ! isEntour
-            updateBackgroundLayoutEntour(isEntour)
-            updateTypes()
-        }
-        binding.uiLayoutBeentour.view.setOnClickListener {
-
-            isBeEntour = ! isBeEntour
-            if(isBeEntour){
-                EnhancedOnboarding.preference = "contribution"
-            }else{
-                EnhancedOnboarding.preference = ""
-            }
-            updateBackgroundLayoutBeenEntour(isBeEntour)
-            updateTypes()
-        }
-        binding.uiLayoutAsso?.setOnClickListener {
-            isAsso = ! isAsso
-
-            updateTypes()
-        }
-
         //if click on asso , reset all other values
         isBeEntour = false
         isEntour = false
@@ -137,11 +115,21 @@ class OnboardingPhase3Fragment : Fragment(), OnboardingChoosePlaceCallback {
 
         binding.uiLayoutEntourBeentourBoth.view.setOnClickListener {
             isBothEntour = !isBothEntour
-            isEntour = isBothEntour
-            isBeEntour = isBothEntour
+            isEntour = false
+            isBeEntour = false
             updateBackgroundLayoutBothEntour(isBothEntour)
-            updateBackgroundLayoutEntour(isEntour)
-            updateBackgroundLayoutBeenEntour(isBeEntour)
+            updateBackgroundLayoutBeenEntour(false)
+            updateBackgroundLayoutEntour(false)
+            updateTypes()
+        }
+
+        binding.uiLayoutAsso?.setOnClickListener {
+            isAsso = !isAsso
+            if(isAsso){
+                binding.uiIvAssoCheck.setImageResource(R.drawable.new_bg_selected_filter)
+            }else{
+                binding.uiIvAssoCheck.setImageResource(R.drawable.new_bg_unselected_filter)
+            }
             updateTypes()
         }
     }
@@ -177,7 +165,11 @@ class OnboardingPhase3Fragment : Fragment(), OnboardingChoosePlaceCallback {
     }
 
     private fun updateTypes() {
-        callback?.updateUsertypeAndAddress(isEntour,isBeEntour,isAsso,address)
+        if(isBothEntour){
+            callback?.updateUsertypeAndAddress(true,true,isAsso,address)
+        }else{
+            callback?.updateUsertypeAndAddress(isEntour,isBeEntour,isAsso,address)
+        }
     }
 
     companion object {
