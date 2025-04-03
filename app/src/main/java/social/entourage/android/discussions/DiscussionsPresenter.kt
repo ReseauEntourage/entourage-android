@@ -13,6 +13,7 @@ import social.entourage.android.home.UnreadMessages
 import social.entourage.android.api.model.Conversation
 import social.entourage.android.api.model.GroupMember
 import social.entourage.android.api.model.Post
+import social.entourage.android.api.model.User
 import social.entourage.android.api.model.UserBlockedUser
 import timber.log.Timber
 
@@ -40,6 +41,7 @@ class DiscussionsPresenter:ViewModel() {
     var newConversation = MutableLiveData<Conversation?>()
 
     var getMembersSearch = MutableLiveData<MutableList<GroupMember>>()
+    var conversationUsers = MutableLiveData<MutableList<GroupMember>>()
 
     var hasBlockUser = MutableLiveData<Boolean>()
     var getBlockedUsers = MutableLiveData<MutableList<UserBlockedUser>?>()
@@ -353,6 +355,27 @@ class DiscussionsPresenter:ViewModel() {
 
                 override fun onFailure(call: Call<DiscussionsListWrapper>, t: Throwable) {
                     isLoading = false
+                }
+            })
+    }
+
+    fun fetchUsersForConversation(conversationId: Int) {
+        EntourageApplication.get().apiModule.discussionsRequest
+            .getUsersForConversation(conversationId)
+            .enqueue(object : Callback<UserListWithConversationWrapper> {
+                override fun onResponse(
+                    call: Call<UserListWithConversationWrapper>,
+                    response: Response<UserListWithConversationWrapper>
+                ) {
+                    response.body()?.let { wrapper ->
+                        conversationUsers.value = wrapper.users
+                    } ?: run {
+                        conversationUsers.value = mutableListOf()
+                    }
+                }
+
+                override fun onFailure(call: Call<UserListWithConversationWrapper>, t: Throwable) {
+                    conversationUsers.value = mutableListOf()
                 }
             })
     }

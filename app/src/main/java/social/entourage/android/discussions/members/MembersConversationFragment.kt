@@ -66,6 +66,7 @@ class MembersConversationFragment : BaseDialogFragment() {
         binding.searchBarLayout.endIconMode = TextInputLayout.END_ICON_NONE
 
         discussionsPresenter.newConversation.observe(requireActivity(), ::handleGetConversation)
+        discussionsPresenter.conversationUsers.observe(requireActivity(), ::handleGetUsers)
     }
 
     private fun getMembers() {
@@ -88,6 +89,8 @@ class MembersConversationFragment : BaseDialogFragment() {
         updateView(membersList.isEmpty())
 
         (binding.recyclerView.adapter as? MembersConversationListAdapter)?.updateCreatorId(userCreatorId)
+        id?.let { discussionsPresenter.fetchUsersForConversation(it) }
+
     }
 
     private fun handleResponseGetMembersSearch(allMembersSearch: MutableList<GroupMember>?) {
@@ -122,6 +125,15 @@ class MembersConversationFragment : BaseDialogFragment() {
                     ), 0
             )
         }
+    }
+
+    private fun handleGetUsers(users: MutableList<GroupMember>?) {
+        Timber.d("handleGetUsers")
+        membersList.clear()
+        users?.let { membersList.addAll(it) }
+        binding.progressBar.visibility = View.GONE
+        (binding.recyclerView.adapter as? MembersConversationListAdapter)?.updateCreatorId(userCreatorId)
+        binding.recyclerView.adapter?.notifyDataSetChanged()
     }
 
     private fun initializeMembers() {
