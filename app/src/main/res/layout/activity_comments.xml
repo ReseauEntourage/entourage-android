@@ -134,7 +134,7 @@
                 android:clipToPadding="false"
                 android:paddingHorizontal="28dp"
                 android:paddingTop="21dp"
-                android:paddingBottom="70dp" />
+                />
 
         </LinearLayout>
 
