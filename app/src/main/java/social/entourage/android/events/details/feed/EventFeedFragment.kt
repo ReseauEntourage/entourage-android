@@ -643,6 +643,7 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
             }else{
                 if (event?.member==false){
                     eventPresenter.participate(eventId)
+                    binding.participateView.visibility = View.VISIBLE
                 }else{
                     goDiscussion()
                 }
