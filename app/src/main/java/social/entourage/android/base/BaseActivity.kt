@@ -114,6 +114,8 @@ abstract class BaseActivity : AppCompatActivity() {
                     AnalyticsEvents.logEvent(AnalyticsEvents.NotificationClicked__MemberEvent)}
                 if(tracking.equals("outing_on_cancel")){
                     AnalyticsEvents.logEvent(AnalyticsEvents.NotificationClicked__CanceledEvent)}
+                if(tracking.equals("outing_message")){
+                    AnalyticsEvents.logEvent(AnalyticsEvents.NotificationClicked__CanceledEvent)}
                 if(tracking.equals("post_on_create_to_outing")){
                     AnalyticsEvents.logEvent(AnalyticsEvents.NotificationReceived__PostEvent)}
                 if(tracking.equals("public_chat_message_on_create")){
