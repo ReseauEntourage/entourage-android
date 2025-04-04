@@ -165,7 +165,7 @@ class InAppNotificationListFragment : Fragment() {
                         itemSelected = -1
                     }
                     if(instance != null && instanceId != null) {
-                        NotificationActionManager.presentAction(requireContext(),parentFragmentManager,instance,instanceId,postId,stage, notifContext = notifContext)
+                        NotificationActionManager.presentAction(requireContext(),parentFragmentManager,instance,instanceId,postId,stage, notifContext = notifContext )
                     } else{
                         NotificationActionManager.presentWelcomeAction(requireContext(), stage)
                     }

@@ -278,6 +278,8 @@ class MainActivity : BaseSecuredActivity() {
         intent.action?.let { action ->
             checkIntentAction(action, intent.extras)
         }
+
+
         val isFromWidget = intent.getBooleanExtra("isFromWidget", false)
         Log.wtf("wtf" , "isFromWidget : $isFromWidget")
         if (isFromWidget) {
@@ -367,7 +369,7 @@ class MainActivity : BaseSecuredActivity() {
                     extra.instance?.let { instance ->
                         extra.instanceId?.let { id ->
                             NotificationActionManager.presentAction(
-                                this, supportFragmentManager, instance, id, extra.postId, popup = extra.popup
+                                this, supportFragmentManager, instance, id, extra.postId, popup = extra.popup, tracking = extra.tracking
                             )
                         }
                     }
