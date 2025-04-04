@@ -179,6 +179,8 @@ class CommentsListAdapter(
                     ContextCompat.getColor(context, R.color.light_orange)
                 )
             }
+            binding.comment.layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT
+            binding.comment.requestLayout()
         }
 
         // ----------------------------------------------------------------------------------------
@@ -257,6 +259,8 @@ class CommentsListAdapter(
                     ContextCompat.getColor(context, R.color.light_orange)
                 )
             }
+            binding.comment.layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT
+            binding.comment.requestLayout()
         }
 
         // ----------------------------------------------------------------------------------------
