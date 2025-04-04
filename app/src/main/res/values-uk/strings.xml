@@ -1914,7 +1914,7 @@
 
     <string name="login_smscode_sent">SMS відправлено</string>
 
-    <string name="error_login_phone_length">Номер телефону має містити принаймні %s цифр</string>
+    <string name="error_login_phone_length">Номер телефону має містити принаймні %d цифр</string>
     <string name="error_login_code_lenght">Код повинен складатися з 6 цифр</string>
     <string name="login_title">Підключення</string>
     <string name="login_phone_placeholder">Номер телефону</string>
@@ -2134,7 +2134,7 @@
     <string name="onboard_sms_title">Введіть код, отриманий в SMS</string>
 
     <string name="attention_pop_title">Увага</string>
-    <string name="onboard_sms_pop_alert">Зачекайте %s с, перш ніж повторити запит.</string>
+    <string name="onboard_sms_pop_alert">Зачекайте %d с, перш ніж повторити запит.</string>
     <string name="onboard_sms_no_pwd">Будь ласка, введіть пароль</string>
     <string name="onboard_type_title">Приємно познайомитися, %s.</string>
     <string name="onboard_type_sub">Як ви хочете налаштувати програму?</string>
