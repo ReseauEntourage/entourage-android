@@ -46,7 +46,7 @@ class MembersConversationListAdapter(
                 val isMe = EntourageApplication.get().me()?.id == id
                 binding.contact.visibility = if (isMe) View.INVISIBLE else View.VISIBLE
                 binding.name.text = displayName
-
+                binding.reaction.root.visibility = View.GONE
                 if (this.id == userCreatorId) {
                     binding.ambassador.text = "Admin"
                     binding.ambassador.visibility = View.VISIBLE
