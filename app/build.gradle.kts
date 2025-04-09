@@ -64,8 +64,12 @@ android {
     compileSdk = 35
     buildToolsVersion = "35.0.1"
 
-    val localTestAccountLogin = "\"" + (System.getenv("TEST_ACCOUNT_LOGIN") ?: "") + "\""
-    val localTestAccountPwd = "\"" + (System.getenv("TEST_ACCOUNT_PWD") ?: "") + "\""
+    val localTestAccountLogin = System.getenv("TEST_ACCOUNT_LOGIN")?.let { login -> "\""+ login+ "\"" }
+        ?: findProperty("entourageTestLogin") as String?
+        ?: "\"\""
+    val localTestAccountPwd = System.getenv("TEST_ACCOUNT_PWD")?.let { login -> "\""+ login+ "\"" }
+        ?: findProperty("entourageTestPwd") as String?
+        ?: "\"\""
 
     buildFeatures.buildConfig = true
 
