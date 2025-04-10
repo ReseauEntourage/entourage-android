@@ -38,12 +38,6 @@ workflows:
             - gradle_options: --stacktrace
             - gradle_task: $GRADLE_TASK
       - deploy-to-bitrise-io: {}
-      - post-jira-comment-with-build-details:
-          inputs:
-            - base_url: $JIRA_BASE_URL
-            - api_token: $JIRA_API_TOKEN
-            - user_name: $JIRA_USER_EMAIL
-            - issue_keys: $JIRA_ISSUE_KEYS
       - slack:
           inputs:
             - webhook_url: ""
@@ -64,6 +58,12 @@ workflows:
                 Jira|<${JIRA_BASE_URL}browse/${JIRA_ISSUE_KEYS}|${JIRA_ISSUE_KEYS}>
             - api_token: $SLACK__BOT_API_TOKEN
             - channel: '#androiddev'
+      - post-jira-comment-with-build-details:
+          inputs:
+            - base_url: $JIRA_BASE_URL
+            - api_token: $JIRA_API_TOKEN
+            - user_name: $JIRA_USER_EMAIL
+            - issue_keys: $JIRA_ISSUE_KEYS
       - cache-push: {}
     meta:
       bitrise.io:
