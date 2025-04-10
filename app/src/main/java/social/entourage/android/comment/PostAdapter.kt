@@ -574,6 +574,7 @@ class PostAdapter(
         }
     }
 
+
     // -------------------------
     // BLOC : GESTION DES POSTS
     // -------------------------

@@ -164,11 +164,8 @@ class OnboardingPhase3Fragment : Fragment(), OnboardingChoosePlaceCallback {
     }
 
     private fun updateTypes() {
-        if(isBothEntour){
-            callback?.updateUsertypeAndAddress(true,true,isAsso,address)
-        }else{
-            callback?.updateUsertypeAndAddress(isEntour,isBeEntour,isAsso,address)
-        }
+        callback?.updateUsertypeAndAddress(isEntour,isBeEntour,isBothEntour,isAsso,address)
+
     }
 
     companion object {
