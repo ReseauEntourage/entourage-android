@@ -263,7 +263,7 @@ Ei vor citi acest mesaj imediat ce se vor alătura grupului.</string>
     <string name="welcome_message_title">Felicitări, ești membru al grupului!</string>
     <string name="welcome_message_btn_title">Mă prezint</string>
     <string name="member">Membru</string>
-    <string name="members_location">%s membri. %s</string>
+    <string name="members_location">%1$d membri. %2$s</string>
     <string name="group_settings">Setări de grup</string>
     <string name="report_group">pentru a raporta o problemă</string>
     <string name="rules_group">Regulile de grup</string>

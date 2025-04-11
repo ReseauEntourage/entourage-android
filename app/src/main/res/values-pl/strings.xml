@@ -263,7 +263,7 @@ Przeczytają tę wiadomość, gdy tylko dołączą do grupy.</string>
     <string name="welcome_message_title">Gratulacje, jesteś członkiem grupy!</string>
     <string name="welcome_message_btn_title">przedstawię się</string>
     <string name="member">Członek</string>
-    <string name="members_location">%s członków. %s</string>
+    <string name="members_location">%1$d członków. %2$s</string>
     <string name="group_settings">Ustawienia grupy</string>
     <string name="report_group">zgłosić problem</string>
     <string name="rules_group">Zasady grupy</string>

@@ -263,7 +263,7 @@
     <string name="welcome_message_title">Вітаємо, ви учасник групи!</string>
     <string name="welcome_message_btn_title">Я представляюсь</string>
     <string name="member">Член</string>
-    <string name="members_location">%s членів. %s</string>
+    <string name="members_location">%1$d членів. %2$s</string>
     <string name="group_settings">Налаштування групи</string>
     <string name="report_group">щоб повідомити про проблему</string>
     <string name="rules_group">Правила групи</string>

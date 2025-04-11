@@ -234,7 +234,7 @@
     <string name="welcome_message_title">Congratulations, you\'re a member of the group!</string>
     <string name="welcome_message_btn_title">I introduce myself</string>
     <string name="member">Member</string>
-    <string name="members_location">%s members. %s</string>
+    <string name="members_location">%1$d members. %2$s</string>
     <string name="group_settings">Group settings</string>
     <string name="report_group">Report a problem</string>
     <string name="rules_group">Group rules</string>

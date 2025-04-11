@@ -261,7 +261,7 @@ Sie werden diese Nachricht lesen, sobald sie der Gruppe beitreten.</string>
     <string name="welcome_message_title">Herzlichen Glückwunsch, Sie sind Mitglied der Gruppe!</string>
     <string name="welcome_message_btn_title">ich stelle mich vor</string>
     <string name="member">Mitglied</string>
-    <string name="members_location">%s Mitglieder. %s</string>
+    <string name="members_location">%1$d Mitglieder. %2$s</string>
     <string name="group_settings">Gruppeneinstellungen</string>
     <string name="report_group">ein Problem melden</string>
     <string name="rules_group">Gruppenregeln</string>

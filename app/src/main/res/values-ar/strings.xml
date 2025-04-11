@@ -247,7 +247,7 @@
     <string name="welcome_message_title">تهانينا، أنت عضو في المجموعة!</string>
     <string name="welcome_message_btn_title">اقدم نفسي</string>
     <string name="member">عضو</string>
-    <string name="members_location">%s من الأعضاء. %s</string>
+    <string name="members_location">%2$s من الأعضاء.  %1$d</string>
     <string name="group_settings">إعدادات المجموعة</string>
     <string name="report_group">للإبلاغ عن مشكلة</string>
     <string name="rules_group">قواعد المجموعة</string>

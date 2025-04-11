@@ -9,7 +9,6 @@ import android.os.Bundle
 import android.text.Spannable
 import android.text.SpannableStringBuilder
 import android.text.style.ForegroundColorSpan
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -76,8 +75,6 @@ import social.entourage.android.tools.utils.px
 import kotlin.math.abs
 import kotlin.math.max
 
-const val rotationDegree = 135F
-
 class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface, SurveyInteractionListener {
 
     private var _binding: FragmentFeedGroupBinding? = null
@@ -93,7 +90,6 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface, Surv
 
     private var isLoading = false
     private var page: Int = 0
-    private val ITEM_PER_PAGE = 10
     private var hasShownWelcomeMessage = false
     private var surveyPresenter: SurveyPresenter = SurveyPresenter()
 
@@ -239,11 +235,6 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface, Surv
         // groupPresenter.getGroupMembers(groupId)
         groupPresenter.getGroup(groupId)
     }
-    override fun onDestroy() {
-        super.onDestroy()
-        Log.d("BACK_STACK", "FeedActivity a été détruite !")
-    }
-
 
     private fun handleResponseGetGroupMembers(allMembers: MutableList<EntourageUser>?) {
         memberList.addAll(allMembers ?: emptyList())
@@ -941,6 +932,7 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface, Surv
         binding.appBar.addOnOffsetChangedListener { appBarLayout, verticalOffset ->
             val res: Float = abs(verticalOffset).toFloat() / appBarLayout.totalScrollRange
             binding.toolbarLayout.alpha = 1f - res
+            binding.groupImage.alpha = 1f - res
             binding.groupImageToolbar.alpha = res
             binding.groupNameToolbar.alpha = res
         }
@@ -1025,7 +1017,7 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface, Surv
         })
     }
 
-    fun requestInAppReview(context: Context) {
+    private fun requestInAppReview(context: Context) {
         val manager = ReviewManagerFactory.create(context)
         val request = manager.requestReviewFlow()
         request.addOnCompleteListener { task ->
@@ -1074,6 +1066,7 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface, Surv
 
     companion object {
         var isFromCreation = false
+        private const val ITEM_PER_PAGE = 10
     }
 }
 
