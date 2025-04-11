@@ -215,6 +215,7 @@
 
         <activity
             android:name=".main_filter.MainFilterActivity"
+            android:windowSoftInputMode="adjustPan"
             android:exported="false"
             />
 

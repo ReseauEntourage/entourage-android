@@ -33,7 +33,7 @@ import social.entourage.android.welcome.WelcomeTwoActivity
 object NotificationActionManager {
 
     /**/
-    fun presentAction(context:Context,supportFragmentManager: FragmentManager, instance:String, id:Int, postId:Int?, stage:String? = "", popup:String? = "" , notifContext:String? = "") {
+    fun presentAction(context:Context,supportFragmentManager: FragmentManager, instance:String, id:Int, postId:Int?, stage:String? = "", popup:String? = "" , notifContext:String? = "", tracking:String? = ""){
         if(popup.equals("outing_on_day_before")){
             if(context is MainActivity){
                 (context as MainActivity).ifEventLastDay(id)
@@ -80,14 +80,50 @@ object NotificationActionManager {
                 context.startActivity(intent)
             }
         }
+
+
         Log.wtf("wtf", "instance: $instance")
+        Log.wtf("wtf", "tracking: $tracking")
         Log.wtf("wtf", "id: $id")
+
+        // Cas spécifiques : si c'est un outing ET que le tracking correspond à une conversation
+        val validTracking = listOf(
+            "public_chat_message_on_create",
+            "post_on_create_to_outing",
+            "post_on_create",
+            "comment_on_create_to_outing",
+            "comment_on_create",
+            "chat_message_on_mention",
+            "reaction_on_create",
+            "survey_response_on_create"
+        )
+
+        if ((instance == "outings" || instance == "outing") && (notifContext in validTracking || tracking in validTracking)) {
+            Log.wtf("wtf", "➡️ Redirection discussion/outing via notifContext = $notifContext")
+            context.startActivity(
+                Intent(context, DetailConversationActivity::class.java).apply {
+                    putExtras(
+                        bundleOf(
+                            Const.ID to id,
+                            Const.SHOULD_OPEN_KEYBOARD to false,
+                            Const.IS_CONVERSATION_1TO1 to true,
+                            Const.IS_MEMBER to true,
+                            Const.IS_CONVERSATION to true,
+                            Const.HAS_TO_SHOW_MESSAGE to true
+                        )
+                    )
+                }
+            )
+            return
+        }
+
         when(getInstanceTypeFromName(instance)) {
             InstanceType.POIS -> showPoi(supportFragmentManager,id)
             InstanceType.USERS -> showUser(context,supportFragmentManager,id)
             InstanceType.NEIGHBORHOODS -> showNeighborhood(context,supportFragmentManager,id)
             InstanceType.RESOURCES -> showResource(context,supportFragmentManager,id)
             InstanceType.OUTINGS -> showOuting(context,supportFragmentManager,id)
+            InstanceType.OUTINGS_MESSAGE -> showConversation(context,supportFragmentManager,id)
             InstanceType.CONTRIBUTIONS -> showContribution(context,supportFragmentManager,id)
             InstanceType.SOLICITATIONS -> showSolicitation(context,supportFragmentManager,id)
             InstanceType.CONVERSATIONS -> showConversation(context,supportFragmentManager,id)
@@ -144,6 +180,7 @@ object NotificationActionManager {
             InstanceType.NEIGHBORHOODS -> return R.drawable.placeholder_user
             InstanceType.RESOURCES -> return R.drawable.ic_new_placeholder_notif
             InstanceType.OUTINGS -> return R.drawable.placeholder_user
+            InstanceType.OUTINGS_MESSAGE -> return R.drawable.placeholder_user
             InstanceType.CONTRIBUTIONS -> return R.drawable.ic_new_placeholder_notif
             InstanceType.SOLICITATIONS -> return R.drawable.ic_new_placeholder_notif
             InstanceType.CONVERSATIONS -> return R.drawable.placeholder_user
@@ -260,6 +297,7 @@ object NotificationActionManager {
         NEIGHBORHOODS_POSTS,
         RESOURCES,
         OUTINGS,
+        OUTINGS_MESSAGE,
         OUTING_POSTS,
         CONTRIBUTIONS,
         SOLICITATIONS,
@@ -276,6 +314,7 @@ object NotificationActionManager {
             "neighborhood_post" -> InstanceType.NEIGHBORHOODS_POSTS
             "resources", "resource" -> InstanceType.RESOURCES
             "outings", "outing" -> InstanceType.OUTINGS
+            "outings_message" -> InstanceType.OUTINGS_MESSAGE
             "outing_post" -> InstanceType.OUTING_POSTS
             "contributions", "contribution" -> InstanceType.CONTRIBUTIONS
             "solicitations", "solicitation" -> InstanceType.SOLICITATIONS
