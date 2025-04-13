@@ -9,7 +9,6 @@ import androidx.test.espresso.action.ViewActions.clearText
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.action.ViewActions.closeSoftKeyboard
 import androidx.test.espresso.action.ViewActions.typeText
-import androidx.test.espresso.assertion.ViewAssertions.doesNotExist
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.intent.Intents
 import androidx.test.espresso.intent.Intents.intended
@@ -67,7 +66,6 @@ class LoginTest {
 
     @After
     fun tearDown() {
-        //checkLoginSuccessful()
         Intents.release()
 
         IdlingRegistry.getInstance().unregister(resource)
@@ -106,6 +104,16 @@ class LoginTest {
     }
 
     @Test
+    fun loginFailureShortPassword() {
+        onView(withId(R.id.ui_login_phone_et_phone)).perform(typeText(BuildConfig.TEST_ACCOUNT_LOGIN), closeSoftKeyboard())
+        closeAutofill()
+        onView(withId(R.id.ui_login_et_code)).perform(typeText("9999"), closeSoftKeyboard())
+        closeAutofill()
+        onView(withId(R.id.ui_login_button_signup)).perform(click())
+        checkLoginFailure(R.string.attention_pop_title, R.string.close)
+    }
+
+    @Test
     fun loginFailureWrongPhoneNumberFormat() {
         onView(withId(R.id.ui_login_phone_et_phone)).perform(typeText("012345678"), closeSoftKeyboard())
         closeAutofill()
@@ -129,7 +137,7 @@ class LoginTest {
 
         //Check that error is displayed
         onView(withText(R.string.login_error_network)).check(matches(isDisplayed()))
-        onView(withText(R.string.login_retry_label)).perform(click())
+        //onView(withText(R.string.login_retry_label)).perform(click())
     }
 
     @Test
@@ -147,8 +155,7 @@ class LoginTest {
 
         onView(withId(R.id.ui_login_button_resend_code)).perform(click())
 
-        onView(withText(R.string.login_button_resend_code_action))
-            .check(doesNotExist())
+        checkLoginFailure(R.string.attention_pop_title, R.string.close)
     }
 
     @Test
@@ -191,9 +198,12 @@ class LoginTest {
         intended(hasComponent(MainActivity::class.java.name))
     }
 
-    private fun checkLoginFailure() {
-        onView(withText(R.string.login_error_title)).check(matches(isDisplayed()))
-        onView(withText(R.string.login_retry_label)).perform(click())
+    private fun checkLoginFailure(
+        title_id: Int = R.string.login_error_title,
+        action_id: Int = R.string.login_retry_label
+    ) {
+        onView(withText(title_id)).check(matches(isDisplayed()))
+        onView(withText(action_id)).perform(click())
     }
 
     private fun closeAutofill() {

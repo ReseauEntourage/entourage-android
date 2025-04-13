@@ -97,7 +97,11 @@ class LoginActivity : BaseActivity() {
                     checkAndResendCode()
                 }
             } else {
-                Toast.makeText(this, R.string.login_text_invalid_format, Toast.LENGTH_LONG).show()
+                val message =
+                    String.format(getString(R.string.error_login_phone_length),
+                        MINIMUM_PHONE_CHARACTERS
+                    )
+                showError(R.string.attention_pop_title, message, R.string.close)
             }
         }
 
@@ -182,7 +186,7 @@ class LoginActivity : BaseActivity() {
      * Methods Valide inputs
      ********************************/
 
-    fun validateInputsAndLogin():Boolean {
+    private fun validateInputsAndLogin():Boolean {
         val countryCode = binding.uiLoginPhoneCcpCode.selectedCountryCodeWithPlus
         val phoneNumber = binding.uiLoginPhoneEtPhone.text.toString()
         val codePwd = binding.uiLoginEtCode.text.toString()
@@ -211,13 +215,7 @@ class LoginActivity : BaseActivity() {
 
         val phoneWithCode = Utils.checkPhoneNumberFormat(countryCode, phoneNumber)
 
-        if (phoneWithCode != null) {
-            if (!isLoading) {
-                isLoading = true
-                login(phoneWithCode, codePwd)
-                return true
-            }
-        } else {
+        if (phoneWithCode == null) {
             showError(
                 R.string.attention_pop_title,
                 getString(R.string.login_error_invalid_phone_format),
@@ -225,12 +223,16 @@ class LoginActivity : BaseActivity() {
             )
             return false
         }
+        if (!isLoading) {
+            isLoading = true
+            login(phoneWithCode, codePwd)
+        }
         return true
     }
 
     private fun checkAndResendCode() {
-        val countryCode = binding.uiLoginPhoneCcpCode?.selectedCountryCodeWithPlus
-        val phoneNumber = binding.uiLoginPhoneEtPhone?.text.toString()
+        val countryCode = binding.uiLoginPhoneCcpCode.selectedCountryCodeWithPlus
+        val phoneNumber = binding.uiLoginPhoneEtPhone.text.toString()
 
         if (phoneNumber.length <= MINIMUM_PHONE_CHARACTERS) {
             val message =
@@ -252,9 +254,9 @@ class LoginActivity : BaseActivity() {
                     getString(R.string.login_error_invalid_phone_format),
                     R.string.close
                 )
-                return
+            } else {
+                resendCode(phoneWithCode)
             }
-            resendCode(phoneWithCode)
         }
     }
 
@@ -318,8 +320,6 @@ class LoginActivity : BaseActivity() {
             }
         }
     }
-
-
 
     private fun resendCode(phone: String) {
         AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ACTION_LOGIN_SMS)

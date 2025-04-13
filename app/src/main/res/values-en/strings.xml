@@ -946,7 +946,7 @@
     <string name="login_text_invalid_format">The number must be 9 or 10 digits long.</string>
     <string name="login_hint_code">Code</string>
     <string name="login_error">Authentication problem\nPlease try again</string>
-    <string name="login_error_title">Try again</string>
+    <string name="login_error_title">Please try again</string>
     <string name="login_error_invalid_credentials">The phone number and this access code do not match.</string>
     <string name="login_error_invalid_phone_format">Invalid number format.\nIf your number is not from mainland France, include the country code</string>
     <string name="login_error_network">Check your internet connection</string>
