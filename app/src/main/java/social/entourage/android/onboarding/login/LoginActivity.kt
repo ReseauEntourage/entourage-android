@@ -1,19 +1,13 @@
 package social.entourage.android.onboarding.login
 
-import android.app.Activity
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.text.Html
 import android.text.method.LinkMovementMethod
-import android.util.Log
 import android.widget.EditText
-import android.widget.TextView
 import android.widget.Toast
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.updatePadding
+import androidx.core.content.edit
 import social.entourage.android.EntourageApplication
 import social.entourage.android.EntourageApplication.Companion.KEY_ONBOARDING_SHOW_POP_FIRSTLOGIN
 import social.entourage.android.MainActivity
@@ -22,11 +16,12 @@ import social.entourage.android.api.OnboardingAPI
 import social.entourage.android.authentication.AuthenticationController
 import social.entourage.android.base.BaseActivity
 import social.entourage.android.databinding.ActivityLoginBinding
-import social.entourage.android.tools.utils.CustomAlertDialog
-import social.entourage.android.tools.utils.Utils
 import social.entourage.android.onboarding.pre_onboarding.PreOnboardingChoiceActivity
 import social.entourage.android.tools.hideKeyboard
 import social.entourage.android.tools.log.AnalyticsEvents
+import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
+import social.entourage.android.tools.utils.CustomAlertDialog
+import social.entourage.android.tools.utils.Utils
 import social.entourage.android.tools.view.CustomProgressDialog
 import java.util.Locale
 
@@ -35,14 +30,11 @@ class LoginActivity : BaseActivity() {
     lateinit var authenticationController: AuthenticationController
     lateinit var binding:ActivityLoginBinding
 
-    private val minimumPhoneCharacters = 9
-    private val TIME_BEFORE_CALL = 60
-
     private var countDownTimer: CountDownTimer? = null
     private var timeOut = TIME_BEFORE_CALL
     var isLoading = false
 
-    lateinit var alertDialog: CustomProgressDialog
+    private lateinit var alertDialog: CustomProgressDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,15 +44,7 @@ class LoginActivity : BaseActivity() {
         setupViews()
         setContentView(binding.root)
 
-        ViewCompat.setOnApplyWindowInsetsListener(binding.layout) { view, windowInsets ->
-            // Get the insets for the statusBars() type:
-            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.statusBars())
-            view.updatePadding(
-                top = insets.top
-            )
-            // Return the original insets so they aren’t consumed
-            windowInsets
-        }
+        updatePaddingTopForEdgeToEdge(binding.layout)
         AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_VIEW_LOGIN_LOGIN)
     }
 
@@ -89,7 +73,7 @@ class LoginActivity : BaseActivity() {
 
     fun setupViews() {
         setEditTextAlignmentBasedOnLocale()
-        binding.onboardLoginMainlayout.setOnTouchListener { view, motionEvent ->
+        binding.onboardLoginMainlayout.setOnTouchListener { view, _ ->
             view.hideKeyboard()
             view.performClick()
             true
@@ -131,7 +115,7 @@ class LoginActivity : BaseActivity() {
         binding.tvConditionGenerales.movementMethod = LinkMovementMethod.getInstance()
     }
 
-    fun changeLocale(activity: Activity, locale: Locale) {
+    /*fun changeLocale(activity: Activity, locale: Locale) {
         val resources = activity.resources
         val configuration = resources.configuration
         configuration.setLocale(locale)
@@ -140,13 +124,13 @@ class LoginActivity : BaseActivity() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             activity.applicationContext.createConfigurationContext(configuration)
         }
-    }
+    }*/
 
     /********************************
      * Methods
      ********************************/
 
-    fun activateTimer() {
+    private fun activateTimer() {
         cancelTimer()
         timeOut = TIME_BEFORE_CALL
         countDownTimer = object : CountDownTimer(600000, 1000L) {
@@ -167,19 +151,19 @@ class LoginActivity : BaseActivity() {
         countDownTimer = null
     }
 
-    fun goBack() {
+    private fun goBack() {
         startActivity(Intent(this, PreOnboardingChoiceActivity::class.java))
         finish()
     }
 
-    fun goMain() {
+    private fun goMain() {
         val sharedPreferences = EntourageApplication.get().sharedPreferences
         sharedPreferences.edit().putBoolean(KEY_ONBOARDING_SHOW_POP_FIRSTLOGIN, true).apply()
         sharedPreferences.edit().putBoolean(EntourageApplication.KEY_MIGRATION_V7_OK,true).apply()
         goRealMain()
     }
 
-    fun goRealMain() {
+    private fun goRealMain() {
         val intent = Intent(this, MainActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         }
@@ -206,10 +190,12 @@ class LoginActivity : BaseActivity() {
         var isValidate = true
         var message = ""
 
-        if (phoneNumber.length < minimumPhoneCharacters) {
+        if (phoneNumber.length < MINIMUM_PHONE_CHARACTERS) {
             isValidate = false
             message =
-                String.format(getString(R.string.error_login_phone_length), minimumPhoneCharacters)
+                String.format(getString(R.string.error_login_phone_length),
+                    MINIMUM_PHONE_CHARACTERS
+                )
         }
 
         if (isValidate && codePwd.length != 6) {
@@ -246,9 +232,11 @@ class LoginActivity : BaseActivity() {
         val countryCode = binding.uiLoginPhoneCcpCode?.selectedCountryCodeWithPlus
         val phoneNumber = binding.uiLoginPhoneEtPhone?.text.toString()
 
-        if (phoneNumber.length <= minimumPhoneCharacters) {
+        if (phoneNumber.length <= MINIMUM_PHONE_CHARACTERS) {
             val message =
-                String.format(getString(R.string.error_login_phone_length), minimumPhoneCharacters)
+                String.format(getString(R.string.error_login_phone_length),
+                    MINIMUM_PHONE_CHARACTERS
+                )
             showError(R.string.attention_pop_title, message, R.string.close)
             return
         }
@@ -293,9 +281,11 @@ class LoginActivity : BaseActivity() {
                     EntourageApplication.KEY_TUTORIAL_DONE,
                     HashSet()
                 ) as HashSet<String>?)?.let { loggedNumbers ->
-                    loggedNumbers.add(phone)
-                    sharedPreferences.edit()
-                        .putStringSet(EntourageApplication.KEY_TUTORIAL_DONE, loggedNumbers).apply()
+                    val mutableLoggedNumbers = loggedNumbers.toHashSet()
+                    mutableLoggedNumbers.add(phone)
+                    sharedPreferences.edit {
+                        putStringSet(EntourageApplication.KEY_TUTORIAL_DONE, mutableLoggedNumbers)
+                    }
                 }
                 alertDialog.dismiss()
                 goMain()
@@ -331,9 +321,9 @@ class LoginActivity : BaseActivity() {
 
 
 
-    fun resendCode(phone: String) {
+    private fun resendCode(phone: String) {
         AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ACTION_LOGIN_SMS)
-        OnboardingAPI.getInstance().requestNewCode(phone) { isOK, loginResponse, error ->
+        OnboardingAPI.getInstance().requestNewCode(phone) { isOK, _, error ->
             if (isOK) {
                 Toast.makeText(this, R.string.login_smscode_sent, Toast.LENGTH_LONG).show()
                 activateTimer()
@@ -358,5 +348,10 @@ class LoginActivity : BaseActivity() {
             message,
             getString(buttonTextId)
         ) {}
+    }
+
+    companion object {
+        private const val TIME_BEFORE_CALL = 60
+        private const val MINIMUM_PHONE_CHARACTERS = 9
     }
 }

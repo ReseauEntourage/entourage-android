@@ -263,7 +263,7 @@
     <string name="welcome_message_title">Вітаємо, ви учасник групи!</string>
     <string name="welcome_message_btn_title">Я представляюсь</string>
     <string name="member">Член</string>
-    <string name="members_location">%s членів. %s</string>
+    <string name="members_location">%1$d членів. %2$s</string>
     <string name="group_settings">Налаштування групи</string>
     <string name="report_group">щоб повідомити про проблему</string>
     <string name="rules_group">Правила групи</string>
@@ -1914,7 +1914,7 @@
 
     <string name="login_smscode_sent">SMS відправлено</string>
 
-    <string name="error_login_phone_length">Номер телефону має містити принаймні %s цифр</string>
+    <string name="error_login_phone_length">Номер телефону має містити принаймні %d цифр</string>
     <string name="error_login_code_lenght">Код повинен складатися з 6 цифр</string>
     <string name="login_title">Підключення</string>
     <string name="login_phone_placeholder">Номер телефону</string>
@@ -2134,7 +2134,7 @@
     <string name="onboard_sms_title">Введіть код, отриманий в SMS</string>
 
     <string name="attention_pop_title">Увага</string>
-    <string name="onboard_sms_pop_alert">Зачекайте %s с, перш ніж повторити запит.</string>
+    <string name="onboard_sms_pop_alert">Зачекайте %d с, перш ніж повторити запит.</string>
     <string name="onboard_sms_no_pwd">Будь ласка, введіть пароль</string>
     <string name="onboard_type_title">Приємно познайомитися, %s.</string>
     <string name="onboard_type_sub">Як ви хочете налаштувати програму?</string>

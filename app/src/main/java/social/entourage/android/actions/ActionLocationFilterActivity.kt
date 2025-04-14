@@ -13,9 +13,6 @@ import android.widget.SeekBar
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.updatePadding
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationResult
@@ -36,6 +33,7 @@ import social.entourage.android.base.location.LocationProvider
 import social.entourage.android.base.location.LocationUtils
 import social.entourage.android.databinding.ActivityActionLocationFiltersBinding
 import social.entourage.android.events.list.DiscoverEventsListFragment
+import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
 import timber.log.Timber
 import java.io.IOException
 import java.util.Locale
@@ -106,15 +104,7 @@ class ActionLocationFilterActivity : AppCompatActivity() {
             finish()
         }
 
-        ViewCompat.setOnApplyWindowInsetsListener(binding.header.layout) { view, windowInsets ->
-            // Get the insets for the statusBars() type:
-            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.statusBars())
-            view.updatePadding(
-                top = insets.top
-            )
-            // Return the original insets so they aren’t consumed
-            windowInsets
-        }
+        updatePaddingTopForEdgeToEdge(binding.header.layout)
     }
 
     private fun onSaveFilters() {

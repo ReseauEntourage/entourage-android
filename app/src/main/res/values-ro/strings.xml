@@ -263,7 +263,7 @@ Ei vor citi acest mesaj imediat ce se vor alătura grupului.</string>
     <string name="welcome_message_title">Felicitări, ești membru al grupului!</string>
     <string name="welcome_message_btn_title">Mă prezint</string>
     <string name="member">Membru</string>
-    <string name="members_location">%s membri. %s</string>
+    <string name="members_location">%1$d membri. %2$s</string>
     <string name="group_settings">Setări de grup</string>
     <string name="report_group">pentru a raporta o problemă</string>
     <string name="rules_group">Regulile de grup</string>
@@ -1912,7 +1912,7 @@ Ei vor citi acest mesaj imediat ce se vor alătura grupului.</string>
 
     <string name="login_smscode_sent">SMS trimis</string>
 
-    <string name="error_login_phone_length">Numărul de telefon trebuie să aibă cel puțin %s cifre</string>
+    <string name="error_login_phone_length">Numărul de telefon trebuie să aibă cel puțin %d cifre</string>
     <string name="error_login_code_lenght">Codul trebuie să aibă 6 cifre</string>
     <string name="login_title">Conexiune</string>
     <string name="login_phone_placeholder">Număr de telefon</string>
@@ -2129,7 +2129,7 @@ Ei vor citi acest mesaj imediat ce se vor alătura grupului.</string>
     <string name="onboard_sms_title">Introdu codul primit prin SMS</string>
 
     <string name="attention_pop_title">Atenţie</string>
-    <string name="onboard_sms_pop_alert">Vă rugăm să așteptați %s secunde înainte de a repeta solicitarea.</string>
+    <string name="onboard_sms_pop_alert">Vă rugăm să așteptați %d secunde înainte de a repeta solicitarea.</string>
     <string name="onboard_sms_no_pwd">Vă rugăm să completați parola</string>
     <string name="onboard_type_title">Mă bucur să te cunosc, %s.</string>
     <string name="onboard_type_sub">Cum doriți să personalizați aplicația?</string>

@@ -15,9 +15,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.collection.ArrayMap
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.updatePadding
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
@@ -30,6 +27,7 @@ import social.entourage.android.comment.MentionAdapter
 import social.entourage.android.databinding.ActivityCreatePostBinding
 import social.entourage.android.groups.details.feed.CreatePostGroupActivity
 import social.entourage.android.tools.log.AnalyticsEvents
+import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.Utils
 import social.entourage.android.tools.utils.px
@@ -89,12 +87,7 @@ abstract class CreatePostActivity : AppCompatActivity() {
         // Ecoute du '@' dans l'EditText
         setupMentionTextWatcher()
 
-        // Gérer l'affichage du header selon les insets
-        ViewCompat.setOnApplyWindowInsetsListener(binding.header.layout) { view, windowInsets ->
-            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.statusBars())
-            view.updatePadding(top = insets.top)
-            windowInsets
-        }
+        updatePaddingTopForEdgeToEdge(binding.header.layout)
     }
 
     /**

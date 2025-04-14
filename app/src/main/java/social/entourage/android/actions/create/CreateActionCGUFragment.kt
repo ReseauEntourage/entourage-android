@@ -4,9 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -16,6 +13,7 @@ import social.entourage.android.api.model.Rules
 import social.entourage.android.databinding.NewFragmentCreateActionCguBinding
 import social.entourage.android.groups.details.rules.RulesListAdapter
 import social.entourage.android.tools.log.AnalyticsEvents
+import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
 
 class CreateActionCGUFragment : Fragment() {
 
@@ -40,15 +38,7 @@ class CreateActionCGUFragment : Fragment() {
     ): View {
         _binding = NewFragmentCreateActionCguBinding.inflate(inflater, container, false)
 
-        ViewCompat.setOnApplyWindowInsetsListener(binding.layout) { view, windowInsets ->
-            // Get the insets for the statusBars() type:
-            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.statusBars())
-            view.updatePadding(
-                top = insets.top
-            )
-            // Return the original insets so they aren’t consumed
-            windowInsets
-        }
+        updatePaddingTopForEdgeToEdge(binding.layout)
         return binding.root
     }
 

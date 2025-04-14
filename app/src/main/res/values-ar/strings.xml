@@ -247,7 +247,7 @@
     <string name="welcome_message_title">تهانينا، أنت عضو في المجموعة!</string>
     <string name="welcome_message_btn_title">اقدم نفسي</string>
     <string name="member">عضو</string>
-    <string name="members_location">%s من الأعضاء. %s</string>
+    <string name="members_location">%2$s من الأعضاء.  %1$d</string>
     <string name="group_settings">إعدادات المجموعة</string>
     <string name="report_group">للإبلاغ عن مشكلة</string>
     <string name="rules_group">قواعد المجموعة</string>
@@ -1887,7 +1887,7 @@
 
     <string name="login_smscode_sent">تم إرسال الرسائل القصيرة</string>
 
-    <string name="error_login_phone_length">يجب أن يتكون رقم الهاتف من %s من الأرقام على الأقل</string>
+    <string name="error_login_phone_length">يجب أن يتكون رقم الهاتف من %d من الأرقام على الأقل</string>
     <string name="error_login_code_lenght">يجب أن يتكون الرمز من 6 أرقام</string>
     <string name="login_title">اتصال</string>
     <string name="login_phone_placeholder">رقم الهاتف</string>
@@ -2114,7 +2114,7 @@
     <string name="onboard_sms_title">أدخل الرمز الذي تلقيته عبر الرسائل القصيرة</string>
 
     <string name="attention_pop_title">حذاري</string>
-    <string name="onboard_sms_pop_alert">الرجاء الانتظار لمدة %s ثانية قبل تكرار الطلب.</string>
+    <string name="onboard_sms_pop_alert">الرجاء الانتظار لمدة %d ثانية قبل تكرار الطلب.</string>
     <string name="onboard_sms_no_pwd">يرجى ملء كلمة المرور</string>
     <string name="onboard_type_title">تشرفت بلقائك، %s.</string>
     <string name="onboard_type_sub">كيف تريد تخصيص التطبيق؟</string>

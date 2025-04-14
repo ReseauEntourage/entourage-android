@@ -2,26 +2,22 @@ package social.entourage.android.notifications
 
 import android.os.Bundle
 import android.os.CountDownTimer
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.updatePadding
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.gson.Gson
 import social.entourage.android.R
+import social.entourage.android.api.model.notification.InAppNotification
 import social.entourage.android.databinding.NewFragmentNotifsInAppListBinding
 import social.entourage.android.home.HomePresenter
-import social.entourage.android.api.model.notification.InAppNotification
-import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.log.AnalyticsEvents
+import social.entourage.android.tools.utils.Const
 
 class InAppNotificationListFragment : Fragment() {
-    val groupPerPage = 10
+    private val groupPerPage = 10
     private var _binding: NewFragmentNotifsInAppListBinding? = null
     val binding: NewFragmentNotifsInAppListBinding get() = _binding!!
 
@@ -80,22 +76,21 @@ class InAppNotificationListFragment : Fragment() {
     }
 
     private fun checkUnread() {
-
         if (hasToShowDot) {
-            binding.iconBell.setImageDrawable(resources.getDrawable(R.drawable.ic_new_notif_on))
+            binding.iconBell.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_new_notif_on))
             val timer = object: CountDownTimer(2000, 1000) {
                 override fun onTick(millisUntilFinished: Long) {}
 
                 override fun onFinish() {
                     if(context != null) {
-                        binding.iconBell.setImageDrawable(resources.getDrawable(R.drawable.ic_new_notif_off))
+                        binding.iconBell.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_new_notif_off))
                     }
                 }
             }
             timer.start()
         }
         else {
-            binding.iconBell.setImageDrawable(resources.getDrawable(R.drawable.ic_new_notif_off))
+            binding.iconBell.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_new_notif_off))
         }
     }
 

@@ -16,9 +16,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import androidx.core.os.bundleOf
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -32,6 +29,7 @@ import social.entourage.android.home.CommunicationHandlerBadgeViewModel
 import social.entourage.android.home.UnreadMessages
 import social.entourage.android.notifications.NotificationDemandActivity
 import social.entourage.android.tools.log.AnalyticsEvents
+import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.VibrationUtil
 import kotlin.math.abs
@@ -61,16 +59,7 @@ class DiscussionsMainFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = NewFragmentMessagesBinding.inflate(inflater, container, false)
-        // Listen for WindowInsets
-        ViewCompat.setOnApplyWindowInsetsListener(binding.appBar) { view, windowInsets ->
-            // Get the insets for the statusBars() type:
-            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.statusBars())
-            view.updatePadding(
-                top = insets.top
-            )
-            // Return the original insets so they aren’t consumed
-            windowInsets
-        }
+        updatePaddingTopForEdgeToEdge(binding.appBar)
         return binding.root
     }
 

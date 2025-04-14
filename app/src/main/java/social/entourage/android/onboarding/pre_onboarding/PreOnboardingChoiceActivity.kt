@@ -6,15 +6,13 @@ import android.os.Bundle
 import android.widget.ImageView
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.updatePadding
 import social.entourage.android.R
 import social.entourage.android.base.BaseActivity
 import social.entourage.android.databinding.ActivityPreOnboardingChoiceBinding
 import social.entourage.android.onboarding.login.LoginActivity
 import social.entourage.android.onboarding.onboard.OnboardingStartActivity
 import social.entourage.android.tools.log.AnalyticsEvents
+import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
 
 class PreOnboardingChoiceActivity : BaseActivity() {
 
@@ -49,16 +47,7 @@ class PreOnboardingChoiceActivity : BaseActivity() {
         }
 
         AnalyticsEvents.logEvent(AnalyticsEvents.PreOnboard_view_choice)
-        // Listen for WindowInsets
-        ViewCompat.setOnApplyWindowInsetsListener(binding.logos) { view, windowInsets ->
-            // Get the insets for the statusBars() type:
-            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.statusBars())
-            view.updatePadding(
-                top = insets.top
-            )
-            // Return the original insets so they aren’t consumed
-            windowInsets
-        }
+        updatePaddingTopForEdgeToEdge(binding.logos)
     }
 
     private fun goLogin() {

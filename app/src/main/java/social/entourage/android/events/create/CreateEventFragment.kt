@@ -16,9 +16,6 @@ import android.widget.RadioButton
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
@@ -31,6 +28,7 @@ import social.entourage.android.databinding.NewFragmentCreateEventBinding
 import social.entourage.android.events.EventsPresenter
 import social.entourage.android.events.create.CommunicationHandler.canExitEventCreation
 import social.entourage.android.tools.log.AnalyticsEvents
+import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.CustomAlertDialog
 import social.entourage.android.tools.utils.Utils
@@ -55,15 +53,7 @@ class CreateEventFragment : Fragment() {
     ): View {
         _binding = NewFragmentCreateEventBinding.inflate(inflater, container, false)
 
-        ViewCompat.setOnApplyWindowInsetsListener(binding.header.layout) { view, windowInsets ->
-            // Get the insets for the statusBars() type:
-            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.statusBars())
-            view.updatePadding(
-                top = insets.top
-            )
-            // Return the original insets so they aren’t consumed
-            windowInsets
-        }
+        updatePaddingTopForEdgeToEdge(binding.header.layout)
         return binding.root
     }
 
