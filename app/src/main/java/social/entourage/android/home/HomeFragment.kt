@@ -50,6 +50,7 @@ import social.entourage.android.notifications.InAppNotificationsActivity
 import social.entourage.android.notifications.NotificationDemandActivity
 import social.entourage.android.onboarding.onboard.OnboardingStartActivity
 import social.entourage.android.profile.ProfileFullActivity
+import social.entourage.android.small_talks.SmallTalkIntroActivity
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.CustomAlertDialog
@@ -210,6 +211,10 @@ class HomeFragment: Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocatio
         //testNotifDemandePage()
         testToken()
         sendUserDiscussionStatus()
+//        val intent = Intent(requireContext(), SmallTalkIntroActivity::class.java)
+//        startActivity(intent)
+//        requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+
     }
 
     /*private fun testNotifDemandePage(){

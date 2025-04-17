@@ -746,7 +746,7 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface, Surv
             Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
         )
         spannable.setSpan(
-            CustomTypefaceSpan(regularFont),
+            regularFont?.let { CustomTypefaceSpan(it) },
             0,
             truncatedText.length,
             Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
@@ -768,7 +768,7 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface, Surv
                     Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
                 )
                 fullSpannable.setSpan(
-                    CustomTypefaceSpan(regularFont),
+                    regularFont?.let { it1 -> CustomTypefaceSpan(it1) },
                     0,
                     description.length,
                     Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
