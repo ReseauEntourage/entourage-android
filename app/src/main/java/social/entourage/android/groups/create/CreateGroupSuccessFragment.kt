@@ -5,9 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import social.entourage.android.R
@@ -16,6 +13,7 @@ import social.entourage.android.databinding.NewFragmentCreateGroupSuccessBinding
 import social.entourage.android.groups.details.feed.CreatePostGroupActivity
 import social.entourage.android.groups.details.feed.GroupFeedActivity
 import social.entourage.android.tools.log.AnalyticsEvents
+import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
 import social.entourage.android.tools.utils.Const
 
 class CreateGroupSuccessFragment : Fragment() {
@@ -40,15 +38,7 @@ class CreateGroupSuccessFragment : Fragment() {
             AnalyticsEvents.VIEW_NEW_GROUP_CONFIRMATION
         )
 
-        ViewCompat.setOnApplyWindowInsetsListener(binding.pass) { view, windowInsets ->
-            // Get the insets for the statusBars() type:
-            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.statusBars())
-            view.updatePadding(
-                top = insets.top
-            )
-            // Return the original insets so they aren’t consumed
-            windowInsets
-        }
+        updatePaddingTopForEdgeToEdge(binding.pass)
         return binding.root
     }
 

@@ -10,10 +10,7 @@ import android.view.View
 import android.view.ViewTreeObserver.OnGlobalLayoutListener
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
-import androidx.core.view.updatePadding
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import social.entourage.android.EntourageApplication
@@ -28,9 +25,9 @@ import social.entourage.android.report.DataLanguageStock
 import social.entourage.android.report.ReportModalFragment
 import social.entourage.android.report.ReportTypes
 import social.entourage.android.report.onDissmissFragment
+import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.Utils
-import social.entourage.android.tools.utils.focusAndShowKeyboard
 import social.entourage.android.tools.utils.scrollToPositionSmooth
 import social.entourage.android.tools.view.WebViewFragment
 import java.util.UUID
@@ -90,15 +87,7 @@ override fun onCreate(savedInstanceState: Bundle?) {
 
     handleSendButtonState()
 
-    ViewCompat.setOnApplyWindowInsetsListener(binding.header.layout) { view, windowInsets ->
-        // Get the insets for the statusBars() type:
-        val insets = windowInsets.getInsets(WindowInsetsCompat.Type.statusBars())
-        view.updatePadding(
-            top = insets.top
-        )
-        // Return the original insets so they aren’t consumed
-        windowInsets
-    }
+    updatePaddingTopForEdgeToEdge(binding.header.layout)
 }
 
 fun setIsEventTrue(){

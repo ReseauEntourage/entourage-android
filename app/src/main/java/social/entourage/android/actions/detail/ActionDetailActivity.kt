@@ -7,10 +7,7 @@ import android.text.TextUtils
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
-import androidx.core.view.updatePadding
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
 import social.entourage.android.BuildConfig
@@ -19,6 +16,7 @@ import social.entourage.android.actions.ActionsPresenter
 import social.entourage.android.api.model.Action
 import social.entourage.android.databinding.ActivityActionDetailBinding
 import social.entourage.android.tools.log.AnalyticsEvents
+import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
 import social.entourage.android.tools.utils.Const
 
 //Use to hide report button when loading detail action if canceled
@@ -79,15 +77,7 @@ class ActionDetailActivity : AppCompatActivity(), OnDetailActionReceive {
 
         handleShareButton()
 
-        ViewCompat.setOnApplyWindowInsetsListener(binding.actionDetailHeaderLayout) { view, windowInsets ->
-            // Get the insets for the statusBars() type:
-            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.statusBars())
-            view.updatePadding(
-                top = insets.top
-            )
-            // Return the original insets so they aren’t consumed
-            windowInsets
-        }
+        updatePaddingTopForEdgeToEdge(binding.actionDetailHeaderLayout)
 
     }
 

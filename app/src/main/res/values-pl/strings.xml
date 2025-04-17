@@ -263,7 +263,7 @@ Przeczytają tę wiadomość, gdy tylko dołączą do grupy.</string>
     <string name="welcome_message_title">Gratulacje, jesteś członkiem grupy!</string>
     <string name="welcome_message_btn_title">przedstawię się</string>
     <string name="member">Członek</string>
-    <string name="members_location">%s członków. %s</string>
+    <string name="members_location">%1$d członków. %2$s</string>
     <string name="group_settings">Ustawienia grupy</string>
     <string name="report_group">zgłosić problem</string>
     <string name="rules_group">Zasady grupy</string>
@@ -1911,7 +1911,7 @@ Przeczytają tę wiadomość, gdy tylko dołączą do grupy.</string>
 
     <string name="login_smscode_sent">Wysłano SMS-a</string>
 
-    <string name="error_login_phone_length">Numer telefonu musi mieć co najmniej %s cyfr</string>
+    <string name="error_login_phone_length">Numer telefonu musi mieć co najmniej %d cyfr</string>
     <string name="error_login_code_lenght">Kod musi mieć długość 6 cyfr</string>
     <string name="login_title">Połączenie</string>
     <string name="login_phone_placeholder">Numer telefonu</string>
@@ -2133,7 +2133,7 @@ Przeczytają tę wiadomość, gdy tylko dołączą do grupy.</string>
     <string name="onboard_sms_title">Wpisz kod otrzymany SMS-em</string>
 
     <string name="attention_pop_title">Uwaga</string>
-    <string name="onboard_sms_pop_alert">Przed powtórzeniem żądania odczekaj %s s.</string>
+    <string name="onboard_sms_pop_alert">Przed powtórzeniem żądania odczekaj %d s.</string>
     <string name="onboard_sms_no_pwd">Proszę wpisać hasło</string>
     <string name="onboard_type_title">Miło Cię poznać, %s.</string>
     <string name="onboard_type_sub">Jak chcesz dostosować aplikację?</string>

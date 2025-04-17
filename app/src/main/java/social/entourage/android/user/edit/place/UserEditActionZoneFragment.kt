@@ -5,9 +5,6 @@ import android.location.Geocoder
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.updatePadding
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import social.entourage.android.EntourageApplication
@@ -18,6 +15,7 @@ import social.entourage.android.api.model.User
 import social.entourage.android.groups.create.CommunicationHandlerViewModel
 import social.entourage.android.home.OnHomeChangeLocationUpdate
 import social.entourage.android.tools.log.AnalyticsEvents
+import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
 import java.io.IOException
 
 class UserEditActionZoneFragment : UserActionPlaceFragment() {
@@ -69,15 +67,7 @@ class UserEditActionZoneFragment : UserActionPlaceFragment() {
             }
         }
 
-        ViewCompat.setOnApplyWindowInsetsListener(binding.editPlaceTitleLayout) { view, windowInsets ->
-            // Get the insets for the statusBars() type:
-            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.statusBars())
-            view.updatePadding(
-                top = insets.top
-            )
-            // Return the original insets so they aren’t consumed
-            windowInsets
-        }
+        updatePaddingTopForEdgeToEdge(binding.editPlaceTitleLayout)
     }
 
     override fun onCurrentLocationClicked() {

@@ -234,7 +234,7 @@
     <string name="welcome_message_title">Congratulations, you\'re a member of the group!</string>
     <string name="welcome_message_btn_title">I introduce myself</string>
     <string name="member">Member</string>
-    <string name="members_location">%s members. %s</string>
+    <string name="members_location">%1$d members. %2$s</string>
     <string name="group_settings">Group settings</string>
     <string name="report_group">Report a problem</string>
     <string name="rules_group">Group rules</string>
@@ -946,7 +946,7 @@
     <string name="login_text_invalid_format">The number must be 9 or 10 digits long.</string>
     <string name="login_hint_code">Code</string>
     <string name="login_error">Authentication problem\nPlease try again</string>
-    <string name="login_error_title">Try again</string>
+    <string name="login_error_title">Please try again</string>
     <string name="login_error_invalid_credentials">The phone number and this access code do not match.</string>
     <string name="login_error_invalid_phone_format">Invalid number format.\nIf your number is not from mainland France, include the country code</string>
     <string name="login_error_network">Check your internet connection</string>
@@ -961,7 +961,7 @@
     <string name="login_place_title">What is your neighborhood?</string>
     <string name="login_place_description">You will be able to respond to requests from people in difficulty and from associations in your neighborhood, and you yourself will be able to offer donations of your time or materials.</string>
     <string name="login_smscode_sent">SMS sent</string>
-    <string name="error_login_phone_length">The phone number must be at least %s digits long</string>
+    <string name="error_login_phone_length">The phone number must be at least %d digits long</string>
     <string name="error_login_code_lenght">The code must be 6 digits long</string>
     <string name="login_title">Log in</string>
     <string name="login_phone_placeholder">Phone number</string>
@@ -1132,7 +1132,7 @@
     <string name="onboard_phone_placeholder_phone">Phone number</string>
     <string name="onboard_sms_title">Enter the code received by SMS</string>
     <string name="attention_pop_title">Attention</string>
-    <string name="onboard_sms_pop_alert">Please wait for %s sec before repeating the request.</string>
+    <string name="onboard_sms_pop_alert">Please wait for %d sec before repeating the request.</string>
     <string name="onboard_sms_no_pwd">Please fill in the password</string>
     <string name="onboard_type_title">Nice to meet you, %s.</string>
     <string name="onboard_type_sub">How do you want to customize the app?</string>

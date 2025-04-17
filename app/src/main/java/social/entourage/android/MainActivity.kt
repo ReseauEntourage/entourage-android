@@ -19,9 +19,6 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.os.bundleOf
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.updatePadding
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
@@ -56,6 +53,7 @@ import social.entourage.android.main_filter.MainFilterActivity
 import social.entourage.android.notifications.NotificationActionManager
 import social.entourage.android.profile.ProfileFullActivity
 import social.entourage.android.tools.log.AnalyticsEvents
+import social.entourage.android.tools.updatePaddingBottomForEdgeToEdge
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.view.WebViewFragment
 import social.entourage.android.user.UserPresenter
@@ -100,15 +98,7 @@ class MainActivity : BaseSecuredActivity() {
         }
         checkForAppUpdate()
         //ifEventLastDay(591022)
-        // Listen for WindowInsets
-        ViewCompat.setOnApplyWindowInsetsListener(binding.navView) { view, windowInsets ->
-            // Get the insets for the statusBars() type:
-            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.navigationBars())
-            view.layoutParams.height = insets.bottom +view.minimumHeight
-            view.updatePadding(bottom =  insets.bottom)
-            // Return the original insets so they aren’t consumed
-            windowInsets
-        }
+        updatePaddingBottomForEdgeToEdge(binding.navView)
     }
 
     fun hideBottomBar() {
