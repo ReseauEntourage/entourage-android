@@ -16,6 +16,7 @@ import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
@@ -28,15 +29,20 @@ import social.entourage.android.R
 import social.entourage.android.actions.ActionsPresenter
 import social.entourage.android.api.model.Action
 import social.entourage.android.api.model.ActionSectionFilters
+import social.entourage.android.api.model.Conversation
 import social.entourage.android.api.model.EventActionLocationFilters
 import social.entourage.android.api.model.Events
 import social.entourage.android.api.model.Group
+import social.entourage.android.api.model.GroupMember
 import social.entourage.android.api.model.Help
 import social.entourage.android.api.model.Pedago
+import social.entourage.android.api.model.SmallTalk
 import social.entourage.android.api.model.Summary
 import social.entourage.android.api.model.User
+import social.entourage.android.api.model.UserSmallTalkRequest
 import social.entourage.android.chatbot.ChatBotBottomSheet
 import social.entourage.android.databinding.FragmentHomeBinding
+import social.entourage.android.discussions.DetailConversationActivity
 import social.entourage.android.enhanced_onboarding.EnhancedOnboarding
 import social.entourage.android.events.create.CommunicationHandler
 import social.entourage.android.guide.GDSMainActivity
@@ -47,7 +53,9 @@ import social.entourage.android.notifications.InAppNotificationsActivity
 import social.entourage.android.notifications.NotificationDemandActivity
 import social.entourage.android.onboarding.onboard.OnboardingStartActivity
 import social.entourage.android.profile.ProfileFullActivity
+import social.entourage.android.small_talks.SmallTalkGuidelinesActivity
 import social.entourage.android.small_talks.SmallTalkIntroActivity
+import social.entourage.android.small_talks.SmallTalkViewModel
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
 import social.entourage.android.tools.utils.Const
@@ -63,6 +71,7 @@ class HomeFragment: Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocatio
     private lateinit var homePresenter:HomePresenter
     private var homeGroupAdapter = HomeGroupAdapter()
     private lateinit var homeEventAdapter: HomeEventAdapter
+    private lateinit var homeSmallTalkAdapter: HomeSmallTalkAdapter
     private var homeActionAdapter = HomeActionAdapter(false)
     private val userPresenter: UserPresenter by lazy { UserPresenter() }
     private lateinit var homeHelpAdapter: HomeHelpAdapter
@@ -89,6 +98,13 @@ class HomeFragment: Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocatio
     private var isActionEmpty = false
     private var isContribution = false
     private lateinit var actionsPresenter: ActionsPresenter
+    private val smallTalkViewModel: SmallTalkViewModel by lazy {
+        ViewModelProvider(this).get(SmallTalkViewModel::class.java)
+    }
+    private var isRequestLoaded = false
+    private var isTalksLoaded   = false
+    private var currentRequests: List<UserSmallTalkRequest> = emptyList()
+    private var smallTalksList: List<SmallTalk> = emptyList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -142,7 +158,18 @@ class HomeFragment: Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocatio
                 }
             }
         })
-
+        homeSmallTalkAdapter = HomeSmallTalkAdapter(
+            onStartClick = {
+                startActivity(Intent(requireContext(), SmallTalkGuidelinesActivity::class.java))
+            },
+            onConversationClick = { conversation ->
+                val intent = Intent(requireContext(), DetailConversationActivity::class.java)
+                intent.putExtra(Const.CONVERSATION_ID, conversation.id)
+                startActivity(intent)
+            }
+        )
+        binding.rvHomeSmallTalk.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        binding.rvHomeSmallTalk.adapter = homeSmallTalkAdapter
         AnalyticsEvents.logEvent(AnalyticsEvents.View__Home)
         if(EnhancedOnboarding.shouldNotDisplayCampain == true){
             //HERE DO NOTHING AS WE DONT WANT TO PROC FIREBASE CAMPAIN MESSAGE TO  NEW USER
@@ -165,6 +192,22 @@ class HomeFragment: Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocatio
         binding.chatbotButton.setOnClickListener {
             ChatBotBottomSheet().show(parentFragmentManager, "chatbot")
         }
+        // 2) observe les LiveData small-talk
+        smallTalkViewModel.userRequests.observe(viewLifecycleOwner) { req ->
+            Timber.wtf("wtf observe userRequest → ${req != null}")
+            currentRequests = req
+            isRequestLoaded = true
+            composeSmallTalkItems()
+        }
+
+        smallTalkViewModel.smallTalks.observe(viewLifecycleOwner) { talks ->
+            smallTalksList   = talks
+            isTalksLoaded    = true
+            composeSmallTalkItems()
+        }
+
+        // 3) déclenche le chargement dès que tu veux (par ex. en onResume)
+        loadSmallTalkItems()
 
         return binding.root
     }
@@ -197,23 +240,86 @@ class HomeFragment: Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocatio
                 Intent(context, ProfileFullActivity::class.java), 0
             )
         }
-        //testNotifDemandePage()
-        testToken()
+        testNotifDemandePage()
+        //testToken()
         sendUserDiscussionStatus()
 //        val intent = Intent(requireContext(), SmallTalkIntroActivity::class.java)
 //        startActivity(intent)
 //        requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+        loadSmallTalkItems()
 
     }
 
-    /*private fun testNotifDemandePage(){
+    /** Remplace loadDummySmallTalkItems() */
+    private fun loadSmallTalkItems() {
+        isRequestLoaded = false
+        isTalksLoaded   = false
+        smallTalkViewModel.listUserRequests()
+        smallTalkViewModel.listSmallTalks()
+    }
+
+    /** Compose la liste finale dès que les deux appels sont terminés */
+    private fun composeSmallTalkItems() {
+        Timber.wtf("wtf étape : composeSmallTalkItems() appelée")
+
+        if (!isRequestLoaded) {
+            Timber.wtf("wtf étape : currentUserRequest PAS encore chargé")
+            return
+        }
+        if (!isTalksLoaded) {
+            Timber.wtf("wtf étape : smallTalksList PAS encore chargée")
+            return
+        }
+
+        Timber.wtf("wtf étape : les deux chargements sont terminés")
+
+        val items = mutableListOf<HomeSmallTalkItem>()
+
+        if (currentRequests.isNotEmpty()) {
+            Timber.wtf("wtf étape : ajout de la cellule Waiting")
+            items.add(HomeSmallTalkItem.Waiting)
+        } else {
+            Timber.wtf("wtf étape : aucune currentRequest reçue")
+        }
+
+        if (smallTalksList.isNotEmpty()) {
+            Timber.wtf("wtf étape : ${smallTalksList.size} smallTalk(s) reçus")
+        } else {
+            Timber.wtf("wtf étape : aucun smallTalk reçu")
+        }
+
+        smallTalksList.forEach { st ->
+            Timber.wtf("wtf étape : ajout d’une cellule Conversation (id=${st.id}, uuid=${st.uuid})")
+            items.add(
+                HomeSmallTalkItem.ConversationItem(
+                    Conversation(
+                        id = st.id ?: 0,
+                        title = st.uuid ?: "",
+                        members = arrayListOf() // Tu peux peupler plus tard si besoin
+                    )
+                )
+            )
+        }
+
+        if (items.size < 3) {
+            Timber.wtf("wtf étape : moins de 3 items → ajout de la cellule MatchPossible")
+            items.add(HomeSmallTalkItem.MatchPossible)
+        } else {
+            Timber.wtf("wtf étape : assez d’items, pas de MatchPossible ajouté (taille = ${items.size})")
+        }
+
+        Timber.wtf("wtf étape : soumission finale à l’adapter avec ${items.size} item(s)")
+        homeSmallTalkAdapter.submitList(items)
+    }
+    
+    private fun testNotifDemandePage(){
         binding.ivLogoHome.setOnLongClickListener {
-            val intent = Intent(requireContext(), NotificationDemandActivity::class.java)
-            this.startActivity(intent)
-            requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+        val intent = Intent(requireContext(), SmallTalkGuidelinesActivity::class.java)
+        startActivity(intent)
+        requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
             true
         }
-    }*/
+    }
 
     private fun testToken() {
         binding.ivLogoHome.setOnLongClickListener {

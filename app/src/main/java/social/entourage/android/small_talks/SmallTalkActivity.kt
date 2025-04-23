@@ -58,25 +58,31 @@ class SmallTalkActivity : BaseActivity() {
             binding.title.text = step.title
             binding.subtitle.text = step.subtitle
 
-            // Adapter LayoutManager dynamiquement selon l’étape
+            // Sécurise le changement de LayoutManager
+            binding.rvSmallTalk.suppressLayout(true)
+
             val isInterestStep = viewModel.isLastStep()
-            binding.rvSmallTalk.layoutManager = if (isInterestStep) {
+            val newLayoutManager = if (isInterestStep) {
                 GridLayoutManager(this, 2)
             } else {
                 LinearLayoutManager(this)
             }
 
-            // Supprimer les anciens items
-            val oldSize = adapter.interests.size
-            adapter.interests = emptyList()
-            adapter.notifyItemRangeRemoved(0, oldSize)
+            if (binding.rvSmallTalk.layoutManager?.javaClass != newLayoutManager.javaClass) {
+                binding.rvSmallTalk.layoutManager = newLayoutManager
+            }
 
-            // Post pour insérer les nouveaux items après délai
-            binding.rvSmallTalk.postDelayed({
-                adapter.interests = step.items
-                adapter.notifyItemRangeInserted(0, step.items.size)
-            }, 150)
+            binding.rvSmallTalk.suppressLayout(false)
 
+            // Applique ton animation
+            binding.rvSmallTalk.layoutAnimation = AnimationUtils.loadLayoutAnimation(this, R.anim.layout_anim_fade_in)
+            binding.rvSmallTalk.scheduleLayoutAnimation()
+
+            // Rafraîchit les données proprement
+            adapter.interests = step.items
+            adapter.notifyDataSetChanged()
+
+            // Barre de progression animée
             animateProgressTo(viewModel.getStepProgress())
         }
 
@@ -87,6 +93,7 @@ class SmallTalkActivity : BaseActivity() {
             )
         }
     }
+
 
     private fun setupButtons() {
         binding.buttonStart.setOnClickListener {

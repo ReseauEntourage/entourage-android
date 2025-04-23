@@ -11,6 +11,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import social.entourage.android.BuildConfig
 import social.entourage.android.api.model.BaseEntourage
 import social.entourage.android.api.model.BaseEntourage.BaseEntourageJsonAdapter
+import social.entourage.android.api.model.SmallTalk
 import social.entourage.android.api.model.feed.NewsfeedItem
 import social.entourage.android.api.model.feed.NewsfeedItem.NewsfeedItemJsonAdapter
 import social.entourage.android.api.request.*
@@ -34,6 +35,7 @@ class ApiModule {
     val metaDataRequest: MetaDataRequest
     val groupRequest: GroupRequest
     val homeRequest: HomeRequest
+    val smallTalkRequest: SmallTalkRequest
     val eventsRequest: EventsRequest
     val actionsRequest : ActionsRequest
     val surveyRequest : SurveyRequest
@@ -53,6 +55,7 @@ class ApiModule {
         metaDataRequest = providesMetaDataRequest(restAdapter)
         groupRequest = providesGroupRequest(restAdapter)
         homeRequest = providesSummaryRequest(restAdapter)
+        smallTalkRequest = providesSmallTalkRequest(restAdapter)
         eventsRequest = providesEventsRequest(restAdapter)
         actionsRequest = providesActionsRequest(restAdapter)
         surveyRequest = providesSurveyRequest(restAdapter)
@@ -147,6 +150,9 @@ class ApiModule {
 
     fun providesSummaryRequest(restAdapter: Retrofit): HomeRequest {
         return restAdapter.create(HomeRequest::class.java)
+    }
+    fun providesSmallTalkRequest(restAdapter: Retrofit): SmallTalkRequest {
+        return restAdapter.create(SmallTalkRequest::class.java)
     }
 
     fun providesEventsRequest(restAdapter: Retrofit): EventsRequest {

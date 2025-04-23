@@ -286,8 +286,9 @@ dependencies {
     testImplementation("junit:junit:4.13.2")
     testImplementation("androidx.test.ext:junit:1.1.5")
     testImplementation("androidx.test:core:1.5.0")
-    testImplementation("org.mockito:mockito-core:3.12.4") // For mocking
-
+    testImplementation("org.mockito:mockito-core:3.12.4")
+    testImplementation("org.mockito:mockito-inline:3.12.4")
+    testImplementation("org.mockito.kotlin:mockito-kotlin:4.1.0")
 
 
     implementation("com.google.android.flexbox:flexbox:3.0.0")

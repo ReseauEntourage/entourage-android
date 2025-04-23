@@ -1,9 +1,11 @@
 package social.entourage.android.small_talks
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
 import social.entourage.android.base.BaseActivity
 import social.entourage.android.databinding.SmallTalkOtherBandsBinding
+import social.entourage.android.small_talks.SmallTalkGroupFoundActivity
 
 enum class OtherBandType {
     DIFFERENT_LOCATION,
@@ -52,8 +54,9 @@ class SmallTalkListOtherBands : BaseActivity() {
                 type = OtherBandType.GROUP_OF_THREE_PLUS
             )
         )
-
-
+        binding.title.setOnClickListener {
+            startActivity(Intent(this, SmallTalkGroupFoundActivity::class.java))
+        }
 
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
         binding.recyclerView.adapter = OtherBandsAdapter(bands) { band ->
