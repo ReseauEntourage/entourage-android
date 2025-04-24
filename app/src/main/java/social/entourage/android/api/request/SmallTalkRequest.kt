@@ -84,9 +84,8 @@ interface SmallTalkRequest {
     ): Call<SmallTalkMatchResponse>
 
     // Supprime la demande (si pas encore matchée)
-    @DELETE("user_smalltalks/{id}")
+    @DELETE("user_smalltalks")
     fun deleteUserSmallTalkRequest(
-        @Path("id") id: String
     ): Call<ResponseBody>
 
     /* ---------- smalltalks (salles de chat) ---------- */

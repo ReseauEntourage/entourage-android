@@ -160,7 +160,7 @@ class HomeFragment: Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocatio
         })
         homeSmallTalkAdapter = HomeSmallTalkAdapter(
             onStartClick = {
-                startActivity(Intent(requireContext(), SmallTalkGuidelinesActivity::class.java))
+                startActivity(Intent(requireContext(), SmallTalkIntroActivity::class.java))
             },
             onConversationClick = { conversation ->
                 val intent = Intent(requireContext(), DetailConversationActivity::class.java)
@@ -260,36 +260,27 @@ class HomeFragment: Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocatio
 
     /** Compose la liste finale dès que les deux appels sont terminés */
     private fun composeSmallTalkItems() {
-        Timber.wtf("wtf étape : composeSmallTalkItems() appelée")
 
         if (!isRequestLoaded) {
-            Timber.wtf("wtf étape : currentUserRequest PAS encore chargé")
             return
         }
         if (!isTalksLoaded) {
-            Timber.wtf("wtf étape : smallTalksList PAS encore chargée")
             return
         }
-
-        Timber.wtf("wtf étape : les deux chargements sont terminés")
 
         val items = mutableListOf<HomeSmallTalkItem>()
 
         if (currentRequests.isNotEmpty()) {
-            Timber.wtf("wtf étape : ajout de la cellule Waiting")
             items.add(HomeSmallTalkItem.Waiting)
         } else {
-            Timber.wtf("wtf étape : aucune currentRequest reçue")
         }
 
         if (smallTalksList.isNotEmpty()) {
-            Timber.wtf("wtf étape : ${smallTalksList.size} smallTalk(s) reçus")
         } else {
-            Timber.wtf("wtf étape : aucun smallTalk reçu")
+
         }
 
         smallTalksList.forEach { st ->
-            Timber.wtf("wtf étape : ajout d’une cellule Conversation (id=${st.id}, uuid=${st.uuid})")
             items.add(
                 HomeSmallTalkItem.ConversationItem(
                     Conversation(
@@ -302,19 +293,15 @@ class HomeFragment: Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocatio
         }
 
         if (items.size < 3) {
-            Timber.wtf("wtf étape : moins de 3 items → ajout de la cellule MatchPossible")
             items.add(HomeSmallTalkItem.MatchPossible)
         } else {
-            Timber.wtf("wtf étape : assez d’items, pas de MatchPossible ajouté (taille = ${items.size})")
         }
-
-        Timber.wtf("wtf étape : soumission finale à l’adapter avec ${items.size} item(s)")
         homeSmallTalkAdapter.submitList(items)
     }
-    
+
     private fun testNotifDemandePage(){
         binding.ivLogoHome.setOnLongClickListener {
-        val intent = Intent(requireContext(), SmallTalkGuidelinesActivity::class.java)
+        val intent = Intent(requireContext(), SmallTalkIntroActivity::class.java)
         startActivity(intent)
         requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
             true
@@ -415,8 +402,6 @@ class HomeFragment: Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocatio
             userPresenter.updateUser(isInterested)
         }
     }
-
-
 
     private fun checkNotificationStatus() {
         val notificationManager = NotificationManagerCompat.from(requireContext())

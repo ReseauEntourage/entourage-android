@@ -43,6 +43,7 @@ data class MembersWrapper(
 data class UserSmallTalkRequest(
     @SerializedName("id") val id: Int? = null,
     @SerializedName("uuid_v2") val uuid: String? = null,
+    @SerializedName("smalltalk_id") val smalltalkId: Int? = null,
 
     @SerializedName("match_format")
     val matchFormat: String, // "one" ou "many"

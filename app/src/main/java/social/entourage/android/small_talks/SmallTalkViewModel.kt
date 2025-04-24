@@ -151,8 +151,8 @@ class SmallTalkViewModel(application: Application) : AndroidViewModel(applicatio
         })
     }
 
-    fun deleteRequest(id: String) {
-        request.deleteUserSmallTalkRequest(id).enqueue(object : Callback<ResponseBody> {
+    fun deleteRequest() {
+        request.deleteUserSmallTalkRequest().enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 requestDeleted.value = response.isSuccessful
             }
