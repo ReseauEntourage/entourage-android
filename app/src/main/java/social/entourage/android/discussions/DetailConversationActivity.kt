@@ -119,19 +119,6 @@ class DetailConversationActivity : CommentActivity() {
     }
 
     private fun handleSmallTakDetail(smallTalk: SmallTalk?) {
-        smallTalk?.let {
-            binding.header.iconSettings.setOnClickListener {
-                VibrationUtil.vibrate(this)
-                SettingsDiscussionModalFragment.isEvent = false
-                SettingsDiscussionModalFragment.newInstance(
-                    postAuthorID,
-                    id,
-                    isOne2One,
-                    conversationTitle,
-                    discussionsPresenter.detailConversation.value?.imBlocker()
-                ).show(supportFragmentManager, SettingsDiscussionModalFragment.TAG)
-            }
-        }
         binding.postBlocked.isVisible = false
     }
     // --- SmallTalk messages mapping ---
@@ -459,5 +446,11 @@ class DetailConversationActivity : CommentActivity() {
 
     fun updateDiscussion() {
         discussionsPresenter.getDetailConversation(id)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        isSmallTalkMode = false
+        smallTalkId = ""
     }
 }

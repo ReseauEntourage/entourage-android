@@ -6,7 +6,9 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.viewModels
 import androidx.core.view.isVisible
+import androidx.fragment.app.viewModels
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
@@ -17,6 +19,7 @@ import social.entourage.android.api.model.Conversation
 import social.entourage.android.profile.ProfileFullActivity
 import social.entourage.android.report.ReportModalFragment
 import social.entourage.android.report.ReportTypes
+import social.entourage.android.small_talks.SmallTalkViewModel
 import social.entourage.android.user.UserProfileActivity
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.CustomAlertDialog
@@ -27,6 +30,7 @@ class SettingsDiscussionModalFragment : BottomSheetDialogFragment() {
     val binding: NewFragmentSettingsDiscussionModalBinding get() = _binding!!
 
     private val discussionPresenter : DiscussionsPresenter by lazy { DiscussionsPresenter() }
+    private val smallTalkViewModel: SmallTalkViewModel by viewModels()
 
     var isOneToOne = true
 
@@ -137,6 +141,9 @@ class SettingsDiscussionModalFragment : BottomSheetDialogFragment() {
                     ), 0)
             }
             else {
+                if(DetailConversationActivity.isSmallTalkMode){
+                    MembersConversationFragment.newInstance(DetailConversationActivity.smallTalkId.toInt()).show(childFragmentManager,"")
+                }
                 MembersConversationFragment.newInstance(conversationId).show(childFragmentManager,"")
             }
         }
@@ -158,8 +165,12 @@ class SettingsDiscussionModalFragment : BottomSheetDialogFragment() {
                 getString(R.string.leave_conversation_dialog_content),
                 getString(R.string.exit),
             ) {
-                conversationId?.let {
-                    discussionPresenter.leaveConverstion(it)
+                if (DetailConversationActivity.isSmallTalkMode) {
+                    smallTalkViewModel.leaveSmallTalk(DetailConversationActivity.smallTalkId)
+                }else{
+                    conversationId?.let {
+                        discussionPresenter.leaveConverstion(it)
+                    }
                 }
             }
         }

@@ -141,6 +141,7 @@ class SmallTalkActivity : BaseActivity() {
             }
 
             if (viewModel.isLastStep()) {
+                SmallTalkingSearchingActivity.id = SMALL_TALK_REQUEST_ID
                 startActivity(Intent(this, SmallTalkingSearchingActivity::class.java))
                 overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
             } else {
