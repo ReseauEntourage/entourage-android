@@ -34,39 +34,50 @@ class SmallTalkIntroActivity : BaseActivity() {
 
         applyFormattedIntroText()
 
-        binding.startButton.setOnClickListener {
-            // Crée une requête vide au départ
-            val emptyRequest = UserSmallTalkRequest(
-                matchFormat = "one",
-                matchLocality = false,
-                matchGender = false,
-                matchInterest = true
-            )
-            viewModel.createRequest(emptyRequest)
+        // Observe la liste des requêtes existantes
+        viewModel.userRequests.observe(this) { requests ->
+
+            val nbMatches = requests.count { it.smalltalkId != null }
+            val hasPendingRequest = requests.any { it.smalltalkId == null }
+
+            binding.startButton.setOnClickListener {
+                if (nbMatches >= 3 || hasPendingRequest) {
+                    showToast(this, getString(R.string.smalltalk_intro_limit))
+                    return@setOnClickListener
+                }
+
+                // Crée une nouvelle requête avec des valeurs par défaut
+                val newRequest = UserSmallTalkRequest(
+                    matchFormat = "one",
+                    matchLocality = false,
+                    matchGender = false,
+                    userGender = "not_defined",
+                    matchInterest = true
+                )
+                viewModel.createRequest(newRequest)
+            }
         }
 
+        // Observe la requête créée (réponse de createRequest)
         viewModel.userRequest.observe(this) { request ->
-            Timber.wtf("wtf" + Gson().toJson(request))
+            Timber.wtf("wtf " + Gson().toJson(request))
             if (request?.id != null) {
-                // On stocke l’ID dans le companion object de SmallTalkActivity
                 SmallTalkActivity.SMALL_TALK_REQUEST_ID = request.id.toString()
-                // Puis on lance l'activité
                 val intent = Intent(this, SmallTalkActivity::class.java)
                 startActivity(intent)
                 overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
             } else {
-                // En cas d'erreur
-                showToast(this,getString(R.string.error_not_yet_implemented))
+                showToast(this, getString(R.string.error_not_yet_implemented))
             }
         }
 
+        // Bouton retour
         binding.endButton.setOnClickListener {
             finish()
         }
 
-        binding.titleText.setOnClickListener {
-            viewModel.deleteRequest()
-        }
+        // Déclenche initialement le chargement
+        viewModel.listUserRequests()
     }
 
     private fun applyFormattedIntroText() {

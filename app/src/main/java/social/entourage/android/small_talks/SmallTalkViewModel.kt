@@ -31,8 +31,8 @@ class SmallTalkViewModel(application: Application) : AndroidViewModel(applicatio
     val userRequests = MutableLiveData<List<UserSmallTalkRequest>>()
     val smallTalks = MutableLiveData<List<SmallTalk>>()
     val participants = MutableLiveData<List<User>>()
-    val messages = MutableLiveData<List<ChatMessage>>()
-    val createdMessage = MutableLiveData<ChatMessage?>()
+    val messages = MutableLiveData<List<Post>>()
+    val createdMessage = MutableLiveData<Post?>()
     val matchResult = MutableLiveData<SmallTalkMatchResponse?>()
     val requestDeleted = MutableLiveData<Boolean>()
     val smallTalkDetail = MutableLiveData<SmallTalk?>()
@@ -241,12 +241,13 @@ class SmallTalkViewModel(application: Application) : AndroidViewModel(applicatio
     /**
      * 5️⃣ Créer un message
      */
-    fun createChatMessage(id: String, params: ArrayMap<String, Any>) {
+    fun createChatMessage(id: String, content: String) {
+        val params = ArrayMap<String, Any>()
+        params["content"] = content
         request.createChatMessage(id, params).enqueue(object : Callback<ChatMessageWrapper> {
             override fun onResponse(call: Call<ChatMessageWrapper>, response: Response<ChatMessageWrapper>) {
                 createdMessage.value = response.body()?.chatMessage
-                // Optionnel : rafraîchir la liste
-                listChatMessages(id)
+                listChatMessages(id) // Optionnel : rafraîchir
             }
             override fun onFailure(call: Call<ChatMessageWrapper>, t: Throwable) {
                 createdMessage.value = null
@@ -254,17 +255,15 @@ class SmallTalkViewModel(application: Application) : AndroidViewModel(applicatio
         })
     }
 
-    /**
-     * 6️⃣ Mettre à jour un message
-     */
-    fun updateChatMessage(smallTalkId: String, messageId: String, params: ArrayMap<String, Any>) {
+    fun updateChatMessage(smallTalkId: String, messageId: String, newContent: String) {
+        val params = ArrayMap<String, Any>()
+        params["content"] = newContent
         request.updateChatMessage(smallTalkId, messageId, params).enqueue(object : Callback<ChatMessageWrapper> {
             override fun onResponse(call: Call<ChatMessageWrapper>, response: Response<ChatMessageWrapper>) {
-                // On peut soit renvoyer le message mis à jour, soit rafraîchir la liste entière
                 listChatMessages(smallTalkId)
             }
             override fun onFailure(call: Call<ChatMessageWrapper>, t: Throwable) {
-                // Optionnel : gérer l’erreur
+                // Optionnel : gestion erreur
             }
         })
     }

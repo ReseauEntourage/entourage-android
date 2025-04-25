@@ -7,6 +7,7 @@ import retrofit2.Call
 import retrofit2.http.*
 import social.entourage.android.api.model.ChatMessage
 import social.entourage.android.api.model.MembersWrapper
+import social.entourage.android.api.model.Post
 import social.entourage.android.api.model.SmallTalk
 import social.entourage.android.api.model.UserSmallTalkRequest
 
@@ -38,7 +39,7 @@ class SmallTalkListWrapper(
 
 class ChatMessageListWrapper(
     @field:SerializedName("chat_messages")
-    val messages: MutableList<ChatMessage>
+    val messages: MutableList<Post>
 )
 
 class SmallTalkMatchResponse(

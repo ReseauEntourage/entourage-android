@@ -305,3 +305,15 @@ class User : Serializable {
         }
     }
 }
+
+fun User.toGroupMember(): GroupMember {
+    return GroupMember(
+        id = this.id,
+        displayName = this.displayName,
+        avatarUrl = this.avatarURL
+    )
+}
+
+fun List<User>.toGroupMembers(): List<GroupMember> {
+    return map { it.toGroupMember() }
+}

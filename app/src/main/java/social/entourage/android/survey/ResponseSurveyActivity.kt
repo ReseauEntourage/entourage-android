@@ -70,6 +70,7 @@ class ResponseSurveyActivity:BaseActivity(), OnItemShowListener {
 
     private fun handleGetConversation(conversation: Conversation?) {
         conversation?.let {
+            DetailConversationActivity.isSmallTalkMode = false
             startActivityForResult(
                 Intent(this, DetailConversationActivity::class.java)
                     .putExtras(

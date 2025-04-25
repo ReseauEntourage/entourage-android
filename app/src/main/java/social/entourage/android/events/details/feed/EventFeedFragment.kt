@@ -581,6 +581,7 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
 
     fun goDiscussion(){
         VibrationUtil.vibrate(requireContext())
+        DetailConversationActivity.isSmallTalkMode = false
         startActivity(
             Intent(context, DetailConversationActivity::class.java)
                 .addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)

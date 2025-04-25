@@ -2994,6 +2994,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="small_talk_step1_item1_subtitle">Pour un échange simple et intimiste</string>
     <string name="small_talk_step1_item2_title">En petit groupe</string>
     <string name="small_talk_step1_item2_subtitle">Pour discuter à plusieurs, dans une ambiance conviviale</string>
+    <string name="smalltalk_intro_limit">Impossible de générer une nouvelle demande, veuillez quitter l\'une de vos bandes</string>
 
     <!-- Step 2: Proximité -->
     <string name="small_talk_step_title_2">Avec qui aimeriez-vous échanger ?</string>

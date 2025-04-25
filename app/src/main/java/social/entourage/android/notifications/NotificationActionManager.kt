@@ -209,6 +209,7 @@ object NotificationActionManager {
         )
     }
     private fun showConversation(context:Context,supportFragmentManager: FragmentManager, id: Int) {
+        DetailConversationActivity.isSmallTalkMode = false
         context.startActivity(
             Intent(context, DetailConversationActivity::class.java)
                 .putExtras(

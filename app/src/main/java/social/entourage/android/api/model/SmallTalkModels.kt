@@ -47,18 +47,18 @@ data class UserSmallTalkRequest(
 
     @SerializedName("match_format")
     val matchFormat: String, // "one" ou "many"
-
     @SerializedName("match_locality")
     val matchLocality: Boolean,
-
     @SerializedName("match_gender")
     val matchGender: Boolean,
-
+    @SerializedName("user_gender")
+    val userGender: String,
     @SerializedName("match_interest")
     val matchInterest: Boolean,
-
     @SerializedName("created_at")
     val createdAt: Date? = null,
+    @SerializedName("matched_at")
+    val matchedAt: Date? = null,
 
     @SerializedName("updated_at")
     val updatedAt: Date? = null

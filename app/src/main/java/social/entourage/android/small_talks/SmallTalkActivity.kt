@@ -11,11 +11,11 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import social.entourage.android.R
+import social.entourage.android.api.model.UserSmallTalkRequest
 import social.entourage.android.base.BaseActivity
 import social.entourage.android.databinding.SmallTalkActivityBinding
 import social.entourage.android.enhanced_onboarding.InterestForAdapter
 import social.entourage.android.enhanced_onboarding.fragments.OnboardingInterestsAdapter
-import social.entourage.android.api.model.UserSmallTalkRequest
 
 class SmallTalkActivity : BaseActivity() {
 
@@ -23,22 +23,22 @@ class SmallTalkActivity : BaseActivity() {
     private lateinit var viewModel: SmallTalkViewModel
     private lateinit var adapter: OnboardingInterestsAdapter
 
-    // Requête utilisateur à construire
     private var selectedRequest = UserSmallTalkRequest(
         id = SMALL_TALK_REQUEST_ID.toIntOrNull(),
         uuid = null,
+        smalltalkId = null,
         matchFormat = "",
         matchLocality = false,
         matchGender = false,
+        userGender = "",
         matchInterest = false
     )
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProvider(this)[SmallTalkViewModel::class.java]
         binding = SmallTalkActivityBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        viewModel = ViewModelProvider(this)[SmallTalkViewModel::class.java]
 
         setupRecyclerView()
         setupButtons()
@@ -50,55 +50,48 @@ class SmallTalkActivity : BaseActivity() {
             context = this,
             isFromInterest = false,
             interests = emptyList(),
-            onInterestClicked = { /* pas besoin ici, géré automatiquement */ }
+            onInterestClicked = { /* handled by adapter internally */ }
         )
 
-        binding.rvSmallTalk.layoutManager = LinearLayoutManager(this)
-        binding.rvSmallTalk.adapter = adapter
-        binding.rvSmallTalk.layoutAnimation = AnimationUtils.loadLayoutAnimation(this, R.anim.layout_anim_fade_in)
-        binding.rvSmallTalk.itemAnimator = DefaultItemAnimator().apply {
-            addDuration = 200
-            removeDuration = 150
+        binding.rvSmallTalk.apply {
+            layoutManager = LinearLayoutManager(this@SmallTalkActivity)
+            adapter = this@SmallTalkActivity.adapter
+            layoutAnimation = AnimationUtils.loadLayoutAnimation(context, R.anim.layout_anim_fade_in)
+            itemAnimator = DefaultItemAnimator().apply {
+                addDuration = 200
+                removeDuration = 150
+            }
         }
     }
 
     private fun observeViewModel() {
         viewModel.currentStep.observe(this) { step ->
-            // Mise à jour du titre et sous-titre
             binding.title.text = step.title
             binding.subtitle.text = step.subtitle
 
             val isInterestStep = viewModel.isLastStep()
-
-            // Mise à jour du comportement de sélection unique dans l’adapter
             adapter.forceSingleSelectionForSmallTalk = !isInterestStep
 
-            // Choix du bon LayoutManager selon l’étape
             val newLayoutManager = if (isInterestStep) {
                 GridLayoutManager(this, 2)
             } else {
                 LinearLayoutManager(this)
             }
 
-            // Application du nouveau LayoutManager si différent
             binding.rvSmallTalk.suppressLayout(true)
             if (binding.rvSmallTalk.layoutManager?.javaClass != newLayoutManager.javaClass) {
                 binding.rvSmallTalk.layoutManager = newLayoutManager
             }
             binding.rvSmallTalk.suppressLayout(false)
 
-            // Mise à jour des items
             adapter.interests = step.items
             adapter.notifyDataSetChanged()
-
-            // Animation du recyclerview
             binding.rvSmallTalk.scheduleLayoutAnimation()
 
-            // Animation de la barre de progression
             animateProgressTo(viewModel.getStepProgress())
         }
 
-        viewModel.currentStepIndex.observe(this) {
+        viewModel.currentStepIndex.observe(this) { stepIndex ->
             binding.buttonStart.text = getString(
                 if (viewModel.isLastStep()) R.string.onboarding_btn_finish
                 else R.string.onboarding_btn_next
@@ -109,7 +102,6 @@ class SmallTalkActivity : BaseActivity() {
     private fun setupButtons() {
         binding.buttonStart.setOnClickListener {
             val selectedItem = adapter.interests.find { it.isSelected }
-
             val stepIndex = viewModel.currentStepIndex.value ?: 0
             val update = ArrayMap<String, Any>()
 
@@ -130,12 +122,15 @@ class SmallTalkActivity : BaseActivity() {
                     update["match_locality"] = value
                 }
                 2 -> {
-                    val value = selectedItem?.id == "5"
-                    selectedRequest = selectedRequest.copy(matchGender = value)
-                    update["match_gender"] = value
+                    val genderValue = when (selectedItem?.id) {
+                        "5" -> "male"
+                        "6" -> "female"
+                        else -> "not_defined"
+                    }
+                    selectedRequest = selectedRequest.copy(userGender = genderValue)
+                    update["user_gender"] = genderValue
                 }
                 3 -> {
-                    // On ne se base plus sur le choix, on met toujours true
                     selectedRequest = selectedRequest.copy(matchInterest = true)
                     update["match_interest"] = true
                 }
@@ -159,15 +154,16 @@ class SmallTalkActivity : BaseActivity() {
     }
 
     private fun animateProgressTo(progressRatio: Float) {
-        val animator = ValueAnimator.ofInt(binding.progressBar.progress, (progressRatio * 100).toInt())
-        animator.duration = 300
-        animator.addUpdateListener { anim ->
-            binding.progressBar.progress = anim.animatedValue as Int
+        ValueAnimator.ofInt(binding.progressBar.progress, (progressRatio * 100).toInt()).apply {
+            duration = 300
+            addUpdateListener { animation ->
+                binding.progressBar.progress = animation.animatedValue as Int
+            }
+            start()
         }
-        animator.start()
     }
 
     companion object {
-        var SMALL_TALK_REQUEST_ID = "12345" // À remplacer par un vrai ID backend
+        var SMALL_TALK_REQUEST_ID = "12345" // À injecter depuis SmallTalkIntroActivity
     }
 }

@@ -179,7 +179,7 @@ class DiscussionsMainFragment : Fragment() {
     private fun showDetail(position:Int) {
         val conversation = messagesList[position]
         VibrationUtil.vibrate(requireContext())
-
+        DetailConversationActivity.isSmallTalkMode = false
         startActivity(
             Intent(context, DetailConversationActivity::class.java)
                 .putExtras(

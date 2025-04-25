@@ -102,7 +102,6 @@ class HomeFragment: Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocatio
         ViewModelProvider(this).get(SmallTalkViewModel::class.java)
     }
     private var isRequestLoaded = false
-    private var isTalksLoaded   = false
     private var currentRequests: List<UserSmallTalkRequest> = emptyList()
     private var smallTalksList: List<SmallTalk> = emptyList()
 
@@ -163,10 +162,13 @@ class HomeFragment: Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocatio
                 startActivity(Intent(requireContext(), SmallTalkIntroActivity::class.java))
             },
             onConversationClick = { conversation ->
+
                 val intent = Intent(requireContext(), DetailConversationActivity::class.java)
-                intent.putExtra(Const.CONVERSATION_ID, conversation.id)
+                DetailConversationActivity.isSmallTalkMode = true
+                DetailConversationActivity.smallTalkId = conversation.id.toString()
                 startActivity(intent)
-            }
+            },
+            onMatchingClick = { smallTalkViewModel.deleteRequest() }
         )
         binding.rvHomeSmallTalk.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         binding.rvHomeSmallTalk.adapter = homeSmallTalkAdapter
@@ -193,17 +195,9 @@ class HomeFragment: Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocatio
             ChatBotBottomSheet().show(parentFragmentManager, "chatbot")
         }
         // 2) observe les LiveData small-talk
-        smallTalkViewModel.userRequests.observe(viewLifecycleOwner) { req ->
-            Timber.wtf("wtf observe userRequest → ${req != null}")
-            currentRequests = req
-            isRequestLoaded = true
-            composeSmallTalkItems()
-        }
-
-        smallTalkViewModel.smallTalks.observe(viewLifecycleOwner) { talks ->
-            smallTalksList   = talks
-            isTalksLoaded    = true
-            composeSmallTalkItems()
+        smallTalkViewModel.userRequests.observe(viewLifecycleOwner) { requests ->
+            currentRequests = requests
+            composeSmallTalkItemsSimplified()
         }
 
         // 3) déclenche le chargement dès que tu veux (par ex. en onResume)
@@ -253,48 +247,31 @@ class HomeFragment: Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocatio
     /** Remplace loadDummySmallTalkItems() */
     private fun loadSmallTalkItems() {
         isRequestLoaded = false
-        isTalksLoaded   = false
         smallTalkViewModel.listUserRequests()
-        smallTalkViewModel.listSmallTalks()
     }
 
     /** Compose la liste finale dès que les deux appels sont terminés */
-    private fun composeSmallTalkItems() {
-
-        if (!isRequestLoaded) {
-            return
-        }
-        if (!isTalksLoaded) {
-            return
-        }
-
+    private fun composeSmallTalkItemsSimplified() {
         val items = mutableListOf<HomeSmallTalkItem>()
-
-        if (currentRequests.isNotEmpty()) {
-            items.add(HomeSmallTalkItem.Waiting)
-        } else {
-        }
-
-        if (smallTalksList.isNotEmpty()) {
-        } else {
-
-        }
-
-        smallTalksList.forEach { st ->
-            items.add(
+        val matchedConversations = currentRequests
+            .filter { it.smalltalkId != null }
+            .map { matchedRequest ->
                 HomeSmallTalkItem.ConversationItem(
                     Conversation(
-                        id = st.id ?: 0,
-                        title = st.uuid ?: "",
-                        members = arrayListOf() // Tu peux peupler plus tard si besoin
+                        id = matchedRequest.smalltalkId ?: 0,
+                        title = matchedRequest.uuid ?: "",
+                        members = arrayListOf() // À peupler plus tard
                     )
                 )
-            )
-        }
+            }
 
-        if (items.size < 3) {
-            items.add(HomeSmallTalkItem.MatchPossible)
-        } else {
+        items.addAll(matchedConversations)
+        val hasOngoingRequestWithoutMatch = currentRequests.any { it.smalltalkId == null }
+        when {
+            // Si 3 conversations matchées ou une en attente, on ne montre pas "MatchPossible"
+            matchedConversations.size >= 3 -> {} // rien
+            hasOngoingRequestWithoutMatch -> items.add(HomeSmallTalkItem.Waiting)
+            else -> items.add(HomeSmallTalkItem.MatchPossible)
         }
         homeSmallTalkAdapter.submitList(items)
     }

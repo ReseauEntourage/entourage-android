@@ -109,6 +109,7 @@ class MembersConversationFragment : BaseDialogFragment() {
 
     private fun handleGetConversation(conversation: Conversation?) {
         conversation?.let {
+            DetailConversationActivity.isSmallTalkMode = false
             startActivityForResult(
                 Intent(context, DetailConversationActivity::class.java)
                     .putExtras(

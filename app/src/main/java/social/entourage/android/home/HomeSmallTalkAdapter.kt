@@ -1,17 +1,17 @@
 package social.entourage.android.home
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import social.entourage.android.R
+import com.google.gson.Gson
 import social.entourage.android.api.model.Conversation
+import social.entourage.android.databinding.ItemHomeSmallTalkConversationBinding
+import social.entourage.android.databinding.ItemHomeSmallTalkMatchBinding
+import social.entourage.android.databinding.ItemHomeSmallTalkWaitingBinding
+import timber.log.Timber
 
 sealed class HomeSmallTalkItem {
     object MatchPossible : HomeSmallTalkItem()
@@ -21,7 +21,8 @@ sealed class HomeSmallTalkItem {
 
 class HomeSmallTalkAdapter(
     private val onStartClick: () -> Unit,
-    private val onConversationClick: (Conversation) -> Unit
+    private val onConversationClick: (Conversation) -> Unit,
+    private val onMatchingClick: () -> Unit
 ) : ListAdapter<HomeSmallTalkItem, RecyclerView.ViewHolder>(DiffCallback()) {
 
     companion object {
@@ -39,16 +40,20 @@ class HomeSmallTalkAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        val inflater = LayoutInflater.from(parent.context)
         return when (viewType) {
-            TYPE_MATCH -> MatchViewHolder(
-                LayoutInflater.from(parent.context).inflate(R.layout.item_home_small_talk_match, parent, false)
-            )
-            TYPE_WAITING -> WaitingViewHolder(
-                LayoutInflater.from(parent.context).inflate(R.layout.item_home_small_talk_waiting, parent, false)
-            )
-            TYPE_CONVERSATION -> ConversationViewHolder(
-                LayoutInflater.from(parent.context).inflate(R.layout.item_home_small_talk_conversation, parent, false)
-            )
+            TYPE_MATCH -> {
+                val binding = ItemHomeSmallTalkMatchBinding.inflate(inflater, parent, false)
+                MatchViewHolder(binding)
+            }
+            TYPE_WAITING -> {
+                val binding = ItemHomeSmallTalkWaitingBinding.inflate(inflater, parent, false)
+                WaitingViewHolder(binding)
+            }
+            TYPE_CONVERSATION -> {
+                val binding = ItemHomeSmallTalkConversationBinding.inflate(inflater, parent, false)
+                ConversationViewHolder(binding)
+            }
             else -> throw IllegalArgumentException("Unknown view type $viewType")
         }
     }
@@ -61,44 +66,45 @@ class HomeSmallTalkAdapter(
         }
     }
 
-    inner class MatchViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    inner class MatchViewHolder(private val binding: ItemHomeSmallTalkMatchBinding) :
+        RecyclerView.ViewHolder(binding.root) {
         fun bind() {
-            itemView.findViewById<Button>(R.id.button_start).setOnClickListener {
+            binding.buttonStart.setOnClickListener {
                 onStartClick()
             }
         }
     }
 
-    inner class WaitingViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    inner class WaitingViewHolder(private val binding: ItemHomeSmallTalkWaitingBinding) :
+        RecyclerView.ViewHolder(binding.root) {
         fun bind() {
-            // No action needed for now
+            binding.layoutItem.setOnClickListener {
+                onMatchingClick()
+            }
         }
     }
 
-    inner class ConversationViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        private val avatar1: ImageView = view.findViewById(R.id.iv_home_small_talk_avatar_1)
-        private val avatar2: ImageView = view.findViewById(R.id.iv_home_small_talk_avatar_2)
-        private val avatar3: ImageView = view.findViewById(R.id.iv_home_small_talk_avatar_3)
-        private val names: TextView = view.findViewById(R.id.tv_home_small_talk_names)
+    inner class ConversationViewHolder(private val binding: ItemHomeSmallTalkConversationBinding) :
+        RecyclerView.ViewHolder(binding.root) {
 
         fun bind(conversation: Conversation) {
+            Timber.wtf("wtf conversation:  " + Gson().toJson(conversation))
             val members = conversation.members?.take(3) ?: listOf()
-            val avatars = listOf(avatar1, avatar2, avatar3)
+            val avatars = listOf(binding.ivHomeSmallTalkAvatar1, binding.ivHomeSmallTalkAvatar2, binding.ivHomeSmallTalkAvatar3)
 
             members.forEachIndexed { index, member ->
                 avatars.getOrNull(index)?.let { imageView ->
                     Glide.with(imageView.context)
                         .load(member.avatarUrl)
-                        .placeholder(R.drawable.placeholder_user)
+                        .placeholder(social.entourage.android.R.drawable.placeholder_user)
                         .circleCrop()
                         .into(imageView)
                 }
             }
 
-            val displayNames = members.joinToString(", ") { it.displayName ?: "" }
-            names.text = displayNames
+            binding.tvHomeSmallTalkNames.text = members.joinToString(", ") { it.displayName ?: "" }
 
-            itemView.setOnClickListener {
+            binding.root.setOnClickListener {
                 onConversationClick(conversation)
             }
         }
