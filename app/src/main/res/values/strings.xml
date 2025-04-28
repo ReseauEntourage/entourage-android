@@ -3096,6 +3096,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
 
     <!-- Bouton -->
     <string name="small_talk_btn_close">Fermer</string>
+    <string name="small_talk_btn_charte">Retrouvez la charte et les bonnes pratiques → ici</string>
 
 </resources>
 

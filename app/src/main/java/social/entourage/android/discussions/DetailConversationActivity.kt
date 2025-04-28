@@ -30,6 +30,8 @@ import social.entourage.android.events.details.feed.EventFeedActivity
 import social.entourage.android.language.LanguageManager
 import social.entourage.android.profile.ProfileFullActivity
 import social.entourage.android.report.DataLanguageStock
+import social.entourage.android.small_talks.SmallTalkGuidelinesActivity
+import social.entourage.android.small_talks.SmallTalkListOtherBands
 import social.entourage.android.small_talks.SmallTalkViewModel
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.utils.Const
@@ -87,6 +89,15 @@ class DetailConversationActivity : CommentActivity() {
             smallTalkViewModel.getSmallTalk(smallTalkId)
             smallTalkViewModel.listChatMessages(smallTalkId)
             smallTalkViewModel.listSmallTalkParticipants(smallTalkId)
+            binding.btnSeeEvent.text = getString(R.string.small_talk_btn_charte)
+            binding.layoutEventConv.visibility = View.VISIBLE
+            binding.btnSeeEvent.setOnClickListener {
+                VibrationUtil.vibrate(this)
+                startActivity(
+                    Intent(this, SmallTalkGuidelinesActivity::class.java)
+                )
+            }
+
         } else {
             discussionsPresenter.getDetailConversation(id)
             discussionsPresenter.getAllComments.observe(this) { handleGetPostComments(it) }
@@ -159,7 +170,7 @@ class DetailConversationActivity : CommentActivity() {
                 MembersConversationFragment.newInstance(id).show(supportFragmentManager, "")
             }
         }
-        if (conversation.type == "outing") {
+        if (conversation.type == "outing" || isSmallTalkMode ) {
             binding.layoutEventConv.visibility = View.VISIBLE
             binding.layoutInfoNewDiscussion.visibility = View.GONE
             conversation.id?.let { eventPresenter.getEvent(it.toString()) }

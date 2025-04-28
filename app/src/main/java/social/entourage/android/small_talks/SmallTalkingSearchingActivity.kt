@@ -39,7 +39,9 @@ class SmallTalkingSearchingActivity : AppCompatActivity() {
             isMatchFinished = true
             maybeGoToNextScreen(result)
         })
-
+        binding.titleText.setOnClickListener {
+            startActivity(Intent(this, SmallTalkListOtherBands::class.java))
+        }
         startProgressiveMessages()
     }
 
