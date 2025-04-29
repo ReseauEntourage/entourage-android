@@ -27,19 +27,19 @@ class SmallTalkingSearchingActivity : AppCompatActivity() {
     }
 
     private var isAnimationFinished = false
-    private var isMatchFinished = false
+    private var matchResult: SmallTalkMatchResponse? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySmallTalkSearchingBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        smallTalkViewModel.matchRequest(id)
         smallTalkViewModel.matchResult.observe(this, Observer { result ->
-            isMatchFinished = true
-            maybeGoToNextScreen(result)
+            matchResult = result
+            maybeGoToNextScreen()
         })
 
+        smallTalkViewModel.matchRequest(id)
         startProgressiveMessages()
     }
 
@@ -51,20 +51,26 @@ class SmallTalkingSearchingActivity : AppCompatActivity() {
                 binding.progressiveMessage.text = message
                 binding.progressiveMessage.animate().alpha(1f).setDuration(500).start()
 
-                // Si c’est le dernier message, on marque l’animation comme finie
                 if (index == animatedTexts.lastIndex) {
                     handler.postDelayed({
                         isAnimationFinished = true
-                        maybeGoToNextScreen(smallTalkViewModel.matchResult.value)
-                    }, 500) // attendre que le fade-in soit terminé
+                        maybeGoToNextScreen()
+                    }, 500)
                 }
             }, index * delay)
         }
     }
 
-    private fun maybeGoToNextScreen(result: SmallTalkMatchResponse?) {
-        if (isAnimationFinished && isMatchFinished && result != null) {
-            startActivity(Intent(this, SmallTalkListOtherBands::class.java))
+    private fun maybeGoToNextScreen() {
+        if (isAnimationFinished && matchResult != null) {
+            if (matchResult?.match == true) {
+                val intent = Intent(this, SmallTalkGroupFoundActivity::class.java)
+                intent.putExtra(SmallTalkGroupFoundActivity.EXTRA_SMALL_TALK_ID, matchResult?.smalltalkId ?: -1)
+                startActivity(intent)
+            } else {
+                startActivity(Intent(this, SmallTalkListOtherBands::class.java))
+            }
+            finish()
         }
     }
 

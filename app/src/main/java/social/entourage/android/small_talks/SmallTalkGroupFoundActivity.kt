@@ -1,46 +1,54 @@
 package social.entourage.android.small_talks
 
-import android.graphics.Rect
 import android.os.Bundle
 import android.view.View
 import android.widget.LinearLayout
+import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import social.entourage.android.R
-import social.entourage.android.api.model.Conversation
-import social.entourage.android.api.model.GroupMember
 import social.entourage.android.api.model.User
 import social.entourage.android.api.model.toUsers
 import social.entourage.android.base.BaseActivity
 import social.entourage.android.databinding.ActivitySmallTalkGroupFoundBinding
-import social.entourage.android.discussions.DiscussionsPresenter
 
 class SmallTalkGroupFoundActivity : BaseActivity() {
 
     private lateinit var binding: ActivitySmallTalkGroupFoundBinding
     private lateinit var adapter: SmallTalkGroupFoundAdapter
-    private val discussionsPresenter: DiscussionsPresenter by lazy { DiscussionsPresenter() }
+    private val smallTalkViewModel: SmallTalkViewModel by viewModels()
+
+    private var smallTalkId: Int = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySmallTalkGroupFoundBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        smallTalkId = intent.getIntExtra(EXTRA_SMALL_TALK_ID, -1)
+
         setupViewPager()
-        discussionsPresenter.detailConversation.observe(this) {
-            handleDetailConversation(it)
+
+        smallTalkViewModel.smallTalkDetail.observe(this) { smallTalk ->
+            val users = smallTalk?.members?.toUsers() ?: emptyList()
+            adapter = SmallTalkGroupFoundAdapter(users)
+            binding.smallTalkGroupFoundViewpager.adapter = adapter
+            updateDots(0, users.size)
+
+            binding.smallTalkGroupFoundViewpager.registerOnPageChangeCallback(object :
+                ViewPager2.OnPageChangeCallback() {
+                override fun onPageSelected(position: Int) {
+                    updateDots(position, users.size)
+                }
+            })
         }
 
-        // TODO: bouton "Discuter"
+        smallTalkViewModel.getSmallTalk(smallTalkId.toString())
+
         binding.buttonStart.setOnClickListener {
-            // TODO: action
+            // TODO : bouton discuter
         }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        discussionsPresenter.getDetailConversation(136082)
     }
 
     private fun setupViewPager() {
@@ -55,42 +63,19 @@ class SmallTalkGroupFoundActivity : BaseActivity() {
 
             setPageTransformer { page, position ->
                 val absPos = kotlin.math.abs(position)
-
-                // distance caméra plus petite pour effet coverflow plus subtil
                 page.cameraDistance = 10000f
-
                 if (position in -1f..1f) {
                     page.alpha = 1f
-
-                    // Rotation plus douce
                     page.rotationY = position * -25f
-
-                    // Zoom plus marqué au centre
                     val scale = 0.85f + (1 - absPos) * 0.15f
                     page.scaleX = scale
                     page.scaleY = scale
-
-                    // Réduit la translation latérale = cartes plus serrées
                     page.translationX = -position * page.width * 0.15f
                 } else {
                     page.alpha = 0f
                 }
             }
         }
-    }
-
-    private fun handleDetailConversation(conversation: Conversation?) {
-        val users = conversation?.members?.toUsers() ?: emptyList()
-        adapter = SmallTalkGroupFoundAdapter(users)
-        binding.smallTalkGroupFoundViewpager.adapter = adapter
-        updateDots(0, users.size)
-
-        binding.smallTalkGroupFoundViewpager.registerOnPageChangeCallback(object :
-            ViewPager2.OnPageChangeCallback() {
-            override fun onPageSelected(position: Int) {
-                updateDots(position, users.size)
-            }
-        })
     }
 
     private fun updateDots(currentIndex: Int, total: Int) {
@@ -110,5 +95,9 @@ class SmallTalkGroupFoundActivity : BaseActivity() {
             }
             binding.smallTalkGroupFoundDotsContainer.addView(dot)
         }
+    }
+
+    companion object {
+        const val EXTRA_SMALL_TALK_ID = "extra_small_talk_id"
     }
 }
