@@ -60,7 +60,6 @@ class SmallTalkIntroActivity : BaseActivity() {
 
         // Observe la requête créée (réponse de createRequest)
         viewModel.userRequest.observe(this) { request ->
-            Timber.wtf("wtf " + Gson().toJson(request))
             if (request?.id != null) {
                 SmallTalkActivity.SMALL_TALK_REQUEST_ID = request.id.toString()
                 val intent = Intent(this, SmallTalkActivity::class.java)

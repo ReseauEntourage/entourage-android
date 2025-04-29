@@ -131,6 +131,7 @@ class DetailConversationActivity : CommentActivity() {
 
     private fun handleSmallTakDetail(smallTalk: SmallTalk?) {
         binding.postBlocked.isVisible = false
+
     }
     // --- SmallTalk messages mapping ---
     private fun handleSmallTalkMessages(messages: List<Post>?) {
@@ -151,8 +152,9 @@ class DetailConversationActivity : CommentActivity() {
     // --- Discussion detail (inchangé) ---
     private fun handleDetailConversation(conversation: Conversation?) {
         conversation ?: return
+        isMember = conversation.member == true
+        updateView(false)
         if (conversation.memberCount > 2) {
-            Timber.wtf("wtf conversation member count ${conversation.memberCount}")
             isOne2One = false
         }
         if (isOne2One) {
@@ -210,7 +212,6 @@ class DetailConversationActivity : CommentActivity() {
         } else {
             binding.header.title = conversation.title
         }
-        Timber.wtf("wtf blocker ${conversation.imBlocker()}")
         if (conversation.hasBlocker()) {
             binding.postBlocked.isVisible = true
             val name = conversationTitle ?: ""

@@ -99,7 +99,6 @@ class DiscussionsListAdapter(
                     .map {
                         if (it.length > 2) it.dropLast(3) else it
                     }
-                Timber.wtf("wtf ${Gson().toJson(names)}")
                 val namesText = names.joinToString(", ")
                 binding.name.apply {
                     text = namesText

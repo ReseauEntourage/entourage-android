@@ -212,7 +212,6 @@ class CommentsListAdapter(
             }
 
             if (contentToShow.isNullOrEmpty()) contentToShow = ""
-            Timber.wtf("contentToShow $contentToShow")
 
             // On parse en HTML
             val spanned = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -717,7 +716,6 @@ class CommentsListAdapter(
                     // Par ex. si c'est un lien vers un profil user => extraits l'ID
                     // et ouvre la bonne Activity in-app. Ou appelle onShowWeb(url).
                     onItemClick.onShowWeb(url)
-                    Timber.wtf("wtf clic sur le lien $url")
                 }
 
                 // Optionnel : personnalise l'apparence du lien (souligné, etc.)

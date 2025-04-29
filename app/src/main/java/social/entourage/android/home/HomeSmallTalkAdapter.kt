@@ -88,7 +88,6 @@ class HomeSmallTalkAdapter(
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(conversation: Conversation) {
-            Timber.wtf("wtf conversation:  " + Gson().toJson(conversation))
             val members = conversation.members?.take(3) ?: listOf()
             val avatars = listOf(binding.ivHomeSmallTalkAvatar1, binding.ivHomeSmallTalkAvatar2, binding.ivHomeSmallTalkAvatar3)
 

@@ -271,7 +271,6 @@ class MainActivity : BaseSecuredActivity() {
 
 
         val isFromWidget = intent.getBooleanExtra("isFromWidget", false)
-        Log.wtf("wtf" , "isFromWidget : $isFromWidget")
         if (isFromWidget) {
             goEvent()
             return
