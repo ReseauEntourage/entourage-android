@@ -37,7 +37,7 @@
         android:id="@+id/lottie_image"
         android:layout_width="180dp"
         android:layout_height="180dp"
-        app:lottie_rawRes="@raw/congrat_short_anim"
+        app:lottie_rawRes="@raw/puzzle_mount"
         app:lottie_autoPlay="true"
         app:lottie_loop="true"
         android:layout_marginTop="40dp"

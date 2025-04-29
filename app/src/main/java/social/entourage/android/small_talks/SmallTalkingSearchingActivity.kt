@@ -34,11 +34,12 @@ class SmallTalkingSearchingActivity : AppCompatActivity() {
         binding = ActivitySmallTalkSearchingBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        smallTalkViewModel.matchRequest(id)
+
         smallTalkViewModel.matchResult.observe(this, Observer { result ->
             isMatchFinished = true
             maybeGoToNextScreen(result)
         })
+        //smallTalkViewModel.matchRequest(id)
         binding.titleText.setOnClickListener {
             startActivity(Intent(this, SmallTalkListOtherBands::class.java))
         }
