@@ -147,4 +147,9 @@ interface SmallTalkRequest {
         @Path("smalltalk_id") smallTalkId: String,
         @Path("message_id")   messageId:  String
     ): Call<ResponseBody>
+
+    @GET("user_smalltalks/{id_or_uuid_v2}/almost_matches")
+    fun listAlmostMatches(
+        @Path("id_or_uuid_v2") id: String
+    ): Call<SmallTalkListWrapper>
 }
