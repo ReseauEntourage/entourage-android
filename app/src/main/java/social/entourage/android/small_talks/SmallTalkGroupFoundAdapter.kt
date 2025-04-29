@@ -8,6 +8,7 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.flexbox.FlexboxLayout
@@ -41,13 +42,15 @@ class SmallTalkGroupFoundAdapter(
             .into(holder.binding.smallTalkGroupFoundAvatar)
 
         holder.binding.smallTalkGroupFoundInterests.removeAllViews()
-        user.interests.forEach { interest ->
+        val formattedInterests = user.getFormattedInterests(context)
+        formattedInterests.split(",").map { it.trim() }.forEach { interest ->
             val chip = TextView(context).apply {
                 text = interest
                 setPadding(24, 8, 24, 8)
                 background = ContextCompat.getDrawable(context, R.drawable.chip_background_selector)
-                setTextColor(Color.BLACK)
+                setTextColor(ContextCompat.getColor(context, R.color.orange))
                 textSize = 12f
+                typeface = ResourcesCompat.getFont(context, R.font.quicksand_bold)
                 layoutParams = FlexboxLayout.LayoutParams(
                     FlexboxLayout.LayoutParams.WRAP_CONTENT,
                     FlexboxLayout.LayoutParams.WRAP_CONTENT

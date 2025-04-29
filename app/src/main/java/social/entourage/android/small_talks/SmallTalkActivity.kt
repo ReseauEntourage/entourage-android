@@ -16,12 +16,19 @@ import social.entourage.android.base.BaseActivity
 import social.entourage.android.databinding.SmallTalkActivityBinding
 import social.entourage.android.enhanced_onboarding.InterestForAdapter
 import social.entourage.android.enhanced_onboarding.fragments.OnboardingInterestsAdapter
+import social.entourage.android.user.UserPresenter
+import social.entourage.android.api.request.UserResponse
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import social.entourage.android.EntourageApplication
 
 class SmallTalkActivity : BaseActivity() {
 
     private lateinit var binding: SmallTalkActivityBinding
     private lateinit var viewModel: SmallTalkViewModel
     private lateinit var adapter: OnboardingInterestsAdapter
+    private lateinit var userPresenter: UserPresenter
 
     private var selectedRequest = UserSmallTalkRequest(
         id = SMALL_TALK_REQUEST_ID.toIntOrNull(),
@@ -39,6 +46,7 @@ class SmallTalkActivity : BaseActivity() {
         binding = SmallTalkActivityBinding.inflate(layoutInflater)
         setContentView(binding.root)
         viewModel = ViewModelProvider(this)[SmallTalkViewModel::class.java]
+        userPresenter = UserPresenter()
 
         setupRecyclerView()
         setupButtons()
@@ -85,6 +93,12 @@ class SmallTalkActivity : BaseActivity() {
             binding.rvSmallTalk.suppressLayout(false)
 
             adapter.interests = step.items
+
+            // 🔥 Précocher automatiquement les intérêts de l'utilisateur si c'est l'étape intérêts
+            if (isInterestStep) {
+                preselectUserInterests()
+            }
+
             adapter.notifyDataSetChanged()
             binding.rvSmallTalk.scheduleLayoutAnimation()
 
@@ -102,6 +116,7 @@ class SmallTalkActivity : BaseActivity() {
     private fun setupButtons() {
         binding.buttonStart.setOnClickListener {
             val selectedItem = adapter.interests.find { it.isSelected }
+            val selectedItems = adapter.interests.filter { it.isSelected }
             val stepIndex = viewModel.currentStepIndex.value ?: 0
             val update = ArrayMap<String, Any>()
 
@@ -121,18 +136,37 @@ class SmallTalkActivity : BaseActivity() {
                     selectedRequest = selectedRequest.copy(matchLocality = value)
                     update["match_locality"] = value
                 }
-                2 -> {
+                2 -> { // 🎯 Étape GENDER
                     val genderValue = when (selectedItem?.id) {
                         "5" -> "male"
                         "6" -> "female"
-                        else -> "not_defined"
+                        else -> "non_binary"
                     }
                     selectedRequest = selectedRequest.copy(userGender = genderValue)
                     update["user_gender"] = genderValue
+
+                    val userUpdate = ArrayMap<String, Any>()
+                    userUpdate["gender"] = genderValue
+                    val wrapper = ArrayMap<String, Any>()
+                    wrapper["user"] = userUpdate
+                    EntourageApplication.get().apiModule.userRequest.updateUser(wrapper).enqueue(object : Callback<UserResponse> {
+                        override fun onResponse(call: Call<UserResponse>, response: Response<UserResponse>) {}
+                        override fun onFailure(call: Call<UserResponse>, t: Throwable) {}
+                    })
                 }
-                3 -> {
+                3 -> { // 🎯 Étape INTERESTS
                     selectedRequest = selectedRequest.copy(matchInterest = true)
                     update["match_interest"] = true
+
+                    val selectedInterestIds = selectedItems.mapNotNull { it.id }
+                    val userUpdate = ArrayMap<String, Any>()
+                    userUpdate["interests"] = selectedInterestIds
+                    val wrapper = ArrayMap<String, Any>()
+                    wrapper["user"] = userUpdate
+                    EntourageApplication.get().apiModule.userRequest.updateUser(wrapper).enqueue(object : Callback<UserResponse> {
+                        override fun onResponse(call: Call<UserResponse>, response: Response<UserResponse>) {}
+                        override fun onFailure(call: Call<UserResponse>, t: Throwable) {}
+                    })
                 }
             }
 
@@ -161,6 +195,18 @@ class SmallTalkActivity : BaseActivity() {
                 binding.progressBar.progress = animation.animatedValue as Int
             }
             start()
+        }
+    }
+
+    /**
+     * 🔥 Préselectionner les intérêts déjà choisis par l'utilisateur
+     */
+    private fun preselectUserInterests() {
+        val currentUser = EntourageApplication.get(this).authenticationController.me
+        val userInterests = currentUser?.interests ?: return
+
+        adapter.interests.forEach { interest ->
+            interest.isSelected = userInterests.contains(interest.id)
         }
     }
 

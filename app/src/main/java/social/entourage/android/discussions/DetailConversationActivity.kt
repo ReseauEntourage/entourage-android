@@ -53,6 +53,9 @@ class DetailConversationActivity : CommentActivity() {
     private val eventPresenter: EventsPresenter by lazy { EventsPresenter() }
     private val discussionsPresenter: DiscussionsPresenter by lazy { DiscussionsPresenter() }
     private val smallTalkViewModel: SmallTalkViewModel by viewModels()
+    private var refreshMessagesRunnable: Runnable? = null
+    private val refreshHandler = android.os.Handler()
+    private val refreshIntervalMs = 5000L // 5 secondes
 
     // UI state
     private var hasToShowFirstMessage = false
@@ -109,6 +112,13 @@ class DetailConversationActivity : CommentActivity() {
     override fun onResume() {
         super.onResume()
         AnalyticsEvents.logEvent(AnalyticsEvents.Message_view_detail)
+        startRefreshingMessages()
+
+    }
+
+    override fun onPause() {
+        super.onPause()
+        stopRefreshingMessages()
     }
 
     override fun reloadView() {
@@ -116,6 +126,24 @@ class DetailConversationActivity : CommentActivity() {
             shouldOpenKeyboard = false
             recreate()
         }
+    }
+
+    private fun startRefreshingMessages() {
+        refreshMessagesRunnable = object : Runnable {
+            override fun run() {
+                if (isSmallTalkMode) {
+                    smallTalkViewModel.listChatMessages(smallTalkId)
+                } else {
+                    discussionsPresenter.getPostComments(id)
+                }
+                refreshHandler.postDelayed(this, refreshIntervalMs)
+            }
+        }
+        refreshHandler.postDelayed(refreshMessagesRunnable!!, refreshIntervalMs)
+    }
+
+    private fun stopRefreshingMessages() {
+        refreshMessagesRunnable?.let { refreshHandler.removeCallbacks(it) }
     }
 
     override fun translateView(id: Int) {

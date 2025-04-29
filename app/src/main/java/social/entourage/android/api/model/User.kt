@@ -29,6 +29,8 @@ class User : Serializable {
 
     @SerializedName("birthday")
     var birthday: String? = null
+    @SerializedName("gender")
+    var gender: String? = null
 
     @SerializedName("interests")
     var interests: ArrayList<String> = ArrayList()

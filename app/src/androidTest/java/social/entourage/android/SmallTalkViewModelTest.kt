@@ -19,24 +19,7 @@ class SmallTalkViewModelLogTest {
         viewModel = SmallTalkViewModel(context)
     }
 
-    @Test
-    fun testCreateRequest_logsResponse() {
-        val request = UserSmallTalkRequest(
-            matchFormat = "one",
-            matchLocality = true,
-            matchGender = true,
-            matchInterest = true
-        )
 
-        viewModel.createRequest(request)
-
-        // Juste pour démonstration : observe et log le résultat (optionnel)
-        viewModel.userRequest.observeForever {
-            Log.w("SmallTalkTest", "createRequest → result: $it")
-        }
-
-        Thread.sleep(3000)
-    }
 
     @Test
     fun testMatchRequest_logsResponse() {

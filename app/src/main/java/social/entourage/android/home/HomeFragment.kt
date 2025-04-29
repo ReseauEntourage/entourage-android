@@ -162,7 +162,6 @@ class HomeFragment: Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocatio
                 startActivity(Intent(requireContext(), SmallTalkIntroActivity::class.java))
             },
             onConversationClick = { conversation ->
-
                 val intent = Intent(requireContext(), DetailConversationActivity::class.java)
                 DetailConversationActivity.isSmallTalkMode = true
                 DetailConversationActivity.smallTalkId = conversation.id.toString()

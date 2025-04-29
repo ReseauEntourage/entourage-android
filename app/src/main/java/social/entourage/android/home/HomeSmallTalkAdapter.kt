@@ -1,12 +1,14 @@
 package social.entourage.android.home
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.gson.Gson
+import social.entourage.android.R
 import social.entourage.android.api.model.Conversation
 import social.entourage.android.databinding.ItemHomeSmallTalkConversationBinding
 import social.entourage.android.databinding.ItemHomeSmallTalkMatchBinding
@@ -88,21 +90,44 @@ class HomeSmallTalkAdapter(
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(conversation: Conversation) {
-            val members = conversation.members?.take(3) ?: listOf()
-            val avatars = listOf(binding.ivHomeSmallTalkAvatar1, binding.ivHomeSmallTalkAvatar2, binding.ivHomeSmallTalkAvatar3)
+            Timber.wtf("wtf conversation : ${Gson().toJson(conversation)}")
+            val members = conversation.members?.take(3) ?: emptyList()
 
+            val avatars = listOf(
+                binding.ivHomeSmallTalkAvatar1,
+                binding.ivHomeSmallTalkAvatar2,
+                binding.ivHomeSmallTalkAvatar3
+            )
+
+            // Reset toutes les images avant de charger
+            avatars.forEach { imageView ->
+                Glide.with(imageView.context).clear(imageView)
+                imageView.setImageResource(R.drawable.placeholder_user)
+                imageView.visibility = View.GONE // cacher par défaut
+            }
+
+            // Charger les membres disponibles
             members.forEachIndexed { index, member ->
                 avatars.getOrNull(index)?.let { imageView ->
+                    imageView.visibility = View.VISIBLE
                     Glide.with(imageView.context)
                         .load(member.avatarUrl)
-                        .placeholder(social.entourage.android.R.drawable.placeholder_user)
+                        .placeholder(R.drawable.placeholder_user)
                         .circleCrop()
                         .into(imageView)
                 }
             }
 
-            binding.tvHomeSmallTalkNames.text = members.joinToString(", ") { it.displayName ?: "" }
+            // Mettre les noms dans le TextView en dessous des avatars
+            when (members.size) {
+                0 -> binding.tvHomeSmallTalkNames.text = "" // pas de membres
+                1 -> binding.tvHomeSmallTalkNames.text = members[0].displayName.orEmpty()
+                2 -> binding.tvHomeSmallTalkNames.text = "${members[0].displayName.orEmpty()} et ${members[1].displayName.orEmpty()}"
+                else -> binding.tvHomeSmallTalkNames.text =
+                    "${members[0].displayName.orEmpty()}, ${members[1].displayName.orEmpty()} et ${members[2].displayName.orEmpty()}"
+            }
 
+            // Clic sur toute la carte
             binding.root.setOnClickListener {
                 onConversationClick(conversation)
             }

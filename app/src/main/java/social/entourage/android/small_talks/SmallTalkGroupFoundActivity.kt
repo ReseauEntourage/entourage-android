@@ -1,5 +1,6 @@
 package social.entourage.android.small_talks
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.LinearLayout
@@ -12,6 +13,7 @@ import social.entourage.android.api.model.User
 import social.entourage.android.api.model.toUsers
 import social.entourage.android.base.BaseActivity
 import social.entourage.android.databinding.ActivitySmallTalkGroupFoundBinding
+import social.entourage.android.discussions.DetailConversationActivity
 
 class SmallTalkGroupFoundActivity : BaseActivity() {
 
@@ -47,7 +49,11 @@ class SmallTalkGroupFoundActivity : BaseActivity() {
         smallTalkViewModel.getSmallTalk(smallTalkId.toString())
 
         binding.buttonStart.setOnClickListener {
-            // TODO : bouton discuter
+            val intent = Intent(this, DetailConversationActivity::class.java)
+            DetailConversationActivity.isSmallTalkMode = true
+            DetailConversationActivity.smallTalkId = smallTalkId.toString()
+            startActivity(intent)
+            finish()
         }
     }
 

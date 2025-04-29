@@ -14,9 +14,12 @@
         android:text="@string/small_talk_title_conversation"
         android:fontFamily="@font/quicksand_bold"
         android:textSize="16sp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
         android:textColor="@color/black"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/iv_home_small_talk_avatar_3"
+        app:layout_constraintTop_toTopOf="@+id/iv_home_small_talk_avatar_1"
+
         app:layout_constraintEnd_toEndOf="parent" />
 
     <ImageView
@@ -26,7 +29,8 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="4dp"
         android:src="@drawable/placeholder_user"
-        app:layout_constraintTop_toBottomOf="@id/tv_home_small_talk_title_conversation"
+        app:layout_constraintTop_toTopOf="parent"
+
         app:layout_constraintStart_toStartOf="parent"
         android:scaleType="centerCrop"
         android:background="@drawable/bg_beige_round" />
@@ -62,7 +66,7 @@
         android:fontFamily="@font/nunitosans_regular"
         android:textSize="14sp"
         android:textColor="@color/grey_dark"
-        app:layout_constraintStart_toEndOf="@id/iv_home_small_talk_avatar_3"
-        app:layout_constraintTop_toTopOf="@id/iv_home_small_talk_avatar_3"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/iv_home_small_talk_avatar_1"
         app:layout_constraintEnd_toEndOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
