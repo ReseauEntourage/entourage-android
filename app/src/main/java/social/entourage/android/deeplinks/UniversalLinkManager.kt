@@ -30,12 +30,14 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
     private val stagingURL = "preprod.entourage.social"
     val presenter:UniversalLinkPresenter = UniversalLinkPresenter(this)
 
+
     fun handleUniversalLink(uri: Uri) {
         val pathSegments = uri.pathSegments
         uri.queryParameterNames.forEach { name ->
             val value = uri.getQueryParameter(name)
         }
         if (uri.host == stagingURL || uri.host == prodURL) {
+            Log.wtf("wtf", "pathSegments: $pathSegments")
             when {
                 pathSegments.contains("charte-ethique-grand-public") ->{
                     val chartIntent = Intent(Intent.ACTION_VIEW, Uri.parse(context.getString(R.string.disclaimer_link_public)))
@@ -58,6 +60,7 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
                         //HERE GO TO DETAIL MESSAGE GROUP
                     }
                 }
+
                 pathSegments.contains("conversations") && pathSegments.contains("chat_messages") -> {
                     val convId = pathSegments[2]
                     val meId = EntourageApplication.get().me()?.id

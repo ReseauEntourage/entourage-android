@@ -2715,5 +2715,8 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="home_v2_no_adress_content">Pour connaître les actions et évènements solidaires autour de chez vous, veuillez prendre un moment pour ajouter votre localité à votre profil.</string>
     <string name="home_v2_no_adress_button">Ajouter ma localité</string>
 
+    <string name="popup_event_confirm_btn_confirm">Je viens</string>
+    <string name="popup_event_confirm_btn_cancel">Je ne viens pas</string>
+
 </resources>
 

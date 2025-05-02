@@ -21,6 +21,9 @@ class EntourageUser : TimestampedObject(), Serializable {
     private var requestDate: Date? = null
     var message: String? = null
 
+    @SerializedName("confirmed_at")
+    var confirmedAt : Boolean? = null
+
     @SerializedName("avatar_url")
     var avatarURLAsString: String? = null
 
@@ -72,6 +75,7 @@ class EntourageUser : TimestampedObject(), Serializable {
         clone.feedItem = feedItem
         clone.displayName = displayName
         clone.email = email
+        clone.confirmedAt = confirmedAt
         clone.status = status
         clone.requestDate = requestDate
         clone.message = message

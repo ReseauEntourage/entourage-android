@@ -699,6 +699,11 @@ object AnalyticsEvents {
     const val   Clic_Event_Poll_See_Votes = "Clic_Event_Poll_See_Votes"
 
 
+    const val   view_update_version = "view_update_version"
+    const val   clic_update_version_validate = "clic_update_version_validate"
+    const val   clic_update_version_cancel = "clic_update_version_cancel"
+
+
 
 
 

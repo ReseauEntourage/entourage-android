@@ -157,5 +157,6 @@ class DetailConversationActivity : CommentActivity() {
 
     fun updateDiscussion() {
         viewModel.getDetailConversation(id)
+
     }
 }

@@ -56,6 +56,12 @@ data class Events(
     @field:SerializedName("title")
     val title: String? = null,
 
+    @field:SerializedName("confirmed_member")
+    val confirmedMember : Boolean? = null,
+
+    @field:SerializedName("confirmed_members_count")
+    val confirmedMembersCount: Int? = null,
+
     @SerializedName("title_translations")
     val titleTranslations: Translation? = null,
 

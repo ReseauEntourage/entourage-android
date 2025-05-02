@@ -65,6 +65,9 @@ class PushNotificationContent : Serializable {
         @SerializedName("invitee_id")
         var inviteeId = 0
 
+        @SerializedName("popup")
+        var popup:String? = null
+
         @SerializedName("invitation_id")
         var invitationId = 0
         var type: String? = null

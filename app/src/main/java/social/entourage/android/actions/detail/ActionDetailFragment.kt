@@ -6,6 +6,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.SpannableString
 import android.text.style.UnderlineSpan
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -228,6 +229,7 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
         }
     }
     private fun initializeViews() {
+        Log.wtf("wtf", "passed here ")
         binding.layoutTopCancel.isVisible = false
         binding.layoutTopDemand.isVisible = isDemand
         binding.layoutTopContrib.isVisible = !isDemand
@@ -333,21 +335,29 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
                         .into(binding.uiImageContrib)
                 } ?: kotlin.run {
                     binding.uiImagePlaceholder.isVisible = true
+
+                }
+                Log.wtf("wtf", "image url : ${action?.imageUrl}")
+                if(action?.imageUrl == null){
+                    binding.layoutTopContrib.isVisible = false
+                    binding.uiLayoutCatContrib.isVisible = false
+                    binding.layoutTopDemand.isVisible = true
+                    binding.uiLayoutCatDemand.isVisible = true
                 }
                 if(it.sectionName != null){
                     binding.uiTitleCatContrib.text = ActionUtils.showTagTranslated(requireContext(), it.sectionName!!)
                     binding.uiTitleCatDemand.text = ActionUtils.showTagTranslated(requireContext(), it.sectionName!!)
                 }
+
                 binding.uiIvCatContrib.setImageDrawable(ResourcesCompat.getDrawable(resources,
                     ActionSection.getIconFromId(it.sectionName),null))
                 binding.uiIvCatDemand.setImageDrawable(ResourcesCompat.getDrawable(resources,
                     ActionSection.getIconFromId(it.sectionName),null))
                 binding.uiActionDescription.text = action?.description
-
                 val _addr = action?.metadata?.displayAddress ?: "-"
                 val _addr_and_dist = _addr + " " + action?.displayDistance(requireContext())
                 binding.uiLocation.text = _addr_and_dist
-
+                binding.uiLocation.visibility = View.VISIBLE
                 action?.author?.avatarURLAsString?.let { avatarURL ->
                     Glide.with(binding.uiUserIv.context)
                         .load(avatarURL)
