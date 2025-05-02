@@ -10,8 +10,12 @@ class Post(
     val id: Int? = null,
     @SerializedName("content")
     val content: String? = null,
+    @SerializedName("content_html")
+    val contentHtml: String? = null,
     @SerializedName("content_translations")
     val contentTranslations: Translation? = null,
+    @SerializedName("content_translations_html")
+    val contentTranslationsHtml: Translation? = null,
     @SerializedName("user")
     var user: EntourageUser? = null,
     @SerializedName("created_at")

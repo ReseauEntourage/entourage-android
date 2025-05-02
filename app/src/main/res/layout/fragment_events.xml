@@ -8,19 +8,22 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/root_layout"
+        android:background="@drawable/new_profile_header_yellow"
         >
-
-
-        <ImageView
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/new_profile_header_yellow"
-            android:scaleType="center"/>
+            android:layout_height="50dp"
+            android:id="@+id/space_view"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:visibility="gone"
+            />
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/top_event_layout"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/space_view"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent">
 
@@ -35,7 +38,10 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                android:layout_margin="16dp"/>
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="21dp"
+                android:layout_marginStart="32dp"/>
+
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/ui_layout_filter"
                 android:layout_width="36dp"
@@ -139,9 +145,11 @@
                     android:text="@string/location" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
+
         <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:id="@+id/coordinator"
             android:background="@color/transparent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

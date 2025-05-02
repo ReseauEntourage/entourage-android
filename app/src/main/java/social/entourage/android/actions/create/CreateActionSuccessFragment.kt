@@ -12,10 +12,8 @@ import androidx.navigation.fragment.navArgs
 import com.google.android.play.core.review.ReviewManagerFactory
 import social.entourage.android.MainActivity
 import social.entourage.android.R
-import social.entourage.android.databinding.NewFragmentCreateActionSuccessBinding
 import social.entourage.android.RefreshController
-import social.entourage.android.actions.detail.ActionDetailActivity
-import social.entourage.android.tools.utils.Const
+import social.entourage.android.databinding.NewFragmentCreateActionSuccessBinding
 
 class CreateActionSuccessFragment : Fragment() {
 
@@ -41,7 +39,6 @@ class CreateActionSuccessFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = NewFragmentCreateActionSuccessBinding.inflate(inflater, container, false)
-
         return binding.root
     }
 

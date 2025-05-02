@@ -11,20 +11,17 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
-import androidx.activity.result.ActivityResult
-import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
-import androidx.core.os.bundleOf
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.doOnPreDraw
-import androidx.core.widget.TextViewCompat
+import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.leinardi.android.speeddial.SpeedDialActionItem
@@ -32,40 +29,35 @@ import com.leinardi.android.speeddial.SpeedDialView
 import social.entourage.android.EntourageApplication
 import social.entourage.android.MainActivity
 import social.entourage.android.R
-import social.entourage.android.databinding.NewFragmentActionsBinding
 import social.entourage.android.RefreshController
 import social.entourage.android.ViewPagerDefaultPageController
 import social.entourage.android.actions.create.CreateActionActivity
 import social.entourage.android.actions.list.ActionsViewPagerAdapter
-import social.entourage.android.actions.list.me.MyActionsListActivity
 import social.entourage.android.api.model.ActionSectionFilters
-import social.entourage.android.groups.details.feed.rotationDegree
-import social.entourage.android.home.CommunicationHandlerBadgeViewModel
-import social.entourage.android.home.UnreadMessages
 import social.entourage.android.api.model.EventActionLocationFilters
-import social.entourage.android.homev2.HomeV2Fragment
+import social.entourage.android.databinding.FragmentActionsBinding
+import social.entourage.android.home.CommunicationHandlerBadgeViewModel
+import social.entourage.android.home.HomeFragment
+import social.entourage.android.home.UnreadMessages
 import social.entourage.android.main_filter.MainFilterActivity
 import social.entourage.android.main_filter.MainFilterMode
-import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.log.AnalyticsEvents
-import kotlin.math.abs
+import social.entourage.android.tools.utils.Const
 
 const val CONTRIBUTIONS_TAB = 0
 const val DEMANDS_TAB = 1
 
 const val LOCATION_FILTERS = "locationFilters"
 const val CATEGORIES_FILTERS = "categoriesFilters"
-const val FILTERS = "filters"
-const val FILTERS2 = "filters2"
 
 class ActionsFragment : Fragment() {
 
-    private var _binding: NewFragmentActionsBinding? = null
-    val binding: NewFragmentActionsBinding get() = _binding!!
+    private var _binding: FragmentActionsBinding? = null
+    val binding: FragmentActionsBinding get() = _binding!!
 
     private var activityResultLauncher: ActivityResultLauncher<Intent>? = null
 
-    private var isFromFilters = false
+    //private var isFromFilters = false
     private var isSearching = false
     private lateinit var presenter: ActionsPresenter
 
@@ -75,18 +67,18 @@ class ActionsFragment : Fragment() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         activityResultLauncher = registerForActivityResult(
-            ActivityResultContracts.StartActivityForResult(),
-            ActivityResultCallback<ActivityResult> { result ->
-                (result.data?.getSerializableExtra(LOCATION_FILTERS) as? EventActionLocationFilters)?.let {
-                    this.currentLocationFilters = it
-                    updateFilters()
-                }
+            ActivityResultContracts.StartActivityForResult()
+        ) { result ->
+            (result.data?.getSerializableExtra(LOCATION_FILTERS) as? EventActionLocationFilters)?.let {
+                this.currentLocationFilters = it
+                updateFilters()
+            }
 
-                (result.data?.getSerializableExtra(CATEGORIES_FILTERS) as? ActionSectionFilters)?.let {
-                    this.currentCategoriesFilters = it
-                    updateFilters()
-                }
-            })
+            (result.data?.getSerializableExtra(CATEGORIES_FILTERS) as? ActionSectionFilters)?.let {
+                this.currentCategoriesFilters = it
+                updateFilters()
+            }
+        }
     }
 
     private fun updateFilters() {
@@ -100,7 +92,7 @@ class ActionsFragment : Fragment() {
         arguments?.let {
             isDemand = it.getBoolean(Const.IS_ACTION_DEMAND, false)
         }
-        isDemand = !HomeV2Fragment.isContribProfile
+        isDemand = !HomeFragment.isContribProfile
         ViewPagerDefaultPageController.shouldSelectActionDemand = isDemand
     }
 
@@ -108,8 +100,18 @@ class ActionsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = NewFragmentActionsBinding.inflate(inflater, container, false)
+        _binding = FragmentActionsBinding.inflate(inflater, container, false)
         setSearchAndFilterButtons()
+        // Listen for WindowInsets
+        ViewCompat.setOnApplyWindowInsetsListener(binding.appBar) { view, windowInsets ->
+            // Get the insets for the statusBars() type:
+            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.statusBars())
+            view.updatePadding(
+                top = insets.top
+            )
+            // Return the original insets so they aren’t consumed
+            windowInsets
+        }
         return binding.root
     }
 
@@ -271,6 +273,8 @@ class ActionsFragment : Fragment() {
             MainFilterActivity.hasToReloadAction = true
             val intent = Intent(activity, MainFilterActivity::class.java)
             startActivity(intent)
+            requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+
         }
         binding.searchEditText.setOnTouchListener { v, event ->
             if (event.action == MotionEvent.ACTION_UP) {
@@ -320,7 +324,7 @@ class ActionsFragment : Fragment() {
 
         binding.uiLayoutCategoryBt.setOnClickListener {
             AnalyticsEvents.logEvent(AnalyticsEvents.Help_action_filters)
-            val intent = Intent(context, social.entourage.android.actions.ActionCategoriesFiltersActivity::class.java)
+            val intent = Intent(context, ActionCategoriesFiltersActivity::class.java)
             intent.putExtra(CATEGORIES_FILTERS, currentCategoriesFilters)
             activityResultLauncher?.launch(intent)
         }

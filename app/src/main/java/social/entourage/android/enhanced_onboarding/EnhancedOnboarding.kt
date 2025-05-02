@@ -7,12 +7,17 @@ import androidx.activity.OnBackPressedCallback
 import androidx.lifecycle.ViewModelProvider
 import social.entourage.android.EntourageApplication
 import social.entourage.android.MainActivity
+import social.entourage.android.R
 import social.entourage.android.api.model.User
 import social.entourage.android.base.BaseActivity
 import social.entourage.android.databinding.ActivityEnhancedOnboardingLayoutBinding
-import social.entourage.android.enhanced_onboarding.fragments.*
+import social.entourage.android.enhanced_onboarding.fragments.OnboardingActionWishesFragment
+import social.entourage.android.enhanced_onboarding.fragments.OnboardingCategorieFragment
+import social.entourage.android.enhanced_onboarding.fragments.OnboardingCongratsFragment
+import social.entourage.android.enhanced_onboarding.fragments.OnboardingDisponibilityFragment
+import social.entourage.android.enhanced_onboarding.fragments.OnboardingInterestFragment
+import social.entourage.android.enhanced_onboarding.fragments.OnboardingPresentationFragment
 import social.entourage.android.user.UserPresenter
-import timber.log.Timber
 
 class EnhancedOnboarding : BaseActivity() {
 
@@ -24,9 +29,9 @@ class EnhancedOnboarding : BaseActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityEnhancedOnboardingLayoutBinding.inflate(layoutInflater)
         viewModel = ViewModelProvider(this).get(OnboardingViewModel::class.java)
-        userPresenter.getUser(viewModel.user?.id ?: 0)
+        userPresenter.getUser(viewModel.user?.id.toString())
         viewModel.user = EntourageApplication.me(this)
-        Timber.wtf("wtf" + viewModel.user?.interests)
+
         // Observateurs pour chaque étape
         viewModel.onboardingFirstStep.observe(this, ::handleOnboardingFirstStep)
         viewModel.onboardingSecondStep.observe(this, ::handleOnboardingSecondStep)
@@ -36,7 +41,6 @@ class EnhancedOnboarding : BaseActivity() {
         viewModel.onboardingFifthStep.observe(this, ::handleOnboardingFifthStep)
         viewModel.onboardingShouldQuit.observe(this, ::handleOnboardingShouldQuit)
         viewModel.shouldDismissBtnBack.observe(this, ::toggleBtnBack)
-
         userPresenter.user.observe(this, ::updateUser)
 
         setContentView(binding.root)
@@ -44,41 +48,28 @@ class EnhancedOnboarding : BaseActivity() {
 
     override fun onResume() {
         super.onResume()
-        userPresenter.getUser(viewModel.user?.id ?: 0)
+        userPresenter.getUser(viewModel.user?.id.toString())
+
+        // Gestion du clic sur le bouton retour
         binding.btnBack.setOnClickListener {
-            if (isFromSettingsinterest || isFromSettingsDisponibility || isFromSettingsWishes || isFromSettingsActionCategorie) {
-                viewModel.registerAndQuit()
-            } else {
-                viewModel.register()
-                onBackPressed()
-                viewModel.step -= 1
-                if (viewModel.step < 1) {
-                    viewModel.registerAndQuit()
-                }
-            }
+            handleBackNavigation()
         }
+
+        // Callback pour la touche physique retour
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                if (isFromSettingsinterest || isFromSettingsDisponibility || isFromSettingsWishes || isFromSettingsActionCategorie) {
-                    viewModel.registerAndQuit()
-                } else {
-                    viewModel.register()
-                    onBackPressed()
-                    viewModel.step -= 1
-                    if (viewModel.step < 1) {
-                        viewModel.registerAndQuit()
-                    }
-                }
+                handleBackNavigation()
             }
         })
 
+        // Déclenchement de l'étape d'onboarding selon le contexte
         if (isFromSettingsinterest) {
             viewModel.setOnboardingThirdStep(true)
-        }else if (isFromSettingsDisponibility) {
+        } else if (isFromSettingsDisponibility) {
             viewModel.onboardingDisponibilityStep.postValue(true)
-        }else if (isFromSettingsWishes) {
+        } else if (isFromSettingsWishes) {
             viewModel.setOnboardingSecondStep(true)
-        }else if(isFromSettingsActionCategorie){
+        } else if (isFromSettingsActionCategorie) {
             viewModel.setOnboardingFourthStep(true)
         } else {
             when (viewModel.step) {
@@ -90,19 +81,38 @@ class EnhancedOnboarding : BaseActivity() {
                 6 -> viewModel.setOnboardingFifthStep(true)
             }
         }
-
     }
 
-    private fun updateUser(user: User){
-        viewModel.user = user
+    /**
+     * Méthode centralisée de gestion du retour.
+     * Elle décrémente le step, appelle register() puis, si nécessaire, quitte l'onboarding
+     * ou effectue un popBackStack pour revenir au fragment précédent.
+     */
+    private fun handleBackNavigation() {
+        if (isFromSettingsinterest || isFromSettingsDisponibility || isFromSettingsWishes || isFromSettingsActionCategorie) {
+            viewModel.registerAndQuit()
+        } else {
+            viewModel.register()
+            viewModel.step -= 1
+            if (viewModel.step < 1) {
+                viewModel.registerAndQuit()
+            } else {
+                // Retour au fragment précédent sans appeler onBackPressed() récursivement
+                supportFragmentManager.popBackStack()
+            }
+        }
+    }
 
+    private fun updateUser(user: User) {
+        viewModel.user = user
     }
 
     private fun toggleBtnBack(value: Boolean) {
         binding.btnBack.visibility = if (value) View.VISIBLE else View.GONE
     }
 
-    // Gestion de l'étape de présentation
+    // Gestion des différentes étapes d'onboarding en remplaçant le fragment courant
+
     private fun handleOnboardingFirstStep(value: Boolean) {
         if (value) {
             val fragment = OnboardingPresentationFragment()
@@ -114,7 +124,6 @@ class EnhancedOnboarding : BaseActivity() {
         }
     }
 
-    // Gestion de l'étape des souhaits d'actions
     private fun handleOnboardingSecondStep(value: Boolean) {
         if (value) {
             val fragment = OnboardingActionWishesFragment()
@@ -126,7 +135,6 @@ class EnhancedOnboarding : BaseActivity() {
         }
     }
 
-    // Gestion de l'étape des intérêts
     private fun handleOnboardingThirdStep(value: Boolean) {
         if (value) {
             val fragment = OnboardingInterestFragment()
@@ -138,7 +146,6 @@ class EnhancedOnboarding : BaseActivity() {
         }
     }
 
-    // Gestion de l'étape des catégories
     private fun handleOnboardingFourthStep(value: Boolean) {
         if (value) {
             if (isFromSettingsinterest || isFromSettingsDisponibility || isFromSettingsWishes) {
@@ -154,7 +161,6 @@ class EnhancedOnboarding : BaseActivity() {
         }
     }
 
-    // Gestion de l'étape de disponibilités
     private fun handleOnboardingDisponibilityStep(value: Boolean) {
         if (value) {
             val fragment = OnboardingDisponibilityFragment()
@@ -166,7 +172,6 @@ class EnhancedOnboarding : BaseActivity() {
         }
     }
 
-    // Gestion de l'étape finale de félicitations
     private fun handleOnboardingFifthStep(value: Boolean) {
         if (value) {
             val fragment = OnboardingCongratsFragment()
@@ -187,7 +192,7 @@ class EnhancedOnboarding : BaseActivity() {
                 "resources" -> MainActivity.shouldLaunchQuizz = true
                 "neighborhoods" -> MainActivity.shouldLaunchWelcomeGroup = true
             }
-            if (isFromSettingsinterest  || isFromSettingsDisponibility || isFromSettingsWishes || isFromSettingsActionCategorie) {
+            if (isFromSettingsinterest || isFromSettingsDisponibility || isFromSettingsWishes || isFromSettingsActionCategorie) {
                 isFromSettingsinterest = false
                 MainActivity.shouldLaunchEvent = false
                 MainActivity.shouldLaunchProfile = true
@@ -200,13 +205,10 @@ class EnhancedOnboarding : BaseActivity() {
                 flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
             }
             startActivity(intent)
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
             finish()
         }
     }
-
-
-
-
 
     companion object {
         var preference: String = ""
@@ -214,6 +216,6 @@ class EnhancedOnboarding : BaseActivity() {
         var isFromSettingsDisponibility: Boolean = false
         var isFromSettingsWishes: Boolean = false
         var isFromSettingsActionCategorie: Boolean = false
-        var shouldNotDisplayCampain:Boolean = false
+        var shouldNotDisplayCampain: Boolean = false
     }
 }

@@ -12,7 +12,7 @@ import androidx.navigation.fragment.navArgs
 import com.google.android.play.core.review.ReviewManagerFactory
 import social.entourage.android.databinding.NewFragmentCreateEventSuccessBinding
 import social.entourage.android.RefreshController
-import social.entourage.android.events.details.feed.FeedActivity
+import social.entourage.android.events.details.feed.EventFeedActivity
 import social.entourage.android.tools.utils.Const
 
 class CreateEventSuccessFragment : Fragment() {
@@ -38,7 +38,7 @@ class CreateEventSuccessFragment : Fragment() {
     private fun handleSeeEventButton() {
         binding.seeEvent.setOnClickListener {
             startActivityForResult(
-                Intent(requireContext(), FeedActivity::class.java).putExtra(
+                Intent(requireContext(), EventFeedActivity::class.java).putExtra(
                     Const.EVENT_ID,
                     args.eventID
                 ), 0

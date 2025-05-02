@@ -1,10 +1,7 @@
 package social.entourage.android.base
 
-import android.app.ProgressDialog
-import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import com.google.gson.Gson
@@ -14,17 +11,16 @@ import social.entourage.android.R
 import social.entourage.android.api.model.notification.PushNotificationContent
 import social.entourage.android.deeplinks.UniversalLinkManager
 import social.entourage.android.language.LanguageManager
+import social.entourage.android.report.DataLanguageStock
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.view.WebViewFragment
 import timber.log.Timber
-import java.net.URL
-import social.entourage.android.report.DataLanguageStock
 
 /**
  * Base activity which set up a scoped graph and inject it
  */
 abstract class BaseActivity : AppCompatActivity() {
-    private var progressDialog: ProgressDialog? = null
+    //private var progressDialog: ProgressDialog? = null
     val entApp: EntourageApplication?
         get()= (application as? EntourageApplication)
     private val universalLinkManager = UniversalLinkManager(this)

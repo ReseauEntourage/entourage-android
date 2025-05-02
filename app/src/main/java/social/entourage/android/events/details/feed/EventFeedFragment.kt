@@ -1,5 +1,6 @@
 package social.entourage.android.events.details.feed
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
@@ -7,20 +8,20 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.provider.CalendarContract
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.getColor
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.os.bundleOf
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
+import androidx.core.view.updatePadding
 import androidx.core.widget.NestedScrollView
-import androidx.core.widget.TextViewCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.lifecycleScope
@@ -34,6 +35,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
+import com.google.android.play.core.review.ReviewManagerFactory
 import com.leinardi.android.speeddial.SpeedDialActionItem
 import com.leinardi.android.speeddial.SpeedDialView
 import kotlinx.coroutines.CoroutineScope
@@ -44,7 +46,6 @@ import social.entourage.android.BuildConfig
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.RefreshController
-import social.entourage.android.actions.create.CreateActionActivity
 import social.entourage.android.api.MetaDataRepository
 import social.entourage.android.api.model.EntourageUser
 import social.entourage.android.api.model.Events
@@ -58,12 +59,10 @@ import social.entourage.android.comment.ReactionInterface
 import social.entourage.android.comment.SurveyInteractionListener
 import social.entourage.android.databinding.FragmentFeedEventBinding
 import social.entourage.android.events.EventsPresenter
-import social.entourage.android.events.create.CreateEventActivity
 import social.entourage.android.events.details.SettingsModalFragment
 import social.entourage.android.groups.details.feed.CallbackReportFragment
 import social.entourage.android.groups.details.feed.FeedFragment
 import social.entourage.android.groups.details.feed.GroupMembersPhotosAdapter
-import social.entourage.android.groups.details.feed.rotationDegree
 import social.entourage.android.groups.details.members.MembersType
 import social.entourage.android.language.LanguageManager
 import social.entourage.android.members.MembersActivity
@@ -84,17 +83,14 @@ import social.entourage.android.tools.utils.Utils.enableCopyOnLongClick
 import social.entourage.android.tools.utils.px
 import social.entourage.android.tools.utils.underline
 import java.text.SimpleDateFormat
-import kotlin.math.abs
-import com.google.android.play.core.review.ReviewManagerFactory
-import com.google.android.play.core.review.ReviewManager
-import com.google.android.play.core.review.testing.FakeReviewManager
-import timber.log.Timber
 import java.util.Calendar
+import kotlin.math.abs
 
 
-class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
+class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
     SurveyInteractionListener {
 
+    private var initialSwipeTopMargin: Int = 0
     private var _binding: FragmentFeedEventBinding? = null
     val binding: FragmentFeedEventBinding get() = _binding!!
 
@@ -104,26 +100,32 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
     private var eventId = Const.DEFAULT_VALUE
     private var event: Events? = null
     private var myId: Int? = null
-    private val args: FeedFragmentArgs by navArgs()
+    private val args: EventFeedFragmentArgs by navArgs()
     private var shouldShowPopUp = true
     private var isLoading = false
     private var page:Int = 1
     private val ITEM_PER_PAGE = 10
-
 
     private var newPostsList: MutableList<Post> = mutableListOf()
     private var oldPostsList: MutableList<Post> = mutableListOf()
     private var allPostsList: MutableList<Post> = mutableListOf()
     private var memberList: MutableList<EntourageUser> = mutableListOf()
 
-
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentFeedEventBinding.inflate(inflater, container, false)
-
+        // Listen for WindowInsets
+        ViewCompat.setOnApplyWindowInsetsListener(binding.header) { view, windowInsets ->
+            // Get the insets for the statusBars() type:
+            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.statusBars())
+            view.updatePadding(
+                top = insets.top
+            )
+            // Return the original insets so they aren’t consumed
+            windowInsets
+        }
         return binding.root
     }
 
@@ -154,11 +156,6 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
 
     }
 
-
-
-
-
-
     private fun handleResponseGetEvent(getEvent: Events?) {
         getEvent?.let {
             event = it
@@ -187,6 +184,7 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
                         CalendarContract.Events.AVAILABILITY_BUSY
                     )
                 requireContext().startActivity(intent)
+
             }
         }
         handleImageViewAnimation()
@@ -229,8 +227,7 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
 
     private fun handleImageViewAnimation() {
         binding.appBar.addOnOffsetChangedListener { appBarLayout, verticalOffset ->
-            val res: Float =
-                abs(verticalOffset).toFloat() / appBarLayout.totalScrollRange
+            val res: Float =abs(verticalOffset).toFloat() / appBarLayout.totalScrollRange
             binding.toolbarLayout.alpha = 1f - res
             binding.eventImageToolbar.alpha = res
             binding.eventNameToolbar.alpha = res
@@ -238,6 +235,14 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
                 res == 1F && event?.member == false && event?.status == Status.OPEN
 
             binding.eventImage.alpha = 1f - res
+            //change topmargin when collapsing and no image is shown
+            val lp = binding.swipeRefresh.layoutParams as ViewGroup.MarginLayoutParams
+            if (res != 0F) {
+                lp.topMargin = 0
+            } else {
+                lp.topMargin = initialSwipeTopMargin
+            }
+            binding.swipeRefresh.layoutParams = lp
         }
     }
 
@@ -290,6 +295,7 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
         }
     }
 
+    @SuppressLint("StringFormatInvalid")
     private fun openGoogleMaps() {
         if (event?.online != true) {
             binding.location.root.setOnClickListener {
@@ -297,10 +303,12 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
                     String.format(getString(R.string.geoUri), event?.metadata?.displayAddress)
                 val intent = Intent(Intent.ACTION_VIEW, Uri.parse(geoUri))
                 startActivity(intent)
+                requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
             }
         }
     }
 
+    @SuppressLint("StringFormatMatches")
     private fun updateView() {
 
         MetaDataRepository.metaData.observe(requireActivity(), ::handleMetaData)
@@ -446,8 +454,10 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
             allPostsList.clear()
             loadPosts()
         }
+        initialSwipeTopMargin = (binding.swipeRefresh.layoutParams as ViewGroup.MarginLayoutParams).topMargin
     }
 
+    @SuppressLint("StringFormatInvalid")
     private fun openMap() {
         val geoUri =
             String.format(getString(R.string.geoUri), event?.metadata?.displayAddress)
@@ -578,6 +588,7 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
         intent.putExtra("postId", postId)
         intent.putExtra("eventId", this.event?.id)
         startActivity(intent)
+        requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
     }
 
     private fun fragmentResult() {
@@ -616,7 +627,7 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
             event?.let { event ->
                 val eventUI = event.toEventUi(requireContext())
                 val action =
-                    FeedFragmentDirections.actionEventFeedToEventAbout(
+                    EventFeedFragmentDirections.actionEventFeedToEventAbout(
                         eventUI
                     )
                 findNavController().navigate(action)
@@ -659,7 +670,6 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
             var numberOrganizer = 0
             var nameOrganizers = ""
             for(member in allMembers){
-                Timber.wtf("wtf role " + member.groupRole + "name " + nameOrganizers)
                 if(member.groupRole == "organizer"){
                     numberOrganizer += 1
                     if(numberOrganizer < 3){
@@ -703,7 +713,6 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
         binding.join.setOnClickListener {
             requestInAppReview(requireContext())
             val meUser = EntourageApplication.me(activity)
-            Timber.wtf("wtf role " + meUser?.roles)
             if(meUser?.roles?.contains("Ambassadeur") == true){
                 CustomAlertDialog.showAmbassadorWithTwoButton(requireContext(),
                     onNo = {
@@ -729,7 +738,6 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
         }
         binding.participate.setOnClickListener {
             val meUser = EntourageApplication.me(activity)
-            Timber.wtf("wtf", "role ? ${meUser?.roles}")
             if(meUser?.roles?.contains("Ambassadeur") == true){
                 CustomAlertDialog.showAmbassadorWithTwoButton(requireContext(),
                     onNo = {
@@ -767,6 +775,7 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
                 putExtra("TYPE", MembersType.EVENT.code) // Utilise 'code' pour passer l'enum comme un Int
             }
             startActivity(intent)
+            requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
         }
     }
 
@@ -845,6 +854,7 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
                     FeedFragment.isFromCreation = true
                     intent.putExtra(Const.EVENT_ID, eventId)
                     startActivity(intent)
+                    requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
                     true
                 }
                 else -> false
@@ -983,6 +993,7 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
             putExtra("TYPE", MembersType.EVENT.code) // Utilise 'code' pour passer l'enum comme un Int
         }
         startActivity(intent)
+        requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
     }
 
     override fun deleteReaction(post: Post) {
@@ -1018,6 +1029,7 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
 
         }
         startActivity(intent)
+        requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
     }
 
 

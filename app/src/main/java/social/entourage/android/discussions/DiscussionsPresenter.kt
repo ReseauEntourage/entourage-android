@@ -127,7 +127,7 @@ class DiscussionsPresenter:ViewModel() {
             })
     }
 
-    fun createOrGetConversation(userId:Int) {
+    fun createOrGetConversation(userId:String) {
         val params = ArrayMap<String,Any>()
         val userParam = ArrayMap<String,Any>()
         userParam["user_id"] = userId

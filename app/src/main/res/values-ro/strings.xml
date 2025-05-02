@@ -2857,4 +2857,8 @@ Ei vor citi acest mesaj imediat ce se vor alătura grupului.</string>
     <string name="notifications_disabled_message">Notificările tale sunt dezactivate.\nActivează-le pentru a fi la curent</string>
     <string name="enable_notifications">Activează-le pentru a fi la curent</string>
 
+    <string name="add_to_agenda">Adaugă în agendă</string>
+    <string name="share_and_join_event">Participă și alătură-te conversației</string>
+    <string name="see_conversation_event">Vezi conversația</string>
+
 </resources>

@@ -134,7 +134,7 @@ class SettingsDiscussionModalFragment : BottomSheetDialogFragment() {
         binding.profile.layout.setOnClickListener {
             if (isOneToOne) {
                 ProfileFullActivity.isMe = false
-                ProfileFullActivity.userId = userId!!
+                ProfileFullActivity.userId = userId.toString()
                 startActivityForResult(
                     Intent(requireContext(), ProfileFullActivity::class.java).putExtra(
                         Const.USER_ID, userId

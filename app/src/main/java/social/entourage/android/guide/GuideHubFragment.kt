@@ -41,6 +41,7 @@ class GuideHubFragment : Fragment() {
             val intent = Intent(activity,GDSMainActivity::class.java)
 
             startActivity(intent)
+            requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
         }
 
         binding.uiLayoutCell2?.setOnClickListener {

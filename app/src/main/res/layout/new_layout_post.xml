@@ -127,7 +127,7 @@
             style="@style/left_courant_black"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:autoLink="web"
+            android:linksClickable="true"
             android:layout_marginTop="8dp"
             tools:text="Bienvenue à toi cher danseur !
 Nous sommes prêt pour les beaux jours ! :-)" />

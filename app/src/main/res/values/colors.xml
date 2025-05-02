@@ -142,7 +142,8 @@
     <color name="light_orange_button">#ffcdae</color>
     <color name="light_orange_opacity_25">#40ff9c5d</color>
     <color name="light_orange_opacity_35">#59ff9c5d</color>
-    <color name="green">#2BBA7A</color>
+    <color name="green">#208054</color>
+    <color name="green_light">#DEF1E8</color>
     <color name="dark_grey">#343C58</color>
     <color name="dark_grey_opacity_40">#66343C58</color>
     <color name="red">#FF0000</color>

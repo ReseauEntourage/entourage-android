@@ -1,11 +1,12 @@
 package social.entourage.android.profile
 
-import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
@@ -14,7 +15,6 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import social.entourage.android.EntourageApplication
-import social.entourage.android.MainActivity
 import social.entourage.android.R
 import social.entourage.android.api.request.UserResponse
 import social.entourage.android.databinding.NewFragmentProfileBinding
@@ -30,6 +30,16 @@ class ProfileFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = NewFragmentProfileBinding.inflate(inflater, container, false)
+
+        ViewCompat.setOnApplyWindowInsetsListener(binding.profileHeader) { view, windowInsets ->
+            // Get the insets for the statusBars() type:
+            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.statusBars())
+            view.updatePadding(
+                top = insets.top
+            )
+            // Return the original insets so they aren’t consumed
+            windowInsets
+        }
         return binding.root
     }
 
@@ -81,7 +91,7 @@ class ProfileFragment : Fragment() {
     fun getUser() {
         val user = EntourageApplication.me(activity) ?: return
         val userRequest = EntourageApplication.get().apiModule.userRequest
-        userRequest.getUser(user.id).enqueue(object : Callback<UserResponse> {
+        userRequest.getUser(user.id.toString()).enqueue(object : Callback<UserResponse> {
             override fun onResponse(call: Call<UserResponse>, response: Response<UserResponse>) {
                 if (response.isSuccessful) {
                     response.body()?.user?.let {

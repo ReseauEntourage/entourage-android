@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/beige"
+    android:fitsSystemWindows="false"
     xmlns:tools="http://schemas.android.com/tools">
     <ImageView
         android:layout_width="match_parent"
@@ -13,187 +14,206 @@
         app:layout_constraintTop_toTopOf="parent"
         android:src="@drawable/people_welcome_1"
         android:scaleType="fitXY"/>
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="100dp"
-        android:id="@+id/image_people"
-        app:layout_constraintEnd_toStartOf="@+id/close_button"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="30dp"
-        android:src="@drawable/cafe_1"
-        android:scaleType="fitXY"/>
-    <ScrollView
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/layout_content_welcome_one"
-        android:layout_marginTop="60dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
-        android:background="@drawable/bcknd_white_35dp_corner">
-        <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="100dp"
+            android:id="@+id/image_people"
+            app:layout_constraintEnd_toStartOf="@+id/close_button"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="30dp"
+            android:src="@drawable/cafe_1"
+            android:scaleType="fitXY"/>
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:id="@+id/title_welcome_two"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginTop="42dp"
-                android:layout_marginEnd="15dp"
-                android:paddingEnd="10dp"
-                android:paddingStart="10dp"
-                android:layout_marginStart="32dp"
-                android:fontFamily="@font/nunitosans_regular"
-                android:textColor="@color/black"
-                tools:text="@string/welcome_three_title_with_event"
-                android:textSize="24sp"/>
-
-            <ImageView
-                android:layout_width="17dp"
-                android:layout_height="20dp"
-                android:id="@+id/img_artifice"
-                android:src="@drawable/ic_party"
-                app:layout_constraintTop_toTopOf="@+id/title_welcome_two"
-                app:layout_constraintStart_toStartOf="@+id/title_welcome_two"
-                android:layout_marginStart="-10dp"
-                android:layout_marginTop="-10dp"
-                />
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:id="@+id/tv_text_one"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/title_welcome_two"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginStart="20dp"
-                android:layout_marginBottom="20dp"
-                android:paddingEnd="10dp"
-                android:layout_marginTop="20dp"
-                tools:text="@string/welcome_three_text_one"
-                android:textSize="15sp"
-                android:fontFamily="@font/nunitosans_regular"
-                android:textColor="@color/black"
-                android:textStyle="bold"
-                />
-
-            <include
-                android:id="@+id/event_example_one"
-                layout="@layout/new_event_item"
+            android:layout_height="match_parent"
+            android:id="@+id/layout_content_welcome_one"
+            android:layout_marginTop="60dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/bcknd_white_35dp_corner">
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_text_one"
-                android:layout_margin="20dp"
-                />
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/title_welcome_two"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginTop="42dp"
+                    android:layout_marginEnd="15dp"
+                    android:paddingEnd="10dp"
+                    android:paddingStart="10dp"
+                    android:layout_marginStart="32dp"
+                    android:fontFamily="@font/nunitosans_regular"
+                    android:textColor="@color/black"
+                    tools:text="@string/welcome_three_title_with_event"
+                    android:textSize="24sp"/>
 
-            <include
-                android:id="@+id/event_example_two"
-                layout="@layout/new_event_item"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/event_example_one"
-                android:layout_margin="20dp"
-                />
+                <ImageView
+                    android:layout_width="17dp"
+                    android:layout_height="20dp"
+                    android:id="@+id/img_artifice"
+                    android:src="@drawable/ic_party"
+                    app:layout_constraintTop_toTopOf="@+id/title_welcome_two"
+                    app:layout_constraintStart_toStartOf="@+id/title_welcome_two"
+                    android:layout_marginStart="-10dp"
+                    android:layout_marginTop="-10dp"
+                    />
 
-            <include
-                android:id="@+id/event_example_three"
-                layout="@layout/new_event_item"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/event_example_two"
-                android:layout_margin="20dp"
-                />
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tv_text_one"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/title_welcome_two"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:paddingEnd="10dp"
+                    android:layout_marginTop="20dp"
+                    tools:text="@string/welcome_three_text_one"
+                    android:textSize="15sp"
+                    android:fontFamily="@font/nunitosans_regular"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    />
 
-            <include
-                android:id="@+id/demand_example_one"
-                layout="@layout/demande_welcome_example"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/event_example_three"
-                android:layout_margin="20dp"
-                />
+                <include
+                    android:id="@+id/event_example_one"
+                    layout="@layout/new_event_item"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_text_one"
+                    android:layout_margin="20dp"
+                    />
 
-            <include
-                android:id="@+id/demand_example_two"
-                layout="@layout/demande_welcome_example"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/demand_example_one"
-                android:layout_margin="20dp"
-                />
+                <include
+                    android:id="@+id/event_example_two"
+                    layout="@layout/new_event_item"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/event_example_one"
+                    android:layout_margin="20dp"
+                    />
 
-            <include
-                android:id="@+id/demand_example_three"
-                layout="@layout/demande_welcome_example"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/demand_example_two"
-                android:layout_margin="20dp"
-                />
+                <include
+                    android:id="@+id/event_example_three"
+                    layout="@layout/new_event_item"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/event_example_two"
+                    android:layout_margin="20dp"
+                    />
 
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:id="@+id/tv_text_four"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/demand_example_three"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginStart="20dp"
-                android:paddingEnd="10dp"
-                android:layout_marginTop="20dp"
-                android:text="@string/welcome_two_text_four"
-                android:textSize="15sp"
-                android:fontFamily="@font/nunitosans_regular"
-                android:textColor="@color/orange"
-                android:textStyle="bold"
-                />
+                <include
+                    android:id="@+id/demand_example_one"
+                    layout="@layout/demande_welcome_example"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/event_example_three"
+                    android:layout_margin="20dp"
+                    />
+
+                <include
+                    android:id="@+id/demand_example_two"
+                    layout="@layout/demande_welcome_example"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/demand_example_one"
+                    android:layout_margin="20dp"
+                    />
+
+                <include
+                    android:id="@+id/demand_example_three"
+                    layout="@layout/demande_welcome_example"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/demand_example_two"
+                    android:layout_margin="20dp"
+                    />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tv_text_four"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/demand_example_three"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginStart="20dp"
+                    android:paddingEnd="10dp"
+                    android:layout_marginTop="20dp"
+                    android:text="@string/welcome_two_text_four"
+                    android:textSize="15sp"
+                    android:fontFamily="@font/nunitosans_regular"
+                    android:textColor="@color/orange"
+                    android:textStyle="bold"
+                    />
 
 
-            <include
-                android:id="@+id/contrib_example_one"
-                layout="@layout/welcome_contrib_example"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_text_four"
-                android:layout_margin="20dp"
-                />
+                <include
+                    android:id="@+id/contrib_example_one"
+                    layout="@layout/welcome_contrib_example"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_text_four"
+                    android:layout_margin="20dp"
+                    />
 
 
-            <include
-                android:id="@+id/contrib_example_two"
-                layout="@layout/welcome_contrib_example"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/contrib_example_one"
-                android:layout_margin="20dp"
-                />
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="250dp"
-                android:background="@color/transparent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/contrib_example_two"/>
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </ScrollView>
+                <include
+                    android:id="@+id/contrib_example_two"
+                    layout="@layout/welcome_contrib_example"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/contrib_example_one"
+                    android:layout_margin="20dp"
+                    />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="250dp"
+                    android:background="@color/transparent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/contrib_example_two"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </ScrollView>
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:id="@+id/close_button"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:src="@drawable/icon_cross"
+            android:layout_margin="15dp"
+            android:scaleType="fitXY"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
     <Button
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -211,13 +231,4 @@
         android:layout_marginBottom="20dp"
         android:textAllCaps="false"
         />
-    <ImageView
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:id="@+id/close_button"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:src="@drawable/icon_cross"
-        android:layout_margin="15dp"
-        android:scaleType="fitXY"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

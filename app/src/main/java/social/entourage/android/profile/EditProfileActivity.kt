@@ -31,7 +31,7 @@ import social.entourage.android.R
 import social.entourage.android.api.OnboardingAPI
 import social.entourage.android.api.model.User
 import social.entourage.android.base.BaseActivity
-import social.entourage.android.databinding.NewFragmentEditProfileBinding
+import social.entourage.android.databinding.ActivityEditProfileBinding
 import social.entourage.android.enhanced_onboarding.EnhancedOnboarding
 import social.entourage.android.main_filter.MainFilterActivity
 import social.entourage.android.main_filter.MainFilterActivity.Companion.PlaceDetails
@@ -48,7 +48,7 @@ import timber.log.Timber
 
 class EditProfileActivity : BaseActivity(), AvatarUploadView {
 
-    private lateinit var binding: NewFragmentEditProfileBinding
+    private lateinit var binding: ActivityEditProfileBinding
     private lateinit var avatarUploadPresenter: AvatarUploadPresenter
     private val editProfilePresenter: EditProfilePresenter by lazy { EditProfilePresenter() }
     val profilePresenter: ProfilePresenter by lazy { ProfilePresenter() }
@@ -67,7 +67,7 @@ class EditProfileActivity : BaseActivity(), AvatarUploadView {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = NewFragmentEditProfileBinding.inflate(layoutInflater)
+        binding = ActivityEditProfileBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         initPlacesClient()
@@ -185,6 +185,7 @@ class EditProfileActivity : BaseActivity(), AvatarUploadView {
         binding.language.layout.setOnClickListener {
             val intent = Intent(this, ActivityChooseLanguage::class.java)
             startActivity(intent)
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
         }
         binding.language.layout.visibility = View.GONE
     }

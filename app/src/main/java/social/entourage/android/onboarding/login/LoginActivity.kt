@@ -11,6 +11,9 @@ import android.util.Log
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updatePadding
 import social.entourage.android.EntourageApplication
 import social.entourage.android.EntourageApplication.Companion.KEY_ONBOARDING_SHOW_POP_FIRSTLOGIN
 import social.entourage.android.MainActivity
@@ -39,8 +42,6 @@ class LoginActivity : BaseActivity() {
     private var timeOut = TIME_BEFORE_CALL
     var isLoading = false
 
-
-
     lateinit var alertDialog: CustomProgressDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,6 +51,16 @@ class LoginActivity : BaseActivity() {
         alertDialog = CustomProgressDialog(this)
         setupViews()
         setContentView(binding.root)
+
+        ViewCompat.setOnApplyWindowInsetsListener(binding.layout) { view, windowInsets ->
+            // Get the insets for the statusBars() type:
+            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.statusBars())
+            view.updatePadding(
+                top = insets.top
+            )
+            // Return the original insets so they aren’t consumed
+            windowInsets
+        }
         AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_VIEW_LOGIN_LOGIN)
     }
 
@@ -113,12 +124,11 @@ class LoginActivity : BaseActivity() {
         binding.uiLoginButtonChangePhone.setOnClickListener {
             val intent = Intent(this, LoginChangePhoneActivity::class.java)
             startActivity(intent)
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
         }
         val text = getString(R.string.terms_and_conditions_html)
         binding.tvConditionGenerales.text = Html.fromHtml(text)
         binding.tvConditionGenerales.movementMethod = LinkMovementMethod.getInstance()
-
-
     }
 
     fun changeLocale(activity: Activity, locale: Locale) {
@@ -174,6 +184,7 @@ class LoginActivity : BaseActivity() {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         }
         startActivity(intent)
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
 
     }
 

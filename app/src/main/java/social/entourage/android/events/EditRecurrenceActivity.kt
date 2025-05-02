@@ -3,6 +3,9 @@ package social.entourage.android.events
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.collection.ArrayMap
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updatePadding
 import social.entourage.android.R
 import social.entourage.android.RefreshController
 import social.entourage.android.databinding.ActivityEditRecurrenceBinding
@@ -56,6 +59,16 @@ class EditRecurrenceActivity : AppCompatActivity() {
             Recurrence.EVERY_WEEK.value -> binding.everyWeek.isChecked = true
             Recurrence.EVERY_TWO_WEEKS.value -> binding.everyTwoWeek.isChecked = true
             else -> binding.once.isChecked = true
+        }
+        // Listen for WindowInsets
+        ViewCompat.setOnApplyWindowInsetsListener(binding.header.layout) { view, windowInsets ->
+            // Get the insets for the statusBars() type:
+            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.statusBars())
+            view.updatePadding(
+                top = insets.top
+            )
+            // Return the original insets so they aren’t consumed
+            windowInsets
         }
     }
 

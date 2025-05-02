@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
     tools:context="social.entourage.android.guide.GDSMainActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout

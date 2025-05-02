@@ -135,7 +135,7 @@ class MembersListAdapter(
                 // Gestion du clic pour afficher le profil de l'utilisateur
                 binding.layout.setOnClickListener { view ->
                     ProfileFullActivity.isMe = false
-                    ProfileFullActivity.userId = this.userId
+                    ProfileFullActivity.userId = this.userId.toString()
                     (view.context as? Activity)?.startActivityForResult(
                         Intent(view.context, ProfileFullActivity::class.java).putExtra(
                             Const.USER_ID,

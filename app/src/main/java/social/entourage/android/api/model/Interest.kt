@@ -10,16 +10,16 @@ class Interest(
     val icon: Int
         get() {
             return when (id) {
-                animals -> R.drawable.new_animals
-                wellBeing -> R.drawable.new_wellbeing
-                cooking -> R.drawable.new_cooking
-                culture -> R.drawable.new_art
-                games -> R.drawable.new_games
-                nature -> R.drawable.new_nature
-                sport -> R.drawable.new_sport
-                activities -> R.drawable.new_drawing
-                marauding -> R.drawable.new_encounters
-                else -> R.drawable.new_others
+                animals -> R.drawable.ic_onboarding_interest_name_animaux
+                wellBeing -> R.drawable.ic_onboarding_interest_name_bien_etre
+                cooking -> R.drawable.ic_onboarding_interest_name_cuisine
+                culture -> R.drawable.ic_onboarding_interest_name_art
+                games -> R.drawable.ic_onboarding_interest_name_jeux
+                nature -> R.drawable.ic_onboarding_interest_name_nature
+                sport -> R.drawable.ic_onboarding_interest_sport
+                activities -> R.drawable.ic_onboarding_interest_name_activite_manuelle
+                marauding -> R.drawable.ic_onboarding_interest_name_rencontre_nomade
+                else -> R.drawable.ic_onboarding_interest_name_autre
             }
         }
 
@@ -39,16 +39,16 @@ class Interest(
         const val marauding = "marauding"
 
         fun getIconFromId(id: String): Int = when (id) {
-            animals -> R.drawable.new_interests_animal_item
-            wellBeing -> R.drawable.new_interests_wellbeing_item
-            cooking -> R.drawable.new_interests_cooking_item
-            culture -> R.drawable.new_interests_art_item
-            games -> R.drawable.new_interests_games_item
-            nature -> R.drawable.new_interests_nature_item
-            sport -> R.drawable.new_interests_sport_item
-            activities -> R.drawable.new_interests_drawing_item
-            marauding -> R.drawable.new_interests_encounters_item
-            else -> R.drawable.new_interests_other_item
+            animals -> R.drawable.ic_onboarding_interest_name_animaux
+            wellBeing -> R.drawable.ic_onboarding_interest_name_bien_etre
+            cooking -> R.drawable.ic_onboarding_interest_name_cuisine
+            culture -> R.drawable.ic_onboarding_interest_name_art
+            games -> R.drawable.ic_onboarding_interest_name_jeux
+            nature -> R.drawable.ic_onboarding_interest_name_nature
+            sport -> R.drawable.ic_onboarding_interest_sport
+            activities -> R.drawable.ic_onboarding_interest_name_activite_manuelle
+            marauding -> R.drawable.ic_onboarding_interest_name_rencontre_nomade
+            else -> R.drawable.ic_onboarding_interest_name_autre
         }
     }
 }

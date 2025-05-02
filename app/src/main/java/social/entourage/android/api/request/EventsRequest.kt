@@ -83,7 +83,11 @@ interface EventsRequest {
         @Path("event_id") groupId: Int,
         @Path("post_id") postId: Int
     ): Call<ResponseBody>
-
+    @GET("outings/{event_id}/users")
+    fun getMembersSearch(
+        @Path("event_id") eventId: Int,
+        @Query("query") searchQuery: String
+    ): Call<MembersWrapper>
 
 
     @DELETE("outings/{event_id}/chat_messages/{post_id}/reactions")

@@ -19,7 +19,9 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.os.bundleOf
+import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updatePadding
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
@@ -30,14 +32,12 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.UpdateAvailability
-
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.gson.Gson
 import social.entourage.android.actions.create.CreateActionActivity
 import social.entourage.android.api.MetaDataRepository
 import social.entourage.android.api.model.Events
 import social.entourage.android.api.model.ReactionType
-import social.entourage.android.api.model.Tags
 import social.entourage.android.api.model.formatEventStartTime
 import social.entourage.android.api.model.notification.PushNotificationContent
 import social.entourage.android.api.model.notification.PushNotificationMessage
@@ -54,18 +54,13 @@ import social.entourage.android.homev2.EventConfirmationDialogFragment
 import social.entourage.android.language.LanguageManager
 import social.entourage.android.main_filter.MainFilterActivity
 import social.entourage.android.notifications.NotificationActionManager
-import social.entourage.android.notifications.PushNotificationManager
 import social.entourage.android.profile.ProfileFullActivity
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.view.WebViewFragment
 import social.entourage.android.user.UserPresenter
-import social.entourage.android.user.UserProfileActivity
-import social.entourage.android.welcome.WelcomeFourActivity
 import social.entourage.android.welcome.WelcomeTwoActivity
 import timber.log.Timber
-import java.text.SimpleDateFormat
-import java.util.Date
 
 class MainActivity : BaseSecuredActivity() {
     private lateinit var navController: NavController
@@ -105,9 +100,16 @@ class MainActivity : BaseSecuredActivity() {
         }
         checkForAppUpdate()
         //ifEventLastDay(591022)
+        // Listen for WindowInsets
+        ViewCompat.setOnApplyWindowInsetsListener(binding.navView) { view, windowInsets ->
+            // Get the insets for the statusBars() type:
+            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.navigationBars())
+            view.layoutParams.height = insets.bottom +view.minimumHeight
+            view.updatePadding(bottom =  insets.bottom)
+            // Return the original insets so they aren’t consumed
+            windowInsets
+        }
     }
-
-
 
     fun hideBottomBar() {
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.nav_view)
@@ -192,6 +194,7 @@ class MainActivity : BaseSecuredActivity() {
             val intent = Intent(this, CreateActionActivity::class.java)
             intent.putExtra(Const.IS_ACTION_DEMAND, false)
             this.startActivity(intent)
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
         }
         if(shouldLaunchQuizz){
             shouldLaunchQuizz = false
@@ -203,6 +206,7 @@ class MainActivity : BaseSecuredActivity() {
             shouldLaunchWelcomeGroup = false
             val intent = Intent(this, WelcomeTwoActivity::class.java)
             this.startActivity(intent)
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
         }
 
     }
@@ -245,7 +249,7 @@ class MainActivity : BaseSecuredActivity() {
         updateLanguage()
         val id = EntourageApplication.me(this)?.id
          if (id != null) {
-             userPresenter.getUser(id)
+             userPresenter.getUser(id.toString())
          }
         if(id != null){
             userPresenter.updateLanguage(id, LanguageManager.loadLanguageFromPreferences(this))
@@ -611,6 +615,7 @@ class MainActivity : BaseSecuredActivity() {
     fun showGuideMap() {
         val intent = Intent(this, GDSMainActivity::class.java)
         startActivity(intent)
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
     }
 
     fun deleteApplicationInfo(listener:() -> Unit) {

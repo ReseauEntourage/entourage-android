@@ -8,8 +8,6 @@ import androidx.fragment.app.FragmentManager
 import androidx.navigation.NavArgument
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import social.entourage.android.actions.ActionLocationFilterActivity
-import social.entourage.android.actions.LOCATION_FILTERS
 import social.entourage.android.api.model.guide.Poi
 import social.entourage.android.guide.GDSMainActivity
 import social.entourage.android.guide.poi.ReadPoiFragment
@@ -18,7 +16,7 @@ import social.entourage.android.actions.detail.ActionDetailActivity
 import social.entourage.android.discussions.DetailConversationActivity
 import social.entourage.android.events.create.CreateEventActivity
 import social.entourage.android.groups.create.CreateGroupActivity
-import social.entourage.android.groups.details.feed.FeedActivity
+import social.entourage.android.groups.details.feed.GroupFeedActivity
 import social.entourage.android.home.pedago.PedagoDetailActivity
 import social.entourage.android.api.model.ActionSummary
 import social.entourage.android.api.model.HomeActionParams
@@ -27,7 +25,6 @@ import social.entourage.android.events.details.feed.EventCommentActivity
 import social.entourage.android.groups.details.feed.GroupCommentActivity
 import social.entourage.android.profile.ProfileActivity
 import social.entourage.android.profile.ProfileFullActivity
-import social.entourage.android.user.UserProfileActivity
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.Utils
 import social.entourage.android.tools.view.WebViewFragment
@@ -42,6 +39,7 @@ object Navigation {
     ) {
         getNavigateIntent(context, fragmentManager, homeType, action, params)?.let { intent ->
             context.startActivity(intent)
+
         }
     }
 
@@ -78,7 +76,7 @@ object Navigation {
             }
             HomeType.NEIGHBORHOOD -> when (action) {
                 ActionSummary.SHOW ->
-                    return Intent(context, FeedActivity::class.java).putExtra(
+                    return Intent(context, GroupFeedActivity::class.java).putExtra(
                         Const.GROUP_ID,
                         params.id
                     )
@@ -125,7 +123,7 @@ object Navigation {
                 ActionSummary.SHOW ->
                     return Intent(
                         context,
-                        social.entourage.android.events.details.feed.FeedActivity::class.java
+                        social.entourage.android.events.details.feed.EventFeedActivity::class.java
                     ).putExtra(
                         Const.EVENT_ID,
                         params.id

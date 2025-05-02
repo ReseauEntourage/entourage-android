@@ -24,7 +24,7 @@ interface UserRequest {
     fun regenerateSecretCode(@Body userInfo: ArrayMap<String, Any>): Call<UserResponse>
 
     @GET("users/{user_id}")
-    fun getUser(@Path("user_id") userId: Int): Call<UserResponse>
+    fun getUser(@Path("user_id") userId: String): Call<UserResponse>
 
     @DELETE("users/me.json")
     fun deleteUser(): Call<UserResponse>

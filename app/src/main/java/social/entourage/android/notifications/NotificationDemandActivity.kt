@@ -3,7 +3,6 @@ package social.entourage.android.notifications
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
@@ -53,12 +52,8 @@ class NotificationDemandActivity : BaseActivity() {
 
     private fun initializePermissionLauncher() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            requestPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
-                if (isGranted) {
-                    goMain()
-                } else {
-                    goMain()  // Instead of redirecting to settings, just call goMain
-                }
+            requestPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) { _ ->
+                goMain()  // Instead of redirecting to settings when not granted, always call goMain
             }
         }
     }
@@ -81,16 +76,6 @@ class NotificationDemandActivity : BaseActivity() {
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     private fun requestPostNotificationsPermission() {
         requestPermissionLauncher.launch(android.Manifest.permission.POST_NOTIFICATIONS)
-    }
-
-    private fun redirectToNotificationSettings() {
-        // Always redirect to notification settings
-        MainActivity.shouldLaunchOnboarding = true
-        val intent = Intent().apply {
-            action = "android.settings.APP_NOTIFICATION_SETTINGS"
-            putExtra("android.provider.extra.APP_PACKAGE", packageName)
-        }
-        notificationSettingsLauncher.launch(intent)
     }
 
     private fun goMain() {

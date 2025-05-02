@@ -213,7 +213,6 @@ class ReportModalFragment() : BottomSheetDialogFragment() {
         getIsMyLanguage()
         getIsFromConv()
         getIsOneToOne()
-        Timber.wtf("wtf reporttype $reportType")
         if(contentCopied == null || contentCopied.isNullOrEmpty()){
             binding.layoutChooseCopy.visibility = View.GONE
         }else{
@@ -354,7 +353,6 @@ class ReportModalFragment() : BottomSheetDialogFragment() {
             onClose()
             dismiss()
         }
-        Timber.wtf("wtf passed here")
     }
 
     override fun onCancel(dialog: DialogInterface) {

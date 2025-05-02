@@ -23,7 +23,7 @@ class UserPresenter {
     var isLanguageChanged = MutableLiveData<Boolean>()
 
 
-    fun getUser(userId: Int) {
+    fun getUser(userId: String) {
         EntourageApplication.get().apiModule.userRequest.getUser(userId)
             .enqueue(object : Callback<UserResponse> {
                 override fun onResponse(
@@ -54,7 +54,6 @@ class UserPresenter {
         call.enqueue(object : Callback<UserResponse> {
             override fun onResponse(call: Call<UserResponse>, response: Response<UserResponse>) {
                 if (response.isSuccessful) {
-                    Timber.wtf("User updated for plural discussion")
                 }
             }
 

@@ -255,7 +255,7 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
 
         binding.layoutUser.setOnClickListener {
             ProfileFullActivity.isMe = false
-            ProfileFullActivity.userId = action?.author?.userID!!
+            ProfileFullActivity.userId = action?.author?.userID.toString()
             startActivityForResult(Intent(context, ProfileFullActivity::class.java).putExtra(
                 Const.USER_ID,
                 action?.author?.userID
@@ -295,7 +295,7 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
                 AnalyticsEvents.logEvent(AnalyticsEvents.Help_action_contrib_contact)
             }
 
-            action?.author?.userID?.let { user -> discussionPresenter.createOrGetConversation(user) }
+            action?.author?.userID?.let { user -> discussionPresenter.createOrGetConversation(user.toString()) }
         }
 
         binding.uiBtBackEmpty.setOnClickListener {

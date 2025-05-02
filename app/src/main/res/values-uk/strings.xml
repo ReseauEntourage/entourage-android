@@ -2770,5 +2770,8 @@
     <string name="notifications_disabled_message">Ваші сповіщення вимкнені.\nУвімкніть їх, щоб бути в курсі</string>
     <string name="enable_notifications">Увімкніть їх, щоб бути в курсі</string>
 
+    <string name="add_to_agenda">Додати до календаря</string>
+    <string name="share_and_join_event">Приєднатися та взяти участь у розмові</string>
+    <string name="see_conversation_event">Переглянути розмову</string>
 
 </resources>

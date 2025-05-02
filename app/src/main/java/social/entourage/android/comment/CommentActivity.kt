@@ -1,17 +1,18 @@
 package social.entourage.android.comment
 
-import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.View
 import android.view.ViewTreeObserver.OnGlobalLayoutListener
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
+import androidx.core.view.updatePadding
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import social.entourage.android.EntourageApplication
@@ -22,7 +23,6 @@ import social.entourage.android.base.BaseActivity
 import social.entourage.android.databinding.ActivityCommentsBinding
 import social.entourage.android.deeplinks.UniversalLinkManager
 import social.entourage.android.discussions.DiscussionsPresenter
-import social.entourage.android.discussions.WebViewActivityForTest
 import social.entourage.android.report.DataLanguageStock
 import social.entourage.android.report.ReportModalFragment
 import social.entourage.android.report.ReportTypes
@@ -88,6 +88,16 @@ abstract class CommentActivity : BaseActivity(), onDissmissFragment {
         }
 
         handleSendButtonState()
+
+        ViewCompat.setOnApplyWindowInsetsListener(binding.header.layout) { view, windowInsets ->
+            // Get the insets for the statusBars() type:
+            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.statusBars())
+            view.updatePadding(
+                top = insets.top
+            )
+            // Return the original insets so they aren’t consumed
+            windowInsets
+        }
     }
 
     fun setIsEventTrue(){
@@ -304,12 +314,12 @@ abstract class CommentActivity : BaseActivity(), onDissmissFragment {
     }
 
     private fun openEditTextKeyboard() {
-        if (shouldOpenKeyboard) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                binding.commentMessage.setTextColor(getColor(R.color.black))
-            }
-            binding.commentMessage.focusAndShowKeyboard()
-        }
+//        if (shouldOpenKeyboard) {
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//                binding.commentMessage.setTextColor(getColor(R.color.black))
+//            }
+//            binding.commentMessage.focusAndShowKeyboard()
+//        }
     }
 
     abstract fun addComment()

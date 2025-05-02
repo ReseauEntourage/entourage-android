@@ -3,6 +3,7 @@ package social.entourage.android.events.create
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +11,8 @@ import android.widget.EditText
 import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import com.google.gson.Gson
+import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.databinding.NewFragmentCreateEventStepTwoBinding
 import social.entourage.android.language.LanguageManager
@@ -165,6 +168,14 @@ class CreateEventStepTwoFragment : Fragment() {
     }
 
     private fun setView() {
+        val me = EntourageApplication.me(requireContext())
+        if(me?.roles?.isEmpty() == true){
+            binding.layout.recurrenceTitle.root.isVisible = false
+            binding.layout.recurrence.isVisible = false
+        }else{
+            binding.layout.recurrenceTitle.root.isVisible = true
+            binding.layout.recurrence.isVisible = true
+        }
         with(CommunicationHandler.eventEdited) {
             this?.let {
                 binding.layout.recurrenceTitle.root.isVisible = this.recurrence == null

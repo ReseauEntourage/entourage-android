@@ -1,9 +1,10 @@
-package social.entourage.android.homev2
+package social.entourage.android.home
 
 import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
@@ -13,11 +14,11 @@ import social.entourage.android.api.model.Help
 import social.entourage.android.api.model.Summary
 import social.entourage.android.databinding.HomeV2HelpItemLayoutBinding
 
-interface OnHomeV2HelpItemClickListener{
+interface OnHomeHelpItemClickListener{
     fun onItemClick(position:Int, moderatorId:Int)
 }
 
-class HomeHelpAdapter(val callback:OnHomeV2HelpItemClickListener): RecyclerView.Adapter<HomeHelpAdapter.HelpViewHolder>() {
+class HomeHelpAdapter(val callback: OnHomeHelpItemClickListener): RecyclerView.Adapter<HomeHelpAdapter.HelpViewHolder>() {
 
     private var helps:MutableList<Help> = mutableListOf()
     private var summary:Summary? = null
@@ -29,10 +30,11 @@ class HomeHelpAdapter(val callback:OnHomeV2HelpItemClickListener): RecyclerView.
 
     }
 
-    fun clearList(){
+    /*fun clearList(){
         this.helps.clear()
         notifyDataSetChanged()
-    }
+    }*/
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HelpViewHolder {
         val binding = HomeV2HelpItemLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return HelpViewHolder(binding)
@@ -52,7 +54,7 @@ class HomeHelpAdapter(val callback:OnHomeV2HelpItemClickListener): RecyclerView.
 
         if(help.ressourceId != 0){
             val context = holder.binding.root.context
-            holder.binding.ivHomeV2HelpItem.setImageDrawable(context.getDrawable(help.ressourceId))
+            holder.binding.ivHomeV2HelpItem.setImageDrawable(AppCompatResources.getDrawable(context,help.ressourceId))
         }
         help.title.let {
             val context = holder.binding.root.context
@@ -61,7 +63,7 @@ class HomeHelpAdapter(val callback:OnHomeV2HelpItemClickListener): RecyclerView.
             holder.binding.ivArrowRightHomeV2HelpItem.scaleX = if (isRTL) -1f else 1f
 
             if(position == 0){
-                holder.binding.homeV2PedagoItemMainLayout.background = context.getDrawable(R.drawable.home_version_two_large_button_gradient_shape)
+                holder.binding.homeV2PedagoItemMainLayout.background = AppCompatResources.getDrawable(context,R.drawable.home_version_two_large_button_gradient_shape)
                 holder.binding.tvHomeV2HelpItem.setTextColor(context.getColor(R.color.white))
                 holder.binding.ivArrowRightHomeV2HelpItem.setColorFilter(context.getColor(R.color.white))
                 summary?.moderator?.imageURL?.let { imageUrl->

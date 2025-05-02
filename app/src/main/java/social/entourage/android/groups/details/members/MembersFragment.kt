@@ -201,7 +201,7 @@ open class MembersFragment : Fragment() {
             layoutManager = LinearLayoutManager(context)
             adapter = MembersListAdapter(requireContext(),membersList,reactionList, object : OnItemShowListener {
                 override fun onShowConversation(userId: Int) {
-                    discussionPresenter.createOrGetConversation(userId)
+                    discussionPresenter.createOrGetConversation(userId.toString())
                 }
             })
             addItemDecoration(itemDecorator)
@@ -236,7 +236,7 @@ open class MembersFragment : Fragment() {
             layoutManager = LinearLayoutManager(context)
             adapter = MembersListAdapter(requireContext(),membersListSearch, reactionList, object : OnItemShowListener {
                 override fun onShowConversation(userId: Int) {
-                    discussionPresenter.createOrGetConversation(userId)
+                    discussionPresenter.createOrGetConversation(userId.toString())
                 }
             })
             addItemDecoration(itemDecorator)

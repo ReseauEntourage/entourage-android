@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".actions.ActionsFragment">
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
@@ -20,12 +21,10 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/collapsing_toolbar"
                 android:animateLayoutChanges="true"
-                android:fitsSystemWindows="true"
                 android:paddingTop="15dp"
                 app:collapsedTitleTextAppearance="@style/h1_collapsed"
                 app:expandedTitleTextAppearance="@style/h1"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed"
-                android:layout_marginStart="-10dp"
                 app:title="@string/actions_title">
 
                 <androidx.appcompat.widget.Toolbar
@@ -304,6 +303,7 @@
             android:layout_margin="16dp"
             app:sdMainFabClosedSrc="@drawable/new_fab_plus"
             app:sdMainFabOpenedSrc="@drawable/new_fab_plus" />
+
         <View
             android:id="@+id/overlay_view"
             android:layout_width="match_parent"

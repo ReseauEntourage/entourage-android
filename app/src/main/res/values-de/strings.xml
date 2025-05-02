@@ -2847,5 +2847,8 @@ Sie werden diese Nachricht lesen, sobald sie der Gruppe beitreten.</string>
     <string name="notifications_disabled_message">Ihre Benachrichtigungen sind deaktiviert.\nAktivieren Sie sie, um auf dem Laufenden zu bleiben</string>
     <string name="enable_notifications">Aktivieren Sie sie, um auf dem Laufenden zu bleiben</string>
 
+    <string name="add_to_agenda">Zum Kalender hinzufügen</string>
+    <string name="share_and_join_event">Teilnehmen und der Unterhaltung beitreten</string>
+    <string name="see_conversation_event">Gespräch ansehen</string>
 
 </resources>

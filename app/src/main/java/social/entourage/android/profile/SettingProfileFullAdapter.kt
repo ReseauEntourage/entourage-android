@@ -115,7 +115,8 @@ class SettingProfileFullAdapter(
                     when (item.title) {
                         context.getString(R.string.settings_language_title) -> {
                             val intent = Intent(context, LanguageActivitySettings::class.java)
-                            context.startActivity(intent)                        }
+                            context.startActivity(intent)
+                        }
                         context.getString(R.string.translation_auto_title) -> {
                             TranslationBottomFragment.newInstance().show(parentFragmentManager, TranslationBottomFragment.TAG)
                         }

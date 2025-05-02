@@ -6,7 +6,6 @@ import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -22,19 +21,17 @@ import com.bumptech.glide.Glide
 import social.entourage.android.EntourageApplication
 import social.entourage.android.MainActivity
 import social.entourage.android.R
-import social.entourage.android.databinding.ActivityChooseLanguageLayoutBinding
-import social.entourage.android.databinding.NewFragmentEditProfileBinding
+import social.entourage.android.databinding.ActivityEditProfileBinding
 import social.entourage.android.enhanced_onboarding.EnhancedOnboarding
 import social.entourage.android.profile.ProfileActivity
+import social.entourage.android.tools.isValidEmail
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.transformIntoDatePicker
 import social.entourage.android.tools.utils.trimEnd
-import social.entourage.android.tools.isValidEmail
 import social.entourage.android.user.AvatarUpdatePresenter
 import social.entourage.android.user.AvatarUploadPresenter
 import social.entourage.android.user.AvatarUploadRepository
 import social.entourage.android.user.AvatarUploadView
-import social.entourage.android.user.edit.photo.ChooseProfilePhotoFragment
 import social.entourage.android.user.edit.photo.PhotoChooseInterface
 import social.entourage.android.user.edit.place.UserEditActionZoneFragment
 import social.entourage.android.user.languechoose.ActivityChooseLanguage
@@ -44,8 +41,8 @@ import java.io.File
 class EditProfileFragment : Fragment(), EditProfileCallback,
     UserEditActionZoneFragment.FragmentListener {
 
-    private var _binding: NewFragmentEditProfileBinding? = null
-    val binding: NewFragmentEditProfileBinding get() = _binding!!
+    private var _binding: ActivityEditProfileBinding? = null
+    val binding: ActivityEditProfileBinding get() = _binding!!
     private var mListener: PhotoChooseInterface? = null
     private val paddingRight = 20
     private val paddingRightLimit = 60
@@ -62,7 +59,7 @@ class EditProfileFragment : Fragment(), EditProfileCallback,
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = NewFragmentEditProfileBinding.inflate(inflater, container, false)
+        _binding = ActivityEditProfileBinding.inflate(inflater, container, false)
         return binding.root
     }
 

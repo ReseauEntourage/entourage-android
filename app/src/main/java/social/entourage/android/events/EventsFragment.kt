@@ -1,18 +1,9 @@
 package social.entourage.android.events
 
-import android.animation.Animator
-import android.animation.AnimatorListenerAdapter
-import android.animation.ValueAnimator
 import android.content.Context
 import android.content.Intent
-import android.content.res.Resources
-import android.graphics.Color
 import android.graphics.Paint
 import android.os.Bundle
-import android.transition.AutoTransition
-import android.transition.TransitionManager
-import android.util.Log
-import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,21 +11,19 @@ import android.widget.TextView
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.doOnPreDraw
+import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.google.android.material.appbar.AppBarLayout
-import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-import com.google.android.material.tabs.TabLayout
-import com.google.android.material.tabs.TabLayoutMediator
-
 import social.entourage.android.EntourageApplication
 import social.entourage.android.MainActivity
 import social.entourage.android.R
-import social.entourage.android.databinding.NewFragmentEventsBinding
 import social.entourage.android.RefreshController
 import social.entourage.android.ViewPagerDefaultPageController
 import social.entourage.android.api.model.EventActionLocationFilters
+import social.entourage.android.databinding.FragmentEventsBinding
 import social.entourage.android.events.create.CreateEventActivity
 import social.entourage.android.events.list.DiscoverEventsListFragment
 import social.entourage.android.events.list.EventsViewPagerAdapter
@@ -42,24 +31,22 @@ import social.entourage.android.home.CommunicationHandlerBadgeViewModel
 import social.entourage.android.home.UnreadMessages
 import social.entourage.android.main_filter.MainFilterActivity
 import social.entourage.android.main_filter.MainFilterMode
-import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.log.AnalyticsEvents
+import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.HighlightOverlayView
-import timber.log.Timber
-import kotlin.math.abs
 
-const val MY_EVENTS_TAB = 0
 const val DISCOVER_EVENTS_TAB = 1
 
 class EventsFragment : Fragment() {
-    private var _binding: NewFragmentEventsBinding? = null
+    private var _binding: FragmentEventsBinding? = null
     private var currentFilters = EventActionLocationFilters()
     private var activityResultLauncher: ActivityResultLauncher<Intent>? = null
     private var isFromFilters = false
+    private var statusBarHeight = 0
 
 
     //TODO title same size as
-    val binding: NewFragmentEventsBinding get() = _binding!!
+    val binding: FragmentEventsBinding get() = _binding!!
     private lateinit var eventsPresenter: EventsPresenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -85,13 +72,22 @@ class EventsFragment : Fragment() {
         }
     }
 
-
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = NewFragmentEventsBinding.inflate(inflater, container, false)
+        _binding = FragmentEventsBinding.inflate(inflater, container, false)
+        // Listen for WindowInsets
+        ViewCompat.setOnApplyWindowInsetsListener(binding.topEventLayout) { view, windowInsets ->
+            // Get the insets for the statusBars() type:
+            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.statusBars())
+            statusBarHeight = insets.top
+            view.updatePadding(
+                top = insets.top
+            )
+            // Return the original insets so they aren’t consumed
+            windowInsets
+        }
         return binding.root
     }
 
@@ -157,18 +153,10 @@ class EventsFragment : Fragment() {
 
         // Mesurer le bubbleView
         bubbleView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
-        val bubbleWidth = bubbleView.measuredWidth
-        val bubbleHeight = bubbleView.measuredHeight
 
         // Obtenir la position de 'targetView'
         val location = IntArray(2)
         targetView.getLocationOnScreen(location)
-        val targetX = location[0]
-        val targetY = location[1] - getStatusBarHeight() // Ajuster pour la barre de statut
-
-        // Calculer la position du bubbleView (par exemple, en dessous de 'targetView')
-        val x = targetX + targetView.width / 2 - bubbleWidth / 2
-        val y = targetY + targetView.height
 
         // Positionner le bubbleView
         bubbleView.x = 0f
@@ -192,15 +180,7 @@ class EventsFragment : Fragment() {
         }
     }
 
-
-    private fun getStatusBarHeight(): Int {
-        val resourceId = resources.getIdentifier("status_bar_height", "dimen", "android")
-        return if (resourceId > 0) resources.getDimensionPixelSize(resourceId) else 0
-    }
-
-
     private fun showBubbleCase(){
-
        if(MainActivity.shouldLaunchEvent == true){
             MainActivity.shouldLaunchEvent = false
             MainFilterActivity.savedGroupInterests = MainFilterActivity.savedGroupInterestsFromOnboarding
@@ -210,14 +190,57 @@ class EventsFragment : Fragment() {
            showCustomBubble(binding.uiLayoutFilter)
        }
     }
-
-    fun handleTopTitle(hideTitle:Boolean){
-        if(hideTitle){
-            binding.topEventLayout.visibility = View.GONE
-        }else{
-            binding.topEventLayout.visibility = View.VISIBLE
-        }
+    fun Int.dpToPx(context: Context): Int {
+        return (this * context.resources.displayMetrics.density).toInt()
     }
+    fun handleTopTitle(hideTitle: Boolean) {
+        if (!isAdded) {
+            // Le fragment n'est pas attaché, on ne tente pas de mettre à jour l'UI
+            return
+        }
+        val constraintSet = androidx.constraintlayout.widget.ConstraintSet()
+        constraintSet.clone(binding.rootLayout)
+
+        // Convertit 20dp en pixels
+        val marginPx = 35.dpToPx(requireContext())
+
+        if (hideTitle) {
+            // 1. Écrase la hauteur de top_event_layout
+            constraintSet.constrainHeight(R.id.top_event_layout, 0)
+
+            // 2. Connecte le coordinator au parent (root_layout) avec une marge top de 20dp
+            constraintSet.clear(R.id.coordinator, androidx.constraintlayout.widget.ConstraintSet.TOP)
+            constraintSet.connect(
+                R.id.coordinator,
+                androidx.constraintlayout.widget.ConstraintSet.TOP,
+                R.id.root_layout,
+                androidx.constraintlayout.widget.ConstraintSet.TOP,
+                marginPx // <-- LA MARGE
+            )
+
+        } else {
+            // 1. Remet la hauteur en wrap_content
+            constraintSet.constrainHeight(
+                R.id.top_event_layout,
+                androidx.constraintlayout.widget.ConstraintSet.WRAP_CONTENT
+            )
+
+            // 2. Connecte le coordinator SOUS top_event_layout, sans marge
+            constraintSet.clear(R.id.coordinator, androidx.constraintlayout.widget.ConstraintSet.TOP)
+            constraintSet.connect(
+                R.id.coordinator,
+                androidx.constraintlayout.widget.ConstraintSet.TOP,
+                R.id.top_event_layout,
+                androidx.constraintlayout.widget.ConstraintSet.BOTTOM
+            )
+        }
+
+        // Lance l’animation de transition
+        androidx.transition.TransitionManager.beginDelayedTransition(binding.rootLayout)
+        constraintSet.applyTo(binding.rootLayout)
+    }
+
+
 
     fun setSearchAndFilterButtons(){
         binding.uiLayoutSearch.background = ContextCompat.getDrawable(requireContext(), R.drawable.bg_unselected_filter) // Ajoute un fond orange rond
@@ -233,8 +256,9 @@ class EventsFragment : Fragment() {
            DiscoverEventsListFragment.isFirstResumeWithFilters = true
            MainFilterActivity.mod = MainFilterMode.EVENT
            val intent = Intent(activity, MainFilterActivity::class.java)
-
            startActivity(intent)
+           requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+
        }
     }
 
@@ -350,9 +374,7 @@ class EventsFragment : Fragment() {
 
     private fun setPage() {
         binding.viewPager.doOnPreDraw {
-            binding.viewPager.setCurrentItem(
-               DISCOVER_EVENTS_TAB
-            )
+            binding.viewPager.currentItem = DISCOVER_EVENTS_TAB
             ViewPagerDefaultPageController.shouldSelectDiscoverEvents = true
         }
 

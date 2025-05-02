@@ -4,30 +4,25 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
-import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.GranularRoundedCorners
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-import com.bumptech.glide.request.RequestOptions
 import social.entourage.android.R
 import social.entourage.android.api.model.Events
 import social.entourage.android.api.model.Status
 import social.entourage.android.databinding.LayoutItemMyEventBinding
 import social.entourage.android.events.EventsFragment
-import social.entourage.android.events.details.feed.FeedActivity
+import social.entourage.android.events.details.feed.EventFeedActivity
 import social.entourage.android.language.LanguageManager
 import social.entourage.android.tools.calculateIfEventPassed
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.px
 import java.text.SimpleDateFormat
-import java.util.Locale
 
 class MyEventRVAdapter(var context: Context) :RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -64,7 +59,7 @@ class MyEventRVAdapter(var context: Context) :RecyclerView.Adapter<RecyclerView.
                 (view.context as? Activity)?.startActivityForResult(
                     Intent(
                         view.context,
-                        FeedActivity::class.java
+                        EventFeedActivity::class.java
                     ).putExtra(
                         Const.EVENT_ID,
                         event.id

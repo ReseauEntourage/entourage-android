@@ -702,7 +702,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="action_create_location_title">Localisez votre %s</string>
     <string name="action_create_location_subtitle">Votre position précise ne sera pas partagée, vous pouvez mettre une autre localisation que la zone d’action de votre profil.</string>
 
-    <string name="action_create_success_title">Votre %s\a bien été créée !</string>
+    <string name="action_create_success_title">Votre %s\na bien été créée !</string>
     <string name="action_create_success_subtitle">Félicitations, vous venez de créer une nouvelle %s. Pour la rendre plus visible parlez-en sur vos groupes !</string>
     <string name="action_create_end_finish_bt">Terminer</string>
     <string name="action_error_create_action">Erreur lors de la création de la %s</string>
@@ -2939,21 +2939,21 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="settings_feedback_title">Partager une idée</string>
     <string name="settings_share_title">Partager l\'application</string>
     <string name="settings_password_title">Changer de mot de passe</string>
-
-
     <string name="notifications_actions">actions</string>
     <string name="notifications_events">événements</string>
     <string name="notifications_groups">groupes</string>
     <string name="notifications_messages">messages</string>
     <string name="no_notifications_active">Désactivé</string>
 
-
-
     <string name="translation_auto_title">Trad auto</string>
     <string name="translation_auto_enabled">Activée</string>
     <string name="translation_auto_disabled">Désactivée</string>
-
     <string name="offensive_message">Ce contenu a été supprimé car il ne respecte pas notre charte.</string>
+    <string name="profil_full_send_message">Envoyer un message</string>
+
+    <string name="add_to_agenda">Ajouter à l\agenda</string>
+    <string name="share_and_join_event">Participer et rejoindre la conversation</string>
+    <string name="see_conversation_event">Voir la conversation</string>
 
 
 </resources>

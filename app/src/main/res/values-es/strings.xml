@@ -2845,5 +2845,8 @@ Leerán este mensaje tan pronto como se unan al grupo.</string>
     <string name="notifications_disabled_message">Tus notificaciones están desactivadas.\nActívalas para mantenerte informado</string>
     <string name="enable_notifications">Actívalas para mantenerte informado</string>
 
+    <string name="add_to_agenda">Añadir a la agenda</string>
+    <string name="share_and_join_event">Participar y unirse a la conversación</string>
+    <string name="see_conversation_event">Ver la conversación</string>
 
 </resources>

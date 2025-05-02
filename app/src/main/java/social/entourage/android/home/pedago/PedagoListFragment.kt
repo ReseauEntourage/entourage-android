@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.gson.Gson
 import social.entourage.android.R
 import social.entourage.android.databinding.NewFragmentPedagoListBinding
 import social.entourage.android.home.HomePresenter
@@ -45,11 +46,13 @@ class PedagoListFragment : Fragment() {
         AnalyticsEvents.logEvent(AnalyticsEvents.Pedago_View)
         pedagoAdapter = PedagoListAdapter(requireContext(), sections, object : OnItemClick {
             override fun onItemClick(pedagogicalContent: Pedago) {
-                if (pedagogicalContent.html != null && pedagogicalContent.id != null) {
+                Timber.wtf("wtf" + Gson().toJson(pedagogicalContent))
+                Timber.wtf("wtf" + pedagogicalContent.html)
+                if (pedagogicalContent.id != null) {
                     PedagoDetailActivity.setPedagoId(pedagogicalContent.id)
-                    PedagoDetailActivity.setHtmlContent(pedagogicalContent.html)
+                    PedagoDetailActivity.setHtmlContent(pedagogicalContent.html?:"")
                     val action = PedagoListFragmentDirections.actionPedagogicalListFragmentToPedagogicalDetailsFragment(
-                            pedagogicalContent.html, pedagogicalContent.id,false
+                            pedagogicalContent.html?:"", pedagogicalContent.id,false
                         )
                     findNavController().navigate(action)
                 }
@@ -95,7 +98,6 @@ class PedagoListFragment : Fragment() {
     private fun logHtmlSizes(pedagogicalResources: MutableList<Pedago>) {
         pedagogicalResources.forEach { pedago ->
             val htmlSize = pedago.html?.length ?: 0
-            Timber.wtf("Pedago ID: ${pedago.id}, HTML content size: $htmlSize bytes")
         }
     }
 

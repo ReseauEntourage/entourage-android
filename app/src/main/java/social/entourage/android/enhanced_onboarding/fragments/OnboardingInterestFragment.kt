@@ -78,7 +78,6 @@ class OnboardingInterestFragment : Fragment() {
 
     private fun loadAndSendInterests() {
         val user = viewModel.user
-        Timber.wtf("wtf" + user?.interests)
         val interests = listOf(
             user?.interests?.contains("sport")?.let {
                 InterestForAdapter(

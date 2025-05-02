@@ -4,12 +4,9 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.core.os.bundleOf
-import androidx.navigation.NavController
-import social.entourage.android.EntourageApplication
 import social.entourage.android.MainActivity
 import social.entourage.android.R
 import social.entourage.android.actions.create.CreateActionActivity
@@ -20,12 +17,14 @@ import social.entourage.android.api.model.Events
 import social.entourage.android.api.model.Group
 import social.entourage.android.comment.CommentActivity
 import social.entourage.android.discussions.DetailConversationActivity
-import social.entourage.android.events.details.feed.FeedFragment
-import social.entourage.android.groups.details.feed.FeedActivity
+import social.entourage.android.events.details.feed.EventFeedFragment
+import social.entourage.android.groups.details.feed.GroupFeedActivity
 import social.entourage.android.guide.GDSMainActivity
 import social.entourage.android.home.pedago.PedagoDetailActivity
 import social.entourage.android.home.pedago.PedagoListActivity
+import social.entourage.android.profile.ProfileFullActivity
 import social.entourage.android.tools.utils.Const
+import timber.log.Timber
 
 class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback {
     /*private const val prodURL = "https://www.entourage.social"
@@ -42,8 +41,34 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
         uri.queryParameterNames.forEach { name ->
             val value = uri.getQueryParameter(name)
         }
+        for (segment in pathSegments) {
+            Log.wtf("wtf", "Segment: $segment")
+        }
         if (uri.host == stagingURL || uri.host == prodURL) {
+            Timber.d("Universal link: $uri")
             when {
+                pathSegments.contains("users") -> {
+                    if (pathSegments.size > 2) {
+                        val userId = pathSegments[2]
+                        ProfileFullActivity.isMe = false
+                        ProfileFullActivity.userId = userId
+                        val intent = Intent(context, ProfileFullActivity::class.java)
+                        context.startActivity(intent)
+                        (context as Activity).overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+
+                    }
+                }
+                pathSegments.contains("user") -> {
+                    if (pathSegments.size > 2) {
+                        val userId = pathSegments[2]
+                        ProfileFullActivity.isMe = false
+                        ProfileFullActivity.userId = userId
+                        val intent = Intent(context, ProfileFullActivity::class.java)
+                        context.startActivity(intent)
+                        (context as Activity).overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+
+                    }
+                }
 
                 pathSegments.contains("charte-ethique-entourage") ->{
                     val chartIntent = Intent(Intent.ACTION_VIEW, Uri.parse(context.getString(R.string.disclaimer_link_public)))
@@ -98,7 +123,7 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
                 pathSegments.contains("outings") -> {
                     if (pathSegments.size > 3) {
                         val outingId = pathSegments[2]
-                        FeedFragment.shouldAddToAgenda = true
+                        EventFeedFragment.shouldAddToAgenda = true
                         presenter.getEvent(outingId)
                     }
                     else if (pathSegments.size > 2) {
@@ -111,6 +136,7 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
                         //intent.putExtra("fromWelcomeActivityThreeEvent", true)
                         intent.putExtra("goDiscoverEvent", true)
                         context.startActivity(intent)
+                        (context as Activity).overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
 
                     }
                 }
@@ -124,6 +150,7 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
                         intent.putExtra("fromWelcomeActivity", true)
                         intent.putExtra("goDiscoverGroup", true)
                         context.startActivity(intent)
+                        (context as Activity).overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
                     }
                 }
 
@@ -141,6 +168,7 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
                                 .addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
                             intent.putExtra("goDemand", true)
                             context.startActivity(intent)
+                            (context as Activity).overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
                         }
                     }
                 }
@@ -158,12 +186,14 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
                                 .addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
                             intent.putExtra("goContrib", true)
                             context.startActivity(intent)
+                            (context as Activity).overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
                         }
                     }
                 }
                 pathSegments.contains("map") -> {
                     val intent = Intent(context, GDSMainActivity::class.java)
                     context.startActivity(intent)
+                    (context as Activity).overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
                 }
                 pathSegments.contains("resources") -> {
                     val intent = when {
@@ -185,16 +215,21 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
                     when (context) {
                         is MainActivity -> {
                             context.startActivity(intent)
+                            (context as Activity).overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
                         }
                         is DetailConversationActivity -> {
                             context.startActivity(intent)
+                            (context as Activity).overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
                         }
                         is CommentActivity -> {
                             context.startActivity(intent)
+                            (context as Activity).overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
                         }
                         else -> {
                             // Logique par défaut ou gestion d'autres contextes
                             context.startActivity(intent)
+                            (context as Activity).overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+
                         }
                     }
                 }
@@ -206,7 +241,7 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
         (context as? Activity)?.startActivityForResult(
             Intent(
                 context,
-                social.entourage.android.events.details.feed.FeedActivity::class.java
+                social.entourage.android.events.details.feed.EventFeedActivity::class.java
             ).apply {
                 putExtra(Const.EVENT_ID, event.id)
                 addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
@@ -216,7 +251,7 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
 
     override fun onRetrievedGroup(group: Group) {
         (context as? Activity)?.startActivityForResult(
-            Intent(context, FeedActivity::class.java).putExtra(
+            Intent(context, GroupFeedActivity::class.java).putExtra(
                 Const.GROUP_ID,
                 group.id
             ), 0
@@ -232,6 +267,7 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
                 .putExtra(Const.IS_ACTION_DEMAND,false)
                 .putExtra(Const.IS_ACTION_MINE, action.isMine())
             context.startActivity(intent)
+            (context as Activity).overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
         }else{
             val intent = Intent(context, ActionDetailActivity::class.java)
                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
@@ -240,6 +276,7 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
                 .putExtra(Const.IS_ACTION_DEMAND,true)
                 .putExtra(Const.IS_ACTION_MINE, action.isMine())
             context.startActivity(intent)
+            (context as Activity).overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
         }
     }
 
@@ -267,6 +304,7 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
                 // Si le context est DetailConversationActivity, on ajoute le flag et on lance une nouvelle activité
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
                 (context as DetailConversationActivity).startActivity(intent)
+                (context as Activity).overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
                 context.finish() // Fermer l'activité actuelle pour éviter l'empilement des activités
             }
             is CommentActivity -> {

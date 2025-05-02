@@ -25,8 +25,7 @@
     <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" /> <!-- Permissions -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" /> <!-- uses-permission android:name="android.permission.BLUETOOTH"/ -->
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
-        android:maxSdkVersion="32" />
+
     <!-- Devices running Android 12L (API level 32) or lower  -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" android:maxSdkVersion="32" />
     <!-- Devices running Android 13 (API level 33) or higher -->
@@ -35,8 +34,7 @@
     <!-- To handle the reselection within the app on devices running Android 14
          or higher if your app targets Android 14 (API level 34) or higher.  -->
     <uses-permission android:name="android.permission.READ_MEDIA_VISUAL_USER_SELECTED" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"
-        android:maxSdkVersion="32" /> <!-- uses-permission android:name="android.permission.RECORD_AUDIO"/ -->
+    <!-- uses-permission android:name="android.permission.RECORD_AUDIO"/ -->
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission
@@ -120,6 +118,7 @@
             android:exported="false" />
         <activity
             android:name=".discussions.DetailConversationActivity"
+            android:windowSoftInputMode="adjustPan"
             android:exported="false" />
         <activity
             android:name=".actions.ActionLocationFilterActivity"
@@ -147,15 +146,19 @@
             android:exported="false" />
         <activity
             android:name=".events.details.feed.CreatePostEventActivity"
+            android:windowSoftInputMode="adjustPan"
             android:exported="false" />
         <activity
             android:name=".events.details.feed.EventCommentActivity"
+            android:windowSoftInputMode="adjustPan"
             android:exported="false" />
         <activity
             android:name=".groups.details.feed.GroupCommentActivity"
+            android:windowSoftInputMode="adjustPan"
             android:exported="false" />
         <activity
-            android:name=".events.details.feed.FeedActivity"
+            android:name=".events.details.feed.EventFeedActivity"
+            android:windowSoftInputMode="adjustPan"
             android:exported="false" />
         <activity
             android:name=".tools.image_viewer.ImageDialogActivity"
@@ -178,17 +181,20 @@
             android:exported="false" />
         <activity
             android:name=".comment.CommentActivity"
+            android:windowSoftInputMode="adjustPan"
             android:exported="false" />
         <activity
             android:name=".groups.details.rules.GroupRulesActivity"
             android:exported="false" />
         <activity
-            android:name=".groups.details.feed.FeedActivity"
+            android:name=".groups.details.feed.GroupFeedActivity"
+            android:windowSoftInputMode="adjustPan"
             android:exported="false" />
         <activity
             android:name=".groups.edit.EditGroupActivity"
+            android:windowSoftInputMode="adjustPan"
             android:exported="false"
-            android:windowSoftInputMode="adjustPan" />
+            />
         <activity
             android:name=".groups.create.CreateGroupActivity"
             android:exported="false"

@@ -133,7 +133,7 @@ class MembersConversationFragment : BaseDialogFragment() {
             layoutManager = LinearLayoutManager(context)
             adapter = MembersConversationListAdapter(membersList, userCreatorId, object : OnItemShowListener {
                 override fun onShowConversation(userId: Int) {
-                    discussionsPresenter.createOrGetConversation(userId)
+                    discussionsPresenter.createOrGetConversation(userId.toString())
                 }
             })
             addItemDecoration(itemDecorator)
@@ -148,7 +148,7 @@ class MembersConversationFragment : BaseDialogFragment() {
             layoutManager = LinearLayoutManager(context)
             adapter = MembersConversationListAdapter(membersListSearch,userCreatorId, object : OnItemShowListener {
                 override fun onShowConversation(userId: Int) {
-                    discussionsPresenter.createOrGetConversation(userId)
+                    discussionsPresenter.createOrGetConversation(userId.toString())
                 }
             })
             addItemDecoration(itemDecorator)

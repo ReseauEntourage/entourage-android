@@ -5,7 +5,7 @@
     app:startDestination="@+id/event_feed">
     <fragment
         android:id="@+id/event_feed"
-        android:name="social.entourage.android.events.details.feed.FeedFragment">
+        android:name="social.entourage.android.events.details.feed.EventFeedFragment">
 
         <argument
             android:name="eventID"

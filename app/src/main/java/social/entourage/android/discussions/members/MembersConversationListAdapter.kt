@@ -72,7 +72,7 @@ class MembersConversationListAdapter(
 
                 binding.layout.setOnClickListener { view ->
                     ProfileFullActivity.isMe = false
-                    ProfileFullActivity.userId = this.id!!
+                    ProfileFullActivity.userId = this.id.toString()
                     view.context.startActivity(
                         Intent(view.context, ProfileFullActivity::class.java).putExtra(
                             Const.USER_ID,

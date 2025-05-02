@@ -489,6 +489,29 @@ class GroupPresenter: ViewModel() {
         })
     }
 
+    fun searchGroupMembers(groupId: Int, query: String) {
+        EntourageApplication.get().apiModule.groupRequest.searchGroupMembers(groupId, query)
+            .enqueue(object : Callback<MembersWrapper> {
+                override fun onResponse(
+                    call: Call<MembersWrapper>,
+                    response: Response<MembersWrapper>
+                ) {
+                    if (response.isSuccessful) {
+                        // On publie la liste retournée par l'API
+                        getMembersSearch.value = response.body()?.users ?: mutableListOf()
+                    } else {
+                        // En cas d'erreur HTTP, on renvoie une liste vide
+                        getMembersSearch.value = mutableListOf()
+                    }
+                }
+
+                override fun onFailure(call: Call<MembersWrapper>, t: Throwable) {
+                    // En cas d'erreur réseau/exception
+                    getMembersSearch.value = mutableListOf()
+                }
+            })
+    }
+
     fun addPost(groupId: Int, params: ArrayMap<String, Any>) {
         var id = groupId
         if (id == -1 && CreatePostGroupActivity.idGroupForPost != null){

@@ -6,6 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
@@ -15,18 +18,17 @@ import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import social.entourage.android.R
-import social.entourage.android.databinding.NewFragmentCreateActionBinding
 import social.entourage.android.RefreshController
 import social.entourage.android.actions.ActionsPresenter
 import social.entourage.android.api.model.Action
 import social.entourage.android.api.model.Group
+import social.entourage.android.databinding.NewFragmentCreateActionBinding
 import social.entourage.android.groups.GroupPresenter
+import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.utils.CustomAlertDialog
 import social.entourage.android.tools.utils.Utils
 import social.entourage.android.tools.utils.nextPage
 import social.entourage.android.tools.utils.previousPage
-import social.entourage.android.tools.log.AnalyticsEvents
-import timber.log.Timber
 
 class CreateActionFragment : Fragment() {
 
@@ -67,6 +69,16 @@ class CreateActionFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = NewFragmentCreateActionBinding.inflate(inflater, container, false)
+
+        ViewCompat.setOnApplyWindowInsetsListener(binding.layout) { view, windowInsets ->
+            // Get the insets for the statusBars() type:
+            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.statusBars())
+            view.updatePadding(
+                top = insets.top
+            )
+            // Return the original insets so they aren’t consumed
+            windowInsets
+        }
         return binding.root
     }
 
@@ -272,7 +284,6 @@ class CreateActionFragment : Fragment() {
     private fun handleValidate() {
         binding.next.setOnClickListener {
             val isSharingTimeSelected = viewModel.sectionsList.value?.first()?.isSelected == true
-            Timber.wtf("wtf isSharingTimeSelected $isSharingTimeSelected")
             if (viewPager?.currentItem == NB_TABS - 2 && !isSharingTimeSelected && hasADefaultGroup) {
                 viewModel.isCondition.postValue(true)
             } else if (binding.viewPager.currentItem == NB_TABS - 1) {

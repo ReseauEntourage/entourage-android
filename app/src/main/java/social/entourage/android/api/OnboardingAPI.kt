@@ -275,7 +275,7 @@ class OnboardingAPI {
 
     fun getUser(userId:Int, listener:(isOK:Boolean,userResponse: UserResponse?) -> Unit) {
 
-        val call = onboardingService.getUser(userId)
+        val call = onboardingService.getUser(userId.toString())
         call.enqueue(object : Callback<UserResponse> {
             override fun onResponse(call: Call<UserResponse>, response: Response<UserResponse>) {
                 if (response.isSuccessful) {

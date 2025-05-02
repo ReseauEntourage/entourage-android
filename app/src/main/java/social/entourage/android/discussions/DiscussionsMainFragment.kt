@@ -3,8 +3,10 @@ package social.entourage.android.discussions
 import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
+import android.graphics.Typeface
 import android.os.Build
 import android.os.Bundle
+import android.provider.Settings
 import android.text.SpannableString
 import android.text.Spanned
 import android.text.style.StyleSpan
@@ -13,26 +15,24 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.appbar.AppBarLayout
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
-import social.entourage.android.databinding.NewFragmentMessagesBinding
 import social.entourage.android.RefreshController
+import social.entourage.android.api.model.Conversation
+import social.entourage.android.databinding.NewFragmentMessagesBinding
 import social.entourage.android.home.CommunicationHandlerBadgeViewModel
 import social.entourage.android.home.UnreadMessages
-import social.entourage.android.api.model.Conversation
-import social.entourage.android.tools.utils.Const
-import social.entourage.android.tools.log.AnalyticsEvents
-import social.entourage.android.tools.view.VideoCallActivity
-import timber.log.Timber
-import kotlin.math.abs
-import android.provider.Settings
 import social.entourage.android.notifications.NotificationDemandActivity
-import android.graphics.Typeface
+import social.entourage.android.tools.log.AnalyticsEvents
+import social.entourage.android.tools.utils.Const
+import kotlin.math.abs
 
 const val messagesPerPage = 25
 
@@ -47,13 +47,23 @@ class DiscussionsMainFragment : Fragment() {
 
     private val discussionsPresenter: DiscussionsPresenter by lazy { DiscussionsPresenter() }
 
-    lateinit var discussionsAdapter: DiscussionsListAdapter
+    private lateinit var discussionsAdapter: DiscussionsListAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = NewFragmentMessagesBinding.inflate(inflater, container, false)
+        // Listen for WindowInsets
+        ViewCompat.setOnApplyWindowInsetsListener(binding.appBar) { view, windowInsets ->
+            // Get the insets for the statusBars() type:
+            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.statusBars())
+            view.updatePadding(
+                top = insets.top
+            )
+            // Return the original insets so they aren’t consumed
+            windowInsets
+        }
         return binding.root
     }
 
@@ -76,10 +86,11 @@ class DiscussionsMainFragment : Fragment() {
             isFromRefresh = true
         }
         discussionsPresenter.getUnreadCount()
-        binding.buttonCall.setOnClickListener {
+        //UNCOMMENT FOR VIDEO CALL FEATURE
+/*        binding.buttonCall.setOnClickListener {
             val intent = Intent(requireContext(), VideoCallActivity::class.java)
             startActivity(intent)
-        }
+        }*/
         checkNotificationsState()
 
     }
@@ -239,10 +250,10 @@ class DiscussionsMainFragment : Fragment() {
     }
 
     private fun handleImageViewAnimation() {
-        binding.appBar.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
+        binding.appBar.addOnOffsetChangedListener { appBarLayout, verticalOffset ->
             val res: Float =
                 abs(verticalOffset).toFloat() / appBarLayout.totalScrollRange
             binding.img.alpha = 1f - res
-        })
+        }
     }
 }

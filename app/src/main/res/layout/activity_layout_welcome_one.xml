@@ -13,134 +13,143 @@
         app:layout_constraintTop_toTopOf="parent"
         android:src="@drawable/people_welcome_1"
         android:scaleType="fitXY"/>
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:id="@+id/image_people_welcome"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/layout_content_welcome_one"
-        android:src="@drawable/people_for_welcome_1"
-        android:scaleType="fitXY"/>
-    <ImageView
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:id="@+id/close_button"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:src="@drawable/icon_cross"
-        android:layout_margin="15dp"
-        android:scaleType="fitXY"/>
-
-    <ScrollView
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/layout_content_welcome_one"
-        android:layout_marginTop="140dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
-        android:background="@drawable/bcknd_white_35dp_corner">
-        <androidx.constraintlayout.widget.ConstraintLayout
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:id="@+id/layout_content" >
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:id="@+id/close_button"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:src="@drawable/icon_cross"
+            android:layout_margin="15dp"
+            android:scaleType="fitXY"/>
+
+        <ImageView
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:id="@+id/title_welcome_one"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:layout_marginTop="42dp"
-                android:layout_marginEnd="15dp"
-                android:paddingEnd="10dp"
-                android:paddingStart="10dp"
-                android:layout_marginStart="32dp"
-                android:fontFamily="@font/nunitosans_regular"
-                android:textColor="@color/black"
-                android:text="@string/welcome_one_title"
-                android:textSize="24sp"/>
-
-
-            <ImageView
-                android:layout_width="17dp"
-                android:layout_height="20dp"
-                android:src="@drawable/ic_party"
-                app:layout_constraintTop_toTopOf="@+id/title_welcome_one"
-                app:layout_constraintStart_toStartOf="@+id/title_welcome_one"
-                android:layout_marginStart="-10dp"
-                android:layout_marginTop="-10dp"
-                />
-
-            <TextView
-                android:id="@+id/content_welcome_one"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="30dp"
-                android:layout_marginEnd="15dp"
-                android:paddingEnd="10dp"
-                android:paddingStart="10dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:fontFamily="@font/nunitosans_regular"
-                android:textColor="@color/gris_tres_tres_fonce"
-                android:text="@string/welcome_one_content"
-                android:textSize="17sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/title_welcome_one" />
-
-            <androidx.cardview.widget.CardView
-                android:id="@+id/cardview_webview"
+            android:layout_height="0dp"
+            android:id="@+id/image_people_welcome"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/layout_content_welcome_one"
+            android:src="@drawable/people_for_welcome_1"
+            android:scaleType="fitXY"/>
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/layout_content_welcome_one"
+            android:layout_marginTop="140dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:background="@drawable/bcknd_white_35dp_corner">
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="170dp"
-                app:layout_constraintTop_toBottomOf="@+id/content_welcome_one"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="15dp"
-                android:layout_marginTop="30dp"
-                android:layout_marginHorizontal="@dimen/padding_horizontal"
-                app:cardCornerRadius="15dp"
-                >
-                <WebView
-                    android:id="@+id/wv_content"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:scrollbars="none"
+                android:layout_height="match_parent">
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/title_welcome_one"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginTop="42dp"
+                    android:layout_marginEnd="15dp"
+                    android:paddingEnd="10dp"
+                    android:paddingStart="10dp"
+                    android:layout_marginStart="32dp"
+                    android:fontFamily="@font/nunitosans_regular"
+                    android:textColor="@color/black"
+                    android:text="@string/welcome_one_title"
+                    android:textSize="24sp"/>
+
+
+                <ImageView
+                    android:layout_width="17dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_party"
+                    app:layout_constraintTop_toTopOf="@+id/title_welcome_one"
+                    app:layout_constraintStart_toStartOf="@+id/title_welcome_one"
+                    android:layout_marginStart="-10dp"
+                    android:layout_marginTop="-10dp"
                     />
 
-            </androidx.cardview.widget.CardView>
+                <TextView
+                    android:id="@+id/content_welcome_one"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginEnd="15dp"
+                    android:paddingEnd="10dp"
+                    android:paddingStart="10dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:fontFamily="@font/nunitosans_regular"
+                    android:textColor="@color/gris_tres_tres_fonce"
+                    android:text="@string/welcome_one_content"
+                    android:textSize="17sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/title_welcome_one" />
 
-            <ProgressBar
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:elevation="10dp"
-                android:id="@+id/progress_bar"
-                app:layout_constraintTop_toTopOf="@+id/cardview_webview"
-                app:layout_constraintStart_toStartOf="@+id/cardview_webview"
-                app:layout_constraintBottom_toBottomOf="@+id/cardview_webview"
-                app:layout_constraintEnd_toEndOf="@+id/cardview_webview"
-                android:progressTint="@color/orange"/>
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardview_webview"
+                    android:layout_width="match_parent"
+                    android:layout_height="170dp"
+                    app:layout_constraintTop_toBottomOf="@+id/content_welcome_one"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="15dp"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginHorizontal="@dimen/padding_horizontal"
+                    app:cardCornerRadius="15dp"
+                    >
+                    <WebView
+                        android:id="@+id/wv_content"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scrollbars="none"
+                        />
+
+                </androidx.cardview.widget.CardView>
+
+                <ProgressBar
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:elevation="10dp"
+                    android:id="@+id/progress_bar"
+                    app:layout_constraintTop_toTopOf="@+id/cardview_webview"
+                    app:layout_constraintStart_toStartOf="@+id/cardview_webview"
+                    app:layout_constraintBottom_toBottomOf="@+id/cardview_webview"
+                    app:layout_constraintEnd_toEndOf="@+id/cardview_webview"
+                    android:progressTint="@color/orange"/>
 
 
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:id="@+id/tv_endLine"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/cardview_webview"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginTop="30dp"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="15dp"
-                android:paddingEnd="10dp"
-                android:paddingStart="10dp"
-                android:fontFamily="@font/nunitosans_regular"
-                android:textColor="@color/gris_tres_tres_fonce"
-                android:text="@string/welcome_one_sensib"
-                android:textSize="17sp"/>
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tv_endLine"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/cardview_webview"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="15dp"
+                    android:paddingEnd="10dp"
+                    android:paddingStart="10dp"
+                    android:fontFamily="@font/nunitosans_regular"
+                    android:textColor="@color/gris_tres_tres_fonce"
+                    android:text="@string/welcome_one_sensib"
+                    android:textSize="17sp"/>
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </ScrollView>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </ScrollView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 

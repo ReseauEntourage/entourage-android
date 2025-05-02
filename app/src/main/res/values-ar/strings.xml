@@ -2884,4 +2884,8 @@
     <string name="notifications_disabled_message">الإشعارات الخاصة بك معطلة.\nقم بتفعيلها للبقاء على اطلاع</string>
     <string name="enable_notifications">قم بتفعيلها للبقاء على اطلاع</string>
 
+    <string name="add_to_agenda">أضف إلى الأجندة</string>
+    <string name="share_and_join_event">انضم وشارك في المحادثة</string>
+    <string name="see_conversation_event">مشاهدة المحادثة</string>
+
 </resources>

@@ -4,6 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_my_actions_list"
+    android:fitsSystemWindows="true"
     tools:context=".actions.list.me.MyActionsListActivity">
 
 <androidx.constraintlayout.widget.ConstraintLayout

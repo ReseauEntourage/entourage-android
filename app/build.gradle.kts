@@ -28,8 +28,8 @@ android {
     val targetCompatibilityVersion = JavaVersion.VERSION_11
 
     // App versions
-    val versionMajor = 10
-    val versionMinor = 7
+    val versionMajor = 11
+    val versionMinor = 0
     val versionPatch = "git rev-list HEAD --count".runCommand().toInt()
     val versionBranchName = "git rev-parse --abbrev-ref HEAD".runCommand()
     val versionCodeInt = (versionMajor * 100 + versionMinor) * 10000 + versionPatch % 10000
@@ -60,11 +60,17 @@ android {
         }
     }
 
-    compileSdk = 34
-    buildToolsVersion = "34.0.0"
+    compileSdk = 35
+    buildToolsVersion = "35.0.1"
 
     val localTestAccountLogin = "\"" + (System.getenv("TEST_ACCOUNT_LOGIN") ?: "") + "\""
     val localTestAccountPwd = "\"" + (System.getenv("TEST_ACCOUNT_PWD") ?: "") + "\""
+
+    buildFeatures.buildConfig = true
+
+    androidResources{
+        localeFilters.addAll(listOf("en", "fr", "de", "pl", "es","uk", "ro", "ar"))
+    }
 
     defaultConfig {
         manifestPlaceholders += mapOf(
@@ -72,16 +78,15 @@ android {
             "deepLinksScheme" to deepLinksSchemeProd
         )
         applicationId = "social.entourage.android"
-        resourceConfigurations += listOf("en", "fr", "de", "pl", "es","uk", "ro", "ar")
 
         minSdk = 23 /*November 2015: Android 6.0, MarshMallow*/
-        targetSdk = 34
+        targetSdk = 35
 
         // Making either of these two values dynamic in the defaultConfig will
         // require a full APK build and reinstallation because the AndroidManifest.xml
         // must be updated.
-        versionCode =800
-        versionName ="9.0"
+        versionCode =1000
+        versionName ="10.0"
 
         buildConfigField("String", "VERSION_FULL_NAME", "\"" + versionNameProd + "\"")
         buildConfigField("String", "VERSION_DISPLAY_BRANCH_NAME", "\"" + versionBranchName + "\"")
@@ -169,7 +174,7 @@ android {
         targetCompatibility = targetCompatibilityVersion
     }
 
-    packagingOptions {
+    packaging {
         resources {
             excludes += listOf(
                 "META-INF/notice.txt", "META-INF/NOTICE.txt", "META-INF/NOTICE", "META-INF/license.txt", "META-INF/LICENSE.txt", "META-INF/LICENSE", "META-INF/ASL2.0", "META-INF/DEPENDENCIES"
@@ -196,21 +201,22 @@ android {
 
 
 dependencies {
-    implementation("androidx.core:core-ktx:1.13.1")
-    implementation(platform("com.squareup.okhttp3:okhttp-bom:4.10.0"))
+    implementation("androidx.core:core-ktx:1.15.0")
+    implementation(platform("com.squareup.okhttp3:okhttp-bom:4.12.0"))
 
     //implementation androidSupportDependencies.values()
 
-    implementation("androidx.annotation:annotation:1.8.1")
+    implementation("androidx.annotation:annotation:1.9.1")
     implementation("androidx.appcompat:appcompat:1.7.0")
     implementation("androidx.browser:browser:1.8.0")
     implementation("androidx.cardview:cardview:1.0.0")
     implementation("androidx.coordinatorlayout:coordinatorlayout:1.2.0")
-    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
-    implementation("androidx.fragment:fragment-ktx:1.8.2")
+    implementation("androidx.constraintlayout:constraintlayout:2.2.0")
+    implementation("androidx.fragment:fragment-ktx:1.8.6")
     implementation("androidx.multidex:multidex:2.0.1")
-    implementation("androidx.recyclerview:recyclerview:1.3.2")
+    implementation("androidx.recyclerview:recyclerview:1.4.0")
     implementation("androidx.preference:preference-ktx:1.2.1")
+    implementation("androidx.compose.ui:ui-text-android:1.7.8")
 
     //implementation devDependencies.values()
     //implementation("net.danlew:android.joda:2.12.5")
@@ -219,23 +225,21 @@ dependencies {
 
 
     //https://firebase.google.com/support/release-notes/android
-    implementation(platform("com.google.firebase:firebase-bom:33.1.2"))
+    implementation(platform("com.google.firebase:firebase-bom:33.7.0"))
     //implementation firebaseDependencies.values()
     implementation("com.google.firebase:firebase-analytics")
     implementation("com.google.firebase:firebase-messaging")
-    implementation("androidx.compose.ui:ui-text-android:1.6.8")
     implementation("com.google.android.play:app-update-ktx:2.1.0")
-    //TODO: fix this inappmessaging lib that is blocking tests to run
-    releaseImplementation("com.google.firebase:firebase-inappmessaging-display")
+    implementation("com.google.firebase:firebase-inappmessaging-display")
     implementation("com.google.firebase:firebase-crashlytics")
     implementation("com.google.firebase:firebase-config")
-    //implementation("com.google.firebase:firebase-perf-ktx")
+    //implementation("com.google.firebase:firebase-perf")
 
     //implementation gmsDependencies.values()
     implementation("com.google.android.gms:play-services-maps:19.0.0")
     implementation("com.google.android.gms:play-services-location:21.3.0") //v19 needs refactoring
     //implementation("com.google.android.libraries.places:places-compat:2.6.0")
-    implementation("com.google.android.libraries.places:places:3.5.0")
+    implementation("com.google.android.libraries.places:places:4.1.0")
 
     //https://developers.google.com/android/guides/opensource
     implementation("com.google.android.gms:play-services-oss-licenses:17.1.0")
@@ -255,11 +259,11 @@ dependencies {
     implementation("com.github.bumptech.glide:glide:4.14.2")
     implementation("me.leolin:ShortcutBadger:1.1.22@aar")
     implementation("net.yslibrary.keyboardvisibilityevent:keyboardvisibilityevent:3.0.0-RC3")
-    kapt("com.github.bumptech.glide:compiler:4.14.2")
+    kapt("com.github.bumptech.glide:compiler:4.16.0")
 
     //entourageImplementation facebookDependencies.values()
-    implementation("com.facebook.android:facebook-android-sdk:15.2.0")
-    implementation("com.facebook.android:facebook-core:15.2.0")
+    implementation("com.facebook.android:facebook-android-sdk:18.0.1")
+    implementation("com.facebook.android:facebook-core:18.0.1")
     compileOnly("org.glassfish:javax.annotation:10.0-b28")
 
 
@@ -276,7 +280,7 @@ dependencies {
     //androidTestImplementation("com.jakewharton.espresso:okhttp3-idling-resource:1.0.0")
     //,exclude: [group: "com.squareup.okhttp3"                    ]
     androidTestImplementation("androidx.test.ext:junit:1.2.1")
-    androidTestImplementation("androidx.test:runner:1.6.1")
+    androidTestImplementation("androidx.test:runner:1.6.2")
     androidTestImplementation("androidx.test:rules:1.6.1")
 
     testImplementation("junit:junit:4.13.2")
@@ -288,8 +292,8 @@ dependencies {
 
     implementation("com.google.android.flexbox:flexbox:3.0.0")
     // Kotlin
-    implementation("androidx.navigation:navigation-fragment-ktx:2.7.7")
-    implementation("androidx.navigation:navigation-ui-ktx:2.7.7")
+    implementation("androidx.navigation:navigation-fragment-ktx:2.8.7")
+    implementation("androidx.navigation:navigation-ui-ktx:2.8.7")
     implementation("com.github.IntruderShanky:Sectioned-RecyclerView:2.1.1")
 
     implementation("com.airbnb.android:lottie:5.2.0")
@@ -299,14 +303,16 @@ dependencies {
     implementation("androidx.transition:transition:1.5.1") // Remplacez 'x.x.x' par la dernière version disponible.
 
     implementation("com.google.android.play:app-update-ktx:2.1.0")
-    implementation("com.google.android.play:asset-delivery:2.2.2")
-    implementation("com.google.android.play:asset-delivery-ktx:2.2.2")
+    implementation("com.google.android.play:asset-delivery:2.3.0")
+    implementation("com.google.android.play:asset-delivery-ktx:2.3.0")
     implementation("com.google.android.play:feature-delivery:2.1.0")
     implementation("com.google.android.play:feature-delivery-ktx:2.1.0")
-    implementation("com.google.android.play:review:2.0.1")
-    implementation("com.google.android.play:review-ktx:2.0.1")
+    implementation("com.google.android.play:review:2.0.2")
+    implementation("com.google.android.play:review-ktx:2.0.2")
     implementation("com.leinardi.android:speed-dial:3.2.0")
-    implementation("com.dafruits:webrtc:123.0.0")
-    implementation("com.google.firebase:firebase-database:20.0.6")
+    implementation("com.google.firebase:firebase-database")
+
+    //UNCOMMENT FOR VIDEO CALL FEATURE
+    //implementation("com.dafruits:webrtc:123.0.0")
 
 }

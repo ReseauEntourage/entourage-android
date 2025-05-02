@@ -114,6 +114,6 @@ class ResponseSurveyActivity:BaseActivity(), OnItemShowListener {
     }
 
     override fun onShowConversation(userId: Int) {
-        discussionPresenter.createOrGetConversation(userId)
+        discussionPresenter.createOrGetConversation(userId.toString())
     }
 }
