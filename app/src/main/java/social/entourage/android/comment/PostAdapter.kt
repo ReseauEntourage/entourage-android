@@ -289,8 +289,11 @@ class PostAdapter(
                         }
 
                     }
-                    if(postsList[position].status == "deleted"){
+                    if(postsList[position].status == "deleted" || postsList[position].status == "offensive" || postsList[position].status == "offensible"){
                         surveyHolder.binding.surveyQuestion.text = context.getText(R.string.deleted_publi)
+                        if(postsList[position].status == "offensive" || postsList[position].status == "offensible"){
+                            surveyHolder.binding.surveyQuestion.text = context.getText(R.string.offensive_message)
+                        }
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                             surveyHolder.binding.surveyQuestion.setTextColor(context.getColor(R.color.deleted_grey))
                         }
@@ -834,8 +837,11 @@ class PostAdapter(
                                 }
                             }
                         }
-                        if(status == "deleted"){
+                        if(status == "deleted" || status == "offensive" || status == "offensible"){
                             binding.postMessage.text = context.getText(R.string.deleted_publi)
+                            if(status == "offensive" || status == "offensible"){
+                                binding.postMessage.text = context.getText(R.string.offensive_message)
+                            }
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                                 binding.postMessage.setTextColor(context.getColor(R.color.deleted_grey))
                             }

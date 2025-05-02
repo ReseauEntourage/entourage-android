@@ -43,7 +43,7 @@
                             android:drawablePadding="8dp"
                             android:hint="@string/search_group_hint"
                             android:imeOptions="actionSearch"
-                            android:inputType="textCapSentences"
+                            android:inputType="textCapSentences|textMultiLine"
                             android:paddingHorizontal="16dp"
                             app:drawableStartCompat="@drawable/new_search" />
                     </com.google.android.material.textfield.TextInputLayout>

@@ -109,7 +109,7 @@ class CommentsListAdapter(
 
             val isMe = comment.user?.userId == EntourageApplication.get().me()?.id
 
-            if (comment.status == "deleted") {
+            if (comment.status == "deleted" || comment.status == "offensive" || comment.status == "offensible") {
                 val drawable = ContextCompat.getDrawable(context, R.drawable.ic_comment_deleted)
                 val vectorDrawable = DrawableCompat.wrap(drawable!!) as VectorDrawable
                 val width = 12
@@ -127,6 +127,9 @@ class CommentsListAdapter(
                     binding.comment.text = context.getString(R.string.deleted_message)
                 } else {
                     binding.comment.text = context.getString(R.string.deleted_comment)
+                }
+                if(comment.status == "offensive" || comment.status == "offensible"){
+                    binding.comment.text = context.getString(R.string.offensive_message)
                 }
                 binding.comment.background = context.getDrawable(R.drawable.new_comment_background_grey)
                 binding.comment.setTextColor(context.getColor(R.color.grey_deleted_icon))
@@ -163,7 +166,7 @@ class CommentsListAdapter(
                 onItemClick.onCommentReport(comment.id, isForEvent, isMe, commentLang)
             }
             //here
-            if (comment.status != "deleted") {
+            if (comment.status != "deleted" || comment.status == "offensive" || comment.status == "offensible") {
                 val commentLang = comment.contentTranslations?.fromLang ?: ""
                 binding.comment.setOnLongClickListener {
                     DataLanguageStock.updateContentToCopy(comment.content ?: "")
@@ -261,7 +264,7 @@ class CommentsListAdapter(
 
             val isMe = comment.user?.userId == EntourageApplication.get().me()?.id
 
-            if (comment.status == "deleted") {
+            if (comment.status == "deleted" || comment.status == "offensive" || comment.status == "offensible") {
 
                 val drawable = ContextCompat.getDrawable(context, R.drawable.ic_comment_deleted)
                 val vectorDrawable = DrawableCompat.wrap(drawable!!) as VectorDrawable
@@ -280,6 +283,9 @@ class CommentsListAdapter(
                     binding.comment.text = context.getString(R.string.deleted_message)
                 } else {
                     binding.comment.text = context.getString(R.string.deleted_comment)
+                }
+                if(comment.status == "offensive" || comment.status == "offensible"){
+                    binding.comment.text = context.getString(R.string.offensive_message)
                 }
                 binding.comment.background = context.getDrawable(R.drawable.new_comment_background_grey)
                 binding.comment.setTextColor(context.getColor(R.color.grey_deleted_icon))
@@ -316,7 +322,7 @@ class CommentsListAdapter(
                 onItemClick.onCommentReport(comment.id, isForEvent, isMe, commentLang)
             }
             //here
-            if (comment.status != "deleted") {
+            if (comment.status != "deleted" || comment.status == "offensive" || comment.status == "offensible") {
                 val commentLang = comment.contentTranslations?.fromLang ?: ""
                 binding.comment.setOnLongClickListener {
                     DataLanguageStock.updateContentToCopy(comment.content ?: "")

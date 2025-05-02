@@ -2953,6 +2953,8 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="translation_auto_enabled">Activée</string>
     <string name="translation_auto_disabled">Désactivée</string>
 
+    <string name="offensive_message">Ce contenu a été supprimé car il ne respecte pas notre charte.</string>
+
 
 </resources>
 

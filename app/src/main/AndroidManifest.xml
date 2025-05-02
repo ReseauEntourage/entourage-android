@@ -196,7 +196,8 @@
         <activity
             android:name="social.entourage.android.posts.CreatePostActivity"
             android:exported="false"
-            android:windowSoftInputMode="adjustPan" />
+            android:windowSoftInputMode="adjustPan"
+            />
         <activity
             android:name=".groups.details.feed.CreatePostGroupActivity"
             android:exported="false"
