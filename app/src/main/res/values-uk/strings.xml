@@ -2774,5 +2774,18 @@
     <string name="share_and_join_event">Приєднатися та взяти участь у розмові</string>
     <string name="see_conversation_event">Переглянути розмову</string>
     <string name="child_rules">Стандарти захисту дітей</string>
-
+    <string name="filter_all">Усі</string>
+    <string name="filter_discussions">Обговорення</string>
+    <string name="filter_events">Події</string>
+    <string name="title_button_see_event">Знайдіть усю інформацію про подію тут</string>
+    <string name="welcome" lang="uk">Ласкаво просимо %1$s!</string>
+    <string name="question" lang="uk">Як ви хочете допомогти спільноті Entourage?</string>
+    <string name="option_surround" lang="uk">Підтримка</string>
+    <string name="option_surround_desc" lang="uk">Я хочу підтримувати своїх сусідів, яким це потрібно.</string>
+    <string name="option_supported" lang="uk">Бути підтриманим</string>
+    <string name="option_supported_desc" lang="uk">Я у вразливій ситуації і шукаю підтримки.</string>
+    <string name="option_both" lang="uk">Обидва</string>
+    <string name="option_both_desc" lang="uk">Підтримувати та отримувати підтримку.</string>
+    <string name="question_location" lang="uk">Який ваш район?</string>
+    <string name="input_location" lang="uk">Адреса міста або області</string>
 </resources>

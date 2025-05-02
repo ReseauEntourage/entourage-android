@@ -2888,5 +2888,18 @@
     <string name="share_and_join_event">انضم وشارك في المحادثة</string>
     <string name="see_conversation_event">مشاهدة المحادثة</string>
     <string name="child_rules">معايير حماية الأطفال</string>
-
+    <string name="filter_all">جميع</string>
+    <string name="filter_discussions">المناقشات</string>
+    <string name="filter_events">الفعاليات</string>
+    <string name="title_button_see_event">ابحث عن جميع معلومات الحدث هنا</string>
+    <string name="welcome" lang="ar">مرحبًا %1$s!</string>
+    <string name="question" lang="ar">كيف تود المساهمة في مجتمع Entourage إلى جانب تكوين علاقات إنسانية؟</string>
+    <string name="option_surround" lang="ar">الدعم</string>
+    <string name="option_surround_desc" lang="ar">أرغب في تقديم الدعم لجيراني الذين يحتاجونه.</string>
+    <string name="option_supported" lang="ar">أن تكون مدعومًا</string>
+    <string name="option_supported_desc" lang="ar">أنا في وضع ضعيف وأبحث عن الدعم.</string>
+    <string name="option_both" lang="ar">كلاهما</string>
+    <string name="option_both_desc" lang="ar">تقديم الدعم وتلقيه.</string>
+    <string name="question_location" lang="ar">ما هو حيك؟</string>
+    <string name="input_location" lang="ar">عنوان المدينة أو المنطقة</string>
 </resources>

@@ -331,8 +331,8 @@ class EventsPresenter : ViewModel() {
         })
     }
 
-    fun getEvent(id: Int) {
-        EntourageApplication.get().apiModule.eventsRequest.getEvent(id.toString())
+    fun getEvent(id: String) {
+        EntourageApplication.get().apiModule.eventsRequest.getEvent(id)
             .enqueue(object : Callback<EventWrapper> {
                 override fun onResponse(
                     call: Call<EventWrapper>,
@@ -343,9 +343,11 @@ class EventsPresenter : ViewModel() {
                             getEvent.value = eventWrapper.event
                         }
                     }
+
                 }
 
                 override fun onFailure(call: Call<EventWrapper>, t: Throwable) {
+                    Timber.wtf("wtf error " + t.message)
                 }
             })
     }

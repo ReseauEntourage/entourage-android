@@ -2849,5 +2849,18 @@ Leerán este mensaje tan pronto como se unan al grupo.</string>
     <string name="share_and_join_event">Participar y unirse a la conversación</string>
     <string name="see_conversation_event">Ver la conversación</string>
     <string name="child_rules">Normas de protección infantil</string>
-
+    <string name="filter_all">Todas</string>
+    <string name="filter_discussions">Discusiones</string>
+    <string name="filter_events">Eventos</string>
+    <string name="title_button_see_event">Encuentra toda la información del evento aquí</string>
+    <string name="welcome" lang="es">¡Encantado %1$s!</string>
+    <string name="question" lang="es">¿Cómo le gustaría contribuir a la Comunidad Entourage además de hacer conexiones humanas?</string>
+    <string name="option_surround" lang="es">Apoyar</string>
+    <string name="option_surround_desc" lang="es">Quiero ofrecer apoyo a mis vecinos que lo necesitan.</string>
+    <string name="option_supported" lang="es">Ser apoyado</string>
+    <string name="option_supported_desc" lang="es">Estoy en una situación vulnerable y busco apoyo.</string>
+    <string name="option_both" lang="es">Ambos</string>
+    <string name="option_both_desc" lang="es">Ofrecer apoyo y recibirlo.</string>
+    <string name="question_location" lang="es">¿Cuál es tu barrio?</string>
+    <string name="input_location" lang="es">Dirección de ciudad o departamento</string>
 </resources>

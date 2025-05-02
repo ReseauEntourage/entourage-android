@@ -10,6 +10,7 @@ plugins {
     kotlin("kapt")
     id("androidx.navigation.safeargs")
     id("com.google.gms.google-services")
+
 }
 
 fun String.runCommand(currentWorkingDir: File = file("./")): String {
@@ -29,7 +30,7 @@ android {
 
     // App versions
     val versionMajor = 11
-    val versionMinor = 0
+    val versionMinor = 1
     val versionPatch = "git rev-list HEAD --count".runCommand().toInt()
     val versionBranchName = "git rev-parse --abbrev-ref HEAD".runCommand()
     val versionCodeInt = (versionMajor * 100 + versionMinor) * 10000 + versionPatch % 10000
@@ -311,6 +312,12 @@ dependencies {
     implementation("com.google.android.play:review-ktx:2.0.2")
     implementation("com.leinardi.android:speed-dial:3.2.0")
     implementation("com.google.firebase:firebase-database")
+
+    implementation("io.ktor:ktor-client-core:2.3.5")
+    implementation("io.ktor:ktor-client-okhttp:2.3.5")
+    implementation("io.ktor:ktor-client-content-negotiation:2.3.5")
+    implementation("io.ktor:ktor-serialization-kotlinx-json:2.3.5")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
 
     //UNCOMMENT FOR VIDEO CALL FEATURE
     //implementation("com.dafruits:webrtc:123.0.0")

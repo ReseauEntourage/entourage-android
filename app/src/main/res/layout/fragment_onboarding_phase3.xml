@@ -28,140 +28,44 @@
                 android:fontFamily="@font/nunitosans_regular"
                 android:text="@string/onboard_phase3_entour_desc"
                 android:textColor="@color/pre_onboard_black"
-                android:textSize="13sp"
+                android:textSize="15sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/ui_onboard_consent_check"
                 app:layout_constraintTop_toTopOf="@+id/ui_onboard_consent_check" />
 
-
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <include
+                android:id="@+id/ui_layout_entour"
+                layout="@layout/layout_item_onboarding_interests"
                 android:layout_width="match_parent"
-                android:layout_height="120dp">
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/ui_layout_entour"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_marginStart="22dp"
-                    android:layout_marginTop="4dp"
-                    android:layout_marginEnd="22dp"
-                    android:layout_marginBottom="4dp"
-                    android:background="@drawable/new_bg_rounded_button_light_beige_orange_stroke_radius20"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                    <TextView
-                        android:id="@+id/ui_onboard_names_tv_info5"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/nunitosans_regular"
-                        android:text="@string/onboard_phase3_entour_subtitle"
-                        android:textColor="@color/pre_onboard_black"
-                        android:textSize="13sp"
-                        app:layout_constraintEnd_toStartOf="@+id/imageView44"
-                        app:layout_constraintStart_toStartOf="@+id/textView36"
-                        app:layout_constraintTop_toBottomOf="@+id/textView36" />
-
-                    <TextView
-                        android:id="@+id/textView36"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:text="@string/onboard_phase3_entour_title"
-                        android:textColor="@color/onboard_black_36"
-                        android:textStyle="bold"
-                        app:layout_constraintBottom_toBottomOf="@+id/ui_iv_entour_check"
-                        app:layout_constraintStart_toEndOf="@+id/ui_iv_entour_check"
-                        app:layout_constraintTop_toTopOf="@+id/ui_iv_entour_check" />
-
-                    <ImageView
-                        android:id="@+id/ui_iv_entour_check"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:layout_marginStart="28dp"
-                        android:layout_marginTop="16dp"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:srcCompat="@drawable/new_bg_unselected_filter" />
-
-                    <ImageView
-                        android:id="@+id/imageView44"
-                        android:layout_width="95dp"
-                        android:layout_height="57dp"
-                        android:layout_marginEnd="16dp"
-                        android:src="@drawable/entraide_entoure"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toTopOf="@id/recycler_view"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginHorizontal="22dp"
+                android:layout_marginTop="20dp"
+                />
+            <include
+                android:id="@+id/ui_layout_beentour"
+                layout="@layout/layout_item_onboarding_interests"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toTopOf="@id/recycler_view"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginHorizontal="22dp"
+                android:layout_marginTop="20dp"
+                />
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/ui_layout_beentour"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="22dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="22dp"
-                    android:layout_marginBottom="4dp"
-                    android:background="@drawable/new_bg_rounded_button_light_beige_orange_stroke_radius20"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
+            <include
+                android:id="@+id/ui_layout_entour_beentour_both"
+                layout="@layout/layout_item_onboarding_interests"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toTopOf="@id/recycler_view"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginHorizontal="22dp"
+                android:layout_marginTop="20dp"
+                />
 
-                    <ImageView
-                        android:id="@+id/ui_iv_beentour_check"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:layout_marginStart="28dp"
-                        android:layout_marginTop="16dp"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:srcCompat="@drawable/new_bg_selected_filter" />
-
-                    <TextView
-                        android:id="@+id/textView37"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:text="@string/onboard_phase3_be_entour_title"
-                        android:textColor="@color/onboard_black_36"
-                        android:textStyle="bold"
-                        app:layout_constraintBottom_toBottomOf="@+id/ui_iv_beentour_check"
-                        app:layout_constraintStart_toEndOf="@+id/ui_iv_beentour_check"
-                        app:layout_constraintTop_toTopOf="@+id/ui_iv_beentour_check" />
-
-                    <TextView
-                        android:id="@+id/ui_onboard_names_tv_info6"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="20dp"
-                        android:fontFamily="@font/nunitosans_regular"
-                        android:text="@string/onboard_phase3_be_entour_subtitle"
-                        android:textColor="@color/pre_onboard_black"
-                        android:textSize="13sp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@+id/imageView45"
-                        app:layout_constraintStart_toStartOf="@+id/textView37"
-                        app:layout_constraintTop_toBottomOf="@+id/textView37" />
-
-                    <ImageView
-                        android:id="@+id/imageView45"
-                        android:layout_width="95dp"
-                        android:layout_height="57dp"
-                        android:layout_marginEnd="16dp"
-                        android:src="@drawable/etre_entoure"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
-            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -187,8 +91,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
                         android:text="@string/onboard_phase3_place_title"
+                        android:fontFamily="@font/nunitosans_bold"
                         android:textColor="@color/onboard_black_36"
-                        android:textStyle="bold"
                         app:layout_constraintStart_toEndOf="@+id/image"
                         app:layout_constraintTop_toTopOf="parent" />
 

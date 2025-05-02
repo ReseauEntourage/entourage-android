@@ -105,6 +105,10 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
             cancel.text = getString(R.string.cancel_event)
             leave.text = getString(R.string.leave_event)
             editRecurrence.label = getString(R.string.modify_recurrence)
+            val me = EntourageApplication.me(requireContext())
+            if (me?.roles?.isEmpty() == true) {
+                editRecurrence.root.isVisible = false
+            }
         }
     }
 
@@ -258,7 +262,6 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
     private fun viewWithRole() {
         val eventWithNoRecurrence =
             event?.recurrence != null && event?.recurrence != Recurrence.NO_RECURRENCE.value
-
         with(binding) {
             if (EntourageApplication.me(context)?.id == event?.author?.userID) {
                 if (event?.status == Status.OPEN) {

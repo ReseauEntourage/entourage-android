@@ -32,7 +32,7 @@ import social.entourage.android.groups.create.CreateGroupActivity
 import social.entourage.android.groups.list.FromScreen
 import social.entourage.android.groups.list.GroupsListAdapter
 import social.entourage.android.groups.list.UpdateGroupInter
-import social.entourage.android.homev2.HomeGroupAdapter
+import social.entourage.android.home.HomeGroupAdapter
 import social.entourage.android.main_filter.MainFilterActivity
 import social.entourage.android.main_filter.MainFilterMode
 import social.entourage.android.tools.log.AnalyticsEvents

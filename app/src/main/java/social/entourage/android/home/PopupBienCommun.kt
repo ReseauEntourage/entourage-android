@@ -1,4 +1,4 @@
-package social.entourage.android.homev2
+package social.entourage.android.home
 
 import social.entourage.android.databinding.PopupNuitbiencommunBinding
 

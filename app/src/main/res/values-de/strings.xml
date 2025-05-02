@@ -2851,5 +2851,19 @@ Sie werden diese Nachricht lesen, sobald sie der Gruppe beitreten.</string>
     <string name="share_and_join_event">Teilnehmen und der Unterhaltung beitreten</string>
     <string name="see_conversation_event">Gespräch ansehen</string>
     <string name="child_rules">Kinderschutzstandards</string>
+    <string name="filter_all">Alle</string>
+    <string name="filter_discussions">Diskussionen</string>
+    <string name="filter_events">Veranstaltungen</string>
+    <string name="title_button_see_event">Finden Sie hier alle Informationen zur Veranstaltung</string>
+    <string name="welcome" lang="de">Willkommen %1$s!</string>
+    <string name="question" lang="de">Wie möchten Sie neben menschlichen Begegnungen zur Entourage-Community beitragen?</string>
+    <string name="option_surround" lang="de">Unterstützen</string>
+    <string name="option_surround_desc" lang="de">Ich möchte meine Nachbarn unterstützen, die es brauchen.</string>
+    <string name="option_supported" lang="de">Unterstützt werden</string>
+    <string name="option_supported_desc" lang="de">Ich bin in einer verletzlichen Situation und suche Unterstützung.</string>
+    <string name="option_both" lang="de">Beides</string>
+    <string name="option_both_desc" lang="de">Unterstützen und unterstützt werden.</string>
+    <string name="question_location" lang="de">Was ist Ihr Viertel?</string>
+    <string name="input_location" lang="de">Stadt oder Bezirksadresse</string>
 
 </resources>

@@ -13,6 +13,7 @@ import social.entourage.android.home.UnreadMessages
 import social.entourage.android.api.model.Conversation
 import social.entourage.android.api.model.GroupMember
 import social.entourage.android.api.model.Post
+import social.entourage.android.api.model.User
 import social.entourage.android.api.model.UserBlockedUser
 import timber.log.Timber
 
@@ -40,6 +41,7 @@ class DiscussionsPresenter:ViewModel() {
     var newConversation = MutableLiveData<Conversation?>()
 
     var getMembersSearch = MutableLiveData<MutableList<GroupMember>>()
+    var conversationUsers = MutableLiveData<MutableList<GroupMember>>()
 
     var hasBlockUser = MutableLiveData<Boolean>()
     var getBlockedUsers = MutableLiveData<MutableList<UserBlockedUser>?>()
@@ -290,6 +292,90 @@ class DiscussionsPresenter:ViewModel() {
 
                 override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                     hasUserjoined.postValue(false)
+                }
+            })
+    }
+
+    fun fetchAllConversations(page: Int, per: Int) {
+        isLoading = true
+        EntourageApplication.get().apiModule.discussionsRequest.getAllConversations(page, per)
+            .enqueue(object : Callback<DiscussionsListWrapper> {
+                override fun onResponse(
+                    call: Call<DiscussionsListWrapper>,
+                    response: Response<DiscussionsListWrapper>
+                ) {
+                    response.body()?.let { wrapper ->
+                        if (wrapper.allConversations.size < per) isLastPage = true
+                        getAllMessages.value = wrapper.allConversations
+                    }
+                    isLoading = false
+                }
+
+                override fun onFailure(call: Call<DiscussionsListWrapper>, t: Throwable) {
+                    isLoading = false
+                }
+            })
+    }
+
+    fun fetchPrivateConversations(page: Int, per: Int) {
+        isLoading = true
+        EntourageApplication.get().apiModule.discussionsRequest.getPrivateConversations(page, per)
+            .enqueue(object : Callback<DiscussionsListWrapper> {
+                override fun onResponse(
+                    call: Call<DiscussionsListWrapper>,
+                    response: Response<DiscussionsListWrapper>
+                ) {
+                    response.body()?.let { wrapper ->
+                        if (wrapper.allConversations.size < per) isLastPage = true
+                        getAllMessages.value = wrapper.allConversations
+                    }
+                    isLoading = false
+                }
+
+                override fun onFailure(call: Call<DiscussionsListWrapper>, t: Throwable) {
+                    isLoading = false
+                }
+            })
+    }
+
+    fun fetchOutingConversations(page: Int, per: Int) {
+        isLoading = true
+        EntourageApplication.get().apiModule.discussionsRequest.getOutingConversations(page, per)
+            .enqueue(object : Callback<DiscussionsListWrapper> {
+                override fun onResponse(
+                    call: Call<DiscussionsListWrapper>,
+                    response: Response<DiscussionsListWrapper>
+                ) {
+                    response.body()?.let { wrapper ->
+                        if (wrapper.allConversations.size < per) isLastPage = true
+                        getAllMessages.value = wrapper.allConversations
+                    }
+                    isLoading = false
+                }
+
+                override fun onFailure(call: Call<DiscussionsListWrapper>, t: Throwable) {
+                    isLoading = false
+                }
+            })
+    }
+
+    fun fetchUsersForConversation(conversationId: Int) {
+        EntourageApplication.get().apiModule.discussionsRequest
+            .getUsersForConversation(conversationId)
+            .enqueue(object : Callback<UserListWithConversationWrapper> {
+                override fun onResponse(
+                    call: Call<UserListWithConversationWrapper>,
+                    response: Response<UserListWithConversationWrapper>
+                ) {
+                    response.body()?.let { wrapper ->
+                        conversationUsers.value = wrapper.users
+                    } ?: run {
+                        conversationUsers.value = mutableListOf()
+                    }
+                }
+
+                override fun onFailure(call: Call<UserListWithConversationWrapper>, t: Throwable) {
+                    conversationUsers.value = mutableListOf()
                 }
             })
     }

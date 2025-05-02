@@ -6,6 +6,7 @@ import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.Html
+import android.text.TextUtils
 import android.text.TextWatcher
 import android.view.View
 import androidx.core.content.ContextCompat
@@ -13,23 +14,34 @@ import androidx.core.text.HtmlCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import kotlinx.coroutines.launch
 import social.entourage.android.BuildConfig
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.api.model.Conversation
 import social.entourage.android.api.model.EntourageUser
+import social.entourage.android.api.model.Events
 import social.entourage.android.api.model.GroupMember
 import social.entourage.android.api.model.Post
 import social.entourage.android.comment.CommentActivity
 import social.entourage.android.comment.CommentsListAdapter
 import social.entourage.android.comment.MentionAdapter
+import social.entourage.android.discussions.members.MembersConversationFragment
+import social.entourage.android.events.EventsPresenter
+import social.entourage.android.events.details.feed.EventFeedActivity
 import social.entourage.android.language.LanguageManager
 import social.entourage.android.profile.ProfileFullActivity
 import social.entourage.android.report.DataLanguageStock
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.Utils
+import social.entourage.android.tools.utils.VibrationUtil
+import timber.log.Timber
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Date
 import java.util.Locale
 import java.util.UUID
 
@@ -41,6 +53,7 @@ class DetailConversationActivity : CommentActivity() {
     // --- Variables existantes ---
     private var hasToShowFirstMessage = false
     var hasSeveralpeople = false
+    private val eventPresenter: EventsPresenter by lazy { EventsPresenter() }
 
     // Nom de la conversation pour mise à jour du header
     private var conversationTitle: String? = null
@@ -70,7 +83,7 @@ class DetailConversationActivity : CommentActivity() {
 
         // Récupération éventuelle de certains extras
         hasToShowFirstMessage = intent.getBooleanExtra(Const.HAS_TO_SHOW_MESSAGE, false)
-
+        binding.emptyState.visibility = View.GONE
         // Observateurs sur le Presenter
         with(discussionsPresenter) {
             // Observateur : liste des commentaires
@@ -79,7 +92,9 @@ class DetailConversationActivity : CommentActivity() {
             commentPosted.observe(this@DetailConversationActivity) { handleCommentPosted(it) }
             // Observateur : détail conversation
             detailConversation.observe(this@DetailConversationActivity) { handleDetailConversation(it) }
+            eventPresenter.getEvent.observe(this@DetailConversationActivity) { handleGetEvent(it) }
         }
+
 
         // Charger la conversation et ses messages
         discussionsPresenter.getDetailConversation(id)
@@ -91,17 +106,7 @@ class DetailConversationActivity : CommentActivity() {
         binding.header.iconSettings.setBackgroundColor(ContextCompat.getColor(this, R.color.transparent))
 
         // Ouvrir le profil auteur si conversation 1-to-1
-        if (isOne2One) {
-            binding.header.headerTitle.setOnClickListener {
-                ProfileFullActivity.isMe = false
-                ProfileFullActivity.userId = postAuthorID.toString()
-                startActivityForResult(
-                    Intent(this, ProfileFullActivity::class.java)
-                        .putExtra(Const.USER_ID, postAuthorID),
-                    0
-                )
-            }
-        }
+
 
         // Mise en place de la RecyclerView pour les suggestions de mention
         binding.mentionSuggestionsRecycler.layoutManager = LinearLayoutManager(this)
@@ -136,6 +141,34 @@ class DetailConversationActivity : CommentActivity() {
     // -----------------------------------------------------------------------------------
     private fun handleDetailConversation(conversation: Conversation?) {
         conversation ?: return
+        if(conversation.memberCount > 2){
+            Timber.wtf("wtf conversation member count " + conversation.memberCount)
+            this.isOne2One = false
+        }
+        if (isOne2One) {
+            binding.header.headerTitle.setOnClickListener {
+                ProfileFullActivity.isMe = false
+                ProfileFullActivity.userId = postAuthorID.toString()
+                startActivityForResult(
+                    Intent(this, ProfileFullActivity::class.java)
+                        .putExtra(Const.USER_ID, postAuthorID),
+                    0
+                )
+            }
+        }else{
+            binding.header.headerTitle.setOnClickListener {
+                MembersConversationFragment.newInstance(this.id).show(supportFragmentManager, "")
+            }
+        }
+        if(conversation.type == "outing"){
+            binding.layoutEventConv.visibility = View.VISIBLE
+            binding.layoutInfoNewDiscussion.visibility = View.GONE
+            conversation.id?.let { eventPresenter.getEvent(it.toString()) }
+        }else{
+            binding.layoutEventConv.visibility = View.GONE
+            binding.header.headerSubtitle.visibility = View.GONE
+            SettingsDiscussionModalFragment.isEvent = false
+        }
 
         // Parcourt la liste de messages pour détecter l'éventuel rôle "Équipe Entourage"
         conversation.message?.forEach { message ->
@@ -161,6 +194,21 @@ class DetailConversationActivity : CommentActivity() {
             val convMemberCount = conversation.memberCount
             binding.header.title = "$displayName + ${convMemberCount - 1} membres"
         }
+        if (conversation.memberCount > 2 && conversation.members != null) {
+            val currentUserId = EntourageApplication.get().me()?.id
+            val names = conversation.members
+                .filter { it?.id != currentUserId } // exclure le current user
+                .take(5) // prendre les 5 premiers autres membres
+                .mapNotNull { it?.displayName } // éviter les nulls
+                .map {
+                    if (it.length > 2) it.dropLast(3) else it
+                }
+
+            val namesText = names.joinToString(", ")
+            binding.header.title = namesText
+        } else {
+            binding.header.title = conversation.title
+        }
 
         // Bloqueurs ?
         if (conversation.hasBlocker()) {
@@ -175,10 +223,96 @@ class DetailConversationActivity : CommentActivity() {
             binding.postBlocked.isVisible = false
         }
 
+
         // -- RÉCUPÉRATION DES MEMBRES POUR LES MENTIONS --
         // conversation.members est de type ArrayList<GroupMember>?
         // On le stocke dans allMembers
         allMembers = conversation.members ?: emptyList()
+    }
+
+    private fun handleGetEvent(event: Events?) {
+        binding.emptyState.visibility = View.GONE
+        event?.let {
+            SettingsDiscussionModalFragment.isEvent = true
+            binding.header.headerTitle.setOnClickListener {
+                VibrationUtil.vibrate(this)
+                val intent = Intent(this, EventFeedActivity::class.java)
+                intent.putExtra(Const.EVENT_ID,event.id)
+                intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+                startActivity(intent)
+            }
+            binding.btnSeeEvent.setOnClickListener {
+               VibrationUtil.vibrate(this)
+               val intent = Intent(this, EventFeedActivity::class.java)
+                intent.putExtra(Const.EVENT_ID,event.id)
+               intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+                startActivity(intent)
+           }
+            if (event.metadata?.portraitThumbnailUrl.isNullOrBlank()) {
+                binding.header.ivEvent.visibility = View.GONE
+                Glide.with(this)
+                    .load(R.drawable.placeholder_my_event)
+                    .into(binding.header.ivEvent)
+            } else {
+                binding.header.ivEvent.visibility = View.VISIBLE
+                Glide.with(this)
+                    .load(event.metadata?.portraitThumbnailUrl)
+                    .transform(RoundedCorners(10)) // Ajout des arrondis de 5dp
+                    .error(R.drawable.placeholder_my_event) // Si l'URL est invalide, charger le placeholder
+                    .into(binding.header.ivEvent)
+            }
+            Timber.wtf("wtf event date " + event.metadata?.startsAt )
+            binding.header.headerSubtitle.visibility = View.VISIBLE
+            binding.header.headerTitle.text = event.title
+            binding.header.headerSubtitle.text = formatDate(event.metadata?.startsAt.toString())
+            binding.emptyState.visibility = View.GONE
+        }
+    }
+    fun formatDate(inputDate: String): String {
+        val locale = Locale.getDefault()
+        val inputFormat = SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.US)
+
+        // Parser la date en objet Date
+        val date: Date? = inputFormat.parse(inputDate)
+        if (date == null) return ""
+
+        // Transformer en Calendar pour extraire jour, mois et année
+        val calendar = Calendar.getInstance()
+        calendar.time = date
+
+        val dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK)
+        val month = calendar.get(Calendar.MONTH).toInt() // Ajout de `.toInt()` pour éviter l'erreur
+        val day = calendar.get(Calendar.DAY_OF_MONTH)
+        val year = calendar.get(Calendar.YEAR)
+
+        val dayString = when (dayOfWeek) {
+            Calendar.MONDAY -> this.getString(R.string.enhanced_onboarding_time_disponibility_day_monday)
+            Calendar.TUESDAY -> this.getString(R.string.enhanced_onboarding_time_disponibility_day_tuesday)
+            Calendar.WEDNESDAY -> this.getString(R.string.enhanced_onboarding_time_disponibility_day_wednesday)
+            Calendar.THURSDAY -> this.getString(R.string.enhanced_onboarding_time_disponibility_day_thursday)
+            Calendar.FRIDAY -> this.getString(R.string.enhanced_onboarding_time_disponibility_day_friday)
+            Calendar.SATURDAY -> this.getString(R.string.enhanced_onboarding_time_disponibility_day_saturday)
+            Calendar.SUNDAY -> this.getString(R.string.enhanced_onboarding_time_disponibility_day_sunday)
+            else -> ""
+        }
+
+        val monthString = when (month) {
+            Calendar.JANUARY -> this.getString(R.string.january)
+            Calendar.FEBRUARY -> this.getString(R.string.february)
+            Calendar.MARCH -> this.getString(R.string.march)
+            Calendar.APRIL -> this.getString(R.string.april)
+            Calendar.MAY -> this.getString(R.string.may)
+            Calendar.JUNE -> this.getString(R.string.june)
+            Calendar.JULY -> this.getString(R.string.july)
+            Calendar.AUGUST -> this.getString(R.string.august)
+            Calendar.SEPTEMBER -> this.getString(R.string.september)
+            Calendar.OCTOBER -> this.getString(R.string.october)
+            Calendar.NOVEMBER -> this.getString(R.string.november)
+            Calendar.DECEMBER -> this.getString(R.string.december)
+            else -> ""
+        }
+
+        return "$dayString $day $monthString $year"
     }
 
     private fun checkAndShowPopWarning() {

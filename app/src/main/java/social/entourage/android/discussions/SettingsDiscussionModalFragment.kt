@@ -94,7 +94,6 @@ class SettingsDiscussionModalFragment : BottomSheetDialogFragment() {
         binding.header.title = getString(R.string.discussion_settings_title)
         if (isOneToOne) {
             binding.profile.label = getString(R.string.discussion_settings_profil) //discussion_settings_members
-
             binding.layoutBlock.isVisible = !imBlocker
             binding.block.text = getString(R.string.discussion_block_title)
             binding.blockSub.text = String.format(getString(R.string.discussion_block_subtitle),username)
@@ -107,13 +106,10 @@ class SettingsDiscussionModalFragment : BottomSheetDialogFragment() {
         if(isSeveralPersonneInConversation){
             binding.layoutBlock.isVisible = false
         }
-        else{
-            binding.layoutBlock.isVisible = true
-        }
     }
 
     private fun updateInputs() {
-        if (isOneToOne || isCreator) {
+        if (isCreator || isOneToOne || isEvent ) {
             binding.quit.layout.isVisible = false
         }
         else {
@@ -206,6 +202,7 @@ class SettingsDiscussionModalFragment : BottomSheetDialogFragment() {
         private const val ARG_BLOCKED = "imBlocker"
         const val TAG = "SettingsDiscussionModalFragment"
         var isSeveralPersonneInConversation = false
+        var isEvent = false
         fun newInstance(userId:Int?,conversationId:Int?,isOneToOne:Boolean, username:String?,imBlocker:Boolean? = null): SettingsDiscussionModalFragment {
             val fragment = SettingsDiscussionModalFragment()
             val args = Bundle()

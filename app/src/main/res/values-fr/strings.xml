@@ -394,7 +394,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="feed_event_date">"dd MMMM yyyy"</string>
     <string name="feed_event_time">HH\'h\'mm</string>
     <string name="participate">Participer</string>
-    <string name="participating">Participe</string>
+    <string name="participating">Je participe</string>
     <string name="geoUri">http://maps.google.com/maps?q=loc:%s</string>
     <string name="event_settings">Paramètres de l\'événement</string>
     <string name="event_notification_all">Toute l\'activité de l\'événement</string>
@@ -2895,6 +2895,21 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="share_and_join_event">Participer et rejoindre la conversation</string>
     <string name="see_conversation_event">Voir la conversation</string>
     <string name="child_rules">Normes de protection des enfants</string>
+    <string name="filter_all">Toutes</string>
+    <string name="filter_discussions">Discussions</string>
+    <string name="filter_events">Événements</string>
+
+    <string name="title_button_see_event">Retrouvez toutes les informations de l’événement ici</string>
+    <string name="welcome">Enchantés %1$s !</string>
+    <string name="question">En plus de faire des rencontres humaines, comment souhaitez-vous contribuer au sein de la Communauté Entourage ?</string>
+    <string name="option_surround">Entourer</string>
+    <string name="option_surround_desc">Je souhaite proposer du soutien à mes voisin(e)s qui en ont besoin.</string>
+    <string name="option_supported">Être entouré</string>
+    <string name="option_supported_desc">Je suis en situation de vulnérabilité et recherche du soutien</string>
+    <string name="option_both">Les deux</string>
+    <string name="option_both_desc">Proposer du soutien et en recevoir</string>
+    <string name="question_location">Quel est votre quartier ?</string>
+    <string name="input_location">Adresse ville ou département</string>
 
 </resources>
 

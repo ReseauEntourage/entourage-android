@@ -6,6 +6,8 @@ import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.*
 import social.entourage.android.api.model.Conversation
+import social.entourage.android.api.model.GroupMember
+import social.entourage.android.api.model.User
 import social.entourage.android.api.model.UserBlockedUser
 
 /**
@@ -16,11 +18,11 @@ class DiscussionsListWrapper(@field:SerializedName("conversations") val allConve
 class DiscussionDetailWrapper(@field:SerializedName("conversation") val conversation: Conversation)
 class UserBlockedWrapper(@field:SerializedName("user_blocked_user") val blockedUser: UserBlockedUser)
 class UsersBlockedWrapper(@field:SerializedName("user_blocked_users") val blockedUsers: MutableList<UserBlockedUser>)
+class UserListWithConversationWrapper(
+    @SerializedName("users") val users: MutableList<GroupMember>
+)
 
 interface DiscussionsRequest {
-    @GET("conversations")
-    fun getAllConversations(@Query("page") page: Int,
-                            @Query("per") per: Int): Call<DiscussionsListWrapper>
 
     @GET("conversations/{convId}")
     fun getDetailConversation(@Path("convId") conversationId: Int): Call<DiscussionDetailWrapper>
@@ -78,4 +80,28 @@ interface DiscussionsRequest {
         @Path("conversation_id") conversationId: String,
 
     ): Call<ResponseBody>
+
+    @GET("conversations")
+    fun getAllConversations(
+        @Query("page") page: Int,
+        @Query("per") per: Int
+    ): Call<DiscussionsListWrapper>
+
+    @GET("conversations/privates")
+    fun getPrivateConversations(
+        @Query("page") page: Int,
+        @Query("per") per: Int
+    ): Call<DiscussionsListWrapper>
+
+    @GET("conversations/outings")
+    fun getOutingConversations(
+        @Query("page") page: Int,
+        @Query("per") per: Int
+    ): Call<DiscussionsListWrapper>
+
+    @GET("conversations/{conversation_id}/users")
+    fun getUsersForConversation(
+        @Path("conversation_id") conversationId: Int
+    ): Call<UserListWithConversationWrapper>
+
 }

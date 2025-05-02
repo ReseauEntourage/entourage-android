@@ -2861,5 +2861,19 @@ Ei vor citi acest mesaj imediat ce se vor alătura grupului.</string>
     <string name="share_and_join_event">Participă și alătură-te conversației</string>
     <string name="see_conversation_event">Vezi conversația</string>
     <string name="child_rules">Standardele de protecție a copiilor</string>
+    <string name="filter_all">Toate</string>
+    <string name="filter_discussions">Discuții</string>
+    <string name="filter_events">Evenimente</string>
+    <string name="title_button_see_event">Găsiți toate informațiile despre eveniment aici</string>
+    <string name="welcome" lang="ro">Bine ai venit, %1$s!</string>
+    <string name="question" lang="ro">Cum dorești să contribui la comunitatea Entourage?</string>
+    <string name="option_surround" lang="ro">Sprijin</string>
+    <string name="option_surround_desc" lang="ro">Vreau să ofer sprijin vecinilor mei care au nevoie.</string>
+    <string name="option_supported" lang="ro">A fi sprijinit</string>
+    <string name="option_supported_desc" lang="ro">Sunt într-o situație vulnerabilă și caut sprijin.</string>
+    <string name="option_both" lang="ro">Ambele</string>
+    <string name="option_both_desc" lang="ro">Oferă sprijin și primește-l.</string>
+    <string name="question_location" lang="ro">Care este cartierul tău?</string>
+    <string name="input_location" lang="ro">Adresă oraș sau județ</string>
 
 </resources>

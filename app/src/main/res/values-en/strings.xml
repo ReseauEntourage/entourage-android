@@ -352,7 +352,7 @@
     <string name="event_posts_empty_state_title">There is no publication (yet) on this event</string>
     <string name="event_posts_empty_state_subtitle">Hey! It\s time to share the first news to start the discussion!</string>
     <string name="participate">Participate</string>
-    <string name="participating">Participate</string>
+    <string name="participating">I participate</string>
     <string name="geoUri">http://maps.google.com/maps?q</string>
     <string name="event_settings">Event settings</string>
     <string name="event_notification_all">All event activity</string>
@@ -1799,5 +1799,20 @@
     <string name="share_and_join_event">Join and participate in the conversation</string>
     <string name="see_conversation_event">See the conversation</string>
     <string name="child_rules">Child protection standards</string>
+    <string name="filter_all">All</string>
+    <string name="filter_discussions">Discussions</string>
+    <string name="filter_events">Events</string>
+    <string name="title_button_see_event">Find all event information here</string>
+    <string name="welcome" lang="en">Welcome %1$s!</string>
+    <string name="question" lang="en">In addition to making human connections, how would you like to contribute to the Entourage Community?</string>
+    <string name="option_surround" lang="en">Support</string>
+    <string name="option_surround_desc" lang="en">I want to offer support to my neighbors in need.</string>
+    <string name="option_supported" lang="en">Be supported</string>
+    <string name="option_supported_desc" lang="en">I am in a vulnerable situation and looking for support.</string>
+    <string name="option_both" lang="en">Both</string>
+    <string name="option_both_desc" lang="en">Offer support and receive it.</string>
+    <string name="question_location" lang="en">What is your neighborhood?</string>
+    <string name="input_location" lang="en">City or department address</string>
+
 
 </resources>

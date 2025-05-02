@@ -25,6 +25,7 @@ class OnboardingPhase3Fragment : Fragment(), OnboardingChoosePlaceCallback {
 
     private var isEntour = false
     private var isBeEntour = false
+    private var isBothEntour = false
     private var isAsso = false
     private lateinit var binding:FragmentOnboardingPhase3Binding
     private var address: User.Address? = null
@@ -51,38 +52,86 @@ class OnboardingPhase3Fragment : Fragment(), OnboardingChoosePlaceCallback {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        initOnboardingViews()
         binding.location.setOnClickListener {
             val fg = OnboardingAddPlaceFragment()
             fg.callback = this
             fg.show(parentFragmentManager,"")
         }
 
-        binding.uiLayoutEntour?.setOnClickListener {
-            isEntour = ! isEntour
-            changeSelections()
-            updateTypes()
-        }
-        binding.uiLayoutBeentour?.setOnClickListener {
-
-            isBeEntour = ! isBeEntour
-            if(isBeEntour){
-                EnhancedOnboarding.preference = "contribution"
-            }else{
-                EnhancedOnboarding.preference = ""
-            }
-            changeSelections()
-            updateTypes()
-        }
-        binding.uiLayoutAsso?.setOnClickListener {
-            isAsso = ! isAsso
-            changeSelections()
-            updateTypes()
-        }
-
-        changeSelections()
+        //if click on asso , reset all other values
+        isBeEntour = false
+        isEntour = false
+        updateBackgroundLayoutEntour(false)
+        updateBackgroundLayoutBeenEntour(false)
+        updateBackgroundLayoutBothEntour(false)
         AnalyticsEvents.logEvent(AnalyticsEvents.Onboard_profile)
         EnhancedOnboarding.shouldNotDisplayCampain = true
+    }
+
+    private fun initOnboardingViews() {
+        // Initialisation des textes depuis les strings.xml
+        binding.uiLayoutEntour.tvInterestTitleFromRight.text = getString(R.string.option_surround)
+        binding.uiLayoutEntour.tvInterestSubTitleFromRight.text = getString(R.string.option_surround_desc)
+        binding.uiLayoutEntour.ivInterestIcon.setImageResource(R.drawable.onboarding_entour) // Ajouter l'icône spécifique
+        binding.uiLayoutEntour.tvInterestTitle.visibility = View.GONE
+
+        binding.uiLayoutBeentour.tvInterestTitleFromRight.text = getString(R.string.option_supported)
+        binding.uiLayoutBeentour.tvInterestSubTitleFromRight.text = getString(R.string.option_supported_desc)
+        binding.uiLayoutBeentour.ivInterestIcon.setImageResource(R.drawable.onboarding_been_entour) // Ajouter l'icône spécifique
+        binding.uiLayoutBeentour.tvInterestTitle.visibility = View.GONE
+
+        binding.uiLayoutEntourBeentourBoth.tvInterestTitleFromRight.text = getString(R.string.option_both)
+        binding.uiLayoutEntourBeentourBoth.tvInterestSubTitleFromRight.text = getString(R.string.option_both_desc)
+        binding.uiLayoutEntourBeentourBoth.ivInterestIcon.setImageResource(R.drawable.onboarding_both_entour_been_entour) // Ajouter l'icône spécifique
+        binding.uiLayoutEntourBeentourBoth.tvInterestTitle.visibility = View.GONE
+
+        // Appliquer les styles initiaux
+        updateBackgroundLayoutEntour(isEntour)
+        updateBackgroundLayoutBeenEntour(isBeEntour)
+        updateBackgroundLayoutBothEntour(isBothEntour)
+
+        // Gestion des clics pour basculer les états
+        binding.uiLayoutEntour.view.setOnClickListener {
+            isEntour = !isEntour
+            isBeEntour = false
+            isBothEntour = false
+            updateBackgroundLayoutEntour(isEntour)
+            updateBackgroundLayoutBeenEntour(false)
+            updateBackgroundLayoutBothEntour(false)
+            updateTypes()
+        }
+
+        binding.uiLayoutBeentour.view.setOnClickListener {
+            isBeEntour = !isBeEntour
+            isEntour = false
+            isBothEntour = false
+            EnhancedOnboarding.preference = if (isBeEntour) "contribution" else ""
+            updateBackgroundLayoutBeenEntour(isBeEntour)
+            updateBackgroundLayoutEntour(false)
+            updateBackgroundLayoutBothEntour(false)
+            updateTypes()
+        }
+
+        binding.uiLayoutEntourBeentourBoth.view.setOnClickListener {
+            isBothEntour = !isBothEntour
+            isEntour = false
+            isBeEntour = false
+            updateBackgroundLayoutBothEntour(isBothEntour)
+            updateBackgroundLayoutBeenEntour(false)
+            updateBackgroundLayoutEntour(false)
+            updateTypes()
+        }
+
+        binding.uiLayoutAsso?.setOnClickListener {
+            isAsso = !isAsso
+            if(isAsso){
+                binding.uiIvAssoCheck.setImageResource(R.drawable.new_bg_selected_filter)
+            }else{
+                binding.uiIvAssoCheck.setImageResource(R.drawable.new_bg_unselected_filter)
+            }
+            updateTypes()
+        }
     }
 
     override fun onAttach(context: Context) {
@@ -95,25 +144,31 @@ class OnboardingPhase3Fragment : Fragment(), OnboardingChoosePlaceCallback {
         callback = null
     }
 
-    private fun changeSelections() {
-        changeLayoutAndImage(binding.uiLayoutEntour,binding.uiIvEntourCheck, isEntour)
-        changeLayoutAndImage(binding.uiLayoutBeentour,binding.uiIvBeentourCheck, isBeEntour)
-        changeLayoutAndImage(binding.uiLayoutAsso,binding.uiIvAssoCheck, isAsso)
+    private fun updateBackgroundLayoutEntour(isSelected: Boolean) {
+        val backgroundResource = if (isSelected) R.drawable.shape_border_orange else R.drawable.shape_grey_border
+        binding.uiLayoutEntour.view.setBackgroundResource(backgroundResource)
+        binding.uiLayoutEntour.ivInterestCheck.setImageResource(if (isSelected) R.drawable.ic_onboarding_check else R.drawable.ic_onboarding_uncheck)
     }
-
-    private fun changeLayoutAndImage(layout:ConstraintLayout?,image:ImageView?, isOn:Boolean) {
-        if (isOn) {
-            layout?.background =  AppCompatResources.getDrawable(requireContext(),R.drawable.new_bg_rounded_button_beige_orange_stroke_radius20)
-            image?.setImageDrawable( AppCompatResources.getDrawable(requireContext(),R.drawable.new_bg_selected_filter))
-        }
-        else {
-            layout?.background =  AppCompatResources.getDrawable(requireContext(),R.drawable.new_bg_rounded_button_light_beige_orange_stroke_radius20)
-            image?.setImageDrawable( AppCompatResources.getDrawable(requireContext(),R.drawable.new_bg_unselected_filter))
-        }
+    private fun updateBackgroundLayoutBeenEntour(isSelected: Boolean) {
+        val backgroundResource = if (isSelected) R.drawable.shape_border_orange else R.drawable.shape_grey_border
+        binding.uiLayoutBeentour.view.setBackgroundResource(backgroundResource)
+        binding.uiLayoutBeentour.ivInterestCheck.setImageResource(if (isSelected) R.drawable.ic_onboarding_check else R.drawable.ic_onboarding_uncheck)
+    }
+    // Fonction pour mettre à jour l'affichage de "Les deux"
+    private fun updateBackgroundLayoutBothEntour(isSelected: Boolean) {
+        val backgroundResource = if (isSelected) R.drawable.shape_border_orange else R.drawable.shape_grey_border
+        binding.uiLayoutEntourBeentourBoth.view.setBackgroundResource(backgroundResource)
+        binding.uiLayoutEntourBeentourBoth.ivInterestCheck.setImageResource(
+            if (isSelected) R.drawable.ic_onboarding_check else R.drawable.ic_onboarding_uncheck
+        )
     }
 
     private fun updateTypes() {
-        callback?.updateUsertypeAndAddress(isEntour,isBeEntour,isAsso,address)
+        if(isBothEntour){
+            callback?.updateUsertypeAndAddress(true,true,isAsso,address)
+        }else{
+            callback?.updateUsertypeAndAddress(isEntour,isBeEntour,isAsso,address)
+        }
     }
 
     companion object {

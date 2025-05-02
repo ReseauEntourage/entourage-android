@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.collection.ArrayMap
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.google.gson.Gson
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -538,6 +539,7 @@ class GroupPresenter: ViewModel() {
     }
 
     fun addComment(groupId: Int, comment: Post?) {
+        Timber.wtf("wtf comment added " + Gson().toJson(comment))
         val messageChat = ArrayMap<String, Any>()
         messageChat["content"] = comment?.content
         messageChat["parent_id"] = comment?.postId.toString()

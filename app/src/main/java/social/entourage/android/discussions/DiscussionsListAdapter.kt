@@ -1,6 +1,7 @@
 package social.entourage.android.discussions
 
 import android.graphics.Typeface
+import android.text.TextUtils
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -10,10 +11,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.google.gson.Gson
+import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.api.model.Conversation
 import social.entourage.android.databinding.LayoutConversationHomeItemBinding
+import social.entourage.android.tools.utils.Utils
+import timber.log.Timber
 
 interface OnItemClick {
     fun onItemClick(position: Int)
@@ -35,6 +40,7 @@ class DiscussionsListAdapter(
 
             binding.layout.setOnClickListener {
                 onItemClickListener.onItemClick(position)
+
             }
             if (conversation.isOneToOne()) {
                 binding.imagePicto.isVisible = false
@@ -52,22 +58,64 @@ class DiscussionsListAdapter(
                 }
             }
             else {
-                binding.imagePicto.isVisible = true
-                Glide.with(binding.image.context)
-                    .load(R.drawable.new_circle_fill_beige)
-                    .transform(CenterCrop(), CircleCrop())
-                    .into(binding.image)
-                binding.imagePicto.setImageResource(conversation.getPictoTypeFromSection())
+                conversation.type?.let { type ->
+                    if (type == "outing") {
+                        Timber.d("type : $type")
+                        if (conversation.imageUrl.isNullOrBlank()) {
+                            Glide.with(binding.image.context)
+                                .load(R.drawable.placeholder_my_event)
+                                .transform(CenterCrop(),RoundedCorners(10)) // Ajout des arrondis de 5dp
+                                .into(binding.image)
+                        } else {
+                            Glide.with(binding.image.context)
+                                .load(conversation.imageUrl)
+                                .transform(CenterCrop(),RoundedCorners(10)) // Ajout des arrondis de 5dp
+                                .error(R.drawable.placeholder_my_event) // Si l'URL est invalide, charger le placeholder
+                                .into(binding.image)
+                        }
+                    }else{
+                        conversation.user?.imageUrl?.let {
+                            Glide.with(binding.image.context)
+                                .load(it)
+                                .error(R.drawable.placeholder_user)
+                                .transform(CenterCrop(), CircleCrop())
+                                .into(binding.image)
+                        } ?: run {
+                            Glide.with(binding.image.context)
+                                .load(R.drawable.placeholder_user)
+                                .transform(CenterCrop(), CircleCrop())
+                                .into(binding.image)
+                        }
+                    }
+                }
             }
 
-            if (conversation.memberCount > 2) {
-                var namesText = ""
-                namesText = conversation.user?.displayName +  " + " + (conversation.memberCount.minus(1) ) + " membres"
-                binding.name.text = namesText
+            if (conversation.memberCount > 2 && conversation.members != null) {
+                val currentUserId = EntourageApplication.get().me()?.id
+                val names = conversation.members
+                    .filter { it?.id != currentUserId } // exclure le current user
+                    .take(5) // prendre les 5 premiers autres membres
+                    .mapNotNull { it?.displayName } // éviter les nulls
+                    .map {
+                        if (it.length > 2) it.dropLast(3) else it
+                    }
+                Timber.wtf("wtf ${Gson().toJson(names)}")
+                val namesText = names.joinToString(", ")
+                binding.name.apply {
+                    text = namesText
+                    isSingleLine = true
+                    ellipsize = TextUtils.TruncateAt.END
+                }
             } else {
                 binding.name.text = conversation.title
             }
 
+            if(conversation.type == "outing"){
+               binding.name.text = conversation.title
+                binding.date.visibility = View.GONE
+            }else{
+                binding.date.visibility = View.VISIBLE
+            }
 
             if (conversation.getRolesWithPartnerFormated()?.isEmpty() == false) {
                 binding.role.isVisible = true

@@ -7,6 +7,22 @@
     android:id="@+id/home_parent"
     tools:context=".home.HomeFragment">
 
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/chatbotButton"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:elevation="10dp"
+        android:layout_margin="16dp"
+        android:clickable="true"
+        android:focusable="true"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:lottie_rawRes="@raw/chatbot_anim"
+        android:visibility="gone"
+        />
+
     <ProgressBar
         android:id="@+id/progressBar"
         style="?android:attr/progressBarStyleLarge"

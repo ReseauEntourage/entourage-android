@@ -201,6 +201,10 @@ class OnboardingStartActivity : AppCompatActivity(), OnboardingStartCallback {
         }
         else if (isBeEntour) {
             userType = UserTypeSelection.ALONE
+        }else if (isEntour) {
+            userType = UserTypeSelection.NEIGHBOUR
+        }else if (isBeEntour && isEntour) {
+            userType = UserTypeSelection.BOTH
         }
 
         val currentGoal = userType.getGoalString()

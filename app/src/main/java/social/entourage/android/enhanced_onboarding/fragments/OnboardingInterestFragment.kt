@@ -99,7 +99,7 @@ class OnboardingInterestFragment : Fragment() {
             },
             user?.interests?.contains("marauding")?.let {
                 InterestForAdapter(
-                    icon = getIconForInterest("rencontre"),
+                    icon = getIconForInterest("marauding"),
                     title = getString(R.string.interest_marauding),
                     isSelected = it,
                     id = "marauding",
@@ -108,7 +108,7 @@ class OnboardingInterestFragment : Fragment() {
             },
             user?.interests?.contains("bien-etre")?.let {
                 InterestForAdapter(
-                    icon = getIconForInterest("bien_etre"),
+                    icon = getIconForInterest("bien-etre"),
                     title = getString(R.string.interest_bien_etre),
                     isSelected = it,
                     id = "bien-etre",
@@ -126,7 +126,7 @@ class OnboardingInterestFragment : Fragment() {
             },
             user?.interests?.contains("culture")?.let {
                 InterestForAdapter(
-                    icon = getIconForInterest("art"),
+                    icon = getIconForInterest("culture"),
                     title = getString(R.string.interest_culture),
                     isSelected = it,
                     id = "culture",
@@ -153,7 +153,7 @@ class OnboardingInterestFragment : Fragment() {
             },
             user?.interests?.contains("activites")?.let {
                 InterestForAdapter(
-                    icon = getIconForInterest("activite_manuelle"),
+                    icon = getIconForInterest("activites"),
                     title = getString(R.string.interest_activites_onboarding),
                     isSelected = it,
                     id = "activites",
@@ -162,16 +162,18 @@ class OnboardingInterestFragment : Fragment() {
             },
             user?.interests?.contains("other")?.let {
                 InterestForAdapter(
-                    icon = getIconForInterest("autre"),
+                    icon = getIconForInterest("other"),
                     title = getString(R.string.interest_other),
                     isSelected = it,
                     id = "other",
                     subtitle = ""
                 )
             }
-        ).filterNotNull() // Filtre pour enlever les éléments nulls si jamais `contains` renvoie null
+        ).filterNotNull()
+
         viewModel.setInterests(interests)
     }
+
 
 
     fun getIconForInterest(id: String): Int {
@@ -189,6 +191,7 @@ class OnboardingInterestFragment : Fragment() {
             else -> R.drawable.ic_onboarding_interest_name_autre
         }
     }
+
 
     private fun handleInterestLoad(interests: List<InterestForAdapter>) {
         // Vérifie si l'adapter est déjà défini

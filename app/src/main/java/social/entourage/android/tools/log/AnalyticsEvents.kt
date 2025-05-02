@@ -623,6 +623,8 @@ object AnalyticsEvents {
 
     const val NotificationClicked__CanceledEvent = "NotificationClicked__CanceledEvent"
 
+    const val NotificationClicked__OutingMessage = "NotificationClicked__OutingMessage"
+
     const val NotificationReceived__OfferHelp__WDay1 = "NotificationReceived__OfferHelp__WDay1"
 
     const val NotificationClicked__OfferHelp__WDay1 = "NotificationClicked__OfferHelp__WDay1"

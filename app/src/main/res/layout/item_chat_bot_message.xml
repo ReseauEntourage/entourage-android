@@ -1,0 +1,16 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="wrap_content"
+    android:padding="8dp">
+    <TextView
+        android:id="@+id/botMessage"
+        android:layout_width="wrap_content"
+        android:layout_gravity="start"
+        android:layout_height="wrap_content"
+        android:padding="12dp"
+        android:fontFamily="@font/nunitosans_regular"
+        android:textSize="15sp"
+        android:autoLink="web"
+        android:textColorLink="@color/bright_blue"
+        android:background="@drawable/bg_unrounded_beige"
+        android:textColor="@android:color/black" />
+</FrameLayout>

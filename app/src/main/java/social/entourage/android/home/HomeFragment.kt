@@ -38,6 +38,7 @@ import social.entourage.android.api.model.Help
 import social.entourage.android.api.model.Pedago
 import social.entourage.android.api.model.Summary
 import social.entourage.android.api.model.User
+import social.entourage.android.chatbot.ChatBotBottomSheet
 import social.entourage.android.databinding.FragmentHomeBinding
 import social.entourage.android.enhanced_onboarding.EnhancedOnboarding
 import social.entourage.android.events.create.CommunicationHandler
@@ -45,11 +46,6 @@ import social.entourage.android.guide.GDSMainActivity
 import social.entourage.android.home.pedago.OnItemClick
 import social.entourage.android.home.pedago.PedagoDetailActivity
 import social.entourage.android.home.pedago.PedagoListActivity
-import social.entourage.android.homev2.HomeActionAdapter
-import social.entourage.android.homev2.HomeEventAdapter
-import social.entourage.android.homev2.HomeGroupAdapter
-import social.entourage.android.homev2.HomeInitialPedagoAdapter
-import social.entourage.android.homev2.HomePedagoAdapter
 import social.entourage.android.notifications.InAppNotificationsActivity
 import social.entourage.android.notifications.NotificationDemandActivity
 import social.entourage.android.onboarding.onboard.OnboardingStartActivity
@@ -176,6 +172,10 @@ class HomeFragment: Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocatio
             // Return the original insets so they aren’t consumed
             windowInsets
         }
+        binding.chatbotButton.setOnClickListener {
+            ChatBotBottomSheet().show(parentFragmentManager, "chatbot")
+        }
+
         return binding.root
     }
 

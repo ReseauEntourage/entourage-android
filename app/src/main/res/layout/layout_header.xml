@@ -31,6 +31,18 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:src="@drawable/new_back" />
+        
+        <ImageView
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:id="@+id/iv_event"
+            app:layout_constraintBottom_toTopOf="@id/divider"
+            app:layout_constraintStart_toEndOf="@+id/icon_back"
+            app:layout_constraintTop_toTopOf="parent"
+            android:visibility="gone"
+            tools:src="@drawable/new_calendar"
+            tools:visibility="visible"
+            />
 
         <TextView
             android:id="@+id/header_title"
@@ -39,11 +51,33 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="11dp"
             android:text="@{title}"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:ellipsize="marquee"
+            android:layout_marginStart="10dp"
             app:layout_constraintBottom_toTopOf="@id/divider"
             app:layout_constraintEnd_toStartOf="@+id/card_icon_setting"
-            app:layout_constraintStart_toEndOf="@+id/icon_back"
+            app:layout_constraintStart_toEndOf="@+id/iv_event"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Notifications" />
+        <TextView
+            android:id="@+id/header_subtitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="11dp"
+            android:text="@{title}"
+            android:layout_marginStart="10dp"
+            app:layout_constraintBottom_toTopOf="@id/divider"
+            app:layout_constraintEnd_toStartOf="@+id/card_icon_setting"
+            app:layout_constraintStart_toEndOf="@+id/iv_event"
+            app:layout_constraintTop_toBottomOf="@+id/header_title"
+            android:fontFamily="@font/nunitosans_regular"
+            android:textSize="13sp"
+
+            android:visibility="gone"
+            android:textColor="@color/grey"
+            tools:text="Notifications"
+            tools:visibility="visible"/>
         <androidx.cardview.widget.CardView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

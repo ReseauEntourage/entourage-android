@@ -1,4 +1,4 @@
-package social.entourage.android.homev2
+package social.entourage.android.home
 
 
 import android.net.Uri
@@ -13,7 +13,6 @@ import social.entourage.android.R
 import social.entourage.android.api.model.Category
 import social.entourage.android.api.model.Pedago
 import social.entourage.android.databinding.HomeV2InitialPedagoItemLayoutBinding
-import social.entourage.android.databinding.HomeV2PedagoItemLayoutBinding
 import social.entourage.android.home.pedago.OnItemClick
 import social.entourage.android.tools.log.AnalyticsEvents
 

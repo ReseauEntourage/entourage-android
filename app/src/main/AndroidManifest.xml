@@ -76,9 +76,6 @@
             android:name=".onboarding.onboard.OnboardingEndActivity"
             android:exported="false" />
         <activity
-            android:name=".tools.view.VideoCallActivity"
-            android:exported="false" />
-        <activity
             android:name=".welcome.WelcomeOneActivity"
             android:exported="false" />
         <activity android:name=".enhanced_onboarding.EnhancedOnboarding"
@@ -218,6 +215,7 @@
 
         <activity
             android:name=".main_filter.MainFilterActivity"
+            android:windowSoftInputMode="adjustPan"
             android:exported="false"
             />
 
@@ -229,113 +227,124 @@
             android:name="google_analytics_adid_collection_enabled"
             android:value="false" />
 
+        <!--
+         <receiver android:name=".widgets.WidgetMainProvider" android:exported="true">
+             <intent-filter>
+                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+             </intent-filter>
 
-        <activity
-            android:name=".MainActivity"
-            android:exported="true"
-            android:launchMode="singleInstance"
-            android:screenOrientation="portrait">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-            <intent-filter android:autoVerify="true" tools:targetApi="m">
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="https"/>
-                <data android:host="${deepLinksHostName}"/>
-                <data android:pathPrefix="/app/"/>
-                <data android:pathPrefix="/deeplink/" />
-                <data android:pathPrefix="/entourages/" />
-            </intent-filter>
-            <intent-filter android:autoVerify="true" tools:targetApi="m">
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="http"/>
-                <data android:host="${deepLinksHostName}"/>
-                <data android:pathPrefix="/app/"/>
-                <data android:pathPrefix="/deeplink/" />
-                <data android:pathPrefix="/entourages/" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="${deepLinksScheme}" />
-            </intent-filter>        </activity>
+             <meta-data
+                 android:name="android.appwidget.provider"
+                 android:resource="@xml/widget_main_info" />
+         </receiver>
+        -->
 
-        <activity
-            android:name="com.google.android.gms.oss.licenses.OssLicensesMenuActivity"
-            android:theme="@style/EntourageOSSLicenses.Theme" />
-        <activity
-            android:name="com.google.android.gms.oss.licenses.OssLicensesActivity"
-            android:theme="@style/EntourageOSSLicenses.Theme" />
-        <activity android:name=".involvement.ShareActivity" />
-        <activity android:name=".involvement.RateActivity" />
-        <activity
-            android:name=".profile.ProfileActivity"
-            android:windowSoftInputMode="adjustPan" />
-        <activity
-            android:name=".onboarding.pre_onboarding.PreOnboardingChoiceActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".onboarding.pre_onboarding.PreOnboardingStartActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".onboarding.pre_onboarding.PreOnboardingLanguage"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".onboarding.login.LoginActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan" />
-        <activity
-            android:name=".profile.ProfileFullActivity"
-            android:windowSoftInputMode="adjustPan" />
+         <activity
+             android:name=".MainActivity"
+             android:exported="true"
+             android:launchMode="singleInstance"
+             android:screenOrientation="portrait">
+             <intent-filter>
+                 <action android:name="android.intent.action.MAIN" />
+                 <category android:name="android.intent.category.LAUNCHER" />
+             </intent-filter>
+             <intent-filter android:autoVerify="true" tools:targetApi="m">
+                 <action android:name="android.intent.action.VIEW" />
+                 <category android:name="android.intent.category.DEFAULT" />
+                 <category android:name="android.intent.category.BROWSABLE" />
+                 <data android:scheme="https"/>
+                 <data android:host="${deepLinksHostName}"/>
+                 <data android:pathPrefix="/app/"/>
+                 <data android:pathPrefix="/deeplink/" />
+                 <data android:pathPrefix="/entourages/" />
+             </intent-filter>
+             <intent-filter android:autoVerify="true" tools:targetApi="m">
+                 <action android:name="android.intent.action.VIEW" />
+                 <category android:name="android.intent.category.DEFAULT" />
+                 <category android:name="android.intent.category.BROWSABLE" />
+                 <data android:scheme="http"/>
+                 <data android:host="${deepLinksHostName}"/>
+                 <data android:pathPrefix="/app/"/>
+                 <data android:pathPrefix="/deeplink/" />
+                 <data android:pathPrefix="/entourages/" />
+             </intent-filter>
+             <intent-filter>
+                 <action android:name="android.intent.action.VIEW" />
+                 <category android:name="android.intent.category.DEFAULT" />
+                 <category android:name="android.intent.category.BROWSABLE" />
+                 <data android:scheme="${deepLinksScheme}" />
+             </intent-filter>        </activity>
 
-        <activity
-            android:name=".profile.EditProfileActivity"
-            android:windowSoftInputMode="adjustPan" />
+         <activity
+             android:name="com.google.android.gms.oss.licenses.OssLicensesMenuActivity"
+             android:theme="@style/EntourageOSSLicenses.Theme" />
+         <activity
+             android:name="com.google.android.gms.oss.licenses.OssLicensesActivity"
+             android:theme="@style/EntourageOSSLicenses.Theme" />
+         <activity android:name=".involvement.ShareActivity" />
+         <activity android:name=".involvement.RateActivity" />
+         <activity
+             android:name=".profile.ProfileActivity"
+             android:windowSoftInputMode="adjustPan" />
+         <activity
+             android:name=".onboarding.pre_onboarding.PreOnboardingChoiceActivity"
+             android:screenOrientation="portrait" />
+         <activity
+             android:name=".onboarding.pre_onboarding.PreOnboardingStartActivity"
+             android:screenOrientation="portrait" />
+         <activity
+             android:name=".onboarding.pre_onboarding.PreOnboardingLanguage"
+             android:screenOrientation="portrait" />
+         <activity
+             android:name=".onboarding.login.LoginActivity"
+             android:screenOrientation="portrait"
+             android:windowSoftInputMode="adjustPan" />
+         <activity
+             android:name=".profile.ProfileFullActivity"
+             android:windowSoftInputMode="adjustPan" />
 
-        <service
-            android:name=".service.EntService"
-            android:exported="false" />
-        <service
-            android:name=".notifications.EntourageFirebaseMessagingService"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT" />
-            </intent-filter>
-        </service>
+         <activity
+             android:name=".profile.EditProfileActivity"
+             android:windowSoftInputMode="adjustPan" />
 
-        <provider
-            android:name="androidx.core.content.FileProvider"
-            android:authorities="${applicationId}.fileprovider"
-            android:exported="false"
-            android:grantUriPermissions="true">
-            <meta-data
-                android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/provider_paths" />
-        </provider>
+         <service
+             android:name=".service.EntService"
+             android:exported="false" />
+         <service
+             android:name=".notifications.EntourageFirebaseMessagingService"
+             android:exported="false">
+             <intent-filter>
+                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
+             </intent-filter>
+         </service>
+
+         <provider
+             android:name="androidx.core.content.FileProvider"
+             android:authorities="${applicationId}.fileprovider"
+             android:exported="false"
+             android:grantUriPermissions="true">
+             <meta-data
+                 android:name="android.support.FILE_PROVIDER_PATHS"
+                 android:resource="@xml/provider_paths" />
+         </provider>
 
 
-        <meta-data
-            android:name="com.google.firebase.messaging.default_notification_icon"
-            android:resource="@drawable/ic_entourage_logo_one_color" />
-        <meta-data
-            android:name="com.google.firebase.messaging.default_notification_color"
-            android:resource="@color/accent" />
-        <meta-data
-            android:name="com.google.firebase.messaging.default_notification_channel_id"
-            android:value="@string/default_notifiation_channel" />
+         <meta-data
+             android:name="com.google.firebase.messaging.default_notification_icon"
+             android:resource="@drawable/ic_entourage_logo_one_color" />
+         <meta-data
+             android:name="com.google.firebase.messaging.default_notification_color"
+             android:resource="@color/accent" />
+         <meta-data
+             android:name="com.google.firebase.messaging.default_notification_channel_id"
+             android:value="@string/default_notifiation_channel" />
 
-        <uses-library
-            android:name="org.apache.http.legacy"
-            android:required="false" />
-        <uses-library
-            android:name="android.test.runner"
-            android:required="false" />
-    </application>
+         <uses-library
+             android:name="org.apache.http.legacy"
+             android:required="false" />
+         <uses-library
+             android:name="android.test.runner"
+             android:required="false" />
+     </application>
 
-</manifest>
+ </manifest>

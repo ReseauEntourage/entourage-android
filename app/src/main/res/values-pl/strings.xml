@@ -2865,5 +2865,18 @@ Przeczytają tę wiadomość, gdy tylko dołączą do grupy.</string>
     <string name="share_and_join_event">Dołącz i weź udział w rozmowie</string>
     <string name="see_conversation_event">Zobacz rozmowę</string>
     <string name="child_rules">Standardy ochrony dzieci</string>
-
+    <string name="filter_all">Wszystkie</string>
+    <string name="filter_discussions">Dyskusje</string>
+    <string name="filter_events">Wydarzenia</string>
+    <string name="title_button_see_event">Znajdź wszystkie informacje o wydarzeniu tutaj</string>
+    <string name="welcome" lang="pl">Witamy %1$s!</string>
+    <string name="question" lang="pl">Jak chcesz przyczynić się do wspólnoty Entourage?</string>
+    <string name="option_surround" lang="pl">Wsparcie</string>
+    <string name="option_surround_desc" lang="pl">Chcę wspierać moich sąsiadów, którzy tego potrzebują.</string>
+    <string name="option_supported" lang="pl">Być wspieranym</string>
+    <string name="option_supported_desc" lang="pl">Jestem w trudnej sytuacji i szukam wsparcia.</string>
+    <string name="option_both" lang="pl">Oba</string>
+    <string name="option_both_desc" lang="pl">Wspierać i być wspieranym.</string>
+    <string name="question_location" lang="pl">Jaka jest twoja dzielnica?</string>
+    <string name="input_location" lang="pl">Adres miasta lub regionu</string>
 </resources>

@@ -6,7 +6,6 @@ import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -31,9 +30,8 @@ import social.entourage.android.api.model.Events
 import social.entourage.android.databinding.NewFragmentDiscoverEventsListBinding
 import social.entourage.android.events.EventFiltersActivity
 import social.entourage.android.events.EventsPresenter
-import social.entourage.android.homev2.HomeEventAdapter
+import social.entourage.android.home.HomeEventAdapter
 import social.entourage.android.main_filter.MainFilterActivity
-import social.entourage.android.main_filter.MainFilterMode
 import social.entourage.android.tools.log.AnalyticsEvents
 
 const val EVENTS_PER_PAGE = 20

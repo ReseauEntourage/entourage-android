@@ -50,7 +50,7 @@ import social.entourage.android.events.EventsPresenter
 import social.entourage.android.guide.GDSMainActivity
 import social.entourage.android.home.CommunicationHandlerBadgeViewModel
 import social.entourage.android.home.UnreadMessages
-import social.entourage.android.homev2.EventConfirmationDialogFragment
+import social.entourage.android.home.EventConfirmationDialogFragment
 import social.entourage.android.language.LanguageManager
 import social.entourage.android.main_filter.MainFilterActivity
 import social.entourage.android.notifications.NotificationActionManager
@@ -198,7 +198,7 @@ class MainActivity : BaseSecuredActivity() {
         }
         if(shouldLaunchQuizz){
             shouldLaunchQuizz = false
-            val urlString = "https://kahoot.it/challenge/0354666?challenge-id=45371e80-fe50-4be5-afec-b37e3d50ede2_1729004998521"
+            val urlString = "https://kahoot.it/challenge/45371e80-fe50-4be5-afec-b37e3d50ede2_1733228323615"
             WebViewFragment.newInstance(urlString, 0, true)
                 .show(supportFragmentManager, WebViewFragment.TAG)
         }
@@ -277,6 +277,14 @@ class MainActivity : BaseSecuredActivity() {
     fun useIntentForRedictection(intent: Intent){
         intent.action?.let { action ->
             checkIntentAction(action, intent.extras)
+        }
+
+
+        val isFromWidget = intent.getBooleanExtra("isFromWidget", false)
+        Log.wtf("wtf" , "isFromWidget : $isFromWidget")
+        if (isFromWidget) {
+            goEvent()
+            return
         }
         val fromWelcomeActivity = intent.getBooleanExtra("fromWelcomeActivity", false)
         val fromWelcomeActivityThreeEvent = intent.getBooleanExtra("fromWelcomeActivityThreeEvent", false)
@@ -361,7 +369,7 @@ class MainActivity : BaseSecuredActivity() {
                     extra.instance?.let { instance ->
                         extra.instanceId?.let { id ->
                             NotificationActionManager.presentAction(
-                                this, supportFragmentManager, instance, id, extra.postId, popup = extra.popup
+                                this, supportFragmentManager, instance, id, extra.postId, popup = extra.popup, tracking = extra.tracking
                             )
                         }
                     }
@@ -372,10 +380,8 @@ class MainActivity : BaseSecuredActivity() {
         intent = null
     }
 
-
-
     fun ifEventLastDay(eventId:Int){
-        eventPresenter.getEvent(eventId)
+        eventPresenter.getEvent(eventId.toString())
     }
 
     private fun handleEventResponse(event: Events?) {

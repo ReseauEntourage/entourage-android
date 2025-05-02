@@ -1,4 +1,4 @@
-package social.entourage.android.homev2
+package social.entourage.android.home
 
 import android.app.Dialog
 import android.os.Bundle

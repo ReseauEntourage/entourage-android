@@ -15,6 +15,7 @@ import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.os.bundleOf
 import androidx.preference.PreferenceManager
 import com.google.firebase.messaging.RemoteMessage
 import com.google.gson.Gson
@@ -25,8 +26,10 @@ import social.entourage.android.api.model.notification.PushNotificationMessage
 import social.entourage.android.api.model.notification.PushNotificationContent
 import social.entourage.android.api.model.TimestampedObject
 import social.entourage.android.api.model.feed.FeedItem
+import social.entourage.android.discussions.DetailConversationActivity
 import social.entourage.android.notifications.NotificationActionReceiver.Companion.ACTION_CLICKED
 import social.entourage.android.tools.log.AnalyticsEvents
+import social.entourage.android.tools.utils.Const
 import social.entourage.android.welcome.*
 import timber.log.Timber
 
@@ -420,6 +423,43 @@ object PushNotificationManager {
             val intent = Intent(context, WelcomeFiveActivity::class.java)
             intent.putExtra("notification_content", Gson().toJson(pushNotificationMessage.content))
             return PendingIntent.getActivity(context, pushNotificationMessage.pushNotificationId, intent, PendingIntent.FLAG_IMMUTABLE)
+        }
+
+        val instance = pushNotificationMessage.content?.extra?.instance
+        val tracking = pushNotificationMessage.content?.extra?.tracking
+        Timber.wtf("wtf instance = $instance")
+        Timber.wtf("wtf tracking = $tracking")
+        val isDiscussionTracking = tracking in listOf(
+            "public_chat_message_on_create",
+            "post_on_create_to_outing",
+            "post_on_create",
+            "comment_on_create_to_outing",
+            "comment_on_create",
+            "chat_message_on_mention",
+            "reaction_on_create",
+            "survey_response_on_create"
+        )
+        if ((instance == "outings" || instance == "outing") && isDiscussionTracking) {
+            val intent = Intent(context, DetailConversationActivity::class.java).apply {
+                putExtras(
+                    bundleOf(
+                        Const.ID to pushNotificationMessage.content?.joinableId?.toInt(), // ou .toLong() selon ton implémentation
+                        Const.SHOULD_OPEN_KEYBOARD to false,
+                        Const.IS_CONVERSATION_1TO1 to true, // à adapter selon besoin
+                        Const.IS_MEMBER to true,
+                        Const.IS_CONVERSATION to true,
+                        Const.HAS_TO_SHOW_MESSAGE to true, // à adapter selon besoin
+                        "notification_content" to Gson().toJson(pushNotificationMessage.content)
+                    )
+                )
+            }
+
+            return PendingIntent.getActivity(
+                context,
+                pushNotificationMessage.pushNotificationId,
+                intent,
+                PendingIntent.FLAG_IMMUTABLE
+            )
         }
 
         val messageIntent = Intent(context, MainActivity::class.java)

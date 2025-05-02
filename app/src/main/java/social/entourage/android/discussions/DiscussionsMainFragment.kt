@@ -14,6 +14,7 @@ import android.text.style.UnderlineSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import androidx.core.os.bundleOf
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -32,7 +33,12 @@ import social.entourage.android.home.UnreadMessages
 import social.entourage.android.notifications.NotificationDemandActivity
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.utils.Const
+import social.entourage.android.tools.utils.VibrationUtil
 import kotlin.math.abs
+
+enum class FilterMode {
+    ALL, PRIVATE, OUTINGS
+}
 
 const val messagesPerPage = 25
 
@@ -46,6 +52,7 @@ class DiscussionsMainFragment : Fragment() {
     private var messagesList: MutableList<Conversation> = ArrayList()
 
     private val discussionsPresenter: DiscussionsPresenter by lazy { DiscussionsPresenter() }
+    private var currentFilterMode: FilterMode = FilterMode.ALL // Mode par défaut
 
     private lateinit var discussionsAdapter: DiscussionsListAdapter
 
@@ -70,6 +77,7 @@ class DiscussionsMainFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.progressBar.visibility = View.VISIBLE
+        initializeSearchBar()
         initializeRV()
         handleSwipeRefresh()
         discussionsPresenter.getAllMessages.observe(viewLifecycleOwner, ::handleResponseGetDiscussions)
@@ -148,15 +156,16 @@ class DiscussionsMainFragment : Fragment() {
 
     private fun handleResponseGetDiscussions(allGroups: MutableList<Conversation>?) {
         allGroups?.let {
-            //messagesList.clear()
-            messagesList.addAll(it) }
+            if (page == 1) { // Si c'est la première page, on reset
+                messagesList.clear()
+            }
+            messagesList.addAll(it) // Ajoute les nouveaux messages sans supprimer les anciens
+        }
+
         binding.progressBar.visibility = View.GONE
         binding.recyclerView.adapter?.notifyDataSetChanged()
-        if (isFromRefresh) {
-            isFromRefresh = false
-            binding.recyclerView.scrollToPosition(0)
-        }
     }
+
 
     private fun updateUnreadCount(unreadMessages: UnreadMessages?) {
         val count:Int = unreadMessages?.unreadCount ?: 0
@@ -168,12 +177,19 @@ class DiscussionsMainFragment : Fragment() {
 
     private fun loadMessages() {
         binding.swipeRefresh.isRefreshing = false
-        page += 1
-        discussionsPresenter.getAllMessages(page, messagesPerPage)
+        page += 1 // On incrémente la page pour la pagination
+
+        when (currentFilterMode) {
+            FilterMode.ALL -> discussionsPresenter.fetchAllConversations(page, messagesPerPage)
+            FilterMode.PRIVATE -> discussionsPresenter.fetchPrivateConversations(page, messagesPerPage)
+            FilterMode.OUTINGS -> discussionsPresenter.fetchOutingConversations(page, messagesPerPage)
+        }
     }
+
 
     private fun showDetail(position:Int) {
         val conversation = messagesList[position]
+        VibrationUtil.vibrate(requireContext())
 
         startActivity(
             Intent(context, DetailConversationActivity::class.java)
@@ -193,6 +209,82 @@ class DiscussionsMainFragment : Fragment() {
 
         messagesList[position].numberUnreadMessages = 0
         discussionsPresenter.getAllMessages.postValue(messagesList)
+    }
+
+    private fun initializeSearchBar() {
+        binding.filter1.buttonStart.text = getString(R.string.filter_all)
+        binding.filter2.buttonStart.text = getString(R.string.filter_discussions)
+        binding.filter3.buttonStart.text = getString(R.string.filter_events)
+
+        setFilterActive(binding.filter1.root)
+        setFilterInactive(binding.filter2.root)
+        setFilterInactive(binding.filter3.root)
+
+        binding.filter1.buttonStart.setOnClickListener {
+            if (currentFilterMode != FilterMode.ALL) { // Vérifie si on change de filtre
+                currentFilterMode = FilterMode.ALL
+                resetMessagesList() // Reset seulement si changement de filtre
+            }
+            setFilterActive(binding.filter1.root)
+            setFilterInactive(binding.filter2.root)
+            setFilterInactive(binding.filter3.root)
+            loadMessages()
+        }
+
+        binding.filter2.buttonStart.setOnClickListener {
+            if (currentFilterMode != FilterMode.PRIVATE) {
+                currentFilterMode = FilterMode.PRIVATE
+                resetMessagesList()
+            }
+            setFilterInactive(binding.filter1.root)
+            setFilterActive(binding.filter2.root)
+            setFilterInactive(binding.filter3.root)
+            loadMessages()
+        }
+
+        binding.filter3.buttonStart.setOnClickListener {
+            if (currentFilterMode != FilterMode.OUTINGS) {
+                currentFilterMode = FilterMode.OUTINGS
+                resetMessagesList()
+            }
+            setFilterInactive(binding.filter1.root)
+            setFilterInactive(binding.filter2.root)
+            setFilterActive(binding.filter3.root)
+            loadMessages()
+        }
+
+        binding.filterLayout.visibility = View.VISIBLE
+    }
+
+    /**
+     * Réinitialise la liste des messages et la page pour un nouveau filtre.
+     */
+    private fun resetMessagesList() {
+        messagesList.clear()
+        discussionsPresenter.isLastPage = false
+        discussionsPresenter.getAllMessages.postValue(messagesList)
+        page = 0
+        binding.recyclerView.adapter?.notifyDataSetChanged()
+    }
+
+    /**
+     * Active un filtre (change son background en activé)
+     */
+    private fun setFilterActive(filter: View) {
+        filter.findViewById<Button>(R.id.button_start).apply {
+            setBackgroundResource(R.drawable.shape_filter_discussion_activated)
+            setTextColor(resources.getColor(android.R.color.white, null))
+        }
+    }
+
+    /**
+     * Désactive un filtre (change son background en désactivé)
+     */
+    private fun setFilterInactive(filter: View) {
+        filter.findViewById<Button>(R.id.button_start).apply {
+            setBackgroundResource(R.drawable.shape_filter_discussion_desactivated)
+            setTextColor(resources.getColor(R.color.orange, null)) // Change la couleur selon ton design
+        }
     }
 
     private fun initializeRV() {
@@ -239,15 +331,16 @@ class DiscussionsMainFragment : Fragment() {
         layoutManager?.let {
             val visibleItemCount: Int = layoutManager.childCount
             val totalItemCount: Int = layoutManager.itemCount
-            val firstVisibleItemPosition: Int =
-                layoutManager.findFirstVisibleItemPosition()
+            val firstVisibleItemPosition: Int = layoutManager.findFirstVisibleItemPosition()
+
             if (!discussionsPresenter.isLoading && !discussionsPresenter.isLastPage) {
                 if (visibleItemCount + firstVisibleItemPosition >= totalItemCount && firstVisibleItemPosition >= 0 && totalItemCount >= messagesPerPage) {
-                    loadMessages()
+                    loadMessages() // Charge la page suivante en fonction du filtre actif
                 }
             }
         }
     }
+
 
     private fun handleImageViewAnimation() {
         binding.appBar.addOnOffsetChangedListener { appBarLayout, verticalOffset ->

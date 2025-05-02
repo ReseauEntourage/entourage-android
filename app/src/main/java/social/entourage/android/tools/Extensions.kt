@@ -62,26 +62,34 @@ fun TextView.setHyperlinkClickable() {
 
 fun TextView.displayHtml(textContent: String) {
     var processedText = textContent
-    // Si le texte ne contient pas déjà une balise <a> (cas des URL brutes),
-    // on transforme chaque URL en lien HTML
+
+    // Si le texte ne contient pas déjà une balise <a> (cas des URL brutes), on les transforme
     if (!processedText.contains("<a", ignoreCase = true)) {
         val matcher = Patterns.WEB_URL.matcher(processedText)
         val sb = StringBuffer()
         while (matcher.find()) {
             val url = matcher.group()
-            // On entoure l'URL d'une balise <a>
             matcher.appendReplacement(sb, "<a href=\"$url\">$url</a>")
         }
         matcher.appendTail(sb)
         processedText = sb.toString()
     }
-    // On convertit le texte traité en HTML
+
+    // 🔧 Étape supplémentaire : nettoyage des <p> et remplacement des \n par <br>
+    processedText = processedText
+        .replace(Regex("<p[^>]*>"), "")     // supprime les balises <p>
+        .replace("</p>", "")                // supprime les </p>
+        .replace("\n", "<br>")              // convertit les \n en <br>
+
+    // 🔄 Conversion en Spanned avec prise en compte des <br> et <a>
     text = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
         Html.fromHtml(processedText, Html.FROM_HTML_MODE_LEGACY)
     } else {
+        @Suppress("DEPRECATION")
         Html.fromHtml(processedText)
     }
-    // On appelle ensuite notre fonction qui remplace les URLSpan par nos URLSpan personnalisés
+
+    // 🎯 Rends les liens et mentions cliquables (URLSpan → ClickableSpan)
     setHyperlinkClickable()
 }
 

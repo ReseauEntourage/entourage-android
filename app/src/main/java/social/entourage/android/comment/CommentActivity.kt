@@ -144,7 +144,7 @@ abstract class CommentActivity : BaseActivity(), onDissmissFragment {
 
     fun updateView(emptyState: Boolean) {
         if (emptyState) {
-            binding.emptyState.visibility = View.VISIBLE
+            binding.emptyState.visibility = View.GONE
             binding.comments.visibility = if (currentParentPost != null) View.VISIBLE else View.GONE
         } else {
             binding.emptyState.visibility = View.GONE
