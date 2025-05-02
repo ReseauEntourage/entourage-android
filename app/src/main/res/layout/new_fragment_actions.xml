@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
@@ -36,9 +35,7 @@
                     android:background="@android:color/transparent"
                     app:layout_collapseMode="pin"
                     app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
-
                 </androidx.appcompat.widget.Toolbar>
-
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/ui_button_my_actions"
@@ -50,6 +47,7 @@
                     android:layout_marginBottom="10dp"
                     app:layout_collapseMode="pin"
                     app:layout_scrollFlags="noScroll">
+
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/ui_layout_filter"
                         android:layout_width="36dp"
@@ -68,9 +66,9 @@
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
-                            app:srcCompat="@drawable/ds_ic_filter"
-                            />
+                            app:srcCompat="@drawable/ds_ic_filter" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
+
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/ui_layout_search"
                         android:layout_width="36dp"
@@ -80,6 +78,7 @@
                         app:layout_constraintTop_toTopOf="parent"
                         android:layout_marginTop="10dp"
                         android:layout_marginEnd="8dp">
+
                         <ImageView
                             android:id="@+id/ui_bell_search"
                             android:layout_width="24dp"
@@ -88,9 +87,9 @@
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
-                            app:srcCompat="@drawable/ds_ic_search"
-                            />
+                            app:srcCompat="@drawable/ds_ic_search" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
+
                     <LinearLayout
                         android:layout_width="15dp"
                         android:layout_height="15dp"
@@ -101,6 +100,7 @@
                         android:layout_marginEnd="-5dp"
                         android:layout_marginTop="-5dp"
                         android:visibility="gone">
+
                         <TextView
                             android:layout_width="15dp"
                             android:layout_height="15dp"
@@ -140,6 +140,7 @@
                     app:tabRippleColor="@null"
                     app:tabSelectedTextColor="@color/orange"
                     app:tabTextAppearance="@style/tab_text" />
+
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -193,7 +194,6 @@
                             app:layout_constraintTop_toTopOf="parent"
                             app:srcCompat="@drawable/new_location"
                             app:tint="@color/white" />
-
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <androidx.constraintlayout.widget.Guideline
@@ -259,8 +259,8 @@
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
                             tools:text="1" />
-
                     </androidx.constraintlayout.widget.ConstraintLayout>
+
                     <EditText
                         android:id="@+id/searchEditText"
                         android:layout_width="0dp"
@@ -283,10 +283,8 @@
                         android:textColor="@android:color/black"
                         android:imeOptions="actionSearch"
                         android:visibility="gone"/>
-
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </LinearLayout>
-
         </com.google.android.material.appbar.AppBarLayout>
 
         <androidx.viewpager2.widget.ViewPager2
@@ -298,16 +296,14 @@
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
             app:userInputEnabled="@{false}" />
 
-
-        <uk.co.markormesher.android_fab.FloatingActionButton
+        <com.leinardi.android.speeddial.SpeedDialView
             android:id="@+id/create_action"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="end|bottom"
-            app:buttonBackgroundColour="@color/orange"
-            app:buttonIcon="@drawable/new_fab_plus"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintRight_toRightOf="parent" />
+            android:layout_margin="16dp"
+            app:sdMainFabClosedSrc="@drawable/new_fab_plus"
+            app:sdMainFabOpenedSrc="@drawable/new_fab_plus" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

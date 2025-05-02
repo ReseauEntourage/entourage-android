@@ -5,6 +5,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.multidex.MultiDexApplication
 import com.google.firebase.analytics.FirebaseAnalytics
@@ -109,7 +110,6 @@ class EntourageApplication : MultiDexApplication() {
                 editor.putInt(KEY_NB_OF_LAUNCH, 0)
                 editor.putBoolean("translatedByDefault", true)
                 editor.apply()
-
                 removeAllPushNotifications()
                 AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_LOGOUT)
                 mainActivity?.let {

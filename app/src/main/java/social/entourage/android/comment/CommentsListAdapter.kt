@@ -6,6 +6,8 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.*
 import android.graphics.drawable.VectorDrawable
+import android.text.method.LinkMovementMethod
+import android.text.util.Linkify
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,7 +19,6 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
-import io.github.armcha.autolink.MODE_URL
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.api.model.Post
@@ -43,23 +44,23 @@ enum class CommentsTypes(val code: Int) {
 
 interface OnItemClickListener {
     fun onItemClick(comment: Post)
-    fun onCommentReport(commentId: Int?, isForEvent:Boolean, isMe:Boolean, commentLang:String)
-    fun onShowWeb(url:String)
+    fun onCommentReport(commentId: Int?, isForEvent: Boolean, isMe: Boolean, commentLang: String)
+    fun onShowWeb(url: String)
 }
 
 class CommentsListAdapter(
     var context: Context,
     private var commentsList: List<Post>,
     private var postAuthorId: Int,
-    var isOne2One:Boolean,
-    var isConversation:Boolean,
-    private var currentParentPost:Post?,
+    var isOne2One: Boolean,
+    var isConversation: Boolean,
+    private var currentParentPost: Post?,
     var onItemClick: OnItemClickListener,
 ) : RecyclerView.Adapter<CommentsListAdapter.ViewHolder>() {
 
-    var isForEvent:Boolean = false
+    var isForEvent: Boolean = false
 
-    fun initiateList(){
+    fun initiateList() {
         val translatedByDefault = context.getSharedPreferences(
             context.getString(R.string.preference_file_key), Context.MODE_PRIVATE
         ).getBoolean("translatedByDefault", true)
@@ -76,6 +77,7 @@ class CommentsListAdapter(
     fun setForEvent() {
         isForEvent = true
     }
+
     private val translationExceptions = mutableSetOf<Int>()
 
     fun translateItem(commentId: Int) {
@@ -93,19 +95,20 @@ class CommentsListAdapter(
         fun bindDate(comment: Post) {
             (binding as LayoutCommentItemDateBinding).publicationDay.text = comment.datePostText
         }
+
         fun bindLeft(comment: Post) {
             val binding = binding as LayoutCommentItemLeftBinding
 
-            if(binding.comment.text != null){
-                binding.comment.addAutoLinkMode(MODE_URL)
-                binding.comment.onAutoLinkClick { item ->
-                    onItemClick.onShowWeb(item.originalText)
-                }
+            if (binding.comment.text != null) {
+                Linkify.addLinks(binding.comment, Linkify.WEB_URLS)
+                binding.comment.movementMethod = LinkMovementMethod.getInstance()
+                binding.comment.setHyperlinkClickable()
+
             }
 
             val isMe = comment.user?.userId == EntourageApplication.get().me()?.id
 
-            if(comment.status == "deleted"){
+            if (comment.status == "deleted") {
                 val drawable = ContextCompat.getDrawable(context, R.drawable.ic_comment_deleted)
                 val vectorDrawable = DrawableCompat.wrap(drawable!!) as VectorDrawable
                 val width = 12
@@ -119,9 +122,9 @@ class CommentsListAdapter(
                 grayDrawable.setBounds(8, 0, scaledDrawable.width - 8, scaledDrawable.height)
                 binding.comment.setCompoundDrawablesWithIntrinsicBounds(grayDrawable, null, null, null)
                 binding.comment.compoundDrawablePadding = 16
-                if(isOne2One){
+                if (isOne2One) {
                     binding.comment.text = context.getString(R.string.deleted_message)
-                }else{
+                } else {
                     binding.comment.text = context.getString(R.string.deleted_comment)
                 }
                 binding.comment.background = context.getDrawable(R.drawable.new_comment_background_grey)
@@ -135,7 +138,7 @@ class CommentsListAdapter(
                 } else {
                     isTranslatedByDefault
                 }
-                if(comment.contentTranslations != null){
+                if (comment.contentTranslations != null) {
                     contentToShow = if (isTranslated) {
                         comment.contentTranslations.translation ?: comment.content
                     } else {
@@ -145,9 +148,9 @@ class CommentsListAdapter(
 
                 binding.comment.text = contentToShow
 
-                if(isMe){
+                if (isMe) {
                     binding.comment.background = context.getDrawable(R.drawable.new_comment_background_orange)
-                }else{
+                } else {
                     binding.comment.background = context.getDrawable(R.drawable.new_comment_background_beige)
                 }
                 binding.comment.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null)
@@ -156,14 +159,14 @@ class CommentsListAdapter(
             binding.report.setOnClickListener {
                 val commentLang = comment.contentTranslations?.fromLang ?: ""
                 DataLanguageStock.updateContentToCopy(comment.content ?: "")
-                onItemClick.onCommentReport(comment.id, isForEvent, isMe,commentLang)
+                onItemClick.onCommentReport(comment.id, isForEvent, isMe, commentLang)
             }
             //here
-            if(comment.status != "deleted" ){
+            if (comment.status != "deleted") {
                 val commentLang = comment.contentTranslations?.fromLang ?: ""
                 binding.comment.setOnLongClickListener {
                     DataLanguageStock.updateContentToCopy(comment.content ?: "")
-                    onItemClick.onCommentReport(comment.id, isForEvent, isMe,commentLang)
+                    onItemClick.onCommentReport(comment.id, isForEvent, isMe, commentLang)
                     return@setOnLongClickListener true
                 }
             }
@@ -176,8 +179,7 @@ class CommentsListAdapter(
                     binding.publicationDate.text = SimpleDateFormat("HH'h'mm",
                         locale
                     ).format(it)
-                }
-                else {
+                } else {
                     binding.publicationDate.text = "le ${SimpleDateFormat(
                         binding.root.context.getString(R.string.comments_date),
                         locale
@@ -211,7 +213,7 @@ class CommentsListAdapter(
                 }
             }
             binding.image.setOnClickListener {
-                if(comment.user != null){
+                if (comment.user != null) {
                     (binding.image.context as? Activity)?.startActivityForResult(
                         Intent(binding.image.context, UserProfileActivity::class.java).putExtra(
                             Const.USER_ID,
@@ -223,11 +225,10 @@ class CommentsListAdapter(
 
             if (isMe || isConversation) {
                 binding.report.visibility = View.GONE
-            }
-            else {
+            } else {
                 binding.report.visibility = View.VISIBLE
-                binding.image.setOnClickListener { view->
-                    if(comment.user != null){
+                binding.image.setOnClickListener { view ->
+                    if (comment.user != null) {
                         (view.context as? Activity)?.startActivityForResult(
                             Intent(view.context, UserProfileActivity::class.java).putExtra(
                                 Const.USER_ID,
@@ -243,19 +244,19 @@ class CommentsListAdapter(
                 binding.publicationDate.setTextColor(binding.publicationDate.context.resources.getColor(R.color.light_orange))
             }
         }
+
         fun bindRight(comment: Post) {
             val binding = binding as LayoutCommentItemRightBinding
 
-            if(binding.comment.text != null){
-                binding.comment.addAutoLinkMode(MODE_URL)
-                binding.comment.onAutoLinkClick { item ->
-                    onItemClick.onShowWeb(item.originalText)
-                }
+            if (binding.comment.text != null) {
+                Linkify.addLinks(binding.comment, Linkify.WEB_URLS)
+                binding.comment.movementMethod = LinkMovementMethod.getInstance()
+                binding.comment.setHyperlinkClickable()
             }
 
             val isMe = comment.user?.userId == EntourageApplication.get().me()?.id
 
-            if(comment.status == "deleted"){
+            if (comment.status == "deleted") {
 
                 val drawable = ContextCompat.getDrawable(context, R.drawable.ic_comment_deleted)
                 val vectorDrawable = DrawableCompat.wrap(drawable!!) as VectorDrawable
@@ -270,9 +271,9 @@ class CommentsListAdapter(
                 grayDrawable.setBounds(8, 0, scaledDrawable.width - 8, scaledDrawable.height)
                 binding.comment.setCompoundDrawablesWithIntrinsicBounds(grayDrawable, null, null, null)
                 binding.comment.compoundDrawablePadding = 16
-                if(isOne2One){
+                if (isOne2One) {
                     binding.comment.text = context.getString(R.string.deleted_message)
-                }else{
+                } else {
                     binding.comment.text = context.getString(R.string.deleted_comment)
                 }
                 binding.comment.background = context.getDrawable(R.drawable.new_comment_background_grey)
@@ -286,7 +287,7 @@ class CommentsListAdapter(
                 } else {
                     isTranslatedByDefault
                 }
-                if(comment.contentTranslations != null){
+                if (comment.contentTranslations != null) {
                     contentToShow = if (isTranslated) {
                         comment.contentTranslations.translation ?: comment.content
                     } else {
@@ -296,9 +297,9 @@ class CommentsListAdapter(
 
                 binding.comment.text = contentToShow
 
-                if(isMe){
+                if (isMe) {
                     binding.comment.background = context.getDrawable(R.drawable.new_comment_background_orange)
-                }else{
+                } else {
                     binding.comment.background = context.getDrawable(R.drawable.new_comment_background_beige)
                 }
                 binding.comment.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null)
@@ -307,14 +308,14 @@ class CommentsListAdapter(
             binding.report.setOnClickListener {
                 val commentLang = comment.contentTranslations?.fromLang ?: ""
                 DataLanguageStock.updateContentToCopy(comment.content ?: "")
-                onItemClick.onCommentReport(comment.id, isForEvent, isMe,commentLang)
+                onItemClick.onCommentReport(comment.id, isForEvent, isMe, commentLang)
             }
             //here
-            if(comment.status != "deleted" ){
+            if (comment.status != "deleted") {
                 val commentLang = comment.contentTranslations?.fromLang ?: ""
                 binding.comment.setOnLongClickListener {
                     DataLanguageStock.updateContentToCopy(comment.content ?: "")
-                    onItemClick.onCommentReport(comment.id, isForEvent, isMe,commentLang)
+                    onItemClick.onCommentReport(comment.id, isForEvent, isMe, commentLang)
                     return@setOnLongClickListener true
                 }
             }
@@ -323,13 +324,12 @@ class CommentsListAdapter(
                 binding.informationLayout.visibility = View.VISIBLE
                 binding.error.visibility = View.GONE
                 if (isConversation) {
-                    var locale = LanguageManager.getLocaleFromPreferences(context)
+                    val locale = LanguageManager.getLocaleFromPreferences(context)
                     binding.publicationDate.text = SimpleDateFormat("HH'h'mm",
                         locale
                     ).format(it)
-                }
-                else {
-                    var locale = LanguageManager.getLocaleFromPreferences(context)
+                } else {
+                    val locale = LanguageManager.getLocaleFromPreferences(context)
                     binding.publicationDate.text = "le ${SimpleDateFormat(
                         binding.root.context.getString(R.string.comments_date),
                         locale
@@ -365,11 +365,10 @@ class CommentsListAdapter(
 
             if (isMe || isConversation) {
                 binding.report.visibility = View.GONE
-            }
-            else {
+            } else {
                 binding.report.visibility = View.VISIBLE
-                binding.image.setOnClickListener { view->
-                    if(comment.user != null){
+                binding.image.setOnClickListener { view ->
+                    if (comment.user != null) {
                         (view.context as? Activity)?.startActivityForResult(
                             Intent(view.context, UserProfileActivity::class.java).putExtra(
                                 Const.USER_ID,
@@ -385,11 +384,12 @@ class CommentsListAdapter(
                 binding.publicationDate.setTextColor(binding.publicationDate.context.resources.getColor(R.color.light_orange))
             }
         }
+
         fun bindDetails(comment: Post) {
             val binding = binding as LayoutCommentDetailPostTopBinding
             //TODO: parse Detail post
             binding.commentPost.text = comment.content
-            if(comment.status.equals("deleted")){
+            if (comment.status.equals("deleted")) {
                 binding.commentPost.text = context.getString(R.string.deleted_publi)
             }
             binding.commentPost.setHyperlinkClickable()
@@ -402,7 +402,7 @@ class CommentsListAdapter(
 
             comment.imageUrl?.let { avatarURL ->
                 binding.photoPost.visibility = View.VISIBLE
-                Glide.with( binding.photoPost.context)
+                Glide.with(binding.photoPost.context)
                     .load(avatarURL)
                     .transform(CenterCrop(), RoundedCorners(Const.ROUNDED_CORNERS_IMAGES.px))
                     .placeholder(R.drawable.new_group_illu)
@@ -466,8 +466,8 @@ class CommentsListAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val comment = if (position == 0 && hasCurrentPost()) currentParentPost 
-            else commentsList[if(hasCurrentPost()) (position - 1) else position]
+        val comment = if (position == 0 && hasCurrentPost()) currentParentPost
+        else commentsList[if(hasCurrentPost()) (position - 1) else position]
         if(comment == null) return
 
         when(getItemViewType(position)) {
@@ -478,7 +478,7 @@ class CommentsListAdapter(
         }
     }
 
-    private fun hasCurrentPost() : Boolean {
+    private fun hasCurrentPost(): Boolean {
         return currentParentPost != null
     }
 
@@ -491,7 +491,7 @@ class CommentsListAdapter(
 
         if (position == 0 && hasCurrentPost()) return CommentsTypes.TYPE_DETAIL.code
 
-        val realPos = if(hasCurrentPost()) position - 1 else position
+        val realPos = if (hasCurrentPost()) position - 1 else position
 
         if (commentsList[realPos].isDatePostOnly) return CommentsTypes.TYPE_DATE.code
 

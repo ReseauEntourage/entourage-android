@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/fab_create_event"
+        android:icon="@drawable/ic_group_feed_two"
+        android:title="@string/create_event" />
+
+    <item
+        android:id="@+id/fab_create_post"
+        android:icon="@drawable/ic_group_feed_one"
+        android:title="@string/create_post" />
+
+    <item
+        android:id="@+id/fab_create_survey"
+        android:icon="@drawable/ic_survey_creation"
+        android:title="@string/create_survey" />
+
+</menu>

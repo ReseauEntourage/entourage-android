@@ -144,7 +144,7 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
         setProfileButton()
         setNestedScrollViewAnimation()
         checkNotificationStatus()
-
+        increaseCounter()
         return binding.root
     }
 
@@ -174,15 +174,50 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
                 Intent(context, ProfileActivity::class.java), 0
             )
         }
-
+        checkNotifAndSendToken()
     }
+
+    private fun checkNotifAndSendToken(){
+        val notificationManager = NotificationManagerCompat.from(requireContext())
+        val areNotificationsEnabled = notificationManager.areNotificationsEnabled()
+        if (areNotificationsEnabled) {
+            sendtoken()
+
+        } else {
+
+        }
+    }
+
+    fun increaseCounter(){
+        val sharedPreferences = requireActivity().getSharedPreferences("userPref", Context.MODE_PRIVATE)
+        var count = sharedPreferences.getInt("COUNT_DISCUSSION_ASK", 0)
+        sharedPreferences.edit().putInt("COUNT_DISCUSSION_ASK", ++count).apply()
+    }
+
+    fun checkAndShowDiscussionDialog() {
+        val sharedPreferences = requireActivity().getSharedPreferences("userPref", Context.MODE_PRIVATE)
+        val isInterested = sharedPreferences.getBoolean("DISCUSSION_INTERESTED", false)
+        val userRefused = sharedPreferences.getBoolean("USER_REFUSED_POPUP", false)
+        var count = sharedPreferences.getInt("COUNT_DISCUSSION_ASK", 0)
+        if (userRefused || isInterested) {
+            // L'utilisateur a refusé ou a déjà accepté, ne pas montrer la popup
+            return
+        }
+
+        if (count >= 2) {
+            // L'utilisateur n'a pas encore refusé, et le compteur a atteint le seuil
+            val dialog = DiscussionTestDialogFragment()
+            dialog.show(requireActivity().supportFragmentManager, "DiscussionDialog")
+        }
+    }
+
+
 
     private fun checkNotificationStatus() {
         val notificationManager = NotificationManagerCompat.from(requireContext())
         val areNotificationsEnabled = notificationManager.areNotificationsEnabled()
         if (areNotificationsEnabled) {
             AnalyticsEvents.logEvent(AnalyticsEvents.has_user_activated_notif)
-            sendtoken()
 
         } else {
             AnalyticsEvents.logEvent(AnalyticsEvents.has_user_disabled_notif)
@@ -546,6 +581,9 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
             startActivity(intent)
         }
         isContribution = summary.preference.equals("contribution")
+        if(!isContribution){
+            checkAndShowDiscussionDialog()
+        }
         isContribProfile = isContribution
         if(isContribution){
             if(!homeActionAdapter.getIsContrib()){
@@ -572,27 +610,34 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
             homeHelpAdapter.resetData(helps, summary)
         }
     }
-    //HERE JUST RECONNECT OLD FUNCTIONS
+
     private fun updateNotifsCount(count: Int) {
-        context?.resources?.let { resources ->
-            val bgColor = if (count > 0) {
-                ResourcesCompat.getColor(resources, R.color.orange, null)
-            } else {
-                ResourcesCompat.getColor(resources, R.color.partner_logo_background, null)
+        if (count > 0) {
+            // Set the notification number text
+            if(count > 9){
+                binding.tvNumberOfFilter.text = "9+"
+            }else{
+                binding.tvNumberOfFilter.text = count.toString()
             }
+            // Make the notification number layout visible
+            binding.cardNotifNumber.visibility = View.VISIBLE
+        } else {
+            // Hide the notification number layout if there are no notifications
+            binding.cardNotifNumber.visibility = View.INVISIBLE
+        }
 
-            val shapeDrawable = binding.uiLayoutNotif.background as? GradientDrawable
-            shapeDrawable?.setColor(bgColor)
-
+        // Optionally, you can maintain the default notification icon without change
+        context?.resources?.let { resources ->
             binding.uiBellNotif.setImageDrawable(
                 ResourcesCompat.getDrawable(
                     resources,
-                    if (count > 0) R.drawable.ic_white_notif_on else R.drawable.ic_new_notif_off,
+                    R.drawable.ic_new_notif_off, // Assuming this is your default notification icon
                     null
                 )
             )
         }
     }
+
 
     private fun updateAvatar() {
         with(binding) {

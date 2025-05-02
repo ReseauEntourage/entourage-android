@@ -1,0 +1,10 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/fab_create_demand"
+        android:icon="@drawable/new_ic_create_demand"
+        android:title="@string/action_menu_create_demand"/>
+    <item
+        android:id="@+id/fab_create_contrib"
+        android:icon="@drawable/new_ic_create_contrib"
+        android:title="@string/action_menu_create_contrib"/>
+</menu>

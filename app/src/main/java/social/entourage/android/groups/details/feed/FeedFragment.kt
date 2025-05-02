@@ -30,6 +30,8 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
+import com.leinardi.android.speeddial.SpeedDialActionItem
+import com.leinardi.android.speeddial.SpeedDialView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -48,6 +50,7 @@ import social.entourage.android.comment.ReactionInterface
 import social.entourage.android.comment.SurveyInteractionListener
 import social.entourage.android.databinding.FragmentFeedBinding
 import social.entourage.android.events.create.CreateEventActivity
+import social.entourage.android.events.details.feed.CreatePostEventActivity
 import social.entourage.android.groups.GroupModel
 import social.entourage.android.groups.GroupPresenter
 import social.entourage.android.groups.details.GroupDetailsFragment
@@ -67,8 +70,6 @@ import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.CustomAlertDialog
 import social.entourage.android.tools.utils.Utils.enableCopyOnLongClick
 import social.entourage.android.tools.utils.px
-import uk.co.markormesher.android_fab.SpeedDialMenuAdapter
-import uk.co.markormesher.android_fab.SpeedDialMenuItem
 import kotlin.math.abs
 
 
@@ -99,80 +100,6 @@ class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface,
     private var dernierClicTime: Long = 0
 
 
-    private val speedDialMenuAdapter = object : SpeedDialMenuAdapter() {
-        override fun getCount(): Int = 3
-        override fun getMenuItem(context: Context, position: Int): SpeedDialMenuItem =
-            when (position) {
-                0 -> SpeedDialMenuItem(
-                    context,
-                    R.drawable.ic_group_feed_one,
-                    getString(R.string.create_post)
-                )
-                1 -> SpeedDialMenuItem(
-                    context,
-                    R.drawable.ic_survey_creation,
-                    getString(R.string.create_survey)
-                )
-                2 -> SpeedDialMenuItem(
-                    context,
-                    R.drawable.ic_group_feed_two,
-                    getString(R.string.create_event)
-                )
-                else -> SpeedDialMenuItem(
-                    context,
-                    R.drawable.new_create_event,
-                    getString(R.string.create_event)
-                )
-            }
-
-
-
-        override fun onMenuItemClick(position: Int): Boolean {
-            when (position) {
-                0 -> {
-                    createAPost()
-                }
-                1 -> {
-                    AnalyticsEvents.logEvent(
-                        AnalyticsEvents.Clic_Group_Create_Poll
-                    )
-                    val intent = Intent(context, CreateSurveyActivity::class.java)
-                    isFromCreation = true
-                    intent.putExtra(Const.GROUP_ID, groupId)
-                    startActivity(intent)
-                }
-                2 -> {
-                    AnalyticsEvents.logEvent(
-                        AnalyticsEvents.ACTION_GROUP_FEED_NEW_EVENT
-                    )
-                    val intent = Intent(context, CreateEventActivity::class.java)
-                    intent.putExtra(Const.GROUP_ID, groupId)
-                    startActivityForResult(intent,0)
-                }
-                else -> {
-                    AnalyticsEvents.logEvent(
-                        AnalyticsEvents.ACTION_GROUP_FEED_PLUS_CLOSE
-                    )
-                }
-            }
-            return true
-        }
-
-        override fun onPrepareItemLabel(context: Context, position: Int, label: TextView) {
-            TextViewCompat.setTextAppearance(label, R.style.left_courant_bold_black)
-        }
-
-        override fun onPrepareItemCard(context: Context, position: Int, card: View) {
-            card.background = ContextCompat.getDrawable(
-                requireContext(),
-                R.drawable.new_bg_circle_orange
-            )
-        }
-
-        override fun fabRotationDegrees(): Float = rotationDegree
-    }
-
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         groupId = args.groupID
@@ -196,18 +123,13 @@ class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface,
         handleAboutButton()
         handleSwipeRefresh()
         onFragmentResult()
-        binding.createPost.setContentCoverColour(0xeeffffff.toInt())
-        binding.createPost.speedDialMenuAdapter = speedDialMenuAdapter
+
         binding.createPost.setOnClickListener {
             AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_GROUP_FEED_PLUS)
         }
-        binding.createPost.setContentCoverColour(
-            ContextCompat.getColor(
-                requireContext(),
-                R.color.light_beige_96
-            )
-        )
+
         setupNestedScrollViewScrollListener()
+        createPost()
         loadPosts()
     }
 
@@ -350,6 +272,9 @@ class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface,
         getGroup?.let {
             groupId = it.id!!
             group = it
+            if (group?.national == true) {
+                group?.address?.displayAddress = ""
+            }
             updateView()
         }
     }
@@ -384,7 +309,6 @@ class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface,
             binding.subtitle.visibility = View.VISIBLE
             binding.arrow.visibility = View.VISIBLE
         } else {
-            binding.createPost.hide(true)
             binding.emptyStateEventsSubtitle.visibility = View.GONE
             binding.subtitle.visibility = View.GONE
             binding.arrow.visibility = View.GONE
@@ -911,6 +835,70 @@ class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface,
         }
         startActivity(intent)
     }
+
+
+    private fun createPost() {
+        val speedDialView: SpeedDialView = binding.createPost
+        speedDialView.addActionItem(
+            SpeedDialActionItem.Builder(R.id.fab_create_event, R.drawable.ic_group_feed_two)
+                .setFabBackgroundColor(ContextCompat.getColor(requireContext(), R.color.orange))
+                .setFabImageTintColor(ContextCompat.getColor(requireContext(), R.color.white))
+                .setLabel(getString(R.string.create_event))
+                .setLabelColor(ContextCompat.getColor(requireContext(), R.color.white))
+                .setLabelBackgroundColor(ContextCompat.getColor(requireContext(), R.color.orange))
+                .create()
+        )
+        speedDialView.addActionItem(
+            SpeedDialActionItem.Builder(R.id.fab_create_post, R.drawable.ic_group_feed_one)
+                .setFabBackgroundColor(ContextCompat.getColor(requireContext(), R.color.orange))
+                .setFabImageTintColor(ContextCompat.getColor(requireContext(), R.color.white))
+                .setLabel(getString(R.string.create_post))
+                .setLabelColor(ContextCompat.getColor(requireContext(), R.color.white))
+                .setLabelBackgroundColor(ContextCompat.getColor(requireContext(), R.color.orange))
+                .create()
+        )
+        speedDialView.addActionItem(
+            SpeedDialActionItem.Builder(R.id.fab_create_survey, R.drawable.ic_survey_creation)
+                .setFabBackgroundColor(ContextCompat.getColor(requireContext(), R.color.orange))
+                .setFabImageTintColor(ContextCompat.getColor(requireContext(), R.color.white))
+                .setLabel(getString(R.string.create_survey))
+                .setLabelColor(ContextCompat.getColor(requireContext(), R.color.white))
+                .setLabelBackgroundColor(ContextCompat.getColor(requireContext(), R.color.orange))
+                .create()
+        )
+        speedDialView.setOnActionSelectedListener { actionItem ->
+            when (actionItem.id) {
+                R.id.fab_create_event -> {
+                    AnalyticsEvents.logEvent(
+                        AnalyticsEvents.ACTION_GROUP_FEED_NEW_EVENT
+                    )
+                    val intent = Intent(context, CreateEventActivity::class.java)
+                    intent.putExtra(Const.GROUP_ID, groupId)
+                    startActivityForResult(intent,0)
+                    true
+                }
+                R.id.fab_create_post -> {
+                    createAPost()
+                    true
+                }
+                R.id.fab_create_survey -> {
+                    AnalyticsEvents.logEvent(
+                        AnalyticsEvents.Clic_Group_Create_Poll
+                    )
+                    val intent = Intent(context, CreateSurveyActivity::class.java)
+                    isFromCreation = true
+                    intent.putExtra(Const.GROUP_ID, groupId)
+                    startActivity(intent)
+                    true
+                }
+                else -> false
+            }
+        }
+    }
+
+
+
+
 }
 
  interface CallbackReportFragment{

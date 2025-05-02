@@ -225,7 +225,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="pass">Passer</string>
     <string name="create_post">Créer une publication</string>
 
-    <string name="create_event">Créer un événement sur le groupe</string>
+    <string name="create_event">Créer un événement</string>
     <string name="create_event_if_no_event">Créer un événement</string>
     <string name="create_event_btn_title">Créer un événement</string>
     <string name="group_success_title">Votre groupe \nest en ligne !</string>
@@ -2802,6 +2802,14 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="see_participants">Participants</string>
     <string name="comments_title">Commentaires</string>
     <string name="participant_number">%s participants</string>
+
+    <string name="popup_discussion_test_btn_confirm">Participer au chat</string>
+    <string name="popup_discussion_test_btn_cancel"><u>Je ne suis pas intéressé⸱e</u></string>
+    <string name="popup_discussion_test_label">Nouvelle fonctionnalité</string>
+    <string name="popup_discussion_test_title">Rejoignez un groupe de riverains motivés !</string>
+    <string name="popup_discussion_test_text">Ensemble, recevez des conseils pour réaliser des actions solidaires, participez à des événements locaux et aidez des personnes en situation de précarité. Tout cela se fera grâce à un chat dédié dans l\'application, où vous pourrez échanger et vous motiver mutuellement.</string>
+    <string name="toast_message_participate">Super, Nous revenons vers vous prochainement ! </string>
+
 
 </resources>
 

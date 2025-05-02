@@ -18,7 +18,7 @@
         app:layout_constraintEnd_toStartOf="@id/comment"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <io.github.armcha.autolink.AutoLinkTextView
+    <TextView
         android:id="@+id/comment"
         style="@style/left_courant_black"
         android:layout_width="0dp"
@@ -27,6 +27,8 @@
         android:background="@drawable/new_comment_background_light_orange"
         android:paddingHorizontal="12dp"
         android:paddingVertical="14dp"
+        android:autoLink="web"
+        android:linksClickable="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/image"
         app:layout_constraintHorizontal_bias="1"

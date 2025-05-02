@@ -29,7 +29,7 @@ android {
 
     // App versions
     val versionMajor = 10
-    val versionMinor = 0
+    val versionMinor = 1
     val versionPatch = "git rev-list HEAD --count".runCommand().toInt()
     val versionBranchName = "git rev-parse --abbrev-ref HEAD".runCommand()
     val versionCodeInt = (versionMajor * 100 + versionMinor) * 10000 + versionPatch % 10000
@@ -193,6 +193,8 @@ android {
     namespace = "social.entourage.android"
 }
 
+
+
 dependencies {
     //TODO check why core-ktx:1.10  needs kotlin 1.8
     implementation("androidx.core:core-ktx:1.9.0")
@@ -224,6 +226,7 @@ dependencies {
     implementation("com.google.firebase:firebase-analytics")
     implementation("com.google.firebase:firebase-messaging")
     implementation("androidx.compose.ui:ui-text-android:1.6.3")
+    implementation("com.google.android.play:app-update-ktx:2.1.0")
     //TODO: fix this inappmessaging lib that is blocking tests to run
     releaseImplementation("com.google.firebase:firebase-inappmessaging-display")
     implementation("com.google.firebase:firebase-crashlytics")
@@ -289,14 +292,21 @@ dependencies {
     // Kotlin
     implementation("androidx.navigation:navigation-fragment-ktx:2.5.3")
     implementation("androidx.navigation:navigation-ui-ktx:2.5.3")
-    implementation("uk.co.markormesher:android-fab:2.5.0")
     implementation("com.github.IntruderShanky:Sectioned-RecyclerView:2.1.1")
 
     implementation("com.airbnb.android:lottie:5.2.0")
-    implementation("com.github.armcha:AutoLinkTextViewV2:3.0.0")
 
     //photoview to click and zoom
     implementation("com.github.chrisbanes:PhotoView:2.3.0")
     implementation("androidx.transition:transition:1.4.1") // Remplacez 'x.x.x' par la dernière version disponible.
-    implementation("com.google.android.play:core:1.10.0")
+
+    implementation("com.google.android.play:asset-delivery:2.2.2")
+    implementation("com.google.android.play:asset-delivery-ktx:2.2.2")
+    implementation("com.google.android.play:feature-delivery:2.1.0")
+    implementation("com.google.android.play:feature-delivery-ktx:2.1.0")
+    implementation("com.google.android.play:review:2.0.1")
+    implementation("com.google.android.play:review-ktx:2.0.1")
+
+    implementation("com.leinardi.android:speed-dial:3.2.0")
+
 }

@@ -753,6 +753,9 @@ object AnalyticsEvents {
 
     const val filter_tag_item_ = "filter_tag_item_"
 
+    const val discussion_plural_accept = "discussion_plural_accept"
+    const val discussion_plural_deny = "discussion_plural_deny"
+    const val discussion_plural_view = "discussion_plural_view"
 
 
 

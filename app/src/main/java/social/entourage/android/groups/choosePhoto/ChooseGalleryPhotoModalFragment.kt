@@ -19,6 +19,8 @@ import social.entourage.android.api.model.Image
 import social.entourage.android.databinding.NewFragmentCreateGroupChoosePhotoModalBinding
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.log.AnalyticsEvents
+import com.leinardi.android.speeddial.SpeedDialView
+import com.leinardi.android.speeddial.SpeedDialActionItem
 
 private const val SPAN_COUNT = 3
 
@@ -60,7 +62,7 @@ class ChooseGalleryPhotoModalFragment : BottomSheetDialogFragment() {
         dialog?.setOnShowListener { dialog ->
             val d = dialog as BottomSheetDialog
             val bottomSheet =
-                d.findViewById<View>(uk.co.markormesher.android_fab.fab.R.id.design_bottom_sheet) as FrameLayout?
+                d.findViewById<View>(com.google.android.material.R.id.design_bottom_sheet) as FrameLayout?
             val coordinatorLayout = bottomSheet!!.parent as CoordinatorLayout
             val bottomSheetBehavior: BottomSheetBehavior<*> =
                 BottomSheetBehavior.from(bottomSheet)
@@ -103,7 +105,7 @@ class ChooseGalleryPhotoModalFragment : BottomSheetDialogFragment() {
     }
 
     private fun initializeInterests() {
-        choosePhotoAdapter = ChoosePhotoAdapter(photosList,imagesType == ImagesType.EVENTS)
+        choosePhotoAdapter = ChoosePhotoAdapter(photosList, imagesType == ImagesType.EVENTS)
         binding.recyclerView.apply {
             layoutManager = GridLayoutManager(context, SPAN_COUNT)
             adapter = choosePhotoAdapter
