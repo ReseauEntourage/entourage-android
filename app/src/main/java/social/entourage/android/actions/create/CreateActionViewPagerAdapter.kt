@@ -5,7 +5,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
 
-const val NB_TABS = 3
+const val NB_TABS = 4
 
 class CreateActionViewPagerAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycle) :
     FragmentStateAdapter(fragmentManager, lifecycle) {
@@ -18,7 +18,8 @@ class CreateActionViewPagerAdapter(fragmentManager: FragmentManager, lifecycle: 
         return when (position) {
             0 -> CreateActionStepTwoFragment()
             1 -> CreateActionStepOneFragment()
-            else -> CreateActionStepThreeFragment()
+            2 -> CreateActionStepThreeFragment()
+            else -> CreateActionStepFourFragment()
         }
     }
 }

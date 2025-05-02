@@ -9,6 +9,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
@@ -18,11 +19,14 @@ import social.entourage.android.databinding.NewFragmentCreateActionBinding
 import social.entourage.android.RefreshController
 import social.entourage.android.actions.ActionsPresenter
 import social.entourage.android.api.model.Action
+import social.entourage.android.api.model.Group
+import social.entourage.android.groups.GroupPresenter
 import social.entourage.android.tools.utils.CustomAlertDialog
 import social.entourage.android.tools.utils.Utils
 import social.entourage.android.tools.utils.nextPage
 import social.entourage.android.tools.utils.previousPage
 import social.entourage.android.tools.log.AnalyticsEvents
+import timber.log.Timber
 
 class CreateActionFragment : Fragment() {
 
@@ -31,10 +35,12 @@ class CreateActionFragment : Fragment() {
     private val viewModel: CommunicationActionHandlerViewModel by activityViewModels()
     private var viewPager: ViewPager2? = null
     private val actionPresenter: ActionsPresenter by lazy { ActionsPresenter() }
+    private lateinit var groupPresenter: GroupPresenter
 
     private var isDemand = false
     private var actionEdited: Action? = null
     private var isAlreadySend = false
+    private var hasADefaultGroup = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -91,6 +97,11 @@ class CreateActionFragment : Fragment() {
 
         actionPresenter.isActionUpdated.observe(viewLifecycleOwner, ::isActionUpdated)
         actionPresenter.newActionCreated.observe(viewLifecycleOwner, ::handleCreateActionResponse)
+        groupPresenter = ViewModelProvider(requireActivity()).get(GroupPresenter::class.java)
+        groupPresenter.getGroup.observe(viewLifecycleOwner, { group ->
+            handleResponseGetGroups(group)
+        })
+        groupPresenter.getDefaultGroup()
     }
 
     private fun handleCreateActionResponse(actionCreated: Action?) {
@@ -141,9 +152,18 @@ class CreateActionFragment : Fragment() {
             tab.view.isClickable = false
         }.attach()
         viewPager?.currentItem = currentPos ?: 0
+        var btnTitle = ""
+        val isSharingTimeSelected = viewModel.sectionsList.value?.first()?.isSelected == true
+        //check first if section list if sharing time
+        if(currentPos == NB_TABS - 2 && !isSharingTimeSelected && hasADefaultGroup){
+            btnTitle =  getString(R.string.create)
+        }else if(currentPos == NB_TABS - 1){
+           btnTitle =  getString(R.string.create)
+        }else{
+            btnTitle =  getString(R.string.new_next)
+        }
 
-        binding.next.text = getString(if (currentPos == NB_TABS - 1) R.string.create else R.string.new_next)
-
+        binding.next.text = btnTitle
         setNextClickListener()
         setPreviousClickListener()
         handleNextButtonState()
@@ -177,14 +197,12 @@ class CreateActionFragment : Fragment() {
 
     private fun handleButtonState(isButtonActive: Boolean?) {
         val isActive = isButtonActive ?: false // Si isButtonActive est null, considérez-le comme false.
-
         val background = ContextCompat.getDrawable(
             requireContext(),
             if (isActive) R.drawable.new_rounded_button_light_orange else R.drawable.new_bg_rounded_inactive_button_light_orange
         )
         binding.next.background = background
     }
-
 
     private fun setPreviousClickListener() {
         binding.previous.setOnClickListener {
@@ -197,26 +215,24 @@ class CreateActionFragment : Fragment() {
     }
 
     private fun handleIsCondition(isCondition: Boolean) {
-
         if (isCondition) {
-            if (viewPager?.currentItem == NB_TABS - 1) {
+            val isSharingTimeSelected = viewModel.sectionsList.value?.first()?.isSelected == true
+            if (viewPager?.currentItem == NB_TABS - 1 || (viewPager?.currentItem == NB_TABS - 2 && !isSharingTimeSelected && hasADefaultGroup) ) {
                 if (viewModel.actionEdited != null) {
                     if (isAlreadySend) return
                     isAlreadySend = true
                     updateAction()
                     return
                 }
-
                 if (viewModel.isButtonClickable.value == true) {
                     if (isAlreadySend) return
                     isAlreadySend = true
                     viewModel.prepareCreateAction()
-                    actionPresenter.createAction(viewModel.action, isDemand, viewModel.imageURI, requireContext())
+                    actionPresenter.createAction(viewModel.action, isDemand, viewModel.imageURI, requireContext(),viewModel.autoPostAtCreate)
                 }
                 else {
                     viewModel.clickNext.value = true
                 }
-
             } else {
                 viewPager?.nextPage(true)
                 if ((viewPager?.currentItem ?: 0) > 0) binding.previous.visibility = View.VISIBLE
@@ -227,7 +243,7 @@ class CreateActionFragment : Fragment() {
 
     private fun updateAction() {
         viewModel.prepareUpdateAction()
-        actionPresenter.updateAction(viewModel.actionEdited, viewModel.action, isDemand,viewModel.imageURI,requireContext())
+        actionPresenter.updateAction(viewModel.actionEdited, viewModel.action, isDemand,viewModel.imageURI,requireContext(),viewModel.autoPostAtCreate)
     }
 
     private fun onBackButton() {
@@ -245,17 +261,28 @@ class CreateActionFragment : Fragment() {
         }
     }
 
+    private fun handleResponseGetGroups(groups: Group) {
+        if (groups == null ) {
+            hasADefaultGroup = false
+        }else{
+            hasADefaultGroup = true
+        }
+    }
+
     private fun handleValidate() {
         binding.next.setOnClickListener {
-            if (binding.viewPager.currentItem == NB_TABS - 1) {
-                viewModel.isCondition.value = true
+            val isSharingTimeSelected = viewModel.sectionsList.value?.first()?.isSelected == true
+            Timber.wtf("wtf isSharingTimeSelected $isSharingTimeSelected")
+            if (viewPager?.currentItem == NB_TABS - 2 && !isSharingTimeSelected && hasADefaultGroup) {
+                viewModel.isCondition.postValue(true)
+            } else if (binding.viewPager.currentItem == NB_TABS - 1) {
+                viewModel.isCondition.postValue(true)
             }
             else {
                 viewModel.clickNext.value = true
             }
         }
     }
-
     override fun onDestroy() {
         super.onDestroy()
         viewModel.resetValues()

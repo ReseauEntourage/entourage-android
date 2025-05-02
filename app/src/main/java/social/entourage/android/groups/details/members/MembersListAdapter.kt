@@ -56,16 +56,25 @@ class MembersListAdapter(
             with(membersList[position]) {
                 // Vérifier si le membre a le rôle "organizer"
                 if (groupRole == "organizer") {
+                    val isMe = EntourageApplication.get().me()?.id == userId
+
                     // Changer la couleur du fond du layout
                     binding.layout.background = ContextCompat.getDrawable(context, R.drawable.background_organizer)
 
-                    // Créer un SpannableString pour ajouter "- Organisateur" en orange
+                    // Obtenir le label approprié à partir des ressources
+                    val roleLabel = if (!isMe) {
+                        context.getString(R.string.organizer_label)
+                    } else {
+                        context.getString(R.string.animateur_label)
+                    }
+
+                    // Créer un SpannableString pour ajouter le texte avec le label dynamique
                     val nameText = displayName
-                    val organizerText = " - Organisateur"
-                    val spannable = SpannableString(nameText + organizerText)
+                    val spannable = SpannableString(nameText + roleLabel)
+
                     spannable.setSpan(
                         ForegroundColorSpan(ContextCompat.getColor(context, R.color.organizer_text)),
-                        nameText?.length ?: 0, // Start of " - Organisateur"
+                        nameText?.length ?: 0, // Start of the role label
                         spannable.length, // End of the text
                         Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
                     )
@@ -77,6 +86,7 @@ class MembersListAdapter(
                     binding.name.text = displayName
                     binding.name.setTextColor(ContextCompat.getColor(context, R.color.black))
                 }
+
 
                 // Vérifier si le membre a une réaction et l'afficher
                 if (reactionList.isNotEmpty()) {

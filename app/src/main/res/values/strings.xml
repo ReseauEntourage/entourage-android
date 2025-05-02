@@ -2815,11 +2815,12 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="popup_nightgood_vote">Voter</string>
     <string name="popup_nightgood_text">Pour permettre à 60 personnes en précarité d\'intégrer un club de sport, il suffit d\'un clic. Le vôtre !</string>
 
-    <string name="popup_ambassador_title">Participez-vous en tant qu’organisateur ou en tant que participant ?</string>
-    <string name="popup_ambassador_subtitle">Si vous êtes organisateur, les participants pourront vous identifier plus facilement</string>
-    <string name="popup_ambassador_button_orga">Organisateur</string>
+    <string name="popup_ambassador_title">Participez-vous en tant qu’animateur ou en tant que participant ?</string>
+    <string name="popup_ambassador_subtitle">Si vous êtes animateur, les participants pourront vous identifier plus facilement</string>
+    <string name="popup_ambassador_button_orga">Animateur</string>
     <string name="popup_ambassador_button_participant">Participant</string>
-    <string name="organizer_label">- Organisateur</string>
+    <string name="organizer_label"> - Organisateur</string>
+    <string name="animateur_label"> - Animateur</string>
 
     <string name="demand_social_title">Exemple : Balade dans le parc</string>
     <string name="demand_social_description">Exemple : Je propose une balade dans le parc ce week-end pour discuter et se détendre.</string>
@@ -2842,6 +2843,9 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="contrib_equipment_description">Exemple : Je donne un ancien téléphone portable fonctionnel. Idéal pour quelqu\'un qui en aurait besoin.</string>
     <string name="contrib_hygiene_title">Exemple : Produits hygiéniques à donner</string>
     <string name="contrib_hygiene_description">Exemple : Je donne plusieurs paquets de protections hygiéniques.</string>
+
+    <string name="share_request_group">Souhaitez-vous partager votre %s dans votre groupe %s ?</string>
+    <string name="share_request_description">Vous avez la possibilité de partager votre %s dans le groupe de voisins de votre ville pour améliorer sa visibilité</string>
 
 
 </resources>

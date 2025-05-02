@@ -46,8 +46,9 @@ class PedagoListFragment : Fragment() {
         pedagoAdapter = PedagoListAdapter(requireContext(), sections, object : OnItemClick {
             override fun onItemClick(pedagogicalContent: Pedago) {
                 if (pedagogicalContent.html != null && pedagogicalContent.id != null) {
-                    val action =
-                        PedagoListFragmentDirections.actionPedagogicalListFragmentToPedagogicalDetailsFragment(
+                    PedagoDetailActivity.setPedagoId(pedagogicalContent.id)
+                    PedagoDetailActivity.setHtmlContent(pedagogicalContent.html)
+                    val action = PedagoListFragmentDirections.actionPedagogicalListFragmentToPedagogicalDetailsFragment(
                             pedagogicalContent.html, pedagogicalContent.id,false
                         )
                     findNavController().navigate(action)
@@ -71,6 +72,7 @@ class PedagoListFragment : Fragment() {
     }
 
     private fun handleGetPedagogicalResourcesResponse(pedagogicalResources: MutableList<Pedago>) {
+        //logHtmlSizes(pedagogicalResources)
         childListAct.clear()
         childListUnderstand.clear()
         childListInspire.clear()
@@ -88,6 +90,13 @@ class PedagoListFragment : Fragment() {
         sections.add(SectionHeader(childListInspire, getString(Category.INSPIRE.id)))
         applyFilter(selectedFilter)
         pedagoAdapter.notifyDataChanged(sections)
+    }
+
+    private fun logHtmlSizes(pedagogicalResources: MutableList<Pedago>) {
+        pedagogicalResources.forEach { pedago ->
+            val htmlSize = pedago.html?.length ?: 0
+            Timber.wtf("Pedago ID: ${pedago.id}, HTML content size: $htmlSize bytes")
+        }
     }
 
     private fun applyFilter(filter: Category) {

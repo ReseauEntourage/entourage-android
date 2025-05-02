@@ -24,13 +24,15 @@ class CommunicationActionHandlerViewModel : ViewModel() {
     var sectionsList = MutableLiveData<MutableList<ActionSection>>()
 
     var isDemand = false
+    var autoPostAtCreate = false
 
     var metadata = MutableLiveData<MetadataActionLocation>()
 
     var keyImageUpload:String? = null
 
+    //TODO : check if tag can be null in metadataRepository
     fun prepareCreateAction() {
-        sectionsList.value?.first { it.isSelected }?.let {
+        sectionsList.value?.firstOrNull { it.isSelected }?.let {
             action.sectionName = it.id
         }
 
@@ -40,7 +42,7 @@ class CommunicationActionHandlerViewModel : ViewModel() {
             action.location?.longitude = metadata.value?.longitude!!
         }
         action.hasConsent = true
-
+        action.autoPostAtCreate = this.autoPostAtCreate
         if (keyImageUpload != null) {
             action.imageUrl = keyImageUpload!!
         }
@@ -68,10 +70,8 @@ class CommunicationActionHandlerViewModel : ViewModel() {
             }
     }
 
-
-
     fun prepareUpdateAction() {
-        sectionsList.value?.first { it.isSelected }?.let {
+        sectionsList.value?.firstOrNull { it.isSelected }?.let {
             action.sectionName = it.id
         }
 
@@ -86,7 +86,7 @@ class CommunicationActionHandlerViewModel : ViewModel() {
         if (action.title == actionEdited?.title) {
             action.title = null
         }
-
+        action.autoPostAtCreate = this.autoPostAtCreate
         if (action.description == actionEdited?.description) {
             action.description = null
         }

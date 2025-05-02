@@ -2793,5 +2793,13 @@
     <string name="popup_nightgood_vote">تصويت</string>
     <string name="popup_nightgood_text">للمساعدة في انضمام 60 شخصًا في وضع غير مستقر إلى نادٍ رياضي، يكفي نقرة واحدة. نقرتك!</string>
 
+    <string name="popup_ambassador_title">هل تشارك كمنشط أو كمشارك؟</string>
+    <string name="popup_ambassador_subtitle">إذا كنت منشطًا، سيتمكن المشاركون من التعرف عليك بسهولة أكبر</string>
+    <string name="popup_ambassador_button_orga">منشط</string>
+    <string name="popup_ambassador_button_participant">مشارك</string>
+    <string name="organizer_label">- منظم</string>
+    <string name="animateur_label">- منشط</string>
+    <string name="share_request_group">هل ترغب في مشاركة %s في مجموعتك %s؟</string>
+    <string name="share_request_description">لديك إمكانية مشاركة %s في مجموعة الجيران في مدينتك لزيادة وضوحها</string>
 
 </resources>

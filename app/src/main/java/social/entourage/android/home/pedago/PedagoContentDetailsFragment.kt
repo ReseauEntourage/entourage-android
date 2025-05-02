@@ -30,7 +30,7 @@ class PedagoContentDetailsFragment : Fragment() {
 
     private val homePresenter: HomePresenter by lazy { HomePresenter() }
 
-    private val args: PedagoContentDetailsFragmentArgs by navArgs()
+    //private val args: PedagoContentDetailsFragmentArgs by navArgs()
 
     private var isFromNotifs = false
     private var htmlContent:String = ""
@@ -46,17 +46,18 @@ class PedagoContentDetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         handleBackButton()
-        isFromNotifs = args.isFromNotif
-        htmlContent = args.htmlContent
+        isFromNotifs = PedagoDetailActivity.getIsFromNotif()
+        htmlContent = PedagoDetailActivity.getHtmlContent()
 
         setView()
         homePresenter.pedagolSingle.observe(requireActivity(), ::updateContent)
-        homePresenter.getPedagogicalResource(args.id)
+        homePresenter.getPedagogicalResource(PedagoDetailActivity.getPedagoId())
     }
 
     private fun updateContent(pedago: Pedago) {
         pedago.html?.let {
             htmlContent = it
+            PedagoDetailActivity.setHtmlContent(it)
             setView()
         }
     }

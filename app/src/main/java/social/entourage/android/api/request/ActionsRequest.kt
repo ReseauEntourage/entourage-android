@@ -77,10 +77,10 @@ interface ActionsRequest {
 
     //create action
     @POST("contributions")
-    fun createActionContrib(@Body action: ContribWrapper): Call<ContribWrapper>
+    fun createActionContrib(@Query("auto_post_at_create") autoPost: Boolean,@Body action: ContribWrapper): Call<ContribWrapper>
 
     @POST("solicitations")
-    fun createActionDemand(@Body action: DemandWrapper): Call<DemandWrapper>
+    fun createActionDemand(@Query("auto_post_at_create") autoPost: Boolean,@Body action: DemandWrapper): Call<DemandWrapper>
 
     //Update
     @PUT("contributions/{action_id}")

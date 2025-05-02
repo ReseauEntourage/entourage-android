@@ -2766,4 +2766,14 @@ Ei vor citi acest mesaj imediat ce se vor alătura grupului.</string>
     <string name="popup_nightgood_vote">Votați</string>
     <string name="popup_nightgood_text">Pentru a ajuta 60 de persoane aflate în situații precare să se alăture unui club sportiv, este suficient un singur clic. Al tău!</string>
 
+    <string name="popup_ambassador_title">Participați ca facilitator sau ca participant?</string>
+    <string name="popup_ambassador_subtitle">Dacă sunteți facilitator, participanții vă vor putea identifica mai ușor</string>
+    <string name="popup_ambassador_button_orga">Facilitator</string>
+    <string name="popup_ambassador_button_participant">Participant</string>
+    <string name="organizer_label">- Organizator</string>
+    <string name="animateur_label">- Facilitator</string>
+    <string name="share_request_group">Doriți să vă împărtășiți %s în grupul %s?</string>
+    <string name="share_request_description">Aveți opțiunea de a vă împărtăși %s în grupul de vecini al orașului pentru a-i crește vizibilitatea</string>
+
+
 </resources>

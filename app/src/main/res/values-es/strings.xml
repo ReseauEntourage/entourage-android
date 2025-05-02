@@ -2755,4 +2755,14 @@ Leerán este mensaje tan pronto como se unan al grupo.</string>
     <string name="popup_nightgood_vote">Votar</string>
     <string name="popup_nightgood_text">Para ayudar a 60 personas en situación precaria a unirse a un club deportivo, solo hace falta un clic. ¡El tuyo!</string>
 
+    <string name="popup_ambassador_title">¿Participa como facilitador o como participante?</string>
+    <string name="popup_ambassador_subtitle">Si es facilitador, los participantes podrán identificarlo más fácilmente</string>
+    <string name="popup_ambassador_button_orga">Facilitador</string>
+    <string name="popup_ambassador_button_participant">Participante</string>
+    <string name="organizer_label">- Organizador</string>
+    <string name="animateur_label">- Facilitador</string>
+    <string name="share_request_group">¿Desea compartir su %s en su grupo %s?</string>
+    <string name="share_request_description">Tiene la opción de compartir su %s en el grupo de vecinos de su ciudad para mejorar su visibilidad</string>
+
+
 </resources>

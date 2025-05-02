@@ -197,7 +197,7 @@ object Navigation {
                     return Intent(context, PedagoDetailActivity::class.java)
                         .putExtra(Const.ID, params.id)
                         .putExtra(Const.IS_FROM_NOTIF, true)
-                        .putExtra(Const.HTML_CONTENT, "")
+                        //.putExtra(Const.HTML_CONTENT, "")
                 }
                 ActionSummary.INDEX -> Utils.showToast(
                     context,

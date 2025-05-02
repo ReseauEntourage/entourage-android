@@ -346,7 +346,7 @@ purus dui, aliquet cursus tellus a, dictum hen." />
                         android:layout_height="wrap_content"
                         android:layout_marginStart="6dp"
                         android:text="TextView"
-                        android:textSize="11sp"
+                        android:textSize="13sp"
                         app:layout_constraintBottom_toBottomOf="@+id/imageView36"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/imageView36"

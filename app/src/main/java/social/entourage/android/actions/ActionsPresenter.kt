@@ -214,7 +214,7 @@ class ActionsPresenter : ViewModel() {
         Create / update
      */
 
-    fun createContribWithImage(action: Action, file: File, isUpdate:Boolean) {
+    fun createContribWithImage(autoPost: Boolean,action: Action, file: File, isUpdate:Boolean) {
 
         if (isSendingCreateContrib) return
         isSendingCreateContrib = true
@@ -229,7 +229,7 @@ class ActionsPresenter : ViewModel() {
                         val presignedUrl = response.body()?.presignedUrl
                         val uploadKey = response.body()?.uploadKey
                         presignedUrl?.let {
-                            uploadFile(action, file, presignedUrl, uploadKey,isUpdate)
+                            uploadFile(action, file, presignedUrl, uploadKey,isUpdate,autoPost)
                         } ?: run { isSendingCreateContrib = false }
                     }
                     else {
@@ -243,7 +243,7 @@ class ActionsPresenter : ViewModel() {
             })
     }
 
-    fun uploadFile(action: Action, file: File, presignedUrl: String, uploadKey: String?, isUpdate:Boolean) {
+    fun uploadFile(action: Action, file: File, presignedUrl: String, uploadKey: String?, isUpdate:Boolean,autoPost: Boolean) {
         val client: OkHttpClient = EntourageApplication.get().apiModule.okHttpClient
         val requestBody = file.asRequestBody("image/jpeg".toMediaTypeOrNull())
         val request = Request.Builder()
@@ -263,26 +263,14 @@ class ActionsPresenter : ViewModel() {
                     updateContrib(action)
                 }
                 else {
-                    createContrib(action)
+                    createContrib(autoPost,action)
                 }
             }
         })
     }
 
-    fun createAction(action: Action, isDemand:Boolean, uri:Uri?, context: Context) {
-        if (isDemand) {
-            createDemand(action)
-        }
-        else {
-            uri?.let { it ->
-                val file = Utils.getFile(context, it)
-                createContribWithImage(action,file,false)
-            } ?: run { createContrib(action) }
-        }
-    }
-
-    fun createDemand(action: Action) {
-        EntourageApplication.get().apiModule.actionsRequest.createActionDemand(DemandWrapper(action))
+    fun createDemand(autoPost:Boolean, action: Action) {
+        EntourageApplication.get().apiModule.actionsRequest.createActionDemand(autoPost, DemandWrapper(action))
             .enqueue(object : Callback<DemandWrapper> {
                 override fun onResponse(
                     call: Call<DemandWrapper>,
@@ -305,8 +293,20 @@ class ActionsPresenter : ViewModel() {
             })
     }
 
-    fun createContrib(action: Action) {
-        EntourageApplication.get().apiModule.actionsRequest.createActionContrib(ContribWrapper(action))
+    fun createAction(action: Action, isDemand:Boolean, uri:Uri?, context: Context, autoPost: Boolean) {
+        if (isDemand) {
+            createDemand(autoPost,action)
+        }
+        else {
+            uri?.let { it ->
+                val file = Utils.getFile(context, it)
+                createContribWithImage(autoPost,action,file,false)
+            } ?: run { createContrib(autoPost,action) }
+        }
+    }
+
+    fun createContrib(autoPost:Boolean,action: Action) {
+        EntourageApplication.get().apiModule.actionsRequest.createActionContrib(autoPost,ContribWrapper(action))
             .enqueue(object : Callback<ContribWrapper> {
                 override fun onResponse(
                     call: Call<ContribWrapper>,
@@ -329,7 +329,7 @@ class ActionsPresenter : ViewModel() {
             })
     }
 
-    fun updateAction(actionEdited: Action?, newAction: Action, isDemand: Boolean, uri:Uri?, context: Context) {
+    fun updateAction(actionEdited: Action?, newAction: Action, isDemand: Boolean, uri:Uri?, context: Context,autoPost: Boolean) {
 
         if (actionEdited == null || newAction.id == null) {
             newActionCreated.value = null
@@ -342,7 +342,7 @@ class ActionsPresenter : ViewModel() {
         else {
             uri?.let { it ->
                 val file = Utils.getFile(context, it)
-                createContribWithImage(newAction,file,true)
+                createContribWithImage(autoPost,newAction,file,true)
             } ?: run { updateContrib(newAction) }
         }
     }

@@ -53,6 +53,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:tint="@color/orange"
+            android:visibility="gone"
             tools:src="@drawable/home_v2_second_help_item_illu" />
         <TextView
             android:layout_width="wrap_content"
@@ -66,7 +67,7 @@
             android:layout_marginStart="@dimen/entourage_little_margin_five"
             android:textColor="@color/orange"
             android:layout_marginBottom="3dp"
-            android:textSize="11sp"
+            android:textSize="13sp"
             android:fontFamily="@font/quicksand_bold"
             tools:text="Sport"
             />

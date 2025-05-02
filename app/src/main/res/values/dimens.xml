@@ -74,7 +74,7 @@
     <!--New-->
     <dimen name="profile_name">20sp</dimen>
     <dimen name="profile_labels">13sp</dimen>
-    <dimen name="profile_legend">11sp</dimen>
+    <dimen name="profile_legend">13sp</dimen>
     <dimen name="version_number">9sp</dimen>
     <dimen name="profile_description">15sp</dimen>
     <dimen name="button_create_group">18sp</dimen>
@@ -85,10 +85,10 @@
     <dimen name="mini_header_title">18sp</dimen>
     <dimen name="padding_top">25dp</dimen>
     <dimen name="padding_horizontal">28dp</dimen>
-    <dimen name="error_msg">11sp</dimen>
+    <dimen name="error_msg">13sp</dimen>
     <dimen name="list_item_spacing">16dp</dimen>
     <dimen name="list_item_spacing_half">8dp</dimen>
-    <dimen name="group_member_subtitle">11sp</dimen>
+    <dimen name="group_member_subtitle">13sp</dimen>
     <dimen name="tabs_height">60dp</dimen>
     <dimen name="contributions_value">30sp</dimen>
     <dimen name="contributions_empty_label">10sp</dimen>

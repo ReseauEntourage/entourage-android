@@ -2757,4 +2757,14 @@ Sie werden diese Nachricht lesen, sobald sie der Gruppe beitreten.</string>
     <string name="see_participants">Teilnehmer</string>
     <string name="participant_number">%s Teilnehmer</string>
 
+    <string name="popup_ambassador_title">Nehmen Sie als Moderator oder als Teilnehmer teil?</string>
+    <string name="popup_ambassador_subtitle">Wenn Sie Moderator sind, können Sie leichter von den Teilnehmern erkannt werden</string>
+    <string name="popup_ambassador_button_orga">Moderator</string>
+    <string name="popup_ambassador_button_participant">Teilnehmer</string>
+    <string name="organizer_label"> - Organisator</string>
+    <string name="animateur_label"> - Moderator</string>
+    <string name="share_request_group">Möchten Sie Ihre %s in Ihrer Gruppe %s teilen?</string>
+    <string name="share_request_description">Sie haben die Möglichkeit, Ihre %s in der Nachbarschaftsgruppe Ihrer Stadt zu teilen, um die Sichtbarkeit zu erhöhen</string>
+
+
 </resources>

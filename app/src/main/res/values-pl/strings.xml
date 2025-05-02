@@ -2771,4 +2771,14 @@ Przeczytają tę wiadomość, gdy tylko dołączą do grupy.</string>
     <string name="popup_nightgood_vote">Głosować</string>
     <string name="popup_nightgood_text">Aby pomóc 60 osobom w trudnej sytuacji dołączyć do klubu sportowego, wystarczy jedno kliknięcie. Twoje!</string>
 
+    <string name="popup_ambassador_title">Czy uczestniczysz jako animator czy jako uczestnik?</string>
+    <string name="popup_ambassador_subtitle">Jeśli jesteś animatorem, uczestnicy będą mogli cię łatwiej rozpoznać</string>
+    <string name="popup_ambassador_button_orga">Animator</string>
+    <string name="popup_ambassador_button_participant">Uczestnik</string>
+    <string name="organizer_label">- Organizator</string>
+    <string name="animateur_label">- Animator</string>
+    <string name="share_request_group">Czy chcesz udostępnić swoją %s w grupie %s?</string>
+    <string name="share_request_description">Masz możliwość udostępnienia swojej %s w grupie sąsiedzkiej twojego miasta, aby zwiększyć jej widoczność</string>
+
+
 </resources>

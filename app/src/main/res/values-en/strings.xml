@@ -1700,9 +1700,18 @@
     <string name="see_participants">Participants</string>
     <string name="participant_number">%s participants</string>
 
+    <string name="popup_ambassador_title">Are you participating as a facilitator or as a participant?</string>
+    <string name="popup_ambassador_subtitle">If you are a facilitator, participants will be able to identify you more easily</string>
+    <string name="popup_ambassador_button_orga">Facilitator</string>
+    <string name="popup_ambassador_button_participant">Participant</string>
+    <string name="organizer_label">- Organizer</string>
+    <string name="animateur_label">- Facilitator</string>
+    <string name="share_request_group">Would you like to share your %s in your group %s?</string>
+    <string name="share_request_description">You have the option to share your %s in your city’s neighborhood group to increase its visibility</string>
+
+
     <string name="popup_nightgood_vote">Vote</string>
     <string name="popup_nightgood_text">To help 60 people in precarious situations join a sports club, just one click is enough. Yours!</string>
-
 
 
 

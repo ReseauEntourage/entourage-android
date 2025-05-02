@@ -76,7 +76,7 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/orange"
                 android:textAlignment="viewStart"
-                android:textSize="11sp"
+                android:textSize="13sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/name"
                 tools:text="role" />
