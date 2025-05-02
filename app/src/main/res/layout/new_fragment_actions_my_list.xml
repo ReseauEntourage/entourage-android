@@ -17,8 +17,8 @@
             android:layout_marginTop="20dp"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/divider"
             tools:itemCount="4"
             tools:listitem="@layout/new_event_item" />
@@ -44,8 +44,8 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <ImageView
@@ -55,8 +55,8 @@
                     android:layout_gravity="center"
                     android:src="@drawable/new_action_empty_state"
                     app:layout_constraintBottom_toTopOf="@+id/title"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
@@ -68,7 +68,7 @@
                     android:layout_marginTop="10dp"
                     android:text="@string/action_my_empty_title"
                     app:layout_constraintBottom_toTopOf="@id/title"
-                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/image" />
 
                 <TextView
@@ -80,7 +80,7 @@
                     android:layout_marginTop="10dp"
                     android:gravity="start"
                     android:text="@string/action_my_empty_subtitle"
-                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/title" />
             </LinearLayout>
 

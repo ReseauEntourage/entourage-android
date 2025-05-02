@@ -206,22 +206,41 @@ abstract class CommentActivity : BaseActivity(), onDissmissFragment {
         binding.comment.setOnClickListener {
             val message = binding.commentMessage.text.toString()
             if (!message.isNullOrBlank() && !message.isNullOrEmpty()) {
-                val user = EntourageUser()
-                user.userId = EntourageApplication.me(this)?.id!!
-                user.avatarURLAsString = EntourageApplication.me(this)?.avatarURL
-                comment =
-                    Post(
-                        idInternal = UUID.randomUUID(),
-                        content = message,
-                        postId = postId,
-                        user = user
-                    )
+                // Disable the send button and show the progress bar
+                binding.comment.isEnabled = false
+                binding.progressBar.visibility = View.VISIBLE
+
+                // Create the user and post objects as before
+                val user = EntourageUser().apply {
+                    userId = EntourageApplication.me(this@CommentActivity)?.id ?: 0
+                    avatarURLAsString = EntourageApplication.me(this@CommentActivity)?.avatarURL
+                }
+
+                comment = Post(
+                    idInternal = UUID.randomUUID(),
+                    content = message,
+                    postId = postId,
+                    user = user
+                )
+
+                // Send the comment
                 addComment()
+
+                // Simulate a delay of 2 seconds (2000 milliseconds)
+                binding.comment.postDelayed({
+                    // Re-enable the button and hide the progress bar
+                    binding.comment.isEnabled = true
+                    binding.progressBar.visibility = View.GONE
+                }, 2000)
+
+                // Clear the input field and hide the keyboard
+                binding.commentMessage.text.clear()
+                Utils.hideKeyboard(this)
             }
-            binding.commentMessage.text.clear()
-            Utils.hideKeyboard(this)
         }
     }
+
+
 
     private fun handleBackButton() {
         binding.header.iconBack.setOnClickListener {

@@ -2768,5 +2768,7 @@ Przeczytają tę wiadomość, gdy tylko dołączą do grupy.</string>
     <string name="members_location_temporary">%s</string>
     <string name="see_participants">Uczestnicy</string>
     <string name="participant_number">%s uczestników</string>
+    <string name="popup_nightgood_vote">Głosować</string>
+    <string name="popup_nightgood_text">Aby pomóc 60 osobom w trudnej sytuacji dołączyć do klubu sportowego, wystarczy jedno kliknięcie. Twoje!</string>
 
 </resources>

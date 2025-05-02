@@ -1,5 +1,6 @@
 package social.entourage.android.groups.details.feed
 
+import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
@@ -30,6 +31,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
+import com.google.android.play.core.review.ReviewManagerFactory
 import com.leinardi.android.speeddial.SpeedDialActionItem
 import com.leinardi.android.speeddial.SpeedDialView
 import kotlinx.coroutines.CoroutineScope
@@ -87,6 +89,7 @@ class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface,
     private lateinit var groupUI: GroupModel
     private var myId: Int? = null
     private val args: FeedFragmentArgs by navArgs()
+
     private var isLoading = false
     private var page:Int = 0
     private val ITEM_PER_PAGE = 10
@@ -152,6 +155,7 @@ class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface,
 
         }
     }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -764,6 +768,7 @@ class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface,
         adapter?.translateItem(id)
     }
     override fun onReactionClicked(postId: Post, reactionId: Int) {
+        requestInAppReview(requireContext())
         if(this.group?.member == false){
             AlertDialog.Builder(context) // Utilise 'this' si c'est dans une activité, ou 'getActivity()' si c'est dans un fragment
                 .setTitle("Attention")
@@ -879,12 +884,14 @@ class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface,
                 }
                 R.id.fab_create_post -> {
                     createAPost()
+                    requestInAppReview(requireContext())
                     true
                 }
                 R.id.fab_create_survey -> {
                     AnalyticsEvents.logEvent(
                         AnalyticsEvents.Clic_Group_Create_Poll
                     )
+                    requestInAppReview(requireContext())
                     val intent = Intent(context, CreateSurveyActivity::class.java)
                     isFromCreation = true
                     intent.putExtra(Const.GROUP_ID, groupId)
@@ -895,9 +902,18 @@ class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface,
             }
         }
     }
-
-
-
+    fun requestInAppReview(context: Context) {
+        val manager = ReviewManagerFactory.create(context)
+        val request = manager.requestReviewFlow()
+        request.addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                val flow = manager.launchReviewFlow(context as Activity, task.result)
+                flow.addOnCompleteListener {
+                }
+            } else {
+            }
+        }
+    }
 
 }
 

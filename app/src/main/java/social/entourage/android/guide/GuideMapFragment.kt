@@ -7,11 +7,16 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.Paint
 import android.graphics.Point
 import android.location.Location
 import android.os.Bundle
 import android.os.IBinder
 import android.provider.Settings
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,15 +26,19 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.model.BitmapDescriptor
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.Marker
+import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.snackbar.Snackbar
 import social.entourage.android.Constants
 import social.entourage.android.EntourageApplication
@@ -37,6 +46,7 @@ import social.entourage.android.R
 import social.entourage.android.RefreshController
 import social.entourage.android.api.ApiConnectionListener
 import social.entourage.android.api.model.guide.Poi
+import social.entourage.android.api.request.ClusterPoi
 import social.entourage.android.base.location.EntLocation
 import social.entourage.android.base.location.LocationUpdateListener
 import social.entourage.android.base.location.LocationUtils
@@ -253,6 +263,91 @@ class GuideMapFragment : Fragment(),
         }
     }
 
+    // Méthode pour vider la carte
+    fun clearMap() {
+        map?.clear()
+    }
+
+    // Méthode pour afficher les clusters et POIs
+    fun putClustersAndPoisOnMap(clustersAndPois: List<ClusterPoi>) {
+        val poisToAdd = mutableListOf<Poi>() // Liste pour stocker les POIs à ajouter à l'adaptateur
+
+        clustersAndPois.forEach { item ->
+            val position = LatLng(item.latitude, item.longitude)
+            when (item.type) {
+                "cluster" -> {
+                    // Créer un marqueur personnalisé pour le cluster
+                    val markerOptions = MarkerOptions()
+                        .position(position)
+                        .icon(createClusterIcon(item.count))
+                        .title("Cluster de ${item.count} POIs")
+
+                    map?.addMarker(markerOptions)
+                }
+                "poi" -> {
+                    // Utiliser le PoiRenderer pour les POIs
+                    val poi = item.toPoi()
+                    mapRenderer.getMarkerOptions(poi, requireContext())?.let { markerOptions ->
+                        map?.addMarker(markerOptions)?.apply {
+                            this.tag = poi
+                        }
+                    }
+                    // Ajouter le POI à la liste des POIs à ajouter à l'adaptateur
+                    poisToAdd.add(poi)
+                }
+            }
+        }
+
+        // Ajouter les POIs à l'adaptateur
+        if (poisToAdd.isNotEmpty()) {
+            poisAdapter.removeAll()
+            poisAdapter.addItems(poisToAdd)
+        }
+    }
+
+    private fun createClusterIcon(poiCount: Int): BitmapDescriptor {
+        val iconSize = 100  // Taille de l'icône
+        val bitmap = Bitmap.createBitmap(iconSize, iconSize, Bitmap.Config.ARGB_8888)
+        val canvas = Canvas(bitmap)
+
+        // Récupérer les couleurs à partir des ressources
+        val orangeSecondaryLocal = ContextCompat.getColor(requireContext(), R.color.orange_secondary_local)
+        val orangeTextMapLocal = ContextCompat.getColor(requireContext(), R.color.orange_entourage)
+
+        // Dessiner le fond de l'icône (un cercle par exemple)
+        val paint = Paint().apply {
+            color = orangeSecondaryLocal  // Utiliser la couleur orange_secondary_local
+            isAntiAlias = true
+        }
+        val radius = iconSize / 2f
+        canvas.drawCircle(radius, radius, radius, paint)
+
+        // Dessiner le texte (nombre de POIs)
+        paint.color = orangeTextMapLocal  // Utiliser la couleur orange_text_map_local
+        paint.textSize = 40f
+        paint.textAlign = Paint.Align.CENTER
+
+        val textX = radius
+        val textY = radius - (paint.descent() + paint.ascent()) / 2
+        canvas.drawText(poiCount.toString(), textX, textY, paint)
+
+        return BitmapDescriptorFactory.fromBitmap(bitmap)
+    }
+
+
+    // Convertir ClusterPoi en Poi pour l'utiliser avec PoiRenderer
+    private fun ClusterPoi.toPoi(): Poi {
+        return Poi().apply {
+            id = this@toPoi.id?.toLong() ?: 0
+            uuid = this@toPoi.uuid ?: "" // Transférez le uuid ici
+            name = this@toPoi.name ?: "Unnamed POI"
+            latitude = this@toPoi.latitude
+            longitude = this@toPoi.longitude
+            categoryId = this@toPoi.category_id ?: 0
+        }
+    }
+
+
     private fun onDisplayToggle() {
         AnalyticsEvents.logEvent(if (!isFullMapShown) AnalyticsEvents.ACTION_GUIDE_SHOWMAP else AnalyticsEvents.ACTION_GUIDE_SHOWLIST)
         togglePOIList()
@@ -263,7 +358,7 @@ class GuideMapFragment : Fragment(),
         map?.clear()
         presenter.clear()
         poisAdapter.removeAll()
-        presenter.updatePoisNearby(map)
+        presenter.updatePoisAndClusters(map)
     }
 
     // ----------------------------------
@@ -368,21 +463,24 @@ class GuideMapFragment : Fragment(),
         }
         initializeMapZoom()
         map?.setOnMarkerClickListener(this)
-        //map?.setMinZoomPreference(MAX_ZOOM_VALUE)
 
+        // Appel pour charger les clusters et POIs au démarrage
+        presenter.updatePoisAndClusters(map)
+
+        // Gestion du zoom/dézoom ou des mouvements de caméra
         map?.setOnCameraIdleListener {
-            map?.cameraPosition?.let {position ->
+            map?.cameraPosition?.let { position ->
                 val newLocation = EntLocation.cameraPositionToLocation(null, position)
                 val newZoom = position.zoom
                 if (newZoom / previousCameraZoom >= ZOOM_REDRAW_LIMIT || newLocation.distanceTo(previousCameraLocation ?: newLocation) >= REDRAW_LIMIT) {
                     previousCameraZoom = newZoom
                     previousCameraLocation = newLocation
-                    presenter.updatePoisNearby(map)
+                    presenter.updatePoisAndClusters(map)
                 }
             }
         }
-        presenter.updatePoisNearby(map)
     }
+
 
     override fun showPoiDetails(poi: Poi, isTxtSearch:Boolean) {
         AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_GUIDE_POI)
@@ -677,10 +775,23 @@ class GuideMapFragment : Fragment(),
         }
     }
 
-    override fun onMarkerClick(poiMarker: Marker): Boolean {
-        (poiMarker.tag as? Poi)?.let { poi ->
-            showPoiDetails(poi,false)
+    override fun onMarkerClick(marker: Marker): Boolean {
+        val poi = marker.tag as? Poi
+        val cluster = marker.title?.startsWith("Cluster") == true
+
+        if (cluster) {
+            val currentZoom = map?.cameraPosition?.zoom ?: 10f
+            map?.animateCamera(
+                CameraUpdateFactory.newLatLngZoom(marker.position, currentZoom + 2f) // Zoom in on the cluster
+            )
+            return true
         }
+
+        poi?.let {
+            showPoiDetails(it, false)
+        }
+
         return true
     }
+
 }

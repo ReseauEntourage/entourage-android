@@ -83,7 +83,6 @@ open class DeepLinkingTest {
             }
         }
     }
-
 }
 
 class DeepLinkingTestCreateAction : DeepLinkingTest() {

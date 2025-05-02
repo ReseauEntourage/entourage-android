@@ -3,9 +3,12 @@ package social.entourage.android.onboarding.pre_onboarding
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.view.View.LAYOUT_DIRECTION_LTR
+import android.view.View.LAYOUT_DIRECTION_RTL
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.view.ViewCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
@@ -86,11 +89,25 @@ class PreOnboardingStartActivity : AppCompatActivity() {
         data.add(R.drawable.carousel_onboarding_1)
         data.add(R.drawable.carousel_onboarding_2)
         data.add(R.drawable.carousel_onboarding_3)
+
         val linearLayoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         binding.uiRecyclerView.setHasFixedSize(true)
         binding.uiRecyclerView.layoutManager = linearLayoutManager
-//        binding.uiRecyclerView?.addItemDecoration(RecyclerViewItemDecorationCenterFirstLast(CELL_SPACING))
 
+        // Vérifie si l'interface est en RTL
+        val isRtl = resources.configuration.layoutDirection == ViewCompat.LAYOUT_DIRECTION_RTL
+        if (isRtl) {
+
+            ViewCompat.setLayoutDirection(binding.uiRecyclerView, ViewCompat.LAYOUT_DIRECTION_RTL)
+        } else {
+            ViewCompat.setLayoutDirection(binding.uiRecyclerView, ViewCompat.LAYOUT_DIRECTION_LTR)
+        }
+
+        // Initialise l'adaptateur
+        val adapter = PreOnboardingRVAdapter(this, data)
+        binding.uiRecyclerView.adapter = adapter
+
+        // Ajoute le scroll listener pour gérer les dots ou autres éléments de l'UI
         val scrollListener = object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
@@ -100,21 +117,12 @@ class PreOnboardingStartActivity : AppCompatActivity() {
                 }
             }
         }
-
         binding.uiRecyclerView.addOnScrollListener(scrollListener)
-        val snapHelper = LinearSnapHelper()
-        snapHelper.attachToRecyclerView(binding.uiRecyclerView)
-
-        linearLayoutManager.scrollToPosition(0)
-        mAdapter = PreOnboardingRVAdapter(this, data)
-        binding.uiRecyclerView.adapter = mAdapter
-
-        mAdapter.notifyDataSetChanged()
-
     }
 
+
     private fun updateViewAndDots() {
-        for (i in 0 until arrayViewDots.size) {
+        for (i in arrayViewDots.indices) {
             val drawableId = if (i == currentDotPosition) R.drawable.start_carousel_dot_selected else R.drawable.start_carousel_dot_unselected
             val drawable = AppCompatResources.getDrawable(this, drawableId)
             arrayViewDots[i].setImageDrawable(drawable)
@@ -122,14 +130,15 @@ class PreOnboardingStartActivity : AppCompatActivity() {
 
         val title: String
         val description: String
-        binding.uiLogo.visibility = View.GONE
+        binding.uiLogo.visibility = View.GONE // Par défaut, le logo est caché
         binding.uiButtonConnect.visibility = View.VISIBLE
         binding.uiButtonPrevious.isVisible = true
+
         when(currentDotPosition) {
             0 -> {
                 title = getString(R.string.intro_title_1)
                 description = getString(R.string.intro_subtitle_1)
-                binding.uiLogo.visibility = View.VISIBLE
+                binding.uiLogo.visibility = View.VISIBLE // Le logo n'est visible que pour la première image
                 binding.uiButtonPrevious.isVisible = false
                 AnalyticsEvents.logEvent(AnalyticsEvents.PreOnboard_car1)
             }

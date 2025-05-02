@@ -13,7 +13,7 @@
         android:layout_marginTop="20dp"
         android:layout_marginBottom="10dp"
         android:text="@string/within"
-        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -38,8 +38,8 @@
         android:progressDrawable="@drawable/new_seek_bar"
         android:splitTrack="false"
         android:thumb="@drawable/new_thumb"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_trickle_indicator" />
 
     <TextView
@@ -50,7 +50,7 @@
         android:paddingStart="10dp"
         android:paddingTop="15dp"
         android:text="@string/min_progressbar"
-        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/seekbar" />
 
     <TextView
@@ -60,7 +60,7 @@
         android:paddingTop="15dp"
         android:paddingEnd="10dp"
         android:text="@string/max_progressbar"
-        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/seekbar" />
 
     <TextView
@@ -71,7 +71,7 @@
         android:layout_marginTop="20dp"
         android:paddingStart="5dp"
         android:text="@string/indications"
-        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/bar_indicator" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -70,7 +70,7 @@ object NotificationActionManager {
                 val intent = Intent(context, WelcomeThreeActivity::class.java)
                 context.startActivity(intent)
             }
-            if(stage.equals("j!")){
+            if(stage.equals("j8")){
                 val intent = Intent(context, WelcomeFourActivity::class.java)
                 context.startActivity(intent)
             }
@@ -79,7 +79,8 @@ object NotificationActionManager {
                 context.startActivity(intent)
             }
         }
-
+        Log.wtf("wtf", "instance: $instance")
+        Log.wtf("wtf", "id: $id")
         when(getInstanceTypeFromName(instance)) {
             InstanceType.POIS -> showPoi(supportFragmentManager,id)
             InstanceType.USERS -> showUser(context,supportFragmentManager,id)
@@ -266,11 +267,11 @@ object NotificationActionManager {
 
     fun getInstanceTypeFromName(instanceName:String) : InstanceType {
         return when (instanceName) {
-            "pois" -> InstanceType.POIS
+            "pois","poi" -> InstanceType.POIS
             "users", "user" -> InstanceType.USERS
             "neighborhoods", "neighborhood" -> InstanceType.NEIGHBORHOODS
             "neighborhood_post" -> InstanceType.NEIGHBORHOODS_POSTS
-            "resources" -> InstanceType.RESOURCES
+            "resources", "resource" -> InstanceType.RESOURCES
             "outings", "outing" -> InstanceType.OUTINGS
             "outing_post" -> InstanceType.OUTING_POSTS
             "contributions", "contribution" -> InstanceType.CONTRIBUTIONS

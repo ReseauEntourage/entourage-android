@@ -1,7 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources>
 
-    <string name="app_name">Entourage</string>
     <string name="button_loading">تحميل…</string>
     <string name="error_not_yet_implemented">غير متوفره</string>
     <string name="error_google_play_store_not_installed">لم يتم تثبيت متجر Google Play n\</string>
@@ -30,10 +29,6 @@
     <string name="no_browser_error">لم يتم تثبيت أي متصفح n\</string>
 
     <string name="badge_count_format">%1$د</string>
-
-    <string name="empty_description"></string>
-
-    <string name="preference_file_key">ENTOURAGE_GCM_DATA</string>
     <string name="action_overlay_close">أغلق قائمة الإجراءات</string>
     <string name="plus_image_subtitle">الشيء الرئيسي هو الاجتماع!</string>
 
@@ -66,15 +61,13 @@
 
     <string name="home_title_headlines">إلى الرئيسية</string>
     <string name="home_title_actions">الطلبات والمبادرات</string>
-    <string name="home_title_events">الأحداث</string>
-    <string name="home_title_none"></string>
+    <string name="home_title_events">الفعالية</string>
     <string name="home_title_actions_contrib">مساهمات</string>
     <string name="home_title_actions_ask">الطلبات</string>
 
     <string name="home_help_title">حاشية بشكل مختلف</string>
     <string name="home_help_description">إليك كيفية المشاركة في مشروع Entourage، إذا لم تكن هناك أحداث أو أنشطة في منطقتك:</string>
     <string name="home_help_button_1">قم بالتبرع المالي إلى \nEntourage</string>
-    <string name="home_help_button_2">Devenir reporter pour\nEntourage</string>
     <string name="home_help_button_3">الحديث عن حاشية</string>
     <string name="home_help_button_4">كن سفيرا</string>
     <string name="home_help_button_5">برنامج لينكد اوت</string>
@@ -95,8 +88,7 @@
     <string name="my_activity">نشاطي</string>
     <string name="my_information">معلوماتي</string>
     <string name="his_activity">نشاطه</string>
-    <string name="test">5</string>
-    <string name="events">الأحداث</string>
+    <string name="events">الفعالية</string>
     <string name="contributions">مساهمات</string>
     <string name="firstname">الاسم الأول</string>
     <string name="lastname">اسم</string>
@@ -142,7 +134,7 @@
     <string name="delete_account_dialog_content">هل تريد حذف حسابك؟</string>
 
     <string name="unsubscribe_title">هل تريد إلغاء الاشتراك؟</string>
-    <string name="unsubscribe_content">من خلال إلغاء الاشتراك، لن تتلقى بعد الآن الإخطارات والأخبار والأحداث الجديدة من هذه الجمعية.</string>
+    <string name="unsubscribe_content">من خلال إلغاء الاشتراك، لن تتلقى بعد الآن الإخطارات والأخبار والفعالية الجديدة من هذه الجمعية.</string>
 
     <string name="sign_out_dialog_title">قطع الاتصال</string>
     <string name="sign_out_dialog_content">هل ترغب بالخروج؟</string>
@@ -160,8 +152,6 @@
     <string name="validate">للتحقق من صحة</string>
     <string name="take_picture">التقاط صورة</string>
     <string name="import_picture">استيراد من المعرض</string>
-    <string name="description_counter">%s /200</string>
-    <string name="events_description_counter">%s /900</string>
     <string name="apply_modifications">تطبيق التغييرات</string>
     <string name="edit_interests">تغيير اهتماماتي</string>
     <string name="follow">S\الاشتراك</string>
@@ -179,11 +169,6 @@
     <string name="mandatory">- واجب</string>
     <string name="optional">- خياري</string>
     <string name="step">منصة</string>
-    <string name="stepOne">01.</string>
-    <string name="stepThree">03.</string>
-    <string name="stepTwo">02.</string>
-    <string name="stepFour">04.</string>
-    <string name="stepFive">05.</string>
     <string name="choose_categories_group">حدد الفئة (الفئات) التي تصف موضوع مناقشة المجموعة بشكل أفضل.</string>
     <string name="web_site">موقع إلكتروني</string>
     <string name="address">عنوان بريدي</string>
@@ -234,19 +219,18 @@
     <string name="edit_photo">تعديل الصورة</string>
     <string name="group_updated">وقد تم أخذ التعديل بعين الاعتبار</string>
     <string name="group_error_updated">خطأ في تحرير المجموعة</string>
-    <string name="title_activity_main">ActivityMain</string>
-    <string name="title_home">ترحيب</string>
+    <string name="title_home">الصفحة الرئيسية</string>
     <string name="title_donations">المساعدة المتبادلة</string>
     <string name="title_messages">مناقشات</string>
     <string name="title_groups">مجموعات</string>
-    <string name="title_events">الأحداث</string>
+    <string name="title_events">الفعالية</string>
     <string name="communities">مجموعات</string>
     <string name="discover_groups">اكتشف</string>
     <string name="my_groups">مجموعاتي</string>
     <string name="members_number">%s من الأعضاء</string>
     <string name="members_number_singular">%s عضو</string>
     <string name="member_number">%s عضو</string>
-    <string name="future_outgoing_events_number">%s من الأحداث المخطط لها</string>
+    <string name="future_outgoing_events_number">%s من الفعالية المخطط لها</string>
     <string name="future_outgoing_events_number_singular">الحدث المتوقع %s</string>
     <string name="search_group_hint">ابحث عن مجموعة</string>
     <string name="group_list_empty_state_title">عفوًا، لا توجد مجموعات أخرى حولك حتى الآن.</string>
@@ -306,13 +290,12 @@
     <string name="contributions_meeting_empty">لا توجد اجتماعات Entourage حتى الآن</string>
     <string name="contributions_message">رسالة مرسلة</string>
     <string name="contributions_message_empty">لم يتم إرسال أي رسائل حتى الآن</string>
-    <string name="contributions_event">الأحداث\n</string>
+    <string name="contributions_event">الفعالية\n</string>
     <string name="contribution_event">الحدث\n</string>
     <string name="contributions_event_empty">حضور الحدث الأول الخاص بك</string>
     <string name="contributions_group">مجموعات من \n الجيران</string>
     <string name="contribution_group">مجموعة الجيران\n</string>
     <string name="contributions_group_empty">N\ لا تنتظر أكثر من ذلك للانضمام إلى مجموعة من الجيران!</string>
-    <string name="zero">0</string>
     <string name="all_pedago_content">جميع المحتويات التعليمية</string>
     <string name="pedago_details">المحتوى التعليمي</string>
     <string name="read">يقرأ!</string>
@@ -366,7 +349,7 @@
     <string name="discover_events">اكتشف</string>
     <string name="my_events">أنا اشارك</string>
     <string name="canceled">- ألغيت</string>
-    <string name="title_btn_discover_event">اكتشف الأحداث</string>
+    <string name="title_btn_discover_event">اكتشف الفعالية</string>
     <string name="title_button_create_event">إنشاء حدث</string>
     <string name="event_list_empty_state_title">لم تنضم إلى الحدث بعد</string>
     <string name="event_list_empty_state_subtitle">C\ هي الفرصة للتعرف على ما يحدث بالقرب منك، أو لإنشاء حدث جديد!</string>
@@ -384,7 +367,6 @@
     <string name="event_posts_empty_state_subtitle">يا! C\ هي الفرصة لمشاركة الأخبار الأولى لبدء المناقشة!</string>
     <string name="participate">يشارك</string>
     <string name="participating">يشارك</string>
-    <string name="geoUri">http://maps.google.com/maps?q=loc:%s</string>
     <string name="event_settings">معلمات الحدث \</string>
     <string name="event_notification_all">جميع أنشطة l\ لحدث l\</string>
     <string name="notification_new_publications">منشورات جديدة</string>
@@ -399,7 +381,6 @@
     <string name="category">فئة</string>
     <string name="associated_groups">المجموعات المرتبطة:</string>
     <string name="associated_group">المجموعة المرتبطة:</string>
-    <string name="date_recurrence_event">%s . %s</string>
     <string name="start_and_end_time_event">من %s إلى %s</string>
     <string name="limited_places">عدد محدود من الأماكن: %s</string>
     <string name="created_at">تم إنشاء %s</string>
@@ -417,7 +398,6 @@
     <string name="event_places">عدد الأماكن</string>
     <string name="event_canceled">تم إلغاء الحدث</string>
     <string name="member_since">عضو الوفد المرافق منذ ذلك الحين</string>
-    <string name="profile_date_format">MM/yyyy</string>
     <plurals name="number_of_people">
         <item quantity="zero">ليس هناك مشاركين</item>
         <item quantity="one">%1$d مشارك</item>
@@ -429,7 +409,7 @@
     <string name="event_cancel_subtitle_pop">هل تريد إلغاء الحدث؟ سيتم إخطار جميع المشاركين بالإلغاء.</string>
     <string name="event_cancel_recurrent_event">إلغاء حدث متكرر</string>
     <string name="this_event">هذا الحدث</string>
-    <string name="all_events_recurrent">هذا الحدث وكل الأحداث اللاحقة</string>
+    <string name="all_events_recurrent">هذا الحدث وكل الفعالية اللاحقة</string>
     <string name="date_of_event">تاريخ الحدث</string>
     <string name="edit_event">قم بتحرير حدث \</string>
     <string name="event_edit_recurrent_event">تحرير حدث متكرر</string>
@@ -479,7 +459,7 @@
     <string name="welcome_five_main_button">شارك تطبيق \</string>
 
 
-    <string name="welcome_three_button_title">اكتشف الأحداث</string>
+    <string name="welcome_three_button_title">اكتشف الفعالية</string>
     <string name="welcome_three_title_with_event">قام 6000 شخص بتكوين صداقات جديدة في حدث Entourage</string>
     <string name="welcome_three_title_with_demand">امنح جيرانك يد العون</string>
     <string name="welcome_three_title_with_contrib">لا توجد مساعدة d\ من حولك؟ اصنعها!</string>
@@ -491,7 +471,7 @@
     <string name="welcome_three_contrib_distance">10 متر مني</string>
     <string name="welcome_three_contrib_location">باريس (75010)</string>
     <string name="welcome_three_contrib_date">21 يونيو 2022 الساعة 12 ظهرًا</string>
-    <string name="welcome_three_main_button_title_event">اكتشف الأحداث</string>
+    <string name="welcome_three_main_button_title_event">اكتشف الفعالية</string>
     <string name="welcome_three_main_button_title_demand">اكتشاف الطلبات</string>
     <string name="welcome_three_main_button_title_contrib">إنشاء مساهمة</string>
     <string name="welcome_five_share_title">"اكتشف تطبيق \ Entourage، الشبكة الاجتماعية الحقيقية"</string>
@@ -519,7 +499,6 @@
     <string name="entourage_info_text_join_rejected">تم رفض \u0020</string>
     <string name="entourage_info_text_join_cancelled_entourage">ألغى طلبه للانضمام إلى المجموعة</string>
     <string name="entourage_info_text_join_quited_entourage">غادر المجموعة</string>
-    <string name="entourage_info_text_join_html">&lt;font color=\"#FF9739\"&gt;%1$s &lt;/font&gt;%2$s</string>
     <string name="entourage_info_error_chat_message">لم يتم إرسال الرسالة</string>
     <string name="entourage_info_options_stop">لإحاطة</string>
     <string name="entourage_info_options_cancel_event">قم بإلغاء حدث \</string>
@@ -546,15 +525,12 @@
     <string name="entourage_info_metadata_date_format">لقاء %1$s %2$s</string>
     <string name="entourage_info_metadata_dateStart_hours_format">نراكم في %1$s %2$s</string>
     <string name="entourage_info_metadata_dateStart_End_hours_format">قابل من %1$s %2$s إلى %3$s %4$s</string>
-    <string name="entourage_info_metadata_dateStart_hours_format_new">%1$s %2$s</string>
     <string name="entourage_info_metadata_dateStart_End_hours_format_new">من %1$s %2$s إلى %3$s %4$s</string>
 
     <string name="loader_title_outing_finish">إزالة الحدث \</string>
     <string name="loader_title_action_finish">إزالة الإجراء \</string>
 
     <!-- Entourage Cell -->
-    <string name="entourage_cell_title">%1$s</string>
-    <string name="entourage_cell_author">%1$s</string>
     <string name="entourage_cell_location">في %1$s</string>
     <string name="entourage_cell_numberOfPeople">%1$د</string>
     <string name="entourage_cell_button_join">أنضم</string>
@@ -577,8 +553,8 @@
     <string name="newsfeed_no_more_items">لا يوجد حاشية أخرى بالقرب من هذا الموقف</string>
 
     <!-- Map Filter -->
-    <string name="map_filter_outing_title">الأحداث</string>
-    <string name="map_filter_entourage_outing_text">الأحداث</string>
+    <string name="map_filter_outing_title">الفعالية</string>
+    <string name="map_filter_entourage_outing_text">الفعالية</string>
     <string name="map_filter_past_events_text">تضمين الماضي</string>
 
     <!-- New detail action/event -->
@@ -623,7 +599,6 @@
     <string name="actions_tab_contribs">مساهمات</string>
     <string name="actions_tab_demands">الطلبات</string>
 
-    <string name="action_date_list">%s</string>
     <string name="action_bt_my_actions">إعلاناتي</string>
 
     <string name="action_contrib_empty_state_title">لا توجد مساهمات تطابق بحثك</string>
@@ -709,7 +684,6 @@
 
 
     <!--    STRING CAROUSEL-->
-    <string name="carousel_close_button">@string/close</string>
 
     <string name="carousel_p1_title">عرف نفسك لأعضاء الشبكة</string>
     <string name="carousel_p1_about">صباح الخير ! لقد انضممت للتو إلى الشبكة وأرغب في مقابلة بعض الجيران المهتمين.</string>
@@ -738,8 +712,8 @@
     <string name="neighborhood_CGU_5_title">حماية الناس</string>
     <string name="neighborhood_CGU_5">لا يمكن أن تحتوي المنشورات على أي بيانات شخصية تسمح بالتعرف على الشخص وتحديد مكانه بدقة ولا أي بيانات حساسة عن الأشخاص (بيانات طبية أو قانونية أو أصل أخلاقي أو بيانات التوجه الجنسي أو السياسي، وما إلى ذلك).</string>
 
-    <string name="event_params_cgu_title">ميثاق الأحداث</string>
-    <string name="event_params_cgu_description">ميثاق الأحداث، إقرأه بعناية.</string>
+    <string name="event_params_cgu_title">ميثاق الفعالية</string>
+    <string name="event_params_cgu_description">ميثاق الفعالية، إقرأه بعناية.</string>
     <string name="event_CGU_1_title">كن طيبا</string>
     <string name="event_CGU_1">أستخدم التطبيق بغرض المساعدة المتبادلة للأشخاص الذين يعيشون في مواقف محفوفة بالمخاطر أو مستبعدة للغاية.</string>
     <string name="event_CGU_2_title">جمع الاتفاق</string>
@@ -750,7 +724,6 @@
     <string name="event_CGU_4">أتعهد بعدم التمييز على أساس العرق أو اللون أو الجنس أو اللغة أو الدين أو الرأي السياسي أو الملكية أو المولد أو أي وضع آخر.</string>
 
     <string name="action_params_cgu_title">مدونة لقواعد السلوك</string>
-    <string name="action_params_cgu_description"></string>
     <string name="action_CGU_1_title">المساعدة المتبادلة</string>
     <string name="action_CGU_1">يتيح لك التطبيق إنشاء لقاءات جديدة بين الجيران وتشجيع أوقات التبادل. المساعدة عن بعد (القيادة، التوصيل، قسيمة الهدايا، مجموع الجوائز، وما إلى ذلك) غير مسموح بها.</string>
     <string name="action_CGU_2_title">المساهمات والطلبات</string>
@@ -767,8 +740,7 @@
     <string name="search_hint">يطلب …</string>
     <string name="no_result_found">لم يتم العثور على النتائج</string>
     <string name="select_country">حدد الدولة</string>
-    <string name="country_code_and_phone_code">(%1$s) +%2$s</string>
-    <string name="country_full_name_and_phone_code">%1$s +%2$s</string>
+
 
     <!-- Country Codes -->
 
@@ -779,7 +751,6 @@
     <string name="country_albania_code">آل</string>
 
     <string name="country_algeria_name">الجزائر</string>
-    <string name="country_algeria_code">dz</string>
 
     <string name="country_andorra_name">أندورا</string>
     <string name="country_andorra_code">إعلان</string>
@@ -1534,7 +1505,7 @@
     <string name="entourage_create_title_hint">مثال: %1$s</string>
     <string name="entourage_create_title_char_count_format">%1$d/%2$d</string>
     <string name="entourage_create_description_label">وصف</string>
-    <string name="entourage_create_help_text_event">&lt;a href=\"%1$s\"&gt;ما هي الأحداث التي سيتم بثها؟&lt;/a&gt;</string>
+    <string name="entourage_create_help_text_event">&lt;a href=\"%1$s\"&gt;ما هي الفعالية التي سيتم بثها؟&lt;/a&gt;</string>
     <string name="entourage_create_help_text">&lt;a href=\"%1$s\"&gt;هل تحتاج إلى أفكار d\ لإجراء d\؟&lt;/a&gt;</string>
 
     <string name="entourage_create_date_start_label">تاريخ البدء *</string>
@@ -1573,7 +1544,7 @@
     <string name="entourage_title_fragment_info">الإجراءات ذات العنوان الواضح تجذب المزيد من الأعضاء ومن المرجح أن تنجح!</string>
     <string name="entourage_title_fragment_error">يجب أن يكون عنوانك أقل من 100 حرف. يمكنك قول المزيد في الوصف.</string>
     <string name="entourage_title_fragment_hint_outing">مثال: أمسية لعبة بين الجيران مع وبدون منازل</string>
-    <string name="entourage_title_fragment_info_outing">تجذب الأحداث التي تحمل عنوانًا واضحًا المزيد من المشاركين.</string>
+    <string name="entourage_title_fragment_info_outing">تجذب الفعالية التي تحمل عنوانًا واضحًا المزيد من المشاركين.</string>
 
     <!-- Entourage Description Fragment -->
     <string name="entourage_description_fragment_title">وصف</string>
@@ -1765,7 +1736,7 @@
     <string name="event_organisez_asso">حدث %s</string>
     <string name="event_organisez_entourage">حدث الحاشية</string>
 
-    <string name="event_filter_title">الأحداث - مرشحات البحث</string>
+    <string name="event_filter_title">الفعالية - مرشحات البحث</string>
     <string name="event_filter_profile">على عنوان \ الموجود في ملفي الشخصي</string>
     <string name="event_filter_google">في عنوان جديد</string>
     <string name="event_filter_gps">حول موقعي الحالي</string>
@@ -1962,7 +1933,7 @@
     <string name="action_profile">حساب تعريفي</string>
     <string name="debug_info_clipboard">تم نسخ المعلومات إلى الحافظة</string>
 
-    <string name="events_conviv">الأحداث\ غير ودية</string>
+    <string name="events_conviv">الفعالية\ غير ودية</string>
     <string name="events_button">عرض القائمة →</string>
     <string name="actions_solidr">إجراءات\nsolidaires</string>
     <string name="actions_button">عرض القائمة →</string>
@@ -2070,7 +2041,7 @@
     <string name="param_notifs_switch_notifs">إشعارات</string>
     <string name="param_notifs_switch_messages">إشعارات الرسائل</string>
     <string name="param_notifs_switch_groups">إشعارات المجموعة</string>
-    <string name="param_notifs_switch_events">إشعارات الأحداث</string>
+    <string name="param_notifs_switch_events">إشعارات الفعالية</string>
     <string name="param_notifs_switch_actions">إشعارات التبرعات والخدمات</string>
     <string name="param_notifs_validate">تطبيق التغييرات</string>
     <string name="notif_contrib_title">أحد الجيران يقدم مساعدة جديدة. ربما هذا قد يثير اهتمامك؟</string>
@@ -2172,7 +2143,6 @@
     <string name="onboard_photo_description">اللمسة الأخيرة: يمكنك إضافة صورتك. لا يستطيع أعضاء الوفد المرافق في منطقتك الانتظار لمقابلتك!</string>
     <string name="onboard_photo_bt_take_photo">التقاط صورة</string>
     <string name="onboard_photo_bt_take_gallery">استيراد من المعرض</string>
-    <string name="onboard_waiting_dialog"></string>
 
     <string name="take_photo_title">إضافة صورة؟</string>
     <string name="take_photo_description">مع الصورة، يصبح الأمر أجمل على الفور.\nأظهر لنا ابتسامتك الدافئة.</string>
@@ -2388,14 +2358,14 @@
     <string name="profile_sdf_activity_description">العديد من الخيارات الممكنة.\n هناك آلاف الطرق للحصول على الدعم والمساعدة من \.</string>
 
     <string name="rencontrer_sdf">اصنع دائرة من الأصدقاء</string>
-    <string name="event_sdf">المشاركة في الأحداث</string>
+    <string name="event_sdf">المشاركة في الفعالية</string>
     <string name="questions_sdf">طرح أسئلة</string>
     <string name="aide_sdf">طلب المساعدة</string>
     <string name="m_orienter_sdf">توجيه نفسي</string>
     <string name="trouver_asso_sdf">البحث عن الجمعيات</string>
 
     <string name="m_informer_riverain">أعلمني</string>
-    <string name="event_riverain">المشاركة في الأحداث</string>
+    <string name="event_riverain">المشاركة في الفعالية</string>
     <string name="entourer_riverain">تحيط بشخص معزول</string>
     <string name="dons_riverain">تقديم التبرعات المادية</string>
     <string name="benevolat_riverain">شارك في الجمعية</string>
@@ -2516,7 +2486,7 @@
     <!-- New Home string -->
     <string name="home_v2_title">تطبيق L\ الذي يعيد إنشاء الروابط بين الجيران</string>
 
-    <string name="home_v2_title_action">إعطاء دفعة</string>
+    <string name="home_v2_title_action"> تقديم يد العون والمساعدة</string>
     <string name="home_v2_subtitle_action">جيرانك بحاجة إليك!</string>
     <string name="home_v2_btn_more_action">رؤية جميع الطلبات</string>
 
@@ -2526,7 +2496,7 @@
 
     <string name="home_v2_title_event">المشاركة في حدث تضامني</string>
     <string name="home_v2_subtitle_event">الكثير من التضامن في مكان قريب</string>
-    <string name="home_v2_btn_more_event">رؤية جميع الأحداث</string>
+    <string name="home_v2_btn_more_event">رؤية جميع الفعالية</string>
     <string name="tag_other">آخر</string>
 
     <string name="home_v2_title_group">مجموعات جيرانك</string>
@@ -2587,7 +2557,7 @@
     <string name="translate">ترجمة</string>
     <string name="title_language">لغة</string>
     <string name="select_language">اختر لغتك</string>
-    <string name="all_event">جميع الأحداث</string>
+    <string name="all_event">جميع الفعالية</string>
     <string name="all_my_event">أحداثي</string>
     <string name="lang_fr">فرنسي</string>
     <string name="lang_en">إنجليزي</string>
@@ -2626,26 +2596,11 @@
     <string name="interest_marauding">لقاءات الرحالة</string>
     <string name="interest_other">أخرى</string>
 
-    <string name="modify_image"><u>تعديل صورتي</u></string>
-    <string name="more"><u>اعرف أكثر</u></string>
-    <string name="posts_comment_number"><u>%s تعليقات</u></string>
-    <string name="posts_comment_number_singular"><u>%s تعليق</u></string>
-    <string name="show_more_lined"><u>عرض المزيد</u></string>
-    <string name="welcome_one_sensib">ابحث عن محتوانا التوعوي <u><font color="#FF9739">هنا</font></u></string>
-    <string name="action_show_charte"><u>ميثاق أخلاقي</u></string>
-    <string name="signal_a_problem"><u>الإبلاغ عن مشكلة</u></string>
-    <string name="login_button_resend_code"><u>طلب الرمز مرة أخرى</u></string>
-    <string name="login_change_phone"><u>لقد غيرت رقم هاتفي</u></string>
-    <string name="newsfeed_load_more_button"><u>البحث أكثر.</u></string>
-    <string name="newsfeed_tab_events_no_items_button"><u>ابحث عن المزيد من فعاليات Entourage هنا</u></string>
-    <string name="pre_onboard_choice_about"><u>من هي جمعية Entourage؟</u></string>
-    <string name="onboard_sms_help"><u>بحاجة إلى مساعدة؟\nاتصل بفريق Entourage.</u></string>
+
     <string name="outing_message_card_updated_author"><![CDATA[%1$s <b>قام بتعديل</b> <font color=\"%2$s\">رحلة</font>:]]></string>
     <string name="create_action_wizard_p1_description">هل تقوم بإنشاء هذا النشاط التضامني <b>لشخص محدد غيرك:</b> صديق في وضع صعب، شخص قابلته في الشارع؟</string>
     <string name="create_action_wizard_p2_description">هل <b>حصلت على موافقته</b> لنشر هذا النشاط من أجله على Entourage؟</string>
     <string name="menu_info_social">لتعيش <b>تضامنًا أكثر</b> تابع Entourage على شبكاتك!</string>
-    <string name="map_filter_entourage_demand_text"><b>عرض الطلبات المتعلقة بـ:</b></string>
-    <string name="map_filter_entourage_contribution_text"><b>عرض المساهمات المتعلقة بـ:</b></string>
     <string name="custom_dialog_action_content_one_contrib">هل اكتملت مهمتك \"<![CDATA[<b>%1$s</b>]]>\"؟</string>
     <string name="search_member_hint">ابحث عن عضو</string>
     <string name="terms_and_conditions_html">بالنقر على &lt;b&gt;التالي&lt;/b&gt;، فإنك توافق على &lt;a href=\'https://www.entourage.social</string>
@@ -2659,6 +2614,64 @@
     <string name="layout_translate_title_original_button">عرض الترجمة</string>
     <string name="layout_translate_title_original_title">لم يتم ترجمة هذه الصفحة.</string>
     <string name="layout_translate_title_translation_title">تمت ترجمة بعض المعلومات تلقائيًا.</string>
+
+
+
+    <!-- Clés non traduites -->
+    <string name="empty_description"></string>
+    <string name="home_title_none"></string>
+    <string name="action_params_cgu_description"></string>
+    <string name="onboard_waiting_dialog"></string>
+    <string name="modify_image">تعديل الصورة</string>
+    <string name="more">المزيد</string>
+    <string name="posts_comment_number">%d تعليقات</string>
+    <string name="posts_comment_number_singular">تعليق واحد</string>
+    <string name="show_more_lined">إظهار المزيد</string>
+    <string name="action_show_charte">عرض الميثاق</string>
+    <string name="signal_a_problem">الإبلاغ عن مشكلة</string>
+    <string name="login_button_resend_code">إعادة إرسال الرمز</string>
+    <string name="login_change_phone">تغيير الهاتف</string>
+    <string name="newsfeed_load_more_button">تحميل المزيد</string>
+    <string name="newsfeed_tab_events_no_items_button">لا توجد عناصر</string>
+    <string name="pre_onboard_choice_about">عن</string>
+    <string name="onboard_sms_help">مساعدة الرسائل القصيرة</string>
+    <string name="map_filter_entourage_demand_text">طلبات</string>
+    <string name="map_filter_entourage_contribution_text">مساهمات</string>
+    <string name="posts_vote_number">%d أصوات</string>
+    <string name="posts_vote_number_singular">صوت واحد</string>
+
+    <!-- Clés mal traduites -->
+    <string name="app_name">الوفد</string>
+    <string name="preference_file_key">ENTOURAGE_GCM_DATA</string>
+    <string name="home_help_button_2">أصبح مراسلا لـ Entourage</string>
+    <string name="test">اختبار</string>
+    <string name="description_counter">%s /200</string>
+    <string name="events_description_counter">%s /900</string>
+    <string name="stepOne">01.</string>
+    <string name="stepThree">03.</string>
+    <string name="stepTwo">02.</string>
+    <string name="stepFour">04.</string>
+    <string name="stepFive">05.</string>
+    <string name="title_activity_main">النشاط الرئيسي</string>
+    <string name="zero">0</string>
+    <string name="geoUri">http://maps.google.com/maps?q=loc:%s</string>
+    <string name="date_recurrence_event">%s . %s</string>
+    <string name="profile_date_format">MM/yyyy</string>
+    <string name="entourage_info_text_join_html">&lt;font color=\"#FF9739\"&gt;%1$s &lt;/font&gt;%2$s</string>
+    <string name="entourage_info_metadata_dateStart_hours_format_new">%1$s %2$s</string>
+    <string name="entourage_cell_title">%1$s</string>
+    <string name="entourage_cell_author">%1$s</string>
+    <string name="action_date_list">%s</string>
+    <string name="carousel_close_button">@string/close</string>
+    <string name="country_code_and_phone_code">(%1$s) +%2$s</string>
+    <string name="country_full_name_and_phone_code">%1$s +%2$s</string>
+    <string name="country_algeria_code">dz</string>
+    <!-- Ajoutez les autres traductions mal traduites ici -->
+
+
+
+
+
 
     <string name="category_other">أخرى</string>
     <string name="category_food">الطعام</string>
@@ -2688,7 +2701,7 @@
     <string name="text_title_i_like">أعجبني</string>
     <string name="text_title_comment">تعليق</string>
     <string name="text_title_votes">عرض الأصوات</string>
-    <string name="header_title_create_survey">إنشاء استطلاع</string>
+    <string name="header_title_create_survey">إنشاء استبيان</string>
     <string name="create_question_title">سؤال</string>
     <string name="create_question_hint">اطرح سؤالك</string>
     <string name="create_option_hint">+ إضافة خيار</string>
@@ -2699,13 +2712,13 @@
     <string name="btn_survey_validate">تأكيد</string>
     <string name="btn_survey_cancel">إلغاء</string>
     <string name="popup_survey_title">تنبيه</string>
-    <string name="popup_survey_content">إذا تركت إنشاء الاستطلاع، ستفقد جميع المعلومات المدخلة</string>
+    <string name="popup_survey_content">إذا تركت إنشاء الااستبيان، ستفقد جميع المعلومات المدخلة</string>
     <string name="popup_survey_btn_leave">مغادرة</string>
     <string name="popup_survey_btn_cancel">إلغاء</string>
-    <string name="see_member_vote">إجابات الاستطلاع</string>
+    <string name="see_member_vote">استبياناستطلاع</string>
     <string name="activate_geoloc">تمكين الموقع</string>
     <string name="home_v2_no_adress_title">حسن تجربتك!</string>
-    <string name="home_v2_no_adress_content">لمعرفة الأنشطة والأحداث التضامنية من حولك، يرجى أخذ لحظة لإضافة موقعك إلى ملفك الشخصي.</string>
+    <string name="home_v2_no_adress_content">لمعرفة الأنشطة الفعالية التضامنية من حولك، يرجى أخذ لحظة لإضافة موقعك إلى ملفك الشخصي.</string>
     <string name="home_v2_no_adress_button">أضف موقعي</string>
     <string name="popup_event_confirm_btn_confirm">سأحضر</string>
     <string name="popup_event_confirm_btn_cancel">لن أحضر</string>
@@ -2770,15 +2783,15 @@
     <string name="home_v2_subtitle_sensibilisation">بعض الاقتراحات للقراءة للبدء</string>
     <string name="interest_activites_onboarding">أنشطة \nيدوية</string>
     <string name="interest_activites_main_filter">أنشطة يدوية</string>
-    <string name="posts_vote_number"><u>%s أصوات</u></string>
-    <string name="posts_vote_number_singular"><u>%s صوت</u></string>
     <string name="my_onboarding">تخصيص حسابي</string>
     <string name="actions_tab_mygroup">إعلاناتي</string>
-    <string name="create_survey">إنشاء استطلاع</string>
+    <string name="create_survey">إنشاء استبيان</string>
     <string name="participant_number_singular">%s مشارك</string>
     <string name="members_location_temporary">%s</string>
     <string name="see_participants">المشاركون</string>
     <string name="participant_number">%s مشاركون</string>
+    <string name="popup_nightgood_vote">تصويت</string>
+    <string name="popup_nightgood_text">للمساعدة في انضمام 60 شخصًا في وضع غير مستقر إلى نادٍ رياضي، يكفي نقرة واحدة. نقرتك!</string>
 
 
 </resources>

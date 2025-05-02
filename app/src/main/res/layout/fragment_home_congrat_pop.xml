@@ -241,6 +241,6 @@
         android:paddingTop="20dp"
         android:paddingBottom="14dp"
         android:src="@drawable/new_cross"
-        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

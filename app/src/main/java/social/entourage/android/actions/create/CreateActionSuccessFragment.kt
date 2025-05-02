@@ -1,5 +1,7 @@
 package social.entourage.android.actions.create
 
+import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
+import com.google.android.play.core.review.ReviewManagerFactory
 import social.entourage.android.R
 import social.entourage.android.databinding.NewFragmentCreateActionSuccessBinding
 import social.entourage.android.RefreshController
@@ -46,6 +49,24 @@ class CreateActionSuccessFragment : Fragment() {
             requireActivity().finish()
             RefreshController.shouldRefreshFragment = true
 
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        requestInAppReview(requireContext())
+    }
+
+    fun requestInAppReview(context: Context) {
+        val manager = ReviewManagerFactory.create(context)
+        val request = manager.requestReviewFlow()
+        request.addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                val flow = manager.launchReviewFlow(context as Activity, task.result)
+                flow.addOnCompleteListener {
+                }
+            } else {
+            }
         }
     }
 }

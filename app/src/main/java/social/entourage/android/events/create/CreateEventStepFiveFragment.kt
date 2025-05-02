@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -43,6 +44,7 @@ class CreateEventStepFiveFragment : Fragment() {
         initializeGroups()
         loadGroups()
         setView()
+        adjustTextViewsForRTL(binding.layout.root)
         groupPresenter.getAllMyGroups.observe(viewLifecycleOwner, ::handleResponseGetGroups)
         groupID?.let {
             if (groupID != Const.DEFAULT_VALUE) {
@@ -53,6 +55,23 @@ class CreateEventStepFiveFragment : Fragment() {
 
         if (CommunicationHandler.eventEdited == null) {
             AnalyticsEvents.logEvent(AnalyticsEvents.Event_create_5)
+        }
+    }
+
+    private fun adjustTextViewsForRTL(view: View) {
+        val isRTL = resources.configuration.layoutDirection == View.LAYOUT_DIRECTION_RTL
+
+        if (isRTL) {
+            if (view is ViewGroup) {
+                for (i in 0 until view.childCount) {
+                    val child = view.getChildAt(i)
+                    adjustTextViewsForRTL(child) // Récursion pour parcourir toutes les sous-vues
+                }
+            } else if (view is TextView) {
+                // Ajuster la gravité et la direction du texte pour RTL
+                view.gravity = View.TEXT_ALIGNMENT_VIEW_END
+                view.textDirection = View.TEXT_DIRECTION_RTL
+            }
         }
     }
 

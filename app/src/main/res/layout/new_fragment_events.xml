@@ -169,7 +169,7 @@
                 android:fontFamily="@font/nunitosans_bold"
                 app:backgroundTint="@color/orange"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 android:visibility="visible"/>
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/create_event_retracted"
@@ -182,7 +182,7 @@
                 android:padding="10dp"
                 app:backgroundTint="@color/orange"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 android:visibility="gone"/>
 
         </androidx.coordinatorlayout.widget.CoordinatorLayout>

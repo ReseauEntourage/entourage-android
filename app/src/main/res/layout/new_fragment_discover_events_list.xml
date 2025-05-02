@@ -148,8 +148,8 @@
                         android:paddingHorizontal="20dp"
                         android:visibility="gone"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/divider"
                         tools:itemCount="4"
                         tools:listitem="@layout/new_event_item" />
@@ -165,8 +165,8 @@
                             android:layout_height="wrap_content"
                             android:orientation="vertical"
                             app:layout_constraintBottom_toTopOf="@id/arrow"
-                            app:layout_constraintLeft_toLeftOf="parent"
-                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent">
                             <ImageView
                                 android:id="@+id/image"
@@ -175,8 +175,8 @@
                                 android:layout_gravity="center"
                                 android:src="@drawable/new_event_empty_state"
                                 app:layout_constraintBottom_toTopOf="@+id/title"
-                                app:layout_constraintLeft_toLeftOf="parent"
-                                app:layout_constraintRight_toRightOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintTop_toTopOf="parent" />
                             <ImageView
                                 android:layout_width="wrap_content"
@@ -185,7 +185,7 @@
                                 android:layout_marginBottom="-15dp"
                                 android:src="@drawable/new_group_stars"
                                 app:layout_constraintBottom_toTopOf="@id/title"
-                                app:layout_constraintLeft_toLeftOf="parent" />
+                                app:layout_constraintStart_toStartOf="parent" />
                             <TextView
                                 android:id="@+id/title"
                                 style="@style/mini_header_black"
@@ -195,7 +195,7 @@
                                 android:layout_marginTop="10dp"
                                 android:text="@string/discover_event_list_empty_state_title"
                                 app:layout_constraintBottom_toTopOf="@id/title"
-                                app:layout_constraintLeft_toLeftOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toBottomOf="@id/image" />
 
                             <TextView
@@ -207,7 +207,7 @@
                                 android:layout_marginTop="10dp"
                                 android:gravity="start"
                                 android:text="@string/discover_event_list_empty_state_subtitle"
-                                app:layout_constraintLeft_toLeftOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toBottomOf="@+id/title" />
 
                         </LinearLayout>
@@ -221,7 +221,7 @@
                             android:visibility="gone"
                             android:src="@drawable/new_arrow_create_group"
                             app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
                             />
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </LinearLayout>

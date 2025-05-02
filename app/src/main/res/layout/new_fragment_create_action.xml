@@ -24,7 +24,7 @@
                 android:padding="10dp"
                 android:src="@drawable/new_back_white"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:src="@drawable/new_back_white" />
 
@@ -48,7 +48,7 @@
                 android:layout_marginBottom="8dp"
                 android:src="@drawable/ic_new_header_action_create"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

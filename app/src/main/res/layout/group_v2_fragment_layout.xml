@@ -219,8 +219,8 @@ android:background="@drawable/new_profile_header_orange_dark">
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     app:layout_constraintBottom_toTopOf="@id/arrow"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
 
                     <ImageView
@@ -230,8 +230,8 @@ android:background="@drawable/new_profile_header_orange_dark">
                         android:layout_gravity="center"
                         android:src="@drawable/new_choose_group_photo"
                         app:layout_constraintBottom_toTopOf="@+id/title"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <ImageView
@@ -241,7 +241,7 @@ android:background="@drawable/new_profile_header_orange_dark">
                         android:layout_marginBottom="-15dp"
                         android:src="@drawable/new_group_stars"
                         app:layout_constraintBottom_toTopOf="@id/title"
-                        app:layout_constraintLeft_toLeftOf="parent" />
+                        app:layout_constraintStart_toStartOf="parent" />
 
                     <TextView
                         android:id="@+id/title"
@@ -252,7 +252,7 @@ android:background="@drawable/new_profile_header_orange_dark">
                         android:layout_marginTop="10dp"
                         android:text="@string/group_list_empty_state_title"
                         app:layout_constraintBottom_toTopOf="@id/title"
-                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/image" />
 
                     <TextView
@@ -264,7 +264,7 @@ android:background="@drawable/new_profile_header_orange_dark">
                         android:layout_marginTop="10dp"
                         android:gravity="start"
                         android:text="@string/group_list_empty_state_subtitle"
-                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/title" />
                 </LinearLayout>
 
@@ -277,7 +277,7 @@ android:background="@drawable/new_profile_header_orange_dark">
                     android:layout_marginBottom="90dp"
                     android:src="@drawable/new_arrow_create_group"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintRight_toRightOf="parent" />
+                    app:layout_constraintEnd_toEndOf="parent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
             <androidx.recyclerview.widget.RecyclerView
@@ -302,7 +302,7 @@ android:background="@drawable/new_profile_header_orange_dark">
         android:src="@drawable/new_fab_plus"
         app:fab_colorNormal="@color/orange"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         android:visibility="gone"/>
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/create_group_expanded"

@@ -14,6 +14,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.animation.doOnEnd
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.res.ResourcesCompat
@@ -41,6 +42,8 @@ import social.entourage.android.api.model.Help
 import social.entourage.android.api.model.Pedago
 import social.entourage.android.api.model.Summary
 import social.entourage.android.api.model.User
+import social.entourage.android.api.model.notification.PushNotificationMessage
+import social.entourage.android.base.BaseActivity
 import social.entourage.android.databinding.FragmentHomeV2LayoutBinding
 import social.entourage.android.enhanced_onboarding.EnhancedOnboarding
 import social.entourage.android.events.create.CommunicationHandler
@@ -52,7 +55,9 @@ import social.entourage.android.home.pedago.OnItemClick
 import social.entourage.android.home.pedago.PedagoDetailActivity
 import social.entourage.android.home.pedago.PedagoListActivity
 import social.entourage.android.notifications.InAppNotificationsActivity
+import social.entourage.android.notifications.MockNotificationGenerator
 import social.entourage.android.notifications.NotificationDemandActivity
+import social.entourage.android.notifications.PushNotificationManager
 import social.entourage.android.onboarding.onboard.OnboardingStartActivity
 import social.entourage.android.profile.ProfileActivity
 import social.entourage.android.tools.log.AnalyticsEvents
@@ -97,6 +102,7 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
     private var isContribution = false
     private lateinit var actionsPresenter: ActionsPresenter
     private var locationPopupHasPop = false
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -175,6 +181,14 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
             )
         }
         checkNotifAndSendToken()
+        showPopupBienCommun()
+    }
+
+    private fun testIRLNotification(){
+        binding.ivLogoHome.setOnLongClickListener {
+            MockNotificationGenerator.createAllMockNotifications(requireContext())
+            true
+      }
     }
 
     private fun checkNotifAndSendToken(){
@@ -195,19 +209,26 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
     }
 
     fun checkAndShowDiscussionDialog() {
-        val sharedPreferences = requireActivity().getSharedPreferences("userPref", Context.MODE_PRIVATE)
-        val isInterested = sharedPreferences.getBoolean("DISCUSSION_INTERESTED", false)
-        val userRefused = sharedPreferences.getBoolean("USER_REFUSED_POPUP", false)
-        var count = sharedPreferences.getInt("COUNT_DISCUSSION_ASK", 0)
-        if (userRefused || isInterested) {
-            // L'utilisateur a refusé ou a déjà accepté, ne pas montrer la popup
-            return
-        }
+        if (isAdded) {
+            val sharedPreferences = requireActivity().getSharedPreferences("userPref", Context.MODE_PRIVATE)
+            val isInterested = sharedPreferences.getBoolean("DISCUSSION_INTERESTED", false)
+            val userRefused = sharedPreferences.getBoolean("USER_REFUSED_POPUP", false)
+            val count = sharedPreferences.getInt("COUNT_DISCUSSION_ASK", 0)
 
-        if (count >= 2) {
-            // L'utilisateur n'a pas encore refusé, et le compteur a atteint le seuil
-            val dialog = DiscussionTestDialogFragment()
-            dialog.show(requireActivity().supportFragmentManager, "DiscussionDialog")
+            if (userRefused || isInterested) {
+                // L'utilisateur a refusé ou a déjà accepté, ne pas montrer la popup
+                return
+            }
+
+            // Check if the dialog is already being shown
+            val fragmentManager = requireActivity().supportFragmentManager
+            val existingDialog = fragmentManager.findFragmentByTag("DiscussionDialog")
+
+            if (count >= 2 && existingDialog == null) {
+                // L'utilisateur n'a pas encore refusé, et le compteur a atteint le seuil
+                val dialog = DiscussionTestDialogFragment()
+                dialog.show(fragmentManager, "DiscussionDialog")
+            }
         }
     }
 
@@ -218,18 +239,53 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
         val areNotificationsEnabled = notificationManager.areNotificationsEnabled()
         if (areNotificationsEnabled) {
             AnalyticsEvents.logEvent(AnalyticsEvents.has_user_activated_notif)
+            FirebaseMessaging.getInstance().token.addOnSuccessListener { token ->
+                AnalyticsEvents.logEvent(AnalyticsEvents.user_have_notif_and_token)
+            }
+            FirebaseMessaging.getInstance().token.addOnFailureListener {
+                AnalyticsEvents.logEvent(AnalyticsEvents.user_have_notif_and_no_token)
+            }
 
         } else {
             AnalyticsEvents.logEvent(AnalyticsEvents.has_user_disabled_notif)
-
+            mainPresenter.updateApplicationInfo("")
         }
     }
 
     fun sendtoken(){
         FirebaseMessaging.getInstance().token.addOnSuccessListener { token ->
+            Log.wtf("TOKEN", token)
             mainPresenter.updateApplicationInfo(token)
         }
     }
+
+    fun showPopupBienCommun() {
+        // Accéder aux SharedPreferences en utilisant la clé personnalisée
+        val sharedPreferences = requireContext().getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE)
+
+        // Vérifier si le popup a déjà été affiché
+        val hasShownPopup = sharedPreferences.getBoolean("has_shown_biencommun_popup", false)
+
+        if (!hasShownPopup) {
+            val bienCommunDialogFragment = PopupBienCommun.newInstance().apply {
+                AnalyticsEvents.logEvent(AnalyticsEvents.popup_biencommun)
+                listener = object : PopupBienCommun.BienCommunConfirmationListener {
+                    override fun onConfirmParticipation() {
+                        AnalyticsEvents.logEvent(AnalyticsEvents.popup_biencommun_vote)
+                        Toast.makeText(context, "Merci d’avoir voté, à bientôt !", Toast.LENGTH_LONG).show()
+                        (requireActivity() as BaseActivity).showWebView("https://bit.ly/3Z2tOB5")
+                    }
+                }
+            }
+
+            // Afficher le popup
+            bienCommunDialogFragment.show(requireActivity().supportFragmentManager, "PopupBienCommun")
+
+            // Mettre à jour SharedPreferences pour indiquer que le popup a été affiché
+            sharedPreferences.edit().putBoolean("has_shown_biencommun_popup", true).apply()
+        }
+    }
+
 
     private fun updateUnreadCount(unreadMessages: UnreadMessages?) {
         val count:Int = unreadMessages?.unreadCount ?: 0
@@ -581,9 +637,7 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
             startActivity(intent)
         }
         isContribution = summary.preference.equals("contribution")
-        if(!isContribution){
-            checkAndShowDiscussionDialog()
-        }
+
         isContribProfile = isContribution
         if(isContribution){
             if(!homeActionAdapter.getIsContrib()){
@@ -755,6 +809,8 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
             )
         }
     }
+
+
     private fun onActionUnclosed(summary: Summary){
         if(summary.unclosedAction != null){
             if(summary.unclosedAction!!.actionType == "solicitation"){
@@ -823,6 +879,7 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
                 )
             }
         }
+
     }
     companion object {
         var isContribProfile = false

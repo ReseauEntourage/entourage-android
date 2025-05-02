@@ -132,7 +132,6 @@ class DiscoverEventsListFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         AnalyticsEvents.logEvent(AnalyticsEvents.View__Event__List)
-        Log.wtf("wtf","isSearching: $isSearching")
         if(!isSearching){
             showMainViews()
         }
@@ -382,7 +381,6 @@ class DiscoverEventsListFragment : Fragment() {
             val latitude = MainFilterActivity.savedLocation?.lat ?: currentFilters.latitude()
             val longitude = MainFilterActivity.savedLocation?.lng ?: currentFilters.longitude()
             if (!MainFilterActivity.hasFilter) {
-                Log.wtf("wtf","here")
                 // Si aucun filtre n'est sélectionné, utiliser getMyEvents
                 eventsPresenter.getMyEvents(
                     myId!!,
@@ -393,7 +391,6 @@ class DiscoverEventsListFragment : Fragment() {
                 val radius = MainFilterActivity.savedRadius.takeIf { it != 0 } ?: currentFilters.travel_distance()
                 val latitude = MainFilterActivity.savedLocation?.lat ?: currentFilters.latitude()
                 val longitude = MainFilterActivity.savedLocation?.lng ?: currentFilters.longitude()
-                Log.wtf("wtf","there")
                 eventsPresenter.getMyEventsWithFilter(
                     myId!!,
                     pageMyEvent, EVENTS_PER_PAGE,

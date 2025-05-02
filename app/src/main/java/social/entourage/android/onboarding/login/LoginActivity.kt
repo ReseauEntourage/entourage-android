@@ -8,6 +8,7 @@ import android.os.CountDownTimer
 import android.text.Html
 import android.text.method.LinkMovementMethod
 import android.util.Log
+import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import social.entourage.android.EntourageApplication
@@ -46,7 +47,6 @@ class LoginActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         authenticationController = EntourageApplication.get().authenticationController
-
         alertDialog = CustomProgressDialog(this)
         setupViews()
         setContentView(binding.root)
@@ -58,8 +58,26 @@ class LoginActivity : BaseActivity() {
         cancelTimer()
     }
 
-    fun setupViews() {
+    private fun setEditTextAlignmentBasedOnLocale() {
+        val locale = Locale.getDefault()
 
+        // Définir l'alignement pour chaque EditText concerné
+        setEditTextGravity(binding.uiLoginPhoneEtPhone, locale)
+        setEditTextGravity(binding.uiLoginEtCode, locale)
+    }
+
+    private fun setEditTextGravity(editText: EditText, locale: Locale) {
+        if (locale.language == "ar") {
+            editText.gravity = android.view.Gravity.CENTER_VERTICAL or android.view.Gravity.END
+            editText.textAlignment = android.view.View.TEXT_ALIGNMENT_VIEW_END
+        } else {
+            editText.gravity = android.view.Gravity.CENTER_VERTICAL or android.view.Gravity.START
+            editText.textAlignment = android.view.View.TEXT_ALIGNMENT_VIEW_START
+        }
+    }
+
+    fun setupViews() {
+        setEditTextAlignmentBasedOnLocale()
         binding.onboardLoginMainlayout.setOnTouchListener { view, motionEvent ->
             view.hideKeyboard()
             view.performClick()

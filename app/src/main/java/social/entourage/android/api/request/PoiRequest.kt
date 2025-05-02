@@ -27,4 +27,13 @@ interface PoiRequest {
                            @Query("distance") distance: Double,
                            @Query("query") categoryIDs: String,
                            @Query("v")version:String): Call<PoiResponse>
+
+    @GET("pois/clusters")
+    fun retrieveClustersAndPois(
+        @Query("latitude") latitude: Double,
+        @Query("longitude") longitude: Double,
+        @Query("distance") distance: Double,
+        @Query("category_ids") categoryIDs: String?,
+        @Query("partners_filters") partnersFilters: String?,
+    ): Call<ClusterPoiResponse>
 }

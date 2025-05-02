@@ -3,6 +3,7 @@ package social.entourage.android.guide.poi
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.net.Uri
+import android.util.Log
 import android.view.View
 import retrofit2.Call
 import retrofit2.Callback
@@ -24,6 +25,7 @@ class ReadPoiPresenter(private val fragment: ReadPoiFragment) {
 
     fun getPoiDetail(poiUuid: String) {
         val call = poiRequest.getPoiDetail(poiUuid)
+        Log.wtf("wtf" , "getPoiDetail"  + poiUuid)
         call.enqueue(object : Callback<PoiDetailResponse> {
             override fun onResponse(call: Call<PoiDetailResponse>, response: Response<PoiDetailResponse>) {
                 response.body()?.poi?.let { poi ->

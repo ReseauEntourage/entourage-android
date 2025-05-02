@@ -3,7 +3,10 @@ package social.entourage.android.actions.list
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.os.Build
+import android.view.Gravity
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.recyclerview.widget.RecyclerView
@@ -104,6 +107,24 @@ class ActionsListAdapter(
                         .putExtra(Const.IS_ACTION_MINE, action.isMine()),
                     0
                 )
+            }
+            val isArabic = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                binding.root.resources.configuration.locales[0].language == "ar"
+            } else {
+                binding.root.resources.configuration.locale.language == "ar"
+            }
+
+            // Appliquer les propriétés en fonction de la langue
+            if (isArabic) {
+                binding.demandUsername.layoutDirection = View.LAYOUT_DIRECTION_RTL
+                binding.demandUsername.gravity = Gravity.END
+                binding.demandUsername.textAlignment = View.TEXT_ALIGNMENT_VIEW_START
+                binding.demandUsername.textDirection = View.TEXT_DIRECTION_RTL
+            } else {
+                binding.demandUsername.layoutDirection = View.LAYOUT_DIRECTION_LTR
+                binding.demandUsername.gravity = Gravity.START
+                binding.demandUsername.textAlignment = View.TEXT_ALIGNMENT_VIEW_START
+                binding.demandUsername.textDirection = View.TEXT_DIRECTION_LTR
             }
 
             binding.demandTitle.text = action.title

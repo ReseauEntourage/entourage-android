@@ -94,7 +94,6 @@ class NotificationDemandActivity : BaseActivity() {
     }
 
     private fun goMain() {
-        Log.wtf("wtf", "hello")
         EntourageApplication.get().authenticationController.me?.let { me ->
             OnboardingAPI.getInstance().getUser(me.id) { isOK, userResponse ->
                 if (isOK) {

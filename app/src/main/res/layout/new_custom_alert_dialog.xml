@@ -25,9 +25,8 @@
         style="@style/h2_orange"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/btn_cross"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btn_cross"
         app:layout_constraintTop_toTopOf="@+id/btn_cross"
         android:layout_marginEnd="25dp"
         tools:text="content" />
@@ -40,7 +39,7 @@
         android:paddingBottom="20dp"
         android:src="@drawable/new_cross"
         android:visibility="gone"
-        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -50,7 +49,6 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
         android:layout_marginEnd="25dp"
-        app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/btn_cross"
         app:layout_constraintTop_toBottomOf="@id/title"
@@ -62,8 +60,8 @@
         android:layout_marginTop="12dp"
         android:gravity="center_horizontal"
         android:paddingBottom="10dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/content">
         <Button
             android:id="@+id/no"

@@ -100,7 +100,7 @@
                         android:layout_marginBottom="20dp"
                         android:src="@drawable/password"
                         app:layout_constraintBottom_toTopOf="@id/divider"
-                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         tools:src="@drawable/password"
                         app:tint="@color/accent" />
@@ -126,7 +126,7 @@
                         android:layout_marginBottom="20dp"
                         android:src="@drawable/new_arrow"
                         app:layout_constraintBottom_toTopOf="@id/divider"
-                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         tools:src="@drawable/new_arrow" />
 
@@ -136,8 +136,8 @@
                         android:layout_height="1px"
                         android:background="@color/light_orange"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toRightOf="parent" />
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 

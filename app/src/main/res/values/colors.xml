@@ -149,5 +149,8 @@
     <color name="bottom_sheet_background">#B5545454</color>
     <color name="orange_opacity_50">#ffcbab</color>
     <color name="new_orange_bubble">#FFCDAE</color>
+    <color name="orange_secondary_local">#FFD8B5</color>
+    <color name="orange_text_map_local">#FF9739</color>
+    <color name="orange_entourage">#F55F24</color>
 
 </resources>

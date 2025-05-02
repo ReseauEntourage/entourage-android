@@ -2792,5 +2792,9 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="see_participants">Participants</string>
     <string name="participant_number">%s participants</string>
 
+    <string name="popup_nightgood_vote">Voter</string>
+    <string name="popup_nightgood_text">Pour permettre à 60 personnes en précarité d\'intégrer un club de sport, il suffit d\'un clic. Le vôtre !</string>
+
+
 </resources>
 

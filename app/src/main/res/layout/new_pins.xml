@@ -26,7 +26,7 @@
                 android:paddingHorizontal="10dp"
                 android:paddingVertical="5dp"
                 android:text="@string/ambassador"
-                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintRight_toLeftOf="@id/association"
                 app:layout_constraintTop_toBottomOf="@id/name"
                 tool:text="text" />

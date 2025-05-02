@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import android.widget.TextView
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -31,6 +32,7 @@ class CreateEventStepThreeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setViewMultiSelect()
         handleNextButtonState()
+        adjustTextViewsForRTL(binding.layout.root)
         binding.layout.location.setOnClickListener {
             findNavController().navigate(R.id.action_create_event_fragment_to_edit_action_zone_fragment)
         }
@@ -46,6 +48,22 @@ class CreateEventStepThreeFragment : Fragment() {
         setLimitedPlacesSelection()
     }
 
+    private fun adjustTextViewsForRTL(view: View) {
+        val isRTL = resources.configuration.layoutDirection == View.LAYOUT_DIRECTION_RTL
+
+        if (isRTL) {
+            if (view is ViewGroup) {
+                for (i in 0 until view.childCount) {
+                    val child = view.getChildAt(i)
+                    adjustTextViewsForRTL(child) // Récursion pour parcourir toutes les sous-vues
+                }
+            } else if (view is TextView) {
+                // Ajuster la gravité et la direction du texte pour RTL
+                view.gravity = View.TEXT_ALIGNMENT_VIEW_END
+                view.textDirection = View.TEXT_DIRECTION_RTL
+            }
+        }
+    }
     private fun setPlaceSelection() {
         binding.layout.eventType.setOnCheckedChangeListener { _, checkedId ->
             val isEventFaceToFace = checkedId == R.id.face_to_face

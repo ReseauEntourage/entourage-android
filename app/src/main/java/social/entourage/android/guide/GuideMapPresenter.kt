@@ -9,6 +9,7 @@ import retrofit2.Response
 import social.entourage.android.Constants
 import social.entourage.android.EntourageApplication
 import social.entourage.android.api.model.guide.Poi
+import social.entourage.android.api.request.ClusterPoiResponse
 import social.entourage.android.api.request.PoiRequest
 import social.entourage.android.api.request.PoiResponse
 import social.entourage.android.authentication.AuthenticationController
@@ -99,6 +100,42 @@ class GuideMapPresenter (private val fragment: GuideMapFragment) {
             }
         }
         return newPois
+    }
+    fun updatePoisAndClusters(map: GoogleMap?) {
+        if (map != null) {
+            val region = map.projection.visibleRegion
+            val result = floatArrayOf(0f)
+            Location.distanceBetween(
+                region.farLeft.latitude, region.farLeft.longitude,
+                region.nearLeft.latitude, region.nearLeft.longitude, result
+            )
+            val distance = result[0] / 1000.0f
+            retrieveClustersAndPois(map.cameraPosition, distance)
+        } else {
+            Timber.w("no map available for updating Guide")
+        }
+    }
+
+    private fun retrieveClustersAndPois(currentPosition: CameraPosition, mapDistance: Float) {
+        val location = currentPosition.target
+        val distance: Double = mapDistance.toDouble() / 2
+
+        val call = poiRequest.retrieveClustersAndPois(location.latitude, location.longitude, distance, GuideFilter.instance.requestedCategories,GuideFilter.instance.requestedPartnerFilters)
+        call.enqueue(object : Callback<ClusterPoiResponse> {
+            override fun onResponse(call: Call<ClusterPoiResponse>, response: Response<ClusterPoiResponse>) {
+                response.body()?.let {
+                    if (response.isSuccessful) {
+                        fragment.clearMap()
+                        fragment.putClustersAndPoisOnMap(it.clusters)
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<ClusterPoiResponse>, t: Throwable) {
+                Timber.e(t, "Impossible to retrieve clusters and POIs")
+                fragment.showErrorMessage()
+            }
+        })
     }
 
     var isShowNoPOIsPopup: Boolean

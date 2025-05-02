@@ -43,7 +43,7 @@
             android:buttonTint="@color/orange"
             android:clickable="false"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/divider"
             app:layout_constraintWidth_percent="0.1" />
 
@@ -52,8 +52,8 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@color/light_orange_opacity_25"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

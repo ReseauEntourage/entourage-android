@@ -14,8 +14,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
             <include
@@ -52,7 +52,7 @@
                         android:textColor="@color/black"
                         android:textSize="15sp"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/seekbar" />
 
                     <RadioGroup
@@ -61,7 +61,7 @@
                         android:layout_height="match_parent"
                         android:checkedButton="@+id/once"
                         android:orientation="vertical"
-                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/recurrence_title">
 
                         <RadioButton
@@ -178,7 +178,7 @@
                             android:text="@string/within"
                             android:textColor="@color/black"
                             android:textSize="15sp"
-                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 
                         <TextView
@@ -203,8 +203,8 @@
                             android:progressDrawable="@drawable/new_seek_bar"
                             android:splitTrack="false"
                             android:thumb="@drawable/new_thumb"
-                            app:layout_constraintLeft_toLeftOf="parent"
-                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/tv_trickle_indicator" />
 
                         <TextView
@@ -216,7 +216,7 @@
                             android:paddingTop="15dp"
                             android:text="@string/min_progressbar"
                             app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/seekbar" />
 
                         <TextView
@@ -226,7 +226,7 @@
                             android:paddingTop="15dp"
                             android:paddingEnd="10dp"
                             android:text="@string/max_progressbar"
-                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/seekbar" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
