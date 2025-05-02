@@ -1,11 +1,13 @@
 package social.entourage.android.notifications
 
+import android.app.Activity
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.util.Log
 import androidx.core.os.bundleOf
 import androidx.fragment.app.FragmentManager
+import social.entourage.android.MainActivity
 import social.entourage.android.Navigation
 import social.entourage.android.R
 import social.entourage.android.api.model.guide.Poi
@@ -30,8 +32,33 @@ import social.entourage.android.welcome.WelcomeTwoActivity
 object NotificationActionManager {
 
     /**/
-    fun presentAction(context:Context,supportFragmentManager: FragmentManager, instance:String, id:Int, postId:Int?, stage:String? = "") {
+    fun presentAction(context:Context,supportFragmentManager: FragmentManager, instance:String, id:Int, postId:Int?, stage:String? = "", popup:String? = "" , notifContext:String? = "") {
+        Log.wtf("wtf" ,"instance: $instance, id: $id, postId: $postId, stage: $stage, popup: $popup, notifContext: $notifContext")
+        if(popup.equals("outing_on_day_before")){
+            if(context is MainActivity){
+                (context as MainActivity).ifEventLastDay(id)
+                return
+            }
+            else{
+                MainActivity.shouldLaunchEventPopUp = id
+                (context as Activity).finish()
+                return
+            }
+        }
+        if(notifContext.equals("outing_on_day_before")){
+            if(context is MainActivity){
+                (context as MainActivity).ifEventLastDay(id)
+                return
+
+            }else{
+                MainActivity.shouldLaunchEventPopUp = id
+                (context as Activity).finish()
+                return
+            }
+        }
+
         if(!stage.isNullOrEmpty()){
+
             if(stage.equals("h1")){
                 val intent = Intent(context, WelcomeOneActivity::class.java)
                 context.startActivity(intent)

@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -202,6 +203,7 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
         openLink()
         AnalyticsEvents.logEvent(AnalyticsEvents.Event_detail_main)
         setupNestedScrollViewScrollListener()
+
     }
 
 
@@ -831,9 +833,18 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
         }
     }
 
-    override fun onSuppressPost() {
+    override fun onSuppressPost(id: Int) {
+        binding.progressBar.visibility = View.VISIBLE
         lifecycleScope.launch {
-            delay(500)
+            delay(300)
+            val isNewPost = newPostsList.any { it.id == id }
+            val adapter = if (isNewPost) {
+                binding.postsNewRecyclerview.adapter as? PostAdapter
+            } else {
+                binding.postsOldRecyclerview.adapter as? PostAdapter
+            }
+            adapter?.deleteItem(id)
+            page--
             loadPosts()
         }
     }

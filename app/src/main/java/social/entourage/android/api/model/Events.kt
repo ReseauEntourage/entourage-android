@@ -9,6 +9,7 @@ import social.entourage.android.api.model.feed.FeedItemAuthor
 import social.entourage.android.api.model.notification.Translation
 import social.entourage.android.events.EventModel
 import java.io.Serializable
+import java.text.SimpleDateFormat
 import java.util.*
 
 enum class Status(val value: String) {
@@ -219,4 +220,8 @@ class EventUtils {
             }
         }
     }
+}
+fun Events.formatEventStartTime(): String {
+    val dateFormat = SimpleDateFormat("HH", Locale.getDefault())
+    return this.metadata?.startsAt?.let { dateFormat.format(it) } ?: "Heure inconnue"
 }

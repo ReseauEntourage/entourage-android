@@ -71,6 +71,8 @@
         <activity
             android:name=".welcome.WelcomeOneActivity"
             android:exported="false" />
+        <activity android:name=".enhanced_onboarding.EnhancedOnboarding"
+            android:exported="false"/>
         <activity
             android:name=".welcome.WelcomeTwoActivity"
             android:exported="false" />
@@ -92,6 +94,8 @@
         <activity
             android:name=".home.pedago.PedagoDetailActivity"
             android:exported="false" />
+        <activity android:name=".discussions.WebViewActivityForTest">
+        </activity>
         <activity
             android:name=".user.languechoose.ActivityChooseLanguage"
             android:exported="false" />

@@ -221,7 +221,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/home_title_group"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/btn_more_event"
+                app:layout_constraintTop_toBottomOf="@+id/btn_more_pedago"
                 android:layout_marginTop="@dimen/entourage_margin_section"
                 android:layout_marginStart="@dimen/entourage_marginstart"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -308,11 +308,13 @@
                 android:layout_marginEnd="@dimen/entourage_margin_end"
                 android:layout_marginStart="@dimen/entourage_marginstart"
                 android:layout_marginTop="28dp"
+                android:layout_marginBottom="16dp"
                 android:background="@drawable/home_version_two_large_button_gradient_shape"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/home_subtitle_map">
+                app:layout_constraintTop_toBottomOf="@+id/home_subtitle_map"
+                >
 
                 <ImageView
                     android:id="@+id/icon_hom_v2_map_button"
@@ -358,7 +360,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/home_title_pedago"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/home_button_map"
+                app:layout_constraintTop_toBottomOf="@+id/btn_more_event"
                 android:layout_marginTop="@dimen/entourage_margin_section"
                 android:layout_marginStart="@dimen/entourage_marginstart"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -422,42 +424,54 @@
                 android:visibility="gone"
                 />
 
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:id="@+id/home_title_help"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/item_hz"
-                android:layout_marginTop="@dimen/entourage_margin_top"
-                android:layout_marginStart="@dimen/entourage_marginstart"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginEnd="16dp"
-                android:fontFamily="@font/quicksand_bold"
-                android:textSize="@dimen/entourage_font_large"
-                android:textColor="@color/grey_dark"
-                android:text="@string/home_v2_title_help"
-                />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/home_subtitle_help"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/home_title_help"
-                android:layout_marginStart="@dimen/entourage_marginstart"
-                android:fontFamily="@font/nunitosans_regular"
-                android:textSize="@dimen/entourage_font_small"
-                android:text="@string/home_v2_subtitle_help"
-                />
-            <androidx.recyclerview.widget.RecyclerView
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/rv_home_help"
-                android:layout_marginTop="@dimen/entourage_little_margin_top"
-                app:layout_constraintTop_toBottomOf="@+id/home_subtitle_help"
+                android:orientation="vertical"
+                app:layout_constraintTop_toBottomOf="@+id/home_button_map"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                android:layout_marginBottom="@dimen/entourage_margin_section"/>
+                android:visibility="visible"
+                >
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/home_title_help"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginTop="@dimen/entourage_margin_top"
+                    android:layout_marginStart="@dimen/entourage_marginstart"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginEnd="16dp"
+                    android:fontFamily="@font/quicksand_bold"
+                    android:textSize="@dimen/entourage_font_large"
+                    android:textColor="@color/grey_dark"
+                    android:text="@string/home_v2_title_help"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/home_subtitle_help"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/home_title_help"
+                    android:layout_marginStart="@dimen/entourage_marginstart"
+                    android:fontFamily="@font/nunitosans_regular"
+                    android:textSize="@dimen/entourage_font_small"
+                    android:text="@string/home_v2_subtitle_help"
+                    />
+                <androidx.recyclerview.widget.RecyclerView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/rv_home_help"
+                    android:layout_marginTop="@dimen/entourage_little_margin_top"
+                    app:layout_constraintTop_toBottomOf="@+id/home_subtitle_help"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_marginBottom="@dimen/entourage_margin_section"/>
+
+            </LinearLayout>
+
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
     <FrameLayout

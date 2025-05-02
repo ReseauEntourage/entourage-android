@@ -2377,7 +2377,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
 
     <!-- Edit profile -->
     <string name="profile_edit_zone_title">Où souhaitez-vous agir ?</string>
-    <string name="profile_edit_zone_description">Entourage est un réseau social !\nDécouvrez les initiatives solidaires de votre quartier et tissez des liens avec vos voisins</string>
+    <string name="profile_edit_zone_description">Nous vous demandons votre localité afin de vous proposer des contenus adaptés à votre localité. Soyez assuré(e) que vos informations resteront confidentielles et ne seront jamais partagées avec des tiers</string>
     <string name="profile_action_not_selected">"Mode d'action non sélectionné</string>
     <string name="profile_title_action_mode">Mon mode d’action</string>
     <string name="profile_activities">Activité(s) : %s</string>
@@ -2612,7 +2612,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="action_hygiene_name">Produit d\'hygiène</string>
     <string name="action_hygiene_subname">savon, protection hygiénique...</string>
 
-    <string name="interest_activites">Activités manuelles</string>
+    <string name="interest_activites">Activités \nmanuelles</string>
     <string name="interest_animaux">Animaux</string>
     <string name="interest_bien_etre">Bien-être</string>
     <string name="interest_cuisine">Cuisine</string>

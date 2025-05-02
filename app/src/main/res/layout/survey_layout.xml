@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:id="@+id/survey_layout"
     android:padding="18dp"
     android:layout_marginTop="8dp"
     xmlns:tools="http://schemas.android.com/tools"
@@ -147,26 +148,284 @@
         app:layout_constraintTop_toBottomOf="@+id/choice_four"
         android:layout_marginTop="20dp"
         android:layout_marginBottom="8dp" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/post_comments_number_layout"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        app:layout_constraintTop_toBottomOf="@+id/choice_five">
+
+        <Button
+            android:id="@+id/btn_reaction"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@color/transparent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/number_reaction"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <ImageView
+            android:id="@+id/imageViewComments"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/new_comments"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <TextView
+            android:id="@+id/number_reaction"
+            style="@style/left_courant_black"
+            android:layout_width="14dp"
+            android:layout_height="17dp"
+            android:layout_marginStart="5dp"
+            android:ellipsize="none"
+            android:maxLines="1"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/reaction5"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="12" />
+
+        <TextView
+            android:id="@+id/post_comments_number"
+            style="@style/input"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/post_vote_number"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Pas de commentaires" />
+        <TextView
+            android:id="@+id/post_vote_number"
+            style="@style/input"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Pas de commentaires" />
+
+        <TextView
+            android:id="@+id/post_no_comments"
+            style="@style/left_default"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/post_comments_number"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_reactions"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="2dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/shape_layout_reactions"
+            android:elevation="15dp"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/iv_react_one"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginStart="22dp"
+                android:src="@drawable/ic_pouce_orange"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/iv_react_two"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginStart="36dp"
+                android:src="@drawable/ic_pouce_orange"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/iv_react_one"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/iv_react_three"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginStart="36dp"
+                android:src="@drawable/ic_pouce_orange"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/iv_react_two"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/iv_react_four"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginStart="36dp"
+                android:src="@drawable/ic_pouce_orange"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/iv_react_three"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/iv_react_five"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginEnd="22dp"
+                android:layout_marginStart="36dp"
+                android:src="@drawable/ic_pouce_orange"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/iv_react_four"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <include
+            android:id="@+id/reaction1"
+            layout="@layout/layout_item_reaction"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <include
+            android:id="@+id/reaction2"
+            layout="@layout/layout_item_reaction"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginStart="-5dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/reaction1"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <include
+            android:id="@+id/reaction3"
+            layout="@layout/layout_item_reaction"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginStart="-5dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/reaction2"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <include
+            android:id="@+id/reaction4"
+            layout="@layout/layout_item_reaction"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginStart="-5dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/reaction3"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <include
+            android:id="@+id/reaction5"
+            layout="@layout/layout_item_reaction"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginStart="-5dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/reaction4"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
     <View
         android:layout_width="match_parent"
         android:layout_height="2dp"
         android:id="@+id/separator_layout"
-       app:layout_constraintTop_toBottomOf="@+id/choice_five"
+       app:layout_constraintTop_toBottomOf="@+id/post_comments_number_layout"
         android:layout_marginTop="15dp"
         android:background="@color/light_grey"
         />
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:id="@+id/tv_title_who_vote"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/separator_layout"
-        android:layout_marginTop="15dp"
-        style="@style/left_courant_black"
-        android:textAlignment="center"
-        android:gravity="center"
-        android:text="@string/text_title_votes"
-        />
 
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:id="@+id/btns_layout"
+        android:layout_height="40dp"
+        android:layout_marginTop="15dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/separator_layout" >
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/btn_i_like"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/btn_i_comment"
+            android:layout_marginTop="15dp">
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:id="@+id/iv_i_like"
+                android:src="@drawable/ic_pouce_grey"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginStart="55dp"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/tv_title_i_like"
+                app:layout_constraintStart_toEndOf="@+id/iv_i_like"
+                style="@style/left_courant_black"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginStart="5dp"
+                tools:text="j'aime"
+                />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/btn_i_comment"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/btn_i_like"
+            android:layout_marginTop="15dp">
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:id="@+id/iv_i_comment"
+                android:src="@drawable/ic_comment_grey"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/tv_i_comment"
+                android:layout_marginEnd="5dp"
+
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/tv_i_comment"
+                style="@style/left_courant_black"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginEnd="55dp"
+                tools:text="commenter"
+                />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

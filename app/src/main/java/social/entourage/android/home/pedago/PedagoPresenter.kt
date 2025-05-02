@@ -1,5 +1,6 @@
 package social.entourage.android.home.pedago
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import retrofit2.Call
@@ -11,7 +12,7 @@ import social.entourage.android.api.request.PedagogicSingleResponse
 
 class PedagoPresenter: ViewModel()  {
     var pedagolSingle = MutableLiveData<Pedago>()
-
+    var hasNoReturn =  MutableLiveData<Boolean>()
     fun getPedagogicalResource(resourceId:String) {
         EntourageApplication.get().apiModule.homeRequest
             .getPedagogicalResourceWithHash(resourceId)
@@ -22,10 +23,13 @@ class PedagoPresenter: ViewModel()  {
                 ) {
                     if (response.isSuccessful) {
                         pedagolSingle.value = response.body()?.pedago
+                    }else{
+                        hasNoReturn.postValue(true)
                     }
                 }
 
                 override fun onFailure(call: Call<PedagogicSingleResponse>, t: Throwable) {
+
 
                 }
             })

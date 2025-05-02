@@ -1,6 +1,8 @@
 package social.entourage.android.home.pedago
 
 import android.os.Bundle
+import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
 import social.entourage.android.R
@@ -23,12 +25,15 @@ class PedagoDetailActivity : AppCompatActivity() {
         htmlContent = intent.getStringExtra(Const.HTML_CONTENT).toString()
         isFromNotif = intent.getBooleanExtra(Const.IS_FROM_NOTIF,false)
         pedagoPresenter.pedagolSingle.observe(this, ::handlePedago)
+        pedagoPresenter.hasNoReturn.observe(this, ::handlePedago)
     }
 
     override fun onResume() {
         super.onResume()
         if(hashId != ""){
             pedagoPresenter.getPedagogicalResource(hashId)
+        }else{
+            pedagoPresenter.getPedagogicalResource(id.toString())
         }
     }
 
@@ -56,6 +61,13 @@ class PedagoDetailActivity : AppCompatActivity() {
             isFromNotif = true
         }
         showFragment()
+    }
+
+    fun handlePedago(hasNoReturn: Boolean){
+        if(hasNoReturn){
+            Toast.makeText(this,"Aucune ressource trouvée",Toast.LENGTH_SHORT).show()
+            this.onBackPressed()
+        }
     }
 
     override fun onDestroy() {

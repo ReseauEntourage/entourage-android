@@ -128,7 +128,6 @@ class AboutEventFragment : Fragment(), OnMapReadyCallback {
             }else{
                 binding.placesLimit.root.isVisible = true
             }
-            Log.wtf("wtf", "place limit: ${event?.metadata?.placeLimit}")
             binding.mapView.isVisible = event?.online == false
             binding.cvMapView.isVisible = event?.online == false
 

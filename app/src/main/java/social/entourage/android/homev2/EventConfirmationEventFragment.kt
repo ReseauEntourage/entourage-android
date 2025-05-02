@@ -21,6 +21,13 @@ class EventConfirmationDialogFragment : DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         _binding = DialogEventConfirmationBinding.inflate(layoutInflater)
 
+        val title = arguments?.getString(ARG_TITLE) ?: "Titre non fourni"
+        val description = arguments?.getString(ARG_DESCRIPTION) ?: "Description non fournie"
+
+        // Ici, tu peux utiliser `title` et `description` pour peupler tes TextViews
+        binding.tvTitleEventConfirm.text = title
+        binding.tvDescEventConfirm.text = description
+
         binding.validateBtn.setOnClickListener {
             listener?.onConfirmParticipation()
             dismiss()
@@ -30,13 +37,35 @@ class EventConfirmationDialogFragment : DialogFragment() {
             dismiss()
         }
 
-        return AlertDialog.Builder(requireActivity())
+        binding.closeButton.setOnClickListener {
+            dismiss()
+        }
+
+        return AlertDialog.Builder(requireActivity(), R.style.RoundedDialog)
             .setView(binding.root)
             .create()
     }
 
+
+
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    companion object {
+        private const val ARG_TITLE = "title"
+        private const val ARG_DESCRIPTION = "description"
+
+        fun newInstance(title: String, description: String): EventConfirmationDialogFragment {
+            val args = Bundle().apply {
+                putString(ARG_TITLE, title)
+                putString(ARG_DESCRIPTION, description)
+            }
+            return EventConfirmationDialogFragment().apply {
+                arguments = args
+            }
+        }
     }
 }

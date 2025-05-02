@@ -229,7 +229,6 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
         }
     }
     private fun initializeViews() {
-        Log.wtf("wtf", "passed here ")
         binding.layoutTopCancel.isVisible = false
         binding.layoutTopDemand.isVisible = isDemand
         binding.layoutTopContrib.isVisible = !isDemand
@@ -337,7 +336,6 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
                     binding.uiImagePlaceholder.isVisible = true
 
                 }
-                Log.wtf("wtf", "image url : ${action?.imageUrl}")
                 if(action?.imageUrl == null){
                     binding.layoutTopContrib.isVisible = false
                     binding.uiLayoutCatContrib.isVisible = false

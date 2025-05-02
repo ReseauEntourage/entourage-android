@@ -20,6 +20,7 @@
     <color name="light_grey">#ededed</color>
     <color name="grey_dark">#3d3d3d</color>
     <color name="orange_light_separator_event">#FF9C5D</color>
+    <color name="orange_onboarding_item_selected_border">#80FF9C5D</color>
 
 
     <!-- Backgrounds -->
@@ -144,6 +145,7 @@
     <color name="new_light_grey">#cdcdcd</color>
     <color name="deleted_grey">#a8a8a8</color>
     <color name="grey_vote">#979797</color>
+    <color name="grey_onboarding_item_border">#CDCDCD</color>
     <color name="bottom_sheet_background">#B5545454</color>
     <color name="orange_opacity_50">#ffcbab</color>
     <color name="new_orange_bubble">#FFCDAE</color>

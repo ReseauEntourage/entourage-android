@@ -61,8 +61,12 @@ class MembersListAdapter(
                 }
                 val isMe = EntourageApplication.get().me()?.id == userId
                 binding.contact.visibility = if (isMe) View.INVISIBLE else View.VISIBLE
-
-                binding.name.text = displayName
+                if(membersList[position].confirmedAt != null) {
+                    binding.name.text = displayName + " - Participation confirmée"
+                }
+                else {
+                    binding.name.text = displayName
+                }
 
                 val roles = getCommunityRoleWithPartnerFormated()
 

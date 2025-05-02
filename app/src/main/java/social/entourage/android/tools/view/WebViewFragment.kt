@@ -8,6 +8,7 @@ import android.net.Uri
 import android.net.http.SslError
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.GestureDetector.SimpleOnGestureListener
 import android.view.LayoutInflater
 import android.view.MotionEvent
@@ -99,7 +100,9 @@ class WebViewFragment : BaseDialogFragment() {
                 ) {
                 }
 
-                override fun onFailure(call: Call<okhttp3.ResponseBody>, t: Throwable) {}
+                override fun onFailure(call: Call<okhttp3.ResponseBody>, t: Throwable) {
+
+                }
             })
     }
     private fun showAnimation() {
@@ -223,6 +226,7 @@ class WebViewFragment : BaseDialogFragment() {
                     if (host.startsWith("www.")) {
                         host = host.substring(4)
                     }
+                    Log.wtf("wtf", "host: $host")
                     binding.webviewTitle.text = if (host.isNotEmpty()) host.replaceFirstChar {
                         if (it.isLowerCase()) it.titlecase(
                             Locale.ROOT
@@ -244,6 +248,7 @@ class WebViewFragment : BaseDialogFragment() {
         @TargetApi(Build.VERSION_CODES.M)
         override fun onReceivedError(view: WebView, request: WebResourceRequest, error: WebResourceError) {
             super.onReceivedError(view, request, error)
+            Log.wtf("wtf", "error: ${error.description}")
             binding.webviewProgressbar?.visibility = View.GONE
         }
 

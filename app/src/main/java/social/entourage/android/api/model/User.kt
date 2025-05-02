@@ -26,6 +26,15 @@ class User : Serializable {
     @SerializedName("birthday")
     var birthday: String? = null
 
+    @SerializedName("interests")
+    var interests: ArrayList<String> = ArrayList()
+
+    @SerializedName("involvements")
+    var involvements: ArrayList<String> = ArrayList()
+
+    @SerializedName("concerns")
+    var concerns: ArrayList<String> = ArrayList()
+
     @SerializedName("display_name")
     val displayName: String?
     var partner: Partner?
@@ -44,7 +53,6 @@ class User : Serializable {
     @SerializedName("address_2")
     var addressSecondary: Address? = null
     var goal: String? = null
-    val interests: ArrayList<String> = ArrayList()
     var stats: Stats? = null
     var organization: Organization? = null
 

@@ -3,7 +3,9 @@ package social.entourage.android.groups.details.feed
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -273,12 +275,24 @@ class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface,
             isLoading = false
             allPosts?.let {
                 allPostsList.addAll(allPosts)
+
                 it.forEach { post ->
                     if (post.read == true || post.read == null) oldPostsList.add(post)
                     else newPostsList.add(post)
                 }
             }
             //allPosts?.let { newPostsList.addAll(it) }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                newPostsList.removeIf { post ->
+                    post.status == "deleted"
+                }
+            }
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                oldPostsList.removeIf { post ->
+                    post.status == "deleted"
+                }
+            }
             if (newPostsList.isEmpty() && oldPostsList.isEmpty()) {
                 binding.postsLayoutEmptyState.visibility = View.VISIBLE
                 binding.postsNewRecyclerview.visibility = View.GONE
@@ -782,11 +796,19 @@ class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface,
         }
     }
 
-    override fun onSuppressPost() {
+    override fun onSuppressPost(id: Int) {
+        binding.progressBar.visibility = View.VISIBLE
         lifecycleScope.launch {
-            delay(500)
+            delay(300)
+            val isNewPost = newPostsList.any { it.id == id }
+            val adapter = if (isNewPost) {
+                binding.postsNewRecyclerview.adapter as? PostAdapter
+            } else {
+                binding.postsOldRecyclerview.adapter as? PostAdapter
+            }
+            adapter?.deleteItem(id)
+            page--
             loadPosts()
-            updateView()
         }
     }
 
@@ -874,6 +896,6 @@ class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface,
 }
 
  interface CallbackReportFragment{
-    fun onSuppressPost()
+    fun onSuppressPost(id: Int)
     fun onTranslatePost(id:Int)
 }

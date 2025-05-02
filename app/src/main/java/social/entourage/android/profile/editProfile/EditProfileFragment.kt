@@ -21,6 +21,7 @@ import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.databinding.ActivityChooseLanguageLayoutBinding
 import social.entourage.android.databinding.NewFragmentEditProfileBinding
+import social.entourage.android.enhanced_onboarding.EnhancedOnboarding
 import social.entourage.android.profile.ProfileActivity
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.transformIntoDatePicker
@@ -154,7 +155,17 @@ class EditProfileFragment : Fragment(), EditProfileCallback,
 
     private fun onEditInterests() {
         binding.interests.layout.setOnClickListener {
-            findNavController().navigate(R.id.action_edit_profile_fragment_to_edit_profile_interest_fragment)
+            EnhancedOnboarding.isFromSettingsinterest = true
+            val intent = Intent(requireContext(), EnhancedOnboarding::class.java)
+            startActivity(intent)
+            requireActivity().finish()
+
+        }
+        binding.personnalize.layout.setOnClickListener {
+            //Launch Enhanced Onboarding activity
+            val intent = Intent(requireContext(), EnhancedOnboarding::class.java)
+            startActivity(intent)
+            requireActivity().finish()
         }
     }
 

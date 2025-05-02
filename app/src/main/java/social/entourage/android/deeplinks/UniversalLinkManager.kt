@@ -41,7 +41,6 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
             val value = uri.getQueryParameter(name)
         }
         if (uri.host == stagingURL || uri.host == prodURL) {
-            Log.wtf("wtf", "pathSegments: $pathSegments")
             when {
                 pathSegments.contains("charte-ethique-grand-public") ->{
                     val chartIntent = Intent(Intent.ACTION_VIEW, Uri.parse(context.getString(R.string.disclaimer_link_public)))
@@ -172,13 +171,13 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
 
                     when (context) {
                         is MainActivity -> {
-                            context.startActivityForResult(intent, 0)
+                            context.startActivity(intent)
                         }
                         is DetailConversationActivity -> {
-                            context.startActivityForResult(intent, 0)
+                            context.startActivity(intent)
                         }
                         is CommentActivity -> {
-                            context.startActivityForResult(intent, 0)
+                            context.startActivity(intent)
                         }
                         else -> {
                             // Logique par défaut ou gestion d'autres contextes
@@ -267,7 +266,6 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
                 // Gérer d'autres types de contextes si nécessaire
             }
         }
-        Log.wtf("wtf", "discussion id: ${discussion.id.toString()}")
 
     }
 

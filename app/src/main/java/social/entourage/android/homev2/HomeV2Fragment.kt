@@ -39,6 +39,7 @@ import social.entourage.android.api.model.Pedago
 import social.entourage.android.api.model.Summary
 import social.entourage.android.api.model.User
 import social.entourage.android.databinding.FragmentHomeV2LayoutBinding
+import social.entourage.android.enhanced_onboarding.EnhancedOnboarding
 import social.entourage.android.events.create.CommunicationHandler
 import social.entourage.android.guide.GDSMainActivity
 import social.entourage.android.home.CommunicationHandlerBadgeViewModel
@@ -131,6 +132,13 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
         super.onViewCreated(view, savedInstanceState)
         user = EntourageApplication.me(activity) ?: return
         updateAvatar()
+        if(MainActivity.shouldLaunchOnboarding){
+            MainActivity.shouldLaunchOnboarding = false
+            //launch onboarding activity
+            val intent = Intent(requireActivity(), EnhancedOnboarding::class.java)
+            startActivity(intent)
+        }
+
     }
 
     override fun onResume() {
@@ -142,6 +150,7 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
 
 
     }
+
 
     private fun updateUnreadCount(unreadMessages: UnreadMessages?) {
         val count:Int = unreadMessages?.unreadCount ?: 0
@@ -447,6 +456,7 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
     }
 
     private fun updateContributionsView(summary: Summary) {
+        EnhancedOnboarding.preference = summary.preference ?: ""
         onActionUnclosed(summary)
         handleHelps(summary)
         isContribution = summary.preference.equals("contribution")
@@ -470,8 +480,8 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
             val help2 = Help(requireContext().getString(R.string.home_v2_help_title_two) , R.drawable.ic_home_v2_create_group)
             val help3 = Help(formattedString , R.drawable.first_help_item_illu)
             var helps:MutableList<Help> = mutableListOf()
-            helps.add(help1)
-            helps.add(help2)
+            //helps.add(help1)
+            //helps.add(help2)
             helps.add(help3)
             homeHelpAdapter.resetData(helps, summary)
         }
@@ -589,7 +599,7 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
     }
 
     override fun onItemClick(position: Int, moderatorId:Int) {
-        if(position == 0){
+        if(position == 2){
             AnalyticsEvents.logEvent(AnalyticsEvents.Action_Home_CreateGroup)
             val intent = Intent(requireActivity(), PedagoDetailActivity::class.java)
             intent.putExtra(Const.ID, pedagoItemForCreateGroup?.id)
@@ -603,7 +613,7 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
             intent.putExtra(Const.HTML_CONTENT, pedagoItemForCreateEvent?.html)
             requireActivity().startActivity(intent)
         }
-        if(position == 2){
+        if(position == 0){
             AnalyticsEvents.logEvent(AnalyticsEvents.Action__Home__Moderator)
             startActivity(
                 Intent(context, UserProfileActivity::class.java).putExtra(

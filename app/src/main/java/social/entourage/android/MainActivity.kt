@@ -15,6 +15,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.os.bundleOf
 import androidx.lifecycle.ViewModelProvider
@@ -31,15 +32,21 @@ import com.google.firebase.messaging.FirebaseMessaging
 import com.google.gson.Gson
 import social.entourage.android.actions.create.CreateActionActivity
 import social.entourage.android.api.MetaDataRepository
+import social.entourage.android.api.model.Events
 import social.entourage.android.api.model.ReactionType
+import social.entourage.android.api.model.Tags
+import social.entourage.android.api.model.formatEventStartTime
 import social.entourage.android.api.model.notification.PushNotificationMessage
+import social.entourage.android.api.request.userConfig
 import social.entourage.android.base.BaseSecuredActivity
 import social.entourage.android.base.location.EntLocation
 import social.entourage.android.databinding.ActivityMainBinding
 import social.entourage.android.deeplinks.UniversalLinkManager
+import social.entourage.android.events.EventsPresenter
 import social.entourage.android.guide.GDSMainActivity
 import social.entourage.android.home.CommunicationHandlerBadgeViewModel
 import social.entourage.android.home.UnreadMessages
+import social.entourage.android.homev2.EventConfirmationDialogFragment
 import social.entourage.android.language.LanguageManager
 import social.entourage.android.notifications.NotificationActionManager
 import social.entourage.android.notifications.PushNotificationManager
@@ -48,11 +55,14 @@ import social.entourage.android.tools.utils.Const
 import social.entourage.android.user.UserPresenter
 import social.entourage.android.user.UserProfileActivity
 import timber.log.Timber
+import java.text.SimpleDateFormat
+import java.util.Date
 
 class MainActivity : BaseSecuredActivity() {
     private lateinit var navController: NavController
     private val presenter: MainPresenter = MainPresenter(this)
     private val userPresenter: UserPresenter by lazy { UserPresenter() }
+    private lateinit var eventPresenter:EventsPresenter
 
     private lateinit var viewModel: CommunicationHandlerBadgeViewModel
     private val universalLinkManager = UniversalLinkManager(this)
@@ -67,9 +77,10 @@ class MainActivity : BaseSecuredActivity() {
         val binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         viewModel = ViewModelProvider(this)[CommunicationHandlerBadgeViewModel::class.java]
+        eventPresenter = ViewModelProvider(this).get(EventsPresenter::class.java)
         viewModel.badgeCount.observe(this,::handleUpdateBadgeResponse)
         userPresenter.isGetUserSuccess.observe(this, ::handleResponse)
-
+        eventPresenter.getEvent.observe(this, ::handleEventResponse)
         initializeNavBar()
         if (authenticationController.isAuthenticated) {
             //refresh the user info from the server
@@ -84,6 +95,7 @@ class MainActivity : BaseSecuredActivity() {
             }
         }
         checkForAppUpdate()
+        //ifEventLastDay(136192)
 
     }
 
@@ -94,8 +106,6 @@ class MainActivity : BaseSecuredActivity() {
     fun getFromDeepLGoDiscoverGroup():Boolean{
         return this.fromDeepLinkGoDiscoverGroup
     }
-
-
 
     override fun onStart() {
         presenter.checkForUpdate(this)
@@ -150,6 +160,14 @@ class MainActivity : BaseSecuredActivity() {
         if(this.intent != null){
             useIntentForRedictection(this.intent)
             this.intent = null
+        }
+        if(shouldLaunchEventPopUp != 0){
+            ifEventLastDay(shouldLaunchEventPopUp)
+            shouldLaunchEventPopUp = 0
+        }
+        if(shouldLaunchEvent){
+            shouldLaunchEvent = false
+            goEvent()
         }
     }
 
@@ -286,15 +304,51 @@ class MainActivity : BaseSecuredActivity() {
 
     private fun checkIntentAction(action: String, extras: Bundle?) {
         val pushNotificationMessage = extras?.get(PushNotificationManager.PUSH_MESSAGE) as? PushNotificationMessage
+        // spush notif message with popup info
+
         pushNotificationMessage?.content?.extra?.let { extra ->
             extra.instance?.let { instance ->
                 extra.instanceId?.let { id ->
-                    NotificationActionManager.presentAction(this, supportFragmentManager, instance, id, extra.postId)
+                    NotificationActionManager.presentAction(this, supportFragmentManager, instance, id, extra.postId, popup = extra.popup)
                 }
             }
         }
         intent = null
     }
+
+    fun ifEventLastDay(eventId:Int){
+        eventPresenter.getEvent(eventId)
+    }
+
+    private fun handleEventResponse(event: Events?) {
+        event?.let {
+            val context = this // Assure-toi que `this` est un Context, sinon utilise `getApplicationContext()` ou un autre contexte valide.
+            val titleEvent = it.title?.take(30) ?: "Titre par défaut"
+            val placeName = it.metadata?.streetAddress ?: "Lieu par défaut"
+            val startTime = it.formatEventStartTime() + "h"
+
+            val title = context.getString(R.string.popup_event_confirm_title, titleEvent, placeName, startTime)
+            val description = context.getString(R.string.popup_event_confirm_content)
+
+            val eventConfirmationDialogFragment = EventConfirmationDialogFragment.newInstance(title, description).apply {
+                listener = object : EventConfirmationDialogFragment.EventConfirmationListener {
+                    override fun onConfirmParticipation() {
+                        eventPresenter.confirmParticipation(it.id ?: 0)
+                        Toast.makeText(context, "Merci d’avoir répondu, à bientôt !", Toast.LENGTH_LONG).show()
+                    }
+
+                    override fun onDeclineParticipation() {
+                        eventPresenter.leaveEvent(it.id ?: 0)
+                        Toast.makeText(context, "Merci d’avoir répondu, à bientôt !", Toast.LENGTH_LONG).show()
+                    }
+                }
+            }
+
+            // Affichage du fragment
+            eventConfirmationDialogFragment.show((context as AppCompatActivity).supportFragmentManager, "eventconfirmtag")
+        }
+    }
+
 
     private val requestNotificationPermissionLauncher =
         registerForActivityResult(
@@ -507,7 +561,12 @@ class MainActivity : BaseSecuredActivity() {
         var instance: MainActivity? = null
         const val UPDATE_REQUEST_CODE = 1001 // Ou tout autre numéro que tu souhaites.
         var reactionsList: MutableList<ReactionType>? = null
-
+        var interest: MutableList<userConfig>? = null
+        var concerns: MutableList<userConfig>? = null
+        var involvements: MutableList<userConfig>? = null
+        var shouldLaunchEventPopUp:Int = 0
+        var shouldLaunchEvent:Boolean = false
+        var shouldLaunchOnboarding:Boolean = false
     }
 }
 

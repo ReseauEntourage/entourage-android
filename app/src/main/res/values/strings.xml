@@ -120,6 +120,7 @@
     <string name="edit_profile">Modifier mes informations</string>
     <string name="description">Description  (200 caractères max)</string>
     <string name="my_interests">Mes centres d’intêrets</string>
+    <string name="my_onboarding">Personnaliser mon compte</string>
     <string name="interests">Centres d’intêrets</string>
     <string name="write_message">Nouveau message</string>
     <string name="ethics">Charte éthique</string>
@@ -2381,7 +2382,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
 
     <!-- Edit profile -->
     <string name="profile_edit_zone_title">Où souhaitez-vous agir ?</string>
-    <string name="profile_edit_zone_description">Entourage est un réseau social !\nDécouvrez les initiatives solidaires de votre quartier et tissez des liens avec vos voisins</string>
+    <string name="profile_edit_zone_description">Nous vous demandons votre localité afin de vous proposer des contenus adaptés à votre localité. Soyez assuré(e) que vos informations resteront confidentielles et ne seront jamais partagées avec des tiers</string>
     <string name="profile_action_not_selected">"Mode d'action non sélectionné</string>
     <string name="profile_title_action_mode">Mon mode d’action</string>
     <string name="profile_activities">Activité(s) : %s</string>
@@ -2617,6 +2618,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="action_hygiene_subname">savon, protection hygiénique...</string>
 
     <string name="interest_activites">Activités manuelles</string>
+    <string name="interest_activites_onboarding">Activités /nmanuelles</string>
     <string name="interest_animaux">Animaux</string>
     <string name="interest_bien_etre">Bien-être</string>
     <string name="interest_cuisine">Cuisine</string>
@@ -2631,6 +2633,8 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="more"><u>En savoir plus</u></string>
     <string name="posts_comment_number"><u>%s commentaires</u></string>
     <string name="posts_comment_number_singular"><u>%s commentaire</u></string>
+    <string name="posts_vote_number"><u>%s votes</u></string>
+    <string name="posts_vote_number_singular"><u>%s vote</u></string>
     <string name="show_more_lined"><u>Voir plus</u></string>
     <string name="welcome_one_sensib">Retrouvez nos contenus de sensibilisation <u><font color="#F55F24">ici</font></u></string>
     <string name="action_show_charte"><u>Charte éthique</u></string>
@@ -2717,6 +2721,47 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
 
     <string name="popup_event_confirm_btn_confirm">Je viens</string>
     <string name="popup_event_confirm_btn_cancel">Je ne viens pas</string>
+
+
+    <string name="popup_event_confirm_title">N’oubliez pas : \"%s\" a lieu demain au %s à %s !</string>
+    <string name="popup_event_confirm_content">Pour faciliter l\'organisation de l\'événement, pouvez-vous nous dire si vous serez présent demain ?</string>
+
+    <string name="onboarding_presentation_title">%s, faisons connaissance !</string>
+    <string name="onboarding_presentation_content">Avant de plonger dans notre application, prenons quelques instants pour mieux te connaître. Tes centres d\'intérêts vont nous aider à te suggérer des activités et des contenus qui t\'intéresseront.</string>
+    <string name="onboarding_presentation_btn_negative">Configurer plus tard</string>
+    <string name="onboarding_presentation_btn_positive">Commencer</string>
+    <string name="onboarding_interest_title">Mes centres d’intérêts</string>
+    <string name="onboarding_interest_content">Pour vous aider à trouver des activités qui vous correspondent, dites-nous ce qui vous intéresse.</string>
+    <string name="onboarding_btn_finish">Terminer plus tard</string>
+    <string name="onboarding_btn_next">Suivant</string>
+    <string name="onboarding_btn_register">Enregister</string>
+    <string name="onboarding_category_title">Mes catégories d\'entraide</string>
+    <string name="onboarding_category_content">Sélectionnez les catégories d\'entraide que vous souhaitez voir en priorité.</string>
+    <string name="onboarding_category_sharing_time">Temps de partage</string>
+    <string name="onboarding_category_donation">Dons matériels</string>
+    <string name="onboarding_category_services">Proposition de services</string>
+    <string name="onboarding_category_services_details"> (lessive, impression de documents, aide administrative…)</string>
+    <string name="onboarding_action_wish_title">Comment souhaitez-vous agir au sein de la communauté Entourage ?</string>
+    <string name="onboarding_action_wish_content">(Eh oui, vous avez le droit de choisir plusieurs options !)</string>
+    <string name="onboarding_action_wish_pedago">Apprendre avec des \ncontenus  pédagogiques</string>
+    <string name="onboarding_action_wish_event">Participer à des \névénements de convivialité</string>
+    <string name="onboarding_action_wish_services">Donner ou solliciter un \ncoup de pouce</string>
+    <string name="onboarding_action_wish_network">Rejoindre un groupe de \nvoisins et tisser des liens</string>
+
+    <string name="onboarding_action_wish_pedago_contrib">Trouver des structures solidaires à proximité</string>
+    <string name="onboarding_action_wish_event_contrib">Participer à des \névénements de convivialité</string>
+    <string name="onboarding_action_wish_services_contrib">Solliciter un \ncoup de pouce</string>
+    <string name="onboarding_action_wish_network_contrib">Rejoindre un groupe de \nvoisins et tisser des liens</string>
+
+    <string name="onboarding_congrats_title">Votre expérience sur-mesure est prête !</string>
+    <string name="onboarding_congrats_content">À partir de vos préférences et disponibilités, nous vous avons préparé une sélection d\’événements à votre image. C\’est le moment de passer à l\’action !</string>
+    <string name="onboarding_congrats_leave">Parcourir les événements</string>
+    <string name="onboarding_congrats_temporary_title">Votre expérience sur-mesure est (quasi) prête !</string>
+    <string name="onboarding_congrats_temporary_content">Merci d\'avoir partagé vos envies d\'agir et vos centres d\'intérêts. Nous sommes impatients de vous proposer bientôt des événements sur-mesure qui vous correspondent. \nRestez connecté(e) !</string>
+
+
+
+
 
 </resources>
 

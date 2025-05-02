@@ -54,7 +54,7 @@ class PostAdapter(
     var context:Context,
     var reactionCallback: ReactionInterface,
     var surveyCallback: SurveyInteractionListener,
-    var postsList: List<Post>,
+    var postsList: MutableList<Post>,
     var isMember: Boolean? = false,
     var onClick: (Post, Boolean) -> Unit,
     var onReport: (Int,Int) -> Unit,
@@ -88,6 +88,14 @@ class PostAdapter(
         return if (post.survey != null) TYPE_SURVEY else TYPE_POST
     }
 
+    fun deleteItem(postId: Int) {
+        val index = postsList.indexOfFirst { it.id == postId }
+        if (index != -1) { // Vérifiez que le post a été trouvé
+            postsList.removeAt(index)
+            notifyItemRemoved(index) // Notifiez que l'item a été supprimé, permet une animation
+            notifyItemRangeChanged(index, postsList.size) // Mettez à jour les positions pour le reste des éléments
+        }
+    }
     fun translateItem(postId: Int) {
         if (translationExceptions.contains(postId)) {
             translationExceptions.remove(postId)
@@ -165,11 +173,6 @@ class PostAdapter(
                         }
                         surveyHolder.binding.tvAmbassador.text = tagsString
                     }
-                    surveyHolder.binding.tvTitleWhoVote.setOnClickListener {
-                        ResponseSurveyActivity.myVote.clear() // Nettoie les anciens votes s'il s'agit d'un choix unique
-                        ResponseSurveyActivity.myVote = localState.toMutableList()
-                        surveyCallback.showParticipantWhoVote(post.survey!!, post.id!!, post.content!!)
-                    }
 
                     // Création d'une copie locale de summary pour ajustements
                     val localSummary = post.survey?.summary?.toMutableList() ?: mutableListOf()
@@ -211,7 +214,7 @@ class PostAdapter(
 
                             // Utilisation de localSummary pour l'UI
                             val choiceResponses = localSummary.getOrNull(index) ?: 0
-                            val totalResponses = localSummary.sum()
+                            var totalResponses = localSummary.sum()
                             val progress = if (totalResponses > 0) (choiceResponses * 100 / totalResponses) else 0
                             it.progressBar3.progress = progress
                             it.tvNumberAnswer.text = "$choiceResponses"
@@ -219,6 +222,7 @@ class PostAdapter(
                             it.parent.setOnClickListener {
                                 val wasSelected = localState[index]
                                 if(wasSelected){
+                                    surveyCallback.onDeleteSurveyClick(post.id!!, localState)
                                     survey.summary[index] = survey.summary[index] - 1
                                 }else{
                                     survey.summary[index] = survey.summary[index] + 1
@@ -231,6 +235,7 @@ class PostAdapter(
                                     } else {
                                         localSummary[index] = (localSummary.getOrNull(index)?.minus(1))?.coerceAtLeast(0) ?: 0
                                     }
+
                                 } else {
                                     // Logique pour sondages à choix unique
                                     val previouslySelectedIndex = localState.indexOf(true) // Trouve l'ancienne réponse sélectionnée
@@ -244,13 +249,34 @@ class PostAdapter(
                                     localState[index] = true // Sélectionne la nouvelle réponse
                                     localSummary[index] = localSummary.getOrNull(index)?.plus(1) ?: 1
                                 }
+                                surveyCallback.onSurveyOptionClicked(post.id!!, localState)
 
                                 // Mise à jour de l'UI pour tous les choix après ajustement
                                 survey.choices.forEachIndexed { choiceIndex, _ ->
                                     updateSurveyUI(surveyHolder, choiceIndex, survey, localState, localSummary)
+
                                 }
 
-                                surveyCallback.onSurveyOptionClicked(post.id ?: 0, localState)
+                                if (postsList[position].commentsCount != null) {
+                                    val resId = if (totalResponses > 1) R.string.posts_vote_number else R.string.posts_vote_number_singular
+                                    Log.wtf("wtf", "commentsCount: ${postsList[position].commentsCount}")
+                                    val commentsText = " - " + String.format(holder.itemView.context.getString(resId), totalResponses)
+                                    val spannableString = SpannableString(commentsText)
+                                    spannableString.setSpan(UnderlineSpan(), 0, commentsText.length, Spanned.SPAN_INCLUSIVE_INCLUSIVE)
+                                    surveyHolder.binding.postVoteNumber.text = spannableString
+                                } else {
+
+                                    // Gérer le cas où commentsCount est null si nécessaire
+                                    val resId = if (totalResponses > 1) R.string.posts_vote_number else R.string.posts_vote_number_singular
+                                    val commentsText = String.format(holder.itemView.context.getString(resId), totalResponses)
+                                    val spannableString = SpannableString(commentsText)
+                                    spannableString.setSpan(UnderlineSpan(), 0, commentsText.length, Spanned.SPAN_INCLUSIVE_INCLUSIVE)
+                                    surveyHolder.binding.postVoteNumber.text = spannableString
+                                }
+                                if(totalResponses == 0 ){
+                                    surveyHolder.binding.postVoteNumber.visibility = View.GONE
+                                }
+                                updateVoteNumberText(surveyHolder, localSummary)  // Appelle cette fonction pour mettre à jour le texte du nombre de votes
                             }
                         }
 
@@ -267,6 +293,198 @@ class PostAdapter(
                         surveyHolder.binding.choiceThree.parent.visibility = View.GONE
                         surveyHolder.binding.choiceFour.parent.visibility = View.GONE
                         surveyHolder.binding.choiceFive.parent.visibility = View.GONE
+                    }
+                    surveyHolder.binding.tvTitleILike.setText(context.getText(R.string.text_title_i_like))
+                    surveyHolder.binding.tvIComment.setText(context.getText(R.string.text_title_comment))
+
+                    surveyHolder.binding.surveyLayout.setOnClickListener {
+                        surveyHolder.binding.layoutReactions.visibility = View.GONE
+                    }
+
+
+                    // Ajouter un listener pour l'appui long sur le bouton "j'aime"
+                    surveyHolder.binding.btnILike.setOnLongClickListener {
+                        AnalyticsEvents.logEvent(
+                            AnalyticsEvents.Clic_Post_List_Reactions
+                        )
+                        surveyHolder.binding.layoutReactions.visibility = if (surveyHolder.binding.layoutReactions.visibility == View.VISIBLE) View.GONE else View.VISIBLE
+                        true
+                    }
+
+                    with(postsList[position]) {
+                        if(this.reactionId == null ){
+                            surveyHolder.binding.ivILike.setImageDrawable(context.getDrawable(R.drawable.ic_pouce_grey))
+                            surveyHolder.binding.tvTitleILike.setTextColor(context.getColor(R.color.black))
+                        }else if (this.reactionId != 0 ) {
+                            // Si le pouce est orange, le changer en gris
+                            surveyHolder.binding.ivILike.setImageDrawable(context.getDrawable(R.drawable.ic_pouce_orange))
+                            surveyHolder.binding.tvTitleILike.setTextColor(context.getColor(R.color.orange))
+                        } else {
+                            // Si le pouce est gris, le changer en orange
+                            surveyHolder.binding.ivILike.setImageDrawable(context.getDrawable(R.drawable.ic_pouce_grey))
+                            surveyHolder.binding.tvTitleILike.setTextColor(context.getColor(R.color.black))
+                        }
+                        surveyHolder.binding.btnILike.setOnClickListener {
+
+                            val firstReactionType = MainActivity.reactionsList?.firstOrNull()
+                            if(firstReactionType != null){
+                                AnalyticsEvents.logEvent(
+                                    AnalyticsEvents.Clic_Post_Like
+                                )
+                                surveyHolder.binding.layoutReactions.visibility =  View.GONE
+                                handleReactionClick(this, firstReactionType)
+                            }
+                        }
+                        val reactionImageViews = listOf(
+                            surveyHolder.binding.ivReactOne,
+                            surveyHolder.binding.ivReactTwo,
+                            surveyHolder.binding.ivReactThree,
+                            surveyHolder.binding.ivReactFour,
+                            surveyHolder.binding.ivReactFive
+                        )
+                        val reactionTypes = MainActivity.reactionsList
+                        reactionTypes?.let { types ->
+                            types.take(5).forEachIndexed { index, reactionType ->
+                                Glide.with(context).load(reactionType.imageUrl).into(reactionImageViews[index])
+                                reactionImageViews[index].setOnClickListener {
+                                    handleReactionClick(this, reactionType)
+                                    surveyHolder.binding.layoutReactions.visibility =  View.GONE
+                                }
+                            }
+                        }
+
+                        val reactionViews = listOf(
+                            surveyHolder.binding.reaction1,
+                            surveyHolder.binding.reaction2,
+                            surveyHolder.binding.reaction3,
+                            surveyHolder.binding.reaction4,
+                            surveyHolder.binding.reaction5
+                        )
+                        val reactionsLayouts = arrayOf(
+                            surveyHolder.binding.reaction1.layoutItemReactionParent,
+                            surveyHolder.binding.reaction2.layoutItemReactionParent,
+                            surveyHolder.binding.reaction3.layoutItemReactionParent,
+                            surveyHolder.binding.reaction4.layoutItemReactionParent,
+                            surveyHolder.binding.reaction5.layoutItemReactionParent
+                        )
+
+                        // Cache tous les layouts de réaction
+                        reactionsLayouts.forEach { it.visibility = View.GONE }
+
+                        // Afficher les réactions disponibles pour ce post
+                        reactions?.forEachIndexed { index, reaction ->
+                            if (index < reactionsLayouts.size) {
+                                val reactionType = reactionTypes?.find { it.id == reaction.reactionId }
+                                reactionType?.let {
+                                    Glide.with(context)
+                                        .load(it.imageUrl)
+                                        .into(reactionViews[index].image)
+                                    reactionsLayouts[index].visibility = View.VISIBLE
+                                }
+                            }
+                        }
+
+
+
+                        // Cache toutes les vues de réaction par défaut
+                        reactionViews.forEach { it.layoutItemReactionParent.visibility = View.GONE }
+                        // Calcule le nombre total de réactions pour ce post
+                        val totalReactionsCount = reactions?.sumOf { it.reactionsCount } ?: 0
+                        surveyHolder.binding.numberReaction.text = totalReactionsCount.toString()
+                        if (totalReactionsCount > 0) {
+                            surveyHolder.binding.numberReaction.visibility = View.VISIBLE
+                        } else {
+                            surveyHolder.binding.numberReaction.visibility = View.GONE
+                        }
+
+                        // Affiche les réactions en fonction des ReactionType disponibles
+                        reactions?.forEachIndexed { index, reaction ->
+                            if (index < reactionViews.size) {
+                                // Récupère le ReactionType correspondant à l'ID de la réaction
+                                val reactionType = MainActivity.reactionsList?.find { it.id == reaction.reactionId }
+                                reactionType?.let {
+                                    Glide.with(context)
+                                        .load(it.imageUrl)
+                                        .into(reactionViews[index].image) // Assurez-vous que votre layout_item_reaction a un ImageView avec un id `image`
+                                    reactionViews[index].layoutItemReactionParent.visibility = View.VISIBLE
+                                }
+                            }
+                        }
+                        if(reactions?.isEmpty() == true && commentsCount == 0 && survey.summary.isEmpty()){
+                            surveyHolder.binding.postCommentsNumberLayout.visibility =  View.GONE
+
+                        }else{
+                            surveyHolder.binding.postCommentsNumberLayout.visibility =  View.VISIBLE
+                        }
+                        surveyHolder.binding.btnIComment.setOnClickListener {
+                            surveyHolder.binding.layoutReactions.visibility =  View.GONE
+                            onClick(this, true)
+                        }
+                        surveyHolder.binding.btnReaction.setOnClickListener {
+                            AnalyticsEvents.logEvent(
+                                AnalyticsEvents.Clic_ListReactions_Contact
+                            )
+                            surveyHolder.binding.layoutReactions.visibility =  View.GONE
+                            reactionCallback.seeMemberReaction(this)
+                        }
+                        surveyHolder.binding.postCommentsNumberLayout.setOnClickListener {
+
+                        }
+                        if (hasComments == false) {
+                            surveyHolder.binding.postNoComments.visibility = View.GONE
+                            surveyHolder.binding.postCommentsNumber.visibility = View.GONE
+                        } else {
+                            surveyHolder.binding.postCommentsNumber.visibility = View.VISIBLE
+                            surveyHolder.binding.postNoComments.visibility = View.GONE
+                            if (commentsCount != null) {
+                                val resId = if (commentsCount > 1) R.string.posts_comment_number else R.string.posts_comment_number_singular
+                                val commentsText = String.format(holder.itemView.context.getString(resId), commentsCount)
+
+                                val spannableString = SpannableString(commentsText)
+                                spannableString.setSpan(UnderlineSpan(), 0, commentsText.length, Spanned.SPAN_INCLUSIVE_INCLUSIVE)
+
+                                surveyHolder.binding.postCommentsNumber.text = spannableString
+                            } else {
+                                // Gérer le cas où commentsCount est null si nécessaire
+                                surveyHolder.binding.postCommentsNumber.text = "" // Ou une valeur par défaut
+                            }
+                        }
+
+                        surveyHolder.binding.postCommentsNumber?.setOnClickListener {
+                            onClick(this, true)
+                        }
+
+                        if (survey.summary.isEmpty()) {
+                            surveyHolder.binding.postVoteNumber.visibility = View.GONE
+                            surveyHolder.binding.postCommentsNumber.visibility = View.GONE
+                        } else {
+                            surveyHolder.binding?.postVoteNumber?.setOnClickListener {
+                                ResponseSurveyActivity.myVote.clear() // Nettoie les anciens votes s'il s'agit d'un choix unique
+                                ResponseSurveyActivity.myVote = localState.toMutableList()
+                                surveyCallback.showParticipantWhoVote(post.survey, post.id!!, post.content!!)
+                            }
+                            surveyHolder.binding.postVoteNumber.visibility = View.VISIBLE
+                            surveyHolder.binding.postNoComments.visibility = View.GONE
+                            val totalResponses = survey.summary.sum()
+                            if (commentsCount != null && commentsCount != 0) {
+                                val resId = if (totalResponses > 1) R.string.posts_vote_number else R.string.posts_vote_number_singular
+                                val commentsText = " - " + String.format(holder.itemView.context.getString(resId), totalResponses)
+                                val spannableString = SpannableString(commentsText)
+                                spannableString.setSpan(UnderlineSpan(), 0, commentsText.length, Spanned.SPAN_INCLUSIVE_INCLUSIVE)
+                                surveyHolder.binding.postVoteNumber.text = spannableString
+                            } else {
+
+                                // Gérer le cas où commentsCount est null si nécessaire
+                                val resId = if (totalResponses > 1) R.string.posts_vote_number else R.string.posts_vote_number_singular
+                                val commentsText = String.format(holder.itemView.context.getString(resId), totalResponses)
+                                val spannableString = SpannableString(commentsText)
+                                spannableString.setSpan(UnderlineSpan(), 0, commentsText.length, Spanned.SPAN_INCLUSIVE_INCLUSIVE)
+                                surveyHolder.binding.postVoteNumber.text = spannableString
+                            }
+                            if(totalResponses == 0 ){
+                                surveyHolder.binding.postVoteNumber.visibility = View.GONE
+                            }
+                        }
                     }
                 }
 
@@ -368,7 +586,6 @@ class PostAdapter(
                         }
 
 
-
                         // Cache toutes les vues de réaction par défaut
                         reactionViews.forEach { it.layoutItemReactionParent.visibility = View.GONE }
                         // Calcule le nombre total de réactions pour ce post
@@ -396,6 +613,8 @@ class PostAdapter(
                         if(reactions?.isEmpty() == true && commentsCount == 0){
                             binding.postCommentsNumberLayout.visibility =  View.GONE
 
+                        }else{
+                            binding.postCommentsNumberLayout.visibility =  View.VISIBLE
                         }
                         binding.btnIComment.setOnClickListener {
                             binding.layoutReactions.visibility =  View.GONE
@@ -621,6 +840,21 @@ class PostAdapter(
                 }
             }
 
+        }
+    }
+
+    fun updateVoteNumberText(surveyHolder: SurveyViewHolder, localSummary: MutableList<Int>) {
+        val totalResponses = localSummary.sum()
+        val context = surveyHolder.itemView.context
+        val resId = if (totalResponses > 1) R.string.posts_vote_number else R.string.posts_vote_number_singular
+        val commentsText = String.format(context.getString(resId), totalResponses)
+        val spannableString = SpannableString(commentsText)
+        spannableString.setSpan(UnderlineSpan(), 0, commentsText.length, Spanned.SPAN_INCLUSIVE_INCLUSIVE)
+        surveyHolder.binding.postVoteNumber.text = spannableString
+        if (totalResponses == 0) {
+            surveyHolder.binding.postVoteNumber.visibility = View.GONE
+        } else {
+            surveyHolder.binding.postVoteNumber.visibility = View.VISIBLE
         }
     }
 

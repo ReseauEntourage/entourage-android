@@ -35,6 +35,7 @@
 
     <dimen name="act_button_right_padding">10dp</dimen>
     <dimen name="entourage_category_icon_padding">6dp</dimen>
+    <dimen name="dp_70">100dp</dimen>
 
     <dimen name="newsfeed_map_height">255dp</dimen>
     <dimen name="solidarity_guide_map_height">155dp</dimen>

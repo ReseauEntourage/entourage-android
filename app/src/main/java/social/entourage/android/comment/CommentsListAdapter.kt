@@ -84,7 +84,6 @@ class CommentsListAdapter(
         } else {
             translationExceptions.add(commentId)
         }
-        //Log.wtf("wtf","translationExceptions : $translationExceptions")
         notifyItemChanged(commentsList.indexOfFirst { it.id == commentId } + 1)
     }
 
