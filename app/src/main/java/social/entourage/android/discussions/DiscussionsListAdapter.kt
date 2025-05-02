@@ -102,7 +102,9 @@ class DiscussionsListAdapter(
     }
 
     override fun onBindViewHolder(holder: DiscussionsListAdapter.ViewHolder, position: Int) {
-        holder.bind(messagesList[position], position)
+        if (position >= 0 && position < messagesList.size) {
+            holder.bind(messagesList[position], position)
+        }
     }
 
     override fun getItemCount(): Int {

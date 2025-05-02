@@ -266,7 +266,7 @@ class EditPhotoActivity : BaseActivity(), PhotoEditInterface, AvatarUploadView {
     }
 
     override fun onUploadError() {
-        TODO("Not yet implemented")
+        // Affiche un message d'erreur à l'utilisateur
+        Toast.makeText(this, "Erreur lors du chargement de la photo", Toast.LENGTH_LONG).show()
     }
-
 }

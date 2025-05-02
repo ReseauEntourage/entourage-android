@@ -3,6 +3,8 @@ package social.entourage.android.homev2
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.animation.ValueAnimator
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
 import android.content.IntentSender
@@ -67,6 +69,7 @@ import social.entourage.android.tools.view.WebViewFragment
 import social.entourage.android.user.UserPresenter
 import social.entourage.android.user.UserProfileActivity
 import social.entourage.android.user.edit.place.UserEditActionZoneFragment
+import timber.log.Timber
 
 class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeLocationUpdate {
 
@@ -181,8 +184,23 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
             )
         }
         checkNotifAndSendToken()
-        showPopupBienCommun()
     }
+
+    private fun testToken() {
+        binding.ivLogoHome.setOnLongClickListener {
+            FirebaseMessaging.getInstance().token.addOnSuccessListener { token ->
+                // Copier le token dans le presse-papiers
+                val clipboard = requireContext().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                val clip = ClipData.newPlainText("FCM Token", token)
+                clipboard.setPrimaryClip(clip)
+
+                // Afficher le Toast
+                Toast.makeText(requireContext(), "Token copié dans le presse-papiers", Toast.LENGTH_LONG).show()
+            }
+            true
+        }
+    }
+
 
     private fun testIRLNotification(){
         binding.ivLogoHome.setOnLongClickListener {
@@ -242,10 +260,10 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
             FirebaseMessaging.getInstance().token.addOnSuccessListener { token ->
                 AnalyticsEvents.logEvent(AnalyticsEvents.user_have_notif_and_token)
             }
-            FirebaseMessaging.getInstance().token.addOnFailureListener {
-                AnalyticsEvents.logEvent(AnalyticsEvents.user_have_notif_and_no_token)
+            FirebaseMessaging.getInstance().token.addOnFailureListener { exception ->
+                Timber.e("FCM Token", "Failed to retrieve token", exception)
+                AnalyticsEvents.logEvent(AnalyticsEvents.user_have_notif_and_no_token + "_" + user?.id)
             }
-
         } else {
             AnalyticsEvents.logEvent(AnalyticsEvents.has_user_disabled_notif)
             mainPresenter.updateApplicationInfo("")
@@ -254,7 +272,7 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
 
     fun sendtoken(){
         FirebaseMessaging.getInstance().token.addOnSuccessListener { token ->
-            Log.wtf("TOKEN", token)
+            Log.wtf("wtf token", token)
             mainPresenter.updateApplicationInfo(token)
         }
     }
@@ -456,16 +474,17 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
         }
     }
 
-    fun setObservations(){
-        homePresenter.summary.observe(requireActivity(), ::updateContributionsView)
-        homePresenter.getAllEvents.observe(viewLifecycleOwner,::handleEvent)
-        homePresenter.getAllMyGroups.observe(viewLifecycleOwner,::handleGroup)
-        homePresenter.getAllActions.observe(viewLifecycleOwner,::handleAction)
-        homePresenter.pedagogicalContent.observe(viewLifecycleOwner,::handlePedago)
-        homePresenter.pedagogicalInitialContent.observe(viewLifecycleOwner,::handleInitialPedago)
-        homePresenter.notifsCount.observe(requireActivity(), ::updateNotifsCount)
-        actionsPresenter.unreadMessages.observe(requireActivity(), ::updateUnreadCount)
+    fun setObservations() {
+        homePresenter.summary.observe(viewLifecycleOwner, ::updateContributionsView)
+        homePresenter.getAllEvents.observe(viewLifecycleOwner, ::handleEvent)
+        homePresenter.getAllMyGroups.observe(viewLifecycleOwner, ::handleGroup)
+        homePresenter.getAllActions.observe(viewLifecycleOwner, ::handleAction)
+        homePresenter.pedagogicalContent.observe(viewLifecycleOwner, ::handlePedago)
+        homePresenter.pedagogicalInitialContent.observe(viewLifecycleOwner, ::handleInitialPedago)
+        homePresenter.notifsCount.observe(viewLifecycleOwner, ::updateNotifsCount)
+        actionsPresenter.unreadMessages.observe(viewLifecycleOwner, ::updateUnreadCount)
     }
+
 
     fun handleGroup(allGroup: MutableList<Group>?){
         if(allGroup == null){
@@ -626,6 +645,7 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
     }
 
     private fun updateContributionsView(summary: Summary) {
+        if (!isAdded) return
         EnhancedOnboarding.preference = summary.preference ?: ""
         onActionUnclosed(summary)
         handleHelps(summary)

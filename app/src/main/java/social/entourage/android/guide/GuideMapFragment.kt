@@ -287,9 +287,11 @@ class GuideMapFragment : Fragment(),
                 "poi" -> {
                     // Utiliser le PoiRenderer pour les POIs
                     val poi = item.toPoi()
-                    mapRenderer.getMarkerOptions(poi, requireContext())?.let { markerOptions ->
-                        map?.addMarker(markerOptions)?.apply {
-                            this.tag = poi
+                    context?.let { safeContext ->  // Vérification du contexte
+                        mapRenderer.getMarkerOptions(poi, safeContext)?.let { markerOptions ->
+                            map?.addMarker(markerOptions)?.apply {
+                                this.tag = poi
+                            }
                         }
                     }
                     // Ajouter le POI à la liste des POIs à ajouter à l'adaptateur
@@ -305,34 +307,38 @@ class GuideMapFragment : Fragment(),
         }
     }
 
+
     private fun createClusterIcon(poiCount: Int): BitmapDescriptor {
         val iconSize = 100  // Taille de l'icône
         val bitmap = Bitmap.createBitmap(iconSize, iconSize, Bitmap.Config.ARGB_8888)
         val canvas = Canvas(bitmap)
 
-        // Récupérer les couleurs à partir des ressources
-        val orangeSecondaryLocal = ContextCompat.getColor(requireContext(), R.color.orange_secondary_local)
-        val orangeTextMapLocal = ContextCompat.getColor(requireContext(), R.color.orange_entourage)
+        context?.let { safeContext ->  // Vérification que le contexte est disponible
+            // Récupérer les couleurs à partir des ressources
+            val orangeSecondaryLocal = ContextCompat.getColor(safeContext, R.color.orange_secondary_local)
+            val orangeTextMapLocal = ContextCompat.getColor(safeContext, R.color.orange_entourage)
 
-        // Dessiner le fond de l'icône (un cercle par exemple)
-        val paint = Paint().apply {
-            color = orangeSecondaryLocal  // Utiliser la couleur orange_secondary_local
-            isAntiAlias = true
+            // Dessiner le fond de l'icône (un cercle par exemple)
+            val paint = Paint().apply {
+                color = orangeSecondaryLocal  // Utiliser la couleur orange_secondary_local
+                isAntiAlias = true
+            }
+            val radius = iconSize / 2f
+            canvas.drawCircle(radius, radius, radius, paint)
+
+            // Dessiner le texte (nombre de POIs)
+            paint.color = orangeTextMapLocal  // Utiliser la couleur orange_text_map_local
+            paint.textSize = 40f
+            paint.textAlign = Paint.Align.CENTER
+
+            val textX = radius
+            val textY = radius - (paint.descent() + paint.ascent()) / 2
+            canvas.drawText(poiCount.toString(), textX, textY, paint)
         }
-        val radius = iconSize / 2f
-        canvas.drawCircle(radius, radius, radius, paint)
-
-        // Dessiner le texte (nombre de POIs)
-        paint.color = orangeTextMapLocal  // Utiliser la couleur orange_text_map_local
-        paint.textSize = 40f
-        paint.textAlign = Paint.Align.CENTER
-
-        val textX = radius
-        val textY = radius - (paint.descent() + paint.ascent()) / 2
-        canvas.drawText(poiCount.toString(), textX, textY, paint)
 
         return BitmapDescriptorFactory.fromBitmap(bitmap)
     }
+
 
 
     // Convertir ClusterPoi en Poi pour l'utiliser avec PoiRenderer

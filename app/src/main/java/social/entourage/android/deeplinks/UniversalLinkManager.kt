@@ -21,6 +21,7 @@ import social.entourage.android.api.model.Group
 import social.entourage.android.comment.CommentActivity
 import social.entourage.android.discussions.DetailConversationActivity
 import social.entourage.android.groups.details.feed.FeedActivity
+import social.entourage.android.guide.GDSMainActivity
 import social.entourage.android.home.pedago.PedagoDetailActivity
 import social.entourage.android.home.pedago.PedagoListActivity
 import social.entourage.android.tools.utils.Const
@@ -154,6 +155,10 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
                         }
                     }
                 }
+                pathSegments.contains("map") -> {
+                    val intent = Intent(context, GDSMainActivity::class.java)
+                    context.startActivity(intent)
+                }
                 pathSegments.contains("resources") -> {
                     val intent = when {
                         pathSegments.size > 2 -> {
@@ -169,6 +174,7 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
                             Intent(context, PedagoListActivity::class.java)
                         }
                     }
+
 
                     when (context) {
                         is MainActivity -> {

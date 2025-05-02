@@ -39,6 +39,7 @@ import social.entourage.android.api.model.Events
 import social.entourage.android.api.model.ReactionType
 import social.entourage.android.api.model.Tags
 import social.entourage.android.api.model.formatEventStartTime
+import social.entourage.android.api.model.notification.PushNotificationContent
 import social.entourage.android.api.model.notification.PushNotificationMessage
 import social.entourage.android.api.request.userConfig
 import social.entourage.android.base.BaseSecuredActivity
@@ -319,18 +320,36 @@ class MainActivity : BaseSecuredActivity() {
     }
 
     private fun checkIntentAction(action: String, extras: Bundle?) {
-        val pushNotificationMessage = extras?.get(PushNotificationManager.PUSH_MESSAGE) as? PushNotificationMessage
-        // spush notif message with popup info
-
-        pushNotificationMessage?.content?.extra?.let { extra ->
-            extra.instance?.let { instance ->
-                extra.instanceId?.let { id ->
-                    NotificationActionManager.presentAction(this, supportFragmentManager, instance, id, extra.postId, popup = extra.popup)
+        extras?.let { bundle ->
+            val author = bundle.getString("sender") ?: "unknown"
+            val msgObject = bundle.getString("object")
+            val rawContent = bundle.getString("content")
+            if (rawContent != null) {
+                val pushNotificationContent = Gson().fromJson(rawContent, PushNotificationContent::class.java)
+                val pushNotificationMessage = PushNotificationMessage(
+                    author = author,
+                    msgObject = msgObject,
+                    content = rawContent, // Chaîne JSON
+                    pushNotificationId = 0, // Si tu as besoin d'un ID, change cette valeur
+                    pushNotificationTag = null // Même chose pour le tag
+                )
+                pushNotificationMessage.content?.extra?.let { extra ->
+                    extra.instance?.let { instance ->
+                        extra.instanceId?.let { id ->
+                            NotificationActionManager.presentAction(
+                                this, supportFragmentManager, instance, id, extra.postId, popup = extra.popup
+                            )
+                        }
+                    }
                 }
+            } else {
+                Log.wtf("wtf notif", "content null")
             }
-        }
+        } ?: Log.wtf("wtf notif", "extras null")
         intent = null
     }
+
+
 
     fun ifEventLastDay(eventId:Int){
         eventPresenter.getEvent(eventId)
