@@ -2887,5 +2887,6 @@
     <string name="add_to_agenda">أضف إلى الأجندة</string>
     <string name="share_and_join_event">انضم وشارك في المحادثة</string>
     <string name="see_conversation_event">مشاهدة المحادثة</string>
+    <string name="child_rules">معايير حماية الأطفال</string>
 
 </resources>

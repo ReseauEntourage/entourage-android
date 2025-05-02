@@ -268,7 +268,7 @@ class GroupCommentActivity : CommentActivity() {
         val cleanedDisplayName = user.displayName?.replace(Regex("[^\\p{L}]"), "")  + ". "
 
         val mentionHtml = """<a href="$baseUrl/app/users/${user.userId}">@${cleanedDisplayName}</a>"""
-        val mentionSpanned = HtmlCompat.fromHtml(mentionHtml, HtmlCompat.FROM_HTML_MODE_LEGACY)
+        val mentionSpanned = HtmlCompat.fromHtml(mentionHtml, HtmlCompat.FROM_HTML_MODE_COMPACT)
 
         // Remplacer le texte entre '@' et la position du curseur par la mention nettoyée
         editable.replace(lastMentionStartIndex, cursorPos, mentionSpanned)

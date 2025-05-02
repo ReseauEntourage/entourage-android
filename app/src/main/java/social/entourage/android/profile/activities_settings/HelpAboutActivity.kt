@@ -44,6 +44,7 @@ class HelpAboutActivity : BaseActivity() {
             ambassadorProgram.layout.setOnClickListener { onAmbassadorClicked() }
             ethic.layout.setOnClickListener { onEthicChartClicked() }
             partner.layout.setOnClickListener { onPartnerClicked() }
+            childRules.layout.setOnClickListener { onChildRuleClicked()}
         }
     }
 
@@ -61,6 +62,11 @@ class HelpAboutActivity : BaseActivity() {
 
     private fun onPrivacyClicked() {
         val privacyUrl = getString(R.string.privacy_policy_url)
+        openLink(privacyUrl)
+    }
+
+    private fun onChildRuleClicked() {
+        val privacyUrl = getString(R.string.child_rule_url)
         openLink(privacyUrl)
     }
 
