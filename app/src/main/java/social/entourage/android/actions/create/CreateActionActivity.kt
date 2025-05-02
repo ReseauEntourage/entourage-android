@@ -10,7 +10,7 @@ import social.entourage.android.tools.utils.Const
 class CreateActionActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.new_activity_create_action)
+        setContentView(R.layout.activity_create_action)
 
         val isDemand = intent.getBooleanExtra(Const.IS_ACTION_DEMAND,false)
         val action = intent.getSerializableExtra(Const.ACTION_OBJ) as? Action

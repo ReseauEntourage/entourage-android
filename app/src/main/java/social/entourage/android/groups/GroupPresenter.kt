@@ -1,11 +1,9 @@
 package social.entourage.android.groups
 
-import android.content.Context
 import android.util.Log
 import androidx.collection.ArrayMap
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.google.gson.Gson
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -15,7 +13,6 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import social.entourage.android.EntourageApplication
-import social.entourage.android.R
 import social.entourage.android.api.request.*
 import social.entourage.android.RefreshController
 import social.entourage.android.api.model.EntourageUser
@@ -24,8 +21,8 @@ import social.entourage.android.home.UnreadMessages
 import social.entourage.android.api.model.Events
 import social.entourage.android.api.model.Group
 import social.entourage.android.api.model.Post
-import social.entourage.android.api.model.notification.CompleteReactionsResponse
-import social.entourage.android.api.model.notification.ReactionWrapper
+import social.entourage.android.api.model.CompleteReactionsResponse
+import social.entourage.android.api.model.ReactionWrapper
 import social.entourage.android.groups.details.feed.CreatePostGroupActivity
 import timber.log.Timber
 import java.io.File
@@ -321,8 +318,8 @@ class GroupPresenter: ViewModel() {
             })
     }
 
-    fun getGroupPosts(groupId: Int) {
-        EntourageApplication.get().apiModule.groupRequest.getGroupPosts(groupId)
+    fun getGroupPosts(groupId: Int, page:Int, per: Int) {
+        EntourageApplication.get().apiModule.groupRequest.getGroupPosts(groupId,page,per)
             .enqueue(object : Callback<PostListWrapper> {
                 override fun onResponse(
                     call: Call<PostListWrapper>,

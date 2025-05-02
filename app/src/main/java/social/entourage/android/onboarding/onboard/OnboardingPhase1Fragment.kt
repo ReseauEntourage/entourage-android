@@ -7,10 +7,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import kotlinx.android.synthetic.main.fragment_onboarding_phase1.*
-import kotlinx.android.synthetic.main.layout_code_picker.view.*
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent
 import social.entourage.android.R
+import social.entourage.android.databinding.FragmentOnboardingPhase1Binding
 import social.entourage.android.tools.isValidEmail
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.view.countrycodepicker.Country
@@ -24,6 +23,7 @@ private const val ARG_EMAIL = "email"
 private const val ARG_CONSENT = "consent"
 
 class OnboardingPhase1Fragment : Fragment() {
+    private lateinit var binding: FragmentOnboardingPhase1Binding
     private var firstname:String? = null
     private var lastname:String? = null
     private var phone:String? = null
@@ -49,7 +49,8 @@ class OnboardingPhase1Fragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_onboarding_phase1, container, false)
+        binding = FragmentOnboardingPhase1Binding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -82,21 +83,20 @@ class OnboardingPhase1Fragment : Fragment() {
             }
         }
 
-        ui_onboard_consent_check?.setOnCheckedChangeListener { compoundButton, b ->
+        binding.uiOnboardConsentCheck?.setOnCheckedChangeListener { compoundButton, b ->
             updateButtonNext()
         }
 
-        ui_onboard_consent_check.isChecked = hasConsent
-        ui_onboard_email.setText(email)
-        ui_onboard_phone_ccp_code.selectedCountry = country
-        ui_onboard_phone_ccp_code.selected_country_tv.text = country?.flagTxt
-        ui_onboard_phone_et_phone.setText(phone)
-        ui_onboard_names_et_lastname.setText(lastname)
-        ui_onboard_names_et_firstname.setText(firstname)
-        ui_onboard_email.addTextChangedListener(object : android.text.TextWatcher {
+        binding.uiOnboardConsentCheck.isChecked = hasConsent
+        binding.uiOnboardEmail.setText(email)
+        binding.uiOnboardPhoneCcpCode.selectedCountry = country
+        binding.uiOnboardPhoneCcpCode.selectedCountry?.flagTxt = country?.flagTxt
+        binding.uiOnboardPhoneEtPhone.setText(phone)
+        binding.uiOnboardNamesEtLastname.setText(lastname)
+        binding.uiOnboardNamesEtFirstname.setText(firstname)
+        binding.uiOnboardEmail.addTextChangedListener(object : android.text.TextWatcher {
             override fun afterTextChanged(s: android.text.Editable?) {
                 (requireActivity() as OnboardingStartActivity).setEmail(s.toString())
-                Log.wtf("wtf","email: $s")
             }
 
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -106,7 +106,7 @@ class OnboardingPhase1Fragment : Fragment() {
             }
         })
 
-        ui_onboard_phone_ccp_code?.countryCodePickerListener = object : CountryCodePickerListener {
+        binding.uiOnboardPhoneCcpCode?.countryCodePickerListener = object : CountryCodePickerListener {
             override fun updatedCountry(newCountry: Country) {
                 country = newCountry
                 updateButtonNext()
@@ -120,32 +120,32 @@ class OnboardingPhase1Fragment : Fragment() {
         if (checkAndValidateInput()) {
             showErrorMessage(false)
             callback?.updateButtonNext(true)
-            callback?.validateNames(ui_onboard_names_et_firstname?.text?.toString(),
-                ui_onboard_names_et_lastname?.text?.toString(),
-                ui_onboard_phone_ccp_code?.selectedCountry,
-                ui_onboard_phone_et_phone?.text?.toString(),
-                ui_onboard_email?.text?.toString(),
-                ui_onboard_consent_check?.isChecked ?: false)
+            callback?.validateNames(binding.uiOnboardNamesEtFirstname?.text?.toString(),
+                binding.uiOnboardNamesEtLastname?.text?.toString(),
+                binding.uiOnboardPhoneCcpCode?.selectedCountry,
+                binding.uiOnboardPhoneEtPhone?.text?.toString(),
+                binding.uiOnboardEmail?.text?.toString(),
+                binding.uiOnboardConsentCheck?.isChecked ?: false)
         }
         else {
-            if (!ui_onboard_names_et_firstname?.text.isNullOrEmpty() &&
-                !ui_onboard_names_et_lastname?.text.isNullOrEmpty())
+            if (!binding.uiOnboardNamesEtFirstname?.text.isNullOrEmpty() &&
+                !binding.uiOnboardNamesEtLastname?.text.isNullOrEmpty())
                 showErrorMessage(true)
 
             callback?.updateButtonNext(false)
             callback?.validateNames(null, null, null,
-                null,null,ui_onboard_consent_check.isChecked)
+                null,null,binding.uiOnboardConsentCheck.isChecked)
         }
     }
 
     /********
      * Validations
      */
-    private fun isValidFirstname() = (ui_onboard_names_et_firstname?.text?.length ?: 0) >= minChars
-    private fun isValidLastname() = (ui_onboard_names_et_lastname?.text?.length ?: 0) >= minChars
-    private fun isValidPhone() = (ui_onboard_phone_et_phone?.text?.length ?: 0) >= minCharsPhone
+    private fun isValidFirstname() = (binding.uiOnboardNamesEtFirstname?.text?.length ?: 0) >= minChars
+    private fun isValidLastname() = (binding.uiOnboardNamesEtLastname?.text?.length ?: 0) >= minChars
+    private fun isValidPhone() = (binding.uiOnboardPhoneEtPhone?.text?.length ?: 0) >= minCharsPhone
     private fun isValidEmail() : Boolean {
-        val email:String = ui_onboard_email?.text.toString()
+        val email:String = binding.uiOnboardEmail?.text.toString()
         if (email.isNotEmpty()) {
             return email.isNotEmpty() && email.isValidEmail()
         }
@@ -172,23 +172,23 @@ class OnboardingPhase1Fragment : Fragment() {
 
         if (show) {
             if (!isValidFirstname()) {
-                error_message_firstname?.visibility = View.VISIBLE
+                binding.errorMessageFirstname.visibility = View.VISIBLE
             }
             else if (!isValidLastname()) {
-                error_message_lastname?.visibility = View.VISIBLE
+                binding.errorMessageLastname.visibility = View.VISIBLE
             }
             else if (!isValidPhone()) {
-                error_message_phone?.visibility = View.VISIBLE
+                binding.errorMessagePhone.visibility = View.VISIBLE
             }
             else if (!isValidEmail()) {
-                error_message_email?.visibility = View.VISIBLE
+                binding.errorMessageEmail.visibility = View.VISIBLE
             }
         }
         else {
-            error_message_firstname?.visibility = View.GONE
-            error_message_lastname?.visibility = View.GONE
-            error_message_phone?.visibility = View.GONE
-            error_message_email?.visibility = View.GONE
+            binding.errorMessageFirstname.visibility = View.GONE
+            binding.errorMessageLastname.visibility = View.GONE
+            binding.errorMessagePhone.visibility = View.GONE
+            binding.errorMessageEmail.visibility = View.GONE
         }
     }
 

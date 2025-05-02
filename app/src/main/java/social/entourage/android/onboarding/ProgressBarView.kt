@@ -26,7 +26,7 @@ class ProgressCellarView: View {
         init(attrs,defStyleAttr)
     }
 
-    override fun onDraw(canvas: Canvas?) {
+    override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
 
         if (bitmap == null) {
@@ -39,10 +39,11 @@ class ProgressCellarView: View {
         bitmap?.let { bitmap ->
             val _canvas = Canvas(bitmap)
             _canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR)
+            //TODO: do we really need this _canvas? Iti is not used anywhere else
 
             val frame = RectF(0f,0f,width.toFloat(),height.toFloat())
             ProgressBar.drawProgressBar(canvas, frame, percent)
-            canvas?.drawBitmap(bitmap,0f,0f,paint)
+            canvas.drawBitmap(bitmap,0f,0f,paint)
         }
     }
 

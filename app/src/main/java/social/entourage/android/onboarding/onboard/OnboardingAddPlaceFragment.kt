@@ -1,8 +1,7 @@
 package social.entourage.android.onboarding.onboard
 
+import android.util.Log
 import android.view.View
-import kotlinx.android.synthetic.main.fragment_select_place.*
-import kotlinx.android.synthetic.main.layout_view_title.view.*
 import social.entourage.android.R
 import social.entourage.android.user.edit.place.UserActionPlaceFragment
 
@@ -12,14 +11,12 @@ class OnboardingAddPlaceFragment : UserActionPlaceFragment() {
 
     override fun setupViews() {
         super.setupViews()
-        ui_onboard_place_tv_title?.text = getString(R.string.profile_edit_zone_title)
-        ui_onboard_place_tv_info?.text = getString(R.string.profile_edit_zone_description)
+        binding.uiOnboardPlaceTvTitle.text = getString(R.string.profile_edit_zone_title)
+        binding.uiOnboardPlaceTvInfo.text = getString(R.string.profile_edit_zone_description)
 
-        edit_place_title_layout?.visibility = View.VISIBLE
-        edit_place_title_layout?.title_action_button?.setOnClickListener {
+        binding.editPlaceTitleLayout.visibility = View.VISIBLE
+        binding.editPlaceTitleLayout.binding.titleActionButton.setOnClickListener {
             validate()
-        }
-        edit_place_title_layout?.title_close_button?.setOnClickListener {
             dismiss()
         }
     }

@@ -1,8 +1,6 @@
 package social.entourage.android.api.model
 
 import com.google.gson.annotations.SerializedName
-import social.entourage.android.api.model.notification.Reaction
-import social.entourage.android.api.model.notification.ReactionType
 import social.entourage.android.api.model.notification.Translation
 import java.text.SimpleDateFormat
 import java.util.*
@@ -37,6 +35,10 @@ class Post(
     @SerializedName("reaction_id")
     var reactionId: Int? = null,
     val idInternal: UUID? = null,
+    @SerializedName("survey")
+    val survey: Survey? = null,
+    @SerializedName("survey_response")
+    var surveyResponse: MutableList<Boolean>? = mutableListOf(),
 ) {
     var datePostText = ""
     var isDatePostOnly = false
@@ -50,3 +52,13 @@ class Post(
         return "Post(id=$id, content=$content, user=$user, createdTime=$createdTime, messageType=$messageType, postId=$postId, hasComments=$hasComments, commentsCount=$commentsCount, imageUrl=$imageUrl, read=$read)"
     }
 }
+
+
+data class Survey(
+    @SerializedName("choices")
+    var choices: List<String>,
+    @SerializedName("multiple")
+    var multiple: Boolean,
+    @SerializedName("summary")
+    var summary: MutableList<Int>
+)

@@ -7,6 +7,6 @@ import social.entourage.android.R
 class PedagoListActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.new_activity_pedago_list)
+        setContentView(R.layout.activity_pedago_list)
     }
 }

@@ -2,6 +2,7 @@ package social.entourage.android.onboarding.onboard
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,9 +10,9 @@ import android.widget.ImageView
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
-import kotlinx.android.synthetic.main.fragment_onboarding_phase3.*
 import social.entourage.android.R
 import social.entourage.android.api.model.User
+import social.entourage.android.databinding.FragmentOnboardingPhase3Binding
 import social.entourage.android.tools.log.AnalyticsEvents
 
 private const val ARG_ENTOUR = "entour"
@@ -19,12 +20,12 @@ private const val ARG_BEENTOUR = "beentour"
 private const val ARG_ASSO = "asso"
 private const val ARG_ADDRESS = "address"
 
-class OnboardingPhase3Fragment : Fragment() {
+class OnboardingPhase3Fragment : Fragment(), OnboardingChoosePlaceCallback {
 
     private var isEntour = false
     private var isBeEntour = false
     private var isAsso = false
-
+    private lateinit var binding:FragmentOnboardingPhase3Binding
     private var address: User.Address? = null
     private var callback:OnboardingStartCallback? = null
 
@@ -42,35 +43,31 @@ class OnboardingPhase3Fragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_onboarding_phase3, container, false)
+        binding = FragmentOnboardingPhase3Binding.inflate(layoutInflater)
+
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        location?.setOnClickListener {
+        binding.location.setOnClickListener {
             val fg = OnboardingAddPlaceFragment()
-            fg.callback = object : OnboardingChoosePlaceCallback {
-                override fun updatePlace(newAddress: User.Address?) {
-                    address = newAddress
-                    location.setText(address?.displayAddress)
-                    updateTypes()
-                }
-            }
+            fg.callback = this
             fg.show(parentFragmentManager,"")
         }
 
-        ui_layout_entour?.setOnClickListener {
+        binding.uiLayoutEntour?.setOnClickListener {
             isEntour = ! isEntour
             changeSelections()
             updateTypes()
         }
-        ui_layout_beentour?.setOnClickListener {
+        binding.uiLayoutBeentour?.setOnClickListener {
             isBeEntour = ! isBeEntour
             changeSelections()
             updateTypes()
         }
-        ui_layout_asso?.setOnClickListener {
+        binding.uiLayoutAsso?.setOnClickListener {
             isAsso = ! isAsso
             changeSelections()
             updateTypes()
@@ -91,9 +88,9 @@ class OnboardingPhase3Fragment : Fragment() {
     }
 
     private fun changeSelections() {
-        changeLayoutAndImage(ui_layout_entour,ui_iv_entour_check, isEntour)
-        changeLayoutAndImage(ui_layout_beentour,ui_iv_beentour_check, isBeEntour)
-        changeLayoutAndImage(ui_layout_asso,ui_iv_asso_check, isAsso)
+        changeLayoutAndImage(binding.uiLayoutEntour,binding.uiIvEntourCheck, isEntour)
+        changeLayoutAndImage(binding.uiLayoutBeentour,binding.uiIvBeentourCheck, isBeEntour)
+        changeLayoutAndImage(binding.uiLayoutAsso,binding.uiIvAssoCheck, isAsso)
     }
 
     private fun changeLayoutAndImage(layout:ConstraintLayout?,image:ImageView?, isOn:Boolean) {
@@ -122,5 +119,11 @@ class OnboardingPhase3Fragment : Fragment() {
                     putSerializable(ARG_ADDRESS,address)
                 }
             }
+    }
+
+    override fun updatePlace(address: User.Address?) {
+        this.address = address
+        binding.location.setText(address?.displayAddress)
+        updateTypes()
     }
 }

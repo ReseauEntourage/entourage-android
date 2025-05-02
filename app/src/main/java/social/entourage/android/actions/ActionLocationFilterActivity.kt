@@ -13,31 +13,26 @@ import android.widget.SeekBar
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.databinding.DataBindingUtil
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.LatLng
-import com.google.android.libraries.places.compat.AutocompleteFilter
 import com.google.android.libraries.places.compat.ui.PlaceAutocomplete
 import com.google.android.libraries.places.widget.AutocompleteActivity
-import kotlinx.android.synthetic.main.fragment_select_place.*
-import kotlinx.android.synthetic.main.new_activity_event_filters.view.*
-import kotlinx.android.synthetic.main.new_header.view.*
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.RefreshController
 import social.entourage.android.api.model.Address
-import social.entourage.android.base.location.LocationProvider
-import social.entourage.android.base.location.LocationUtils
-import social.entourage.android.databinding.NewActivityActionLocationFiltersBinding
-import social.entourage.android.events.list.DiscoverEventsListFragment
 import social.entourage.android.api.model.EventActionLocationFilters
 import social.entourage.android.api.model.EventFilterType
+import social.entourage.android.base.location.LocationProvider
+import social.entourage.android.base.location.LocationUtils
+import social.entourage.android.databinding.ActivityActionLocationFiltersBinding
+import social.entourage.android.events.list.DiscoverEventsListFragment
 import timber.log.Timber
 import java.io.IOException
-import java.util.*
+import java.util.Locale
 
 class ActionLocationFilterActivity : AppCompatActivity() {
 
@@ -53,7 +48,7 @@ class ActionLocationFilterActivity : AppCompatActivity() {
             ActivityResultContracts.RequestMultiplePermissions()
         ) { permissions ->
             if(permissions.entries.any {
-                    it.value == true
+                    it.value
                 })  {
                 RefreshController.shouldRefreshLocationPermission = true
                 startRequestLocation()
@@ -66,15 +61,13 @@ class ActionLocationFilterActivity : AppCompatActivity() {
 
     private var currentFilters: EventActionLocationFilters? = null
 
-    private lateinit var binding: NewActivityActionLocationFiltersBinding
+    private lateinit var binding: ActivityActionLocationFiltersBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding = DataBindingUtil.setContentView(
-            this,
-            R.layout.new_activity_action_location_filters
-        )
+        binding =ActivityActionLocationFiltersBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         currentFilters = intent.getSerializableExtra(LOCATION_FILTERS) as? EventActionLocationFilters
 
@@ -150,14 +143,14 @@ class ActionLocationFilterActivity : AppCompatActivity() {
             binding.errorView.visibility = View.GONE
             when (checkedId) {
                 R.id.profile_address -> {
-                    val _address = EntourageApplication.get().me()?.address
-                    val address = Address(_address?.latitude ?: 0.0,_address?.longitude ?: 0.0,_address?.displayAddress ?: "-")
-                    currentFilters?.modifyFilter(_address?.displayAddress,address,currentFilters?.travel_distance(),
+                    val myAddress = EntourageApplication.get().me()?.address
+                    val address = Address(myAddress?.latitude ?: 0.0,myAddress?.longitude ?: 0.0,myAddress?.displayAddress ?: "-")
+                    currentFilters?.modifyFilter(myAddress?.displayAddress,address,currentFilters?.travel_distance(),
                         EventFilterType.PROFILE)
                     binding.layoutCustom.visibility = View.GONE
                     binding.layoutPlace.visibility = View.GONE
                     binding.layoutMe.visibility = View.VISIBLE
-                    binding.addressName.text = _address?.displayAddress
+                    binding.addressName.text = myAddress?.displayAddress
                     cancelGps()
                 }
                 R.id.place -> {
@@ -217,7 +210,7 @@ class ActionLocationFilterActivity : AppCompatActivity() {
     }
 
     //Google Place
-    fun onPlaceSearch() {
+    private fun onPlaceSearch() {
         //val filter: AutocompleteFilter = AutocompleteFilter.Builder().setCountry("FR").build()
         val intent = PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_OVERLAY)
             .build(this)
@@ -226,9 +219,8 @@ class ActionLocationFilterActivity : AppCompatActivity() {
 
     private var resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         val data: Intent? = result.data
-        val resultCode = result.resultCode
 
-        when (resultCode) {
+        when (result.resultCode) {
             AutocompleteActivity.RESULT_OK -> {
                 val place = PlaceAutocomplete.getPlace(this, data)
                 if (place == null || place.address == null) return@registerForActivityResult
@@ -298,8 +290,6 @@ class ActionLocationFilterActivity : AppCompatActivity() {
     }
 
     fun updateLocationText(lastLocation: Location?) {
-        ui_onboard_place_tv_location?.text = ""
-        ui_onboard_place_tv_location?.hint = getString(R.string.onboard_place_placeholder)
         lastLocation?.let {
             this.let{ activity ->
                 try {
@@ -317,8 +307,8 @@ class ActionLocationFilterActivity : AppCompatActivity() {
 
                             val addressName = "$street$city, $cp"
                             binding.locationName.text = addressName
-                            val address = Address(it.latitude,it.longitude,addressName)
-                            currentFilters?.modifyAddress(address)
+                            val fullAddress = Address(it.latitude,it.longitude,addressName)
+                            currentFilters?.modifyAddress(fullAddress)
                             currentFilters?.modifiyShortname("$city, $cp")
                             binding.errorView.visibility = View.INVISIBLE
                         }
@@ -331,7 +321,7 @@ class ActionLocationFilterActivity : AppCompatActivity() {
     }
 
     @SuppressLint("MissingPermission")
-    protected fun startRequestLocation() {
+    fun startRequestLocation() {
         if (LocationUtils.isLocationPermissionGranted()) {
             binding.locationName.text =  getString(R.string.onboard_place_getting_current_location)
             mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
@@ -341,7 +331,7 @@ class ActionLocationFilterActivity : AppCompatActivity() {
                 null
             )
         } else {
-            Toast.makeText(this, "Activez la localisation", Toast.LENGTH_LONG).show()
+            Toast.makeText(this, R.string.activate_geoloc, Toast.LENGTH_LONG).show()
         }
     }
 }

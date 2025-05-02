@@ -2,7 +2,6 @@ package social.entourage.android.onboarding.pre_onboarding
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
@@ -11,61 +10,59 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.activity_intro_carousel.*
 import social.entourage.android.EntourageApplication
 import social.entourage.android.MainActivity
 import social.entourage.android.R
+import social.entourage.android.databinding.ActivityIntroCarouselBinding
 import social.entourage.android.tools.log.AnalyticsEvents
-import timber.log.Timber
 
 class PreOnboardingStartActivity : AppCompatActivity() {
 
-    var arrayViewDots = ArrayList<ImageView>()
+    private var arrayViewDots = ArrayList<ImageView>()
     var currentDotPosition = 0
 
-    lateinit var mAdapter: PreOnboardingRVAdapter
+    private lateinit var mAdapter: PreOnboardingRVAdapter
+    private lateinit var binding: ActivityIntroCarouselBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setContentView(R.layout.activity_intro_carousel)
+        binding = ActivityIntroCarouselBinding.inflate(layoutInflater)
 
-        arrayViewDots.add(ui_iv_dot1)
-        arrayViewDots.add(ui_iv_dot2)
-        arrayViewDots.add(ui_iv_dot3)
+        setContentView(binding.root)
+
+        arrayViewDots.add(binding.uiIvDot1)
+        arrayViewDots.add(binding.uiIvDot2)
+        arrayViewDots.add(binding.uiIvDot3)
 
         setupViews()
         setupRecyclerView()
         updateViewAndDots()
     }
 
-    override fun onResume() {
-        super.onResume()
-    }
-
     private fun setupViews() {
-        ui_button_connect?.setOnClickListener {
+        binding.uiButtonConnect.setOnClickListener {
            goNext()
         }
 
-        ui_button_next?.setOnClickListener {
+        binding.uiButtonNext.setOnClickListener {
             if (currentDotPosition < 2) {
                 currentDotPosition += 1
-                ui_recyclerView?.smoothScrollToPosition(currentDotPosition)
+                binding.uiRecyclerView.smoothScrollToPosition(currentDotPosition)
                 updateViewAndDots()
                 return@setOnClickListener
             }
             goNext()
         }
 
-        ui_button_previous?.setOnClickListener {
+        binding.uiButtonPrevious.setOnClickListener {
                 currentDotPosition -= 1
-                ui_recyclerView?.smoothScrollToPosition(currentDotPosition)
+            binding.uiRecyclerView.smoothScrollToPosition(currentDotPosition)
                 updateViewAndDots()
                 return@setOnClickListener
 
         }
-        ui_button_previous?.isVisible = false
+        binding.uiButtonPrevious.isVisible = false
     }
 
     private fun goNext() {
@@ -82,14 +79,14 @@ class PreOnboardingStartActivity : AppCompatActivity() {
     }
 
     private fun setupRecyclerView() {
-        val datas = ArrayList<Int>()
-        datas.add(R.drawable.carousel_onboarding_1)
-        datas.add(R.drawable.carousel_onboarding_2)
-        datas.add(R.drawable.carousel_onboarding_3)
+        val data = ArrayList<Int>()
+        data.add(R.drawable.carousel_onboarding_1)
+        data.add(R.drawable.carousel_onboarding_2)
+        data.add(R.drawable.carousel_onboarding_3)
         val linearLayoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        ui_recyclerView?.setHasFixedSize(true)
-        ui_recyclerView?.layoutManager = linearLayoutManager
-//        ui_recyclerView?.addItemDecoration(RecyclerViewItemDecorationCenterFirstLast(CELL_SPACING))
+        binding.uiRecyclerView.setHasFixedSize(true)
+        binding.uiRecyclerView.layoutManager = linearLayoutManager
+//        binding.uiRecyclerView?.addItemDecoration(RecyclerViewItemDecorationCenterFirstLast(CELL_SPACING))
 
         val scrollListener = object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
@@ -101,13 +98,13 @@ class PreOnboardingStartActivity : AppCompatActivity() {
             }
         }
 
-        ui_recyclerView?.addOnScrollListener(scrollListener)
+        binding.uiRecyclerView.addOnScrollListener(scrollListener)
         val snapHelper = LinearSnapHelper()
-        snapHelper.attachToRecyclerView(ui_recyclerView)
+        snapHelper.attachToRecyclerView(binding.uiRecyclerView)
 
         linearLayoutManager.scrollToPosition(0)
-        mAdapter = PreOnboardingRVAdapter(this, datas)
-        ui_recyclerView?.adapter = mAdapter
+        mAdapter = PreOnboardingRVAdapter(this, data)
+        binding.uiRecyclerView.adapter = mAdapter
 
         mAdapter.notifyDataSetChanged()
 
@@ -122,15 +119,15 @@ class PreOnboardingStartActivity : AppCompatActivity() {
 
         val title: String
         val description: String
-        ui_logo?.visibility = View.GONE
-        ui_button_connect?.visibility = View.VISIBLE
-        ui_button_previous.isVisible = true
+        binding.uiLogo.visibility = View.GONE
+        binding.uiButtonConnect.visibility = View.VISIBLE
+        binding.uiButtonPrevious.isVisible = true
         when(currentDotPosition) {
             0 -> {
                 title = getString(R.string.intro_title_1)
                 description = getString(R.string.intro_subtitle_1)
-                ui_logo?.visibility = View.VISIBLE
-                ui_button_previous.isVisible = false
+                binding.uiLogo.visibility = View.VISIBLE
+                binding.uiButtonPrevious.isVisible = false
                 AnalyticsEvents.logEvent(AnalyticsEvents.PreOnboard_car1)
             }
             1 -> {
@@ -141,11 +138,11 @@ class PreOnboardingStartActivity : AppCompatActivity() {
             else -> {
                 title = getString(R.string.intro_title_3)
                 description = getString(R.string.intro_subtitle_3)
-                ui_button_connect?.visibility = View.INVISIBLE
+                binding.uiButtonConnect.visibility = View.INVISIBLE
                 AnalyticsEvents.logEvent(AnalyticsEvents.PreOnboard_car3)
             }
         }
-        ui_tv_title?.text = title
-        ui_tv_description?.text = description
+        binding.uiTvTitle.text = title
+        binding.uiTvDescription.text = description
     }
 }

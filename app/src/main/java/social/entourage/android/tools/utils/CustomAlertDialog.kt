@@ -236,6 +236,43 @@ object CustomAlertDialog {
         alertDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         alertDialog.show()
     }
+    fun showOnlyOneButtonNoClose(
+        context: Context,
+        title: String,
+        content: String,
+        action: String,
+        onAction: () -> (Unit) = {}
+    ) {
+        val layoutInflater = LayoutInflater.from(context)
+        val customDialog: View = layoutInflater.inflate(R.layout.new_custom_alert_dialog, null)
+        val builder = AlertDialog.Builder(context)
+        builder.setView(customDialog)
+        val alertDialog = builder.create()
+
+        with(customDialog.findViewById<TextView>(R.id.title)){
+            text = title
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                setTextColor(context.getColor(R.color.light_orange))
+            }
+        }
+        customDialog.findViewById<TextView>(R.id.content).text = content
+        customDialog.findViewById<Button>(R.id.yes).visibility = View.GONE
+        with(customDialog.findViewById<TextView>(R.id.no)) {
+            text = action
+            setOnClickListener {
+                onAction()
+                alertDialog.dismiss()
+            }
+        }
+        with(customDialog.findViewById<ImageButton>(R.id.btn_cross)) {
+            visibility = View.GONE
+            setOnClickListener {
+                //alertDialog.dismiss()
+            }
+        }
+        alertDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        alertDialog.show()
+    }
 
     fun showWelcomeAlert(
         context: Context,

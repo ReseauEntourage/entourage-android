@@ -12,13 +12,12 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
-import kotlinx.android.synthetic.main.fragment_guide_poi_read.*
-import kotlinx.android.synthetic.main.layout_view_title.*
 import social.entourage.android.R
 import social.entourage.android.api.model.guide.Poi
 import social.entourage.android.base.BaseDialogFragment
 import social.entourage.android.base.map.OnAddressClickListener
-import social.entourage.android.guide.filter.GuideFilterAdapter
+import social.entourage.android.databinding.FragmentGuidePoiReadBinding
+import social.entourage.android.guide.filter.GuideFilterItemAdapter
 import social.entourage.android.guide.poi.PoiRenderer.CategoryType
 import social.entourage.android.guide.poi.ReadPoiPresenter.OnPhoneClickListener
 import social.entourage.android.tools.log.AnalyticsEvents
@@ -31,18 +30,18 @@ class ReadPoiFragment : BaseDialogFragment() {
     // ----------------------------------
     // ATTRIBUTES
     // ----------------------------------
+    private var _binding: FragmentGuidePoiReadBinding? = null
+    val binding: FragmentGuidePoiReadBinding get() = _binding!!
+
     private lateinit var poi: Poi
     private var filtersSelectedFromMap:String? = null
-    var presenter: ReadPoiPresenter
-
-    init {
-        presenter = ReadPoiPresenter(this)
-    }
+    var presenter: ReadPoiPresenter = ReadPoiPresenter(this)
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         super.onCreateView(inflater, container, savedInstanceState)
         AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_OPEN_POI_FROM_MAP)
-        return inflater.inflate(R.layout.fragment_guide_poi_read, container, false)
+        _binding = FragmentGuidePoiReadBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -53,33 +52,33 @@ class ReadPoiFragment : BaseDialogFragment() {
         //Actually WS return id and not uuid for entourage poi
         presenter.getPoiDetail(poi.uuid)
 
-        title_close_button?.setOnClickListener {dismiss()}
-        poi_report_button?.setOnClickListener {onReportButtonClicked()}
-        ui_button_share?.setOnClickListener { onShareClicked() }
-        ui_button_share?.visibility = View.VISIBLE
-        ui_layout_help?.setOnClickListener {
-            ui_layout_full_help_info?.visibility = View.VISIBLE
+        binding.poiReadToolbar.binding.titleCloseButton.setOnClickListener {dismiss()}
+        binding.poiReportButton.setOnClickListener {onReportButtonClicked()}
+        binding.poiReadToolbar.binding.uiButtonShare.setOnClickListener { onShareClicked() }
+        binding.poiReadToolbar.binding.uiButtonShare.visibility = View.VISIBLE
+        binding.uiLayoutHelp.setOnClickListener {
+            binding.uiLayoutFullHelpInfo.visibility = View.VISIBLE
         }
-        ui_layout_full_help_info?.visibility = View.GONE
+        binding.uiLayoutFullHelpInfo.visibility = View.GONE
         setupRVHelp()
 
-        ui_bt_share_close?.setOnClickListener {
-            ui_layout_share?.visibility = View.GONE
+        binding.uiBtShareClose.setOnClickListener {
+            binding.uiLayoutShare.visibility = View.GONE
         }
 
-        ui_bt_share_inside?.setOnClickListener {
-            ui_layout_share?.visibility = View.GONE
+        binding.uiBtShareInside.setOnClickListener {
+            binding.uiLayoutShare.visibility = View.GONE
 
             ShareMessageFragment.newInstanceForPoi(poi.uuid)
                     .show(parentFragmentManager, ShareMessageFragment.TAG)
         }
 
-        ui_bt_share_outside?.setOnClickListener {
-            ui_layout_share?.visibility = View.GONE
+        binding.uiBtShareOutside.setOnClickListener {
+            binding.uiLayoutShare.visibility = View.GONE
             shareOnly()
         }
 
-        ui_button_show_soliguide?.setOnClickListener {
+        binding.uiButtonShowSoliguide.setOnClickListener {
             //TODO: link inside or outside app ?
             poi.soliguideUrl?.let {
                 val stringTag = String.format(AnalyticsEvents.SOLIGUIDE_CLICK,poi.soliguideId,poi.uuid,filtersSelectedFromMap)
@@ -93,16 +92,16 @@ class ReadPoiFragment : BaseDialogFragment() {
     }
 
     private fun setupRVHelp() {
-        val filterAdapter = GuideFilterAdapter(requireContext())
+        val filterAdapter = GuideFilterItemAdapter(requireContext())
         filterAdapter.setHelpOnly()
-        guide_filter_list?.adapter = filterAdapter
+        binding.guideFilterList.adapter = filterAdapter
 
-        ui_layout_full_help_info?.setOnClickListener {
-            ui_layout_full_help_info?.visibility = View.GONE
+        binding.uiLayoutFullHelpInfo.setOnClickListener {
+            binding.uiLayoutFullHelpInfo.visibility = View.GONE
         }
 
-        guide_filter_list?.setOnItemClickListener { parent, view, position, id ->
-            ui_layout_full_help_info?.visibility = View.GONE
+        binding.guideFilterList.setOnItemClickListener { _, _, _, _ ->
+            binding.uiLayoutFullHelpInfo.visibility = View.GONE
         }
     }
 
@@ -111,18 +110,18 @@ class ReadPoiFragment : BaseDialogFragment() {
     }
 
     fun onDisplayedPoi(poi: Poi, onAddressClickListener: OnAddressClickListener?, onPhoneClickListener: OnPhoneClickListener?) {
-        textview_poi_name?.text = poi.name
-        textview_poi_description?.text = poi.description
-        setActionButton(button_poi_phone, poi.phone,ui_layout_phone)
-        setActionButton(button_poi_mail, poi.email,ui_layout_mail)
-        setActionButton(button_poi_web, poi.website,ui_layout_web)
-        setActionButton(button_poi_address, poi.address,ui_layout_location)
+        binding.textviewPoiName.text = poi.name
+        binding.textviewPoiDescription.text = poi.description
+        setActionButton(binding.buttonPoiPhone, poi.phone,binding.uiLayoutPhone)
+        setActionButton(binding.buttonPoiMail, poi.email,binding.uiLayoutMail)
+        setActionButton(binding.buttonPoiWeb, poi.website,binding.uiLayoutWeb)
+        setActionButton(binding.buttonPoiAddress, poi.address,binding.uiLayoutLocation)
 
         if (onAddressClickListener != null) {
-            button_poi_address?.setOnClickListener(onAddressClickListener)
+            binding.buttonPoiAddress.setOnClickListener(onAddressClickListener)
         }
         if (onPhoneClickListener != null) {
-            button_poi_phone?.setOnClickListener(onPhoneClickListener)
+            binding.buttonPoiPhone.setOnClickListener(onPhoneClickListener)
         }
         //Setup icons categories
         for (i in 0 until 6) {
@@ -139,35 +138,35 @@ class ReadPoiFragment : BaseDialogFragment() {
         }
 
         if (!poi.audience.isNullOrEmpty()) {
-            ui_layout_public?.visibility = View.VISIBLE
-            ui_tv_poi_public?.text = poi.audience
+            binding.uiLayoutPublic.visibility = View.VISIBLE
+            binding.uiTvPoiPublic.text = poi.audience
         }
         else {
-            ui_layout_public?.visibility = View.GONE
+            binding.uiLayoutPublic.visibility = View.GONE
         }
 
         //Soliguide
-        layout_top_soliguide?.visibility = View.GONE
-        ui_layout_soliguide_language?.visibility = View.GONE
-        ui_layout_soliguide_openTime?.visibility = View.GONE
+        binding.layoutTopSoliguide.visibility = View.GONE
+        binding.uiLayoutSoliguideLanguage.visibility = View.GONE
+        binding.uiLayoutSoliguideOpenTime.visibility = View.GONE
 
         if (poi.isSoliguide) {
-            layout_top_soliguide?.visibility = View.VISIBLE
+            binding.layoutTopSoliguide.visibility = View.VISIBLE
             poi.openTimeTxt?.let {
-                ui_layout_soliguide_openTime?.visibility = View.VISIBLE
-                ui_tv_poi_open_time?.text = it
+                binding.uiLayoutSoliguideOpenTime.visibility = View.VISIBLE
+                binding.uiTvPoiOpenTime.text = it
             }
             poi.languagesTxt?.let {
-                ui_layout_soliguide_language?.visibility = View.VISIBLE
-                ui_tv_poi_language?.text = it
+                binding.uiLayoutSoliguideLanguage.visibility = View.VISIBLE
+                binding.uiTvPoiLanguage.text = it
             }
-            poi_report_layout?.visibility = View.GONE
+            binding.poiReportLayout.visibility = View.GONE
 
             val stringTag = String.format(AnalyticsEvents.SOLIGUIDE_SHOW_POI,poi.soliguideId,poi.uuid,filtersSelectedFromMap)
             AnalyticsEvents.logEvent(stringTag)
         }
         else {
-            poi_report_layout?.visibility = View.VISIBLE
+            binding.poiReportLayout.visibility = View.VISIBLE
         }
         this.poi = poi
     }
@@ -176,22 +175,22 @@ class ReadPoiFragment : BaseDialogFragment() {
 
         when(position) {
             0 -> {
-              return  ui_iv_picto_1
+              return  binding.uiIvPicto1
             }
             1 -> {
-               return ui_iv_picto_2
+               return binding.uiIvPicto2
             }
             2 -> {
-               return ui_iv_picto_3
+               return binding.uiIvPicto3
             }
             3 -> {
-                return ui_iv_picto_4
+                return binding.uiIvPicto4
             }
             4 -> {
-                return ui_iv_picto_5
+                return binding.uiIvPicto5
             }
             5 -> {
-                return ui_iv_picto_6
+                return binding.uiIvPicto6
             }
             else -> return null
         }
@@ -201,29 +200,29 @@ class ReadPoiFragment : BaseDialogFragment() {
 
         when(position) {
             0 -> {
-                return  ui_iv_trans_picto_1
+                return  binding.uiIvTransPicto1
             }
             1 -> {
-                return ui_iv_trans_picto_2
+                return binding.uiIvTransPicto2
             }
             2 -> {
-                return ui_iv_trans_picto_3
+                return binding.uiIvTransPicto3
             }
             3 -> {
-                return ui_iv_trans_picto_4
+                return binding.uiIvTransPicto4
             }
             4 -> {
-                return ui_iv_trans_picto_5
+                return binding.uiIvTransPicto5
             }
             5 -> {
-                return ui_iv_trans_picto_6
+                return binding.uiIvTransPicto6
             }
             else -> return null
         }
     }
 
     private fun setActionButton(btn: Button?, value: String?,layout:ConstraintLayout?) {
-        if (btn !=null && value != null && value.isNotEmpty()) {
+        if (btn !=null && !value.isNullOrEmpty()) {
             btn.visibility = View.VISIBLE
             btn.text = value
             btn.paintFlags = btn.paintFlags or Paint.UNDERLINE_TEXT_FLAG
@@ -254,14 +253,14 @@ class ReadPoiFragment : BaseDialogFragment() {
     }
 
     private fun onShareClicked() {
-        ui_layout_share?.visibility = View.VISIBLE
+        binding.uiLayoutShare.visibility = View.VISIBLE
     }
 
     private fun shareOnly() {
         AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_GUIDE_SHAREPOI)
         val poiName = if(poi.name == null) "" else poi.name
-        val address = if(poi.address?.length ?: 0 == 0) "" else "Adresse: ${poi.address}"
-        val phone = if(poi.phone?.length ?: 0 == 0) "" else "Tel: ${poi.phone}"
+        val address = if((poi.address?.length ?: 0) == 0) "" else "Adresse: ${poi.address}"
+        val phone = if((poi.phone?.length ?: 0) == 0) "" else "Tel: ${poi.phone}"
         val urlShare = getString(R.string.url_share_entourage_bitly)
 
         val shareText = getString(R.string.info_share_poi_sms).format(poiName,address,phone,urlShare)

@@ -10,7 +10,7 @@
 
         <include
             android:id="@+id/header"
-            layout="@layout/new_header"
+            layout="@layout/layout_header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toTopOf="@id/scrollView"
@@ -48,32 +48,38 @@
                     android:src="@drawable/new_cross" />
             </LinearLayout>
         </ScrollView>
-
-        <include
-            android:id="@+id/import_picture"
-            layout="@layout/new_rounded_button_white"
-            android:layout_width="match_parent"
+        <Button
+            android:id="@+id/button_gallery"
+            style="@style/h2_white"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@drawable/new_rounded_button_orange"
+            android:drawablePadding="10dp"
+            android:paddingHorizontal="20dp"
+            android:text="@string/import_picture"
+            android:textAllCaps="false"
             android:layout_marginHorizontal="65dp"
             android:layout_marginTop="100dp"
-            app:content="@{@string/import_picture}"
-            app:drawable="@{@drawable/new_rounded_button_orange}"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/scrollView" />
-
-        <include
-            android:id="@+id/take_picture"
-            layout="@layout/new_rounded_button_white"
-            android:layout_width="match_parent"
+            app:layout_constraintTop_toBottomOf="@id/scrollView"/>
+        <Button
+            android:id="@+id/button_take_picture"
+            style="@style/h2_white"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@drawable/new_rounded_button_light_orange"
+            android:drawablePadding="10dp"
+            android:paddingHorizontal="20dp"
+            android:text="@string/take_picture"
+            android:textAllCaps="false"
             android:layout_marginHorizontal="65dp"
             android:layout_marginTop="20dp"
-            app:content="@{@string/take_picture}"
-            app:drawable="@{@drawable/new_rounded_button_light_orange}"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/import_picture" />
+            app:layout_constraintTop_toBottomOf="@id/button_gallery"
+            />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -8,8 +8,8 @@ import retrofit2.http.*
 import social.entourage.android.events.create.CreateEvent
 import social.entourage.android.api.model.Events
 import social.entourage.android.api.model.Image
-import social.entourage.android.api.model.notification.CompleteReactionsResponse
-import social.entourage.android.api.model.notification.ReactionWrapper
+import social.entourage.android.api.model.CompleteReactionsResponse
+import social.entourage.android.api.model.ReactionWrapper
 
 class EventsImagesResponse(@field:SerializedName("entourage_images") val eventImages: ArrayList<Image>)
 class EventsListWrapper(@field:SerializedName("outings") val allEvents: MutableList<Events>)
@@ -101,7 +101,9 @@ interface EventsRequest {
 
     @GET("outings/{event_id}/chat_messages")
     fun getEventPosts(
-        @Path("event_id") eventId: Int
+        @Path("event_id") eventId: Int,
+        @Query("page") page: Int,
+        @Query("per") per: Int
     ): Call<PostListWrapper>
 
     @POST("outings/{event_id}/chat_messages/presigned_upload")

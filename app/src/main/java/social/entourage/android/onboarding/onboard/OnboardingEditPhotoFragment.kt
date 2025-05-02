@@ -6,6 +6,7 @@ import android.graphics.PorterDuff
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,8 +14,9 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
 import com.takusemba.cropme.OnCropListener
-import kotlinx.android.synthetic.main.fragment_onboarding_edit_photo.*
+
 import social.entourage.android.R
+import social.entourage.android.databinding.FragmentOnboardingEditPhotoBinding
 import social.entourage.android.tools.utils.Utils
 import social.entourage.android.tools.rotate
 import social.entourage.android.user.edit.photo.PhotoEditInterface
@@ -23,6 +25,7 @@ import java.io.File
 import java.io.IOException
 
 class OnboardingEditPhotoFragment : DialogFragment() {
+    private lateinit var binding: FragmentOnboardingEditPhotoBinding
     private val ROTATE_DEGREES_STEP = -90f
     private var currentAngle = 0f
 
@@ -45,7 +48,8 @@ class OnboardingEditPhotoFragment : DialogFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_onboarding_edit_photo, container, false)
+        binding = FragmentOnboardingEditPhotoBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -90,21 +94,21 @@ class OnboardingEditPhotoFragment : DialogFragment() {
 
     private fun setupViews() {
         context?.let { context ->
-            ui_photo_edit_progressBar?.indeterminateDrawable?.setColorFilter(ContextCompat.getColor(context, R.color.white), PorterDuff.Mode.SRC_ATOP)
+            binding.uiPhotoEditProgressBar.indeterminateDrawable?.setColorFilter(ContextCompat.getColor(context, R.color.white), PorterDuff.Mode.SRC_ATOP)
         }
 
         photoUri?.let {
             try {
-                crop_view?.setUri(it)
+                binding.cropView.setUri(it)
 
             } catch(e: IOException) {
                 Timber.e(e)
             }
         }
 
-        crop_view?.addOnCropListener(object : OnCropListener {
+        binding.cropView.addOnCropListener(object : OnCropListener {
             override fun onSuccess(bitmap: Bitmap) {
-                ui_photo_edit_progressBar?.visibility = View.GONE
+                binding.uiPhotoEditProgressBar.visibility = View.GONE
                 try {
                     val squareBitmap = cropToSquare(bitmap)
                     saveBitmap(squareBitmap)
@@ -117,27 +121,27 @@ class OnboardingEditPhotoFragment : DialogFragment() {
             override fun onFailure(e: Exception) {
                 try {
                     Toast.makeText(activity, R.string.user_photo_error_no_photo, Toast.LENGTH_SHORT).show()
-                    ui_photo_edit_progressBar?.visibility = View.GONE
-                    ui_edit_photo_validate?.isEnabled = true
+                    binding.uiPhotoEditProgressBar.visibility = View.GONE
+                    binding.uiEditPhotoValidate.isEnabled = true
                 } catch (e2: Exception) {
                     Timber.w(e2)
                 }
             }
         })
 
-        ui_edit_photo_cancel?.setOnClickListener {
+        binding.uiEditPhotoCancel.setOnClickListener {
             dismiss()
         }
 
-        ui_photo_edit_bt_rotate?.setOnClickListener {
+        binding.uiPhotoEditBtRotate.setOnClickListener {
             rotateImage()
         }
 
-        ui_edit_photo_validate?.setOnClickListener {
-            ui_edit_photo_validate?.isEnabled = false
-            ui_photo_edit_progressBar?.visibility = View.VISIBLE
+        binding.uiEditPhotoValidate.setOnClickListener {
+            binding.uiEditPhotoValidate.isEnabled = false
+            binding.uiPhotoEditProgressBar.visibility = View.VISIBLE
             try {
-                crop_view?.crop()
+                binding.cropView.crop()
             } catch(e: Exception) {
                 Timber.e(e)
             }
@@ -158,7 +162,7 @@ class OnboardingEditPhotoFragment : DialogFragment() {
     }
 
     private fun saveBitmap(bitmap: Bitmap) {
-        crop_view?.setBitmap(bitmap)
+        binding.cropView.setBitmap(bitmap)
         photoFile = Utils.saveBitmapToFile(bitmap, photoFile, requireContext())
     }
 

@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentSender
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
@@ -17,7 +18,6 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.os.bundleOf
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
@@ -29,23 +29,20 @@ import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.UpdateAvailability
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.gson.Gson
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import social.entourage.android.actions.create.CreateActionActivity
 import social.entourage.android.api.MetaDataRepository
+import social.entourage.android.api.model.ReactionType
 import social.entourage.android.api.model.notification.PushNotificationMessage
-import social.entourage.android.api.model.notification.ReactionType
 import social.entourage.android.base.BaseSecuredActivity
 import social.entourage.android.base.location.EntLocation
+import social.entourage.android.databinding.ActivityMainBinding
 import social.entourage.android.deeplinks.UniversalLinkManager
 import social.entourage.android.guide.GDSMainActivity
-import social.entourage.android.notifications.PushNotificationManager
 import social.entourage.android.home.CommunicationHandlerBadgeViewModel
 import social.entourage.android.home.UnreadMessages
 import social.entourage.android.language.LanguageManager
 import social.entourage.android.notifications.NotificationActionManager
+import social.entourage.android.notifications.PushNotificationManager
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.user.UserPresenter
@@ -59,14 +56,16 @@ class MainActivity : BaseSecuredActivity() {
 
     private lateinit var viewModel: CommunicationHandlerBadgeViewModel
     private val universalLinkManager = UniversalLinkManager(this)
-    private var fromDeepLinlGoDiscoverGroup = false
+    private var fromDeepLinkGoDiscoverGroup = false
     private lateinit var updateActivityResultLauncher: ActivityResultLauncher<IntentSenderRequest>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         updateMainLanguage()
         super.onCreate(savedInstanceState)
+
         instance = this
-        setContentView(R.layout.new_activity_main)
+        val binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         viewModel = ViewModelProvider(this)[CommunicationHandlerBadgeViewModel::class.java]
         viewModel.badgeCount.observe(this,::handleUpdateBadgeResponse)
         userPresenter.isGetUserSuccess.observe(this, ::handleResponse)
@@ -80,7 +79,8 @@ class MainActivity : BaseSecuredActivity() {
 
         updateActivityResultLauncher = registerForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) { result ->
             if (result.resultCode != Activity.RESULT_OK) {
-                Log.e("Update", "La mise à jour a échoué ou a été annulée par l'utilisateur.")
+                Timber.tag("Update")
+                    .e("La mise à jour a échoué ou a été annulée par l'utilisateur.")
             }
         }
         checkForAppUpdate()
@@ -88,11 +88,11 @@ class MainActivity : BaseSecuredActivity() {
     }
 
     fun setGoDiscoverGroupFromDeepL(bool:Boolean){
-        this.fromDeepLinlGoDiscoverGroup = bool
+        this.fromDeepLinkGoDiscoverGroup = bool
     }
 
     fun getFromDeepLGoDiscoverGroup():Boolean{
-        return this.fromDeepLinlGoDiscoverGroup
+        return this.fromDeepLinkGoDiscoverGroup
     }
 
 
@@ -177,15 +177,17 @@ class MainActivity : BaseSecuredActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == UPDATE_REQUEST_CODE) {
             if (resultCode != RESULT_OK) {
-                Log.e("Update", "La mise à jour a échoué ou a été annulée par l'utilisateur.")
+                Timber.tag("Update")
+                    .e("La mise à jour a échoué ou a été annulée par l'utilisateur.")
             }
         }
     }
      fun updateMainLanguage(){
         updateLanguage()
         val id = EntourageApplication.me(this)?.id
-         userPresenter.getUser(id ?: 0)
-
+         if (id != null) {
+             userPresenter.getUser(id)
+         }
         if(id != null){
             userPresenter.updateLanguage(id, LanguageManager.loadLanguageFromPreferences(this))
             LanguageManager.setLocale(this, LanguageManager.loadLanguageFromPreferences(this))
@@ -206,15 +208,12 @@ class MainActivity : BaseSecuredActivity() {
     }
 
     fun handleResponse(success: Boolean){
-        Log.wtf("wtf", "wtf is sucess : $success")
-        Log.wtf("wtf", "user " + Gson().toJson(userPresenter.user.value))
-
 
     }
 
     fun useIntentForRedictection(intent: Intent){
         intent.action?.let { action ->
-            checkIntentAction(action, intent?.extras)
+            checkIntentAction(action, intent.extras)
         }
         val fromWelcomeActivity = intent.getBooleanExtra("fromWelcomeActivity", false)
         val fromWelcomeActivityThreeEvent = intent.getBooleanExtra("fromWelcomeActivityThreeEvent", false)
@@ -257,9 +256,9 @@ class MainActivity : BaseSecuredActivity() {
         }
         if (fromWelcomeActivityThreeContrib) {
             goContrib()
-            val intent = Intent(this, CreateActionActivity::class.java)
-            intent.putExtra(Const.IS_ACTION_DEMAND, false)
-            startActivity(intent)
+            val newIntent = Intent(this, CreateActionActivity::class.java)
+            newIntent.putExtra(Const.IS_ACTION_DEMAND, false)
+            startActivity(newIntent)
             return
         }
         this.intent = intent
@@ -307,7 +306,11 @@ class MainActivity : BaseSecuredActivity() {
             sharedPref.edit()
                 .putBoolean(EntourageApplication.KEY_NOTIFICATIONS_ENABLED, false)
                 .apply()
-            requestNotificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                requestNotificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+            } else {
+                //TODO
+            }
         } else {
             storePushNotificationPermision()
         }
@@ -329,8 +332,6 @@ class MainActivity : BaseSecuredActivity() {
             FirebaseMessaging.getInstance().token.addOnSuccessListener { token ->
                 presenter.updateApplicationInfo(token)
             }
-        } else {
-
         }
     }
 
@@ -406,7 +407,7 @@ class MainActivity : BaseSecuredActivity() {
 
     private fun initializeNavBar() {
         val navHostFragment = supportFragmentManager.findFragmentById(
-            R.id.nav_host_fragment_new_activity_main
+            R.id.nav_host_fragment_activity_main
         ) as NavHostFragment
         navController = navHostFragment.navController
 
@@ -439,7 +440,7 @@ class MainActivity : BaseSecuredActivity() {
             }
 
             val navController: NavController =
-            androidx.navigation.Navigation.findNavController(this, social.entourage.android.R.id.nav_host_fragment_new_activity_main)
+            androidx.navigation.Navigation.findNavController(this, R.id.nav_host_fragment_activity_main)
             NavigationUI.onNavDestinationSelected(item, navController)
         }
     }

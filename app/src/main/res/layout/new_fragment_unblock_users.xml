@@ -48,7 +48,7 @@
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/divider"
                 tools:itemCount="5"
-                tools:listitem="@layout/new_profile_edit_interest_item"
+                tools:listitem="@layout/layout_profile_edit_interest_item"
                 tools:visibility="gone" />
 
             <androidx.constraintlayout.widget.ConstraintLayout

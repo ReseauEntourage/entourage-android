@@ -1,7 +1,6 @@
-package social.entourage.android.api.model.notification
+package social.entourage.android.api.model
 
 import com.google.gson.annotations.SerializedName
-import social.entourage.android.api.model.EntourageUser
 import java.io.Serializable
 
 class ReactionType(
@@ -36,10 +35,10 @@ data class UserReaction(
     val user: EntourageUser
 )
 
-data class EntourageUser(
+/*data class EntourageUser(
     val id: Int,
     val lang: String,
     val display_name: String,
     val avatar_url: String,
     val community_roles: List<String>
-)
+)*/

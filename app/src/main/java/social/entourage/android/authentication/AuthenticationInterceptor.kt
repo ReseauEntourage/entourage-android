@@ -1,5 +1,7 @@
 package social.entourage.android.authentication
 
+import android.util.Log
+import com.google.gson.Gson
 import okhttp3.HttpUrl
 import okhttp3.Interceptor
 import okhttp3.Response
@@ -31,6 +33,7 @@ object AuthenticationInterceptor : Interceptor {
                 .url(url).build()
         val response = chain.proceed(request)
         if (response.code == 401) {
+            Log.wtf("wtf", "Unauthorized " + Gson().toJson(request))
             if (response.message.equals("Unauthorized", ignoreCase = true)) {
                 EntourageApplication.get().logOut()
             }

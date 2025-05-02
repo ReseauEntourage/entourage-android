@@ -882,7 +882,10 @@
     <string name="poi_detail_soliguide_1">Information on this location is provided by Soliguide, solidarity cartography.</string>
     <string name="poi_detail_soliguide_2">For even more complete information available in several languages</string>
     <string name="poi_detail_soliguide_consult">Consult</string>
-    <string name="map_poi_empty_popup">It looks like c\ is calm here!&amp;lt;br/&amp;gt;&amp;lt;br/&amp;gt;</string>
+    <string name="map_poi_empty_popup"><![CDATA[It looks like it is calm here!<br/><br/>
+    Move around to find out about support structures: solidarity restaurants, public showers, medical centers open to unhoused people...<br/><br/>
+    A structure is missing on the map?<br/>
+    <a href=\'%1$s\'>Propose a structure</a>]]></string>
     <string name="map_poi_info_popup">The Solidarity Guide allows you to find out about support structures: solidarity restaurants, public showers, medical centers open to unhoused people...\n\n</string>
     <string name="map_empty_poi_recyclerV">That\'s all for the solidarity places in this radius around you</string>
     <string name="guide_filter_title">Filters</string>
@@ -974,8 +977,8 @@
     <string name="login_change_phone_old_phone_placeholder">Old phone number</string>
     <string name="login_change_phone_new_phone">New phone number</string>
     <string name="login_change_phone_new_phone_placeholder">New phone number</string>
-    <string name="login_change_phone_email">Email adress (optional)</string>
-    <string name="login_change_phone_email_placeholder">Email adress</string>
+    <string name="login_change_phone_email">Email address (optional)</string>
+    <string name="login_change_phone_email_placeholder">Email address</string>
     <string name="login_change_phone_bt_validate">Send</string>
     <string name="login_change_phone_send_ok">Your request has been sent.\n\n\nEntourage support team will notify you when the phone number change has been completed.</string>
     <string name="login_change_phone_bt_return">Back</string>
@@ -1214,8 +1217,8 @@
     <string name="role_ambassador">Ambassador</string>
     <string name="role_admin">Ambassador</string>
     <string name="disclaimer_link_public">https://blog.entourage.social/charte-ethique-grand-public/</string>
-    <string name="market_url">market://details?id</string>
-    <string name="playstore_url">https://play.google.com/store/apps/details?id</string>
+    <string name="market_url">market://details?id=%s</string>
+    <string name="playstore_url">https://play.google.com/store/apps/details?id=%s</string>
     <string name="facebook_url">https://www.facebook.com/EntourageReseauCivique</string>
     <string name="twitter_url">https://twitter.com/r_entourage</string>
     <string name="instagram_url">https://www.instagram.com/reseauentourage/</string>
@@ -1223,7 +1226,7 @@
     <string name="website_url">https://www.entourage.social</string>
     <string name="more_events_url">https://www.facebook.com/EntourageReseauCivique/events/</string>
     <string name="contact_email">app@entourage.social</string>
-    <string name="redirect_link_format">%1$slinks/%2$s/redirect?token</string>
+    <string name="redirect_link_format">%1$slinks/%2$s/redirect?token=%3$s</string>
     <string name="redirect_link_no_token_format">%1$slinks/%2$s/redirect</string>
     <string name="url_share_entourage_bitly">https://bit.ly/applientourage</string>
     <string name="url_linkedout">https://www.linkedout.fr</string>

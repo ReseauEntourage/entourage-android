@@ -1,13 +1,15 @@
 package social.entourage.android.onboarding.login
 
+import android.app.Activity
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.text.Html
 import android.text.method.LinkMovementMethod
+import android.util.Log
 import android.widget.TextView
 import android.widget.Toast
-import kotlinx.android.synthetic.main.activity_login.*
 import social.entourage.android.EntourageApplication
 import social.entourage.android.EntourageApplication.Companion.KEY_ONBOARDING_SHOW_POP_FIRSTLOGIN
 import social.entourage.android.MainActivity
@@ -15,16 +17,19 @@ import social.entourage.android.R
 import social.entourage.android.api.OnboardingAPI
 import social.entourage.android.authentication.AuthenticationController
 import social.entourage.android.base.BaseActivity
+import social.entourage.android.databinding.ActivityLoginBinding
 import social.entourage.android.tools.utils.CustomAlertDialog
 import social.entourage.android.tools.utils.Utils
 import social.entourage.android.onboarding.pre_onboarding.PreOnboardingChoiceActivity
 import social.entourage.android.tools.hideKeyboard
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.view.CustomProgressDialog
+import java.util.Locale
 
 class LoginActivity : BaseActivity() {
 
     lateinit var authenticationController: AuthenticationController
+    lateinit var binding:ActivityLoginBinding
 
     private val minimumPhoneCharacters = 9
     private val TIME_BEFORE_CALL = 60
@@ -33,17 +38,18 @@ class LoginActivity : BaseActivity() {
     private var timeOut = TIME_BEFORE_CALL
     var isLoading = false
 
+
+
     lateinit var alertDialog: CustomProgressDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        binding = ActivityLoginBinding.inflate(layoutInflater)
         authenticationController = EntourageApplication.get().authenticationController
-        setContentView(R.layout.activity_login)
 
         alertDialog = CustomProgressDialog(this)
         setupViews()
-
+        setContentView(binding.root)
         AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_VIEW_LOGIN_LOGIN)
     }
 
@@ -54,24 +60,24 @@ class LoginActivity : BaseActivity() {
 
     fun setupViews() {
 
-        onboard_login_mainlayout?.setOnTouchListener { view, motionEvent ->
+        binding.onboardLoginMainlayout.setOnTouchListener { view, motionEvent ->
             view.hideKeyboard()
             view.performClick()
             true
         }
 
-       icon_back?.setOnClickListener {
+       binding.iconBack.setOnClickListener {
             goBack()
         }
 
-        ui_login_button_resend_code?.setOnClickListener {
-            if(ui_login_phone_et_phone?.text.toString().isNotEmpty()) {
+        binding.uiLoginButtonResendCode.setOnClickListener {
+            if(binding.uiLoginPhoneEtPhone.text.toString().isNotEmpty()) {
                 CustomAlertDialog.showWithCancelFirst(
                     this,
                     getString(R.string.login_button_resend_code),
                     String.format(
                         getString(R.string.login_button_resend_code_text),
-                        ui_login_phone_et_phone?.text.toString()
+                        binding.uiLoginPhoneEtPhone.text.toString()
                     ),
                     getString(R.string.login_button_resend_code_action)
                 ) {
@@ -82,19 +88,30 @@ class LoginActivity : BaseActivity() {
             }
         }
 
-        ui_login_button_signup?.setOnClickListener {
+        binding.uiLoginButtonSignup.setOnClickListener {
             validateInputsAndLogin()
         }
 
-        ui_login_button_change_phone?.setOnClickListener {
+        binding.uiLoginButtonChangePhone.setOnClickListener {
             val intent = Intent(this, LoginChangePhoneActivity::class.java)
             startActivity(intent)
         }
         val text = getString(R.string.terms_and_conditions_html)
-        tv_condition_generales.text = Html.fromHtml(text)
-        tv_condition_generales.movementMethod = LinkMovementMethod.getInstance()
+        binding.tvConditionGenerales.text = Html.fromHtml(text)
+        binding.tvConditionGenerales.movementMethod = LinkMovementMethod.getInstance()
 
 
+    }
+
+    fun changeLocale(activity: Activity, locale: Locale) {
+        val resources = activity.resources
+        val configuration = resources.configuration
+        configuration.setLocale(locale)
+        resources.updateConfiguration(configuration, resources.displayMetrics)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            activity.applicationContext.createConfigurationContext(configuration)
+        }
     }
 
     /********************************
@@ -148,13 +165,14 @@ class LoginActivity : BaseActivity() {
      * Methods Valide inputs
      ********************************/
 
-    fun validateInputsAndLogin() {
-        val countryCode = ui_login_phone_ccp_code?.selectedCountryCodeWithPlus
-        val phoneNumber = ui_login_phone_et_phone?.text.toString()
-        val codePwd = ui_login_et_code?.text.toString()
+    fun validateInputsAndLogin():Boolean {
+        val countryCode = binding.uiLoginPhoneCcpCode.selectedCountryCodeWithPlus
+        val phoneNumber = binding.uiLoginPhoneEtPhone.text.toString()
+        val codePwd = binding.uiLoginEtCode.text.toString()
 
         var isValidate = true
         var message = ""
+
         if (phoneNumber.length < minimumPhoneCharacters) {
             isValidate = false
             message =
@@ -164,11 +182,12 @@ class LoginActivity : BaseActivity() {
         if (isValidate && codePwd.length != 6) {
             isValidate = false
             message = getString(R.string.error_login_code_lenght)
+
         }
 
         if (!isValidate) {
             showError(R.string.attention_pop_title, message, R.string.close)
-            return
+            return false
         }
 
         val phoneWithCode = Utils.checkPhoneNumberFormat(countryCode, phoneNumber)
@@ -177,6 +196,7 @@ class LoginActivity : BaseActivity() {
             if (!isLoading) {
                 isLoading = true
                 login(phoneWithCode, codePwd)
+                return true
             }
         } else {
             showError(
@@ -184,12 +204,14 @@ class LoginActivity : BaseActivity() {
                 getString(R.string.login_error_invalid_phone_format),
                 R.string.close
             )
+            return false
         }
+        return true
     }
 
     private fun checkAndResendCode() {
-        val countryCode = ui_login_phone_ccp_code?.selectedCountryCodeWithPlus
-        val phoneNumber = ui_login_phone_et_phone?.text.toString()
+        val countryCode = binding.uiLoginPhoneCcpCode?.selectedCountryCodeWithPlus
+        val phoneNumber = binding.uiLoginPhoneEtPhone?.text.toString()
 
         if (phoneNumber.length <= minimumPhoneCharacters) {
             val message =
@@ -220,6 +242,7 @@ class LoginActivity : BaseActivity() {
      ********************************/
 
     fun login(phone: String, codePwd: String) {
+
         alertDialog.show(R.string.onboard_waiting_dialog)
         AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ACTION_LOGIN_SUBMIT)
         OnboardingAPI.getInstance().login(phone, codePwd) { isOK, loginResponse, error ->

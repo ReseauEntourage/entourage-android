@@ -21,7 +21,6 @@ import social.entourage.android.discussions.DetailConversationActivity
 import social.entourage.android.groups.details.feed.FeedActivity
 import social.entourage.android.home.pedago.PedagoListActivity
 import social.entourage.android.tools.utils.Const
-import timber.log.Timber
 
 class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback {
     /*private const val prodURL = "https://www.entourage.social"

@@ -2,6 +2,7 @@ package social.entourage.android.user.edit.photo
 
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,29 +17,18 @@ import social.entourage.android.tools.log.AnalyticsEvents
 class ChooseProfilePhotoFragment : EditPhotoFragment() {
 
     private var mListener: PhotoChooseInterface? = null
-    private var _binding: FragmentOnboardingPhotoBinding? = null
-    val binding: FragmentOnboardingPhotoBinding get() = _binding!!
     var editProfileCallback: EditProfileCallback? = null
 
     //**********//**********//**********
     // Lifecycle
     //**********//**********//**********
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        _binding = FragmentOnboardingPhotoBinding.inflate(inflater, container, false)
-        return binding.root
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         if (context is PhotoChooseInterface) {
             mListener = requireContext() as PhotoChooseInterface
         }
-
         setBackButton()
         updateUserView()
     }

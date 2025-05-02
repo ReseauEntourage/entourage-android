@@ -253,6 +253,8 @@ Nous sommes prêt pour les beaux jours ! :-)" />
                 style="@style/left_courant_black"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
+                android:maxLines="1"
+                android:ellipsize="none"
                 tools:text="12"
                 />
 
@@ -288,13 +290,6 @@ Nous sommes prêt pour les beaux jours ! :-)" />
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 android:visibility="gone"/>
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/reaction1"
-                android:layout_marginTop="20dp"
-                android:background="@color/light_grey"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -302,8 +297,16 @@ Nous sommes prêt pour les beaux jours ! :-)" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
+            android:id="@+id/btns_layout"
             android:layout_height="40dp"
-            android:layout_marginTop="10dp">
+            android:layout_marginTop="15dp">
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:id="@+id/separator_layout"
+                app:layout_constraintTop_toTopOf="parent"
+                android:background="@color/light_grey"
+                />
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -311,7 +314,8 @@ Nous sommes prêt pour les beaux jours ! :-)" />
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/btn_i_comment">
+                app:layout_constraintEnd_toStartOf="@+id/btn_i_comment"
+                android:layout_marginTop="15dp">
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
@@ -342,7 +346,8 @@ Nous sommes prêt pour les beaux jours ! :-)" />
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/btn_i_like">
+                app:layout_constraintStart_toEndOf="@+id/btn_i_like"
+                android:layout_marginTop="15dp">
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"

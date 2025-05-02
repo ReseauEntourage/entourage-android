@@ -2,30 +2,25 @@ package social.entourage.android.events.create
 
 import android.view.View
 import androidx.navigation.fragment.findNavController
-import com.google.gson.Gson
-import kotlinx.android.synthetic.main.fragment_select_place.*
-import kotlinx.android.synthetic.main.layout_view_title.view.*
 import social.entourage.android.R
 import social.entourage.android.user.edit.place.UserActionPlaceFragment
-import timber.log.Timber
 
 class CreateEventActionZoneFragment : UserActionPlaceFragment() {
-
     // To be changed
     override fun setupViews() {
         super.setupViews()
-        ui_onboard_place_tv_title?.text = getString(R.string.event_location_title)
-        ui_onboard_place_tv_info?.text = getString(R.string.event_location_detail)
-        ui_onboard_phone_tv_info2?.visibility = View.INVISIBLE
-        edit_place_title_layout?.visibility = View.VISIBLE
-        edit_place_title_layout?.title_action_button?.setOnClickListener {
+        binding.uiOnboardPlaceTvTitle.text = getString(R.string.event_location_title)
+        binding.uiOnboardPlaceTvInfo.text = getString(R.string.event_location_detail)
+        binding.uiOnboardPhoneTvInfo2.visibility = View.INVISIBLE
+        binding.editPlaceTitleLayout.visibility = View.VISIBLE
+        binding.editPlaceTitleLayout.binding.titleActionButton.setOnClickListener {
             validate()
         }
-        edit_place_title_layout?.title_close_button?.setOnClickListener {
+        binding.editPlaceTitleLayout.binding.titleCloseButton.setOnClickListener {
             dismiss()
             findNavController().popBackStack()
         }
-        edit_place_title_layout?.title_text?.text = ""
+        binding.editPlaceTitleLayout.binding.titleText.text = ""
     }
 
     private fun validate() {

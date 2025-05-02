@@ -3,36 +3,38 @@ package social.entourage.android.onboarding.login
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AlertDialog
-import kotlinx.android.synthetic.main.activity_login_change_phone.*
 import social.entourage.android.R
 import social.entourage.android.api.OnboardingAPI
 import social.entourage.android.base.BaseActivity
+import social.entourage.android.databinding.ActivityLoginChangePhoneBinding
 import social.entourage.android.tools.hideKeyboard
 import social.entourage.android.tools.isValidEmail
 import timber.log.Timber
 
 class LoginChangePhoneActivity : BaseActivity() {
+    private lateinit var binding: ActivityLoginChangePhoneBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_login_change_phone)
+        binding = ActivityLoginChangePhoneBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        ui_layout_change_phone_ok?.visibility = View.GONE
-        ui_layout_waiting?.visibility = View.GONE
+        binding.uiLayoutChangePhoneOk.visibility = View.GONE
+        binding.uiLayoutWaiting.visibility = View.GONE
 
-        icon_back?.setOnClickListener {
+        binding.iconBack.setOnClickListener {
             finish()
         }
 
-        change_phone_mainLayout?.setOnTouchListener { view, _ ->
+        binding.changePhoneMainLayout.setOnTouchListener { view, _ ->
             view.hideKeyboard()
             view.performClick()
             true
         }
-        
-        ui_changeCode_bt_validate?.setOnClickListener {
-            val oldPhone = ui_changeCode_et_old_phone.text.toString()
-            val newPhone = ui_changeCode_et_new_phone.text.toString()
-            val email = ui_changeCode_et_email.text.toString()
+
+        binding.uiChangeCodeBtValidate.setOnClickListener {
+            val oldPhone = binding.uiChangeCodeEtOldPhone.text.toString()
+            val newPhone = binding.uiChangeCodeEtNewPhone.text.toString()
+            val email = binding.uiChangeCodeEtEmail.text.toString()
 
             var isValidated = true
             var titleId = 0
@@ -59,12 +61,12 @@ class LoginChangePhoneActivity : BaseActivity() {
                 return@setOnClickListener
             }
 
-            ui_layout_waiting?.visibility = View.VISIBLE
+            binding.uiLayoutWaiting.visibility = View.VISIBLE
             OnboardingAPI.getInstance().changePhone(oldPhone,newPhone,email) { resID ->
-                ui_layout_waiting?.visibility = View.GONE
+                binding.uiLayoutWaiting.visibility = View.GONE
                 if (resID==R.string.login_change_phone_send_ok) {
-                    ui_layout_change_phone_ok?.visibility = View.VISIBLE
-                    ui_changeCode_bt_validate?.visibility = View.INVISIBLE
+                    binding.uiLayoutChangePhoneOk.visibility = View.VISIBLE
+                    binding.uiLayoutChangePhoneOk.visibility = View.INVISIBLE
                 }
                 else {
                     showError(R.string.login_change_error_return, getString(resID), R.string.button_OK)
@@ -72,12 +74,12 @@ class LoginChangePhoneActivity : BaseActivity() {
             }
         }
 
-        ui_changeCode_bt_return?.setOnClickListener {
+        binding.uiChangeCodeBtReturn.setOnClickListener {
             finish()
         }
     }
 
-    fun showError(titleId:Int, message:String,buttonTextId:Int) {
+    private fun showError(titleId:Int, message:String, buttonTextId:Int) {
        try {
            AlertDialog.Builder(this)
                .setTitle(titleId)

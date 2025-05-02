@@ -1,9 +1,7 @@
 package social.entourage.android.home
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.google.gson.Gson
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -12,8 +10,8 @@ import social.entourage.android.api.model.Action
 import social.entourage.android.api.model.Events
 import social.entourage.android.api.model.Group
 import social.entourage.android.api.request.*
-import social.entourage.android.api.model.InAppNotification
-import social.entourage.android.api.model.InAppNotificationPermission
+import social.entourage.android.api.model.notification.InAppNotification
+import social.entourage.android.api.model.notification.InAppNotificationPermission
 import social.entourage.android.api.model.Pedago
 import social.entourage.android.api.model.Summary
 import social.entourage.android.events.list.EVENTS_PER_PAGE
@@ -302,7 +300,7 @@ class HomePresenter: ViewModel() {
                 }
             })
     }
-    fun updateNotificationsPermissionsFromValue(notifPermData:InAppNotificationPermission) {
+    fun updateNotificationsPermissionsFromValue(notifPermData: InAppNotificationPermission) {
         if (notificationsPermission.value == null) return
         EntourageApplication.get().apiModule.homeRequest.updateNotificationsPermissions(
             NotificationPermissionsResponse(notifPermData))

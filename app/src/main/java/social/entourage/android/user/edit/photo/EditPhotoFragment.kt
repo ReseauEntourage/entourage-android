@@ -8,6 +8,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,9 +17,9 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.FileProvider
 import androidx.core.content.PermissionChecker
 import com.bumptech.glide.Glide
-import kotlinx.android.synthetic.main.fragment_onboarding_photo.*
 import social.entourage.android.R
 import social.entourage.android.base.BaseDialogFragment
+import social.entourage.android.databinding.FragmentOnboardingPhotoBinding
 import social.entourage.android.language.LanguageManager
 import social.entourage.android.onboarding.onboard.OnboardingEditPhotoFragment
 import social.entourage.android.tools.log.AnalyticsEvents
@@ -29,6 +30,9 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 open class EditPhotoFragment : BaseDialogFragment(), PhotoEditInterface {
+    private var _binding: FragmentOnboardingPhotoBinding? = null
+    protected val binding: FragmentOnboardingPhotoBinding
+        get() = _binding ?: throw IllegalStateException("Trying to access the binding outside of the view lifecycle.")
     private val readMediaPermission: String = if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) Manifest.permission.READ_EXTERNAL_STORAGE else Manifest.permission.READ_MEDIA_IMAGES
     private var pickedImageUri: Uri? = null
     protected var pickedImageEditedUri: Uri? = null
@@ -124,15 +128,14 @@ open class EditPhotoFragment : BaseDialogFragment(), PhotoEditInterface {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_onboarding_photo, container, false)
+        _binding = FragmentOnboardingPhotoBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        analyticsEventView?.let { AnalyticsEvents.logEvent(it)}
-
         setupViews()
+        analyticsEventView?.let { AnalyticsEvents.logEvent(it)}
 
     }
 
@@ -168,7 +171,7 @@ open class EditPhotoFragment : BaseDialogFragment(), PhotoEditInterface {
 
     open fun setupViews() {
 
-        import_picture?.setOnClickListener {
+        binding.buttonGallery?.setOnClickListener {
             // write permission is used to store the cropped image before upload
             if (PermissionChecker.checkSelfPermission(
                     requireActivity(),
@@ -181,7 +184,7 @@ open class EditPhotoFragment : BaseDialogFragment(), PhotoEditInterface {
             }
         }
 
-        take_picture?.setOnClickListener {
+        binding.buttonTakePicture?.setOnClickListener {
             if (PermissionChecker.checkSelfPermission(
                     requireContext(),
                     Manifest.permission.CAMERA
@@ -241,6 +244,11 @@ open class EditPhotoFragment : BaseDialogFragment(), PhotoEditInterface {
         )
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null // Nettoie le binding lorsque la vue est détruite
+    }
+
     private fun showNextStep(photoUri: Uri?) {
         if (photoUri == null) {
             Toast.makeText(activity, R.string.user_photo_error_no_photo, Toast.LENGTH_SHORT).show()
@@ -259,7 +267,7 @@ open class EditPhotoFragment : BaseDialogFragment(), PhotoEditInterface {
     override fun onPhotoEdited(photoURI: Uri?, photoSource: Int) {
         pickedImageEditedUri = photoURI
 
-        image_profile?.let {
+        binding.imageProfile.let {
             if (pickedImageEditedUri != null) {
                 Glide.with(this)
                     .load(pickedImageEditedUri)

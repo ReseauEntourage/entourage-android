@@ -5,29 +5,26 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
-import kotlinx.android.synthetic.main.new_fragment_my_profile.view.*
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.api.MetaDataRepository
 import social.entourage.android.api.model.Tags
 import social.entourage.android.api.model.User
-import social.entourage.android.databinding.NewFragmentMyProfileBinding
+import social.entourage.android.databinding.FragmentMyProfileBinding
 import social.entourage.android.language.LanguageManager
 import social.entourage.android.profile.ProfileFragmentDirections
 import social.entourage.android.tools.log.AnalyticsEvents
 import java.text.SimpleDateFormat
-import java.util.*
 
 class MyProfileFragment : Fragment() {
-    private lateinit var _binding: NewFragmentMyProfileBinding
-    val binding: NewFragmentMyProfileBinding get() = _binding!!
+    private lateinit var _binding: FragmentMyProfileBinding
+    val binding: FragmentMyProfileBinding get() = _binding
     private lateinit var user: User
 
     private var interestsList: ArrayList<String> = ArrayList()
@@ -37,7 +34,7 @@ class MyProfileFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = NewFragmentMyProfileBinding.inflate(inflater, container, false)
+        _binding = FragmentMyProfileBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -56,7 +53,7 @@ class MyProfileFragment : Fragment() {
         interestsList.clear()
         val userInterests = user.interests
         tags?.interests?.forEach { interest ->
-            if (userInterests.contains(interest.id)) interest.name?.let { it -> interestsList.add(it) }
+            if (userInterests.contains(interest.id)) interest.name?.let { interestsList.add(it) }
         }
         binding.interests.adapter?.notifyDataSetChanged()
     }
@@ -130,26 +127,26 @@ class MyProfileFragment : Fragment() {
                     city.within.text = String.format(getString(R.string.progress_km), it)
                 }
                 user.stats?.let {
-                    _binding.contribContent.text = it.neighborhoodsCount.toString()
-                    _binding.eventContent.text = it.outingsCount.toString()
+                    contribContent.text = it.neighborhoodsCount.toString()
+                    eventContent.text = it.outingsCount.toString()
 
 
                 }
                 user.roles?.let {
                     if (it.contains("ambassador")) ambassador.visibility = View.VISIBLE
                 }
-                user.createdAt?.let {
-                    var locale = LanguageManager.getLocaleFromPreferences(requireContext())
-                    binding.joined.date.text = SimpleDateFormat(
+                user.createdAt?.let {createdAt ->
+                    val locale = LanguageManager.getLocaleFromPreferences(requireContext())
+                    joined.date.text = SimpleDateFormat(
                         requireContext().getString(R.string.profile_date_format),
                         locale
                     ).format(
-                        it
+                        createdAt
                     )
                 }
                 user.partner?.let {
                     association.visibility = View.VISIBLE
-                    association.association_name.text = it.name
+                    associationName.text = it.name
                     it.smallLogoUrl.let { logo ->
                         Glide.with(requireActivity())
                             .load(Uri.parse(logo))

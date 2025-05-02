@@ -45,7 +45,8 @@ abstract class BaseActivity : AppCompatActivity() {
     }
 
     fun showWebView(url: String, shareMessageRes: Int = 0) {
-        if(url.contains("www.entourage.social") || url.contains("preprod.entourage.social")){
+        if((url.contains("www.entourage.social") || url.contains("preprod.entourage.social")) && !url.contains("propose-poi")) {
+            Log.wtf("wtf", "showWebView: $url")
             val uri = Uri.parse(url)
             universalLinkManager.handleUniversalLink(uri)
             return

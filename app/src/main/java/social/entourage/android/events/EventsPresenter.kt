@@ -4,7 +4,6 @@ import android.util.Log
 import androidx.collection.ArrayMap
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.google.gson.Gson
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -23,8 +22,8 @@ import social.entourage.android.events.list.EVENTS_PER_PAGE
 import social.entourage.android.home.UnreadMessages
 import social.entourage.android.api.model.Events
 import social.entourage.android.api.model.Post
-import social.entourage.android.api.model.notification.CompleteReactionsResponse
-import social.entourage.android.api.model.notification.ReactionWrapper
+import social.entourage.android.api.model.CompleteReactionsResponse
+import social.entourage.android.api.model.ReactionWrapper
 import timber.log.Timber
 import java.io.File
 import java.io.IOException
@@ -129,7 +128,6 @@ class EventsPresenter: ViewModel() {
                     call: Call<EventsListWrapper>,
                     response: Response<EventsListWrapper>
                 ) {
-
                     response.body()?.let { allEventsWrapper ->
                         if (allEventsWrapper.allEvents.size < EVENTS_PER_PAGE) isLastPage = true
                         getAllEvents.postValue(allEventsWrapper.allEvents)
@@ -138,6 +136,7 @@ class EventsPresenter: ViewModel() {
                 }
 
                 override fun onFailure(call: Call<EventsListWrapper>, t: Throwable) {
+
                 }
             })
     }
@@ -348,8 +347,8 @@ class EventsPresenter: ViewModel() {
             })
     }
 
-    fun getEventPosts(eventId: Int) {
-        EntourageApplication.get().apiModule.eventsRequest.getEventPosts(eventId)
+    fun getEventPosts(eventId: Int, page:Int, per:Int) {
+        EntourageApplication.get().apiModule.eventsRequest.getEventPosts(eventId,page,per)
             .enqueue(object : Callback<PostListWrapper> {
                 override fun onResponse(
                     call: Call<PostListWrapper>,
@@ -598,7 +597,6 @@ class EventsPresenter: ViewModel() {
                 if (response.isSuccessful) {
                     response.body()?.let {
                         getMembersReactResponse.value = it
-                        Log.wtf("wtf", "hello " + it)
                     }
                 }else{
                     Timber.e("getReactDetails: ${response.errorBody()?.string()}")

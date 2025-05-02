@@ -7,13 +7,14 @@
               tools:context="social.entourage.android.guide.filter.GuideFilterFragment">
 
     <social.entourage.android.tools.view.CustomTitleView
-        android:id="@+id/entourageTitleView"
+        android:id="@+id/entourage_title_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:entourageTitle="@string/guide_filter_title"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/ui_recyclerView">
 
     </social.entourage.android.tools.view.CustomTitleView>
 
@@ -25,21 +26,23 @@
         android:layout_marginEnd="8dp"
         android:text="@string/button_reset_filters"
         android:textColor="@color/accent"
-        app:layout_constraintBottom_toBottomOf="@+id/entourageTitleView"
-        app:layout_constraintEnd_toEndOf="@+id/entourageTitleView"
-        app:layout_constraintTop_toTopOf="@+id/entourageTitleView" />
+        app:layout_constraintBottom_toBottomOf="@+id/entourage_title_view"
+        app:layout_constraintEnd_toEndOf="@+id/entourage_title_view"
+        app:layout_constraintTop_toTopOf="@+id/entourage_title_view" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/ui_recyclerView"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/constraintLayout11"
+        app:layout_constraintBottom_toTopOf="@+id/bottom_button_layout"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/entourageTitleView" />
+        app:layout_constraintTop_toBottomOf="@+id/entourage_title_view"
+        app:layout_constraintVertical_bias="1.0" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayout11"
+        android:id="@+id/bottom_button_layout"
         android:layout_width="0dp"
         android:layout_height="80dp"
         android:background="@color/white"

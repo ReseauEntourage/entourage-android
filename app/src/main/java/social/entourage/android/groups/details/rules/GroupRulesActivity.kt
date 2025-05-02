@@ -3,26 +3,23 @@ package social.entourage.android.groups.details.rules
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
-import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import social.entourage.android.R
 import social.entourage.android.api.model.Rules
-import social.entourage.android.databinding.NewActivityGroupRulesBinding
-import social.entourage.android.tools.utils.Const
+import social.entourage.android.databinding.ActivityGroupRulesBinding
 import social.entourage.android.tools.log.AnalyticsEvents
+import social.entourage.android.tools.utils.Const
 
 class GroupRulesActivity : AppCompatActivity() {
     private var rulesList: MutableList<Rules> = ArrayList()
-    lateinit var binding: NewActivityGroupRulesBinding
+    lateinit var binding: ActivityGroupRulesBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         AnalyticsEvents.logEvent(
             AnalyticsEvents.VIEW_GROUP_OPTION_RULES)
-        binding = DataBindingUtil.setContentView(
-            this,
-            R.layout.new_activity_group_rules
-        )
+        binding = ActivityGroupRulesBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         val ruleType = intent.getStringExtra(Const.RULES_TYPE)
 

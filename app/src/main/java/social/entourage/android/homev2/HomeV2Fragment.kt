@@ -23,6 +23,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.google.android.play.core.appupdate.AppUpdateManager
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
+import com.google.gson.Gson
 import social.entourage.android.BuildConfig
 import social.entourage.android.EntourageApplication
 import social.entourage.android.MainActivity
@@ -51,8 +52,9 @@ import social.entourage.android.tools.utils.CustomAlertDialog
 import social.entourage.android.tools.view.WebViewFragment
 import social.entourage.android.user.UserPresenter
 import social.entourage.android.user.UserProfileActivity
+import social.entourage.android.user.edit.place.UserEditActionZoneFragment
 
-class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener {
+class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeLocationUpdate {
 
     //VAR
     private lateinit var binding:FragmentHomeV2LayoutBinding
@@ -83,7 +85,7 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener {
     private var isActionEmpty = false
     private var isContribution = false
     private lateinit var actionsPresenter: ActionsPresenter
-
+    private var locationPopupHasPop = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -94,6 +96,7 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener {
         binding = FragmentHomeV2LayoutBinding.inflate(layoutInflater)
         binding.homeNestedScrollView.visibility = View.GONE
         disapearAllAtBeginning()
+        userPresenter.user.observe(viewLifecycleOwner, ::updateUser)
         binding.progressBar.visibility = View.VISIBLE
         homePresenter = ViewModelProvider(requireActivity()).get(HomePresenter::class.java)
         actionsPresenter = ViewModelProvider(requireActivity()).get(ActionsPresenter::class.java)
@@ -132,8 +135,32 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener {
         checksum = 0
         resetFilter()
         callToInitHome()
+
     }
 
+    fun noAdressPopFillAdress(){
+        if(!locationPopupHasPop){
+            locationPopupHasPop = true
+            if(user?.address == null){
+
+                AnalyticsEvents.logEvent(AnalyticsEvents.view_miss_location_popup)
+                CustomAlertDialog.showOnlyOneButtonNoClose(requireContext(),
+                    getString(R.string.home_v2_no_adress_title),
+                    getString(R.string.home_v2_no_adress_content),
+                    getString(R.string.home_v2_no_adress_button)
+                ) {
+                    AnalyticsEvents.logEvent(AnalyticsEvents.clic_miss_location_add)
+                    binding.frameLayoutChangeLocation.visibility = View.VISIBLE
+                    childFragmentManager.beginTransaction()
+                        .replace(
+                            R.id.frame_layout_change_location,
+                            UserEditActionZoneFragment.newInstance(null, false, this)
+                        )
+                        .commit()
+                }
+            }
+        }
+    }
 
     fun callToInitHome(){
 
@@ -144,7 +171,7 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener {
             homePresenter.getAllEvents(pageEvent,nbOfItemForHozrizontalList,currentFilters.travel_distance(),currentFilters.latitude(),currentFilters.longitude(),"future")
             homePresenter.getPedagogicalResources()
             homePresenter.getNotificationsCount()
-
+            userPresenter.getUser(meId)
         }
     }
 
@@ -287,6 +314,7 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener {
             binding.homeTitleGroup.visibility = View.GONE
         }
         this.homeGroupAdapter.resetData(allGroup)
+
     }
 
     fun handleEvent(allEvent: MutableList<Events>?){
@@ -408,6 +436,7 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener {
         onActionUnclosed(summary)
         handleHelps(summary)
         isContribution = summary.preference.equals("contribution")
+        isContribProfile = isContribution
         if(isContribution){
             if(!homeActionAdapter.getIsContrib()){
                 homeActionAdapter = HomeActionAdapter(isContribution)
@@ -470,6 +499,11 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener {
 
             }
         }
+    }
+    private fun updateUser(user:User){
+        this.user = user
+        updateAvatar()
+        noAdressPopFillAdress()
     }
 
     private fun setMapButton(){
@@ -634,4 +668,16 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener {
             }
         }
     }
+    companion object {
+        var isContribProfile = false
+    }
+
+    override fun onHomeV2ChangeLocationUpdateClearFragment() {
+        binding.frameLayoutChangeLocation.visibility = View.GONE
+        callToInitHome()
+    }
+}
+
+interface OnHomeV2ChangeLocationUpdate{
+    fun onHomeV2ChangeLocationUpdateClearFragment()
 }

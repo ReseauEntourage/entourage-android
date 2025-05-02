@@ -17,7 +17,7 @@ import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
 import androidx.test.platform.app.InstrumentationRegistry
-import com.jakewharton.espresso.OkHttp3IdlingResource
+//import com.jakewharton.espresso.OkHttp3IdlingResource
 import org.hamcrest.Description
 import org.hamcrest.Matchers.allOf
 import org.hamcrest.TypeSafeMatcher
@@ -42,8 +42,8 @@ class LoginTest {
         checkNoUserIsLoggedIn()
         activityRule.scenario.onActivity { activity ->
             val client = EntourageApplication[activity].apiModule.okHttpClient
-            resource = OkHttp3IdlingResource.create("OkHttp", client)
-            IdlingRegistry.getInstance().register(resource)
+            //TODO resource = OkHttp3IdlingResource.create("OkHttp", client)
+            //TODO IdlingRegistry.getInstance().register(resource)
             afM = activity.getSystemService(AutofillManager::class.java)
             afM?.disableAutofillServices()
         }

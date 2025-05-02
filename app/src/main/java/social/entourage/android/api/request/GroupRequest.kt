@@ -9,8 +9,8 @@ import social.entourage.android.api.model.EntourageUser
 import social.entourage.android.api.model.Group
 import social.entourage.android.api.model.Image
 import social.entourage.android.api.model.Post
-import social.entourage.android.api.model.notification.CompleteReactionsResponse
-import social.entourage.android.api.model.notification.ReactionWrapper
+import social.entourage.android.api.model.CompleteReactionsResponse
+import social.entourage.android.api.model.ReactionWrapper
 
 class GroupImagesResponse(@field:SerializedName("neighborhood_images") val groupImages: ArrayList<Image>)
 class GroupWrapper(@field:SerializedName("neighborhood") val group: Group)
@@ -94,8 +94,11 @@ interface GroupRequest {
 
     @GET("neighborhoods/{neighborhood_id}/chat_messages")
     fun getGroupPosts(
-        @Path("neighborhood_id") groupId: Int
+        @Path("neighborhood_id") groupId: Int,
+        @Query("page") page: Int,
+        @Query("per") per: Int,
     ): Call<PostListWrapper>
+
 
     @POST("neighborhoods/{neighborhood_id}/chat_messages/presigned_upload")
     fun prepareAddPost(

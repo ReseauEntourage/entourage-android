@@ -29,7 +29,6 @@ fun ViewGroup.showSkeleton() {
 private fun recurseAndReplaceWithSkeleton(originalViewGroup: ViewGroup, skeletonOverlay: ConstraintLayout,context: Context) {
     for (i in 0 until originalViewGroup.childCount) {
         val child = originalViewGroup.getChildAt(i)
-        Log.wtf("Skeleton", "View encountered: ${child.javaClass.simpleName}")
 
         val skeletonView = View(context).apply {
             layoutParams = ConstraintLayout.LayoutParams(child.width, child.height).also { lp ->

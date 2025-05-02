@@ -1,27 +1,26 @@
 package social.entourage.android.profile.settings
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
-import kotlinx.android.synthetic.main.new_item_blocker_user.view.*
 import social.entourage.android.R
 import social.entourage.android.api.model.UserBlockedUser
+import social.entourage.android.databinding.LayoutItemBlockerUserBinding
 
 interface OnItemCheckListener {
     fun onItemCheck(position: Int)
 }
 
 class UnblockUsersListAdapter(
-    var blockUsersList: List<UserBlockedUser>,
+    private var blockUsersList: List<UserBlockedUser>,
     var onItemClick: OnItemCheckListener,
 ) : RecyclerView.Adapter<UnblockUsersListAdapter.ViewHolder>() {
 
-    inner class ViewHolder(val binding: View) :
-        RecyclerView.ViewHolder(binding) {
+    inner class ViewHolder(val binding: LayoutItemBlockerUserBinding) :
+        RecyclerView.ViewHolder(binding.root) {
         fun bind(userBlockedUser: UserBlockedUser, position: Int) {
 
             if (userBlockedUser.isChecked) {
@@ -73,9 +72,7 @@ class UnblockUsersListAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater
-            .from(parent.context)
-            .inflate(R.layout.new_item_blocker_user, parent, false)
+        val view = LayoutItemBlockerUserBinding.inflate(LayoutInflater.from(parent.context), parent, false)
 
         return ViewHolder(view)
     }

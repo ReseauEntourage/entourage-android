@@ -1,12 +1,10 @@
 package social.entourage.android.events.create
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.new_profile_edit_interest_item.view.*
-import social.entourage.android.R
 import social.entourage.android.api.model.Group
+import social.entourage.android.databinding.NewChooseGroupEventItemBinding
 
 interface OnItemCheckListener {
     fun onItemCheck(item: Group)
@@ -18,19 +16,18 @@ class ChooseGroupEventListAdapter(
     var onItemClick: OnItemCheckListener
 ) : RecyclerView.Adapter<ChooseGroupEventListAdapter.ViewHolder>() {
 
-    inner class ViewHolder(val binding: View) :
-        RecyclerView.ViewHolder(binding)
+    inner class ViewHolder(val binding: NewChooseGroupEventItemBinding) :
+        RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater
-            .from(parent.context)
-            .inflate(R.layout.new_choose_group_event_item, parent, false)
-        return ViewHolder(view)
+        val binding = NewChooseGroupEventItemBinding.inflate(
+            LayoutInflater.from(parent.context),  parent, false)
+        return ViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         with(holder) {
-            if (groupsList[position].isSelected) binding.title.setTypeface(
+            if (groupsList[position].isSelected) holder.binding.title.setTypeface(
                 binding.title.typeface,
                 android.graphics.Typeface.BOLD
             )

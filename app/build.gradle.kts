@@ -31,7 +31,7 @@ android {
 
     // App versions
     val versionMajor = 9
-    val versionMinor = 4
+    val versionMinor = 5
     val versionPatch = "git rev-list HEAD --count".runCommand().toInt()
     val versionBranchName = "git rev-parse --abbrev-ref HEAD".runCommand()
     val versionCodeInt = (versionMajor * 100 + versionMinor) * 10000 + versionPatch % 10000
@@ -62,8 +62,8 @@ android {
         }
     }
 
-    compileSdk = 33
-    buildToolsVersion = "33.0.1"
+    compileSdk = 34
+    buildToolsVersion = "34.0.0"
 
     val localTestAccountLogin = "\"" + (System.getenv("TEST_ACCOUNT_LOGIN") ?: "") + "\""
     val localTestAccountPwd = "\"" + (System.getenv("TEST_ACCOUNT_PWD") ?: "") + "\""
@@ -77,7 +77,7 @@ android {
         resourceConfigurations += listOf("en", "fr", "de", "pl", "es","uk", "ro")
 
         minSdk = 23 /*November 2015: Android 6.0, MarshMallow*/
-        targetSdk = 33
+        targetSdk = 34
 
         // Making either of these two values dynamic in the defaultConfig will
         // require a full APK build and reinstallation because the AndroidManifest.xml
@@ -156,8 +156,6 @@ android {
             applicationIdSuffix = ".debug"
             //firebaseCrashlytics.mappingFileUploadEnabled = false
             //optimizing build speed
-            splits.abi.isEnable = false
-            splits.density.isEnable = false
             aaptOptions.cruncherEnabled = false
             /*FirebasePerformance {
                 // Set this flag to "false" to disable @AddTrace annotation processing and
@@ -206,8 +204,7 @@ dependencies {
 
     //TODO check why annotation:1.6 needs kotlin 1.8
     implementation("androidx.annotation:annotation:1.5.0")
-    //TODO check why alpha02 needs kotlin 1.8
-    implementation("androidx.appcompat:appcompat:1.7.0-alpha01")
+    implementation("androidx.appcompat:appcompat:1.7.0-alpha03")
     implementation("androidx.browser:browser:1.5.0")
     implementation("androidx.cardview:cardview:1.0.0")
     implementation("androidx.coordinatorlayout:coordinatorlayout:1.2.0")
@@ -218,15 +215,17 @@ dependencies {
     implementation("androidx.preference:preference-ktx:1.2.0")
 
     //implementation devDependencies.values()
-    implementation("net.danlew:android.joda:2.12.1")
+    //implementation("net.danlew:android.joda:2.12.5")
     implementation("com.squareup:tape:1.2.3")
     implementation("com.jakewharton.timber:timber:5.0.1")
+
 
     //https://firebase.google.com/support/release-notes/android
     implementation(platform("com.google.firebase:firebase-bom:32.1.0"))
     //implementation firebaseDependencies.values()
     implementation("com.google.firebase:firebase-analytics-ktx")
     implementation("com.google.firebase:firebase-messaging-ktx")
+    implementation("androidx.compose.ui:ui-text-android:1.6.3")
     //TODO: fix this inappmessaging lib that is blocking tests to run
     releaseImplementation("com.google.firebase:firebase-inappmessaging-display-ktx")
     implementation("com.google.firebase:firebase-crashlytics-ktx")
@@ -273,11 +272,18 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-intents:3.5.1")
     androidTestImplementation("androidx.test.uiautomator:uiautomator:2.2.0")
 
-    androidTestImplementation("com.jakewharton.espresso:okhttp3-idling-resource:1.0.0")
+    //androidTestImplementation("com.jakewharton.espresso:okhttp3-idling-resource:1.0.0")
     //,exclude: [group: "com.squareup.okhttp3"                    ]
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test:runner:1.5.2")
     androidTestImplementation("androidx.test:rules:1.5.0")
+
+    testImplementation("junit:junit:4.13.2")
+    testImplementation("org.mockito:mockito-core:4.0.0")
+    testImplementation("org.mockito.kotlin:mockito-kotlin:4.0.0")
+    androidTestImplementation("org.mockito:mockito-android:4.0.0")
+    androidTestImplementation("androidx.test.ext:junit:1.1.3")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
 
     implementation("com.google.android.flexbox:flexbox:3.0.0")
     // Kotlin
@@ -285,7 +291,6 @@ dependencies {
     implementation("androidx.navigation:navigation-ui-ktx:2.5.3")
     implementation("uk.co.markormesher:android-fab:2.5.0")
     implementation("com.github.IntruderShanky:Sectioned-RecyclerView:2.1.1")
-    implementation("com.github.mmin18:realtimeblurview:1.2.1")
 
     implementation("com.airbnb.android:lottie:5.2.0")
     implementation("com.github.armcha:AutoLinkTextViewV2:3.0.0")
@@ -293,7 +298,5 @@ dependencies {
     //photoview to click and zoom
     implementation("com.github.chrisbanes:PhotoView:2.3.0")
     implementation("androidx.transition:transition:1.4.1") // Remplacez 'x.x.x' par la dernière version disponible.
-    implementation("androidx.core:core-splashscreen:1.0.1")
     implementation("com.google.android.play:core:1.10.0")
-
 }

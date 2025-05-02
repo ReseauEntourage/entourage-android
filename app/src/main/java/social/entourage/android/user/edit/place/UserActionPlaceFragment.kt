@@ -6,6 +6,7 @@ import android.content.Intent
 import android.location.Geocoder
 import android.location.Location
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,18 +18,21 @@ import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
 import com.google.android.libraries.places.compat.ui.PlaceAutocomplete
 import com.google.android.libraries.places.widget.AutocompleteActivity
-import kotlinx.android.synthetic.main.fragment_select_place.*
 import social.entourage.android.R
 import social.entourage.android.RefreshController
 import social.entourage.android.api.model.User
 import social.entourage.android.base.BaseDialogFragment
 import social.entourage.android.base.location.LocationProvider
 import social.entourage.android.base.location.LocationUtils
+import social.entourage.android.databinding.FragmentSelectPlaceBinding
 import timber.log.Timber
 import java.io.IOException
 import java.util.*
 
 open class UserActionPlaceFragment : BaseDialogFragment() {
+    private var _binding: FragmentSelectPlaceBinding? = null
+    val binding: FragmentSelectPlaceBinding get() = _binding!!
+
     //Location
     private var mFusedLocationClient: FusedLocationProviderClient? = null
     private val mLocationCallback = object : LocationCallback() {
@@ -77,12 +81,12 @@ open class UserActionPlaceFragment : BaseDialogFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_select_place, container, false)
+        _binding = FragmentSelectPlaceBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         setupViews()
     }
 
@@ -124,23 +128,23 @@ open class UserActionPlaceFragment : BaseDialogFragment() {
     //**********//**********//**********
 
     open fun setupViews() {
-        ui_onboard_bt_location?.setOnClickListener {
+        binding.uiOnboardBtLocation.setOnClickListener {
             onCurrentLocationClicked()
-            ui_onboard_bt_location?.visibility = View.GONE
+            binding.uiOnboardBtLocation.visibility = View.GONE
         }
 
-        ui_onboard_place_tv_location?.setOnClickListener {
+        binding.uiOnboardPlaceTvLocation.setOnClickListener {
             onSearchCalled()
             mFusedLocationClient?.removeLocationUpdates(mLocationCallback)
-            ui_onboard_bt_location?.visibility = View.VISIBLE
+            binding.uiOnboardBtLocation.visibility = View.VISIBLE
 
         }
 
         if (userAddress != null) {
-            ui_onboard_place_tv_location?.text = userAddress?.displayAddress
+            binding.uiOnboardPlaceTvLocation.text = userAddress?.displayAddress
         } else {
-            ui_onboard_place_tv_location?.text = ""
-            ui_onboard_place_tv_location?.hint = getString(R.string.onboard_place_placeholder)
+            binding.uiOnboardPlaceTvLocation.text = ""
+            binding.uiOnboardPlaceTvLocation.hint = getString(R.string.onboard_place_placeholder)
         }
     }
 
@@ -170,8 +174,8 @@ open class UserActionPlaceFragment : BaseDialogFragment() {
     protected fun startRequestLocation() {
         if (LocationUtils.isLocationPermissionGranted()) {
             //if(mFusedLocationClient==null) {
-                ui_onboard_place_tv_location?.text = ""
-                ui_onboard_place_tv_location?.hint =
+                binding.uiOnboardPlaceTvLocation.text = ""
+                binding.uiOnboardPlaceTvLocation.hint =
                     getString(R.string.onboard_place_getting_current_location)
                 mFusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
                 mFusedLocationClient?.requestLocationUpdates(
@@ -196,8 +200,8 @@ open class UserActionPlaceFragment : BaseDialogFragment() {
     }
 
     fun updateLocationText(lastLocation: Location?) {
-        ui_onboard_place_tv_location?.text = ""
-        ui_onboard_place_tv_location?.hint = getString(R.string.onboard_place_placeholder)
+        binding.uiOnboardPlaceTvLocation.text = ""
+        binding.uiOnboardPlaceTvLocation.hint = getString(R.string.onboard_place_placeholder)
         lastLocation?.let {
             activity?.let{ activity ->
                 try {
@@ -214,7 +218,7 @@ open class UserActionPlaceFragment : BaseDialogFragment() {
                             val cp = address[0].postalCode
 
                             temporaryAddressName = "$city - $cp"
-                            ui_onboard_place_tv_location?.text = temporaryAddressName
+                            binding.uiOnboardPlaceTvLocation.text = temporaryAddressName
                         }
                     }
                 } catch (e: IOException) {
@@ -241,15 +245,15 @@ open class UserActionPlaceFragment : BaseDialogFragment() {
         if (placeId != null && addressName != null) {
             temporaryAddressPlace = User.Address(placeId)
             temporaryAddressPlace?.displayAddress = addressName
-            ui_onboard_place_tv_location?.text = addressName
+            binding.uiOnboardPlaceTvLocation.text = addressName
             latLng?.let {
                 temporaryAddressPlace?.latitude = it.latitude
                 temporaryAddressPlace?.longitude = it.longitude
             }
         } else {
             temporaryAddressPlace = null
-            ui_onboard_place_tv_location?.text = ""
-            ui_onboard_place_tv_location?.hint = getString(R.string.onboard_place_placeholder)
+            binding.uiOnboardPlaceTvLocation.text = ""
+            binding.uiOnboardPlaceTvLocation.hint = getString(R.string.onboard_place_placeholder)
         }
         updateCallback()
     }

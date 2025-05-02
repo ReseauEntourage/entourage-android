@@ -19,7 +19,7 @@
 
             <include
                 android:id="@+id/header"
-                layout="@layout/new_header"
+                layout="@layout/layout_header"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layout_constraintBottom_toTopOf="@id/scrollView"
@@ -91,7 +91,7 @@
 
                     <include
                         android:id="@+id/phone"
-                        layout="@layout/new_profile_edit_item_clickable"
+                        layout="@layout/profile_edit_item_clickable"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:icon="@{@drawable/new_phone}"
@@ -99,7 +99,7 @@
 
                     <include
                         android:id="@+id/language"
-                        layout="@layout/new_profile_edit_item_clickable"
+                        layout="@layout/profile_edit_item_clickable"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:icon="@{@drawable/planete}"
@@ -116,7 +116,7 @@
 
                     <include
                         android:id="@+id/city_action"
-                        layout="@layout/new_profile_edit_item_clickable"
+                        layout="@layout/profile_edit_item_clickable"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:icon="@{@drawable/new_location}"

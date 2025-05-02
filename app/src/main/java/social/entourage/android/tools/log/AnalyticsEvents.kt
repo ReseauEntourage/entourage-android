@@ -688,6 +688,16 @@ object AnalyticsEvents {
     const val   Clic_Post_List_Reactions = "Clic_Post_List_Reactions"
     const val   Clic_ListReactions_Contact = "Clic_ListReactions_Contact"
 
+    const val   view_miss_location_popup = "view_miss_location_popup"
+    const val   clic_miss_location_add = "clic_miss_location_add"
+
+    const val   Clic_Group_Create_Poll = "Clic_Group_Create_Poll"
+    const val   Clic_Event_Create_Poll = "Clic_Event_Create_Poll"
+    const val   Clic_Group_Validate_Poll = "Clic_Group_Validate_Poll"
+    const val   Clic_Event_Validate_Poll = "Clic_Event_Validate_Poll"
+    const val   Clic_Group_Poll_See_Votes = "Clic_Group_Poll_See_Votes"
+    const val   Clic_Event_Poll_See_Votes = "Clic_Event_Poll_See_Votes"
+
 
 
 

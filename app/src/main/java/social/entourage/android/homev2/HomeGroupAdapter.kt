@@ -9,18 +9,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.GranularRoundedCorners
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-import com.bumptech.glide.request.RequestOptions
 import social.entourage.android.R
-import social.entourage.android.api.model.Events
 import social.entourage.android.api.model.Group
 import social.entourage.android.databinding.HomeV2GroupItemLayoutBinding
 import social.entourage.android.groups.details.feed.FeedActivity
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.utils.Const
-import social.entourage.android.tools.utils.px
 
-class HomeGroupAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class HomeGroupAdapter: RecyclerView.Adapter<HomeGroupAdapter.GroupViewHolder>() {
 
     var groups:MutableList<Group> = mutableListOf()
 
@@ -36,7 +32,7 @@ class HomeGroupAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         this.groups.clear()
         notifyDataSetChanged()
     }
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GroupViewHolder {
         val binding = HomeV2GroupItemLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return GroupViewHolder(binding)
     }
@@ -45,35 +41,33 @@ class HomeGroupAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         return groups.size
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        if (holder is GroupViewHolder) {
-            val group = groups[position]
-            holder.binding.layout.setOnClickListener {view ->
-                AnalyticsEvents.logEvent(AnalyticsEvents.Action_Home_Group_Detail)
-                (view.context as? Activity)?.startActivityForResult(
-                    Intent(view.context, FeedActivity::class.java).putExtra(
-                        Const.GROUP_ID,
-                        group.id
-                    ), 0
-                )
-            }
+    override fun onBindViewHolder(holder: GroupViewHolder, position: Int) {
+        val group = groups[position]
+        holder.binding.layout.setOnClickListener {view ->
+            AnalyticsEvents.logEvent(AnalyticsEvents.Action_Home_Group_Detail)
+            (view.context as? Activity)?.startActivityForResult(
+                Intent(view.context, FeedActivity::class.java).putExtra(
+                    Const.GROUP_ID,
+                    group.id
+                ), 0
+            )
+        }
 
-            group.imageUrl?.let {
-                Glide.with(holder.binding.root.context)
-                    .load(Uri.parse(it))
-                    .placeholder(R.drawable.ic_event_placeholder)
-                    .transform(CenterCrop(), GranularRoundedCorners(15F, 15F, 0F, 0F))
-                    .error(R.drawable.ic_event_placeholder)
-                    .into(holder.binding.ivGroupItem)
-            } ?: run {
-                Glide.with(holder.binding.root.context)
-                    .load(R.drawable.ic_event_placeholder)
-                    .transform(CenterCrop(), GranularRoundedCorners(15F, 0F, 0F, 15F))
-                    .into(holder.binding.ivGroupItem)
-            }
-            group.name.let {
-                holder.binding.tvGroupItem.text = it
-            }
+        group.imageUrl?.let {
+            Glide.with(holder.binding.root.context)
+                .load(Uri.parse(it))
+                .placeholder(R.drawable.ic_event_placeholder)
+                .transform(CenterCrop(), GranularRoundedCorners(15F, 15F, 0F, 0F))
+                .error(R.drawable.ic_event_placeholder)
+                .into(holder.binding.ivGroupItem)
+        } ?: run {
+            Glide.with(holder.binding.root.context)
+                .load(R.drawable.ic_event_placeholder)
+                .transform(CenterCrop(), GranularRoundedCorners(15F, 0F, 0F, 15F))
+                .into(holder.binding.ivGroupItem)
+        }
+        group.name.let {
+            holder.binding.tvGroupItem.text = it
         }
     }
     class GroupViewHolder(val binding: HomeV2GroupItemLayoutBinding) : RecyclerView.ViewHolder(binding.root)

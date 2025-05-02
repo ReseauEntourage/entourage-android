@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/country_code_holder_rly"
     android:layout_width="wrap_content"
     android:layout_height="40dp">
@@ -36,8 +37,9 @@
         android:layout_toEndOf="@+id/flag_holder_lly"
         android:maxLines="1"
         android:paddingStart="4dp"
+        android:layout_marginStart="10dp"
         android:singleLine="true"
-        android:text="(ID) +33"
+        tools:text="(ID) +33"
         android:textColor="@android:color/black"
         android:textSize="18sp" />
 
@@ -49,6 +51,8 @@
         android:layout_toEndOf="@+id/selected_country_tv"
         android:adjustViewBounds="true"
         android:alpha="0.6"
+        android:layout_marginStart="15dp"
+
         android:tint="@android:color/black"
         app:srcCompat="@drawable/ic_expand_more_black_24dp" />
 

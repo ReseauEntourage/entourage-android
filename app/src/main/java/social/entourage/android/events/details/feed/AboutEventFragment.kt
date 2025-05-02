@@ -121,11 +121,14 @@ class AboutEventFragment : Fragment(), OnMapReadyCallback {
                     )
                 }
             }
-
-            binding.placesLimit.root.isVisible = event?.metadata?.placeLimit != null
             binding.placesLimit.content.text =
                 String.format(getString(R.string.limited_places), event?.metadata?.placeLimit)
-
+            if(event?.metadata?.placeLimit == null || event?.metadata?.placeLimit == 0){
+                binding.placesLimit.root.isVisible = false
+            }else{
+                binding.placesLimit.root.isVisible = true
+            }
+            Log.wtf("wtf", "place limit: ${event?.metadata?.placeLimit}")
             binding.mapView.isVisible = event?.online == false
             binding.cvMapView.isVisible = event?.online == false
 

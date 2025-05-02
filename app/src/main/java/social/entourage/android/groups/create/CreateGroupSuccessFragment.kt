@@ -44,11 +44,11 @@ class CreateGroupSuccessFragment : Fragment() {
             AnalyticsEvents.logEvent(
                 AnalyticsEvents.ACTION_NEW_GROUP_CONFIRMATION_SKIP
             )
-            startActivityForResult(
+            startActivity(
                 Intent(requireContext(), FeedActivity::class.java).putExtra(
                     Const.GROUP_ID,
                     args.groupID
-                ), 0
+                )
             )
             requireActivity().finish()
             RefreshController.shouldRefreshFragment = true

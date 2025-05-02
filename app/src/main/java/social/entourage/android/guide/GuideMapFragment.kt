@@ -1,29 +1,46 @@
 package social.entourage.android.guide
 
+import android.Manifest
 import android.animation.ValueAnimator
+import android.annotation.SuppressLint
 import android.content.ComponentName
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
+import android.graphics.Point
+import android.location.Location
 import android.os.Bundle
 import android.os.IBinder
+import android.provider.Settings
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
+import android.view.WindowManager
+import android.widget.RelativeLayout
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.StringRes
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.model.CameraPosition
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.Marker
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.fragment_guide_map.*
-import kotlinx.android.synthetic.main.layout_guide_longclick.*
 import social.entourage.android.Constants
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
+import social.entourage.android.RefreshController
 import social.entourage.android.api.ApiConnectionListener
 import social.entourage.android.api.model.guide.Poi
-import social.entourage.android.base.HeaderBaseAdapter
 import social.entourage.android.base.location.EntLocation
-import social.entourage.android.base.location.LocationUtils.isLocationPermissionGranted
-import social.entourage.android.base.map.BaseMapFragment
+import social.entourage.android.base.location.LocationUpdateListener
+import social.entourage.android.base.location.LocationUtils
+import social.entourage.android.databinding.FragmentGuideMapBinding
 import social.entourage.android.guide.filter.GuideFilter.Companion.instance
 import social.entourage.android.guide.filter.GuideFilterFragment
 import social.entourage.android.guide.poi.PoiListFragment
@@ -31,20 +48,137 @@ import social.entourage.android.guide.poi.PoiRenderer
 import social.entourage.android.guide.poi.PoisAdapter
 import social.entourage.android.guide.poi.ReadPoiFragment
 import social.entourage.android.guide.poi.ReadPoiFragment.Companion.newInstance
-import social.entourage.android.tools.utils.Utils
 import social.entourage.android.service.EntService
 import social.entourage.android.tools.EntLinkMovementMethod
 import social.entourage.android.tools.log.AnalyticsEvents
+import social.entourage.android.tools.utils.Utils
 import social.entourage.android.tools.view.EntSnackbar
 import social.entourage.android.user.partner.PartnerFragment
 import timber.log.Timber
 
-class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), PoiListFragment, ApiConnectionListener,
+class GuideMapFragment : Fragment(),
+    LocationUpdateListener, PoiListFragment, ApiConnectionListener,
         GoogleMap.OnMarkerClickListener, OnMapReadyCallback {
+    private var eventLongClick: String = AnalyticsEvents.EVENT_GUIDE_LONGPRESS
+    private var isFullMapShown = true
+    private var previousCameraLocation: Location? = null
+    private var previousCameraZoom = 10.0f
+    var map: GoogleMap? = null
+
+    private var originalMapLayoutHeight = 0
+
+    private val requestPermissionLauncher =
+        registerForActivityResult(
+            ActivityResultContracts.RequestMultiplePermissions()
+        ) { permissions ->
+            if(permissions.entries.any {
+                    it.value
+                }) {
+                RefreshController.shouldRefreshLocationPermission = true
+                onLocationPermissionGranted(true)
+            }
+        }
+
+    private fun centerMap(latLng: LatLng) {
+        val cameraPosition = CameraPosition(latLng, previousCameraZoom, 0F, 0F)
+        centerMap(cameraPosition)
+    }
+
+    private fun centerMap(cameraPosition: CameraPosition) {
+        map?.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition), 300, null)
+        saveCameraPosition()
+    }
+
+    private fun saveCameraPosition() {
+        map?.cameraPosition?.let {
+            EntLocation.lastCameraPosition = it
+        }
+    }
+
+    private fun initializeMapZoom() {
+        EntourageApplication.get().authenticationController.me?.address?.let {
+            centerMap(LatLng(it.latitude, it.longitude))
+        } ?: run {
+            centerMap(EntLocation.lastCameraPosition)
+        }
+    }
+
+    // ----------------------------------
+    // LIFECYCLE
+    // ----------------------------------
+
+    private fun showAllowGeolocationDialog(source: Int) {
+        activity?.let {
+            @StringRes var messagedId = R.string.map_error_geolocation_disabled_use_entourage
+            val eventName = when (source) {
+                GEOLOCATION_POPUP_GUIDE_RECENTER -> {
+                    messagedId = R.string.map_error_geolocation_disabled_recenter
+                    AnalyticsEvents.EVENT_GUIDE_ACTIVATE_GEOLOC_RECENTER
+                }
+                else -> AnalyticsEvents.EVENT_FEED_ACTIVATE_GEOLOC_FROM_BANNER
+            }
+
+            AlertDialog.Builder(it)
+                .setMessage(messagedId)
+                .setPositiveButton(R.string.activate) { _: DialogInterface?, _: Int ->
+                    AnalyticsEvents.logEvent(eventName)
+                    try {
+                        if (!LocationUtils.isLocationPermissionGranted()
+                            || shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_COARSE_LOCATION)
+                        ) {
+                            requestPermissionLauncher.launch(arrayOf(
+                                Manifest.permission.ACCESS_COARSE_LOCATION,
+                                Manifest.permission.ACCESS_FINE_LOCATION
+                            ))
+                        } else {
+                            // User selected "Never ask again", so show the settings page
+                            startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
+                        }
+                    } catch (e: IllegalStateException) {
+                        Timber.w(e)
+                    }
+                }
+                .setNegativeButton(R.string.map_permission_refuse, null)
+                .show()
+        }
+    }
+
+    private fun onLocationPermissionGranted(isPermissionGranted: Boolean) =
+        updateGeolocBanner()
+
+    private fun updateGeolocBanner() {
+        val granted = LocationUtils.isLocationPermissionGranted()
+        poisAdapter.setGeolocStatusIcon(granted)
+        try {
+            map?.isMyLocationEnabled = granted
+        } catch (ex: SecurityException) {
+            Timber.w(ex)
+        } catch (ex: Exception) {
+            Timber.e(ex)
+        }
+    }
+
+    private fun onFollowGeolocation() {
+        AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_FEED_RECENTERCLICK)
+        // Check if geolocation is enabled
+        if (!LocationUtils.isLocationPermissionGranted()) {
+            showAllowGeolocationDialog(GEOLOCATION_POPUP_GUIDE_RECENTER)
+        } else {
+            centerMap(EntLocation.currentLocation?.let {
+                LatLng(it.latitude, it.longitude)
+            } ?: LatLng(0.0, 0.0))
+        }
+    }
+
+    override fun onLocationUpdated(location: LatLng) {}
+
+    override fun onLocationStatusUpdated() = updateGeolocBanner()
 
     // ----------------------------------
     // ATTRIBUTES
     // ----------------------------------
+
+    private lateinit var binding: FragmentGuideMapBinding
     private var isAlertTextVisible: Boolean = false
     private val connection = ServiceConnection()
 
@@ -53,12 +187,28 @@ class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), PoiListFr
     private var onMapReadyCallback: OnMapReadyCallback? = null
     private val poisAdapter: PoisAdapter = PoisAdapter()
     private var mapRenderer: PoiRenderer = PoiRenderer()
+    private var toReturn: View? = null
 
     // ----------------------------------
     // LIFECYCLE
     // ----------------------------------
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        if (toReturn == null) {
+            binding= FragmentGuideMapBinding.inflate(inflater, container, false)
+            toReturn = binding.root
+        }
+        return toReturn
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        previousCameraLocation =
+            EntLocation.cameraPositionToLocation(null, EntLocation.lastCameraPosition)
         initializeMap()
         initializeAlertBanner()
         initializePopups()
@@ -76,7 +226,7 @@ class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), PoiListFr
 
     override fun onResume() {
         super.onResume()
-        val isLocationGranted = isLocationPermissionGranted()
+        val isLocationGranted = LocationUtils.isLocationPermissionGranted()
         onLocationPermissionGranted(isLocationGranted)
     }
 
@@ -86,8 +236,8 @@ class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), PoiListFr
     }
 
     fun onBackPressed(): Boolean {
-        if (fragment_map_longclick?.visibility == View.VISIBLE) {
-            fragment_map_longclick?.visibility = View.GONE
+        if (binding.fragmentMapLongclick.parent.visibility == View.VISIBLE) {
+            binding.fragmentMapLongclick.parent.visibility = View.GONE
             //fabProposePOI.setVisibility(View.VISIBLE);
             return true
         }
@@ -122,7 +272,7 @@ class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), PoiListFr
     fun putPoiOnMap(pois: List<Poi>?) {
         if (activity != null) {
             clearOldPois()
-            if (pois != null && pois.isNotEmpty()) {
+            if (!pois.isNullOrEmpty()) {
                 val poiCollection = presenter.removeRedundantPois(pois)
                 map?.let { map ->
                     poiCollection.forEach { poi ->
@@ -138,7 +288,7 @@ class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), PoiListFr
                     val previousPoiCount = it.dataItemCount
                     it.addItems(poiCollection)
                     if (previousPoiCount == 0) {
-                        fragment_guide_pois_view?.scrollToPosition(0)
+                        binding.fragmentGuidePoisView.scrollToPosition(0)
                     }
                 }
             } else {
@@ -146,7 +296,7 @@ class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), PoiListFr
                     showEmptyListPopup()
                 }
                 if (poisAdapter.dataItemCount == 0) {
-                    hidePOIList(false)
+                    hidePOIList()
                 }
             }
         }
@@ -158,7 +308,7 @@ class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), PoiListFr
         }
     }
 
-    override fun initializeMap() {
+    private fun initializeMap() {
         originalMapLayoutHeight = resources.getDimension(R.dimen.solidarity_guide_map_height).toInt()
         if (onMapReadyCallback == null) {
             onMapReadyCallback = OnMapReadyCallback { googleMap: GoogleMap -> this.onMapReady(googleMap) }
@@ -169,11 +319,8 @@ class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), PoiListFr
         // Close the overlays
         onBackPressed()
         // Open the link to propose a POI
-        (activity as? GDSMainActivity)?.showWebViewForLinkId(Constants.PROPOSE_POI_ID)
+        (activity as? GDSMainActivity)?.showWebViewForLinkId(Constants.PROPOSE_POI_ID )
     }
-
-    override val adapter: HeaderBaseAdapter?
-        get() { return poisAdapter}
 
     // ----------------------------------
     // PRIVATE METHODS
@@ -185,10 +332,40 @@ class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), PoiListFr
         map?.clear()
     }
 
+    @SuppressLint("MissingPermission")
     override fun onMapReady(googleMap: GoogleMap) {
-        super.onMapReady(googleMap,
-                null
+
+        map = googleMap
+        //we forced the setting of the map anyway
+        if (activity == null) {
+            Timber.e("No activity found")
+            return
+        }
+
+        val isLocationPermissionGranted = LocationUtils.isLocationPermissionGranted()
+
+        googleMap.isMyLocationEnabled = isLocationPermissionGranted
+
+        //mylocation is handled in MapViewHolder
+        googleMap.uiSettings.isMyLocationButtonEnabled = false
+        googleMap.uiSettings.isMapToolbarEnabled = false
+        googleMap.setMapStyle(
+            MapStyleOptions.loadRawResourceStyle(
+                requireContext(),
+                R.raw.map_styles_json
+            )
         )
+
+        googleMap.setOnMapLongClickListener { latLng: LatLng ->
+            //only show when map is in full screen and not visible
+            if (!isFullMapShown || binding.fragmentMapLongclick.parent.visibility == View.VISIBLE) {
+                return@setOnMapLongClickListener
+            }
+            if (activity != null) {
+                AnalyticsEvents.logEvent(eventLongClick)
+                showLongClickOnMapOptions(latLng)
+            }
+        }
         initializeMapZoom()
         map?.setOnMarkerClickListener(this)
         //map?.setMinZoomPreference(MAX_ZOOM_VALUE)
@@ -229,20 +406,20 @@ class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), PoiListFr
 
     private fun initializeAlertBanner() {
         isAlertTextVisible = false
-        fragment_guide_alert_description?.setHtmlString(getString(R.string.guide_alert_info_text), EntLinkMovementMethod)
-        fragment_guide_alert_arrow?.setOnClickListener {onClickAlertArrow()}
-        fragment_guide_alert?.setOnClickListener {onClickAlertArrow()}
+        binding.fragmentGuideAlertDescription.setHtmlString(getString(R.string.guide_alert_info_text), EntLinkMovementMethod)
+        binding.fragmentGuideAlertArrow.setOnClickListener {onClickAlertArrow()}
+        binding.fragmentGuideAlert.setOnClickListener {onClickAlertArrow()}
     }
 
     private fun onClickAlertArrow() {
         if(!isAlertTextVisible) {
             isAlertTextVisible = true
-            fragment_guide_alert_description?.visibility = View.VISIBLE
-            fragment_guide_alert_arrow?.setImageDrawable((AppCompatResources.getDrawable(requireContext(), R.drawable.ic_expand_less_black_24dp)))
+            binding.fragmentGuideAlertDescription.visibility = View.VISIBLE
+            binding.fragmentGuideAlertArrow.setImageDrawable((AppCompatResources.getDrawable(requireContext(), R.drawable.ic_expand_less_black_24dp)))
         } else {
             isAlertTextVisible = false
-            fragment_guide_alert_description?.visibility = View.GONE
-            fragment_guide_alert_arrow?.setImageDrawable((AppCompatResources.getDrawable(requireContext(), R.drawable.ic_expand_more_black_24dp)))
+            binding.fragmentGuideAlertDescription.visibility = View.GONE
+            binding.fragmentGuideAlertArrow.setImageDrawable((AppCompatResources.getDrawable(requireContext(), R.drawable.ic_expand_more_black_24dp)))
         }
     }
 
@@ -250,13 +427,13 @@ class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), PoiListFr
     // EMPTY LIST POPUP
     // ----------------------------------
     private fun initializePopups() {
-        fragment_guide_empty_list_popup?.setOnClickListener {onEmptyListPopupClose()}
-        fragment_guide_info_popup_close?.setOnClickListener {onInfoPopupClose()}
-        fragment_guide_info_popup?.setOnClickListener {onInfoPopupClose()}
+        binding.fragmentGuideEmptyListPopup.setOnClickListener {onEmptyListPopupClose()}
+        binding.fragmentGuideInfoPopupClose.setOnClickListener {onInfoPopupClose()}
+        binding.fragmentGuideInfoPopup.setOnClickListener {onInfoPopupClose()}
         val proposePOIUrl = (activity as? GDSMainActivity)?.getLink(Constants.PROPOSE_POI_ID) ?: ""
         hideInfoPopup()
-        fragment_guide_empty_list_popup_text?.movementMethod = EntLinkMovementMethod
-        fragment_guide_empty_list_popup_text?.text = Utils.fromHtml(getString(R.string.map_poi_empty_popup, proposePOIUrl))
+        binding.fragmentGuideEmptyListPopupText.movementMethod = EntLinkMovementMethod
+        binding.fragmentGuideEmptyListPopupText.text = Utils.fromHtml(getString(R.string.map_poi_empty_popup, proposePOIUrl))
     }
 
     private fun onEmptyListPopupClose() {
@@ -270,12 +447,12 @@ class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), PoiListFr
             presenter.updatePreviousEmptyListPopupLocation(cameraPosition)
         }
         if (presenter.isShowNoPOIsPopup) {
-            fragment_guide_empty_list_popup?.visibility = View.VISIBLE
+            binding.fragmentGuideEmptyListPopup.visibility = View.VISIBLE
         }
     }
 
     private fun hideEmptyListPopup() {
-        fragment_guide_empty_list_popup?.visibility = View.GONE
+        binding.fragmentGuideEmptyListPopup.visibility = View.GONE
     }
 
     // ----------------------------------
@@ -288,16 +465,16 @@ class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), PoiListFr
 
     private fun showInfoPopup() {
         if (!presenter.isShowInfoPOIsPopup) {
-            fragment_guide_info_popup?.visibility = View.VISIBLE
+            binding.fragmentGuideInfoPopup.visibility = View.VISIBLE
         }
     }
 
     private fun hideInfoPopup() {
-        fragment_guide_info_popup?.visibility = View.GONE
+        binding.fragmentGuideInfoPopup.visibility = View.GONE
     }
 
     private val isInfoPopupVisible: Boolean
-        get() = fragment_guide_info_popup?.visibility == View.VISIBLE
+        get() = binding.fragmentGuideInfoPopup.visibility == View.VISIBLE
 
     // ----------------------------------
     // FAB HANDLING
@@ -311,64 +488,51 @@ class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), PoiListFr
     // POI List
     // ----------------------------------
     private fun initializePOIList() {
-        fragment_guide_pois_view?.layoutManager = LinearLayoutManager(context)
+        binding.fragmentGuidePoisView.layoutManager = LinearLayoutManager(context)
         onMapReadyCallback?.let { poisAdapter.setOnMapReadyCallback(it) }
         poisAdapter.setOnFollowButtonClickListener { onFollowGeolocation() }
-        fragment_guide_pois_view?.adapter = poisAdapter
+        binding.fragmentGuidePoisView.adapter = poisAdapter
     }
 
     private fun togglePOIList() {
         if (isFullMapShown) {
-            showPOIList(true)
+            showPOIList()
         } else {
-            hidePOIList(true)
+            hidePOIList()
         }
     }
 
-    private fun hidePOIList(animated: Boolean) {
+    private fun hidePOIList() {
         if (isFullMapShown) {
             return
         }
-        ui_view_empty_list?.visibility = View.GONE
+        binding.uiViewEmptyList.visibility = View.GONE
         isFullMapShown = true
-        fragment_guide_display_toggle?.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_list_white_24dp))
+        binding.fragmentGuideDisplayToggle.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_list_white_24dp))
         ensureMapVisible()
-        val targetHeight = fragment_guide_main_layout?.measuredHeight ?: originalMapLayoutHeight
-        if (animated) {
-            val anim = ValueAnimator.ofInt(originalMapLayoutHeight, targetHeight)
-            anim.addUpdateListener { valueAnimator: ValueAnimator -> onAnimationUpdate(valueAnimator) }
-            anim.start()
-        } else {
-            poisAdapter.setMapHeight(targetHeight)
-            fragment_guide_pois_view?.layoutManager?.requestLayout()
-        }
+        val targetHeight = binding.fragmentGuideMainLayout.measuredHeight
+        val anim = ValueAnimator.ofInt(originalMapLayoutHeight, targetHeight)
+        anim.addUpdateListener { valueAnimator: ValueAnimator -> onAnimationUpdate(valueAnimator) }
+        anim.start()
     }
 
-    private fun showPOIList(animated: Boolean) {
-        if (fragment_guide_main_layout == null || fragment_guide_pois_view == null || fragment_guide_display_toggle == null) {
-            return
-        }
+    private fun showPOIList() {
         if (!isFullMapShown) {
             return
         }
         isFullMapShown = false
-        fragment_guide_display_toggle?.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_map_white_24dp))
+        binding.fragmentGuideDisplayToggle.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_map_white_24dp))
         hideInfoPopup()
         hideEmptyListPopup()
-        if (animated) {
-            val anim = ValueAnimator.ofInt(fragment_guide_main_layout.measuredHeight, originalMapLayoutHeight)
-            anim.addUpdateListener { valueAnimator: ValueAnimator -> onAnimationUpdate(valueAnimator) }
-            anim.start()
-        } else {
-            poisAdapter.setMapHeight(originalMapLayoutHeight)
-            fragment_guide_pois_view?.layoutManager?.requestLayout()
-        }
+        val anim = ValueAnimator.ofInt(binding.fragmentGuideMainLayout.measuredHeight, originalMapLayoutHeight)
+        anim.addUpdateListener { valueAnimator: ValueAnimator -> onAnimationUpdate(valueAnimator) }
+        anim.start()
 
-        ui_view_empty_list?.visibility = if (poisAdapter.dataItemCount == 0)  View.VISIBLE else View.GONE
+        binding.uiViewEmptyList.visibility = if (poisAdapter.dataItemCount == 0)  View.VISIBLE else View.GONE
     }
 
     private fun ensureMapVisible() {
-        fragment_guide_pois_view?.scrollToPosition(0)
+        binding.fragmentGuidePoisView.scrollToPosition(0)
     }
 
     // ----------------------------------
@@ -377,14 +541,16 @@ class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), PoiListFr
     private fun initializeFloatingButtons() {
         // Guide starts in full map mode, adjust the text accordingly
         if (context == null) return
-        fragment_guide_display_toggle?.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_list_white_24dp))
-        fragment_guide_display_toggle?.setOnClickListener {onDisplayToggle()}
-        guide_longclick_button_poi_propose?.setOnClickListener {proposePOI()}
-        button_poi_propose?.setOnClickListener {onPOIProposeClicked()}
+        binding.fragmentGuideDisplayToggle.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_list_white_24dp))
+        binding.fragmentGuideDisplayToggle.setOnClickListener {onDisplayToggle()}
+        binding.fragmentMapLongclick.guideLongclickButtonPoiPropose.setOnClickListener {proposePOI()}
+        binding.buttonPoiPropose.setOnClickListener {
+            onPOIProposeClicked()
+        }
     }
 
     private fun initializeFilterButton() {
-        fragment_guide_filter_button?.let {
+        binding.fragmentGuideFilterButton.let {
             it.setOnClickListener {onShowFilter()}
             it.setText(if (instance.hasFilteredCategories()) R.string.guide_filters_activated else R.string.guide_no_filter)
         }
@@ -392,10 +558,14 @@ class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), PoiListFr
 
     private fun onAnimationUpdate(valueAnimator: ValueAnimator) {
         poisAdapter.setMapHeight(valueAnimator.animatedValue as Int)
-        fragment_guide_pois_view?.layoutManager?.requestLayout()
+        binding.fragmentGuidePoisView.layoutManager?.requestLayout()
     }
 
     companion object {
+        // Constants used to track the source call of the geolocation popup
+        private const val GEOLOCATION_POPUP_GUIDE_RECENTER = 3
+        const val ZOOM_REDRAW_LIMIT = 1.1f
+        const val REDRAW_LIMIT = 300
         // ----------------------------------
         // CONSTANTS
         // ----------------------------------
@@ -403,27 +573,64 @@ class GuideMapFragment : BaseMapFragment(R.layout.fragment_guide_map), PoiListFr
         const val MAX_ZOOM_VALUE = 14.0F
     }
 
-    init {
-        eventLongClick = AnalyticsEvents.EVENT_GUIDE_LONGPRESS
-    }
-
     override fun onNetworkException() {
-        fragment_guide_coordinator?.let {
+        binding.fragmentGuideCoordinator.let {
             EntSnackbar.make(it, R.string.network_error, Snackbar.LENGTH_LONG).show()
         }
     }
 
     override fun onServerException(throwable: Throwable) {
-        fragment_guide_coordinator?.let {
+        binding.fragmentGuideCoordinator.let {
             EntSnackbar.make(it, R.string.network_error, Snackbar.LENGTH_LONG).show()
         }
     }
 
     override fun onTechnicalException(throwable: Throwable) {
-        fragment_guide_coordinator?.let {
+        binding.fragmentGuideCoordinator.let {
             EntSnackbar.make(it, R.string.technical_error, Snackbar.LENGTH_LONG).show()
         }
     }
+    // ----------------------------------
+    // Long clicks on map handler
+    // ----------------------------------
+    private fun showLongClickOnMapOptions(latLng: LatLng) {
+        //get the click point
+        map?.let {
+            binding.fragmentMapLongclick.mapLongclickButtons.let { buttons ->
+                buttons.measure(
+                    RelativeLayout.LayoutParams.WRAP_CONTENT,
+                    RelativeLayout.LayoutParams.WRAP_CONTENT
+                )
+                val bW = buttons.measuredWidth
+                val bH = buttons.measuredHeight
+                val lp = buttons.layoutParams as RelativeLayout.LayoutParams
+                val clickPoint = it.projection.toScreenLocation(latLng)
+                //adjust the buttons holder layout
+                val display =
+                    (requireContext().getSystemService(Context.WINDOW_SERVICE) as WindowManager).defaultDisplay
+                val screenSize = Point()
+                display.getSize(screenSize)
+
+                var marginLeft = clickPoint.x - bW / 2
+                if (marginLeft + bW > screenSize.x) {
+                    marginLeft -= bW / 2
+                }
+                if (marginLeft < 0) {
+                    marginLeft = 0
+                }
+                var marginTop = clickPoint.y - bH / 2
+                if (marginTop < 0) {
+                    marginTop = clickPoint.y
+                }
+                lp.setMargins(marginLeft, marginTop, 0, 0)
+                buttons.layoutParams = lp
+            }
+            //show the view
+            binding.fragmentMapLongclick.parent.visibility = View.VISIBLE
+        }
+    }
+
+
 
     private inner class ServiceConnection : android.content.ServiceConnection {
         private var isBound = false

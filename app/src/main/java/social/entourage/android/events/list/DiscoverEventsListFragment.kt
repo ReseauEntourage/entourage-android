@@ -2,7 +2,6 @@ package social.entourage.android.events.list
 
 import android.content.Context
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -16,20 +15,14 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.new_header_bottom_sheet.view.view
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
+import social.entourage.android.api.model.EventActionLocationFilters
+import social.entourage.android.api.model.Events
 import social.entourage.android.databinding.NewFragmentDiscoverEventsListBinding
 import social.entourage.android.events.EventFiltersActivity
 import social.entourage.android.events.EventsPresenter
-import social.entourage.android.api.model.EventActionLocationFilters
-import social.entourage.android.api.model.Events
-import social.entourage.android.api.request.HomeRequest
 import social.entourage.android.homev2.HomeEventAdapter
-import social.entourage.android.tools.utils.Utils
 import social.entourage.android.tools.log.AnalyticsEvents
 
 const val EVENTS_PER_PAGE = 20
@@ -41,7 +34,7 @@ class DiscoverEventsListFragment : Fragment() {
 
     private lateinit var eventsPresenter: EventsPresenter
     private var myId: Int? = null
-    lateinit var eventsAdapter: AllEventAdapterV2
+    lateinit var eventsAdapter: AllEventAdapter
     lateinit var myeventsAdapter: HomeEventAdapter
     private var page: Int = 0
     private var pageMyEvent: Int = 0
@@ -81,7 +74,7 @@ class DiscoverEventsListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         eventsPresenter = ViewModelProvider(requireActivity()).get(EventsPresenter::class.java)
         myId = EntourageApplication.me(activity)?.id
-        eventsAdapter = AllEventAdapterV2(myId,requireContext())
+        eventsAdapter = AllEventAdapter(myId,requireContext())
         myeventsAdapter = HomeEventAdapter(requireContext())
         eventsPresenter.getAllEvents.observe(viewLifecycleOwner, ::handleResponseGetEvents)
         eventsPresenter.hasChangedFilter.observe(viewLifecycleOwner, ::handleFilterChange)
@@ -103,10 +96,9 @@ class DiscoverEventsListFragment : Fragment() {
         eventsPresenter.isLastPageMyEvent = false
         page = 0
         pageMyEvent = 0
-        CoroutineScope(Dispatchers.IO).launch {
-            loadEvents()
-            loadMyEvents()
-        }
+        loadEvents()
+        loadMyEvents()
+
     }
 
     override fun onStop() {
@@ -157,7 +149,6 @@ class DiscoverEventsListFragment : Fragment() {
             } else if (scrollY < oldScrollY) {
                 eventsPresenter.tellParentFragmentToMoveButton(true)
             }
-            Log.wtf("wtf", "isLastPage: ${eventsPresenter.isLastPage} isLoading: $isLoading")
             if (!binding.nestedScrollView.canScrollVertically(1) && !isLoading && !eventsPresenter.isLastPage) {
                 binding.progressBar.visibility = View.VISIBLE
                 loadEvents()
@@ -240,10 +231,8 @@ class DiscoverEventsListFragment : Fragment() {
             eventsPresenter.isLastPageMyEvent = false
             page = 0
             pageMyEvent = 0
-            CoroutineScope(Dispatchers.IO).launch {
-                loadEvents()
-                loadMyEvents()
-            }
+            loadEvents()
+            loadMyEvents()
         }
     }
 }

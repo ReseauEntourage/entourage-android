@@ -9,22 +9,23 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.new_fragment_action_list.view.*
 import social.entourage.android.R
-import social.entourage.android.databinding.NewFragmentActionsMyListBinding
 import social.entourage.android.actions.ActionsPresenter
 import social.entourage.android.actions.detail.ActionDetailActivity
 import social.entourage.android.api.model.Action
+import social.entourage.android.databinding.NewFragmentActionsMyListBinding
 import social.entourage.android.tools.utils.Const
 
 class MyActionsListFragment : Fragment() {
-    val EVENTS_PER_PAGE = 10
+    companion object {
+        const val EVENTS_PER_PAGE = 10
+    }
 
     private var _binding: NewFragmentActionsMyListBinding? = null
     val binding: NewFragmentActionsMyListBinding get() = _binding!!
 
     private val myActionsPresenter: ActionsPresenter by lazy { ActionsPresenter() }
-    lateinit var actionAdapter: MyActionsListAdapter
+    private lateinit var actionAdapter: MyActionsListAdapter
     private var page: Int = 0
     private var allActions:MutableList<Action>  = ArrayList()
 
@@ -67,8 +68,8 @@ class MyActionsListFragment : Fragment() {
     }
 
     private fun initializeEmptyState() {
-        binding.emptyStateLayout.title.text =  getString(R.string.action_my_empty_title)
-        binding.emptyStateLayout.subtitle.text = getString(R.string.action_my_empty_subtitle)
+        binding.title.text =  getString(R.string.action_my_empty_title)
+        binding.subtitle.text = getString(R.string.action_my_empty_subtitle)
     }
 
     private fun handleResponseGetDemands(allDemands: MutableList<Action>?) {

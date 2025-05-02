@@ -1,6 +1,5 @@
 package social.entourage.android.comment
 
-import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -8,11 +7,9 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.view.ViewTreeObserver.OnGlobalLayoutListener
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
-import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import social.entourage.android.EntourageApplication
@@ -20,7 +17,7 @@ import social.entourage.android.R
 import social.entourage.android.api.model.EntourageUser
 import social.entourage.android.api.model.Post
 import social.entourage.android.base.BaseActivity
-import social.entourage.android.databinding.NewActivityCommentsBinding
+import social.entourage.android.databinding.ActivityCommentsBinding
 import social.entourage.android.deeplinks.UniversalLinkManager
 import social.entourage.android.discussions.DiscussionsPresenter
 import social.entourage.android.report.DataLanguageStock
@@ -32,11 +29,10 @@ import social.entourage.android.tools.utils.Utils
 import social.entourage.android.tools.utils.focusAndShowKeyboard
 import social.entourage.android.tools.utils.scrollToPositionSmooth
 import social.entourage.android.tools.view.WebViewFragment
-import timber.log.Timber
-import java.util.*
+import java.util.UUID
 
 abstract class CommentActivity : BaseActivity(), onDissmissFragment {
-    lateinit var binding: NewActivityCommentsBinding
+    lateinit var binding: ActivityCommentsBinding
 
     var id = Const.DEFAULT_VALUE
     var postId = Const.DEFAULT_VALUE
@@ -60,10 +56,10 @@ abstract class CommentActivity : BaseActivity(), onDissmissFragment {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(
-            this,
-            R.layout.new_activity_comments
-        )
+
+        binding = ActivityCommentsBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
         viewModel = ViewModelProvider(this).get(DiscussionsPresenter::class.java)
         id = intent.getIntExtra(Const.ID, Const.DEFAULT_VALUE)
         postId = intent.getIntExtra(Const.POST_ID, Const.DEFAULT_VALUE)

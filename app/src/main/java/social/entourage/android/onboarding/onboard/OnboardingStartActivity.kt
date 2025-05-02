@@ -2,7 +2,6 @@ package social.entourage.android.onboarding.onboard
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.annotation.StringRes
@@ -10,28 +9,29 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
-import kotlinx.android.synthetic.main.activity_onboarding_start.*
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.api.OnboardingAPI
 import social.entourage.android.api.model.User
 import social.entourage.android.authentication.AuthenticationController
-import social.entourage.android.tools.utils.Utils
+import social.entourage.android.databinding.ActivityOnboardingStartBinding
 import social.entourage.android.onboarding.pre_onboarding.PreOnboardingChoiceActivity
 import social.entourage.android.tools.disable
 import social.entourage.android.tools.enable
+import social.entourage.android.tools.utils.Utils
 import social.entourage.android.tools.view.CustomProgressDialog
 import social.entourage.android.tools.view.countrycodepicker.Country
 import timber.log.Timber
 
 class OnboardingStartActivity : AppCompatActivity(), OnboardingStartCallback {
+    private lateinit var binding : ActivityOnboardingStartBinding
     private val LOGIN_ERROR_UNAUTHORIZED = -1
     private val LOGIN_ERROR_INVALID_PHONE_FORMAT = -2
     private val LOGIN_ERROR_UNKNOWN = -9998
     private val LOGIN_ERROR_NETWORK = -9999
 
     lateinit var authenticationController: AuthenticationController
-    lateinit var alertDialog: CustomProgressDialog
+    private lateinit var alertDialog: CustomProgressDialog
 
     private var currentFragmentPosition = 1
     private val numberOfSteps = 3
@@ -52,7 +52,8 @@ class OnboardingStartActivity : AppCompatActivity(), OnboardingStartCallback {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_onboarding_start)
+        binding = ActivityOnboardingStartBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         temporaryCountrycode = Country(getString(R.string.country_france_code),
             getString(R.string.country_france_number),
@@ -85,7 +86,6 @@ class OnboardingStartActivity : AppCompatActivity(), OnboardingStartCallback {
     }
     private fun callSignup() {
         alertDialog.show(R.string.onboard_waiting_dialog)
-        Log.wtf("wtf", "callSignup: " + temporaryUser.email )
         OnboardingAPI.getInstance().createUser(temporaryUser, hasConsent) { isOK, error ->
             alertDialog.dismiss()
             if (isOK) {
@@ -264,7 +264,7 @@ class OnboardingStartActivity : AppCompatActivity(), OnboardingStartCallback {
         goNextStep()
     }
 
-    fun displayToast(messageId: Int) {
+    private fun displayToast(messageId: Int) {
         Toast.makeText(this, messageId, Toast.LENGTH_LONG).show()
     }
 
@@ -304,7 +304,7 @@ class OnboardingStartActivity : AppCompatActivity(), OnboardingStartCallback {
     }
 
     private fun changeFragment() {
-        ui_onboarding_bt_next?.disable()
+        binding.uiOnboardingBtNext.disable()
         val fragment = when (currentFragmentPosition) {
             1 -> OnboardingPhase1Fragment.newInstance(
                 temporaryUser.firstName,
@@ -322,10 +322,10 @@ class OnboardingStartActivity : AppCompatActivity(), OnboardingStartCallback {
             else -> Fragment()
         }
 
-        if ( currentFragmentPosition >= PositionsType.Type.pos) {
-            icon_back?.visibility = View.GONE
+        binding.iconBack.visibility = if ( currentFragmentPosition >= PositionsType.Type.pos) {
+            View.GONE
         } else {
-            icon_back?.visibility = View.VISIBLE
+            View.VISIBLE
         }
         try {
             supportFragmentManager
@@ -344,37 +344,36 @@ class OnboardingStartActivity : AppCompatActivity(), OnboardingStartCallback {
      */
 
     private fun setupViews() {
-        ui_onboarding_bt_next?.setOnClickListener {
+        binding.uiOnboardingBtNext.setOnClickListener {
             goNext()
         }
 
-        ui_onboarding_bt_previous?.setOnClickListener {
+        binding.uiOnboardingBtPrevious.setOnClickListener {
             goPrevious()
         }
 
-        icon_back?.setOnClickListener {
+        binding.iconBack.setOnClickListener {
             startActivity(Intent(this, PreOnboardingChoiceActivity::class.java))
             finish()
         }
 
-        ui_onboarding_bt_previous?.visibility = View.INVISIBLE
-        ui_onboarding_bt_next?.disable()
+        binding.uiOnboardingBtPrevious.visibility = View.INVISIBLE
+        binding.uiOnboardingBtNext.disable()
     }
 
-    fun updateButtons() {
+    private fun updateButtons() {
         when (currentFragmentPosition) {
             PositionsType.NamesPhone.pos -> {
-                ui_onboarding_bt_previous?.visibility = View.INVISIBLE
-                ui_header_title.text = getString(R.string.onboard_welcome_title)
+                binding.uiOnboardingBtPrevious.visibility = View.INVISIBLE
+                binding.uiHeaderTitle.text = getString(R.string.onboard_welcome_title)
             }
             PositionsType.Type.pos -> {
-                ui_onboarding_bt_previous?.visibility = View.INVISIBLE
-                val usern = String.format(getString(R.string.onboard_welcome_title_phase3),temporaryUser.firstName)
-                ui_header_title.text = usern
+                binding.uiOnboardingBtPrevious.visibility = View.INVISIBLE
+                binding.uiHeaderTitle.text = String.format(getString(R.string.onboard_welcome_title_phase3),temporaryUser.firstName)
             }
             else -> {
-                ui_onboarding_bt_previous?.visibility = View.VISIBLE
-                ui_header_title.text = getString(R.string.onboard_welcome_title_phase2)
+                binding.uiOnboardingBtPrevious.visibility = View.VISIBLE
+                binding.uiHeaderTitle.text = getString(R.string.onboard_welcome_title_phase2)
             }
         }
     }
@@ -426,10 +425,10 @@ class OnboardingStartActivity : AppCompatActivity(), OnboardingStartCallback {
 
     override fun updateButtonNext(isValid: Boolean) {
         if (isValid) {
-            ui_onboarding_bt_next.enable()
+            binding.uiOnboardingBtNext.enable()
         }
         else {
-            ui_onboarding_bt_next.disable()
+            binding.uiOnboardingBtNext.disable()
         }
     }
 

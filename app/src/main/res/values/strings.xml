@@ -223,6 +223,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="category_name_label">Décrivez en un mot la catégorie de votre groupe</string>
     <string name="pass">Passer</string>
     <string name="create_post">Créer une publication</string>
+    <string name="create_survey">Créer un sondage</string>
     <string name="create_event">Créer un événement sur le groupe</string>
     <string name="create_event_if_no_event">Créer un événement</string>
     <string name="create_event_btn_title">Créer un événement</string>
@@ -244,7 +245,9 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="discover_groups">Je découvre</string>
     <string name="my_groups">Mes groupes</string>
     <string name="members_number">%s membres</string>
+    <string name="participant_number">%s participants</string>
     <string name="members_number_singular">%s membre</string>
+    <string name="participant_number_singular">%s participant</string>
     <string name="member_number">%s membre</string>
     <string name="future_outgoing_events_number">%s événements prévus</string>
     <string name="future_outgoing_events_number_singular">%s événement prévu</string>
@@ -275,6 +278,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="group_posts_empty_state_subtitle">Pourquoi ne pas lancer la discussion avec vos voisins ?</string>
     <string name="posts">Fil d’actualité</string>
     <string name="see_members">Voir les membres</string>
+    <string name="see_participants">Participants</string>
     <string name="leave_group">Quitter le groupe</string>
     <string name="edit_group_information">Modifier les informations du groupe</string>
     <string name="notification_new_event">Les nouveaux événements</string>
@@ -2645,6 +2649,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="map_filter_entourage_contribution_text"><b>Voir les contributions concernant :</b></string>
     <string name="custom_dialog_action_content_one_contrib">Votre action \"<![CDATA[<b>%1$s</b>]]>\" est-elle terminée ?</string>
     <string name="search_member_hint">Chercher un membre</string>
+    <string name="search_participant_hint">Chercher un participant</string>
     <string name="terms_and_conditions_html">En cliquant sur &lt;b&gt;Suivant&lt;/b&gt;, vous acceptez les &lt;a href=\'https://www.entourage.social/cgu/\'&gt;Conditions Générales d\'Utilisation&lt;/a&gt; et la &lt;a href=\'https://www.entourage.social/politique-de-confidentialite/\'&gt;Politique de Confidentialité&lt;/a&gt;</string>
     <string name="action_crete_cat_about">Vous cherchez à proposer une %s qui ne rentre pas dans l\'une de ces catégories ? Il semble qu\'elle n\'ait pas sa place sur le réseau,mais vous pouvez toujours</string>
     <string name="action_create_cat_about_link"> en savoir plus par ici.</string>
@@ -2685,6 +2690,30 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="see_member_react">Personnes ayant réagi</string>
     <string name="text_title_i_like">J\'aime</string>
     <string name="text_title_comment">Commenter</string>
+    <string name="text_title_votes">Voir les votes</string>
+
+    <!--    CREATE SURVEY-->
+    <string name="header_title_create_survey">Créer un sondage</string>
+    <string name="create_question_title">Question</string>
+    <string name="create_question_hint">Poser votre question</string>
+    <string name="create_option_hint">+ Ajouter une option</string>
+    <string name="create_option_title">Options</string>
+    <string name="title_switch_mutiple_choice">Plusieurs réponses possibles</string>
+    <string name="title_switch_single_choice">Sélectionnez une option</string>
+    <string name="title_switch_mutiples_choices">Sélectionnez une ou plusieurs options</string>
+    <string name="btn_survey_validate">Valider</string>
+    <string name="btn_survey_cancel">Annuler</string>
+    <string name="popup_survey_title">Attention</string>
+    <string name="popup_survey_content">Si vous quittez la création de sondage, toutes les informations saisies seront perdues</string>
+    <string name="popup_survey_btn_leave">Quitter</string>
+    <string name="popup_survey_btn_cancel">Annuler</string>
+    <string name="see_member_vote">Réponses au sondage</string>
+    <string name="activate_geoloc">Activez la localisation</string>
+
+
+    <string name="home_v2_no_adress_title">Améliorez votre expérience !</string>
+    <string name="home_v2_no_adress_content">Pour connaître les actions et évènements solidaires autour de chez vous, veuillez prendre un moment pour ajouter votre localité à votre profil.</string>
+    <string name="home_v2_no_adress_button">Ajouter ma localité</string>
 
 </resources>
 

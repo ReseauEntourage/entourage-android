@@ -20,6 +20,7 @@ import social.entourage.android.R
 import social.entourage.android.api.model.Events
 import social.entourage.android.api.model.Status
 import social.entourage.android.databinding.LayoutItemMyEventBinding
+import social.entourage.android.events.EventsFragment
 import social.entourage.android.events.details.feed.FeedActivity
 import social.entourage.android.language.LanguageManager
 import social.entourage.android.tools.calculateIfEventPassed
@@ -59,6 +60,7 @@ class MyEventRVAdapter(var context: Context) :RecyclerView.Adapter<RecyclerView.
     inner class MyEventItemViewHolder(private val binding: LayoutItemMyEventBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(event: Events) {
             binding.entireCardLayoutItem.setOnClickListener { view ->
+                EventsFragment.isFromDetails = true
                 (view.context as? Activity)?.startActivityForResult(
                     Intent(
                         view.context,

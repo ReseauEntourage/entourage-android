@@ -12,16 +12,17 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.RelativeLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.layout_code_picker_dialog.*
-import social.entourage.android.R
+import social.entourage.android.databinding.LayoutCodePickerDialogBinding
 import social.entourage.android.tools.hideKeyboard
-import java.util.*
+import java.util.Locale
 import kotlin.math.roundToInt
 
 /**
  * Dialog for selecting Country.
  */
 internal class CountryCodeDialog(private val mCountryCodePicker: CountryCodePicker) : Dialog(mCountryCodePicker.context) {
+    private lateinit var binding: LayoutCodePickerDialogBinding
+    
     private var mFilteredCountries: List<Country?>? = null
     private var mInputMethodManager: InputMethodManager? = null
     private var mAdapter: CountryCodeAdapter? = null
@@ -29,25 +30,26 @@ internal class CountryCodeDialog(private val mCountryCodePicker: CountryCodePick
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         requestWindowFeature(Window.FEATURE_NO_TITLE)
-        setContentView(R.layout.layout_code_picker_dialog)
+        binding = LayoutCodePickerDialogBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         setupData()
     }
 
     private fun setupData() {
         mCountryCodePicker.typeFace?.let { typeface->
-            title_tv?.typeface = typeface
-            search_edt?.typeface = typeface
-            no_result_tv?.typeface = typeface
+            binding.titleTv.typeface = typeface
+            binding.searchEdt.typeface = typeface
+            binding.noResultTv.typeface = typeface
         }
         if (mCountryCodePicker.mBackgroundColor != CountryCodePicker.defaultBackgroundColor) {
-            dialog_rly?.setBackgroundColor(mCountryCodePicker.mBackgroundColor)
+            binding.dialogRly.setBackgroundColor(mCountryCodePicker.mBackgroundColor)
         }
         if (mCountryCodePicker.textColor != CountryCodePicker.defaultContentColor) {
             val color = mCountryCodePicker.textColor
-            title_tv?.setTextColor(color)
-            no_result_tv?.setTextColor(color)
-            search_edt?.setTextColor(color)
-            search_edt?.setHintTextColor(adjustAlpha(color, 0.7f))
+            binding.titleTv.setTextColor(color)
+            binding.noResultTv.setTextColor(color)
+            binding.searchEdt.setTextColor(color)
+            binding.searchEdt.setHintTextColor(adjustAlpha(color, 0.7f))
         }
         mCountryCodePicker.refreshCustomMasterList()
         mCountryCodePicker.refreshPreferredCountries()
@@ -55,7 +57,7 @@ internal class CountryCodeDialog(private val mCountryCodePicker: CountryCodePick
             override fun onItemCountrySelected(country: Country?) {
                 mCountryCodePicker.selectedCountry = country
                 //if (view != null && mCountries.get(position) != null) {
-                search_edt?.hideKeyboard()
+                binding.searchEdt.hideKeyboard()
                 dismiss()
             }
         }
@@ -63,14 +65,14 @@ internal class CountryCodeDialog(private val mCountryCodePicker: CountryCodePick
             mAdapter = CountryCodeAdapter(it, mCountryCodePicker, callback)
         }
         if (!mCountryCodePicker.isSelectionDialogShowSearch) {
-            country_dialog_rv?.let {
+            binding.countryDialogRv.let {
                 val params = it.layoutParams as RelativeLayout.LayoutParams
                 params.height = RecyclerView.LayoutParams.WRAP_CONTENT
                 it.layoutParams = params
             }
         }
-        country_dialog_rv?.layoutManager = LinearLayoutManager(context)
-        country_dialog_rv?.adapter = mAdapter
+        binding.countryDialogRv.layoutManager = LinearLayoutManager(context)
+        binding.countryDialogRv.adapter = mAdapter
         mInputMethodManager = mCountryCodePicker.context
                 .getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         setSearchBar()
@@ -93,7 +95,7 @@ internal class CountryCodeDialog(private val mCountryCodePicker: CountryCodePick
         if (mCountryCodePicker.isSelectionDialogShowSearch) {
             setTextWatcher()
         } else {
-            search_edt?.visibility = View.GONE
+            binding.searchEdt.visibility = View.GONE
         }
     }
 
@@ -101,7 +103,7 @@ internal class CountryCodeDialog(private val mCountryCodePicker: CountryCodePick
      * add textChangeListener, to apply new query each time editText get text changed.
      */
     private fun setTextWatcher() {
-        search_edt?.addTextChangedListener(object : TextWatcher {
+        binding.searchEdt.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable) {}
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
@@ -121,7 +123,7 @@ internal class CountryCodeDialog(private val mCountryCodePicker: CountryCodePick
      */
     private fun applyQuery(query: String) {
         var newQuery = query.lowercase(Locale.getDefault())
-        no_result_tv?.visibility = View.GONE
+        binding.noResultTv.visibility = View.GONE
 
         //if query started from "+" ignore it
         if (newQuery.isNotEmpty() && newQuery[0] == '+') {
@@ -129,7 +131,7 @@ internal class CountryCodeDialog(private val mCountryCodePicker: CountryCodePick
         }
         mFilteredCountries = getFilteredCountries(newQuery)
         if (mFilteredCountries.isNullOrEmpty()) {
-            no_result_tv?.visibility = View.VISIBLE
+            binding.noResultTv.visibility = View.VISIBLE
         }
         mAdapter?.notifyDataSetChanged()
     }

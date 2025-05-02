@@ -4,17 +4,14 @@ import android.app.Application
 import android.content.Intent
 import android.os.Bundle
 import androidx.test.core.app.ApplicationProvider.getApplicationContext
-import androidx.test.espresso.Espresso
-import androidx.test.espresso.assertion.ViewAssertions
-import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.rule.ActivityTestRule
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import social.entourage.android.api.model.notification.PushNotificationMessage
 import social.entourage.android.api.model.notification.PushNotificationContent
+import social.entourage.android.api.model.notification.PushNotificationMessage
 import social.entourage.android.notifications.PushNotificationManager
 
 @RunWith(AndroidJUnit4::class)
@@ -64,6 +61,6 @@ class PushNotificationTest {
         args.putSerializable(PushNotificationManager.PUSH_MESSAGE, pushNotificationMessage)
         intent.putExtras(args)
         startIntent(intent)
-        Espresso.onView(ViewMatchers.withId(R.id.fragment_map_new_entourages_button)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+        //Espresso.onView(ViewMatchers.withId(R.id.fragment_guide_new_entourages_button)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
     }
 }

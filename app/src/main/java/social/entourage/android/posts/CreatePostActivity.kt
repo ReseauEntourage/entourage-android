@@ -12,25 +12,23 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.collection.ArrayMap
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
-import androidx.databinding.DataBindingUtil
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import social.entourage.android.R
-import social.entourage.android.databinding.NewActivityCreatePostBinding
-import social.entourage.android.groups.details.feed.FeedActivity
 import social.entourage.android.base.ChoosePhotoModalFragment
+import social.entourage.android.databinding.ActivityCreatePostBinding
 import social.entourage.android.groups.details.feed.CreatePostGroupActivity
+import social.entourage.android.groups.details.feed.FeedActivity
+import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.Utils
 import social.entourage.android.tools.utils.px
-import social.entourage.android.tools.log.AnalyticsEvents
-import timber.log.Timber
 import java.io.File
 
 abstract class CreatePostActivity : AppCompatActivity() {
 
-    lateinit var binding: NewActivityCreatePostBinding
+    lateinit var binding: ActivityCreatePostBinding
     protected var groupId = Const.DEFAULT_VALUE
     private var shouldClose = false
     var imageURI: Uri? = null
@@ -40,10 +38,9 @@ abstract class CreatePostActivity : AppCompatActivity() {
         AnalyticsEvents.logEvent(
             AnalyticsEvents.VIEW_GROUP_FEED_NEW_POST_SCREEN
         )
-        binding = DataBindingUtil.setContentView(
-            this,
-            R.layout.new_activity_create_post
-        )
+        binding = ActivityCreatePostBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
         groupId = intent.getIntExtra(Const.ID, Const.DEFAULT_VALUE)
         shouldClose = intent.getBooleanExtra(Const.FROM_CREATE_GROUP, false)
         setView()

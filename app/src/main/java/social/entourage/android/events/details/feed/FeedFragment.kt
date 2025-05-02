@@ -1,13 +1,14 @@
 package social.entourage.android.events.details.feed
 
 import android.app.AlertDialog
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
@@ -16,6 +17,7 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.core.widget.NestedScrollView
+import androidx.core.widget.TextViewCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.lifecycleScope
@@ -29,10 +31,8 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
-import com.google.gson.Gson
-import kotlinx.android.synthetic.main.new_fragment_feed.view.arrow
-import kotlinx.android.synthetic.main.new_fragment_feed.view.subtitle
-import kotlinx.android.synthetic.main.new_fragment_feed_event.view.tv_more
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import social.entourage.android.BuildConfig
@@ -44,23 +44,30 @@ import social.entourage.android.api.model.EntourageUser
 import social.entourage.android.api.model.Events
 import social.entourage.android.api.model.Post
 import social.entourage.android.api.model.Status
+import social.entourage.android.api.model.Survey
 import social.entourage.android.api.model.Tags
 import social.entourage.android.api.model.toEventUi
-import social.entourage.android.comment.CommentsListAdapter
 import social.entourage.android.comment.PostAdapter
 import social.entourage.android.comment.ReactionInterface
-import social.entourage.android.databinding.NewFragmentFeedEventBinding
+import social.entourage.android.comment.SurveyInteractionListener
+import social.entourage.android.databinding.FragmentFeedEventBinding
 import social.entourage.android.events.EventsPresenter
+import social.entourage.android.events.create.CreateEventActivity
 import social.entourage.android.events.details.SettingsModalFragment
 import social.entourage.android.groups.details.feed.CallbackReportFragment
+import social.entourage.android.groups.details.feed.FeedFragment
 import social.entourage.android.groups.details.feed.GroupMembersPhotosAdapter
-import social.entourage.android.groups.details.members.MembersFragment
+import social.entourage.android.groups.details.feed.rotationDegree
 import social.entourage.android.groups.details.members.MembersType
 import social.entourage.android.language.LanguageManager
+import social.entourage.android.members.MembersActivity
 import social.entourage.android.profile.myProfile.InterestsAdapter
 import social.entourage.android.report.DataLanguageStock
 import social.entourage.android.report.ReportModalFragment
 import social.entourage.android.report.ReportTypes
+import social.entourage.android.survey.CreateSurveyActivity
+import social.entourage.android.survey.ResponseSurveyActivity
+import social.entourage.android.survey.SurveyPresenter
 import social.entourage.android.tools.calculateIfEventPassed
 import social.entourage.android.tools.image_viewer.ImageDialogActivity
 import social.entourage.android.tools.log.AnalyticsEvents
@@ -70,33 +77,104 @@ import social.entourage.android.tools.utils.Utils
 import social.entourage.android.tools.utils.Utils.enableCopyOnLongClick
 import social.entourage.android.tools.utils.px
 import social.entourage.android.tools.utils.underline
-import timber.log.Timber
+import uk.co.markormesher.android_fab.SpeedDialMenuAdapter
+import uk.co.markormesher.android_fab.SpeedDialMenuItem
 import java.text.SimpleDateFormat
-import java.util.Locale
 import kotlin.math.abs
 
-class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface {
+class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
+    SurveyInteractionListener {
 
-    private var _binding: NewFragmentFeedEventBinding? = null
-    val binding: NewFragmentFeedEventBinding get() = _binding!!
+    private var _binding: FragmentFeedEventBinding? = null
+    val binding: FragmentFeedEventBinding get() = _binding!!
 
     private val eventPresenter: EventsPresenter by lazy { EventsPresenter() }
+    private val surveyPresenter: SurveyPresenter by lazy { SurveyPresenter() }
     private var interestsList: ArrayList<String> = ArrayList()
     private var eventId = Const.DEFAULT_VALUE
     private var event: Events? = null
     private var myId: Int? = null
     private val args: FeedFragmentArgs by navArgs()
     private var shouldShowPopUp = true
+    private var isLoading = false
+    private var page:Int = 1
+    private val ITEM_PER_PAGE = 10
 
     private var newPostsList: MutableList<Post> = mutableListOf()
     private var oldPostsList: MutableList<Post> = mutableListOf()
     private var allPostsList: MutableList<Post> = mutableListOf()
 
+    private val speedDialMenuAdapter = object : SpeedDialMenuAdapter() {
+        override fun getCount(): Int = 2
+        override fun getMenuItem(context: Context, position: Int): SpeedDialMenuItem =
+            when (position) {
+                0 -> SpeedDialMenuItem(
+                    context,
+                    R.drawable.ic_group_feed_one,
+                    getString(R.string.create_post)
+                )
+                1 -> SpeedDialMenuItem(
+                    context,
+                    R.drawable.ic_survey_creation,
+                    getString(R.string.create_survey)
+                )
+                else -> SpeedDialMenuItem(
+                    context,
+                    R.drawable.new_create_event,
+                    getString(R.string.create_event)
+                )
+            }
+
+
+
+        override fun onMenuItemClick(position: Int): Boolean {
+            when (position) {
+                0 -> {
+                    AnalyticsEvents.logEvent(AnalyticsEvents.Event_detail_action_post)
+                    val intent = Intent(context, CreatePostEventActivity::class.java)
+                    intent.putExtra(Const.ID, eventId)
+                    startActivityForResult(intent, 0)
+                }
+                1 -> {
+                    AnalyticsEvents.logEvent(
+                        AnalyticsEvents.Clic_Event_Create_Poll
+                    )
+                    val intent = Intent(context, CreateSurveyActivity::class.java)
+                    FeedFragment.isFromCreation = true
+                    intent.putExtra(Const.EVENT_ID, eventId)
+                    startActivity(intent)
+                }
+
+                else -> {
+                    AnalyticsEvents.logEvent(
+                        AnalyticsEvents.ACTION_GROUP_FEED_PLUS_CLOSE
+                    )
+                }
+            }
+            return true
+        }
+
+        override fun onPrepareItemLabel(context: Context, position: Int, label: TextView) {
+            TextViewCompat.setTextAppearance(label, R.style.left_courant_bold_black)
+        }
+
+        override fun onPrepareItemCard(context: Context, position: Int, card: View) {
+            card.background = ContextCompat.getDrawable(
+                requireContext(),
+                R.drawable.new_bg_circle_orange
+            )
+        }
+
+        override fun fabRotationDegrees(): Float = rotationDegree
+    }
+
+
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = NewFragmentFeedEventBinding.inflate(inflater, container, false)
+        _binding = FragmentFeedEventBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -111,6 +189,8 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface {
         eventPresenter.isUserParticipating.observe(viewLifecycleOwner, ::handleParticipateResponse)
         eventPresenter.getAllPosts.observe(viewLifecycleOwner, ::handleResponseGetEventPosts)
         eventPresenter.getMembers.observe(viewLifecycleOwner, ::handleResponseGetMembers)
+        surveyPresenter.isSurveyVoted.observe(requireActivity(), ::handleSurveyPostResponse)
+
         handleSwipeRefresh()
         handleMembersButton()
         fragmentResult()
@@ -134,11 +214,16 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface {
     }
 
     private fun setupNestedScrollViewScrollListener() {
-        binding.scrollView.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { _, _, scrollY, _, _ ->
+        binding.scrollView.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { _, _, scrollY, _, oldScrollY ->
             if (scrollY > 0) {
-                Log.wtf("NestedScroll", "Scrolling in NestedScrollView")
                 // Ici, tu peux notifier ton RecyclerView adapter de cacher les éléments layoutReactions
                 hideReactionsInRecyclerView()
+                if (!binding.scrollView.canScrollVertically(1) && !isLoading) {
+                    isLoading = true
+                    page++ // Incrémente la page pour la pagination
+                    binding.progressBar.visibility = View.VISIBLE
+                    loadPosts()
+                }
             }
         })
     }
@@ -174,52 +259,50 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface {
     }
 
     private fun handleResponseGetEventPosts(allPosts: MutableList<Post>?) {
-        binding.swipeRefresh.isRefreshing = false
-        newPostsList.clear()
-        oldPostsList.clear()
-        allPostsList.clear()
-        allPosts?.let {
-            allPostsList.addAll(allPosts)
-            it.forEach { post ->
-                if (post.read == true || post.read == null) oldPostsList.add(post)
-                else newPostsList.add(post)
+        CoroutineScope(Dispatchers.Main).launch {
+            binding.swipeRefresh.isRefreshing = false
+            binding.progressBar.visibility = View.GONE
+            isLoading = false
+            allPosts?.let {
+                allPostsList.addAll(allPosts)
+                it.forEach { post ->
+                    if (post.read == true || post.read == null) oldPostsList.add(post)
+                    else newPostsList.add(post)
+                }
             }
-        }
-        Log.wtf("wtf", "newPostsList: " + newPostsList.size)
-        Log.wtf("wtf", "oldpostlist: " + oldPostsList.size)
-
-        when {
-            newPostsList.isEmpty() && oldPostsList.isEmpty() -> {
-                binding.postsLayoutEmptyState.visibility = View.VISIBLE
-                binding.postsNewRecyclerview.visibility = View.GONE
-                binding.postsOldRecyclerview.visibility = View.GONE
-                binding.postsNew.root.visibility = View.GONE
-                binding.postsOld.root.visibility = View.GONE
-            }
-            newPostsList.isNotEmpty() && oldPostsList.isEmpty() -> {
-                binding.postsNew.root.visibility = View.VISIBLE
-                binding.postsNewRecyclerview.visibility = View.VISIBLE
-                binding.postsLayoutEmptyState.visibility = View.GONE
-                binding.postsOldRecyclerview.visibility = View.GONE
-                binding.postsOld.root.visibility = View.GONE
-                binding.postsNewRecyclerview.adapter?.notifyDataSetChanged()
-            }
-            oldPostsList.isNotEmpty() && newPostsList.isEmpty() -> {
-                binding.postsOld.root.visibility = View.GONE
-                binding.postsOldRecyclerview.visibility = View.VISIBLE
-                binding.postsLayoutEmptyState.visibility = View.GONE
-                binding.postsNew.root.visibility = View.GONE
-                binding.postsNewRecyclerview.visibility = View.GONE
-                binding.postsOldRecyclerview.adapter?.notifyDataSetChanged()
-            }
-            oldPostsList.isNotEmpty() && newPostsList.isNotEmpty() -> {
-                binding.postsOld.root.visibility = View.VISIBLE
-                binding.postsOldRecyclerview.visibility = View.VISIBLE
-                binding.postsNew.root.visibility = View.VISIBLE
-                binding.postsNewRecyclerview.visibility = View.VISIBLE
-                binding.postsLayoutEmptyState.visibility = View.GONE
-                binding.postsOldRecyclerview.adapter?.notifyDataSetChanged()
-                binding.postsNewRecyclerview.adapter?.notifyDataSetChanged()
+            when {
+                newPostsList.isEmpty() && oldPostsList.isEmpty() -> {
+                    binding.postsLayoutEmptyState.visibility = View.VISIBLE
+                    binding.postsNewRecyclerview.visibility = View.GONE
+                    binding.postsOldRecyclerview.visibility = View.GONE
+                    binding.postsNew.root.visibility = View.GONE
+                    binding.postsOld.root.visibility = View.GONE
+                }
+                newPostsList.isNotEmpty() && oldPostsList.isEmpty() -> {
+                    binding.postsNew.root.visibility = View.VISIBLE
+                    binding.postsNewRecyclerview.visibility = View.VISIBLE
+                    binding.postsLayoutEmptyState.visibility = View.GONE
+                    binding.postsOldRecyclerview.visibility = View.GONE
+                    binding.postsOld.root.visibility = View.GONE
+                    binding.postsNewRecyclerview.adapter?.notifyDataSetChanged()
+                }
+                oldPostsList.isNotEmpty() && newPostsList.isEmpty() -> {
+                    binding.postsOld.root.visibility = View.GONE
+                    binding.postsOldRecyclerview.visibility = View.VISIBLE
+                    binding.postsLayoutEmptyState.visibility = View.GONE
+                    binding.postsNew.root.visibility = View.GONE
+                    binding.postsNewRecyclerview.visibility = View.GONE
+                    binding.postsOldRecyclerview.adapter?.notifyDataSetChanged()
+                }
+                oldPostsList.isNotEmpty() && newPostsList.isNotEmpty() -> {
+                    binding.postsOld.root.visibility = View.VISIBLE
+                    binding.postsOldRecyclerview.visibility = View.VISIBLE
+                    binding.postsNew.root.visibility = View.VISIBLE
+                    binding.postsNewRecyclerview.visibility = View.VISIBLE
+                    binding.postsLayoutEmptyState.visibility = View.GONE
+                    binding.postsOldRecyclerview.adapter?.notifyDataSetChanged()
+                    binding.postsNewRecyclerview.adapter?.notifyDataSetChanged()
+                }
             }
         }
     }
@@ -244,20 +327,24 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface {
             eventDescription.enableCopyOnLongClick(requireContext())
             if(event != null && event?.membersCount!! > 1){
                 eventMembersNumberLocation.text = String.format(
-                    getString(R.string.members_number),
+                    getString(R.string.participant_number),
                     event?.membersCount,
                 )
             }else{
                 eventMembersNumberLocation.text = String.format(
-                    getString(R.string.members_number_singular),
+                    getString(R.string.participant_number_singular),
                     event?.membersCount,
                 )
             }
-            var locale = LanguageManager.getLocaleFromPreferences(requireContext())
+            val locale = LanguageManager.getLocaleFromPreferences(requireContext())
 
 
             event?.metadata?.placeLimit?.let {
-                placesLimit.root.visibility = View.VISIBLE
+                if(it == 0){
+                    placesLimit.root.visibility = View.GONE
+                }else{
+                    placesLimit.root.visibility = View.VISIBLE
+                }
                 placesLimit.content.text = String.format(
                     getString(R.string.places_numbers),
                     it,
@@ -412,28 +499,32 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface {
         }
     }
 
+
     private fun loadPosts() {
-        eventPresenter.getEventPosts(eventId)
+        CoroutineScope(Dispatchers.IO).launch {
+            eventPresenter.getEventPosts(eventId,page,ITEM_PER_PAGE)
+        }
     }
 
     private fun initializePosts() {
 
         binding.postsNewRecyclerview.layoutManager = LinearLayoutManager(requireContext())
         binding.postsNewRecyclerview.adapter = PostAdapter(
-                requireContext(),
-                this,
-                newPostsList,
-                this.event?.member,
-                ::openCommentPage,
-                ::openReportFragment,
-                ::openImageFragment
-            )
-            (binding.postsNewRecyclerview.adapter as? PostAdapter)?.initiateList()
+            requireContext(),
+            this,
+            this,
+            newPostsList,
+            this.event?.member,
+            ::openCommentPage,
+            ::openReportFragment,
+            ::openImageFragment)
+        (binding.postsNewRecyclerview.adapter as? PostAdapter)?.initiateList()
 
 
         binding.postsOldRecyclerview.layoutManager = LinearLayoutManager(requireContext())
         binding.postsOldRecyclerview.adapter = PostAdapter(
                 requireContext(),
+            this,
             this,
                 oldPostsList,
                 this.event?.member,
@@ -466,25 +557,35 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface {
         val reportGroupBottomDialogFragment =
             event?.id?.let {
                 val meId = EntourageApplication.get().me()?.id
-                val post = allPostsList.find { it.id == postId }
+                val post = allPostsList.find { post -> post.id == postId }
                 val fromLang = post?.contentTranslations?.fromLang
                 if (fromLang != null) {
                     DataLanguageStock.updatePostLanguage(fromLang)
                 }
                 val isFrome = meId == post?.user?.id?.toInt()
-                Log.wtf("wtf", "isFrome $isFrome")
 
-                var description = allPostsList.find { it.id == postId }?.content ?: ""
+                val description = allPostsList.find { post1 -> post1.id == postId }?.content ?: ""
 
                 ReportModalFragment.newInstance(
                     postId,
                     it, ReportTypes.REPORT_POST_EVENT, isFrome
-                ,false,false, contentCopied = description)
+                , isConv = false, isOneToOne = false, contentCopied = description)
             }
         reportGroupBottomDialogFragment?.setCallback(this)
         reportGroupBottomDialogFragment?.show(parentFragmentManager, ReportModalFragment.TAG)
 
     }
+
+    private fun handleSurveyPostResponse(success: Boolean) {
+        if(isAdded){
+            if (success){
+                
+            }else{
+                showToast("Erreur serveur, veuillez réessayer plus tard")
+            }
+        }
+    }
+
 
     private fun openImageFragment(imageUrl:String, postId: Int) {
         val intent = Intent(requireContext(), ImageDialogActivity::class.java)
@@ -515,13 +616,16 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface {
     override fun onResume() {
         super.onResume()
         if (RefreshController.shouldRefreshEventFragment) eventPresenter.getEvent(eventId)
+        newPostsList.clear()
+        oldPostsList.clear()
+        allPostsList.clear()
         loadPosts()
 
     }
 
 
     private fun handleAboutButton() {
-        binding.more.tv_more.setOnClickListener {
+        binding.tvMore.setOnClickListener {
             event?.let { event ->
                 val eventUI = event.toEventUi(requireContext())
                 val action =
@@ -556,12 +660,12 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface {
         return "https://" + deepLinksHostName + "/app/outings/" + event?.uuid_v2
     }
 
-    fun getPrincipalMember(){
+    private fun getPrincipalMember(){
         eventPresenter.getEventMembers(eventId)
 
     }
 
-    fun handleResponseGetMembers(allMembers: MutableList<EntourageUser>?) {
+    private fun handleResponseGetMembers(allMembers: MutableList<EntourageUser>?) {
         if (allMembers != null) {
             for(member in allMembers){
                 if(member.id.toInt() == event?.author?.userID){
@@ -594,9 +698,12 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface {
 
     private fun handleMembersButton() {
         binding.members.setOnClickListener {
-            val action =
-                FeedFragmentDirections.actionEventFeedToMembers(eventId, MembersType.EVENT)
-            findNavController().navigate(action)
+            val intent = Intent(context, MembersActivity::class.java).apply {
+                // Passage des arguments nécessaires
+                putExtra("ID", eventId) // Assure-toi que 'groupId' est un Int
+                putExtra("TYPE", MembersType.EVENT.code) // Utilise 'code' pour passer l'enum comme un Int
+            }
+            startActivity(intent)
         }
     }
 
@@ -607,7 +714,8 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface {
                 updateButtonJoin()
                 handleCreatePostButton()
                 binding.participate.hide()
-                if (event.metadata?.placeLimit != null) {
+                eventPresenter.getEvent(eventId)
+                if (event.metadata?.placeLimit != null && event.metadata.placeLimit != 0) {
                     showLimitPlacePopUp()
                 } else {
                     if (shouldShowPopUp){
@@ -624,6 +732,7 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface {
             updateButtonJoin()
             handleCreatePostButton()
             binding.participate.show()
+            eventPresenter.getEvent(eventId)
         }
     }
 
@@ -637,23 +746,18 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface {
     }
 
     private fun handleCreatePostButtonClick() {
-        binding.createPost.setOnClickListener {
-            AnalyticsEvents.logEvent(AnalyticsEvents.Event_detail_action_post)
-            val intent = Intent(context, CreatePostEventActivity::class.java)
-            intent.putExtra(Const.ID, eventId)
-            startActivityForResult(intent, 0)
-        }
+        binding.createPost.speedDialMenuAdapter = speedDialMenuAdapter
     }
 
     private fun handleCreatePostButton() {
         if (event?.member == false) {
             binding.createPost.hide(true)
-            binding.postsLayoutEmptyState.subtitle.visibility = View.VISIBLE
-            binding.postsLayoutEmptyState.arrow.visibility = View.VISIBLE
+            binding.subtitle.visibility = View.VISIBLE
+            binding.arrow.visibility = View.VISIBLE
         } else {
             binding.createPost.show()
-            binding.postsLayoutEmptyState.subtitle.visibility = View.GONE
-            binding.postsLayoutEmptyState.arrow.visibility = View.GONE
+            binding.subtitle.visibility = View.GONE
+            binding.arrow.visibility = View.GONE
         }
     }
 
@@ -760,11 +864,14 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface {
     }
 
     override fun seeMemberReaction(post: Post) {
-        MembersFragment.isFromReact = true
-        MembersFragment.postId = post.id!!
-        val action =
-            FeedFragmentDirections.actionEventFeedToMembers(eventId, MembersType.EVENT)
-        findNavController().navigate(action)
+        MembersActivity.isFromReact = true
+        MembersActivity.postId = post.id!!
+        val intent = Intent(context, MembersActivity::class.java).apply {
+            // Passage des arguments nécessaires
+            putExtra("ID", eventId) // Assure-toi que 'groupId' est un Int
+            putExtra("TYPE", MembersType.EVENT.code) // Utilise 'code' pour passer l'enum comme un Int
+        }
+        startActivity(intent)
     }
 
     override fun deleteReaction(post: Post) {
@@ -780,5 +887,25 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface {
             return
         }
         eventPresenter.deleteReactToPost(eventId,post.id!!)
+    }
+
+    override fun onSurveyOptionClicked(postId: Int, surveyResponse: MutableList<Boolean>) {
+        surveyPresenter.postSurveyResponseEvent(eventId, postId, surveyResponse)
+    }
+
+    override fun onDeleteSurveyClick(postId: Int, surveyResponse: MutableList<Boolean>) {
+        //Toast.makeText(requireContext(), "Survey option deleted", Toast.LENGTH_SHORT).show()
+    }
+
+    override fun showParticipantWhoVote(survey: Survey, postId: Int, question:String) {
+        val intent = Intent(context, ResponseSurveyActivity::class.java).apply {
+            ResponseSurveyActivity.survey = survey
+            ResponseSurveyActivity.isGroup = false
+            ResponseSurveyActivity.itemId = eventId
+            ResponseSurveyActivity.postId = postId
+            ResponseSurveyActivity.question = question
+
+        }
+        startActivity(intent)
     }
 }
