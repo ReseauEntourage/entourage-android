@@ -101,9 +101,11 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
     private var page:Int = 1
     private val ITEM_PER_PAGE = 10
 
+
     private var newPostsList: MutableList<Post> = mutableListOf()
     private var oldPostsList: MutableList<Post> = mutableListOf()
     private var allPostsList: MutableList<Post> = mutableListOf()
+    private var memberList: MutableList<EntourageUser> = mutableListOf()
 
     private val speedDialMenuAdapter = object : SpeedDialMenuAdapter() {
         override fun getCount(): Int = 2
@@ -176,6 +178,7 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentFeedEventBinding.inflate(inflater, container, false)
+
         return binding.root
     }
 
@@ -183,14 +186,14 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
         super.onViewCreated(view, savedInstanceState)
         eventId = args.eventID
         myId = EntourageApplication.me(activity)?.id
-        eventPresenter.getEvent(eventId)
         eventPresenter.getEvent.observe(viewLifecycleOwner, ::handleResponseGetEvent)
         eventPresenter.isEventReported.observe(requireActivity(), ::handleDeletedResponse)
         eventPresenter.hasUserLeftEvent.observe(requireActivity(),::handleLeaveResponse)
         eventPresenter.isUserParticipating.observe(viewLifecycleOwner, ::handleParticipateResponse)
         eventPresenter.getAllPosts.observe(viewLifecycleOwner, ::handleResponseGetEventPosts)
-        eventPresenter.getMembers.observe(viewLifecycleOwner, ::handleResponseGetMembers)
         surveyPresenter.isSurveyVoted.observe(requireActivity(), ::handleSurveyPostResponse)
+        eventPresenter.getMembers.observe(viewLifecycleOwner, ::handleResponseGetMembers)
+        getPrincipalMember()
 
         handleSwipeRefresh()
         handleMembersButton()
@@ -205,6 +208,8 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
         setupNestedScrollViewScrollListener()
 
     }
+
+
 
 
     private fun handleResponseGetEvent(getEvent: Events?) {
@@ -450,7 +455,6 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
         handleCreatePostButtonClick()
         openGoogleMaps()
         initializePosts()
-        getPrincipalMember()
     }
 
     private fun handleBackButton() {
@@ -461,6 +465,10 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
 
     private fun handleSwipeRefresh() {
         binding.swipeRefresh.setOnRefreshListener {
+            page = 1
+            oldPostsList.clear()
+            newPostsList.clear()
+            allPostsList.clear()
             loadPosts()
         }
     }
@@ -519,7 +527,8 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
             this.event?.member,
             ::openCommentPage,
             ::openReportFragment,
-            ::openImageFragment)
+            ::openImageFragment,
+            memberList)
         (binding.postsNewRecyclerview.adapter as? PostAdapter)?.initiateList()
 
 
@@ -532,8 +541,8 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
                 this.event?.member,
                 ::openCommentPage,
                 ::openReportFragment,
-                ::openImageFragment
-            )
+                ::openImageFragment,
+                memberList)
             (binding.postsOldRecyclerview.adapter as? PostAdapter)?.initiateList()
 
     }
@@ -669,6 +678,8 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
 
     private fun handleResponseGetMembers(allMembers: MutableList<EntourageUser>?) {
         if (allMembers != null) {
+            this.memberList.clear()
+            this.memberList.addAll(allMembers)
             for(member in allMembers){
                 if(member.id.toInt() == event?.author?.userID){
                     if(member.communityRoles?.contains("Équipe Entourage") == true || member.communityRoles?.contains("Ambassadeur") == true){
@@ -678,6 +689,7 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
                 }
             }
         }
+        eventPresenter.getEvent(eventId)
     }
 
     private fun handleParticipateButton() {

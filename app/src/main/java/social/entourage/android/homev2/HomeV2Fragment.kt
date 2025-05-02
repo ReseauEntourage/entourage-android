@@ -49,6 +49,7 @@ import social.entourage.android.home.pedago.OnItemClick
 import social.entourage.android.home.pedago.PedagoDetailActivity
 import social.entourage.android.home.pedago.PedagoListActivity
 import social.entourage.android.notifications.InAppNotificationsActivity
+import social.entourage.android.onboarding.onboard.OnboardingStartActivity
 import social.entourage.android.profile.ProfileActivity
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.utils.Const
@@ -161,6 +162,7 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
         CommunicationHandler.resetValues()
     }
 
+    /*TODO remove this code if really not needed
     fun noAdressPopFillAdress(){
         if(!locationPopupHasPop){
             locationPopupHasPop = true
@@ -183,7 +185,7 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
                 }
             }
         }
-    }
+    }*/
 
     fun callToInitHome(){
 
@@ -459,6 +461,13 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
         EnhancedOnboarding.preference = summary.preference ?: ""
         onActionUnclosed(summary)
         handleHelps(summary)
+        val me = EntourageApplication.me(activity)
+        if(summary.preference == null || me?.address == null){
+            OnboardingStartActivity.FRAGMENT_NUMBER = 3
+            //launch onboarding activity
+            val intent = Intent(requireActivity(), OnboardingStartActivity::class.java)
+            startActivity(intent)
+        }
         isContribution = summary.preference.equals("contribution")
         isContribProfile = isContribution
         if(isContribution){
@@ -527,7 +536,7 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
     private fun updateUser(user:User){
         this.user = user
         updateAvatar()
-        noAdressPopFillAdress()
+
     }
 
     private fun setMapButton(){

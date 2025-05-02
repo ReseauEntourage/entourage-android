@@ -54,7 +54,9 @@ class OnboardingStartActivity : AppCompatActivity(), OnboardingStartCallback {
         super.onCreate(savedInstanceState)
         binding = ActivityOnboardingStartBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
+        if(FRAGMENT_NUMBER != 0) {
+            currentFragmentPosition = FRAGMENT_NUMBER
+        }
         temporaryCountrycode = Country(getString(R.string.country_france_code),
             getString(R.string.country_france_number),
             getString(R.string.country_france_name),
@@ -369,7 +371,12 @@ class OnboardingStartActivity : AppCompatActivity(), OnboardingStartCallback {
             }
             PositionsType.Type.pos -> {
                 binding.uiOnboardingBtPrevious.visibility = View.INVISIBLE
-                binding.uiHeaderTitle.text = String.format(getString(R.string.onboard_welcome_title_phase3),temporaryUser.firstName)
+                if(FRAGMENT_NUMBER != 0) {
+                    val meUser = EntourageApplication.me(this)
+                    binding.uiHeaderTitle.text = String.format(getString(R.string.onboard_welcome_title_phase3),meUser?.firstName)
+                } else {
+                    binding.uiHeaderTitle.text = String.format(getString(R.string.onboard_welcome_title_phase3),temporaryUser.firstName)
+                }
             }
             else -> {
                 binding.uiOnboardingBtPrevious.visibility = View.VISIBLE
@@ -438,5 +445,10 @@ class OnboardingStartActivity : AppCompatActivity(), OnboardingStartCallback {
 
     override fun requestNewCode() {
         resendCode()
+    }
+
+    companion object {
+        //fragment number to send from another page
+        var FRAGMENT_NUMBER = 0
     }
 }

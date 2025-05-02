@@ -24,10 +24,12 @@ import com.google.gson.Gson
 import social.entourage.android.EntourageApplication
 import social.entourage.android.MainActivity
 import social.entourage.android.R
+import social.entourage.android.api.model.EntourageUser
 import social.entourage.android.api.model.Post
 import social.entourage.android.api.model.Survey
 import social.entourage.android.api.model.Reaction
 import social.entourage.android.api.model.ReactionType
+import social.entourage.android.api.model.User
 import social.entourage.android.databinding.NewLayoutPostBinding
 import social.entourage.android.databinding.SurveyLayoutBinding
 import social.entourage.android.language.LanguageManager
@@ -59,6 +61,7 @@ class PostAdapter(
     var onClick: (Post, Boolean) -> Unit,
     var onReport: (Int,Int) -> Unit,
     var onClickImage: (imageUrl:String, postId:Int) -> Unit,
+    var memberList:MutableList<EntourageUser>? = null,
     ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private val translationExceptions = mutableSetOf<Int>()
     private val localSurveyResponseState: MutableMap<Int, MutableList<Boolean>> = mutableMapOf()
@@ -155,23 +158,25 @@ class PostAdapter(
                         )
                     }
                     surveyHolder.binding.tvAmbassador.visibility = View.VISIBLE
-                    var tagsString = ""
-                    if (post.user?.isAdmin() == true){
-                        tagsString = tagsString + context.getString(R.string.admin) + " •"
-                    }else if(post.user?.isAmbassador() == true){
-                        tagsString = tagsString + context.getString(R.string.ambassador) + " •"
-                    }else if(post.user?.partner != null ){
-                        tagsString = tagsString + post.user?.partner!!.name
 
+                    val member = memberList?.find { it.id.toInt() == post.user?.id?.toInt() }
+
+                    var tagsString = ""
+                    if (member?.isAdmin() == true) {
+                        tagsString += context.getString(R.string.admin) + " • "
+                    } else if (member?.isAmbassador() == true) {
+                        tagsString += context.getString(R.string.ambassador) + " • "
+                    } else if (member?.partner != null) {
+                        tagsString += member.partner!!.name
                     }
-                    if(tagsString.isEmpty()){
-                        surveyHolder.binding.tvAmbassador.visibility = View.GONE
-                    }else{
-                        surveyHolder.binding.tvAmbassador.visibility = View.VISIBLE
-                        if(tagsString.last().toString() == "•"){
-                            tagsString = tagsString.removeSuffix("•")
+                    if (tagsString.isEmpty()) {
+                        holder.binding.tvAmbassador.visibility = View.GONE
+                    } else {
+                        holder.binding.tvAmbassador.visibility = View.VISIBLE
+                        if (tagsString.endsWith("• ")) {
+                            tagsString = tagsString.dropLast(2)
                         }
-                        surveyHolder.binding.tvAmbassador.text = tagsString
+                        holder.binding.tvAmbassador.text = tagsString
                     }
 
                     // Création d'une copie locale de summary pour ajustements
@@ -259,7 +264,6 @@ class PostAdapter(
 
                                 if (postsList[position].commentsCount != null) {
                                     val resId = if (totalResponses > 1) R.string.posts_vote_number else R.string.posts_vote_number_singular
-                                    Log.wtf("wtf", "commentsCount: ${postsList[position].commentsCount}")
                                     val commentsText = " - " + String.format(holder.itemView.context.getString(resId), totalResponses)
                                     val spannableString = SpannableString(commentsText)
                                     spannableString.setSpan(UnderlineSpan(), 0, commentsText.length, Spanned.SPAN_INCLUSIVE_INCLUSIVE)
@@ -750,24 +754,27 @@ class PostAdapter(
                                 .into(binding.image)
                         }
                         binding.tvAmbassador.visibility = View.VISIBLE
-                        var tagsString = ""
-                        if (this.user?.isAdmin() == true){
-                            tagsString = tagsString + context.getString(R.string.admin) + " •"
-                        }else if(this.user?.isAmbassador() == true){
-                            tagsString = tagsString + context.getString(R.string.ambassador) + " •"
-                        }else if(this.user?.partner != null ){
-                            tagsString = tagsString + this.user?.partner!!.name
 
+                        val _post = postsList[position]
+                        val member = memberList?.find { it.id.toInt() == _post.user?.id?.toInt() }
+                        var tagsString = ""
+                        if (member?.isAdmin() == true) {
+                            tagsString += context.getString(R.string.admin) + " • "
+                        } else if (member?.isAmbassador() == true) {
+                            tagsString += context.getString(R.string.ambassador) + " • "
+                        } else if (member?.partner != null) {
+                            tagsString += member.partner!!.name
                         }
-                        if(tagsString.isEmpty()){
-                            binding.tvAmbassador.visibility = View.GONE
-                        }else{
-                            binding.tvAmbassador.visibility = View.VISIBLE
-                            if(tagsString.last().toString() == "•"){
-                                tagsString = tagsString.removeSuffix("•")
+                        if (tagsString.isEmpty()) {
+                            holder.binding.tvAmbassador.visibility = View.GONE
+                        } else {
+                            holder.binding.tvAmbassador.visibility = View.VISIBLE
+                            if (tagsString.endsWith("• ")) {
+                                tagsString = tagsString.dropLast(2)
                             }
-                            binding.tvAmbassador.text = tagsString
+                            holder.binding.tvAmbassador.text = tagsString
                         }
+
                         binding.name.setOnClickListener {
                             showUserDetail(binding.name.context,this.user?.userId)
                             binding.layoutReactions.visibility =  View.GONE

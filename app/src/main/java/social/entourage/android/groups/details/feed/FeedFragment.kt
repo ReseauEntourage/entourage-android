@@ -38,6 +38,7 @@ import social.entourage.android.BuildConfig
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.api.MetaDataRepository
+import social.entourage.android.api.model.EntourageUser
 import social.entourage.android.api.model.Group
 import social.entourage.android.api.model.Post
 import social.entourage.android.api.model.Survey
@@ -94,6 +95,7 @@ class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface,
     private var newPostsList: MutableList<Post> = ArrayList()
     private var oldPostsList: MutableList<Post> = ArrayList()
     private var allPostsList: MutableList<Post> = ArrayList()
+    private var memberList: MutableList<EntourageUser> = mutableListOf()
     private var dernierClicTime: Long = 0
 
 
@@ -175,7 +177,9 @@ class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface,
         super.onViewCreated(view, savedInstanceState)
         groupId = args.groupID
         myId = EntourageApplication.me(activity)?.id
-        groupPresenter.getGroup(groupId)
+
+        getPrincipalMember()
+        groupPresenter.getMembers.observe(viewLifecycleOwner, ::handleResponseGetGroupMembers)
         groupPresenter.getGroup.observe(viewLifecycleOwner, ::handleResponseGetGroup)
         groupPresenter.getAllPosts.observe(viewLifecycleOwner, ::handleResponseGetGroupPosts)
         groupPresenter.hasUserJoinedGroup.observe(viewLifecycleOwner, ::handleJoinResponse)
@@ -251,6 +255,17 @@ class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface,
                 }
             }
         })
+    }
+
+    private fun getPrincipalMember(){
+        groupPresenter.getGroupMembers(groupId)
+
+    }
+
+    private fun handleResponseGetGroupMembers(allMembers: MutableList<EntourageUser>?) {
+        memberList.addAll(allMembers ?: emptyList())
+        groupPresenter.getGroup(groupId)
+
     }
 
     private fun hideReactionsInRecyclerView() {
@@ -403,8 +418,7 @@ class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface,
             groupName.text = group?.name
             groupNameToolbar.text = group?.name
             groupMembersNumberLocation.text = String.format(
-                getString(R.string.members_location),
-                group?.members_count,
+                getString(R.string.members_location_temporary),
                 group?.address?.displayAddress
             )
             initializeMembersPhotos()
@@ -564,7 +578,8 @@ class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface,
             this.group?.member,
             ::openCommentPage,
             ::openReportFragment,
-            ::openImageFragment
+            ::openImageFragment,
+            memberList
         )
         (binding.postsNewRecyclerview.adapter as? PostAdapter)?.initiateList()
 
@@ -578,7 +593,8 @@ class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface,
             this.group?.member,
             ::openCommentPage,
             ::openReportFragment,
-            ::openImageFragment
+            ::openImageFragment,
+            memberList
         )
         (binding.postsOldRecyclerview.adapter as? PostAdapter)?.initiateList()
 

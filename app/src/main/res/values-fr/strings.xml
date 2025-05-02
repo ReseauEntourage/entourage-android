@@ -264,6 +264,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="welcome_message_btn_title">Je me présente</string>
     <string name="member">Membre</string>
     <string name="members_location">%s membres. %s</string>
+    <string name="members_location_temporary">%s</string>
     <string name="group_settings">Paramètres du groupe</string>
     <string name="report_group">Signaler un problème</string>
     <string name="rules_group">Règlement du groupe</string>
@@ -2128,9 +2129,9 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
 
     <string name="onboard_phase3_entour_desc">En plus de faire des rencontres humaines, comment souhaitez-vous contribuer au sein de la Communauté Entourage ? </string>
     <string name="onboard_phase3_entour_title">Entourer</string>
-    <string name="onboard_phase3_entour_subtitle">Proposer de l’aide …</string>
+    <string name="onboard_phase3_entour_subtitle">Je souhaite proposer du soutien à mes voisin(e)s qui en ont besoin.</string>
     <string name="onboard_phase3_be_entour_title">Être entouré</string>
-    <string name="onboard_phase3_be_entour_subtitle">Demander de l’aide, trouver les structures sociales autour de moi …</string>
+    <string name="onboard_phase3_be_entour_subtitle">Je suis en situation de vulnérabilité et recherche du soutien.</string>
     <string name="onboard_phase3_place_title">Quel est votre quartier ?</string>
     <string name="onboard_phase3_asso_title">Je suis une association</string>
 
@@ -2612,7 +2613,8 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="action_hygiene_name">Produit d\'hygiène</string>
     <string name="action_hygiene_subname">savon, protection hygiénique...</string>
 
-    <string name="interest_activites">Activités \nmanuelles</string>
+    <string name="interest_activites">Activités manuelles</string>
+    <string name="interest_activites_onboarding">Activités \nmanuelles</string>
     <string name="interest_animaux">Animaux</string>
     <string name="interest_bien_etre">Bien-être</string>
     <string name="interest_cuisine">Cuisine</string>

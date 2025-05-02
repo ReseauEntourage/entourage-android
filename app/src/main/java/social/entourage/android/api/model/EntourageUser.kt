@@ -1,5 +1,6 @@
 package social.entourage.android.api.model
 
+import android.util.Log
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import social.entourage.android.api.model.feed.FeedItem
@@ -128,7 +129,7 @@ class EntourageUser : TimestampedObject(), Serializable {
     }
 
     fun isAmbassador() : Boolean {
-        if (groupRole == "ambassador") {
+        if (communityRoles?.contains("Ambassadeur") == true ||communityRoles?.contains("ambassador") == true) {
             return true
         }
         return false

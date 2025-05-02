@@ -226,7 +226,6 @@ class WebViewFragment : BaseDialogFragment() {
                     if (host.startsWith("www.")) {
                         host = host.substring(4)
                     }
-                    Log.wtf("wtf", "host: $host")
                     binding.webviewTitle.text = if (host.isNotEmpty()) host.replaceFirstChar {
                         if (it.isLowerCase()) it.titlecase(
                             Locale.ROOT
@@ -248,7 +247,6 @@ class WebViewFragment : BaseDialogFragment() {
         @TargetApi(Build.VERSION_CODES.M)
         override fun onReceivedError(view: WebView, request: WebResourceRequest, error: WebResourceError) {
             super.onReceivedError(view, request, error)
-            Log.wtf("wtf", "error: ${error.description}")
             binding.webviewProgressbar?.visibility = View.GONE
         }
 
