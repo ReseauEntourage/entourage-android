@@ -25,6 +25,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:id="@+id/ui_title_events"
                 android:textSize="@dimen/header_title"
                 android:fontFamily="@font/quicksand_bold"
                 android:textColor="@color/white"
@@ -33,6 +34,68 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 android:layout_margin="16dp"/>
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/ui_layout_filter"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:background="@drawable/bg_partner_logo"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="@dimen/entourage_margin_end">
+
+                <ImageView
+                    android:id="@+id/ui_bell_filter"
+                    android:layout_width="24dp"
+                    android:layout_height="22dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ds_ic_filter"
+                    />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/ui_layout_search"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:background="@drawable/bg_partner_logo"
+                app:layout_constraintEnd_toStartOf="@+id/ui_layout_filter"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="8dp">
+                <ImageView
+                    android:id="@+id/ui_bell_search"
+                    android:layout_width="24dp"
+                    android:layout_height="22dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ds_ic_search"
+                    />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+            <LinearLayout
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:id="@+id/card_filter_number"
+                android:background="@drawable/bg_main_filter_item_number_shape"
+                app:layout_constraintTop_toTopOf="@+id/ui_layout_filter"
+                app:layout_constraintEnd_toEndOf="@+id/ui_layout_filter"
+                android:layout_marginEnd="-5dp"
+                android:layout_marginTop="-5dp"
+                android:visibility="gone">
+                <TextView
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:id="@+id/tv_number_of_filter"
+                    android:textAlignment="center"
+                    android:textSize="12sp"
+                    android:layout_marginTop="-3dp"
+                    android:fontFamily="@font/quicksand_bold"
+                    android:text="1"
+                    android:textColor="@color/white"/>
+            </LinearLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/ui_layout_location_bt"
@@ -44,7 +107,8 @@
                 android:paddingHorizontal="4dp"
                 android:paddingVertical="6dp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintTop_toTopOf="parent"
+                android:visibility="gone">
 
                 <ImageView
                     android:id="@+id/imageView26"

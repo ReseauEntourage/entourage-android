@@ -519,7 +519,7 @@
     <string name="entourage_info_text_join_rejected">تم رفض \u0020</string>
     <string name="entourage_info_text_join_cancelled_entourage">ألغى طلبه للانضمام إلى المجموعة</string>
     <string name="entourage_info_text_join_quited_entourage">غادر المجموعة</string>
-    <string name="entourage_info_text_join_html">&lt;font color=\"#F55F24\"&gt;%1$s &lt;/font&gt;%2$s</string>
+    <string name="entourage_info_text_join_html">&lt;font color=\"#FF9739\"&gt;%1$s &lt;/font&gt;%2$s</string>
     <string name="entourage_info_error_chat_message">لم يتم إرسال الرسالة</string>
     <string name="entourage_info_options_stop">لإحاطة</string>
     <string name="entourage_info_options_cancel_event">قم بإلغاء حدث \</string>
@@ -1605,7 +1605,7 @@
     <!-- Entourage Notifications -->
     <string name="entourage_info_text_join_accepted">\u0020انضم إلى المجموعة.</string>
     <string name="entourage_join_request_received_nomsg">%1$s يرغب في الانضمام إلى تحركك.</string>
-    <string name="entourage_join_request_received_message_html">&lt;font color=\"#F55F24\"&gt;%1$s &lt;/font&gt;يرغب في الانضمام إلى مجموعتك</string>
+    <string name="entourage_join_request_received_message_html">&lt;font color=\"#FF9739\"&gt;%1$s &lt;/font&gt;يرغب في الانضمام إلى مجموعتك</string>
     <string name="entourage_join_request_received_message_short">يريد الانضمام إلى مجموعتك.</string>
     <!-- Join Request -->
     <string name="entourage_join_request_success">تم قبول الطلب</string>
@@ -2631,7 +2631,7 @@
     <string name="posts_comment_number"><u>%s تعليقات</u></string>
     <string name="posts_comment_number_singular"><u>%s تعليق</u></string>
     <string name="show_more_lined"><u>عرض المزيد</u></string>
-    <string name="welcome_one_sensib">ابحث عن محتوانا التوعوي <u><font color="#F55F24">هنا</font></u></string>
+    <string name="welcome_one_sensib">ابحث عن محتوانا التوعوي <u><font color="#FF9739">هنا</font></u></string>
     <string name="action_show_charte"><u>ميثاق أخلاقي</u></string>
     <string name="signal_a_problem"><u>الإبلاغ عن مشكلة</u></string>
     <string name="login_button_resend_code"><u>طلب الرمز مرة أخرى</u></string>
@@ -2687,6 +2687,98 @@
     <string name="see_member_react">الأشخاص الذين تفاعلوا</string>
     <string name="text_title_i_like">أعجبني</string>
     <string name="text_title_comment">تعليق</string>
+    <string name="text_title_votes">عرض الأصوات</string>
+    <string name="header_title_create_survey">إنشاء استطلاع</string>
+    <string name="create_question_title">سؤال</string>
+    <string name="create_question_hint">اطرح سؤالك</string>
+    <string name="create_option_hint">+ إضافة خيار</string>
+    <string name="create_option_title">خيارات</string>
+    <string name="title_switch_mutiple_choice">اختيارات متعددة ممكنة</string>
+    <string name="title_switch_single_choice">اختر خيارًا واحدًا</string>
+    <string name="title_switch_mutiples_choices">اختر خيارًا واحدًا أو أكثر</string>
+    <string name="btn_survey_validate">تأكيد</string>
+    <string name="btn_survey_cancel">إلغاء</string>
+    <string name="popup_survey_title">تنبيه</string>
+    <string name="popup_survey_content">إذا تركت إنشاء الاستطلاع، ستفقد جميع المعلومات المدخلة</string>
+    <string name="popup_survey_btn_leave">مغادرة</string>
+    <string name="popup_survey_btn_cancel">إلغاء</string>
+    <string name="see_member_vote">إجابات الاستطلاع</string>
+    <string name="activate_geoloc">تمكين الموقع</string>
+    <string name="home_v2_no_adress_title">حسن تجربتك!</string>
+    <string name="home_v2_no_adress_content">لمعرفة الأنشطة والأحداث التضامنية من حولك، يرجى أخذ لحظة لإضافة موقعك إلى ملفك الشخصي.</string>
+    <string name="home_v2_no_adress_button">أضف موقعي</string>
+    <string name="popup_event_confirm_btn_confirm">سأحضر</string>
+    <string name="popup_event_confirm_btn_cancel">لن أحضر</string>
+    <string name="popup_event_confirm_title">لا تنسى: "%s" سيعقد غدًا في %s في %s!</string>
+    <string name="popup_event_confirm_content">لتسهيل تنظيم الحدث، هل يمكنك إخبارنا إذا كنت ستحضر غدًا؟</string>
+    <string name="onboarding_presentation_title">%s، دعونا نتعرف عليك!</string>
+    <string name="onboarding_presentation_content">قبل الغوص في تطبيقنا، دعونا نأخذ لحظة للتعرف عليك بشكل أفضل. ستساعدنا اهتماماتك في اقتراح الأنشطة والمحتويات التي تهمك.</string>
+    <string name="onboarding_presentation_btn_negative">تكوين لاحقًا</string>
+    <string name="onboarding_presentation_btn_positive">ابدأ</string>
+    <string name="onboarding_interest_title">اهتماماتي</string>
+    <string name="onboarding_interest_content">لمساعدتك في العثور على الأنشطة التي تناسب اهتماماتك، أخبرنا بما يثير اهتمامك.</string>
+    <string name="onboarding_btn_finish">إنهاء لاحقًا</string>
+    <string name="onboarding_btn_next">التالي</string>
+    <string name="onboarding_btn_register">تسجيل</string>
+    <string name="onboarding_category_title">فئات دعمي</string>
+    <string name="onboarding_category_content">اختر فئات الدعم التي ترغب في رؤيتها أولاً.</string>
+    <string name="onboarding_category_sharing_time">وقت المشاركة</string>
+    <string name="onboarding_category_donation">التبرعات المادية</string>
+    <string name="onboarding_category_services">عروض الخدمات</string>
+    <string name="onboarding_category_services_details">(الغسيل، طباعة الوثائق، المساعدة الإدارية...)</string>
+    <string name="onboarding_action_wish_title">كيف ترغب في العمل داخل مجتمع Entourage؟</string>
+    <string name="onboarding_action_wish_content">(نعم، يمكنك اختيار عدة خيارات!)</string>
+    <string name="onboarding_action_wish_pedago">التعلم باستخدام \nالمحتويات التربوية</string>
+    <string name="onboarding_action_wish_event">المشاركة في \nالفعاليات الاجتماعية</string>
+    <string name="onboarding_action_wish_services">تقديم أو طلب \nمساعدة</string>
+    <string name="onboarding_action_wish_network">الانضمام إلى مجموعة من \nالجيران وتكوين علاقات</string>
+    <string name="onboarding_action_wish_pedago_contrib">العثور على هياكل تضامنية قريبة</string>
+    <string name="onboarding_action_wish_event_contrib">المشاركة في \nالفعاليات الاجتماعية</string>
+    <string name="onboarding_action_wish_services_contrib">طلب \nمساعدة</string>
+    <string name="onboarding_action_wish_network_contrib">الانضمام إلى مجموعة من \nالجيران وتكوين علاقات</string>
+    <string name="onboarding_congrats_title">تجربتك المخصصة جاهزة!</string>
+    <string name="onboarding_congrats_content">استنادًا إلى تفضيلاتك وتوافرك، قمنا بإعداد مجموعة من الفعاليات التي تناسب ملفك الشخصي. حان الوقت للعمل!</string>
+    <string name="onboarding_congrats_leave">استكشاف الفعاليات</string>
+    <string name="onboarding_congrats_temporary_title">تجربتك المخصصة (تقريبًا) جاهزة!</string>
+    <string name="onboarding_congrats_temporary_content">شكرًا لمشاركة رغباتك في العمل واهتماماتك. نحن متحمسون لتقديم فعاليات مخصصة لك قريبًا. \nابقَ متصلاً!</string>
+    <string name="notif_ask_page_title">تفعيل الإشعارات لتجنب فقدان أي شيء</string>
+    <string name="notif_ask_page_subtitle">تلقي المساعدة بالقرب منك، الحصول على إشعارات الفعاليات المحلية، منشورات جيرانك والرسائل الشخصية في الوقت الفعلي.</string>
+    <string name="notif_ask_page_btn_main">تفعيل الإشعارات</string>
+    <string name="notif_ask_page_btn_secondary">ليس الآن</string>
+    <string name="main_filter_title">فلاتر</string>
+    <string name="main_filter_btn_validate">تطبيق الفلاتر</string>
+    <string name="main_filter_btn_reinit">إعادة ضبط</string>
+    <string name="main_filter_subtitle_group_event">حسب الموضوع</string>
+    <string name="main_filter_subtitle_action">حسب الفئة</string>
+    <string name="main_filter_title_location">حسب الموقع</string>
+    <string name="main_filter_title_radius">في نطاق</string>
+    <string name="sharing_time_title">وقت المشاركة</string>
+    <string name="sharing_time_subtitle">قهوة، نشاط...</string>
+    <string name="services_title">خدمة</string>
+    <string name="services_subtitle">الغسيل، طباعة الوثائق...</string>
+    <string name="clothes_title">ملابس</string>
+    <string name="clothes_subtitle">أحذية، معطف...</string>
+    <string name="equipment_title">معدات</string>
+    <string name="equipment_subtitle">هاتف، كيس نوم...</string>
+    <string name="hygiene_title">منتج النظافة</string>
+    <string name="hygiene_subtitle">صابون، حماية صحية، حفاضات...</string>
+    <string name="group_search_hint">البحث عن مجموعة</string>
+    <string name="event_search_hint">البحث عن حدث</string>
+    <string name="action_search_hint">البحث عن عمل</string>
+    <string name="search_participant_hint">البحث عن مشارك</string>
+    <string name="home_v2_title_sensibilisation">التوعية</string>
+    <string name="home_v2_subtitle_sensibilisation">بعض الاقتراحات للقراءة للبدء</string>
+    <string name="interest_activites_onboarding">أنشطة \nيدوية</string>
+    <string name="interest_activites_main_filter">أنشطة يدوية</string>
+    <string name="posts_vote_number"><u>%s أصوات</u></string>
+    <string name="posts_vote_number_singular"><u>%s صوت</u></string>
+    <string name="my_onboarding">تخصيص حسابي</string>
+    <string name="actions_tab_mygroup">إعلاناتي</string>
+    <string name="create_survey">إنشاء استطلاع</string>
+    <string name="participant_number_singular">%s مشارك</string>
+    <string name="members_location_temporary">%s</string>
+    <string name="see_participants">المشاركون</string>
+    <string name="participant_number">%s مشاركون</string>
 
 
 </resources>

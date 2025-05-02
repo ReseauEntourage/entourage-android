@@ -21,6 +21,7 @@
     <string name="edit">Modifier</string>
     <string name="activate">Activer</string>
     <string name="view">Voir</string>
+    <string name="google_api_key">AIzaSyBwBr8Zro0P1GJDeI4-VPOF3QpVg91q3uk</string>
 
 
     <string name="network_error">Vérifiez votre connexion\net réessayez plus tard</string>
@@ -120,7 +121,6 @@
     <string name="edit_profile">Modifier mes informations</string>
     <string name="description">Description  (200 caractères max)</string>
     <string name="my_interests">Mes centres d’intêrets</string>
-    <string name="my_onboarding">Personnaliser mon compte</string>
     <string name="interests">Centres d’intêrets</string>
     <string name="write_message">Nouveau message</string>
     <string name="ethics">Charte éthique</string>
@@ -224,7 +224,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="category_name_label">Décrivez en un mot la catégorie de votre groupe</string>
     <string name="pass">Passer</string>
     <string name="create_post">Créer une publication</string>
-    <string name="create_survey">Créer un sondage</string>
+
     <string name="create_event">Créer un événement sur le groupe</string>
     <string name="create_event_if_no_event">Créer un événement</string>
     <string name="create_event_btn_title">Créer un événement</string>
@@ -246,9 +246,9 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="discover_groups">Je découvre</string>
     <string name="my_groups">Mes groupes</string>
     <string name="members_number">%s membres</string>
-    <string name="participant_number">%s participants</string>
     <string name="members_number_singular">%s membre</string>
-    <string name="participant_number_singular">%s participant</string>
+
+
     <string name="member_number">%s membre</string>
     <string name="future_outgoing_events_number">%s événements prévus</string>
     <string name="future_outgoing_events_number_singular">%s événement prévu</string>
@@ -268,7 +268,8 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="welcome_message_btn_title">Je me présente</string>
     <string name="member">Membre</string>
     <string name="members_location">%s membres. %s</string>
-    <string name="members_location_temporary">%s</string>
+
+
     <string name="group_settings">Paramètres du groupe</string>
     <string name="report_group">Signaler un problème</string>
     <string name="rules_group">Règlement du groupe</string>
@@ -280,7 +281,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="group_posts_empty_state_subtitle">Pourquoi ne pas lancer la discussion avec vos voisins ?</string>
     <string name="posts">Fil d’actualité</string>
     <string name="see_members">Voir les membres</string>
-    <string name="see_participants">Participants</string>
+
     <string name="leave_group">Quitter le groupe</string>
     <string name="edit_group_information">Modifier les informations du groupe</string>
     <string name="notification_new_event">Les nouveaux événements</string>
@@ -297,7 +298,6 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="event_date">"dd/MM/yyyy"</string>
     <string name="event_date_time">"dd MMMM yyyy à HH'h'mm"</string>
     <string name="post_date">"dd.MM.yyyy"</string>
-    <string name="comments_title">Commentaires</string>
     <string name="comments_date">dd.MM.yy à HH:mm</string>
     <string name="write_your_message">Écrire votre message</string>
     <string name="share_post">Partager</string>
@@ -528,7 +528,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="entourage_info_text_join_rejected">\u0020 rejeté</string>
     <string name="entourage_info_text_join_cancelled_entourage">a annulé sa demande de rejoindre le groupe</string>
     <string name="entourage_info_text_join_quited_entourage">a quitté le groupe</string>
-    <string name="entourage_info_text_join_html"><![CDATA[<font color=\"#F55F24\">%1$s </font>%2$s]]></string>
+    <string name="entourage_info_text_join_html"><![CDATA[<font color=\"#FF9739\">%1$s </font>%2$s]]></string>
     <string name="entourage_info_error_chat_message">Message non envoyé</string>
     <string name="entourage_info_options_stop">Clôturer</string>
     <string name="entourage_info_options_cancel_event">Annuler l\'événement</string>
@@ -1634,7 +1634,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <!-- Entourage Notifications -->
     <string name="entourage_info_text_join_accepted">\u0020a rejoint le groupe.</string>
     <string name="entourage_join_request_received_nomsg">%1$s souhaite rejoindre votre action.</string>
-    <string name="entourage_join_request_received_message_html"><![CDATA[<font color=\"#F55F24\">%1$s </font>souhaite rejoindre votre groupe]]></string>
+    <string name="entourage_join_request_received_message_html"><![CDATA[<font color=\"#FF9739\">%1$s </font>souhaite rejoindre votre groupe]]></string>
     <string name="entourage_join_request_received_message_short">veut rejoindre votre groupe.</string>
     <!-- Join Request -->
     <string name="entourage_join_request_success">Demande acceptée</string>
@@ -2180,8 +2180,6 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="onboard_photo_description">La touche finale : vous pouvez ajouter votre photo. Les membres d’Entourage de votre quartier ont hâte de faire votre connaissance !</string>
     <string name="onboard_photo_bt_take_photo">Prendre une photo</string>
     <string name="onboard_photo_bt_take_gallery">Importer depuis la galerie</string>
-    <string name="onboard_waiting_dialog"></string>
-
 
     <string name="take_photo_title">Ajouter une photo ?</string>
     <string name="take_photo_description">Avec une photo, c’est tout de suite plus sympa.\nMontrez-nous votre sourire le plus chaleureux.</string>
@@ -2563,6 +2561,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="home_v2_help_title_two">Comment créer un événement ?</string>
     <string name="home_v2_help_title_three">Une question ?\nContactez %s</string>
 
+
     <string name="home_v2_pedag_item_lenght_title">"%d min de lecture</string>
 
     <string name="home_v2_hz_item_title">"Tiens, ça semble un peu calme par ici…</string>
@@ -2618,7 +2617,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="action_hygiene_subname">savon, protection hygiénique...</string>
 
     <string name="interest_activites">Activités manuelles</string>
-    <string name="interest_activites_onboarding">Activités \nmanuelles</string>
+
     <string name="interest_animaux">Animaux</string>
     <string name="interest_bien_etre">Bien-être</string>
     <string name="interest_cuisine">Cuisine</string>
@@ -2633,10 +2632,9 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="more"><u>En savoir plus</u></string>
     <string name="posts_comment_number"><u>%s commentaires</u></string>
     <string name="posts_comment_number_singular"><u>%s commentaire</u></string>
-    <string name="posts_vote_number"><u>%s votes</u></string>
-    <string name="posts_vote_number_singular"><u>%s vote</u></string>
+
     <string name="show_more_lined"><u>Voir plus</u></string>
-    <string name="welcome_one_sensib">Retrouvez nos contenus de sensibilisation <u><font color="#F55F24">ici</font></u></string>
+    <string name="welcome_one_sensib">Retrouvez nos contenus de sensibilisation <u><font color="#FF9739">ici</font></u></string>
     <string name="action_show_charte"><u>Charte éthique</u></string>
     <string name="signal_a_problem"><u>Signaler un problème</u></string>
     <string name="login_button_resend_code"><u>Redemander un code</u></string>
@@ -2653,7 +2651,6 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="map_filter_entourage_contribution_text"><b>Voir les contributions concernant :</b></string>
     <string name="custom_dialog_action_content_one_contrib">Votre action \"<![CDATA[<b>%1$s</b>]]>\" est-elle terminée ?</string>
     <string name="search_member_hint">Chercher un membre</string>
-    <string name="search_participant_hint">Chercher un participant</string>
     <string name="terms_and_conditions_html">En cliquant sur &lt;b&gt;Suivant&lt;/b&gt;, vous acceptez les &lt;a href=\'https://www.entourage.social/cgu/\'&gt;Conditions Générales d\'Utilisation&lt;/a&gt; et la &lt;a href=\'https://www.entourage.social/politique-de-confidentialite/\'&gt;Politique de Confidentialité&lt;/a&gt;</string>
     <string name="action_crete_cat_about">Vous cherchez à proposer une %s qui ne rentre pas dans l\'une de ces catégories ? Il semble qu\'elle n\'ait pas sa place sur le réseau,mais vous pouvez toujours</string>
     <string name="action_create_cat_about_link"> en savoir plus par ici.</string>
@@ -2694,6 +2691,8 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="see_member_react">Personnes ayant réagi</string>
     <string name="text_title_i_like">J\'aime</string>
     <string name="text_title_comment">Commenter</string>
+
+
     <string name="text_title_votes">Voir les votes</string>
 
     <!--    CREATE SURVEY-->
@@ -2764,8 +2763,45 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="notif_ask_page_btn_main">Activer les notifications</string>
     <string name="notif_ask_page_btn_secondary">Pas maintenant</string>
 
+    <string name="main_filter_title">Filtres</string>
+    <string name="main_filter_btn_validate">Appliquer les filtres</string>
+    <string name="main_filter_btn_reinit">Réinitialiser</string>
+    <string name="main_filter_subtitle_group_event">Par thématique</string>
+    <string name="main_filter_subtitle_action">Par catégorie</string>
+    <string name="main_filter_title_location">Par localisation</string>
+    <string name="main_filter_title_radius">Dans un rayon de</string>
+    <string name="sharing_time_title">Temps de partage</string>
+    <string name="sharing_time_subtitle">café, activité...</string>
+    <string name="services_title">Service</string>
+    <string name="services_subtitle">lessive, impression de documents...</string>
+    <string name="clothes_title">Vêtement</string>
+    <string name="clothes_subtitle">chaussures, manteau...</string>
+    <string name="equipment_title">Équipement</string>
+    <string name="equipment_subtitle">téléphone, duvet...</string>
+    <string name="hygiene_title">Produit d’hygiène</string>
+    <string name="hygiene_subtitle">savon, protection hygiénique, couches...</string>
 
 
+    <string name="group_search_hint">Rechercher un groupe</string>
+    <string name="event_search_hint">Rechercher un événement</string>
+    <string name="action_search_hint">Rechercher une action</string>
+    <string name="search_participant_hint">Chercher un participant</string>
+
+    <string name="onboard_waiting_dialog"></string>
+    <string name="home_v2_title_sensibilisation">Se sensibiliser</string>
+    <string name="home_v2_subtitle_sensibilisation">Quelques suggestions de lecture pour commencer</string>
+    <string name="interest_activites_onboarding">Activités \nmanuelles</string>
+    <string name="interest_activites_main_filter">Activités manuelles</string>
+    <string name="posts_vote_number"><u>%s votes</u></string>
+    <string name="posts_vote_number_singular"><u>%s vote</u></string>
+    <string name="my_onboarding">Personnaliser mon compte</string>
+    <string name="actions_tab_mygroup">Mes annonces</string>
+    <string name="create_survey">Créer un sondage</string>
+    <string name="participant_number_singular">%s participant</string>
+    <string name="members_location_temporary">%s</string>
+    <string name="see_participants">Participants</string>
+    <string name="comments_title">Commentaires</string>
+    <string name="participant_number">%s participants</string>
 
 </resources>
 

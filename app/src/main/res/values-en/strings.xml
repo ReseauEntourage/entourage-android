@@ -1548,7 +1548,7 @@
     <string name="posts_comment_number"><u>%s comments</u></string>
     <string name="posts_comment_number_singular"><u>%s comment</u></string>
     <string name="show_more_lined"><u>Show more</u></string>
-    <string name="welcome_one_sensib">Find our awareness content <u><font color="#F55F24">here</font></u></string>
+    <string name="welcome_one_sensib">Find our awareness content <u><font color="#FF9739">here</font></u></string>
     <string name="action_show_charte"><u>Ethical Charter</u></string>
     <string name="signal_a_problem"><u>Report a problem</u></string>
     <string name="login_button_resend_code"><u>Resend code</u></string>
@@ -1605,6 +1605,104 @@
     <string name="see_member_react">People who reacted</string>
     <string name="text_title_i_like">Like</string>
     <string name="text_title_comment">Comment</string>
+
+    <string name="text_title_votes">See votes</string>
+    <string name="header_title_create_survey">Create a survey</string>
+    <string name="create_question_title">Question</string>
+    <string name="create_question_hint">Ask your question</string>
+    <string name="create_option_hint">+ Add an option</string>
+    <string name="create_option_title">Options</string>
+    <string name="title_switch_mutiple_choice">Multiple choices possible</string>
+    <string name="title_switch_single_choice">Select one option</string>
+    <string name="title_switch_mutiples_choices">Select one or more options</string>
+    <string name="btn_survey_validate">Validate</string>
+    <string name="btn_survey_cancel">Cancel</string>
+    <string name="popup_survey_title">Attention</string>
+    <string name="popup_survey_content">If you leave the survey creation, all entered information will be lost</string>
+    <string name="popup_survey_btn_leave">Leave</string>
+    <string name="popup_survey_btn_cancel">Cancel</string>
+    <string name="see_member_vote">Survey responses</string>
+    <string name="activate_geoloc">Enable location</string>
+    <string name="home_v2_no_adress_title">Improve your experience!</string>
+    <string name="home_v2_no_adress_content">To know the solidarity actions and events around you, please take a moment to add your location to your profile.</string>
+    <string name="home_v2_no_adress_button">Add my location</string>
+    <string name="popup_event_confirm_btn_confirm">I\'m coming</string>
+    <string name="popup_event_confirm_btn_cancel">I\'m not coming</string>
+    <string name="popup_event_confirm_title">Don\'t forget: "%s" is happening tomorrow at %s at %s!</string>
+    <string name="popup_event_confirm_content">To facilitate the organization of the event, can you tell us if you will be present tomorrow?</string>
+    <string name="onboarding_presentation_title">%s, let\'s get to know each other!</string>
+    <string name="onboarding_presentation_content">Before diving into our app, let\'s take a moment to get to know you better. Your interests will help us suggest activities and content that will interest you.</string>
+    <string name="onboarding_presentation_btn_negative">Configure later</string>
+    <string name="onboarding_presentation_btn_positive">Start</string>
+    <string name="onboarding_interest_title">My interests</string>
+    <string name="onboarding_interest_content">To help you find activities that match your interests, tell us what you are interested in.</string>
+    <string name="onboarding_btn_finish">Finish later</string>
+    <string name="onboarding_btn_next">Next</string>
+    <string name="onboarding_btn_register">Register</string>
+    <string name="onboarding_category_title">My mutual aid categories</string>
+    <string name="onboarding_category_content">Select the mutual aid categories you want to see first.</string>
+    <string name="onboarding_category_sharing_time">Sharing time</string>
+    <string name="onboarding_category_donation">Material donations</string>
+    <string name="onboarding_category_services">Service offerings</string>
+    <string name="onboarding_category_services_details">(laundry, document printing, administrative help...)</string>
+    <string name="onboarding_action_wish_title">How would you like to get involved in the Entourage community?</string>
+    <string name="onboarding_action_wish_content">(Yes, you can choose multiple options!)</string>
+    <string name="onboarding_action_wish_pedago">Learn with \npedagogical content</string>
+    <string name="onboarding_action_wish_event">Participate in \nconvivial events</string>
+    <string name="onboarding_action_wish_services">Give or request a \nhelping hand</string>
+    <string name="onboarding_action_wish_network">Join a group of \nneighbors and make connections</string>
+    <string name="onboarding_action_wish_pedago_contrib">Find solidarity structures nearby</string>
+    <string name="onboarding_action_wish_event_contrib">Participate in \nconvivial events</string>
+    <string name="onboarding_action_wish_services_contrib">Request a \nhelping hand</string>
+    <string name="onboarding_action_wish_network_contrib">Join a group of \nneighbors and make connections</string>
+    <string name="onboarding_congrats_title">Your personalized experience is ready!</string>
+    <string name="onboarding_congrats_content">Based on your preferences and availability, we have prepared a selection of events that match your profile. Take action now on our app!</string>
+    <string name="onboarding_congrats_leave">Browse events</string>
+    <string name="onboarding_congrats_temporary_title">Your personalized experience is (almost) ready!</string>
+    <string name="onboarding_congrats_temporary_content">Thank you for sharing your enthusiasm and interests. We look forward to offering you personalized events soon.\nStay tuned!</string>
+    <string name="notif_ask_page_title">Enable notifications to stay updated on everything</string>
+    <string name="notif_ask_page_subtitle">Receive assistance near you, be informed of local events, your neighbors posts, and personal messages in real-time.</string>
+    <string name="notif_ask_page_btn_main">Enable notifications</string>
+    <string name="notif_ask_page_btn_secondary">Not now</string>
+    <string name="main_filter_title">Filters</string>
+    <string name="main_filter_btn_validate">Apply filters</string>
+    <string name="main_filter_btn_reinit">Reset</string>
+    <string name="main_filter_subtitle_group_event">By theme</string>
+    <string name="main_filter_subtitle_action">By category</string>
+    <string name="main_filter_title_location">By location</string>
+    <string name="main_filter_title_radius">Within</string>
+    <string name="sharing_time_title">Sharing time</string>
+    <string name="sharing_time_subtitle">coffee, activity...</string>
+    <string name="services_title">Service</string>
+    <string name="services_subtitle">laundry, document printing...</string>
+    <string name="clothes_title">Clothing</string>
+    <string name="clothes_subtitle">shoes, coat...</string>
+    <string name="equipment_title">Equipment</string>
+    <string name="equipment_subtitle">phone, sleeping bag...</string>
+    <string name="hygiene_title">Hygiene product</string>
+    <string name="hygiene_subtitle">soap, sanitary protection, diapers...</string>
+    <string name="group_search_hint">Search for a group</string>
+    <string name="event_search_hint">Search for an event</string>
+    <string name="action_search_hint">Search for an action</string>
+    <string name="search_participant_hint">Search for a participant</string>
+    <string name="onboard_waiting_dialog"></string>
+    <string name="home_v2_title_sensibilisation">Get informed</string>
+    <string name="home_v2_subtitle_sensibilisation">Some reading suggestions to get started</string>
+    <string name="interest_activites_onboarding">Manual \nactivities</string>
+    <string name="interest_activites_main_filter">Manual activities</string>
+    <string name="posts_vote_number"><u>%s votes</u></string>
+    <string name="posts_vote_number_singular"><u>%s vote</u></string>
+    <string name="my_onboarding">Personalize my account</string>
+    <string name="actions_tab_mygroup">My listings</string>
+    <string name="create_survey">Create a survey</string>
+    <string name="participant_number_singular">%s participant</string>
+    <string name="members_location_temporary">%s</string>
+    <string name="see_participants">Participants</string>
+    <string name="participant_number">%s participants</string>
+
+
+
+
 
 
 </resources>

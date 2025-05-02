@@ -24,10 +24,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.google.android.play.core.appupdate.AppUpdateManager
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
+import com.google.firebase.messaging.FirebaseMessaging
 import com.google.gson.Gson
 import social.entourage.android.BuildConfig
 import social.entourage.android.EntourageApplication
 import social.entourage.android.MainActivity
+import social.entourage.android.MainPresenter
 import social.entourage.android.R
 import social.entourage.android.actions.ActionsPresenter
 import social.entourage.android.api.model.Action
@@ -72,6 +74,8 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
     private val userPresenter: UserPresenter by lazy { UserPresenter() }
     private lateinit var homeHelpAdapter:HomeHelpAdapter
     private var homePedagoAdapter:HomePedagoAdapter? = null
+    private var homeInitialPedagoAdapter:HomeInitialPedagoAdapter? = null
+    private lateinit var  mainPresenter: MainPresenter
     private var pagegroup = 0
     private var pageEvent = 0
     private var nbOfItemForHozrizontalList = 10
@@ -103,6 +107,7 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
         binding = FragmentHomeV2LayoutBinding.inflate(layoutInflater)
         binding.homeNestedScrollView.visibility = View.GONE
         disapearAllAtBeginning()
+        mainPresenter = MainPresenter(requireActivity() as MainActivity)
         userPresenter.user.observe(viewLifecycleOwner, ::updateUser)
         binding.progressBar.visibility = View.VISIBLE
         homePresenter = ViewModelProvider(requireActivity()).get(HomePresenter::class.java)
@@ -119,6 +124,17 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
                 }
             }
         })
+        homeInitialPedagoAdapter= HomeInitialPedagoAdapter(object : OnItemClick {
+            override fun onItemClick(pedagogicalContent: Pedago) {
+                if (pedagogicalContent.html != null && pedagogicalContent.id != null) {
+                    val intent = Intent(requireActivity(), PedagoDetailActivity::class.java)
+                    intent.putExtra(Const.ID, pedagogicalContent.id)
+                    //intent.putExtra(Const.HTML_CONTENT, pedagogicalContent.html)
+                    requireActivity().startActivity(intent)
+                }
+            }
+        })
+
         AnalyticsEvents.logEvent(AnalyticsEvents.View__Home)
         setRecyclerViews()
         setSeeAllButtons()
@@ -166,6 +182,7 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
         val areNotificationsEnabled = notificationManager.areNotificationsEnabled()
         if (areNotificationsEnabled) {
             AnalyticsEvents.logEvent(AnalyticsEvents.has_user_activated_notif)
+            sendtoken()
 
         } else {
             AnalyticsEvents.logEvent(AnalyticsEvents.has_user_disabled_notif)
@@ -173,7 +190,11 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
         }
     }
 
-
+    fun sendtoken(){
+        FirebaseMessaging.getInstance().token.addOnSuccessListener { token ->
+            mainPresenter.updateApplicationInfo(token)
+        }
+    }
 
     private fun updateUnreadCount(unreadMessages: UnreadMessages?) {
         val count:Int = unreadMessages?.unreadCount ?: 0
@@ -183,7 +204,11 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
         }
         CommunicationHandler.resetValues()
     }
-
+    private fun setMarginTop(view: View, marginTop: Int) {
+        val layoutParams = view.layoutParams as ViewGroup.MarginLayoutParams
+        layoutParams.topMargin = marginTop
+        view.layoutParams = layoutParams
+    }
     /*TODO remove this code if really not needed
     fun noAdressPopFillAdress(){
         if(!locationPopupHasPop){
@@ -217,6 +242,7 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
             homePresenter.getMyGroups(pagegroup,nbOfItemForHozrizontalList,meId)
             homePresenter.getAllEvents(pageEvent,nbOfItemForHozrizontalList,currentFilters.travel_distance(),currentFilters.latitude(),currentFilters.longitude(),"future")
             homePresenter.getPedagogicalResources()
+            homePresenter.getInitialPedagogicalResources()
             homePresenter.getNotificationsCount()
             userPresenter.getUser(meId)
         }
@@ -295,6 +321,12 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
         val settingPedagolayoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         binding.rvHomePedago.adapter = homePedagoAdapter
         binding.rvHomePedago.layoutManager = settingPedagolayoutManager
+
+        //Initial Pedago RV
+        binding.rvHomeSensibilisation.adapter = homeInitialPedagoAdapter
+        binding.rvHomeSensibilisation.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        binding.rvHomeSensibilisation.setPadding(offsetInPixels, 0, 0, 0)
+
         //Help RV
         val settingHelplayoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         binding.rvHomeHelp.adapter = homeHelpAdapter
@@ -339,6 +371,7 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
         homePresenter.getAllMyGroups.observe(viewLifecycleOwner,::handleGroup)
         homePresenter.getAllActions.observe(viewLifecycleOwner,::handleAction)
         homePresenter.pedagogicalContent.observe(viewLifecycleOwner,::handlePedago)
+        homePresenter.pedagogicalInitialContent.observe(viewLifecycleOwner,::handleInitialPedago)
         homePresenter.notifsCount.observe(requireActivity(), ::updateNotifsCount)
         actionsPresenter.unreadMessages.observe(requireActivity(), ::updateUnreadCount)
     }
@@ -430,6 +463,28 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
             checkSumEventAction()
         }
         this.homeActionAdapter.resetData(allAction)
+
+    }
+
+    fun handleInitialPedago(allPedago: MutableList<Pedago>?){
+        if(allPedago == null) {
+            return
+        }
+        doTotalchecksumToDisplayHomeFirstTime()
+        if(allPedago.size > 0 ){
+            binding.rvHomeSensibilisation.visibility = View.VISIBLE
+            binding.homeSubtitleSensibilisation.visibility = View.VISIBLE
+            binding.homeTitleSensibilisation.visibility = View.VISIBLE
+            setMarginTop(binding.homeTitleAction, 16)
+
+        }else{
+            binding.rvHomeSensibilisation.visibility = View.GONE
+            binding.homeSubtitleSensibilisation.visibility = View.GONE
+            binding.homeTitleSensibilisation.visibility = View.GONE
+            setMarginTop(binding.homeTitleAction, 0)
+
+        }
+        this.homeInitialPedagoAdapter?.resetData(allPedago)
 
     }
     fun handlePedago(allPedago: MutableList<Pedago>?){
@@ -628,6 +683,7 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
         }
         animator.start()
     }
+
 
     override fun onItemClick(position: Int, moderatorId:Int) {
         if(position == 2){

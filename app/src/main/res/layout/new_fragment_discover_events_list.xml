@@ -31,7 +31,38 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:layout_marginTop="10dp">
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/cs_layout_search"
+                        android:visibility="gone"
+                        >
+                        <EditText
+                            android:id="@+id/searchEditText"
+                            android:layout_width="0dp"
+                            android:layout_height="40dp"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            android:layout_marginStart="28dp"
+                            android:layout_marginEnd="28dp"
+                            android:textSize="15sp"
+                            android:fontFamily="@font/nunitosans_regular"
+                            android:background="@drawable/bg_unselected_filter_main"
+                            android:drawableStart="@drawable/ic_arrow_left_black"
+                            android:drawableEnd="@drawable/ic_cross_orange"
+                            android:hint="@string/event_search_hint"
+                            android:padding="10dp"
+                            android:inputType="text"
+                            android:imeOptions="actionSearch"
+                            android:textColor="@android:color/black"/>
+
+
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -93,7 +124,16 @@
                         android:layout_marginEnd="30dp"
                         android:layout_marginBottom="10dp"
                         />
-
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/rv_search"
+                        app:layout_constraintTop_toBottomOf="@+id/separator"
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:paddingHorizontal="20dp"
+                        android:layout_marginStart="2dp"
+                        android:layout_marginTop="20dp"
+                        />
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

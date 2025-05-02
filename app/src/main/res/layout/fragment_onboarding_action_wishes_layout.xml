@@ -58,50 +58,51 @@
             app:layout_constraintTop_toBottomOf="@+id/tv_description"
             app:layout_constraintVertical_bias="1.0" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:elevation="0dp"
-            android:background="@color/transparent"
-            android:padding="20dp">
-
-            <Button
-                android:id="@+id/button_configure_later"
-                android:layout_width="0dp"
-                android:layout_height="47dp"
-                android:layout_weight="1"
-                android:background="@drawable/shape_button_v9_negative"
-                android:text="@string/onboarding_btn_finish"
-                android:textColor="@color/black"
-                android:textAllCaps="false"
-                android:textSize="14sp"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/transparent"
                 android:elevation="0dp"
-                android:fontFamily="@font/quicksand_bold"
-                android:layout_marginEnd="4dp"
-                android:paddingVertical="10dp"
-                style="?android:attr/borderlessButtonStyle"/>
+                android:orientation="horizontal"
+                android:padding="20dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent">
 
-            <Button
-                android:id="@+id/button_start"
-                android:layout_width="0dp"
-                android:layout_height="47dp"
-                android:layout_weight="1"
-                android:background="@drawable/shape_button_v9_positive"
-                android:text="@string/onboarding_btn_next"
-                android:textColor="@android:color/white"
-                android:textAllCaps="false"
-                android:textSize="14sp"
-                android:elevation="0dp"
-                android:fontFamily="@font/quicksand_bold"
-                android:layout_marginStart="4dp"
-                android:paddingVertical="10dp"
-                style="?android:attr/borderlessButtonStyle"/>
+                <Button
+                    android:id="@+id/button_configure_later"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="47dp"
+                    android:layout_marginEnd="4dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/shape_button_v9_negative"
+                    android:elevation="0dp"
+                    android:fontFamily="@font/quicksand_bold"
+                    android:paddingVertical="10dp"
+                    android:text="@string/onboarding_btn_finish"
+                    android:textAllCaps="false"
+                    android:textColor="@color/black"
+                    android:textSize="14sp" />
 
-        </LinearLayout>
+                <Button
+                    android:id="@+id/button_start"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="47dp"
+                    android:layout_marginStart="4dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/shape_button_v9_positive"
+                    android:elevation="0dp"
+                    android:fontFamily="@font/quicksand_bold"
+                    android:paddingVertical="10dp"
+                    android:text="@string/onboarding_btn_next"
+                    android:textAllCaps="false"
+                    android:textColor="@android:color/white"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.core.widget.NestedScrollView>

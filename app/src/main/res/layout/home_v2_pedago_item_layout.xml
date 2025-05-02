@@ -61,7 +61,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginBottom="@dimen/entourage_margin_bottom"
         android:layout_marginStart="@dimen/entourage_margin_start_inner_item"
-        android:textColor="@color/new_light_grey"
+        android:textColor="@color/grey"
         android:textSize="@dimen/entourage_font_very_small"
         android:fontFamily="@font/nunitosans_regular"
         tools:text="cette video dure 6 min"/>

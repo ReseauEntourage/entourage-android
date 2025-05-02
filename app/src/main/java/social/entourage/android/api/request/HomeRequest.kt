@@ -26,6 +26,9 @@ interface HomeRequest {
     @GET("resources")
     fun getPedagogicalResources(@Query("noHtml") noHtml:Boolean): Call<PedagogicResponse>
 
+    @GET("resources/home")
+    fun getInitialPedagogicalResources(@Query("noHtml") noHtml:Boolean): Call<PedagogicResponse>
+
     @GET("resources/{id}")
     fun getPedagogicalResource(@Path("id") resourceId: Int): Call<PedagogicSingleResponse>
     @GET("resources/{id}")

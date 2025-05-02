@@ -162,6 +162,7 @@ class PostAdapter(
                     val member = memberList?.find { it.id.toInt() == post.user?.id?.toInt() }
 
                     var tagsString = ""
+
                     if (member?.isAdmin() == true) {
                         tagsString += context.getString(R.string.admin) + " • "
                     } else if (member?.isAmbassador() == true) {
@@ -756,14 +757,14 @@ class PostAdapter(
                         binding.tvAmbassador.visibility = View.VISIBLE
 
                         val _post = postsList[position]
-                        val member = memberList?.find { it.id.toInt() == _post.user?.id?.toInt() }
                         var tagsString = ""
-                        if (member?.isAdmin() == true) {
-                            tagsString += context.getString(R.string.admin) + " • "
-                        } else if (member?.isAmbassador() == true) {
-                            tagsString += context.getString(R.string.ambassador) + " • "
-                        } else if (member?.partner != null) {
-                            tagsString += member.partner!!.name
+                        if (_post.user?.roles?.isNotEmpty() == true) {
+                            _post.user?.roles?.let { roles ->
+                                if (roles.isNotEmpty()) {
+                                    val role = roles[0]
+                                    tagsString += role
+                                }
+                            }
                         }
                         if (tagsString.isEmpty()) {
                             holder.binding.tvAmbassador.visibility = View.GONE

@@ -512,7 +512,7 @@ Przeczytają tę wiadomość, gdy tylko dołączą do grupy.</string>
     <string name="entourage_info_text_join_rejected">\u0020 odrzucony</string>
     <string name="entourage_info_text_join_cancelled_entourage">anulował swoją prośbę o dołączenie do grupy</string>
     <string name="entourage_info_text_join_quited_entourage">opuścić grupę</string>
-    <string name="entourage_info_text_join_html">&lt;font color=\"#F55F24\"&gt;%1$s &lt;/font&gt;%2$s</string>
+    <string name="entourage_info_text_join_html">&lt;font color=\"#FF9739\"&gt;%1$s &lt;/font&gt;%2$s</string>
     <string name="entourage_info_error_chat_message">Wiadomość nie została wysłana</string>
     <string name="entourage_info_options_stop">Załączyć</string>
     <string name="entourage_info_options_cancel_event">Anuluj wydarzenie \</string>
@@ -1600,7 +1600,7 @@ Przeczytają tę wiadomość, gdy tylko dołączą do grupy.</string>
     <!-- Entourage Notifications -->
     <string name="entourage_info_text_join_accepted">\u0020dołączył do grupy.</string>
     <string name="entourage_join_request_received_nomsg">%1$s chce dołączyć do Twojej akcji.</string>
-    <string name="entourage_join_request_received_message_html">&lt;font color=\"#F55F24\"&gt;%1$s &lt;/font&gt;chce dołączyć do Twojej grupy</string>
+    <string name="entourage_join_request_received_message_html">&lt;font color=\"#FF9739\"&gt;%1$s &lt;/font&gt;chce dołączyć do Twojej grupy</string>
     <string name="entourage_join_request_received_message_short">chce dołączyć do Twojej grupy.</string>
     <!-- Join Request -->
     <string name="entourage_join_request_success">Prośba zaakceptowana</string>
@@ -2621,7 +2621,7 @@ Przeczytają tę wiadomość, gdy tylko dołączą do grupy.</string>
     <string name="posts_comment_number"><u>%s komentarze</u></string>
     <string name="posts_comment_number_singular"><u>%s komentarz</u></string>
     <string name="show_more_lined"><u>Pokaż więcej</u></string>
-    <string name="welcome_one_sensib">Znajdź nasze treści z zakresu świadomości <u><font color="#F55F24">tutaj</font></u></string>
+    <string name="welcome_one_sensib">Znajdź nasze treści z zakresu świadomości <u><font color="#FF9739">tutaj</font></u></string>
     <string name="action_show_charte"><u>Karta etyczna</u></string>
     <string name="signal_a_problem"><u>Zgłoś problem</u></string>
     <string name="login_button_resend_code"><u>Poproś ponownie o kod</u></string>
@@ -2676,5 +2676,97 @@ Przeczytają tę wiadomość, gdy tylko dołączą do grupy.</string>
     <string name="see_member_react">Osoby, które zareagowały</string>
     <string name="text_title_i_like">Lubię to</string>
     <string name="text_title_comment">Komentarz</string>
+    <string name="text_title_votes">Zobacz głosy</string>
+    <string name="header_title_create_survey">Utwórz ankietę</string>
+    <string name="create_question_title">Pytanie</string>
+    <string name="create_question_hint">Zadaj swoje pytanie</string>
+    <string name="create_option_hint">+ Dodaj opcję</string>
+    <string name="create_option_title">Opcje</string>
+    <string name="title_switch_mutiple_choice">Możliwe wiele odpowiedzi</string>
+    <string name="title_switch_single_choice">Wybierz jedną opcję</string>
+    <string name="title_switch_mutiples_choices">Wybierz jedną lub więcej opcji</string>
+    <string name="btn_survey_validate">Zatwierdź</string>
+    <string name="btn_survey_cancel">Anuluj</string>
+    <string name="popup_survey_title">Uwaga</string>
+    <string name="popup_survey_content">Jeśli opuścisz tworzenie ankiety, wszystkie wprowadzone informacje zostaną utracone</string>
+    <string name="popup_survey_btn_leave">Wyjdź</string>
+    <string name="popup_survey_btn_cancel">Anuluj</string>
+    <string name="see_member_vote">Odpowiedzi na ankietę</string>
+    <string name="activate_geoloc">Włącz lokalizację</string>
+    <string name="home_v2_no_adress_title">Popraw swoje doświadczenie!</string>
+    <string name="home_v2_no_adress_content">Aby poznać solidarne działania i wydarzenia wokół ciebie, poświęć chwilę na dodanie swojej lokalizacji do swojego profilu.</string>
+    <string name="home_v2_no_adress_button">Dodaj moją lokalizację</string>
+    <string name="popup_event_confirm_btn_confirm">Przyjdę</string>
+    <string name="popup_event_confirm_btn_cancel">Nie przyjdę</string>
+    <string name="popup_event_confirm_title">Nie zapomnij: „%s” odbywa się jutro o %s w %s!</string>
+    <string name="popup_event_confirm_content">Aby ułatwić organizację wydarzenia, czy możesz powiedzieć, czy będziesz jutro obecny?</string>
+    <string name="onboarding_presentation_title">%s, poznajmy się!</string>
+    <string name="onboarding_presentation_content">Przed zanurzeniem się w naszej aplikacji, poświęć chwilę, aby lepiej się poznać. Twoje zainteresowania pomogą nam zasugerować ci działania i treści, które cię zainteresują.</string>
+    <string name="onboarding_presentation_btn_negative">Skonfiguruj później</string>
+    <string name="onboarding_presentation_btn_positive">Zacznij</string>
+    <string name="onboarding_interest_title">Moje zainteresowania</string>
+    <string name="onboarding_interest_content">Aby pomóc ci znaleźć działania, które cię interesują, powiedz nam, co cię interesuje.</string>
+    <string name="onboarding_btn_finish">Zakończ później</string>
+    <string name="onboarding_btn_next">Dalej</string>
+    <string name="onboarding_btn_register">Zarejestruj</string>
+    <string name="onboarding_category_title">Moje kategorie wsparcia</string>
+    <string name="onboarding_category_content">Wybierz kategorie wsparcia, które chcesz zobaczyć jako pierwsze.</string>
+    <string name="onboarding_category_sharing_time">Czas dzielenia się</string>
+    <string name="onboarding_category_donation">Darowizny rzeczowe</string>
+    <string name="onboarding_category_services">Oferty usług</string>
+    <string name="onboarding_category_services_details">(pralnia, druk dokumentów, pomoc administracyjna...)</string>
+    <string name="onboarding_action_wish_title">Jak chcesz działać w społeczności Entourage?</string>
+    <string name="onboarding_action_wish_content">(Tak, możesz wybrać kilka opcji!)</string>
+    <string name="onboarding_action_wish_pedago">Ucz się za pomocą \nmateriałów edukacyjnych</string>
+    <string name="onboarding_action_wish_event">Uczestnicz w \nwydarzeniach towarzyskich</string>
+    <string name="onboarding_action_wish_services">Daj lub poproś o \npomoc</string>
+    <string name="onboarding_action_wish_network">Dołącz do grupy \nsąsiadów i nawiąż kontakty</string>
+    <string name="onboarding_action_wish_pedago_contrib">Znajdź solidne struktury w pobliżu</string>
+    <string name="onboarding_action_wish_event_contrib">Uczestnicz w \nwydarzeniach towarzyskich</string>
+    <string name="onboarding_action_wish_services_contrib">Poproś o \npomoc</string>
+    <string name="onboarding_action_wish_network_contrib">Dołącz do grupy \nsąsiadów i nawiąż kontakty</string>
+    <string name="onboarding_congrats_title">Twoje spersonalizowane doświadczenie jest gotowe!</string>
+    <string name="onboarding_congrats_content">Na podstawie twoich preferencji i dostępności przygotowaliśmy dla ciebie wybór wydarzeń, które odpowiadają twojemu profilowi. Czas działać!</string>
+    <string name="onboarding_congrats_leave">Przeglądaj wydarzenia</string>
+    <string name="onboarding_congrats_temporary_title">Twoje spersonalizowane doświadczenie jest (prawie) gotowe!</string>
+    <string name="onboarding_congrats_temporary_content">Dziękujemy za podzielenie się swoimi pragnieniami i zainteresowaniami. Nie możemy się doczekać, aby wkrótce zaoferować ci spersonalizowane wydarzenia, które ci odpowiadają. \nBądź na bieżąco!</string>
+    <string name="notif_ask_page_title">Włącz powiadomienia, aby niczego nie przegapić</string>
+    <string name="notif_ask_page_subtitle">Otrzymuj pomoc w pobliżu, bądź informowany o lokalnych wydarzeniach, postach sąsiadów i wiadomościach osobistych w czasie rzeczywistym.</string>
+    <string name="notif_ask_page_btn_main">Włącz powiadomienia</string>
+    <string name="notif_ask_page_btn_secondary">Nie teraz</string>
+    <string name="main_filter_title">Filtry</string>
+    <string name="main_filter_btn_validate">Zastosuj filtry</string>
+    <string name="main_filter_btn_reinit">Zresetuj</string>
+    <string name="main_filter_subtitle_group_event">Według tematu</string>
+    <string name="main_filter_subtitle_action">Według kategorii</string>
+    <string name="main_filter_title_location">Według lokalizacji</string>
+    <string name="main_filter_title_radius">W promieniu</string>
+    <string name="sharing_time_title">Czas dzielenia się</string>
+    <string name="sharing_time_subtitle">kawa, aktywność...</string>
+    <string name="services_title">Usługa</string>
+    <string name="services_subtitle">pralnia, druk dokumentów...</string>
+    <string name="clothes_title">Odzież</string>
+    <string name="clothes_subtitle">buty, płaszcz...</string>
+    <string name="equipment_title">Sprzęt</string>
+    <string name="equipment_subtitle">telefon, śpiwór...</string>
+    <string name="hygiene_title">Produkt higieniczny</string>
+    <string name="hygiene_subtitle">mydło, ochrona sanitarna, pieluchy...</string>
+    <string name="group_search_hint">Szukaj grupy</string>
+    <string name="event_search_hint">Szukaj wydarzenia</string>
+    <string name="action_search_hint">Szukaj akcji</string>
+    <string name="search_participant_hint">Szukaj uczestnika</string>
+    <string name="home_v2_title_sensibilisation">Uzyskaj informacje</string>
+    <string name="home_v2_subtitle_sensibilisation">Kilka propozycji do przeczytania na początek</string>
+    <string name="interest_activites_onboarding">Ręczne \ndziałania</string>
+    <string name="interest_activites_main_filter">Ręczne działania</string>
+    <string name="posts_vote_number"><u>%s głosów</u></string>
+    <string name="posts_vote_number_singular"><u>%s głos</u></string>
+    <string name="my_onboarding">Personalizuj moje konto</string>
+    <string name="actions_tab_mygroup">Moje ogłoszenia</string>
+    <string name="create_survey">Utwórz ankietę</string>
+    <string name="participant_number_singular">%s uczestnik</string>
+    <string name="members_location_temporary">%s</string>
+    <string name="see_participants">Uczestnicy</string>
+    <string name="participant_number">%s uczestników</string>
 
 </resources>

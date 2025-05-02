@@ -5,6 +5,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
+import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import com.google.gson.Gson
 import social.entourage.android.BuildConfig
@@ -30,6 +31,7 @@ abstract class BaseActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         entApp?.onActivityCreated(this)
+        window.clearFlags(WindowManager.LayoutParams.FLAG_SECURE)
         super.onCreate(savedInstanceState)
     }
 
@@ -40,7 +42,8 @@ abstract class BaseActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        fromNotifLogFirebaseEvent()
+        //TODO rest to track notif
+        //fromNotifLogFirebaseEvent()
 
     }
 

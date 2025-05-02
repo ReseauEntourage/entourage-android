@@ -135,7 +135,7 @@ class MyEventsListFragment : Fragment() {
     private fun loadEvents() {
         binding.swipeRefresh.isRefreshing = false
         page++
-        myId?.let { eventsPresenter.getMyEvents(it, page, EVENTS_PER_PAGE) } ?: run {
+        myId?.let { eventsPresenter.getMyEvents(it, page, EVENTS_PER_PAGE,currentFilters.travel_distance(),currentFilters.latitude(),currentFilters.longitude()) } ?: run {
             binding.progressBar.visibility = View.GONE
             binding.emptyStateLayout.visibility = View.VISIBLE
         }

@@ -512,7 +512,7 @@ Ei vor citi acest mesaj imediat ce se vor alătura grupului.</string>
     <string name="entourage_info_text_join_rejected">\u0020 respins</string>
     <string name="entourage_info_text_join_cancelled_entourage">și-a anulat cererea de a se alătura grupului</string>
     <string name="entourage_info_text_join_quited_entourage">a părăsit grupul</string>
-    <string name="entourage_info_text_join_html">&lt;font color=\"#F55F24\"&gt;%1$s &lt;/font&gt;%2$s</string>
+    <string name="entourage_info_text_join_html">&lt;font color=\"#FF9739\"&gt;%1$s &lt;/font&gt;%2$s</string>
     <string name="entourage_info_error_chat_message">Mesajul nu a fost trimis</string>
     <string name="entourage_info_options_stop">A încadra</string>
     <string name="entourage_info_options_cancel_event">Anulați evenimentul \</string>
@@ -1601,7 +1601,7 @@ Ei vor citi acest mesaj imediat ce se vor alătura grupului.</string>
     <!-- Entourage Notifications -->
     <string name="entourage_info_text_join_accepted">\u0020 sa alăturat grupului.</string>
     <string name="entourage_join_request_received_nomsg">%1$s ar dori să se alăture acțiunii tale.</string>
-    <string name="entourage_join_request_received_message_html">&lt;font color=\"#F55F24\"&gt;%1$s &lt;/font&gt;dorește să se alăture grupului dvs.</string>
+    <string name="entourage_join_request_received_message_html">&lt;font color=\"#FF9739\"&gt;%1$s &lt;/font&gt;dorește să se alăture grupului dvs.</string>
     <string name="entourage_join_request_received_message_short">vrea să se alăture grupului dvs.</string>
     <!-- Join Request -->
     <string name="entourage_join_request_success">Cerere acceptată</string>
@@ -2616,7 +2616,7 @@ Ei vor citi acest mesaj imediat ce se vor alătura grupului.</string>
     <string name="posts_comment_number"><u>%s comentarii</u></string>
     <string name="posts_comment_number_singular"><u>%s comentariu</u></string>
     <string name="show_more_lined"><u>Afișează mai mult</u></string>
-    <string name="welcome_one_sensib">Găsiți conținutul nostru de sensibilizare <u><font color="#F55F24">aici</font></u></string>
+    <string name="welcome_one_sensib">Găsiți conținutul nostru de sensibilizare <u><font color="#FF9739">aici</font></u></string>
     <string name="action_show_charte"><u>Cartă etică</u></string>
     <string name="signal_a_problem"><u>Raportează o problemă</u></string>
     <string name="login_button_resend_code"><u>Cereți din nou codul</u></string>
@@ -2671,5 +2671,97 @@ Ei vor citi acest mesaj imediat ce se vor alătura grupului.</string>
     <string name="see_member_react">Persoane care au reacționat</string>
     <string name="text_title_i_like">Îmi place</string>
     <string name="text_title_comment">Comentează</string>
+    <string name="text_title_votes">Vezi voturile</string>
+    <string name="header_title_create_survey">Creează un sondaj</string>
+    <string name="create_question_title">Întrebare</string>
+    <string name="create_question_hint">Puneți întrebarea</string>
+    <string name="create_option_hint">+ Adăugați o opțiune</string>
+    <string name="create_option_title">Opțiuni</string>
+    <string name="title_switch_mutiple_choice">Mai multe răspunsuri posibile</string>
+    <string name="title_switch_single_choice">Selectați o opțiune</string>
+    <string name="title_switch_mutiples_choices">Selectați una sau mai multe opțiuni</string>
+    <string name="btn_survey_validate">Validați</string>
+    <string name="btn_survey_cancel">Anulați</string>
+    <string name="popup_survey_title">Atenție</string>
+    <string name="popup_survey_content">Dacă părăsiți crearea sondajului, toate informațiile introduse vor fi pierdute</string>
+    <string name="popup_survey_btn_leave">Părăsiți</string>
+    <string name="popup_survey_btn_cancel">Anulați</string>
+    <string name="see_member_vote">Răspunsuri la sondaj</string>
+    <string name="activate_geoloc">Activați locația</string>
+    <string name="home_v2_no_adress_title">Îmbunătățiți experiența!</string>
+    <string name="home_v2_no_adress_content">Pentru a cunoaște acțiunile și evenimentele de solidaritate din jurul vostru, vă rugăm să vă luați un moment pentru a adăuga localitatea în profilul vostru.</string>
+    <string name="home_v2_no_adress_button">Adăugați localitatea mea</string>
+    <string name="popup_event_confirm_btn_confirm">Vin</string>
+    <string name="popup_event_confirm_btn_cancel">Nu vin</string>
+    <string name="popup_event_confirm_title">Nu uitați: „%s” are loc mâine la %s la %s!</string>
+    <string name="popup_event_confirm_content">Pentru a facilita organizarea evenimentului, ne puteți spune dacă veți fi prezent mâine?</string>
+    <string name="onboarding_presentation_title">%s, să ne cunoaștem!</string>
+    <string name="onboarding_presentation_content">Înainte de a intra în aplicația noastră, să ne acordăm un moment pentru a vă cunoaște mai bine. Interesele voastre ne vor ajuta să vă sugerăm activități și conținut care vă interesează.</string>
+    <string name="onboarding_presentation_btn_negative">Configurați mai târziu</string>
+    <string name="onboarding_presentation_btn_positive">Începeți</string>
+    <string name="onboarding_interest_title">Interesele mele</string>
+    <string name="onboarding_interest_content">Pentru a vă ajuta să găsiți activități care vă interesează, spuneți-ne ce vă interesează.</string>
+    <string name="onboarding_btn_finish">Terminați mai târziu</string>
+    <string name="onboarding_btn_next">Următor</string>
+    <string name="onboarding_btn_register">Înregistrați</string>
+    <string name="onboarding_category_title">Categoriile mele de sprijin</string>
+    <string name="onboarding_category_content">Selectați categoriile de sprijin pe care doriți să le vedeți mai întâi.</string>
+    <string name="onboarding_category_sharing_time">Timp de partajare</string>
+    <string name="onboarding_category_donation">Donații materiale</string>
+    <string name="onboarding_category_services">Oferte de servicii</string>
+    <string name="onboarding_category_services_details">(spălătorie, imprimare documente, ajutor administrativ...)</string>
+    <string name="onboarding_action_wish_title">Cum doriți să acționați în cadrul comunității Entourage?</string>
+    <string name="onboarding_action_wish_content">(Da, puteți alege mai multe opțiuni!)</string>
+    <string name="onboarding_action_wish_pedago">Învățați cu \nconținuturi pedagogice</string>
+    <string name="onboarding_action_wish_event">Participați la \nevenimente de convivialitate</string>
+    <string name="onboarding_action_wish_services">Dați sau solicitați un \najutor</string>
+    <string name="onboarding_action_wish_network">Alăturați-vă unui grup de \nvecini și stabiliți conexiuni</string>
+    <string name="onboarding_action_wish_pedago_contrib">Găsiți structuri solidare în apropiere</string>
+    <string name="onboarding_action_wish_event_contrib">Participați la \nevenimente de convivialitate</string>
+    <string name="onboarding_action_wish_services_contrib">Solicitați un \najutor</string>
+    <string name="onboarding_action_wish_network_contrib">Alăturați-vă unui grup de \nvecini și stabiliți conexiuni</string>
+    <string name="onboarding_congrats_title">Experiența voastră personalizată este gata!</string>
+    <string name="onboarding_congrats_content">Pe baza preferințelor și disponibilităților voastre, am pregătit o selecție de evenimente care vă reprezintă. Este timpul să acționați!</string>
+    <string name="onboarding_congrats_leave">Explorați evenimentele</string>
+    <string name="onboarding_congrats_temporary_title">Experiența voastră personalizată este (aproape) gata!</string>
+    <string name="onboarding_congrats_temporary_content">Vă mulțumim că ne-ați împărtășit dorințele de a acționa și interesele voastre. Suntem nerăbdători să vă oferim în curând evenimente personalizate care vă corespund. \nRămâneți conectați!</string>
+    <string name="notif_ask_page_title">Activați notificările pentru a nu pierde nimic</string>
+    <string name="notif_ask_page_subtitle">Primiți ajutor în apropierea voastră, fiți informați despre evenimente locale, postările vecinilor voștri și mesajele personale în timp real.</string>
+    <string name="notif_ask_page_btn_main">Activați notificările</string>
+    <string name="notif_ask_page_btn_secondary">Nu acum</string>
+    <string name="main_filter_title">Filtre</string>
+    <string name="main_filter_btn_validate">Aplicați filtrele</string>
+    <string name="main_filter_btn_reinit">Resetați</string>
+    <string name="main_filter_subtitle_group_event">Pe tematică</string>
+    <string name="main_filter_subtitle_action">Pe categorie</string>
+    <string name="main_filter_title_location">Pe locație</string>
+    <string name="main_filter_title_radius">Într-un rază de</string>
+    <string name="sharing_time_title">Timp de partajare</string>
+    <string name="sharing_time_subtitle">cafea, activitate...</string>
+    <string name="services_title">Serviciu</string>
+    <string name="services_subtitle">spălătorie, imprimare documente...</string>
+    <string name="clothes_title">Îmbrăcăminte</string>
+    <string name="clothes_subtitle">încălțăminte, haină...</string>
+    <string name="equipment_title">Echipament</string>
+    <string name="equipment_subtitle">telefon, sac de dormit...</string>
+    <string name="hygiene_title">Produs de igienă</string>
+    <string name="hygiene_subtitle">săpun, protecție sanitară, scutece...</string>
+    <string name="group_search_hint">Căutați un grup</string>
+    <string name="event_search_hint">Căutați un eveniment</string>
+    <string name="action_search_hint">Căutați o acțiune</string>
+    <string name="search_participant_hint">Căutați un participant</string>
+    <string name="home_v2_title_sensibilisation">Informați-vă</string>
+    <string name="home_v2_subtitle_sensibilisation">Câteva sugestii de lectură pentru început</string>
+    <string name="interest_activites_onboarding">Activități \nmanuale</string>
+    <string name="interest_activites_main_filter">Activități manuale</string>
+    <string name="posts_vote_number"><u>%s voturi</u></string>
+    <string name="posts_vote_number_singular"><u>%s vot</u></string>
+    <string name="my_onboarding">Personalizați contul meu</string>
+    <string name="actions_tab_mygroup">Anunțurile mele</string>
+    <string name="create_survey">Creează un sondaj</string>
+    <string name="participant_number_singular">%s participant</string>
+    <string name="members_location_temporary">%s</string>
+    <string name="see_participants">Participanți</string>
+    <string name="participant_number">%s participanți</string>
 
 </resources>

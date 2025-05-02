@@ -61,6 +61,28 @@ interface GroupRequest {
     ): Call<GroupsListWrapper>
 
     @GET("neighborhoods")
+    fun getAllGroupswithFilter(
+        @Query("page") page: Int,
+        @Query("per") per: Int,
+        @Query("interest_list") interests: String,
+        @Query("travel_distance") radius: Int,
+        @Query("latitude") latitude: Double?,
+        @Query("longitude") longitude: Double?
+    ): Call<GroupsListWrapper>
+
+
+    @GET("users/{user_id}/neighborhoods")
+    fun getMyGroupswithFilter(
+        @Path("user_id") userId: Int,
+        @Query("page") page: Int,
+        @Query("per") per: Int,
+        @Query("interest_list") interests: String,
+        @Query("travel_distance") radius: Int,
+        @Query("latitude") latitude: Double?,
+        @Query("longitude") longitude: Double?
+    ): Call<GroupsListWrapper>
+
+    @GET("neighborhoods")
     fun getGroupsSearch(
         @Query("q") searchTxt: String,
     ): Call<GroupsListWrapper>
@@ -176,4 +198,19 @@ interface GroupRequest {
         @Path("post_id") postId: Int,
         @Query("image_size") size:String,
     ): Call<PostWrapper>
+
+    @GET("neighborhoods")
+    fun getAllGroupsWithSearchQuery(
+        @Query("q") query: String,
+        @Query("page") page: Int,
+        @Query("per") per: Int
+    ): Call<GroupsListWrapper>
+
+    @GET("users/{user_id}/neighborhoods")
+    fun getMyGroupsWithSearchQuery(
+        @Path("user_id") userId: Int,
+        @Query("q") query: String,
+        @Query("page") page: Int,
+        @Query("per") per: Int
+    ): Call<GroupsListWrapper>
 }

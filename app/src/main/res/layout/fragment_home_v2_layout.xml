@@ -100,15 +100,55 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
+
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/home_title_sensibilisation"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginEnd="16dp"
+                android:layout_marginStart="@dimen/entourage_marginstart"
+                android:fontFamily="@font/quicksand_bold"
+                android:textSize="@dimen/entourage_font_large"
+                android:textColor="@color/grey_dark"
+                android:text="@string/home_v2_title_sensibilisation"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/home_subtitle_sensibilisation"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/home_title_sensibilisation"
+                android:layout_marginStart="@dimen/entourage_marginstart"
+                android:fontFamily="@font/nunitosans_regular"
+                android:textSize="@dimen/entourage_font_small"
+                android:text="@string/home_v2_subtitle_sensibilisation"
+                />
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/rv_home_sensibilisation"
+                android:layout_marginTop="@dimen/entourage_little_margin_top"
+                app:layout_constraintTop_toBottomOf="@+id/home_subtitle_sensibilisation"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/home_title_action"/>
+
+
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:id="@+id/home_title_action"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/rv_home_sensibilisation"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginEnd="16dp"
             android:layout_marginStart="@dimen/entourage_marginstart"
+            android:layout_marginTop="28dp"
             android:fontFamily="@font/quicksand_bold"
             android:textSize="@dimen/entourage_font_large"
             android:textColor="@color/grey_dark"

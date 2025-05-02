@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="60dp"
+    android:background="@drawable/shape_grey_border"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    android:layout_marginStart="16dp"
+    android:layout_marginEnd="16dp"
+    android:layout_marginTop="16dp">
+
+    <TextView
+        android:id="@+id/tvInterestTitleFromRight"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="12dp"
+        android:fontFamily="@font/nunitosans_regular"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        android:text="title" />
+
+    <TextView
+        android:id="@+id/tvInterestSubTitleFromRight"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="@id/tvInterestTitleFromRight"
+        app:layout_constraintBottom_toBottomOf="@id/tvInterestTitleFromRight"
+        app:layout_constraintStart_toEndOf="@+id/tvInterestTitleFromRight"
+        android:layout_marginStart="10dp"
+        android:fontFamily="@font/nunitosans_regular"
+        android:textColor="@color/black"
+        android:textSize="13sp"
+        android:text="subtitle"
+        android:visibility="visible" />
+
+    <ImageView
+        android:id="@+id/ivInterestCheck"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="16dp"
+        android:src="@drawable/ic_onboarding_uncheck"
+        />
+</androidx.constraintlayout.widget.ConstraintLayout>

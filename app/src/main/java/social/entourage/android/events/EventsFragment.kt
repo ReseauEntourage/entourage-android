@@ -14,6 +14,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -32,6 +33,8 @@ import social.entourage.android.events.list.DiscoverEventsListFragment
 import social.entourage.android.events.list.EventsViewPagerAdapter
 import social.entourage.android.home.CommunicationHandlerBadgeViewModel
 import social.entourage.android.home.UnreadMessages
+import social.entourage.android.main_filter.MainFilterActivity
+import social.entourage.android.main_filter.MainFilterMode
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.log.AnalyticsEvents
 import timber.log.Timber
@@ -45,6 +48,7 @@ class EventsFragment : Fragment() {
     private var currentFilters = EventActionLocationFilters()
     private var activityResultLauncher: ActivityResultLauncher<Intent>? = null
     private var isFromFilters = false
+
 
     //TODO title same size as
     val binding: NewFragmentEventsBinding get() = _binding!!
@@ -85,6 +89,7 @@ class EventsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setSearchAndFilterButtons()
         eventsPresenter = ViewModelProvider(requireActivity()).get(EventsPresenter::class.java)
         createEvent()
         initializeTab()
@@ -93,8 +98,13 @@ class EventsFragment : Fragment() {
         eventsPresenter.haveToChangePage.observe(requireActivity(),::handlePageChange)
         eventsPresenter.haveToCreateEvent.observe(requireActivity(),::handleLaunchCreateEvent)
         eventsPresenter.isCreateButtonExtended.observe(requireActivity(),::handleButtonBehavior)
+        eventsPresenter.hasToHideButton.observe(requireActivity(),::handleShowHideButton)
+        eventsPresenter.shouldChangeTopView.observe(requireActivity(),::handleTopTitle)
+        eventsPresenter.textSizeChange.observe(requireActivity(),::handleTextSize)
         eventsPresenter.hasChangedFilterLocationForParentFragment.observe(requireActivity(),::handleFilterTitleAfterChange)
         eventsPresenter.getUnreadCount()
+        handleFilterButton()
+        handleSearchButton()
     }
 
     override fun onResume() {
@@ -110,12 +120,73 @@ class EventsFragment : Fragment() {
             RefreshController.shouldRefreshEventFragment = false
         }
         initView()
+        if (MainFilterActivity.savedGroupInterests.size > 0) {
+            binding.cardFilterNumber.visibility = View.VISIBLE
+            binding.tvNumberOfFilter.text = MainFilterActivity.savedGroupInterests.size.toString()
+
+        } else {
+            binding.cardFilterNumber.visibility = View.GONE
+
+        }
+        resetSearchButtonState()
 
     }
+
+    fun handleTopTitle(hideTitle:Boolean){
+        if(hideTitle){
+            binding.topEventLayout.visibility = View.GONE
+        }else{
+            binding.topEventLayout.visibility = View.VISIBLE
+        }
+    }
+
+    fun setSearchAndFilterButtons(){
+        binding.uiLayoutSearch.background = ContextCompat.getDrawable(requireContext(), R.drawable.bg_unselected_filter) // Ajoute un fond orange rond
+        binding.uiBellSearch.setColorFilter(ContextCompat.getColor(requireContext(), R.color.orange), android.graphics.PorterDuff.Mode.SRC_IN)
+        binding.uiLayoutFilter.background = ContextCompat.getDrawable(requireContext(), R.drawable.bg_unselected_filter) // Remet le fond en blanc rond
+        binding.uiBellFilter.setColorFilter(ContextCompat.getColor(requireContext(), R.color.orange), android.graphics.PorterDuff.Mode.SRC_IN)
+        binding.uiLayoutFilter.visibility = View.VISIBLE
+        binding.uiLayoutSearch.visibility = View.VISIBLE
+    }
+
+    private fun handleFilterButton() {
+       binding.uiLayoutFilter.setOnClickListener {
+           DiscoverEventsListFragment.isFirstResumeWithFilters = true
+           MainFilterActivity.mod = MainFilterMode.EVENT
+           val intent = Intent(activity, MainFilterActivity::class.java)
+
+           startActivity(intent)
+       }
+    }
+
+    private fun handleSearchButton(){
+        binding.uiLayoutSearch.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.events_searchbar_clic)
+            this.eventsPresenter.changeSearchMode()
+        }
+    }
+
+
+
+    private fun resetSearchButtonState() {
+        binding.uiLayoutFilter.background = ContextCompat.getDrawable(requireContext(), R.drawable.bg_unselected_filter) // Remet le fond en blanc rond
+        binding.uiBellFilter.setColorFilter(ContextCompat.getColor(requireContext(), R.color.orange), android.graphics.PorterDuff.Mode.SRC_IN) // Applique une tint noire par défaut
+        binding.uiLayoutSearch.background = ContextCompat.getDrawable(requireContext(), R.drawable.bg_unselected_filter) // Remet le fond en blanc rond
+        binding.uiBellSearch.setColorFilter(ContextCompat.getColor(requireContext(), R.color.orange), android.graphics.PorterDuff.Mode.SRC_IN) // Applique une tint noire par défaut
+    }
+
+
     private fun updateFilters() {
         isFromFilters = true
         binding.uiTitleLocationBt.text = currentFilters.getFilterButtonString(requireContext())
 
+    }
+    private fun handleShowHideButton(hideButton:Boolean){
+        if(hideButton){
+            binding.createEventExpanded.visibility = View.GONE
+            binding.createEventRetracted.visibility = View.GONE
+        }else{
+            binding.createEventExpanded.visibility = View.VISIBLE }
     }
     fun initView(){
 
@@ -142,6 +213,11 @@ class EventsFragment : Fragment() {
         } else {
             animateToRetractedState()
         }
+    }
+
+    fun handleTextSize(size:Float){
+        Log.wtf("wtf", "size: $size")
+        binding.uiTitleEvents.textSize = size
     }
 
     private fun animateToExtendedState() {

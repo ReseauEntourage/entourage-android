@@ -25,13 +25,36 @@ interface EventsRequest {
     fun getMyEvents(
         @Path("user_id") userId: Int,
         @Query("page") page: Int,
-        @Query("per") per: Int
+        @Query("per") per: Int,
+        @Query("travel_distance") travelDistance: Int?,
+        @Query("latitude") latitude: Double?,
+        @Query("longitude") longitude: Double?,
     ): Call<EventsListWrapper>
-
+    @GET("users/{user_id}/outings")
+    fun getMyEventsWithFilter(
+        @Path("user_id") userId: Int,
+        @Query("page") page: Int,
+        @Query("per") per: Int,
+        @Query("interest_list") interests: String,
+        @Query("travel_distance") travelDistance: Int?,
+        @Query("latitude") latitude: Double?,
+        @Query("longitude") longitude: Double?,
+        @Query("period") period: String
+    ): Call<EventsListWrapper>
     @GET("outings")
     fun getAllEvents(
         @Query("page") page: Int,
         @Query("per") per: Int,
+        @Query("travel_distance") travelDistance: Int?,
+        @Query("latitude") latitude: Double?,
+        @Query("longitude") longitude: Double?,
+        @Query("period") period:String
+    ): Call<EventsListWrapper>
+    @GET("outings")
+    fun getAllEventsWithFilter(
+        @Query("page") page: Int,
+        @Query("per") per: Int,
+        @Query("interest_list") interests: String,
         @Query("travel_distance") travelDistance: Int?,
         @Query("latitude") latitude: Double?,
         @Query("longitude") longitude: Double?,
@@ -166,5 +189,19 @@ interface EventsRequest {
     fun confirmParticipation(
         @Path("outing_id") eventId: Int
     ): Call<ResponseBody>
+    @GET("outings")
+    fun getAllEventsWithSearchQuery(
+        @Query("q") query: String,
+        @Query("page") page: Int,
+        @Query("per") per: Int
+    ): Call<EventsListWrapper>
+
+    @GET("users/{user_id}/outings")
+    fun getMyEventsWithSearchQuery(
+        @Path("user_id") userId: Int,
+        @Query("q") query: String,
+        @Query("page") page: Int,
+        @Query("per") per: Int
+    ): Call<EventsListWrapper>
 
 }

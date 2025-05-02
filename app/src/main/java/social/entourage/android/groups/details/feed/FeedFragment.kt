@@ -179,7 +179,7 @@ class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface,
         myId = EntourageApplication.me(activity)?.id
 
         getPrincipalMember()
-        groupPresenter.getMembers.observe(viewLifecycleOwner, ::handleResponseGetGroupMembers)
+        //groupPresenter.getMembers.observe(viewLifecycleOwner, ::handleResponseGetGroupMembers)
         groupPresenter.getGroup.observe(viewLifecycleOwner, ::handleResponseGetGroup)
         groupPresenter.getAllPosts.observe(viewLifecycleOwner, ::handleResponseGetGroupPosts)
         groupPresenter.hasUserJoinedGroup.observe(viewLifecycleOwner, ::handleJoinResponse)
@@ -258,7 +258,9 @@ class FeedFragment : Fragment(),CallbackReportFragment, ReactionInterface,
     }
 
     private fun getPrincipalMember(){
-        groupPresenter.getGroupMembers(groupId)
+//        groupPresenter.getGroupMembers(groupId)
+        groupPresenter.getGroup(groupId)
+
 
     }
 

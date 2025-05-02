@@ -32,7 +32,7 @@ interface ActionsRequest {
     fun getAllActionsDemand(
         @Query("page") page: Int,
         @Query("per") per: Int,
-        @Query("sections[]") sections: String?,
+        @Query("section_list") sections: String?,
         @Query("travel_distance") travelDistance: Int?,
         @Query("latitude") latitude: Double?,
         @Query("longitude") longitude: Double?,
@@ -42,7 +42,7 @@ interface ActionsRequest {
     fun getAllActionsDemandWithoutMine(
         @Query("page") page: Int,
         @Query("per") per: Int,
-        @Query("sections[]") sections: String?,
+        @Query("section_list") sections: String?,
         @Query("travel_distance") travelDistance: Int?,
         @Query("latitude") latitude: Double?,
         @Query("longitude") longitude: Double?,
@@ -108,4 +108,36 @@ interface ActionsRequest {
         @Body params: DemandCancelWrapper
     ): Call<DemandWrapper>
 
+    @GET("contributions")
+    fun getAllActionsContribWithFilter(
+        @Query("page") page: Int,
+        @Query("per") per: Int,
+        @Query("section_list") sections: String?,
+        @Query("travel_distance") travelDistance: Int?,
+        @Query("latitude") latitude: Double?,
+        @Query("longitude") longitude: Double?,
+    ): Call<ContribsListWrapper>
+
+    @GET("solicitations")
+    fun getAllActionsDemandWithFilter(
+        @Query("page") page: Int,
+        @Query("per") per: Int,
+        @Query("section_list") sections: String?,
+        @Query("travel_distance") travelDistance: Int?,
+        @Query("latitude") latitude: Double?,
+        @Query("longitude") longitude: Double?,
+    ): Call<DemandsListWrapper>
+    @GET("contributions")
+    fun getAllContribsWithSearchQuery(
+        @Query("q") query: String,
+        @Query("page") page: Int,
+        @Query("per") per: Int
+    ): Call<ContribsListWrapper>
+
+    @GET("solicitations")
+    fun getAllDemandsWithSearchQuery(
+        @Query("q") query: String,
+        @Query("page") page: Int,
+        @Query("per") per: Int
+    ): Call<DemandsListWrapper>
 }

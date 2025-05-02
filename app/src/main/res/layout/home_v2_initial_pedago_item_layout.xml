@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="300dp"
+    android:layout_height="130dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/home_v2_action_item_shape"
+    android:layout_marginStart="0dp"
+    android:layout_marginEnd="10dp"
+    android:layout_marginTop="@dimen/entourage_little_margin_top">
+    <ImageView
+        android:layout_width="90dp"
+        android:layout_height="match_parent"
+        android:id="@+id/iv_pedago_item"
+        android:background="@drawable/home_v2_pedago_iv_item_shape"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:scaleType="centerCrop"
+        tools:src="@drawable/placeholder_user"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_tag_pedago_item"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/iv_pedago_item"
+        android:layout_marginTop="@dimen/entourage_little_margin_top"
+        android:layout_marginStart="@dimen/entourage_margin_start_inner_item"
+        android:background="@drawable/home_v2_tv_tag_item_pedago_shape"
+        android:textColor="@color/light_orange"
+        android:fontFamily="@font/quicksand_bold"
+        android:textSize="@dimen/entourage_font_very_small"
+        tools:text="comprendre"
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp"
+        android:paddingStart="6dp"
+        android:paddingEnd="6dp"
+        />
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_title_item_pedago"
+        app:layout_constraintStart_toEndOf="@+id/iv_pedago_item"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_tag_pedago_item"
+        android:layout_marginStart="@dimen/entourage_margin_start_inner_item"
+        android:layout_marginTop="@dimen/entourage_little_margin_five"
+        android:textSize="@dimen/entourage_font_small"
+        android:textColor="@color/black"
+        android:fontFamily="@font/quicksand_bold"
+        android:maxLines="3"
+        tools:text="un super titre pour ma carte pedago pour tester si elle passe bien"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_lenght_pedago_item"
+        app:layout_constraintStart_toEndOf="@+id/iv_pedago_item"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="@dimen/entourage_margin_bottom"
+        android:layout_marginStart="@dimen/entourage_margin_start_inner_item"
+        android:textColor="@color/grey"
+        android:textSize="@dimen/entourage_font_very_small"
+        android:fontFamily="@font/nunitosans_regular"
+        tools:text="cette video dure 6 min"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

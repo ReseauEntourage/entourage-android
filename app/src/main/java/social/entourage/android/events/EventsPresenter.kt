@@ -28,9 +28,11 @@ import timber.log.Timber
 import java.io.File
 import java.io.IOException
 
-class EventsPresenter: ViewModel() {
+class EventsPresenter : ViewModel() {
     var getAllMyEvents = MutableLiveData<MutableList<Events>>()
     var getAllEvents = MutableLiveData<MutableList<Events>>()
+    var getFilteredEvents = MutableLiveData<MutableList<Events>>()
+    var getFilteredMyEvents = MutableLiveData<MutableList<Events>>()
     var getEvent = MutableLiveData<Events>()
     var isEventReported = MutableLiveData<Boolean>()
     var isEventDeleted = MutableLiveData<Boolean>()
@@ -49,58 +51,87 @@ class EventsPresenter: ViewModel() {
     var hasChangedFilterLocationForParentFragment = MutableLiveData<EventActionLocationFilters>()
     var isCreateButtonExtended = MutableLiveData<Boolean>()
     var getMembersReactResponse = MutableLiveData<CompleteReactionsResponse>()
-
+    var allEventsSearch = MutableLiveData<MutableList<Events>>()
+    var myEventsSearch = MutableLiveData<MutableList<Events>>()
+    
     var hasUserLeftEvent = MutableLiveData<Boolean>()
     var eventCanceled = MutableLiveData<Boolean>()
-
+    var textSizeChange = MutableLiveData<Float>()
     var isEventUpdated = MutableLiveData<Boolean>()
     var hasPost = MutableLiveData<Boolean>()
     var commentPosted = MutableLiveData<Post?>()
     var haveToChangePage = MutableLiveData<Boolean>()
     var haveToCreateEvent = MutableLiveData<Boolean>()
+    var shouldChangeTopView = MutableLiveData<Boolean>()
+    var passSearchMod = MutableLiveData<Boolean>()
+    var isSearchMode = false
     var haveChanged = false
     var havelaunchedCreation = false
+
 
     var isLoading: Boolean = false
     var isLastPage: Boolean = false
     var isLastPageMyEvent: Boolean = false
 
     var isSendingCreatePost = false
+    var hasToHideButton = MutableLiveData<Boolean>()
 
     var unreadMessages = MutableLiveData<UnreadMessages?>()
 
-    fun changePage(){
-        haveChanged = ! haveChanged
+    fun changePage() {
+        haveChanged = !haveChanged
         haveToChangePage.postValue(haveChanged)
     }
 
-    fun launchCreateEvent(){
+    fun changeTextSize(size: Float) {
+        textSizeChange.postValue(size)
+    }
+    fun changeTopView(shouldHide: Boolean) {
+        shouldChangeTopView.postValue(shouldHide)
+    }
+
+    fun changeSearchMode() {
+        isSearchMode = !isSearchMode
+        passSearchMod.postValue(isSearchMode)
+    }
+
+
+    fun hideButton() {
+        hasToHideButton.postValue(true)
+    }
+
+    fun showButton() {
+        hasToHideButton.postValue(false)
+    }
+
+    fun launchCreateEvent() {
         havelaunchedCreation = !havelaunchedCreation
         haveToCreateEvent.postValue(havelaunchedCreation)
     }
 
-    fun resetAllEvent(){
+    fun resetAllEvent() {
         this.getAllMyEvents.value?.clear()
     }
-    fun resetMyEvent(){
+
+    fun resetMyEvent() {
         this.getAllEvents.value?.clear()
     }
 
-    fun changedFilterFromUpperFragment(){
+    fun changedFilterFromUpperFragment() {
         hasChangedFilter.postValue(true)
     }
 
-    fun tellParentFragmentToupdateLocation(filter: EventActionLocationFilters){
+    fun tellParentFragmentToupdateLocation(filter: EventActionLocationFilters) {
         hasChangedFilterLocationForParentFragment.postValue(filter)
     }
 
-    fun tellParentFragmentToMoveButton(isExtended:Boolean){
+    fun tellParentFragmentToMoveButton(isExtended: Boolean) {
         isCreateButtonExtended.postValue(isExtended)
     }
 
-
-    fun getMyEvents(userId: Int, page: Int, per: Int) {
-        EntourageApplication.get().apiModule.eventsRequest.getMyEvents(userId, page, per)
+    fun getMyEvents(userId: Int, page: Int, per: Int,travelDistance: Int?,
+                    latitude: Double?, longitude: Double?) {
+        EntourageApplication.get().apiModule.eventsRequest.getMyEvents(userId, page, per, travelDistance, latitude, longitude)
             .enqueue(object : Callback<EventsListWrapper> {
                 override fun onResponse(
                     call: Call<EventsListWrapper>,
@@ -118,28 +149,77 @@ class EventsPresenter: ViewModel() {
             })
     }
 
-    fun hasChangedFilter(){
+    fun getMyEventsWithFilter(
+        userId: Int, page: Int, per: Int, interests: String, travelDistance: Int?,
+        latitude: Double?, longitude: Double?, period: String
+    ) {
+        EntourageApplication.get().apiModule.eventsRequest.getMyEventsWithFilter(
+            userId, page, per, interests, travelDistance, latitude, longitude, period
+        ).enqueue(object : Callback<EventsListWrapper> {
+            override fun onResponse(
+                call: Call<EventsListWrapper>,
+                response: Response<EventsListWrapper>
+            ) {
+                response.body()?.let { allEventsWrapper ->
+                    if (allEventsWrapper.allEvents.size < EVENTS_PER_PAGE) isLastPageMyEvent = true
+                    getFilteredMyEvents.postValue(allEventsWrapper.allEvents)
+                }
+            }
+
+            override fun onFailure(call: Call<EventsListWrapper>, t: Throwable) {
+                Log.e("EventsPresenter", "Failed to fetch filtered my events: ${t.message}")
+            }
+        })
+    }
+
+    fun hasChangedFilter() {
         hasChangedFilter.postValue(false)
     }
 
-    fun getAllEvents(page: Int, per: Int,distance:Int?,latitude:Double?,longitude:Double?,period:String) {
-        EntourageApplication.get().apiModule.eventsRequest.getAllEvents(page, per,distance,latitude,longitude,period)
-            .enqueue(object : Callback<EventsListWrapper> {
-                override fun onResponse(
-                    call: Call<EventsListWrapper>,
-                    response: Response<EventsListWrapper>
-                ) {
-                    response.body()?.let { allEventsWrapper ->
-                        if (allEventsWrapper.allEvents.size < EVENTS_PER_PAGE) isLastPage = true
-                        getAllEvents.postValue(allEventsWrapper.allEvents)
-
-                    }
+    fun getAllEvents(
+        page: Int, per: Int, distance: Int?, latitude: Double?,
+        longitude: Double?, period: String
+    ) {
+        EntourageApplication.get().apiModule.eventsRequest.getAllEvents(
+            page, per, distance, latitude, longitude, period
+        ).enqueue(object : Callback<EventsListWrapper> {
+            override fun onResponse(
+                call: Call<EventsListWrapper>,
+                response: Response<EventsListWrapper>
+            ) {
+                response.body()?.let { allEventsWrapper ->
+                    if (allEventsWrapper.allEvents.size < EVENTS_PER_PAGE) isLastPage = true
+                    getAllEvents.postValue(allEventsWrapper.allEvents)
                 }
+            }
 
-                override fun onFailure(call: Call<EventsListWrapper>, t: Throwable) {
+            override fun onFailure(call: Call<EventsListWrapper>, t: Throwable) {
+            }
+        })
+    }
 
+    fun getAllEventsWithFilter(
+        page: Int, per: Int, interests: String, travelDistance: Int?,
+        latitude: Double?, longitude: Double?, period: String
+    ) {
+        EntourageApplication.get().apiModule.eventsRequest.getAllEventsWithFilter(
+            page, per, interests, travelDistance, latitude, longitude, period
+        ).enqueue(object : Callback<EventsListWrapper> {
+            override fun onResponse(
+                call: Call<EventsListWrapper>,
+                response: Response<EventsListWrapper>
+            ) {
+                response.body()?.let { allEventsWrapper ->
+                    Log.wtf("wtf","hello here")
+                    if (allEventsWrapper.allEvents.size < EVENTS_PER_PAGE) isLastPage = true
+                    getFilteredEvents.postValue(allEventsWrapper.allEvents)
                 }
-            })
+            }
+
+            override fun onFailure(call: Call<EventsListWrapper>, t: Throwable) {
+                Log.e("EventsPresenter", "Failed to fetch filtered events: ${t.message}")
+            }
+        })
     }
 
     fun createEvent(event: CreateEvent) {
@@ -149,7 +229,6 @@ class EventsPresenter: ViewModel() {
                     call: Call<EventWrapper>,
                     response: Response<EventWrapper>
                 ) {
-
                     if (response.isSuccessful) {
                         response.body()?.let {
                             isEventCreated.value = true
@@ -215,10 +294,10 @@ class EventsPresenter: ViewModel() {
 
     fun deletedEventPost(
         id: Int,
-        postId: Int) {
+        postId: Int
+    ) {
         val userRequest = EntourageApplication.get().apiModule.eventsRequest
-        val call = userRequest.deleteEventPost(
-            id, postId)
+        val call = userRequest.deleteEventPost(id, postId)
         call.enqueue(object : Callback<ResponseBody> {
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                 isEventDeleted.value = false
@@ -248,7 +327,6 @@ class EventsPresenter: ViewModel() {
                 }
             })
     }
-
 
     fun participate(eventId: Int) {
         EntourageApplication.get().apiModule.eventsRequest.participate(eventId)
@@ -308,7 +386,6 @@ class EventsPresenter: ViewModel() {
                     response.body()?.let { allMembersWrapper ->
                         getMembers.value = allMembersWrapper.users
                     }
-
                 }
 
                 override fun onFailure(call: Call<MembersWrapper>, t: Throwable) {
@@ -348,8 +425,8 @@ class EventsPresenter: ViewModel() {
             })
     }
 
-    fun getEventPosts(eventId: Int, page:Int, per:Int) {
-        EntourageApplication.get().apiModule.eventsRequest.getEventPosts(eventId,page,per)
+    fun getEventPosts(eventId: Int, page: Int, per: Int) {
+        EntourageApplication.get().apiModule.eventsRequest.getEventPosts(eventId, page, per)
             .enqueue(object : Callback<PostListWrapper> {
                 override fun onResponse(
                     call: Call<PostListWrapper>,
@@ -358,7 +435,6 @@ class EventsPresenter: ViewModel() {
                     response.body()?.let { allPostsWrapper ->
                         getAllPosts.value = allPostsWrapper.posts
                     }
-
                 }
 
                 override fun onFailure(call: Call<PostListWrapper>, t: Throwable) {
@@ -383,8 +459,7 @@ class EventsPresenter: ViewModel() {
                             isSendingCreatePost = true
                             uploadFile(eventId, file, presignedUrl, uploadKey, message)
                         } ?: run { isSendingCreatePost = false }
-                    }
-                    else {
+                    } else {
                         isSendingCreatePost = false
                     }
                 }
@@ -446,9 +521,8 @@ class EventsPresenter: ViewModel() {
         })
     }
 
-
     fun getCurrentParentPost(eventId: Int, postId: Int) {
-        EntourageApplication.get().apiModule.eventsRequest.getPostDetail(eventId,postId, "high")
+        EntourageApplication.get().apiModule.eventsRequest.getPostDetail(eventId, postId, "high")
             .enqueue(object : Callback<PostWrapper> {
                 override fun onResponse(
                     call: Call<PostWrapper>,
@@ -481,13 +555,13 @@ class EventsPresenter: ViewModel() {
             })
     }
 
-    fun addComment(groupId: Int, comment: Post?) {
+    fun addComment(eventId: Int, comment: Post?) {
         val messageChat = ArrayMap<String, Any>()
         messageChat["content"] = comment?.content
         messageChat["parent_id"] = comment?.postId.toString()
         val chatMessage = ArrayMap<String, Any>()
         chatMessage["chat_message"] = messageChat
-        EntourageApplication.get().apiModule.eventsRequest.addPost(groupId, chatMessage)
+        EntourageApplication.get().apiModule.eventsRequest.addPost(eventId, chatMessage)
             .enqueue(object : Callback<PostWrapper> {
                 override fun onResponse(
                     call: Call<PostWrapper>,
@@ -503,35 +577,39 @@ class EventsPresenter: ViewModel() {
     }
 
     fun updateEvent(eventId: Int, eventEdited: CreateEvent) {
-        EntourageApplication.get().apiModule.eventsRequest.updateEvent(eventId, CreateEventWrapper(eventEdited))
-            .enqueue(object : Callback<EventWrapper> {
-                override fun onResponse(
-                    call: Call<EventWrapper>,
-                    response: Response<EventWrapper>
-                ) {
-                    isEventUpdated.value = response.isSuccessful && response.body()?.event != null
-                }
+        EntourageApplication.get().apiModule.eventsRequest.updateEvent(
+            eventId,
+            CreateEventWrapper(eventEdited)
+        ).enqueue(object : Callback<EventWrapper> {
+            override fun onResponse(
+                call: Call<EventWrapper>,
+                response: Response<EventWrapper>
+            ) {
+                isEventUpdated.value = response.isSuccessful && response.body()?.event != null
+            }
 
-                override fun onFailure(call: Call<EventWrapper>, t: Throwable) {
-                    isEventUpdated.value = false
-                }
-            })
+            override fun onFailure(call: Call<EventWrapper>, t: Throwable) {
+                isEventUpdated.value = false
+            }
+        })
     }
 
     fun updateEventSiblings(eventId: Int, eventEdited: CreateEvent) {
-        EntourageApplication.get().apiModule.eventsRequest.updateEventSiblings(eventId, CreateEventWrapper(eventEdited))
-            .enqueue(object : Callback<EventWrapper> {
-                override fun onResponse(
-                    call: Call<EventWrapper>,
-                    response: Response<EventWrapper>
-                ) {
-                    isEventUpdated.value = response.isSuccessful && response.body()?.event != null
-                }
+        EntourageApplication.get().apiModule.eventsRequest.updateEventSiblings(
+            eventId,
+            CreateEventWrapper(eventEdited)
+        ).enqueue(object : Callback<EventWrapper> {
+            override fun onResponse(
+                call: Call<EventWrapper>,
+                response: Response<EventWrapper>
+            ) {
+                isEventUpdated.value = response.isSuccessful && response.body()?.event != null
+            }
 
-                override fun onFailure(call: Call<EventWrapper>, t: Throwable) {
-                    isEventUpdated.value = false
-                }
-            })
+            override fun onFailure(call: Call<EventWrapper>, t: Throwable) {
+                isEventUpdated.value = false
+            }
+        })
     }
 
     fun getUnreadCount() {
@@ -552,11 +630,15 @@ class EventsPresenter: ViewModel() {
             })
     }
 
-    fun reactToPost(eventId:Int, postId:Int, reactionId:Int){
-        var reactionWrapper = ReactionWrapper()
+    fun reactToPost(eventId: Int, postId: Int, reactionId: Int) {
+        val reactionWrapper = ReactionWrapper()
         reactionWrapper.reactionId = reactionId
 
-        EntourageApplication.get().apiModule.eventsRequest.postReactionEventPost(eventId,postId,reactionWrapper).enqueue(object : Callback<ResponseBody> {
+        EntourageApplication.get().apiModule.eventsRequest.postReactionEventPost(
+            eventId,
+            postId,
+            reactionWrapper
+        ).enqueue(object : Callback<ResponseBody> {
             override fun onResponse(
                 call: Call<ResponseBody>,
                 response: Response<ResponseBody>
@@ -566,14 +648,18 @@ class EventsPresenter: ViewModel() {
                     }
                 }
             }
+
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                 Log.d("EventPresenter deleteReactToPost", "onFailure: $t")
             }
         })
     }
 
-    fun deleteReactToPost(eventId:Int, postId: Int){
-        EntourageApplication.get().apiModule.eventsRequest.deleteReactionAnEventPost(eventId, postId).enqueue(object : Callback<ResponseBody> {
+    fun deleteReactToPost(eventId: Int, postId: Int) {
+        EntourageApplication.get().apiModule.eventsRequest.deleteReactionAnEventPost(
+            eventId,
+            postId
+        ).enqueue(object : Callback<ResponseBody> {
             override fun onResponse(
                 call: Call<ResponseBody>,
                 response: Response<ResponseBody>
@@ -583,14 +669,18 @@ class EventsPresenter: ViewModel() {
                     }
                 }
             }
+
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                 Log.d("deleteReactToPost deleteReactToPost", "onFailure: $t")
             }
         })
     }
 
-    fun getReactDetails(eventId:Int, postId:Int){
-        EntourageApplication.get().apiModule.eventsRequest.getDetailsReactionEventPost(eventId,postId).enqueue(object : Callback<CompleteReactionsResponse> {
+    fun getReactDetails(eventId: Int, postId: Int) {
+        EntourageApplication.get().apiModule.eventsRequest.getDetailsReactionEventPost(
+            eventId,
+            postId
+        ).enqueue(object : Callback<CompleteReactionsResponse> {
             override fun onResponse(
                 call: Call<CompleteReactionsResponse>,
                 response: Response<CompleteReactionsResponse>
@@ -599,11 +689,11 @@ class EventsPresenter: ViewModel() {
                     response.body()?.let {
                         getMembersReactResponse.value = it
                     }
-                }else{
+                } else {
                     Timber.e("getReactDetails: ${response.errorBody()?.string()}")
-
                 }
             }
+
             override fun onFailure(call: Call<CompleteReactionsResponse>, t: Throwable) {
                 Timber.e("getReactDetails: $t")
             }
@@ -616,7 +706,7 @@ class EventsPresenter: ViewModel() {
                 override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                     if (response.isSuccessful) {
                         Log.d("EventsPresenter", "Participation confirmée avec succès.")
-                        isUserConfirmedParticipating.value = true // Supposition d'un changement d'état représentatif
+                        isUserConfirmedParticipating.value = true
                     } else {
                         Log.d("EventsPresenter", "Échec de la confirmation de participation.")
                         isUserConfirmedParticipating.value = false
@@ -624,11 +714,44 @@ class EventsPresenter: ViewModel() {
                 }
 
                 override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                    // Gérer l'échec de la communication avec le serveur (peut-être le réseau est avalé par un trou noir)
                     Log.e("EventsPresenter", "Échec de l'appel réseau: ${t.message}")
                     isUserConfirmedParticipating.value = false
                 }
             })
     }
+    fun getAllEventsWithSearchQuery(query: String, page: Int, per: Int) {
+        EntourageApplication.get().apiModule.eventsRequest.getAllEventsWithSearchQuery(query, page, per)
+            .enqueue(object : Callback<EventsListWrapper> {
+                override fun onResponse(call: Call<EventsListWrapper>, response: Response<EventsListWrapper>) {
+                    response.body()?.let { allEventsWrapper ->
+                        allEventsSearch.value = allEventsWrapper.allEvents
+                    }
+                }
 
+                override fun onFailure(call: Call<EventsListWrapper>, t: Throwable) {
+                    // Gérer l'échec
+                }
+            })
+    }
+
+    fun getMyEventsWithSearchQuery(userId: Int, query: String, page: Int, per: Int) {
+        EntourageApplication.get().apiModule.eventsRequest.getMyEventsWithSearchQuery(userId, query, page, per)
+            .enqueue(object : Callback<EventsListWrapper> {
+                override fun onResponse(call: Call<EventsListWrapper>, response: Response<EventsListWrapper>) {
+                    response.body()?.let { allEventsWrapper ->
+                        if (page == 1) {
+                            myEventsSearch.value = allEventsWrapper.allEvents
+                        } else {
+                            val currentList = myEventsSearch.value ?: mutableListOf()
+                            currentList.addAll(allEventsWrapper.allEvents)
+                            myEventsSearch.value = currentList
+                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<EventsListWrapper>, t: Throwable) {
+                    // Gérer l'échec
+                }
+            })
+    }
 }

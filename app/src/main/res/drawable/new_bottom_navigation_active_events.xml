@@ -5,14 +5,14 @@
     android:viewportHeight="33">
   <path
       android:pathData="M0,12c0.168,-3.889 3.633,-7 7.882,-7h17.236c4.249,0 7.714,3.111 7.882,7H0z"
-      android:fillColor="#F55F24"
+      android:fillColor="#FF9739"
       android:fillType="evenOdd"/>
   <group>
     <clip-path
         android:pathData="M0,14h33v17L0,31z"/>
     <path
         android:pathData="M33,14v8.438C33,27.166 29.467,31 25.114,31L7.886,31C3.53,31 0,27.166 0,22.438L0,14h33z"
-        android:fillColor="#F55F24"
+        android:fillColor="#FF9739"
         android:fillType="evenOdd"/>
   </group>
   <path

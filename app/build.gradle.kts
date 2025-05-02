@@ -28,8 +28,8 @@ android {
     val targetCompatibilityVersion = JavaVersion.VERSION_11
 
     // App versions
-    val versionMajor = 9
-    val versionMinor = 9
+    val versionMajor = 10
+    val versionMinor = 0
     val versionPatch = "git rev-list HEAD --count".runCommand().toInt()
     val versionBranchName = "git rev-parse --abbrev-ref HEAD".runCommand()
     val versionCodeInt = (versionMajor * 100 + versionMinor) * 10000 + versionPatch % 10000
@@ -233,7 +233,9 @@ dependencies {
     //implementation gmsDependencies.values()
     implementation("com.google.android.gms:play-services-maps:18.1.0")
     implementation("com.google.android.gms:play-services-location:21.0.1") //v19 needs refactoring
-    implementation("com.google.android.libraries.places:places-compat:2.6.0")
+    //implementation("com.google.android.libraries.places:places-compat:2.6.0")
+    implementation("com.google.android.libraries.places:places:3.5.0")
+
     //https://developers.google.com/android/guides/opensource
     implementation("com.google.android.gms:play-services-oss-licenses:17.0.1")
 

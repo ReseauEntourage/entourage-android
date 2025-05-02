@@ -4,10 +4,11 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
@@ -24,25 +25,34 @@ import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.utils.Const
 import java.text.SimpleDateFormat
 
-class HomeEventAdapter(var context: Context):RecyclerView.Adapter<HomeEventAdapter.EventViewHolder>() {
-    var events:MutableList<Events> = mutableListOf()
+class HomeEventAdapter(
+    var context: Context
+) : RecyclerView.Adapter<HomeEventAdapter.EventViewHolder>() {
+
+    var events: MutableList<Events> = mutableListOf()
 
     fun addEvents(listEvents: List<Events>) {
         events.addAll(listEvents)
         notifyDataSetChanged()
     }
 
-    fun resetData(events:MutableList<Events>){
+    fun resetData(events: MutableList<Events>) {
         this.events.clear()
         this.events.addAll(events)
         notifyDataSetChanged()
-
     }
 
-    fun clearList(){
+    fun clearList() {
         this.events.clear()
         notifyDataSetChanged()
     }
+
+    fun addData(newEvents: List<Events>) {
+        val startPosition = events.size
+        events.addAll(newEvents)
+        notifyItemRangeInserted(startPosition, newEvents.size)
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EventViewHolder {
         val binding = HomeV2EventItemLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return EventViewHolder(binding)
@@ -50,6 +60,9 @@ class HomeEventAdapter(var context: Context):RecyclerView.Adapter<HomeEventAdapt
 
     override fun getItemCount(): Int {
         return events.size
+    }
+    fun getEventIds(): Set<Int> {
+        return events.mapNotNull { it.id }.toSet()
     }
 
     override fun onBindViewHolder(holder: EventViewHolder, position: Int) {
@@ -67,14 +80,13 @@ class HomeEventAdapter(var context: Context):RecyclerView.Adapter<HomeEventAdapt
                 ), 0
             )
         }
-        if(event.author?.communityRoles != null) {
-            if(event.author?.communityRoles?.contains("Équipe Entourage") == true || event.author?.communityRoles?.contains("Ambassadeur") == true){
-
+        if (event.author?.communityRoles != null) {
+            if (event.author?.communityRoles?.contains("Équipe Entourage") == true || event.author?.communityRoles?.contains("Ambassadeur") == true) {
                 holder.binding.ivEntourageLogo.visibility = View.VISIBLE
-            }else{
+            } else {
                 holder.binding.ivEntourageLogo.visibility = View.GONE
             }
-        }else{
+        } else {
             holder.binding.ivEntourageLogo.visibility = View.GONE
         }
 
@@ -109,11 +121,11 @@ class HomeEventAdapter(var context: Context):RecyclerView.Adapter<HomeEventAdapt
             )
         }
         event.interests.let {
-            if(it.size > 0){
+            if (it.isNotEmpty()) {
                 val context = holder.binding.root.context
-                holder.binding.tvTagHomeV2EventItem.text = EventUtils.showTagTranslated(context ,it[0]).replaceFirstChar { char -> char.uppercaseChar() }
+                holder.binding.tvTagHomeV2EventItem.text = EventUtils.showTagTranslated(context, it[0]).replaceFirstChar { char -> char.uppercaseChar() }
                 holder.binding.homeV2ItemEventLayoutTag.visibility = View.VISIBLE
-                if(it[0] == "other"){
+                if (it[0] == "other") {
                     holder.binding.tvTagHomeV2EventItem.text = context.getString(R.string.tag_other)
                 }
                 when (it[0]) {
@@ -128,11 +140,11 @@ class HomeEventAdapter(var context: Context):RecyclerView.Adapter<HomeEventAdapt
                     Interest.marauding -> holder.binding.ivTagHomeV2EventItem.setImageDrawable(context.getDrawable(R.drawable.new_encounters))
                     else -> holder.binding.ivTagHomeV2EventItem.setImageDrawable(context.getDrawable(R.drawable.new_others))
                 }
-            }else{
+            } else {
                 holder.binding.homeV2ItemEventLayoutTag.visibility = View.GONE
             }
         }
     }
-    class EventViewHolder(val binding: HomeV2EventItemLayoutBinding) : RecyclerView.ViewHolder(binding.root)
 
+    class EventViewHolder(val binding: HomeV2EventItemLayoutBinding) : RecyclerView.ViewHolder(binding.root)
 }

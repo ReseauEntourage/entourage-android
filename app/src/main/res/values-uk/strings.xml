@@ -517,7 +517,7 @@
     <string name="entourage_info_text_join_rejected">\u0020 відхилено</string>
     <string name="entourage_info_text_join_cancelled_entourage">скасував свій запит на приєднання до групи</string>
     <string name="entourage_info_text_join_quited_entourage">залишив групу</string>
-    <string name="entourage_info_text_join_html">&lt;font color=\"#F55F24\"&gt;%1$s &lt;/font&gt;%2$s</string>
+    <string name="entourage_info_text_join_html">&lt;font color=\"#FF9739\"&gt;%1$s &lt;/font&gt;%2$s</string>
     <string name="entourage_info_error_chat_message">Повідомлення не надіслано</string>
     <string name="entourage_info_options_stop">Вкладати</string>
     <string name="entourage_info_options_cancel_event">Скасувати подію \</string>
@@ -1603,7 +1603,7 @@
     <!-- Entourage Notifications -->
     <string name="entourage_info_text_join_accepted">\u0020приєднався до групи.</string>
     <string name="entourage_join_request_received_nomsg">%1$s хоче приєднатися до вашої дії.</string>
-    <string name="entourage_join_request_received_message_html">&lt;font color=\"#F55F24\"&gt;%1$s &lt;/font&gt;бажає приєднатися до вашої групи</string>
+    <string name="entourage_join_request_received_message_html">&lt;font color=\"#FF9739\"&gt;%1$s &lt;/font&gt;бажає приєднатися до вашої групи</string>
     <string name="entourage_join_request_received_message_short">хоче приєднатися до вашої групи.</string>
     <!-- Join Request -->
     <string name="entourage_join_request_success">Запит прийнято</string>
@@ -2622,7 +2622,7 @@
     <string name="posts_comment_number"><u>%s коментарів</u></string>
     <string name="posts_comment_number_singular"><u>%s коментар</u></string>
     <string name="show_more_lined"><u>Показати більше</u></string>
-    <string name="welcome_one_sensib">Знайдіть наші матеріали для підвищення обізнаності <u><font color="#F55F24">тут</font></u></string>
+    <string name="welcome_one_sensib">Знайдіть наші матеріали для підвищення обізнаності <u><font color="#FF9739">тут</font></u></string>
     <string name="action_show_charte"><u>Етична хартія</u></string>
     <string name="signal_a_problem"><u>Повідомити про проблему</u></string>
     <string name="login_button_resend_code"><u>Запросити код знову</u></string>

@@ -9,6 +9,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Button
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
@@ -18,6 +19,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.os.bundleOf
+import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
@@ -48,6 +50,7 @@ import social.entourage.android.home.CommunicationHandlerBadgeViewModel
 import social.entourage.android.home.UnreadMessages
 import social.entourage.android.homev2.EventConfirmationDialogFragment
 import social.entourage.android.language.LanguageManager
+import social.entourage.android.main_filter.MainFilterActivity
 import social.entourage.android.notifications.NotificationActionManager
 import social.entourage.android.notifications.PushNotificationManager
 import social.entourage.android.tools.log.AnalyticsEvents
@@ -96,7 +99,17 @@ class MainActivity : BaseSecuredActivity() {
         }
         checkForAppUpdate()
         //ifEventLastDay(136592)
+    }
 
+
+
+    fun hideBottomBar() {
+        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.nav_view)
+        bottomNavigationView.visibility = View.GONE
+    }
+    fun showBottomBar() {
+        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.nav_view)
+        bottomNavigationView.visibility = View.VISIBLE
     }
 
     fun setGoDiscoverGroupFromDeepL(bool:Boolean){
@@ -169,6 +182,7 @@ class MainActivity : BaseSecuredActivity() {
             shouldLaunchEvent = false
             goEvent()
         }
+
     }
 
     private fun checkForAppUpdate() {
@@ -323,6 +337,8 @@ class MainActivity : BaseSecuredActivity() {
 
     private fun handleEventResponse(event: Events?) {
         event?.let {
+            AnalyticsEvents.logEvent(AnalyticsEvents.popup_event_last_day_view)
+
             val context = this // Assure-toi que `this` est un Context, sinon utilise `getApplicationContext()` ou un autre contexte valide.
             val titleEvent = it.title?.take(30) ?: "Titre par défaut"
             val placeName = it.metadata?.displayAddress ?: "Lieu par défaut"
@@ -334,11 +350,13 @@ class MainActivity : BaseSecuredActivity() {
             val eventConfirmationDialogFragment = EventConfirmationDialogFragment.newInstance(title, description).apply {
                 listener = object : EventConfirmationDialogFragment.EventConfirmationListener {
                     override fun onConfirmParticipation() {
+                        AnalyticsEvents.logEvent(AnalyticsEvents.popup_event_last_day_accept)
                         eventPresenter.confirmParticipation(it.id ?: 0)
                         Toast.makeText(context, "Merci d’avoir répondu, à bientôt !", Toast.LENGTH_LONG).show()
                     }
 
                     override fun onDeclineParticipation() {
+                        AnalyticsEvents.logEvent(AnalyticsEvents.popup_event_last_day_decline)
                         eventPresenter.leaveEvent(it.id ?: 0)
                         Toast.makeText(context, "Merci d’avoir répondu, à bientôt !", Toast.LENGTH_LONG).show()
                     }
@@ -436,7 +454,6 @@ class MainActivity : BaseSecuredActivity() {
 
     fun goHome(){
         navController.navigate(R.id.navigation_home)
-
     }
 
     fun goGroup(){
@@ -448,6 +465,7 @@ class MainActivity : BaseSecuredActivity() {
 
     fun goEvent(){
         navController.navigate(R.id.navigation_events)
+        MainFilterActivity.resetAllFilters(this)
 
     }
 
@@ -492,9 +510,11 @@ class MainActivity : BaseSecuredActivity() {
                 }
                 R.id.navigation_groups -> {
                     AnalyticsEvents.logEvent(AnalyticsEvents.Action_Tabbar_groups)
+                    MainFilterActivity.resetAllFilters(this)
                 }
                 R.id.navigation_events -> {
                     AnalyticsEvents.logEvent(AnalyticsEvents.Action_Tabbar_events)
+                    MainFilterActivity.resetAllFilters(this)
                 }
             }
 
@@ -512,7 +532,7 @@ class MainActivity : BaseSecuredActivity() {
         badge.isVisible = true
         badge.maxCharacterCount = 2
         badge.verticalOffsetWithText = 10
-        badge.backgroundColor = resources.getColor(R.color.light_orange)
+        badge.backgroundColor = resources.getColor(R.color.tomato)
         badge.badgeTextColor = resources.getColor(R.color.white)
         if (count == 0) {
             bottomNavigationView.removeBadge(R.id.navigation_messages)

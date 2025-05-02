@@ -25,6 +25,7 @@ class OnboardingEndActivity : AppCompatActivity() {
     fun goNotifChoicePage(){
         val intent = Intent(this, NotificationDemandActivity::class.java)
        this.startActivity(intent)
+        finish()
     }
 
 }
