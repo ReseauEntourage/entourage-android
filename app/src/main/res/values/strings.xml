@@ -120,8 +120,8 @@
     <string name="share_app">Bonjour ! Grâce au réseau Entourage, je participe à des actions solidaires entre voisins avec et sans domicile. Rejoins-moi : https://bit.ly/applientourage</string>
     <string name="edit_profile">Modifier mes informations</string>
     <string name="description">Description  (200 caractères max)</string>
-    <string name="my_interests">Mes centres d’intêrets</string>
-    <string name="interests">Centres d’intêrets</string>
+    <string name="my_interests">Mes centres d’intêret</string>
+    <string name="interests">Centres d’intêret</string>
     <string name="write_message">Nouveau message</string>
     <string name="ethics">Charte éthique</string>
     <string name="ambassador_program">Postuler au programme ambassadeur</string>
@@ -2731,7 +2731,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="onboarding_presentation_content">Avant de plonger dans notre application, prenons quelques instants pour mieux te connaître. Tes centres d\'intérêts vont nous aider à te suggérer des activités et des contenus qui t\'intéresseront.</string>
     <string name="onboarding_presentation_btn_negative">Configurer plus tard</string>
     <string name="onboarding_presentation_btn_positive">Commencer</string>
-    <string name="onboarding_interest_title">Mes centres d’intérêts</string>
+    <string name="onboarding_interest_title">Mes centres d’intérêt</string>
     <string name="onboarding_interest_content">Pour vous aider à trouver des activités qui vous correspondent, dites-nous ce qui vous intéresse.</string>
     <string name="onboarding_btn_finish">Terminer plus tard</string>
     <string name="onboarding_btn_next">Suivant</string>
@@ -2754,11 +2754,35 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="onboarding_action_wish_services_contrib">Solliciter un \ncoup de pouce</string>
     <string name="onboarding_action_wish_network_contrib">Rejoindre un groupe de \nvoisins et tisser des liens</string>
 
+
+
     <string name="onboarding_congrats_title">Votre expérience sur-mesure est prête !</string>
     <string name="onboarding_congrats_content">À partir de vos préférences et disponibilités, nous vous avons préparé une sélection d\’événements à votre image. C\’est le moment de passer à l\’action !</string>
     <string name="onboarding_congrats_leave">Parcourir les événements</string>
     <string name="onboarding_congrats_temporary_title">Votre expérience sur-mesure est (quasi) prête !</string>
     <string name="onboarding_congrats_temporary_content">Merci d\'avoir partagé vos envies d\'agir et vos centres d\'intérêts. Nous sommes impatients de vous proposer bientôt des événements sur-mesure qui vous correspondent. \nRestez connecté(e) !</string>
+
+    <string name="onboarding_experience_resource_title">Vous êtes maintenant prêt(e) à vous engager !</string>
+    <string name="onboarding_experience_resource_content">On vous propose un défi rapide pour balayer les idées reçues sur les personnes en situation de précarité.</string>
+    <string name="onboarding_experience_resource_button">Démarrer le quiz</string>
+
+    <string name="onboarding_experience_event_title">Votre expérience sur-mesure est prête !</string>
+    <string name="onboarding_experience_event_content">Nous avons sélectionné des événements qui correspondent aux critères que vous nous avez indiqués.</string>
+    <string name="onboarding_experience_event_button">Voir les événements</string>
+
+    <string name="onboarding_no_event_title">Pas d’événements près de chez vous ? Créez le vôtre !</string>
+    <string name="onboarding_no_event_content">Aucun événement est prévu près de chez vous pour l’instant, mais vous pouvez proposer un moment de partage et inviter vos voisins à participer.</string>
+    <string name="onboarding_no_event_button">Proposer un temps de partage</string>
+
+    <string name="onboarding_ready_action_title">C\'est parti ! Présentez-vous à vos voisins</string>
+    <string name="onboarding_ready_action_content">On vous propose de commencer par une présentation dans votre groupe de voisins solidaires.</string>
+    <string name="onboarding_ready_action_button">Savoir comment me présenter</string>
+
+    <string name="onboarding_start_action_title">C’est parti ! Donnez une seconde vie à vos objets</string>
+    <string name="onboarding_start_action_content">On vous propose de commencer par donner une seconde vie à un objet, un geste qui renforce la solidarité et crée des liens avec vos voisins.</string>
+    <string name="onboarding_start_action_button">Faire ma première action solidaire</string>
+
+
 
     <string name="notif_ask_page_title">Activez les notifications pour ne rien manquer</string>
     <string name="notif_ask_page_subtitle">Recevez les entraides près de chez vous, soyez informé des événements locaux, des publications de vos voisins et des messages personnels en temps réel."</string>
@@ -2847,6 +2871,27 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="share_request_group">Souhaitez-vous partager votre %s dans votre groupe %s ?</string>
     <string name="share_request_description">Vous avez la possibilité de partager votre %s dans le groupe de voisins de votre ville pour améliorer sa visibilité</string>
 
+    <string name="bubble_title">Des filtres ont été appliqués en fonction de vos préférences. Cliquez ici pour les modifier.</string>
+    <string name="bubble_button">J\'ai compris</string>
+
+    <!-- Enhanced Onboarding Time Disponibility -->
+
+    <string name="enhanced_onboarding_time_disponibility_title">Mes disponibilités</string>
+    <string name="enhanced_onboarding_time_disponibility_description">Précisez vos disponibilités pour que l\'on puisse vous suggérer des événements adaptés.</string>
+    <string name="enhanced_onboarding_time_disponibility_days_label">Mes jours</string>
+    <string name="enhanced_onboarding_time_disponibility_day_monday">Lundi</string>
+    <string name="enhanced_onboarding_time_disponibility_day_tuesday">Mardi</string>
+    <string name="enhanced_onboarding_time_disponibility_day_wednesday">Mercredi</string>
+    <string name="enhanced_onboarding_time_disponibility_day_thursday">Jeudi</string>
+    <string name="enhanced_onboarding_time_disponibility_day_friday">Vendredi</string>
+    <string name="enhanced_onboarding_time_disponibility_day_saturday">Samedi</string>
+    <string name="enhanced_onboarding_time_disponibility_day_sunday">Dimanche</string>
+    <string name="enhanced_onboarding_time_disponibility_time_slots_label">Mes tranches horaires</string>
+    <string name="enhanced_onboarding_time_disponibility_time_morning">Matin</string>
+    <string name="enhanced_onboarding_time_disponibility_time_afternoon">Après-midi</string>
+    <string name="enhanced_onboarding_time_disponibility_time_evening">Soir</string>
+    <string name="enhanced_onboarding_time_disponibility_btn_finish_later">Terminer plus tard</string>
+    <string name="enhanced_onboarding_time_disponibility_btn_next">Suivant</string>
 
 </resources>
 

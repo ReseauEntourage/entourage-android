@@ -119,7 +119,7 @@
     <string name="share_app">Bonjour ! Grâce au réseau Entourage, je participe à des actions solidaires entre voisins avec et sans domicile. Rejoins-moi : https://bit.ly/applientourage</string>
     <string name="edit_profile">Modifier mes informations</string>
     <string name="description">Description  (200 caractères max)</string>
-    <string name="my_interests">Mes centres d’intêrets</string>
+    <string name="my_interests">Mes centres d’intêret</string>
     <string name="interests">Centres d’intêrets</string>
     <string name="write_message">Nouveau message</string>
     <string name="ethics">Charte éthique</string>
@@ -161,7 +161,7 @@ Découvrez les initiatives de votre quartier et tissez des liens avec vos voisin
     <string name="description_counter">%s /200</string>
     <string name="events_description_counter">%s /900</string>
     <string name="apply_modifications">Appliquer les modifications</string>
-    <string name="edit_interests">Modifier mes centres d’interêts</string>
+    <string name="edit_interests">Modifier mes centres d’interêt</string>
     <string name="follow">S\'abonner</string>
     <string name="following">Abonné</string>
     <string name="ambassador">Ambassadeur</string>
@@ -2723,7 +2723,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="onboarding_presentation_content">Avant de plonger dans notre application, prenons quelques instants pour mieux te connaître. Tes centres d\'intérêts vont nous aider à te suggérer des activités et des contenus qui t\'intéresseront.</string>
     <string name="onboarding_presentation_btn_negative">Configurer plus tard</string>
     <string name="onboarding_presentation_btn_positive">Commencer</string>
-    <string name="onboarding_interest_title">Mes centres d’intérêts</string>
+    <string name="onboarding_interest_title">Mes centres d’intérêt</string>
     <string name="onboarding_interest_content">Pour vous aider à trouver des activités qui vous correspondent, dites-nous ce qui vous intéresse.</string>
     <string name="onboarding_btn_finish">Terminer plus tard</string>
     <string name="onboarding_btn_next">Suivant</string>

@@ -671,4 +671,18 @@
     <style name="RoundedDialog" parent="Theme.AppCompat.Light.Dialog.Alert">
         <item name="android:windowBackground">@drawable/bg_rounded_dialog</item>
     </style>
+
+    <style name="CustomChip" parent="Widget.MaterialComponents.Chip.Choice">
+        <item name="chipBackgroundColor">@color/chip_background_color</item>
+        <item name="chipStrokeColor">@color/chip_stroke_color</item>
+        <item name="chipStrokeWidth">1dp</item>
+        <item name="chipIcon">@drawable/chips_pin_icon</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">13sp</item>
+        <item name="android:fontFamily">@font/nunitosans_regular</item>
+        <item name="checkedIconVisible">false</item>
+        <!-- Disable default ripple color -->
+        <item name="rippleColor">@android:color/transparent</item>
+    </style>
+
 </resources>

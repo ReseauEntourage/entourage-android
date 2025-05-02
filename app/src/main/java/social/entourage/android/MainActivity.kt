@@ -57,8 +57,11 @@ import social.entourage.android.notifications.NotificationActionManager
 import social.entourage.android.notifications.PushNotificationManager
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.utils.Const
+import social.entourage.android.tools.view.WebViewFragment
 import social.entourage.android.user.UserPresenter
 import social.entourage.android.user.UserProfileActivity
+import social.entourage.android.welcome.WelcomeFourActivity
+import social.entourage.android.welcome.WelcomeTwoActivity
 import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -181,8 +184,24 @@ class MainActivity : BaseSecuredActivity() {
             shouldLaunchEventPopUp = 0
         }
         if(shouldLaunchEvent){
-            shouldLaunchEvent = false
             goEvent()
+        }
+        if(shouldLaunchActionCreation){
+            shouldLaunchActionCreation = false
+            val intent = Intent(this, CreateActionActivity::class.java)
+            intent.putExtra(Const.IS_ACTION_DEMAND, false)
+            this.startActivity(intent)
+        }
+        if(shouldLaunchQuizz){
+            shouldLaunchQuizz = false
+            val urlString = "https://kahoot.it/challenge/0354666?challenge-id=45371e80-fe50-4be5-afec-b37e3d50ede2_1729004998521"
+            WebViewFragment.newInstance(urlString, 0, true)
+                .show(supportFragmentManager, WebViewFragment.TAG)
+        }
+        if(shouldLaunchWelcomeGroup){
+            shouldLaunchWelcomeGroup = false
+            val intent = Intent(this, WelcomeTwoActivity::class.java)
+            this.startActivity(intent)
         }
 
     }
@@ -480,12 +499,11 @@ class MainActivity : BaseSecuredActivity() {
 
     }
 
-
-
     fun goEvent(){
         navController.navigate(R.id.navigation_events)
-        MainFilterActivity.resetAllFilters(this)
-
+        if(shouldLaunchEvent == false){
+            MainFilterActivity.resetAllFilters(this)
+        }
     }
 
     fun goConv(){
@@ -508,7 +526,6 @@ class MainActivity : BaseSecuredActivity() {
         navController = navHostFragment.navController
 
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.nav_view)
-
 
 
         bottomNavigationView.itemIconTintList = null
@@ -605,10 +622,14 @@ class MainActivity : BaseSecuredActivity() {
         var concerns: MutableList<userConfig>? = null
         var involvements: MutableList<userConfig>? = null
         var shouldLaunchEventPopUp:Int = 0
-        var shouldLaunchEvent:Boolean = false
         var shouldLaunchOnboarding:Boolean = false
         var shouldLaunchProfile:Boolean = false
         var isFromProfile:Boolean = false
+        var shouldLaunchEvent:Boolean = false
+        var shouldLaunchActionCreation:Boolean = false
+        var shouldLaunchQuizz:Boolean = false
+        var shouldLaunchWelcomeGroup:Boolean = false
+
     }
 }
 

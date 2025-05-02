@@ -39,7 +39,9 @@ class OnboardingCategorieFragment: Fragment() {
         }
         binding.buttonStart.setOnClickListener {
             AnalyticsEvents.logEvent(AnalyticsEvents.onboarding_donations_categories_next_clic)
-            viewModel.setOnboardingFifthStep(true)}
+            viewModel.completeDisponibilityStep() // Passer à l'étape des disponibilités
+
+        }
         binding.tvTitle.text = getString(R.string.onboarding_category_title)
         binding.tvDescription.text = getString(R.string.onboarding_category_content)
     }

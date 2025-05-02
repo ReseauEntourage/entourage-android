@@ -5,13 +5,18 @@ import android.animation.AnimatorListenerAdapter
 import android.animation.ValueAnimator
 import android.content.Context
 import android.content.Intent
+import android.content.res.Resources
+import android.graphics.Color
+import android.graphics.Paint
 import android.os.Bundle
 import android.transition.AutoTransition
 import android.transition.TransitionManager
 import android.util.Log
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
@@ -22,7 +27,9 @@ import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
+
 import social.entourage.android.EntourageApplication
+import social.entourage.android.MainActivity
 import social.entourage.android.R
 import social.entourage.android.databinding.NewFragmentEventsBinding
 import social.entourage.android.RefreshController
@@ -37,6 +44,7 @@ import social.entourage.android.main_filter.MainFilterActivity
 import social.entourage.android.main_filter.MainFilterMode
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.log.AnalyticsEvents
+import social.entourage.android.tools.utils.HighlightOverlayView
 import timber.log.Timber
 import kotlin.math.abs
 
@@ -91,6 +99,7 @@ class EventsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setSearchAndFilterButtons()
         eventsPresenter = ViewModelProvider(requireActivity()).get(EventsPresenter::class.java)
+        showBubbleCase()
         createEvent()
         initializeTab()
         setPage()
@@ -129,7 +138,77 @@ class EventsFragment : Fragment() {
 
         }
         resetSearchButtonState()
+    }
 
+    fun showCustomBubble(targetView: View) {
+        val activity = requireActivity()
+        val rootLayout = activity.findViewById<ViewGroup>(android.R.id.content)
+
+        // Créer l'overlay
+        val overlayView = HighlightOverlayView(activity, targetView)
+
+        // Inflater votre 'bubble_layout.xml'
+        val inflater = LayoutInflater.from(activity)
+        val bubbleView = inflater.inflate(R.layout.layout_bubble_info_dialog, overlayView, false)
+
+        // **Récupérer le TextView du bouton et appliquer le soulignement**
+        val bubbleButton = bubbleView.findViewById<TextView>(R.id.bubbleButton)
+        bubbleButton.paintFlags = bubbleButton.paintFlags or Paint.UNDERLINE_TEXT_FLAG
+
+        // Mesurer le bubbleView
+        bubbleView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
+        val bubbleWidth = bubbleView.measuredWidth
+        val bubbleHeight = bubbleView.measuredHeight
+
+        // Obtenir la position de 'targetView'
+        val location = IntArray(2)
+        targetView.getLocationOnScreen(location)
+        val targetX = location[0]
+        val targetY = location[1] - getStatusBarHeight() // Ajuster pour la barre de statut
+
+        // Calculer la position du bubbleView (par exemple, en dessous de 'targetView')
+        val x = targetX + targetView.width / 2 - bubbleWidth / 2
+        val y = targetY + targetView.height
+
+        // Positionner le bubbleView
+        bubbleView.x = 0f
+        bubbleView.y = 150f
+
+        // Ajouter le bubbleView à l'overlay
+        overlayView.addView(bubbleView)
+
+        // Ajouter l'overlay à la racine
+        rootLayout.addView(overlayView)
+
+        // Gérer le clic sur l'overlay pour le retirer
+        overlayView.setOnClickListener {
+            rootLayout.removeView(overlayView)
+        }
+
+        // Gérer le clic sur le bubbleView si nécessaire
+        bubbleView.setOnClickListener {
+            // Action lorsque le bubbleView est cliqué
+            rootLayout.removeView(overlayView)
+        }
+    }
+
+
+    private fun getStatusBarHeight(): Int {
+        val resourceId = resources.getIdentifier("status_bar_height", "dimen", "android")
+        return if (resourceId > 0) resources.getDimensionPixelSize(resourceId) else 0
+    }
+
+
+    private fun showBubbleCase(){
+
+       if(MainActivity.shouldLaunchEvent == true){
+            MainActivity.shouldLaunchEvent = false
+            MainFilterActivity.savedGroupInterests = MainFilterActivity.savedGroupInterestsFromOnboarding
+           if(MainFilterActivity.savedGroupInterestsFromOnboarding.size > 0){
+               MainFilterActivity.hasFilter = true
+           }
+           showCustomBubble(binding.uiLayoutFilter)
+       }
     }
 
     fun handleTopTitle(hideTitle:Boolean){
@@ -257,7 +336,6 @@ class EventsFragment : Fragment() {
     private fun handleLaunchCreateEvent(haveToLaunchCreateEvent:Boolean){
         if(haveToLaunchCreateEvent){
             AnalyticsEvents.logEvent(AnalyticsEvents.Action__Event__LocationFilter)
-
             startActivityForResult(
                 Intent(context, CreateEventActivity::class.java),
                 0

@@ -145,6 +145,8 @@ class DiscoverEventsListFragment : Fragment() {
             isFirstResumeWithFilters = false
             resetDataAndApplyFilters()
         }
+
+
     }
 
     fun handleSearchMode(searchMod:Boolean) {
@@ -173,8 +175,6 @@ class DiscoverEventsListFragment : Fragment() {
             loadMyEvents()
         }
     }
-
-
 
     fun initView() {
         isLoading = false

@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/enhanced_onboarding_time_disponibility_title"
+                android:fontFamily="@font/quicksand_bold"
+                android:textSize="24sp"
+                android:textColor="@color/black"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="50dp"/>
+
+            <TextView
+                android:id="@+id/tv_description"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/enhanced_onboarding_time_disponibility_description"
+                android:fontFamily="@font/nunitosans_regular"
+                android:textSize="18sp"
+                android:layout_marginStart="24dp"
+                android:textColor="@color/black"
+                app:layout_constraintTop_toBottomOf="@id/tv_title"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="20dp"/>
+
+            <TextView
+                android:id="@+id/tv_days_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/enhanced_onboarding_time_disponibility_days_label"
+                android:fontFamily="@font/quicksand_bold"
+                android:textSize="16sp"
+                android:textColor="@color/black"
+                app:layout_constraintTop_toBottomOf="@id/tv_description"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginTop="32dp"
+                android:layout_marginStart="24dp"
+                />
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/chipGroupDays"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/tv_days_label"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginStart="14dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp">
+
+                <!-- Define each Chip for days with explicit IDs -->
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipMonday"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/CustomChip"
+                    android:text="@string/enhanced_onboarding_time_disponibility_day_monday" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipTuesday"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/CustomChip"
+                    android:text="@string/enhanced_onboarding_time_disponibility_day_tuesday"
+                    />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipWednesday"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/CustomChip"
+                    android:text="@string/enhanced_onboarding_time_disponibility_day_wednesday"
+                    />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipThursday"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/CustomChip"
+                    android:text="@string/enhanced_onboarding_time_disponibility_day_thursday"
+                    />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipFriday"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/CustomChip"
+                    android:text="@string/enhanced_onboarding_time_disponibility_day_friday"
+                    />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipSaturday"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/CustomChip"
+                    android:text="@string/enhanced_onboarding_time_disponibility_day_saturday"
+                    />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipSunday"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/CustomChip"
+                    android:text="@string/enhanced_onboarding_time_disponibility_day_sunday"
+                    />
+            </com.google.android.material.chip.ChipGroup>
+
+            <!-- Time Slots Label -->
+            <TextView
+                android:id="@+id/tv_time_slots_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/enhanced_onboarding_time_disponibility_time_slots_label"
+                android:fontFamily="@font/quicksand_bold"
+                android:textSize="16sp"
+                android:textColor="@color/black"
+                app:layout_constraintTop_toBottomOf="@id/chipGroupDays"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="24dp"/>
+
+            <!-- Time Slots ChipGroup -->
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/chipGroupTimeSlots"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/tv_time_slots_label"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginTop="8dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginEnd="16dp">
+
+                <!-- Define each Chip for time slots with explicit IDs -->
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipMorning"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/CustomChip"
+                    android:text="@string/enhanced_onboarding_time_disponibility_time_morning"
+                   />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipAfternoon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/CustomChip"
+                    android:text="@string/enhanced_onboarding_time_disponibility_time_afternoon"
+                    />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipEvening"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/CustomChip"
+                    android:text="@string/enhanced_onboarding_time_disponibility_time_evening"
+                    />
+            </com.google.android.material.chip.ChipGroup>
+
+            <!-- Bottom Button Layout -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginTop="32dp"
+                android:padding="20dp">
+
+                <!-- Configure Later Button -->
+                <Button
+                    android:id="@+id/button_configure_later"
+                    android:layout_width="0dp"
+                    android:layout_height="47dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/shape_button_v9_negative"
+                    android:text="@string/enhanced_onboarding_time_disponibility_btn_finish_later"
+                    android:textColor="@color/black"
+                    android:textAllCaps="false"
+                    android:textSize="14sp"
+                    android:fontFamily="@font/quicksand_bold"
+                    android:layout_marginEnd="4dp"
+                    style="?android:attr/borderlessButtonStyle"/>
+
+                <!-- Next Button -->
+                <Button
+                    android:id="@+id/button_next"
+                    android:layout_width="0dp"
+                    android:layout_height="47dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/shape_button_v9_positive"
+                    android:text="@string/enhanced_onboarding_time_disponibility_btn_next"
+                    android:textColor="@android:color/white"
+                    android:textAllCaps="false"
+                    android:textSize="14sp"
+                    android:fontFamily="@font/quicksand_bold"
+                    android:layout_marginStart="4dp"
+                    style="?android:attr/borderlessButtonStyle"/>
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

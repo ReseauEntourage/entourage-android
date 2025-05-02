@@ -658,6 +658,7 @@ object AnalyticsEvents {
 
     //NEW EVENT
     const val   View__Home = "View__Home"
+    const val   home_activate_firebase_message = "home_activate_firebase_message"
     const val   Action__Home__Notif = "Action__Home__Notif"
     const val   Action__Tab__Profil = "Action__Tab__Profil"
     const val   Action_Home_Demand_Detail = "Action_Home_Demand_Detail"
@@ -722,6 +723,7 @@ object AnalyticsEvents {
 
     // Écran de fin
     const val onboarding_end_browse_events_clic = "onboarding_end_browse_events_clic"
+    const val onboarding_end_congrats_clic_on_ = "onboarding_end_congrats_clic_on_"
 
 
 
@@ -730,6 +732,10 @@ object AnalyticsEvents {
     const val onboarding_interests_view = "onboarding_interests_view"
     const val onboarding_donations_categories_view = "onboarding_donations_categories_view"
     const val onboarding_end_view = "onboarding_end_view"
+
+    const val onboarding_disponibility_view = "onboarding_disponibility_view"
+    const val onboarding_disponibility_configure_later_clic = "onboarding_disponibility_configure_later_clic"
+    const val onboarding_disponibility_next_clic = "onboarding_disponibility_next_clic"
 
     const val has_user_activated_notif = "has_user_activated_notif"
     const val has_user_disabled_notif = "has_user_disabled_notif"

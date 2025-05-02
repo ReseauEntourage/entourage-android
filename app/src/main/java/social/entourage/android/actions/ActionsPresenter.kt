@@ -79,7 +79,8 @@ class ActionsPresenter : ViewModel() {
                         getAllActions.value = allActionsWrapper.allActions
                     }
                 }
-                override fun onFailure(call: Call<DemandsListWrapper>, t: Throwable) {}
+                override fun onFailure(call: Call<DemandsListWrapper>, t: Throwable) {
+                }
             })
     }
 

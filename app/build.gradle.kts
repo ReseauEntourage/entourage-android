@@ -29,7 +29,7 @@ android {
 
     // App versions
     val versionMajor = 10
-    val versionMinor = 5
+    val versionMinor = 6
     val versionPatch = "git rev-list HEAD --count".runCommand().toInt()
     val versionBranchName = "git rev-parse --abbrev-ref HEAD".runCommand()
     val versionCodeInt = (versionMajor * 100 + versionMinor) * 10000 + versionPatch % 10000
@@ -305,7 +305,6 @@ dependencies {
     implementation("com.google.android.play:feature-delivery-ktx:2.1.0")
     implementation("com.google.android.play:review:2.0.1")
     implementation("com.google.android.play:review-ktx:2.0.1")
-
     implementation("com.leinardi.android:speed-dial:3.2.0")
 
 }

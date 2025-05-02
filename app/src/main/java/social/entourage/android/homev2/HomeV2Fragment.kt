@@ -160,6 +160,12 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
         })
 
         AnalyticsEvents.logEvent(AnalyticsEvents.View__Home)
+        if(EnhancedOnboarding.shouldNotDisplayCampain == true){
+            //HERE DO NOTHING AS WE DONT WANT TO PROC FIREBASE CAMPAIN MESSAGE TO  NEW USER
+        }else{
+            //HERE IS THE FIREBASE EVENT TO PROC MESSAGE TO USERS
+            AnalyticsEvents.logEvent(AnalyticsEvents.home_activate_firebase_message)
+        }
         setRecyclerViews()
         setSeeAllButtons()
         setObservations()
