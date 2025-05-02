@@ -2224,7 +2224,7 @@ Leerán este mensaje tan pronto como se unan al grupo.</string>
     <string name="role_ambassador">Embajador</string>
     <string name="role_admin">Embajador</string>
 
-    <string name="disclaimer_link_public">https://blog.entourage.social/charte-ethique-grand-public/</string>
+    <string name="disclaimer_link_public">https://www.entourage.social/blog/charte-ethique-entourage-local/</string>
 
     <string name="market_url">mercado://detalles?id=%s</string>
     <string name="playstore_url">https://play.google.com/store/apps/details?id=%s</string>
@@ -2513,7 +2513,7 @@ Leerán este mensaje tan pronto como se unan al grupo.</string>
 
     <string name="home_v2_title_map">Descubra direcciones útiles</string>
     <string name="home_v2_subtitle_map">Todas las estructuras solidarias cercanas</string>
-    <string name="home_v2_button_map">Mapa de lugares solidarios cerca de ti</string>
+    <string name="home_v2_button_map">Descubrir el map</string>
 
     <string name="home_v2_title_pedago">Todo lo que necesitas saber para actuar</string>
     <string name="home_v2_subtitle_pedago">Luchar contra la precariedad es como todo, ¡se aprende!</string>

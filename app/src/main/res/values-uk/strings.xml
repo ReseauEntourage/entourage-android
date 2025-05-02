@@ -2237,7 +2237,7 @@
     <string name="role_ambassador">посол</string>
     <string name="role_admin">посол</string>
 
-    <string name="disclaimer_link_public">https://blog.entourage.social/charte-ethique-grand-public/</string>
+    <string name="disclaimer_link_public">https://www.entourage.social/blog/charte-ethique-entourage-local/</string>
 
     <string name="market_url">market://details?id=%s</string>
     <string name="playstore_url">https://play.google.com/store/apps/details?id=%s</string>
@@ -2526,7 +2526,7 @@
 
     <string name="home_v2_title_map">Відкрийте для себе корисні адреси</string>
     <string name="home_v2_subtitle_map">Всі споруди солідарності поруч</string>
-    <string name="home_v2_button_map">Карта місць солідарності поблизу вас</string>
+    <string name="home_v2_button_map">Карта місць солідарності</string>
 
     <string name="home_v2_title_pedago">Усе, що вам потрібно знати, щоб діяти</string>
     <string name="home_v2_subtitle_pedago">Боротьба з нестабільністю – це як усе, цьому можна навчитися!</string>

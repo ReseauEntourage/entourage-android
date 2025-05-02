@@ -2224,7 +2224,7 @@ Sie werden diese Nachricht lesen, sobald sie der Gruppe beitreten.</string>
     <string name="role_ambassador">Botschafter</string>
     <string name="role_admin">Botschafter</string>
 
-    <string name="disclaimer_link_public">https://blog.entourage.social/charte-ethique-grand-public/</string>
+    <string name="disclaimer_link_public">https://www.entourage.social/blog/charte-ethique-entourage-local/</string>
 
     <string name="market_url">market://details?id=%s</string>
     <string name="playstore_url">https://play.google.com/store/apps/details?id=%s</string>
@@ -2513,7 +2513,7 @@ Sie werden diese Nachricht lesen, sobald sie der Gruppe beitreten.</string>
 
     <string name="home_v2_title_map">Entdecken Sie nützliche Adressen</string>
     <string name="home_v2_subtitle_map">Alle Solidaritätsstrukturen in der Nähe</string>
-    <string name="home_v2_button_map">Karte der Solidaritätsorte in Ihrer Nähe</string>
+    <string name="home_v2_button_map">Die Karte entdecken</string>
 
     <string name="home_v2_title_pedago">Alles, was Sie wissen müssen, um Maßnahmen zu ergreifen</string>
     <string name="home_v2_subtitle_pedago">Prekarität zu bekämpfen ist wie alles, man kann es lernen!</string>

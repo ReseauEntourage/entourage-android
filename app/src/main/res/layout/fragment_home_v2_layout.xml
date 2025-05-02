@@ -359,27 +359,42 @@
                 android:textSize="@dimen/entourage_font_small"
                 android:text="@string/home_v2_subtitle_map"
                 />
+            
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:id="@+id/iv_map"
+                android:src="@drawable/ic_home_map_river"
+                android:scaleType="fitXY"
+                android:layout_marginEnd="@dimen/entourage_margin_end"
+                android:layout_marginStart="@dimen/entourage_marginstart"
+                android:layout_marginTop="@dimen/entourage_marginstart"
+                android:layout_marginBottom="@dimen/entourage_marginstart"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/home_subtitle_map"
+
+                />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/home_button_map"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="55dp"
                 android:layout_marginEnd="@dimen/entourage_margin_end"
                 android:layout_marginStart="@dimen/entourage_marginstart"
                 android:layout_marginTop="28dp"
                 android:layout_marginBottom="16dp"
-                android:background="@drawable/home_version_two_large_button_gradient_shape"
+                android:background="@drawable/new_backn_map_home"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/home_subtitle_map"
+                app:layout_constraintBottom_toBottomOf="@+id/iv_map"
                 >
 
                 <ImageView
                     android:id="@+id/icon_hom_v2_map_button"
                     android:layout_width="29dp"
                     android:layout_height="29dp"
-                    android:layout_marginStart="@dimen/entourage_little_margin_start"
+                    android:layout_marginStart="20dp"
                     android:scaleType="fitXY"
                     android:src="@drawable/home_map_button_illu"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -388,28 +403,19 @@
 
                     />
 
-                <ImageView
-                    android:id="@+id/iv_button_map"
-                    android:layout_width="11dp"
-                    android:layout_height="16dp"
-                    android:layout_marginEnd="25dp"
-                    android:src="@drawable/arrow_right_white"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
                 <TextView
                     android:id="@+id/tv_title_button_map"
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/entourage_margin_end"
+                    android:layout_marginEnd="20dp"
                     android:layout_marginStart="@dimen/entourage_little_margin_five"
                     android:fontFamily="@font/quicksand_bold"
                     android:text="@string/home_v2_button_map"
                     android:textColor="@color/white"
+                    android:textAlignment="center"
                     android:textSize="@dimen/entourage_font_small"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/iv_button_map"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/icon_hom_v2_map_button"
                     app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -487,7 +493,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                app:layout_constraintTop_toBottomOf="@+id/home_button_map"
+                app:layout_constraintTop_toBottomOf="@+id/iv_map"
                 app:layout_constraintStart_toStartOf="parent"
                 android:visibility="visible"
                 >

@@ -51,6 +51,31 @@ object CustomAlertDialog {
         alertDialog.show()
     }
 
+    fun showAmbassadorWithTwoButton(
+        context: Context,
+        onNo: () -> (Unit) = {},
+        onYes: (() -> Unit),
+    ) {
+        val layoutInflater = LayoutInflater.from(context)
+        val customDialog: View = layoutInflater.inflate(R.layout.custom_alert_organise_as_ambassador, null)
+        val builder = AlertDialog.Builder(context)
+        builder.setView(customDialog)
+        val alertDialog = builder.create()
+        customDialog.findViewById<ImageButton>(R.id.btn_cross).setOnClickListener {
+            alertDialog.dismiss()
+        }
+        customDialog.findViewById<Button>(R.id.button_start).setOnClickListener {
+            onYes()
+            alertDialog.dismiss()
+        }
+        customDialog.findViewById<Button>(R.id.button_configure_later).setOnClickListener {
+            onNo()
+            alertDialog.dismiss()
+        }
+        alertDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        alertDialog.show()
+    }
+
 
     fun showForLastActionOneDemand(
         context: Context,

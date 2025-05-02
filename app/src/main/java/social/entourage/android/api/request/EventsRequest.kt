@@ -10,6 +10,7 @@ import social.entourage.android.api.model.Events
 import social.entourage.android.api.model.Image
 import social.entourage.android.api.model.CompleteReactionsResponse
 import social.entourage.android.api.model.ReactionWrapper
+import social.entourage.android.events.JoinRoleBody
 
 class EventsImagesResponse(@field:SerializedName("entourage_images") val eventImages: ArrayList<Image>)
 class EventsListWrapper(@field:SerializedName("outings") val allEvents: MutableList<Events>)
@@ -100,6 +101,13 @@ interface EventsRequest {
     fun participate(
         @Path("event_id") eventId: Int
     ): Call<EntourageUserResponse>
+
+    @POST("outings/{event_id}/users")
+    fun joinAsOrganizer(
+        @Path("event_id") eventId: Int,
+        @Body body: JoinRoleBody
+    ): Call<EntourageUserResponse>
+
 
     @DELETE("outings/{event_id}/users")
     fun leaveEvent(

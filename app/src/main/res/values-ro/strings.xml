@@ -2232,7 +2232,7 @@ Ei vor citi acest mesaj imediat ce se vor alătura grupului.</string>
     <string name="role_ambassador">Ambasador</string>
     <string name="role_admin">Ambasador</string>
 
-    <string name="disclaimer_link_public">https://blog.entourage.social/charte-ethique-grand-public/</string>
+    <string name="disclaimer_link_public">https://www.entourage.social/blog/charte-ethique-entourage-local/</string>
 
     <string name="market_url">market://details?id=%s</string>
     <string name="playstore_url">https://play.google.com/store/apps/details?id=%s</string>
@@ -2521,7 +2521,7 @@ Ei vor citi acest mesaj imediat ce se vor alătura grupului.</string>
 
     <string name="home_v2_title_map">Descoperiți adrese utile</string>
     <string name="home_v2_subtitle_map">Toate structurile de solidaritate din apropiere</string>
-    <string name="home_v2_button_map">Harta locurilor de solidaritate din apropiere</string>
+    <string name="home_v2_button_map">Descoperă harta</string>
 
     <string name="home_v2_title_pedago">Tot ce trebuie să știi pentru a acționa</string>
     <string name="home_v2_subtitle_pedago">Combaterea precarității este ca orice, se poate învăța!</string>

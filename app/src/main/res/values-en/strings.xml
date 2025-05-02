@@ -1216,7 +1216,7 @@
     <string name="member_type_organization">Marauder</string>
     <string name="role_ambassador">Ambassador</string>
     <string name="role_admin">Ambassador</string>
-    <string name="disclaimer_link_public">https://blog.entourage.social/charte-ethique-grand-public/</string>
+    <string name="disclaimer_link_public">https://www.entourage.social/blog/charte-ethique-entourage-local/</string>
     <string name="market_url">market://details?id=%s</string>
     <string name="playstore_url">https://play.google.com/store/apps/details?id=%s</string>
     <string name="facebook_url">https://www.facebook.com/EntourageReseauCivique</string>
@@ -1448,7 +1448,7 @@
     <string name="home_v2_btn_more_group">View all groups</string>
     <string name="home_v2_title_map">Discover useful addresses</string>
     <string name="home_v2_subtitle_map">All solidarity structures nearby</string>
-    <string name="home_v2_button_map">Map of solidarity places near you</string>
+    <string name="home_v2_button_map">Discover the map</string>
     <string name="home_v2_title_pedago">Everything you need to know </string>
     <string name="home_v2_subtitle_pedago">Fighting precarity, like everything else, can be learned!</string>
     <string name="home_v2_btn_more_pedago">View all articles</string>

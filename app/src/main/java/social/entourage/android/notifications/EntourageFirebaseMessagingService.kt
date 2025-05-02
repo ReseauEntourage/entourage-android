@@ -9,7 +9,6 @@ import social.entourage.android.tools.log.AnalyticsEvents
 
 class EntourageFirebaseMessagingService : FirebaseMessagingService() {
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
-        Log.wtf("wtf notif" , "received notif")
         AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_NOTIFICATION_RECEIVED)
         if (remoteMessage.data.isNotEmpty()) {
             //we always provide some extra data in our push notif
@@ -32,6 +31,7 @@ class EntourageFirebaseMessagingService : FirebaseMessagingService() {
             fcmMessageNotif.body,
             this
         )
+
     }
 
     private fun handleNow(remoteMessage: RemoteMessage) {

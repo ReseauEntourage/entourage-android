@@ -2236,7 +2236,7 @@ Przeczytają tę wiadomość, gdy tylko dołączą do grupy.</string>
     <string name="role_ambassador">Ambasador</string>
     <string name="role_admin">Ambasador</string>
 
-    <string name="disclaimer_link_public">https://blog.entourage.social/charte-ethique-grand-public/</string>
+    <string name="disclaimer_link_public">https://www.entourage.social/blog/charte-ethique-entourage-local/</string>
 
     <string name="market_url">market://details?id=%s</string>
     <string name="playstore_url">https://play.google.com/store/apps/details?id=%s</string>
@@ -2525,7 +2525,7 @@ Przeczytają tę wiadomość, gdy tylko dołączą do grupy.</string>
 
     <string name="home_v2_title_map">Odkryj przydatne adresy</string>
     <string name="home_v2_subtitle_map">Wszystkie struktury solidarnościowe w pobliżu</string>
-    <string name="home_v2_button_map">Mapa miejsc solidarnościowych w Twojej okolicy</string>
+    <string name="home_v2_button_map">Odkryj mapę</string>
 
     <string name="home_v2_title_pedago">Wszystko, co musisz wiedzieć, aby podjąć działania</string>
     <string name="home_v2_subtitle_pedago">Walka z niepewnością jest jak ze wszystkim, można się jej nauczyć!</string>

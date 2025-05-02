@@ -64,7 +64,7 @@ class OnboardingCategorieFragment: Fragment() {
                     title = getString(R.string.onboarding_category_sharing_time),
                     isSelected = it,
                     id = "sharing_time",
-                    subtitle = ""
+                    subtitle = getString(R.string.sharing_time_subtitle)
                 )
             },
             user?.concerns?.contains("material_donations")?.let {

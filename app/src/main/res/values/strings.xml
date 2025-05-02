@@ -2254,6 +2254,8 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="role_admin">Ambassadeur</string>
 
     <string name="disclaimer_link_public">https://blog.entourage.social/charte-ethique-grand-public/</string>
+    <string name="ambassadeur_link_public">https://site.entourage.social/agir-avec-nous/par-action/devenir-benevole/</string>
+    <string name="faq_link_public">https://site.entourage.social/blog/comment-utiliser-l-application-entourage#index-faq/</string>
 
     <string name="market_url">market://details?id=%s</string>
     <string name="playstore_url">https://play.google.com/store/apps/details?id=%s</string>
@@ -2542,7 +2544,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
 
     <string name="home_v2_title_map">Découvrir des adresses utiles</string>
     <string name="home_v2_subtitle_map">Toutes les structures solidaires à proximité</string>
-    <string name="home_v2_button_map">Carte des lieux solidaires près de vous</string>
+    <string name="home_v2_button_map">Carte des lieux solidaires</string>
 
     <string name="home_v2_title_pedago">Tout savoir pour passer à l‘action</string>
     <string name="home_v2_subtitle_pedago">Combattre la précarité, c’est comme tout, ça s’apprend !</string>
@@ -2771,7 +2773,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="main_filter_title_location">Par localisation</string>
     <string name="main_filter_title_radius">Dans un rayon de</string>
     <string name="sharing_time_title">Temps de partage</string>
-    <string name="sharing_time_subtitle">café, activité...</string>
+    <string name="sharing_time_subtitle">(café, activité, rencontre...)</string>
     <string name="services_title">Service</string>
     <string name="services_subtitle">lessive, impression de documents...</string>
     <string name="clothes_title">Vêtement</string>
@@ -2813,7 +2815,11 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="popup_nightgood_vote">Voter</string>
     <string name="popup_nightgood_text">Pour permettre à 60 personnes en précarité d\'intégrer un club de sport, il suffit d\'un clic. Le vôtre !</string>
 
-
+    <string name="popup_ambassador_title">Participez-vous en tant qu’organisateur ou en tant que participant ?</string>
+    <string name="popup_ambassador_subtitle">Si vous êtes organisateur, les participants pourront vous identifier plus facilement</string>
+    <string name="popup_ambassador_button_orga">Organisateur</string>
+    <string name="popup_ambassador_button_participant">Participant</string>
+    <string name="organizer_label">- Organisateur</string>
 
 </resources>
 

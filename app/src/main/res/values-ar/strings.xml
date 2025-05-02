@@ -2216,7 +2216,7 @@
     <string name="role_ambassador">سفير</string>
     <string name="role_admin">سفير</string>
 
-    <string name="disclaimer_link_public">https://blog.entourage.social/charte-ethique-grand-public/</string>
+    <string name="disclaimer_link_public">https://www.entourage.social/blog/charte-ethique-entourage-local/</string>
 
     <string name="market_url">السوق://details?id=%s</string>
     <string name="playstore_url">https://play.google.com/store/apps/details?id=%s</string>
@@ -2505,7 +2505,7 @@
 
     <string name="home_v2_title_map">اكتشف عناوين مفيدة</string>
     <string name="home_v2_subtitle_map">جميع الهياكل التضامنية في مكان قريب</string>
-    <string name="home_v2_button_map">خريطة لأماكن التضامن القريبة منك</string>
+    <string name="home_v2_button_map">اكتشف الخريطة</string>
 
     <string name="home_v2_title_pedago">كل ما تحتاج إلى معرفته لاتخاذ الإجراءات اللازمة</string>
     <string name="home_v2_subtitle_pedago">محاربة عدم الاستقرار مثل كل شيء، يمكن تعلمه!</string>

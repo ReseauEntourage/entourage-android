@@ -87,6 +87,7 @@ import kotlin.math.abs
 import com.google.android.play.core.review.ReviewManagerFactory
 import com.google.android.play.core.review.ReviewManager
 import com.google.android.play.core.review.testing.FakeReviewManager
+import timber.log.Timber
 
 
 class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
@@ -345,7 +346,7 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
                 )
             }
             event?.author.let {author->
-                binding.organizer.content.text = String.format(getString(R.string.event_organisez_by), author?.userName)
+                //binding.organizer.content.text = String.format(getString(R.string.event_organisez_by), author?.userName)
                 author?.partner.let { partner->
                     if(!partner?.name.isNullOrEmpty()){
                         binding.tvAssociation.text = String.format(getString(R.string.event_organisez_asso),partner?.name)
@@ -621,7 +622,16 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
         if (allMembers != null) {
             this.memberList.clear()
             this.memberList.addAll(allMembers)
+            var numberOrganizer = 0
+            var nameOrganizers = ""
             for(member in allMembers){
+                Timber.wtf("wtf role " + member.groupRole + "name " + nameOrganizers)
+                if(member.groupRole == "organizer"){
+                    numberOrganizer += 1
+                    if(numberOrganizer < 3){
+                        nameOrganizers += ", " + member.displayName
+                    }
+                }
                 if(member.id.toInt() == event?.author?.userID){
                     if(member.communityRoles?.contains("Équipe Entourage") == true || member.communityRoles?.contains("Ambassadeur") == true){
                         binding.tvAssociation.text = getString(R.string.event_organisez_entourage)
@@ -629,7 +639,14 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
                     }
                 }
             }
+            nameOrganizers.removePrefix(", ")
+            if(numberOrganizer > 2 ){
+                nameOrganizers += " + " + (numberOrganizer - 2).toString()
+            }
+            binding.organizer.content.text = String.format(getString(R.string.event_organisez_by), nameOrganizers)
+
         }
+
         eventPresenter.getEvent(eventId)
     }
 
@@ -651,19 +668,60 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
     private fun handleParticipateButton() {
         binding.join.setOnClickListener {
             requestInAppReview(requireContext())
-            if (event?.member==false){
-                eventPresenter.participate(eventId)
+            val meUser = EntourageApplication.me(activity)
+            Timber.wtf("wtf role " + meUser?.roles)
+            if(meUser?.roles?.contains("Ambassadeur") == true){
+                CustomAlertDialog.showAmbassadorWithTwoButton(requireContext(),
+                    onNo = {
+                        if (event?.member==false){
+                            eventPresenter.joinAsOrganizer(eventId)
+                        }else{
+                            eventPresenter.leaveEvent(eventId)
+                        }
+                    }, onYes = {
+                        if (event?.member==false){
+                            eventPresenter.participate(eventId)
+                        }else{
+                            eventPresenter.leaveEvent(eventId)
+                        }
+                    })
             }else{
-                eventPresenter.leaveEvent(eventId)
+                if (event?.member==false){
+                    eventPresenter.participate(eventId)
+                }else{
+                    eventPresenter.leaveEvent(eventId)
+                }
             }
         }
         binding.participate.setOnClickListener {
-            AnalyticsEvents.logEvent(AnalyticsEvents.Event_detail_action_participate)
-            if (event?.member==false){
-                eventPresenter.participate(eventId)
+            val meUser = EntourageApplication.me(activity)
+            Timber.wtf("wtf", "role ? ${meUser?.roles}")
+            if(meUser?.roles?.contains("Ambassadeur") == true){
+                CustomAlertDialog.showAmbassadorWithTwoButton(requireContext(),
+                    onNo = {
+                        if (event?.member==false){
+                            eventPresenter.joinAsOrganizer(eventId)
+                        }else{
+                            eventPresenter.leaveEvent(eventId)
+                        }
+                }, onYes = {
+                    AnalyticsEvents.logEvent(AnalyticsEvents.Event_detail_action_participate)
+                    if (event?.member==false){
+                        eventPresenter.participate(eventId)
+                    }else{
+                        eventPresenter.leaveEvent(eventId)
+                    }
+                })
+
             }else{
-                eventPresenter.leaveEvent(eventId)
+                AnalyticsEvents.logEvent(AnalyticsEvents.Event_detail_action_participate)
+                if (event?.member==false){
+                    eventPresenter.participate(eventId)
+                }else{
+                    eventPresenter.leaveEvent(eventId)
+                }
             }
+
         }
     }
 

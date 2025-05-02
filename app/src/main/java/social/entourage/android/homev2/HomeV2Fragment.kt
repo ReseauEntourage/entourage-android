@@ -154,6 +154,8 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
         setNestedScrollViewAnimation()
         checkNotificationStatus()
         increaseCounter()
+        checkNotifAndSendToken()
+
         return binding.root
     }
 
@@ -183,7 +185,16 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
                 Intent(context, ProfileActivity::class.java), 0
             )
         }
-        checkNotifAndSendToken()
+        testNotifDemandePage()
+        sendUserDiscussionStatus()
+    }
+
+    private fun testNotifDemandePage(){
+        binding.ivLogoHome.setOnLongClickListener {
+            val intent = Intent(requireContext(), NotificationDemandActivity::class.java)
+            this.startActivity(intent)
+            true
+        }
     }
 
     private fun testToken() {
@@ -209,44 +220,59 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
       }
     }
 
-    private fun checkNotifAndSendToken(){
+    private fun checkNotifAndSendToken() {
         val notificationManager = NotificationManagerCompat.from(requireContext())
         val areNotificationsEnabled = notificationManager.areNotificationsEnabled()
+        val sharedPreferences = requireActivity().getSharedPreferences("userPref", Context.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+
+        // Récupérer le compteur actuel de connexions
+        var connectionCount = sharedPreferences.getInt("connectionCount", 0)
+
         if (areNotificationsEnabled) {
-            sendtoken()
+            sendToken()
 
+            // Réinitialiser le compteur de connexions si les notifications sont activées
+            connectionCount = 0
+            editor.putInt("connectionCount", connectionCount)
+            editor.apply()
         } else {
+            deleteToken()
 
+            // Incrémenter le compteur de connexions
+            connectionCount++
+            editor.putInt("connectionCount", connectionCount)
+            editor.apply()
+
+            // Afficher la vue d'autorisation la 2e et la 10e fois
+            if (connectionCount == 2 || connectionCount == 5 || connectionCount == 10) {
+                val intent = Intent(requireContext(), NotificationDemandActivity::class.java)
+                this.startActivity(intent)
+            }
         }
     }
+
 
     fun increaseCounter(){
         val sharedPreferences = requireActivity().getSharedPreferences("userPref", Context.MODE_PRIVATE)
         var count = sharedPreferences.getInt("COUNT_DISCUSSION_ASK", 0)
         sharedPreferences.edit().putInt("COUNT_DISCUSSION_ASK", ++count).apply()
+        //toast the count
     }
 
-    fun checkAndShowDiscussionDialog() {
+    fun sendUserDiscussionStatus() {
         if (isAdded) {
             val sharedPreferences = requireActivity().getSharedPreferences("userPref", Context.MODE_PRIVATE)
+            //Add true in cookie DiscussionInterested
             val isInterested = sharedPreferences.getBoolean("DISCUSSION_INTERESTED", false)
             val userRefused = sharedPreferences.getBoolean("USER_REFUSED_POPUP", false)
             val count = sharedPreferences.getInt("COUNT_DISCUSSION_ASK", 0)
 
-            if (userRefused || isInterested) {
-                // L'utilisateur a refusé ou a déjà accepté, ne pas montrer la popup
+            if (userRefused) {
+                // L'utilisateur a refusé, on ne fait rien
                 return
             }
-
-            // Check if the dialog is already being shown
-            val fragmentManager = requireActivity().supportFragmentManager
-            val existingDialog = fragmentManager.findFragmentByTag("DiscussionDialog")
-
-            if (count >= 2 && existingDialog == null) {
-                // L'utilisateur n'a pas encore refusé, et le compteur a atteint le seuil
-                val dialog = DiscussionTestDialogFragment()
-                dialog.show(fragmentManager, "DiscussionDialog")
-            }
+            userPresenter.updateUser(isInterested)
         }
     }
 
@@ -270,39 +296,19 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
         }
     }
 
-    fun sendtoken(){
+    fun sendToken(){
         FirebaseMessaging.getInstance().token.addOnSuccessListener { token ->
             Log.wtf("wtf token", token)
             mainPresenter.updateApplicationInfo(token)
         }
     }
+    fun deleteToken(){
+       mainPresenter.deleteApplicationInfo {
 
-    fun showPopupBienCommun() {
-        // Accéder aux SharedPreferences en utilisant la clé personnalisée
-        val sharedPreferences = requireContext().getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE)
-
-        // Vérifier si le popup a déjà été affiché
-        val hasShownPopup = sharedPreferences.getBoolean("has_shown_biencommun_popup", false)
-
-        if (!hasShownPopup) {
-            val bienCommunDialogFragment = PopupBienCommun.newInstance().apply {
-                AnalyticsEvents.logEvent(AnalyticsEvents.popup_biencommun)
-                listener = object : PopupBienCommun.BienCommunConfirmationListener {
-                    override fun onConfirmParticipation() {
-                        AnalyticsEvents.logEvent(AnalyticsEvents.popup_biencommun_vote)
-                        Toast.makeText(context, "Merci d’avoir voté, à bientôt !", Toast.LENGTH_LONG).show()
-                        (requireActivity() as BaseActivity).showWebView("https://bit.ly/3Z2tOB5")
-                    }
-                }
-            }
-
-            // Afficher le popup
-            bienCommunDialogFragment.show(requireActivity().supportFragmentManager, "PopupBienCommun")
-
-            // Mettre à jour SharedPreferences pour indiquer que le popup a été affiché
-            sharedPreferences.edit().putBoolean("has_shown_biencommun_popup", true).apply()
-        }
+       }
     }
+
+
 
 
     private fun updateUnreadCount(unreadMessages: UnreadMessages?) {
@@ -731,6 +737,7 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
     }
     private fun updateUser(user:User){
         this.user = user
+        Timber.wtf("wtf user want discussion ? " + user.willingToEngageLocally)
         updateAvatar()
 
     }
