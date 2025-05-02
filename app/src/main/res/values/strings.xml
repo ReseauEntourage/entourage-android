@@ -128,7 +128,7 @@
     <string name="donation">Faire un don</string>
     <string name="faq">FAQ</string>
     <string name="share">Partager l’application</string>
-    <string name="suggest">Une suggestion sur l’application ?</string>
+    <string name="suggest">Partager une idée</string>
     <string name="feedback">Noter l’app sur les stores</string>
     <string name="cgu">Conditions générales d’utilisation</string>
     <string name="confidentiality">Politique de Confidentialité</string>
@@ -671,7 +671,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
 
     <string name="action_member_since">Membre depuis %s</string>
     <string name="action_created_at_by">"Créé le %s par</string>
-    <string name="action_created_by">"Créé %s par</string>
+    <string name="action_created_by">"Créé le %s par</string>
     <string name="action_created_by_">"Créé par</string>
 
     <string name="atKm">%s, à %s km de moi</string>
@@ -702,7 +702,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="action_create_location_title">Localisez votre %s</string>
     <string name="action_create_location_subtitle">Votre position précise ne sera pas partagée, vous pouvez mettre une autre localisation que la zone d’action de votre profil.</string>
 
-    <string name="action_create_success_title">Votre %s\nà bien été créée !</string>
+    <string name="action_create_success_title">Votre %s\a bien été créée !</string>
     <string name="action_create_success_subtitle">Félicitations, vous venez de créer une nouvelle %s. Pour la rendre plus visible parlez-en sur vos groupes !</string>
     <string name="action_create_end_finish_bt">Terminer</string>
     <string name="action_error_create_action">Erreur lors de la création de la %s</string>
@@ -2266,6 +2266,8 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="terms_url">https://www.entourage.social/cgu</string>
     <string name="website_url">https://www.entourage.social</string>
     <string name="more_events_url">https://www.facebook.com/EntourageReseauCivique/events/</string>
+    <string name="privacy_policy_url">https://site.entourage.social/politique-de-confidentialite</string>
+    <string name="donate_default_link">https://entourage.iraiser.eu/~share?cid=44</string>
 
     <string name="contact_email">app@entourage.social</string>
 
@@ -2892,6 +2894,65 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="enhanced_onboarding_time_disponibility_time_evening">Soir</string>
     <string name="enhanced_onboarding_time_disponibility_btn_finish_later">Terminer plus tard</string>
     <string name="enhanced_onboarding_time_disponibility_btn_next">Suivant</string>
+
+    <string name="see_more">Voir plus</string>
+    <string name="see_less">Voir moins</string>
+    <string name="placeholder_description_profile">Description non renseignée</string>
+    <string name="no_data_available">Non renseigné</string>
+    <string name="unknown_language">language non reconnu</string>
+
+
+    <!-- Boutons -->
+    <string name="logout_button">Se déconnecter</string>
+    <string name="delete_account_button">Supprimer mon compte</string>
+    <string name="notifications_disabled_message">Vos notifications sont désactivées.\nActivez-les pour ne rien manquer</string>
+    <string name="enable_notifications">Activez-les pour ne rien manquer</string>
+
+    <!-- Profile Full Page  -->
+
+    <string name="preferences_section_title">Mes préférences</string>
+    <string name="preferences_interest_title">Mes centres d\'intérêt</string>
+    <string name="preferences_interest_subtitle">Jeux, Maraudes sociales, Sport</string>
+    <string name="preferences_action_title">Mes envies d\'agir</string>
+    <string name="preferences_action_subtitle">Entraides (Temps de partage, Dons matériels), Événements, Groupes</string>
+    <string name="preferences_availability_title">Mes disponibilités</string>
+    <string name="preferences_availability_subtitle">Jours : Lundi, Mardi\nHoraires : Après-midi</string>
+    <string name="preferences_action_categories_title">Mes catégories d\'entraide</string>
+
+    <string name="preferences_section_title_others">Ses préférences</string>
+    <string name="preferences_interest_title_others">Ses centres d\'intérêt</string>
+    <string name="preferences_action_title_others">Ses envies d\'agir</string>
+    <string name="preferences_availability_title_others">Ses disponibilités</string>
+    <string name="preferences_action_categories_title_others">Ses catégories d\'entraide</string>
+
+    <!-- Section Paramètres -->
+    <string name="settings_section_title">Paramètres</string>
+    <string name="settings_language_title">Langue</string>
+    <string name="settings_language_subtitle">Français - traduction auto active</string>
+    <string name="settings_notifications_title">Notifications</string>
+    <string name="settings_notifications_subtitle">Activés : </string>
+    <string name="settings_help_title">Aide et à propos</string>
+    <string name="settings_help_subtitle">Charte éthique, FAQ, CGU, etc.</string>
+    <string name="settings_unblock_contacts_title">Débloquer des contacts</string>
+    <string name="settings_unblock_contacts_subtitle">Aucun contact bloqué</string>
+    <string name="settings_number_blocked_contacts_subtitle">Contact bloqués : </string>
+    <string name="settings_feedback_title">Partager une idée</string>
+    <string name="settings_share_title">Partager l\'application</string>
+    <string name="settings_password_title">Changer de mot de passe</string>
+
+
+    <string name="notifications_actions">actions</string>
+    <string name="notifications_events">événements</string>
+    <string name="notifications_groups">groupes</string>
+    <string name="notifications_messages">messages</string>
+    <string name="no_notifications_active">Désactivé</string>
+
+
+
+    <string name="translation_auto_title">Trad auto</string>
+    <string name="translation_auto_enabled">Activée</string>
+    <string name="translation_auto_disabled">Désactivée</string>
+
 
 </resources>
 

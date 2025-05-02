@@ -36,11 +36,13 @@
 
             <Button
                 android:id="@+id/previous"
-                style="@style/h2_orange"
+                android:fontFamily="@font/quicksand_bold"
+                android:textColor="@color/black"
+                android:textSize="15sp"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.3"
-                android:background="@drawable/new_bg_rounded_button_orange_stroke_transparent"
+                android:background="@drawable/shape_button_v9_negative"
                 android:text="@string/previous"
                 android:textAllCaps="false"
                 android:visibility="invisible" />

@@ -171,32 +171,11 @@
 
 
                         </LinearLayout>
-
-                        <androidx.constraintlayout.widget.ConstraintLayout
-                            android:id="@+id/more"
+                        <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="15dp"
-                            android:orientation="horizontal"
-                            android:visibility="gone">
-
-                            <TextView
-                                style="@style/h2_orange"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:id="@+id/tv_know_more"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                android:text="@string/more" />
-
-                            <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                app:layout_constraintStart_toEndOf="@+id/tv_know_more"
-                                app:layout_constraintTop_toTopOf="parent"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                android:src="@drawable/new_arrow_orange" />
+                            android:layout_marginTop="10dp"
+                            android:orientation="horizontal">
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="40dp"
@@ -208,51 +187,70 @@
                                 android:paddingStart="16dp"
                                 android:paddingEnd="16dp"
                                 android:fontFamily="@font/nunitosans_bold"
-                                app:layout_constraintTop_toTopOf="@+id/tv_know_more"
-                                app:layout_constraintBottom_toBottomOf="@+id/tv_know_more"
                                 android:text="@string/event_btn_share_title"
-                                android:textColor="@color/orange"
-                                android:background="@drawable/btn_shape_light_orange"
+                                android:textColor="@color/black"
+                                android:background="@drawable/shape_button_v9_negative"
                                 android:drawablePadding="16dp"
                                 app:layout_constraintEnd_toEndOf="parent"
-                                app:drawableTint="@color/orange"
-                                app:drawableEndCompat="@drawable/share_icon" />
-                        </androidx.constraintlayout.widget.ConstraintLayout>
-                        <androidx.constraintlayout.widget.ConstraintLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
+                                app:drawableTint="@color/black"
+                                app:drawableEndCompat="@drawable/share_icon"
+                                android:visibility="gone"/>
                             <Button
                                 android:id="@+id/join"
                                 style="@style/h2_white"
                                 android:layout_width="wrap_content"
                                 android:layout_height="40dp"
-                                app:layout_constraintTop_toTopOf="parent"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintStart_toStartOf="parent"
-                                android:layout_marginTop="15dp"
                                 android:drawablePadding="10dp"
                                 android:paddingStart="16dp"
                                 android:paddingEnd="16dp"
                                 android:textAllCaps="false"
+                                android:layout_marginStart="20dp"
                                 android:visibility="visible" />
+                        </LinearLayout>
+
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/more"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="15dp"
+                            android:orientation="horizontal"
+                            android:visibility="gone">
+
+                            <TextView
+                                style="@style/h2_orange"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/tv_know_more"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintBottom_toTopOf="@+id/tags_container"
+                                android:text="@string/more"
+                                android:visibility="gone"/>
+
+                            <!-- FlexboxLayout for tags -->
+                            <com.google.android.flexbox.FlexboxLayout
+                                android:id="@+id/tags_container"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                app:flexWrap="wrap"
+                                app:justifyContent="flex_start"
+                                app:layout_constraintTop_toBottomOf="@+id/tv_know_more"
+                                />
                             <TextView
                                 android:layout_width="wrap_content"
-                                android:layout_height="0dp"
-                                android:id="@+id/big_btn_share"
-                                android:gravity="center"
-                                android:paddingStart="16dp"
-                                android:paddingEnd="16dp"
-                                android:textSize="15sp"
-                                android:fontFamily="@font/nunitosans_bold"
-                                app:layout_constraintTop_toTopOf="@+id/join"
-                                app:layout_constraintBottom_toBottomOf="@+id/join"
-                                android:text="@string/event_btn_share_title"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/btn_more_desc"
+                                android:text="@string/see_more"
                                 android:textColor="@color/orange"
-                                android:background="@drawable/btn_share_more_radius_bckgrnd"
-                                android:drawablePadding="16dp"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:drawableTint="@color/orange"
-                                app:drawableEndCompat="@drawable/share_icon" />
+                                android:fontFamily="@font/quicksand_bold"
+                                android:textSize="13sp"
+                                android:layout_marginTop="8dp"
+                                app:layout_constraintTop_toBottomOf="@+id/tags_container"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                android:layout_marginBottom="10dp"
+                                />
                         </androidx.constraintlayout.widget.ConstraintLayout>
 
 
@@ -275,19 +273,6 @@
                             tools:text="Description du groupe à écrire ici Lorem ipsum
 Praesent pharetra ac nisi quis finibus. Curabitur
 purus dui, aliquet cursus tellus a, dictum hen." />
-
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/interests"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal"
-                            android:layout_marginTop="20dp"
-                            android:visibility="gone"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/description"
-                            tools:itemCount="5"
-                            tools:listitem="@layout/new_profile_interest_item" />
 
                     </LinearLayout>
 
@@ -506,7 +491,12 @@ purus dui, aliquet cursus tellus a, dictum hen." />
                 </LinearLayout>
             </androidx.core.widget.NestedScrollView>
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-
+        <View
+            android:id="@+id/overlay_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#CCFFFFFF"
+            android:visibility="gone" />
         <com.leinardi.android.speeddial.SpeedDialView
             android:id="@+id/create_post"
             android:layout_width="wrap_content"

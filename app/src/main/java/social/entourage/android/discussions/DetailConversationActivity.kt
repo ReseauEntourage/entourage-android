@@ -15,6 +15,7 @@ import social.entourage.android.api.model.Conversation
 import social.entourage.android.api.model.Post
 import social.entourage.android.comment.CommentsListAdapter
 import social.entourage.android.language.LanguageManager
+import social.entourage.android.profile.ProfileFullActivity
 import social.entourage.android.report.DataLanguageStock
 import social.entourage.android.user.UserProfileActivity
 import social.entourage.android.tools.utils.Const
@@ -48,13 +49,14 @@ class DetailConversationActivity : CommentActivity() {
         binding.header.title = titleName
         if (isOne2One) {
             binding.header.headerTitle.setOnClickListener {
+                ProfileFullActivity.isMe = false
+                ProfileFullActivity.userId = postAuthorID
                 startActivityForResult(
-                    Intent(this, UserProfileActivity::class.java).putExtra(
+                    Intent(this, ProfileFullActivity::class.java).putExtra(
                         Const.USER_ID, postAuthorID
                     ), 0)
             }
         }
-        checkAndShowPopWarning()
 
         viewModel.detailConversation.observe(this, ::handleDetailConversation)
         viewModel.getDetailConversation(id)
@@ -79,9 +81,20 @@ class DetailConversationActivity : CommentActivity() {
 
 
     private fun handleDetailConversation(conversation: Conversation?) {
+        for(message in conversation?.message!!){
+            message.userRole.let {
+                if(it?.contains("Équipe Entourage")!!){
+                    hasToShowFirstMessage = false
+                }
+            }
+        }
+        checkAndShowPopWarning()
         titleName = conversation?.title
         binding.header.title = titleName
         val memberCount = conversation?.members?.size ?: 0
+        for(member in conversation?.members!!){
+
+        }
         if(memberCount > 2){
             this.hasSeveralpeople = true
             var title = ""
@@ -104,14 +117,13 @@ class DetailConversationActivity : CommentActivity() {
 
     fun checkAndShowPopWarning() {
         if (hasToShowFirstMessage) {
+            //TODO rule to makes it always gone
             binding.layoutInfoNewDiscussion.isVisible = true
             binding.uiIvCloseNew.setOnClickListener {
                 binding.layoutInfoNewDiscussion.visibility = View.GONE
             }
         }
     }
-
-
 
     override fun addComment() {
         viewModel.addComment(id, comment)

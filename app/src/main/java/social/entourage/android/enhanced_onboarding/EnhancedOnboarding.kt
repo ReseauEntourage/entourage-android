@@ -3,23 +3,30 @@ package social.entourage.android.enhanced_onboarding
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import androidx.activity.OnBackPressedCallback
 import androidx.lifecycle.ViewModelProvider
 import social.entourage.android.EntourageApplication
 import social.entourage.android.MainActivity
+import social.entourage.android.api.model.User
 import social.entourage.android.base.BaseActivity
 import social.entourage.android.databinding.ActivityEnhancedOnboardingLayoutBinding
 import social.entourage.android.enhanced_onboarding.fragments.*
+import social.entourage.android.user.UserPresenter
+import timber.log.Timber
 
 class EnhancedOnboarding : BaseActivity() {
 
     private lateinit var binding: ActivityEnhancedOnboardingLayoutBinding
     private lateinit var viewModel: OnboardingViewModel
+    private val userPresenter: UserPresenter by lazy { UserPresenter() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityEnhancedOnboardingLayoutBinding.inflate(layoutInflater)
         viewModel = ViewModelProvider(this).get(OnboardingViewModel::class.java)
-
+        userPresenter.getUser(viewModel.user?.id ?: 0)
+        viewModel.user = EntourageApplication.me(this)
+        Timber.wtf("wtf" + viewModel.user?.interests)
         // Observateurs pour chaque étape
         viewModel.onboardingFirstStep.observe(this, ::handleOnboardingFirstStep)
         viewModel.onboardingSecondStep.observe(this, ::handleOnboardingSecondStep)
@@ -30,8 +37,65 @@ class EnhancedOnboarding : BaseActivity() {
         viewModel.onboardingShouldQuit.observe(this, ::handleOnboardingShouldQuit)
         viewModel.shouldDismissBtnBack.observe(this, ::toggleBtnBack)
 
-        viewModel.user = EntourageApplication.me(this)
+        userPresenter.user.observe(this, ::updateUser)
+
         setContentView(binding.root)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        userPresenter.getUser(viewModel.user?.id ?: 0)
+        binding.btnBack.setOnClickListener {
+            if (isFromSettingsinterest || isFromSettingsDisponibility || isFromSettingsWishes || isFromSettingsActionCategorie) {
+                viewModel.registerAndQuit()
+            } else {
+                viewModel.register()
+                onBackPressed()
+                viewModel.step -= 1
+                if (viewModel.step < 1) {
+                    viewModel.registerAndQuit()
+                }
+            }
+        }
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if (isFromSettingsinterest || isFromSettingsDisponibility || isFromSettingsWishes || isFromSettingsActionCategorie) {
+                    viewModel.registerAndQuit()
+                } else {
+                    viewModel.register()
+                    onBackPressed()
+                    viewModel.step -= 1
+                    if (viewModel.step < 1) {
+                        viewModel.registerAndQuit()
+                    }
+                }
+            }
+        })
+
+        if (isFromSettingsinterest) {
+            viewModel.setOnboardingThirdStep(true)
+        }else if (isFromSettingsDisponibility) {
+            viewModel.onboardingDisponibilityStep.postValue(true)
+        }else if (isFromSettingsWishes) {
+            viewModel.setOnboardingSecondStep(true)
+        }else if(isFromSettingsActionCategorie){
+            viewModel.setOnboardingFourthStep(true)
+        } else {
+            when (viewModel.step) {
+                1 -> viewModel.setOnboardingFirstStep(true)
+                2 -> viewModel.setOnboardingSecondStep(true)
+                3 -> viewModel.setOnboardingThirdStep(true)
+                4 -> viewModel.setOnboardingFourthStep(true)
+                5 -> viewModel.onboardingDisponibilityStep.postValue(true) // Étape des disponibilités
+                6 -> viewModel.setOnboardingFifthStep(true)
+            }
+        }
+
+    }
+
+    private fun updateUser(user: User){
+        viewModel.user = user
+
     }
 
     private fun toggleBtnBack(value: Boolean) {
@@ -77,7 +141,7 @@ class EnhancedOnboarding : BaseActivity() {
     // Gestion de l'étape des catégories
     private fun handleOnboardingFourthStep(value: Boolean) {
         if (value) {
-            if (isFromSettingsinterest) {
+            if (isFromSettingsinterest || isFromSettingsDisponibility || isFromSettingsWishes) {
                 viewModel.registerAndQuit()
                 return
             }
@@ -123,7 +187,7 @@ class EnhancedOnboarding : BaseActivity() {
                 "resources" -> MainActivity.shouldLaunchQuizz = true
                 "neighborhoods" -> MainActivity.shouldLaunchWelcomeGroup = true
             }
-            if (isFromSettingsinterest) {
+            if (isFromSettingsinterest  || isFromSettingsDisponibility || isFromSettingsWishes || isFromSettingsActionCategorie) {
                 isFromSettingsinterest = false
                 MainActivity.shouldLaunchEvent = false
                 MainActivity.shouldLaunchProfile = true
@@ -140,38 +204,16 @@ class EnhancedOnboarding : BaseActivity() {
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        binding.btnBack.setOnClickListener {
-            if (isFromSettingsinterest) {
-                viewModel.registerAndQuit()
-            } else {
-                viewModel.register()
-                onBackPressed()
-                viewModel.step -= 1
-                if (viewModel.step < 1) {
-                    viewModel.registerAndQuit()
-                }
-            }
-        }
 
-        if (isFromSettingsinterest) {
-            viewModel.setOnboardingThirdStep(true)
-        } else {
-            when (viewModel.step) {
-                1 -> viewModel.setOnboardingFirstStep(true)
-                2 -> viewModel.setOnboardingSecondStep(true)
-                3 -> viewModel.setOnboardingThirdStep(true)
-                4 -> viewModel.setOnboardingFourthStep(true)
-                5 -> viewModel.onboardingDisponibilityStep.postValue(true) // Étape des disponibilités
-                6 -> viewModel.setOnboardingFifthStep(true)
-            }
-        }
-    }
+
+
 
     companion object {
         var preference: String = ""
         var isFromSettingsinterest: Boolean = false
+        var isFromSettingsDisponibility: Boolean = false
+        var isFromSettingsWishes: Boolean = false
+        var isFromSettingsActionCategorie: Boolean = false
         var shouldNotDisplayCampain:Boolean = false
     }
 }

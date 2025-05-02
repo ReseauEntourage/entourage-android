@@ -26,6 +26,7 @@ import social.entourage.android.api.model.HomeType
 import social.entourage.android.events.details.feed.EventCommentActivity
 import social.entourage.android.groups.details.feed.GroupCommentActivity
 import social.entourage.android.profile.ProfileActivity
+import social.entourage.android.profile.ProfileFullActivity
 import social.entourage.android.user.UserProfileActivity
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.Utils
@@ -113,8 +114,8 @@ object Navigation {
                 )
             }
             HomeType.USER -> when (action) {
-                ActionSummary.SHOW ->
-                    return Intent(context, UserProfileActivity::class.java).putExtra(
+                        ActionSummary.SHOW ->
+                    return Intent(context, ProfileFullActivity::class.java).putExtra(
                         Const.USER_ID,
                         params.id
                     )

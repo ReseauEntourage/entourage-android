@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tool="http://schemas.android.com/tools">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -114,14 +115,42 @@
                         app:icon="@{@drawable/new_mail}"
                         app:title="@{@string/email}" />
 
-                    <include
-                        android:id="@+id/city_action"
-                        layout="@layout/profile_edit_item_clickable"
+                    <TextView
+                        android:id="@+id/adress_title"
+                        style="@style/profile_information_title"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        app:icon="@{@drawable/new_location}"
-                        app:title="@{@string/city_action_zone}" />
+                        android:layout_marginTop="12dp"
+                        android:text="@string/address" />
 
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/layoutCityName"
+                        android:background="@drawable/shape_grey_border"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_subtitle_localisation"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:layout_marginTop="16dp">
+
+                        <AutoCompleteTextView
+                            android:id="@+id/city_action"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginTop="12dp"
+                            android:layout_marginBottom="12dp"
+                            android:layout_marginEnd="10dp"
+                            android:fontFamily="@font/nunitosans_regular"
+                            android:textColor="@color/black"
+                            android:textSize="15sp"
+                            android:hint="Rechercher une adresse"
+                            android:background="@null"/>
+                    </androidx.constraintlayout.widget.ConstraintLayout>
                     <include
                         android:id="@+id/seek_bar_layout"
                         layout="@layout/new_seek_bar_layout"
@@ -146,7 +175,8 @@
                         android:layout_marginBottom="20dp"
                         app:color="@{@android:color/black}"
                         app:icon="@{@drawable/new_description}"
-                        app:label="@{@string/my_interests}" />
+                        app:label="@{@string/my_interests}"
+                        android:visibility="gone"/>
                     <include
                         android:id="@+id/personnalize"
                         layout="@layout/new_profile_settings_item"
@@ -155,7 +185,8 @@
                         android:layout_marginBottom="70dp"
                         app:color="@{@android:color/black}"
                         app:icon="@{@drawable/new_description}"
-                        app:label="@{@string/my_onboarding}" />
+                        app:label="@{@string/my_onboarding}"
+                        android:visibility="gone"/>
 
                 </LinearLayout>
             </ScrollView>

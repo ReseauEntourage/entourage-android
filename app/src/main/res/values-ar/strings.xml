@@ -2802,4 +2802,86 @@
     <string name="share_request_group">هل ترغب في مشاركة %s في مجموعتك %s؟</string>
     <string name="share_request_description">لديك إمكانية مشاركة %s في مجموعة الجيران في مدينتك لزيادة وضوحها</string>
 
+    <string name="demand_social_title">مثال: نزهة في الحديقة</string>
+    <string name="demand_social_description">مثال: أقترح نزهة في الحديقة نهاية هذا الأسبوع للتحدث والاسترخاء.</string>
+    <string name="demand_services_title">مثال: بحاجة لطباعة مستندات</string>
+    <string name="demand_services_description">مثال: أحتاج إلى طباعة بعض الصفحات لموعد. هل يمكن لأي شخص المساعدة؟</string>
+    <string name="demand_clothes_title">مثال: أبحث عن معطف شتوي</string>
+    <string name="demand_clothes_description">مثال: أبحث عن معطف دافئ بمقاس M لفصل الشتاء هذا.</string>
+    <string name="demand_equipment_title">مثال: بحاجة إلى كيس نوم</string>
+    <string name="demand_equipment_description">مثال: أبحث عن كيس نوم للنوم في الخارج هذا الشتاء. إذا كان لدى أي شخص كيس للتبرع، سيكون ذلك عونًا كبيرًا.</string>
+    <string name="demand_hygiene_title">مثال: بحاجة إلى صابون</string>
+    <string name="demand_hygiene_description">مثال: أبحث عن صابون أو جل للاستحمام. إذا كان لدى أي شخص فائض، سأكون ممتنًا.</string>
+
+    <string name="contrib_social_title">مثال: قهوة ونقاش</string>
+    <string name="contrib_social_description">مثال: أبحث عن شخص لأشارك معه فنجان قهوة هذا الأسبوع في الحي.</string>
+    <string name="contrib_services_title">مثال: مساعدة في الغسيل</string>
+    <string name="contrib_services_description">مثال: أقدم المساعدة في غسل الملابس لمن يحتاج.</string>
+    <string name="contrib_clothes_title">مثال: حذاء رياضي للتبرع</string>
+    <string name="contrib_clothes_description">مثال: أتبرع بحذاء رياضي بحالة جيدة، مقاس 42.</string>
+    <string name="contrib_equipment_title">مثال: هاتف محمول للتبرع</string>
+    <string name="contrib_equipment_description">مثال: أتبرع بهاتف محمول قديم ولكنه يعمل. مثالي لمن يحتاج.</string>
+    <string name="contrib_hygiene_title">مثال: منتجات نظافة للتبرع</string>
+    <string name="contrib_hygiene_description">مثال: أتبرع بعدة عبوات من منتجات النظافة.</string>
+
+    <string name="preferences_section_title">تفضيلاتي</string>
+    <string name="preferences_interest_title">اهتماماتي</string>
+    <string name="preferences_interest_subtitle">الألعاب، التطوع الاجتماعي، الرياضة</string>
+    <string name="preferences_action_title">أنشطتي</string>
+    <string name="preferences_action_subtitle">المساعدة المتبادلة (مشاركة الوقت، التبرعات المادية)، الفعاليات، المجموعات</string>
+    <string name="preferences_availability_title">توفرني</string>
+    <string name="preferences_availability_subtitle">الأيام: الإثنين، الثلاثاء\nالأوقات: بعد الظهر</string>
+    <string name="preferences_action_categories_title">فئات عملي</string>
+
+    <string name="settings_section_title">الإعدادات</string>
+    <string name="settings_language_title">اللغة</string>
+    <string name="settings_language_subtitle">العربية - الترجمة التلقائية مفعلة</string>
+    <string name="settings_notifications_title">الإشعارات</string>
+    <string name="settings_notifications_subtitle">مفعلة: </string>
+    <string name="settings_help_title">المساعدة والمعلومات</string>
+    <string name="settings_help_subtitle">الميثاق الأخلاقي، الأسئلة الشائعة، الشروط، إلخ.</string>
+    <string name="settings_unblock_contacts_title">إلغاء حظر جهات الاتصال</string>
+    <string name="settings_unblock_contacts_subtitle">لا توجد جهات اتصال محظورة</string>
+    <string name="settings_number_blocked_contacts_subtitle">جهات الاتصال المحظورة: </string>
+    <string name="settings_feedback_title">اقتراحات حول التطبيق؟</string>
+    <string name="settings_share_title">مشاركة التطبيق</string>
+    <string name="settings_password_title">تغيير كلمة المرور</string>
+
+    <string name="notifications_actions">الإجراءات</string>
+    <string name="notifications_events">الفعاليات</string>
+    <string name="notifications_groups">المجموعات</string>
+    <string name="notifications_messages">الرسائل</string>
+    <string name="no_notifications_active">لا توجد إشعارات مفعلة</string>
+
+    <string name="bubble_title">تم تطبيق الفلاتر بناءً على تفضيلاتك. انقر هنا لتعديلها.</string>
+    <string name="bubble_button">فهمت</string>
+
+    <string name="enhanced_onboarding_time_disponibility_title">توفرني</string>
+    <string name="enhanced_onboarding_time_disponibility_description">حدد توفرك حتى نتمكن من اقتراح أحداث مناسبة.</string>
+    <string name="enhanced_onboarding_time_disponibility_days_label">أيامي</string>
+    <string name="enhanced_onboarding_time_disponibility_day_monday">الاثنين</string>
+    <string name="enhanced_onboarding_time_disponibility_day_tuesday">الثلاثاء</string>
+    <string name="enhanced_onboarding_time_disponibility_day_wednesday">الأربعاء</string>
+    <string name="enhanced_onboarding_time_disponibility_day_thursday">الخميس</string>
+    <string name="enhanced_onboarding_time_disponibility_day_friday">الجمعة</string>
+    <string name="enhanced_onboarding_time_disponibility_day_saturday">السبت</string>
+    <string name="enhanced_onboarding_time_disponibility_day_sunday">الأحد</string>
+    <string name="enhanced_onboarding_time_disponibility_time_slots_label">فترات الوقت</string>
+    <string name="enhanced_onboarding_time_disponibility_time_morning">الصباح</string>
+    <string name="enhanced_onboarding_time_disponibility_time_afternoon">بعد الظهر</string>
+    <string name="enhanced_onboarding_time_disponibility_time_evening">المساء</string>
+    <string name="enhanced_onboarding_time_disponibility_btn_finish_later">إنهاء لاحقًا</string>
+    <string name="enhanced_onboarding_time_disponibility_btn_next">التالي</string>
+
+    <string name="see_more">عرض المزيد</string>
+    <string name="see_less">عرض أقل</string>
+    <string name="placeholder_description_profile">الوصف غير متوفر</string>
+    <string name="no_data_available">غير متوفر</string>
+    <string name="unknown_language">لغة غير معروفة</string>
+
+    <string name="logout_button">تسجيل الخروج</string>
+    <string name="delete_account_button">حذف حسابي</string>
+    <string name="notifications_disabled_message">الإشعارات الخاصة بك معطلة.\nقم بتفعيلها للبقاء على اطلاع</string>
+    <string name="enable_notifications">قم بتفعيلها للبقاء على اطلاع</string>
+
 </resources>

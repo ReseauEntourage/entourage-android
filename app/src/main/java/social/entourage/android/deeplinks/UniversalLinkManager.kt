@@ -20,6 +20,7 @@ import social.entourage.android.api.model.Events
 import social.entourage.android.api.model.Group
 import social.entourage.android.comment.CommentActivity
 import social.entourage.android.discussions.DetailConversationActivity
+import social.entourage.android.events.details.feed.FeedFragment
 import social.entourage.android.groups.details.feed.FeedActivity
 import social.entourage.android.guide.GDSMainActivity
 import social.entourage.android.home.pedago.PedagoDetailActivity
@@ -95,7 +96,12 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
                     )
                 }*/
                 pathSegments.contains("outings") -> {
-                    if (pathSegments.size > 2) {
+                    if (pathSegments.size > 3) {
+                        val outingId = pathSegments[2]
+                        FeedFragment.shouldAddToAgenda = true
+                        presenter.getEvent(outingId)
+                    }
+                    else if (pathSegments.size > 2) {
                         val outingId = pathSegments[2]
                         presenter.getEvent(outingId)
 
@@ -201,10 +207,10 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
             Intent(
                 context,
                 social.entourage.android.events.details.feed.FeedActivity::class.java
-            ).putExtra(
-                Const.EVENT_ID,
-                event.id
-            ), 0
+            ).apply {
+                putExtra(Const.EVENT_ID, event.id)
+                addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+            }, 0
         )
     }
 

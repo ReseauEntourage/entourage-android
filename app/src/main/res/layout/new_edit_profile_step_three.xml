@@ -53,6 +53,7 @@
             android:hint="@string/group_welcome_message"
             android:maxLines="4"
             android:paddingTop="0dp"
+            android:inputType="textCapSentences"
             app:layout_constraintTop_toBottomOf="@id/group_message_welcome_title"
             tools:text="content" />
 

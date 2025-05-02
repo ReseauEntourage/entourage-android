@@ -36,6 +36,17 @@
                     android:fitsSystemWindows="true"
                     android:src="@drawable/new_top_icn_discussion" />
 
+                <Button
+                    android:layout_width="150dp"
+                    android:layout_height="50dp"
+                    android:id="@+id/button_call"
+                    android:text="Rejoindre la conversation"
+                    android:layout_gravity="end"
+                    android:background="@color/orange"
+                    android:textColor="@color/white"
+                    android:visibility="gone"
+                    />
+
                 <androidx.appcompat.widget.Toolbar
                     android:id="@+id/toolbar"
                     android:layout_width="wrap_content"
@@ -65,12 +76,53 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="-33dp"
+            android:layout_marginHorizontal="7dp"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:background="@color/white"
+                >
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/layout_ask_notif"
+                    android:background="@drawable/beige_darker_radius_ten"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginStart="25dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginVertical="10dp"
+                    android:visibility="gone">
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:id="@+id/img_ask_notif"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginVertical="21dp"
+                    android:layout_marginHorizontal="10dp"
+                    android:src="@drawable/icon_notif_alert_discussion_list"
+                    />
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/tv_ask_notif"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/img_ask_notif"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        android:fontFamily="@font/nunitosans_regular"
+                        android:textSize="13sp"
+                        android:textColor="@color/black"
+                        android:layout_marginHorizontal="10dp"
+                        android:layout_marginVertical="13dp"
+
+                        />
+                </androidx.constraintlayout.widget.ConstraintLayout>
                 <ProgressBar
                     android:id="@+id/progressBar"
                     style="?android:attr/progressBarStyleLarge"
@@ -84,12 +136,14 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recycler_view"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="0dp"
                     android:layout_marginHorizontal="7dp"
                     android:background="@color/light_beige"
                     android:clipToPadding="false"
                     android:paddingHorizontal="20dp"
+                    android:layout_marginTop="10dp"
                     android:visibility="visible"
+                    app:layout_constraintTop_toBottomOf="@+id/layout_ask_notif"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"

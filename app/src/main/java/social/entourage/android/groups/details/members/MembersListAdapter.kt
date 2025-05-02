@@ -18,6 +18,7 @@ import social.entourage.android.R
 import social.entourage.android.api.model.EntourageUser
 import social.entourage.android.api.model.ReactionType
 import social.entourage.android.databinding.NewGroupMemberItemBinding
+import social.entourage.android.profile.ProfileFullActivity
 import social.entourage.android.user.UserProfileActivity
 import social.entourage.android.tools.utils.Const
 
@@ -133,8 +134,10 @@ class MembersListAdapter(
 
                 // Gestion du clic pour afficher le profil de l'utilisateur
                 binding.layout.setOnClickListener { view ->
+                    ProfileFullActivity.isMe = false
+                    ProfileFullActivity.userId = this.userId
                     (view.context as? Activity)?.startActivityForResult(
-                        Intent(view.context, UserProfileActivity::class.java).putExtra(
+                        Intent(view.context, ProfileFullActivity::class.java).putExtra(
                             Const.USER_ID,
                             this.userId
                         ), 0

@@ -170,6 +170,8 @@ class ActionsFragment : Fragment() {
             binding.uiLayoutFilter.background = resources.getDrawable(R.drawable.bg_unselected_filter)
             binding.uiLayoutSearch.background = resources.getDrawable(R.drawable.bg_unselected_filter)
         }
+        binding.createAction.close()
+        binding.overlayView.visibility = View.GONE
     }
 
     fun setSearchAndFilterButtons() {
@@ -389,5 +391,16 @@ class ActionsFragment : Fragment() {
                 else -> false
             }
         }
+        speedDialView.setOnChangeListener(object : SpeedDialView.OnChangeListener {
+            override fun onMainActionSelected(): Boolean {
+                // Vous pouvez ici ajouter une action sur le bouton principal
+                return false // Retourner false pour garder le comportement par défaut
+            }
+
+            override fun onToggleChanged(isOpen: Boolean) {
+                // Gérer la visibilité de l'overlayView
+                binding.overlayView.visibility = if (isOpen) View.VISIBLE else View.GONE
+            }
+        })
     }
 }

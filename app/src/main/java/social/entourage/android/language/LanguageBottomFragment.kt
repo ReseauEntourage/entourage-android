@@ -29,6 +29,7 @@ class LanguageBottomFragment : BottomSheetDialogFragment(), OnLanguageClicked {
         savedInstanceState: Bundle?
     ): View {
         binding = BottomFragmentLanguageFragmentBinding.inflate(inflater, container, false)
+        setStyle(STYLE_NORMAL, R.style.FullScreenBottomSheetDialog)
 
         fillArray()
         handleValidateCLick()
@@ -43,7 +44,8 @@ class LanguageBottomFragment : BottomSheetDialogFragment(), OnLanguageClicked {
 
     override fun onResume() {
         super.onResume()
-        setBottomSheetBehavior()
+        //setBottomSheetBehavior()
+        setFullScreenBehavior()
     }
 
     private fun handleValidateCLick(){
@@ -55,8 +57,17 @@ class LanguageBottomFragment : BottomSheetDialogFragment(), OnLanguageClicked {
         val bottomSheetBehavior = BottomSheetBehavior.from(binding.root.parent as View)
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
     }
+    private fun setFullScreenBehavior() {
+        val dialog = dialog ?: return
+        val bottomSheet = dialog.findViewById<View>(com.google.android.material.R.id.design_bottom_sheet) as? ViewGroup
+        bottomSheet?.layoutParams?.height = ViewGroup.LayoutParams.MATCH_PARENT
 
-    //TODO : REFACTOR WITH LANGUAGE CODE
+        val behavior = BottomSheetBehavior.from(bottomSheet!!)
+        behavior.state = BottomSheetBehavior.STATE_EXPANDED
+        behavior.skipCollapsed = true
+    }
+
+        //TODO : REFACTOR WITH LANGUAGE CODE
     private fun fillArray() {
         val currentLanguageCode = LanguageManager.loadLanguageFromPreferences(requireContext())
         languages = mutableListOf(

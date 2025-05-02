@@ -40,7 +40,12 @@ class OnboardingActionWishesFragment:Fragment() {
         }
         binding.buttonStart.setOnClickListener {
             AnalyticsEvents.logEvent(AnalyticsEvents.onboarding_actions_next_clic)
-            viewModel.setOnboardingThirdStep(true)}
+            if(EnhancedOnboarding.isFromSettingsWishes) {
+                viewModel.registerAndQuit()
+            }else{
+                viewModel.setOnboardingThirdStep(true)
+            }
+        }
         binding.tvTitle.text = getString(R.string.onboarding_action_wish_title)
         binding.tvDescription.text = getString(R.string.onboarding_action_wish_content)
     }
@@ -48,6 +53,13 @@ class OnboardingActionWishesFragment:Fragment() {
     override fun onResume() {
         super.onResume()
         viewModel.toggleBtnBack(true)
+        if(EnhancedOnboarding.isFromSettingsWishes) {
+            binding.buttonStart.text = getString(R.string.validate)
+            binding.buttonConfigureLater.text = getString(R.string.cancel)
+        }else{
+            binding.buttonStart.text = getString(R.string.onboarding_btn_next)
+        }
+        loadAndSendActionWishes()
     }
 
     private fun setupRecyclerView() {

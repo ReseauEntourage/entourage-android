@@ -65,16 +65,19 @@
         app:layout_constraintTop_toBottomOf="@id/content">
         <Button
             android:id="@+id/no"
-            style="@style/h2_white"
             android:layout_width="wrap_content"
             android:layout_height="48dp"
             android:layout_marginEnd="10dp"
             android:layout_marginBottom="10dp"
-            android:background="@drawable/new_alert_dialog_button_yes"
+            android:background="@drawable/shape_button_v9_negative"
             android:padding="10dp"
             android:minWidth="65dp"
             android:text="@string/cancel"
-            android:textAllCaps="false" />
+            android:textAllCaps="false"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            android:fontFamily="@font/quicksand_bold"
+            />
         <Button
             android:id="@+id/yes"
             style="@style/h2_white"
@@ -86,6 +89,9 @@
             android:padding="10dp"
             android:minWidth="65dp"
             android:textAllCaps="false"
+            android:textColor="@android:color/white"
+            android:textSize="14sp"
+            android:fontFamily="@font/quicksand_bold"
             />
 
 

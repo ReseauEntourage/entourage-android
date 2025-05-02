@@ -24,7 +24,7 @@
         android:gravity="center"
         android:hint="@string/user_edit_asso_search_hint"
         android:imeOptions="actionSearch"
-        android:inputType="text"
+        android:inputType="textCapSentences"
         android:textSize="@dimen/entourage_font_large"
         app:drawableStartCompat="@android:drawable/ic_menu_search" />
 

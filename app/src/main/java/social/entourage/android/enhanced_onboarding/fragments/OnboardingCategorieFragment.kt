@@ -12,6 +12,7 @@ import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.databinding.FragmentOnboardingActionWishesLayoutBinding
 import social.entourage.android.databinding.FragmentOnboardingInterestsLayoutBinding
+import social.entourage.android.enhanced_onboarding.EnhancedOnboarding
 import social.entourage.android.enhanced_onboarding.InterestForAdapter
 import social.entourage.android.enhanced_onboarding.OnboardingViewModel
 import social.entourage.android.tools.log.AnalyticsEvents
@@ -39,8 +40,11 @@ class OnboardingCategorieFragment: Fragment() {
         }
         binding.buttonStart.setOnClickListener {
             AnalyticsEvents.logEvent(AnalyticsEvents.onboarding_donations_categories_next_clic)
-            viewModel.completeDisponibilityStep() // Passer à l'étape des disponibilités
-
+            if(EnhancedOnboarding.isFromSettingsActionCategorie) {
+                viewModel.registerAndQuit()
+            }else{
+                viewModel.completeDisponibilityStep()
+            }
         }
         binding.tvTitle.text = getString(R.string.onboarding_category_title)
         binding.tvDescription.text = getString(R.string.onboarding_category_content)
@@ -48,6 +52,12 @@ class OnboardingCategorieFragment: Fragment() {
     override fun onResume() {
         super.onResume()
         viewModel.toggleBtnBack(true)
+        if(EnhancedOnboarding.isFromSettingsActionCategorie) {
+            binding.buttonStart.text = getString(R.string.validate)
+            binding.buttonConfigureLater.text = getString(R.string.cancel)
+        }else{
+            binding.buttonStart.text = getString(R.string.onboarding_btn_next)
+        }
     }
 
     private fun setupRecyclerView() {

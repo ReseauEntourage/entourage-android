@@ -113,9 +113,17 @@ class NotificationDemandActivity : BaseActivity() {
                     .putBoolean(EntourageApplication.KEY_MIGRATION_V7_OK, true)
                     .apply()
                 MainActivity.shouldLaunchOnboarding = true
+                if(comeFromSettings) {
+                    comeFromSettings = false
+                    MainActivity.shouldLaunchOnboarding = false
+                }
                 startActivity(Intent(this, MainActivity::class.java))
                 finish()
             }
         }
+    }
+
+    companion object {
+        var comeFromSettings = false
     }
 }

@@ -210,6 +210,7 @@
                         android:layout_marginStart="8dp"
                         android:backgroundTint="@color/light_orange_opacity_50"
                         android:focusable="false"
+                        android:inputType="textCapSentences"
                         android:focusableInTouchMode="false"
                         android:hint="@string/add_location_hint"
                         app:layout_constraintEnd_toEndOf="parent"

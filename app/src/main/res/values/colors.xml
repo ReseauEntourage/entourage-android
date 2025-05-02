@@ -18,6 +18,7 @@
     <color name="tomato">#ee3e3a</color>
     <color name="brownish_grey">#5d5d5d</color>
     <color name="light_grey">#ededed</color>
+    <color name="grey_middle">#D9D9D9</color>
     <color name="grey_dark">#3d3d3d</color>
     <color name="orange_light_separator_event">#FF9C5D</color>
     <color name="orange_onboarding_item_selected_border">#80FF9C5D</color>
@@ -29,6 +30,7 @@
     <color name="background_light">@color/primary_light</color>
     <color name="background_home">#e5e5e5</color>
     <color name="background_transparent">#80000000</color>
+    <color name="background_transparent_80">#CB000000</color>
     <color name="background_accent_dark_translucent">@color/pale_grey</color>
     <color name="background_transparent_grey">#0D000000</color>
     <color name="background_grey_empty">#EEF0F3</color>
@@ -129,6 +131,7 @@
     <color name="light_beige">#fffcfa</color>
     <color name="light_beige_96">#F5fffcfa</color>
     <color name="beige">#ffeadc</color>
+    <color name="beige_darker">#FFDEBB</color>
     <color name="beige_clair">#FFF5EB</color>
     <color name="orange">#FF9739</color>
     <color name="light_orange">#ff9c5d</color>

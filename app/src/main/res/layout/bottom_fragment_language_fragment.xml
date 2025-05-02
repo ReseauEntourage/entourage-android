@@ -1,80 +1,87 @@
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:backgroundTint="@color/light_beige"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    android:id="@+id/root_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- Bouton fermeture -->
     <ImageView
         android:id="@+id/icon_cross"
         android:layout_width="25dp"
         android:layout_height="25dp"
         android:layout_marginTop="@dimen/entourage_margin_section"
-        android:layout_marginBottom="16dp"
-        android:layout_marginStart="@dimen/entourage_marginstart"
         android:layout_marginEnd="@dimen/entourage_marginstart"
-        android:src="@drawable/new_cross"
+        android:layout_marginStart="@dimen/entourage_marginstart"
+        android:src="@drawable/new_back"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        tools:src="@drawable/new_cross" />
+        app:layout_constraintStart_toStartOf="parent" />
 
+    <!-- Titre -->
     <TextView
         android:id="@+id/title_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="@dimen/entourage_margin_section"
-        android:layout_marginBottom="16dp"
-        android:text="@string/select_language"
-        app:layout_constraintBottom_toTopOf="@id/divider"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
         android:fontFamily="@font/quicksand_bold"
+        android:text="@string/select_language"
         android:textColor="@color/black"
         android:textSize="@dimen/entourage_font_medium"
-        android:backgroundTint="@color/light_beige"
-
-        />
-    <View
-        android:id="@+id/divider"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/light_orange_opacity_50"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="@dimen/entourage_margin_top"
-        android:layout_marginEnd="20dp"
-        app:layout_constraintTop_toBottomOf="@+id/title_name"
+        app:layout_constraintTop_toBottomOf="@id/icon_cross"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
+    <!-- RecyclerView pour les langues -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_langue"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="@dimen/entourage_margin_section"
+        app:layout_constraintTop_toBottomOf="@id/title_name"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/divider"
-        android:layout_marginTop="@dimen/entourage_little_margin_five"
-        android:layout_marginBottom="@dimen/entourage_margin_bottom"
-        android:backgroundTint="@color/light_beige"
-        />
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <!-- Ajout du texte et du switch de traduction -->
+    <TextView
+        android:id="@+id/tv_translation"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="20dp"
+        android:fontFamily="@font/nunitosans_regular"
+        android:text="@string/translation_bottom_fragment_title"
+        android:textColor="@color/black"
+        android:textSize="@dimen/entourage_font_small"
+        app:layout_constraintTop_toBottomOf="@id/rv_langue"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/switch_translation"/>
+
+    <Switch
+        android:id="@+id/switch_translation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
+        android:thumbTint="@color/switch_selector"
+        android:trackTint="@color/switch_selector"
+        app:layout_constraintTop_toTopOf="@+id/tv_translation"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_translation"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Bouton validate -->
     <Button
         android:id="@+id/validate"
         style="@style/h2_white"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/padding_horizontal"
+        android:layout_marginBottom="30dp"
+        android:background="@drawable/new_bg_rounded_button_orange_fill"
+        android:text="@string/validate"
+        android:textAllCaps="false"
+        app:layout_constraintTop_toBottomOf="@id/tv_translation"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rv_langue"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginHorizontal="@dimen/padding_horizontal"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="30dp"
-        android:paddingStart="5dp"
-        android:paddingEnd="5dp"
-        android:background="@drawable/new_bg_rounded_button_orange_fill"
-        android:drawablePadding="10dp"
-        android:text="@string/validate"
-        android:textAllCaps="false" />
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

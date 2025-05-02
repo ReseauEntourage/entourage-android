@@ -14,6 +14,7 @@ import social.entourage.android.R
 import social.entourage.android.databinding.FragmentCreateGroupStepOneBinding
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.utils.Const
+import social.entourage.android.tools.utils.VibrationUtil
 import social.entourage.android.user.edit.place.UserEditActionZoneFragment
 
 class CreateGroupStepOneFragment : Fragment(), UserEditActionZoneFragment.FragmentListener {

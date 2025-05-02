@@ -38,6 +38,7 @@ import social.entourage.android.databinding.NewFragmentActionDetailBinding
 import social.entourage.android.discussions.DetailConversationActivity
 import social.entourage.android.discussions.DiscussionsPresenter
 import social.entourage.android.groups.details.rules.GroupRulesActivity
+import social.entourage.android.profile.ProfileFullActivity
 import social.entourage.android.report.DataLanguageStock
 import social.entourage.android.report.ReportModalFragment
 import social.entourage.android.report.ReportTypes
@@ -120,7 +121,6 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
         } catch (e: ClassCastException) {
         }
     }
-
     private fun setupTranslationButton() {
         val sharedPrefs = requireActivity().getSharedPreferences(
             getString(R.string.preference_file_key), Context.MODE_PRIVATE
@@ -254,7 +254,9 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
         }
 
         binding.layoutUser.setOnClickListener {
-            startActivityForResult(Intent(context, UserProfileActivity::class.java).putExtra(
+            ProfileFullActivity.isMe = false
+            ProfileFullActivity.userId = action?.author?.userID!!
+            startActivityForResult(Intent(context, ProfileFullActivity::class.java).putExtra(
                 Const.USER_ID,
                 action?.author?.userID
             ),0)

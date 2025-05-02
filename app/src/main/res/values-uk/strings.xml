@@ -223,7 +223,7 @@
     <string name="category_name_label">Опишіть категорію своєї групи одним словом</string>
     <string name="pass">Пас</string>
     <string name="create_post">Створити пост</string>
-    <string name="create_event">Створіть подію в групі</string>
+    <string name="create_event">Створіть подію</string>
     <string name="create_event_if_no_event">Створіть подію</string>
     <string name="create_event_btn_title">Створіть подію</string>
     <string name="group_success_title">Ваша група \n онлайн!</string>
@@ -2688,6 +2688,87 @@
     <string name="animateur_label">- Ведучий</string>
     <string name="share_request_group">Бажаєте поділитися своєю %s у групі %s?</string>
     <string name="share_request_description">Ви можете поділитися своєю %s у групі сусідів вашого міста, щоб підвищити її видимість</string>
+    <string name="demand_social_title">Приклад: Прогулянка в парку</string>
+    <string name="demand_social_description">Приклад: Пропоную прогулянку в парку цього вихідного, щоб поспілкуватися і розслабитися.</string>
+    <string name="demand_services_title">Приклад: Потрібно надрукувати документи</string>
+    <string name="demand_services_description">Приклад: Мені потрібно надрукувати кілька сторінок для зустрічі. Хтось може допомогти?</string>
+    <string name="demand_clothes_title">Приклад: Шукаю зимове пальто</string>
+    <string name="demand_clothes_description">Приклад: Шукаю тепле пальто розміру M для цієї зими.</string>
+    <string name="demand_equipment_title">Приклад: Потрібен спальний мішок</string>
+    <string name="demand_equipment_description">Приклад: Шукаю спальний мішок, щоб ночувати на вулиці цієї зими. Якщо хтось має для передачі, це було б великою допомогою.</string>
+    <string name="demand_hygiene_title">Приклад: Потрібно мило</string>
+    <string name="demand_hygiene_description">Приклад: Шукаю мило або гель для душу. Якщо у когось є зайве, буду вдячний.</string>
+
+    <string name="contrib_social_title">Приклад: Кава і спілкування</string>
+    <string name="contrib_social_description">Приклад: Шукаю когось, щоб випити каву цього тижня в районі.</string>
+    <string name="contrib_services_title">Приклад: Допомога з пранням</string>
+    <string name="contrib_services_description">Приклад: Пропоную допомогу з пранням для тих, кому це потрібно.</string>
+    <string name="contrib_clothes_title">Приклад: Спортивне взуття для передачі</string>
+    <string name="contrib_clothes_description">Приклад: Передаю пару спортивного взуття у хорошому стані, розмір 42.</string>
+    <string name="contrib_equipment_title">Приклад: Мобільний телефон для передачі</string>
+    <string name="contrib_equipment_description">Приклад: Передаю старий, але функціональний мобільний телефон. Ідеально для тих, кому потрібен.</string>
+    <string name="contrib_hygiene_title">Приклад: Гігієнічні продукти для передачі</string>
+    <string name="contrib_hygiene_description">Приклад: Передаю кілька упаковок гігієнічних продуктів.</string>
+
+    <string name="preferences_section_title">Мої вподобання</string>
+    <string name="preferences_interest_title">Мої інтереси</string>
+    <string name="preferences_interest_subtitle">Ігри, Соціальне волонтерство, Спорт</string>
+    <string name="preferences_action_title">Мої дії</string>
+    <string name="preferences_action_subtitle">Взаємодопомога (Поділ часу, Матеріальні пожертви), Події, Групи</string>
+    <string name="preferences_availability_title">Моя доступність</string>
+    <string name="preferences_availability_subtitle">Дні: Понеділок, Вівторок\nЧас: Після обіду</string>
+    <string name="preferences_action_categories_title">Мої категорії дій</string>
+
+    <string name="settings_section_title">Налаштування</string>
+    <string name="settings_language_title">Мова</string>
+    <string name="settings_language_subtitle">Українська - автоматичний переклад увімкнено</string>
+    <string name="settings_notifications_title">Сповіщення</string>
+    <string name="settings_notifications_subtitle">Увімкнено: </string>
+    <string name="settings_help_title">Допомога та інформація</string>
+    <string name="settings_help_subtitle">Етичний кодекс, Поширені запитання, Умови використання тощо.</string>
+    <string name="settings_unblock_contacts_title">Розблокувати контакти</string>
+    <string name="settings_unblock_contacts_subtitle">Немає заблокованих контактів</string>
+    <string name="settings_number_blocked_contacts_subtitle">Заблоковані контакти: </string>
+    <string name="settings_feedback_title">Пропозиції щодо застосунку?</string>
+    <string name="settings_share_title">Поділитися застосунком</string>
+    <string name="settings_password_title">Змінити пароль</string>
+
+    <string name="notifications_actions">дії</string>
+    <string name="notifications_events">події</string>
+    <string name="notifications_groups">групи</string>
+    <string name="notifications_messages">повідомлення</string>
+    <string name="no_notifications_active">жодних активних сповіщень</string>
+
+    <string name="bubble_title">Фільтри були застосовані на основі ваших вподобань. Натисніть тут, щоб змінити їх.</string>
+    <string name="bubble_button">Зрозумів</string>
+
+    <string name="enhanced_onboarding_time_disponibility_title">Моя доступність</string>
+    <string name="enhanced_onboarding_time_disponibility_description">Укажіть свою доступність, щоб ми могли запропонувати відповідні події.</string>
+    <string name="enhanced_onboarding_time_disponibility_days_label">Мої дні</string>
+    <string name="enhanced_onboarding_time_disponibility_day_monday">Понеділок</string>
+    <string name="enhanced_onboarding_time_disponibility_day_tuesday">Вівторок</string>
+    <string name="enhanced_onboarding_time_disponibility_day_wednesday">Середа</string>
+    <string name="enhanced_onboarding_time_disponibility_day_thursday">Четвер</string>
+    <string name="enhanced_onboarding_time_disponibility_day_friday">П\'ятниця</string>
+    <string name="enhanced_onboarding_time_disponibility_day_saturday">Субота</string>
+    <string name="enhanced_onboarding_time_disponibility_day_sunday">Неділя</string>
+    <string name="enhanced_onboarding_time_disponibility_time_slots_label">Мої часові інтервали</string>
+    <string name="enhanced_onboarding_time_disponibility_time_morning">Ранок</string>
+    <string name="enhanced_onboarding_time_disponibility_time_afternoon">День</string>
+    <string name="enhanced_onboarding_time_disponibility_time_evening">Вечір</string>
+    <string name="enhanced_onboarding_time_disponibility_btn_finish_later">Завершити пізніше</string>
+    <string name="enhanced_onboarding_time_disponibility_btn_next">Далі</string>
+
+    <string name="see_more">Дивитися більше</string>
+    <string name="see_less">Дивитися менше</string>
+    <string name="placeholder_description_profile">Опис не надано</string>
+    <string name="no_data_available">Дані відсутні</string>
+    <string name="unknown_language">Мова не розпізнана</string>
+
+    <string name="logout_button">Вийти</string>
+    <string name="delete_account_button">Видалити мій акаунт</string>
+    <string name="notifications_disabled_message">Ваші сповіщення вимкнені.\nУвімкніть їх, щоб бути в курсі</string>
+    <string name="enable_notifications">Увімкніть їх, щоб бути в курсі</string>
 
 
 </resources>

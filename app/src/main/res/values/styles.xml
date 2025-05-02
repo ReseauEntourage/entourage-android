@@ -435,6 +435,12 @@
         <item name="android:fontFamily">@font/nunitosans_bold</item>
         <item name="android:textColor">@color/orange</item>
     </style>
+    <style name="h3_orange">
+        <item name="android:textSize">@dimen/profile_description</item>
+        <item name="android:fontFamily">@font/quicksand_bold</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
 
     <style name="selected_filter">
         <item name="android:textSize">@dimen/profile_labels</item>
@@ -590,6 +596,17 @@
         <item name="android:windowCloseOnTouchOutside">false</item>
         <item name="android:windowAnimationStyle">@style/MyDialogAnimation</item>
         <item name="android:popupAnimationStyle">@style/MyDialogAnimation</item>
+    </style>
+
+    <style name="FullScreenBottomSheetDialog" parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/FullScreenBottomSheet</item>
+    </style>
+
+    <style name="FullScreenBottomSheet" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="behavior_peekHeight">0dp</item>
+        <item name="android:background">@android:color/transparent</item>
     </style>
 
     <style name="MyDialogAnimation">

@@ -67,12 +67,10 @@
             android:layout_marginStart="@dimen/entourage_little_margin_five"
             android:textColor="@color/orange"
             android:layout_marginBottom="3dp"
-            android:textSize="13sp"
+            android:textSize="12sp"
             android:fontFamily="@font/quicksand_bold"
             tools:text="Sport"
             />
-
-        
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <TextView

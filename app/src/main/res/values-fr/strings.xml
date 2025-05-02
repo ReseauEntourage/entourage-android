@@ -127,7 +127,7 @@
     <string name="donation">Faire un don</string>
     <string name="faq">FAQ</string>
     <string name="share">Partager l’application</string>
-    <string name="suggest">Une suggestion sur l’application ?</string>
+    <string name="suggest">Partager une idée</string>
     <string name="feedback">Noter l’app sur les stores</string>
     <string name="cgu">Conditions générales d’utilisation</string>
     <string name="confidentiality">Politique de Confidentialité</string>
@@ -223,7 +223,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="pass">Passer</string>
     <string name="create_post">Créer une publication</string>
     <string name="create_survey">Créer un sondage</string>
-    <string name="create_event">Créer un événement sur le groupe</string>
+    <string name="create_event">Créer un événement</string>
     <string name="create_event_if_no_event">Créer un événement</string>
     <string name="create_event_btn_title">Créer un événement</string>
     <string name="group_success_title">Votre groupe \nest en ligne !</string>
@@ -666,7 +666,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
 
     <string name="action_member_since">Membre depuis %s</string>
     <string name="action_created_at_by">"Créé le %s par</string>
-    <string name="action_created_by">"Créé %s par</string>
+    <string name="action_created_by">"Créé le %s par</string>
     <string name="action_created_by_">"Créé par</string>
 
     <string name="atKm">%s, à %s km de moi</string>
@@ -697,7 +697,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="action_create_location_title">Localisez votre %s</string>
     <string name="action_create_location_subtitle">Votre position précise ne sera pas partagée, vous pouvez mettre une autre localisation que la zone d’action de votre profil.</string>
 
-    <string name="action_create_success_title">Votre %s\nà bien été créée !</string>
+    <string name="action_create_success_title">Votre %s\na bien été créée !</string>
     <string name="action_create_success_subtitle">Félicitations, vous venez de créer une nouvelle %s. Pour la rendre plus visible parlez-en sur vos groupes !</string>
     <string name="action_create_end_finish_bt">Terminer</string>
     <string name="action_error_create_action">Erreur lors de la création de la %s</string>
@@ -2805,6 +2805,91 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
 
     <string name="share_request_group">Souhaitez-vous partager votre %s dans votre groupe %s ?</string>
     <string name="share_request_description">Vous avez la possibilité de partager votre %s dans le groupe de voisins de votre ville pour améliorer sa visibilité</string>
+    <!-- Demand Section -->
+    <string name="demand_social_title">Exemple : Balade dans le parc</string>
+    <string name="demand_social_description">Exemple : Je propose une balade dans le parc ce week-end pour discuter et se détendre.</string>
+    <string name="demand_services_title">Exemple : Besoin d\'imprimer des documents</string>
+    <string name="demand_services_description">Exemple : Je dois imprimer quelques pages pour un rendez-vous. Quelqu\'un pourrait-il m\'aider ?</string>
+    <string name="demand_clothes_title">Exemple : Cherche manteau d\'hiver</string>
+    <string name="demand_clothes_description">Exemple : Je suis à la recherche d\'un manteau chaud en taille M pour cet hiver.</string>
+    <string name="demand_equipment_title">Exemple : Besoin d\'un duvet</string>
+    <string name="demand_equipment_description">Exemple : Je cherche un duvet pour dormir dehors cet hiver. Si quelqu\'un en a un à donner, ce serait d\'une grande aide.</string>
+    <string name="demand_hygiene_title">Exemple : Besoin de savon</string>
+    <string name="demand_hygiene_description">Exemple : Je cherche du savon ou du gel douche. Si quelqu\'un en a en surplus, je suis preneur.</string>
+
+    <!-- Contrib Section -->
+    <string name="contrib_social_title">Exemple : Café et discussion</string>
+    <string name="contrib_social_description">Exemple : Je cherche quelqu\'un avec qui partager un café cette semaine dans le quartier.</string>
+    <string name="contrib_services_title">Exemple : Aide pour une lessive</string>
+    <string name="contrib_services_description">Exemple : Je propose de laver du linge pour quelqu\'un qui en aurait besoin.</string>
+    <string name="contrib_clothes_title">Exemple : Chaussures de sport à donner</string>
+    <string name="contrib_clothes_description">Exemple : Je donne une paire de chaussures de sport en bon état, taille 42.</string>
+    <string name="contrib_equipment_title">Exemple : Téléphone portable à donner</string>
+    <string name="contrib_equipment_description">Exemple : Je donne un ancien téléphone portable fonctionnel. Idéal pour quelqu\'un qui en aurait besoin.</string>
+    <string name="contrib_hygiene_title">Exemple : Produits hygiéniques à donner</string>
+    <string name="contrib_hygiene_description">Exemple : Je donne plusieurs paquets de protections hygiéniques.</string>
+
+    <!-- Preferences Section -->
+    <string name="preferences_section_title">Mes préférences</string>
+    <string name="preferences_interest_title">Mes centres d\'intérêt</string>
+    <string name="preferences_interest_subtitle">Jeux, Maraudes sociales, Sport</string>
+    <string name="preferences_action_title">Mes envies d\'agir</string>
+    <string name="preferences_action_subtitle">Entraides (Temps de partage, Dons matériels), Événements, Groupes</string>
+    <string name="preferences_availability_title">Mes disponibilités</string>
+    <string name="preferences_availability_subtitle">Jours : Lundi, Mardi\nHoraires : Après-midi</string>
+    <string name="preferences_action_categories_title">Mes catégories d\'entraide</string>
+
+    <!-- Settings -->
+    <string name="settings_section_title">Paramètres</string>
+    <string name="settings_language_title">Langue</string>
+    <string name="settings_language_subtitle">Français - traduction auto active</string>
+    <string name="settings_notifications_title">Notifications</string>
+    <string name="settings_notifications_subtitle">Activé : </string>
+    <string name="settings_help_title">Aide et à propos</string>
+    <string name="settings_help_subtitle">Charte éthique, FAQ, CGU, etc.</string>
+    <string name="settings_unblock_contacts_title">Débloquer des contacts</string>
+    <string name="settings_unblock_contacts_subtitle">Aucun contact bloqué</string>
+    <string name="settings_number_blocked_contacts_subtitle">Contacts bloqués : </string>
+    <string name="settings_feedback_title">Partager une idée</string>
+    <string name="settings_share_title">Partager l\'application</string>
+    <string name="settings_password_title">Changer de mot de passe</string>
+
+    <!-- Notifications -->
+    <string name="notifications_actions">actions</string>
+    <string name="notifications_events">événements</string>
+    <string name="notifications_groups">groupes</string>
+    <string name="notifications_messages">messages</string>
+    <string name="no_notifications_active">Désactivé</string>
+    <string name="bubble_title">Des filtres ont été appliqués en fonction de vos préférences. Cliquez ici pour les modifier.</string>
+    <string name="bubble_button">J\'ai compris</string>
+
+    <string name="enhanced_onboarding_time_disponibility_title">Mes disponibilités</string>
+    <string name="enhanced_onboarding_time_disponibility_description">Précisez vos disponibilités pour que l\'on puisse vous suggérer des événements adaptés.</string>
+    <string name="enhanced_onboarding_time_disponibility_days_label">Mes jours</string>
+    <string name="enhanced_onboarding_time_disponibility_day_monday">Lundi</string>
+    <string name="enhanced_onboarding_time_disponibility_day_tuesday">Mardi</string>
+    <string name="enhanced_onboarding_time_disponibility_day_wednesday">Mercredi</string>
+    <string name="enhanced_onboarding_time_disponibility_day_thursday">Jeudi</string>
+    <string name="enhanced_onboarding_time_disponibility_day_friday">Vendredi</string>
+    <string name="enhanced_onboarding_time_disponibility_day_saturday">Samedi</string>
+    <string name="enhanced_onboarding_time_disponibility_day_sunday">Dimanche</string>
+    <string name="enhanced_onboarding_time_disponibility_time_slots_label">Mes tranches horaires</string>
+    <string name="enhanced_onboarding_time_disponibility_time_morning">Matin</string>
+    <string name="enhanced_onboarding_time_disponibility_time_afternoon">Après-midi</string>
+    <string name="enhanced_onboarding_time_disponibility_time_evening">Soir</string>
+    <string name="enhanced_onboarding_time_disponibility_btn_finish_later">Terminer plus tard</string>
+    <string name="enhanced_onboarding_time_disponibility_btn_next">Suivant</string>
+
+    <string name="see_more">Voir plus</string>
+    <string name="see_less">Voir moins</string>
+    <string name="placeholder_description_profile">Description non renseignée</string>
+    <string name="no_data_available">Non renseigné</string>
+    <string name="unknown_language">language non reconnu</string>
+
+    <string name="logout_button">Se déconnecter</string>
+    <string name="delete_account_button">Supprimer mon compte</string>
+    <string name="notifications_disabled_message">Vos notifications sont désactivées.\nActivez-les pour ne rien manquer</string>
+    <string name="enable_notifications">Activez-les pour ne rien manquer</string>
 
 </resources>
 

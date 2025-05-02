@@ -100,6 +100,7 @@
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/light_orange_opacity_50"
                 android:hint="@string/add_location_hint"
+                android:inputType="textCapSentences"
                 android:visibility="gone"
                 tools:text="content" />
 

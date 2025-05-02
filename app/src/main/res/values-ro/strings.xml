@@ -223,7 +223,7 @@ Ei vor citi acest mesaj imediat ce se vor alătura grupului.</string>
     <string name="category_name_label">Descrieți categoria grupului dvs. într-un singur cuvânt</string>
     <string name="pass">Trece</string>
     <string name="create_post">Creați o postare</string>
-    <string name="create_event">Creați un eveniment în grup</string>
+    <string name="create_event">Creați un eveniment</string>
     <string name="create_event_if_no_event">Creați un eveniment</string>
     <string name="create_event_btn_title">Creați un eveniment</string>
     <string name="group_success_title">Grupul dvs. \n este online!</string>
@@ -2775,5 +2775,86 @@ Ei vor citi acest mesaj imediat ce se vor alătura grupului.</string>
     <string name="share_request_group">Doriți să vă împărtășiți %s în grupul %s?</string>
     <string name="share_request_description">Aveți opțiunea de a vă împărtăși %s în grupul de vecini al orașului pentru a-i crește vizibilitatea</string>
 
+    <string name="demand_social_title">Exemplu: Plimbare în parc</string>
+    <string name="demand_social_description">Exemplu: Propun o plimbare în parc în acest weekend pentru a socializa și relaxa.</string>
+    <string name="demand_services_title">Exemplu: Am nevoie să imprim documente</string>
+    <string name="demand_services_description">Exemplu: Trebuie să imprim câteva pagini pentru o întâlnire. Cineva poate să mă ajute?</string>
+    <string name="demand_clothes_title">Exemplu: Caut o haină de iarnă</string>
+    <string name="demand_clothes_description">Exemplu: Caut o haină călduroasă mărimea M pentru această iarnă.</string>
+    <string name="demand_equipment_title">Exemplu: Am nevoie de un sac de dormit</string>
+    <string name="demand_equipment_description">Exemplu: Caut un sac de dormit pentru a dormi afară iarna aceasta. Dacă cineva are unul de oferit, ar fi de mare ajutor.</string>
+    <string name="demand_hygiene_title">Exemplu: Am nevoie de săpun</string>
+    <string name="demand_hygiene_description">Exemplu: Caut săpun sau gel de duș. Dacă cineva are surplus, aș fi recunoscător.</string>
+
+    <string name="contrib_social_title">Exemplu: Cafea și discuții</string>
+    <string name="contrib_social_description">Exemplu: Caut pe cineva cu care să împart o cafea săptămâna aceasta în cartier.</string>
+    <string name="contrib_services_title">Exemplu: Ajutor la spălat rufe</string>
+    <string name="contrib_services_description">Exemplu: Ofer ajutor pentru spălat rufe pentru cineva care are nevoie.</string>
+    <string name="contrib_clothes_title">Exemplu: Încălțăminte sport de donat</string>
+    <string name="contrib_clothes_description">Exemplu: Donez o pereche de pantofi sport în stare bună, mărimea 42.</string>
+    <string name="contrib_equipment_title">Exemplu: Telefon mobil de donat</string>
+    <string name="contrib_equipment_description">Exemplu: Donez un telefon mobil vechi dar funcțional. Ideal pentru cineva care are nevoie.</string>
+    <string name="contrib_hygiene_title">Exemplu: Produse de igienă de donat</string>
+    <string name="contrib_hygiene_description">Exemplu: Donez mai multe pachete de produse de igienă.</string>
+
+    <string name="preferences_section_title">Preferințele mele</string>
+    <string name="preferences_interest_title">Interesele mele</string>
+    <string name="preferences_interest_subtitle">Jocuri, Voluntariat social, Sport</string>
+    <string name="preferences_action_title">Acțiunile mele</string>
+    <string name="preferences_action_subtitle">Ajutor reciproc (Timp împărtășit, Donații materiale), Evenimente, Grupuri</string>
+    <string name="preferences_availability_title">Disponibilitatea mea</string>
+    <string name="preferences_availability_subtitle">Zile: Luni, Marți\nIntervale: După-amiază</string>
+    <string name="preferences_action_categories_title">Categoriile mele de acțiune</string>
+
+    <string name="settings_section_title">Setări</string>
+    <string name="settings_language_title">Limbă</string>
+    <string name="settings_language_subtitle">Română - traducere automată activată</string>
+    <string name="settings_notifications_title">Notificări</string>
+    <string name="settings_notifications_subtitle">Activat(e): </string>
+    <string name="settings_help_title">Ajutor și informații</string>
+    <string name="settings_help_subtitle">Carta etică, Întrebări frecvente, Termeni, etc.</string>
+    <string name="settings_unblock_contacts_title">Deblochează contacte</string>
+    <string name="settings_unblock_contacts_subtitle">Niciun contact blocat</string>
+    <string name="settings_number_blocked_contacts_subtitle">Contacte blocate: </string>
+    <string name="settings_feedback_title">Sugestii despre aplicație?</string>
+    <string name="settings_share_title">Distribuie aplicația</string>
+    <string name="settings_password_title">Schimbă parola</string>
+
+    <string name="notifications_actions">acțiuni</string>
+    <string name="notifications_events">evenimente</string>
+    <string name="notifications_groups">grupuri</string>
+    <string name="notifications_messages">mesaje</string>
+    <string name="no_notifications_active">nicio notificare activă</string>
+
+    <string name="bubble_title">Filtrele au fost aplicate pe baza preferințelor tale. Apasă aici pentru a le modifica.</string>
+    <string name="bubble_button">Am înțeles</string>
+
+    <string name="enhanced_onboarding_time_disponibility_title">Disponibilitatea mea</string>
+    <string name="enhanced_onboarding_time_disponibility_description">Specifică disponibilitatea ta pentru a-ți sugera evenimente potrivite.</string>
+    <string name="enhanced_onboarding_time_disponibility_days_label">Zilele mele</string>
+    <string name="enhanced_onboarding_time_disponibility_day_monday">Luni</string>
+    <string name="enhanced_onboarding_time_disponibility_day_tuesday">Marți</string>
+    <string name="enhanced_onboarding_time_disponibility_day_wednesday">Miercuri</string>
+    <string name="enhanced_onboarding_time_disponibility_day_thursday">Joi</string>
+    <string name="enhanced_onboarding_time_disponibility_day_friday">Vineri</string>
+    <string name="enhanced_onboarding_time_disponibility_day_saturday">Sâmbătă</string>
+    <string name="enhanced_onboarding_time_disponibility_day_sunday">Duminică</string>
+    <string name="enhanced_onboarding_time_disponibility_time_slots_label">Intervalele mele de timp</string>
+    <string name="enhanced_onboarding_time_disponibility_time_morning">Dimineață</string>
+    <string name="enhanced_onboarding_time_disponibility_time_afternoon">După-amiază</string>
+    <string name="enhanced_onboarding_time_disponibility_time_evening">Seara</string>
+    <string name="enhanced_onboarding_time_disponibility_btn_finish_later">Termină mai târziu</string>
+    <string name="enhanced_onboarding_time_disponibility_btn_next">Următor</string>
+
+    <string name="see_more">Vezi mai mult</string>
+    <string name="see_less">Vezi mai puțin</string>
+    <string name="placeholder_description_profile">Descriere necompletată</string>
+    <string name="no_data_available">Indisponibil</string>
+    <string name="unknown_language">Limbă necunoscută</string>
+
+    <string name="logout_button">Deconectare</string>
+    <string name="delete_account_button">Șterge contul meu</string>
+    <string name="notifications_disabled_message">Notificările tale sunt dezactivate.\nActivează-le pentru a fi la curent</string>
+    <string name="enable_notifications">Activează-le pentru a fi la curent</string>
 
 </resources>

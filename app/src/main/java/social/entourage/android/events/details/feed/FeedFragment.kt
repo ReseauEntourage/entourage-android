@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.provider.CalendarContract
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -88,6 +89,7 @@ import com.google.android.play.core.review.ReviewManagerFactory
 import com.google.android.play.core.review.ReviewManager
 import com.google.android.play.core.review.testing.FakeReviewManager
 import timber.log.Timber
+import java.util.Calendar
 
 
 class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
@@ -155,10 +157,37 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
 
 
 
+
+
     private fun handleResponseGetEvent(getEvent: Events?) {
         getEvent?.let {
             event = it
             updateView()
+            if(shouldAddToAgenda){
+                shouldAddToAgenda = false
+                val startMillis: Long = Calendar.getInstance().run {
+                    time = it.metadata?.startsAt ?: time
+                    timeInMillis
+                }
+                val endMillis: Long = Calendar.getInstance().run {
+                    time = it.metadata?.endsAt ?: time
+                    timeInMillis
+                }
+                val intent = Intent(Intent.ACTION_INSERT)
+                    .setData(CalendarContract.Events.CONTENT_URI)
+                    .putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, startMillis)
+                    .putExtra(CalendarContract.EXTRA_EVENT_END_TIME, endMillis)
+                    .putExtra(CalendarContract.Events.TITLE, it.title)
+                    .putExtra(
+                        CalendarContract.Events.EVENT_LOCATION,
+                        it.metadata?.displayAddress
+                    )
+                    .putExtra(
+                        CalendarContract.Events.AVAILABILITY,
+                        CalendarContract.Events.AVAILABILITY_BUSY
+                    )
+                requireContext().startActivity(intent)
+            }
         }
         handleImageViewAnimation()
     }
@@ -577,7 +606,8 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
         oldPostsList.clear()
         allPostsList.clear()
         loadPosts()
-
+        binding.createPost.close()
+        binding.overlayView.visibility = View.GONE
     }
 
 
@@ -820,6 +850,17 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
                 else -> false
             }
         }
+        speedDialView.setOnChangeListener(object : SpeedDialView.OnChangeListener {
+            override fun onMainActionSelected(): Boolean {
+                // Vous pouvez ici ajouter une action sur le bouton principal
+                return false // Retourner false pour garder le comportement par défaut
+            }
+
+            override fun onToggleChanged(isOpen: Boolean) {
+                // Gérer la visibilité de l'overlayView
+                binding.overlayView.visibility = if (isOpen) View.VISIBLE else View.GONE
+            }
+        })
     }
 
     private fun handleMetaData(tags: Tags?) {
@@ -977,5 +1018,10 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
 
         }
         startActivity(intent)
+    }
+
+
+    companion object {
+        var shouldAddToAgenda = false
     }
 }

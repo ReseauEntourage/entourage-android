@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tool="http://schemas.android.com/tools">
+    
+    <ImageView
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:id="@+id/iv_user_section"
+        app:layout_constraintTop_toTopOf="@id/tv_title_user_section"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_title_user_section"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="10dp"
+        android:background="@drawable/bg_beige_round_15"
+        tool:src="@drawable/ic_user_asso"
+        />
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_title_user_section"
+        app:layout_constraintStart_toEndOf="@+id/iv_user_section"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginTop="20dp"
+        android:textSize="15sp"
+        android:fontFamily="@font/quicksand_bold"
+        android:textColor="@color/black"
+        tool:text="Title for user section"
+        />
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_subtitle_user_section"
+        app:layout_constraintStart_toEndOf="@+id/iv_user_section"
+        app:layout_constraintTop_toBottomOf="@+id/tv_title_user_section"
+        app:layout_constraintEnd_toStartOf="@+id/iv_arrow_user_section"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginTop="5dp"
+        android:textSize="13sp"
+        android:fontFamily="@font/nunitosans_regular"
+        android:textColor="@color/grey"
+        tool:text="subtitle for user section explaning what it is about"
+        />
+    <View
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="@color/new_light_grey"
+        app:layout_constraintTop_toBottomOf="@+id/tv_subtitle_user_section"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@id/iv_user_section"
+        app:layout_constraintEnd_toEndOf="@id/iv_arrow_user_section"
+        android:layout_marginTop="20dp"
+        />
+    
+    <ImageView
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        android:id="@+id/iv_arrow_user_section"
+        app:layout_constraintTop_toTopOf="@id/tv_title_user_section"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_title_user_section"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:tint="@color/black"
+        tool:src="@drawable/arrow_right_orange"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"/>
+
+    
+</androidx.constraintlayout.widget.ConstraintLayout>

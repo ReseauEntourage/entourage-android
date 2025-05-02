@@ -223,7 +223,7 @@ Przeczytają tę wiadomość, gdy tylko dołączą do grupy.</string>
     <string name="category_name_label">Opisz kategorię swojej grupy jednym słowem</string>
     <string name="pass">Przechodzić</string>
     <string name="create_post">Utwórz post</string>
-    <string name="create_event">Utwórz wydarzenie w grupie</string>
+    <string name="create_event">Utwórz wydarzenie</string>
     <string name="create_event_if_no_event">Utwórz wydarzenie</string>
     <string name="create_event_btn_title">Utwórz wydarzenie</string>
     <string name="group_success_title">Twoja grupa \n jest online!</string>
@@ -2779,6 +2779,87 @@ Przeczytają tę wiadomość, gdy tylko dołączą do grupy.</string>
     <string name="animateur_label">- Animator</string>
     <string name="share_request_group">Czy chcesz udostępnić swoją %s w grupie %s?</string>
     <string name="share_request_description">Masz możliwość udostępnienia swojej %s w grupie sąsiedzkiej twojego miasta, aby zwiększyć jej widoczność</string>
+    <string name="demand_social_title">Przykład: Spacer po parku</string>
+    <string name="demand_social_description">Przykład: Proponuję spacer po parku w ten weekend, aby porozmawiać i się zrelaksować.</string>
+    <string name="demand_services_title">Przykład: Potrzebuję wydrukować dokumenty</string>
+    <string name="demand_services_description">Przykład: Muszę wydrukować kilka stron na spotkanie. Czy ktoś może pomóc?</string>
+    <string name="demand_clothes_title">Przykład: Szukam zimowego płaszcza</string>
+    <string name="demand_clothes_description">Przykład: Szukam ciepłego płaszcza w rozmiarze M na tę zimę.</string>
+    <string name="demand_equipment_title">Przykład: Potrzebuję śpiwora</string>
+    <string name="demand_equipment_description">Przykład: Szukam śpiwora, aby spać na zewnątrz tej zimy. Jeśli ktoś ma na oddanie, byłoby to bardzo pomocne.</string>
+    <string name="demand_hygiene_title">Przykład: Potrzebuję mydła</string>
+    <string name="demand_hygiene_description">Przykład: Szukam mydła lub żelu pod prysznic. Jeśli ktoś ma nadmiar, chętnie przyjmę.</string>
+
+    <string name="contrib_social_title">Przykład: Kawa i rozmowa</string>
+    <string name="contrib_social_description">Przykład: Szukam kogoś, z kim mogę wypić kawę w tym tygodniu w sąsiedztwie.</string>
+    <string name="contrib_services_title">Przykład: Pomoc w praniu</string>
+    <string name="contrib_services_description">Przykład: Oferuję pomoc w praniu dla kogoś, kto tego potrzebuje.</string>
+    <string name="contrib_clothes_title">Przykład: Buty sportowe do oddania</string>
+    <string name="contrib_clothes_description">Przykład: Oddaję parę butów sportowych w dobrym stanie, rozmiar 42.</string>
+    <string name="contrib_equipment_title">Przykład: Telefon komórkowy do oddania</string>
+    <string name="contrib_equipment_description">Przykład: Oddaję starszy, ale funkcjonalny telefon komórkowy. Idealny dla kogoś, kto tego potrzebuje.</string>
+    <string name="contrib_hygiene_title">Przykład: Produkty higieniczne do oddania</string>
+    <string name="contrib_hygiene_description">Przykład: Oddaję kilka opakowań produktów higienicznych.</string>
+
+    <string name="preferences_section_title">Moje preferencje</string>
+    <string name="preferences_interest_title">Moje zainteresowania</string>
+    <string name="preferences_interest_subtitle">Gry, Wolontariat społeczny, Sport</string>
+    <string name="preferences_action_title">Moje działania</string>
+    <string name="preferences_action_subtitle">Pomoc wzajemna (dzielenie czasu, darowizny materialne), Wydarzenia, Grupy</string>
+    <string name="preferences_availability_title">Moja dostępność</string>
+    <string name="preferences_availability_subtitle">Dni: Poniedziałek, Wtorek\nGodziny: Popołudnie</string>
+    <string name="preferences_action_categories_title">Moje kategorie działań</string>
+
+    <string name="settings_section_title">Ustawienia</string>
+    <string name="settings_language_title">Język</string>
+    <string name="settings_language_subtitle">Polski - automatyczne tłumaczenie włączone</string>
+    <string name="settings_notifications_title">Powiadomienia</string>
+    <string name="settings_notifications_subtitle">Włączone: </string>
+    <string name="settings_help_title">Pomoc i informacje</string>
+    <string name="settings_help_subtitle">Karta etyczna, FAQ, Warunki itp.</string>
+    <string name="settings_unblock_contacts_title">Odblokuj kontakty</string>
+    <string name="settings_unblock_contacts_subtitle">Brak zablokowanych kontaktów</string>
+    <string name="settings_number_blocked_contacts_subtitle">Zablokowane kontakty: </string>
+    <string name="settings_feedback_title">Sugestie dotyczące aplikacji?</string>
+    <string name="settings_share_title">Udostępnij aplikację</string>
+    <string name="settings_password_title">Zmień hasło</string>
+
+    <string name="notifications_actions">działania</string>
+    <string name="notifications_events">wydarzenia</string>
+    <string name="notifications_groups">grupy</string>
+    <string name="notifications_messages">wiadomości</string>
+    <string name="no_notifications_active">brak aktywnych powiadomień</string>
+
+    <string name="bubble_title">Zastosowano filtry na podstawie Twoich preferencji. Kliknij tutaj, aby je zmienić.</string>
+    <string name="bubble_button">Zrozumiałem</string>
+
+    <string name="enhanced_onboarding_time_disponibility_title">Moja dostępność</string>
+    <string name="enhanced_onboarding_time_disponibility_description">Określ swoją dostępność, abyśmy mogli zasugerować odpowiednie wydarzenia.</string>
+    <string name="enhanced_onboarding_time_disponibility_days_label">Moje dni</string>
+    <string name="enhanced_onboarding_time_disponibility_day_monday">Poniedziałek</string>
+    <string name="enhanced_onboarding_time_disponibility_day_tuesday">Wtorek</string>
+    <string name="enhanced_onboarding_time_disponibility_day_wednesday">Środa</string>
+    <string name="enhanced_onboarding_time_disponibility_day_thursday">Czwartek</string>
+    <string name="enhanced_onboarding_time_disponibility_day_friday">Piątek</string>
+    <string name="enhanced_onboarding_time_disponibility_day_saturday">Sobota</string>
+    <string name="enhanced_onboarding_time_disponibility_day_sunday">Niedziela</string>
+    <string name="enhanced_onboarding_time_disponibility_time_slots_label">Moje przedziały czasowe</string>
+    <string name="enhanced_onboarding_time_disponibility_time_morning">Rano</string>
+    <string name="enhanced_onboarding_time_disponibility_time_afternoon">Popołudnie</string>
+    <string name="enhanced_onboarding_time_disponibility_time_evening">Wieczór</string>
+    <string name="enhanced_onboarding_time_disponibility_btn_finish_later">Zakończ później</string>
+    <string name="enhanced_onboarding_time_disponibility_btn_next">Dalej</string>
+
+    <string name="see_more">Zobacz więcej</string>
+    <string name="see_less">Zobacz mniej</string>
+    <string name="placeholder_description_profile">Brak opisu</string>
+    <string name="no_data_available">Brak danych</string>
+    <string name="unknown_language">Nie rozpoznano języka</string>
+
+    <string name="logout_button">Wyloguj się</string>
+    <string name="delete_account_button">Usuń moje konto</string>
+    <string name="notifications_disabled_message">Twoje powiadomienia są wyłączone.\nWłącz je, aby być na bieżąco</string>
+    <string name="enable_notifications">Włącz je, aby być na bieżąco</string>
 
 
 </resources>

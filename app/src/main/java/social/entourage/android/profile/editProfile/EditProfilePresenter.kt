@@ -76,4 +76,26 @@ class EditProfilePresenter {
             }
         })
     }
+    fun saveNewPasswordActivity(activity: EditPasswordActivity, newPassword: String) {
+        val userMap = ArrayMap<String, Any>()
+        userMap["sms_code"] = newPassword
+        userRequest.updateUser(userMap).enqueue(object : Callback<UserResponse> {
+            override fun onResponse(call: Call<UserResponse>, response: Response<UserResponse>) {
+                if (response.isSuccessful) {
+                    //inform the fragment
+                    authenticationController.me?.phone?.let { phone ->
+                        authenticationController.saveUserPhoneAndCode(phone, newPassword)
+                    }
+                    authenticationController.me?.smsCode = newPassword
+                    activity.onSaveNewPassword()
+                } else {
+                    activity.onSavePasswordError()
+                }
+            }
+
+            override fun onFailure(call: Call<UserResponse>, t: Throwable) {
+                activity.onSavePasswordError()
+            }
+        })
+    }
 }

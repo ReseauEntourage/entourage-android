@@ -51,7 +51,7 @@ class DiscussionTestDialogFragment : DialogFragment() {
     }
 
     private fun handleUserResponse(isInterested: Boolean) {
-        val sharedPreferences = context?.getSharedPreferences("userPref", Context.MODE_PRIVATE)
+        val sharedPreferences = context?.getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE)
         sharedPreferences?.edit()?.putBoolean("DISCUSSION_INTERESTED", isInterested)?.apply()
         if (!isInterested) {
             // Enregistrer un marqueur pour bloquer définitivement la popup si l'utilisateur refuse

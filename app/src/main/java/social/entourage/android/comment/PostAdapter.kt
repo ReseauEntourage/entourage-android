@@ -15,6 +15,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -33,12 +34,14 @@ import social.entourage.android.api.model.User
 import social.entourage.android.databinding.NewLayoutPostBinding
 import social.entourage.android.databinding.SurveyLayoutBinding
 import social.entourage.android.language.LanguageManager
+import social.entourage.android.profile.ProfileFullActivity
 import social.entourage.android.report.DataLanguageStock
 import social.entourage.android.survey.ResponseSurveyActivity
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.setHyperlinkClickable
 import social.entourage.android.user.UserProfileActivity
 import social.entourage.android.tools.utils.Const
+import social.entourage.android.tools.utils.VibrationUtil
 import social.entourage.android.tools.utils.px
 import java.text.SimpleDateFormat
 
@@ -313,6 +316,19 @@ class PostAdapter(
                             AnalyticsEvents.Clic_Post_List_Reactions
                         )
                         surveyHolder.binding.layoutReactions.visibility = if (surveyHolder.binding.layoutReactions.visibility == View.VISIBLE) View.GONE else View.VISIBLE
+                        if (surveyHolder.binding.layoutReactions.visibility == View.VISIBLE) {
+                            animateReactionLayout(
+                                listOf(
+                                    surveyHolder.binding.ivReactOne,
+                                    surveyHolder.binding.ivReactTwo,
+                                    surveyHolder.binding.ivReactThree,
+                                    surveyHolder.binding.ivReactFour,
+                                    surveyHolder.binding.ivReactFive
+                                )
+                            )
+                        } else {
+                            surveyHolder.binding.layoutReactions.visibility = View.VISIBLE
+                        }
                         true
                     }
 
@@ -352,8 +368,10 @@ class PostAdapter(
                             types.take(5).forEachIndexed { index, reactionType ->
                                 Glide.with(context).load(reactionType.imageUrl).into(reactionImageViews[index])
                                 reactionImageViews[index].setOnClickListener {
-                                    handleReactionClick(this, reactionType)
-                                    surveyHolder.binding.layoutReactions.visibility =  View.GONE
+                                    animateBubbleEffect(reactionImageViews[index], surveyHolder.binding.layoutReactions) {
+                                        handleReactionClick(post, reactionType)
+                                        surveyHolder.binding.layoutReactions.visibility =  View.GONE
+                                    }
                                 }
                             }
                         }
@@ -511,9 +529,24 @@ class PostAdapter(
                         AnalyticsEvents.logEvent(
                             AnalyticsEvents.Clic_Post_List_Reactions
                         )
-                        binding.layoutReactions.visibility = if (binding.layoutReactions.visibility == View.VISIBLE) View.GONE else View.VISIBLE
+                        // Rendre `layoutReactions` visible, même si aucune réaction n'existe
+                        if (binding.layoutReactions.visibility == View.VISIBLE) {
+
+                        } else {
+                            binding.layoutReactions.visibility = View.VISIBLE
+                            animateReactionLayout(
+                                listOf(
+                                    binding.ivReactOne,
+                                    binding.ivReactTwo,
+                                    binding.ivReactThree,
+                                    binding.ivReactFour,
+                                    binding.ivReactFive
+                                )
+                            )
+                        }
                         true
                     }
+
 
                     with(postsList[position]) {
                         if(this.autoPostFrom != null){
@@ -537,7 +570,7 @@ class PostAdapter(
 
 
                         binding.btnILike.setOnClickListener {
-
+                            VibrationUtil.vibrate(context)
                             val firstReactionType = MainActivity.reactionsList?.firstOrNull()
                             if(firstReactionType != null){
                                 AnalyticsEvents.logEvent(
@@ -559,8 +592,10 @@ class PostAdapter(
                             types.take(5).forEachIndexed { index, reactionType ->
                                 Glide.with(context).load(reactionType.imageUrl).into(reactionImageViews[index])
                                 reactionImageViews[index].setOnClickListener {
-                                    handleReactionClick(this, reactionType)
-                                    binding.layoutReactions.visibility =  View.GONE
+                                    animateBubbleEffect(reactionImageViews[index], binding.layoutReactions) {
+                                        handleReactionClick(postsList[position], reactionType)
+                                        binding.layoutReactions.visibility =  View.GONE
+                                    }
                                 }
                             }
                         }
@@ -924,6 +959,50 @@ class PostAdapter(
         return adjustedSummary
     }
 
+    private fun animateReactionLayout(reactionViews: List<ImageView>) {
+        reactionViews.forEachIndexed { index, imageView ->
+            imageView.visibility = View.VISIBLE // Assurez-vous qu'elle est visible
+            imageView.scaleX = 0f
+            imageView.scaleY = 0f
+
+            imageView.animate()
+                .scaleX(1f)
+                .scaleY(1f)
+                .translationY(-10f) // Rebond léger vers le haut
+                .setStartDelay(index * 100L) // Décalage entre chaque image
+                .setDuration(300L) // Durée de chaque animation
+                .withEndAction {
+                    imageView.animate()
+                        .translationY(0f) // Retour à la position initiale
+                        .setDuration(300L)
+                        .start()
+                }
+                .start()
+        }
+    }
+
+    private fun animateBubbleEffect(
+        clickedView: ImageView,
+        layoutReactions: View,
+        onAnimationEnd: () -> Unit
+    ) {
+        clickedView.animate()
+            .scaleX(1.2f)
+            .scaleY(1.2f)
+            .setDuration(150L)
+            .withEndAction {
+                clickedView.animate()
+                    .scaleX(1f)
+                    .scaleY(1f)
+                    .setDuration(150L)
+                    .withEndAction {
+                        layoutReactions.visibility = View.GONE // Cache le layout après l'animation
+                        onAnimationEnd()
+                    }
+                    .start()
+            }
+            .start()
+    }
 
 
 
@@ -970,7 +1049,6 @@ class PostAdapter(
             post.reactionId = reactionType.id
             reactionCallback.onReactionClicked(post, reactionType.id)
         }
-
         if (!isSameReaction) {
             notifyItemChanged(postsList.indexOf(post))
         }
@@ -992,8 +1070,10 @@ class PostAdapter(
         }
     }
     private fun showUserDetail(context:Context,userId:Int?) {
+        ProfileFullActivity.isMe = false
+        ProfileFullActivity.userId = userId!!
         (context as? Activity)?.startActivityForResult(
-            Intent(context, UserProfileActivity::class.java).putExtra(
+            Intent(context, ProfileFullActivity::class.java).putExtra(
                 Const.USER_ID,
                 userId
             ), 0

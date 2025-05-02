@@ -197,6 +197,8 @@
                                     app:layout_constraintBottom_toBottomOf="parent"
                                     app:layout_constraintEnd_toEndOf="parent"
                                     app:layout_constraintTop_toTopOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    android:layout_marginStart="8dp"
                                     tools:text="Location" />
 
                                 <ImageView
@@ -210,7 +212,8 @@
                                     app:layout_constraintStart_toStartOf="parent"
                                     app:layout_constraintTop_toTopOf="parent"
                                     app:srcCompat="@drawable/ic_action_section_clothes"
-                                    app:tint="@color/orange" />
+                                    app:tint="@color/orange"
+                                    android:visibility="gone"/>
 
                             </androidx.constraintlayout.widget.ConstraintLayout>
                         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -225,7 +228,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="30dp"
                                 android:layout_marginTop="16dp"
-                                android:background="@drawable/new_bg_rounded_button_orange_stroke"
+                                android:background="@drawable/home_v2_item_event_tag_layout_shape"
                                 android:paddingHorizontal="4dp"
                                 android:paddingVertical="6dp"
                                 app:layout_constraintBottom_toBottomOf="parent"
@@ -239,12 +242,14 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginEnd="8dp"
                                     android:ellipsize="middle"
-                                    android:fontFamily="@font/nunitosans_semibold"
+                                    android:fontFamily="@font/quicksand_bold"
                                     android:textColor="@color/orange"
                                     android:textSize="13sp"
+                                    android:layout_marginStart="8dp"
                                     app:layout_constraintBottom_toBottomOf="parent"
                                     app:layout_constraintEnd_toEndOf="parent"
                                     app:layout_constraintTop_toTopOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
                                     tools:text="Location" />
 
                                 <ImageView
@@ -258,7 +263,8 @@
                                     app:layout_constraintStart_toStartOf="parent"
                                     app:layout_constraintTop_toTopOf="parent"
                                     app:srcCompat="@drawable/ic_action_section_clothes"
-                                    app:tint="@color/orange" />
+                                    app:tint="@color/orange"
+                                    android:visibility="gone"/>
 
                             </androidx.constraintlayout.widget.ConstraintLayout>
                         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -498,16 +504,17 @@ purus dui, aliquet cursus tellus a, dictum hen." />
 
             <Button
                 android:id="@+id/ui_bt_delete"
-                style="@style/left_courant_bold_orange"
                 android:layout_width="wrap_content"
                 android:layout_height="44dp"
                 android:layout_marginEnd="8dp"
-                android:background="@drawable/new_bg_rounded_button_orange_stroke"
+                android:background="@drawable/shape_button_v9_negative"
                 android:drawableRight="@drawable/new_delete"
                 android:drawablePadding="8dp"
                 android:elevation="0dp"
                 android:minWidth="120dp"
                 android:paddingStart="16dp"
+                android:fontFamily="@font/quicksand_bold"
+                android:textSize="15sp"
                 android:paddingEnd="16dp"
                 android:text="@string/action_detail_bt_cancel"
                 android:textAllCaps="false"

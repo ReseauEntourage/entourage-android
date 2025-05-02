@@ -156,6 +156,7 @@ object Utils {
             context.getString(R.string.add_oui),
             context.getString(R.string.no)
         ) {
+            AnalyticsEvents.logEvent(AnalyticsEvents.add_to_calendar_yes_clicked)
             val startMillis: Long = Calendar.getInstance().run {
                 time = event.metadata?.startsAt ?: time
                 timeInMillis

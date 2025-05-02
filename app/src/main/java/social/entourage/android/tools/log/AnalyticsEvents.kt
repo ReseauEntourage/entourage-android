@@ -449,6 +449,8 @@ object AnalyticsEvents {
     const val ACTION_GROUP_FEED_NEW_POST_ADD_PIC = "Action__GroupFeed__NewPost_AddPic"
     const val ACTION_GROUP_FEED_NEW_POST_VALIDATE_PIC = "Action__GroupFeed__NewPost_ValidatePic"
     const val ACTION_GROUP_FEED_NEW_POST_VALIDATE = "Action__GroupFeed__NewPost_Validate"
+    const val ACTION_GROUP_SEE_MORE_DESC = "Action__GroupFeed__SeeMoreDesc"
+
 
     //GROUPES - OPTIONS
 
@@ -768,6 +770,7 @@ object AnalyticsEvents {
     const val user_have_notif_and_no_token = "user_have_notif_and_no_token"
     const val popup_biencommun = "popup_biencommun"
     const val popup_biencommun_vote = "popup_biencommun_vote"
+    const val add_to_calendar_yes_clicked = "add_to_calendar_yes_clicked"
 
 
     val TAG: String? = AnalyticsEvents::class.java.simpleName

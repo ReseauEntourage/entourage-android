@@ -182,7 +182,7 @@ class EditProfileFragment : Fragment(), EditProfileCallback,
     }
 
     private fun onEditActionZone() {
-        binding.cityAction.layout.setOnClickListener {
+        binding.cityAction.setOnClickListener {
             val action =
                 EditProfileFragmentDirections.actionEditProfileFragmentToEditActionZoneFragment(
                     false
@@ -219,7 +219,7 @@ class EditProfileFragment : Fragment(), EditProfileCallback,
                 configureTextViewForRTL(birthday.content, isArabic)
                 configureTextViewForRTL(phone.content, isArabic)
                 configureTextViewForRTL(email.content, isArabic)
-                configureTextViewForRTL(cityAction.content, isArabic)
+                configureTextViewForRTL(cityAction, isArabic)
                 configureTextViewForRTL(description.counter,isArabic)
                 firstname.content.setText(user.firstName)
                 lastname.content.setText(user.lastName)
@@ -244,7 +244,7 @@ class EditProfileFragment : Fragment(), EditProfileCallback,
                 )
                 phone.divider.visibility = View.GONE
                 email.content.setText(user.email)
-                cityAction.content.text = user.address?.displayAddress
+                cityAction.text = Editable.Factory.getInstance().newEditable(user.address?.displayAddress ?: "")
                 seekBarLayout.seekbar.progress = user.travelDistance ?: 0
                 validate.button.setOnClickListener { onSaveProfile() }
                 seekBarLayout.seekbar.post {
@@ -296,16 +296,52 @@ class EditProfileFragment : Fragment(), EditProfileCallback,
         val email = binding.email.content.text.trimEnd()
         val birthday = binding.birthday.content.text.trimEnd()
         val travelDistance = binding.seekBarLayout.seekbar.progress
-        if (checkError()) {
-            val editedUser: ArrayMap<String, Any> = ArrayMap()
-            editedUser["first_name"] = firstname
-            editedUser["last_name"] = lastname
-            editedUser["about"] = about
+        val editedUser: ArrayMap<String, Any> = ArrayMap()
+        editedUser["first_name"] = firstname
+        editedUser["about"] = about
+        if(checkEmail()){
             editedUser["email"] = email
-            editedUser["birthday"] = birthday
-            editedUser["travel_distance"] = travelDistance
-            editProfilePresenter.updateUser(editedUser)
         }
+        if(checkLastName()){
+            editedUser["last_name"] = lastname
+        }
+        editedUser["birthday"] = birthday
+        editedUser["travel_distance"] = travelDistance
+        editProfilePresenter.updateUser(editedUser)
+
+    }
+
+    private fun checkEmail():Boolean {
+        val isEmailCorrect = binding.email.content.text.trimEnd().isValidEmail()
+        with(binding.email) {
+            error.root.visibility = if (isEmailCorrect) View.GONE else View.VISIBLE
+            error.errorMessage.text = getString(R.string.error_email)
+            DrawableCompat.setTint(
+                content.background,
+                ContextCompat.getColor(
+                    requireContext(),
+                    if (isEmailCorrect) R.color.light_orange_opacity_50 else R.color.red
+                )
+            )
+        }
+        return isEmailCorrect
+    }
+
+    private fun checkLastName():Boolean{
+        val isLastnameCorrect = binding.lastname.content.text.trimEnd().length > 2
+
+        with(binding.lastname) {
+            error.root.visibility = if (isLastnameCorrect) View.GONE else View.VISIBLE
+            error.errorMessage.text = getString(R.string.error_lastname)
+            DrawableCompat.setTint(
+                content.background,
+                ContextCompat.getColor(
+                    requireContext(),
+                    if (isLastnameCorrect) R.color.light_orange_opacity_50 else R.color.red
+                )
+            )
+        }
+        return isLastnameCorrect
     }
 
     private fun checkError(): Boolean {

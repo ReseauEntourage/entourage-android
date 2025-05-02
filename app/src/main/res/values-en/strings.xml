@@ -194,7 +194,7 @@
     <string name="category_name_label">Describe your group category in one word</string>
     <string name="pass">Skip</string>
     <string name="create_post">Create a post</string>
-    <string name="create_event">Create an event on the group</string>
+    <string name="create_event">Create an event</string>
     <string name="create_event_if_no_event">Create event</string>
     <string name="create_event_btn_title">Create event</string>
     <string name="group_success_title">Your group is online!</string>
@@ -1713,7 +1713,87 @@
     <string name="popup_nightgood_vote">Vote</string>
     <string name="popup_nightgood_text">To help 60 people in precarious situations join a sports club, just one click is enough. Yours!</string>
 
+    <string name="demand_social_title">Example: Walk in the park</string>
+    <string name="demand_social_description">Example: I suggest a walk in the park this weekend to chat and relax.</string>
+    <string name="demand_services_title">Example: Need to print documents</string>
+    <string name="demand_services_description">Example: I need to print a few pages for an appointment. Can anyone help?</string>
+    <string name="demand_clothes_title">Example: Looking for a winter coat</string>
+    <string name="demand_clothes_description">Example: I\'m looking for a warm coat in size M for this winter.</string>
+    <string name="demand_equipment_title">Example: Need a sleeping bag</string>
+    <string name="demand_equipment_description">Example: I\'m looking for a sleeping bag to sleep outside this winter. If anyone has one to give, it would be a great help.</string>
+    <string name="demand_hygiene_title">Example: Need soap</string>
+    <string name="demand_hygiene_description">Example: I\'m looking for soap or shower gel. If anyone has extras, I\'d gladly take them.</string>
 
+    <string name="contrib_social_title">Example: Coffee and chat</string>
+    <string name="contrib_social_description">Example: I\'m looking for someone to share a coffee with this week in the neighborhood.</string>
+    <string name="contrib_services_title">Example: Help with laundry</string>
+    <string name="contrib_services_description">Example: I offer to do laundry for someone who might need it.</string>
+    <string name="contrib_clothes_title">Example: Sports shoes to give away</string>
+    <string name="contrib_clothes_description">Example: I\'m giving away a pair of sports shoes in good condition, size 42.</string>
+    <string name="contrib_equipment_title">Example: Mobile phone to give away</string>
+    <string name="contrib_equipment_description">Example: I\'m giving away an old but functional mobile phone. Perfect for someone in need.</string>
+    <string name="contrib_hygiene_title">Example: Hygiene products to give away</string>
+    <string name="contrib_hygiene_description">Example: I\'m giving away several packs of hygiene products.</string>
+
+    <string name="preferences_section_title">My preferences</string>
+    <string name="preferences_interest_title">My interests</string>
+    <string name="preferences_interest_subtitle">Games, Social volunteering, Sports</string>
+    <string name="preferences_action_title">My actions</string>
+    <string name="preferences_action_subtitle">Mutual aid (Sharing time, Material donations), Events, Groups</string>
+    <string name="preferences_availability_title">My availability</string>
+    <string name="preferences_availability_subtitle">Days: Monday, Tuesday\nTimes: Afternoon</string>
+    <string name="preferences_action_categories_title">My action categories</string>
+
+    <string name="settings_section_title">Settings</string>
+    <string name="settings_language_title">Language</string>
+    <string name="settings_language_subtitle">English - auto translation enabled</string>
+    <string name="settings_notifications_title">Notifications</string>
+    <string name="settings_notifications_subtitle">Enabled(s): </string>
+    <string name="settings_help_title">Help and about</string>
+    <string name="settings_help_subtitle">Ethical Charter, FAQ, TCs, etc.</string>
+    <string name="settings_unblock_contacts_title">Unblock contacts</string>
+    <string name="settings_unblock_contacts_subtitle">No blocked contacts</string>
+    <string name="settings_number_blocked_contacts_subtitle">Blocked contacts: </string>
+    <string name="settings_feedback_title">Suggestions about the app?</string>
+    <string name="settings_share_title">Share the app</string>
+    <string name="settings_password_title">Change password</string>
+
+    <string name="notifications_actions">actions</string>
+    <string name="notifications_events">events</string>
+    <string name="notifications_groups">groups</string>
+    <string name="notifications_messages">messages</string>
+    <string name="no_notifications_active">no notifications active</string>
+
+    <string name="bubble_title">Filters have been applied based on your preferences. Click here to modify them.</string>
+    <string name="bubble_button">Got it</string>
+
+    <string name="enhanced_onboarding_time_disponibility_title">My availability</string>
+    <string name="enhanced_onboarding_time_disponibility_description">Specify your availability so we can suggest suitable events.</string>
+    <string name="enhanced_onboarding_time_disponibility_days_label">My days</string>
+    <string name="enhanced_onboarding_time_disponibility_day_monday">Monday</string>
+    <string name="enhanced_onboarding_time_disponibility_day_tuesday">Tuesday</string>
+    <string name="enhanced_onboarding_time_disponibility_day_wednesday">Wednesday</string>
+    <string name="enhanced_onboarding_time_disponibility_day_thursday">Thursday</string>
+    <string name="enhanced_onboarding_time_disponibility_day_friday">Friday</string>
+    <string name="enhanced_onboarding_time_disponibility_day_saturday">Saturday</string>
+    <string name="enhanced_onboarding_time_disponibility_day_sunday">Sunday</string>
+    <string name="enhanced_onboarding_time_disponibility_time_slots_label">My time slots</string>
+    <string name="enhanced_onboarding_time_disponibility_time_morning">Morning</string>
+    <string name="enhanced_onboarding_time_disponibility_time_afternoon">Afternoon</string>
+    <string name="enhanced_onboarding_time_disponibility_time_evening">Evening</string>
+    <string name="enhanced_onboarding_time_disponibility_btn_finish_later">Finish later</string>
+    <string name="enhanced_onboarding_time_disponibility_btn_next">Next</string>
+
+    <string name="see_more">See more</string>
+    <string name="see_less">See less</string>
+    <string name="placeholder_description_profile">Description not provided</string>
+    <string name="no_data_available">Not provided</string>
+    <string name="unknown_language">Unrecognized language</string>
+
+    <string name="logout_button">Log out</string>
+    <string name="delete_account_button">Delete my account</string>
+    <string name="notifications_disabled_message">Your notifications are disabled.\nEnable them to stay updated</string>
+    <string name="enable_notifications">Enable them to stay updated</string>
 
 
 </resources>
