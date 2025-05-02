@@ -29,6 +29,7 @@ class DetailConversationActivity : CommentActivity() {
 
 
     private var hasToShowFirstMessage = false
+    var hasSeveralpeople = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -80,21 +81,26 @@ class DetailConversationActivity : CommentActivity() {
     private fun handleDetailConversation(conversation: Conversation?) {
         titleName = conversation?.title
         binding.header.title = titleName
-
+        val memberCount = conversation?.members?.size ?: 0
+        if(memberCount > 2){
+            this.hasSeveralpeople = true
+            var title = ""
+            title = conversation?.user?.displayName +  " + " + (conversation?.memberCount?.minus(1)) + " membres"
+            binding.header.title = title
+        }
         if (conversation?.hasBlocker() == true) {
             binding.postBlocked.isVisible = true
             val _name = titleName ?: ""
             if (conversation.imBlocker()) {
                 binding.commentBlocked.hint = String.format(getString(R.string.message_user_blocked_by_me),_name)
-            }
-            else {
+            } else {
                 binding.commentBlocked.hint = String.format(getString(R.string.message_user_blocked_by_other),_name)
             }
-        }
-        else {
+        } else {
             binding.postBlocked.isVisible = false
         }
     }
+
 
     fun checkAndShowPopWarning() {
         if (hasToShowFirstMessage) {
@@ -104,6 +110,8 @@ class DetailConversationActivity : CommentActivity() {
             }
         }
     }
+
+
 
     override fun addComment() {
         viewModel.addComment(id, comment)
@@ -122,6 +130,11 @@ class DetailConversationActivity : CommentActivity() {
         binding.header.iconSettings.setOnClickListener {
             DataLanguageStock.updatePostLanguage(commentLang)
             AnalyticsEvents.logEvent(AnalyticsEvents.Message_action_param)
+            if(this.hasSeveralpeople){
+                SettingsDiscussionModalFragment.isSeveralPersonneInConversation = true
+            }else{
+                SettingsDiscussionModalFragment.isSeveralPersonneInConversation = false
+            }
             SettingsDiscussionModalFragment.newInstance(
                 postAuthorID,
                 id,

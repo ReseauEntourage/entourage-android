@@ -1,6 +1,7 @@
 package social.entourage.android.discussions
 
 import android.graphics.Typeface
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
+import com.google.gson.Gson
 import social.entourage.android.R
 import social.entourage.android.api.model.Conversation
 import social.entourage.android.databinding.LayoutConversationHomeItemBinding
@@ -58,7 +60,15 @@ class DiscussionsListAdapter(
                 binding.imagePicto.setImageResource(conversation.getPictoTypeFromSection())
             }
 
-            binding.name.text = conversation.title
+            if (conversation.memberCount > 2) {
+                var namesText = ""
+                namesText = conversation.user?.displayName +  " + " + (conversation.memberCount.minus(1) ) + " membres"
+                binding.name.text = namesText
+            } else {
+                binding.name.text = conversation.title
+            }
+
+
             if (conversation.getRolesWithPartnerFormated()?.isEmpty() == false) {
                 binding.role.isVisible = true
                 binding.role.text = conversation.getRolesWithPartnerFormated()

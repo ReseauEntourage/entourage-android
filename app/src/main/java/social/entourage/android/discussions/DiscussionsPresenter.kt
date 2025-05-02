@@ -45,6 +45,8 @@ class DiscussionsPresenter:ViewModel() {
     var getBlockedUsers = MutableLiveData<MutableList<UserBlockedUser>?>()
 
     var hasUserUnblock = MutableLiveData<Boolean>()
+    var hasUserjoined = MutableLiveData<Boolean>()
+
 
     fun getAllMessages(page: Int, per: Int) {
         isLoading = true
@@ -274,4 +276,22 @@ class DiscussionsPresenter:ViewModel() {
             }
         })
     }
+
+    fun addUserToConversation(conversationId: String) {
+        EntourageApplication.get().apiModule.discussionsRequest.addUserToConversation(conversationId)
+            .enqueue(object : Callback<ResponseBody> {
+                override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                    if (response.isSuccessful) {
+                        hasUserjoined.postValue(true)
+                    } else {
+                        hasUserjoined.postValue(false)
+                    }
+                }
+
+                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                    hasUserjoined.postValue(false)
+                }
+            })
+    }
+
 }

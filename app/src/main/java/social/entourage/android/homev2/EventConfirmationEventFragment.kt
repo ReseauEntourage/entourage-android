@@ -1,11 +1,11 @@
 package social.entourage.android.homev2
 
-import android.app.AlertDialog
 import android.app.Dialog
 import android.os.Bundle
-import android.widget.Button
 import androidx.fragment.app.DialogFragment
+import androidx.appcompat.app.AlertDialog
 import social.entourage.android.R
+import social.entourage.android.databinding.DialogEventConfirmationBinding
 
 class EventConfirmationDialogFragment : DialogFragment() {
 
@@ -15,22 +15,28 @@ class EventConfirmationDialogFragment : DialogFragment() {
     }
 
     var listener: EventConfirmationListener? = null
+    private var _binding: DialogEventConfirmationBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val builder = AlertDialog.Builder(activity)
-        val inflater = activity?.layoutInflater
-        val view = inflater?.inflate(R.layout.dialog_event_confirmation, null)
+        _binding = DialogEventConfirmationBinding.inflate(layoutInflater)
 
-/*        view?.findViewById<Button>(R.id.btn_confirm)?.setOnClickListener {
+        binding.validateBtn.setOnClickListener {
             listener?.onConfirmParticipation()
             dismiss()
         }
-        view?.findViewById<Button>(R.id.btn_decline)?.setOnClickListener {
+        binding.cancelButton.setOnClickListener {
             listener?.onDeclineParticipation()
             dismiss()
-        }*/
+        }
 
-        builder.setView(view)
-        return builder.create()
+        return AlertDialog.Builder(requireActivity())
+            .setView(binding.root)
+            .create()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

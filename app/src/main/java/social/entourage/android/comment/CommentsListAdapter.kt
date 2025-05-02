@@ -194,7 +194,7 @@ class CommentsListAdapter(
             }
 
             comment.user?.let {
-                binding.authorName.text = if (isOne2One || isMe) "" else comment.user?.displayName
+                binding.authorName.text = if (isMe) "" else comment.user?.displayName
                 comment.user?.avatarURLAsString?.let {
                     Glide.with(binding.root.context)
                         .load(it)
@@ -209,6 +209,16 @@ class CommentsListAdapter(
                         .apply(RequestOptions().override(25.px, 25.px))
                         .circleCrop()
                         .into(binding.image)
+                }
+            }
+            binding.image.setOnClickListener {
+                if(comment.user != null){
+                    (binding.image.context as? Activity)?.startActivityForResult(
+                        Intent(binding.image.context, UserProfileActivity::class.java).putExtra(
+                            Const.USER_ID,
+                            comment.user?.userId
+                        ), 0
+                    )
                 }
             }
 
@@ -336,7 +346,7 @@ class CommentsListAdapter(
             }
 
             comment.user?.let {
-                binding.authorName.text = if (isOne2One || isMe) "" else comment.user?.displayName
+                binding.authorName.text = if (isMe) "" else comment.user?.displayName
                 comment.user?.avatarURLAsString?.let {
                     Glide.with(binding.root.context)
                         .load(it)

@@ -18,7 +18,7 @@ interface AppLinksRequest {
     @GET("neighborhoods/{id}")
     fun getGroupFromHash(@Path("id") groupId: String): Call<GroupWrapper>
 
-    @GET("discussion/{id}")
+    @GET("conversations/{id}")
     fun getDiscussionFromHash(@Path("id") groupId: String): Call<DiscussionDetailWrapper>
 
 }

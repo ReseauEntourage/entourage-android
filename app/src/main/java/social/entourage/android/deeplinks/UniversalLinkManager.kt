@@ -6,6 +6,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.navigation.NavController
 import social.entourage.android.EntourageApplication
@@ -17,8 +18,10 @@ import social.entourage.android.api.model.Action
 import social.entourage.android.api.model.Conversation
 import social.entourage.android.api.model.Events
 import social.entourage.android.api.model.Group
+import social.entourage.android.comment.CommentActivity
 import social.entourage.android.discussions.DetailConversationActivity
 import social.entourage.android.groups.details.feed.FeedActivity
+import social.entourage.android.home.pedago.PedagoDetailActivity
 import social.entourage.android.home.pedago.PedagoListActivity
 import social.entourage.android.tools.utils.Const
 
@@ -28,6 +31,7 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
 
     private val prodURL = "www.entourage.social"
     private val stagingURL = "preprod.entourage.social"
+    private var conversationId: String = ""
     val presenter:UniversalLinkPresenter = UniversalLinkPresenter(this)
 
 
@@ -60,8 +64,16 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
                         //HERE GO TO DETAIL MESSAGE GROUP
                     }
                 }
-
-                pathSegments.contains("conversations") && pathSegments.contains("chat_messages") -> {
+                pathSegments.contains("conversations") || pathSegments.contains("messages") -> {
+                    if(pathSegments.size > 2){
+                        val convId = pathSegments[2]
+                        this.conversationId = convId
+                        presenter.addUserToConversation(convId)
+                    }else{
+                        (context as? MainActivity)?.goConv()
+                    }
+                }
+/*                pathSegments.contains("conversations") && pathSegments.contains("chat_messages") -> {
                     val convId = pathSegments[2]
                     val meId = EntourageApplication.get().me()?.id
                     (context as? Activity)?.startActivityForResult(
@@ -80,7 +92,7 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
                                 )
                             ),0
                     )
-                }
+                }*/
                 pathSegments.contains("outings") -> {
                     if (pathSegments.size > 2) {
                         val outingId = pathSegments[2]
@@ -107,14 +119,7 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
                         context.startActivity(intent)
                     }
                 }
-                pathSegments.contains("conversations") || pathSegments.contains("messages") -> {
-                    if(pathSegments.size > 2){
-                        val convId = pathSegments[2]
-                        presenter.getDetailConversation(convId)
-                    }else{
-                        (context as? MainActivity)?.goConv()
-                    }
-                }
+
                 pathSegments.contains("solicitations") -> {
                     if (pathSegments.contains("new")) {
                         val intent = Intent(context, CreateActionActivity::class.java)
@@ -149,19 +154,39 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
                         }
                     }
                 }
-
                 pathSegments.contains("resources") -> {
-                    if (pathSegments.size > 2) {
-                        val resourcesId = pathSegments[2]
-                        (context as MainActivity).startActivityForResult(
-                            Intent(
-                                context,
-                                PedagoListActivity::class.java
-                            ), 0
-                        )
+                    val intent = when {
+                        pathSegments.size > 2 -> {
+                            // Un ID de ressource est présent
+                            val resourcesId = pathSegments[2]
+                            PedagoDetailActivity.hashId = resourcesId
+                            Intent(context, PedagoDetailActivity::class.java).apply {
+                                // Assumons que PedagoDetailActivity attend un extra avec l'ID de la ressource
+                            }
+                        }
+                        else -> {
+                            // Aucun ID de ressource spécifié; ouvrir la liste
+                            Intent(context, PedagoListActivity::class.java)
+                        }
+                    }
+
+                    when (context) {
+                        is MainActivity -> {
+                            context.startActivityForResult(intent, 0)
+                        }
+                        is DetailConversationActivity -> {
+                            context.startActivityForResult(intent, 0)
+                        }
+                        is CommentActivity -> {
+                            context.startActivityForResult(intent, 0)
+                        }
+                        else -> {
+                            // Logique par défaut ou gestion d'autres contextes
+                            context.startActivity(intent)
                         }
                     }
                 }
+            }
             }
         }
 
@@ -207,25 +232,52 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
     }
 
     override fun onRetrievedDiscussion(discussion: Conversation) {
-        (context as MainActivity).startActivityForResult(
-            Intent(context, DetailConversationActivity::class.java)
-                .putExtras(
-                    bundleOf(
-                        Const.ID to discussion.id,
-                        Const.POST_AUTHOR_ID to discussion.user?.id,
-                        Const.SHOULD_OPEN_KEYBOARD to false,
-                        Const.NAME to discussion.title,
-                        Const.IS_CONVERSATION_1TO1 to true,
-                        Const.IS_MEMBER to true,
-                        Const.IS_CONVERSATION to true,
-                        Const.HAS_TO_SHOW_MESSAGE to discussion.hasToShowFirstMessage()
-                    )
-                ), 0
-        )
+        val intent = Intent(context, DetailConversationActivity::class.java).apply {
+            putExtras(bundleOf(
+                Const.ID to discussion.id,
+                Const.POST_AUTHOR_ID to discussion.user?.id,
+                Const.SHOULD_OPEN_KEYBOARD to false,
+                Const.NAME to discussion.title,
+                Const.IS_CONVERSATION_1TO1 to true,
+                Const.IS_MEMBER to true,
+                Const.IS_CONVERSATION to true,
+                Const.HAS_TO_SHOW_MESSAGE to discussion.hasToShowFirstMessage()
+            ))
+        }
+
+
+        when (context) {
+            is MainActivity -> {
+                // Si le context est MainActivity, on lance l'activité normalement
+                (context as MainActivity).startActivityForResult(intent, 0)
+            }
+            is DetailConversationActivity -> {
+                // Si le context est DetailConversationActivity, on ajoute le flag et on lance une nouvelle activité
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+                (context as DetailConversationActivity).startActivity(intent)
+                context.finish() // Fermer l'activité actuelle pour éviter l'empilement des activités
+            }
+            is CommentActivity -> {
+                // Si le context est DetailConversationActivity, on ajoute le flag et on lance une nouvelle activité
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+                (context as CommentActivity).startActivity(intent)
+                context.finish() // Fermer l'activité actuelle pour éviter l'empilement des activités
+            }
+            else -> {
+                // Gérer d'autres types de contextes si nécessaire
+            }
+        }
+        Log.wtf("wtf", "discussion id: ${discussion.id.toString()}")
+
+    }
+
+    override fun onUserJoinedConversation() {
+        presenter.getDetailConversation(this.conversationId.toString())
+
     }
 
     override fun onErrorRetrievedDiscussion() {
-        (context as MainActivity).DisplayErrorFromAppLinks(3)
+        (context as Activity).finish()
     }
 
     override fun onErrorRetrievedGroup() {
@@ -238,5 +290,9 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
 
     override fun onErrorRetrievedAction() {
         (context as MainActivity).DisplayErrorFromAppLinks(2)
+    }
+
+    override fun onUserErrorJoinedConversation() {
+        Toast.makeText(context, "Erreur : Vous ne pouvez pas rejoindre cette conversation pour le moment", Toast.LENGTH_SHORT).show()
     }
 }

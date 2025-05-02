@@ -2,6 +2,7 @@ package social.entourage.android.discussions
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,6 +28,7 @@ class SettingsDiscussionModalFragment : BottomSheetDialogFragment() {
     private val discussionPresenter : DiscussionsPresenter by lazy { DiscussionsPresenter() }
 
     var isOneToOne = true
+
     var userId:Int? = null
     var conversationId:Int? = null
     var isCreator = false
@@ -101,6 +103,12 @@ class SettingsDiscussionModalFragment : BottomSheetDialogFragment() {
             binding.profile.label = getString(R.string.discussion_settings_members)
         }
         binding.report.text = getString(R.string.discussion_settings_signal)
+        if(isSeveralPersonneInConversation){
+            binding.layoutBlock.isVisible = false
+        }
+        else{
+            binding.layoutBlock.isVisible = true
+        }
     }
 
     private fun updateInputs() {
@@ -117,6 +125,7 @@ class SettingsDiscussionModalFragment : BottomSheetDialogFragment() {
     private fun handleCloseButton() {
         binding.header.iconCross.setOnClickListener {
             dismiss()
+            SettingsDiscussionModalFragment.isSeveralPersonneInConversation = false
         }
     }
 
@@ -193,6 +202,7 @@ class SettingsDiscussionModalFragment : BottomSheetDialogFragment() {
         private const val ARG_NAME = "username"
         private const val ARG_BLOCKED = "imBlocker"
         const val TAG = "SettingsDiscussionModalFragment"
+        var isSeveralPersonneInConversation = false
         fun newInstance(userId:Int?,conversationId:Int?,isOneToOne:Boolean, username:String?,imBlocker:Boolean? = null): SettingsDiscussionModalFragment {
             val fragment = SettingsDiscussionModalFragment()
             val args = Bundle()

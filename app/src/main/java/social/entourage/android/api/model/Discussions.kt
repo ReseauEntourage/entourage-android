@@ -15,6 +15,8 @@ class Conversation(
     val id: Int? = null,
     @SerializedName("uuid_v2")
     val uuid_v2: String? = null,
+    @SerializedName("uuid")
+    val uuid: String? = null,
     @SerializedName("type")
     val type: String? = null,
     @SerializedName("name")
@@ -36,6 +38,8 @@ class Conversation(
     val hasPersonalPost: Boolean? = null,
     @SerializedName("members")
     val members: ArrayList<GroupMember>? = null,
+    @SerializedName("members_count")
+    val memberCount: Int = 0,
     @SerializedName("creator")
     val isCreator: Boolean? = null,
     @SerializedName("blockers")

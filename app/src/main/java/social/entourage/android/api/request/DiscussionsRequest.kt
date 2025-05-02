@@ -72,4 +72,10 @@ interface DiscussionsRequest {
     fun unblockUsers(
         @Body params: ArrayMap<String, Any>
     ) : Call<ResponseBody>
+
+    @POST("conversations/{conversation_id}/users")
+    fun addUserToConversation(
+        @Path("conversation_id") conversationId: String,
+
+    ): Call<ResponseBody>
 }

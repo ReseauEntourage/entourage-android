@@ -173,6 +173,7 @@ abstract class CommentActivity : BaseActivity(), onDissmissFragment {
                 }
 
                 override fun onShowWeb(url: String) {
+
                     if(url.contains("www.entourage.social") || url.contains("preprod.entourage.social")){
                         val uri = Uri.parse(url)
                         universalLinkManager.handleUniversalLink(uri)
