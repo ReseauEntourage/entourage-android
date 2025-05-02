@@ -2,6 +2,7 @@ package social.entourage.android.homev2
 
 import android.net.Uri
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -47,6 +48,8 @@ class HomeHelpAdapter(val callback:OnHomeV2HelpItemClickListener): RecyclerView.
             callback.onItemClick(position, summary!!.moderator?.id!!)
         }
 
+
+
         if(help.ressourceId != 0){
             val context = holder.binding.root.context
             holder.binding.ivHomeV2HelpItem.setImageDrawable(context.getDrawable(help.ressourceId))
@@ -54,6 +57,8 @@ class HomeHelpAdapter(val callback:OnHomeV2HelpItemClickListener): RecyclerView.
         help.title.let {
             val context = holder.binding.root.context
             holder.binding.tvHomeV2HelpItem.text = it
+            val isRTL = context.resources.configuration.layoutDirection == View.LAYOUT_DIRECTION_RTL
+            holder.binding.ivArrowRightHomeV2HelpItem.scaleX = if (isRTL) -1f else 1f
 
             if(position == 0){
                 holder.binding.homeV2PedagoItemMainLayout.background = context.getDrawable(R.drawable.home_version_two_large_button_gradient_shape)

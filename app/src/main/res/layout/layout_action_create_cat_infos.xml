@@ -13,8 +13,8 @@
         <TextView
             android:id="@+id/ui_tv_message_info"
             style="@style/left_legend"
-            android:fontFamily="@font/nunitosans_light"
-            android:textColor="@color/black"
+            android:fontFamily="@font/nunitosans_regular"
+            android:textColor="@color/grey"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/action_crete_cat_about"
@@ -32,7 +32,8 @@
             android:background="@color/light_orange"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            android:visibility="gone"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

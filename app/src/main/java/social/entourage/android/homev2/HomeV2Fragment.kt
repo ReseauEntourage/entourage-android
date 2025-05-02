@@ -17,6 +17,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.addCallback
 import androidx.core.animation.doOnEnd
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.res.ResourcesCompat
@@ -106,6 +107,18 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
     private lateinit var actionsPresenter: ActionsPresenter
     private var locationPopupHasPop = false
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        requireActivity().onBackPressedDispatcher.addCallback(this) {
+            if (childFragmentManager.backStackEntryCount > 0) {
+                childFragmentManager.popBackStack()
+            } else if (parentFragmentManager.backStackEntryCount > 0) {
+                parentFragmentManager.popBackStack()
+            } else {
+                requireActivity().finish()
+            }
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -155,7 +168,7 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
         checkNotificationStatus()
         increaseCounter()
         checkNotifAndSendToken()
-
+        adjustChevronForRTL()
         return binding.root
     }
 
@@ -185,7 +198,7 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
                 Intent(context, ProfileActivity::class.java), 0
             )
         }
-        testNotifDemandePage()
+        //testNotifDemandePage()
         sendUserDiscussionStatus()
     }
 
@@ -218,6 +231,22 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
             MockNotificationGenerator.createAllMockNotifications(requireContext())
             true
       }
+    }
+
+    fun adjustChevronForRTL() {
+        val isRTL = resources.configuration.layoutDirection == View.LAYOUT_DIRECTION_RTL
+
+        if (isRTL) {
+            binding.chevron1.scaleX = -1f
+            binding.chevron2.scaleX = -1f
+            binding.chevron3.scaleX = -1f
+            binding.chevron4.scaleX = -1f
+        } else {
+            binding.chevron1.scaleX = 1f
+            binding.chevron2.scaleX = 1f
+            binding.chevron3.scaleX = 1f
+            binding.chevron4.scaleX = 1f
+        }
     }
 
     private fun checkNotifAndSendToken() {
@@ -324,30 +353,6 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
         layoutParams.topMargin = marginTop
         view.layoutParams = layoutParams
     }
-    /*TODO remove this code if really not needed
-    fun noAdressPopFillAdress(){
-        if(!locationPopupHasPop){
-            locationPopupHasPop = true
-            if(user?.address == null){
-
-                AnalyticsEvents.logEvent(AnalyticsEvents.view_miss_location_popup)
-                CustomAlertDialog.showOnlyOneButtonNoClose(requireContext(),
-                    getString(R.string.home_v2_no_adress_title),
-                    getString(R.string.home_v2_no_adress_content),
-                    getString(R.string.home_v2_no_adress_button)
-                ) {
-                    AnalyticsEvents.logEvent(AnalyticsEvents.clic_miss_location_add)
-                    binding.frameLayoutChangeLocation.visibility = View.VISIBLE
-                    childFragmentManager.beginTransaction()
-                        .replace(
-                            R.id.frame_layout_change_location,
-                            UserEditActionZoneFragment.newInstance(null, false, this)
-                        )
-                        .commit()
-                }
-            }
-        }
-    }*/
 
     fun callToInitHome(){
 

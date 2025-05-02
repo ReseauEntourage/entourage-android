@@ -36,7 +36,7 @@
                 android:layout_marginStart="10dp"
                 android:text="@string/ethics"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toRightOf="@id/icon_back"
+                app:layout_constraintStart_toEndOf="@id/icon_back"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView

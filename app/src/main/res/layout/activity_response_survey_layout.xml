@@ -31,7 +31,7 @@
             android:textSize="15sp"
             android:fontFamily="@font/quicksand_bold"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toRightOf="@id/icon_back"
+            app:layout_constraintStart_toEndOf="@id/icon_back"
             app:layout_constraintTop_toTopOf="parent"
             />
     </androidx.constraintlayout.widget.ConstraintLayout>

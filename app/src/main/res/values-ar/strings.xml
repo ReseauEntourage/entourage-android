@@ -56,14 +56,14 @@
     <string name="show_more_event">شاهد حدث \</string>
     <string name="show_more_actions">عرض المزيد من طلبات \ ومبادرات \</string>
     <string name="show_more_events">Afficher plus\nd’événements</string>
-    <string name="show_more_actions_ask">رؤية جميع الطلبات</string>
+    <string name="show_more_actions_ask">رؤية جميع طلب مساعدة</string>
     <string name="show_more_actions_contrib">شاهد جميع التبرعات</string>
 
     <string name="home_title_headlines">إلى الرئيسية</string>
-    <string name="home_title_actions">الطلبات والمبادرات</string>
+    <string name="home_title_actions">طلب مساعدة والمبادرات</string>
     <string name="home_title_events">الفعالية</string>
     <string name="home_title_actions_contrib">مساهمات</string>
-    <string name="home_title_actions_ask">الطلبات</string>
+    <string name="home_title_actions_ask">طلب مساعدة</string>
 
     <string name="home_help_title">حاشية بشكل مختلف</string>
     <string name="home_help_description">إليك كيفية المشاركة في مشروع Entourage، إذا لم تكن هناك أحداث أو أنشطة في منطقتك:</string>
@@ -242,7 +242,7 @@
     <string name="admin">مسؤل</string>
     <string name="to_know">لنعرف</string>
     <string name="to_know_group">حول المجموعة</string>
-    <string name="join">ينضم</string>
+    <string name="join">انضمام</string>
     <string name="welcome_message_placeholder">لا تتردد في إرسال الرسالة الأولى للتعريف بنفسك.</string>
     <string name="welcome_message_title">تهانينا، أنت عضو في المجموعة!</string>
     <string name="welcome_message_btn_title">اقدم نفسي</string>
@@ -464,7 +464,7 @@
     <string name="welcome_three_title_with_demand">امنح جيرانك يد العون</string>
     <string name="welcome_three_title_with_contrib">لا توجد مساعدة d\ من حولك؟ اصنعها!</string>
     <string name="welcome_three_text_one">ابحث عن حدث \ الذي يثير اهتمامك وتعال واستمتع بلحظة ودية.</string>
-    <string name="welcome_three_text_one_with_demand">ألق نظرة على الطلبات المنشورة بالقرب منك:</string>
+    <string name="welcome_three_text_one_with_demand">ألق نظرة على طلب مساعدة المنشورة بالقرب منك:</string>
     <string name="welcome_three_text_one_with_contrib">إحدى الطرق الجيدة لإنشاء روابط بين الجيران هي مشاركة اهتماماتك أو عواطفك أو مجرد تناول القهوة للتعرف على بعضكما البعض.</string>
     <string name="welcome_three_contrib_name">مناقشة على القهوة</string>
     <string name="welcome_three_contrib_name_two">التبرع بالملابس النسائية</string>
@@ -472,7 +472,7 @@
     <string name="welcome_three_contrib_location">باريس (75010)</string>
     <string name="welcome_three_contrib_date">21 يونيو 2022 الساعة 12 ظهرًا</string>
     <string name="welcome_three_main_button_title_event">اكتشف الفعالية</string>
-    <string name="welcome_three_main_button_title_demand">اكتشاف الطلبات</string>
+    <string name="welcome_three_main_button_title_demand">اكتشاف طلب مساعدة</string>
     <string name="welcome_three_main_button_title_contrib">إنشاء مساهمة</string>
     <string name="welcome_five_share_title">"اكتشف تطبيق \ Entourage، الشبكة الاجتماعية الحقيقية"</string>
 
@@ -597,7 +597,7 @@
     <!--    STRING ACTION NEW-->
     <string name="actions_title">المساعدة المتبادلة</string>
     <string name="actions_tab_contribs">مساهمات</string>
-    <string name="actions_tab_demands">الطلبات</string>
+    <string name="actions_tab_demands">طلب مساعدة</string>
 
     <string name="action_bt_my_actions">إعلاناتي</string>
 
@@ -649,7 +649,7 @@
     <string name="action_create_title_hint">قم بتسمية %s</string>
     <string name="action_create_description">وصف</string>
     <string name="action_create_description_hint">صف بالتفصيل %s الذي تقدمه</string>
-    <string name="action_create_add_photo">صورة</string>
+    <string name="action_create_add_photo">• صورة</string>
 
     <string name="action_name_demand">طلب</string>
     <string name="action_name_contrib">مساهمة</string>
@@ -726,7 +726,7 @@
     <string name="action_params_cgu_title">مدونة لقواعد السلوك</string>
     <string name="action_CGU_1_title">المساعدة المتبادلة</string>
     <string name="action_CGU_1">يتيح لك التطبيق إنشاء لقاءات جديدة بين الجيران وتشجيع أوقات التبادل. المساعدة عن بعد (القيادة، التوصيل، قسيمة الهدايا، مجموع الجوائز، وما إلى ذلك) غير مسموح بها.</string>
-    <string name="action_CGU_2_title">المساهمات والطلبات</string>
+    <string name="action_CGU_2_title">المساهمات وطلب مساعدة</string>
     <string name="action_CGU_2">يمكنني أن أطلب أو أعرض السلع المادية (المعدات والملابس وما إلى ذلك)، والخدمات (الغسيل، وطباعة المستندات، وما إلى ذلك) وأوقات المشاركة (القهوة، والنشاط، وما إلى ذلك). لا أستطيع أن أطلب أو أعرض مساعدة مالية أو مساعدة في السكن أو الطعام. ولكن إذا كنت في حاجة إليها، يمكنني الاتصال بالمشرف الذي سيرشدني.</string>
     <string name="action_CGU_3_title">موافقة</string>
     <string name="action_CGU_3">عندما أنشر طلبًا لطرف ثالث، أتأكد من الحصول على موافقته مسبقًا.</string>
@@ -1635,7 +1635,7 @@
     <string name="myentourages_filter_created_by_me">الإجراءات التي قمت بإنشائها فقط</string>
     <string name="myentourages_filter_partner">فقط الإجراءات التي أنشأها أنصار الجمعيات التي أدعمها</string>
     <string name="myentourages_filter_types_title">أنواع الحاشية</string>
-    <string name="myentourages_filter_demand">الطلبات</string>
+    <string name="myentourages_filter_demand">طلب مساعدة</string>
     <string name="myentourages_filter_contribution">مساهمات</string>
 
     <!-- Close Entourage Popup -->
@@ -1939,7 +1939,7 @@
     <string name="actions_button">عرض القائمة →</string>
     <string name="title_my_activity">👌 نشاطي</string>
     <string name="contribCreated">تم نشر التبرعات\</string>
-    <string name="askCreated">تم نشر الطلبات\n</string>
+    <string name="askCreated">تم نشر طلب مساعدة\n</string>
 
 
     <string name="menu_info_first_title">👋 اتخذ الخطوة الأولى</string>
@@ -2001,7 +2001,7 @@
         <item quantity="one">طلب جديد لـ %1$s</item>
         <item quantity="two">طلبان جديدان لـ %1$s</item>
         <item quantity="few">%1$d طلبات جديدة لـ %1$s</item>
-        <item quantity="many">العديد من الطلبات لـ %1$s</item>
+        <item quantity="many">العديد من طلب مساعدة لـ %1$s</item>
         <item quantity="other">طلبات جديدة لـ %1$s،...</item>
     </plurals>
 
@@ -2094,10 +2094,10 @@
     <string name="onboard_welcome_title_phase3">أنا سعيد بنسبة %s!</string>
 
     <string name="onboard_phase3_entour_desc">بالإضافة إلى مقابلة الأشخاص، كيف تريد المساهمة في مجتمع Entourage؟</string>
-    <string name="onboard_phase3_entour_title">محيطي</string>
-    <string name="onboard_phase3_entour_subtitle">تقديم المساعدة...</string>
-    <string name="onboard_phase3_be_entour_title">كن محاطًا</string>
-    <string name="onboard_phase3_be_entour_subtitle">أطلب المساعدة، وأعثر على الهياكل الاجتماعية من حولي...</string>
+    <string name="onboard_phase3_entour_title">دعم الآخرين</string>
+    <string name="onboard_phase3_entour_subtitle">أرغب في تقديم الدعم لجيراني الذين يحتاجون إليه.</string>
+    <string name="onboard_phase3_be_entour_title">تلقي الدعم</string>
+    <string name="onboard_phase3_be_entour_subtitle">أنا في وضع ضعيف وأبحث عن الدعم.</string>
     <string name="onboard_phase3_place_title">ما هو حيك؟</string>
     <string name="onboard_phase3_asso_title">أنا جمعية</string>
 
@@ -2406,11 +2406,11 @@
 
     <string name="custom_dialog_action_content_one_demande">هل وجدت ما كنت تبحث عنه؟</string>
     <string name="custom_dialog_action_content_two_demande">نصيحة: انظر إلى المساهمات. قد يعرض عليك أحد الجيران ما تبحث عنه.</string>
-    <string name="custom_dialog_action_content_two_contrib">نصيحة: انظر إلى الطلبات القريبة منك. قد يكون أحد الجيران مهتمًا.</string>
+    <string name="custom_dialog_action_content_two_contrib">نصيحة: انظر إلى طلب مساعدة القريبة منك. قد يكون أحد الجيران مهتمًا.</string>
     <string name="custom_dialog_action_content_three_contrib">شكرا جزيلا لالتزامكم. سنكون قادرين على حذف مساهمتك.</string>
     <string name="custom_dialog_action_content_three_demande">شكرا جزيلا لالتزامكم. سنكون قادرين على حذف طلبك.</string>
     <string name="custom_dialog_action_two_button_contrib">عرض المساهمات</string>
-    <string name="custom_dialog_action_two_button_demand">عرض الطلبات</string>
+    <string name="custom_dialog_action_two_button_demand">عرض طلب مساعدة</string>
 
     <string name="discussion_main_title">مناقشات</string>
     <string name="discussion_settings_title">إعدادات المحادثة</string>
@@ -2484,11 +2484,11 @@
     <string name="pop_up_rugby_france_content">أفضل اللقاءات لا تحدث بالضرورة في الملعب! انضم إلى مجموعة \ "دعونا نمارس الرياضة معًا\"</string>
 
     <!-- New Home string -->
-    <string name="home_v2_title">تطبيق L\ الذي يعيد إنشاء الروابط بين الجيران</string>
+    <string name="home_v2_title">التطبيق الذي يعيد إنشاء الروابط بين الجيران</string>
 
     <string name="home_v2_title_action"> تقديم يد العون والمساعدة</string>
     <string name="home_v2_subtitle_action">جيرانك بحاجة إليك!</string>
-    <string name="home_v2_btn_more_action">رؤية جميع الطلبات</string>
+    <string name="home_v2_btn_more_action">رؤية جميع طلب مساعدة</string>
 
     <string name="home_v2_title_action_contrib">هل تحتاج إلى d\ يد المساعدة؟</string>
     <string name="home_v2_subtitle_action_contrib">اكتشف ما يقدمه جيرانك!</string>

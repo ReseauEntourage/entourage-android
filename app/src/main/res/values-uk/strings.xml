@@ -176,8 +176,8 @@
     <string name="write_description_hint">Зустріти сусідів з 18-го</string>
     <string name="add_location">Ajouter un lieu</string>
     <string name="add_location_hint">Адреса, місто чи відділ</string>
-    <string name="mandatory">- ОБОВ&amp;apos;ЯЗКОВО</string>
-    <string name="optional">- необов&amp;apos;язковий</string>
+    <string name="mandatory"> ОБОВ&amp;apos;ЯЗКОВО</string>
+    <string name="optional"> необов&amp;apos;язковий</string>
     <string name="step">етап</string>
     <string name="stepOne">01.</string>
     <string name="stepThree">03.</string>
@@ -671,9 +671,9 @@
     <string name="action_create_title">Назва дії \</string>
     <string name="action_create_subtitle">Дайте коротку та зрозумілу назву своєму %s</string>
     <string name="action_create_title_hint">Назвіть %s</string>
-    <string name="action_create_description">опис</string>
+    <string name="action_create_description">опис •</string>
     <string name="action_create_description_hint">Детально опишіть %s, який ви пропонуєте</string>
-    <string name="action_create_add_photo">Фото</string>
+    <string name="action_create_add_photo">Фото •</string>
 
     <string name="action_name_demand">запит</string>
     <string name="action_name_contrib">внесок</string>
@@ -683,7 +683,7 @@
     <!-- pop back create-->
     <string name="back_create_action_title">Увага</string>
     <string name="back_create_action_content">Якщо ви вийдете з форми створення %s, уся введена інформація буде втрачена.</string>
-    <string name="action_create_cat_choose_category">Виберіть категорію, яка найкраще описує ваш %s.</string>
+    <string name="action_create_cat_choose_category">Виберіть категорію, яка найкраще описує ваш %s</string>
     <string name="action_create_location_title">Знайдіть %s</string>
     <string name="action_create_location_subtitle">Ваше точне місцезнаходження не повідомлятиметься, ви можете вказати місцезнаходження, відмінне від зони дії вашого профілю.</string>
 
@@ -2114,10 +2114,10 @@
     <string name="onboard_welcome_title_phase3">У захваті від %s!</string>
 
     <string name="onboard_phase3_entour_desc">Крім зустрічей з людьми, як ви хочете зробити внесок у спільноту Entourage?</string>
-    <string name="onboard_phase3_entour_title">Об&amp;apos;ємний</string>
-    <string name="onboard_phase3_entour_subtitle">Запропонуйте допомогу...</string>
-    <string name="onboard_phase3_be_entour_title">Бути оточеним</string>
-    <string name="onboard_phase3_be_entour_subtitle">Зверніться по допомогу, знайдіть соціальні структури навколо мене...</string>
+    <string name="onboard_phase3_entour_title">Підтримати інших</string>
+    <string name="onboard_phase3_entour_subtitle">Я хотів би надати підтримку своїм сусідам, які цього потребуют</string>
+    <string name="onboard_phase3_be_entour_title">Отримати підтримку</string>
+    <string name="onboard_phase3_be_entour_subtitle">Я перебуваю в уразливій ситуації та шукаю підтримки.</string>
     <string name="onboard_phase3_place_title">Який ваш район?</string>
     <string name="onboard_phase3_asso_title">Я асоціація</string>
 

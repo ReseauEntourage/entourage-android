@@ -175,8 +175,8 @@ Découvrez les initiatives de votre quartier et tissez des liens avec vos voisin
     <string name="write_description_hint">Pour se rencontrer entre voisins du 18e</string>
     <string name="add_location">Ajouter un lieu</string>
     <string name="add_location_hint">Adresse, ville ou département</string>
-    <string name="mandatory">- obligatoire</string>
-    <string name="optional">- facultatif</string>
+    <string name="mandatory"> obligatoire</string>
+    <string name="optional"> facultatif</string>
     <string name="step">Étape</string>
     <string name="stepOne">01.</string>
     <string name="stepThree">03.</string>
@@ -680,12 +680,12 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <!-- Action create -->
     <string name="action_create_demand_title">Nouvelle demande</string>
     <string name="action_create_contrib_title">Nouvelle contribution</string>
-    <string name="action_create_title">Titre de l\'action</string>
+    <string name="action_create_title">Titre de l\'action •</string>
     <string name="action_create_subtitle">Donnez un nom court et explicite à votre %s</string>
     <string name="action_create_title_hint">Nommez votre %s</string>
-    <string name="action_create_description">Description</string>
+    <string name="action_create_description">Description •</string>
     <string name="action_create_description_hint">Décrivez en détail la %s que vous proposez</string>
-    <string name="action_create_add_photo">Photo</string>
+    <string name="action_create_add_photo">Photo •</string>
 
     <string name="action_name_demand">demande</string>
     <string name="action_name_contrib">contribution</string>
@@ -698,7 +698,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
 
 
 
-    <string name="action_create_cat_choose_category">Sélectionnez la catégorie qui décrit le mieux votre %s.</string>
+    <string name="action_create_cat_choose_category">Sélectionnez la catégorie qui décrit le mieux votre %s</string>
     <string name="action_create_location_title">Localisez votre %s</string>
     <string name="action_create_location_subtitle">Votre position précise ne sera pas partagée, vous pouvez mettre une autre localisation que la zone d’action de votre profil.</string>
 
@@ -2604,19 +2604,19 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="translation_bottom_fragment_main_title">"Traduction"</string>
 
     <string name="action_social_name">Temps de partage</string>
-    <string name="action_social_subname">café, activité...</string>
+    <string name="action_social_subname">Café, activité...</string>
 
     <string name="action_services_name">Service</string>
-    <string name="action_services_subname">lessive, impression de documents...</string>
+    <string name="action_services_subname">Lessive, impression de documents...</string>
 
     <string name="action_clothes_name">Vêtement</string>
-    <string name="action_clothes_subname">chaussures, manteau...</string>
+    <string name="action_clothes_subname">Chaussures, manteau...</string>
 
     <string name="action_equipment_name">Équipement</string>
-    <string name="action_equipment_subname">téléphone, duvet...</string>
+    <string name="action_equipment_subname">Téléphone, duvet...</string>
 
     <string name="action_hygiene_name">Produit d\'hygiène</string>
-    <string name="action_hygiene_subname">savon, protection hygiénique...</string>
+    <string name="action_hygiene_subname">Savon, protection hygiénique...</string>
 
     <string name="interest_activites">Activités manuelles</string>
 
@@ -2654,7 +2654,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="custom_dialog_action_content_one_contrib">Votre action \"<![CDATA[<b>%1$s</b>]]>\" est-elle terminée ?</string>
     <string name="search_member_hint">Chercher un membre</string>
     <string name="terms_and_conditions_html">En cliquant sur &lt;b&gt;Suivant&lt;/b&gt;, vous acceptez les &lt;a href=\'https://www.entourage.social/cgu/\'&gt;Conditions Générales d\'Utilisation&lt;/a&gt; et la &lt;a href=\'https://www.entourage.social/politique-de-confidentialite/\'&gt;Politique de Confidentialité&lt;/a&gt;</string>
-    <string name="action_crete_cat_about">Vous cherchez à proposer une %s qui ne rentre pas dans l\'une de ces catégories ? Il semble qu\'elle n\'ait pas sa place sur le réseau,mais vous pouvez toujours</string>
+    <string name="action_crete_cat_about">Vous cherchez à proposer une %s qui ne rentre pas dans l\'une de ces catégories ? Il semble qu\'elle n\'ait pas sa place sur le réseau,mais vous pouvez toujours </string>
     <string name="action_create_cat_about_link"> en savoir plus par ici.</string>
     <string name="report_modal_title_translate">Traduire</string>
     <string name="report_modal_subtitle_translate">Nous traduisons automatiquement les messages rédigés par les citoyens</string>
@@ -2820,6 +2820,29 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="popup_ambassador_button_orga">Organisateur</string>
     <string name="popup_ambassador_button_participant">Participant</string>
     <string name="organizer_label">- Organisateur</string>
+
+    <string name="demand_social_title">Exemple : Balade dans le parc</string>
+    <string name="demand_social_description">Exemple : Je propose une balade dans le parc ce week-end pour discuter et se détendre.</string>
+    <string name="demand_services_title">Exemple : Besoin d\'imprimer des documents</string>
+    <string name="demand_services_description">Exemple : Je dois imprimer quelques pages pour un rendez-vous. Quelqu\'un pourrait-il m\'aider ?</string>
+    <string name="demand_clothes_title">Exemple : Cherche manteau d\'hiver</string>
+    <string name="demand_clothes_description">Exemple : Je suis à la recherche d\'un manteau chaud en taille M pour cet hiver.</string>
+    <string name="demand_equipment_title">Exemple : Besoin d\'un duvet</string>
+    <string name="demand_equipment_description">Exemple : Je cherche un duvet pour dormir dehors cet hiver. Si quelqu\'un en a un à donner, ce serait d\'une grande aide.</string>
+    <string name="demand_hygiene_title">Exemple : Besoin de savon</string>
+    <string name="demand_hygiene_description">Exemple : Je cherche du savon ou du gel douche. Si quelqu\'un en a en surplus, je suis preneur.</string>
+
+    <string name="contrib_social_title">Exemple : Café et discussion</string>
+    <string name="contrib_social_description">Exemple : Je cherche quelqu\'un avec qui partager un café cette semaine dans le quartier.</string>
+    <string name="contrib_services_title">Exemple : Aide pour une lessive</string>
+    <string name="contrib_services_description">Exemple : Je propose de laver du linge pour quelqu\'un qui en aurait besoin.</string>
+    <string name="contrib_clothes_title">Exemple : Chaussures de sport à donner</string>
+    <string name="contrib_clothes_description">Exemple : Je donne une paire de chaussures de sport en bon état, taille 42.</string>
+    <string name="contrib_equipment_title">Exemple : Téléphone portable à donner</string>
+    <string name="contrib_equipment_description">Exemple : Je donne un ancien téléphone portable fonctionnel. Idéal pour quelqu\'un qui en aurait besoin.</string>
+    <string name="contrib_hygiene_title">Exemple : Produits hygiéniques à donner</string>
+    <string name="contrib_hygiene_description">Exemple : Je donne plusieurs paquets de protections hygiéniques.</string>
+
 
 </resources>
 

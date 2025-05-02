@@ -176,8 +176,8 @@ Descoperiți inițiativele din cartierul dvs. și construiți legături cu vecin
     <string name="write_description_hint">Să întâlnesc vecini din 18</string>
     <string name="add_location">Adăugați un loc</string>
     <string name="add_location_hint">Adresă, oraș sau departament</string>
-    <string name="mandatory">- OBLIGATORIU</string>
-    <string name="optional">- optional</string>
+    <string name="mandatory"> OBLIGATORIU</string>
+    <string name="optional"> optional</string>
     <string name="step">Etapă</string>
     <string name="stepOne">01.</string>
     <string name="stepThree">03.</string>
@@ -663,12 +663,12 @@ Ei vor citi acest mesaj imediat ce se vor alătura grupului.</string>
     <!-- Action create -->
     <string name="action_create_demand_title">Cerere nouă</string>
     <string name="action_create_contrib_title">Contribuție nouă</string>
-    <string name="action_create_title">Titlul acțiunii \</string>
+    <string name="action_create_title">Titlul acțiunii •</string>
     <string name="action_create_subtitle">Dați un nume scurt și explicit lui %s</string>
     <string name="action_create_title_hint">Denumiți-vă %s</string>
-    <string name="action_create_description">Descriere</string>
+    <string name="action_create_description">Descriere •</string>
     <string name="action_create_description_hint">Descrieți în detaliu %s pe care îl oferiți</string>
-    <string name="action_create_add_photo">Fotografie</string>
+    <string name="action_create_add_photo">Fotografie •</string>
 
     <string name="action_name_demand">cerere</string>
     <string name="action_name_contrib">contribuţie</string>
@@ -680,7 +680,7 @@ Ei vor citi acest mesaj imediat ce se vor alătura grupului.</string>
     <string name="back_create_action_content">Dacă părăsiți formularul de creare %s, toate informațiile introduse se vor pierde.</string>
 
 
-    <string name="action_create_cat_choose_category">Selectați categoria care descrie cel mai bine %s.</string>
+    <string name="action_create_cat_choose_category">Selectați categoria care descrie cel mai bine %s</string>
     <string name="action_create_location_title">Găsiți %s</string>
     <string name="action_create_location_subtitle">Locația dvs. exactă nu va fi partajată, puteți pune o altă locație decât zona de acțiune a profilului dvs.</string>
 
@@ -2109,10 +2109,10 @@ Ei vor citi acest mesaj imediat ce se vor alătura grupului.</string>
     <string name="onboard_welcome_title_phase3">Încântat de %s!</string>
 
     <string name="onboard_phase3_entour_desc">Pe lângă întâlnirea cu oameni, cum vrei să contribui la Comunitatea Entourage?</string>
-    <string name="onboard_phase3_entour_title">Surround</string>
-    <string name="onboard_phase3_entour_subtitle">Oferă ajutor...</string>
-    <string name="onboard_phase3_be_entour_title">Fii inconjurat</string>
-    <string name="onboard_phase3_be_entour_subtitle">Cere ajutor, găsește structurile sociale din jurul meu...</string>
+    <string name="onboard_phase3_entour_title">Sprijină pe alții</string>
+    <string name="onboard_phase3_entour_subtitle">Aș dori să ofer sprijin vecinilor mei care au nevoie.</string>
+    <string name="onboard_phase3_be_entour_title">Primește sprijin</string>
+    <string name="onboard_phase3_be_entour_subtitle">Sunt într-o situație vulnerabilă și caut sprijin.</string>
     <string name="onboard_phase3_place_title">Care este cartierul tău?</string>
     <string name="onboard_phase3_asso_title">Sunt o asociatie</string>
 

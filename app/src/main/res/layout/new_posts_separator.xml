@@ -35,7 +35,7 @@
             android:layout_marginHorizontal="5dp"
             android:layout_marginBottom="11dp"
             android:text="@{content}"
-            app:layout_constraintLeft_toRightOf="@id/view_left"
+            app:layout_constraintStart_toEndOf="@id/view_left"
             app:layout_constraintRight_toLeftOf="@id/view_right"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Notifications" />
@@ -46,7 +46,7 @@
             android:layout_height="1dp"
             android:background="@color/light_orange"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toRightOf="@id/content"
+            app:layout_constraintStart_toEndOf="@id/content"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 

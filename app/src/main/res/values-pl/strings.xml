@@ -176,8 +176,8 @@ Odkrywaj inicjatywy w swojej okolicy i buduj kontakty z sąsiadami.</string>
     <string name="write_description_hint">Spotkanie z sąsiadami z 18</string>
     <string name="add_location">Dodaj miejsce</string>
     <string name="add_location_hint">Adres, miasto lub wydział</string>
-    <string name="mandatory">- OBOWIĄZKOWE</string>
-    <string name="optional">- opcjonalny</string>
+    <string name="mandatory"> OBOWIĄZKOWE</string>
+    <string name="optional"> opcjonalny</string>
     <string name="step">Scena</string>
     <string name="stepOne">01.</string>
     <string name="stepThree">03.</string>
@@ -662,12 +662,12 @@ Przeczytają tę wiadomość, gdy tylko dołączą do grupy.</string>
     <!-- Action create -->
     <string name="action_create_demand_title">Nowa prośba</string>
     <string name="action_create_contrib_title">Nowy wkład</string>
-    <string name="action_create_title">Tytuł akcji \</string>
+    <string name="action_create_title">Tytuł akcji •</string>
     <string name="action_create_subtitle">Nadaj krótką i wyraźną nazwę swojemu %s</string>
     <string name="action_create_title_hint">Nazwij swojego %s</string>
-    <string name="action_create_description">Opis</string>
+    <string name="action_create_description">Opis •</string>
     <string name="action_create_description_hint">Opisz szczegółowo %s, który oferujesz</string>
-    <string name="action_create_add_photo">Zdjęcie</string>
+    <string name="action_create_add_photo">Zdjęcie •</string>
 
     <string name="action_name_demand">wniosek</string>
     <string name="action_name_contrib">składka</string>
@@ -678,7 +678,7 @@ Przeczytają tę wiadomość, gdy tylko dołączą do grupy.</string>
     <string name="back_create_action_title">Uwaga</string>
     <string name="back_create_action_content">Jeśli wyjdziesz z formularza tworzenia %s, wszystkie wprowadzone informacje zostaną utracone.</string>
 
-    <string name="action_create_cat_choose_category">Wybierz kategorię, która najlepiej opisuje Twojego %s.</string>
+    <string name="action_create_cat_choose_category">Wybierz kategorię, która najlepiej opisuje Twojego %s</string>
     <string name="action_create_location_title">Znajdź swój %s</string>
     <string name="action_create_location_subtitle">Twoja dokładna lokalizacja nie będzie udostępniana, możesz podać lokalizację inną niż obszar działania Twojego profilu.</string>
 
@@ -2113,10 +2113,10 @@ Przeczytają tę wiadomość, gdy tylko dołączą do grupy.</string>
     <string name="onboard_welcome_title_phase3">Zachwycony %s!</string>
 
     <string name="onboard_phase3_entour_desc">Oprócz poznawania ludzi, w jaki sposób chcesz wnieść swój wkład w społeczność Entourage?</string>
-    <string name="onboard_phase3_entour_title">Otaczać</string>
-    <string name="onboard_phase3_entour_subtitle">Oferować pomoc...</string>
-    <string name="onboard_phase3_be_entour_title">Być otoczonym</string>
-    <string name="onboard_phase3_be_entour_subtitle">Proś o pomoc, znajdź struktury społeczne wokół mnie...</string>
+    <string name="onboard_phase3_entour_title">Wspierać innych</string>
+    <string name="onboard_phase3_entour_subtitle">Chciałbym/chciałabym zaoferować wsparcie moim sąsiadom w potrzebie.</string>
+    <string name="onboard_phase3_be_entour_title">Otrzymać wsparcie</string>
+    <string name="onboard_phase3_be_entour_subtitle">Jestem w trudnej sytuacji i szukam wsparcia.</string>
     <string name="onboard_phase3_place_title">Jaka jest Twoja okolica?</string>
     <string name="onboard_phase3_asso_title">Jestem stowarzyszeniem</string>
 

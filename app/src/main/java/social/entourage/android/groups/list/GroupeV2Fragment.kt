@@ -351,19 +351,38 @@ class GroupeV2Fragment : Fragment(), UpdateGroupInter {
     }
 
     private fun handleResponseGetGroups(allGroups: MutableList<Group>?) {
-        allGroups?.let {
-            val newGroups = it.filter { group -> !addedGroupIds.contains(group.id) }
-            groupsList.addAll(newGroups)
-            adapterGroup.updateGroupsList(groupsList)
-            addedGroupIds.addAll(newGroups.map { group -> group.id!! })
+        if (allGroups == null || allGroups.isEmpty()) {
+            isLoading = false
+            binding.progressBar.visibility = View.GONE
+            return
         }
+
+        allGroups.let {
+            val newGroups = it.filter { group -> !addedGroupIds.contains(group.id) }
+            val initialSize = groupsList.size
+            groupsList.addAll(newGroups)
+            addedGroupIds.addAll(newGroups.map { group -> group.id!! })
+
+            // Protection : vérifie la cohérence des tailles avant de notifier
+            if (groupsList.size >= initialSize + newGroups.size) {
+                adapterGroup.notifyItemRangeInserted(initialSize, newGroups.size)
+            } else {
+                adapterGroup.notifyDataSetChanged() // Protection redondante
+            }
+        }
+
         checkingSumForEmptyView()
         isLoading = false
         binding.progressBar.visibility = View.GONE
     }
-
+    
     private fun handleResponseMyGetGroups(allGroups: MutableList<Group>?) {
-        allGroups?.let {
+        if (allGroups == null || allGroups.isEmpty()) {
+            isLoading = false
+            binding.progressBar.visibility = View.GONE
+            return
+        }
+        allGroups.let {
             val newGroups = it.filter { group -> !addedMyGroupIds.contains(group.id) }
             myGroupsList.addAll(newGroups)
             adapterMyGroup.resetData(myGroupsList)
@@ -375,6 +394,7 @@ class GroupeV2Fragment : Fragment(), UpdateGroupInter {
                 binding.titleMyGroups.visibility = View.VISIBLE
                 binding.separatorMyGroups.visibility = View.VISIBLE
             }
+            adapterGroupSearch.notifyDataSetChanged()
         }
         checkingSumForEmptyView()
         isLoading = false
@@ -382,13 +402,19 @@ class GroupeV2Fragment : Fragment(), UpdateGroupInter {
     }
 
     private fun updateSearchResults(searchResults: MutableList<Group>?) {
-        searchResults?.let {
+        if (searchResults == null || searchResults.isEmpty()) {
+            binding.progressBar.visibility = View.GONE
+            return
+        }
+        searchResults.let {
             searchResultsList.clear()
             searchResultsList.addAll(it)
             adapterGroupSearch.updateGroupsList(searchResultsList)
             binding.progressBar.visibility = View.GONE
+            adapterGroupSearch.notifyDataSetChanged()
         }
     }
+
 
     private fun checkingSumForEmptyView() {
         checkSum++

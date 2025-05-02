@@ -21,7 +21,7 @@ class WelcomeFourActivity: BaseActivity() {
         binding = ActivityLayoutWelcomeFourBinding.inflate(layoutInflater)
         binding.mainButton.setOnClickListener {
             AnalyticsEvents.logEvent(AnalyticsEvents.Action_WelcomeOfferHelp_Day8)
-            val urlString = "https://kahoot.it/challenge/45371e80-fe50-4be5-afec-b37e3d50ede2_1687252158038"
+            val urlString = "https://kahoot.it/challenge/0354666?challenge-id=45371e80-fe50-4be5-afec-b37e3d50ede2_1729004998521"
             WebViewFragment.newInstance(urlString, 0, true)
                 .show(supportFragmentManager, WebViewFragment.TAG)
         }

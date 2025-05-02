@@ -31,7 +31,7 @@
             android:layout_height="wrap_content"
             android:text="@string/create_survey"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toRightOf="@id/icon_back"
+            app:layout_constraintStart_toEndOf="@id/icon_back"
             app:layout_constraintTop_toTopOf="parent"
             />
 

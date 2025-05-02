@@ -24,7 +24,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    app:step="@{@string/stepTwo}" />
+                    app:step="@{@string/stepOne}" />
 
                 <TextView
                     android:id="@+id/title"
@@ -33,7 +33,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:layout_marginEnd="5dp"
-                    android:text=""
                     tools:text="Title" />
 
                 <TextView
@@ -42,7 +41,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/mandatory"
-                    tools:text="-obligatoire" />
+                    tools:text="-obligatoire"
+                    android:visibility="gone"/>
 
                 <include
                     android:id="@+id/error"

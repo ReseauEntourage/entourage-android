@@ -80,7 +80,7 @@
         app:layout_constraintEnd_toEndOf="@+id/ui_layout_notif"
         android:layout_marginEnd="-5dp"
         android:layout_marginTop="-5dp"
-        android:visibility="visible">
+        android:visibility="invisible">
         <TextView
             android:layout_width="18dp"
             android:layout_height="18dp"
@@ -214,6 +214,7 @@
                 <ImageView
                     android:layout_width="25dp"
                     android:layout_height="25dp"
+                    android:id="@+id/chevron_1"
                     android:src="@drawable/arrow_light_orange"/>
             </LinearLayout>
 
@@ -272,6 +273,7 @@
                 <ImageView
                     android:layout_width="25dp"
                     android:layout_height="25dp"
+                    android:id="@+id/chevron_2"
                     android:src="@drawable/arrow_light_orange"/>
             </LinearLayout>
 
@@ -330,6 +332,7 @@
                 <ImageView
                     android:layout_width="25dp"
                     android:layout_height="25dp"
+                    android:id="@+id/chevron_4"
                     android:src="@drawable/arrow_light_orange"/>
             </LinearLayout>
 
@@ -475,6 +478,7 @@
                 <ImageView
                     android:layout_width="25dp"
                     android:layout_height="25dp"
+                    android:id="@+id/chevron_3"
                     android:src="@drawable/arrow_light_orange"/>
             </LinearLayout>
             <include

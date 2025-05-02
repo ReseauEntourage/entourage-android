@@ -1,8 +1,10 @@
 package social.entourage.android.actions.create
 
+import android.content.Context
 import android.net.Uri
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import social.entourage.android.R
 import social.entourage.android.api.MetaDataRepository
 import social.entourage.android.api.model.Action
 import social.entourage.android.api.model.ActionSection
@@ -43,6 +45,30 @@ class CommunicationActionHandlerViewModel : ViewModel() {
             action.imageUrl = keyImageUpload!!
         }
     }
+
+    fun getPlaceholdersForActionType(context:Context): Pair<String, String> {
+            return if (isDemand) {
+                when (sectionsList.value?.firstOrNull { it.isSelected }?.id) {
+                    ActionSection.social -> context.getString(R.string.demand_social_title) to context.getString(R.string.demand_social_description)
+                    ActionSection.clothes -> context.getString(R.string.demand_clothes_title) to context.getString(R.string.demand_clothes_description)
+                    ActionSection.equipment -> context.getString(R.string.demand_equipment_title) to context.getString(R.string.demand_equipment_description)
+                    ActionSection.hygiene -> context.getString(R.string.demand_hygiene_title) to context.getString(R.string.demand_hygiene_description)
+                    ActionSection.services -> context.getString(R.string.demand_services_title) to context.getString(R.string.demand_services_description)
+                    else -> "" to ""
+                }
+            } else {
+                when (sectionsList.value?.firstOrNull { it.isSelected }?.id) {
+                    ActionSection.social -> context.getString(R.string.contrib_social_title) to context.getString(R.string.contrib_social_description)
+                    ActionSection.clothes -> context.getString(R.string.contrib_clothes_title) to context.getString(R.string.contrib_clothes_description)
+                    ActionSection.equipment -> context.getString(R.string.contrib_equipment_title) to context.getString(R.string.contrib_equipment_description)
+                    ActionSection.hygiene -> context.getString(R.string.contrib_hygiene_title) to context.getString(R.string.contrib_hygiene_description)
+                    ActionSection.services -> context.getString(R.string.contrib_services_title) to context.getString(R.string.contrib_services_description)
+                    else -> "" to ""
+                }
+            }
+    }
+
+
 
     fun prepareUpdateAction() {
         sectionsList.value?.first { it.isSelected }?.let {

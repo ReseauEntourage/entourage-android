@@ -665,12 +665,12 @@ Leerán este mensaje tan pronto como se unan al grupo.</string>
     <!-- Action create -->
     <string name="action_create_demand_title">Nueva solicitud</string>
     <string name="action_create_contrib_title">Nueva contribución</string>
-    <string name="action_create_title">Título de la acción \</string>
+    <string name="action_create_title">Título de la acción •</string>
     <string name="action_create_subtitle">Dale un nombre corto y explícito a tu %s</string>
     <string name="action_create_title_hint">Nombra tu %s</string>
-    <string name="action_create_description">Descripción</string>
+    <string name="action_create_description">Descripción •</string>
     <string name="action_create_description_hint">Describe detalladamente el %s que ofreces</string>
-    <string name="action_create_add_photo">Foto</string>
+    <string name="action_create_add_photo">Foto •</string>
 
     <string name="action_name_demand">pedido</string>
     <string name="action_name_contrib">contribución</string>
@@ -681,7 +681,7 @@ Leerán este mensaje tan pronto como se unan al grupo.</string>
     <string name="back_create_action_title">Atención</string>
     <string name="back_create_action_content">Si sale del formulario de creación %s, se perderá toda la información ingresada.</string>
 
-    <string name="action_create_cat_choose_category">Seleccione la categoría que mejor describa su %s.</string>
+    <string name="action_create_cat_choose_category">Seleccione la categoría que mejor describa su %s</string>
     <string name="action_create_location_title">Localiza tu %s</string>
     <string name="action_create_location_subtitle">Tu ubicación precisa no será compartida, puedes poner una ubicación distinta al área de acción de tu perfil.</string>
 
@@ -2101,10 +2101,10 @@ Leerán este mensaje tan pronto como se unan al grupo.</string>
     <string name="onboard_welcome_title_phase3">¡Encantado con %s!</string>
 
     <string name="onboard_phase3_entour_desc">Además de conocer gente, ¿cómo quieres contribuir a la comunidad Entourage?</string>
-    <string name="onboard_phase3_entour_title">Rodear</string>
-    <string name="onboard_phase3_entour_subtitle">Ofrecer ayuda...</string>
-    <string name="onboard_phase3_be_entour_title">Estar rodeado</string>
-    <string name="onboard_phase3_be_entour_subtitle">Pedir ayuda, encontrar las estructuras sociales que me rodean...</string>
+    <string name="onboard_phase3_entour_title">Apoyar a otros</string>
+    <string name="onboard_phase3_entour_subtitle">Me gustaría ofrecer apoyo a mis vecinos que lo necesitan.</string>
+    <string name="onboard_phase3_be_entour_title">Recibir apoyo</string>
+    <string name="onboard_phase3_be_entour_subtitle">Estoy en una situación vulnerable y busco apoyo.</string>
     <string name="onboard_phase3_place_title">¿Cuál es tu barrio?</string>
     <string name="onboard_phase3_asso_title">soy una asociacion</string>
 

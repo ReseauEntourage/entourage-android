@@ -83,7 +83,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="20dp"
                         android:textColor="@color/orange"
-                        app:layout_constraintLeft_toRightOf="@id/icon"
+                        app:layout_constraintStart_toEndOf="@id/icon"
                         app:layout_constraintTop_toTopOf="parent"
                         tools:text="Notifications" />
 
@@ -137,7 +137,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="20dp"
                         android:textColor="@color/orange"
-                        app:layout_constraintLeft_toRightOf="@id/iconBlock"
+                        app:layout_constraintStart_toEndOf="@id/iconBlock"
                         app:layout_constraintTop_toTopOf="parent"
                         tools:text="discussion_block_title" />
 
