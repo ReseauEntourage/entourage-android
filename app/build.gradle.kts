@@ -1,11 +1,9 @@
-import com.android.build.api.dsl.Lint
-import com.android.build.api.dsl.LintOptions
 import java.io.ByteArrayOutputStream
 
 plugins {
     id("com.android.application")
     kotlin("android")
-    id("kotlin-android-extensions")
+    //id("kotlin-android-extensions")
     id("com.google.firebase.crashlytics")
     id("com.google.android.gms.oss-licenses-plugin")
     //id("com.google.firebase.firebase-perf")
@@ -31,7 +29,7 @@ android {
 
     // App versions
     val versionMajor = 9
-    val versionMinor = 7
+    val versionMinor = 9
     val versionPatch = "git rev-list HEAD --count".runCommand().toInt()
     val versionBranchName = "git rev-parse --abbrev-ref HEAD".runCommand()
     val versionCodeInt = (versionMajor * 100 + versionMinor) * 10000 + versionPatch % 10000
@@ -221,15 +219,15 @@ dependencies {
 
 
     //https://firebase.google.com/support/release-notes/android
-    implementation(platform("com.google.firebase:firebase-bom:32.1.0"))
+    implementation(platform("com.google.firebase:firebase-bom:33.1.0"))
     //implementation firebaseDependencies.values()
-    implementation("com.google.firebase:firebase-analytics-ktx")
-    implementation("com.google.firebase:firebase-messaging-ktx")
+    implementation("com.google.firebase:firebase-analytics")
+    implementation("com.google.firebase:firebase-messaging")
     implementation("androidx.compose.ui:ui-text-android:1.6.3")
     //TODO: fix this inappmessaging lib that is blocking tests to run
-    releaseImplementation("com.google.firebase:firebase-inappmessaging-display-ktx")
-    implementation("com.google.firebase:firebase-crashlytics-ktx")
-    implementation("com.google.firebase:firebase-config-ktx")
+    releaseImplementation("com.google.firebase:firebase-inappmessaging-display")
+    implementation("com.google.firebase:firebase-crashlytics")
+    implementation("com.google.firebase:firebase-config")
     //implementation("com.google.firebase:firebase-perf-ktx")
 
     //implementation gmsDependencies.values()

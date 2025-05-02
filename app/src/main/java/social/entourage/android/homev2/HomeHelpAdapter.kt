@@ -55,7 +55,7 @@ class HomeHelpAdapter(val callback:OnHomeV2HelpItemClickListener): RecyclerView.
             val context = holder.binding.root.context
             holder.binding.tvHomeV2HelpItem.text = it
 
-            if(position == 2){
+            if(position == 0){
                 holder.binding.homeV2PedagoItemMainLayout.background = context.getDrawable(R.drawable.home_version_two_large_button_gradient_shape)
                 holder.binding.tvHomeV2HelpItem.setTextColor(context.getColor(R.color.white))
                 holder.binding.ivArrowRightHomeV2HelpItem.setColorFilter(context.getColor(R.color.white))

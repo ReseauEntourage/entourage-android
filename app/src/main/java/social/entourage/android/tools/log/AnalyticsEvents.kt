@@ -725,6 +725,17 @@ object AnalyticsEvents {
 
 
 
+    const val onboarding_welcome_view = "onboarding_welcome_view"
+    const val onboarding_actions_view = "onboarding_actions_view"
+    const val onboarding_interests_view = "onboarding_interests_view"
+    const val onboarding_donations_categories_view = "onboarding_donations_categories_view"
+    const val onboarding_end_view = "onboarding_end_view"
+
+    const val has_user_activated_notif = "has_user_activated_notif"
+    const val has_user_disabled_notif = "has_user_disabled_notif"
+
+
+
 
 
 

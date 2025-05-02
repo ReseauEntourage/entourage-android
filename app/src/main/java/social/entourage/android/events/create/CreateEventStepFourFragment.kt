@@ -1,6 +1,7 @@
 package social.entourage.android.events.create
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -44,6 +45,7 @@ class CreateEventStepFourFragment : Fragment() {
     }
 
     private fun handleMetaData(tags: Tags?) {
+        Log.wtf("wtf", "tags: $tags")
         interestsList.clear()
         val eventInterests = CommunicationHandler.eventEdited?.interests
         tags?.interests?.forEach { interest ->

@@ -95,7 +95,7 @@ class MainActivity : BaseSecuredActivity() {
             }
         }
         checkForAppUpdate()
-        //ifEventLastDay(136192)
+        //ifEventLastDay(136592)
 
     }
 
@@ -151,7 +151,7 @@ class MainActivity : BaseSecuredActivity() {
         initializeMetaData()
         if (authenticationController.isAuthenticated) {
             //initialize the push notifications
-            initializePushNotifications()
+            //TODO reset this if NotificationDemandActivity is disabled initializePushNotifications()
             updateAnalyticsInfo()
             //TODO authenticationController.me?.unreadCount?.let { bottomBar?.updateBadgeCountForUser(it) }
         }
@@ -192,6 +192,7 @@ class MainActivity : BaseSecuredActivity() {
             }
         }
     }
+    @Deprecated("Deprecated in kt 1.9.0")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == UPDATE_REQUEST_CODE) {
@@ -324,7 +325,7 @@ class MainActivity : BaseSecuredActivity() {
         event?.let {
             val context = this // Assure-toi que `this` est un Context, sinon utilise `getApplicationContext()` ou un autre contexte valide.
             val titleEvent = it.title?.take(30) ?: "Titre par défaut"
-            val placeName = it.metadata?.streetAddress ?: "Lieu par défaut"
+            val placeName = it.metadata?.displayAddress ?: "Lieu par défaut"
             val startTime = it.formatEventStartTime() + "h"
 
             val title = context.getString(R.string.popup_event_confirm_title, titleEvent, placeName, startTime)
@@ -567,6 +568,8 @@ class MainActivity : BaseSecuredActivity() {
         var shouldLaunchEventPopUp:Int = 0
         var shouldLaunchEvent:Boolean = false
         var shouldLaunchOnboarding:Boolean = false
+        var shouldLaunchProfile:Boolean = false
+        var isFromProfile:Boolean = false
     }
 }
 

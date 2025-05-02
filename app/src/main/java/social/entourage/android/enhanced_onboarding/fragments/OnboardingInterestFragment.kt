@@ -25,6 +25,7 @@ class OnboardingInterestFragment : Fragment() {
         binding = FragmentOnboardingInterestsLayoutBinding.inflate(inflater, container, false)
         viewModel = ViewModelProvider(requireActivity()).get(OnboardingViewModel::class.java)
         viewModel.interests.observe( viewLifecycleOwner, ::handleInterestLoad)
+        AnalyticsEvents.logEvent(AnalyticsEvents.onboarding_interests_view)
         return binding.root
     }
 

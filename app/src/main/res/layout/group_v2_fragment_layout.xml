@@ -214,7 +214,7 @@ android:background="@drawable/new_profile_header_orange_dark">
         android:fontFamily="@font/nunitosans_bold"
         app:backgroundTint="@color/orange"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         android:visibility="visible"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

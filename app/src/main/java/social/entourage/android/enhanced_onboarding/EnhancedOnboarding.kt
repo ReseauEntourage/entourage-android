@@ -54,7 +54,6 @@ class EnhancedOnboarding:BaseActivity() {
         super.onResume()
         binding.btnBack.setOnClickListener {
             if(isFromSettingsinterest) {
-                isFromSettingsinterest = false
                 viewModel.registerAndQuit()
             }else{
                 viewModel.register()
@@ -114,7 +113,6 @@ class EnhancedOnboarding:BaseActivity() {
     private fun handleOnboardingFourthStep(value: Boolean) {
         if (value) {
             if(isFromSettingsinterest) {
-                isFromSettingsinterest = false
                 viewModel.registerAndQuit()
                 return
             }
@@ -142,6 +140,15 @@ class EnhancedOnboarding:BaseActivity() {
     private fun handleOnboardingShouldQuit(value: Boolean) {
         if (value) {
             MainActivity.shouldLaunchEvent = true
+            if(isFromSettingsinterest){
+                isFromSettingsinterest = false
+                MainActivity.shouldLaunchEvent = false
+                MainActivity.shouldLaunchProfile = true
+            }
+            if(MainActivity.isFromProfile){
+                MainActivity.shouldLaunchEvent = false
+                MainActivity.shouldLaunchProfile = true
+            }
             val intent = Intent(this, MainActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
             startActivity(intent)

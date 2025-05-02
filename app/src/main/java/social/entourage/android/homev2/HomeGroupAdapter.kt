@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -45,12 +46,28 @@ class HomeGroupAdapter: RecyclerView.Adapter<HomeGroupAdapter.GroupViewHolder>()
         val group = groups[position]
         holder.binding.layout.setOnClickListener {view ->
             AnalyticsEvents.logEvent(AnalyticsEvents.Action_Home_Group_Detail)
+            holder.binding.cardNewsGroup.visibility = View.INVISIBLE
             (view.context as? Activity)?.startActivityForResult(
                 Intent(view.context, FeedActivity::class.java).putExtra(
                     Const.GROUP_ID,
                     group.id
                 ), 0
             )
+        }
+
+        group.unreadPostsCount.let {
+            if (it > 0) {
+                var numberOfPost = ""
+                if (it > 9) {
+                    numberOfPost = "+9"
+                }else {
+                    numberOfPost = it.toString()
+                }
+                holder.binding.tvNewsGroup.text = numberOfPost
+                holder.binding.cardNewsGroup.visibility = android.view.View.VISIBLE
+            } else {
+                holder.binding.cardNewsGroup.visibility = android.view.View.GONE
+            }
         }
 
         group.imageUrl?.let {

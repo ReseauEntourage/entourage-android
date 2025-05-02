@@ -19,6 +19,17 @@
         tools:src="@drawable/placeholder_my_event"
         android:scaleType="centerCrop"
         />
+    <ImageView
+        android:layout_width="22dp"
+        android:layout_height="22dp"
+        android:id="@+id/iv_entourage_logo"
+        android:src="@drawable/ic_entourage_little"
+        app:layout_constraintStart_toStartOf="@+id/iv_event_item"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_event_item"
+        android:layout_marginStart="10dp"
+        android:layout_marginBottom="5dp"
+        />
+
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"

@@ -3,12 +3,14 @@ package social.entourage.android.api.model.feed
 import com.google.gson.annotations.SerializedName
 import social.entourage.android.api.model.Partner
 import java.io.Serializable
+import java.util.ArrayList
 
 class FeedItemAuthor (
-        @field:SerializedName("avatar_url") var avatarURLAsString: String?,
-        @field:SerializedName("id") var userID: Int,
-        @field:SerializedName("display_name") var userName: String?,
-        @field:SerializedName("partner") var partner: Partner?) : Serializable {
+    @field:SerializedName("avatar_url") var avatarURLAsString: String?,
+    @field:SerializedName("id") var userID: Int,
+    @field:SerializedName("display_name") var userName: String?,
+    @field:SerializedName("community_roles") var communityRoles: ArrayList<String>?,
+    @field:SerializedName("partner") var partner: Partner?) : Serializable {
 
     fun isSame(author: FeedItemAuthor?): Boolean {
         if (author == null) return false

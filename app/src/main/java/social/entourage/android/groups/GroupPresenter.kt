@@ -332,6 +332,8 @@ class GroupPresenter: ViewModel() {
                 }
 
                 override fun onFailure(call: Call<PostListWrapper>, t: Throwable) {
+                    Log.wtf("wtf", "error $t")
+
                 }
             })
     }

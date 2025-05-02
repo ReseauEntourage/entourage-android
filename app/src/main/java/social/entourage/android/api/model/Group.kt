@@ -51,6 +51,8 @@ data class Group(
     var longitude: Double = 0.0,
     @SerializedName("display_address")
     var displayAddress: String = "",
+    @SerializedName("unread_posts_count")
+    var unreadPostsCount: Int = 0,
     var isSelected: Boolean = false
 ) {
 

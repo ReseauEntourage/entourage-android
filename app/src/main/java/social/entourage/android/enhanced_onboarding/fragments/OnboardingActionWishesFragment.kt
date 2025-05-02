@@ -23,6 +23,7 @@ class OnboardingActionWishesFragment:Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentOnboardingActionWishesLayoutBinding.inflate(inflater, container, false)
+        AnalyticsEvents.logEvent(AnalyticsEvents.onboarding_actions_view)
         viewModel = ViewModelProvider(requireActivity()).get(OnboardingViewModel::class.java)
         viewModel.actionsWishes.observe( viewLifecycleOwner, ::handleInterestLoad)
         return binding.root
@@ -69,12 +70,12 @@ class OnboardingActionWishesFragment:Fragment() {
                         subtitle = ""
                     )
                 },
-                user?.involvements?.contains("actions")?.let {
+                user?.involvements?.contains("both_actions")?.let {
                     InterestForAdapter(
                         icon = getIconForActionWish("actions"),
                         title = getString(R.string.onboarding_action_wish_services_contrib),
                         isSelected = it,
-                        id = "actions",
+                        id = "both_actions",
                         subtitle = ""
                     )
                 },
@@ -91,7 +92,7 @@ class OnboardingActionWishesFragment:Fragment() {
                         icon = R.drawable.ic_onboarding_interest_name_rencontre_nomade,
                         title = getString(R.string.onboarding_action_wish_pedago_contrib),
                         isSelected = it,
-                        id = "resources",
+                        id = "pois",
                         subtitle = ""
                     )
                 },
@@ -122,7 +123,7 @@ class OnboardingActionWishesFragment:Fragment() {
                         icon = getIconForActionWish("actions"),
                         title = getString(R.string.onboarding_action_wish_services),
                         isSelected = it,
-                        id = "actions",
+                        id = "both_actions",
                         subtitle = ""
                     )
                 },

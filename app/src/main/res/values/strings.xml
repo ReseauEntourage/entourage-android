@@ -2626,7 +2626,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="interest_jeux">Jeux</string>
     <string name="interest_nature">Nature</string>
     <string name="interest_sport">Sport</string>
-    <string name="interest_marauding">Rencontres nomades</string>
+    <string name="interest_marauding">Maraudes sociales</string>
     <string name="interest_other">Autre</string>
 
     <string name="modify_image"><u>Modifier ma photo</u></string>
@@ -2759,6 +2759,10 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="onboarding_congrats_temporary_title">Votre expérience sur-mesure est (quasi) prête !</string>
     <string name="onboarding_congrats_temporary_content">Merci d\'avoir partagé vos envies d\'agir et vos centres d\'intérêts. Nous sommes impatients de vous proposer bientôt des événements sur-mesure qui vous correspondent. \nRestez connecté(e) !</string>
 
+    <string name="notif_ask_page_title">Activez les notifications pour ne rien manquer</string>
+    <string name="notif_ask_page_subtitle">Recevez les entraides près de chez vous, soyez informé des événements locaux, des publications de vos voisins et des messages personnels en temps réel."</string>
+    <string name="notif_ask_page_btn_main">Activer les notifications</string>
+    <string name="notif_ask_page_btn_secondary">Pas maintenant</string>
 
 
 

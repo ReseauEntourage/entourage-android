@@ -31,6 +31,32 @@
                     android:src="@drawable/new_illu_header_group"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
+                <ImageView
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    android:id="@+id/iv_entourage_logo"
+                    android:src="@drawable/ic_entourage_little"
+                    app:layout_constraintStart_toStartOf="@+id/image"
+                    app:layout_constraintBottom_toBottomOf="@+id/image"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginBottom="10dp"
+                    />
+                <TextView
+                    android:id="@+id/tv_subscribed"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="@+id/image"
+                    app:layout_constraintEnd_toEndOf="@+id/image"
+                    android:fontFamily="@font/quicksand_bold"
+                    android:textColor="@color/orange"
+                    android:textSize="10sp"
+                    android:layout_marginEnd="2dp"
+                    android:layout_marginBottom="10dp"
+                    android:padding="5dp"
+                    android:background="@drawable/bg_button_signin_white_rounded"
+                    android:text="Inscrit.e"
+                    android:visibility="gone"
+                    />
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="0dp"
                     android:layout_height="0dp"

@@ -38,9 +38,7 @@ class DiscoverEventsListFragment : Fragment() {
     lateinit var myeventsAdapter: HomeEventAdapter
     private var page: Int = 0
     private var pageMyEvent: Int = 0
-
     private var currentFilters = EventActionLocationFilters()
-
     private var activityResultLauncher:ActivityResultLauncher<Intent>? = null
 
     private var isFromFilters = false
@@ -82,12 +80,17 @@ class DiscoverEventsListFragment : Fragment() {
         initializeEvents()
         setRVScrollListener()
         handleSwipeRefresh()
-
+        initView()
     }
 
     override fun onResume() {
         super.onResume()
         AnalyticsEvents.logEvent(AnalyticsEvents.View__Event__List)
+
+
+    }
+
+    fun initView(){
         isLoading = false
         binding.progressBar.visibility = View.VISIBLE
         eventsAdapter.clearList()
@@ -98,18 +101,9 @@ class DiscoverEventsListFragment : Fragment() {
         pageMyEvent = 0
         loadEvents()
         loadMyEvents()
-
     }
 
-    override fun onStop() {
-        super.onStop()
-        binding.progressBar.visibility = View.VISIBLE
-        eventsAdapter.clearList()
-        eventsPresenter.isLastPage = false
-        eventsPresenter.isLastPageMyEvent = false
-        page = 0
-        pageMyEvent = 0
-    }
+
 
     private fun handleResponseGetEvents(allEvents: MutableList<Events>?) {
         if(allEvents != null && allEvents.size > 0){

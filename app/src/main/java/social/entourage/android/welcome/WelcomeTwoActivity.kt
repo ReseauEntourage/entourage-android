@@ -100,6 +100,8 @@ class WelcomeTwoActivity: BaseActivity() {
 
         binding.tvTextThree.text = bulletSpannableString
     }
+
+    @Deprecated("Deprecated in kt 1.9.0")
     override fun onBackPressed() {
         super.onBackPressed()
         val intent = Intent(this, MainActivity::class.java)

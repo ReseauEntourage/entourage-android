@@ -4,12 +4,14 @@ import android.app.Activity
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.webkit.WebChromeClient
+import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -17,6 +19,7 @@ import androidx.navigation.fragment.navArgs
 import social.entourage.android.R
 import social.entourage.android.api.model.Pedago
 import social.entourage.android.databinding.NewFragmentPedagoContentDetailsBinding
+import social.entourage.android.deeplinks.UniversalLinkManager
 import social.entourage.android.home.HomePresenter
 import java.lang.ref.WeakReference
 
@@ -71,8 +74,9 @@ class PedagoContentDetailsFragment : Fragment() {
     private fun setView() {
         if (isAdded) {
             binding.header.headerTitle.text = getString(R.string.pedago_details)
+            val universalLinkManager = UniversalLinkManager(requireContext())
             with(binding.content) {
-                webViewClient = WebViewClient()
+                webViewClient = CustomWebViewClient(requireActivity(), universalLinkManager)
                 webChromeClient = WebChrome(requireActivity())
                 setBackgroundColor(Color.TRANSPARENT)
                 settings.javaScriptEnabled = true
@@ -131,5 +135,25 @@ class PedagoContentDetailsFragment : Fragment() {
                 window.decorView.systemUiVisibility = 3846
             }
         }
+    }
+}
+
+class CustomWebViewClient(
+    private val activity: Activity,
+    private val universalLinkManager: UniversalLinkManager
+) : WebViewClient() {
+
+    @Deprecated("Deprecated in kt 1.9.0")
+    override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
+        url?.let {
+            val uri = Uri.parse(it)
+            // Vérifiez si l'URL correspond à l'un de vos deeplinks
+            if (uri.host == universalLinkManager.prodURL || uri.host == universalLinkManager.stagingURL) {
+                // Si c'est un deeplink, utilisez UniversalLinkManager pour le gérer
+                universalLinkManager.handleUniversalLink(uri)
+                return true // Indiquez que vous avez pris en charge le lien
+            }
+        }
+        return false // Laissez WebView gérer l'URL comme d'habitude
     }
 }

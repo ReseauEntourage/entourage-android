@@ -10,6 +10,7 @@ class Tags : Serializable {
     @SerializedName("signals")
     var signals: ArrayList<TagMetaData>? = null
 
+
     @SerializedName("sections")
     var sections: ArrayList<TagMetaData>? = null
     override fun toString(): String {

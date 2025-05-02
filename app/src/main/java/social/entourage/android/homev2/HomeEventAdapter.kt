@@ -27,6 +27,10 @@ import java.text.SimpleDateFormat
 class HomeEventAdapter(var context: Context):RecyclerView.Adapter<HomeEventAdapter.EventViewHolder>() {
     var events:MutableList<Events> = mutableListOf()
 
+    fun addEvents(listEvents: List<Events>) {
+        events.addAll(listEvents)
+        notifyDataSetChanged()
+    }
 
     fun resetData(events:MutableList<Events>){
         this.events.clear()
@@ -63,7 +67,16 @@ class HomeEventAdapter(var context: Context):RecyclerView.Adapter<HomeEventAdapt
                 ), 0
             )
         }
+        if(event.author?.communityRoles != null) {
+            if(event.author?.communityRoles?.contains("Équipe Entourage") == true || event.author?.communityRoles?.contains("Ambassadeur") == true){
 
+                holder.binding.ivEntourageLogo.visibility = View.VISIBLE
+            }else{
+                holder.binding.ivEntourageLogo.visibility = View.GONE
+            }
+        }else{
+            holder.binding.ivEntourageLogo.visibility = View.GONE
+        }
 
         event.metadata?.landscapeUrl?.let {
             Glide.with(holder.binding.root.context)

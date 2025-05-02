@@ -15,6 +15,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.animation.doOnEnd
+import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
@@ -49,6 +50,7 @@ import social.entourage.android.home.pedago.OnItemClick
 import social.entourage.android.home.pedago.PedagoDetailActivity
 import social.entourage.android.home.pedago.PedagoListActivity
 import social.entourage.android.notifications.InAppNotificationsActivity
+import social.entourage.android.notifications.NotificationDemandActivity
 import social.entourage.android.onboarding.onboard.OnboardingStartActivity
 import social.entourage.android.profile.ProfileActivity
 import social.entourage.android.tools.log.AnalyticsEvents
@@ -125,6 +127,7 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
         setMapButton()
         setProfileButton()
         setNestedScrollViewAnimation()
+        checkNotificationStatus()
 
         return binding.root
     }
@@ -148,9 +151,28 @@ class HomeV2Fragment: Fragment(), OnHomeV2HelpItemClickListener, OnHomeV2ChangeL
         resetFilter()
         callToInitHome()
         actionsPresenter.getUnreadCount()
-
+        if(MainActivity.shouldLaunchProfile){
+            MainActivity.shouldLaunchProfile = false
+            AnalyticsEvents.logEvent(AnalyticsEvents.Action__Tab__Profil)
+            startActivityForResult(
+                Intent(context, ProfileActivity::class.java), 0
+            )
+        }
 
     }
+
+    private fun checkNotificationStatus() {
+        val notificationManager = NotificationManagerCompat.from(requireContext())
+        val areNotificationsEnabled = notificationManager.areNotificationsEnabled()
+        if (areNotificationsEnabled) {
+            AnalyticsEvents.logEvent(AnalyticsEvents.has_user_activated_notif)
+
+        } else {
+            AnalyticsEvents.logEvent(AnalyticsEvents.has_user_disabled_notif)
+
+        }
+    }
+
 
 
     private fun updateUnreadCount(unreadMessages: UnreadMessages?) {

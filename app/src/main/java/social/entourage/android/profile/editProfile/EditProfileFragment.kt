@@ -18,6 +18,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import social.entourage.android.EntourageApplication
+import social.entourage.android.MainActivity
 import social.entourage.android.R
 import social.entourage.android.databinding.ActivityChooseLanguageLayoutBinding
 import social.entourage.android.databinding.NewFragmentEditProfileBinding
@@ -163,6 +164,7 @@ class EditProfileFragment : Fragment(), EditProfileCallback,
         }
         binding.personnalize.layout.setOnClickListener {
             //Launch Enhanced Onboarding activity
+            MainActivity.isFromProfile = true
             val intent = Intent(requireContext(), EnhancedOnboarding::class.java)
             startActivity(intent)
             requireActivity().finish()
