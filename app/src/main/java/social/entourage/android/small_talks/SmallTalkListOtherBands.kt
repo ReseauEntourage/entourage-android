@@ -64,7 +64,7 @@ class SmallTalkListOtherBands : BaseActivity() {
         }
 
         binding.buttonWait.setOnClickListener {
-            // handle wait logic
+            finish()
         }
     }
 }

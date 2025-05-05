@@ -3042,6 +3042,16 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="small_talk_other_band_join">Rejoindre</string>
     <string name="small_talk_other_band_wait">Je préfère attendre</string>
 
+    <!--small no band activity -->
+
+    <string name="small_talk_no_band_title">Aucune bande n’est disponible pour le moment</string>
+    <string name="small_talk_no_band_subtitle">Vous recevrez une notification dès que nous aurons trouvé une bande</string>
+    <string name="small_talk_no_band_button_title">Revenir à la page d\'accueil</string>
+    <string name="small_talk_no_band_card_title">Événement à ne pas manquer</string>
+    <string name="small_talk_no_band_card_subtitle">Les papotages solidaires : un moment sympa en visio pour échanger et rencontrer de nouvelles personnes (pendant 15min ou plus) tous les jeudis soirs à 18h</string>
+    <string name="small_talk_no_band_card_button">Voir l\'événement</string>
+
+
     <!--small talk found band activity -->
 
     <string name="small_talk_group_found_name_default">Marie</string>

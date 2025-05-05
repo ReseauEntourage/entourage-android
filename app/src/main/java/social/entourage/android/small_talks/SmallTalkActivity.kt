@@ -5,6 +5,8 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.animation.AnimationUtils
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.collection.ArrayMap
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DefaultItemAnimator
@@ -22,6 +24,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import social.entourage.android.EntourageApplication
+import social.entourage.android.profile.editProfile.EditPhotoActivity
 
 class SmallTalkActivity : BaseActivity() {
 
@@ -29,6 +32,9 @@ class SmallTalkActivity : BaseActivity() {
     private lateinit var viewModel: SmallTalkViewModel
     private lateinit var adapter: OnboardingInterestsAdapter
     private lateinit var userPresenter: UserPresenter
+
+    private var shouldAskProfilePhoto = false
+    private lateinit var editPhotoLauncher: ActivityResultLauncher<Intent>
 
     private var selectedRequest = UserSmallTalkRequest(
         id = SMALL_TALK_REQUEST_ID.toIntOrNull(),
@@ -47,6 +53,20 @@ class SmallTalkActivity : BaseActivity() {
         setContentView(binding.root)
         viewModel = ViewModelProvider(this)[SmallTalkViewModel::class.java]
         userPresenter = UserPresenter()
+
+        // 🔥 Check if the user needs to upload a profile photo
+        val currentUser = EntourageApplication.me(this)
+        shouldAskProfilePhoto = currentUser?.avatarURL.isNullOrBlank()
+
+        // 🔥 Register the photo edit launcher
+        editPhotoLauncher = registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult()
+        ) {
+            // Peu importe résultat => on va direct à la recherche
+            SmallTalkingSearchingActivity.id = SMALL_TALK_REQUEST_ID
+            startActivity(Intent(this, SmallTalkingSearchingActivity::class.java))
+            finish()
+        }
 
         setupRecyclerView()
         setupButtons()
@@ -76,7 +96,6 @@ class SmallTalkActivity : BaseActivity() {
         viewModel.currentStep.observe(this) { step ->
             binding.title.text = step.title
             binding.subtitle.text = step.subtitle
-
             val isInterestStep = viewModel.isLastStep()
             adapter.forceSingleSelectionForSmallTalk = !isInterestStep
 
@@ -94,14 +113,13 @@ class SmallTalkActivity : BaseActivity() {
 
             adapter.interests = step.items
 
-            // 🔥 Précocher automatiquement les intérêts de l'utilisateur si c'est l'étape intérêts
+            // 🔥 Preselect already chosen interests
             if (isInterestStep) {
                 preselectUserInterests()
             }
 
             adapter.notifyDataSetChanged()
             binding.rvSmallTalk.scheduleLayoutAnimation()
-
             animateProgressTo(viewModel.getStepProgress())
         }
 
@@ -136,7 +154,7 @@ class SmallTalkActivity : BaseActivity() {
                     selectedRequest = selectedRequest.copy(matchLocality = value)
                     update["match_locality"] = value
                 }
-                2 -> { // 🎯 Étape GENDER
+                2 -> { // 🎯 Step GENDER
                     val genderValue = when (selectedItem?.id) {
                         "5" -> "male"
                         "6" -> "female"
@@ -154,7 +172,7 @@ class SmallTalkActivity : BaseActivity() {
                         override fun onFailure(call: Call<UserResponse>, t: Throwable) {}
                     })
                 }
-                3 -> { // 🎯 Étape INTERESTS
+                3 -> { // 🎯 Step INTERESTS
                     selectedRequest = selectedRequest.copy(matchInterest = true)
                     update["match_interest"] = true
 
@@ -174,10 +192,18 @@ class SmallTalkActivity : BaseActivity() {
                 viewModel.updateRequest(SMALL_TALK_REQUEST_ID, update)
             }
 
+            // 🔥 Special case: Ask photo if needed
+            if (viewModel.isLastStep() && shouldAskProfilePhoto) {
+                shouldAskProfilePhoto = false // Avoid infinite loop
+                editPhotoLauncher.launch(Intent(this, EditPhotoActivity::class.java))
+                return@setOnClickListener
+            }
+
             if (viewModel.isLastStep()) {
                 SmallTalkingSearchingActivity.id = SMALL_TALK_REQUEST_ID
                 startActivity(Intent(this, SmallTalkingSearchingActivity::class.java))
                 overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+                finish()
             } else {
                 viewModel.goToNextStep()
             }
@@ -199,7 +225,7 @@ class SmallTalkActivity : BaseActivity() {
     }
 
     /**
-     * 🔥 Préselectionner les intérêts déjà choisis par l'utilisateur
+     * 🔥 Preselect already chosen interests
      */
     private fun preselectUserInterests() {
         val currentUser = EntourageApplication.get(this).authenticationController.me
@@ -211,6 +237,6 @@ class SmallTalkActivity : BaseActivity() {
     }
 
     companion object {
-        var SMALL_TALK_REQUEST_ID = "12345" // À injecter depuis SmallTalkIntroActivity
+        var SMALL_TALK_REQUEST_ID = "12345"
     }
 }
