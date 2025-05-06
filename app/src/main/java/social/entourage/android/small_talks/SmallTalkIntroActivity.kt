@@ -65,6 +65,7 @@ class SmallTalkIntroActivity : BaseActivity() {
                 val intent = Intent(this, SmallTalkActivity::class.java)
                 startActivity(intent)
                 overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+                this.finish()
             } else {
                 showToast(this, getString(R.string.error_not_yet_implemented))
             }

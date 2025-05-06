@@ -13,7 +13,8 @@
         android:id="@+id/btn_back"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_margin="20dp"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginVertical="30dp"
         android:src="@drawable/ic_back_onboarding"
         />
 

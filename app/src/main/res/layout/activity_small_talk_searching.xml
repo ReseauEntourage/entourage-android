@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="24dp"
-    android:background="@android:color/white">
+    android:background="@color/organizer_background">
 
     <TextView
         android:id="@+id/title_text"
@@ -35,8 +35,8 @@
 
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/lottie_image"
-        android:layout_width="180dp"
-        android:layout_height="180dp"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
         app:lottie_rawRes="@raw/puzzle_mount"
         app:lottie_autoPlay="true"
         app:lottie_loop="true"

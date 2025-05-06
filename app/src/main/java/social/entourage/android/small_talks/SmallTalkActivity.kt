@@ -51,18 +51,14 @@ class SmallTalkActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         binding = SmallTalkActivityBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
         viewModel = ViewModelProvider(this)[SmallTalkViewModel::class.java]
         userPresenter = UserPresenter()
 
-        // 🔥 Check if the user needs to upload a profile photo
         val currentUser = EntourageApplication.me(this)
         shouldAskProfilePhoto = currentUser?.avatarURL.isNullOrBlank()
 
-        // 🔥 Register the photo edit launcher
-        editPhotoLauncher = registerForActivityResult(
-            ActivityResultContracts.StartActivityForResult()
-        ) {
-            // Peu importe résultat => on va direct à la recherche
+        editPhotoLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             SmallTalkingSearchingActivity.id = SMALL_TALK_REQUEST_ID
             startActivity(Intent(this, SmallTalkingSearchingActivity::class.java))
             finish()
@@ -75,14 +71,12 @@ class SmallTalkActivity : BaseActivity() {
 
     private fun setupRecyclerView() {
         adapter = OnboardingInterestsAdapter(
-            context = this,
             isFromInterest = false,
-            interests = emptyList(),
-            onInterestClicked = { /* handled by adapter internally */ }
+            onInterestClicked = { /* handled internally */ }
         )
 
         binding.rvSmallTalk.apply {
-            layoutManager = LinearLayoutManager(this@SmallTalkActivity)
+            layoutManager = GridLayoutManager(this@SmallTalkActivity, 1)
             adapter = this@SmallTalkActivity.adapter
             layoutAnimation = AnimationUtils.loadLayoutAnimation(context, R.anim.layout_anim_fade_in)
             itemAnimator = DefaultItemAnimator().apply {
@@ -96,30 +90,27 @@ class SmallTalkActivity : BaseActivity() {
         viewModel.currentStep.observe(this) { step ->
             binding.title.text = step.title
             binding.subtitle.text = step.subtitle
+
             val isInterestStep = viewModel.isLastStep()
             adapter.forceSingleSelectionForSmallTalk = !isInterestStep
 
-            val newLayoutManager = if (isInterestStep) {
-                GridLayoutManager(this, 2)
+            (binding.rvSmallTalk.layoutManager as? GridLayoutManager)?.spanCount = if (isInterestStep) 2 else 1
+
+            val updatedItems = if (isInterestStep) {
+                preselectUserInterests(step.items)
             } else {
-                LinearLayoutManager(this)
+                step.items
             }
 
-            binding.rvSmallTalk.suppressLayout(true)
-            if (binding.rvSmallTalk.layoutManager?.javaClass != newLayoutManager.javaClass) {
-                binding.rvSmallTalk.layoutManager = newLayoutManager
-            }
-            binding.rvSmallTalk.suppressLayout(false)
+            // 1️⃣ Soumission d'une liste vide
+            adapter.submitList(emptyList())
 
-            adapter.interests = step.items
-
-            // 🔥 Preselect already chosen interests
-            if (isInterestStep) {
-                preselectUserInterests()
+            // 2️⃣ Post une mise à jour un peu plus tard (après le "clear")
+            binding.rvSmallTalk.post {
+                adapter.submitList(updatedItems)
+                binding.rvSmallTalk.scheduleLayoutAnimation()
             }
 
-            adapter.notifyDataSetChanged()
-            binding.rvSmallTalk.scheduleLayoutAnimation()
             animateProgressTo(viewModel.getStepProgress())
         }
 
@@ -133,8 +124,8 @@ class SmallTalkActivity : BaseActivity() {
 
     private fun setupButtons() {
         binding.buttonStart.setOnClickListener {
-            val selectedItem = adapter.interests.find { it.isSelected }
-            val selectedItems = adapter.interests.filter { it.isSelected }
+            val selectedItem = adapter.currentList.find { it.isSelected }
+            val selectedItems = adapter.currentList.filter { it.isSelected }
             val stepIndex = viewModel.currentStepIndex.value ?: 0
             val update = ArrayMap<String, Any>()
 
@@ -144,17 +135,17 @@ class SmallTalkActivity : BaseActivity() {
             }
 
             when (stepIndex) {
-                0 -> {
+                0 -> { // Step MATCH FORMAT
                     val value = if (selectedItem?.id == "1") "one" else "many"
                     selectedRequest = selectedRequest.copy(matchFormat = value)
                     update["match_format"] = value
                 }
-                1 -> {
+                1 -> { // Step LOCALITY
                     val value = selectedItem?.id == "3"
                     selectedRequest = selectedRequest.copy(matchLocality = value)
                     update["match_locality"] = value
                 }
-                2 -> { // 🎯 Step GENDER
+                2 -> { // Step GENDER
                     val genderValue = when (selectedItem?.id) {
                         "5" -> "male"
                         "6" -> "female"
@@ -172,7 +163,12 @@ class SmallTalkActivity : BaseActivity() {
                         override fun onFailure(call: Call<UserResponse>, t: Throwable) {}
                     })
                 }
-                3 -> { // 🎯 Step INTERESTS
+                3 -> { // Step MATCH GENDER
+                    val matchGenderValue = selectedItem?.id == "9"
+                    selectedRequest = selectedRequest.copy(matchGender = matchGenderValue)
+                    update["match_gender"] = matchGenderValue
+                }
+                4 -> { // Step INTERESTS
                     selectedRequest = selectedRequest.copy(matchInterest = true)
                     update["match_interest"] = true
 
@@ -188,13 +184,13 @@ class SmallTalkActivity : BaseActivity() {
                 }
             }
 
+
             if (update.isNotEmpty()) {
                 viewModel.updateRequest(SMALL_TALK_REQUEST_ID, update)
             }
 
-            // 🔥 Special case: Ask photo if needed
             if (viewModel.isLastStep() && shouldAskProfilePhoto) {
-                shouldAskProfilePhoto = false // Avoid infinite loop
+                shouldAskProfilePhoto = false
                 editPhotoLauncher.launch(Intent(this, EditPhotoActivity::class.java))
                 return@setOnClickListener
             }
@@ -224,15 +220,12 @@ class SmallTalkActivity : BaseActivity() {
         }
     }
 
-    /**
-     * 🔥 Preselect already chosen interests
-     */
-    private fun preselectUserInterests() {
+    private fun preselectUserInterests(interests: List<InterestForAdapter>): List<InterestForAdapter> {
         val currentUser = EntourageApplication.get(this).authenticationController.me
-        val userInterests = currentUser?.interests ?: return
+        val userInterests = currentUser?.interests ?: return interests
 
-        adapter.interests.forEach { interest ->
-            interest.isSelected = userInterests.contains(interest.id)
+        return interests.map { interest ->
+            interest.copy(isSelected = userInterests.contains(interest.id))
         }
     }
 

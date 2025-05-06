@@ -7,26 +7,27 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.databinding.FragmentOnboardingActionWishesLayoutBinding
-import social.entourage.android.databinding.FragmentOnboardingInterestsLayoutBinding
 import social.entourage.android.enhanced_onboarding.EnhancedOnboarding
 import social.entourage.android.enhanced_onboarding.InterestForAdapter
 import social.entourage.android.enhanced_onboarding.OnboardingViewModel
+import social.entourage.android.enhanced_onboarding.fragments.OnboardingInterestsAdapter
 import social.entourage.android.tools.log.AnalyticsEvents
-import timber.log.Timber
 
-class OnboardingActionWishesFragment:Fragment() {
+class OnboardingActionWishesFragment : Fragment() {
 
     private lateinit var binding: FragmentOnboardingActionWishesLayoutBinding
     private lateinit var viewModel: OnboardingViewModel
+    private lateinit var adapter: OnboardingInterestsAdapter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentOnboardingActionWishesLayoutBinding.inflate(inflater, container, false)
         AnalyticsEvents.logEvent(AnalyticsEvents.onboarding_actions_view)
-        viewModel = ViewModelProvider(requireActivity()).get(OnboardingViewModel::class.java)
-        viewModel.actionsWishes.observe( viewLifecycleOwner, ::handleInterestLoad)
+
+        viewModel = ViewModelProvider(requireActivity())[OnboardingViewModel::class.java]
+        viewModel.actionsWishes.observe(viewLifecycleOwner, ::handleInterestLoad)
+
         return binding.root
     }
 
@@ -34,18 +35,21 @@ class OnboardingActionWishesFragment:Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setupRecyclerView()
         loadAndSendActionWishes()
+
         binding.buttonConfigureLater.setOnClickListener {
             AnalyticsEvents.logEvent(AnalyticsEvents.onboarding_actions_config_later_clic)
-        viewModel.registerAndQuit()
+            viewModel.registerAndQuit()
         }
+
         binding.buttonStart.setOnClickListener {
             AnalyticsEvents.logEvent(AnalyticsEvents.onboarding_actions_next_clic)
-            if(EnhancedOnboarding.isFromSettingsWishes) {
+            if (EnhancedOnboarding.isFromSettingsWishes) {
                 viewModel.registerAndQuit()
-            }else{
+            } else {
                 viewModel.setOnboardingThirdStep(true)
             }
         }
+
         binding.tvTitle.text = getString(R.string.onboarding_action_wish_title)
         binding.tvDescription.text = getString(R.string.onboarding_action_wish_content)
     }
@@ -53,27 +57,35 @@ class OnboardingActionWishesFragment:Fragment() {
     override fun onResume() {
         super.onResume()
         viewModel.toggleBtnBack(true)
-        if(EnhancedOnboarding.isFromSettingsWishes) {
+
+        if (EnhancedOnboarding.isFromSettingsWishes) {
             binding.buttonStart.text = getString(R.string.validate)
             binding.buttonConfigureLater.text = getString(R.string.cancel)
-        }else{
+        } else {
             binding.buttonStart.text = getString(R.string.onboarding_btn_next)
         }
+
         loadAndSendActionWishes()
     }
 
     private fun setupRecyclerView() {
-        binding.rvInterests.layoutManager = LinearLayoutManager(requireContext())
-        binding.rvInterests.isNestedScrollingEnabled = false
+        adapter = OnboardingInterestsAdapter(
+            isFromInterest = false,
+            onInterestClicked = ::onInterestClicked
+        )
 
-
+        binding.rvInterests.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = this@OnboardingActionWishesFragment.adapter
+            isNestedScrollingEnabled = false
+        }
     }
 
     private fun loadAndSendActionWishes() {
-        val user = viewModel.user  // Obtenir les données de l'utilisateur
-        if(EnhancedOnboarding.preference == "contribution") {
-            val actionWishes = listOf(
+        val user = viewModel.user
 
+        val actionWishes = if (EnhancedOnboarding.preference == "contribution") {
+            listOf(
                 user?.involvements?.contains("outings")?.let {
                     InterestForAdapter(
                         icon = getIconForActionWish("outings"),
@@ -100,7 +112,8 @@ class OnboardingActionWishesFragment:Fragment() {
                         id = "neighborhoods",
                         subtitle = ""
                     )
-                },user?.involvements?.contains("resources")?.let {
+                },
+                user?.involvements?.contains("resources")?.let {
                     InterestForAdapter(
                         icon = R.drawable.ic_onboarding_interest_name_rencontre_nomade,
                         title = getString(R.string.onboarding_action_wish_pedago_contrib),
@@ -108,11 +121,10 @@ class OnboardingActionWishesFragment:Fragment() {
                         id = "pois",
                         subtitle = ""
                     )
-                },
-            ).filterNotNull() // Filtre pour enlever les éléments nulls si jamais `contains` renvoie null
-            viewModel.setActionsWishes(actionWishes)
-        }else{
-            val actionWishes = listOf(
+                }
+            ).filterNotNull()
+        } else {
+            listOf(
                 user?.involvements?.contains("resources")?.let {
                     InterestForAdapter(
                         icon = getIconForActionWish("resources"),
@@ -149,14 +161,13 @@ class OnboardingActionWishesFragment:Fragment() {
                         subtitle = ""
                     )
                 }
-            ).filterNotNull() // Filtre pour enlever les éléments nulls si jamais `contains` renvoie null
-            viewModel.setActionsWishes(actionWishes)
+            ).filterNotNull()
         }
 
+        viewModel.setActionsWishes(actionWishes)
     }
 
-
-    fun getIconForActionWish(id: String): Int {
+    private fun getIconForActionWish(id: String): Int {
         return when (id) {
             "resources" -> R.drawable.ic_onboarding_action_wish_sensibilisation
             "outings" -> R.drawable.ic_onboarding_action_wish_convivialite
@@ -166,28 +177,11 @@ class OnboardingActionWishesFragment:Fragment() {
         }
     }
 
-
     private fun handleInterestLoad(interests: List<InterestForAdapter>) {
-        // Vérifie si l'adapter est déjà défini
-        if (binding.rvInterests.adapter == null) {
-            binding.rvInterests.adapter = OnboardingInterestsAdapter(requireContext(), false, interests, ::onInterestClicked)
-        } else {
-            // Si l'adapter existe déjà, mets à jour simplement les données
-            (binding.rvInterests.adapter as? OnboardingInterestsAdapter)?.let { adapter ->
-                adapter.interests = interests
-                adapter.notifyDataSetChanged()
-            }
-        }
+        adapter.submitList(interests)
     }
+
     private fun onInterestClicked(interest: InterestForAdapter) {
         viewModel.updateActionsWishes(interest)
     }
-
 }
-
-
-
-
-
-
-

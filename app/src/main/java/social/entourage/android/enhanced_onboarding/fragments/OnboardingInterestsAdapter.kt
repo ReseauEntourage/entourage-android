@@ -1,22 +1,22 @@
 package social.entourage.android.enhanced_onboarding.fragments
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import social.entourage.android.R
 import social.entourage.android.databinding.LayoutItemOnboardingInterestsBinding
 import social.entourage.android.enhanced_onboarding.InterestForAdapter
 
 class OnboardingInterestsAdapter(
-    private val context: Context,
     private val isFromInterest: Boolean,
-    var interests: List<InterestForAdapter>,
     private val onInterestClicked: (InterestForAdapter) -> Unit
-) : RecyclerView.Adapter<OnboardingInterestsAdapter.InterestViewHolder>() {
+) : ListAdapter<InterestForAdapter, OnboardingInterestsAdapter.InterestViewHolder>(InterestDiffCallback()) {
 
     var forceSingleSelectionForSmallTalk: Boolean = false
+
     inner class InterestViewHolder(val binding: LayoutItemOnboardingInterestsBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
@@ -40,24 +40,10 @@ class OnboardingInterestsAdapter(
             updateSelectionUI(interest.isSelected)
 
             binding.root.setOnClickListener {
-                if (forceSingleSelectionForSmallTalk && !isFromInterest) {
-                    // Sélection unique (activée uniquement dans SmallTalk sauf pour la grille finale)
-                    val previousSelected = interests.indexOfFirst { it.isSelected }
-                    val currentIndex = adapterPosition
-
-                    if (previousSelected != currentIndex) {
-                        interests.forEach { it.isSelected = false }
-                        interests[currentIndex].isSelected = true
-                        notifyItemChanged(previousSelected)
-                        notifyItemChanged(currentIndex)
-                    }
-                } else {
-                    // Multi-sélection classique
-                    interest.isSelected = !interest.isSelected
-                    notifyItemChanged(adapterPosition)
+                val position = bindingAdapterPosition
+                if (position != RecyclerView.NO_POSITION) {
+                    handleItemClick(position)
                 }
-
-                onInterestClicked(interest)
             }
         }
 
@@ -66,6 +52,22 @@ class OnboardingInterestsAdapter(
             val checkIcon = if (isSelected) R.drawable.ic_onboarding_check else R.drawable.ic_onboarding_uncheck
             binding.root.setBackgroundResource(background)
             binding.ivInterestCheck.setImageResource(checkIcon)
+        }
+
+        private fun handleItemClick(position: Int) {
+            val updatedList = currentList.mapIndexed { index, item ->
+                if (forceSingleSelectionForSmallTalk && !isFromInterest) {
+                    // Sélection unique
+                    item.copy(isSelected = index == position)
+                } else if (index == position) {
+                    // Toggle sélection multiple
+                    item.copy(isSelected = !item.isSelected)
+                } else {
+                    item
+                }
+            }
+            submitList(updatedList)
+            onInterestClicked(updatedList[position])
         }
     }
 
@@ -76,8 +78,16 @@ class OnboardingInterestsAdapter(
     }
 
     override fun onBindViewHolder(holder: InterestViewHolder, position: Int) {
-        holder.bind(interests[position])
+        holder.bind(getItem(position))
+    }
+}
+
+class InterestDiffCallback : DiffUtil.ItemCallback<InterestForAdapter>() {
+    override fun areItemsTheSame(oldItem: InterestForAdapter, newItem: InterestForAdapter): Boolean {
+        return oldItem.id == newItem.id
     }
 
-    override fun getItemCount(): Int = interests.size
+    override fun areContentsTheSame(oldItem: InterestForAdapter, newItem: InterestForAdapter): Boolean {
+        return oldItem.isSelected == newItem.isSelected
+    }
 }
