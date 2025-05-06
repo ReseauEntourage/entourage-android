@@ -12,8 +12,8 @@
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:src="@drawable/ic_home_search_small_talk"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tv_home_small_talk_subtitle_match"
+        app:layout_constraintBottom_toBottomOf="@+id/button_start"
         app:layout_constraintStart_toStartOf="parent" />
 
 

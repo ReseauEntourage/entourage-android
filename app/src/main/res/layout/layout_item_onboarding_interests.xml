@@ -40,19 +40,21 @@
         android:textColor="@color/black"
         android:textSize="15sp"
         android:text="title" />
+
     <TextView
         android:id="@+id/tvInterestSubTitleFromRight"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/tvInterestTitleFromRight"
-        app:layout_constraintStart_toEndOf="@id/id_card_imageview"
-        app:layout_constraintBottom_toBottomOf="@+id/id_card_imageview"
-        app:layout_constraintEnd_toStartOf="@+id/ivInterestCheck"
         android:layout_marginStart="10dp"
         android:fontFamily="@font/nunitosans_regular"
+        android:text="title"
         android:textColor="@color/grey"
         android:textSize="15sp"
-        android:text="title" />
+        app:layout_constraintBottom_toBottomOf="@+id/id_card_imageview"
+        app:layout_constraintEnd_toStartOf="@+id/ivInterestCheck"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@id/id_card_imageview"
+        app:layout_constraintTop_toBottomOf="@+id/tvInterestTitleFromRight" />
 
     <View
         android:layout_width="match_parent"

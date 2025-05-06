@@ -14,8 +14,9 @@
         android:layout_height="40dp"
         android:src="@drawable/ic_home_wait_small_talk"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/tv_home_small_talk_title_waiting"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_home_small_talk_title_waiting"
+         />
 
     <TextView
         android:id="@+id/tv_home_small_talk_title_waiting"
@@ -26,6 +27,7 @@
         android:textSize="16sp"
         android:textColor="@color/black"
         android:layout_marginStart="12dp"
+        android:layout_marginTop="32dp"
         app:layout_constraintStart_toEndOf="@id/iv_home_small_talk_icon_waiting"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />

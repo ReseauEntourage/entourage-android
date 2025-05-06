@@ -12,77 +12,77 @@
         android:layout_height="wrap_content"
         android:background="@color/organizer_background">
 
+
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/container_beige"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/container_beige"
             android:padding="16dp"
 
-            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
 
             >
-            <TextView
-                android:id="@+id/tv_small_talk_title"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="@string/small_talk_guidelines_title"
-                tools:text="Guide et charte des bandes solidaires"
-                android:fontFamily="@font/quicksand_bold"
-                android:textColor="@color/black"
-                android:textSize="24sp"
-                android:layout_marginTop="40dp"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
 
             <ImageView
                 android:id="@+id/iv_small_talk_illu"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
-                android:src="@drawable/ic_home_search_small_talk"
                 android:layout_marginTop="16dp"
-                app:layout_constraintTop_toBottomOf="@id/tv_small_talk_title"
-                app:layout_constraintStart_toStartOf="parent" />
+                android:src="@drawable/ic_home_search_small_talk"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_small_talk_title" />
+
+            <TextView
+                android:id="@+id/tv_small_talk_title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:fontFamily="@font/quicksand_bold"
+                android:text="@string/small_talk_guidelines_title"
+                android:textColor="@color/black"
+                android:textSize="24sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Guide et charte des bandes solidaires" />
 
             <TextView
                 android:id="@+id/tv_small_talk_intro"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="@string/small_talk_guidelines_intro"
-                tools:text="Les Bandes solidaires vous connectent régulièrement..."
-                android:textColor="@color/black"
-                android:fontFamily="@font/nunitosans_regular"
-                android:textSize="15sp"
                 android:layout_marginStart="8dp"
-                app:layout_constraintTop_toTopOf="@id/iv_small_talk_illu"
+                android:fontFamily="@font/nunitosans_regular"
+                android:text="@string/small_talk_guidelines_intro"
+                android:textColor="@color/black"
+                android:textSize="15sp"
                 app:layout_constraintBottom_toBottomOf="@id/iv_small_talk_illu"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/iv_small_talk_illu"
-                app:layout_constraintEnd_toEndOf="parent" />
+                app:layout_constraintTop_toTopOf="@id/iv_small_talk_illu"
+                tools:text="Les Bandes solidaires vous connectent régulièrement..." />
 
             <include
-                layout="@layout/item_home_small_talk_info_card"
                 android:id="@+id/card_small_talk_what_is"
+                layout="@layout/item_home_small_talk_info_card"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/iv_small_talk_illu"
-                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginTop="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginTop="16dp" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/iv_small_talk_illu" />
 
             <include
-                layout="@layout/item_home_small_talk_info_card_uncheck"
                 android:id="@+id/card_small_talk_what_is_not"
+                layout="@layout/item_home_small_talk_info_card_uncheck"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/card_small_talk_what_is"
-                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginTop="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginTop="16dp" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/card_small_talk_what_is" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
