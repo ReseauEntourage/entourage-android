@@ -6,20 +6,11 @@
     <color name="primary_dark">#717171</color>
     <color name="primary_light">#efeff4</color>
     <color name="accent">@color/orange</color>
-    <color name="toolbar">@color/primary</color>
-    <color name="warm_grey">#999999</color>
-    <color name="greyish_brown">#4a4a4a</color>
-    <color name="greyish">#a5a59c</color>
-    <color name="grey_thin">#E8E5E3</color>
-    <color name="pale_grey">#efeff4</color>
     <color name="dodger_blue">#3a97ff</color>
     <color name="bright_blue">#007aff</color>
     <color name="silver">#c9c9ce</color>
     <color name="tomato">#ee3e3a</color>
-    <color name="brownish_grey">#5d5d5d</color>
-    <color name="light_grey">#ededed</color>
-    <color name="grey_middle">#D9D9D9</color>
-    <color name="grey_dark">#3d3d3d</color>
+
     <color name="orange_light_separator_event">#FF9C5D</color>
     <color name="orange_onboarding_item_selected_border">#80FF9C5D</color>
     <color name="organizer_background">#FEF5EB</color>
@@ -60,29 +51,7 @@
     <color name="custom_button_accent_pressed">#D05706</color>
     <color name="custom_button_accent_disabled">#813619</color>
     <color name="custom_button_accent_disabled_alpha">#55F55F24</color>
-    <color name="custom_button_white_enabled">#FFFFFF</color>
-    <color name="custom_button_white_focused">#D4D4D4</color>
-    <color name="custom_button_white_pressed">#F4F4F4</color>
-    <color name="custom_button_white_disabled">#B2FFFFFF</color>
 
-    <!-- EditTexts -->
-    <color name="custom_edittext_short_pressed">#EEEEEE</color>
-    <color name="login_edittext">#000000</color>
-    <color name="login_edittext_hint">#B2FFFFFF</color>
-
-    <!-- Main profile -->
-    <color name="mainprofile_background">@color/background_light</color>
-    <color name="mainprofile_divider">@color/greyish</color>
-
-    <!-- Notifications -->
-    <color name="battleship_grey">#797a7c</color>
-
-    <!-- Action types -->
-    <color name="action_type_outing">@color/greyish_brown</color>
-
-    <!-- Partner Logo -->
-    <color name="partner_logo_background">@color/background</color>
-    <color name="partner_logo_transparent">#00000000</color>
 
     <!-- Create Entourage -->
     <color name="entourage_ok">@color/greyish</color>
@@ -103,14 +72,10 @@
     <color name="carousel_bullet_empty_stroke">#00000000</color>
 
     <!-- Others -->
-    <color name="separator">@color/greyish</color>
-    <color name="grey_contour">#DADADA</color>
     <color name="blue_dark">#007ea9</color>
     <color name="red_dark">#d63649</color>
     <color name="black">#000000</color>
     <color name="white">#ffffff</color>
-    <color name="white_88">#ccffffff</color>
-    <color name="gris_tres_tres_fonce">#282523</color>
 
     <!-- Pre Onboard -->
     <color name="pre_onboard_orange">@color/accent</color>
@@ -120,10 +85,7 @@
     <color name="very_very_clear_orange">#FFFCFA</color>
     
 
-    <color name="onboard_black_36">#363636</color>
-    <color name="onboard_textfield_bg">#F6F6F6</color>
-    <color name="onboard_button_unselect">#80FFFFFF</color>
-    <color name="onboard_white_246">#F6F6F6</color>
+
     <color name="login_orange_light">#60F55F24</color>
     <color name="login_grey_light">#E1E4E8</color>
     <color name="white_f5_f5_f6">#F5F5F6</color>
@@ -147,19 +109,57 @@
     <color name="light_orange_filter_discussion_inactive">#FEF5EB</color>
     <color name="green">#208054</color>
     <color name="green_light">#DEF1E8</color>
-    <color name="dark_grey">#343C58</color>
-    <color name="dark_grey_opacity_40">#66343C58</color>
-    <color name="red">#FF0000</color>
-    <color name="grey">#707070</color>
-    <color name="new_light_grey">#cdcdcd</color>
-    <color name="deleted_grey">#a8a8a8</color>
-    <color name="grey_vote">#979797</color>
-    <color name="grey_onboarding_item_border">#CDCDCD</color>
+
+
     <color name="bottom_sheet_background">#B5545454</color>
     <color name="orange_opacity_50">#ffcbab</color>
     <color name="new_orange_bubble">#FFCDAE</color>
     <color name="orange_secondary_local">#FFD8B5</color>
     <color name="orange_text_map_local">#FF9739</color>
     <color name="orange_entourage">#F55F24</color>
+    <color name="red">#FF0000</color>
 
+    <color name="white_88">#ccffffff</color>
+    <color name="gris_tres_tres_fonce">#282523</color>
+    <color name="separator">@color/greyish</color>
+    <color name="grey_contour">#DADADA</color>
+    <color name="new_light_grey">#cdcdcd</color>
+    <color name="deleted_grey">#a8a8a8</color>
+    <color name="grey_vote">#979797</color>
+    <color name="grey_onboarding_item_border">#CDCDCD</color>
+    <color name="dark_grey">#343C58</color>
+    <color name="dark_grey_opacity_40">#66343C58</color>
+    <color name="grey">#707070</color>
+    <color name="custom_button_white_enabled">#FFFFFF</color>
+    <color name="custom_button_white_focused">#D4D4D4</color>
+    <color name="custom_button_white_pressed">#F4F4F4</color>
+    <color name="custom_button_white_disabled">#B2FFFFFF</color>
+    <color name="onboard_black_36">#363636</color>
+    <color name="onboard_textfield_bg">#F6F6F6</color>
+    <color name="onboard_button_unselect">#80FFFFFF</color>
+    <color name="onboard_white_246">#F6F6F6</color>
+    <!-- EditTexts -->
+    <color name="custom_edittext_short_pressed">#EEEEEE</color>
+    <color name="login_edittext">#000000</color>
+    <color name="login_edittext_hint">#B2FFFFFF</color>
+    <!-- Main profile -->
+    <color name="mainprofile_background">@color/background_light</color>
+    <color name="mainprofile_divider">@color/greyish</color>
+    <!-- Notifications -->
+    <color name="battleship_grey">#797a7c</color>
+    <!-- Action types -->
+    <color name="action_type_outing">@color/greyish_brown</color>
+    <!-- Partner Logo -->
+    <color name="partner_logo_background">@color/background</color>
+    <color name="partner_logo_transparent">#00000000</color>
+    <color name="toolbar">@color/primary</color>
+    <color name="warm_grey">#999999</color>
+    <color name="greyish_brown">#4a4a4a</color>
+    <color name="greyish">#a5a59c</color>
+    <color name="grey_thin">#E8E5E3</color>
+    <color name="pale_grey">#efeff4</color>
+    <color name="brownish_grey">#5d5d5d</color>
+    <color name="light_grey">#ededed</color>
+    <color name="grey_middle">#D9D9D9</color>
+    <color name="grey_dark">#3d3d3d</color>
 </resources>

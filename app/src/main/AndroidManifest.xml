@@ -105,6 +105,8 @@
             android:exported="false"/>
         <activity android:name=".survey.ResponseSurveyActivity"
             android:exported="false"/>
+        <activity android:name=".small_talks.SmallTalkNoBandFound"
+            android:exported="false"/>
         <activity
             android:name=".home.pedago.PedagoDetailActivity"
             android:exported="false" />

@@ -31,7 +31,6 @@ class SmallTalkGroupFoundActivity : BaseActivity() {
         smallTalkId = intent.getIntExtra(EXTRA_SMALL_TALK_ID, -1)
 
         setupViewPager()
-
         smallTalkViewModel.smallTalkDetail.observe(this) { smallTalk ->
             val users = smallTalk?.members?.toUsers() ?: emptyList()
             adapter = SmallTalkGroupFoundAdapter(users)

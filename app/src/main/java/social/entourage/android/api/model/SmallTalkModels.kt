@@ -7,10 +7,8 @@ import java.util.*
 
 /**
  * SmallTalk represents a chat room returned by the Entourage “smalltalks” endpoints.
- * Only the matching‑related flags requested by the backend are modelled for now.
+ * Includes all matching‑related flags and nested members.
  */
-
-
 data class SmallTalk(
     @SerializedName("id")
     val id: Int? = null,
@@ -85,28 +83,55 @@ data class MembersWrapper(
     companion object { private const val serialVersionUID = 44L }
 }
 
+/**
+ * Represents a user’s request to join or create a SmallTalk,
+ * now also includes full smalltalk and user objects.
+ */
 data class UserSmallTalkRequest(
-    @SerializedName("id") val id: Int? = null,
-    @SerializedName("uuid_v2") val uuid: String? = null,
-    @SerializedName("smalltalk_id") val smalltalkId: Int? = null,
+    @SerializedName("id")
+    val id: Int? = null,
+
+    @SerializedName("uuid_v2")
+    val uuid: String? = null,
+
+    @SerializedName("smalltalk_id")
+    val smalltalkId: Int? = null,
 
     @SerializedName("match_format")
-    val matchFormat: String, // "one" ou "many"
+    val matchFormat: String? = null, // "one" ou "many"
+
     @SerializedName("match_locality")
-    val matchLocality: Boolean,
+    val matchLocality: Boolean? = null,
+
     @SerializedName("match_gender")
-    val matchGender: Boolean,
+    val matchGender: Boolean? = null,
+
     @SerializedName("user_gender")
-    val userGender: String,
+    val userGender: String? = null,
+
     @SerializedName("match_interest")
-    val matchInterest: Boolean,
+    val matchInterest: Boolean? = null,
+
     @SerializedName("created_at")
     val createdAt: Date? = null,
+
     @SerializedName("matched_at")
     val matchedAt: Date? = null,
 
     @SerializedName("updated_at")
-    val updatedAt: Date? = null
+    val updatedAt: Date? = null,
+
+    @SerializedName("deleted_at")
+    val deletedAt: Date? = null,
+
+    @SerializedName("last_match_computation_at")
+    val lastMatchComputationAt: Date? = null,
+
+    @SerializedName("user")
+    val user: User? = null,
+
+    @SerializedName("smalltalk")
+    val smallTalk: SmallTalk? = null
 ) : Serializable {
     companion object {
         private const val serialVersionUID = 46L

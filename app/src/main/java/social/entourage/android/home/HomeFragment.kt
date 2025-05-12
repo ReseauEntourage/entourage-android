@@ -252,28 +252,32 @@ class HomeFragment: Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocatio
     /** Compose la liste finale dès que les deux appels sont terminés */
     private fun composeSmallTalkItemsSimplified() {
         val items = mutableListOf<HomeSmallTalkItem>()
-        val matchedConversations = currentRequests
-            .filter { it.smalltalkId != null }
-            .map { matchedRequest ->
-                HomeSmallTalkItem.ConversationItem(
-                    Conversation(
-                        id = matchedRequest.smalltalkId ?: 0,
-                        title = matchedRequest.uuid ?: "",
-                        members = arrayListOf() // À peupler plus tard
-                    )
-                )
-            }
-
-        items.addAll(matchedConversations)
-        val hasOngoingRequestWithoutMatch = currentRequests.any { it.smalltalkId == null }
-        when {
-            // Si 3 conversations matchées ou une en attente, on ne montre pas "MatchPossible"
-            matchedConversations.size >= 3 -> {} // rien
-            hasOngoingRequestWithoutMatch -> items.add(HomeSmallTalkItem.Waiting)
-            else -> items.add(HomeSmallTalkItem.MatchPossible)
+        // On filtre les requêtes qui ont un smalltalk associé
+        val matchedRequests = currentRequests.filter { it.smalltalkId != null }
+        // On les transforme directement en ConversationItem
+        val matchedItems = matchedRequests.map { userRequest ->
+            HomeSmallTalkItem.ConversationItem(userRequest)
         }
+        // Ajout à la liste finale
+        items.addAll(matchedItems)
+        // On détecte s’il existe une requête en attente de match
+        val hasUnmatchedRequest = currentRequests.any { it.smalltalkId == null }
+        // On décide quoi ajouter en plus
+        when {
+            matchedItems.size >= 3 -> {
+                // Rien à ajouter si on a déjà 3 conversations
+            }
+            hasUnmatchedRequest -> {
+                items.add(HomeSmallTalkItem.Waiting)
+            }
+            else -> {
+                items.add(HomeSmallTalkItem.MatchPossible)
+            }
+        }
+        // On pousse la liste à l’adapter
         homeSmallTalkAdapter.submitList(items)
     }
+
 
     private fun testNotifDemandePage(){
         binding.ivLogoHome.setOnLongClickListener {

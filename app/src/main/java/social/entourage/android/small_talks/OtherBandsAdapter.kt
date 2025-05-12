@@ -7,72 +7,78 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import social.entourage.android.R
+import social.entourage.android.api.model.SmallTalk
+import social.entourage.android.api.model.UserSmallTalkRequest
 import social.entourage.android.databinding.ItemOtherBandBinding
 
 class OtherBandsAdapter(
-    private val items: List<OtherBand>,
-    private val onJoinClicked: (OtherBand) -> Unit
-) : RecyclerView.Adapter<OtherBandsAdapter.OtherBandViewHolder>() {
+    private val items: List<UserSmallTalkRequest>,
+    private val onJoinClicked: (UserSmallTalkRequest) -> Unit
+) : RecyclerView.Adapter<OtherBandsAdapter.BandViewHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): OtherBandViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BandViewHolder {
         val binding = ItemOtherBandBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return OtherBandViewHolder(binding)
+        return BandViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: OtherBandViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: BandViewHolder, position: Int) {
         holder.bind(items[position])
     }
 
     override fun getItemCount(): Int = items.size
 
-    inner class OtherBandViewHolder(private val binding: ItemOtherBandBinding) :
+    inner class BandViewHolder(private val binding: ItemOtherBandBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: OtherBand) {
+        fun bind(request: UserSmallTalkRequest) {
             val context = binding.root.context
+            val smallTalk = request.smallTalk
+            val fallbackUser = request.user
 
-            // 📝 Description selon le type
-            binding.textDescription.text = when (item.type) {
-                OtherBandType.DIFFERENT_LOCATION -> context.getString(R.string.small_talk_other_band_different_location)
-                OtherBandType.DIFFERENT_INTERESTS -> context.getString(R.string.small_talk_other_band_different_interests)
-                OtherBandType.DUO -> context.getString(R.string.small_talk_other_band_duo)
-                OtherBandType.GROUP_OF_THREE_PLUS -> context.getString(R.string.small_talk_other_band_group)
-            }
+            val avatarUrls = smallTalk?.members?.mapNotNull { it.avatarUrl }
+                ?: listOfNotNull(fallbackUser?.avatarURL)
 
-            // 👥 Membres
+            renderAvatars(avatarUrls)
+
+            val names = smallTalk?.members?.mapNotNull { it.displayName }
+                ?: listOfNotNull(fallbackUser?.displayName)
+
             binding.textMembers.text = context.getString(
                 R.string.small_talk_other_band_with,
-                item.members.joinToString(" et ")
+                names.joinToString(" et ")
             )
 
-            // 📸 Avatars
-            renderAvatars(item.memberAvatarUrls)
+            // Texte selon les incompatibilités
+            binding.textDescription.text = when {
+                SmallTalkListOtherBands.matchingLocality && request.matchLocality == false ->
+                    context.getString(R.string.small_talk_other_band_different_location)
+                SmallTalkListOtherBands.matchingInterest && request.matchInterest == false ->
+                    context.getString(R.string.small_talk_other_band_different_interests)
+                SmallTalkListOtherBands.matchingGender && request.matchGender == false ->
+                    context.getString(R.string.small_talk_other_band_different_interests)
+                SmallTalkListOtherBands.matchingGroup == "one" && request.matchFormat != "one" ->
+                    context.getString(R.string.small_talk_other_band_duo)
+                else ->
+                    context.getString(R.string.small_talk_other_band_group)
+            }
 
-            // 🔘 Bouton
             binding.buttonJoin.setOnClickListener {
-                onJoinClicked(item)
+                onJoinClicked(request)
             }
         }
 
         private fun renderAvatars(urls: List<String>) {
             val imageViews = listOf(
-                binding.avatar1,
-                binding.avatar2,
-                binding.avatar3,
-                binding.avatar4,
-                binding.avatar5
+                binding.avatar1, binding.avatar2, binding.avatar3, binding.avatar4, binding.avatar5
             )
 
-            // Masquer tous les avatars au départ
             imageViews.forEach { it.visibility = View.GONE }
 
-            // Afficher et remplir ceux nécessaires
             urls.take(5).forEachIndexed { index, url ->
                 val imageView = imageViews[index]
                 imageView.visibility = View.VISIBLE
-
                 Glide.with(imageView)
-                    .load(url.takeIf { it.isNotBlank() })
+                    .load(url)
                     .placeholder(R.drawable.placeholder_user)
                     .error(R.drawable.placeholder_user)
                     .transform(CircleCrop())

@@ -142,6 +142,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginTop="@dimen/entourage_little_margin_top"
         android:paddingTop="@dimen/entourage_margin_top"
+        android:scrollbars="vertical"
         android:background="@drawable/home_v2_scrollview_shape"
         android:fillViewport="true">
         <androidx.constraintlayout.widget.ConstraintLayout

@@ -138,11 +138,13 @@ class SmallTalkActivity : BaseActivity() {
                 0 -> { // Step MATCH FORMAT
                     val value = if (selectedItem?.id == "1") "one" else "many"
                     selectedRequest = selectedRequest.copy(matchFormat = value)
+                    SmallTalkListOtherBands.matchingGroup = value
                     update["match_format"] = value
                 }
                 1 -> { // Step LOCALITY
                     val value = selectedItem?.id == "3"
                     selectedRequest = selectedRequest.copy(matchLocality = value)
+                    SmallTalkListOtherBands.matchingLocality = value
                     update["match_locality"] = value
                 }
                 2 -> { // Step GENDER
@@ -166,6 +168,7 @@ class SmallTalkActivity : BaseActivity() {
                 3 -> { // Step MATCH GENDER
                     val matchGenderValue = selectedItem?.id == "9"
                     selectedRequest = selectedRequest.copy(matchGender = matchGenderValue)
+                    SmallTalkListOtherBands.matchingGender = matchGenderValue
                     update["match_gender"] = matchGenderValue
                 }
                 4 -> { // Step INTERESTS

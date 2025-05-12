@@ -2,21 +2,19 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="170dp"
+    android:layout_height="150dp"
     android:layout_margin="10dp"
     android:background="@drawable/background_organizer"
     android:padding="16dp">
 
     <ImageView
         android:id="@+id/iv_home_small_talk_icon_match"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
         android:src="@drawable/ic_home_search_small_talk"
         app:layout_constraintTop_toTopOf="@+id/tv_home_small_talk_subtitle_match"
         app:layout_constraintBottom_toBottomOf="@+id/button_start"
         app:layout_constraintStart_toStartOf="parent" />
-
-
 
     <TextView
         android:id="@+id/tv_home_small_talk_subtitle_match"
@@ -42,14 +40,14 @@
         android:background="@drawable/shape_button_v9_positive"
         android:elevation="0dp"
         android:fontFamily="@font/quicksand_bold"
-        android:paddingVertical="10dp"
+        android:paddingVertical="5dp"
         android:text="@string/small_talk_button_match"
         android:textAllCaps="false"
         app:layout_constraintTop_toBottomOf="@+id/tv_home_small_talk_subtitle_match"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:textColor="@android:color/white"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:textSize="14sp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

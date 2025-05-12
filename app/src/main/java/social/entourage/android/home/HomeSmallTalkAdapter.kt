@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.gson.Gson
 import social.entourage.android.R
-import social.entourage.android.api.model.Conversation
+import social.entourage.android.api.model.UserSmallTalkRequest
 import social.entourage.android.databinding.ItemHomeSmallTalkConversationBinding
 import social.entourage.android.databinding.ItemHomeSmallTalkMatchBinding
 import social.entourage.android.databinding.ItemHomeSmallTalkWaitingBinding
@@ -18,12 +18,12 @@ import timber.log.Timber
 sealed class HomeSmallTalkItem {
     object MatchPossible : HomeSmallTalkItem()
     object Waiting : HomeSmallTalkItem()
-    data class ConversationItem(val conversation: Conversation) : HomeSmallTalkItem()
+    data class ConversationItem(val userSmallTalkRequest: UserSmallTalkRequest) : HomeSmallTalkItem()
 }
 
 class HomeSmallTalkAdapter(
     private val onStartClick: () -> Unit,
-    private val onConversationClick: (Conversation) -> Unit,
+    private val onConversationClick: (UserSmallTalkRequest) -> Unit,
     private val onMatchingClick: () -> Unit
 ) : ListAdapter<HomeSmallTalkItem, RecyclerView.ViewHolder>(DiffCallback()) {
 
@@ -44,18 +44,9 @@ class HomeSmallTalkAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         return when (viewType) {
-            TYPE_MATCH -> {
-                val binding = ItemHomeSmallTalkMatchBinding.inflate(inflater, parent, false)
-                MatchViewHolder(binding)
-            }
-            TYPE_WAITING -> {
-                val binding = ItemHomeSmallTalkWaitingBinding.inflate(inflater, parent, false)
-                WaitingViewHolder(binding)
-            }
-            TYPE_CONVERSATION -> {
-                val binding = ItemHomeSmallTalkConversationBinding.inflate(inflater, parent, false)
-                ConversationViewHolder(binding)
-            }
+            TYPE_MATCH -> MatchViewHolder(ItemHomeSmallTalkMatchBinding.inflate(inflater, parent, false))
+            TYPE_WAITING -> WaitingViewHolder(ItemHomeSmallTalkWaitingBinding.inflate(inflater, parent, false))
+            TYPE_CONVERSATION -> ConversationViewHolder(ItemHomeSmallTalkConversationBinding.inflate(inflater, parent, false))
             else -> throw IllegalArgumentException("Unknown view type $viewType")
         }
     }
@@ -64,7 +55,7 @@ class HomeSmallTalkAdapter(
         when (val item = getItem(position)) {
             is HomeSmallTalkItem.MatchPossible -> (holder as MatchViewHolder).bind()
             is HomeSmallTalkItem.Waiting -> (holder as WaitingViewHolder).bind()
-            is HomeSmallTalkItem.ConversationItem -> (holder as ConversationViewHolder).bind(item.conversation)
+            is HomeSmallTalkItem.ConversationItem -> (holder as ConversationViewHolder).bind(item.userSmallTalkRequest)
         }
     }
 
@@ -89,9 +80,10 @@ class HomeSmallTalkAdapter(
     inner class ConversationViewHolder(private val binding: ItemHomeSmallTalkConversationBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(conversation: Conversation) {
-            Timber.wtf("wtf conversation : ${Gson().toJson(conversation)}")
-            val members = conversation.members?.take(3) ?: emptyList()
+        fun bind(userSmallTalkRequest: UserSmallTalkRequest) {
+            Timber.wtf("wtf userSmallTalkRequest : ${Gson().toJson(userSmallTalkRequest)}")
+
+            val members = userSmallTalkRequest.smallTalk?.members?.take(3) ?: emptyList()
 
             val avatars = listOf(
                 binding.ivHomeSmallTalkAvatar1,
@@ -103,10 +95,10 @@ class HomeSmallTalkAdapter(
             avatars.forEach { imageView ->
                 Glide.with(imageView.context).clear(imageView)
                 imageView.setImageResource(R.drawable.placeholder_user)
-                imageView.visibility = View.GONE // cacher par défaut
+                imageView.visibility = View.GONE
             }
 
-            // Charger les membres disponibles
+            // Charger les membres
             members.forEachIndexed { index, member ->
                 avatars.getOrNull(index)?.let { imageView ->
                     imageView.visibility = View.VISIBLE
@@ -118,18 +110,16 @@ class HomeSmallTalkAdapter(
                 }
             }
 
-            // Mettre les noms dans le TextView en dessous des avatars
-            when (members.size) {
-                0 -> binding.tvHomeSmallTalkNames.text = "" // pas de membres
-                1 -> binding.tvHomeSmallTalkNames.text = members[0].displayName.orEmpty()
-                2 -> binding.tvHomeSmallTalkNames.text = "${members[0].displayName.orEmpty()} et ${members[1].displayName.orEmpty()}"
-                else -> binding.tvHomeSmallTalkNames.text =
-                    "${members[0].displayName.orEmpty()}, ${members[1].displayName.orEmpty()} et ${members[2].displayName.orEmpty()}"
+            // Mettre les noms dans le TextView
+            binding.tvHomeSmallTalkNames.text = when (members.size) {
+                1 -> members[0].displayName.orEmpty()
+                2 -> "${members[0].displayName.orEmpty()} et ${members[1].displayName.orEmpty()}"
+                3 -> "${members[0].displayName.orEmpty()}, ${members[1].displayName.orEmpty()} et ${members[2].displayName.orEmpty()}"
+                else -> ""
             }
 
-            // Clic sur toute la carte
             binding.root.setOnClickListener {
-                onConversationClick(conversation)
+                onConversationClick(userSmallTalkRequest)
             }
         }
     }
@@ -138,7 +128,7 @@ class HomeSmallTalkAdapter(
         override fun areItemsTheSame(oldItem: HomeSmallTalkItem, newItem: HomeSmallTalkItem): Boolean {
             return when {
                 oldItem is HomeSmallTalkItem.ConversationItem && newItem is HomeSmallTalkItem.ConversationItem ->
-                    oldItem.conversation.id == newItem.conversation.id
+                    oldItem.userSmallTalkRequest.id == newItem.userSmallTalkRequest.id
                 oldItem::class == newItem::class -> true
                 else -> false
             }

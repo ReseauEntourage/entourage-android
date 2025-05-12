@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:id="@+id/view"
     android:padding="15dp"
-    android:layout_marginHorizontal="10dp"
+    android:layout_marginHorizontal="5dp"
     android:layout_marginVertical="15dp">
 
     <androidx.cardview.widget.CardView
