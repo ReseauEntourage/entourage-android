@@ -1,8 +1,12 @@
 package social.entourage.android.discussions
 
+import android.util.Log
 import androidx.collection.ArrayMap
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.Request
+import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
@@ -16,6 +20,8 @@ import social.entourage.android.api.model.Post
 import social.entourage.android.api.model.User
 import social.entourage.android.api.model.UserBlockedUser
 import timber.log.Timber
+import java.io.File
+import java.io.IOException
 
 /**
  * Created by - on 15/11/2022.
@@ -25,7 +31,6 @@ class DiscussionsPresenter:ViewModel() {
     var getAllMessages = MutableLiveData<MutableList<Conversation>>()
     var isLoading: Boolean = false
     var isLastPage: Boolean = false
-
     var isConversationReported = MutableLiveData<Boolean>()
     var isConversationDeleted = MutableLiveData<Boolean>()
     var hasUserLeftConversation = MutableLiveData<Boolean>()
@@ -380,4 +385,58 @@ class DiscussionsPresenter:ViewModel() {
             })
     }
 
+    fun addCommentWithImage(groupId: Int, message: String?, file: File) {
+        val request = RequestContent("image/jpeg")
+        EntourageApplication.get().apiModule.discussionsRequest.prepareAddPost(groupId, request)
+            .enqueue(object : Callback<PrepareAddPostResponse> {
+                override fun onResponse(call: Call<PrepareAddPostResponse>, response: Response<PrepareAddPostResponse>) {
+                    if (response.isSuccessful) {
+                        val presignedUrl = response.body()?.presignedUrl
+                        val uploadKey = response.body()?.uploadKey
+                        if (presignedUrl != null && uploadKey != null) {
+                            uploadFile(groupId, file, presignedUrl, uploadKey, message)
+                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<PrepareAddPostResponse>, t: Throwable) {
+                    Log.wtf("wtf", "t : " + t.message )
+                }
+            })
+    }
+
+    private fun uploadFile(groupId: Int, file: File, presignedUrl: String, uploadKey: String, message: String?) {
+        val requestBody = file.asRequestBody("image/jpeg".toMediaTypeOrNull())
+        val request = Request.Builder().url(presignedUrl).put(requestBody).build()
+        EntourageApplication.get().apiModule.okHttpClient.newCall(request).enqueue(object : okhttp3.Callback {
+            override fun onFailure(call: okhttp3.Call, e: IOException) {
+                // Optionnel : gérer l’échec
+            }
+            override fun onResponse(call: okhttp3.Call, response: okhttp3.Response) {
+                if (!response.isSuccessful) {
+                    // Optionnel : log ou état d’échec
+                    return
+                }
+                val chatMessageMap = ArrayMap<String, Any>()
+                chatMessageMap["image_url"] = uploadKey
+                if (!message.isNullOrBlank()) {
+                    chatMessageMap["content"] = message
+                }
+                val rootMap = ArrayMap<String, Any>()
+                rootMap["chat_message"] = chatMessageMap
+
+                EntourageApplication.get().apiModule.discussionsRequest
+                    .addPost(groupId, rootMap)
+                    .enqueue(object : Callback<PostWrapper> {
+                        override fun onResponse(call: Call<PostWrapper>, response: Response<PostWrapper>) {
+                            commentPosted.postValue(response.body()?.post)
+                        }
+
+                        override fun onFailure(call: Call<PostWrapper>, t: Throwable) {
+                            commentPosted.postValue(null)
+                        }
+                    })
+            }
+        })
+    }
 }

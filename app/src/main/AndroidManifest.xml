@@ -107,6 +107,8 @@
             android:exported="false"/>
         <activity android:name=".small_talks.SmallTalkNoBandFound"
             android:exported="false"/>
+        <activity android:name=".comment.ImageZoomActivity"
+            />
         <activity
             android:name=".home.pedago.PedagoDetailActivity"
             android:exported="false" />

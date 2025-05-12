@@ -15,6 +15,7 @@ import android.text.util.Linkify
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.recyclerview.widget.RecyclerView
@@ -179,6 +180,20 @@ class CommentsListAdapter(
                     ContextCompat.getColor(context, R.color.light_orange)
                 )
             }
+            if (!comment.imageUrl.isNullOrEmpty()) {
+                bindingLeft.commentImageContainer.visibility = View.VISIBLE
+                Glide.with(context)
+                    .load(comment.imageUrl)
+                    .into(bindingLeft.commentImage)
+
+                bindingLeft.commentImage.setOnClickListener {
+                    val intent = Intent(context, ImageZoomActivity::class.java)
+                    intent.putExtra("image_url", comment.imageUrl)
+                    context.startActivity(intent)
+                }
+            } else {
+                bindingLeft.commentImageContainer.visibility = View.GONE
+            }
             binding.comment.layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT
             binding.comment.requestLayout()
         }
@@ -258,8 +273,33 @@ class CommentsListAdapter(
                     ContextCompat.getColor(context, R.color.light_orange)
                 )
             }
+            if (!comment.imageUrl.isNullOrEmpty()) {
+                bindingRight.commentImageContainer.visibility = View.VISIBLE
+                Glide.with(context)
+                    .load(comment.imageUrl)
+                    .into(bindingRight.commentImage)
+
+                bindingRight.commentImage.setOnClickListener {
+                    val intent = Intent(context, ImageZoomActivity::class.java)
+                    intent.putExtra("image_url", comment.imageUrl)
+                    context.startActivity(intent)
+                }
+            } else {
+                bindingRight.commentImageContainer.visibility = View.GONE
+            }
+            val lp = binding.messageContainer.layoutParams as ConstraintLayout.LayoutParams
+            if (comment.imageUrl.isNullOrEmpty()) {
+                // Pas d’image → width = wrap_content
+                lp.matchConstraintPercentWidth = -1f   // -1 ou 0 désactive le %
+            } else {
+                // Image → on force 85 %
+                lp.matchConstraintPercentWidth = 0.85f
+            }
+            binding.messageContainer.layoutParams = lp
+            binding.messageContainer.requestLayout()
             binding.comment.layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT
             binding.comment.requestLayout()
+
         }
 
         // ----------------------------------------------------------------------------------------

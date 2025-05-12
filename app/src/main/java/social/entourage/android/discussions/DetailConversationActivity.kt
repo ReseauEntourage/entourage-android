@@ -1,15 +1,25 @@
 package social.entourage.android.discussions
 
+import android.animation.ObjectAnimator
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.Editable
 import android.text.Html
 import android.text.TextWatcher
 import android.view.View
+import android.view.animation.AnimationUtils
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.core.animation.doOnEnd
 import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.text.HtmlCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
@@ -38,6 +48,7 @@ import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.Utils
 import social.entourage.android.tools.utils.VibrationUtil
 import timber.log.Timber
+import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -48,7 +59,6 @@ class DetailConversationActivity : CommentActivity() {
         var isSmallTalkMode: Boolean = false
         var smallTalkId: String = ""
     }
-
     // Présenters & ViewModel
     private val eventPresenter: EventsPresenter by lazy { EventsPresenter() }
     private val discussionsPresenter: DiscussionsPresenter by lazy { DiscussionsPresenter() }
@@ -56,6 +66,11 @@ class DetailConversationActivity : CommentActivity() {
     private var refreshMessagesRunnable: Runnable? = null
     private val refreshHandler = android.os.Handler()
     private val refreshIntervalMs = 5000L // 5 secondes
+    private lateinit var cameraLauncher: ActivityResultLauncher<Uri>
+    private lateinit var galleryLauncher: ActivityResultLauncher<String>
+    private var photoUri: Uri? = null
+    private var detailConversation: Conversation? = null
+
 
     // UI state
     private var hasToShowFirstMessage = false
@@ -72,7 +87,7 @@ class DetailConversationActivity : CommentActivity() {
         isMember = isSmallTalkMode
         hasToShowFirstMessage = intent.getBooleanExtra(Const.HAS_TO_SHOW_MESSAGE, false)
         binding.emptyState.visibility = View.GONE
-
+        setOptions()
         setupHeader()
         setupMentionList()
         setupMentionTextWatcher()
@@ -107,6 +122,18 @@ class DetailConversationActivity : CommentActivity() {
             discussionsPresenter.commentPosted.observe(this) { handleCommentPosted(it) }
             discussionsPresenter.getPostComments(id)
         }
+        //Camera and galery init
+        cameraLauncher = registerForActivityResult(ActivityResultContracts.TakePicture()) { success ->
+            if (success && photoUri != null) {
+                showThumbnail(photoUri!!)
+            }
+        }
+
+        galleryLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+            if (uri != null) {
+                showThumbnail(uri)
+            }
+        }
     }
 
     override fun onResume() {
@@ -127,6 +154,67 @@ class DetailConversationActivity : CommentActivity() {
             recreate()
         }
     }
+
+    fun setOptions() {
+        var isOptionsVisible = false
+
+        binding.optionButton.setOnClickListener {
+            isOptionsVisible = !isOptionsVisible
+
+            if (isOptionsVisible) {
+                // Animation du layout
+                val slideIn = AnimationUtils.loadAnimation(this, R.anim.slide_in_up)
+                binding.layoutOption.startAnimation(slideIn)
+                binding.layoutOption.visibility = View.VISIBLE
+
+                // Rotation du bouton
+                val rotate = ObjectAnimator.ofFloat(binding.optionButton, View.ROTATION, 0f, 180f)
+                rotate.duration = 300
+                rotate.doOnEnd {
+                    binding.optionButton.setImageDrawable(getDrawable(R.drawable.ic_conversation_more_option))
+                }
+                rotate.start()
+
+            } else {
+                // Animation de sortie
+                val slideOut = AnimationUtils.loadAnimation(this, R.anim.slide_out_down)
+                binding.layoutOption.startAnimation(slideOut)
+
+                // Cache le layout après l’animation
+                Handler(Looper.getMainLooper()).postDelayed({
+                    binding.layoutOption.visibility = View.GONE
+                }, 250)
+
+                // Rotation retour
+                val rotateBack = ObjectAnimator.ofFloat(binding.optionButton, View.ROTATION, 180f, 0f)
+                rotateBack.duration = 300
+                rotateBack.start()
+            }
+        }
+
+        // Initialisation des options
+        binding.optionCamera.ivOption.setImageDrawable(getDrawable(R.drawable.ic_conversation_option_photo))
+        binding.optionGalery.ivOption.setImageDrawable(getDrawable(R.drawable.ic_conversation_option_galerie))
+        binding.optionCamera.tvOption.setText(R.string.discussion_option_camera)
+        binding.optionGalery.tvOption.setText(R.string.discussion_option_gallery)
+        binding.optionCamera.layoutParent.setOnClickListener {
+            photoUri = createImageUri()
+            cameraLauncher.launch(photoUri)
+        }
+
+        binding.optionGalery.layoutParent.setOnClickListener {
+            galleryLauncher.launch("image/*")
+        }
+    }
+
+    private fun createImageUri(): Uri {
+        val image = File.createTempFile("camera_img", ".jpg", cacheDir).apply {
+            createNewFile()
+            deleteOnExit()
+        }
+        return FileProvider.getUriForFile(this, "${packageName}.fileprovider", image)
+    }
+
 
     private fun startRefreshingMessages() {
         refreshMessagesRunnable = object : Runnable {
@@ -166,6 +254,24 @@ class DetailConversationActivity : CommentActivity() {
         handleGetPostComments(messages?.toMutableList())
     }
 
+    private fun showThumbnail(uri: Uri) {
+        binding.ivThumbnail.setImageURI(uri)
+        if (binding.ivThumbnail.visibility != View.VISIBLE) {
+            binding.ivThumbnail.alpha = 0f
+            binding.ivThumbnail.visibility = View.VISIBLE
+            binding.ivThumbnail.animate()
+                .alpha(1f)
+                .setDuration(300)
+                .start()
+        }
+        binding.comment.background = ResourcesCompat.getDrawable(
+            resources,
+            R.drawable.new_circle_orange_button_fill,
+            null
+        )
+        binding.comment.isEnabled = true
+    }
+
     private fun handleParticipants(participants: List<User>?) {
         val currentUserId = EntourageApplication.get().me()?.id
         val names = participants
@@ -177,9 +283,32 @@ class DetailConversationActivity : CommentActivity() {
         allMembers = participants?.map { it.toGroupMember() } ?: emptyList()
     }
 
+    private fun sendImageMessage(uri: Uri) {
+        val file = Utils.getFileFromUri(this, uri) ?: return
+        val content = binding.commentMessage.text?.toString()?.takeIf { it.isNotBlank() }
+
+        when {
+            isSmallTalkMode -> {
+                smallTalkViewModel.addMessageWithImage(smallTalkId, content, file)
+            }
+            detailConversation?.type == "outing" -> {
+                val eventId = detailConversation?.id ?: return
+                eventPresenter.addPost(content, file, eventId)
+            }
+            else -> {
+                detailConversation?.id?.toInt()?.let { discussionsPresenter.addCommentWithImage(it, content, file) }
+            }
+        }
+
+        binding.commentMessage.text.clear()
+        binding.ivThumbnail.visibility = View.GONE
+    }
+
+
     // --- Discussion detail (inchangé) ---
     private fun handleDetailConversation(conversation: Conversation?) {
         conversation ?: return
+        this.detailConversation = conversation
         isMember = conversation.member == true
         updateView(false)
         if (conversation.memberCount > 2) {
@@ -295,6 +424,13 @@ class DetailConversationActivity : CommentActivity() {
 
     // --- Envoi message / commentaire ---
     override fun addComment() {
+        val selectedUri = photoUri
+        if (selectedUri != null && binding.ivThumbnail.isVisible) {
+            sendImageMessage(selectedUri)
+            photoUri = null
+            return
+        }
+
         val spanned = binding.commentMessage.editableText
         val html = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             Html.toHtml(spanned, Html.FROM_HTML_MODE_LEGACY)
@@ -323,6 +459,7 @@ class DetailConversationActivity : CommentActivity() {
         binding.commentMessage.text.clear()
         Utils.hideKeyboard(this)
     }
+
 
     // --- Récupération / affichage commentaires ---
     override fun handleGetPostComments(allComments: MutableList<Post>?) {
@@ -439,6 +576,8 @@ class DetailConversationActivity : CommentActivity() {
         return out
     }
 
+
+
     fun formatDate(inputDate: String): String {
         val fmt = SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.US)
         val date = fmt.parse(inputDate) ?: return ""
@@ -493,4 +632,8 @@ class DetailConversationActivity : CommentActivity() {
         isSmallTalkMode = false
         smallTalkId = ""
     }
+
+
+
+
 }

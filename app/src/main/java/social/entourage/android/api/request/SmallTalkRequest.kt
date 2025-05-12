@@ -151,4 +151,12 @@ interface SmallTalkRequest {
     @GET("user_smalltalks/almost_matches")
     fun listAlmostMatches(
     ): Call<UserSmallTalkRequestListWrapper>
+
+    @POST("smalltalks/{id}/chat_messages/presigned_upload")
+    fun prepareAddPost(
+        @Path("id") smallTalkId: String,
+        @Body request: RequestContent
+    ): Call<PrepareAddPostResponse>
+
+
 }

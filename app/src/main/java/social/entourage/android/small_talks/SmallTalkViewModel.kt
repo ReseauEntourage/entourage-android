@@ -5,6 +5,9 @@ import androidx.collection.ArrayMap
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.Request
+import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
@@ -15,6 +18,8 @@ import social.entourage.android.api.model.*
 import social.entourage.android.api.model.MembersWrapper
 import social.entourage.android.api.request.*
 import social.entourage.android.enhanced_onboarding.InterestForAdapter
+import java.io.File
+import java.io.IOException
 
 data class SmallTalkStep(
     val title: String,
@@ -301,6 +306,75 @@ class SmallTalkViewModel(application: Application) : AndroidViewModel(applicatio
             }
         })
     }
+
+    fun addMessageWithImage(smallTalkId: String, content: String?, file: File) {
+        val request = RequestContent("image/jpeg")
+        EntourageApplication.get().apiModule.smallTalkRequest
+            .prepareAddPost(smallTalkId, request)
+            .enqueue(object : Callback<PrepareAddPostResponse> {
+                override fun onResponse(call: Call<PrepareAddPostResponse>, response: Response<PrepareAddPostResponse>) {
+                    if (response.isSuccessful) {
+                        val presignedUrl = response.body()?.presignedUrl
+                        val uploadKey = response.body()?.uploadKey
+                        if (presignedUrl != null && uploadKey != null) {
+                            uploadFileAndSendMessage(smallTalkId, file, presignedUrl, uploadKey, content)
+                        }
+                    } else {
+                        createdMessage.postValue(null)
+                    }
+                }
+
+                override fun onFailure(call: Call<PrepareAddPostResponse>, t: Throwable) {
+                    createdMessage.postValue(null)
+                }
+            })
+    }
+
+
+    private fun uploadFileAndSendMessage(
+        smallTalkId: String,
+        file: File,
+        presignedUrl: String,
+        uploadKey: String,
+        content: String?
+    ) {
+        val requestBody = file.asRequestBody("image/jpeg".toMediaTypeOrNull())
+        val request = Request.Builder().url(presignedUrl).put(requestBody).build()
+
+        EntourageApplication.get().apiModule.okHttpClient.newCall(request).enqueue(object : okhttp3.Callback {
+            override fun onFailure(call: okhttp3.Call, e: IOException) {
+                createdMessage.postValue(null)
+            }
+
+            override fun onResponse(call: okhttp3.Call, response: okhttp3.Response) {
+                if (!response.isSuccessful) {
+                    createdMessage.postValue(null)
+                    return
+                }
+
+                val chatParams = ArrayMap<String, Any>()
+                chatParams["image_url"] = uploadKey
+                if (!content.isNullOrBlank()) chatParams["content"] = content
+
+                val messagePayload = ArrayMap<String, Any>()
+                messagePayload["chat_message"] = chatParams
+
+                EntourageApplication.get().apiModule.smallTalkRequest
+                    .createChatMessage(smallTalkId, messagePayload)
+                    .enqueue(object : Callback<ChatMessageWrapper> {
+                        override fun onResponse(call: Call<ChatMessageWrapper>, response: Response<ChatMessageWrapper>) {
+                            createdMessage.postValue(response.body()?.chatMessage)
+                            listChatMessages(smallTalkId)
+                        }
+
+                        override fun onFailure(call: Call<ChatMessageWrapper>, t: Throwable) {
+                            createdMessage.postValue(null)
+                        }
+                    })
+            }
+        })
+    }
+
 
 
 }

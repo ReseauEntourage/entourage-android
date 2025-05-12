@@ -104,4 +104,10 @@ interface DiscussionsRequest {
         @Path("conversation_id") conversationId: Int
     ): Call<UserListWithConversationWrapper>
 
+    @POST("conversations/{id}/chat_messages/presigned_upload")
+    fun prepareAddPost(
+        @Path("id") conversationId: Int,
+        @Body request: RequestContent
+    ): Call<PrepareAddPostResponse>
+
 }
