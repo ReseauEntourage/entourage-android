@@ -155,6 +155,13 @@ class DetailConversationActivity : CommentActivity() {
         }
     }
 
+    private fun isAtBottom(): Boolean {
+        val layoutManager = binding.comments.layoutManager as? LinearLayoutManager ?: return true
+        val lastVisibleItem = layoutManager.findLastCompletelyVisibleItemPosition()
+        val totalItemCount = layoutManager.itemCount
+        return lastVisibleItem >= totalItemCount - 2 // on tolère 1-2 items de marge
+    }
+
     fun setOptions() {
         var isOptionsVisible = false
 
@@ -464,13 +471,15 @@ class DetailConversationActivity : CommentActivity() {
     // --- Récupération / affichage commentaires ---
     override fun handleGetPostComments(allComments: MutableList<Post>?) {
         val newComments = sortAndExtractDays(allComments, this)
+        val wasAtBottom = isAtBottom()
         commentsList.clear()
         newComments?.let { commentsList.addAll(it) }
+        binding.comments.adapter?.notifyDataSetChanged()
+
+        if (wasAtBottom) scrollAfterLayout() // 👈 garde uniquement cette ligne pour scroller
         binding.progressBar.visibility = View.GONE
         newComments?.isEmpty()?.let { updateView(it) }
-        scrollAfterLayout()
     }
-
     override fun handleReportPost(id: Int, commentLang: String) {
         binding.header.iconSettings.setOnClickListener {
             DataLanguageStock.updatePostLanguage(commentLang)
