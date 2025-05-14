@@ -2978,6 +2978,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
 
     <string name="onboarding_title">Prêts pour intégrer une bande solidaire ?</string>
     <string name="onboarding_start_button">Je commence</string>
+    <string name="onboarding_end_button">Terminer</string>
     <string name="onboarding_intro_html">
     <![CDATA[
     <p>Les <b>Bandes solidaires</b> vous connectent rapidement avec un ou plusieurs membres...</p>
