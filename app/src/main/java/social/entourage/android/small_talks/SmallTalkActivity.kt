@@ -25,6 +25,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import social.entourage.android.EntourageApplication
 import social.entourage.android.profile.editProfile.EditPhotoActivity
+import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
 
 class SmallTalkActivity : BaseActivity() {
 
@@ -51,13 +52,11 @@ class SmallTalkActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         binding = SmallTalkActivityBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
+        updatePaddingTopForEdgeToEdge(binding.root)
         viewModel = ViewModelProvider(this)[SmallTalkViewModel::class.java]
         userPresenter = UserPresenter()
-
         val currentUser = EntourageApplication.me(this)
         shouldAskProfilePhoto = currentUser?.avatarURL.isNullOrBlank()
-
         editPhotoLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             SmallTalkingSearchingActivity.id = SMALL_TALK_REQUEST_ID
             startActivity(Intent(this, SmallTalkingSearchingActivity::class.java))
@@ -93,6 +92,7 @@ class SmallTalkActivity : BaseActivity() {
 
             val isInterestStep = viewModel.isLastStep()
             adapter.forceSingleSelectionForSmallTalk = !isInterestStep
+            adapter.isFromInterestLocal = isInterestStep
 
             (binding.rvSmallTalk.layoutManager as? GridLayoutManager)?.spanCount = if (isInterestStep) 2 else 1
 
@@ -101,7 +101,6 @@ class SmallTalkActivity : BaseActivity() {
             } else {
                 step.items
             }
-
             // 1️⃣ Soumission d'une liste vide
             adapter.submitList(emptyList())
 
@@ -110,7 +109,6 @@ class SmallTalkActivity : BaseActivity() {
                 adapter.submitList(updatedItems)
                 binding.rvSmallTalk.scheduleLayoutAnimation()
             }
-
             animateProgressTo(viewModel.getStepProgress())
         }
 

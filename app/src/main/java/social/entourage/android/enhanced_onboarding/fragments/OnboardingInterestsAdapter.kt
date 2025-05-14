@@ -15,6 +15,11 @@ class OnboardingInterestsAdapter(
     private val onInterestClicked: (InterestForAdapter) -> Unit
 ) : ListAdapter<InterestForAdapter, OnboardingInterestsAdapter.InterestViewHolder>(InterestDiffCallback()) {
 
+    var isFromInterestLocal = false
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
     var forceSingleSelectionForSmallTalk: Boolean = false
 
     inner class InterestViewHolder(val binding: LayoutItemOnboardingInterestsBinding) :
@@ -23,7 +28,7 @@ class OnboardingInterestsAdapter(
         fun bind(interest: InterestForAdapter) {
             binding.ivInterestIcon.setImageResource(interest.icon)
 
-            if (isFromInterest) {
+            if (isFromInterest || isFromInterestLocal) {
                 binding.tvInterestTitle.text = interest.title
                 binding.tvInterestTitle.visibility = View.VISIBLE
                 binding.tvInterestTitleFromRight.visibility = View.GONE
