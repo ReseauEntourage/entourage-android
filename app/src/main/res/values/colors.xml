@@ -76,6 +76,7 @@
     <color name="red_dark">#d63649</color>
     <color name="black">#000000</color>
     <color name="white">#ffffff</color>
+    <color name="white_30">#4DFFFFFF</color>
 
     <!-- Pre Onboard -->
     <color name="pre_onboard_orange">@color/accent</color>
@@ -97,6 +98,7 @@
     <color name="beige_darker">#FFDEBB</color>
     <color name="beige_clair">#FFF5EB</color>
     <color name="orange">#FF9739</color>
+    <color name="orange_30">#4CFF9739</color>
     <color name="light_orange">#ff9c5d</color>
     <color name="light_orange_50">#80FF9C5D</color>
     <color name="light_orange_opacity_50">#80ff9c5d</color>

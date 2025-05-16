@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
+    android:background="@color/organizer_background"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
@@ -18,26 +19,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="16dp"
-
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-
-            >
-
-            <ImageView
-                android:id="@+id/iv_small_talk_illu"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:layout_marginTop="16dp"
-                android:src="@drawable/ic_home_search_small_talk"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_small_talk_title" />
-
+            app:layout_constraintTop_toTopOf="parent">
             <TextView
                 android:id="@+id/tv_small_talk_title"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="40dp"
+                android:layout_marginTop="0dp"
                 android:fontFamily="@font/quicksand_bold"
                 android:text="@string/small_talk_guidelines_title"
                 android:textColor="@color/black"
@@ -46,6 +34,16 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="Guide et charte des bandes solidaires" />
+            <ImageView
+                android:id="@+id/iv_small_talk_illu"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_marginTop="16dp"
+                android:src="@drawable/ic_home_search_small_talk"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_small_talk_title" />
+
 
             <TextView
                 android:id="@+id/tv_small_talk_intro"
@@ -56,10 +54,10 @@
                 android:text="@string/small_talk_guidelines_intro"
                 android:textColor="@color/black"
                 android:textSize="15sp"
-                app:layout_constraintBottom_toBottomOf="@id/iv_small_talk_illu"
+                android:layout_marginTop="20dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/iv_small_talk_illu"
-                app:layout_constraintTop_toTopOf="@id/iv_small_talk_illu"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/iv_small_talk_illu"
                 tools:text="Les Bandes solidaires vous connectent régulièrement..." />
 
             <include
@@ -67,10 +65,10 @@
                 layout="@layout/item_home_small_talk_info_card"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="20dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/iv_small_talk_illu" />
+                app:layout_constraintTop_toBottomOf="@id/tv_small_talk_intro" />
 
             <include
                 android:id="@+id/card_small_talk_what_is_not"

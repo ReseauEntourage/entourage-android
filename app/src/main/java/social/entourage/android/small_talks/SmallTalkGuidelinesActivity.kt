@@ -3,9 +3,11 @@ package social.entourage.android.small_talks
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import social.entourage.android.R
+import social.entourage.android.base.BaseActivity
 import social.entourage.android.databinding.ActivitySmallTalkGuidelinesBinding
+import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
 
-class SmallTalkGuidelinesActivity : AppCompatActivity() {
+class SmallTalkGuidelinesActivity : BaseActivity() {
 
     private lateinit var binding: ActivitySmallTalkGuidelinesBinding
 
@@ -13,7 +15,7 @@ class SmallTalkGuidelinesActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivitySmallTalkGuidelinesBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
+        updatePaddingTopForEdgeToEdge(binding.root)
         setupUI()
     }
 

@@ -3022,6 +3022,8 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="small_talk_step4_item2_subtitle">Je préfère échanger avec des personnes qui partagent le même genre que moi</string>
 
     <!-- Step 4: small talk searching activity -->
+    <string name="small_talk_step_interest_title">Quels sont vos centres d\'intérêt ?</string>
+    <string name="small_talk_step_interest_subtitle">Sélectionnez les sujets qui vous passionnent pour trouver des personnes qui partagent vos goûts.</string>
 
     <string name="small_talk_searching_title">On te trouve une bande qui te correspond</string>
     <string name="small_talk_searching_intro">On vous prépare une belle rencontre… juste le temps de trouver les bons partenaires. Encore un petit instant, ça arrive !</string>

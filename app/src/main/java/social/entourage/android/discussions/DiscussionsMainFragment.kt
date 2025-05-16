@@ -243,6 +243,9 @@ class DiscussionsMainFragment : Fragment() {
         val conversation = messagesList[position]
         VibrationUtil.vibrate(requireContext())
         DetailConversationActivity.isSmallTalkMode = (currentFilterMode == FilterMode.SMALLTALKS)
+        if(DetailConversationActivity.isSmallTalkMode){
+            DetailConversationActivity.smallTalkId = conversation.id.toString()
+        }
         startActivity(
             Intent(context, DetailConversationActivity::class.java).putExtras(
                 bundleOf(

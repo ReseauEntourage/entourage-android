@@ -8,10 +8,12 @@ import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
+import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.api.model.User
 import social.entourage.android.api.model.toUsers
 import social.entourage.android.base.BaseActivity
+import social.entourage.android.base.BaseSecuredActivity
 import social.entourage.android.databinding.ActivitySmallTalkGroupFoundBinding
 import social.entourage.android.discussions.DetailConversationActivity
 
@@ -32,7 +34,10 @@ class SmallTalkGroupFoundActivity : BaseActivity() {
 
         setupViewPager()
         smallTalkViewModel.smallTalkDetail.observe(this) { smallTalk ->
-            val users = smallTalk?.members?.toUsers() ?: emptyList()
+            val currentUserId = EntourageApplication.me(this)?.id
+            val users = smallTalk?.members
+                ?.toUsers()
+                ?.filter { it.id != currentUserId } ?: emptyList()
             adapter = SmallTalkGroupFoundAdapter(users)
             binding.smallTalkGroupFoundViewpager.adapter = adapter
             updateDots(0, users.size)
@@ -87,10 +92,7 @@ class SmallTalkGroupFoundActivity : BaseActivity() {
         binding.smallTalkGroupFoundDotsContainer.removeAllViews()
         repeat(total) { index ->
             val dot = View(this).apply {
-                layoutParams = LinearLayout.LayoutParams(
-                    if (index == currentIndex) 24 else 16,
-                    16
-                ).apply {
+                layoutParams = LinearLayout.LayoutParams(16, 16).apply {
                     setMargins(8, 0, 8, 0)
                 }
                 background = ContextCompat.getDrawable(

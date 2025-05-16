@@ -33,6 +33,7 @@ class SmallTalkActivity : BaseActivity() {
     private lateinit var viewModel: SmallTalkViewModel
     private lateinit var adapter: OnboardingInterestsAdapter
     private lateinit var userPresenter: UserPresenter
+    private val userSelectionsByStep: MutableMap<Int, String> = mutableMapOf()
 
     private var shouldAskProfilePhoto = false
     private lateinit var editPhotoLauncher: ActivityResultLauncher<Intent>
@@ -96,10 +97,12 @@ class SmallTalkActivity : BaseActivity() {
 
             (binding.rvSmallTalk.layoutManager as? GridLayoutManager)?.spanCount = if (isInterestStep) 2 else 1
 
-            val updatedItems = if (isInterestStep) {
-                preselectUserInterests(step.items)
-            } else {
-                step.items
+            val updatedItems = when {
+                isInterestStep -> preselectUserInterests(step.items)
+                else -> {
+                    val restoredId = userSelectionsByStep[viewModel.currentStepIndex.value ?: 0]
+                    step.items.map { it.copy(isSelected = it.id == restoredId) }
+                }
             }
             // 1️⃣ Soumission d'une liste vide
             adapter.submitList(emptyList())
@@ -130,6 +133,9 @@ class SmallTalkActivity : BaseActivity() {
             if (!viewModel.isLastStep() && selectedItem == null) {
                 Toast.makeText(this, getString(R.string.error_not_yet_implemented), Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
+            }
+            if (!viewModel.isLastStep() && selectedItem != null) {
+                userSelectionsByStep[stepIndex] = selectedItem.id ?: ""
             }
 
             when (stepIndex) {
@@ -172,7 +178,6 @@ class SmallTalkActivity : BaseActivity() {
                 4 -> { // Step INTERESTS
                     selectedRequest = selectedRequest.copy(matchInterest = true)
                     update["match_interest"] = true
-
                     val selectedInterestIds = selectedItems.mapNotNull { it.id }
                     val userUpdate = ArrayMap<String, Any>()
                     userUpdate["interests"] = selectedInterestIds

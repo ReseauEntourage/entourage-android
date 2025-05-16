@@ -1,19 +1,19 @@
-<?xml version="1.0" encoding="utf-8"?>
 <ripple xmlns:android="http://schemas.android.com/apk/res/android"
-    android:color="@android:color/white"> <!-- Ripple blanc -->
+    android:color="#33FFFFFF"> <!-- ripple orange à 15% d'opacité -->
 
+    <!-- Définir la forme du ripple (mask) -->
     <item android:id="@android:id/mask">
         <shape android:shape="rectangle">
-            <solid android:color="@android:color/white" />
-            <corners android:radius="32dp" />
+            <solid android:color="#FFFFFFFF" /> <!-- blanc opaque (important !) -->
+            <corners android:radius="32dp"/>
         </shape>
     </item>
 
+    <!-- Fond normal du bouton -->
     <item>
         <shape android:shape="rectangle">
             <solid android:color="@color/orange" />
-            <corners android:radius="32dp" />
+            <corners android:radius="32dp"/>
         </shape>
     </item>
-
 </ripple>

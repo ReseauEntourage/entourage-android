@@ -8,6 +8,7 @@ import social.entourage.android.api.model.SmallTalk
 import social.entourage.android.api.model.UserSmallTalkRequest
 import social.entourage.android.base.BaseActivity
 import social.entourage.android.databinding.SmallTalkOtherBandsBinding
+import social.entourage.android.discussions.DetailConversationActivity
 
 enum class OtherBandType {
     DIFFERENT_LOCATION,
@@ -67,9 +68,21 @@ class SmallTalkListOtherBands : BaseActivity() {
 
             binding.recyclerView.layoutManager = LinearLayoutManager(this)
             binding.recyclerView.adapter = OtherBandsAdapter(userRequests) { selected ->
-                val smallTalkId = selected.smallTalk?.id?.toString() ?: return@OtherBandsAdapter
-                viewModel.matchRequest(smallTalkId)
-                startActivity(Intent(this, SmallTalkGroupFoundActivity::class.java))
+                val smallTalk = selected.smallTalk
+                if (smallTalk?.id != null) {
+                    // 👇 Redirige vers la conversation directement
+                    val intent = Intent(this, DetailConversationActivity::class.java)
+                    DetailConversationActivity.isSmallTalkMode = true
+                    DetailConversationActivity.smallTalkId = smallTalk.id.toString()
+                    startActivity(intent)
+                    finish()
+                } else {
+                    // Sinon : appelle match + redirection
+                    selected.smallTalk?.id?.toString()?.let { smallTalkId ->
+                        viewModel.matchRequest(smallTalkId)
+                        startActivity(Intent(this, SmallTalkGroupFoundActivity::class.java))
+                    }
+                }
             }
         }
     }

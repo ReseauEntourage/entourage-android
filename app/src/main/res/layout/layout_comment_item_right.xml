@@ -26,21 +26,23 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:background="@drawable/new_comment_background_light_orange"
-        android:paddingBottom="8dp"
+        android:paddingBottom="0dp"
+        android:layout_marginBottom="0dp"
         app:layout_constraintStart_toEndOf="@id/report"
         app:layout_constraintEnd_toStartOf="@id/image"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintHorizontal_bias="1"
         app:layout_constraintWidth_default="wrap"
         app:layout_constrainedWidth="true">
+
         <androidx.cardview.widget.CardView
+            android:id="@+id/comment_image_container"
             android:layout_width="match_parent"
             android:layout_height="175dp"
             android:layout_marginBottom="6dp"
             android:visibility="gone"
             app:cardCornerRadius="12dp"
-            app:cardElevation="0dp"
-            android:id="@+id/comment_image_container">
+            app:cardElevation="0dp">
 
             <ImageView
                 android:id="@+id/comment_image"
@@ -51,7 +53,6 @@
                 android:contentDescription="@null"
                 tools:src="@drawable/place_holder_large" />
         </androidx.cardview.widget.CardView>
-
 
         <TextView
             android:id="@+id/comment"
@@ -65,7 +66,7 @@
             tools:text="Ceci est une réponse avec une image intégrée juste au-dessus." />
     </LinearLayout>
 
-    <!-- Icône signalement (à gauche ici) -->
+    <!-- Icône signalement -->
     <ImageView
         android:id="@+id/report"
         android:layout_width="wrap_content"
@@ -108,7 +109,6 @@
             tools:text="le 15.01.21" />
     </LinearLayout>
 
-    <!-- Bloc d'erreur -->
     <LinearLayout
         android:id="@+id/error"
         android:layout_width="wrap_content"
@@ -134,4 +134,5 @@
             android:layout_height="wrap_content"
             android:text="@string/retry_comment" />
     </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

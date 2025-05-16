@@ -254,7 +254,7 @@ class DetailConversationActivity : CommentActivity() {
 
     private fun handleSmallTakDetail(smallTalk: SmallTalk?) {
         binding.postBlocked.isVisible = false
-
+        smallTalkId = smallTalk?.id.toString()
     }
     // --- SmallTalk messages mapping ---
     private fun handleSmallTalkMessages(messages: List<Post>?) {

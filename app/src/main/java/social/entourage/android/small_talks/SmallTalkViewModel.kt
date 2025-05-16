@@ -79,8 +79,8 @@ class SmallTalkViewModel(application: Application) : AndroidViewModel(applicatio
             )
         ),
         SmallTalkStep(
-            title = context.getString(R.string.onboarding_interest_title),
-            subtitle = context.getString(R.string.onboarding_interest_content),
+            title = context.getString(R.string.small_talk_step_interest_title),
+            subtitle = context.getString(R.string.small_talk_step_interest_subtitle),
             items = listOf(
                 InterestForAdapter(R.drawable.ic_onboarding_interest_sport, context.getString(R.string.interest_sport), "", false, "sport"),
                 InterestForAdapter(R.drawable.ic_onboarding_interest_name_animaux, context.getString(R.string.interest_animaux), "", false, "animaux"),
