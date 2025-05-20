@@ -52,7 +52,7 @@ class SmallTalkIntroActivity : BaseActivity() {
                     matchLocality = false,
                     matchGender = false,
                     userGender = "not_defined",
-                    matchInterest = true
+
                 )
                 viewModel.createRequest(newRequest)
             }

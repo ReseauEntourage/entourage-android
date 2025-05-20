@@ -52,8 +52,8 @@ class OtherBandsAdapter(
             binding.textDescription.text = when {
                 SmallTalkListOtherBands.matchingLocality && request.matchLocality == false ->
                     context.getString(R.string.small_talk_other_band_different_location)
-                SmallTalkListOtherBands.matchingInterest && request.matchInterest == false ->
-                    context.getString(R.string.small_talk_other_band_different_interests)
+                //SmallTalkListOtherBands.matchingInterest && request.matchInterest == false ->
+                   // context.getString(R.string.small_talk_other_band_different_interests)
                 SmallTalkListOtherBands.matchingGender && request.matchGender == false ->
                     context.getString(R.string.small_talk_other_band_different_interests)
                 SmallTalkListOtherBands.matchingGroup == "one" && request.matchFormat != "one" ->

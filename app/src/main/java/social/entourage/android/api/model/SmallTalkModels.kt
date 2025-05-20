@@ -52,9 +52,6 @@ data class SmallTalk(
     @SerializedName("match_gender")
     val matchGender: Boolean? = null,
 
-    @SerializedName("match_interest")
-    val matchInterest: Boolean? = null,
-
     @SerializedName("created_at")
     val createdAt: Date? = null,
 
@@ -109,8 +106,6 @@ data class UserSmallTalkRequest(
     @SerializedName("user_gender")
     val userGender: String? = null,
 
-    @SerializedName("match_interest")
-    val matchInterest: Boolean? = null,
 
     @SerializedName("created_at")
     val createdAt: Date? = null,

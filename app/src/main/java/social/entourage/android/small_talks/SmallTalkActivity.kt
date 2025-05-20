@@ -46,7 +46,6 @@ class SmallTalkActivity : BaseActivity() {
         matchLocality = false,
         matchGender = false,
         userGender = "",
-        matchInterest = false
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -176,8 +175,7 @@ class SmallTalkActivity : BaseActivity() {
                     update["match_gender"] = matchGenderValue
                 }
                 4 -> { // Step INTERESTS
-                    selectedRequest = selectedRequest.copy(matchInterest = true)
-                    update["match_interest"] = true
+                    //update["match_interest"] = true
                     val selectedInterestIds = selectedItems.mapNotNull { it.id }
                     val userUpdate = ArrayMap<String, Any>()
                     userUpdate["interests"] = selectedInterestIds

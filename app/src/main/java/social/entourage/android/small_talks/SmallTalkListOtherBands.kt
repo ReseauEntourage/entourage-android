@@ -90,7 +90,6 @@ class SmallTalkListOtherBands : BaseActivity() {
     private fun determineMismatchType(request: UserSmallTalkRequest): OtherBandType {
         return when {
             matchingLocality && request.matchLocality == false -> OtherBandType.DIFFERENT_LOCATION
-            matchingInterest && request.matchInterest == false -> OtherBandType.DIFFERENT_INTERESTS
             matchingGender && request.matchGender == false -> OtherBandType.DIFFERENT_INTERESTS
             matchingGroup == "one" && request.matchFormat != "one" -> OtherBandType.DUO
             else -> OtherBandType.GROUP_OF_THREE_PLUS
