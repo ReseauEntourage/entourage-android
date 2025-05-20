@@ -9,6 +9,7 @@ import social.entourage.android.databinding.ActivitySmallTalkNoBandFoundBinding
 import social.entourage.android.events.EventsFragment
 import social.entourage.android.events.EventsPresenter
 import social.entourage.android.events.details.feed.EventFeedActivity
+import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
 import social.entourage.android.tools.utils.Const
 
 class SmallTalkNoBandFound: BaseActivity() {
@@ -20,6 +21,8 @@ class SmallTalkNoBandFound: BaseActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivitySmallTalkNoBandFoundBinding.inflate(layoutInflater)
         initView()
+        updatePaddingTopForEdgeToEdge(binding.root)
+
         eventPresenter.getEvent.observe(this, ::onEventChanged)
         setContentView(binding.root)
     }

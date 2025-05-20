@@ -9,6 +9,7 @@ import social.entourage.android.api.model.UserSmallTalkRequest
 import social.entourage.android.base.BaseActivity
 import social.entourage.android.databinding.SmallTalkOtherBandsBinding
 import social.entourage.android.discussions.DetailConversationActivity
+import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
 
 enum class OtherBandType {
     DIFFERENT_LOCATION,
@@ -33,6 +34,7 @@ class SmallTalkListOtherBands : BaseActivity() {
         super.onCreate(savedInstanceState)
         binding = SmallTalkOtherBandsBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        updatePaddingTopForEdgeToEdge(binding.root)
 
         viewModel = ViewModelProvider(this)[SmallTalkViewModel::class.java]
 

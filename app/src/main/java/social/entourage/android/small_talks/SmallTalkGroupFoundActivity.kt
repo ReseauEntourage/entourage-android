@@ -16,6 +16,7 @@ import social.entourage.android.base.BaseActivity
 import social.entourage.android.base.BaseSecuredActivity
 import social.entourage.android.databinding.ActivitySmallTalkGroupFoundBinding
 import social.entourage.android.discussions.DetailConversationActivity
+import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
 
 class SmallTalkGroupFoundActivity : BaseActivity() {
 
@@ -29,6 +30,7 @@ class SmallTalkGroupFoundActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivitySmallTalkGroupFoundBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        updatePaddingTopForEdgeToEdge(binding.root)
 
         smallTalkId = intent.getIntExtra(EXTRA_SMALL_TALK_ID, -1)
 
