@@ -4,7 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import social.entourage.android.api.model.SmallTalk
+import social.entourage.android.MainActivity
 import social.entourage.android.api.model.UserSmallTalkRequest
 import social.entourage.android.base.BaseActivity
 import social.entourage.android.databinding.SmallTalkOtherBandsBinding
@@ -16,7 +16,6 @@ enum class OtherBandType {
     DUO,
     GROUP_OF_THREE_PLUS
 }
-
 
 class SmallTalkListOtherBands : BaseActivity() {
 
@@ -37,22 +36,18 @@ class SmallTalkListOtherBands : BaseActivity() {
 
         viewModel = ViewModelProvider(this)[SmallTalkViewModel::class.java]
 
-        viewModel.userRequests.observe(this) { requests ->
-            // Ne rien faire avec userRequests ici pour l’instant
-        }
+        viewModel.userRequests.observe(this) { /* ignoré ici */ }
 
-        // 🔁 Observer la liste des "presque matchs"
         observeAlmostMatches()
-
-        // ⏩ Lance la requête
         viewModel.listAlmostMatches()
 
-        // 🔘 Bouton "je préfère attendre"
         binding.buttonWait.setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
+            startActivity(intent)
             finish()
         }
 
-        // 🔘 Debug (accès direct)
         binding.title.setOnClickListener {
             startActivity(Intent(this, SmallTalkGroupFoundActivity::class.java))
         }
@@ -70,18 +65,11 @@ class SmallTalkListOtherBands : BaseActivity() {
             binding.recyclerView.adapter = OtherBandsAdapter(userRequests) { selected ->
                 val smallTalk = selected.smallTalk
                 if (smallTalk?.id != null) {
-                    // 👇 Redirige vers la conversation directement
                     val intent = Intent(this, DetailConversationActivity::class.java)
                     DetailConversationActivity.isSmallTalkMode = true
                     DetailConversationActivity.smallTalkId = smallTalk.id.toString()
                     startActivity(intent)
                     finish()
-                } else {
-                    // Sinon : appelle match + redirection
-                    selected.smallTalk?.id?.toString()?.let { smallTalkId ->
-                        viewModel.matchRequest(smallTalkId)
-                        startActivity(Intent(this, SmallTalkGroupFoundActivity::class.java))
-                    }
                 }
             }
         }
