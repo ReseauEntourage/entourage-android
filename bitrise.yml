@@ -18,6 +18,9 @@ app:
     - GRADLE_OPTS: -Dorg.gradle.jvmargs="-Xmx2048m -XX:+HeapDumpOnOutOfMemoryError"
       opts:
         is_expand: false
+meta:
+  bitrise.io:
+    stack: linux-docker-android-22.04
 trigger_map:
   - push_branch: develop
     workflow: dev_entourage
@@ -65,9 +68,6 @@ workflows:
             - user_name: $JIRA_USER_EMAIL
             - issue_keys: $JIRA_ISSUE_KEYS
       - cache-push: {}
-    meta:
-      bitrise.io:
-        stack: linux-docker-android-22.04
   prepare_workflow:
     steps:
       - set-java-version@1:
