@@ -38,23 +38,37 @@ class SmallTalkListOtherBands : BaseActivity() {
 
         viewModel = ViewModelProvider(this)[SmallTalkViewModel::class.java]
 
-        viewModel.userRequests.observe(this) { /* ignoré ici */ }
+        /* ──────────────── OBSERVERS ──────────────── */
 
+        // 1️⃣ Résultat d’un force-match ── configuré AVANT d’appeler l’API
+        viewModel.matchResult.observe(this) { result ->
+            if (result?.match == true && result.smalltalkId != null) {
+                val intent = Intent(this, DetailConversationActivity::class.java).apply {
+                    DetailConversationActivity.isSmallTalkMode = true
+                    DetailConversationActivity.smallTalkId = result.smalltalkId.toString()
+                }
+                startActivity(intent)
+                finish()
+            }
+        }
+
+        // 2️⃣ Liste des demandes « presque matchées »
         observeAlmostMatches()
+
+        // 3️⃣ Lancement de la requête réseau
         viewModel.listAlmostMatches()
 
+        /* ──────────────── BOUTON « Je patiente » ──────────────── */
         binding.buttonWait.setOnClickListener {
-            val intent = Intent(this, MainActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
+            val intent = Intent(this, MainActivity::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
+            }
             startActivity(intent)
             finish()
         }
-
-        binding.title.setOnClickListener {
-            startActivity(Intent(this, SmallTalkGroupFoundActivity::class.java))
-        }
     }
 
+    /** Observe la liste des demandes avec un (presque) match. */
     private fun observeAlmostMatches() {
         viewModel.almostMatches.observe(this) { userRequests ->
             if (userRequests.isEmpty()) {
@@ -63,26 +77,38 @@ class SmallTalkListOtherBands : BaseActivity() {
                 return@observe
             }
 
-            binding.recyclerView.layoutManager = LinearLayoutManager(this)
-            binding.recyclerView.adapter = OtherBandsAdapter(userRequests) { selected ->
-                val smallTalk = selected.smallTalk
-                if (smallTalk?.id != null) {
-                    val intent = Intent(this, DetailConversationActivity::class.java)
-                    DetailConversationActivity.isSmallTalkMode = true
-                    DetailConversationActivity.smallTalkId = smallTalk.id.toString()
-                    startActivity(intent)
-                    finish()
+            binding.recyclerView.apply {
+                layoutManager = LinearLayoutManager(this@SmallTalkListOtherBands)
+                adapter = OtherBandsAdapter(userRequests) { selected ->
+                    val smallTalk = selected.smallTalk
+                    if (smallTalk?.id != null) {
+                        // ✅ SmallTalk déjà créé : on entre dans la conversation
+                        val intent = Intent(
+                            this@SmallTalkListOtherBands,
+                            DetailConversationActivity::class.java
+                        ).apply {
+                            DetailConversationActivity.isSmallTalkMode = true
+                            DetailConversationActivity.smallTalkId = smallTalk.id.toString()
+                        }
+                        startActivity(intent)
+                        finish()
+                    } else {
+                        // 🚀 Pas encore de smallTalk → on force le match
+                        viewModel.forceMatchRequest(selected.id.toString())
+                    }
                 }
             }
         }
     }
 
-    private fun determineMismatchType(request: UserSmallTalkRequest): OtherBandType {
-        return when {
-            matchingLocality && request.matchLocality == false -> OtherBandType.DIFFERENT_LOCATION
-            matchingGender && request.matchGender == false -> OtherBandType.DIFFERENT_INTERESTS
-            matchingGroup == "one" && request.matchFormat != "one" -> OtherBandType.DUO
-            else -> OtherBandType.GROUP_OF_THREE_PLUS
-        }
+    /** Détermine la (première) raison pour laquelle la demande ne matche pas. */
+    private fun determineMismatchType(request: UserSmallTalkRequest): OtherBandType = when {
+        matchingLocality && request.matchLocality == false ->
+            OtherBandType.DIFFERENT_LOCATION
+        matchingGender && request.matchGender == false   ->
+            OtherBandType.DIFFERENT_INTERESTS
+        matchingGroup == "one" && request.matchFormat != "one" ->
+            OtherBandType.DUO
+        else -> OtherBandType.GROUP_OF_THREE_PLUS
     }
 }

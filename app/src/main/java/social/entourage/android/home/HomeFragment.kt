@@ -164,7 +164,7 @@ class HomeFragment: Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocatio
             onConversationClick = { conversation ->
                 val intent = Intent(requireContext(), DetailConversationActivity::class.java)
                 DetailConversationActivity.isSmallTalkMode = true
-                DetailConversationActivity.smallTalkId = conversation.id.toString()
+                DetailConversationActivity.smallTalkId = conversation.smalltalkId.toString()
                 startActivity(intent)
             },
             onMatchingClick = { smallTalkViewModel.deleteRequest() }
