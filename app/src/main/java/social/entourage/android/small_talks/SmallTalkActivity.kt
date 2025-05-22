@@ -113,6 +113,7 @@ class SmallTalkActivity : BaseActivity() {
             }
             animateProgressTo(viewModel.getStepProgress())
         }
+        viewModel.shouldLeave.observe(this) { shouldLeave -> if (shouldLeave) finish() }
 
         viewModel.currentStepIndex.observe(this) { stepIndex ->
             binding.buttonStart.text = getString(

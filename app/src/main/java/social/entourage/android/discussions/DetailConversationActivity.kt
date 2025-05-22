@@ -336,6 +336,7 @@ class DetailConversationActivity : CommentActivity() {
                 MembersConversationFragment.newInstance(id).show(supportFragmentManager, "")
             }
         }
+
         if (conversation.type == "outing" || isSmallTalkMode ) {
             binding.layoutEventConv.visibility = View.VISIBLE
             binding.layoutInfoNewDiscussion.visibility = View.GONE
@@ -482,6 +483,7 @@ class DetailConversationActivity : CommentActivity() {
     }
     override fun handleReportPost(id: Int, commentLang: String) {
         binding.header.iconSettings.setOnClickListener {
+            SettingsDiscussionModalFragment.isSmallTalk = isSmallTalkMode
             DataLanguageStock.updatePostLanguage(commentLang)
             AnalyticsEvents.logEvent(AnalyticsEvents.Message_action_param)
             SettingsDiscussionModalFragment.isSeveralPersonneInConversation = hasSeveralpeople

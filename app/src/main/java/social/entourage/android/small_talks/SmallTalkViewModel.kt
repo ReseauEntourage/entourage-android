@@ -18,6 +18,7 @@ import social.entourage.android.api.model.*
 import social.entourage.android.api.model.MembersWrapper
 import social.entourage.android.api.request.*
 import social.entourage.android.enhanced_onboarding.InterestForAdapter
+import timber.log.Timber
 import java.io.File
 import java.io.IOException
 
@@ -42,7 +43,7 @@ class SmallTalkViewModel(application: Application) : AndroidViewModel(applicatio
     val requestDeleted = MutableLiveData<Boolean>()
     val smallTalkDetail = MutableLiveData<SmallTalk?>()
     val almostMatches = MutableLiveData<List<UserSmallTalkRequest>>() // la liste qu'on observe
-
+    val shouldLeave = MutableLiveData<Boolean>()
 
     private val steps = listOf(
         SmallTalkStep(
@@ -115,6 +116,9 @@ class SmallTalkViewModel(application: Application) : AndroidViewModel(applicatio
         if (previousIndex >= 0) {
             _currentStepIndex.value = previousIndex
             _currentStep.value = steps[previousIndex]
+        }
+        if(_currentStepIndex.value == 0) {
+            shouldLeave.postValue(true)
         }
     }
 
@@ -217,6 +221,21 @@ class SmallTalkViewModel(application: Application) : AndroidViewModel(applicatio
                 almostMatches.value = emptyList()
             }
         })
+    }
+
+    fun forceMatchRequest(id: String, smallTalkId: Int? = null) {
+        request.forceMatchUserSmallTalkRequest(id, smallTalkId)
+            .enqueue(object : Callback<SmallTalkMatchResponse> {
+                override fun onResponse(
+                    call: Call<SmallTalkMatchResponse>,
+                    response: Response<SmallTalkMatchResponse>
+                ) { matchResult.value = response.body() }
+
+                override fun onFailure(
+                    call: Call<SmallTalkMatchResponse>,
+                    t: Throwable
+                ) { matchResult.value = null }
+            })
     }
 
     /**
