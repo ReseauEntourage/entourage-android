@@ -327,6 +327,9 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
             initializeInterests()
             eventDescription.visibility = View.VISIBLE
             eventDescription.text = event?.description
+            if(event?.descriptionTranslations != null){
+                eventDescription.text = event?.descriptionTranslations?.translation
+            }
             binding.location.icon = AppCompatResources.getDrawable(
                 requireContext(),
                 if (event?.online == true) R.drawable.new_web else R.drawable.new_location

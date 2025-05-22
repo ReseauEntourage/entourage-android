@@ -66,6 +66,11 @@ class SmallTalkListOtherBands : BaseActivity() {
             startActivity(intent)
             finish()
         }
+
+        binding.title.setOnClickListener {
+            startActivity(Intent(this, SmallTalkNoBandFound::class.java))
+            finish()
+        }
     }
 
     /** Observe la liste des demandes avec un (presque) match. */
