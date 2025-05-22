@@ -39,6 +39,33 @@ class SmallTalkNoBandFound: BaseActivity() {
                     )
                 )
             }
+            binding.eventTitle.setOnClickListener {
+                EventsFragment.isFromDetails = true
+                startActivity(
+                    Intent(this, EventFeedActivity::class.java).putExtra(
+                        Const.EVENT_ID,
+                        event.id
+                    )
+                )
+            }
+            binding.eventSubtitle.setOnClickListener {
+                EventsFragment.isFromDetails = true
+                startActivity(
+                    Intent(this, EventFeedActivity::class.java).putExtra(
+                        Const.EVENT_ID,
+                        event.id
+                    )
+                )
+            }
+            binding.boutton.setOnClickListener {
+                EventsFragment.isFromDetails = true
+                startActivity(
+                    Intent(this, EventFeedActivity::class.java).putExtra(
+                        Const.EVENT_ID,
+                        event.id
+                    )
+                )
+            }
         } else {
             binding.cardEvent.visibility = View.GONE
         }
