@@ -166,7 +166,10 @@ class HomeFragment: Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocatio
                 DetailConversationActivity.smallTalkId = conversation.smalltalkId.toString()
                 startActivity(intent)
             },
-            onMatchingClick = { smallTalkViewModel.deleteRequest() },
+            onMatchingClick = {
+                //TOAST d'attente
+                Toast.makeText(requireContext(), getString(R.string.small_talk_subtitle_waiting), Toast.LENGTH_SHORT).show()
+            },
             requireContext()
         )
         binding.rvHomeSmallTalk.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
