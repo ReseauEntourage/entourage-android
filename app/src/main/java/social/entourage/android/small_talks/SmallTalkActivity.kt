@@ -117,7 +117,7 @@ class SmallTalkActivity : BaseActivity() {
 
         viewModel.currentStepIndex.observe(this) { stepIndex ->
             binding.buttonStart.text = getString(
-                if (viewModel.isLastStep()) R.string.onboarding_end_button
+                if (viewModel.isLastStep()) R.string.onboarding_btn_next
                 else R.string.onboarding_btn_next
             )
         }

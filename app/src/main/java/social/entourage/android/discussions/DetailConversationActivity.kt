@@ -108,6 +108,7 @@ class DetailConversationActivity : CommentActivity() {
             smallTalkViewModel.listChatMessages(smallTalkId)
             smallTalkViewModel.listSmallTalkParticipants(smallTalkId)
             binding.btnSeeEvent.text = getString(R.string.small_talk_btn_charte)
+            binding.ivBtnEvent.setImageDrawable(getDrawable(R.drawable.ic_book))
             binding.layoutEventConv.visibility = View.VISIBLE
             binding.btnSeeEvent.setOnClickListener {
                 VibrationUtil.vibrate(this)

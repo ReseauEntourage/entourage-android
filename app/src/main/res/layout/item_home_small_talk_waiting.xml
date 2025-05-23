@@ -10,13 +10,15 @@
 
     <ImageView
         android:id="@+id/iv_home_small_talk_icon_waiting"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:src="@drawable/ic_home_wait_small_talk"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintHeight_percent="0.40"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/tv_home_small_talk_title_waiting"
         app:layout_constraintBottom_toBottomOf="@+id/tv_home_small_talk_title_waiting"
-         />
+        />
 
     <TextView
         android:id="@+id/tv_home_small_talk_title_waiting"

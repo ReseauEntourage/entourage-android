@@ -103,7 +103,6 @@ class HomeFragment: Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocatio
     }
     private var isRequestLoaded = false
     private var currentRequests: List<UserSmallTalkRequest> = emptyList()
-    private var smallTalksList: List<SmallTalk> = emptyList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -167,7 +166,8 @@ class HomeFragment: Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocatio
                 DetailConversationActivity.smallTalkId = conversation.smalltalkId.toString()
                 startActivity(intent)
             },
-            onMatchingClick = { smallTalkViewModel.deleteRequest() }
+            onMatchingClick = { smallTalkViewModel.deleteRequest() },
+            requireContext()
         )
         binding.rvHomeSmallTalk.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         binding.rvHomeSmallTalk.adapter = homeSmallTalkAdapter
@@ -403,7 +403,6 @@ class HomeFragment: Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocatio
 
     private fun sendToken(){
         FirebaseMessaging.getInstance().token.addOnSuccessListener { token ->
-            Timber.wtf("wtf token", token)
             mainPresenter.updateApplicationInfo(token)
         }
     }

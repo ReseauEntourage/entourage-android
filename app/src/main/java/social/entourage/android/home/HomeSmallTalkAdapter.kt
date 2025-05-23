@@ -1,5 +1,6 @@
 package social.entourage.android.home
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,6 +9,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.gson.Gson
+import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.api.model.UserSmallTalkRequest
 import social.entourage.android.databinding.ItemHomeSmallTalkConversationBinding
@@ -24,7 +26,8 @@ sealed class HomeSmallTalkItem {
 class HomeSmallTalkAdapter(
     private val onStartClick: () -> Unit,
     private val onConversationClick: (UserSmallTalkRequest) -> Unit,
-    private val onMatchingClick: () -> Unit
+    private val onMatchingClick: () -> Unit,
+    private val context:Context
 ) : ListAdapter<HomeSmallTalkItem, RecyclerView.ViewHolder>(DiffCallback()) {
 
     companion object {
@@ -59,6 +62,19 @@ class HomeSmallTalkAdapter(
         }
     }
 
+    override fun onViewAttachedToWindow(holder: RecyclerView.ViewHolder) {
+        super.onViewAttachedToWindow(holder)
+
+        val displayMetrics = context.resources.displayMetrics
+        val screenWidth = displayMetrics.widthPixels
+        val targetWidth = (screenWidth * 0.85).toInt()
+
+        holder.itemView.layoutParams = holder.itemView.layoutParams.apply {
+            width = targetWidth
+        }
+    }
+
+
     inner class MatchViewHolder(private val binding: ItemHomeSmallTalkMatchBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind() {
@@ -83,7 +99,12 @@ class HomeSmallTalkAdapter(
         fun bind(userSmallTalkRequest: UserSmallTalkRequest) {
             Timber.wtf("wtf userSmallTalkRequest : ${Gson().toJson(userSmallTalkRequest)}")
 
-            val members = userSmallTalkRequest.smallTalk?.members?.take(3) ?: emptyList()
+            val currentUserId = EntourageApplication.me(context)?.id
+
+            val members = userSmallTalkRequest.smallTalk?.members
+                ?.filter { it.id != currentUserId }
+                ?.take(3)
+                ?: emptyList()
 
             val avatars = listOf(
                 binding.ivHomeSmallTalkAvatar1,
@@ -98,7 +119,7 @@ class HomeSmallTalkAdapter(
                 imageView.visibility = View.GONE
             }
 
-            // Charger les membres
+            // Charger les membres (hors utilisateur courant)
             members.forEachIndexed { index, member ->
                 avatars.getOrNull(index)?.let { imageView ->
                     imageView.visibility = View.VISIBLE
@@ -122,6 +143,7 @@ class HomeSmallTalkAdapter(
                 onConversationClick(userSmallTalkRequest)
             }
         }
+
     }
 
     class DiffCallback : DiffUtil.ItemCallback<HomeSmallTalkItem>() {

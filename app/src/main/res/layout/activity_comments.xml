@@ -214,7 +214,8 @@
                 android:layout_height="46dp"
                 android:id="@+id/option_button"
                 android:layout_gravity="start"
-                android:background="@drawable/ic_conversation_more_option"/>
+                android:background="@drawable/ic_conversation_more_option"
+                android:visibility="gone"/>
 
             <EditText
                 android:id="@+id/comment_message"

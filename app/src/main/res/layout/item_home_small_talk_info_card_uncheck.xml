@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/background_white"
-    android:padding="16dp">
+    android:padding="10dp">
 
     <TextView
         android:id="@+id/tv_small_talk_info_title"
@@ -18,7 +18,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="20dp"
-        android:layout_marginHorizontal="20dp"/>
+        android:layout_marginHorizontal="10dp"/>
 
     <TextView
         android:id="@+id/tv_small_talk_info_1"
@@ -34,7 +34,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="20dp"
-        android:layout_marginHorizontal="20dp"/>
+        android:layout_marginHorizontal="10dp"/>
 
     <TextView
         android:id="@+id/tv_small_talk_info_2"
@@ -50,7 +50,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="20dp"
-        android:layout_marginHorizontal="20dp"/>
+        android:layout_marginHorizontal="10dp"/>
 
     <TextView
         android:id="@+id/tv_small_talk_info_3"
@@ -66,6 +66,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="20dp"
-        android:layout_marginHorizontal="20dp"
+        android:layout_marginHorizontal="10dp"
         app:layout_constraintBottom_toBottomOf="parent"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
