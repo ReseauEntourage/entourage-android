@@ -3,6 +3,7 @@ package social.entourage.android.small_talks
 import android.animation.ValueAnimator
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.animation.AnimationUtils
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
@@ -34,6 +35,7 @@ class SmallTalkActivity : BaseActivity() {
     private lateinit var adapter: OnboardingInterestsAdapter
     private lateinit var userPresenter: UserPresenter
     private val userSelectionsByStep: MutableMap<Int, String> = mutableMapOf()
+    private var isFinished = false
 
     private var shouldAskProfilePhoto = false
     private lateinit var editPhotoLauncher: ActivityResultLauncher<Intent>
@@ -60,6 +62,7 @@ class SmallTalkActivity : BaseActivity() {
         editPhotoLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             SmallTalkingSearchingActivity.id = SMALL_TALK_REQUEST_ID
             startActivity(Intent(this, SmallTalkingSearchingActivity::class.java))
+            isFinished = true
             finish()
         }
 
@@ -89,7 +92,6 @@ class SmallTalkActivity : BaseActivity() {
         viewModel.currentStep.observe(this) { step ->
             binding.title.text = step.title
             binding.subtitle.text = step.subtitle
-
             val isInterestStep = viewModel.isLastStep()
             adapter.forceSingleSelectionForSmallTalk = !isInterestStep
             adapter.isFromInterestLocal = isInterestStep
@@ -205,6 +207,7 @@ class SmallTalkActivity : BaseActivity() {
                 SmallTalkingSearchingActivity.id = SMALL_TALK_REQUEST_ID
                 startActivity(Intent(this, SmallTalkingSearchingActivity::class.java))
                 overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+                isFinished = true
                 finish()
             } else {
                 viewModel.goToNextStep()
@@ -224,6 +227,15 @@ class SmallTalkActivity : BaseActivity() {
             }
             start()
         }
+    }
+
+    override fun onDestroy() {
+        if(!isFinished){
+            viewModel.deleteRequest()
+            Log.wtf("wtf" , "request deleted" )
+        }
+        super.onDestroy()
+
     }
 
     private fun preselectUserInterests(interests: List<InterestForAdapter>): List<InterestForAdapter> {
