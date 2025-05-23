@@ -108,7 +108,15 @@ class DetailConversationActivity : CommentActivity() {
             smallTalkViewModel.listChatMessages(smallTalkId)
             smallTalkViewModel.listSmallTalkParticipants(smallTalkId)
             binding.btnSeeEvent.text = getString(R.string.small_talk_btn_charte)
-            binding.ivBtnEvent.setImageDrawable(getDrawable(R.drawable.ic_book))
+            binding.ivBtnEvent.apply {
+                // 1. On enlève toute ColorStateList ou ColorFilter attachée
+                imageTintList = null           // API 21+
+                imageTintMode = null           // facultatif : remet aussi le PorterDuff
+                clearColorFilter()             // au cas où un ColorFilter avait été mis
+
+                // 2. Puis on place le drawable
+                setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_book))
+            }
             binding.layoutEventConv.visibility = View.VISIBLE
             binding.btnSeeEvent.setOnClickListener {
                 VibrationUtil.vibrate(this)

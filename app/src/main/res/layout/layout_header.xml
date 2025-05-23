@@ -40,7 +40,7 @@
             app:layout_constraintStart_toEndOf="@+id/icon_back"
             app:layout_constraintTop_toTopOf="parent"
             android:visibility="gone"
-            tools:src="@drawable/new_calendar"
+            tools:src="@drawable/new_calendar_white"
             tools:visibility="visible"
             />
 
