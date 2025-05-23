@@ -11,6 +11,7 @@ import social.entourage.android.events.EventsPresenter
 import social.entourage.android.events.details.feed.EventFeedActivity
 import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
 import social.entourage.android.tools.utils.Const
+import timber.log.Timber
 
 class SmallTalkNoBandFound: BaseActivity() {
 
@@ -22,8 +23,8 @@ class SmallTalkNoBandFound: BaseActivity() {
         binding = ActivitySmallTalkNoBandFoundBinding.inflate(layoutInflater)
         initView()
         updatePaddingTopForEdgeToEdge(binding.root)
-
         eventPresenter.getEvent.observe(this, ::onEventChanged)
+        eventPresenter.getEventSmallTalk()
         setContentView(binding.root)
     }
 
@@ -77,6 +78,7 @@ class SmallTalkNoBandFound: BaseActivity() {
     }
 
     private fun initView() {
+        binding.cardEvent.visibility = View.GONE
         binding.buttonWait.setOnClickListener {
             finish()
         }

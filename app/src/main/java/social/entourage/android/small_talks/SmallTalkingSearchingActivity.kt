@@ -41,6 +41,7 @@ class SmallTalkingSearchingActivity : AppCompatActivity() {
 
         smallTalkViewModel.matchRequest(id)
         startProgressiveMessages()
+
     }
 
     private fun startProgressiveMessages() {

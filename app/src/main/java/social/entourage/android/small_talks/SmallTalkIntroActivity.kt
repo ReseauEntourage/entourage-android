@@ -30,6 +30,10 @@ class SmallTalkIntroActivity : BaseActivity() {
         binding = SmallTalkIntroActivityBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        binding.titleText.setOnClickListener {
+            startActivity(Intent(this, SmallTalkNoBandFound::class.java))
+            finish()
+        }
         viewModel = ViewModelProvider(this)[SmallTalkViewModel::class.java]
 
         applyFormattedIntroText()
