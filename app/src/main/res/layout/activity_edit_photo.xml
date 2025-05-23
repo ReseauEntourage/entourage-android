@@ -32,12 +32,34 @@
             android:orientation="vertical"
             android:paddingHorizontal="@dimen/padding_horizontal"
             android:paddingTop="@dimen/padding_top">
-
+            <ProgressBar
+                android:id="@+id/progressViewBar"
+                style="@android:style/Widget.ProgressBar.Horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="6dp"
+                android:progress="100"
+                android:max="100"
+                android:progressDrawable="@drawable/progress_bar_track"
+                android:background="@android:color/transparent"
+                />
             <TextView
                 android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="24sp"
+                android:textColor="@color/black"
+                android:fontFamily="@font/quicksand_bold"
+                android:layout_marginTop="20dp"
+                android:gravity="start"
+                android:text="@string/add_image_title"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+            <TextView
+                android:id="@+id/subtitle"
                 style="@style/h4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
                 android:gravity="start"
                 android:text="@string/add_image_subtitle"
                 app:layout_constraintStart_toStartOf="parent"
@@ -91,5 +113,36 @@
         app:layout_constraintEnd_toEndOf="@+id/button_gallery"
         app:layout_constraintTop_toBottomOf="@id/button_gallery"
         />
+    <Button
+        android:id="@+id/button_smalltalk_previous"
+        android:fontFamily="@font/quicksand_bold"
+        android:textSize="14sp"
+        android:textColor="@color/black"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shape_button_v9_negative"
+        android:drawablePadding="10dp"
+        android:paddingHorizontal="20dp"
+        android:text="@string/previous"
+        android:textAllCaps="false"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginBottom="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        />
+    <Button
+        android:id="@+id/button_smalltalk_continu"
+        style="@style/h2_white"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shape_button_v9_positive"
+        android:drawablePadding="10dp"
+        android:paddingHorizontal="20dp"
+        android:text="@string/btn_end"
+        android:textAllCaps="false"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginBottom="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

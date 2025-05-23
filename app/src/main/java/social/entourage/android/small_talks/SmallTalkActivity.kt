@@ -196,6 +196,7 @@ class SmallTalkActivity : BaseActivity() {
 
             if (viewModel.isLastStep() && shouldAskProfilePhoto) {
                 shouldAskProfilePhoto = false
+                EditPhotoActivity.isFromSmallTalk = true
                 editPhotoLauncher.launch(Intent(this, EditPhotoActivity::class.java))
                 return@setOnClickListener
             }

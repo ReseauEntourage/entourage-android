@@ -81,32 +81,41 @@ class SmallTalkIntroActivity : BaseActivity() {
     }
 
     private fun applyFormattedIntroText() {
-        val rawHtml = getString(R.string.onboarding_intro_html)
-        val spanned = HtmlCompat.fromHtml(rawHtml, HtmlCompat.FROM_HTML_MODE_LEGACY)
-        val spannable = SpannableStringBuilder(spanned)
+        val rawText = getString(R.string.onboarding_intro_raw)
+        val spannable = SpannableStringBuilder(rawText)
 
         val quicksandBold = ResourcesCompat.getFont(this, R.font.quicksand_bold)
         val nunitoRegular = ResourcesCompat.getFont(this, R.font.nunitosans_regular)
 
-        spannable.getSpans(0, spannable.length, TypefaceSpan::class.java).forEach { span ->
-            spannable.removeSpan(span)
-        }
+        // Liste des parties à mettre en gras
+        val toBold = listOf(
+            "Bonnes ondes",
+            "1. Vous répondez à quelques questions",
+            "2. On vous met en relation avec des personnes",
+            "3. Une conversation de groupe se crée automatiquement dans l'application",
+            "4. Si vous le souhaitez, vous choisissez un moment pour vous rencontrer"
+        )
 
-        spannable.getSpans(0, spannable.length, StyleSpan::class.java).forEach { span ->
-            if (span.style == Typeface.BOLD) {
-                val start = spannable.getSpanStart(span)
-                val end = spannable.getSpanEnd(span)
-                spannable.removeSpan(span)
+        // Applique le gras aux parties définies
+        toBold.forEach { phrase ->
+            val start = rawText.indexOf(phrase)
+            if (start >= 0) {
+                val end = start + phrase.length
                 quicksandBold?.let {
                     spannable.setSpan(CustomTypefaceSpan(it), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+                } ?: run {
+                    spannable.setSpan(StyleSpan(Typeface.BOLD), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
                 }
             }
         }
 
+        // Applique la font par défaut au reste du texte
         nunitoRegular?.let {
             spannable.setSpan(CustomTypefaceSpan(it), 0, spannable.length, Spanned.SPAN_INCLUSIVE_INCLUSIVE)
         }
 
         binding.descriptionText.text = spannable
     }
+
+
 }

@@ -71,9 +71,7 @@ class OtherBandsAdapter(
             val imageViews = listOf(
                 binding.avatar1, binding.avatar2, binding.avatar3, binding.avatar4, binding.avatar5
             )
-
             imageViews.forEach { it.visibility = View.GONE }
-
             urls.take(5).forEachIndexed { index, url ->
                 val imageView = imageViews[index]
                 imageView.visibility = View.VISIBLE

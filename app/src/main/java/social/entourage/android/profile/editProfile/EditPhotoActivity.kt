@@ -135,6 +135,19 @@ class EditPhotoActivity : BaseActivity(), PhotoEditInterface, AvatarUploadView {
     }
 
     private fun setupViews() {
+        if(!isFromSmallTalk){
+            binding.progressViewBar.visibility = View.GONE
+            binding.buttonSmalltalkContinu.visibility = View.GONE
+            binding.buttonSmalltalkPrevious.visibility = View.GONE
+        }else{
+            binding.header.layout.visibility = View.GONE
+        }
+        binding.buttonSmalltalkPrevious.setOnClickListener {
+            finish()
+        }
+        binding.buttonSmalltalkContinu.setOnClickListener {
+            finish()
+        }
         binding.buttonGallery.setOnClickListener {
             if (PermissionChecker.checkSelfPermission(
                     this,
@@ -227,6 +240,7 @@ class EditPhotoActivity : BaseActivity(), PhotoEditInterface, AvatarUploadView {
             val delayMillis = 2000L
             binding.header.iconBack.postDelayed({
                 binding.progressBar.visibility = View.GONE
+                isFromSmallTalk = false
                 finish()
             }, delayMillis)
         }
@@ -243,6 +257,7 @@ class EditPhotoActivity : BaseActivity(), PhotoEditInterface, AvatarUploadView {
     companion object {
         const val PICK_IMAGE_REQUEST = 1
         const val TAKE_PHOTO_REQUEST = 2
+        var isFromSmallTalk = false
     }
 
     override fun onPhotoEdited(photoURI: Uri?, photoSource: Int) {

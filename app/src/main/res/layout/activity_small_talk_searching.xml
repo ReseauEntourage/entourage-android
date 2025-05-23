@@ -26,7 +26,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/nunitosans_regular"
         android:text="@string/small_talk_searching_intro"
-        android:textSize="15sp"
+        android:textSize="18sp"
         android:layout_marginTop="10dp"
         android:textColor="@android:color/black"
         app:layout_constraintTop_toBottomOf="@id/title_text"

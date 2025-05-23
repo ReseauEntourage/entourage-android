@@ -26,7 +26,12 @@ class OnboardingInterestsAdapter(
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(interest: InterestForAdapter) {
-            binding.ivInterestIcon.setImageResource(interest.icon)
+            if(interest.icon == 999){
+                binding.ivInterestIcon.visibility = View.GONE
+            }else{
+                binding.ivInterestIcon.visibility = View.VISIBLE
+                binding.ivInterestIcon.setImageResource(interest.icon)
+            }
 
             if (isFromInterest || isFromInterestLocal) {
                 binding.tvInterestTitle.text = interest.title

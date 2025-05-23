@@ -106,14 +106,4 @@ class SmallTalkListOtherBands : BaseActivity() {
         }
     }
 
-    /** Détermine la (première) raison pour laquelle la demande ne matche pas. */
-    private fun determineMismatchType(request: UserSmallTalkRequest): OtherBandType = when {
-        matchingLocality && request.matchLocality == false ->
-            OtherBandType.DIFFERENT_LOCATION
-        matchingGender && request.matchGender == false   ->
-            OtherBandType.DIFFERENT_INTERESTS
-        matchingGroup == "one" && request.matchFormat != "one" ->
-            OtherBandType.DUO
-        else -> OtherBandType.GROUP_OF_THREE_PLUS
-    }
 }

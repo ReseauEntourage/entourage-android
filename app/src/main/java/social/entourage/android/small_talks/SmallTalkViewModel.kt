@@ -50,33 +50,34 @@ class SmallTalkViewModel(application: Application) : AndroidViewModel(applicatio
             title = context.getString(R.string.small_talk_step_title_1),
             subtitle = context.getString(R.string.small_talk_step_subtitle_1),
             items = listOf(
-                InterestForAdapter(R.drawable.ic_onboarding_interest_name_autre, context.getString(R.string.small_talk_step1_item1_title), context.getString(R.string.small_talk_step1_item1_subtitle), false, "1"),
-                InterestForAdapter(R.drawable.ic_onboarding_interest_name_autre, context.getString(R.string.small_talk_step1_item2_title), context.getString(R.string.small_talk_step1_item2_subtitle), false, "2")
+                InterestForAdapter(R.drawable.ic_duo, context.getString(R.string.small_talk_step1_item1_title), context.getString(R.string.small_talk_step1_item1_subtitle), false, "1"),
+                InterestForAdapter(R.drawable.ic_quatuor, context.getString(R.string.small_talk_step1_item2_title), context.getString(R.string.small_talk_step1_item2_subtitle), false, "2")
             )
         ),
         SmallTalkStep(
             title = context.getString(R.string.small_talk_step_title_2),
             subtitle = context.getString(R.string.small_talk_step_subtitle_2),
             items = listOf(
-                InterestForAdapter(R.drawable.ic_onboarding_interest_name_autre, context.getString(R.string.small_talk_step2_item1_title), context.getString(R.string.small_talk_step2_item1_subtitle), false, "3"),
-                InterestForAdapter(R.drawable.ic_onboarding_interest_name_autre, context.getString(R.string.small_talk_step2_item2_title), context.getString(R.string.small_talk_step2_item2_subtitle), false, "4")
+                InterestForAdapter(R.drawable.ic_local, context.getString(R.string.small_talk_step2_item1_title), context.getString(R.string.small_talk_step2_item1_subtitle), false, "3"),
+                InterestForAdapter(R.drawable.ic_global, context.getString(R.string.small_talk_step2_item2_title), context.getString(R.string.small_talk_step2_item2_subtitle), false, "4")
             )
         ),
+        //OK here 999 is a fake ID in order to adapt the adaptable item in a way that the term adaptability means nothing , as the design want us to make sames things with multiple kind of non sens differents things
         SmallTalkStep(
             title = context.getString(R.string.small_talk_step_title_3),
             subtitle = context.getString(R.string.small_talk_step_subtitle_3),
             items = listOf(
-                InterestForAdapter(R.drawable.ic_onboarding_interest_name_autre, context.getString(R.string.small_talk_step3_item1_title), "", false, "5"),
-                InterestForAdapter(R.drawable.ic_onboarding_interest_name_autre, context.getString(R.string.small_talk_step3_item2_title), "", false, "6"),
-                InterestForAdapter(R.drawable.ic_onboarding_interest_name_autre, context.getString(R.string.small_talk_step3_item3_title), "", false, "7")
+                InterestForAdapter(999, context.getString(R.string.small_talk_step3_item1_title), "", false, "5"),
+                InterestForAdapter(999, context.getString(R.string.small_talk_step3_item2_title), "", false, "6"),
+                InterestForAdapter(999, context.getString(R.string.small_talk_step3_item3_title), "", false, "7")
             )
         ),
         SmallTalkStep(
             title = context.getString(R.string.small_talk_step_title_4),
             subtitle = context.getString(R.string.small_talk_step_subtitle_4),
             items = listOf(
-                InterestForAdapter(R.drawable.ic_onboarding_interest_name_autre, context.getString(R.string.small_talk_step4_item1_title), context.getString(R.string.small_talk_step4_item1_subtitle), false, "8"),
-                InterestForAdapter(R.drawable.ic_onboarding_interest_name_autre, context.getString(R.string.small_talk_step4_item2_title), context.getString(R.string.small_talk_step4_item2_subtitle), false, "9")
+                InterestForAdapter(999, context.getString(R.string.small_talk_step4_item1_title), context.getString(R.string.small_talk_step4_item1_subtitle), false, "8"),
+                InterestForAdapter(999, context.getString(R.string.small_talk_step4_item2_title), context.getString(R.string.small_talk_step4_item2_subtitle), false, "9")
             )
         ),
         SmallTalkStep(
@@ -122,7 +123,12 @@ class SmallTalkViewModel(application: Application) : AndroidViewModel(applicatio
         }
     }
 
-    fun getStepProgress(): Float = ((_currentStepIndex.value ?: 0) + 1).toFloat() / steps.size.toFloat()
+    fun getStepProgress(): Float {
+        val current = (_currentStepIndex.value ?: 0) + 1
+        val total = steps.size.toFloat()
+        return (current / total) * 0.9f
+    }
+
     fun isLastStep(): Boolean = (_currentStepIndex.value ?: 0) == steps.lastIndex
 
 

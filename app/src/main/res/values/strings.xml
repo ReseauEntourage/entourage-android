@@ -149,8 +149,8 @@
     <string name="progress_km">%s km</string>
     <string name="modify_interests_subtitle">Séléctionnez une ou plusieurs catégories qui vous intéresse.</string>
     <string name="add_image">Ajouter une photo</string>
-    <string name="add_image_subtitle">Avec une photo c’est tout de suite plus sympa.
-        Montrez-nous votre plus beau sourire.</string>
+    <string name="add_image_title">Vous n\'avez pas encore de photo de profil</string>
+    <string name="add_image_subtitle">On se sent toujours plus à l\'aise quand on voit à qui on s\'adresse. Ajoutez votre photo pour faciliter les rencontres !</string>
     <string name="edit_action_zone">Où souhaitez-vous agir ?</string>
     <string name="edit_action_zone_subtitle">Entourage est un réseau social !
 Découvrez les initiatives de votre quartier et tissez des liens avec vos voisins.</string>
@@ -194,6 +194,7 @@ Découvrez les initiatives de votre quartier et tissez des liens avec vos voisin
     <string name="report_eventt">Signaler l’événement</string>
     <string name="why_reporting">Dites-nous la raison de votre signalement</string>
     <string name="new_next">Suivant</string>
+    <string name="btn_end">Terminer</string>
     <string name="back">Retour</string>
     <string name="cancel_event_continue">Continuer</string>
     <string name="previous">Précedent</string>
@@ -2976,18 +2977,11 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
 
     <!-- Section Papotages Smalltalks -->
 
-    <string name="onboarding_title">Prêts pour intégrer une bande solidaire ?</string>
+    <string name="onboarding_title">Prêts à partager des Bonnes ondes ?</string>
     <string name="onboarding_start_button">Je commence</string>
     <string name="onboarding_end_button">Terminer</string>
-    <string name="onboarding_intro_html">
-    <![CDATA[
-    <p>Les <b>Bandes solidaires</b> vous connectent rapidement avec un ou plusieurs membres...</p>
-    <p><b>• Vous répondez à quelques questions</b> : sur vous, vos centres d’intérêts</p>
-    <p><b>• On vous trouve des personnes compatibles</b> : grâce à votre localisation et vos réponses</p>
-    <p><b>• Une conversation de groupe s’ouvre dans l’app</b> : pour faire connaissance pendant quelques jours</p>
-    <p><b>• Vous décidez ensemble d’un moment pour vous rencontrer</b> : en visio ou en vrai, comme vous préférez</p>
-    ]]>
-    </string>
+    <string name="onboarding_intro_raw">Avec les Bonnes ondes, rencontrez des personnes qui vous ressemblent, échangez en toute simplicité et créez des liens qui font du bien !\n\n\n1. Vous répondez à quelques questions : pour mieux vous connaître\n\n2. On vous met en relation avec des personnes : qui vous correspondent\n\n3. Une conversation de groupe se crée automatiquement dans l\'application : pour échanger et tisser des liens\n\n4. Si vous le souhaitez, vous choisissez un moment pour vous rencontrer : En visio ou dans la vraie vie, c\'est vous qui voyez !</string>
+
 
     <!-- Step 1: Format de discussion -->
     <string name="small_talk_step_title_1">Quel format de discussion te convient le mieux ?</string>
@@ -3064,12 +3058,12 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
 
     <!--small talk home activity -->
 
-    <string name="home_v2_title_small_talk">Discuter simplement</string>
-    <string name="small_talk_subtitle_match">On vous met en relation avec d’autres membres : un moyen simple de (re)créer du lien.</string>
+    <string name="home_v2_title_small_talk">Partager des « Bonnes Ondes » !</string>
+    <string name="small_talk_subtitle_match">Découvrez un nouveau moyen de discuter et de créer des liens qui durent dans le temps !</string>
     <string name="small_talk_button_match">Discuter</string>
-    <string name="small_talk_title_waiting">En attente</string>
-    <string name="small_talk_subtitle_waiting">Vous recevrez un message dès que nous aurons trouvé une bande</string>
-    <string name="small_talk_title_conversation">Discuter avec votre bande</string>
+    <string name="small_talk_title_waiting">Bientôt de nouvelles rencontres</string>
+    <string name="small_talk_subtitle_waiting">On vous prévient dès qu’on a trouvé des gens qui sont sur la même longueur d’onde ;) </string>
+    <string name="small_talk_title_conversation">Discuter avec votre groupe</string>
 
 
     <!--small talk guidelines -->
