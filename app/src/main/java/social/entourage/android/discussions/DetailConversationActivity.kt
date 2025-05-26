@@ -155,15 +155,17 @@ class DetailConversationActivity : CommentActivity() {
     }
 
     private fun setCameraIcon() {
-        binding.header.iconCamera.isVisible = !smallTalk?.meetingUrl.isNullOrBlank()
+
+      //  binding.header.iconCamera.isVisible = !smallTalk?.meetingUrl.isNullOrBlank()
         binding.header.iconCamera.isVisible = true
         binding.header.iconCamera.setImageResource(R.drawable.ic_camera)
         binding.header.cardIconCamera.setBackgroundColor(ContextCompat.getColor(this, R.color.transparent))
         binding.header.iconCamera.setBackgroundColor(ContextCompat.getColor(this, R.color.transparent))
         binding.header.iconCamera.setOnClickListener {
             AnalyticsEvents.logEvent(AnalyticsEvents.CLIC__SMALLTALK__VISIO_ICON)
-
-            smallTalk?.meetingUrl?.let { url ->
+            val meetUrl = "https://meet.google.com/prg-ugew-osp"
+            //smallTalk?.meetingUrl?.let { url ->
+            meetUrl.let { url ->
                 WebViewFragment.launchURL(this, url)
             }
         }
