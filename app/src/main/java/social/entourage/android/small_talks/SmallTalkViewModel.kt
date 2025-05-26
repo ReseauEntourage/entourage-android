@@ -42,7 +42,7 @@ class SmallTalkViewModel(application: Application) : AndroidViewModel(applicatio
     val matchResult = MutableLiveData<SmallTalkMatchResponse?>()
     val requestDeleted = MutableLiveData<Boolean>()
     val smallTalkDetail = MutableLiveData<SmallTalk?>()
-    val almostMatches = MutableLiveData<List<UserSmallTalkRequest>>() // la liste qu'on observe
+    val almostMatches = MutableLiveData<List<UserSmallTalkRequestWithMatchData>>()
     val shouldLeave = MutableLiveData<Boolean>()
 
     private val steps = listOf(
@@ -212,18 +212,15 @@ class SmallTalkViewModel(application: Application) : AndroidViewModel(applicatio
     }
 
     fun listAlmostMatches() {
-        request.listAlmostMatches().enqueue(object : Callback<UserSmallTalkRequestListWrapper> {
+        request.listAlmostMatches().enqueue(object : Callback<UserSmallTalkRequestWithMatchDataWrapper> {
             override fun onResponse(
-                call: Call<UserSmallTalkRequestListWrapper>,
-                response: Response<UserSmallTalkRequestListWrapper>
+                call: Call<UserSmallTalkRequestWithMatchDataWrapper>,
+                response: Response<UserSmallTalkRequestWithMatchDataWrapper>
             ) {
-                almostMatches.value = response.body()?.requests ?: emptyList()
+                almostMatches.value = (response.body()?.requests ?: emptyList()) as List<UserSmallTalkRequestWithMatchData>?
             }
 
-            override fun onFailure(
-                call: Call<UserSmallTalkRequestListWrapper>,
-                t: Throwable
-            ) {
+            override fun onFailure(call: Call<UserSmallTalkRequestWithMatchDataWrapper>, t: Throwable) {
                 almostMatches.value = emptyList()
             }
         })

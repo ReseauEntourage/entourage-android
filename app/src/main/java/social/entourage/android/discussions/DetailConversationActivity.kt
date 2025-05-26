@@ -47,6 +47,7 @@ import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.Utils
 import social.entourage.android.tools.utils.VibrationUtil
+import social.entourage.android.tools.view.WebViewFragment
 import timber.log.Timber
 import java.io.File
 import java.text.SimpleDateFormat
@@ -70,7 +71,7 @@ class DetailConversationActivity : CommentActivity() {
     private lateinit var galleryLauncher: ActivityResultLauncher<String>
     private var photoUri: Uri? = null
     private var detailConversation: Conversation? = null
-
+    private var smallTalk: SmallTalk? = null
 
     // UI state
     private var hasToShowFirstMessage = false
@@ -124,6 +125,7 @@ class DetailConversationActivity : CommentActivity() {
                     Intent(this, SmallTalkGuidelinesActivity::class.java)
                 )
             }
+            setCameraIcon()
 
         } else {
             discussionsPresenter.getDetailConversation(id)
@@ -150,6 +152,18 @@ class DetailConversationActivity : CommentActivity() {
         AnalyticsEvents.logEvent(AnalyticsEvents.Message_view_detail)
         startRefreshingMessages()
 
+    }
+
+    private fun setCameraIcon() {
+        binding.header.iconCamera.isVisible = true
+        binding.header.iconCamera.setImageResource(R.drawable.ic_camera)
+        binding.header.cardIconCamera.setBackgroundColor(ContextCompat.getColor(this, R.color.transparent))
+        binding.header.iconCamera.setBackgroundColor(ContextCompat.getColor(this, R.color.transparent))
+        binding.header.iconCamera.setOnClickListener {
+            smallTalk?.meetingUrl?.let { url ->
+                WebViewFragment.launchURL(this, url)
+            }
+        }
     }
 
     override fun onPause() {
@@ -264,6 +278,7 @@ class DetailConversationActivity : CommentActivity() {
     private fun handleSmallTakDetail(smallTalk: SmallTalk?) {
         binding.postBlocked.isVisible = false
         smallTalkId = smallTalk?.id.toString()
+        this.smallTalk = smallTalk
     }
     // --- SmallTalk messages mapping ---
     private fun handleSmallTalkMessages(messages: List<Post>?) {

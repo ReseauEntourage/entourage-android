@@ -27,6 +27,8 @@ data class SmallTalk(
 
     @SerializedName("image_url")
     val imageUrl: String? = null,
+    @SerializedName("meeting_url")
+    val meetingUrl: String? = null,
 
     @SerializedName("members_count")
     val membersCount: Int? = null,
@@ -42,6 +44,8 @@ data class SmallTalk(
 
     @SerializedName("members")
     val members: ArrayList<GroupMember>? = null,
+
+
 
     @SerializedName("match_format")
     val matchFormat: String? = null, // "one" or "many"
@@ -132,3 +136,19 @@ data class UserSmallTalkRequest(
         private const val serialVersionUID = 46L
     }
 }
+
+data class UserSmallTalkRequestWithMatchData(
+    @SerializedName("user_smalltalk_id") val userSmallTalkId: Int,
+    @SerializedName("smalltalk_id") val smallTalkId: Int?,
+    @SerializedName("users") val users: List<User>,
+    @SerializedName("has_matched_format") val hasMatchedFormat: Boolean,
+    @SerializedName("has_matched_gender") val hasMatchedGender: Boolean,
+    @SerializedName("has_matched_locality") val hasMatchedLocality: Boolean,
+    @SerializedName("has_matched_interest") val hasMatchedInterest: Boolean,
+    @SerializedName("has_matched_profile") val hasMatchedProfile: Boolean,
+    @SerializedName("unmatch_count") val unmatchCount: Int
+)
+
+data class UserSmallTalkRequestWithMatchDataWrapper(
+    @SerializedName("user_smalltalks") val requests: List<UserSmallTalkRequestWithMatchData>
+)

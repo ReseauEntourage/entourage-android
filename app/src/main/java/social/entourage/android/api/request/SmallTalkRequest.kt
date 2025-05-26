@@ -10,6 +10,7 @@ import social.entourage.android.api.model.MembersWrapper
 import social.entourage.android.api.model.Post
 import social.entourage.android.api.model.SmallTalk
 import social.entourage.android.api.model.UserSmallTalkRequest
+import social.entourage.android.api.model.UserSmallTalkRequestWithMatchDataWrapper
 
 /*
  * -------------------------------------------------
@@ -150,7 +151,7 @@ interface SmallTalkRequest {
 
     @GET("user_smalltalks/almost_matches")
     fun listAlmostMatches(
-    ): Call<UserSmallTalkRequestListWrapper>
+    ): Call<UserSmallTalkRequestWithMatchDataWrapper>
 
     @POST("smalltalks/{id}/chat_messages/presigned_upload")
     fun prepareAddPost(

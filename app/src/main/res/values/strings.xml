@@ -3031,6 +3031,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="small_talk_other_band_subtitle">Vous pouvez choisir de rejoindre un groupe proche de vos critères ou attendre qu\'un nouveau groupe vous soit proposé.</string>
     <string name="small_talk_other_band_different_location">Ce groupe ne correspond pas à votre choix de proximité géographique</string>
     <string name="small_talk_other_band_different_interests">Ce groupe regroupe des personnes aux centres d\'intérêt différents</string>
+    <string name="small_talk_other_band_different_mixity">Ce groupe regroupe des personnes de genre différent</string>
     <string name="small_talk_other_band_duo">Ce groupe fonctionne en binôme</string>
     <string name="small_talk_other_band_group">Ce groupe est composé de 3 personnes ou plus</string>
     <string name="small_talk_other_band_with">Avec %1$s</string>

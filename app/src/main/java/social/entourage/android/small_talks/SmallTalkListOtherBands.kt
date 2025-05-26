@@ -84,26 +84,28 @@ class SmallTalkListOtherBands : BaseActivity() {
 
             binding.recyclerView.apply {
                 layoutManager = LinearLayoutManager(this@SmallTalkListOtherBands)
-                adapter = OtherBandsAdapter(userRequests) { selected ->
-                    val smallTalk = selected.smallTalk
-                    if (smallTalk?.id != null) {
-                        // ✅ SmallTalk déjà créé : on entre dans la conversation
-                        val intent = Intent(
-                            this@SmallTalkListOtherBands,
-                            DetailConversationActivity::class.java
-                        ).apply {
-                            DetailConversationActivity.isSmallTalkMode = true
-                            DetailConversationActivity.smallTalkId = smallTalk.id.toString()
-                        }
-                        startActivity(intent)
-                        finish()
-                    } else {
-                        // 🚀 Pas encore de smallTalk → on force le match
-                        viewModel.forceMatchRequest(selected.id.toString())
-                    }
+                adapter = OtherBandsAdapter(userRequests) { request ->
+                    // 👉 Toujours un forceMatch AVANT d’entrer dans DetailConversationActivity
+                    viewModel.forceMatchRequest(
+                        id = request.userSmallTalkId.toString(),
+                        smallTalkId = request.smallTalkId // peut être nul, pas grave
+                    )
                 }
             }
         }
+
+        // ⚡️ Résultat du forceMatch (qu’il vienne d’un userRequestId ou d’un smalltalkId)
+        viewModel.matchResult.observe(this) { result ->
+            if (result?.match == true && result.smalltalkId != null) {
+                val intent = Intent(this, DetailConversationActivity::class.java).apply {
+                    DetailConversationActivity.isSmallTalkMode = true
+                    DetailConversationActivity.smallTalkId = result.smalltalkId.toString()
+                }
+                startActivity(intent)
+                finish()
+            }
+        }
     }
+
 
 }
