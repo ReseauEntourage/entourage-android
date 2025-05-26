@@ -159,9 +159,8 @@ interface SmallTalkRequest {
         @Body request: RequestContent
     ): Call<PrepareAddPostResponse>
 
-    @POST("user_smalltalks/{id}/force_match")
+    @POST("user_smalltalks/force_match")
     fun forceMatchUserSmallTalkRequest(
-        @Path("id") id: String,
-        @Query("smalltalk_id") smallTalkId: Int? = null      // nullable → param optionnel
+        @Query("user_smalltalk_id") smallTalkId: Int? = null      // nullable → param optionnel
     ): Call<SmallTalkMatchResponse>
 }

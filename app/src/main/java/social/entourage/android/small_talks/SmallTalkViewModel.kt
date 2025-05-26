@@ -228,8 +228,8 @@ class SmallTalkViewModel(application: Application) : AndroidViewModel(applicatio
         })
     }
 
-    fun forceMatchRequest(id: String, smallTalkId: Int? = null) {
-        request.forceMatchUserSmallTalkRequest(id, smallTalkId)
+    fun forceMatchRequest(smallTalkId: Int? = null) {
+        request.forceMatchUserSmallTalkRequest(smallTalkId)
             .enqueue(object : Callback<SmallTalkMatchResponse> {
                 override fun onResponse(
                     call: Call<SmallTalkMatchResponse>,

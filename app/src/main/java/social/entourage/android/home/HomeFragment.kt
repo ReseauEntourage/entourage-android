@@ -169,10 +169,7 @@ class HomeFragment: Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocatio
             },
             onMatchingClick = {
                 //TOAST d'attente
-                //Toast.makeText(requireContext(), getString(R.string.small_talk_subtitle_waiting), Toast.LENGTH_SHORT).show()
-                val intent = Intent(requireContext(), SmallTalkListOtherBands::class.java)
-                startActivity(intent)
-
+                Toast.makeText(requireContext(), getString(R.string.small_talk_subtitle_waiting), Toast.LENGTH_SHORT).show()
             },
             requireContext()
         )

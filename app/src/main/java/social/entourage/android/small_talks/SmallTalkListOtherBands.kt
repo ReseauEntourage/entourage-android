@@ -2,6 +2,7 @@ package social.entourage.android.small_talks
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import social.entourage.android.MainActivity
@@ -70,10 +71,7 @@ class SmallTalkListOtherBands : BaseActivity() {
             finish()
         }
 
-        binding.title.setOnClickListener {
-            startActivity(Intent(this, SmallTalkNoBandFound::class.java))
-            finish()
-        }
+
     }
 
     /** Observe la liste des demandes avec un (presque) match. */
@@ -90,8 +88,7 @@ class SmallTalkListOtherBands : BaseActivity() {
                 adapter = OtherBandsAdapter(userRequests) { request ->
                     // 👉 Toujours un forceMatch AVANT d’entrer dans DetailConversationActivity
                     viewModel.forceMatchRequest(
-                        id = request.userSmallTalkId.toString(),
-                        smallTalkId = request.smallTalkId // peut être nul, pas grave
+                        smallTalkId = request.userSmallTalkId
                     )
                 }
             }
@@ -107,6 +104,9 @@ class SmallTalkListOtherBands : BaseActivity() {
                 }
                 startActivity(intent)
                 finish()
+            }else{
+                //toast error
+                Toast.makeText(this, "Erreur lors du match", Toast.LENGTH_SHORT).show()
             }
         }
     }
