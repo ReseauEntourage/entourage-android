@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import social.entourage.android.R
 import social.entourage.android.base.BaseActivity
 import social.entourage.android.databinding.ActivitySmallTalkGuidelinesBinding
+import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
 
 class SmallTalkGuidelinesActivity : BaseActivity() {
@@ -15,6 +16,7 @@ class SmallTalkGuidelinesActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivitySmallTalkGuidelinesBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        AnalyticsEvents.logEvent(AnalyticsEvents.VIEW__SMALLTALK__CHARTER)
         updatePaddingTopForEdgeToEdge(binding.root)
         setupUI()
     }

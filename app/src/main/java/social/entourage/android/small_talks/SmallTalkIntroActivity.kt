@@ -16,6 +16,7 @@ import social.entourage.android.R
 import social.entourage.android.api.model.UserSmallTalkRequest
 import social.entourage.android.base.BaseActivity
 import social.entourage.android.databinding.SmallTalkIntroActivityBinding
+import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.utils.CustomTypefaceSpan
 import social.entourage.android.tools.utils.Utils.showToast
 import timber.log.Timber
@@ -29,6 +30,7 @@ class SmallTalkIntroActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         binding = SmallTalkIntroActivityBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        AnalyticsEvents.logEvent(AnalyticsEvents.VIEW__SMALLTALK__PRESENTATION)
 
         binding.titleText.setOnClickListener {
             startActivity(Intent(this, SmallTalkNoBandFound::class.java))
@@ -45,6 +47,8 @@ class SmallTalkIntroActivity : BaseActivity() {
             val hasPendingRequest = requests.any { it.smalltalkId == null }
 
             binding.startButton.setOnClickListener {
+                AnalyticsEvents.logEvent(AnalyticsEvents.CLIC__SMALLTALK__PRESENTATION_START)
+
                 if (nbMatches >= 3 || hasPendingRequest) {
                     showToast(this, getString(R.string.smalltalk_intro_limit))
                     return@setOnClickListener
@@ -77,6 +81,7 @@ class SmallTalkIntroActivity : BaseActivity() {
 
         // Bouton retour
         binding.endButton.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.CLIC__SMALLTALK__PRESENTATION_CANCEL)
             finish()
         }
 

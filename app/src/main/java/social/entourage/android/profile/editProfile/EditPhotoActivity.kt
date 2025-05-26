@@ -23,6 +23,7 @@ import social.entourage.android.databinding.ActivityEditPhotoBinding
 import social.entourage.android.language.LanguageManager
 import social.entourage.android.onboarding.onboard.OnboardingEditPhotoFragment
 import social.entourage.android.profile.ProfilePresenter
+import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.user.AvatarUpdatePresenter
 import social.entourage.android.user.AvatarUploadPresenter
 import social.entourage.android.user.AvatarUploadRepository
@@ -140,12 +141,15 @@ class EditPhotoActivity : BaseActivity(), PhotoEditInterface, AvatarUploadView {
             binding.buttonSmalltalkContinu.visibility = View.GONE
             binding.buttonSmalltalkPrevious.visibility = View.GONE
         }else{
+            AnalyticsEvents.logEvent(AnalyticsEvents.VIEW__SMALLTALK__PHOTO)
             binding.header.layout.visibility = View.GONE
         }
         binding.buttonSmalltalkPrevious.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.CLIC__SMALLTALK__PHOTO_PREVIOUS)
             finish()
         }
         binding.buttonSmalltalkContinu.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.CLIC__SMALLTALK__PHOTO_FINISH)
             finish()
         }
         binding.buttonGallery.setOnClickListener {
@@ -245,7 +249,6 @@ class EditPhotoActivity : BaseActivity(), PhotoEditInterface, AvatarUploadView {
             }, delayMillis)
         }
     }
-
 
 
 

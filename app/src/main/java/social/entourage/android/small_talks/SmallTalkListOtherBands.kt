@@ -9,6 +9,7 @@ import social.entourage.android.api.model.UserSmallTalkRequest
 import social.entourage.android.base.BaseActivity
 import social.entourage.android.databinding.SmallTalkOtherBandsBinding
 import social.entourage.android.discussions.DetailConversationActivity
+import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
 
 enum class OtherBandType {
@@ -37,6 +38,7 @@ class SmallTalkListOtherBands : BaseActivity() {
         updatePaddingTopForEdgeToEdge(binding.root)
 
         viewModel = ViewModelProvider(this)[SmallTalkViewModel::class.java]
+        AnalyticsEvents.logEvent(AnalyticsEvents.VIEW__SMALLTALK__SUGGESTIONS)
 
         /* ──────────────── OBSERVERS ──────────────── */
 
@@ -60,6 +62,7 @@ class SmallTalkListOtherBands : BaseActivity() {
 
         /* ──────────────── BOUTON « Je patiente » ──────────────── */
         binding.buttonWait.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.CLIC__SMALLTALK__SUGGESTIONS_WAIT)
             val intent = Intent(this, MainActivity::class.java).apply {
                 flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
             }
@@ -97,6 +100,7 @@ class SmallTalkListOtherBands : BaseActivity() {
         // ⚡️ Résultat du forceMatch (qu’il vienne d’un userRequestId ou d’un smalltalkId)
         viewModel.matchResult.observe(this) { result ->
             if (result?.match == true && result.smalltalkId != null) {
+                AnalyticsEvents.logEvent(AnalyticsEvents.CLIC__SMALLTALK__SUGGESTIONS_JOIN)
                 val intent = Intent(this, DetailConversationActivity::class.java).apply {
                     DetailConversationActivity.isSmallTalkMode = true
                     DetailConversationActivity.smallTalkId = result.smalltalkId.toString()

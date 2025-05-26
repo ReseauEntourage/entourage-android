@@ -16,6 +16,7 @@ import social.entourage.android.base.BaseActivity
 import social.entourage.android.base.BaseSecuredActivity
 import social.entourage.android.databinding.ActivitySmallTalkGroupFoundBinding
 import social.entourage.android.discussions.DetailConversationActivity
+import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
 
 class SmallTalkGroupFoundActivity : BaseActivity() {
@@ -31,7 +32,7 @@ class SmallTalkGroupFoundActivity : BaseActivity() {
         binding = ActivitySmallTalkGroupFoundBinding.inflate(layoutInflater)
         setContentView(binding.root)
         updatePaddingTopForEdgeToEdge(binding.root)
-
+        AnalyticsEvents.logEvent(AnalyticsEvents.VIEW__SMALLTALK__MATCH)
         smallTalkId = intent.getIntExtra(EXTRA_SMALL_TALK_ID, -1)
 
         setupViewPager()
@@ -55,6 +56,7 @@ class SmallTalkGroupFoundActivity : BaseActivity() {
         smallTalkViewModel.getSmallTalk(smallTalkId.toString())
 
         binding.buttonStart.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.CLIC__SMALLTALK__MATCH_CHAT)
             val intent = Intent(this, DetailConversationActivity::class.java)
             DetailConversationActivity.isSmallTalkMode = true
             DetailConversationActivity.smallTalkId = smallTalkId.toString()

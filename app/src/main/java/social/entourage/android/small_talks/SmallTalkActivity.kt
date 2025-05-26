@@ -26,6 +26,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import social.entourage.android.EntourageApplication
 import social.entourage.android.profile.editProfile.EditPhotoActivity
+import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
 
 class SmallTalkActivity : BaseActivity() {
@@ -69,6 +70,7 @@ class SmallTalkActivity : BaseActivity() {
         setupRecyclerView()
         setupButtons()
         observeViewModel()
+
     }
 
     private fun setupRecyclerView() {
@@ -127,6 +129,7 @@ class SmallTalkActivity : BaseActivity() {
 
     private fun setupButtons() {
         binding.buttonStart.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.CLIC__SMALLTALK__FORMAT_NEXT)
             val selectedItem = adapter.currentList.find { it.isSelected }
             val selectedItems = adapter.currentList.filter { it.isSelected }
             val stepIndex = viewModel.currentStepIndex.value ?: 0
@@ -142,18 +145,21 @@ class SmallTalkActivity : BaseActivity() {
 
             when (stepIndex) {
                 0 -> { // Step MATCH FORMAT
+                    AnalyticsEvents.logEvent(AnalyticsEvents.VIEW__SMALLTALK__FORMAT)
                     val value = if (selectedItem?.id == "1") "one" else "many"
                     selectedRequest = selectedRequest.copy(matchFormat = value)
                     SmallTalkListOtherBands.matchingGroup = value
                     update["match_format"] = value
                 }
                 1 -> { // Step LOCALITY
+                    AnalyticsEvents.logEvent(AnalyticsEvents.VIEW__SMALLTALK__LOCALITY)
                     val value = selectedItem?.id == "3"
                     selectedRequest = selectedRequest.copy(matchLocality = value)
                     SmallTalkListOtherBands.matchingLocality = value
                     update["match_locality"] = value
                 }
                 2 -> { // Step GENDER
+                    AnalyticsEvents.logEvent(AnalyticsEvents.VIEW__SMALLTALK__GENDER)
                     val genderValue = when (selectedItem?.id) {
                         "5" -> "male"
                         "6" -> "female"
@@ -161,7 +167,6 @@ class SmallTalkActivity : BaseActivity() {
                     }
                     selectedRequest = selectedRequest.copy(userGender = genderValue)
                     update["user_gender"] = genderValue
-
                     val userUpdate = ArrayMap<String, Any>()
                     userUpdate["gender"] = genderValue
                     val wrapper = ArrayMap<String, Any>()
@@ -172,6 +177,7 @@ class SmallTalkActivity : BaseActivity() {
                     })
                 }
                 3 -> { // Step MATCH GENDER
+                    AnalyticsEvents.logEvent(AnalyticsEvents.VIEW__SMALLTALK__MIXITE)
                     val matchGenderValue = selectedItem?.id == "9"
                     selectedRequest = selectedRequest.copy(matchGender = matchGenderValue)
                     SmallTalkListOtherBands.matchingGender = matchGenderValue
@@ -179,6 +185,7 @@ class SmallTalkActivity : BaseActivity() {
                 }
                 4 -> { // Step INTERESTS
                     //update["match_interest"] = true
+                    AnalyticsEvents.logEvent(AnalyticsEvents.VIEW__SMALLTALK__INTERESTS)
                     val selectedInterestIds = selectedItems.mapNotNull { it.id }
                     val userUpdate = ArrayMap<String, Any>()
                     userUpdate["interests"] = selectedInterestIds
@@ -215,6 +222,7 @@ class SmallTalkActivity : BaseActivity() {
         }
 
         binding.buttonConfigureLater.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.CLIC__SMALLTALK__FORMAT_PREVIOUS)
             viewModel.goToPreviousStep()
         }
     }

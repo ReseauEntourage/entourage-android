@@ -9,6 +9,7 @@ import social.entourage.android.databinding.ActivitySmallTalkNoBandFoundBinding
 import social.entourage.android.events.EventsFragment
 import social.entourage.android.events.EventsPresenter
 import social.entourage.android.events.details.feed.EventFeedActivity
+import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
 import social.entourage.android.tools.utils.Const
 import timber.log.Timber
@@ -22,6 +23,7 @@ class SmallTalkNoBandFound: BaseActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivitySmallTalkNoBandFoundBinding.inflate(layoutInflater)
         initView()
+        AnalyticsEvents.logEvent(AnalyticsEvents.VIEW__SMALLTALK__NO_SUGGESTIONS)
         updatePaddingTopForEdgeToEdge(binding.root)
         eventPresenter.getEvent.observe(this, ::onEventChanged)
         eventPresenter.getEventSmallTalk()
@@ -41,6 +43,7 @@ class SmallTalkNoBandFound: BaseActivity() {
                 )
             }
             binding.eventTitle.setOnClickListener {
+                AnalyticsEvents.logEvent(AnalyticsEvents.CLIC__SMALLTALK__NO_SUGGESTIONS_EVENT)
                 EventsFragment.isFromDetails = true
                 startActivity(
                     Intent(this, EventFeedActivity::class.java).putExtra(
@@ -80,6 +83,7 @@ class SmallTalkNoBandFound: BaseActivity() {
     private fun initView() {
         binding.cardEvent.visibility = View.GONE
         binding.buttonWait.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.CLIC__SMALLTALK__NO_SUGGESTIONS_HOME)
             finish()
         }
     }
