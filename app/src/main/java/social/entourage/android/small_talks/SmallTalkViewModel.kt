@@ -21,6 +21,8 @@ import social.entourage.android.enhanced_onboarding.InterestForAdapter
 import timber.log.Timber
 import java.io.File
 import java.io.IOException
+import social.entourage.android.api.model.UserSmallTalkRequestWithMatchData
+
 
 data class SmallTalkStep(
     val title: String,
@@ -217,7 +219,7 @@ class SmallTalkViewModel(application: Application) : AndroidViewModel(applicatio
                 call: Call<UserSmallTalkRequestWithMatchDataWrapper>,
                 response: Response<UserSmallTalkRequestWithMatchDataWrapper>
             ) {
-                almostMatches.value = (response.body()?.requests ?: emptyList()) as List<UserSmallTalkRequestWithMatchData>?
+                almostMatches.value = response.body()?.requests.orEmpty()
             }
 
             override fun onFailure(call: Call<UserSmallTalkRequestWithMatchDataWrapper>, t: Throwable) {

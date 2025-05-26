@@ -55,6 +55,7 @@ import social.entourage.android.onboarding.onboard.OnboardingStartActivity
 import social.entourage.android.profile.ProfileFullActivity
 import social.entourage.android.small_talks.SmallTalkGuidelinesActivity
 import social.entourage.android.small_talks.SmallTalkIntroActivity
+import social.entourage.android.small_talks.SmallTalkListOtherBands
 import social.entourage.android.small_talks.SmallTalkViewModel
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
@@ -168,7 +169,10 @@ class HomeFragment: Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocatio
             },
             onMatchingClick = {
                 //TOAST d'attente
-                Toast.makeText(requireContext(), getString(R.string.small_talk_subtitle_waiting), Toast.LENGTH_SHORT).show()
+                //Toast.makeText(requireContext(), getString(R.string.small_talk_subtitle_waiting), Toast.LENGTH_SHORT).show()
+                val intent = Intent(requireContext(), SmallTalkListOtherBands::class.java)
+                startActivity(intent)
+
             },
             requireContext()
         )

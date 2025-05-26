@@ -8,19 +8,10 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import social.entourage.android.R
 import social.entourage.android.api.model.User
+import social.entourage.android.api.model.UserSmallTalkRequestWithMatchData
 import social.entourage.android.databinding.ItemOtherBandBinding
 
-data class UserSmallTalkRequestWithMatchData(
-    val userSmallTalkId: Int,
-    val smallTalkId: Int?,
-    val users: List<User>,
-    val hasMatchedFormat: Boolean,
-    val hasMatchedGender: Boolean,
-    val hasMatchedLocality: Boolean,
-    val hasMatchedInterest: Boolean,
-    val hasMatchedProfile: Boolean,
-    val unmatchCount: Int
-)
+
 
 class OtherBandsAdapter(
     private val items: List<UserSmallTalkRequestWithMatchData>,
