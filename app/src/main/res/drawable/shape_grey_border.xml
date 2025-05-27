@@ -1,5 +1,5 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
     <solid android:color="@android:color/transparent" /> <!-- Background color -->
     <stroke android:width="1dp" android:color="@color/grey_onboarding_item_border" /> <!-- Border color -->
-    <corners android:radius="16dp"/> <!-- Optional: if you want rounded corners -->
+    <corners android:radius="10dp"/> <!-- Optional: if you want rounded corners -->
 </shape>

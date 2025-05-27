@@ -43,8 +43,7 @@ class OnboardingInterestsAdapter(
                 binding.tvInterestSubTitleFromRight.text = interest.subtitle
                 binding.tvInterestTitle.visibility = View.GONE
                 binding.tvInterestTitleFromRight.visibility = View.VISIBLE
-                binding.tvInterestSubTitleFromRight.visibility =
-                    if (interest.subtitle.isEmpty()) View.GONE else View.VISIBLE
+                binding.tvInterestSubTitleFromRight.visibility = View.VISIBLE
             }
 
             updateSelectionUI(interest.isSelected)
