@@ -90,7 +90,7 @@ class DiscussionsListAdapter(
                 }
             }
 
-            if (conversation.memberCount > 2 && conversation.members != null) {
+            if (conversation.members != null) {
                 val currentUserId = EntourageApplication.get().me()?.id
                 val names = conversation.members
                     .filter { it?.id != currentUserId } // exclure le current user
@@ -105,8 +105,6 @@ class DiscussionsListAdapter(
                     isSingleLine = true
                     ellipsize = TextUtils.TruncateAt.END
                 }
-            } else {
-                binding.name.text = conversation.title
             }
 
             if(conversation.type == "outing"){

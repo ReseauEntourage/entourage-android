@@ -226,6 +226,7 @@ class DiscussionsMainFragment : Fragment() {
     }
 
     private fun smallTalkToConversation(smallTalk: SmallTalk): Conversation {
+        Timber.wtf("small talk name ${smallTalk.name}")
         return Conversation(
             id = smallTalk.id,
             uuid_v2 = smallTalk.uuid,

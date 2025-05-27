@@ -3082,13 +3082,13 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="small_talk_what_it_is_not_item_3">Une discussion intrusive sur des sujets sensibles</string>
 
     <string name="small_talk_ethics_title">La charte éthique Entourage</string>
-    <string name="small_talk_ethics_1_title">:orange_heart: Bienveillance</string>
+    <string name="small_talk_ethics_1_title">🧡 Bienveillance</string>
     <string name="small_talk_ethics_1_desc">Nous participons à cet échange avec une intention positive et respectueuse.</string>
-    <string name="small_talk_ethics_2_title">:speaking_head_in_silhouette: Consentement</string>
+    <string name="small_talk_ethics_2_title">🗣️ Consentement</string>
     <string name="small_talk_ethics_2_desc">Nous respectons les limites et les souhaits de notre interlocuteur.</string>
-    <string name="small_talk_ethics_3_title">:lock: Confidentialité</string>
+    <string name="small_talk_ethics_3_title">🔒 Confidentialité</string>
     <string name="small_talk_ethics_3_desc">Nous ne partageons pas d\'informations personnelles (nom, adresse, numéro de téléphone...).</string>
-    <string name="small_talk_ethics_4_title">:earth_africa: Ouverture et non discrimination</string>
+    <string name="small_talk_ethics_4_title">🌍 Ouverture et non discrimination</string>
     <string name="small_talk_ethics_4_desc">Nous accueillons toutes les personnes sans distinction de genre, d\'origine, de croyance ou de parcours de vie.</string>
 
     <!-- Boutons -->
