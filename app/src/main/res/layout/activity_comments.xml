@@ -115,8 +115,8 @@
                     app:layout_constraintStart_toStartOf="parent"/>
                 
                 <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
                     android:id="@+id/iv_btn_event"
                     android:src="@drawable/new_calendar"
                     app:layout_constraintStart_toStartOf="@+id/btn_see_event"

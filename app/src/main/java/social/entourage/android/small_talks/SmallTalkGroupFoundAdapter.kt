@@ -60,6 +60,9 @@ class SmallTalkGroupFoundAdapter(
             }
             holder.binding.smallTalkGroupFoundInterests.addView(chip)
         }
+        if (formattedInterests.isEmpty()) {
+            holder.binding.smallTalkGroupFoundInterests.visibility = View.GONE
+        }
 
     }
 
