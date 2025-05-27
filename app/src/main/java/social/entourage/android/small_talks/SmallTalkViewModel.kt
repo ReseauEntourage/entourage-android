@@ -115,12 +115,14 @@ class SmallTalkViewModel(application: Application) : AndroidViewModel(applicatio
     }
 
     fun goToPreviousStep() {
-        val previousIndex = (_currentStepIndex.value ?: 0) - 1
-        if (previousIndex >= 0) {
+        val current = _currentStepIndex.value ?: 0
+        if (current > 0) {
+            // On peut reculer d’une étape
+            val previousIndex = current - 1
             _currentStepIndex.value = previousIndex
             _currentStep.value = steps[previousIndex]
-        }
-        if(_currentStepIndex.value == 0) {
+        } else {
+            // On est déjà à la 1ère étape, on quitte
             shouldLeave.postValue(true)
         }
     }

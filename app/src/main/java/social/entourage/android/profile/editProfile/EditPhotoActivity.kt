@@ -143,13 +143,17 @@ class EditPhotoActivity : BaseActivity(), PhotoEditInterface, AvatarUploadView {
         }else{
             AnalyticsEvents.logEvent(AnalyticsEvents.VIEW__SMALLTALK__PHOTO)
             binding.header.layout.visibility = View.GONE
+            binding.title.text = getString(R.string.edit_photo_title)
+            binding.subtitle.text = getString(R.string.edit_photo_subtitle)
         }
         binding.buttonSmalltalkPrevious.setOnClickListener {
             AnalyticsEvents.logEvent(AnalyticsEvents.CLIC__SMALLTALK__PHOTO_PREVIOUS)
+            setResult(RESULT_CANCELED)
             finish()
         }
         binding.buttonSmalltalkContinu.setOnClickListener {
             AnalyticsEvents.logEvent(AnalyticsEvents.CLIC__SMALLTALK__PHOTO_FINISH)
+            setResult(RESULT_OK)
             finish()
         }
         binding.buttonGallery.setOnClickListener {

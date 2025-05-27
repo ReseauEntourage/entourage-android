@@ -37,7 +37,6 @@ class SmallTalkActivity : BaseActivity() {
     private lateinit var userPresenter: UserPresenter
     private val userSelectionsByStep: MutableMap<Int, String> = mutableMapOf()
     private var isFinished = false
-
     private var shouldAskProfilePhoto = false
     private lateinit var editPhotoLauncher: ActivityResultLauncher<Intent>
 
@@ -60,11 +59,16 @@ class SmallTalkActivity : BaseActivity() {
         userPresenter = UserPresenter()
         val currentUser = EntourageApplication.me(this)
         shouldAskProfilePhoto = currentUser?.avatarURL.isNullOrBlank()
-        editPhotoLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-            SmallTalkingSearchingActivity.id = SMALL_TALK_REQUEST_ID
-            startActivity(Intent(this, SmallTalkingSearchingActivity::class.java))
-            isFinished = true
-            finish()
+        editPhotoLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == RESULT_OK) {
+                SmallTalkingSearchingActivity.id = SMALL_TALK_REQUEST_ID
+                startActivity(Intent(this, SmallTalkingSearchingActivity::class.java))
+                isFinished = true
+                finish()
+            } else {
+                // L'utilisateur a appuyé sur "Précédent" dans EditPhotoActivity : on ne fait rien.
+                // Tu peux même revenir à l'étape précédente si besoin ici.
+            }
         }
 
         setupRecyclerView()
@@ -163,7 +167,7 @@ class SmallTalkActivity : BaseActivity() {
                     val genderValue = when (selectedItem?.id) {
                         "5" -> "male"
                         "6" -> "female"
-                        else -> "non_binary"
+                        else -> "not_binary"
                     }
                     selectedRequest = selectedRequest.copy(userGender = genderValue)
                     update["user_gender"] = genderValue
