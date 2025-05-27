@@ -103,13 +103,14 @@ class HomeSmallTalkAdapter(
 
             val members = userSmallTalkRequest.smallTalk?.members
                 ?.filter { it.id != currentUserId }
-                ?.take(3)
+                ?.take(4)
                 ?: emptyList()
 
             val avatars = listOf(
                 binding.ivHomeSmallTalkAvatar1,
                 binding.ivHomeSmallTalkAvatar2,
-                binding.ivHomeSmallTalkAvatar3
+                binding.ivHomeSmallTalkAvatar3,
+                binding.ivHomeSmallTalkAvatar4
             )
 
             // Reset toutes les images avant de charger
@@ -136,6 +137,7 @@ class HomeSmallTalkAdapter(
                 1 -> members[0].displayName.orEmpty()
                 2 -> "${members[0].displayName.orEmpty()} et ${members[1].displayName.orEmpty()}"
                 3 -> "${members[0].displayName.orEmpty()}, ${members[1].displayName.orEmpty()} et ${members[2].displayName.orEmpty()}"
+                4 -> "${members[0].displayName.orEmpty()}, ${members[1].displayName.orEmpty()}, ${members[2].displayName.orEmpty()} et ${members[3].displayName.orEmpty()}"
                 else -> ""
             }
 

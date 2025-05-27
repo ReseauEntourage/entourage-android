@@ -3058,7 +3058,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="small_talk_button_match">Discuter</string>
     <string name="small_talk_title_waiting">Bientôt de nouvelles rencontres</string>
     <string name="small_talk_subtitle_waiting">On vous prévient dès qu\'on a trouvé des gens qui sont sur la même longueur d\'onde ;)</string>
-    <string name="small_talk_title_conversation">Discuter avec\nvotre groupe</string>
+    <string name="small_talk_title_conversation">Discuter avec votre groupe</string>
 
     <!-- Charte et éthique -->
     <string name="small_talk_what_it_is_1">Un échange convivial et bienveillant</string>
