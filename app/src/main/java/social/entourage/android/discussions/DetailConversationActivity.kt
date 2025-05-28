@@ -26,6 +26,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.google.gson.Gson
 import kotlinx.coroutines.launch
 import social.entourage.android.BuildConfig
 import social.entourage.android.EntourageApplication
@@ -125,7 +126,6 @@ class DetailConversationActivity : CommentActivity() {
                     Intent(this, SmallTalkGuidelinesActivity::class.java)
                 )
             }
-            setCameraIcon()
 
         } else {
             discussionsPresenter.getDetailConversation(id)
@@ -278,9 +278,12 @@ class DetailConversationActivity : CommentActivity() {
     }
 
     private fun handleSmallTakDetail(smallTalk: SmallTalk?) {
+        Timber.wtf("wtf smallTalk : " + Gson().toJson(smallTalk))
         binding.postBlocked.isVisible = false
         smallTalkId = smallTalk?.id.toString()
         this.smallTalk = smallTalk
+        setCameraIcon()
+
     }
     // --- SmallTalk messages mapping ---
     private fun handleSmallTalkMessages(messages: List<Post>?) {
@@ -612,8 +615,6 @@ class DetailConversationActivity : CommentActivity() {
         }
         return out
     }
-
-
 
     fun formatDate(inputDate: String): String {
         val fmt = SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.US)

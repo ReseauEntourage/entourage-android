@@ -27,6 +27,7 @@ data class SmallTalk(
 
     @SerializedName("image_url")
     val imageUrl: String? = null,
+
     @SerializedName("meeting_url")
     val meetingUrl: String? = null,
 
