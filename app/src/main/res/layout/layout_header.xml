@@ -49,18 +49,16 @@
             style="@style/h2"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="11dp"
-            android:text="@{title}"
-            android:maxLines="1"
-            android:singleLine="true"
-            android:ellipsize="marquee"
             android:layout_marginStart="10dp"
-            android:maxLength="45"
-            app:layout_constraintBottom_toTopOf="@id/divider"
-            app:layout_constraintEnd_toStartOf="@+id/card_icon_setting"
-            app:layout_constraintStart_toEndOf="@+id/iv_event"
+            android:layout_marginBottom="11dp"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:text='@{title.length() > 30 ? title.substring(0, 30).concat("…") : title}'
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="Notifications" />
+            app:layout_constraintBottom_toTopOf="@id/divider"
+            app:layout_constraintStart_toEndOf="@+id/iv_event"
+            app:layout_constraintEnd_toStartOf="@+id/card_icon_setting"
+            tools:text="Un titre avec vraiment beaucoup de caractères pour test" />
         <TextView
             android:id="@+id/header_subtitle"
             android:layout_width="0dp"
