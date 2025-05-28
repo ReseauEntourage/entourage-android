@@ -3005,6 +3005,9 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="small_talk_step3_item1_title">Homme</string>
     <string name="small_talk_step3_item2_title">Femme</string>
     <string name="small_talk_step3_item3_title">Non binaire</string>
+    <string name="small_talk_step3_item1_subtitle">Vous vous identifiez principalement comme un homme</string>
+    <string name="small_talk_step3_item2_subtitle">Vous vous identifiez principalement comme une femme</string>
+    <string name="small_talk_step3_item3_subtitle">Votre genre ne correspond pas exclusivement aux catégories "femme" ou "homme" </string>
 
     <!-- Step 4: Confort selon le genre -->
     <string name="small_talk_step_title_4">Avec qui vous sentez-vous le plus à l\'aise pour échanger ?</string>

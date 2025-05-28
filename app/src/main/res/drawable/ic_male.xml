@@ -1,0 +1,39 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="700dp"
+    android:height="700dp"
+    android:viewportWidth="700"
+    android:viewportHeight="700">
+
+  <!-- Cercle de fond -->
+  <path
+      android:pathData="M350,350m-281.37,0a281.37,281.37 0,1 1,562.74 0a281.37,281.37 0,1 1,-562.74 0"
+      android:strokeWidth="0"
+      android:fillColor="#ffeadc" />
+
+  <!-- Groupe central à 75% et recentré -->
+  <group
+      android:scaleX="0.75"
+      android:scaleY="0.75"
+      android:translateX="87.5"
+      android:translateY="87.5">
+
+    <!-- Cercle orange -->
+    <path
+        android:pathData="M298.69,325.63c41.66,0 75.55,33.89 75.55,75.55s-33.89,75.55 -75.55,75.55 -75.55,-33.89 -75.55,-75.55 33.89,-75.55 75.55,-75.55M298.69,273.4c-70.57,0 -127.78,57.21 -127.78,127.78s57.21,127.78 127.78,127.78 127.78,-57.21 127.78,-127.78 -57.21,-127.78 -127.78,-127.78h0Z"
+        android:strokeWidth="0"
+        android:fillColor="#f55f24" />
+
+    <!-- Ligne diagonale -->
+    <path
+        android:pathData="M504.58,195.28L371.16,328.7"
+        android:strokeWidth="52.23"
+        android:fillColor="#00000000"
+        android:strokeColor="#f55f24" />
+
+    <!-- Forme de loupe/cadre -->
+    <path
+        android:pathData="M518.06,316.89h-30.17c-6.09,0 -11.03,-4.94 -11.03,-11.03v-82.58h-87.89c-6.09,0 -11.03,-4.94 -11.03,-11.03v-30.17c0,-6.09 4.94,-11.03 11.03,-11.03h125.7c7.97,0 14.43,6.46 14.43,14.43v120.38c0,6.09 -4.94,11.03 -11.03,11.03Z"
+        android:strokeWidth="0"
+        android:fillColor="#f55f24" />
+  </group>
+</vector>

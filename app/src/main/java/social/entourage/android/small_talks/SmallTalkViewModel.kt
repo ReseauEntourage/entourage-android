@@ -69,9 +69,9 @@ class SmallTalkViewModel(application: Application) : AndroidViewModel(applicatio
             title = context.getString(R.string.small_talk_step_title_3),
             subtitle = context.getString(R.string.small_talk_step_subtitle_3),
             items = listOf(
-                InterestForAdapter(999, context.getString(R.string.small_talk_step3_item1_title), "", false, "5"),
-                InterestForAdapter(999, context.getString(R.string.small_talk_step3_item2_title), "", false, "6"),
-                InterestForAdapter(999, context.getString(R.string.small_talk_step3_item3_title), "", false, "7")
+                InterestForAdapter(R.drawable.ic_male, context.getString(R.string.small_talk_step3_item1_title), context.getString(R.string.small_talk_step3_item1_subtitle), false, "5"),
+                InterestForAdapter(R.drawable.ic_female, context.getString(R.string.small_talk_step3_item2_title), context.getString(R.string.small_talk_step3_item2_subtitle), false, "6"),
+                InterestForAdapter(R.drawable.ic_non_binary, context.getString(R.string.small_talk_step3_item3_title), context.getString(R.string.small_talk_step3_item3_subtitle), false, "7")
             )
         ),
         SmallTalkStep(
