@@ -55,7 +55,7 @@
             android:singleLine="true"
             android:ellipsize="marquee"
             android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
+            android:maxLength="45"
             app:layout_constraintBottom_toTopOf="@id/divider"
             app:layout_constraintEnd_toStartOf="@+id/card_icon_setting"
             app:layout_constraintStart_toEndOf="@+id/iv_event"
@@ -74,7 +74,6 @@
             app:layout_constraintTop_toBottomOf="@+id/header_title"
             android:fontFamily="@font/nunitosans_regular"
             android:textSize="13sp"
-
             android:visibility="gone"
             android:textColor="@color/grey"
             tools:text="Notifications"
