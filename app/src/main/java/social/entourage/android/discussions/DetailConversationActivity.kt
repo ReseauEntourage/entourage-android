@@ -154,19 +154,50 @@ class DetailConversationActivity : CommentActivity() {
 
     }
 
+
+
+    private fun generateJitsiUrl(displayName: String, roomName: String = "papotage-entre-nous"): String {
+        val encodedDisplayName = displayName
+            .replace(" ", "%20")
+            .replace("\"", "%22")
+        val baseUrl = "https://meet.jit.si/$roomName"
+        val params = "#userInfo.displayName=%22$encodedDisplayName%22&config.startWithAudioMuted=false&config.startWithVideoMuted=false"
+        return "$baseUrl$params"
+    }
+
     private fun setCameraIcon() {
-        binding.header.iconCamera.isVisible = !smallTalk?.meetingUrl.isNullOrBlank()
+        val roomName = "papotage-entre-nous"
+        val displayName = "Invité"
+
+        val url = generateJitsiUrl(displayName, roomName)
+        //smallTalk?.meetingUrl = url
+
+        binding.header.iconCamera.isVisible = true
         binding.header.iconCamera.setImageResource(R.drawable.ic_camera)
         binding.header.cardIconCamera.setBackgroundColor(ContextCompat.getColor(this, R.color.transparent))
         binding.header.iconCamera.setBackgroundColor(ContextCompat.getColor(this, R.color.transparent))
+
         binding.header.iconCamera.setOnClickListener {
-            Timber.wtf("eho url : ${smallTalk?.meetingUrl}")
+            Timber.wtf("📹 Lancement visio Jitsi URL : $url")
             AnalyticsEvents.logEvent(AnalyticsEvents.CLIC__SMALLTALK__VISIO_ICON)
-            smallTalk?.meetingUrl?.let { url ->
-                WebViewFragment.launchURL(this, url)
-            }
+            WebViewFragment.launchURL(this, url)
         }
     }
+
+//    private fun setCameraIcon() {
+//        binding.header.iconCamera.isVisible = !smallTalk?.meetingUrl.isNullOrBlank()
+//        binding.header.iconCamera.setImageResource(R.drawable.ic_camera)
+//        binding.header.cardIconCamera.setBackgroundColor(ContextCompat.getColor(this, R.color.transparent))
+//        binding.header.iconCamera.setBackgroundColor(ContextCompat.getColor(this, R.color.transparent))
+//
+//        binding.header.iconCamera.setOnClickListener {
+//            Timber.wtf("eho url : ${smallTalk?.meetingUrl}")
+//            AnalyticsEvents.logEvent(AnalyticsEvents.CLIC__SMALLTALK__VISIO_ICON)
+//            smallTalk?.meetingUrl?.let { url ->
+//                WebViewFragment.launchURL(this, url)
+//            }
+//        }
+//    }
 
     override fun onPause() {
         super.onPause()
