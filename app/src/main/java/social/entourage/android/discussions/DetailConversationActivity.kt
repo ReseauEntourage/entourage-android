@@ -156,7 +156,7 @@ class DetailConversationActivity : CommentActivity() {
 
 
 
-    private fun generateJitsiUrl(displayName: String, roomName: String = "papotage-entre-nous"): String {
+    private fun generateJitsiUrl(displayName: String, roomName: String = "Bonnes ondes " + smallTalk?.uuid): String {
         val encodedDisplayName = displayName
             .replace(" ", "%20")
             .replace("\"", "%22")
@@ -166,7 +166,7 @@ class DetailConversationActivity : CommentActivity() {
     }
 
     private fun setCameraIcon() {
-        val roomName = "papotage-entre-nous"
+        val roomName = "Bonnes ondes " + smallTalk?.uuid
         val displayName = "Invité"
 
         val url = generateJitsiUrl(displayName, roomName)
