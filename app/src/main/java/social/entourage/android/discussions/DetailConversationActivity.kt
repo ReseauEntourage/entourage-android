@@ -165,7 +165,7 @@ class DetailConversationActivity : CommentActivity() {
         return "$baseUrl$params"
     }
 
-    private fun setCameraIcon() {
+/*    private fun setCameraIcon() {
         val roomName = "Bonnes ondes " + smallTalk?.uuid
         val displayName = "Invité"
 
@@ -182,22 +182,22 @@ class DetailConversationActivity : CommentActivity() {
             AnalyticsEvents.logEvent(AnalyticsEvents.CLIC__SMALLTALK__VISIO_ICON)
             WebViewFragment.launchURL(this, url)
         }
-    }
+    }*/
 
-//    private fun setCameraIcon() {
-//        binding.header.iconCamera.isVisible = !smallTalk?.meetingUrl.isNullOrBlank()
-//        binding.header.iconCamera.setImageResource(R.drawable.ic_camera)
-//        binding.header.cardIconCamera.setBackgroundColor(ContextCompat.getColor(this, R.color.transparent))
-//        binding.header.iconCamera.setBackgroundColor(ContextCompat.getColor(this, R.color.transparent))
-//
-//        binding.header.iconCamera.setOnClickListener {
-//            Timber.wtf("eho url : ${smallTalk?.meetingUrl}")
-//            AnalyticsEvents.logEvent(AnalyticsEvents.CLIC__SMALLTALK__VISIO_ICON)
-//            smallTalk?.meetingUrl?.let { url ->
-//                WebViewFragment.launchURL(this, url)
-//            }
-//        }
-//    }
+    private fun setCameraIcon() {
+        binding.header.iconCamera.isVisible = !smallTalk?.meetingUrl.isNullOrBlank()
+        binding.header.iconCamera.setImageResource(R.drawable.ic_camera)
+        binding.header.cardIconCamera.setBackgroundColor(ContextCompat.getColor(this, R.color.transparent))
+        binding.header.iconCamera.setBackgroundColor(ContextCompat.getColor(this, R.color.transparent))
+
+        binding.header.iconCamera.setOnClickListener {
+            Timber.wtf("eho url : ${smallTalk?.meetingUrl}")
+            AnalyticsEvents.logEvent(AnalyticsEvents.CLIC__SMALLTALK__VISIO_ICON)
+            smallTalk?.meetingUrl?.let { url ->
+                WebViewFragment.launchURL(this, url)
+            }
+        }
+    }
 
     override fun onPause() {
         super.onPause()

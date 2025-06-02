@@ -60,37 +60,11 @@ class OnboardingViewModel() : ViewModel() {
         shouldDismissBtnBack.postValue(value)
     }
     fun updateUserInterests(listener: (isOK: Boolean, userResponse: UserResponse?) -> Unit) {
-        val interestsList = interests.value?.filter { it.isSelected }?.map { it.id } ?: listOf()
-        val categoriesList = categories.value?.filter { it.isSelected }?.map { it.id } ?: listOf()
-        val actionsWishesList = actionsWishes.value?.filter { it.isSelected }?.map { it.id } ?: listOf()
-        val updatedInterests = interestsList.toSet()
-        val updatedConcerns = categoriesList.toSet()
-        val updatedInvolvements = actionsWishesList.toSet()
-
-        // Mettre à jour l'utilisateur localement
-        if (EnhancedOnboarding.isFromSettingsinterest){
-            user?.interests = ArrayList(updatedInterests)
-        }else if (EnhancedOnboarding.isFromSettingsActionCategorie){
-            user?.concerns = ArrayList(updatedConcerns)
-        }else if (EnhancedOnboarding.isFromSettingsWishes){
-            user?.involvements = ArrayList(updatedInvolvements)
-        }else{
-            user?.interests = ArrayList(updatedInterests)
-            user?.concerns = ArrayList(updatedConcerns)
-            user?.involvements = ArrayList(updatedInvolvements)
-        }
-
-        // Construire la structure availability en mappant les jours et horaires
+        // Mapping des jours et horaires
         val dayMapping = mapOf(
-            "Lundi" to "1",
-            "Mardi" to "2",
-            "Mercredi" to "3",
-            "Jeudi" to "4",
-            "Vendredi" to "5",
-            "Samedi" to "6",
-            "Dimanche" to "7"
+            "Lundi" to "1", "Mardi" to "2", "Mercredi" to "3",
+            "Jeudi" to "4", "Vendredi" to "5", "Samedi" to "6", "Dimanche" to "7"
         )
-
         val timeSlotMapping = mapOf(
             "Matin" to "09:00-12:00",
             "Après-midi" to "14:00-18:00",
@@ -103,35 +77,55 @@ class OnboardingViewModel() : ViewModel() {
             dayNumber!! to timeRanges
         } ?: emptyMap()
 
-        // Préparer la requête pour le serveur
+        // Fallback sur les données existantes si non modifiées
+        val finalInterests = interests.value?.filter { it.isSelected }?.map { it.id }
+            ?: user?.interests ?: emptyList()
+
+        val finalConcerns = categories.value?.filter { it.isSelected }?.map { it.id }
+            ?: user?.concerns ?: emptyList()
+
+        val finalInvolvements = actionsWishes.value?.filter { it.isSelected }?.map { it.id }
+            ?: user?.involvements ?: emptyList()
+
+        // Mise à jour locale de l'objet User
+        user?.apply {
+            interests = ArrayList(finalInterests.toSet())
+            concerns = ArrayList(finalConcerns.toSet())
+            involvements = ArrayList(finalInvolvements.toSet())
+        }
+
+        // Construction de la requête JSON
         val userMap = ArrayMap<String, Any>().apply {
-            if(user?.interests != null) {
-                put("interests", user?.interests)
+            if (EnhancedOnboarding.isFromSettingsinterest || !EnhancedOnboarding.isFromSettingsDisponibility) {
+                put("interests", finalInterests)
             }
-            if(user?.concerns != null) {
-                put("concerns", user?.concerns)
+            if (EnhancedOnboarding.isFromSettingsActionCategorie || !EnhancedOnboarding.isFromSettingsDisponibility) {
+                put("concerns", finalConcerns)
             }
-            if(user?.involvements != null) {
-                put("involvements", user?.involvements)
+            if (EnhancedOnboarding.isFromSettingsWishes || !EnhancedOnboarding.isFromSettingsDisponibility) {
+                put("involvements", finalInvolvements)
             }
-            if (availability.isNotEmpty()){
+            if (availability.isNotEmpty()) {
                 put("availability", availability)
             }
         }
-        val request = ArrayMap<String, Any>()
-        request["user"] = userMap
-        val call = onboardingService.updateUser(request)
-        call.enqueue(object : Callback<UserResponse> {
+
+        val request = ArrayMap<String, Any>().apply {
+            put("user", userMap)
+        }
+
+        onboardingService.updateUser(request).enqueue(object : Callback<UserResponse> {
             override fun onResponse(call: Call<UserResponse>, response: Response<UserResponse>) {
                 listener(response.isSuccessful, response.body())
             }
 
             override fun onFailure(call: Call<UserResponse>, t: Throwable) {
-                Timber.wtf("wtf onFailure updateUserInterests " + t.message)
+                Timber.wtf("updateUserInterests failed: ${t.message}")
                 listener(false, null)
             }
         })
     }
+
 
 
 

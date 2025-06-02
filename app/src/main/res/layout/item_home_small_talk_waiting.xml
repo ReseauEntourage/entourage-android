@@ -4,7 +4,8 @@
     android:id="@+id/layout_item"
     android:layout_width="match_parent"
     android:layout_height="150dp"
-    android:layout_margin="10dp"
+    android:layout_marginTop="10dp"
+    android:layout_marginHorizontal="10dp"
     android:background="@drawable/background_organizer"
     android:padding="16dp">
 
