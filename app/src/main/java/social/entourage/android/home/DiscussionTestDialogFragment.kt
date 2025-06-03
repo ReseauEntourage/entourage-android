@@ -16,7 +16,6 @@ class DiscussionTestDialogFragment : DialogFragment() {
 
     private var _binding: DialogDiscussionMainTestBinding? = null
     private val binding get() = _binding!!
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
