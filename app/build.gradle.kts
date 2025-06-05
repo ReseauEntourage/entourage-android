@@ -220,8 +220,6 @@ dependencies {
     implementation("androidx.preference:preference-ktx:1.2.1")
     implementation("androidx.compose.ui:ui-text-android:1.7.8")
 
-    //implementation devDependencies.values()
-    //implementation("net.danlew:android.joda:2.12.5")
     implementation("com.squareup:tape:1.2.3")
     implementation("com.jakewharton.timber:timber:5.0.1")
 
