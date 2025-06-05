@@ -29,8 +29,8 @@ android {
     val targetCompatibilityVersion = JavaVersion.VERSION_11
 
     // App versions
-    val versionMajor = 11
-    val versionMinor = 2
+    val versionMajor = 12
+    val versionMinor = 0
     val versionPatch = "git rev-list HEAD --count".runCommand().toInt()
     val versionBranchName = "git rev-parse --abbrev-ref HEAD".runCommand()
     val versionCodeInt = (versionMajor * 100 + versionMinor) * 10000 + versionPatch % 10000
