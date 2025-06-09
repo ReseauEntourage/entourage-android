@@ -63,21 +63,25 @@ class OnboardingInterestsAdapter(
             binding.ivInterestCheck.setImageResource(checkIcon)
         }
 
+
+
         private fun handleItemClick(position: Int) {
             val updatedList = currentList.mapIndexed { index, item ->
-                if (forceSingleSelectionForSmallTalk && !isFromInterest) {
-                    // Sélection unique
-                    item.copy(isSelected = index == position)
-                } else if (index == position) {
-                    // Toggle sélection multiple
-                    item.copy(isSelected = !item.isSelected)
-                } else {
-                    item
+                when {
+                    forceSingleSelectionForSmallTalk && !isFromInterest ->
+                        item.copy(isSelected = index == position)   // sélection unique
+                    index == position ->
+                        item.copy(isSelected = !item.isSelected)    // toggle
+                    else -> item
                 }
             }
-            submitList(updatedList)
-            onInterestClicked(updatedList[position])
+
+            /* ▼▼ UNE SEULE notification, APRÈS le diff ▼▼ */
+            submitList(updatedList) {                // callback exécuté une fois la nouvelle
+                onInterestClicked(updatedList[position])   // liste effectivement appliquée
+            }
         }
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): InterestViewHolder {

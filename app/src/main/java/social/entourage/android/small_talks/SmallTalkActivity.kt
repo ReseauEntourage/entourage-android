@@ -81,8 +81,7 @@ class SmallTalkActivity : BaseActivity() {
         adapter = OnboardingInterestsAdapter(
             isFromInterest = false,
             onInterestClicked = {
-                updateNextButtonState(true)
-                /* handled internally */
+                updateNextButtonState(adapter.currentList.any { it.isSelected })
             }
         )
         binding.rvSmallTalk.apply {
@@ -107,7 +106,6 @@ class SmallTalkActivity : BaseActivity() {
             val isInterestStep = viewModel.isLastStep()
             adapter.forceSingleSelectionForSmallTalk = !isInterestStep
             adapter.isFromInterestLocal = isInterestStep
-
             (binding.rvSmallTalk.layoutManager as? GridLayoutManager)?.spanCount = if (isInterestStep) 2 else 1
 
             val updatedItems = when {
@@ -124,6 +122,7 @@ class SmallTalkActivity : BaseActivity() {
             // Post une mise à jour un peu plus tard (après le "clear")
             binding.rvSmallTalk.post {
                 adapter.submitList(updatedItems)
+                updateNextButtonState(updatedItems.any { it.isSelected })
                 binding.rvSmallTalk.scheduleLayoutAnimation()
                 // Mettre à jour l'état du bouton en fonction des éléments sélectionnés
                 //updateNextButtonState(adapter.currentList.any { it.isSelected })
@@ -141,6 +140,7 @@ class SmallTalkActivity : BaseActivity() {
                 else R.string.onboarding_btn_next
             )
         }
+
     }
 
 
@@ -235,11 +235,7 @@ class SmallTalkActivity : BaseActivity() {
                 overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
                 isFinished = true
                 finish()
-            } else if (stepIndex == 3){
-                updateNextButtonState(true)
-                viewModel.goToNextStep()
-            } else{
-                updateNextButtonState(false)
+            }else{
                 viewModel.goToNextStep()
             }
         }
