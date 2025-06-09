@@ -64,6 +64,7 @@ import social.entourage.android.tools.utils.CustomAlertDialog
 import social.entourage.android.tools.view.WebViewFragment
 import social.entourage.android.user.UserPresenter
 import timber.log.Timber
+import kotlin.jvm.java
 
 class HomeFragment: Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocationUpdate {
 
@@ -117,6 +118,7 @@ class HomeFragment: Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocatio
             }
         }
     }
+
 
     override fun onCreateView(
         inflater: LayoutInflater,

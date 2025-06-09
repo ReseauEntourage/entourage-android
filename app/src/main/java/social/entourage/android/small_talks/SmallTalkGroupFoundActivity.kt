@@ -59,6 +59,7 @@ class SmallTalkGroupFoundActivity : BaseActivity() {
             AnalyticsEvents.logEvent(AnalyticsEvents.CLIC__SMALLTALK__MATCH_CHAT)
             val intent = Intent(this, DetailConversationActivity::class.java)
             DetailConversationActivity.isSmallTalkMode = true
+            DetailConversationActivity.shouldResetToHome = true
             DetailConversationActivity.smallTalkId = smallTalkId.toString()
             startActivity(intent)
             finish()

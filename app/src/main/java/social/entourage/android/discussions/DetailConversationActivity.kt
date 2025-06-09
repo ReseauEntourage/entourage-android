@@ -60,6 +60,7 @@ class DetailConversationActivity : CommentActivity() {
         /** Mettre à true pour échanger les messages via SmallTalkViewModel */
         var isSmallTalkMode: Boolean = false
         var smallTalkId: String = ""
+        var shouldResetToHome: Boolean = false
     }
     // Présenters & ViewModel
     private val eventPresenter: EventsPresenter by lazy { EventsPresenter() }
@@ -189,7 +190,6 @@ class DetailConversationActivity : CommentActivity() {
         binding.header.iconCamera.setImageResource(R.drawable.ic_camera)
         binding.header.cardIconCamera.setBackgroundColor(ContextCompat.getColor(this, R.color.transparent))
         binding.header.iconCamera.setBackgroundColor(ContextCompat.getColor(this, R.color.transparent))
-
         binding.header.iconCamera.setOnClickListener {
             Timber.wtf("eho url : ${smallTalk?.meetingUrl}")
             AnalyticsEvents.logEvent(AnalyticsEvents.CLIC__SMALLTALK__VISIO_ICON)
