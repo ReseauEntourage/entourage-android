@@ -172,6 +172,7 @@
                 android:layout_marginStart="@dimen/entourage_marginstart"
                 android:fontFamily="@font/nunitosans_regular"
                 android:textSize="@dimen/entourage_font_small"
+                android:visibility="gone"
                 android:text="@string/home_v2_subtitle_sensibilisation"
                 />
             <androidx.recyclerview.widget.RecyclerView
@@ -235,6 +236,7 @@
                 android:fontFamily="@font/nunitosans_regular"
                 android:textSize="@dimen/entourage_font_small"
                 android:text="@string/home_v2_subtitle_action"
+                android:visibility="gone"
                 />
             <androidx.recyclerview.widget.RecyclerView
                 android:layout_width="match_parent"
@@ -295,6 +297,7 @@
                 android:fontFamily="@font/nunitosans_regular"
                 android:textSize="@dimen/entourage_font_small"
                 android:text="@string/home_v2_subtitle_event"
+                android:visibility="gone"
                 />
             <androidx.recyclerview.widget.RecyclerView
                 android:layout_width="match_parent"
@@ -343,6 +346,7 @@
                 android:textSize="@dimen/entourage_font_large"
                 android:textColor="@color/grey_dark"
                 android:text="@string/home_v2_title_group"
+                android:visibility="gone"
                 />
             <TextView
                 android:layout_width="wrap_content"
@@ -354,6 +358,7 @@
                 android:fontFamily="@font/nunitosans_regular"
                 android:textSize="@dimen/entourage_font_small"
                 android:text="@string/home_v2_subtitle_group"
+                android:visibility="gone"
                 />
             <androidx.recyclerview.widget.RecyclerView
                 android:layout_width="match_parent"
@@ -362,7 +367,9 @@
                 android:layout_marginTop="@dimen/entourage_little_margin_top"
                 app:layout_constraintTop_toBottomOf="@+id/home_subtitle_group"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"/>
+                app:layout_constraintEnd_toEndOf="parent"
+                android:visibility="gone"
+                />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -372,6 +379,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginEnd="@dimen/entourage_margin_end"
                 android:layout_marginTop="@dimen/entourage_little_margin_top"
+                android:visibility="gone"
                 >
                 <TextView
                     android:layout_width="wrap_content"
@@ -413,6 +421,7 @@
                 android:fontFamily="@font/nunitosans_regular"
                 android:textSize="@dimen/entourage_font_small"
                 android:text="@string/home_v2_subtitle_map"
+                android:visibility="gone"
                 />
             
             <ImageView
@@ -500,6 +509,7 @@
                 android:fontFamily="@font/nunitosans_regular"
                 android:textSize="@dimen/entourage_font_small"
                 android:text="@string/home_v2_subtitle_pedago"
+                android:visibility="gone"
                 />
             <androidx.recyclerview.widget.RecyclerView
                 android:layout_width="match_parent"
@@ -578,6 +588,7 @@
                     android:fontFamily="@font/nunitosans_regular"
                     android:textSize="@dimen/entourage_font_small"
                     android:text="@string/home_v2_subtitle_help"
+                    android:visibility="gone"
                     />
                 <androidx.recyclerview.widget.RecyclerView
                     android:layout_width="match_parent"

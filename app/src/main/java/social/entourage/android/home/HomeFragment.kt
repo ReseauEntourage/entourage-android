@@ -596,10 +596,10 @@ class HomeFragment: Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocatio
         doTotalchecksumToDisplayHomeFirstTime()
 
         if(allGroup.size > 0 ){
-            binding.btnMoreGroup.visibility = View.VISIBLE
-            binding.rvHomeGroup.visibility = View.VISIBLE
-            binding.homeSubtitleGroup.visibility = View.VISIBLE
-            binding.homeTitleGroup.visibility = View.VISIBLE
+            binding.btnMoreGroup.visibility = View.GONE
+            binding.rvHomeGroup.visibility = View.GONE
+            binding.homeSubtitleGroup.visibility = View.GONE
+            binding.homeTitleGroup.visibility = View.GONE
         }else{
             binding.btnMoreGroup.visibility = View.GONE
             binding.rvHomeGroup.visibility = View.GONE
@@ -630,7 +630,7 @@ class HomeFragment: Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocatio
             }
             binding.btnMoreEvent.visibility = View.VISIBLE
             binding.rvHomeEvent.visibility = View.VISIBLE
-            binding.homeSubtitleEvent.visibility = View.VISIBLE
+            binding.homeSubtitleEvent.visibility = View.GONE
             binding.homeTitleEvent.visibility = View.VISIBLE
         }else{
             isEventsEmpty = true
@@ -663,7 +663,7 @@ class HomeFragment: Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocatio
             isActionEmpty = false
             binding.btnMoreAction.visibility = View.VISIBLE
             binding.rvHomeAction.visibility = View.VISIBLE
-            binding.homeSubtitleAction.visibility = View.VISIBLE
+            binding.homeSubtitleAction.visibility = View.GONE
             binding.homeTitleAction.visibility = View.VISIBLE
         }else{
             isActionEmpty = true
@@ -686,7 +686,7 @@ class HomeFragment: Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocatio
         doTotalchecksumToDisplayHomeFirstTime()
         if(allPedago.size > 0 ){
             binding.rvHomeSensibilisation.visibility = View.VISIBLE
-            binding.homeSubtitleSensibilisation.visibility = View.VISIBLE
+            binding.homeSubtitleSensibilisation.visibility = View.GONE
             binding.homeTitleSensibilisation.visibility = View.VISIBLE
             setMarginTop(binding.homeTitleAction, 16)
 
@@ -708,7 +708,7 @@ class HomeFragment: Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocatio
         if(allPedago.size > 0 ){
             binding.btnMorePedago.visibility = View.VISIBLE
             binding.rvHomePedago.visibility = View.VISIBLE
-            binding.homeSubtitlePedago.visibility = View.VISIBLE
+            binding.homeSubtitlePedago.visibility = View.GONE
             binding.homeTitlePedago.visibility = View.VISIBLE
         }else{
             binding.btnMorePedago.visibility = View.GONE

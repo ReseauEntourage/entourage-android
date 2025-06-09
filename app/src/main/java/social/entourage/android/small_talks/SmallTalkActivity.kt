@@ -75,7 +75,6 @@ class SmallTalkActivity : BaseActivity() {
         setupButtons()
         observeViewModel()
         updateNextButtonState(false)
-
     }
 
     private fun setupRecyclerView() {
