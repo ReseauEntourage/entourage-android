@@ -126,7 +126,7 @@ class SmallTalkActivity : BaseActivity() {
                 adapter.submitList(updatedItems)
                 binding.rvSmallTalk.scheduleLayoutAnimation()
                 // Mettre à jour l'état du bouton en fonction des éléments sélectionnés
-                updateNextButtonState(adapter.currentList.any { it.isSelected })
+                //updateNextButtonState(adapter.currentList.any { it.isSelected })
             }
             animateProgressTo(viewModel.getStepProgress())
         }
@@ -213,6 +213,7 @@ class SmallTalkActivity : BaseActivity() {
                         override fun onResponse(call: Call<UserResponse>, response: Response<UserResponse>) {}
                         override fun onFailure(call: Call<UserResponse>, t: Throwable) {}
                     })
+
                 }
             }
 
@@ -234,7 +235,10 @@ class SmallTalkActivity : BaseActivity() {
                 overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
                 isFinished = true
                 finish()
-            } else {
+            } else if (stepIndex == 3){
+                updateNextButtonState(true)
+                viewModel.goToNextStep()
+            } else{
                 updateNextButtonState(false)
                 viewModel.goToNextStep()
             }
