@@ -171,6 +171,8 @@ class HomeFragment: Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocatio
             },
             onMatchingClick = {
                 //TOAST d'attente
+                //TODO REMOVE TESTING CODE
+                smallTalkViewModel.deleteRequest()
                 Toast.makeText(requireContext(), getString(R.string.small_talk_subtitle_waiting), Toast.LENGTH_SHORT).show()
             },
             requireContext()
