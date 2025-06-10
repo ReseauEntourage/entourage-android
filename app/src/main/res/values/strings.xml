@@ -3102,6 +3102,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="discussion_option_gallery">Photos</string>
     <string name="edit_photo_title">Vous n\'avez pas encore de photo de profil</string>
     <string name="edit_photo_subtitle">On se sent toujours plus à l’aise quand on voit à qui on s’adresse. Ajoutez votre photo pour faciliter les rencontres !</string>
+    <string name="message_auto">Message automatique - </string>
 
 
 </resources>

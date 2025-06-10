@@ -157,6 +157,7 @@ class CommentsListAdapter(
                 ContextCompat.getDrawable(context, R.drawable.new_comment_background_beige)
             }
 
+
             // Couleur du texte normal
             bindingLeft.comment.setTextColor(ContextCompat.getColor(context, R.color.black))
             // Couleur des liens
@@ -196,6 +197,12 @@ class CommentsListAdapter(
             }
             binding.comment.layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT
             binding.comment.requestLayout()
+            Timber.wtf("wtf message type : ${comment.messageType}")
+            if(comment.messageType == "auto"){
+                binding.messageContainer.setBackgroundResource(R.drawable.comment_message_auto_background)
+                binding.comment.setBackgroundResource(R.drawable.comment_message_auto_background)
+                bindingLeft.authorName.text = binding.root.context.getString(R.string.message_auto)
+            }
         }
 
         // ----------------------------------------------------------------------------------------

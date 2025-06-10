@@ -439,7 +439,7 @@ class HomeFragment: Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocatio
     private fun callToInitHome(){
         if(isAdded){
             EntourageApplication.get().me()?.id?.let { meId ->
-                homePresenter.getMyGroups(pagegroup, nbOfItemForHozrizontalList, meId)
+                //homePresenter.getMyGroups(pagegroup, nbOfItemForHozrizontalList, meId)
                 homePresenter.getAllEvents(
                     pageEvent,
                     nbOfItemForHozrizontalList,
@@ -474,7 +474,7 @@ class HomeFragment: Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocatio
 
     private fun doTotalchecksumToDisplayHomeFirstTime(){
         totalchecksum++
-        if(totalchecksum == 5){
+        if(totalchecksum == 4){
             binding.homeNestedScrollView.visibility = View.VISIBLE
             binding.homeHeader.visibility = View.VISIBLE
             binding.progressBar.visibility = View.GONE
@@ -580,7 +580,7 @@ class HomeFragment: Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocatio
     private fun setObservations() {
         homePresenter.summary.observe(viewLifecycleOwner, ::updateContributionsView)
         homePresenter.getAllEvents.observe(viewLifecycleOwner, ::handleEvent)
-        homePresenter.getAllMyGroups.observe(viewLifecycleOwner, ::handleGroup)
+        //homePresenter.getAllMyGroups.observe(viewLifecycleOwner, ::handleGroup)
         homePresenter.getAllActions.observe(viewLifecycleOwner, ::handleAction)
         homePresenter.pedagogicalContent.observe(viewLifecycleOwner, ::handlePedago)
         homePresenter.pedagogicalInitialContent.observe(viewLifecycleOwner, ::handleInitialPedago)
