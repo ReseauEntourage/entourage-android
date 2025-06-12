@@ -224,11 +224,26 @@ class DetailConversationActivity : CommentActivity() {
     }
 
     override fun reloadView() {
-        lifecycleScope.launch {
-            shouldOpenKeyboard = false
-            recreate()
+        shouldOpenKeyboard = false
+
+        when {
+            isSmallTalkMode -> {
+                smallTalkViewModel.listChatMessages(smallTalkId)
+            }
+            detailConversation?.type == "outing" -> {
+                // recharge les commentaires de la discussion…
+                discussionsPresenter.getPostComments(id)
+                // …et si tu veux mettre à jour aussi l’entête événement
+                detailConversation?.id
+                    ?.toString()
+                    ?.let { eventPresenter.getEvent(it) }
+            }
+            else -> {
+                discussionsPresenter.getPostComments(id)
+            }
         }
     }
+
 
     private fun isAtBottom(): Boolean {
         val layoutManager = binding.comments.layoutManager as? LinearLayoutManager ?: return true
@@ -574,23 +589,6 @@ class DetailConversationActivity : CommentActivity() {
                 conversationTitle,
                 discussionsPresenter.detailConversation.value?.imBlocker()
             ).show(supportFragmentManager, SettingsDiscussionModalFragment.TAG)
-        }
-    }
-
-    // --- Suppression de message (appel adapter) ---
-    fun deleteMessage(messageId: String) {
-        itemDeletedId = messageId
-        when {
-            isSmallTalkMode -> {                                   // ➜ Small-Talk
-                smallTalkViewModel.deleteChatMessage(smallTalkId, messageId)
-            }
-            detailConversation?.type == "outing" -> {          // ➜ Event/Outing
-                val eventId = detailConversation?.id ?: return
-                eventPresenter.deletedEventPost(eventId, messageId.toInt())
-            }
-            else -> {                                          // ➜ Discussion “classique”
-                discussionsPresenter.deleteMessage(id, messageId.toInt())
-            }
         }
     }
 

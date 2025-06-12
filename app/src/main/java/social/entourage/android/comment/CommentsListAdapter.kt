@@ -131,6 +131,9 @@ class CommentsListAdapter(
             if (comment.status in listOf("deleted", "offensive", "offensible")) {
                 handleDeletedOrOffensiveLeft(bindingLeft, comment, isMe)
                 return
+            } else {
+                // Masquer l'icône de suppression si le commentaire n'est pas en état "deleted"
+                bindingLeft.comment.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null)
             }
 
             if (contentToShow.isNullOrEmpty()) contentToShow = ""
@@ -156,7 +159,6 @@ class CommentsListAdapter(
             } else {
                 ContextCompat.getDrawable(context, R.drawable.new_comment_background_beige)
             }
-
 
             // Couleur du texte normal
             bindingLeft.comment.setTextColor(ContextCompat.getColor(context, R.color.black))
@@ -205,6 +207,7 @@ class CommentsListAdapter(
             }
         }
 
+
         // ----------------------------------------------------------------------------------------
         // bindRight : Affiche un commentaire "à droite"
         // ----------------------------------------------------------------------------------------
@@ -231,6 +234,9 @@ class CommentsListAdapter(
             if (comment.status in listOf("deleted", "offensive", "offensible")) {
                 handleDeletedOrOffensiveRight(bindingRight, comment, isMe)
                 return
+            } else {
+                // Masquer l'icône de suppression si le commentaire n'est pas en état "deleted"
+                bindingRight.comment.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null)
             }
 
             if (contentToShow.isNullOrEmpty()) contentToShow = ""
@@ -306,8 +312,8 @@ class CommentsListAdapter(
             binding.messageContainer.requestLayout()
             binding.comment.layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT
             binding.comment.requestLayout()
-
         }
+
 
         // ----------------------------------------------------------------------------------------
         // bindDetails : affichage du "post parent" (TYPE_DETAIL)
