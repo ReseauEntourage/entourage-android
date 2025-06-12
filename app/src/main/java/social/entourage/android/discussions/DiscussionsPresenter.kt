@@ -53,6 +53,7 @@ class DiscussionsPresenter:ViewModel() {
 
     var hasUserUnblock = MutableLiveData<Boolean>()
     var hasUserjoined = MutableLiveData<Boolean>()
+    val messageDeleted = MutableLiveData<String>()
 
 
     fun getAllMessages(page: Int, per: Int) {

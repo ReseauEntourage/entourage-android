@@ -198,7 +198,7 @@ class CommentsListAdapter(
             binding.comment.layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT
             binding.comment.requestLayout()
             Timber.wtf("wtf message type : ${comment.messageType}")
-            if(comment.messageType == "auto"){
+            if(comment.messageType == "auto" || comment.messageType == "broadcast"){
                 binding.messageContainer.setBackgroundResource(R.drawable.comment_message_auto_background)
                 binding.comment.setBackgroundResource(R.drawable.comment_message_auto_background)
                 bindingLeft.authorName.text = binding.root.context.getString(R.string.message_auto)
@@ -440,6 +440,7 @@ class CommentsListAdapter(
                 onItemClick.onCommentReport(comment.id, isForEvent, isMe, commentLang)
             }
             // Long click => report
+
             if (comment.status !in listOf("deleted", "offensive", "offensible")) {
                 val commentLang = comment.contentTranslations?.fromLang ?: ""
                 binding.comment.setOnLongClickListener {

@@ -68,6 +68,7 @@ class EventsPresenter : ViewModel() {
     var isSearchMode = false
     var haveChanged = false
     var havelaunchedCreation = false
+    val messageDeleted = MutableLiveData<String>()
 
 
     var isLoading: Boolean = false

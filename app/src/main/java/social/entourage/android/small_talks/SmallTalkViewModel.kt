@@ -46,6 +46,7 @@ class SmallTalkViewModel(application: Application) : AndroidViewModel(applicatio
     val smallTalkDetail = MutableLiveData<SmallTalk?>()
     val almostMatches = MutableLiveData<List<UserSmallTalkRequestWithMatchData>>()
     val shouldLeave = MutableLiveData<Boolean>()
+    val messageDeleted = MutableLiveData<Boolean>()
 
     private val steps = listOf(
         SmallTalkStep(
@@ -326,6 +327,7 @@ class SmallTalkViewModel(application: Application) : AndroidViewModel(applicatio
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 // Après suppression, on rafraîchit la liste
                 listChatMessages(smallTalkId)
+                messageDeleted.postValue(response.isSuccessful)
             }
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                 // Optionnel : gérer l’erreur

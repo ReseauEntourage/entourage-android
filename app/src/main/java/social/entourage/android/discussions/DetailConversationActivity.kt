@@ -74,7 +74,7 @@ class DetailConversationActivity : CommentActivity() {
     private var photoUri: Uri? = null
     private var detailConversation: Conversation? = null
     private var smallTalk: SmallTalk? = null
-
+    private var itemDeletedId = ""
     // UI state
     private var hasToShowFirstMessage = false
     var hasSeveralpeople = false
@@ -84,6 +84,7 @@ class DetailConversationActivity : CommentActivity() {
     private val mentionAdapter: MentionAdapter by lazy {
         MentionAdapter(emptyList()) { user -> insertMentionIntoEditText(user) }
     }
+    private var event: Events? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -94,7 +95,7 @@ class DetailConversationActivity : CommentActivity() {
         setupHeader()
         setupMentionList()
         setupMentionTextWatcher()
-
+        observeDeletedMessage()
         // Toujours charger le détail de la conversation (titre, membres, événement…)
         discussionsPresenter.detailConversation.observe(this) { handleDetailConversation(it) }
         eventPresenter.getEvent.observe(this) { handleGetEvent(it) }
@@ -146,6 +147,24 @@ class DetailConversationActivity : CommentActivity() {
                 showThumbnail(uri)
             }
         }
+    }
+
+    private fun observeDeletedMessage() {
+        smallTalkViewModel.messageDeleted.observe(this) {
+            if (it) smallTalkViewModel.listChatMessages(smallTalkId)
+        }
+
+        eventPresenter.isEventDeleted.observe(this) {
+            eventPresenter.getEvent(this.event?.id.toString())
+        }
+
+        discussionsPresenter.isMessageDeleted.observe(this) {
+            if (it) discussionsPresenter.getPostComments(id)
+        }
+    }
+
+    private fun handleDeletedMessage(boolean: Boolean) {
+
     }
 
     override fun onResume() {
@@ -455,6 +474,7 @@ class DetailConversationActivity : CommentActivity() {
     private fun handleGetEvent(event: Events?) {
         binding.emptyState.visibility = View.GONE
         event?.let {
+            this.event = event
             SettingsDiscussionModalFragment.isEvent = true
             binding.header.headerTitle.setOnClickListener {
                 VibrationUtil.vibrate(this)
@@ -559,8 +579,19 @@ class DetailConversationActivity : CommentActivity() {
 
     // --- Suppression de message (appel adapter) ---
     fun deleteMessage(messageId: String) {
-        if (isSmallTalkMode) smallTalkViewModel.deleteChatMessage(smallTalkId, messageId)
-        else discussionsPresenter.deleteMessage(id, messageId.toInt())
+        itemDeletedId = messageId
+        when {
+            isSmallTalkMode -> {                                   // ➜ Small-Talk
+                smallTalkViewModel.deleteChatMessage(smallTalkId, messageId)
+            }
+            detailConversation?.type == "outing" -> {          // ➜ Event/Outing
+                val eventId = detailConversation?.id ?: return
+                eventPresenter.deletedEventPost(eventId, messageId.toInt())
+            }
+            else -> {                                          // ➜ Discussion “classique”
+                discussionsPresenter.deleteMessage(id, messageId.toInt())
+            }
+        }
     }
 
     // --- Mentions infra ---
