@@ -153,7 +153,9 @@ class MainActivity : BaseSecuredActivity() {
     }
 
     private fun handleUpdateBadgeResponse(unreadMessages: UnreadMessages) {
-        addBadge(unreadMessages.unreadCount ?: 0)
+        addBadge(unreadMessages.unreadConversationsCount ?: 0)
+        addGroupBadge(unreadMessages.unreadNeighborhoodsCount ?: 0)
+
     }
 
     override fun onResume() {
@@ -564,6 +566,20 @@ class MainActivity : BaseSecuredActivity() {
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.nav_view)
         val badge: BadgeDrawable = bottomNavigationView.getOrCreateBadge(
             R.id.navigation_messages)
+        badge.number = count
+        badge.isVisible = true
+        badge.maxCharacterCount = 2
+        badge.verticalOffsetWithText = 10
+        badge.backgroundColor = resources.getColor(R.color.tomato)
+        badge.badgeTextColor = resources.getColor(R.color.white)
+        if (count == 0) {
+            bottomNavigationView.removeBadge(R.id.navigation_messages)
+        }
+    }
+    private fun addGroupBadge(count : Int) {
+        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.nav_view)
+        val badge: BadgeDrawable = bottomNavigationView.getOrCreateBadge(
+            R.id.navigation_groups)
         badge.number = count
         badge.isVisible = true
         badge.maxCharacterCount = 2
