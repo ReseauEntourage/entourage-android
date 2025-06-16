@@ -24,6 +24,7 @@ import androidx.core.text.HtmlCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.google.gson.Gson
@@ -96,29 +97,30 @@ class DetailConversationActivity : CommentActivity() {
         setupMentionList()
         setupMentionTextWatcher()
         observeDeletedMessage()
+
         // Toujours charger le détail de la conversation (titre, membres, événement…)
         discussionsPresenter.detailConversation.observe(this) { handleDetailConversation(it) }
         eventPresenter.getEvent.observe(this) { handleGetEvent(it) }
 
-        // Messages : selon le mode
+        binding.comments.layoutManager = LinearLayoutManager(this)
+        setupScrollPagination() // 👈 Ajout scroll top pagination
+
         if (isSmallTalkMode) {
-            smallTalkViewModel.smallTalkDetail.observe(this){handleSmallTakDetail(it)}
+            smallTalkViewModel.smallTalkDetail.observe(this) { handleSmallTakDetail(it) }
             smallTalkViewModel.messages.observe(this) { handleSmallTalkMessages(it) }
             smallTalkViewModel.participants.observe(this) { handleParticipants(it) }
             smallTalkViewModel.createdMessage.observe(this) {
                 scrollAfterLayout()
             }
             smallTalkViewModel.getSmallTalk(smallTalkId)
-            smallTalkViewModel.listChatMessages(smallTalkId)
+            smallTalkViewModel.loadInitialMessages(smallTalkId) // 👈 Nouveau chargement avec pagination
             smallTalkViewModel.listSmallTalkParticipants(smallTalkId)
+
             binding.btnSeeEvent.text = getString(R.string.small_talk_btn_charte)
             binding.ivBtnEvent.apply {
-                // 1. On enlève toute ColorStateList ou ColorFilter attachée
-                imageTintList = null           // API 21+
-                imageTintMode = null           // facultatif : remet aussi le PorterDuff
-                clearColorFilter()             // au cas où un ColorFilter avait été mis
-
-                // 2. Puis on place le drawable
+                imageTintList = null
+                imageTintMode = null
+                clearColorFilter()
                 setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_book))
             }
             binding.layoutEventConv.visibility = View.VISIBLE
@@ -135,7 +137,7 @@ class DetailConversationActivity : CommentActivity() {
             discussionsPresenter.commentPosted.observe(this) { handleCommentPosted(it) }
             discussionsPresenter.getPostComments(id)
         }
-        //Camera and galery init
+
         cameraLauncher = registerForActivityResult(ActivityResultContracts.TakePicture()) { success ->
             if (success && photoUri != null) {
                 showThumbnail(photoUri!!)
@@ -148,6 +150,23 @@ class DetailConversationActivity : CommentActivity() {
             }
         }
     }
+
+    private fun setupScrollPagination() {
+        (binding.comments.layoutManager as? LinearLayoutManager)?.let { layoutManager ->
+            binding.comments.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    if (!isSmallTalkMode) return
+
+                    val firstVisibleItem = layoutManager.findFirstVisibleItemPosition()
+                    if (firstVisibleItem <= 2) {
+                        Timber.d("🌀 Scroll top détecté, chargement messages SmallTalk")
+                        smallTalkViewModel.loadMoreMessagesIfPossible(smallTalkId)
+                    }
+                }
+            })
+        }
+    }
+
 
     private fun observeDeletedMessage() {
         smallTalkViewModel.messageDeleted.observe(this) {
@@ -203,6 +222,7 @@ class DetailConversationActivity : CommentActivity() {
             WebViewFragment.launchURL(this, url)
         }
     }*/
+
 
     private fun setCameraIcon() {
         binding.header.iconCamera.isVisible = !smallTalk?.meetingUrl.isNullOrBlank()

@@ -153,9 +153,9 @@ class MainActivity : BaseSecuredActivity() {
     }
 
     private fun handleUpdateBadgeResponse(unreadMessages: UnreadMessages) {
+
         addBadge(unreadMessages.unreadConversationsCount ?: 0)
         addGroupBadge(unreadMessages.unreadNeighborhoodsCount ?: 0)
-
     }
 
     override fun onResume() {

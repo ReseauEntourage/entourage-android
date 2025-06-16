@@ -6,8 +6,6 @@ import com.google.gson.annotations.SerializedName
 
 class CommunicationHandlerBadgeViewModel : ViewModel() {
     var badgeCount = MutableLiveData<UnreadMessages>()
-    var badgeDiscussionCount = MutableLiveData<UnreadMessages>()
-    var badgeGroupCount = MutableLiveData<UnreadMessages>()
 
     fun resetValues() {
         badgeCount.value?.unreadCount = 0

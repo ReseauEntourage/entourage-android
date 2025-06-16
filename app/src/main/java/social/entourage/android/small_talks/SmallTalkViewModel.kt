@@ -47,6 +47,10 @@ class SmallTalkViewModel(application: Application) : AndroidViewModel(applicatio
     val almostMatches = MutableLiveData<List<UserSmallTalkRequestWithMatchData>>()
     val shouldLeave = MutableLiveData<Boolean>()
     val messageDeleted = MutableLiveData<Boolean>()
+    private var currentPage = 1
+    private val messagesPerPage = 200
+    private var isLoading = false
+    private var isLastPage = false
 
     private val steps = listOf(
         SmallTalkStep(
@@ -278,13 +282,36 @@ class SmallTalkViewModel(application: Application) : AndroidViewModel(applicatio
     /**
      * 4️⃣ Liste des messages d’un smalltalk
      */
-    fun listChatMessages(id: String, page: Int? = null, per: Int? = null) {
+    fun loadInitialMessages(smallTalkId: String) {
+        currentPage = 1
+        isLastPage = false
+        listChatMessages(smallTalkId, currentPage, messagesPerPage, reset = true)
+    }
+
+    fun loadMoreMessagesIfPossible(smallTalkId: String) {
+        if (isLoading || isLastPage) return
+        currentPage += 1
+        listChatMessages(smallTalkId, currentPage, messagesPerPage)
+    }
+
+    fun listChatMessages(id: String, page: Int? = null, per: Int? = null, reset: Boolean = false) {
+        isLoading = true
         request.listChatMessages(id, page, per).enqueue(object : Callback<ChatMessageListWrapper> {
             override fun onResponse(call: Call<ChatMessageListWrapper>, response: Response<ChatMessageListWrapper>) {
-                messages.value = response.body()?.messages ?: emptyList()
+                val newMessages = response.body()?.messages ?: emptyList()
+                isLoading = false
+                isLastPage = newMessages.size < (per ?: messagesPerPage)
+                if (reset) {
+                    messages.value = newMessages
+                } else {
+                    // concat en haut (scroll top)
+                    val combined = newMessages + (messages.value ?: emptyList())
+                    messages.value = combined
+                }
             }
+
             override fun onFailure(call: Call<ChatMessageListWrapper>, t: Throwable) {
-                messages.value = emptyList()
+                isLoading = false
             }
         })
     }
