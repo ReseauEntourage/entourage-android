@@ -23,6 +23,7 @@ import androidx.recyclerview.widget.RecyclerView
 import social.entourage.android.*
 import social.entourage.android.api.model.*
 import social.entourage.android.databinding.NewFragmentMessagesBinding
+import social.entourage.android.events.create.CommunicationHandler
 import social.entourage.android.home.CommunicationHandlerBadgeViewModel
 import social.entourage.android.home.UnreadMessages
 import social.entourage.android.notifications.NotificationDemandActivity
@@ -268,11 +269,11 @@ class DiscussionsMainFragment : Fragment() {
     // -------------------- OUTILS --------------------
 
     private fun updateUnreadCount(unreadMessages: UnreadMessages?) {
-        val count = unreadMessages?.unreadCount ?: 0
         EntourageApplication.get().mainActivity?.let {
             val viewModel = ViewModelProvider(it)[CommunicationHandlerBadgeViewModel::class.java]
-            viewModel.badgeCount.postValue(UnreadMessages(count))
+            viewModel.badgeCount.postValue(unreadMessages)
         }
+        CommunicationHandler.resetValues()
     }
 
     private fun checkNotificationsState() {

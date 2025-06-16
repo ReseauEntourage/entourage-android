@@ -153,7 +153,6 @@ class MainActivity : BaseSecuredActivity() {
     }
 
     private fun handleUpdateBadgeResponse(unreadMessages: UnreadMessages) {
-
         addBadge(unreadMessages.unreadConversationsCount ?: 0)
         addGroupBadge(unreadMessages.unreadNeighborhoodsCount ?: 0)
     }
@@ -563,6 +562,8 @@ class MainActivity : BaseSecuredActivity() {
     }
 
     private fun addBadge(count : Int) {
+        Timber.wtf("wtf passed here 1 count : $count")
+
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.nav_view)
         val badge: BadgeDrawable = bottomNavigationView.getOrCreateBadge(
             R.id.navigation_messages)
@@ -577,6 +578,7 @@ class MainActivity : BaseSecuredActivity() {
         }
     }
     private fun addGroupBadge(count : Int) {
+        Timber.wtf("wtf passed here 2 count : $count")
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.nav_view)
         val badge: BadgeDrawable = bottomNavigationView.getOrCreateBadge(
             R.id.navigation_groups)
@@ -587,7 +589,7 @@ class MainActivity : BaseSecuredActivity() {
         badge.backgroundColor = resources.getColor(R.color.tomato)
         badge.badgeTextColor = resources.getColor(R.color.white)
         if (count == 0) {
-            bottomNavigationView.removeBadge(R.id.navigation_messages)
+            bottomNavigationView.removeBadge(R.id.navigation_groups)
         }
     }
 

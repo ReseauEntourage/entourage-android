@@ -422,13 +422,9 @@ class HomeFragment: Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocatio
     }
 
     private fun updateUnreadCount(unreadMessages: UnreadMessages?) {
-        Timber.wtf("wtf new count : ${unreadMessages?.unreadConversationsCount}")
-        Timber.wtf("wtf old count : ${unreadMessages?.unreadCount}")
-        Timber.wtf("wtf group count : ${unreadMessages?.unreadNeighborhoodsCount}")
-        val count:Int = unreadMessages?.unreadCount ?: 0
         EntourageApplication.get().mainActivity?.let {
             val viewModel = ViewModelProvider(it)[CommunicationHandlerBadgeViewModel::class.java]
-            viewModel.badgeCount.postValue(UnreadMessages(count))
+            viewModel.badgeCount.postValue(unreadMessages)
         }
         CommunicationHandler.resetValues()
     }
