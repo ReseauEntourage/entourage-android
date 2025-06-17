@@ -86,6 +86,12 @@ class DetailConversationActivity : CommentActivity() {
         MentionAdapter(emptyList()) { user -> insertMentionIntoEditText(user) }
     }
     private var event: Events? = null
+    private fun Post.diffKey(): String =
+        if (isDatePostOnly) {
+            "SEP_$datePostText"                // séparateur de jour
+        } else {
+            (id?.toString() ?: idInternal.toString())
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -586,16 +592,39 @@ class DetailConversationActivity : CommentActivity() {
 
     // --- Récupération / affichage commentaires ---
     override fun handleGetPostComments(allComments: MutableList<Post>?) {
-        val newComments = sortAndExtractDays(allComments, this)
-        val wasAtBottom = isAtBottom()
-        commentsList.clear()
-        newComments?.let { commentsList.addAll(it) }
-        binding.comments.adapter?.notifyDataSetChanged()
+        // 0) Prépare la nouvelle liste (tri + séparateurs de date)
+        val incoming = sortAndExtractDays(allComments, this) ?: return
 
-        if (wasAtBottom) scrollAfterLayout() // 👈 garde uniquement cette ligne pour scroller
+        // 1) Sauvegarde la position de scroll : était-on tout en bas ?
+        val wasAtBottom = isAtBottom()
+
+        // 2) Ensemble des clés déjà affichées
+        val existingKeys = HashSet<String>(commentsList.size).apply {
+            commentsList.forEach { add(it.diffKey()) }
+        }
+
+        // 3) Ne garder que les posts/separateurs vraiment nouveaux
+        val toAdd = incoming.filter { existingKeys.add(it.diffKey()) }
+        if (toAdd.isEmpty()) {
+            binding.progressBar.visibility = View.GONE
+            return                                          // rien de neuf → on sort
+        }
+
+        // 4) On les insère à la fin (ton flux est chronologique ascendant)
+        val insertPos = commentsList.size
+        commentsList.addAll(toAdd)
+
+        // 5) Notification fine à l’adapter (plus de notifyDataSetChanged)
+        binding.comments.adapter?.notifyItemRangeInserted(insertPos, toAdd.size)
+
+        // 6) Scroll automatique uniquement si l’utilisateur était déjà en bas
+        if (wasAtBottom) scrollAfterLayout()
+
+        // 7) UI annexes
         binding.progressBar.visibility = View.GONE
-        newComments?.isEmpty()?.let { updateView(it) }
+        updateView(commentsList.isEmpty())
     }
+    
     override fun handleReportPost(id: Int, commentLang: String) {
         binding.header.iconSettings.setOnClickListener {
             SettingsDiscussionModalFragment.isSmallTalk = isSmallTalkMode

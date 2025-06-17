@@ -123,7 +123,9 @@ interface EventsRequest {
 
     @GET("outings/{event_id}/users")
     fun getMembers(
-        @Path("event_id") eventId: Int
+        @Path("event_id") eventId: Int,
+        @Query("page") page: Int? = null,
+        @Query("per")  per:  Int? = null
     ): Call<MembersWrapper>
 
     @DELETE("outings/{event_id}")

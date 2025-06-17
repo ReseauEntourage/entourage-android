@@ -30,6 +30,7 @@ import java.io.File
 import java.io.IOException
 
 class GroupPresenter: ViewModel() {
+    val MEMBERS_PER_PAGE = 30
 
     var isGroupCreated = MutableLiveData<Boolean>()
     var getGroup = MutableLiveData<Group>()
@@ -70,6 +71,11 @@ class GroupPresenter: ViewModel() {
 
     var getAllGroupSearch = MutableLiveData<MutableList<Group>>()
     var getMyGroupSearch = MutableLiveData<MutableList<Group>>()
+    private var currentMembersPage      = 1
+    private var isLoadingMembers        = false
+    private var isLastMembersPage       = false
+    val pagedMembers = MutableLiveData<MutableList<EntourageUser>>()
+
 
     var page_search = 0
     var groupSearch = MutableLiveData<MutableList<Group>>()
@@ -720,5 +726,44 @@ class GroupPresenter: ViewModel() {
     override fun onCleared() {
         super.onCleared()
         // Insérez ici le code de nettoyage
+    }
+
+    fun resetMembersPaging() {
+        currentMembersPage = 1
+        isLastMembersPage  = false
+        pagedMembers.value = mutableListOf()
+    }
+
+    fun loadGroupMembers(groupId: Int) {
+        if (isLoadingMembers || isLastMembersPage) return
+        isLoadingMembers = true
+
+        EntourageApplication.get()
+            .apiModule
+            .groupRequest
+            .getMembers(groupId, currentMembersPage, MEMBERS_PER_PAGE)
+            .enqueue(object : Callback<MembersWrapper> {
+
+                override fun onResponse(
+                    call:   Call<MembersWrapper>,
+                    resp:   Response<MembersWrapper>
+                ) {
+                    isLoadingMembers = false
+                    if (resp.isSuccessful) {
+                        val newData = resp.body()?.users ?: mutableListOf()
+                        if (newData.size < MEMBERS_PER_PAGE) isLastMembersPage = true
+                        currentMembersPage++
+
+                        // fusionne l’ancienne liste avec la nouvelle
+                        val merged = pagedMembers.value ?: mutableListOf()
+                        merged.addAll(newData)
+                        pagedMembers.value = merged
+                    }
+                }
+
+                override fun onFailure(call: Call<MembersWrapper>, t: Throwable) {
+                    isLoadingMembers = false
+                }
+            })
     }
 }
