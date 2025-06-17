@@ -624,7 +624,7 @@ class DetailConversationActivity : CommentActivity() {
         binding.progressBar.visibility = View.GONE
         updateView(commentsList.isEmpty())
     }
-    
+
     override fun handleReportPost(id: Int, commentLang: String) {
         binding.header.iconSettings.setOnClickListener {
             SettingsDiscussionModalFragment.isSmallTalk = isSmallTalkMode
