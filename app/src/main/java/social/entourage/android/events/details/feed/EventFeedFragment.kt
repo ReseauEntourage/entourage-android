@@ -16,17 +16,12 @@ import android.widget.Toast
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.getColor
-import androidx.core.content.res.ResourcesCompat
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
-import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
-import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
@@ -40,16 +35,9 @@ import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.play.core.review.ReviewManagerFactory
-import com.leinardi.android.speeddial.SpeedDialActionItem
-import com.leinardi.android.speeddial.SpeedDialView
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import social.entourage.android.BuildConfig
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
-import social.entourage.android.RefreshController
 import social.entourage.android.api.MetaDataRepository
 import social.entourage.android.api.model.EntourageUser
 import social.entourage.android.api.model.Events
@@ -57,8 +45,6 @@ import social.entourage.android.api.model.Post
 import social.entourage.android.api.model.Status
 import social.entourage.android.api.model.Survey
 import social.entourage.android.api.model.Tags
-import social.entourage.android.api.model.toEventUi
-import social.entourage.android.comment.PostAdapter
 import social.entourage.android.comment.ReactionInterface
 import social.entourage.android.comment.SurveyInteractionListener
 import social.entourage.android.databinding.FragmentFeedEventBinding
@@ -66,19 +52,13 @@ import social.entourage.android.discussions.DetailConversationActivity
 import social.entourage.android.events.EventsPresenter
 import social.entourage.android.events.details.SettingsModalFragment
 import social.entourage.android.groups.details.feed.CallbackReportFragment
-import social.entourage.android.groups.details.feed.FeedFragment
 import social.entourage.android.groups.details.feed.GroupMembersPhotosAdapter
 import social.entourage.android.groups.details.members.MembersType
 import social.entourage.android.language.LanguageManager
 import social.entourage.android.members.MembersActivity
 import social.entourage.android.profile.myProfile.InterestsAdapter
-import social.entourage.android.report.DataLanguageStock
-import social.entourage.android.report.ReportModalFragment
-import social.entourage.android.report.ReportTypes
-import social.entourage.android.survey.CreateSurveyActivity
 import social.entourage.android.survey.ResponseSurveyActivity
 import social.entourage.android.survey.SurveyPresenter
-import social.entourage.android.tools.calculateIfEventPassed
 import social.entourage.android.tools.image_viewer.ImageDialogActivity
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
@@ -156,13 +136,17 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
     fun reduceButtonSizeImage(){
         // Pour le bouton de partage
         binding.bigBtnShare.post {
-            val shareDrawable = ContextCompat.getDrawable(requireContext(), R.drawable.share_icon)
-            shareDrawable?.let {
-                val sizeInPx = TypedValue.applyDimension(
-                    TypedValue.COMPLEX_UNIT_DIP, 14f, resources.displayMetrics
-                ).toInt()
-                it.setBounds(0, 0, sizeInPx, sizeInPx)
-                binding.bigBtnShare.setCompoundDrawablesRelative(null, null, it, null)
+            try {
+                val shareDrawable = ContextCompat.getDrawable(requireContext(), R.drawable.share_icon)
+                shareDrawable?.let {
+                    val sizeInPx = TypedValue.applyDimension(
+                        TypedValue.COMPLEX_UNIT_DIP, 14f, resources.displayMetrics
+                    ).toInt()
+                    it.setBounds(0, 0, sizeInPx, sizeInPx)
+                    binding.bigBtnShare.setCompoundDrawablesRelative(null, null, it, null)
+                }
+            } catch (e: IllegalStateException) {
+                Timber.e(e, "Error setting share icon")
             }
         }
         binding.btnAddCalendar.post {
@@ -177,8 +161,6 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
         }
 
     }
-
-
 
     override fun onPause() {
         super.onPause()

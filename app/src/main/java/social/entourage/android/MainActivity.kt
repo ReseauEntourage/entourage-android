@@ -8,7 +8,6 @@ import android.content.IntentSender
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.Toast
@@ -30,13 +29,11 @@ import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.UpdateAvailability
 import com.google.firebase.messaging.FirebaseMessaging
-import com.google.gson.Gson
 import social.entourage.android.actions.create.CreateActionActivity
 import social.entourage.android.api.MetaDataRepository
 import social.entourage.android.api.model.Events
 import social.entourage.android.api.model.ReactionType
 import social.entourage.android.api.model.formatEventStartTime
-import social.entourage.android.api.model.notification.PushNotificationContent
 import social.entourage.android.api.model.notification.PushNotificationMessage
 import social.entourage.android.api.request.userConfig
 import social.entourage.android.base.BaseSecuredActivity
@@ -46,8 +43,8 @@ import social.entourage.android.deeplinks.UniversalLinkManager
 import social.entourage.android.events.EventsPresenter
 import social.entourage.android.guide.GDSMainActivity
 import social.entourage.android.home.CommunicationHandlerBadgeViewModel
-import social.entourage.android.home.UnreadMessages
 import social.entourage.android.home.EventConfirmationDialogFragment
+import social.entourage.android.home.UnreadMessages
 import social.entourage.android.language.LanguageManager
 import social.entourage.android.main_filter.MainFilterActivity
 import social.entourage.android.notifications.NotificationActionManager
@@ -347,7 +344,7 @@ class MainActivity : BaseSecuredActivity() {
             val msgObject = bundle.getString("object")
             val rawContent = bundle.getString("content")
             if (rawContent != null) {
-                val pushNotificationContent = Gson().fromJson(rawContent, PushNotificationContent::class.java)
+                //val pushNotificationContent = Gson().fromJson(rawContent, PushNotificationContent::class.java)
                 val pushNotificationMessage = PushNotificationMessage(
                     author = author,
                     msgObject = msgObject,
@@ -366,7 +363,7 @@ class MainActivity : BaseSecuredActivity() {
                 }
             } else {
             }
-        } ?: Log.wtf("wtf notif", "extras null")
+        } ?: Timber.d("wtf notif", "extras null")
         intent = null
     }
 
@@ -562,7 +559,7 @@ class MainActivity : BaseSecuredActivity() {
     }
 
     private fun addBadge(count : Int) {
-        Timber.wtf("wtf passed here 1 count : $count")
+//        Timber.wtf("wtf passed here 1 count : $count")
 
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.nav_view)
         val badge: BadgeDrawable = bottomNavigationView.getOrCreateBadge(
@@ -578,7 +575,7 @@ class MainActivity : BaseSecuredActivity() {
         }
     }
     private fun addGroupBadge(count : Int) {
-        Timber.wtf("wtf passed here 2 count : $count")
+//        Timber.wtf("wtf passed here 2 count : $count")
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.nav_view)
         val badge: BadgeDrawable = bottomNavigationView.getOrCreateBadge(
             R.id.navigation_groups)

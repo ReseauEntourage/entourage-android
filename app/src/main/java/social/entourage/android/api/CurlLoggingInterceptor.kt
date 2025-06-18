@@ -3,7 +3,6 @@ package social.entourage.android.api
 import okhttp3.Interceptor
 import okhttp3.Request
 import okhttp3.Response
-import okhttp3.logging.HttpLoggingInterceptor
 import social.entourage.android.BuildConfig
 import timber.log.Timber
 import java.io.IOException
@@ -38,7 +37,7 @@ class CurlLoggingInterceptor : Interceptor {
         curlCmd.append("\"").append(request.url).append("\"")
 
         if (BuildConfig.DEBUG) {
-            Timber.wtf("Generated cURL: $curlCmd")
+            Timber.d("Generated cURL: $curlCmd")
         }
     }
 }
