@@ -27,6 +27,7 @@ import social.entourage.android.welcome.WelcomeFourActivity
 import social.entourage.android.welcome.WelcomeOneActivity
 import social.entourage.android.welcome.WelcomeThreeActivity
 import social.entourage.android.welcome.WelcomeTwoActivity
+import timber.log.Timber
 
 /**
  * Created by Me on 26/09/2022.
@@ -83,9 +84,9 @@ object NotificationActionManager {
         }
 
 
-        Log.wtf("wtf", "instance: $instance")
-        Log.wtf("wtf", "tracking: $tracking")
-        Log.wtf("wtf", "id: $id")
+        Log.wtf("wtf", "instance from NotificationActionManager: $instance")
+        Log.wtf("wtf", "tracking: from NotificationActionManager$tracking")
+        Log.wtf("wtf", "id: from NotificationActionManager$id")
 
         // Cas spécifiques : si c'est un outing ET que le tracking correspond à une conversation
         val validTracking = listOf(

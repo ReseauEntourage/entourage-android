@@ -197,13 +197,16 @@ class CommentsListAdapter(
             } else {
                 bindingLeft.commentImageContainer.visibility = View.GONE
             }
-            binding.comment.layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT
-            binding.comment.requestLayout()
+            bindingLeft.comment.layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT
+            bindingLeft.comment.requestLayout()
             Timber.wtf("wtf message type : ${comment.messageType}")
             if(comment.messageType == "auto" /*|| comment.messageType == "broadcast"*/){
-                binding.messageContainer.setBackgroundResource(R.drawable.comment_message_auto_background)
-                binding.comment.setBackgroundResource(R.drawable.comment_message_auto_background)
+                bindingLeft.messageContainer.setBackgroundResource(R.drawable.comment_message_auto_background)
+                bindingLeft.comment.setBackgroundResource(R.drawable.comment_message_auto_background)
                 bindingLeft.authorName.text = binding.root.context.getString(R.string.message_auto)
+            }else{
+                bindingLeft.messageContainer.setBackgroundResource(R.drawable.new_comment_background_beige)
+                bindingLeft.comment.setBackgroundResource(R.drawable.new_comment_background_beige)
             }
         }
 

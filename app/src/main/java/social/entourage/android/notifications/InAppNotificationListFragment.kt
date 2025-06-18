@@ -15,6 +15,7 @@ import social.entourage.android.databinding.NewFragmentNotifsInAppListBinding
 import social.entourage.android.home.HomePresenter
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.utils.Const
+import timber.log.Timber
 
 class InAppNotificationListFragment : Fragment() {
     private val groupPerPage = 10
@@ -147,6 +148,7 @@ class InAppNotificationListFragment : Fragment() {
             layoutManager = LinearLayoutManager(context)
             adapter = InAppListNotificationsAdapter(notifications, object : OnItemClick {
                 override fun onItemClick(notif: InAppNotification, position:Int) {
+
                     val instance = notif.instanceType
                     val instanceId = notif.instanceId
                     val stage = notif.context
@@ -159,6 +161,7 @@ class InAppNotificationListFragment : Fragment() {
                     else {
                         itemSelected = -1
                     }
+                    Timber.wtf("wtf instance name $instance")
                     if(instance != null && instanceId != null) {
                         NotificationActionManager.presentAction(requireContext(),parentFragmentManager,instance,instanceId,postId,stage, notifContext = notifContext )
                     } else{

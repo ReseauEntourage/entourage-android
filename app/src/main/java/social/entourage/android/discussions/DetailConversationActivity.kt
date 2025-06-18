@@ -85,6 +85,10 @@ class DetailConversationActivity : CommentActivity() {
     private val mentionAdapter: MentionAdapter by lazy {
         MentionAdapter(emptyList()) { user -> insertMentionIntoEditText(user) }
     }
+    private var isLoadingOlder = false
+    private var storedFirstPos = 0
+    private var storedOffset = 0
+
     private var event: Events? = null
     private fun Post.diffKey(): String =
         if (isDatePostOnly) {
@@ -141,7 +145,8 @@ class DetailConversationActivity : CommentActivity() {
             discussionsPresenter.getDetailConversation(id)
             discussionsPresenter.getAllComments.observe(this) { handleGetPostComments(it) }
             discussionsPresenter.commentPosted.observe(this) { handleCommentPosted(it) }
-            discussionsPresenter.getPostComments(id)
+            discussionsPresenter.loadInitialComments(id)
+            discussionsPresenter.getAllComments.observe(this) { handleGetPostComments(it) }
         }
 
         cameraLauncher = registerForActivityResult(ActivityResultContracts.TakePicture()) { success ->
@@ -157,21 +162,53 @@ class DetailConversationActivity : CommentActivity() {
         }
     }
 
-    private fun setupScrollPagination() {
-        (binding.comments.layoutManager as? LinearLayoutManager)?.let { layoutManager ->
-            binding.comments.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                    if (!isSmallTalkMode) return
+    private fun loadMoreDiscussionComments() {
+        discussionsPresenter.loadMoreComments(id)
+    }
 
-                    val firstVisibleItem = layoutManager.findFirstVisibleItemPosition()
-                    if (firstVisibleItem <= 2) {
-                        Timber.d("🌀 Scroll top détecté, chargement messages SmallTalk")
+    private fun setupScrollPagination() {
+        binding.comments.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(rv: RecyclerView, dx: Int, dy: Int) {
+                // scroll vers le haut et on ne peut plus scroller au-dessus ⇒ top atteint
+                if (dy < 0 && !rv.canScrollVertically(-1) && !isLoadingOlder) {
+                    isLoadingOlder = true
+                    val lm = rv.layoutManager as LinearLayoutManager
+                    storedFirstPos = lm.findFirstVisibleItemPosition()
+                    storedOffset = lm.findViewByPosition(storedFirstPos)?.top ?: 0
+
+                    if (isSmallTalkMode) {
                         smallTalkViewModel.loadMoreMessagesIfPossible(smallTalkId)
+                    } else {
+                        discussionsPresenter.loadMoreComments(id)
                     }
                 }
-            })
-        }
+            }
+        })
     }
+    private fun formatAndAddOlder(
+        newItems: List<Post>,
+        prevFirstPos: Int,
+        prevOffset: Int
+    ) {
+        if (newItems.isEmpty()) {
+            isLoadingOlder = false
+            return
+        }
+
+        // Prépare (séparateurs de date…)
+        val incoming = sortAndExtractDays(newItems.toMutableList(), this) ?: return
+
+        // Insère en tête
+        commentsList.addAll(0, incoming)
+        binding.comments.adapter?.notifyItemRangeInserted(0, incoming.size)
+
+        // Restaure la position pour éviter « saut »
+        val lm = binding.comments.layoutManager as LinearLayoutManager
+        lm.scrollToPositionWithOffset(prevFirstPos + incoming.size, prevOffset)
+
+        isLoadingOlder = false
+    }
+
 
 
     private fun observeDeletedMessage() {
@@ -592,38 +629,38 @@ class DetailConversationActivity : CommentActivity() {
 
     // --- Récupération / affichage commentaires ---
     override fun handleGetPostComments(allComments: MutableList<Post>?) {
-        // 0) Prépare la nouvelle liste (tri + séparateurs de date)
+        allComments ?: return
+
+        if (isLoadingOlder) {
+            // Extrait les vrais « plus anciens » et insère en tête
+            val incoming = sortAndExtractDays(allComments, this) ?: return
+            val existingKeys = HashSet<String>(commentsList.size).apply {
+                commentsList.forEach { add(it.diffKey()) }
+            }
+            val toInsert = incoming.filter { existingKeys.add(it.diffKey()) }
+            formatAndAddOlder(toInsert, storedFirstPos, storedOffset)
+            return
+        }
+
+        // Cas normal : ajout en bas
         val incoming = sortAndExtractDays(allComments, this) ?: return
-
-        // 1) Sauvegarde la position de scroll : était-on tout en bas ?
         val wasAtBottom = isAtBottom()
-
-        // 2) Ensemble des clés déjà affichées
         val existingKeys = HashSet<String>(commentsList.size).apply {
             commentsList.forEach { add(it.diffKey()) }
         }
-
-        // 3) Ne garder que les posts/separateurs vraiment nouveaux
         val toAdd = incoming.filter { existingKeys.add(it.diffKey()) }
         if (toAdd.isEmpty()) {
             binding.progressBar.visibility = View.GONE
-            return                                          // rien de neuf → on sort
+            return
         }
-
-        // 4) On les insère à la fin (ton flux est chronologique ascendant)
         val insertPos = commentsList.size
         commentsList.addAll(toAdd)
-
-        // 5) Notification fine à l’adapter (plus de notifyDataSetChanged)
         binding.comments.adapter?.notifyItemRangeInserted(insertPos, toAdd.size)
-
-        // 6) Scroll automatique uniquement si l’utilisateur était déjà en bas
         if (wasAtBottom) scrollAfterLayout()
-
-        // 7) UI annexes
         binding.progressBar.visibility = View.GONE
         updateView(commentsList.isEmpty())
     }
+
 
     override fun handleReportPost(id: Int, commentLang: String) {
         binding.header.iconSettings.setOnClickListener {

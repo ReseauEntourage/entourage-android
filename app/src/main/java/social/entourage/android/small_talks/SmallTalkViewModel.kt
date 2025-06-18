@@ -48,7 +48,7 @@ class SmallTalkViewModel(application: Application) : AndroidViewModel(applicatio
     val shouldLeave = MutableLiveData<Boolean>()
     val messageDeleted = MutableLiveData<Boolean>()
     private var currentPage = 1
-    private val messagesPerPage = 200
+    private val messagesPerPage = 50
     private var isLoading = false
     private var isLastPage = false
 
@@ -289,6 +289,7 @@ class SmallTalkViewModel(application: Application) : AndroidViewModel(applicatio
     }
 
     fun loadMoreMessagesIfPossible(smallTalkId: String) {
+        Timber.wtf("wtf isloading : $isLoading , isLastPage : $isLastPage")
         if (isLoading || isLastPage) return
         currentPage += 1
         listChatMessages(smallTalkId, currentPage, messagesPerPage)
