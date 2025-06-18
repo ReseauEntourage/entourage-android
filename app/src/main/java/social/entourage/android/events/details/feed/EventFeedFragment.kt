@@ -16,17 +16,12 @@ import android.widget.Toast
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.getColor
-import androidx.core.content.res.ResourcesCompat
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
-import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
-import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
@@ -40,16 +35,9 @@ import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.play.core.review.ReviewManagerFactory
-import com.leinardi.android.speeddial.SpeedDialActionItem
-import com.leinardi.android.speeddial.SpeedDialView
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import social.entourage.android.BuildConfig
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
-import social.entourage.android.RefreshController
 import social.entourage.android.api.MetaDataRepository
 import social.entourage.android.api.model.EntourageUser
 import social.entourage.android.api.model.Events
@@ -57,8 +45,6 @@ import social.entourage.android.api.model.Post
 import social.entourage.android.api.model.Status
 import social.entourage.android.api.model.Survey
 import social.entourage.android.api.model.Tags
-import social.entourage.android.api.model.toEventUi
-import social.entourage.android.comment.PostAdapter
 import social.entourage.android.comment.ReactionInterface
 import social.entourage.android.comment.SurveyInteractionListener
 import social.entourage.android.databinding.FragmentFeedEventBinding
@@ -66,20 +52,13 @@ import social.entourage.android.discussions.DetailConversationActivity
 import social.entourage.android.events.EventsPresenter
 import social.entourage.android.events.details.SettingsModalFragment
 import social.entourage.android.groups.details.feed.CallbackReportFragment
-import social.entourage.android.groups.details.feed.FeedFragment
 import social.entourage.android.groups.details.feed.GroupMembersPhotosAdapter
 import social.entourage.android.groups.details.members.MembersType
 import social.entourage.android.language.LanguageManager
 import social.entourage.android.members.MembersActivity
 import social.entourage.android.profile.myProfile.InterestsAdapter
-import social.entourage.android.report.DataLanguageStock
-import social.entourage.android.report.ReportModalFragment
-import social.entourage.android.report.ReportTypes
-import social.entourage.android.survey.CreateSurveyActivity
 import social.entourage.android.survey.ResponseSurveyActivity
 import social.entourage.android.survey.SurveyPresenter
-import social.entourage.android.tools.calculateIfEventPassed
-import social.entourage.android.tools.image_viewer.ImageDialogActivity
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
 import social.entourage.android.tools.utils.Const
@@ -110,8 +89,7 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
     private var myId: Int? = null
     private val args: EventFeedFragmentArgs by navArgs()
     private var shouldShowPopUp = true
-    private var isLoading = false
-    private lateinit var mMap: GoogleMap
+    private var mMap: GoogleMap? = null
 
     private var memberList: MutableList<EntourageUser> = mutableListOf()
 
@@ -342,9 +320,9 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
             }
             event?.author.let {author->
                 //binding.organizer.content.text = String.format(getString(R.string.event_organisez_by), author?.userName)
-                author?.partner.let { partner->
-                    if(!partner?.name.isNullOrEmpty()){
-                        binding.tvAssociation.text = String.format(getString(R.string.event_organisez_asso),partner?.name)
+                author?.partner?.name?.let { partnerName->
+                    if(partnerName.isNotEmpty()){
+                        binding.tvAssociation.text = String.format(getString(R.string.event_organisez_asso),partnerName)
                         binding.tvAssociation.visibility = View.VISIBLE
                     }
                 }
@@ -440,41 +418,10 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
         }
     }
 
-
-
-    private fun openCommentPage(post: Post, shouldOpenKeyboard: Boolean) {
-        startActivityForResult(
-            Intent(context, EventCommentActivity::class.java)
-                .putExtras(
-                    bundleOf(
-                        Const.ID to eventId,
-                        Const.POST_ID to post.id,
-                        Const.POST_AUTHOR_ID to post.user?.userId,
-                        Const.SHOULD_OPEN_KEYBOARD to shouldOpenKeyboard,
-                        Const.IS_MEMBER to event?.member,
-                        Const.NAME to event?.title
-                    )
-                ), 0
-        )
-    }
-
     private fun handleSurveyPostResponse(success: Boolean) {
-        if(isAdded){
-            if (success){
-
-            }else{
-                showToast("Erreur serveur, veuillez réessayer plus tard")
-            }
+        if(isAdded && !success){
+            showToast("Erreur serveur, veuillez réessayer plus tard")
         }
-    }
-
-
-    private fun openImageFragment(imageUrl:String, postId: Int) {
-        val intent = Intent(requireContext(), ImageDialogActivity::class.java)
-        intent.putExtra("postId", postId)
-        intent.putExtra("eventId", this.event?.id)
-        startActivity(intent)
-        requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
     }
 
     private fun fragmentResult() {
@@ -610,7 +557,6 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
                 val flow = manager.launchReviewFlow(context as Activity, task.result)
                 flow.addOnCompleteListener {
                 }
-            } else {
             }
         }
     }
