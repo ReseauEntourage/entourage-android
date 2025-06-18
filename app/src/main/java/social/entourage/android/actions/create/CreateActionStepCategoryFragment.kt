@@ -13,15 +13,14 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import social.entourage.android.R
-import social.entourage.android.databinding.NewFragmentCreateActionStepTwoBinding
-import social.entourage.android.tools.utils.Utils
+import social.entourage.android.databinding.FragmentCreateActionStepCategoryBinding
 import social.entourage.android.tools.log.AnalyticsEvents
-import timber.log.Timber
+import social.entourage.android.tools.utils.Utils
 
-class CreateActionStepTwoFragment : Fragment() {
+class CreateActionStepCategoryFragment : Fragment() {
 
-    private var _binding: NewFragmentCreateActionStepTwoBinding? = null
-    val binding: NewFragmentCreateActionStepTwoBinding get() = _binding!!
+    private var _binding: FragmentCreateActionStepCategoryBinding? = null
+    val binding: FragmentCreateActionStepCategoryBinding get() = _binding!!
 
     private val viewModel: CommunicationActionHandlerViewModel by activityViewModels()
 
@@ -44,7 +43,7 @@ class CreateActionStepTwoFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = NewFragmentCreateActionStepTwoBinding.inflate(inflater, container, false)
+        _binding = FragmentCreateActionStepCategoryBinding.inflate(inflater, container, false)
         return binding.root
     }
 

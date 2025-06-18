@@ -13,11 +13,11 @@ class CreateActionViewPagerAdapter(fragmentManager: FragmentManager, lifecycle: 
     override fun getItemCount(): Int {
         return NB_TABS
     }
-    // NOTE : FirST STEP FRAGMENT IS TITLE AND DESC FRAGMENT, SECOND STEP FRAGMENT IS CATEGORY FRAGMENT.
+    // NOTE : Second STEP FRAGMENT IS TITLE AND DESC FRAGMENT, First STEP FRAGMENT IS CATEGORY FRAGMENT.
     override fun createFragment(position: Int): Fragment {
         return when (position) {
-            0 -> CreateActionStepTwoFragment()
-            1 -> CreateActionStepOneFragment()
+            0 -> CreateActionStepCategoryFragment()
+            1 -> CreateActionStepDescriptionFragment()
             2 -> CreateActionStepThreeFragment()
             else -> CreateActionStepFourFragment()
         }
