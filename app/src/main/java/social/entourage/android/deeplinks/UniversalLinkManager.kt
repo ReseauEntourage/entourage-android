@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.util.Log
 import android.widget.Toast
 import androidx.core.os.bundleOf
 import social.entourage.android.MainActivity
@@ -42,7 +41,7 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
             val value = uri.getQueryParameter(name)
         }
         for (segment in pathSegments) {
-            Log.wtf("wtf", "Segment: $segment")
+            Timber.d("Segment: $segment")
         }
         if (uri.host == stagingURL || uri.host == prodURL) {
             Timber.d("Universal link: $uri")
@@ -158,7 +157,7 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
                     if (pathSegments.contains("new")) {
                         val intent = Intent(context, CreateActionActivity::class.java)
                         intent.putExtra(Const.IS_ACTION_DEMAND, true)
-                        (context as MainActivity).startActivityForResult(intent, 0)
+                        (context as? MainActivity)?.startActivityForResult(intent, 0)
                     } else {
                         if (pathSegments.size > 2) {
                             val soliciationId = pathSegments[2]
@@ -176,7 +175,7 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
                     if (pathSegments.contains("new")) {
                         val intent = Intent(context, CreateActionActivity::class.java)
                         intent.putExtra(Const.IS_ACTION_DEMAND, false)
-                        (context as MainActivity).startActivityForResult(intent, 0)
+                        (context as? MainActivity)?.startActivityForResult(intent, 0)
                     } else {
                         if (pathSegments.size > 2) {
                             val contribId = pathSegments[2]
@@ -298,19 +297,19 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
         when (context) {
             is MainActivity -> {
                 // Si le context est MainActivity, on lance l'activité normalement
-                (context as MainActivity).startActivityForResult(intent, 0)
+                context.startActivityForResult(intent, 0)
             }
             is DetailConversationActivity -> {
                 // Si le context est DetailConversationActivity, on ajoute le flag et on lance une nouvelle activité
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
-                (context as DetailConversationActivity).startActivity(intent)
+                context.startActivity(intent)
                 (context as Activity).overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
                 context.finish() // Fermer l'activité actuelle pour éviter l'empilement des activités
             }
             is CommentActivity -> {
                 // Si le context est DetailConversationActivity, on ajoute le flag et on lance une nouvelle activité
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
-                (context as CommentActivity).startActivity(intent)
+                context.startActivity(intent)
                 context.finish() // Fermer l'activité actuelle pour éviter l'empilement des activités
             }
             else -> {
@@ -326,19 +325,19 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
     }
 
     override fun onErrorRetrievedDiscussion() {
-        (context as Activity).finish()
+        (context as? Activity)?.finish()
     }
 
     override fun onErrorRetrievedGroup() {
-        (context as MainActivity).DisplayErrorFromAppLinks(1)
+        (context as? MainActivity)?.DisplayErrorFromAppLinks(1)
     }
 
     override fun onErrorRetrievedEvent() {
-        (context as MainActivity).DisplayErrorFromAppLinks(0)
+        (context as? MainActivity)?.DisplayErrorFromAppLinks(0)
     }
 
     override fun onErrorRetrievedAction() {
-        (context as MainActivity).DisplayErrorFromAppLinks(2)
+        (context as? MainActivity)?.DisplayErrorFromAppLinks(2)
     }
 
     override fun onUserErrorJoinedConversation() {
