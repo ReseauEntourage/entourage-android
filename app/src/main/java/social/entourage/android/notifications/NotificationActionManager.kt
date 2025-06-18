@@ -19,6 +19,7 @@ import social.entourage.android.api.model.ActionSummary
 import social.entourage.android.api.model.HomeActionParams
 import social.entourage.android.api.model.HomeType
 import social.entourage.android.profile.ProfileFullActivity
+import social.entourage.android.small_talks.SmallTalkListOtherBands
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.welcome.WelcomeFiveActivity
@@ -128,6 +129,7 @@ object NotificationActionManager {
             InstanceType.SOLICITATIONS -> showSolicitation(context,supportFragmentManager,id)
             InstanceType.CONVERSATIONS -> showConversation(context,supportFragmentManager,id)
             InstanceType.SMALLTALK -> showSmallTalk(context,supportFragmentManager,id)
+            InstanceType.AlMOSTMATCH -> showAlmostMatch(context,supportFragmentManager,id)
             InstanceType.PARTNERS -> showPartner(context,id)
             InstanceType.NONE -> return
 
@@ -190,6 +192,7 @@ object NotificationActionManager {
             InstanceType.NEIGHBORHOODS_POSTS -> return R.drawable.placeholder_user
             InstanceType.OUTING_POSTS -> return R.drawable.placeholder_user
             InstanceType.SMALLTALK -> return R.drawable.placeholder_user
+            InstanceType.AlMOSTMATCH -> return R.drawable.placeholder_user
         }
         return R.drawable.ic_new_placeholder_notif
     }
@@ -239,6 +242,11 @@ object NotificationActionManager {
                         Const.IS_CONVERSATION to true
                     )
                 )
+        )
+    }
+    private fun showAlmostMatch(context:Context,supportFragmentManager: FragmentManager, id: Int) {
+        context.startActivity(
+            Intent(context, SmallTalkListOtherBands::class.java)
         )
     }
 
@@ -322,6 +330,7 @@ object NotificationActionManager {
         SOLICITATIONS,
         CONVERSATIONS,
         SMALLTALK,
+        AlMOSTMATCH,
         PARTNERS,
         NONE
     }
@@ -340,8 +349,8 @@ object NotificationActionManager {
             "solicitations", "solicitation" -> InstanceType.SOLICITATIONS
             "conversations", "conversation" -> InstanceType.CONVERSATIONS
             "smalltalk", "user_smalltalk " -> InstanceType.SMALLTALK
+            "almost_matches" -> InstanceType.AlMOSTMATCH
             "partners" -> InstanceType.PARTNERS
-
             else -> InstanceType.NONE
         }
     }
