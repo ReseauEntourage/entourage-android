@@ -6,7 +6,6 @@ import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,7 +14,6 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import social.entourage.android.R
 import social.entourage.android.api.model.Pedago
 import social.entourage.android.databinding.NewFragmentPedagoContentDetailsBinding
@@ -66,9 +64,10 @@ class PedagoContentDetailsFragment : Fragment() {
         binding.header.iconBack.setOnClickListener {
             if(isFromNotifs) {
                 activity?.onBackPressed()
-                return@setOnClickListener
             }
-            findNavController().popBackStack()
+            else if(findNavController().popBackStack() == false) {
+                activity?.onBackPressed()
+            }
         }
     }
 
