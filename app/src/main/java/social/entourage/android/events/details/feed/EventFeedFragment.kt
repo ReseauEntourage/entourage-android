@@ -90,8 +90,7 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
     private var myId: Int? = null
     private val args: EventFeedFragmentArgs by navArgs()
     private var shouldShowPopUp = true
-    private var isLoading = false
-    private lateinit var mMap: GoogleMap
+    private var mMap: GoogleMap? = null
 
     private var memberList: MutableList<EntourageUser> = mutableListOf()
 
@@ -324,9 +323,9 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
             }
             event?.author.let {author->
                 //binding.organizer.content.text = String.format(getString(R.string.event_organisez_by), author?.userName)
-                author?.partner.let { partner->
-                    if(!partner?.name.isNullOrEmpty()){
-                        binding.tvAssociation.text = String.format(getString(R.string.event_organisez_asso),partner?.name)
+                author?.partner?.name?.let { partnerName->
+                    if(partnerName.isNotEmpty()){
+                        binding.tvAssociation.text = String.format(getString(R.string.event_organisez_asso),partnerName)
                         binding.tvAssociation.visibility = View.VISIBLE
                     }
                 }
@@ -422,41 +421,10 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
         }
     }
 
-
-
-    private fun openCommentPage(post: Post, shouldOpenKeyboard: Boolean) {
-        startActivityForResult(
-            Intent(context, EventCommentActivity::class.java)
-                .putExtras(
-                    bundleOf(
-                        Const.ID to eventId,
-                        Const.POST_ID to post.id,
-                        Const.POST_AUTHOR_ID to post.user?.userId,
-                        Const.SHOULD_OPEN_KEYBOARD to shouldOpenKeyboard,
-                        Const.IS_MEMBER to event?.member,
-                        Const.NAME to event?.title
-                    )
-                ), 0
-        )
-    }
-
     private fun handleSurveyPostResponse(success: Boolean) {
-        if(isAdded){
-            if (success){
-
-            }else{
-                showToast("Erreur serveur, veuillez réessayer plus tard")
-            }
+        if(isAdded && !success){
+            showToast("Erreur serveur, veuillez réessayer plus tard")
         }
-    }
-
-
-    private fun openImageFragment(imageUrl:String, postId: Int) {
-        val intent = Intent(requireContext(), ImageDialogActivity::class.java)
-        intent.putExtra("postId", postId)
-        intent.putExtra("eventId", this.event?.id)
-        startActivity(intent)
-        requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
     }
 
     private fun fragmentResult() {
@@ -592,7 +560,6 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
                 val flow = manager.launchReviewFlow(context as Activity, task.result)
                 flow.addOnCompleteListener {
                 }
-            } else {
             }
         }
     }
