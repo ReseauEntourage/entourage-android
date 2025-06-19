@@ -357,11 +357,9 @@ class MainActivity : BaseSecuredActivity() {
                 )
                 pushNotificationMessage.content?.extra?.let { extra ->
                     extra.instance?.let { instance ->
-                        extra.instanceId?.let { id ->
-                            NotificationActionManager.presentAction(
-                                this, supportFragmentManager, instance, id, extra.postId, popup = extra.popup, tracking = extra.tracking
-                            )
-                        }
+                        NotificationActionManager.presentAction(
+                            this, supportFragmentManager, instance, extra.instanceId ?:0 , extra.postId, popup = extra.popup, tracking = extra.tracking
+                        )
                     }
                 }
             } else {

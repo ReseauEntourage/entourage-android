@@ -35,7 +35,7 @@ import timber.log.Timber
 object NotificationActionManager {
 
     /**/
-    fun presentAction(context:Context,supportFragmentManager: FragmentManager, instance:String, id:Int, postId:Int?, stage:String? = "", popup:String? = "" , notifContext:String? = "", tracking:String? = ""){
+    fun presentAction(context:Context,supportFragmentManager: FragmentManager, instance:String, id:Int = 0, postId:Int?, stage:String? = "", popup:String? = "" , notifContext:String? = "", tracking:String? = ""){
         if(popup.equals("outing_on_day_before")){
             if(context is MainActivity){
                 (context as MainActivity).ifEventLastDay(id)

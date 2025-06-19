@@ -150,7 +150,7 @@ class InAppNotificationListFragment : Fragment() {
                 override fun onItemClick(notif: InAppNotification, position:Int) {
 
                     val instance = notif.instanceType
-                    val instanceId = notif.instanceId
+                    val instanceId = notif.instanceId ?: 0
                     val stage = notif.context
                     val notifContext = notif.context
                     val postId:Int? = notif.postId
@@ -162,7 +162,7 @@ class InAppNotificationListFragment : Fragment() {
                         itemSelected = -1
                     }
                     Timber.wtf("wtf instance name $instance")
-                    if(instance != null && instanceId != null) {
+                    if(instance != null) {
                         NotificationActionManager.presentAction(requireContext(),parentFragmentManager,instance,instanceId,postId,stage, notifContext = notifContext )
                     } else{
                         NotificationActionManager.presentWelcomeAction(requireContext(), stage)
