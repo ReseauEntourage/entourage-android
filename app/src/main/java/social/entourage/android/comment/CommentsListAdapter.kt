@@ -88,6 +88,17 @@ class CommentsListAdapter(
         isForEvent = true
     }
 
+    private fun findFirstMessagePosition(): Int {
+        val total = itemCount
+        for (i in 0 until total) {
+            val vt = getItemViewType(i)
+            if (vt == CommentsTypes.TYPE_LEFT.code || vt == CommentsTypes.TYPE_RIGHT.code) {
+                return i
+            }
+        }
+        return total
+    }
+
     fun translateItem(commentId: Int) {
         // On inverse la logique pour cet ID
         if (translationExceptions.contains(commentId)) {
@@ -102,7 +113,20 @@ class CommentsListAdapter(
 
         @SuppressLint("SetTextI18n")
         fun bindDate(comment: Post) {
-            (binding as LayoutCommentItemDateBinding).publicationDay.text = comment.datePostText
+            val bindingDate = binding as LayoutCommentItemDateBinding
+            val pos = bindingAdapterPosition
+            val firstMsgPos = findFirstMessagePosition()
+
+            // Tous les séparateurs avant celui juste avant le premier message : on les dégage
+            if (pos < firstMsgPos - 1) {
+                bindingDate.root.layoutParams = RecyclerView.LayoutParams(0, 0)
+                bindingDate.root.visibility = View.GONE
+                return
+            }
+
+            // sinon, on affiche normalement
+            bindingDate.root.visibility = View.VISIBLE
+            bindingDate.publicationDay.text = comment.datePostText
         }
 
         // ----------------------------------------------------------------------------------------

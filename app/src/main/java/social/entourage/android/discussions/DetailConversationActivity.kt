@@ -190,23 +190,68 @@ class DetailConversationActivity : CommentActivity() {
         prevFirstPos: Int,
         prevOffset: Int
     ) {
+        // 1) si pas de nouveaux messages => pas de chargement
         if (newItems.isEmpty()) {
             isLoadingOlder = false
             return
         }
 
-        // Prépare (séparateurs de date…)
-        val incoming = sortAndExtractDays(newItems.toMutableList(), this) ?: return
+        // 2) on regroupe + trie + extrait les séparateurs de date
+        //    (assure un ordre chronologique)
+        val incoming = sortAndExtractDays(newItems.toMutableList(), this) ?: run {
+            isLoadingOlder = false
+            return
+        }
 
-        // Insère en tête
+        // 3) on cherche le premier séparateur de date déjà présent
+        //    (indépendamment de la présence ou non d’un detailPost en index 0)
+        val firstExistingDate = commentsList.firstOrNull { it.isDatePostOnly }
+        //    et on compare avec le premier de incoming
+        if (incoming.firstOrNull()?.isDatePostOnly == true
+            && firstExistingDate != null
+            && incoming.first().datePostText == firstExistingDate.datePostText
+        ) {
+            // même jour => on vire le séparateur “en double”
+            incoming.removeAt(0)
+        }
+
+        // 4) insertion en tête
         commentsList.addAll(0, incoming)
         binding.comments.adapter?.notifyItemRangeInserted(0, incoming.size)
 
-        // Restaure la position pour éviter « saut »
+        // 5) restauration de la position de scroll pour éviter le “jump”
         val lm = binding.comments.layoutManager as LinearLayoutManager
         lm.scrollToPositionWithOffset(prevFirstPos + incoming.size, prevOffset)
 
+        // 6) fin du chargement “older”
         isLoadingOlder = false
+    }
+
+    /**
+     * Trie par createdTime, groupe par date formatée, puis injecte
+     * un Post séparateur avant chaque groupe.
+     */
+    fun sortAndExtractDays(allEvents: MutableList<Post>?, context: Context): MutableList<Post>? {
+        if (allEvents == null) return null
+
+        // 1) tri chronologique
+        val sorted = allEvents.sortedBy { it.createdTime }
+
+        // 2) groupement par date “jj MMMM yyyy”
+        val grouped = sorted.groupBy { it.getFormatedStr() }
+
+        // 3) pour chaque date, on crée un Post “séparateur” + on ajoute les messages
+        val out = mutableListOf<Post>()
+        grouped.forEach { (dateStr, posts) ->
+            // séparateur de jour
+            val sep = Post().apply {
+                isDatePostOnly = true
+                datePostText = dateStr.replaceFirstChar { it.uppercaseChar() }
+            }
+            out += sep
+            out += posts
+        }
+        return out
     }
 
 
@@ -743,23 +788,6 @@ class DetailConversationActivity : CommentActivity() {
         binding.commentMessage.setSelection(lastMentionStartIndex + span.length)
         hideMentionSuggestions()
         lastMentionStartIndex = -1
-    }
-
-    // --- Utilitaires ---
-    fun sortAndExtractDays(allEvents: MutableList<Post>?, context: Context): MutableList<Post>? {
-        val code = LanguageManager.loadLanguageFromPreferences(context)
-        val loc = Locale(code)
-        val grouped = allEvents?.groupBy { it.getFormatedStr() }
-        val out = ArrayList<Post>()
-        grouped?.forEach { (dateStr, posts) ->
-            val sep = Post().apply {
-                isDatePostOnly = true
-                datePostText = dateStr.replaceFirstChar { it.uppercaseChar() }
-            }
-            out.add(sep)
-            out.addAll(posts)
-        }
-        return out
     }
 
     fun formatDate(inputDate: String): String {
