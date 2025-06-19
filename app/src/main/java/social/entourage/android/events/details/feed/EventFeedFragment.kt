@@ -59,6 +59,7 @@ import social.entourage.android.members.MembersActivity
 import social.entourage.android.profile.myProfile.InterestsAdapter
 import social.entourage.android.survey.ResponseSurveyActivity
 import social.entourage.android.survey.SurveyPresenter
+import social.entourage.android.tools.image_viewer.ImageDialogActivity
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
 import social.entourage.android.tools.utils.Const
@@ -134,13 +135,17 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
     fun reduceButtonSizeImage(){
         // Pour le bouton de partage
         binding.bigBtnShare.post {
-            val shareDrawable = ContextCompat.getDrawable(requireContext(), R.drawable.share_icon)
-            shareDrawable?.let {
-                val sizeInPx = TypedValue.applyDimension(
-                    TypedValue.COMPLEX_UNIT_DIP, 14f, resources.displayMetrics
-                ).toInt()
-                it.setBounds(0, 0, sizeInPx, sizeInPx)
-                binding.bigBtnShare.setCompoundDrawablesRelative(null, null, it, null)
+            try {
+                val shareDrawable = ContextCompat.getDrawable(requireContext(), R.drawable.share_icon)
+                shareDrawable?.let {
+                    val sizeInPx = TypedValue.applyDimension(
+                        TypedValue.COMPLEX_UNIT_DIP, 14f, resources.displayMetrics
+                    ).toInt()
+                    it.setBounds(0, 0, sizeInPx, sizeInPx)
+                    binding.bigBtnShare.setCompoundDrawablesRelative(null, null, it, null)
+                }
+            } catch (e: IllegalStateException) {
+                Timber.e(e, "Error setting share icon")
             }
         }
         binding.btnAddCalendar.post {
@@ -155,8 +160,6 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
         }
 
     }
-
-
 
     override fun onPause() {
         super.onPause()

@@ -34,6 +34,7 @@ import social.entourage.android.tools.utils.CustomAlertDialog
 import social.entourage.android.tools.utils.Utils
 import social.entourage.android.tools.utils.nextPage
 import social.entourage.android.tools.utils.previousPage
+import timber.log.Timber
 
 class CreateEventFragment : Fragment() {
 
@@ -231,15 +232,20 @@ class CreateEventFragment : Fragment() {
             isAlreadySend = false
             Utils.showToast(requireContext(), getString(R.string.error_create_group))
         } else {
-            eventPresenter.newEventCreated.value?.id?.let {
+            eventPresenter.newEventCreated.value?.id?.let { eventID->
                 if (CommunicationHandler.eventEdited == null) {
                     AnalyticsEvents.logEvent(AnalyticsEvents.Event_create_end)
                 }
                 val action =
                     CreateEventFragmentDirections.actionCreateEventFragmentToCreateEventSuccessFragment(
-                        it
+                        eventID
                     )
-                findNavController().navigate(action)
+                try {
+                    findNavController().navigate(action)
+                } catch (e: Exception) {
+                    Utils.showToast(requireContext(), getString(R.string.error_create_group))
+                    Timber.e(e, "Navigation error in CreateEventFragment")
+                }
             }
         }
     }

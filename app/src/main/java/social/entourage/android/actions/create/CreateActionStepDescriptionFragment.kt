@@ -13,16 +13,16 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import social.entourage.android.R
-import social.entourage.android.databinding.NewFragmentCreateActionStepOneBinding
-import social.entourage.android.groups.choosePhoto.ChooseGalleryPhotoModalFragment
 import social.entourage.android.base.ChoosePhotoModalFragment
+import social.entourage.android.databinding.FragmentCreateActionStepDescriptionBinding
+import social.entourage.android.groups.choosePhoto.ChooseGalleryPhotoModalFragment
+import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.px
-import social.entourage.android.tools.log.AnalyticsEvents
 
-class CreateActionStepOneFragment : Fragment() {
-    private var _binding: NewFragmentCreateActionStepOneBinding? = null
-    val binding: NewFragmentCreateActionStepOneBinding get() = _binding!!
+class CreateActionStepDescriptionFragment : Fragment() {
+    private var _binding: FragmentCreateActionStepDescriptionBinding? = null
+    val binding: FragmentCreateActionStepDescriptionBinding get() = _binding!!
 
     private val viewModel: CommunicationActionHandlerViewModel by activityViewModels()
 
@@ -30,7 +30,7 @@ class CreateActionStepOneFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = NewFragmentCreateActionStepOneBinding.inflate(inflater, container, false)
+        _binding = FragmentCreateActionStepDescriptionBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -41,9 +41,7 @@ class CreateActionStepOneFragment : Fragment() {
         handleChoosePhoto()
         initializeDescriptionCounter()
         setupViewWithEdit()
-
-
-
+        
         if (viewModel.actionEdited == null) {
             if (viewModel.isDemand) {
                 AnalyticsEvents.logEvent(AnalyticsEvents.Help_create_demand_1)
@@ -52,8 +50,7 @@ class CreateActionStepOneFragment : Fragment() {
             }
         }
     }
-
-
+    
     private fun handleOnClickNext(onClick: Boolean) {
         if (onClick) {
             if (isActionNameValid() && isActionDescriptionValid()) {
@@ -193,7 +190,7 @@ class CreateActionStepOneFragment : Fragment() {
     }
 
     override fun onDestroy() {
-        binding.error.root.visibility = View.GONE
+        _binding?.error?.root?.visibility = View.GONE
         super.onDestroy()
     }
 

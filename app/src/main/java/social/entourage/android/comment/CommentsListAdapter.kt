@@ -398,6 +398,7 @@ class CommentsListAdapter(
             if (comment.status in listOf("offensive", "offensible")) {
                 binding.comment.text = context.getString(R.string.offensive_message)
             }
+            binding.messageContainer.setBackgroundResource(R.drawable.new_comment_background_grey)
             binding.comment.background =
                 ContextCompat.getDrawable(context, R.drawable.new_comment_background_grey)
             binding.comment.setTextColor(ContextCompat.getColor(context, R.color.grey_deleted_icon))
@@ -433,6 +434,7 @@ class CommentsListAdapter(
             if (comment.status in listOf("offensive", "offensible")) {
                 binding.comment.text = context.getString(R.string.offensive_message)
             }
+            binding.messageContainer.setBackgroundResource(R.drawable.new_comment_background_grey)
             binding.comment.background =
                 ContextCompat.getDrawable(context, R.drawable.new_comment_background_grey)
             binding.comment.setTextColor(ContextCompat.getColor(context, R.color.grey_deleted_icon))
