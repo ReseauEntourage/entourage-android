@@ -447,7 +447,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="error_event_end_time">L\'heure de fin ne peut pas dépasser minuit</string>
     <string name="deleted_publi">Cette publication a été supprimée.</string>
     <string name="deleted_message">Ce message a été supprimé.</string>
-    <string name="deleted_comment">Ce commentaire a été supprimé.</string>
+    <string name="deleted_comment">Ce message a été supprimé.</string>
     <string name="deleted__my_message">Vous avez supprimé ce message.</string>
 
     <!-- Home pop congrat -->
@@ -2472,7 +2472,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="title_param_comment">Paramètres d\'un commentaire</string>
     <string name="discussion_ask_supress">Souhaitez-vous supprimer cette publication ?</string>
     <string name="discussion_ask_supress_message">Souhaitez-vous supprimer ce message de la conversation ?</string>
-    <string name="discussion_ask_supress_comment">Souhaitez-vous supprimer ce commentaire ?</string>
+    <string name="discussion_ask_supress_comment">Souhaitez-vous supprimer ce message ?</string>
     <string name="discussion_button_supress">Supprimer</string>
     <string name="discussion_settings_signal_sub">Signalez cette conversation à l\'équipe Entourage.</string>
     <string name="discussion_settings_profil">Voir le profil</string>
