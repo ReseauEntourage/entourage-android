@@ -28,6 +28,7 @@ import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.api.model.Post
 import social.entourage.android.databinding.*
+import social.entourage.android.discussions.DetailConversationActivity
 import social.entourage.android.language.LanguageManager
 import social.entourage.android.profile.ProfileFullActivity
 import social.entourage.android.report.DataLanguageStock
@@ -414,7 +415,7 @@ class CommentsListAdapter(
             binding.comment.setCompoundDrawablesWithIntrinsicBounds(grayDrawable, null, null, null)
             binding.comment.compoundDrawablePadding = 16
 
-            if (isOne2One) {
+            if (isOne2One || DetailConversationActivity.isSmallTalkMode) {
                 binding.comment.text = context.getString(R.string.deleted_message)
             } else {
                 binding.comment.text = context.getString(R.string.deleted_comment)
@@ -450,7 +451,7 @@ class CommentsListAdapter(
             binding.comment.setCompoundDrawablesWithIntrinsicBounds(grayDrawable, null, null, null)
             binding.comment.compoundDrawablePadding = 16
 
-            if (isOne2One) {
+            if (isOne2One || DetailConversationActivity.isSmallTalkMode) {
                 binding.comment.text = context.getString(R.string.deleted_message)
             } else {
                 binding.comment.text = context.getString(R.string.deleted_comment)

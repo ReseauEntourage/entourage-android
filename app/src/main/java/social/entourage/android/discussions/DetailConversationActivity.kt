@@ -69,7 +69,7 @@ class DetailConversationActivity : CommentActivity() {
     private val smallTalkViewModel: SmallTalkViewModel by viewModels()
     private var refreshMessagesRunnable: Runnable? = null
     private val refreshHandler = android.os.Handler()
-    private val refreshIntervalMs = 5000L // 5 secondes
+    private val refreshIntervalMs = 3000L // 5 secondes
     private lateinit var cameraLauncher: ActivityResultLauncher<Uri>
     private lateinit var galleryLauncher: ActivityResultLauncher<String>
     private var photoUri: Uri? = null
@@ -675,7 +675,9 @@ class DetailConversationActivity : CommentActivity() {
     // --- Récupération / affichage commentaires ---
     override fun handleGetPostComments(allComments: MutableList<Post>?) {
         allComments ?: return
-
+        for(comment in allComments){
+            Timber.wtf("wtf comment : " + comment?.messageType)
+        }
         if (isLoadingOlder) {
             // Extrait les vrais « plus anciens » et insère en tête
             val incoming = sortAndExtractDays(allComments, this) ?: return
@@ -687,15 +689,29 @@ class DetailConversationActivity : CommentActivity() {
             return
         }
 
-        // Cas normal : ajout en bas
+        // Cas normal : ajout en bas (refresh ou premier chargement)
         val incoming = sortAndExtractDays(allComments, this) ?: return
         val wasAtBottom = isAtBottom()
         val existingKeys = HashSet<String>(commentsList.size).apply {
             commentsList.forEach { add(it.diffKey()) }
         }
+
+        // --- 🔁 Mise à jour des messages déjà présents (statut, contenu) ---
+        val incomingMap = allComments.associateBy { it.diffKey() }
+        commentsList.forEachIndexed { index, existing ->
+            val updated = incomingMap[existing.diffKey()]
+            if (updated != null &&
+                (existing.status != updated.status || existing.content != updated.content || existing.contentHtml != updated.contentHtml)
+            ) {
+                commentsList[index] = updated
+                binding.comments.adapter?.notifyItemChanged(index + if (currentParentPost != null) 1 else 0)
+            }
+        }
+
+        // --- ➕ Nouveaux messages à ajouter ---
         val toAdd = incoming.filter { existingKeys.add(it.diffKey()) }.toMutableList()
 
-        // --- ✅ Suppression du dernier bloc de date inutile ---
+        // --- 🧹 Nettoyage : suppression de la dernière cellule "date" si elle est seule ---
         if (toAdd.isNotEmpty() && toAdd.last().isDatePostOnly) {
             val lastDate = toAdd.last().datePostText
             val lastDateIndex = toAdd.indexOfLast { it.isDatePostOnly && it.datePostText == lastDate }
@@ -703,9 +719,7 @@ class DetailConversationActivity : CommentActivity() {
                 i > lastDateIndex && !post.isDatePostOnly
             }
             if (!hasMessagesAfter) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.VANILLA_ICE_CREAM) {
-                    toAdd.removeLast()
-                }
+                toAdd.removeLast()
             }
         }
 
