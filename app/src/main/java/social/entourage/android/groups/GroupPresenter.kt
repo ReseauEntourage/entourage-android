@@ -615,26 +615,18 @@ class GroupPresenter: ViewModel() {
         })
     }
 
-    fun deletedGroupPost(
-        groupId: Int,
-        postId: Int,
-    ) {
-
-        EntourageApplication.get().apiModule.groupRequest.deletePost(
-            groupId,
-            postId
-        ).enqueue(object :
-            Callback<ResponseBody> {
-            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-            }
-
-            override fun onResponse(
-                call: Call<ResponseBody>,
-                response: Response<ResponseBody>
-            ) {
-                isPostDeleted.value = response.isSuccessful
-            }
-        })
+    fun deletedGroupPost(groupId: Int, postId: Int) {
+        EntourageApplication.get().apiModule.groupRequest.deletePost(groupId, postId)
+            .enqueue(object : Callback<ResponseBody> {
+                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                    Timber.e("Failed to delete post: ${t.message}")
+                    isPostDeleted.value = false
+                }
+                override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                    Timber.d("Post deleted successfully")
+                    isPostDeleted.value = response.isSuccessful
+                }
+            })
     }
 
     fun getGroupEvents(groupId: Int) {

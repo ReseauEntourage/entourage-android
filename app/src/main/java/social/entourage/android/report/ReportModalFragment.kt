@@ -76,6 +76,7 @@ class ReportModalFragment() : BottomSheetDialogFragment() {
     private var reportType: Int? = Const.DEFAULT_VALUE
     private var title: String = ""
     private var isEventComment = false
+    private var isGroupComment = false
     private var callback: CallbackReportFragment? = null
     private var isFromMe: Boolean? = false
     private var isMyLanguage: Boolean? = false
@@ -371,6 +372,9 @@ class ReportModalFragment() : BottomSheetDialogFragment() {
     fun setEventComment(){
         isEventComment = true
     }
+    fun setGroupComment(){
+        isGroupComment = true
+    }
 
     private fun setView() {
         binding.next.visibility = View.VISIBLE
@@ -577,6 +581,9 @@ class ReportModalFragment() : BottomSheetDialogFragment() {
                     groupPresenter.deletedGroupPost(it, id)
                 }
                 ReportTypes.REPORT_COMMENT.code -> groupId?.let { it ->
+                    if(isGroupComment){
+                        groupPresenter.deletedGroupPost(it, id)
+                    }
                     if(DetailConversationActivity.isSmallTalkMode){
                         smallTalkViewModel.deleteChatMessage(smallTalkId, id.toString())
                     }else {
@@ -586,6 +593,7 @@ class ReportModalFragment() : BottomSheetDialogFragment() {
                 ReportTypes.REPORT_POST_EVENT.code -> groupId?.let { it ->
                     eventPresenter.deletedEventPost(it, id)
                 }
+
                 else -> R.string.report_member
             }
         }

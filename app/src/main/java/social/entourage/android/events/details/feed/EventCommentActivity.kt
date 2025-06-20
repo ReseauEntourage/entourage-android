@@ -71,6 +71,10 @@ class EventCommentActivity : CommentActivity() {
         // 5) Configure l'adapter de commentaires pour l'événement
         setAdapterForEvent()
     }
+    override fun onResume() {
+        super.onResume()
+        this.isEvent = true
+    }
 
     private fun animateMentionSuggestions(show: Boolean) {
         val container = binding.mentionSuggestionsContainer
@@ -173,6 +177,7 @@ class EventCommentActivity : CommentActivity() {
     private fun setAdapterForEvent() {
         (binding.comments.adapter as? CommentsListAdapter)?.setForEvent()
     }
+
 
     // ---------------------------------------------------------------------------
     // Gestion du post parent

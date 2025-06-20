@@ -13,6 +13,7 @@ import android.text.Html
 import android.text.TextWatcher
 import android.view.View
 import android.view.animation.AnimationUtils
+import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
@@ -257,16 +258,26 @@ class DetailConversationActivity : CommentActivity() {
 
 
     private fun observeDeletedMessage() {
-        smallTalkViewModel.messageDeleted.observe(this) {
-            if (it) smallTalkViewModel.listChatMessages(smallTalkId)
+        smallTalkViewModel.messageDeleteResult.observe(this, { result ->
+            val (isSuccessful, messageId) = result
+            if (isSuccessful) {
+                commentsList.removeAll { it.id?.toString() == messageId }
+                binding.comments.adapter?.notifyDataSetChanged()
+            } else {
+                Toast.makeText(this, "Failed to delete message with ID: $messageId", Toast.LENGTH_SHORT).show()
+            }
+        })
+
+        eventPresenter.isEventDeleted.observe(this) { isDeleted ->
+            if (isDeleted) {
+                eventPresenter.getEvent(this.event?.id.toString())
+            }
         }
 
-        eventPresenter.isEventDeleted.observe(this) {
-            eventPresenter.getEvent(this.event?.id.toString())
-        }
-
-        discussionsPresenter.isMessageDeleted.observe(this) {
-            if (it) discussionsPresenter.getPostComments(id)
+        discussionsPresenter.isMessageDeleted.observe(this) { isDeleted ->
+            if (isDeleted) {
+                discussionsPresenter.getPostComments(id)
+            }
         }
     }
 
@@ -420,6 +431,22 @@ class DetailConversationActivity : CommentActivity() {
         return FileProvider.getUriForFile(this, "${packageName}.fileprovider", image)
     }
 
+    private fun updateDeletedMessages(newMessages: List<Post>?) {
+        newMessages ?: return
+
+        val newMessagesMap = newMessages.associateBy { it.id?.toString() ?: it.idInternal.toString() }
+
+        commentsList.forEachIndexed { index, currentMessage ->
+            val currentMessageId = currentMessage.id?.toString() ?: currentMessage.idInternal.toString()
+            val newMessage = newMessagesMap[currentMessageId]
+            Timber.d("messages status " + currentMessage.status + " " + newMessage?.status)
+            if (newMessage != null && currentMessage.status != newMessage.status) {
+                // Mettre à jour le statut du message
+                commentsList[index] = newMessage
+                binding.comments.adapter?.notifyItemChanged(index)
+            }
+        }
+    }
 
     private fun startRefreshingMessages() {
         refreshMessagesRunnable = object : Runnable {
@@ -460,6 +487,7 @@ class DetailConversationActivity : CommentActivity() {
     }
     // --- SmallTalk messages mapping ---
     private fun handleSmallTalkMessages(messages: List<Post>?) {
+        updateDeletedMessages(messages)
         handleGetPostComments(messages?.toMutableList())
     }
 

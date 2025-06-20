@@ -47,7 +47,7 @@ enum class CommentsTypes(val code: Int) {
 
 interface OnItemClickListener {
     fun onItemClick(comment: Post)
-    fun onCommentReport(commentId: Int?, isForEvent: Boolean, isMe: Boolean, commentLang: String)
+    fun onCommentReport(commentId: Int?, isForEvent: Boolean, isForGroup: Boolean, isMe: Boolean, commentLang: String)
     fun onShowWeb(url: String) // si tu veux ouvrir un navigateur ou gérer autrement
 }
 
@@ -62,6 +62,7 @@ class CommentsListAdapter(
 ) : RecyclerView.Adapter<CommentsListAdapter.ViewHolder>() {
 
     var isForEvent: Boolean = false
+    var isForGroup: Boolean = false
 
     // Pour savoir si l'utilisateur veut la version traduite ou originale
     // On inverse si l'ID est dans translationExceptions
@@ -88,6 +89,10 @@ class CommentsListAdapter(
     fun setForEvent() {
         isForEvent = true
     }
+    fun setForGroup() {
+        isForGroup = true
+    }
+
 
     private fun findFirstMessagePosition(): Int {
         val total = itemCount
@@ -473,7 +478,7 @@ class CommentsListAdapter(
             binding.report.setOnClickListener {
                 val commentLang = comment.contentTranslations?.fromLang ?: ""
                 DataLanguageStock.updateContentToCopy(comment.content ?: "")
-                onItemClick.onCommentReport(comment.id, isForEvent, isMe, commentLang)
+                onItemClick.onCommentReport(comment.id, isForEvent, isForGroup, isMe, commentLang)
             }
             // Long click => report
 
@@ -481,7 +486,7 @@ class CommentsListAdapter(
                 val commentLang = comment.contentTranslations?.fromLang ?: ""
                 binding.comment.setOnLongClickListener {
                     DataLanguageStock.updateContentToCopy(comment.content ?: "")
-                    onItemClick.onCommentReport(comment.id, isForEvent, isMe, commentLang)
+                    onItemClick.onCommentReport(comment.id, isForEvent,isForGroup, isMe, commentLang)
                     true
                 }
             }
@@ -501,13 +506,13 @@ class CommentsListAdapter(
             binding.report.setOnClickListener {
                 val commentLang = comment.contentTranslations?.fromLang ?: ""
                 DataLanguageStock.updateContentToCopy(comment.content ?: "")
-                onItemClick.onCommentReport(comment.id, isForEvent, isMe, commentLang)
+                onItemClick.onCommentReport(comment.id, isForEvent,isForGroup, isMe, commentLang)
             }
             if (comment.status !in listOf("deleted", "offensive", "offensible")) {
                 val commentLang = comment.contentTranslations?.fromLang ?: ""
                 binding.comment.setOnLongClickListener {
                     DataLanguageStock.updateContentToCopy(comment.content ?: "")
-                    onItemClick.onCommentReport(comment.id, isForEvent, isMe, commentLang)
+                    onItemClick.onCommentReport(comment.id, isForEvent,isForGroup, isMe, commentLang)
                     true
                 }
             }

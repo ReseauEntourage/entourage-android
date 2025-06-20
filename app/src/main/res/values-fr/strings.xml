@@ -188,7 +188,7 @@ Découvrez les initiatives de votre quartier et tissez des liens avec vos voisin
     <string name="report_user">Signaler l\'utilisateur</string>
     <string name="report_member">Signaler le membre</string>
     <string name="report_post">Signaler la publication</string>
-    <string name="report_comment">Signaler le commentaire</string>
+    <string name="report_comment">Signaler le message</string>
     <string name="report_eventt">Signaler l’événement</string>
     <string name="why_reporting">Dites-nous la raison de votre signalement</string>
     <string name="new_next">Suivant</string>
@@ -288,18 +288,18 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="leave_group_dialog_content">Souhaitez-vous quitter le groupe ?</string>
     <string name="discuss">Commenter…</string>
     <string name="discussbis">Écrire un message…</string>
-    <string name="no_comments">Pas de commentaires</string>
+    <string name="no_comments">Pas de messages</string>
     <string name="event_date">"dd/MM/yyyy"</string>
     <string name="event_date_time">"dd MMMM yyyy à HH'h'mm"</string>
     <string name="post_date">"dd.MM.yyyy"</string>
-    <string name="comments_title">Commentaires</string>
+    <string name="comments_title">Messages</string>
     <string name="comments_date">dd.MM.yy à HH:mm</string>
     <string name="write_your_message">Écrire votre message</string>
     <string name="share_post">Partager</string>
     <string name="zoom_photo">Déplacer et zoomer pour ajuster la photo.</string>
     <string name="old_publications">Anciennes publications</string>
     <string name="new_publications">Nouvelles publications</string>
-    <string name="empty_state_comments">Pas encore de commentaires</string>
+    <string name="empty_state_comments">Pas encore de messages</string>
     <string name="retry_comment">Erreur de publication, réessayez</string>
     <string name="join_group_to_comment"><![CDATA[* Pour commenter cette publication, rejoignez le groupe « %s » !]]></string>
     <string name="report_sent">Votre demande a bien été envoyée. Elle sera traitée au plus vite par notre équipe.</string>
@@ -2454,13 +2454,13 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="discussion_entraide_signal">Signaler cette entraide à l\'équipe Entourage</string>
     <string name="discussion_choose_supress">Supprimer ma publication</string>
     <string name="discussion_choose_supress_message">Supprimer le message</string>
-    <string name="discussion_choose_supress_commentary">Supprimer le commentaire</string>
+    <string name="discussion_choose_supress_commentary">Supprimer le message</string>
     <string name="discussion_supress_the_post">Supprimer la publication</string>
     <string name="discussion_supress_the_message">Supprimer le message</string>
-    <string name="discussion_supress_the_comment">Supprimer le commentaire</string>
+    <string name="discussion_supress_the_comment">Supprimer le message</string>
     <string name="title_param_post">Paramètres de la publication</string>
     <string name="title_param_message">Paramètres d\'un message</string>
-    <string name="title_param_comment">Paramètres d\'un commentaire</string>
+    <string name="title_param_comment">Paramètres d\'un message</string>
     <string name="discussion_ask_supress">Souhaitez-vous supprimer cette publication ?</string>
     <string name="discussion_ask_supress_message">Souhaitez-vous supprimer ce message de la conversation ?</string>
     <string name="discussion_ask_supress_comment">Souhaitez-vous supprimer ce message ?</string>
@@ -2627,8 +2627,8 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
 
     <string name="modify_image"><u>Modifier ma photo</u></string>
     <string name="more"><u>En savoir plus</u></string>
-    <string name="posts_comment_number"><u>%s commentaires</u></string>
-    <string name="posts_comment_number_singular"><u>%s commentaire</u></string>
+    <string name="posts_comment_number"><u>%s messages</u></string>
+    <string name="posts_comment_number_singular"><u>%s message</u></string>
     <string name="show_more_lined"><u>Voir plus</u></string>
     <string name="welcome_one_sensib">Retrouvez nos contenus de sensibilisation <u><font color="#FF9739">ici</font></u></string>
     <string name="action_show_charte"><u>Charte éthique</u></string>

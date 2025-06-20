@@ -46,6 +46,7 @@ var shouldOpenKeyboard = false
 var messagesFailed: MutableList<Post?> = mutableListOf()
 var comment: Post? = null
 var isEvent = false
+var isGroup = false
 lateinit var viewModel: DiscussionsPresenter
 var haveReloadFromDelete = false
 
@@ -118,8 +119,7 @@ protected fun scrollAfterLayout() {
 }
 
 private fun handleMessageDeleted(isMessageDeleted:Boolean){
-    if(isMessageDeleted){
-    }
+
 }
 
 protected fun handleCommentPosted(post: Post?) {
@@ -168,12 +168,13 @@ private fun initializeComments() {
                 addComment()
                 commentsList.remove(comment)
             }
-            override fun onCommentReport(commentId: Int?, isForEvent: Boolean, isMe:Boolean,commentLang:String) {
+            override fun onCommentReport(commentId: Int?, isForEvent: Boolean, isForGroup:Boolean, isMe:Boolean,commentLang:String) {
                 if(isForEvent){
-                    commentId?.let { handleReport(it, ReportTypes.REPORT_POST_EVENT, true, isMe, commentLang) }
+                    commentId?.let { handleReport(it, ReportTypes.REPORT_POST_EVENT, true, false, isMe, commentLang) }
+                }else if(isForGroup){
+                    commentId?.let { handleReport(it, ReportTypes.REPORT_POST, false, true, isMe, commentLang) }
                 }else{
-                    commentId?.let { handleReport(it, ReportTypes.REPORT_COMMENT , true, isMe,commentLang) }
-
+                    commentId?.let { handleReport(it, ReportTypes.REPORT_COMMENT , false, false, isMe,commentLang) }
                 }
             }
 
@@ -279,7 +280,7 @@ private fun setSettingsIcon() {
     binding.header.iconSettings.setBackgroundColor(ContextCompat.getColor(this, R.color.transparent))
 }
 
-protected fun handleReport(id: Int, type: ReportTypes, isEventComment :Boolean, isMe:Boolean, commentLang:String) {
+protected fun handleReport(id: Int, type: ReportTypes, isEventComment :Boolean, isGroupComment:Boolean, isMe:Boolean, commentLang:String) {
     val fromLang =  commentLang
     var isNotTranslatable = false
     if (fromLang == null || fromLang.equals("")){
@@ -294,6 +295,9 @@ protected fun handleReport(id: Int, type: ReportTypes, isEventComment :Boolean, 
     if(isEventComment){
         reportGroupBottomDialogFragment.setEventComment()
     }
+    if(isGroupComment){
+        reportGroupBottomDialogFragment.setGroupComment()
+    }
     reportGroupBottomDialogFragment.setDismissCallback(this)
     reportGroupBottomDialogFragment.show(
         supportFragmentManager,
@@ -304,9 +308,9 @@ protected fun handleReport(id: Int, type: ReportTypes, isEventComment :Boolean, 
 protected open fun handleReportPost(id: Int, commentLang: String) {
     binding.header.iconSettings.setOnClickListener {
         if(isEvent){
-            handleReport(id, ReportTypes.REPORT_POST_EVENT, false, false/*checkIsME*/,commentLang)
+            handleReport(id, ReportTypes.REPORT_POST_EVENT, isEvent, isGroup, false/*checkIsME*/,commentLang)
         }else{
-            handleReport(id, ReportTypes.REPORT_POST, false, false/*checkIsME*/,commentLang)
+            handleReport(id, ReportTypes.REPORT_POST, isEvent, isGroup, false/*checkIsME*/,commentLang)
         }
     }
 }

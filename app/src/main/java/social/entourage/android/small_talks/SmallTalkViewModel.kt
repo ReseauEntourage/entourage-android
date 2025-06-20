@@ -46,7 +46,7 @@ class SmallTalkViewModel(application: Application) : AndroidViewModel(applicatio
     val smallTalkDetail = MutableLiveData<SmallTalk?>()
     val almostMatches = MutableLiveData<List<UserSmallTalkRequestWithMatchData>>()
     val shouldLeave = MutableLiveData<Boolean>()
-    val messageDeleted = MutableLiveData<Boolean>()
+    val messageDeleteResult = MutableLiveData<Pair<Boolean, String>>()
     private var currentPage = 1
     private val messagesPerPage = 50
     private var isLoading = false
@@ -353,12 +353,13 @@ class SmallTalkViewModel(application: Application) : AndroidViewModel(applicatio
     fun deleteChatMessage(smallTalkId: String, messageId: String) {
         request.deleteChatMessage(smallTalkId, messageId).enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
-                // Après suppression, on rafraîchit la liste
-                listChatMessages(smallTalkId)
-                messageDeleted.postValue(response.isSuccessful)
+                // Après suppression, on renvoie le résultat et l'ID du message
+                messageDeleteResult.postValue(Pair(response.isSuccessful, messageId))
             }
+
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                // Optionnel : gérer l’erreur
+                // En cas d'échec, on renvoie false et l'ID du message
+                messageDeleteResult.postValue(Pair(false, messageId))
             }
         })
     }
