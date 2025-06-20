@@ -693,17 +693,41 @@ class DetailConversationActivity : CommentActivity() {
         val existingKeys = HashSet<String>(commentsList.size).apply {
             commentsList.forEach { add(it.diffKey()) }
         }
-        val toAdd = incoming.filter { existingKeys.add(it.diffKey()) }
+        val toAdd = incoming.filter { existingKeys.add(it.diffKey()) }.toMutableList()
+
+        // --- ✅ Suppression du dernier bloc de date inutile ---
+        if (toAdd.isNotEmpty() && toAdd.last().isDatePostOnly) {
+            val lastDate = toAdd.last().datePostText
+            val lastDateIndex = toAdd.indexOfLast { it.isDatePostOnly && it.datePostText == lastDate }
+            val hasMessagesAfter = toAdd.anyIndexed { i, post ->
+                i > lastDateIndex && !post.isDatePostOnly
+            }
+            if (!hasMessagesAfter) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.VANILLA_ICE_CREAM) {
+                    toAdd.removeLast()
+                }
+            }
+        }
+
         if (toAdd.isEmpty()) {
             binding.progressBar.visibility = View.GONE
             return
         }
+
         val insertPos = commentsList.size
         commentsList.addAll(toAdd)
         binding.comments.adapter?.notifyItemRangeInserted(insertPos, toAdd.size)
+
         if (wasAtBottom) scrollAfterLayout()
         binding.progressBar.visibility = View.GONE
         updateView(commentsList.isEmpty())
+    }
+
+    private inline fun <T> List<T>.anyIndexed(predicate: (Int, T) -> Boolean): Boolean {
+        forEachIndexed { index, item ->
+            if (predicate(index, item)) return true
+        }
+        return false
     }
 
 
