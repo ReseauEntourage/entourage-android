@@ -108,6 +108,7 @@ class ReportModalFragment() : BottomSheetDialogFragment() {
         discussionsPresenter.isConversationReported.observe(requireActivity(), ::handleReportResponse)
         discussionsPresenter.isConversationDeleted.observe(requireActivity(), ::handleDeletedResponse)
         discussionsPresenter.isMessageDeleted.observe(requireActivity(),::handleDeletedResponse)
+        smallTalkViewModel.messageDeleteResult.observe(requireActivity(),::handleDeletedResponse)
         groupPresenter.isPostDeleted.observe(requireActivity(),::handleDeletedResponse)
         eventPresenter.isEventDeleted.observe(requireActivity(),::handleDeletedResponse)
 

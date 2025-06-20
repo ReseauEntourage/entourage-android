@@ -46,7 +46,7 @@ class SmallTalkViewModel(application: Application) : AndroidViewModel(applicatio
     val smallTalkDetail = MutableLiveData<SmallTalk?>()
     val almostMatches = MutableLiveData<List<UserSmallTalkRequestWithMatchData>>()
     val shouldLeave = MutableLiveData<Boolean>()
-    val messageDeleteResult = MutableLiveData<Pair<Boolean, String>>()
+    val messageDeleteResult = MutableLiveData<Boolean>()
     private var currentPage = 1
     private val messagesPerPage = 50
     private var isLoading = false
@@ -302,12 +302,32 @@ class SmallTalkViewModel(application: Application) : AndroidViewModel(applicatio
                 val newMessages = response.body()?.messages ?: emptyList()
                 isLoading = false
                 isLastPage = newMessages.size < (per ?: messagesPerPage)
+
                 if (reset) {
                     messages.value = newMessages
                 } else {
-                    // concat en haut (scroll top)
-                    val combined = newMessages + (messages.value ?: emptyList())
-                    messages.value = combined
+                    // Récupérer la liste actuelle des messages
+                    val currentMessages = messages.value ?: emptyList()
+
+                    // Créer une copie mutable de la liste actuelle
+                    val updatedMessages = currentMessages.toMutableList()
+
+                    // Parcourir les nouveaux messages
+                    newMessages.forEach { newMessage ->
+                        // Vérifier si le message existe déjà dans la liste actuelle
+                        val index = updatedMessages.indexOfFirst { it.id == newMessage.id }
+
+                        if (index != -1) {
+                            // Si le message existe déjà, le mettre à jour
+                            updatedMessages[index] = newMessage
+                        } else {
+                            // Sinon, ajouter le nouveau message à la liste
+                            updatedMessages.add(newMessage)
+                        }
+                    }
+
+                    // Mettre à jour la liste des messages
+                    messages.value = updatedMessages
                 }
             }
 
@@ -316,7 +336,7 @@ class SmallTalkViewModel(application: Application) : AndroidViewModel(applicatio
             }
         })
     }
-
+    
     /**
      * 5️⃣ Créer un message
      */
@@ -354,12 +374,12 @@ class SmallTalkViewModel(application: Application) : AndroidViewModel(applicatio
         request.deleteChatMessage(smallTalkId, messageId).enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 // Après suppression, on renvoie le résultat et l'ID du message
-                messageDeleteResult.postValue(Pair(response.isSuccessful, messageId))
+                messageDeleteResult.postValue(response.isSuccessful,)
             }
 
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                 // En cas d'échec, on renvoie false et l'ID du message
-                messageDeleteResult.postValue(Pair(false, messageId))
+                messageDeleteResult.postValue(false)
             }
         })
     }

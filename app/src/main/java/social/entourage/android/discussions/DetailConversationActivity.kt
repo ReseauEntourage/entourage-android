@@ -258,15 +258,6 @@ class DetailConversationActivity : CommentActivity() {
 
 
     private fun observeDeletedMessage() {
-        smallTalkViewModel.messageDeleteResult.observe(this, { result ->
-            val (isSuccessful, messageId) = result
-            if (isSuccessful) {
-                commentsList.removeAll { it.id?.toString() == messageId }
-                binding.comments.adapter?.notifyDataSetChanged()
-            } else {
-                Toast.makeText(this, "Failed to delete message with ID: $messageId", Toast.LENGTH_SHORT).show()
-            }
-        })
 
         eventPresenter.isEventDeleted.observe(this) { isDeleted ->
             if (isDeleted) {
@@ -281,9 +272,7 @@ class DetailConversationActivity : CommentActivity() {
         }
     }
 
-    private fun handleDeletedMessage(boolean: Boolean) {
 
-    }
 
     override fun onResume() {
         super.onResume()
@@ -291,37 +280,6 @@ class DetailConversationActivity : CommentActivity() {
         startRefreshingMessages()
 
     }
-
-
-
-    private fun generateJitsiUrl(displayName: String, roomName: String = "Bonnes ondes " + smallTalk?.uuid): String {
-        val encodedDisplayName = displayName
-            .replace(" ", "%20")
-            .replace("\"", "%22")
-        val baseUrl = "https://meet.jit.si/$roomName"
-        val params = "#userInfo.displayName=%22$encodedDisplayName%22&config.startWithAudioMuted=false&config.startWithVideoMuted=false"
-        return "$baseUrl$params"
-    }
-
-/*    private fun setCameraIcon() {
-        val roomName = "Bonnes ondes " + smallTalk?.uuid
-        val displayName = "Invité"
-
-        val url = generateJitsiUrl(displayName, roomName)
-        //smallTalk?.meetingUrl = url
-
-        binding.header.iconCamera.isVisible = true
-        binding.header.iconCamera.setImageResource(R.drawable.ic_camera)
-        binding.header.cardIconCamera.setBackgroundColor(ContextCompat.getColor(this, R.color.transparent))
-        binding.header.iconCamera.setBackgroundColor(ContextCompat.getColor(this, R.color.transparent))
-
-        binding.header.iconCamera.setOnClickListener {
-            Timber.wtf("📹 Lancement visio Jitsi URL : $url")
-            AnalyticsEvents.logEvent(AnalyticsEvents.CLIC__SMALLTALK__VISIO_ICON)
-            WebViewFragment.launchURL(this, url)
-        }
-    }*/
-
 
     private fun setCameraIcon() {
         binding.header.iconCamera.isVisible = !smallTalk?.meetingUrl.isNullOrBlank()
@@ -431,22 +389,7 @@ class DetailConversationActivity : CommentActivity() {
         return FileProvider.getUriForFile(this, "${packageName}.fileprovider", image)
     }
 
-    private fun updateDeletedMessages(newMessages: List<Post>?) {
-        newMessages ?: return
 
-        val newMessagesMap = newMessages.associateBy { it.id?.toString() ?: it.idInternal.toString() }
-
-        commentsList.forEachIndexed { index, currentMessage ->
-            val currentMessageId = currentMessage.id?.toString() ?: currentMessage.idInternal.toString()
-            val newMessage = newMessagesMap[currentMessageId]
-            Timber.d("messages status " + currentMessage.status + " " + newMessage?.status)
-            if (newMessage != null && currentMessage.status != newMessage.status) {
-                // Mettre à jour le statut du message
-                commentsList[index] = newMessage
-                binding.comments.adapter?.notifyItemChanged(index)
-            }
-        }
-    }
 
     private fun startRefreshingMessages() {
         refreshMessagesRunnable = object : Runnable {
@@ -487,7 +430,7 @@ class DetailConversationActivity : CommentActivity() {
     }
     // --- SmallTalk messages mapping ---
     private fun handleSmallTalkMessages(messages: List<Post>?) {
-        updateDeletedMessages(messages)
+
         handleGetPostComments(messages?.toMutableList())
     }
 

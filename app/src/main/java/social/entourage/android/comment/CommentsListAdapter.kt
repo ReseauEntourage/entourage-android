@@ -419,7 +419,7 @@ class CommentsListAdapter(
             grayDrawable.setBounds(8, 0, scaledDrawable.width - 8, scaledDrawable.height)
             binding.comment.setCompoundDrawablesWithIntrinsicBounds(grayDrawable, null, null, null)
             binding.comment.compoundDrawablePadding = 16
-
+            binding.commentImage.visibility = View.GONE
             if (isOne2One || DetailConversationActivity.isSmallTalkMode) {
                 binding.comment.text = context.getString(R.string.deleted_message)
             } else {
