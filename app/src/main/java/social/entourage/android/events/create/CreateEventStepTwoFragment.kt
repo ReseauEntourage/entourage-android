@@ -141,7 +141,6 @@ class CreateEventStepTwoFragment : Fragment() {
                     )
                 val startDateString = dateFormatterToString.format(startDate)
                 val endDateString = dateFormatterToString.format(endDate)
-
                 CommunicationHandler.event.metadata?.startsAt(startDateString)
                 CommunicationHandler.event.metadata?.endsAt(endDateString)
             } else {

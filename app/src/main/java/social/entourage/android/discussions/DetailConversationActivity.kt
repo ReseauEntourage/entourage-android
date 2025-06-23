@@ -690,7 +690,7 @@ class DetailConversationActivity : CommentActivity() {
                 i > lastDateIndex && !post.isDatePostOnly
             }
             if (!hasMessagesAfter) {
-                toAdd.removeLast()
+                toAdd.removeAt(toAdd.lastIndex)
             }
         }
 
