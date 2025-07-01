@@ -70,7 +70,7 @@ class DetailConversationActivity : CommentActivity() {
     private val smallTalkViewModel: SmallTalkViewModel by viewModels()
     private var refreshMessagesRunnable: Runnable? = null
     private val refreshHandler = android.os.Handler()
-    private val refreshIntervalMs = 30000L // 5 secondes
+    private val refreshIntervalMs = 3000L // 5 secondes
     private lateinit var cameraLauncher: ActivityResultLauncher<Uri>
     private lateinit var galleryLauncher: ActivityResultLauncher<String>
     private var detailConversation: Conversation? = null
