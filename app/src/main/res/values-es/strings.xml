@@ -1510,12 +1510,12 @@ Leerán este mensaje tan pronto como se unan al grupo.</string>
     <string name="x_days_ago">Hace %s días</string>
     <string name="date_this_month">este mes</string>
     <string name="x_months_ago">Hace %s meses</string>
-    <string name="duration_month">%s mes</string>
-    <string name="duration_weeks">%s semana</string>
-    <string name="duration_days">%s j</string>
-    <string name="duration_hours">%s horas</string>
-    <string name="duration_minutes">%s mín.</string>
-    <string name="duration_secondes">en el momento \</string>
+    <string name="duration_month">%d mes</string>
+    <string name="duration_weeks">%d semana</string>
+    <string name="duration_days">%d j</string>
+    <string name="duration_hours">%d horas</string>
+    <string name="duration_minutes">%d mín.</string>
+    <string name="duration_secondes">en el momento</string>
 
     <!--    STRING Entourage-->
 
@@ -2863,4 +2863,5 @@ Leerán este mensaje tan pronto como se unan al grupo.</string>
     <string name="option_both_desc" lang="es">Ofrecer apoyo y recibirlo.</string>
     <string name="question_location" lang="es">¿Cuál es tu barrio?</string>
     <string name="input_location" lang="es">Dirección de ciudad o departamento</string>
+    <string name="needs_to_join_group" lang="es">Vous devez rejoindre le groupe pour effectuer cette action.</string>
 </resources>

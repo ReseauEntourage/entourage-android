@@ -425,7 +425,7 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
 
     private fun handleSurveyPostResponse(success: Boolean) {
         if(isAdded && !success){
-            showToast("Erreur serveur, veuillez réessayer plus tard")
+            showToast(getString(R.string.entourage_report_error_send_failed))
         }
     }
 
@@ -489,13 +489,13 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
                 type = "text/plain"
                 putExtra(Intent.EXTRA_TEXT, shareTitle + "\n" + event?.title + ": " + "\n" + createShareUrl())
             }
-            startActivity(Intent.createChooser(shareIntent, "Partager l'URL via"))
+            startActivity(Intent.createChooser(shareIntent, getString(R.string.entourage_share_intent_title)))
         }
     }
 
     private fun createShareUrl():String{
         val deepLinksHostName = BuildConfig.DEEP_LINKS_URL
-        return "https://" + deepLinksHostName + "/app/outings/" + event?.uuid_v2
+        return """https://$deepLinksHostName/app/outings/${event?.uuid_v2}"""
     }
 
     private fun getPrincipalMember(){
@@ -726,9 +726,9 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
     override fun deleteReaction(post: Post) {
         if(this.event?.member == false){
             AlertDialog.Builder(context) // Utilise 'this' si c'est dans une activité, ou 'getActivity()' si c'est dans un fragment
-                .setTitle("Attention")
-                .setMessage("Vous devez rejoindre le groupe pour effectuer cette action.")
-                .setPositiveButton("Retour") { dialog, which ->
+                .setTitle(getString(R.string.attention_pop_title))
+                .setMessage(getString(R.string.needs_to_join_group))
+                .setPositiveButton(getString(R.string.back)) { dialog, which ->
                     // Code à exécuter lorsque le bouton "Retour" est cliqué.
                     // Si tu ne veux rien faire, tu peux laisser ce bloc vide.
                 }

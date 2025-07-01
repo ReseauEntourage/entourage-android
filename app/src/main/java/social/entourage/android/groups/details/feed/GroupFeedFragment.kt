@@ -452,9 +452,9 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface, Surv
     private fun openReportFragment(postId: Int, userId: Int) {
         if (this.group?.member == false) {
             AlertDialog.Builder(context)
-                .setTitle("Attention")
-                .setMessage("Vous devez rejoindre le groupe pour effectuer cette action.")
-                .setPositiveButton("Retour") { dialog, _ ->
+                .setTitle(getString(R.string.attention_pop_title))
+                .setMessage(getString(R.string.needs_to_join_group))
+                .setPositiveButton(getString(R.string.back)) { dialog, _ ->
                     // Rien
                 }
                 .show()
@@ -542,9 +542,9 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface, Surv
         requestInAppReview(requireContext())
         if (this.group?.member == false) {
             AlertDialog.Builder(context)
-                .setTitle("Attention")
-                .setMessage("Vous devez rejoindre le groupe pour effectuer cette action.")
-                .setPositiveButton("Retour") { _, _ -> }
+                .setTitle(getString(R.string.attention_pop_title))
+                .setMessage(getString(R.string.needs_to_join_group))
+                .setPositiveButton(getString(R.string.back)) { _, _ -> }
                 .show()
             return
         }
@@ -569,9 +569,9 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface, Surv
     override fun deleteReaction(post: Post) {
         if (this.group?.member == false) {
             AlertDialog.Builder(context)
-                .setTitle("Attention")
-                .setMessage("Vous devez rejoindre le groupe pour effectuer cette action.")
-                .setPositiveButton("Retour") { _, _ -> }
+                .setTitle(getString(R.string.attention_pop_title))
+                .setMessage(getString(R.string.needs_to_join_group))
+                .setPositiveButton(getString(R.string.back)) { _, _ -> }
                 .show()
             return
         }

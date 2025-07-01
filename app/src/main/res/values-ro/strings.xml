@@ -1509,12 +1509,12 @@ Ei vor citi acest mesaj imediat ce se vor alătura grupului.</string>
     <string name="x_days_ago">Acum %s zile</string>
     <string name="date_this_month">luna aceasta</string>
     <string name="x_months_ago">%s luni în urmă</string>
-    <string name="duration_month">%s lună</string>
-    <string name="duration_weeks">%s săptămână</string>
-    <string name="duration_days">%s j</string>
-    <string name="duration_hours">%s h</string>
-    <string name="duration_minutes">%s min</string>
-    <string name="duration_secondes">în momentul \</string>
+    <string name="duration_month">%d lună</string>
+    <string name="duration_weeks">%d săptămână</string>
+    <string name="duration_days">%d j</string>
+    <string name="duration_hours">%d h</string>
+    <string name="duration_minutes">%d min</string>
+    <string name="duration_secondes">în momentul</string>
 
     <!--    STRING Entourage-->
 
@@ -2875,5 +2875,6 @@ Ei vor citi acest mesaj imediat ce se vor alătura grupului.</string>
     <string name="option_both_desc" lang="ro">Oferă sprijin și primește-l.</string>
     <string name="question_location" lang="ro">Care este cartierul tău?</string>
     <string name="input_location" lang="ro">Adresă oraș sau județ</string>
+    <string name="needs_to_join_group" lang="ro">Vous devez rejoindre le groupe pour effectuer cette action.</string>
 
 </resources>

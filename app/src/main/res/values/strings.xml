@@ -1540,11 +1540,11 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="birthday_date_format">dd-MM</string>
     <string name="events_date">dd/MM/yyyy</string>
     <string name="events_time">HH\'h\'mm</string>
-    <string name="duration_month">%s mois</string>
-    <string name="duration_weeks">%s sem</string>
-    <string name="duration_days">%s j</string>
-    <string name="duration_hours">%s h</string>
-    <string name="duration_minutes">%s min</string>
+    <string name="duration_month">%d mois</string>
+    <string name="duration_weeks">%d sem</string>
+    <string name="duration_days">%d j</string>
+    <string name="duration_hours">%d h</string>
+    <string name="duration_minutes">%d min</string>
     <string name="duration_secondes">à l\'instant</string>
 
     <!--    STRING Entourage-->
@@ -3103,6 +3103,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="edit_photo_title">Vous n\'avez pas encore de photo de profil</string>
     <string name="edit_photo_subtitle">On se sent toujours plus à l’aise quand on voit à qui on s’adresse. Ajoutez votre photo pour faciliter les rencontres !</string>
     <string name="message_auto">Message automatique - </string>
+    <string name="needs_to_join_group">Vous devez rejoindre le groupe pour effectuer cette action.</string>
 
 
 </resources>
