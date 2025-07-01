@@ -91,6 +91,7 @@ class CreateEventStepFiveFragment : Fragment() {
             CommunicationHandler.isButtonClickable.value = true
             binding.layout.recyclerView.isVisible = true
         }
+
         binding.layout.rbShareInGroups.setOnCheckedChangeListener { _, checkedId ->
             binding.layout.recyclerView.isVisible = checkedId == R.id.share_in_groups
 
@@ -208,5 +209,8 @@ class CreateEventStepFiveFragment : Fragment() {
         CommunicationHandler.resetValues()
         CommunicationHandler.clickNext.observe(viewLifecycleOwner, ::handleOnClickNext)
         CommunicationHandler.isButtonClickable.value = groupsHaveBeenSelected()
+        if(binding.layout.dontShare.isChecked || binding.layout.shareInGroups.isChecked && selectedGroupsIdList.isNotEmpty()){
+            CommunicationHandler.isButtonClickable.value = true
+        }
     }
 }

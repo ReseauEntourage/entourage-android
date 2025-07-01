@@ -296,6 +296,7 @@ class CreateEventFragment : Fragment() {
     }
 
     private fun handleButtonState(isButtonActive: Boolean) {
+
         val background = ContextCompat.getDrawable(
             requireContext(),
             if (isButtonActive) R.drawable.new_rounded_button_light_orange else R.drawable.new_bg_rounded_inactive_button_light_orange
