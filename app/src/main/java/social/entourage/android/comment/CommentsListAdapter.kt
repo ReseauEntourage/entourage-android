@@ -5,6 +5,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.graphics.*
+import android.graphics.drawable.Drawable
 import android.graphics.drawable.VectorDrawable
 import android.os.Build
 import android.text.*
@@ -215,9 +216,27 @@ class CommentsListAdapter(
             }
             if (!comment.imageUrl.isNullOrEmpty()) {
                 bindingLeft.commentImageContainer.visibility = View.VISIBLE
+
                 Glide.with(context)
+                    .asBitmap()
                     .load(comment.imageUrl)
-                    .into(bindingLeft.commentImage)
+                    .into(object : com.bumptech.glide.request.target.CustomTarget<Bitmap>() {
+                        override fun onResourceReady(resource: Bitmap, transition: com.bumptech.glide.request.transition.Transition<in Bitmap>?) {
+                            val isPortrait = resource.height > resource.width
+                            val screenWidth = (context as Activity).resources.displayMetrics.widthPixels
+
+                            val layoutParams = bindingLeft.commentImage.layoutParams
+                            layoutParams.width = if (isPortrait) screenWidth / 2 else ViewGroup.LayoutParams.MATCH_PARENT
+                            layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT
+                            bindingLeft.commentImage.layoutParams = layoutParams
+
+                            bindingLeft.commentImage.setImageBitmap(resource)
+                        }
+
+                        override fun onLoadCleared(placeholder: Drawable?) {
+                            bindingLeft.commentImage.setImageDrawable(placeholder)
+                        }
+                    })
 
                 bindingLeft.commentImage.setOnClickListener {
                     val intent = Intent(context, ImageZoomActivity::class.java)
@@ -227,9 +246,9 @@ class CommentsListAdapter(
             } else {
                 bindingLeft.commentImageContainer.visibility = View.GONE
             }
+
             bindingLeft.comment.layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT
             bindingLeft.comment.requestLayout()
-            Timber.wtf("wtf message type : ${comment.messageType}")
             if(comment.messageType == "auto" /*|| comment.messageType == "broadcast"*/){
                 bindingLeft.messageContainer.setBackgroundResource(R.drawable.comment_message_auto_background)
                 bindingLeft.comment.setBackgroundResource(R.drawable.comment_message_auto_background)
@@ -321,9 +340,27 @@ class CommentsListAdapter(
             }
             if (!comment.imageUrl.isNullOrEmpty()) {
                 bindingRight.commentImageContainer.visibility = View.VISIBLE
+
                 Glide.with(context)
+                    .asBitmap()
                     .load(comment.imageUrl)
-                    .into(bindingRight.commentImage)
+                    .into(object : com.bumptech.glide.request.target.CustomTarget<Bitmap>() {
+                        override fun onResourceReady(resource: Bitmap, transition: com.bumptech.glide.request.transition.Transition<in Bitmap>?) {
+                            val isPortrait = resource.height > resource.width
+                            val screenWidth = (context as Activity).resources.displayMetrics.widthPixels
+
+                            val layoutParams = bindingRight.commentImage.layoutParams
+                            layoutParams.width = if (isPortrait) screenWidth / 2 else ViewGroup.LayoutParams.MATCH_PARENT
+                            layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT
+                            bindingRight.commentImage.layoutParams = layoutParams
+
+                            bindingRight.commentImage.setImageBitmap(resource)
+                        }
+
+                        override fun onLoadCleared(placeholder: Drawable?) {
+                            bindingRight.commentImage.setImageDrawable(placeholder)
+                        }
+                    })
 
                 bindingRight.commentImage.setOnClickListener {
                     val intent = Intent(context, ImageZoomActivity::class.java)
@@ -333,20 +370,7 @@ class CommentsListAdapter(
             } else {
                 bindingRight.commentImageContainer.visibility = View.GONE
             }
-            val lp = binding.messageContainer.layoutParams as ConstraintLayout.LayoutParams
-            if (comment.imageUrl.isNullOrEmpty()) {
-                // Pas d’image → width = wrap_content
-                lp.matchConstraintPercentWidth = -1f   // -1 ou 0 désactive le %
-            } else {
-                // Image → on force 85 %
-                lp.matchConstraintPercentWidth = 0.85f
-            }
-            binding.messageContainer.layoutParams = lp
-            binding.messageContainer.requestLayout()
-            binding.comment.layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT
-            binding.comment.requestLayout()
         }
-
 
         // ----------------------------------------------------------------------------------------
         // bindDetails : affichage du "post parent" (TYPE_DETAIL)

@@ -289,7 +289,6 @@ class SmallTalkViewModel(application: Application) : AndroidViewModel(applicatio
     }
 
     fun loadMoreMessagesIfPossible(smallTalkId: String) {
-        Timber.wtf("wtf isloading : $isLoading , isLastPage : $isLastPage")
         if (isLoading || isLastPage) return
         currentPage += 1
         listChatMessages(smallTalkId, currentPage, messagesPerPage)

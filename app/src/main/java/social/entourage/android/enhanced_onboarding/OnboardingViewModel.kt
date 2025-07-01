@@ -120,7 +120,6 @@ class OnboardingViewModel() : ViewModel() {
             }
 
             override fun onFailure(call: Call<UserResponse>, t: Throwable) {
-                Timber.wtf("updateUserInterests failed: ${t.message}")
                 listener(false, null)
             }
         })

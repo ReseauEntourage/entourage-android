@@ -90,23 +90,7 @@ class DiscussionsListAdapter(
                 }
             }
 
-            if (conversation.members != null) {
-                val currentUserId = EntourageApplication.get().me()?.id
-                val names = conversation.members
-                    .filter { it?.id != currentUserId } // exclure le current user
-                    .take(5) // prendre les 5 premiers autres membres
-                    .mapNotNull { it?.displayName } // éviter les nulls
-                    .map {
-                        if (it.length > 2) it.dropLast(3) else it
-                    }
-                val namesText = names.joinToString(", ")
-                binding.name.apply {
-                    text = namesText
-                    isSingleLine = true
-                    ellipsize = TextUtils.TruncateAt.END
-                }
-            }
-
+            binding.name.text = conversation.title
             if(conversation.type == "outing"){
                binding.name.text = conversation.title
                 binding.date.visibility = View.GONE

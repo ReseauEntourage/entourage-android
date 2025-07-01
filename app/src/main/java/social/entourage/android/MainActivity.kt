@@ -558,7 +558,6 @@ class MainActivity : BaseSecuredActivity() {
     }
 
     private fun addBadge(count : Int) {
-//        Timber.wtf("wtf passed here 1 count : $count")
 
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.nav_view)
         val badge: BadgeDrawable = bottomNavigationView.getOrCreateBadge(
@@ -574,7 +573,6 @@ class MainActivity : BaseSecuredActivity() {
         }
     }
     private fun addGroupBadge(count : Int) {
-//        Timber.wtf("wtf passed here 2 count : $count")
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.nav_view)
         val badge: BadgeDrawable = bottomNavigationView.getOrCreateBadge(
             R.id.navigation_groups)

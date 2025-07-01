@@ -197,6 +197,39 @@
             app:layout_constraintBottom_toBottomOf="parent" />
 
         <!-- 4) Bloc pour poster un commentaire, collé en bas -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:id="@+id/layout_photo"
+            android:background="@color/light_beige"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/post_comment"
+            android:visibility="gone">
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/iv_photo_preview"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:visibility="gone"
+                />
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:id="@+id/btn_quit_photo"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:src="@drawable/icon_cross"
+                app:tint="@color/orange"
+                android:background="@drawable/bg_beige_round_15"
+                android:padding="8dp"
+                android:layout_marginTop="40dp"
+                android:layout_marginEnd="20dp"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
         <LinearLayout
             android:id="@+id/post_comment"
             android:layout_width="match_parent"

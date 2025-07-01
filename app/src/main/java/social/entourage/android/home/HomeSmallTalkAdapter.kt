@@ -97,7 +97,6 @@ class HomeSmallTalkAdapter(
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(userSmallTalkRequest: UserSmallTalkRequest) {
-            Timber.wtf("wtf userSmallTalkRequest : ${Gson().toJson(userSmallTalkRequest)}")
 
             val currentUserId = EntourageApplication.me(context)?.id
 

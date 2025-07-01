@@ -75,6 +75,7 @@ class DiscussionsMainFragment : Fragment() {
         discussionsPresenter.getAllMessages.observe(viewLifecycleOwner, ::handleResponseGetDiscussions)
         discussionsPresenter.unreadMessages.observe(requireActivity(), ::updateUnreadCount)
         smallTalkViewModel.smallTalks.observe(viewLifecycleOwner, ::handleResponseGetSmallTalks)
+        discussionsPresenter.memberships.observe(viewLifecycleOwner, ::handleResponseGetMemberships)
 
         handleImageViewAnimation()
 
@@ -199,13 +200,12 @@ class DiscussionsMainFragment : Fragment() {
         binding.swipeRefresh.isRefreshing = false
         binding.progressBar.visibility = View.VISIBLE
 
-        page += 1
-
+        // Plus de pagination ici : la nouvelle route ne la supporte pas encore
         when (currentFilterMode) {
-            FilterMode.ALL -> discussionsPresenter.fetchAllConversations(page, messagesPerPage)
-            FilterMode.PRIVATE -> discussionsPresenter.fetchPrivateConversations(page, messagesPerPage)
-            FilterMode.OUTINGS -> discussionsPresenter.fetchOutingConversations(page, messagesPerPage)
-            FilterMode.SMALLTALKS -> smallTalkViewModel.listSmallTalks()
+            FilterMode.ALL -> discussionsPresenter.fetchMemberships(null)
+            FilterMode.PRIVATE -> discussionsPresenter.fetchMemberships("Conversation")
+            FilterMode.OUTINGS -> discussionsPresenter.fetchMemberships("Outing")
+            FilterMode.SMALLTALKS -> discussionsPresenter.fetchMemberships("Smalltalk")
         }
     }
 
@@ -219,7 +219,6 @@ class DiscussionsMainFragment : Fragment() {
     private fun handleResponseGetSmallTalks(allSmallTalks: List<SmallTalk>?) {
         messagesList.clear()
         allSmallTalks?.let { list ->
-            Timber.wtf("wtf small talks size ${list.size}")
             messagesList.addAll(list.map { smallTalkToConversation(it) })
         }
         binding.progressBar.visibility = View.GONE
@@ -227,7 +226,6 @@ class DiscussionsMainFragment : Fragment() {
     }
 
     private fun smallTalkToConversation(smallTalk: SmallTalk): Conversation {
-        Timber.wtf("small talk name ${smallTalk.name}")
         return Conversation(
             id = smallTalk.id,
             uuid_v2 = smallTalk.uuid,
@@ -337,10 +335,39 @@ class DiscussionsMainFragment : Fragment() {
         }
     }
 
+    private fun handleResponseGetMemberships(memberships: List<ConversationMembership>?) {
+        binding.progressBar.visibility = View.GONE
+        binding.swipeRefresh.isRefreshing = false
+
+        messagesList.clear()
+        memberships?.let { list ->
+            Timber.wtf("wtf message list size : ${list.size}")
+            messagesList.addAll(list.map { membershipToConversation(it) })
+        }
+
+        binding.recyclerView.adapter?.notifyDataSetChanged()
+    }
     private fun handleImageViewAnimation() {
         binding.appBar.addOnOffsetChangedListener { appBarLayout, verticalOffset ->
             val ratio = abs(verticalOffset).toFloat() / appBarLayout.totalScrollRange
             binding.img.alpha = 1f - ratio
         }
+    }
+
+    private fun membershipToConversation(m: ConversationMembership): Conversation {
+        return Conversation(
+            id = m.joinableId,
+            type = when (m.joinableType?.lowercase()) {
+                "outing" -> "outing"
+                "conversation" -> "private"
+                "smalltalk" -> "small_talk"
+                "neighborhood" -> "group"
+                else -> "group"
+            },
+            title = m.name ?: "[Sans nom]",
+            lastMessage = m.lastChatMessage ?: LastMessage("Aucun message", null),
+            numberUnreadMessages = m.numberOfUnreadMessages ?: 0,
+            memberCount = m.numberOfPeople ?: 0
+        )
     }
 }

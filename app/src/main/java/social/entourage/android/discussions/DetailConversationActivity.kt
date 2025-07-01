@@ -70,10 +70,9 @@ class DetailConversationActivity : CommentActivity() {
     private val smallTalkViewModel: SmallTalkViewModel by viewModels()
     private var refreshMessagesRunnable: Runnable? = null
     private val refreshHandler = android.os.Handler()
-    private val refreshIntervalMs = 3000L // 5 secondes
+    private val refreshIntervalMs = 30000L // 5 secondes
     private lateinit var cameraLauncher: ActivityResultLauncher<Uri>
     private lateinit var galleryLauncher: ActivityResultLauncher<String>
-    private var photoUri: Uri? = null
     private var detailConversation: Conversation? = null
     private var smallTalk: SmallTalk? = null
     private var itemDeletedId = ""
@@ -152,14 +151,21 @@ class DetailConversationActivity : CommentActivity() {
 
         cameraLauncher = registerForActivityResult(ActivityResultContracts.TakePicture()) { success ->
             if (success && photoUri != null) {
+                binding.comment.isEnabled = true
                 showThumbnail(photoUri!!)
             }
         }
 
         galleryLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
             if (uri != null) {
+                binding.comment.isEnabled = true
                 showThumbnail(uri)
             }
+        }
+
+        binding.btnQuitPhoto.setOnClickListener {
+            photoUri = null
+            binding.layoutPhoto.visibility = View.GONE
         }
     }
 
@@ -308,9 +314,7 @@ class DetailConversationActivity : CommentActivity() {
                 smallTalkViewModel.listChatMessages(smallTalkId)
             }
             detailConversation?.type == "outing" -> {
-                // recharge les commentaires de la discussion…
                 discussionsPresenter.getPostComments(id)
-                // …et si tu veux mettre à jour aussi l’entête événement
                 detailConversation?.id
                     ?.toString()
                     ?.let { eventPresenter.getEvent(it) }
@@ -435,15 +439,18 @@ class DetailConversationActivity : CommentActivity() {
     }
 
     private fun showThumbnail(uri: Uri) {
-        binding.ivThumbnail.setImageURI(uri)
-        if (binding.ivThumbnail.visibility != View.VISIBLE) {
-            binding.ivThumbnail.alpha = 0f
-            binding.ivThumbnail.visibility = View.VISIBLE
-            binding.ivThumbnail.animate()
+        binding.layoutPhoto.visibility = View.VISIBLE
+        binding.ivPhotoPreview.setImageURI(uri)
+
+        if (binding.ivPhotoPreview.visibility != View.VISIBLE) {
+            binding.ivPhotoPreview.alpha = 0f
+            binding.ivPhotoPreview.visibility = View.VISIBLE
+            binding.ivPhotoPreview.animate()
                 .alpha(1f)
                 .setDuration(300)
                 .start()
         }
+
         binding.comment.background = ResourcesCompat.getDrawable(
             resources,
             R.drawable.new_circle_orange_button_fill,
@@ -465,6 +472,7 @@ class DetailConversationActivity : CommentActivity() {
 
     private fun sendImageMessage(uri: Uri) {
         val file = Utils.getFileFromUri(this, uri) ?: return
+
         val content = binding.commentMessage.text?.toString()?.takeIf { it.isNotBlank() }
 
         when {
@@ -481,7 +489,7 @@ class DetailConversationActivity : CommentActivity() {
         }
 
         binding.commentMessage.text.clear()
-        binding.ivThumbnail.visibility = View.GONE
+        binding.layoutPhoto.visibility = View.GONE
     }
 
 
@@ -509,7 +517,9 @@ class DetailConversationActivity : CommentActivity() {
                 MembersConversationFragment.newInstance(id).show(supportFragmentManager, "")
             }
         }
-
+        if (conversation.type == "outing" && !isSmallTalkMode) {
+            binding.optionButton.visibility = View.VISIBLE
+        }
         if (conversation.type == "outing" || isSmallTalkMode ) {
             binding.layoutEventConv.visibility = View.VISIBLE
             binding.layoutInfoNewDiscussion.visibility = View.GONE
@@ -607,7 +617,7 @@ class DetailConversationActivity : CommentActivity() {
     // --- Envoi message / commentaire ---
     override fun addComment() {
         val selectedUri = photoUri
-        if (selectedUri != null && binding.ivThumbnail.isVisible) {
+        if (selectedUri != null && binding.layoutPhoto.isVisible) {
             sendImageMessage(selectedUri)
             photoUri = null
             return

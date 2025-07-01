@@ -427,8 +427,7 @@ object PushNotificationManager {
 
         val instance = pushNotificationMessage.content?.extra?.instance
         val tracking = pushNotificationMessage.content?.extra?.tracking
-        Timber.wtf("wtf instance = $instance")
-        Timber.wtf("wtf tracking = $tracking")
+
         val isDiscussionTracking = tracking in listOf(
             "public_chat_message_on_create",
             "post_on_create_to_outing",

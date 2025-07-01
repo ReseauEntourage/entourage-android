@@ -56,6 +56,7 @@ protected var isConversation = false
 protected var isFromNotif = false
 var currentParentPost:Post? = null
 private val universalLinkManager = UniversalLinkManager(this)
+var photoUri: Uri? = null
 
 override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -134,7 +135,6 @@ protected fun handleCommentPosted(post: Post?) {
 }
 
 fun updateView(emptyState: Boolean) {
-    Timber.wtf("wtf isMember $isMember")
     if (emptyState) {
         binding.emptyState.visibility = View.GONE
         binding.comments.visibility = if (currentParentPost != null) View.VISIBLE else View.GONE
@@ -215,7 +215,7 @@ private fun handleCommentAction() {
             Html.toHtml(binding.commentMessage.text)
         }
 
-        if (message.isNotBlank()) {
+        if (message.isNotBlank() || photoUri != null) {
             // Désactiver le bouton et afficher la progress bar
             binding.comment.isEnabled = false
             binding.progressBar.visibility = View.VISIBLE
@@ -225,11 +225,11 @@ private fun handleCommentAction() {
                 userId = EntourageApplication.me(this@CommentActivity)?.id ?: 0
                 avatarURLAsString = EntourageApplication.me(this@CommentActivity)?.avatarURL
             }
-
             comment = Post(
                 idInternal = UUID.randomUUID(),
                 content = message,
                 postId = postId,
+                imageUrl = photoUri?.toString(),
                 user = user
             )
 

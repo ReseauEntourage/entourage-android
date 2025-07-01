@@ -180,3 +180,19 @@ class ConversationAuthor (
     @SerializedName("display_name")
     var username:String?
 )
+
+data class ConversationMembership(
+    @SerializedName("status") val status: String?,
+    @SerializedName("joinable_status") val joinableStatus: String?,
+    @SerializedName("name") val name: String?,
+    @SerializedName("joinable_type") val joinableType: String?,
+    @SerializedName("joinable_id") val joinableId: Int?,
+    @SerializedName("number_of_people") val numberOfPeople: Int?,
+    @SerializedName("number_of_root_chat_messages") val numberOfRootMessages: Int?,
+    @SerializedName("number_of_unread_messages") val numberOfUnreadMessages: Int?,
+    @SerializedName("last_chat_message") val lastChatMessage: LastMessage?
+)
+
+data class ConversationMembershipsWrapper(
+    @SerializedName("memberships") val memberships: List<ConversationMembership>
+)

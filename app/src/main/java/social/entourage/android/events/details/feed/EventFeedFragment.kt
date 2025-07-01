@@ -168,7 +168,6 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
 
     private fun handleResponseGetEvent(getEvent: Events?) {
         getEvent?.let {
-            Timber.wtf("wtf event id : ${it.id}")
             event = it
             updateView()
             if(shouldAddToAgenda){

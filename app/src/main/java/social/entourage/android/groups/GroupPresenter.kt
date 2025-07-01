@@ -545,7 +545,6 @@ class GroupPresenter: ViewModel() {
     }
 
     fun addComment(groupId: Int, comment: Post?) {
-        Timber.wtf("wtf comment added " + Gson().toJson(comment))
         val messageChat = ArrayMap<String, Any>()
         messageChat["content"] = comment?.content
         messageChat["parent_id"] = comment?.postId.toString()
