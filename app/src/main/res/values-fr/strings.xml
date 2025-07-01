@@ -1533,11 +1533,11 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="birthday_date_format">dd-MM</string>
     <string name="events_date">dd/MM/yyyy</string>
     <string name="events_time">HH\'h\'mm</string>
-    <string name="duration_month">%s mois</string>
-    <string name="duration_weeks">%s sem</string>
-    <string name="duration_days">%s j</string>
-    <string name="duration_hours">%s h</string>
-    <string name="duration_minutes">%s min</string>
+    <string name="duration_month">%d mois</string>
+    <string name="duration_weeks">%d sem</string>
+    <string name="duration_days">%d j</string>
+    <string name="duration_hours">%d h</string>
+    <string name="duration_minutes">%d min</string>
     <string name="duration_secondes">à l\'instant</string>
 
     <!--    STRING Entourage-->
@@ -2910,6 +2910,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="option_both_desc">Proposer du soutien et en recevoir</string>
     <string name="question_location">Quel est votre quartier ?</string>
     <string name="input_location">Adresse ville ou département</string>
+    <string name="needs_to_join_group">Vous devez rejoindre le groupe pour effectuer cette action.</string>
 
 </resources>
 

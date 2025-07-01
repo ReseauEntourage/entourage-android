@@ -1484,11 +1484,11 @@
     <string name="x_days_ago">قبل %s من الأيام</string>
     <string name="date_this_month">هذا الشهر</string>
     <string name="x_months_ago">قبل %s من الأشهر</string>
-    <string name="duration_month">%s شهرًا</string>
-    <string name="duration_weeks">%s أسبوع</string>
-    <string name="duration_days">%s ي</string>
-    <string name="duration_hours">%s ح</string>
-    <string name="duration_minutes">%s دقيقة</string>
+    <string name="duration_month">%d شهرًا</string>
+    <string name="duration_weeks">%d أسبوع</string>
+    <string name="duration_days">%d ي</string>
+    <string name="duration_hours">%d ح</string>
+    <string name="duration_minutes">%d دقيقة</string>
     <string name="duration_secondes">في لحظة \</string>
 
     <!--    STRING Entourage-->
@@ -2902,4 +2902,5 @@
     <string name="option_both_desc" lang="ar">تقديم الدعم وتلقيه.</string>
     <string name="question_location" lang="ar">ما هو حيك؟</string>
     <string name="input_location" lang="ar">عنوان المدينة أو المنطقة</string>
+    <string name="needs_to_join_group" lang="ar">Vous devez rejoindre le groupe pour effectuer cette action.</string>
 </resources>

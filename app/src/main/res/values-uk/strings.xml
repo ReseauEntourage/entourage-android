@@ -1511,12 +1511,12 @@
     <string name="x_days_ago">%s днів тому</string>
     <string name="date_this_month">цього місяця</string>
     <string name="x_months_ago">%s місяців тому</string>
-    <string name="duration_month">%s місяць</string>
-    <string name="duration_weeks">%s тиждень</string>
-    <string name="duration_days">%s j</string>
-    <string name="duration_hours">%s год</string>
-    <string name="duration_minutes">%s хв</string>
-    <string name="duration_secondes">у момент \</string>
+    <string name="duration_month">%d місяць</string>
+    <string name="duration_weeks">%d тиждень</string>
+    <string name="duration_days">%d j</string>
+    <string name="duration_hours">%d год</string>
+    <string name="duration_minutes">%d хв</string>
+    <string name="duration_secondes">у момент</string>
 
     <!--    STRING Entourage-->
 
@@ -2788,4 +2788,5 @@
     <string name="option_both_desc" lang="uk">Підтримувати та отримувати підтримку.</string>
     <string name="question_location" lang="uk">Який ваш район?</string>
     <string name="input_location" lang="uk">Адреса міста або області</string>
+    <string name="needs_to_join_group" lang="uk">Vous devez rejoindre le groupe pour effectuer cette action.</string>
 </resources>

@@ -28,12 +28,11 @@ import android.widget.Toast
 import com.google.android.gms.maps.model.BitmapDescriptor
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import social.entourage.android.R
+import social.entourage.android.api.model.Events
 import social.entourage.android.events.EventModel
 import social.entourage.android.events.list.SectionHeader
-import social.entourage.android.api.model.Events
 import social.entourage.android.language.LanguageManager
 import social.entourage.android.tools.log.AnalyticsEvents
-import timber.log.Timber
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -43,7 +42,8 @@ import java.time.YearMonth
 import java.time.ZoneId
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
-import java.util.*
+import java.util.Calendar
+import java.util.Date
 import kotlin.math.max
 
 object Utils {
@@ -215,8 +215,6 @@ object Utils {
         }
     }
 
-
-
     fun dateAsStringLitteralFromNow(date: Date, context: Context, format:Int?,caps:Boolean = true): String {
         val lastUpdate = Calendar.getInstance()
         lastUpdate.time = date
@@ -234,7 +232,7 @@ object Utils {
         }
 
         // custom regular date
-        var locale = LanguageManager.getLocaleFromPreferences(context)
+        val locale = LanguageManager.getLocaleFromPreferences(context)
         val dateStr = SimpleDateFormat(context.getString(R.string.action_date_list_formatter),
             locale).format(date)
         return if (format != null) context.getString(format,dateStr) else dateStr
@@ -297,10 +295,6 @@ object Utils {
         return context.getString(R.string.date_format_short, lastUpdate[Calendar.DAY_OF_MONTH], month)
     }
 
-    fun checkPhoneNumberFormat(phoneNumber: String): String? {
-        return checkPhoneNumberFormat(null, phoneNumber)
-    }
-
     fun checkPhoneNumberFormat(countryCode: String?, phoneNumber: String): String? {
         var correctPhoneNumber = phoneNumber
         if (correctPhoneNumber.startsWith("0")) {
@@ -350,7 +344,7 @@ object Utils {
     @Throws(IOException::class)
     private fun createImageFile(context:Context): File {
         // Create an image file name
-        var locale = LanguageManager.getLocaleFromPreferences(context)
+        val locale = LanguageManager.getLocaleFromPreferences(context)
         val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss", locale).format(Date())
         val imageFileName = "ENTOURAGE_CROP_" + timeStamp + "_"
         val storageDir = Environment.getExternalStoragePublicDirectory(
