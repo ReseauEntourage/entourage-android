@@ -437,6 +437,7 @@ class DetailConversationActivity : CommentActivity() {
     private fun showThumbnail(uri: Uri) {
         //Hide options
         // Animation du layout vers le bas
+        binding.optionButton.visibility = View.GONE
         val slideOut = AnimationUtils.loadAnimation(this, R.anim.slide_out_down)
         binding.layoutOption.startAnimation(slideOut)
 
@@ -499,6 +500,7 @@ class DetailConversationActivity : CommentActivity() {
 
         binding.commentMessage.text.clear()
         binding.layoutPhoto.visibility = View.GONE
+        binding.optionButton.visibility = View.VISIBLE
     }
 
 

@@ -237,7 +237,7 @@
             android:layout_gravity="end"
             android:gravity="center_vertical"
             android:orientation="horizontal"
-            android:paddingHorizontal="28dp"
+            android:paddingHorizontal="10dp"
             android:paddingBottom="20dp"
             android:weightSum="1"
             app:layout_constraintBottom_toTopOf="@+id/layout_option">

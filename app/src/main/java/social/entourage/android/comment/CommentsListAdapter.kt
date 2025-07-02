@@ -202,7 +202,6 @@ class CommentsListAdapter(
             // Gestion de l'image
             if (!comment.imageUrl.isNullOrEmpty()) {
                 bindingLeft.commentImageContainer.visibility = View.VISIBLE
-
                 Glide.with(context)
                     .asBitmap()
                     .load(comment.imageUrl)
@@ -210,8 +209,6 @@ class CommentsListAdapter(
                         override fun onResourceReady(resource: Bitmap, transition: com.bumptech.glide.request.transition.Transition<in Bitmap>?) {
                             val isPortrait = resource.height > resource.width
                             val screenWidth = (context as Activity).resources.displayMetrics.widthPixels
-
-                            // Redimensionne l'image - CORRECTION: création sécurisée des layoutParams
                             val currentImageParams = bindingLeft.commentImage.layoutParams
                             val newImageParams = when (currentImageParams) {
                                 is ViewGroup.MarginLayoutParams -> currentImageParams.apply {
@@ -222,7 +219,6 @@ class CommentsListAdapter(
                                     if (isPortrait) screenWidth / 2 else ViewGroup.LayoutParams.MATCH_PARENT,
                                     ViewGroup.LayoutParams.WRAP_CONTENT
                                 ).also {
-                                    // Copie les marges si possible
                                     if (currentImageParams is ViewGroup.MarginLayoutParams) {
                                         it.setMargins(
                                             currentImageParams.leftMargin,
@@ -235,15 +231,12 @@ class CommentsListAdapter(
                             }
                             bindingLeft.commentImage.layoutParams = newImageParams
                             bindingLeft.commentImage.setImageBitmap(resource)
-
-                            // Ajuste messageContainer - CORRECTION: gestion sécurisée
                             val currentContainerParams = bindingLeft.messageContainer.layoutParams
                             val newContainerParams = when (currentContainerParams) {
                                 is ViewGroup.MarginLayoutParams -> currentContainerParams.apply {
                                     width = newImageParams.width
                                 }
                                 else -> ViewGroup.MarginLayoutParams(newImageParams.width, currentContainerParams.height).also {
-                                    // Copie les marges si possible
                                     if (currentContainerParams is ViewGroup.MarginLayoutParams) {
                                         it.setMargins(
                                             currentContainerParams.leftMargin,
@@ -261,7 +254,6 @@ class CommentsListAdapter(
                             bindingLeft.commentImage.setImageDrawable(placeholder)
                         }
                     })
-
                 bindingLeft.commentImage.setOnClickListener {
                     val intent = Intent(context, ImageZoomActivity::class.java)
                     intent.putExtra("image_url", comment.imageUrl)
@@ -270,80 +262,29 @@ class CommentsListAdapter(
                 val hasOnlyImage = contentToShow.isBlank() && !comment.imageUrl.isNullOrEmpty()
                 if (hasOnlyImage) {
                     bindingLeft.comment.visibility = View.GONE
-                    bindingLeft.comment.layoutParams.height = 0
                     bindingLeft.messageContainer.setBackgroundResource(0)
                 } else {
                     bindingLeft.comment.visibility = View.VISIBLE
                 }
-
                 bindingLeft.commentImage.setOnLongClickListener {
                     val commentLang = comment.contentTranslations?.fromLang ?: ""
                     DataLanguageStock.updateContentToCopy(comment.content ?: "")
                     onItemClick.onCommentReport(comment.id, isForEvent, isForGroup, isMe, commentLang)
                     true
                 }
-
-
             } else {
                 bindingLeft.commentImageContainer.visibility = View.GONE
                 bindingLeft.commentImage.setImageDrawable(null)
-
-                // Reset de l'image - CORRECTION: création sécurisée
-                val currentImageParams = bindingLeft.commentImage.layoutParams
-                val resetImageParams = when (currentImageParams) {
-                    is ViewGroup.MarginLayoutParams -> currentImageParams.apply {
-                        width = ViewGroup.LayoutParams.WRAP_CONTENT
-                        height = ViewGroup.LayoutParams.WRAP_CONTENT
-                    }
-                    else -> ViewGroup.MarginLayoutParams(
-                        ViewGroup.LayoutParams.WRAP_CONTENT,
-                        ViewGroup.LayoutParams.WRAP_CONTENT
-                    ).also {
-                        // Copie les marges si possible
-                        if (currentImageParams is ViewGroup.MarginLayoutParams) {
-                            it.setMargins(
-                                currentImageParams.leftMargin,
-                                currentImageParams.topMargin,
-                                currentImageParams.rightMargin,
-                                currentImageParams.bottomMargin
-                            )
-                        }
-                    }
-                }
-                bindingLeft.commentImage.layoutParams = resetImageParams
-
-                // Reset safe pour messageContainer - CORRECTION: gestion sécurisée
-                val currentContainerParams = bindingLeft.messageContainer.layoutParams
-                val resetContainerParams = when (currentContainerParams) {
-                    is ViewGroup.MarginLayoutParams -> currentContainerParams.apply {
-                        width = ViewGroup.LayoutParams.WRAP_CONTENT
-                    }
-                    else -> ViewGroup.MarginLayoutParams(
-                        ViewGroup.LayoutParams.WRAP_CONTENT,
-                        currentContainerParams.height
-                    ).also {
-                        // Copie les marges si possible
-                        if (currentContainerParams is ViewGroup.MarginLayoutParams) {
-                            it.setMargins(
-                                currentContainerParams.leftMargin,
-                                currentContainerParams.topMargin,
-                                currentContainerParams.rightMargin,
-                                currentContainerParams.bottomMargin
-                            )
-                        }
-                    }
-                }
-                bindingLeft.messageContainer.layoutParams = resetContainerParams
+                bindingLeft.comment.visibility = View.VISIBLE
             }
 
-            // Taille dynamique - CORRECTION: gestion sécurisée
+            // Taille dynamique
             val currentCommentParams = bindingLeft.comment.layoutParams
             val newCommentParams = when (currentCommentParams) {
                 is ViewGroup.MarginLayoutParams -> currentCommentParams.apply {
                     height = ViewGroup.LayoutParams.WRAP_CONTENT
                 }
                 else -> ViewGroup.MarginLayoutParams(currentCommentParams.width, ViewGroup.LayoutParams.WRAP_CONTENT).also {
-                    // Copie les marges si possible
                     if (currentCommentParams is ViewGroup.MarginLayoutParams) {
                         it.setMargins(
                             currentCommentParams.leftMargin,
@@ -370,6 +311,7 @@ class CommentsListAdapter(
 
 
 
+
         // ----------------------------------------------------------------------------------------
         // bindRight : Affiche un commentaire "à droite"
         // ----------------------------------------------------------------------------------------
@@ -391,17 +333,15 @@ class CommentsListAdapter(
 
             // Récupère la chaîne final
             var contentToShow = getFinalContent(comment, isTranslated)
+            if (contentToShow.isNullOrEmpty()) contentToShow = ""
 
             // Gère statuts "deleted"/"offensif"
             if (comment.status in listOf("deleted", "offensive", "offensible")) {
                 handleDeletedOrOffensiveRight(bindingRight, comment, isMe)
                 return
             } else {
-                // Masquer l'icône de suppression si le commentaire n'est pas en état "deleted"
                 bindingRight.comment.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null)
             }
-
-            if (contentToShow.isNullOrEmpty()) contentToShow = ""
 
             // On parse en HTML
             val spanned = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -427,6 +367,7 @@ class CommentsListAdapter(
 
             // Couleur du texte normal
             bindingRight.comment.setTextColor(ContextCompat.getColor(context, R.color.black))
+
             // Couleur des liens
             bindingRight.comment.setLinkTextColor(ContextCompat.getColor(context, R.color.bright_blue))
 
@@ -448,9 +389,9 @@ class CommentsListAdapter(
                     ContextCompat.getColor(context, R.color.light_orange)
                 )
             }
+
             if (!comment.imageUrl.isNullOrEmpty()) {
                 bindingRight.commentImageContainer.visibility = View.VISIBLE
-
                 Glide.with(context)
                     .asBitmap()
                     .load(comment.imageUrl)
@@ -458,12 +399,10 @@ class CommentsListAdapter(
                         override fun onResourceReady(resource: Bitmap, transition: com.bumptech.glide.request.transition.Transition<in Bitmap>?) {
                             val isPortrait = resource.height > resource.width
                             val screenWidth = (context as Activity).resources.displayMetrics.widthPixels
-
                             val layoutParams = bindingRight.commentImage.layoutParams
                             layoutParams.width = if (isPortrait) screenWidth / 2 else ViewGroup.LayoutParams.MATCH_PARENT
                             layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT
                             bindingRight.commentImage.layoutParams = layoutParams
-
                             bindingRight.commentImage.setImageBitmap(resource)
                         }
 
@@ -471,33 +410,30 @@ class CommentsListAdapter(
                             bindingRight.commentImage.setImageDrawable(placeholder)
                         }
                     })
-
                 bindingRight.commentImage.setOnClickListener {
                     val intent = Intent(context, ImageZoomActivity::class.java)
                     intent.putExtra("image_url", comment.imageUrl)
                     context.startActivity(intent)
                 }
-
                 val hasOnlyImage = contentToShow.isBlank() && !comment.imageUrl.isNullOrEmpty()
                 if (hasOnlyImage) {
                     bindingRight.comment.visibility = View.GONE
-                    bindingRight.comment.layoutParams.height = 0
                     bindingRight.messageContainer.setBackgroundResource(0)
                 } else {
                     bindingRight.comment.visibility = View.VISIBLE
                 }
-
                 bindingRight.commentImage.setOnLongClickListener {
                     val commentLang = comment.contentTranslations?.fromLang ?: ""
                     DataLanguageStock.updateContentToCopy(comment.content ?: "")
                     onItemClick.onCommentReport(comment.id, isForEvent, isForGroup, isMe, commentLang)
                     true
                 }
-
             } else {
                 bindingRight.commentImageContainer.visibility = View.GONE
+                bindingRight.comment.visibility = View.VISIBLE
             }
         }
+
 
         // ----------------------------------------------------------------------------------------
         // bindDetails : affichage du "post parent" (TYPE_DETAIL)
