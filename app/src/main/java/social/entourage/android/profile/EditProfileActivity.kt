@@ -181,12 +181,12 @@ class EditProfileActivity : BaseActivity(), AvatarUploadView {
 
     private fun setupLanguageButton() {
         // Bouton langues désactivé pour l'instant
-        binding.language.layout.setOnClickListener {
+        binding.language.peciLayout.setOnClickListener {
             val intent = Intent(this, ActivityChooseLanguage::class.java)
             startActivity(intent)
             overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
         }
-        binding.language.layout.visibility = View.GONE
+        binding.language.peciLayout.visibility = View.GONE
     }
 
     private fun setupInterestsButtons() {
@@ -283,16 +283,16 @@ class EditProfileActivity : BaseActivity(), AvatarUploadView {
 
         with(binding) {
             // Configuration RTL si nécessaire
-            configureTextDirection(isArabic, firstname.content)
-            configureTextDirection(isArabic, lastname.content)
+            configureTextDirection(isArabic, firstname.peeiContent)
+            configureTextDirection(isArabic, lastname.peeiContent)
             configureTextDirection(isArabic, description.content)
-            configureTextDirection(isArabic, birthday.content)
-            configureTextDirection(isArabic, phone.content)
-            configureTextDirection(isArabic, email.content)
+            configureTextDirection(isArabic, birthday.peeiContent)
+            configureTextDirection(isArabic, phone.peciContent)
+            configureTextDirection(isArabic, email.peeiContent)
             configureTextDirection(isArabic, cityAction)
 
-            firstname.content.setText(user.firstName)
-            lastname.content.setText(user.lastName)
+            firstname.peeiContent.setText(user.firstName)
+            lastname.peeiContent.setText(user.lastName)
 
             if (descriptionRegistered.isEmpty()) {
                 description.content.setText(user.about)
@@ -300,15 +300,15 @@ class EditProfileActivity : BaseActivity(), AvatarUploadView {
                 description.content.setText(descriptionRegistered)
             }
 
-            birthday.content.transformIntoDatePicker(
+            birthday.peeiContent.transformIntoDatePicker(
                 this@EditProfileActivity,
                 getString(R.string.birthday_date_format)
             )
-            birthday.content.setText(user.birthday)
+            birthday.peeiContent.setText(user.birthday)
 
-            phone.content.setText(user.phone)
-            phone.content.setTextColor(ContextCompat.getColor(this@EditProfileActivity, R.color.dark_grey_opacity_40))
-            email.content.setText(user.email)
+            phone.peciContent.setText(user.phone)
+            phone.peciContent.setTextColor(ContextCompat.getColor(this@EditProfileActivity, R.color.dark_grey_opacity_40))
+            email.peeiContent.setText(user.email)
             cityAction.setText(user.address?.displayAddress ?: "")
 
             seekBarLayout.seekbar.progress = user.travelDistance ?: 0
@@ -401,11 +401,11 @@ class EditProfileActivity : BaseActivity(), AvatarUploadView {
 
     private fun onSaveProfile() {
         if(checkEmail() && checkLastName()){
-            val firstname = binding.firstname.content.text.trimEnd()
-            val lastname = binding.lastname.content.text.trimEnd()
+            val firstname = binding.firstname.peeiContent.text.trimEnd()
+            val lastname = binding.lastname.peeiContent.text.trimEnd()
             val about = binding.description.content.text?.trimEnd()
-            val email = binding.email.content.text.trimEnd()
-            val birthday = binding.birthday.content.text.trimEnd()
+            val email = binding.email.peeiContent.text.trimEnd()
+            val birthday = binding.birthday.peeiContent.text.trimEnd()
             val travelDistance = binding.seekBarLayout.seekbar.progress
             val editedUser: ArrayMap<String, Any> = ArrayMap()
             editedUser["first_name"] = firstname
@@ -420,15 +420,15 @@ class EditProfileActivity : BaseActivity(), AvatarUploadView {
     }
 
     private fun checkEmail(): Boolean {
-        if(binding.email.content.text.isEmpty()){
+        if(binding.email.peeiContent.text.isEmpty()){
             return true
         }
-        val isEmailCorrect = binding.email.content.text.trimEnd().isValidEmail()
+        val isEmailCorrect = binding.email.peeiContent.text.trimEnd().isValidEmail()
         with(binding.email) {
             error.root.visibility = if (isEmailCorrect) View.GONE else View.VISIBLE
             error.errorMessage.text = getString(R.string.error_email)
             DrawableCompat.setTint(
-                content.background,
+                peeiContent.background,
                 ContextCompat.getColor(
                     this@EditProfileActivity,
                     if (isEmailCorrect) R.color.light_orange_opacity_50 else R.color.red
@@ -439,12 +439,12 @@ class EditProfileActivity : BaseActivity(), AvatarUploadView {
     }
 
     private fun checkLastName():Boolean{
-        val isLastnameCorrect = binding.lastname.content.text.trimEnd().length > 2
+        val isLastnameCorrect = binding.lastname.peeiContent.text.trimEnd().length > 2
         with(binding.lastname) {
             error.root.visibility = if (isLastnameCorrect) View.GONE else View.VISIBLE
             error.errorMessage.text = getString(R.string.error_lastname)
             DrawableCompat.setTint(
-                content.background,
+                peeiContent.background,
                 ContextCompat.getColor(
                     this@EditProfileActivity,
                     if (isLastnameCorrect) R.color.light_orange_opacity_50 else R.color.red
@@ -482,8 +482,8 @@ class EditProfileActivity : BaseActivity(), AvatarUploadView {
     // --------------------------
 
     private fun checkError(): Boolean {
-        val isLastnameCorrect = binding.lastname.content.text.trimEnd().length > 2
-        val isEmailCorrect = binding.email.content.text.trimEnd().isValidEmail()
+        val isLastnameCorrect = binding.lastname.peeiContent.text.trimEnd().length > 2
+        val isEmailCorrect = binding.email.peeiContent.text.trimEnd().isValidEmail()
 
         // Gestion de l'affichage des erreurs
         updateErrorUI(binding.lastname, isLastnameCorrect, getString(R.string.error_lastname))
@@ -493,14 +493,14 @@ class EditProfileActivity : BaseActivity(), AvatarUploadView {
     }
 
     private fun updateErrorUI(
-        itemLayout: social.entourage.android.databinding.NewProfileEditItemBinding,
+        itemLayout: social.entourage.android.databinding.ProfileEditEditableItemBinding,
         isCorrect: Boolean,
         errorMsg: String
     ) {
         itemLayout.error.root.visibility = if (isCorrect) View.GONE else View.VISIBLE
         itemLayout.error.errorMessage.text = errorMsg
         DrawableCompat.setTint(
-            itemLayout.content.background,
+            itemLayout.peeiContent.background,
             ContextCompat.getColor(this, if (isCorrect) R.color.light_orange_opacity_50 else R.color.red)
         )
     }
