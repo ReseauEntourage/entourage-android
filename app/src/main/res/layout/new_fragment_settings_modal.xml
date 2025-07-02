@@ -129,7 +129,7 @@
 
                 <include
                     android:id="@+id/edit"
-                    layout="@layout/profile_settings_item"
+                    layout="@layout/layout_settings_item"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="25dp"
@@ -147,7 +147,7 @@
 
                 <include
                     android:id="@+id/edit_recurrence"
-                    layout="@layout/profile_settings_item"
+                    layout="@layout/layout_settings_item"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="25dp"
@@ -167,7 +167,7 @@
 
                 <include
                     android:id="@+id/share"
-                    layout="@layout/profile_settings_item"
+                    layout="@layout/layout_settings_item"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="25dp"
@@ -176,7 +176,7 @@
 
                 <include
                     android:id="@+id/rules"
-                    layout="@layout/profile_settings_item"
+                    layout="@layout/layout_settings_item"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="25dp"
