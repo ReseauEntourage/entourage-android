@@ -191,9 +191,9 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
             rules.profileSettingsItemDivider.visibility = View.GONE
             edit.profileSettingsItemDivider.visibility = View.GONE
             editRecurrence.profileSettingsItemDivider.visibility = View.GONE
-            notificationNewMembers.divider.visibility = View.GONE
+            notificationNewMembers.notificationsCardDivider.visibility = View.GONE
             TextViewCompat.setTextAppearance(
-                notificationAll.tvLabel,
+                notificationAll.notificationsCardTvLabel,
                 R.style.left_courant_bold_black
             )
             event?.let {

@@ -13,40 +13,40 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/layout"
+        android:id="@+id/posts_separator_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <View
-            android:id="@+id/view_left"
+            android:id="@+id/posts_separator_view_left"
             android:layout_width="0dp"
             android:layout_height="1dp"
             android:background="@color/light_orange"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintRight_toLeftOf="@id/content"
+            app:layout_constraintRight_toLeftOf="@id/posts_separator_content"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/content"
+            android:id="@+id/posts_separator_content"
             style="@style/left_courant_black"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="5dp"
             android:layout_marginBottom="11dp"
             android:text="@{content}"
-            app:layout_constraintStart_toEndOf="@id/view_left"
-            app:layout_constraintRight_toLeftOf="@id/view_right"
+            app:layout_constraintStart_toEndOf="@id/posts_separator_view_left"
+            app:layout_constraintRight_toLeftOf="@id/posts_separator_view_right"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Notifications" />
 
         <View
-            android:id="@+id/view_right"
+            android:id="@+id/posts_separator_view_right"
             android:layout_width="0dp"
             android:layout_height="1dp"
             android:background="@color/light_orange"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@id/content"
+            app:layout_constraintStart_toEndOf="@id/posts_separator_content"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 

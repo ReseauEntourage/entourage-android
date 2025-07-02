@@ -440,7 +440,7 @@ purus dui, aliquet cursus tellus a, dictum hen." />
 
                     <include
                         android:id="@+id/posts_new"
-                        layout="@layout/new_posts_separator"
+                        layout="@layout/item_group_posts_separator"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="33dp"
@@ -457,7 +457,7 @@ purus dui, aliquet cursus tellus a, dictum hen." />
 
                     <include
                         android:id="@+id/posts_old"
-                        layout="@layout/new_posts_separator"
+                        layout="@layout/item_group_posts_separator"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="33dp"

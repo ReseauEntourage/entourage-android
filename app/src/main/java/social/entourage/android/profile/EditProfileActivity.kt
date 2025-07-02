@@ -258,7 +258,7 @@ class EditProfileActivity : BaseActivity(), AvatarUploadView {
     }
 
     private fun setBackButton() {
-        binding.header.iconBack.setOnClickListener {
+        binding.header.headerIconBack.setOnClickListener {
             finish()
         }
     }

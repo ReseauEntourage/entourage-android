@@ -61,7 +61,7 @@ class PedagoContentDetailsFragment : Fragment() {
     }
 
     private fun handleBackButton() {
-        binding.header.iconBack.setOnClickListener {
+        binding.header.headerIconBack.setOnClickListener {
             if(isFromNotifs) {
                 activity?.onBackPressed()
             }

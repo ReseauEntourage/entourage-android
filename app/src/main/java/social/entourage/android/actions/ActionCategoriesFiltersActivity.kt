@@ -27,14 +27,14 @@ class ActionCategoriesFiltersActivity : AppCompatActivity() {
 
         setupViews()
         initializeActionCat()
-        updatePaddingTopForEdgeToEdge(binding.header.layout)
+        updatePaddingTopForEdgeToEdge(binding.header.headerLayout)
     }
 
     private fun setupViews() {
         binding.validate.button.setOnClickListener {
             onSaveFilters()
         }
-        binding.header.iconBack.setOnClickListener {
+        binding.header.headerIconBack.setOnClickListener {
             onCancel()
         }
     }

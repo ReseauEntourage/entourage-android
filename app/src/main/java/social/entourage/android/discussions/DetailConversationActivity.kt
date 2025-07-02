@@ -13,7 +13,6 @@ import android.text.Html
 import android.text.TextWatcher
 import android.view.View
 import android.view.animation.AnimationUtils
-import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
@@ -23,28 +22,31 @@ import androidx.core.content.FileProvider
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.text.HtmlCompat
 import androidx.core.view.isVisible
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.google.gson.Gson
-import kotlinx.coroutines.launch
 import social.entourage.android.BuildConfig
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
-import social.entourage.android.api.model.*
+import social.entourage.android.api.model.Conversation
+import social.entourage.android.api.model.EntourageUser
+import social.entourage.android.api.model.Events
+import social.entourage.android.api.model.GroupMember
+import social.entourage.android.api.model.Post
+import social.entourage.android.api.model.SmallTalk
+import social.entourage.android.api.model.User
+import social.entourage.android.api.model.toGroupMember
 import social.entourage.android.comment.CommentActivity
 import social.entourage.android.comment.CommentsListAdapter
 import social.entourage.android.comment.MentionAdapter
 import social.entourage.android.discussions.members.MembersConversationFragment
 import social.entourage.android.events.EventsPresenter
 import social.entourage.android.events.details.feed.EventFeedActivity
-import social.entourage.android.language.LanguageManager
 import social.entourage.android.profile.ProfileFullActivity
 import social.entourage.android.report.DataLanguageStock
 import social.entourage.android.small_talks.SmallTalkGuidelinesActivity
-import social.entourage.android.small_talks.SmallTalkListOtherBands
 import social.entourage.android.small_talks.SmallTalkViewModel
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.utils.Const
@@ -54,7 +56,9 @@ import social.entourage.android.tools.view.WebViewFragment
 import timber.log.Timber
 import java.io.File
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Calendar
+import java.util.Locale
+import java.util.UUID
 
 class DetailConversationActivity : CommentActivity() {
 
@@ -295,11 +299,11 @@ class DetailConversationActivity : CommentActivity() {
     }
 
     private fun setCameraIcon() {
-        binding.header.iconCamera.isVisible = !smallTalk?.meetingUrl.isNullOrBlank()
-        binding.header.iconCamera.setImageResource(R.drawable.ic_camera)
-        binding.header.cardIconCamera.setBackgroundColor(ContextCompat.getColor(this, R.color.transparent))
-        binding.header.iconCamera.setBackgroundColor(ContextCompat.getColor(this, R.color.transparent))
-        binding.header.iconCamera.setOnClickListener {
+        binding.header.headerIconCamera.isVisible = !smallTalk?.meetingUrl.isNullOrBlank()
+        binding.header.headerIconCamera.setImageResource(R.drawable.ic_camera)
+        binding.header.headerCardIconCamera.setBackgroundColor(ContextCompat.getColor(this, R.color.transparent))
+        binding.header.headerIconCamera.setBackgroundColor(ContextCompat.getColor(this, R.color.transparent))
+        binding.header.headerIconCamera.setOnClickListener {
             Timber.wtf("eho url : ${smallTalk?.meetingUrl}")
             AnalyticsEvents.logEvent(AnalyticsEvents.CLIC__SMALLTALK__VISIO_ICON)
             smallTalk?.meetingUrl?.let { url ->
@@ -421,9 +425,9 @@ class DetailConversationActivity : CommentActivity() {
 
     // --- Header setup ---
     private fun setupHeader() {
-        binding.header.iconSettings.setImageDrawable(resources.getDrawable(R.drawable.new_settings))
-        binding.header.cardIconSetting.setBackgroundColor(ContextCompat.getColor(this, R.color.transparent))
-        binding.header.iconSettings.setBackgroundColor(ContextCompat.getColor(this, R.color.transparent))
+        binding.header.headerIconSettings.setImageDrawable(resources.getDrawable(R.drawable.new_settings))
+        binding.header.headerCardIconSetting.setBackgroundColor(ContextCompat.getColor(this, R.color.transparent))
+        binding.header.headerIconSettings.setBackgroundColor(ContextCompat.getColor(this, R.color.transparent))
     }
 
     private fun handleSmallTalkDetail(smallTalk: SmallTalk?) {
@@ -614,15 +618,15 @@ class DetailConversationActivity : CommentActivity() {
                 )
             }
             if (event.metadata?.portraitThumbnailUrl.isNullOrBlank()) {
-                binding.header.ivEvent.visibility = View.GONE
-                Glide.with(this).load(R.drawable.placeholder_my_event).into(binding.header.ivEvent)
+                binding.header.headerIvEvent.visibility = View.GONE
+                Glide.with(this).load(R.drawable.placeholder_my_event).into(binding.header.headerIvEvent)
             } else {
-                binding.header.ivEvent.visibility = View.GONE
+                binding.header.headerIvEvent.visibility = View.GONE
                 Glide.with(this)
                     .load(event.metadata?.portraitThumbnailUrl)
                     .transform(RoundedCorners(10))
                     .error(R.drawable.placeholder_my_event)
-                    .into(binding.header.ivEvent)
+                    .into(binding.header.headerIvEvent)
             }
             binding.header.headerSubtitle.visibility = View.VISIBLE
             binding.header.headerTitle.text = event.title
@@ -744,7 +748,7 @@ class DetailConversationActivity : CommentActivity() {
 
 
     override fun handleReportPost(id: Int, commentLang: String) {
-        binding.header.iconSettings.setOnClickListener {
+        binding.header.headerIconSettings.setOnClickListener {
             SettingsDiscussionModalFragment.isSmallTalk = isSmallTalkMode
             DataLanguageStock.updatePostLanguage(commentLang)
             AnalyticsEvents.logEvent(AnalyticsEvents.Message_action_param)

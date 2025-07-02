@@ -429,7 +429,7 @@ class PostAdapter(
                 if (index < reactionsLayouts.size) {
                     val foundType = reactionTypes?.find { it.id == r.reactionId }
                     foundType?.let {
-                        Glide.with(context).load(it.imageUrl).into(reactionViews[index].image)
+                        Glide.with(context).load(it.imageUrl).into(reactionViews[index].reactionImage)
                         reactionsLayouts[index].visibility = View.VISIBLE
                     }
                 }
@@ -670,7 +670,7 @@ class PostAdapter(
             if (index < reactionsLayouts.size) {
                 val foundType = reactionTypes?.find { it.id == r.reactionId }
                 foundType?.let {
-                    Glide.with(context).load(it.imageUrl).into(reactionViews[index].image)
+                    Glide.with(context).load(it.imageUrl).into(reactionViews[index].reactionImage)
                     reactionsLayouts[index].visibility = View.VISIBLE
                 }
             }

@@ -2,12 +2,9 @@ package social.entourage.android.profile.editProfile
 
 import android.Manifest
 import android.content.ActivityNotFoundException
-import android.content.Context
-import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.provider.MediaStore
 import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
@@ -18,7 +15,6 @@ import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.base.BaseActivity
 import social.entourage.android.databinding.ActivityEditPhotoBinding
-import social.entourage.android.language.LanguageManager
 import social.entourage.android.onboarding.onboard.OnboardingEditPhotoFragment
 import social.entourage.android.profile.ProfilePresenter
 import social.entourage.android.tools.log.AnalyticsEvents
@@ -30,7 +26,8 @@ import timber.log.Timber
 import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Date
+import java.util.Locale
 
 class EditPhotoActivity : BaseActivity(), PhotoEditInterface, AvatarUploadView {
 
@@ -112,7 +109,7 @@ class EditPhotoActivity : BaseActivity(), PhotoEditInterface, AvatarUploadView {
             binding.buttonSmalltalkPrevious.visibility = View.GONE
         } else {
             AnalyticsEvents.logEvent(AnalyticsEvents.VIEW__SMALLTALK__PHOTO)
-            binding.header.layout.visibility = View.GONE
+            binding.header.headerLayout.visibility = View.GONE
             binding.title.text = getString(R.string.edit_photo_title)
             binding.subtitle.text = getString(R.string.edit_photo_subtitle)
         }
@@ -197,9 +194,9 @@ class EditPhotoActivity : BaseActivity(), PhotoEditInterface, AvatarUploadView {
     }
 
     private fun setBackButton() {
-        binding.header.iconBack.setOnClickListener {
+        binding.header.headerIconBack.setOnClickListener {
             binding.progressBar.visibility = View.VISIBLE
-            binding.header.iconBack.postDelayed({
+            binding.header.headerIconBack.postDelayed({
                 binding.progressBar.visibility = View.GONE
                 isFromSmallTalk = false
                 finish()

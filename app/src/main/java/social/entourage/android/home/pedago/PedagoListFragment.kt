@@ -1,21 +1,18 @@
 package social.entourage.android.home.pedago
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.gson.Gson
 import social.entourage.android.R
-import social.entourage.android.databinding.NewFragmentPedagoListBinding
-import social.entourage.android.home.HomePresenter
 import social.entourage.android.api.model.Category
 import social.entourage.android.api.model.Pedago
+import social.entourage.android.databinding.NewFragmentPedagoListBinding
+import social.entourage.android.home.HomePresenter
 import social.entourage.android.tools.log.AnalyticsEvents
-import timber.log.Timber
 
 class PedagoListFragment : Fragment() {
 
@@ -147,7 +144,7 @@ class PedagoListFragment : Fragment() {
     }
 
     private fun handleBackButton() {
-        binding.header.iconBack.setOnClickListener {
+        binding.header.headerIconBack.setOnClickListener {
             requireActivity().onBackPressed()
         }
     }

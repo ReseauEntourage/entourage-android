@@ -220,7 +220,7 @@ class EventFiltersActivity : AppCompatActivity() {
     }
 
     private fun setBackButton() {
-        binding.header.iconBack.setOnClickListener {
+        binding.header.headerIconBack.setOnClickListener {
             setResult(Activity.RESULT_CANCELED)
             finish()
         }

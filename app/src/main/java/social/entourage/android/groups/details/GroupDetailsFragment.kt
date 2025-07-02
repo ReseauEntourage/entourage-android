@@ -131,9 +131,9 @@ class GroupDetailsFragment : BottomSheetDialogFragment() {
         MetaDataRepository.metaData.observe(requireActivity(), ::handleMetaData)
         binding.rules.profileSettingsItemDivider.visibility = View.GONE
         binding.edit.profileSettingsItemDivider.visibility = View.GONE
-        binding.notificationNewMembers.divider.visibility = View.GONE
+        binding.notificationNewMembers.notificationsCardDivider.visibility = View.GONE
         TextViewCompat.setTextAppearance(
-            binding.notificationAll.tvLabel,
+            binding.notificationAll.notificationsCardTvLabel,
             R.style.left_courant_bold_black
         )
         group?.let {

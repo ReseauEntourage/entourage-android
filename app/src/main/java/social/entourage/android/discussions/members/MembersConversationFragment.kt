@@ -114,7 +114,7 @@ class MembersConversationFragment : BaseDialogFragment() {
     }
 
     private fun setupListeners() {
-        binding.header.iconBack.setOnClickListener { dismiss() }
+        binding.header.headerIconBack.setOnClickListener { dismiss() }
 
         binding.searchBar.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {

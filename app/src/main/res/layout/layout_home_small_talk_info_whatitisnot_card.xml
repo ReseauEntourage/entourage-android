@@ -7,7 +7,7 @@
     android:padding="10dp">
 
     <TextView
-        android:id="@+id/tv_small_talk_info_title"
+        android:id="@+id/tv_small_talk_info_not_title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="Ce que c’est"
@@ -20,7 +20,7 @@
         android:layout_marginHorizontal="10dp"/>
 
     <TextView
-        android:id="@+id/tv_small_talk_info_1"
+        android:id="@+id/tv_small_talk_info_not_1"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:drawableStart="@drawable/ic_uncheck_red"
@@ -36,7 +36,7 @@
         android:layout_marginHorizontal="10dp"/>
 
     <TextView
-        android:id="@+id/tv_small_talk_info_2"
+        android:id="@+id/tv_small_talk_info_not_2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:drawableStart="@drawable/ic_uncheck_red"
@@ -45,14 +45,14 @@
         android:text="Une rencontre authentique entre deux personnes"
         android:textColor="@color/black"
         android:textSize="14sp"
-        app:layout_constraintTop_toBottomOf="@id/tv_small_talk_info_1"
+        app:layout_constraintTop_toBottomOf="@id/tv_small_talk_info_not_1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="20dp"
         android:layout_marginHorizontal="10dp"/>
 
     <TextView
-        android:id="@+id/tv_small_talk_info_3"
+        android:id="@+id/tv_small_talk_info_not_3"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:drawableStart="@drawable/ic_uncheck_red"
@@ -61,7 +61,7 @@
         android:text="Une occasion de briser l’isolement"
         android:textColor="@color/black"
         android:textSize="14sp"
-        app:layout_constraintTop_toBottomOf="@id/tv_small_talk_info_2"
+        app:layout_constraintTop_toBottomOf="@id/tv_small_talk_info_not_2"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="20dp"
