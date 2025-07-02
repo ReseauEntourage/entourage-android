@@ -72,7 +72,7 @@ class EditInterestsFragment : Fragment() {
     }
 
     private fun setBackButton() {
-        binding.header.iconBack.setOnClickListener {
+        binding.header.headerIconBack.setOnClickListener {
             findNavController().popBackStack()
         }
     }

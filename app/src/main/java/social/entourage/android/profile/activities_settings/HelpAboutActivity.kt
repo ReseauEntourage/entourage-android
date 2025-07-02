@@ -5,10 +5,8 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.widget.Toast
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import com.google.android.material.snackbar.Snackbar
-import social.entourage.android.Constants
 import social.entourage.android.R
 import social.entourage.android.base.BaseActivity
 import social.entourage.android.databinding.NewFragmentHelpAboutBinding
@@ -139,7 +137,7 @@ class HelpAboutActivity : BaseActivity() {
     }
 
     private fun handleCloseButton() {
-        binding.header.iconCross.setOnClickListener {
+        binding.header.headerHelpIconCross.setOnClickListener {
             finish()
         }
     }

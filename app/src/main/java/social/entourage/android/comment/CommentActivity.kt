@@ -30,7 +30,6 @@ import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.Utils
 import social.entourage.android.tools.utils.scrollToPositionSmooth
 import social.entourage.android.tools.view.WebViewFragment
-import timber.log.Timber
 import java.util.UUID
 
 abstract class CommentActivity : BaseActivity(), onDissmissFragment {
@@ -90,7 +89,7 @@ override fun onCreate(savedInstanceState: Bundle?) {
 
     handleSendButtonState()
 
-    updatePaddingTopForEdgeToEdge(binding.header.layout)
+    updatePaddingTopForEdgeToEdge(binding.header.headerLayout)
 }
 
 fun setIsEventTrue(){
@@ -251,10 +250,8 @@ private fun handleCommentAction() {
     }
 }
 
-
-
 private fun handleBackButton() {
-    binding.header.iconBack.setOnClickListener {
+    binding.header.headerIconBack.setOnClickListener {
         finish()
     }
 }
@@ -276,10 +273,10 @@ private fun handleSendButtonState() {
 
 private fun setSettingsIcon() {
     binding.header.title = getString(R.string.comments_title)
-    binding.header.iconSettings.isVisible = true
-    binding.header.iconSettings.setImageResource(R.drawable.new_report_group)
-    binding.header.cardIconSetting.setBackgroundColor(ContextCompat.getColor(this, R.color.transparent))
-    binding.header.iconSettings.setBackgroundColor(ContextCompat.getColor(this, R.color.transparent))
+    binding.header.headerIconSettings.isVisible = true
+    binding.header.headerIconSettings.setImageResource(R.drawable.new_report_group)
+    binding.header.headerCardIconSetting.setBackgroundColor(ContextCompat.getColor(this, R.color.transparent))
+    binding.header.headerIconSettings.setBackgroundColor(ContextCompat.getColor(this, R.color.transparent))
 }
 
 protected fun handleReport(id: Int, type: ReportTypes, isEventComment :Boolean, isGroupComment:Boolean, isMe:Boolean, commentLang:String) {
@@ -308,7 +305,7 @@ protected fun handleReport(id: Int, type: ReportTypes, isEventComment :Boolean, 
 }
 
 protected open fun handleReportPost(id: Int, commentLang: String) {
-    binding.header.iconSettings.setOnClickListener {
+    binding.header.headerIconSettings.setOnClickListener {
         if(isEvent){
             handleReport(id, ReportTypes.REPORT_POST_EVENT, isEvent, isGroup, false/*checkIsME*/,commentLang)
         }else{

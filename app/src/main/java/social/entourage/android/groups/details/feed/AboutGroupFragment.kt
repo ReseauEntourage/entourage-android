@@ -16,17 +16,17 @@ import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
 import social.entourage.android.R
 import social.entourage.android.api.MetaDataRepository
-import social.entourage.android.groups.GroupModel
 import social.entourage.android.api.model.Tags
 import social.entourage.android.databinding.NewFragmentAboutGroupBinding
+import social.entourage.android.groups.GroupModel
 import social.entourage.android.groups.GroupPresenter
 import social.entourage.android.groups.details.GroupDetailsFragment
 import social.entourage.android.groups.details.members.MembersType
 import social.entourage.android.profile.myProfile.InterestsAdapter
-import social.entourage.android.tools.utils.Const
-import social.entourage.android.tools.utils.CustomAlertDialog
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.setHyperlinkClickable
+import social.entourage.android.tools.utils.Const
+import social.entourage.android.tools.utils.CustomAlertDialog
 import social.entourage.android.tools.utils.Utils.enableCopyOnLongClick
 
 class AboutGroupFragment : Fragment() {
@@ -64,9 +64,9 @@ class AboutGroupFragment : Fragment() {
 
     private fun setView() {
         MetaDataRepository.metaData.observe(requireActivity(), ::handleMetaData)
-        binding.header.iconSettings.visibility = View.VISIBLE
-        binding.header.cardIconSetting.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.transparent))
-        binding.header.iconSettings.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.transparent))
+        binding.header.headerIconSettings.visibility = View.VISIBLE
+        binding.header.headerCardIconSetting.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.transparent))
+        binding.header.headerIconSettings.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.transparent))
         with(binding) {
             groupName.text = group?.name
             groupMembersNumberLocation.text = String.format(
@@ -125,7 +125,7 @@ class AboutGroupFragment : Fragment() {
     }
 
     private fun handleSettingsButton() {
-        binding.header.iconSettings.setOnClickListener {
+        binding.header.headerIconSettings.setOnClickListener {
             group?.let { group ->
                 GroupDetailsFragment.newInstance(group)
                     .show(parentFragmentManager, GroupDetailsFragment.TAG)
@@ -169,7 +169,7 @@ class AboutGroupFragment : Fragment() {
     }
 
     private fun handleBackButton() {
-        binding.header.iconBack.setOnClickListener {
+        binding.header.headerIconBack.setOnClickListener {
             findNavController().popBackStack()
         }
     }

@@ -31,7 +31,7 @@ class HelpAboutFragment : BottomSheetDialogFragment() {
     ): View {
         _binding = NewFragmentHelpAboutBinding.inflate(inflater, container, false)
 
-        updatePaddingTopForEdgeToEdge(binding.header.layout)
+        updatePaddingTopForEdgeToEdge(binding.header.headerHelpLayout)
         return binding.root
     }
 
@@ -173,7 +173,7 @@ class HelpAboutFragment : BottomSheetDialogFragment() {
     }
 
     private fun handleCloseButton() {
-        binding.header.iconCross.setOnClickListener {
+        binding.header.headerHelpIconCross.setOnClickListener {
             dismiss()
         }
     }

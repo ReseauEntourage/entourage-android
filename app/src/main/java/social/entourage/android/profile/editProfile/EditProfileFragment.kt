@@ -189,7 +189,7 @@ class EditProfileFragment : Fragment(), EditProfileCallback,
     }
 
     private fun setBackButton() {
-        binding.header.iconBack.setOnClickListener {
+        binding.header.headerIconBack.setOnClickListener {
             if (fromHomePage)
                 activity?.finish()
             else

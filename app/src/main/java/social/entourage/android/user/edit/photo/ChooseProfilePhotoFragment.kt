@@ -2,15 +2,11 @@ package social.entourage.android.user.edit.photo
 
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
-import social.entourage.android.databinding.FragmentOnboardingPhotoBinding
 import social.entourage.android.profile.editProfile.EditProfileCallback
 import social.entourage.android.tools.log.AnalyticsEvents
 
@@ -56,7 +52,7 @@ class ChooseProfilePhotoFragment : EditPhotoFragment() {
     }
 
     private fun setBackButton() {
-        binding.header.iconBack.setOnClickListener {
+        binding.header.headerIconBack.setOnClickListener {
             if (editProfileCallback != null) {
                 dismiss()
                 return@setOnClickListener

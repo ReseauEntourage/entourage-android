@@ -275,7 +275,7 @@ Nous sommes prêt pour les beaux jours ! :-)" />
 
             <include
                 android:id="@+id/reaction1"
-                layout="@layout/layout_item_reaction"
+                layout="@layout/item_reaction"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -284,7 +284,7 @@ Nous sommes prêt pour les beaux jours ! :-)" />
 
             <include
                 android:id="@+id/reaction2"
-                layout="@layout/layout_item_reaction"
+                layout="@layout/item_reaction"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:layout_marginStart="-5dp"
@@ -294,7 +294,7 @@ Nous sommes prêt pour les beaux jours ! :-)" />
 
             <include
                 android:id="@+id/reaction3"
-                layout="@layout/layout_item_reaction"
+                layout="@layout/item_reaction"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:layout_marginStart="-5dp"
@@ -304,7 +304,7 @@ Nous sommes prêt pour les beaux jours ! :-)" />
 
             <include
                 android:id="@+id/reaction4"
-                layout="@layout/layout_item_reaction"
+                layout="@layout/item_reaction"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:layout_marginStart="-5dp"
@@ -314,7 +314,7 @@ Nous sommes prêt pour les beaux jours ! :-)" />
 
             <include
                 android:id="@+id/reaction5"
-                layout="@layout/layout_item_reaction"
+                layout="@layout/item_reaction"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:layout_marginStart="-5dp"

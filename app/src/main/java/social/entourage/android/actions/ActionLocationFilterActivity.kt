@@ -99,12 +99,12 @@ class ActionLocationFilterActivity : AppCompatActivity() {
         binding.layoutPlace.setOnClickListener {
             onPlaceSearch()
         }
-        binding.header.iconBack.setOnClickListener {
+        binding.header.headerIconBack.setOnClickListener {
             setResult(Activity.RESULT_CANCELED)
             finish()
         }
 
-        updatePaddingTopForEdgeToEdge(binding.header.layout)
+        updatePaddingTopForEdgeToEdge(binding.header.headerLayout)
     }
 
     private fun onSaveFilters() {
