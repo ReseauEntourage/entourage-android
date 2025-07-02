@@ -261,7 +261,7 @@
                 android:padding="13dp"
                 android:layout_marginStart="7dp"
                 android:inputType="textCapSentences|textMultiLine"
-                android:textColorHint="@color/grey"
+                android:textColorHint="@color/grey_onboarding_item_border"
                 android:textColor="@color/black" />
 
             <ImageButton
