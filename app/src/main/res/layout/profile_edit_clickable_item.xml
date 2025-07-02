@@ -16,35 +16,35 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/layout"
+        android:id="@+id/peci_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="25dp">
 
         <ImageView
-            android:id="@+id/icon"
+            android:id="@+id/peci_icon"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:paddingEnd="40dp"
             android:src="@{icon}"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintRight_toLeftOf="@id/linearLayout"
+            app:layout_constraintRight_toLeftOf="@id/peci_linearLayout"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintWidth_percent="0.2"
             tools:src="@drawable/new_cross" />
 
         <LinearLayout
-            android:id="@+id/linearLayout"
+            android:id="@+id/peci_linearLayout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintStart_toEndOf="@+id/icon"
+            app:layout_constraintStart_toEndOf="@+id/peci_icon"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintWidth_percent="0.8">
 
             <TextView
-                android:id="@+id/title"
+                android:id="@+id/peci_title"
                 style="@style/profile_information_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -52,7 +52,7 @@
                 tools:text="Title" />
 
             <TextView
-                android:id="@+id/content"
+                android:id="@+id/peci_content"
                 style="@style/input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -62,7 +62,7 @@
                 tools:text="content" />
 
             <View
-                android:id="@+id/divider"
+                android:id="@+id/peci_divider"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="@color/light_orange_opacity_50"

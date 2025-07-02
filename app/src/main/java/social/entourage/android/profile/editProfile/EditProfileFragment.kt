@@ -89,11 +89,11 @@ class EditProfileFragment : Fragment(), EditProfileCallback,
     }
 
     private fun handlelanguageButton(){
-        binding.language.layout.setOnClickListener {
+        binding.language.peciLayout.setOnClickListener {
             val intent = Intent(requireContext(), ActivityChooseLanguage::class.java)
             requireActivity().startActivity(intent)
         }
-        binding.language.layout.visibility = View.GONE
+        binding.language.peciLayout.visibility = View.GONE
     }
 
     private fun handleUpdateResponse(success: Boolean) {
@@ -210,16 +210,16 @@ class EditProfileFragment : Fragment(), EditProfileCallback,
 
             with(binding) {
                 // Configuration des champs en fonction de la langue
-                configureTextViewForRTL(firstname.content, isArabic)
-                configureTextViewForRTL(lastname.content, isArabic)
+                configureTextViewForRTL(firstname.peeiContent, isArabic)
+                configureTextViewForRTL(lastname.peeiContent, isArabic)
                 configureTextViewForRTL(description.content, isArabic)
-                configureTextViewForRTL(birthday.content, isArabic)
-                configureTextViewForRTL(phone.content, isArabic)
-                configureTextViewForRTL(email.content, isArabic)
+                configureTextViewForRTL(birthday.peeiContent, isArabic)
+                configureTextViewForRTL(phone.peciContent, isArabic)
+                configureTextViewForRTL(email.peeiContent, isArabic)
                 configureTextViewForRTL(cityAction, isArabic)
                 configureTextViewForRTL(description.counter,isArabic)
-                firstname.content.setText(user.firstName)
-                lastname.content.setText(user.lastName)
+                firstname.peeiContent.setText(user.firstName)
+                lastname.peeiContent.setText(user.lastName)
 
                 if (descriptionRegistered.isEmpty()) {
                     description.content.setText(user.about)
@@ -227,20 +227,20 @@ class EditProfileFragment : Fragment(), EditProfileCallback,
                     description.content.setText(descriptionRegistered)
                 }
 
-                birthday.content.transformIntoDatePicker(
+                birthday.peeiContent.transformIntoDatePicker(
                     requireContext(),
                     getString(R.string.birthday_date_format)
                 )
-                birthday.content.setText(user.birthday)
-                phone.content.text = user.phone
-                phone.content.setTextColor(
+                birthday.peeiContent.setText(user.birthday)
+                phone.peciContent.text = user.phone
+                phone.peciContent.setTextColor(
                     ContextCompat.getColor(
                         requireContext(),
                         R.color.dark_grey_opacity_40
                     )
                 )
-                phone.divider.visibility = View.GONE
-                email.content.setText(user.email)
+                phone.peciDivider.visibility = View.GONE
+                email.peeiContent.setText(user.email)
                 cityAction.text = Editable.Factory.getInstance().newEditable(user.address?.displayAddress ?: "")
                 seekBarLayout.seekbar.progress = user.travelDistance ?: 0
                 validate.button.setOnClickListener { onSaveProfile() }
@@ -287,11 +287,11 @@ class EditProfileFragment : Fragment(), EditProfileCallback,
     }
 
     private fun onSaveProfile() {
-        val firstname = binding.firstname.content.text.trimEnd()
-        val lastname = binding.lastname.content.text.trimEnd()
+        val firstname = binding.firstname.peeiContent.text.trimEnd()
+        val lastname = binding.lastname.peeiContent.text.trimEnd()
         val about = binding.description.content.text?.trimEnd()
-        val email = binding.email.content.text.trimEnd()
-        val birthday = binding.birthday.content.text.trimEnd()
+        val email = binding.email.peeiContent.text.trimEnd()
+        val birthday = binding.birthday.peeiContent.text.trimEnd()
         val travelDistance = binding.seekBarLayout.seekbar.progress
         val editedUser: ArrayMap<String, Any> = ArrayMap()
         editedUser["first_name"] = firstname
@@ -309,12 +309,12 @@ class EditProfileFragment : Fragment(), EditProfileCallback,
     }
 
     private fun checkEmail():Boolean {
-        val isEmailCorrect = binding.email.content.text.trimEnd().isValidEmail()
+        val isEmailCorrect = binding.email.peeiContent.text.trimEnd().isValidEmail()
         with(binding.email) {
             error.root.visibility = if (isEmailCorrect) View.GONE else View.VISIBLE
             error.errorMessage.text = getString(R.string.error_email)
             DrawableCompat.setTint(
-                content.background,
+                peeiContent.background,
                 ContextCompat.getColor(
                     requireContext(),
                     if (isEmailCorrect) R.color.light_orange_opacity_50 else R.color.red
@@ -325,13 +325,13 @@ class EditProfileFragment : Fragment(), EditProfileCallback,
     }
 
     private fun checkLastName():Boolean{
-        val isLastnameCorrect = binding.lastname.content.text.trimEnd().length > 2
+        val isLastnameCorrect = binding.lastname.peeiContent.text.trimEnd().length > 2
 
         with(binding.lastname) {
             error.root.visibility = if (isLastnameCorrect) View.GONE else View.VISIBLE
             error.errorMessage.text = getString(R.string.error_lastname)
             DrawableCompat.setTint(
-                content.background,
+                peeiContent.background,
                 ContextCompat.getColor(
                     requireContext(),
                     if (isLastnameCorrect) R.color.light_orange_opacity_50 else R.color.red
@@ -342,14 +342,14 @@ class EditProfileFragment : Fragment(), EditProfileCallback,
     }
 
     private fun checkError(): Boolean {
-        val isLastnameCorrect = binding.lastname.content.text.trimEnd().length > 2
-        val isEmailCorrect = binding.email.content.text.trimEnd().isValidEmail()
+        val isLastnameCorrect = binding.lastname.peeiContent.text.trimEnd().length > 2
+        val isEmailCorrect = binding.email.peeiContent.text.trimEnd().isValidEmail()
 
         with(binding.lastname) {
             error.root.visibility = if (isLastnameCorrect) View.GONE else View.VISIBLE
             error.errorMessage.text = getString(R.string.error_lastname)
             DrawableCompat.setTint(
-                content.background,
+                peeiContent.background,
                 ContextCompat.getColor(
                     requireContext(),
                     if (isLastnameCorrect) R.color.light_orange_opacity_50 else R.color.red
@@ -361,7 +361,7 @@ class EditProfileFragment : Fragment(), EditProfileCallback,
             error.root.visibility = if (isEmailCorrect) View.GONE else View.VISIBLE
             error.errorMessage.text = getString(R.string.error_email)
             DrawableCompat.setTint(
-                content.background,
+                peeiContent.background,
                 ContextCompat.getColor(
                     requireContext(),
                     if (isEmailCorrect) R.color.light_orange_opacity_50 else R.color.red

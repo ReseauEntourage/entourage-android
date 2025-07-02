@@ -20,35 +20,35 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/layout"
+        android:id="@+id/peei_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="25dp">
 
         <ImageView
-            android:id="@+id/icon"
+            android:id="@+id/peei_icon"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:paddingEnd="40dp"
             android:src="@{icon}"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintRight_toLeftOf="@id/linearLayout"
+            app:layout_constraintRight_toLeftOf="@id/peei_text"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintWidth_percent="0.2"
             tools:src="@drawable/new_cross" />
 
         <LinearLayout
-            android:id="@+id/linearLayout"
+            android:id="@+id/peei_text"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintStart_toEndOf="@+id/icon"
+            app:layout_constraintStart_toEndOf="@+id/peei_icon"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintWidth_percent="0.8">
 
             <TextView
-                android:id="@+id/title"
+                android:id="@+id/peei_title"
                 style="@style/profile_information_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -56,7 +56,7 @@
                 tools:text="Title" />
 
             <EditText
-                android:id="@+id/content"
+                android:id="@+id/peei_content"
                 style="@style/input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
