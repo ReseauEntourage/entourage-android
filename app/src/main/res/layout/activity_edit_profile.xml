@@ -170,7 +170,7 @@
 
                     <include
                         android:id="@+id/interests"
-                        layout="@layout/profile_settings_item"
+                        layout="@layout/layout_settings_item"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="20dp"
@@ -180,7 +180,7 @@
                         android:visibility="gone"/>
                     <include
                         android:id="@+id/personnalize"
-                        layout="@layout/profile_settings_item"
+                        layout="@layout/layout_settings_item"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="70dp"

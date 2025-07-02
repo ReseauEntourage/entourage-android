@@ -32,7 +32,7 @@ class CreateGroupStepTwoFragment : Fragment() {
         viewModel.resetValues()
         MetaDataRepository.metaData.observe(requireActivity(), ::handleMetaData)
         initializeInterests()
-        binding.layout.error.root.visibility = View.GONE
+        binding.layout.egs2Error.root.visibility = View.GONE
     }
 
     override fun onCreateView(
@@ -56,7 +56,7 @@ class CreateGroupStepTwoFragment : Fragment() {
                 )
             )
         }
-        binding.layout.recyclerView.adapter?.notifyDataSetChanged()
+        binding.layout.egs2RecyclerView.adapter?.notifyDataSetChanged()
     }
 
     private fun initializeInterests() {
@@ -73,7 +73,7 @@ class CreateGroupStepTwoFragment : Fragment() {
                 viewModel.isButtonClickable.value = interestHaveBeenSelected()
             }
         }, true)
-        binding.layout.recyclerView.apply {
+        binding.layout.egs2RecyclerView.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = interestsListAdapter
         }
@@ -83,13 +83,13 @@ class CreateGroupStepTwoFragment : Fragment() {
         if (onClick) {
             when {
                 selectedInterestIdList.isEmpty() -> {
-                    binding.layout.error.root.visibility = View.VISIBLE
-                    binding.layout.error.errorMessage.text =
+                    binding.layout.egs2Error.root.visibility = View.VISIBLE
+                    binding.layout.egs2Error.errorMessage.text =
                         getString(R.string.error_categories_create_group)
                     viewModel.isCondition.value = false
                 }
                 else -> {
-                    binding.layout.error.root.visibility = View.GONE
+                    binding.layout.egs2Error.root.visibility = View.GONE
                     viewModel.isCondition.value = true
                     viewModel.group.interests(selectedInterestIdList)
                     interestsListAdapter.getOtherInterestCategory()
@@ -113,6 +113,6 @@ class CreateGroupStepTwoFragment : Fragment() {
 
     override fun onDestroy() {
         super.onDestroy()
-        binding.layout.error.root.visibility = View.GONE
+        binding.layout.egs2Error.root.visibility = View.GONE
     }
 }
