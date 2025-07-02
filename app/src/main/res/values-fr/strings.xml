@@ -201,7 +201,7 @@ Découvrez les initiatives de votre quartier et tissez des liens avec vos voisin
     <string name="edit_group">Modifier le groupe</string>
     <string name="error_mandatory_fields">Veuillez remplir tous les champs obligatoires</string>
     <string name="error_categories_create_group">Une catégorie doit être sélectionnée.</string>
-    <string name="error_categories_create_group_image">Veuillez sélectionnez une image</string>
+    <string name="error_categories_create_group_image">Veuillez sélectionner une image</string>
     <string name="error_empty_other_category_create_group">Veuillez préciser la catégorie divers</string>
     <string name="error_lastname">Le nom doit comporter au moins 2 lettres.</string>
     <string name="error_email">e-mail invalide</string>
@@ -459,7 +459,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
 
     <!-- WELCOME PAGES -->
     <string name="welcome_one_title">Bienvenue sur le réseau \nsocial, vraiment social</string>
-    <string name="welcome_one_content">Pour beaucoup, la rue est un lieu de passage.\nPour certains, c\'est un quotidien.\nAlors pour commencer, rencontrez celles et ceux qui la vivent tous les jours.</string>
+    <string name="welcome_one_content">Pour beaucoup, la rue est un lieu de passage.\nPour certains, c\'est un quotidien.\nAlors pour commencer, rencontrer celles et ceux qui la vivent tous les jours.</string>
 
     <string name="welcome_two_title">C\'est le moment de se lancer !</string>
     <string name="welcome_two_text_one_corrected">Un réseau social, c\'est mieux à plusieurs !\nPrésentez-vous auprès de %s</string>
@@ -1793,7 +1793,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="event_filter_profile">À l\'adresse renseignée dans mon profil</string>
     <string name="event_filter_google">À une nouvelle adresse</string>
     <string name="event_filter_gps">Autour de ma position actuelle</string>
-    <string name="event_filter_error_place">Veuillez sélectionnez une adresse</string>
+    <string name="event_filter_error_place">Veuillez sélectionner une adresse</string>
     <string name="search_filter">Rechercher :</string>
 
     <string name="event_location_title">Localisez votre événement</string>
