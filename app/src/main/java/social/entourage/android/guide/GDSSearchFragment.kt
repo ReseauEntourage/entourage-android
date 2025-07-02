@@ -111,7 +111,7 @@ class GDSSearchFragment : BaseDialogFragment(), PoiListFragment {
     }
 
     fun sendSearch() {
-        if (binding.uiEtSearch?.text?.length ?: 0 < MIN_CHARS_SEARCH) return
+        if ((binding.uiEtSearch?.text?.length ?: 0) < MIN_CHARS_SEARCH) return
         view?.hideKeyboard()
         binding.uiEtSearch?.clearFocus()
 
