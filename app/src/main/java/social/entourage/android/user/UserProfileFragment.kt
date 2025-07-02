@@ -17,11 +17,11 @@ import com.google.android.flexbox.JustifyContent
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.api.MetaDataRepository
+import social.entourage.android.api.model.Conversation
+import social.entourage.android.api.model.User
 import social.entourage.android.databinding.NewFragmentUserProfileBinding
 import social.entourage.android.discussions.DetailConversationActivity
 import social.entourage.android.discussions.DiscussionsPresenter
-import social.entourage.android.api.model.Conversation
-import social.entourage.android.api.model.User
 import social.entourage.android.language.LanguageManager
 import social.entourage.android.profile.myProfile.InterestsAdapter
 import social.entourage.android.report.ReportModalFragment
@@ -29,7 +29,6 @@ import social.entourage.android.report.ReportTypes
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.CustomAlertDialog
 import java.text.SimpleDateFormat
-import java.util.*
 
 class UserProfileFragment : Fragment() {
 
@@ -103,12 +102,16 @@ class UserProfileFragment : Fragment() {
                 ReportModalFragment.newInstance(
                     args.userId,
                     Const.DEFAULT_VALUE,
-                    ReportTypes.REPORT_USER
-                ,false,false, false, contentCopied = "" )
+                    ReportTypes.REPORT_USER,
+                    isFromMe = false,
+                    isConv = false,
+                    isOneToOne = false,
+                    contentCopied = ""
+                )
             reportUserBottomDialogFragment.show(parentFragmentManager, ReportModalFragment.TAG)
         }
         binding.blockUser.setOnClickListener {
-            val desc = String.format(getString(R.string.params_block_user_conv_pop_message,userPresenter.user.value?.displayName ?: args.userId))
+            val desc = getString(R.string.params_block_user_conv_pop_message,userPresenter.user.value?.displayName ?: args.userId)
             CustomAlertDialog.showButtonClickedWithCrossClose(
                 requireContext(),
                 getString(R.string.params_block_user_conv_pop_title),
@@ -163,12 +166,12 @@ class UserProfileFragment : Fragment() {
                 description.text = user.about
             }
             user.stats?.let {
-                contribution.content.text = it.neighborhoodsCount.toString()
-                events.content.text = it.outingsCount.toString()
+                contribution.statisticsItemContent.text = it.neighborhoodsCount.toString()
+                events.statisticsItemContent.text = it.outingsCount.toString()
             }
             user.createdAt?.let {
-                var locale = LanguageManager.getLocaleFromPreferences(requireContext())
-                binding.joined.date.text = SimpleDateFormat(
+                val locale = LanguageManager.getLocaleFromPreferences(requireContext())
+                binding.joined.profileJoinedDate.text = SimpleDateFormat(
                     requireContext().getString(R.string.profile_date_format),
                     locale
                 ).format(

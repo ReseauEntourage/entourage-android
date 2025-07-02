@@ -119,7 +119,7 @@
 
             <include
                 android:id="@+id/joined"
-                layout="@layout/new_profile_joined_layout"
+                layout="@layout/profile_joined_layout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="12dp"
@@ -226,8 +226,6 @@
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@+id/title_event"
-
-
                         />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
@@ -246,7 +244,7 @@
 
             <include
                 android:id="@+id/birthday"
-                layout="@layout/new_profile_information_item"
+                layout="@layout/profile_information_item"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
@@ -258,7 +256,7 @@
 
             <include
                 android:id="@+id/phone"
-                layout="@layout/new_profile_information_item"
+                layout="@layout/profile_information_item"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:visibility="gone"
@@ -269,7 +267,7 @@
 
             <include
                 android:id="@+id/email"
-                layout="@layout/new_profile_information_item"
+                layout="@layout/profile_information_item"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:visibility="gone"
@@ -280,7 +278,7 @@
 
             <include
                 android:id="@+id/city"
-                layout="@layout/new_profile_information_city_item"
+                layout="@layout/profile_information_city"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:visibility="gone"

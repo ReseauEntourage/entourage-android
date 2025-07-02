@@ -23,7 +23,7 @@
 
                 <include
                     android:id="@+id/translate"
-                    layout="@layout/new_profile_settings_item"
+                    layout="@layout/profile_settings_item"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     app:color="@{@android:color/black}"
@@ -33,7 +33,7 @@
 
                 <include
                     android:id="@+id/language"
-                    layout="@layout/new_profile_settings_item"
+                    layout="@layout/profile_settings_item"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     app:color="@{@android:color/black}"
@@ -42,7 +42,7 @@
 
                 <include
                     android:id="@+id/notifications"
-                    layout="@layout/new_profile_settings_item"
+                    layout="@layout/profile_settings_item"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     app:color="@{@android:color/black}"
@@ -51,7 +51,7 @@
 
                 <include
                     android:id="@+id/help_about"
-                    layout="@layout/new_profile_settings_item"
+                    layout="@layout/profile_settings_item"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     app:color="@{@android:color/black}"
@@ -60,7 +60,7 @@
 
                 <include
                     android:id="@+id/help_block"
-                    layout="@layout/new_profile_settings_item"
+                    layout="@layout/profile_settings_item"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     app:color="@{@android:color/black}"
@@ -69,7 +69,7 @@
 
                 <include
                     android:id="@+id/suggest"
-                    layout="@layout/new_profile_settings_item"
+                    layout="@layout/profile_settings_item"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     app:color="@{@android:color/black}"
@@ -78,7 +78,7 @@
 
                 <include
                     android:id="@+id/share"
-                    layout="@layout/new_profile_settings_item"
+                    layout="@layout/profile_settings_item"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     app:color="@{@android:color/black}"
@@ -143,7 +143,7 @@
 
                 <include
                     android:id="@+id/sign_out"
-                    layout="@layout/new_profile_settings_item"
+                    layout="@layout/profile_settings_item"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     app:color="@{@color/orange}"
@@ -152,7 +152,7 @@
 
                 <include
                     android:id="@+id/delete_account"
-                    layout="@layout/new_profile_settings_item"
+                    layout="@layout/profile_settings_item"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     app:color="@{@color/orange}"

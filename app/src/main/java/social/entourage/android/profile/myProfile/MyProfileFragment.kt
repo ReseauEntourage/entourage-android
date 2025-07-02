@@ -88,34 +88,34 @@ class MyProfileFragment : Fragment() {
                 user.phone?.let {
                     if (it.isNotEmpty()) {
                         phone.root.visibility = View.VISIBLE
-                        phone.content.text = it
+                        phone.profileItemContent.text = it
                     }
                 }
                 user.birthday?.let {
                     if (it.isNotEmpty()) {
                         birthday.root.visibility = View.VISIBLE
-                        birthday.content.text = it
+                        birthday.profileItemContent.text = it
                     }else {
                         birthday.root.visibility = View.VISIBLE
-                        birthday.content.hint = getString(R.string.placeholder_birthday_my_profile)
+                        birthday.profileItemContent.hint = getString(R.string.placeholder_birthday_my_profile)
                     }
                 }
                 if (user.birthday == null){
                     birthday.root.visibility = View.VISIBLE
-                    birthday.content.hint = getString(R.string.placeholder_birthday_my_profile)
+                    birthday.profileItemContent.hint = getString(R.string.placeholder_birthday_my_profile)
                 }
                 user.email?.let {
                     if (it.isNotEmpty()) {
                         email.root.visibility = View.VISIBLE
-                        email.content.text = it
+                        email.profileItemContent.text = it
                     }else {
                         email.root.visibility = View.VISIBLE
-                        email.content.hint = getString(R.string.placeholder_email_my_profile)
+                        email.profileItemContent.hint = getString(R.string.placeholder_email_my_profile)
                     }
                 }
                 if (user.birthday == null){
                     email.root.visibility = View.VISIBLE
-                    email.content.hint = getString(R.string.placeholder_email_my_profile)
+                    email.profileItemContent.hint = getString(R.string.placeholder_email_my_profile)
                 }
                 user.address?.displayAddress?.let {
                     if (it.isNotEmpty()) {
@@ -124,7 +124,7 @@ class MyProfileFragment : Fragment() {
                     }
                 }
                 user.travelDistance?.let {
-                    city.within.text = String.format(getString(R.string.progress_km), it)
+                    city.within.text = getString(R.string.progress_km, it)
                 }
                 user.stats?.let {
                     contribContent.text = it.neighborhoodsCount.toString()
@@ -137,7 +137,7 @@ class MyProfileFragment : Fragment() {
                 }
                 user.createdAt?.let {createdAt ->
                     val locale = LanguageManager.getLocaleFromPreferences(requireContext())
-                    joined.date.text = SimpleDateFormat(
+                    joined.profileJoinedDate.text = SimpleDateFormat(
                         requireContext().getString(R.string.profile_date_format),
                         locale
                     ).format(

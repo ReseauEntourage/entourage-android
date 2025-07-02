@@ -146,7 +146,7 @@
 
     <string name="sign_out_dialog_title">Deconectat</string>
     <string name="sign_out_dialog_content">Doriți să vă deconectați?</string>
-    <string name="progress_km">%s km</string>
+    <string name="progress_km">%d km</string>
     <string name="modify_interests_subtitle">Selectați una sau mai multe categorii care vă interesează.</string>
     <string name="add_image">Adăugați o imagine</string>
     <string name="add_image_subtitle">Cu o fotografie, este imediat mai frumos.

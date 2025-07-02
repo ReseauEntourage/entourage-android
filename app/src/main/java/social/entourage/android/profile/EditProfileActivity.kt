@@ -191,14 +191,14 @@ class EditProfileActivity : BaseActivity(), AvatarUploadView {
 
     private fun setupInterestsButtons() {
         // Ouvrir l'écran d'onboarding amélioré pour l'édition des intérêts
-        binding.interests.layout.setOnClickListener {
+        binding.interests.profileSettingsItemLayout.setOnClickListener {
             EnhancedOnboarding.isFromSettingsinterest = true
             startActivity(Intent(this, EnhancedOnboarding::class.java))
             finish()
         }
 
         // Personnaliser le onboarding
-        binding.personnalize.layout.setOnClickListener {
+        binding.personnalize.profileSettingsItemLayout.setOnClickListener {
             MainActivity.isFromProfile = true
             startActivity(Intent(this, EnhancedOnboarding::class.java))
             finish()

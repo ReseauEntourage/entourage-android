@@ -12,7 +12,7 @@
         android:paddingVertical="8dp">
 
         <TextView
-            android:id="@+id/title"
+            android:id="@+id/profile_joined_title"
             style="@style/left_courant_black"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -21,7 +21,7 @@
             tools:text="Events" />
 
         <TextView
-            android:id="@+id/date"
+            android:id="@+id/profile_joined_date"
             style="@style/left_courant_bold_black"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

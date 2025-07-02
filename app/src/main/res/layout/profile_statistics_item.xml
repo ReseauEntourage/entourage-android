@@ -23,7 +23,7 @@
         android:paddingVertical="8dp">
 
         <ImageView
-            android:id="@+id/icon"
+            android:id="@+id/statistics_item_icon"
             android:layout_width="35dp"
             android:layout_height="20dp"
             android:adjustViewBounds="true"
@@ -39,14 +39,14 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/content"
+                android:id="@+id/statistics_item_content"
                 style="@style/left_courant_bold_black"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 tools:text="4" />
 
             <TextView
-                android:id="@+id/title"
+                android:id="@+id/statistics_item_title"
                 style="@style/left_courant_black"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

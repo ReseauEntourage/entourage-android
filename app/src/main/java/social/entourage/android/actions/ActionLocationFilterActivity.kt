@@ -199,11 +199,7 @@ class ActionLocationFilterActivity : AppCompatActivity() {
      * Thumbbar
      */
     private fun setProgressThumb(progress: Int) {
-        binding.tvTrickleIndicator.text =
-            String.format(
-                getString(R.string.progress_km),
-                progress.toString()
-            )
+        binding.tvTrickleIndicator.text = getString(R.string.progress_km, progress)
         val bounds: Rect = binding.seekbar.thumb.dirtyBounds
         val paddingRight = if (progress > progressLimit) paddingRightLimit else paddingRight
         binding.tvTrickleIndicator.x =

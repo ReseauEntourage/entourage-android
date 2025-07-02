@@ -138,7 +138,7 @@
 
     <string name="sign_out_dialog_title">قطع الاتصال</string>
     <string name="sign_out_dialog_content">هل ترغب بالخروج؟</string>
-    <string name="progress_km">%s كم</string>
+    <string name="progress_km">%d كم</string>
     <string name="modify_interests_subtitle">اختر واحدة أو أكثر من الفئات التي تهمك.</string>
     <string name="add_image">أضف صورة</string>
     <string name="add_image_subtitle">مع الصورة يصبح الأمر أجمل على الفور.

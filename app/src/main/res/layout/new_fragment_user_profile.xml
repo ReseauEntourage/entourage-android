@@ -101,7 +101,7 @@
 
                 <include
                     android:id="@+id/joined"
-                    layout="@layout/new_profile_joined_layout"
+                    layout="@layout/profile_joined_layout"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginTop="12dp"
@@ -118,7 +118,7 @@
 
                     <include
                         android:id="@+id/contribution"
-                        layout="@layout/new_profile_statistics_item"
+                        layout="@layout/profile_statistics_item"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_marginEnd="10dp"
@@ -128,7 +128,7 @@
 
                     <include
                         android:id="@+id/events"
-                        layout="@layout/new_profile_statistics_item"
+                        layout="@layout/profile_statistics_item"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
