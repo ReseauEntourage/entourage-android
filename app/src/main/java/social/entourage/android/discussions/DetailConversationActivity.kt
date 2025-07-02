@@ -158,6 +158,7 @@ class DetailConversationActivity : CommentActivity() {
 
         galleryLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
             if (uri != null) {
+                photoUri = uri
                 binding.comment.isEnabled = true
                 showThumbnail(uri)
             }
@@ -340,21 +341,16 @@ class DetailConversationActivity : CommentActivity() {
             isOptionsVisible = !isOptionsVisible
 
             if (isOptionsVisible) {
-                // Animation du layout
+                // Animation du layout vers le haut
                 val slideIn = AnimationUtils.loadAnimation(this, R.anim.slide_in_up)
                 binding.layoutOption.startAnimation(slideIn)
                 binding.layoutOption.visibility = View.VISIBLE
 
-                // Rotation du bouton
-                val rotate = ObjectAnimator.ofFloat(binding.optionButton, View.ROTATION, 0f, 180f)
-                rotate.duration = 300
-                rotate.doOnEnd {
-                    binding.optionButton.setImageDrawable(getDrawable(R.drawable.ic_conversation_more_option))
-                }
-                rotate.start()
+                // Rotation vers le haut (180°)
+                binding.optionButton.animate().rotation(45f).setDuration(300).start()
 
             } else {
-                // Animation de sortie
+                // Animation du layout vers le bas
                 val slideOut = AnimationUtils.loadAnimation(this, R.anim.slide_out_down)
                 binding.layoutOption.startAnimation(slideOut)
 
@@ -363,18 +359,18 @@ class DetailConversationActivity : CommentActivity() {
                     binding.layoutOption.visibility = View.GONE
                 }, 250)
 
-                // Rotation retour
-                val rotateBack = ObjectAnimator.ofFloat(binding.optionButton, View.ROTATION, 180f, 0f)
-                rotateBack.duration = 300
-                rotateBack.start()
+                // Retour rotation à 0°
+                binding.optionButton.animate().rotation(0f).setDuration(300).start()
             }
         }
 
-        // Initialisation des options
-        binding.optionCamera.ivOption.setImageDrawable(getDrawable(R.drawable.ic_conversation_option_photo))
-        binding.optionGalery.ivOption.setImageDrawable(getDrawable(R.drawable.ic_conversation_option_galerie))
+        // Initialisation des icônes et textes d’option
+        binding.optionCamera.ivOption.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_conversation_option_photo))
+        binding.optionGalery.ivOption.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_conversation_option_galerie))
         binding.optionCamera.tvOption.setText(R.string.discussion_option_camera)
         binding.optionGalery.tvOption.setText(R.string.discussion_option_gallery)
+
+        // Actions
         binding.optionCamera.layoutParent.setOnClickListener {
             photoUri = createImageUri()
             cameraLauncher.launch(photoUri)
@@ -439,6 +435,19 @@ class DetailConversationActivity : CommentActivity() {
     }
 
     private fun showThumbnail(uri: Uri) {
+        //Hide options
+        // Animation du layout vers le bas
+        val slideOut = AnimationUtils.loadAnimation(this, R.anim.slide_out_down)
+        binding.layoutOption.startAnimation(slideOut)
+
+        // Cache le layout après l’animation
+        Handler(Looper.getMainLooper()).postDelayed({
+            binding.layoutOption.visibility = View.GONE
+        }, 250)
+
+        // Retour rotation à 0°
+        binding.optionButton.animate().rotation(0f).setDuration(300).start()
+
         binding.layoutPhoto.visibility = View.VISIBLE
         binding.ivPhotoPreview.setImageURI(uri)
 
