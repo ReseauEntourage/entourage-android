@@ -146,7 +146,7 @@
 
     <string name="sign_out_dialog_title">Desconectar</string>
     <string name="sign_out_dialog_content">¿Quieres cerrar sesión?</string>
-    <string name="progress_km">%s kilómetros</string>
+    <string name="progress_km">%d kilómetros</string>
     <string name="modify_interests_subtitle">Seleccione una o más categorías que le interesen.</string>
     <string name="add_image">Añadir una imagen</string>
     <string name="add_image_subtitle">Con una foto es inmediatamente mejor.

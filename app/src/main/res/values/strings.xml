@@ -146,7 +146,7 @@
 
     <string name="sign_out_dialog_title">Déconnexion</string>
     <string name="sign_out_dialog_content">Voulez-vous vous déconnecter ?</string>
-    <string name="progress_km">%s km</string>
+    <string name="progress_km">%d km</string>
     <string name="modify_interests_subtitle">Séléctionnez une ou plusieurs catégories qui vous intéresse.</string>
     <string name="add_image">Ajouter une photo</string>
     <string name="add_image_title">Vous n\'avez pas encore de photo de profil</string>

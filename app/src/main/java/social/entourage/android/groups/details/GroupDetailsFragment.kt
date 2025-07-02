@@ -15,9 +15,9 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import social.entourage.android.BuildConfig
 import social.entourage.android.R
 import social.entourage.android.api.MetaDataRepository
-import social.entourage.android.groups.GroupModel
 import social.entourage.android.api.model.Tags
 import social.entourage.android.databinding.NewFragmentSettingsModalBinding
+import social.entourage.android.groups.GroupModel
 import social.entourage.android.groups.GroupPresenter
 import social.entourage.android.groups.details.rules.GroupRulesActivity
 import social.entourage.android.groups.edit.EditGroupActivity
@@ -25,9 +25,9 @@ import social.entourage.android.profile.myProfile.InterestsAdapter
 import social.entourage.android.report.DataLanguageStock
 import social.entourage.android.report.ReportModalFragment
 import social.entourage.android.report.ReportTypes
+import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.CustomAlertDialog
-import social.entourage.android.tools.log.AnalyticsEvents
 
 class GroupDetailsFragment : BottomSheetDialogFragment() {
 
@@ -95,7 +95,7 @@ class GroupDetailsFragment : BottomSheetDialogFragment() {
     }
 
     private fun handleShareButton(){
-        binding.share.layout.setOnClickListener {
+        binding.share.profileSettingsItemLayout.setOnClickListener {
             AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_GROUP_SHARE)
             val shareTitle = getString(R.string.share_title_group)
             val shareIntent = Intent(Intent.ACTION_SEND).apply {
@@ -129,8 +129,8 @@ class GroupDetailsFragment : BottomSheetDialogFragment() {
 
     private fun updateView() {
         MetaDataRepository.metaData.observe(requireActivity(), ::handleMetaData)
-        binding.rules.divider.visibility = View.GONE
-        binding.edit.divider.visibility = View.GONE
+        binding.rules.profileSettingsItemDivider.visibility = View.GONE
+        binding.edit.profileSettingsItemDivider.visibility = View.GONE
         binding.notificationNewMembers.divider.visibility = View.GONE
         TextViewCompat.setTextAppearance(
             binding.notificationAll.tvLabel,
@@ -154,7 +154,7 @@ class GroupDetailsFragment : BottomSheetDialogFragment() {
     }
 
     private fun handleRulesButton() {
-        binding.rules.layout.setOnClickListener {
+        binding.rules.profileSettingsItemLayout.setOnClickListener {
             AnalyticsEvents.logEvent(
                 AnalyticsEvents.ACTION_GROUP_OPTION_RULES
             )

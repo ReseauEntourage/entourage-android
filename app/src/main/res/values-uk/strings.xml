@@ -146,7 +146,7 @@
 
     <string name="sign_out_dialog_title">Відключити</string>
     <string name="sign_out_dialog_content">Ви хочете вийти?</string>
-    <string name="progress_km">%s км</string>
+    <string name="progress_km">%d км</string>
     <string name="modify_interests_subtitle">Виберіть одну або кілька категорій, які вас цікавлять.</string>
     <string name="add_image">Додайте картинку</string>
     <string name="add_image_subtitle">З фотографією одразу стає приємніше.

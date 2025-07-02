@@ -154,14 +154,14 @@ class EditProfileFragment : Fragment(), EditProfileCallback,
     }
 
     private fun onEditInterests() {
-        binding.interests.layout.setOnClickListener {
+        binding.interests.profileSettingsItemLayout.setOnClickListener {
             EnhancedOnboarding.isFromSettingsinterest = true
             val intent = Intent(requireContext(), EnhancedOnboarding::class.java)
             startActivity(intent)
             requireActivity().finish()
 
         }
-        binding.personnalize.layout.setOnClickListener {
+        binding.personnalize.profileSettingsItemLayout.setOnClickListener {
             //Launch Enhanced Onboarding activity
             MainActivity.isFromProfile = true
             val intent = Intent(requireContext(), EnhancedOnboarding::class.java)

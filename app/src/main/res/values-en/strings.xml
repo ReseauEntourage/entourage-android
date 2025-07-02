@@ -122,7 +122,7 @@
     <string name="unsubscribe_content">If you unsubscribe, you will no longer receive notifications, news, and new events from this association.</string>
     <string name="sign_out_dialog_title">Log out</string>
     <string name="sign_out_dialog_content">Do you want to log out?</string>
-    <string name="progress_km">%s km</string>
+    <string name="progress_km">%d km</string>
     <string name="modify_interests_subtitle">Select one or more categories that interest you.</string>
     <string name="add_image">Add a photo</string>
     <string name="add_image_subtitle">With a photo it\'s immediately nicer.</string>

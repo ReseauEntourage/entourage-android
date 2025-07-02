@@ -144,7 +144,7 @@
 
     <string name="sign_out_dialog_title">Trennen</string>
     <string name="sign_out_dialog_content">Möchten Sie sich abmelden?</string>
-    <string name="progress_km">%s km</string>
+    <string name="progress_km">%d km</string>
     <string name="modify_interests_subtitle">Wählen Sie eine oder mehrere Kategorien aus, die Sie interessieren.</string>
     <string name="add_image">Bild hinzufügen</string>
     <string name="add_image_subtitle">Mit einem Foto ist es sofort schöner.

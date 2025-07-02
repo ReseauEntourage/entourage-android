@@ -19,29 +19,29 @@
         android:layout_height="wrap_content">
 
         <ImageView
-            android:id="@+id/icon"
+            android:id="@+id/profile_item_icon"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:src="@{icon}"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintRight_toLeftOf="@id/layout"
+            app:layout_constraintRight_toLeftOf="@id/profile_item_layout"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintWidth_percent="0.2"
             tools:src="@drawable/new_edit_profile" />
 
         <LinearLayout
-            android:id="@+id/layout"
+            android:id="@+id/profile_item_layout"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/icon"
+            app:layout_constraintStart_toEndOf="@+id/profile_item_icon"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintWidth_percent="0.8">
 
             <TextView
-                android:id="@+id/title"
+                android:id="@+id/profile_item_title"
                 style="@style/profile_information_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -49,7 +49,7 @@
                 tools:text="Date d'annif" />
 
             <TextView
-                android:id="@+id/content"
+                android:id="@+id/profile_item_content"
                 style="@style/h4"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -57,14 +57,14 @@
         </LinearLayout>
 
         <View
-            android:id="@+id/divider"
+            android:id="@+id/profile_item_divider"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginTop="10dp"
             android:background="@color/light_orange_opacity_50"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/layout" />
+            app:layout_constraintTop_toBottomOf="@id/profile_item_layout" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

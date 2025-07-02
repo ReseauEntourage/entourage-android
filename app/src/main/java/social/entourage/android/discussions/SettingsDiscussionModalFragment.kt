@@ -110,8 +110,8 @@ class SettingsDiscussionModalFragment : BottomSheetDialogFragment() {
 
     private fun updateInputs() {
         val mustHideQuit = isCreator || isOneToOne || isEvent
-        binding.quit.layout.isVisible = !mustHideQuit
-        binding.quit.arrow.isVisible  = !mustHideQuit
+        binding.quit.profileSettingsItemLayout.isVisible = !mustHideQuit
+        binding.quit.profileSettingsArrow.isVisible  = !mustHideQuit
         if (!mustHideQuit) binding.quit.label = getString(R.string.discussion_settings_quit)
     }
 
@@ -142,7 +142,7 @@ class SettingsDiscussionModalFragment : BottomSheetDialogFragment() {
     private fun handleButtons() {
 
         /* ▶️ Profil (1-1) ou liste des membres (groupe) */
-        binding.profile.layout.setOnClickListener {
+        binding.profile.profileSettingsItemLayout.setOnClickListener {
             if (isOneToOne) {
                 ProfileFullActivity.isMe = false
                 ProfileFullActivity.userId = userId.toString()
@@ -182,7 +182,7 @@ class SettingsDiscussionModalFragment : BottomSheetDialogFragment() {
         }
 
         /* ▶️ Quitter la conversation */
-        binding.quit.layout.setOnClickListener {
+        binding.quit.profileSettingsItemLayout.setOnClickListener {
             CustomAlertDialog.showWithCancelFirst(
                 requireContext(),
                 getString(R.string.leave_conversation),

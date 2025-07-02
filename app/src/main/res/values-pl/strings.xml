@@ -146,7 +146,7 @@
 
     <string name="sign_out_dialog_title">Rozłączyć się</string>
     <string name="sign_out_dialog_content">Czy chcesz się wylogować?</string>
-    <string name="progress_km">%s km</string>
+    <string name="progress_km">%d km</string>
     <string name="modify_interests_subtitle">Wybierz jedną lub więcej kategorii, które Cię interesują.</string>
     <string name="add_image">Dodaj zdjęcie</string>
     <string name="add_image_subtitle">Dzięki zdjęciu od razu jest ładniej.

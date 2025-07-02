@@ -20,7 +20,7 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/layout"
+        android:id="@+id/profile_item_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="25dp">
@@ -32,14 +32,14 @@
             android:paddingEnd="40dp"
             android:src="@{icon}"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintRight_toLeftOf="@id/linearLayout"
+            app:layout_constraintRight_toLeftOf="@id/linear_layout"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintWidth_percent="0.2"
             tools:src="@drawable/new_cross" />
 
         <LinearLayout
-            android:id="@+id/linearLayout"
+            android:id="@+id/linear_layout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -77,7 +77,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/linearLayout"
+            app:layout_constraintTop_toBottomOf="@id/linear_layout"
             tools:text="Title" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

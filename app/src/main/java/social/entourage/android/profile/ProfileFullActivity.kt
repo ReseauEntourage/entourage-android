@@ -539,13 +539,13 @@ class ProfileFullActivity : BaseActivity()  {
         // Date d'inscription
         user?.createdAt?.let { createdAt ->
             val locale = LanguageManager.getLocaleFromPreferences(this)
-            binding.joined.date.text = SimpleDateFormat(
+            binding.joined.profileJoinedDate.text = SimpleDateFormat(
                 this.getString(R.string.profile_date_format),
                 locale
             ).format(createdAt)
-            binding.joined.date.visibility = View.VISIBLE
+            binding.joined.profileJoinedDate.visibility = View.VISIBLE
         } ?: run {
-            binding.joined.date.visibility = View.GONE
+            binding.joined.profileJoinedDate.visibility = View.GONE
         }
 
         // Email

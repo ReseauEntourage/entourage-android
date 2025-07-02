@@ -4,13 +4,11 @@ import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageButton
-import android.widget.ImageView
 import android.widget.RadioButton
 import android.widget.RadioGroup
 import android.widget.TextView
@@ -27,16 +25,16 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import social.entourage.android.BuildConfig
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
-import social.entourage.android.api.MetaDataRepository
-import social.entourage.android.databinding.NewFragmentSettingsModalBinding
 import social.entourage.android.RefreshController
+import social.entourage.android.api.MetaDataRepository
+import social.entourage.android.api.model.Events
+import social.entourage.android.api.model.Status
+import social.entourage.android.api.model.Tags
+import social.entourage.android.databinding.NewFragmentSettingsModalBinding
 import social.entourage.android.events.EventsPresenter
 import social.entourage.android.events.create.CreateEventActivity
 import social.entourage.android.events.create.Recurrence
 import social.entourage.android.groups.details.rules.GroupRulesActivity
-import social.entourage.android.api.model.Events
-import social.entourage.android.api.model.Status
-import social.entourage.android.api.model.Tags
 import social.entourage.android.profile.myProfile.InterestsAdapter
 import social.entourage.android.report.DataLanguageStock
 import social.entourage.android.report.ReportModalFragment
@@ -114,7 +112,7 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
 
     private fun handleShareButton(){
         AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_OPTION_SHARED)
-        binding.share.layout.setOnClickListener {
+        binding.share.profileSettingsItemLayout.setOnClickListener {
             if(event != null){
                 val shareTitle = getString(R.string.share_title_event)
                 val shareIntent = Intent(Intent.ACTION_SEND).apply {
@@ -145,7 +143,7 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
     }
 
     private fun handleRulesButton() {
-        binding.rules.layout.setOnClickListener {
+        binding.rules.profileSettingsItemLayout.setOnClickListener {
             val intent = Intent(context, GroupRulesActivity::class.java)
             intent.putExtra(Const.RULES_TYPE, Const.RULES_EVENT)
             startActivityForResult(intent, 0)
@@ -190,9 +188,9 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
     private fun updateView() {
         MetaDataRepository.metaData.observe(requireActivity(), ::handleMetaData)
         with(binding) {
-            rules.divider.visibility = View.GONE
-            edit.divider.visibility = View.GONE
-            editRecurrence.divider.visibility = View.GONE
+            rules.profileSettingsItemDivider.visibility = View.GONE
+            edit.profileSettingsItemDivider.visibility = View.GONE
+            editRecurrence.profileSettingsItemDivider.visibility = View.GONE
             notificationNewMembers.divider.visibility = View.GONE
             TextViewCompat.setTextAppearance(
                 notificationAll.tvLabel,
