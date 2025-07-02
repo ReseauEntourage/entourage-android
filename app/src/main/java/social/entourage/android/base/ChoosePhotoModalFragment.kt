@@ -10,7 +10,6 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -25,14 +24,14 @@ import com.takusemba.cropme.OnCropListener
 import social.entourage.android.R
 import social.entourage.android.databinding.NewFragmentChoosePhotoModalBinding
 import social.entourage.android.language.LanguageManager
-import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.log.AnalyticsEvents
+import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.Utils
 import timber.log.Timber
 import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Date
 
 class ChoosePhotoModalFragment : BottomSheetDialogFragment() {
 
@@ -242,7 +241,7 @@ class ChoosePhotoModalFragment : BottomSheetDialogFragment() {
 
 
     private fun handleCloseButton() {
-        binding.header.iconCross.setOnClickListener {
+        binding.header.hbsIconCross.setOnClickListener {
             dismiss()
         }
     }

@@ -166,7 +166,7 @@ class UnblockUsersFragment : BottomSheetDialogFragment() {
     }
 
     private fun handleCloseButton() {
-        binding.header.iconCross.setOnClickListener {
+        binding.header.hbsIconCross.setOnClickListener {
             profilFullViewModel.updateProfile()
             dismiss()
         }

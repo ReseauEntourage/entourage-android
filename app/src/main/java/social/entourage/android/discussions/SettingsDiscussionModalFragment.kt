@@ -133,7 +133,7 @@ class SettingsDiscussionModalFragment : BottomSheetDialogFragment() {
     /* ─────────────────────────── Listeners ─────────────────────────── */
 
     private fun handleCloseButton() {
-        binding.header.iconCross.setOnClickListener {
+        binding.header.hbsIconCross.setOnClickListener {
             dismiss()
             isSeveralPersonneInConversation = false
         }

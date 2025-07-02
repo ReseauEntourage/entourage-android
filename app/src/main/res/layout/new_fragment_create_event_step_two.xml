@@ -8,7 +8,7 @@
 
     <include
         android:id="@+id/layout"
-        layout="@layout/new_edit_event_step_two"
+        layout="@layout/layout_edit_event_step_two"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 

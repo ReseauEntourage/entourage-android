@@ -8,7 +8,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationManagerCompat
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
-import social.entourage.android.R
 import social.entourage.android.api.model.notification.InAppNotificationPermission
 import social.entourage.android.databinding.NewFragmentSettingsNotifsBinding
 import social.entourage.android.home.HomePresenter
@@ -122,7 +121,7 @@ class SettingsNotificationsActivity : AppCompatActivity() {
     }
 
     private fun handleCloseButton() {
-        binding.header.iconCross.setOnClickListener {
+        binding.header.hbsIconCross.setOnClickListener {
             finish() // A la place de dismiss()
         }
     }

@@ -13,13 +13,13 @@ import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import social.entourage.android.R
 import social.entourage.android.api.model.Partner
-import social.entourage.android.databinding.NewFragmentAssociationProfileBinding
+import social.entourage.android.databinding.FragmentAssociationProfileBinding
 import social.entourage.android.tools.utils.CustomAlertDialog
 
 class AssociationProfileFragment : Fragment() {
 
-    private var _binding: NewFragmentAssociationProfileBinding? = null
-    val binding: NewFragmentAssociationProfileBinding get() = _binding!!
+    private var _binding: FragmentAssociationProfileBinding? = null
+    val binding: FragmentAssociationProfileBinding get() = _binding!!
     private val associationPresenter: AssociationPresenter by lazy { AssociationPresenter() }
     var partner: Partner? = null
     private val args: AssociationProfileFragmentArgs by navArgs()
@@ -29,7 +29,7 @@ class AssociationProfileFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = NewFragmentAssociationProfileBinding.inflate(inflater, container, false)
+        _binding = FragmentAssociationProfileBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -58,44 +58,44 @@ class AssociationProfileFragment : Fragment() {
     private fun updateView() {
         with(binding) {
             partner?.name?.let {
-                name.visibility = View.VISIBLE
-                name.text = it
+                assoProfileName.visibility = View.VISIBLE
+                assoProfileName.text = it
             }
             partner?.description?.let {
-                description.visibility = View.VISIBLE
-                description.text = it
+                assoProfileDescription.visibility = View.VISIBLE
+                assoProfileDescription.text = it
             }
             partner?.phone?.let {
-                phone.root.visibility = View.VISIBLE
-                phone.content.text = it
+                assoProfilePhone.root.visibility = View.VISIBLE
+                assoProfilePhone.content.text = it
             }
             partner?.websiteUrl?.let {
-                web.root.visibility = View.VISIBLE
-                web.content.text = it
+                assoProfileWeb.root.visibility = View.VISIBLE
+                assoProfileWeb.content.text = it
             }
             partner?.address?.let {
-                address.root.visibility = View.VISIBLE
-                address.content.text = it
+                assoProfileAddress.root.visibility = View.VISIBLE
+                assoProfileAddress.content.text = it
             }
             partner?.email?.let {
-                email.root.visibility = View.VISIBLE
-                email.content.text = it
+                assoProfileEmail.root.visibility = View.VISIBLE
+                assoProfileEmail.content.text = it
             }
             partner?.donationsNeeds?.let {
-                donation.root.visibility = View.VISIBLE
-                needs.visibility = View.VISIBLE
-                donation.content.text = it
+                assoProfileDonation.root.visibility = View.VISIBLE
+                assoProfileNeeds.visibility = View.VISIBLE
+                assoProfileDonation.assoNeedsContent.text = it
             }
             partner?.volunteersNeeds?.let {
-                volunteers.root.visibility = View.VISIBLE
-                needs.visibility = View.VISIBLE
-                volunteers.content.text = it
+                assoProfileVolunteers.root.visibility = View.VISIBLE
+                assoProfileNeeds.visibility = View.VISIBLE
+                assoProfileVolunteers.assoNeedsContent.text = it
             }
             partner?.largeLogoUrl.let {
                 Glide.with(requireActivity())
                     .load(Uri.parse(it))
                     .circleCrop()
-                    .into(imageAssociation)
+                    .into(assoProfileImageAssociation)
             }
         }
         updateButtonFollow()
@@ -119,10 +119,10 @@ class AssociationProfileFragment : Fragment() {
                 if (it.isFollowing) R.drawable.new_check else R.drawable.new_plus_white,
                 null
             )
-            binding.subscribe.button.text = label
-            binding.subscribe.button.setTextColor(textColor)
-            binding.subscribe.button.background = background
-            binding.subscribe.button.setCompoundDrawablesWithIntrinsicBounds(
+            binding.assoProfileSubscribe.button.text = label
+            binding.assoProfileSubscribe.button.setTextColor(textColor)
+            binding.assoProfileSubscribe.button.background = background
+            binding.assoProfileSubscribe.button.setCompoundDrawablesWithIntrinsicBounds(
                 null,
                 null,
                 rightDrawable,
@@ -132,7 +132,7 @@ class AssociationProfileFragment : Fragment() {
     }
 
     private fun setBackButton() {
-        binding.iconBack.setOnClickListener {
+        binding.assoProfileIconBack.setOnClickListener {
             if(isFromNotifs) {
                 activity?.onBackPressed()
                 return@setOnClickListener
@@ -143,7 +143,7 @@ class AssociationProfileFragment : Fragment() {
     }
 
     private fun handleFollowButton() {
-        binding.subscribe.button.setOnClickListener {
+        binding.assoProfileSubscribe.button.setOnClickListener {
             partner?.let {
                 if (it.isFollowing) CustomAlertDialog.showWithCancelFirst(
                     requireContext(),

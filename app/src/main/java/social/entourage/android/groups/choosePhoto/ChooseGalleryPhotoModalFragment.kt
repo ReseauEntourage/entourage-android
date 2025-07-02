@@ -17,10 +17,8 @@ import social.entourage.android.R
 import social.entourage.android.api.MetaDataRepository
 import social.entourage.android.api.model.Image
 import social.entourage.android.databinding.NewFragmentCreateGroupChoosePhotoModalBinding
-import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.log.AnalyticsEvents
-import com.leinardi.android.speeddial.SpeedDialView
-import com.leinardi.android.speeddial.SpeedDialActionItem
+import social.entourage.android.tools.utils.Const
 
 private const val SPAN_COUNT = 3
 
@@ -95,7 +93,7 @@ class ChooseGalleryPhotoModalFragment : BottomSheetDialogFragment() {
         AnalyticsEvents.logEvent(
             AnalyticsEvents.ACTION_NEW_GROUP_STEP3_PIC_GALLERY_CLOSE
         )
-        binding.header.iconCross.setOnClickListener {
+        binding.header.hbsIconCross.setOnClickListener {
             dismiss()
         }
     }
