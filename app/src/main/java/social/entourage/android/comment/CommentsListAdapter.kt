@@ -267,6 +267,22 @@ class CommentsListAdapter(
                     intent.putExtra("image_url", comment.imageUrl)
                     context.startActivity(intent)
                 }
+                val hasOnlyImage = contentToShow.isBlank() && !comment.imageUrl.isNullOrEmpty()
+                if (hasOnlyImage) {
+                    bindingLeft.comment.visibility = View.GONE
+                    bindingLeft.comment.layoutParams.height = 0
+                    bindingLeft.messageContainer.setBackgroundResource(0)
+                } else {
+                    bindingLeft.comment.visibility = View.VISIBLE
+                }
+
+                bindingLeft.commentImage.setOnLongClickListener {
+                    val commentLang = comment.contentTranslations?.fromLang ?: ""
+                    DataLanguageStock.updateContentToCopy(comment.content ?: "")
+                    onItemClick.onCommentReport(comment.id, isForEvent, isForGroup, isMe, commentLang)
+                    true
+                }
+
 
             } else {
                 bindingLeft.commentImageContainer.visibility = View.GONE
@@ -461,6 +477,23 @@ class CommentsListAdapter(
                     intent.putExtra("image_url", comment.imageUrl)
                     context.startActivity(intent)
                 }
+
+                val hasOnlyImage = contentToShow.isBlank() && !comment.imageUrl.isNullOrEmpty()
+                if (hasOnlyImage) {
+                    bindingRight.comment.visibility = View.GONE
+                    bindingRight.comment.layoutParams.height = 0
+                    bindingRight.messageContainer.setBackgroundResource(0)
+                } else {
+                    bindingRight.comment.visibility = View.VISIBLE
+                }
+
+                bindingRight.commentImage.setOnLongClickListener {
+                    val commentLang = comment.contentTranslations?.fromLang ?: ""
+                    DataLanguageStock.updateContentToCopy(comment.content ?: "")
+                    onItemClick.onCommentReport(comment.id, isForEvent, isForGroup, isMe, commentLang)
+                    true
+                }
+
             } else {
                 bindingRight.commentImageContainer.visibility = View.GONE
             }

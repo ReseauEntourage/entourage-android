@@ -256,12 +256,12 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@drawable/new_bg_rounded_button_orange_beige_stroke_slim"
+                android:background="@drawable/bg_rounded_button_grey_stroke_slim"
                 android:hint="@string/discussbis"
                 android:padding="13dp"
                 android:layout_marginStart="7dp"
                 android:inputType="textCapSentences|textMultiLine"
-                android:textColorHint="@color/orange"
+                android:textColorHint="@color/grey"
                 android:textColor="@color/black" />
 
             <ImageButton
