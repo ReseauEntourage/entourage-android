@@ -416,15 +416,15 @@ class WelcomeThreeActivity: BaseActivity() {
             binding.contribExampleOne.layoutContrib.visibility = View.VISIBLE
             binding.contribExampleTwo.layoutContrib.visibility = View.VISIBLE
             //FILL CONTRIB ONE
-            binding.contribExampleOne.name.text = getString(R.string.welcome_three_contrib_name)
-            binding.contribExampleOne.location.text = getString(R.string.welcome_three_contrib_location)
-            binding.contribExampleOne.date.text = getString(R.string.welcome_three_contrib_date)
+            binding.contribExampleOne.wceName.text = getString(R.string.welcome_three_contrib_name)
+            binding.contribExampleOne.wceLocation.text = getString(R.string.welcome_three_contrib_location)
+            binding.contribExampleOne.wceDate.text = getString(R.string.welcome_three_contrib_date)
             binding.contribExampleOne.distance.text = getString(R.string.welcome_three_contrib_distance)
-            binding.contribExampleOne.image.setImageDrawable(getDrawable(R.drawable.contrib_example_one))
+            binding.contribExampleOne.wceImage.setImageDrawable(getDrawable(R.drawable.contrib_example_one))
             //FILL CONTRIB TWO
-            binding.contribExampleTwo.name.text = getString(R.string.welcome_three_contrib_name_two)
-            binding.contribExampleTwo.location.text = getString(R.string.welcome_three_contrib_location)
-            binding.contribExampleTwo.date.text = getString(R.string.welcome_three_contrib_date)
+            binding.contribExampleTwo.wceName.text = getString(R.string.welcome_three_contrib_name_two)
+            binding.contribExampleTwo.wceLocation.text = getString(R.string.welcome_three_contrib_location)
+            binding.contribExampleTwo.wceDate.text = getString(R.string.welcome_three_contrib_date)
             binding.contribExampleTwo.distance.text = getString(R.string.welcome_three_contrib_distance)
 
         }

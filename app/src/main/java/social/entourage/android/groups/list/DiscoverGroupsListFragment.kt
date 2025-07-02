@@ -1,10 +1,8 @@
 package social.entourage.android.groups.list
 
-import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,8 +17,8 @@ import social.entourage.android.R
 import social.entourage.android.api.model.Group
 import social.entourage.android.databinding.NewFragmentGroupsListBinding
 import social.entourage.android.groups.GroupPresenter
-import social.entourage.android.tools.utils.Utils
 import social.entourage.android.tools.log.AnalyticsEvents
+import social.entourage.android.tools.utils.Utils
 
 const val groupPerPage = 10
 
@@ -149,11 +147,9 @@ class DiscoverGroupsListFragment : Fragment() , UpdateGroupInter {
     }
 
     private fun setRVScrollListener(){
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            binding.recyclerView.setOnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
-                handlePagination(binding.recyclerView)
+        binding.recyclerView.setOnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
+            handlePagination(binding.recyclerView)
 
-            }
         }
     }
 

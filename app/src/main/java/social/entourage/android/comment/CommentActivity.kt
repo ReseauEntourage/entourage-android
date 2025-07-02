@@ -319,9 +319,6 @@ protected open fun handleReportPost(id: Int, commentLang: String) {
 
 private fun openEditTextKeyboard() {
 //        if (shouldOpenKeyboard) {
-//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-//                binding.commentMessage.setTextColor(getColor(R.color.black))
-//            }
 //            binding.commentMessage.focusAndShowKeyboard()
 //        }
 }

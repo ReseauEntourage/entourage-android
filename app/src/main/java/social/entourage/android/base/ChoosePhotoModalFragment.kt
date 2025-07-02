@@ -280,9 +280,6 @@ class ChoosePhotoModalFragment : BottomSheetDialogFragment() {
         ActivityCompat.checkSelfPermission(context, permission) == PackageManager.PERMISSION_GRANTED
 
     private fun takePhoto() {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-            showTakePhotoActivity()
-        }
         activity?.let {
             if (hasPermission(
                     activity as Context,
@@ -297,19 +294,15 @@ class ChoosePhotoModalFragment : BottomSheetDialogFragment() {
     }
 
     private fun pickPhoto() {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-            showChoosePhotoActivity()
-        } else {
-            activity?.let {
-                if (hasPermission(
-                        activity as Context,
-                        readMediaPermission
-                    )
-                ) {
-                    showChoosePhotoActivity()
-                } else {
-                    permReqChoosePhotoLauncher.launch(readMediaPermission)
-                }
+        activity?.let {
+            if (hasPermission(
+                    activity as Context,
+                    readMediaPermission
+                )
+            ) {
+                showChoosePhotoActivity()
+            } else {
+                permReqChoosePhotoLauncher.launch(readMediaPermission)
             }
         }
     }

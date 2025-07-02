@@ -209,9 +209,7 @@ object CustomAlertDialog {
 
         with(customDialog.findViewById<TextView>(R.id.title)){
             text = title
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                setTextColor(context.getColor(R.color.light_orange))
-            }
+            setTextColor(context.getColor(R.color.light_orange))
         }
         customDialog.findViewById<TextView>(R.id.content).text = content
         customDialog.findViewById<Button>(R.id.yes).visibility = View.GONE
@@ -246,9 +244,7 @@ object CustomAlertDialog {
 
         with(customDialog.findViewById<TextView>(R.id.title)){
             text = title
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                setTextColor(context.getColor(R.color.light_orange))
-            }
+            setTextColor(context.getColor(R.color.light_orange))
         }
         customDialog.findViewById<TextView>(R.id.content).text = content
         customDialog.findViewById<Button>(R.id.yes).visibility = View.GONE
@@ -284,18 +280,14 @@ object CustomAlertDialog {
 
         with(customDialog.findViewById<TextView>(R.id.title)){
             text = title
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                setTextColor(context.getColor(R.color.light_orange))
-            }
+            setTextColor(context.getColor(R.color.light_orange))
         }
         customDialog.findViewById<TextView>(R.id.content).text = content
         customDialog.findViewById<Button>(R.id.no).visibility = View.GONE
         with(customDialog.findViewById<TextView>(R.id.yes)) {
             text = action
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                setTextColor(context.getColor(R.color.white))
+            setTextColor(context.getColor(R.color.white))
 
-            }
             setOnClickListener {
                 AnalyticsEvents.logEvent(AnalyticsEvents.I_present_click_i_post)
                 onAction()

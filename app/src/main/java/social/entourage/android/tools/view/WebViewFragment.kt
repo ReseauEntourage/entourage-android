@@ -244,7 +244,6 @@ class WebViewFragment : BaseDialogFragment() {
             binding.webviewProgressbar.visibility = View.GONE
         }
 
-        @TargetApi(Build.VERSION_CODES.M)
         override fun onReceivedError(view: WebView, request: WebResourceRequest, error: WebResourceError) {
             super.onReceivedError(view, request, error)
             binding.webviewProgressbar?.visibility = View.GONE
@@ -257,7 +256,6 @@ class WebViewFragment : BaseDialogFragment() {
             binding.webviewProgressbar?.visibility = View.GONE
         }
 
-        @RequiresApi(Build.VERSION_CODES.M)
         override fun onReceivedHttpError(view: WebView, request: WebResourceRequest, errorResponse: WebResourceResponse) {
             super.onReceivedHttpError(view, request, errorResponse)
             binding.webviewProgressbar?.visibility = View.GONE

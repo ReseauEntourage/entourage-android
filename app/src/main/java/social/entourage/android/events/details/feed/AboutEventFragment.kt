@@ -4,14 +4,12 @@ import android.content.Intent
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.getColor
-import androidx.core.content.ContextCompat.getDrawable
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -28,29 +26,29 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
-import com.google.gson.Gson
 import social.entourage.android.R
 import social.entourage.android.api.MetaDataRepository
 import social.entourage.android.api.model.EntourageUser
-import social.entourage.android.events.EventModel
+import social.entourage.android.api.model.Status
+import social.entourage.android.api.model.Tags
 import social.entourage.android.databinding.NewFragmentAboutEventBinding
+import social.entourage.android.events.EventModel
 import social.entourage.android.events.EventsPresenter
 import social.entourage.android.events.create.Recurrence
 import social.entourage.android.events.details.feed.AboutEventFragmentDirections.actionEventAboutToEventMembers
 import social.entourage.android.groups.details.feed.GroupMembersPhotosAdapter
 import social.entourage.android.groups.details.members.MembersType
-import social.entourage.android.api.model.Status
-import social.entourage.android.api.model.Tags
 import social.entourage.android.language.LanguageManager
 import social.entourage.android.profile.myProfile.InterestsAdapter
 import social.entourage.android.tools.displayDistance
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.setHyperlinkClickable
-import social.entourage.android.tools.utils.*
+import social.entourage.android.tools.utils.Const
+import social.entourage.android.tools.utils.CustomAlertDialog
+import social.entourage.android.tools.utils.Utils
 import social.entourage.android.tools.utils.Utils.enableCopyOnLongClick
-import timber.log.Timber
+import social.entourage.android.tools.utils.underlineWithDistanceUnder
 import java.text.SimpleDateFormat
-import java.util.*
 
 const val ZOOM = 15f
 
@@ -209,16 +207,15 @@ class AboutEventFragment : Fragment(), OnMapReadyCallback {
                 handleEventCanceled()
         }
 
-        event?.author.let {
+        event?.author?.let { author ->
             binding.organizer.icon = AppCompatResources.getDrawable(requireContext(),R.drawable.ic_event_header_organiser)
-            binding.organizer.content.text = String.format(getString(R.string.event_organisez_by), it?.userName)
+            binding.organizer.content.text = String.format(getString(R.string.event_organisez_by), author.userName)
 
-            it?.partner.let {
-                if(!it?.name.isNullOrEmpty()){
-                    binding.tvAssociation.text = String.format(getString(R.string.event_organisez_asso),it?.name)
+            author.partner?.name?.let { partnerName->
+                if(!partnerName.isEmpty()){
+                    binding.tvAssociation.text = String.format(getString(R.string.event_organisez_asso),partnerName)
                     binding.tvAssociation.visibility = View.VISIBLE
                 }
-
             }
         }
         getPrincipalMember()

@@ -20,7 +20,7 @@
             app:cardCornerRadius="20dp"
             >
             <ImageView
-                android:id="@+id/image"
+                android:id="@+id/wce_image"
                 android:layout_width="90dp"
                 android:layout_height="90dp"
                 android:src="@drawable/contrib_example_two"
@@ -29,7 +29,7 @@
         </androidx.cardview.widget.CardView>
 
         <LinearLayout
-            android:id="@+id/information"
+            android:id="@+id/wce_information"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
@@ -43,7 +43,7 @@
                 android:weightSum="100">
 
                 <ImageView
-                    android:id="@+id/iv_canceled"
+                    android:id="@+id/wce_iv_canceled"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="start"
@@ -53,7 +53,7 @@
                     android:visibility="gone" />
 
                 <TextView
-                    android:id="@+id/name"
+                    android:id="@+id/wce_name"
                     style="@style/left_h2"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -63,7 +63,7 @@
                     tools:text="Ping pong" />
 
                 <TextView
-                    android:id="@+id/canceled"
+                    android:id="@+id/wce_canceled"
                     style="@style/left_legend_grey"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -73,7 +73,7 @@
                     android:visibility="gone" />
 
                 <ImageView
-                    android:id="@+id/star"
+                    android:id="@+id/wce_star"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="4dp"
@@ -83,7 +83,7 @@
                     android:visibility="gone" />
 
                 <TextView
-                    android:id="@+id/admin"
+                    android:id="@+id/wce_admin"
                     style="@style/left_courant_light_orange"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -126,7 +126,7 @@
                     android:src="@drawable/new_location_grey" />
 
                 <TextView
-                    android:id="@+id/location"
+                    android:id="@+id/wce_location"
                     style="@style/left_legend_grey"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -147,7 +147,7 @@
                     android:src="@drawable/new_date_grey" />
 
                 <TextView
-                    android:id="@+id/date"
+                    android:id="@+id/wce_date"
                     style="@style/left_legend_grey"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -158,7 +158,7 @@
     </LinearLayout>
 
     <View
-        android:id="@+id/divider"
+        android:id="@+id/wce_divider"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginTop="10dp"

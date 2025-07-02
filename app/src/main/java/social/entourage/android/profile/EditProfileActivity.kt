@@ -3,6 +3,7 @@ package social.entourage.android.profile
 import android.content.Intent
 import android.graphics.Rect
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -11,7 +12,6 @@ import android.view.View
 import android.view.ViewTreeObserver
 import android.view.inputmethod.InputMethodManager
 import android.widget.ArrayAdapter
-import android.widget.AutoCompleteTextView
 import android.widget.SeekBar
 import android.widget.TextView
 import android.widget.Toast
@@ -33,7 +33,6 @@ import social.entourage.android.api.model.User
 import social.entourage.android.base.BaseActivity
 import social.entourage.android.databinding.ActivityEditProfileBinding
 import social.entourage.android.enhanced_onboarding.EnhancedOnboarding
-import social.entourage.android.main_filter.MainFilterActivity
 import social.entourage.android.main_filter.MainFilterActivity.Companion.PlaceDetails
 import social.entourage.android.profile.editProfile.EditPhotoActivity
 import social.entourage.android.profile.editProfile.EditProfilePresenter
@@ -276,7 +275,11 @@ class EditProfileActivity : BaseActivity(), AvatarUploadView {
 
     private fun updateUserView() {
         val user = EntourageApplication.me(this) ?: return
-        val isArabic = resources.configuration.locales[0].language == "ar"
+        val isArabic = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            resources.configuration.locales[0].language == "ar"
+        } else {
+            resources.configuration.locale.language == "ar"
+        }
 
         with(binding) {
             // Configuration RTL si nécessaire

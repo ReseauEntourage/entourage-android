@@ -373,7 +373,7 @@ class SmallTalkViewModel(application: Application) : AndroidViewModel(applicatio
         request.deleteChatMessage(smallTalkId, messageId).enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 // Après suppression, on renvoie le résultat et l'ID du message
-                messageDeleteResult.postValue(response.isSuccessful,)
+                messageDeleteResult.postValue(response.isSuccessful)
             }
 
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
