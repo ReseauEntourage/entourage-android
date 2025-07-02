@@ -11,7 +11,7 @@
 
         <include
             android:id="@+id/header"
-            layout="@layout/new_header_bottom_sheet"
+            layout="@layout/layout_header_bottom_sheet"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toTopOf="@id/title"
@@ -86,7 +86,7 @@
 
                 <include
                     android:id="@+id/notification_all"
-                    layout="@layout/new_notifications_layout"
+                    layout="@layout/item_notifications_card"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="25dp"
@@ -95,7 +95,7 @@
 
                 <include
                     android:id="@+id/notification_new_event"
-                    layout="@layout/new_notifications_layout"
+                    layout="@layout/item_notifications_card"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="25dp"
@@ -103,7 +103,7 @@
 
                 <include
                     android:id="@+id/notification_new_messages"
-                    layout="@layout/new_notifications_layout"
+                    layout="@layout/item_notifications_card"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="25dp"
@@ -111,7 +111,7 @@
 
                 <include
                     android:id="@+id/notification_new_members"
-                    layout="@layout/new_notifications_layout"
+                    layout="@layout/item_notifications_card"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="25dp"

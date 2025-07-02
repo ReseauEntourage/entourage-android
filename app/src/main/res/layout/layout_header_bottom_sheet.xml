@@ -13,14 +13,14 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/layout"
+        android:id="@+id/hbs_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingHorizontal="@dimen/padding_horizontal"
         android:paddingTop="8dp">
 
         <View
-            android:id="@+id/view"
+            android:id="@+id/hbs_view"
             android:layout_width="match_parent"
             android:layout_height="4dp"
             android:layout_marginHorizontal="130dp"
@@ -30,34 +30,33 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
-            android:id="@+id/icon_cross"
+            android:id="@+id/hbs_icon_cross"
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:layout_marginTop="20dp"
             android:layout_marginBottom="16dp"
             android:src="@drawable/new_back"
-            app:layout_constraintBottom_toTopOf="@id/divider"
+            app:layout_constraintBottom_toTopOf="@id/hbs_divider"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/view"
+            app:layout_constraintTop_toBottomOf="@id/hbs_view"
             tools:src="@drawable/new_back" />
 
-
         <TextView
-            android:id="@+id/title_name"
+            android:id="@+id/hbs_title_name"
             style="@style/h2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:layout_marginBottom="16dp"
             android:text="@{title}"
-            app:layout_constraintBottom_toTopOf="@id/divider"
+            app:layout_constraintBottom_toTopOf="@id/hbs_divider"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Notifications" />
 
         <View
-            android:id="@+id/divider"
+            android:id="@+id/hbs_divider"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@color/light_orange_opacity_50"

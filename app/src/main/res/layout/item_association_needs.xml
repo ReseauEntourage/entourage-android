@@ -20,34 +20,34 @@
         android:paddingVertical="15dp">
 
         <ImageView
-            android:id="@+id/icon"
+            android:id="@+id/asso_needs_icon"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:src="@{icon}"
-            app:layout_constraintRight_toLeftOf="@id/layout"
+            app:layout_constraintRight_toLeftOf="@id/asso_needs_layout"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintWidth_percent="0.1" />
 
         <LinearLayout
-            android:id="@+id/layout"
+            android:id="@+id/asso_needs_layout"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/icon"
+            app:layout_constraintStart_toEndOf="@+id/asso_needs_icon"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintWidth_percent="0.9">
 
             <TextView
-                android:id="@+id/title"
+                android:id="@+id/asso_needs_title"
                 style="@style/profile_information_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@{title}" />
 
             <TextView
-                android:id="@+id/content"
+                android:id="@+id/asso_needs_content"
                 style="@style/left_legend"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
