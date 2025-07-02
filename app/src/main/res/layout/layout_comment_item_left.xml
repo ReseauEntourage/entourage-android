@@ -25,9 +25,10 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="7dp"
+        android:layout_marginBottom="0dp"
         android:orientation="vertical"
         android:background="@drawable/new_comment_background_beige"
-        android:paddingBottom="8dp"
+        android:paddingBottom="0dp"
         app:layout_constraintStart_toEndOf="@id/image"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toStartOf="@id/report"
@@ -35,13 +36,13 @@
         tools:ignore="RtlHardcoded">
 
         <androidx.cardview.widget.CardView
+            android:id="@+id/comment_image_container"
             android:layout_width="match_parent"
             android:layout_height="175dp"
-            android:layout_marginBottom="6dp"
+            android:layout_marginBottom="0dp"
             android:visibility="visible"
             app:cardCornerRadius="12dp"
-            app:cardElevation="0dp"
-            android:id="@+id/comment_image_container">
+            app:cardElevation="0dp">
 
             <ImageView
                 android:id="@+id/comment_image"
