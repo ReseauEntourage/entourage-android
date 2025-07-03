@@ -535,7 +535,7 @@ class DetailConversationActivity : CommentActivity() {
             }
         }
         if (conversation.type == "outing" && !isSmallTalkMode) {
-            //binding.optionButton.visibility = View.VISIBLE
+            binding.optionButton.visibility = View.VISIBLE
         }
         if (conversation.type == "outing" || isSmallTalkMode ) {
             binding.layoutEventConv.visibility = View.VISIBLE
