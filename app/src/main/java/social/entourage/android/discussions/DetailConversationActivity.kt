@@ -70,7 +70,7 @@ class DetailConversationActivity : CommentActivity() {
     private val smallTalkViewModel: SmallTalkViewModel by viewModels()
     private var refreshMessagesRunnable: Runnable? = null
     private val refreshHandler = android.os.Handler()
-    private val refreshIntervalMs = 3000L // 5 secondes
+    private val refreshIntervalMs = 30000L // 5 secondes
     private lateinit var cameraLauncher: ActivityResultLauncher<Uri>
     private lateinit var galleryLauncher: ActivityResultLauncher<String>
     private var detailConversation: Conversation? = null
@@ -108,24 +108,24 @@ class DetailConversationActivity : CommentActivity() {
         setupMentionTextWatcher()
         observeDeletedMessage()
 
-        // Toujours charger le détail de la conversation (titre, membres, événement…)
+        // Toujours charger le détail de la conversation (titre, membres, événement...)
         discussionsPresenter.detailConversation.observe(this) { handleDetailConversation(it) }
         eventPresenter.getEvent.observe(this) { handleGetEvent(it) }
+        eventPresenter.getMembersSearch.observe(this) { handleMembersSearch(it) }
 
         binding.comments.layoutManager = LinearLayoutManager(this)
-        setupScrollPagination() // 👈 Ajout scroll top pagination
+        setupScrollPagination()
 
         if (isSmallTalkMode) {
-            smallTalkViewModel.smallTalkDetail.observe(this) { handleSmallTakDetail(it) }
+            smallTalkViewModel.smallTalkDetail.observe(this) { handleSmallTalkDetail(it) }
             smallTalkViewModel.messages.observe(this) { handleSmallTalkMessages(it) }
             smallTalkViewModel.participants.observe(this) { handleParticipants(it) }
             smallTalkViewModel.createdMessage.observe(this) {
                 scrollAfterLayout()
             }
             smallTalkViewModel.getSmallTalk(smallTalkId)
-            smallTalkViewModel.loadInitialMessages(smallTalkId) // 👈 Nouveau chargement avec pagination
+            smallTalkViewModel.loadInitialMessages(smallTalkId)
             smallTalkViewModel.listSmallTalkParticipants(smallTalkId)
-
             binding.btnSeeEvent.text = getString(R.string.small_talk_btn_charte)
             binding.ivBtnEvent.apply {
                 imageTintList = null
@@ -140,7 +140,6 @@ class DetailConversationActivity : CommentActivity() {
                     Intent(this, SmallTalkGuidelinesActivity::class.java)
                 )
             }
-
         } else {
             discussionsPresenter.getDetailConversation(id)
             discussionsPresenter.getAllComments.observe(this) { handleGetPostComments(it) }
@@ -170,8 +169,15 @@ class DetailConversationActivity : CommentActivity() {
         }
     }
 
+
     private fun loadMoreDiscussionComments() {
         discussionsPresenter.loadMoreComments(id)
+    }
+
+    private fun handleMembersSearch(members: List<EntourageUser>?) {
+        val currentUserId = EntourageApplication.get().me()?.id
+        val filteredMembers = members?.filter { it?.id != currentUserId?.toLong() }?.map { it.toGroupMember() } ?: emptyList()
+        showMentionSuggestions(filteredMembers)
     }
 
     private fun setupScrollPagination() {
@@ -420,7 +426,7 @@ class DetailConversationActivity : CommentActivity() {
         binding.header.iconSettings.setBackgroundColor(ContextCompat.getColor(this, R.color.transparent))
     }
 
-    private fun handleSmallTakDetail(smallTalk: SmallTalk?) {
+    private fun handleSmallTalkDetail(smallTalk: SmallTalk?) {
         Timber.wtf("wtf smallTalk : " + Gson().toJson(smallTalk))
         binding.postBlocked.isVisible = false
         smallTalkId = smallTalk?.id.toString()
@@ -762,24 +768,37 @@ class DetailConversationActivity : CommentActivity() {
     private fun setupMentionTextWatcher() {
         binding.commentMessage.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun afterTextChanged(s: Editable?) {}
+
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 if (s == null) return
                 val cursorPos = binding.commentMessage.selectionStart
                 val substring = s.subSequence(0, cursorPos)
                 val lastAt = substring.lastIndexOf('@')
+
                 if (lastAt >= 0) {
                     val query = substring.substring(lastAt + 1, cursorPos)
                     lastMentionStartIndex = lastAt
-                    if (query.isEmpty()) showMentionSuggestions(allMembers)
-                    else filterAndShowMentions(query)
+                    if (query.isEmpty()) {
+                        showMentionSuggestions(allMembers)
+                    } else {
+                        if (detailConversation?.type == "outing") {
+                            event?.id?.let { eventId ->
+                                eventPresenter.searchEventMembers(eventId, query)
+                            }
+                        } else {
+                            filterAndShowMentions(query)
+                        }
+                    }
                 } else {
                     hideMentionSuggestions()
                     lastMentionStartIndex = -1
                 }
             }
+
+            override fun afterTextChanged(s: Editable?) {}
         })
     }
+
 
     private fun showMentionSuggestions(members: List<GroupMember>) {
         if (members.isEmpty()) {

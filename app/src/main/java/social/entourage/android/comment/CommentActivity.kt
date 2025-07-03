@@ -205,6 +205,8 @@ private fun initializeComments() {
     }
 }
 
+
+
 private fun handleCommentAction() {
     binding.comment.setOnClickListener {
         // Convertir le contenu de l'EditText en HTML pour préserver les retours à la ligne

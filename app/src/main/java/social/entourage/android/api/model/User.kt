@@ -316,6 +316,14 @@ fun User.toGroupMember(): GroupMember {
     )
 }
 
+fun EntourageUser.toGroupMember(): GroupMember {
+    return GroupMember(
+        id = this.id.toInt(),
+        displayName = this.displayName,
+        avatarUrl = this.avatarURLAsString
+    )
+}
+
 fun List<User>.toGroupMembers(): List<GroupMember> {
     return map { it.toGroupMember() }
 }
