@@ -1,12 +1,10 @@
-import android.app.Activity
+
 import android.content.Intent
 import android.net.Uri
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import org.junit.Test
 import org.junit.runner.RunWith
-import social.entourage.android.MainActivity
-import social.entourage.android.R
 
 @RunWith(AndroidJUnit4::class)
 class UniversalLinkManagerPreprodTest {
@@ -30,7 +28,7 @@ class UniversalLinkManagerPreprodTest {
         }
         // Démarrer l'activité en utilisant le contexte
         context.startActivity(intent)
-        (context as Activity).overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+        //(context as Activity).overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
 
         // Attendre 2 secondes pour observer le résultat
         pauseForTwoSeconds()

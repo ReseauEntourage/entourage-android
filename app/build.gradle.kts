@@ -269,25 +269,26 @@ dependencies {
 
     // Instrumentation tests
 
-    androidTestImplementation("androidx.test.ext:junit:1.1.5")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
-    androidTestImplementation("androidx.test:runner:1.5.2")
-    androidTestImplementation("androidx.test:rules:1.5.0")
+    androidTestImplementation("androidx.test.ext:junit:1.2.1")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
+    androidTestImplementation("androidx.test:runner:1.6.2")
+    androidTestImplementation("androidx.test:rules:1.6.1")
 
     androidTestImplementation("androidx.test.uiautomator:uiautomator:2.3.0")
     //androidTestImplementation("androidx.test.espresso:espresso-contrib:3.5.1")
     //androidTestImplementation("androidx.test.espresso.idling:idling-concurrent:3.5.1")
     //androidTestImplementation("androidx.test.espresso:espresso-idling-resource:3.5.1")
-    androidTestImplementation("androidx.test.espresso:espresso-intents:3.5.1")
+    androidTestImplementation("androidx.test.espresso:espresso-intents:3.6.1")
     androidTestImplementation("com.jakewharton.espresso:okhttp3-idling-resource:1.0.0")
+    androidTestImplementation("androidx.arch.core:core-testing:2.2.0")
 
     // Unit tests
     testImplementation("junit:junit:4.13.2")
-    testImplementation("androidx.test.ext:junit:1.1.5")
-    testImplementation("androidx.test:core:1.5.0")
-    testImplementation("org.mockito:mockito-core:3.12.4")
-    testImplementation("org.mockito:mockito-inline:3.12.4")
-    testImplementation("org.mockito.kotlin:mockito-kotlin:4.1.0")
+    testImplementation("androidx.test.ext:junit:1.2.1")
+    testImplementation("androidx.test:core:1.6.1")
+    testImplementation("org.mockito:mockito-core:5.18.0")
+    testImplementation("org.mockito:mockito-inline:5.2.0")
+    testImplementation("org.mockito.kotlin:mockito-kotlin:5.4.0")
 
 
     implementation("com.google.android.flexbox:flexbox:3.0.0")
