@@ -29,7 +29,7 @@
         android:text="Un échange convivial et bienveillant"
         android:textColor="@color/black"
         android:textSize="14sp"
-        app:layout_constraintTop_toBottomOf="@id/tv_small_talk_info_title"
+        app:layout_constraintTop_toBottomOf="@id/tv_small_talk_info_not_title"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="20dp"
