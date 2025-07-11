@@ -506,6 +506,7 @@ class MainActivity : BaseSecuredActivity() {
     fun goConv(){
         navController.navigate(R.id.navigation_messages)
     }
+
     fun goContrib(){
         val bundle = bundleOf("isActionDemand" to false) // Mettez ici la valeur souhaitée pour "isActionDemand"
         navController.navigate(R.id.navigation_donations, bundle)
@@ -646,7 +647,6 @@ class MainActivity : BaseSecuredActivity() {
 
     }
 }
-
 
 enum class EntourageLink(val link: String) {
     HOME("https://preprod.entourage.social/app"),

@@ -263,8 +263,8 @@ dependencies {
     kapt("com.github.bumptech.glide:compiler:4.16.0")
 
     //entourageImplementation facebookDependencies.values()
-    implementation("com.facebook.android:facebook-android-sdk:18.0.1")
-    implementation("com.facebook.android:facebook-core:18.0.1")
+    implementation("com.facebook.android:facebook-android-sdk:18.0.3")
+    implementation("com.facebook.android:facebook-core:18.0.3")
     compileOnly("org.glassfish:javax.annotation:10.0-b28")
 
     // Instrumentation tests
