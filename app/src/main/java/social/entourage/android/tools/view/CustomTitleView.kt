@@ -35,23 +35,23 @@ class CustomTitleView : RelativeLayout {
 
         // Load attributes
         val attributes = context.obtainStyledAttributes(
-                attrs, R.styleable.EntourageTitleView, defStyle, 0)
-        binding.titleText.text = attributes.getString(R.styleable.EntourageTitleView_entourageTitle)
-        if (attributes.hasValue(R.styleable.EntourageTitleView_android_textColor)) {
-            binding.titleText.setTextColor(attributes.getColor(R.styleable.EntourageTitleView_android_textColor, ContextCompat.getColor(context, R.color.greyish_brown)))
+                attrs, R.styleable.CustomTitleView, defStyle, 0)
+        binding.titleText.text = attributes.getString(R.styleable.CustomTitleView_entourageTitle)
+        if (attributes.hasValue(R.styleable.CustomTitleView_android_textColor)) {
+            binding.titleText.setTextColor(attributes.getColor(R.styleable.CustomTitleView_android_textColor, ContextCompat.getColor(context, R.color.greyish_brown)))
         }
-        if (attributes.hasValue(R.styleable.EntourageTitleView_entourageTitleCloseDrawable)) {
+        if (attributes.hasValue(R.styleable.CustomTitleView_entourageTitleCloseDrawable)) {
             binding.titleCloseButton.setImageDrawable(attributes.getDrawable(
-                    R.styleable.EntourageTitleView_entourageTitleCloseDrawable))
+                    R.styleable.CustomTitleView_entourageTitleCloseDrawable))
 
         }
-        if (attributes.hasValue(R.styleable.EntourageTitleView_entourageTitleCloseDrawableTint)) {
+        if (attributes.hasValue(R.styleable.CustomTitleView_entourageTitleCloseDrawableTint)) {
             binding.titleCloseButton.imageTintList = attributes.getColorStateList(
-                        R.styleable.EntourageTitleView_entourageTitleCloseDrawableTint)
+                        R.styleable.CustomTitleView_entourageTitleCloseDrawableTint)
         }
-        binding.titleActionButton.text = attributes.getString(R.styleable.EntourageTitleView_entourageTitleAction)
-        setBackgroundResource(attributes.getResourceId(R.styleable.EntourageTitleView_android_background, R.color.background))
-        binding.titleSeparator.visibility = if (attributes.getBoolean(R.styleable.EntourageTitleView_entourageShowSeparator, true)) View.VISIBLE else View.GONE
+        binding.titleActionButton.text = attributes.getString(R.styleable.CustomTitleView_entourageTitleAction)
+        setBackgroundResource(attributes.getResourceId(R.styleable.CustomTitleView_android_background, R.color.background))
+        binding.titleSeparator.visibility = if (attributes.getBoolean(R.styleable.CustomTitleView_entourageShowSeparator, true)) View.VISIBLE else View.GONE
         attributes.recycle()
     }
 
