@@ -1,6 +1,7 @@
 <resources>
 
-    <string name="app_name">Entourage</string>
+    <string name="app_name" translatable="false">Entourage</string>
+    <string name="full_app_name">Entourage</string>
     <string name="button_loading">Chargement…</string>
     <string name="error_not_yet_implemented">Indisponible</string>
     <string name="error_google_play_store_not_installed">Le Google Play Store n\'est pas intallé</string>

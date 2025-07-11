@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources>
-    <string name="app_name">Entourage</string>
+    <string name="full_app_name">Entourage</string>
     <string name="button_loading">Loading…</string>
     <string name="error_not_yet_implemented">Unavailable</string>
     <string name="error_google_play_store_not_installed">The Google Play Store is not installed</string>
