@@ -384,7 +384,6 @@ Ei vor citi acest mesaj imediat ce se vor alătura grupului.</string>
     <string name="event_posts_empty_state_subtitle">Hei! C\ este ocazia de a împărtăși primele știri pentru a începe discuția!</string>
     <string name="participate">Participa</string>
     <string name="participating">Participa</string>
-    <string name="geoUri">http://maps.google.com/maps?q=loc:%s</string>
     <string name="event_settings">Parametrii evenimentului \</string>
     <string name="event_notification_all">Toată activitatea l\ a evenimentului l\</string>
     <string name="notification_new_publications">Publicații noi</string>

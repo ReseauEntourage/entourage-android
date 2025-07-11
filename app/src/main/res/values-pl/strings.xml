@@ -384,7 +384,6 @@ Przeczytają tę wiadomość, gdy tylko dołączą do grupy.</string>
     <string name="event_posts_empty_state_subtitle">Hej! C\ to okazja, aby podzielić się pierwszymi wiadomościami i rozpocząć dyskusję!</string>
     <string name="participate">Brać udział</string>
     <string name="participating">Brać udział</string>
-    <string name="geoUri">http://maps.google.com/maps?q=loc:%s</string>
     <string name="event_settings">Parametry zdarzenia \</string>
     <string name="event_notification_all">Cała aktywność l\ w zdarzeniu l\</string>
     <string name="notification_new_publications">Nowe publikacje</string>

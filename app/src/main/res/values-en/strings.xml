@@ -353,7 +353,6 @@
     <string name="event_posts_empty_state_subtitle">Hey! It\s time to share the first news to start the discussion!</string>
     <string name="participate">Participate</string>
     <string name="participating">I participate</string>
-    <string name="geoUri">http://maps.google.com/maps?q</string>
     <string name="event_settings">Event settings</string>
     <string name="event_notification_all">All event activity</string>
     <string name="notification_new_publications">New posts</string>
