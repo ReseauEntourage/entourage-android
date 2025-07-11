@@ -16,10 +16,10 @@
             android:layout_height="110dp"
             android:background="@drawable/new_shadow"
             android:elevation="1dp"
-            app:layout_constraintBottom_toTopOf="@id/scrollView"
+            app:layout_constraintBottom_toTopOf="@id/asso_profile_scrollview"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/scrollView" />
+            app:layout_constraintTop_toTopOf="@id/asso_profile_scrollview" />
 
         <ImageView
             android:id="@+id/asso_profile_icon_back"
