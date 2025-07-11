@@ -2641,7 +2641,7 @@
     <string name="posts_vote_number_singular">صوت واحد</string>
 
     <!-- Clés mal traduites -->
-    <string name="app_name">الوفد</string>
+    <string name="full_app_name">الوفد</string>
     <string name="preference_file_key">ENTOURAGE_GCM_DATA</string>
     <string name="home_help_button_2">أصبح مراسلا لـ Entourage</string>
     <string name="test">اختبار</string>

@@ -257,7 +257,7 @@ dependencies {
     implementation("com.github.takusemba:cropme:2.0.8")
     implementation("com.google.maps.android:maps-utils-ktx:3.4.0")
     implementation("com.google.android.material:material:1.12.0")
-    implementation("com.github.bumptech.glide:glide:4.14.2")
+    implementation("com.github.bumptech.glide:glide:4.16.0")
     implementation("me.leolin:ShortcutBadger:1.1.22@aar")
     implementation("net.yslibrary.keyboardvisibilityevent:keyboardvisibilityevent:3.0.0-RC3")
     kapt("com.github.bumptech.glide:compiler:4.16.0")
