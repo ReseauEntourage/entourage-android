@@ -2654,7 +2654,6 @@
     <string name="stepFive">05.</string>
     <string name="title_activity_main">النشاط الرئيسي</string>
     <string name="zero">0</string>
-    <string name="geoUri">http://maps.google.com/maps?q=loc:%s</string>
     <string name="date_recurrence_event">%s . %s</string>
     <string name="profile_date_format">MM/yyyy</string>
     <string name="entourage_info_text_join_html">&lt;font color=\"#FF9739\"&gt;%1$s &lt;/font&gt;%2$s</string>

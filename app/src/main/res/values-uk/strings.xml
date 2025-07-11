@@ -384,7 +384,6 @@
     <string name="event_posts_empty_state_subtitle">привіт! C\ – це можливість поділитися першою новиною, щоб почати обговорення!</string>
     <string name="participate">брати участь</string>
     <string name="participating">брати участь</string>
-    <string name="geoUri">http://maps.google.com/maps?q=loc:%s</string>
     <string name="event_settings">Параметри події \</string>
     <string name="event_notification_all">Уся активність l\ події l\</string>
     <string name="notification_new_publications">Нові публікації</string>

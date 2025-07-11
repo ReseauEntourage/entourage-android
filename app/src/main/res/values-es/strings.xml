@@ -383,7 +383,6 @@ Leerán este mensaje tan pronto como se unan al grupo.</string>
     <string name="event_posts_empty_state_subtitle">¡Ey! ¡C\ es la oportunidad de compartir las primeras noticias para iniciar la discusión!</string>
     <string name="participate">Participar</string>
     <string name="participating">Participar</string>
-    <string name="geoUri">http://maps.google.com/maps?q=loc:%s</string>
     <string name="event_settings">Parámetros del evento \</string>
     <string name="event_notification_all">Toda la actividad l\ del evento l\</string>
     <string name="notification_new_publications">Nuevas publicaciones</string>

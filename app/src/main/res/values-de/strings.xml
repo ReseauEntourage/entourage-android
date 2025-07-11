@@ -382,7 +382,6 @@ Sie werden diese Nachricht lesen, sobald sie der Gruppe beitreten.</string>
     <string name="event_posts_empty_state_subtitle">Hey! Cist die Gelegenheit, die ersten Neuigkeiten zu teilen, um die Diskussion anzustoßen!</string>
     <string name="participate">Teilnehmen</string>
     <string name="participating">Teilnehmen</string>
-    <string name="geoUri">http://maps.google.com/maps?q=loc:%s</string>
     <string name="event_settings">Parameter des \-Ereignisses</string>
     <string name="event_notification_all">Alle l\-Aktivitäten des l\-Ereignisses</string>
     <string name="notification_new_publications">Neue Veröffentlichungen</string>
