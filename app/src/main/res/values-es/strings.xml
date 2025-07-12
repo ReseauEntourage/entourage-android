@@ -243,11 +243,11 @@ Leerán este mensaje tan pronto como se unan al grupo.</string>
     <string name="communities">Grupos</string>
     <string name="discover_groups">Yo descubro</string>
     <string name="my_groups">Mis grupos</string>
-    <string name="members_number">%s miembros</string>
-    <string name="members_number_singular">%s miembro</string>
-    <string name="member_number">%s miembro</string>
-    <string name="future_outgoing_events_number">%s eventos planificados</string>
-    <string name="future_outgoing_events_number_singular">%s evento esperado</string>
+    <string name="members_number">%d miembros</string>
+    <string name="members_number_singular">%d miembro</string>
+    <string name="member_number">%d miembro</string>
+    <string name="future_outgoing_events_number">%d eventos planificados</string>
+    <string name="future_outgoing_events_number_singular">%d evento esperado</string>
     <string name="search_group_hint">Buscar un grupo</string>
     <string name="group_list_empty_state_title">Vaya, todavía no hay otros grupos a tu alrededor.</string>
     <string name="group_list_empty_state_subtitle">N\¡No dudes en crear \nnuevos grupos de vecinos!</string>
@@ -399,7 +399,7 @@ Leerán este mensaje tan pronto como se unan al grupo.</string>
     <string name="associated_group">Grupo asociado:</string>
     <string name="date_recurrence_event">%s. %s</string>
     <string name="start_and_end_time_event">De %s a %s</string>
-    <string name="limited_places">Número limitado de plazas: %s</string>
+    <string name="limited_places">Número limitado de plazas: %d</string>
     <string name="created_at">Creó el %s</string>
     <string name="updated_at">Modificó el %s</string>
     <string name="canceled_at">Cancelado el %s</string>
@@ -791,30 +791,24 @@ Leerán este mensaje tan pronto como se unan al grupo.</string>
 
     <string name="country_australia_name">Australia</string>
     <string name="country_australia_code">En</string>
-    <string name="country_australia_number" translatable="false">61</string>
 
     <string name="country_austria_name">Austria</string>
     <string name="country_austria_code">en</string>
 
     <string name="country_azerbaijan_name">Azerbaiyán</string>
     <string name="country_azerbaijan_code">Arizona</string>
-    <string name="country_azerbaijan_number" translatable="false">994</string>
 
     <string name="country_bahrain_name">Bahréin</string>
     <string name="country_bahrain_code">bh</string>
-    <string name="country_bahrain_number" translatable="false">973</string>
 
     <string name="country_bangladesh_name">Bangladesh</string>
     <string name="country_bangladesh_code">cómic</string>
-    <string name="country_bangladesh_number" translatable="false">880</string>
 
     <string name="country_belarus_name">Bielorrusia</string>
     <string name="country_belarus_code">por</string>
-    <string name="country_belarus_number" translatable="false">375</string>
 
     <string name="country_belgium_name">Bélgica</string>
     <string name="country_belgium_code">ser</string>
-    <string name="country_belgium_number" translatable="false">32</string>
     <string name="country_belgium_flag" translatable="false">🇧🇪</string>
 
     <string name="country_belize_name">Belice</string>

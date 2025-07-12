@@ -62,7 +62,6 @@
         android:localeConfig="@xml/locales_config"
         >
 
-
         <receiver android:name=".notifications.NotificationActionReceiver"
             android:exported="true"/>
 
@@ -254,7 +253,7 @@
                  <action android:name="android.intent.action.MAIN" />
                  <category android:name="android.intent.category.LAUNCHER" />
              </intent-filter>
-             <intent-filter android:autoVerify="true" tools:targetApi="m">
+             <intent-filter android:autoVerify="true">
                  <action android:name="android.intent.action.VIEW" />
                  <category android:name="android.intent.category.DEFAULT" />
                  <category android:name="android.intent.category.BROWSABLE" />
@@ -264,7 +263,7 @@
                  <data android:pathPrefix="/deeplink/" />
                  <data android:pathPrefix="/entourages/" />
              </intent-filter>
-             <intent-filter android:autoVerify="true" tools:targetApi="m">
+             <intent-filter android:autoVerify="true">
                  <action android:name="android.intent.action.VIEW" />
                  <category android:name="android.intent.category.DEFAULT" />
                  <category android:name="android.intent.category.BROWSABLE" />

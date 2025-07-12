@@ -94,18 +94,17 @@ class AboutEventFragment : Fragment(), OnMapReadyCallback {
         MetaDataRepository.metaData.observe(requireActivity(), ::handleMetaData)
         with(binding) {
             eventName.text = event?.name
-
-            if(event != null && event?.members_count!! > 1 ){
-                eventMembersNumberLocation.text = String.format(
-                    getString(R.string.members_number),
-                    event?.members_count
-                )
-            }else{
-                eventMembersNumberLocation.text = String.format(
-                    getString(R.string.members_number_singular),
-                    event?.members_count
-                )
-            }
+            val eventMemberCount = event?.members_count ?:0
+            eventMembersNumberLocation.text = String.format(
+                getString(
+                    if(eventMemberCount > 1 ){
+                        R.string.members_number
+                    } else {
+                        R.string.members_number_singular
+                    }
+                ),
+                eventMemberCount
+            )
             binding.location.icon = AppCompatResources.getDrawable(
                 requireContext(),
                 if (event?.online == true) R.drawable.new_web else R.drawable.new_location
@@ -120,7 +119,7 @@ class AboutEventFragment : Fragment(), OnMapReadyCallback {
                 }
             }
             binding.placesLimit.content.text =
-                String.format(getString(R.string.limited_places), event?.metadata?.placeLimit)
+                String.format(getString(R.string.limited_places), event?.metadata?.placeLimit ?: 0)
             if(event?.metadata?.placeLimit == null || event?.metadata?.placeLimit == 0){
                 binding.placesLimit.root.isVisible = false
             }else{

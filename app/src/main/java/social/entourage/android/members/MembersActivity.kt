@@ -57,7 +57,7 @@ class MembersActivity : BaseActivity() {
 
         id = intent.getIntExtra("ID", Const.DEFAULT_VALUE)
         val typeCode = intent.getIntExtra("TYPE", MembersType.GROUP.code)
-        type = MembersType.values().firstOrNull { it.code == typeCode } ?: MembersType.GROUP
+        type = MembersType.entries.firstOrNull { it.code == typeCode } ?: MembersType.GROUP
 
         setupToolbar()
         setupLists()

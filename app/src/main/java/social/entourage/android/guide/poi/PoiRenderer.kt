@@ -60,7 +60,7 @@ class PoiRenderer {
 
         companion object {
             fun findCategoryTypeById(categoryId: Int): CategoryType {
-                for (categoryType in values()) {
+                for (categoryType in entries) {
                     if (categoryType.categoryId == categoryId) {
                         return categoryType
                     }

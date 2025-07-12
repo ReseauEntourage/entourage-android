@@ -34,7 +34,7 @@ class GuideFilter private constructor() : Serializable {
         get() {
             val builder = StringBuilder()
             var existingFilteredCategories = false
-            for (categoryType in CategoryType.values()) {
+            for (categoryType in CategoryType.entries) {
                 if (categoryType.categoryId != 0)  {
                     if (valueForCategoryId(categoryType.categoryId)) {
                         if (builder.isNotEmpty()) builder.append(',')
@@ -67,7 +67,7 @@ class GuideFilter private constructor() : Serializable {
 
     fun getFiltersSelected() : String {
         var filtersString = ""
-        for (catType in CategoryType.values()) {
+        for (catType in CategoryType.entries) {
             if (valueForCategoryId(catType.categoryId) && catType.categoryId > 0) {
                 filtersString = filtersString + "_${catType.categoryId}"
             }
@@ -85,7 +85,7 @@ class GuideFilter private constructor() : Serializable {
             return true
         }
 
-        for (catType in CategoryType.values()) {
+        for (catType in CategoryType.entries) {
             if (!valueForCategoryId(catType.categoryId)) {
                 return true
             }
@@ -98,7 +98,7 @@ class GuideFilter private constructor() : Serializable {
     }
 
     init {
-        for (categoryType in CategoryType.values()) {
+        for (categoryType in CategoryType.entries) {
             filterValues.put(categoryType.categoryId, true)
         }
     }

@@ -196,7 +196,7 @@ class EventFiltersActivity : AppCompatActivity() {
         binding.tvTrickleIndicator.text =
             String.format(
                 getString(R.string.progress_km),
-                progress.toString()
+                progress
             )
         val bounds: Rect = binding.seekbar.thumb.dirtyBounds
         val paddingRight = if (progress > progressLimit) paddingRightLimit else paddingRight

@@ -1,11 +1,10 @@
-package social.entourage.android.chatbot
+package social.entourage.android.home.chatbot
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import social.entourage.android.databinding.ItemChatBotMessageBinding
 import social.entourage.android.databinding.ItemChatUserMessageBinding
-import social.entourage.android.chatbot.model.ChatMessage
 
 class ChatAdapter(private val messages: List<ChatMessage>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 

@@ -1,4 +1,4 @@
-package social.entourage.android.chatbot.model
+package social.entourage.android.home.chatbot
 
 sealed class ChatMessage {
     data class User(val message: String): ChatMessage()

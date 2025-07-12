@@ -682,7 +682,7 @@
         <item name="android:textSize">13sp</item>
     </style>
     <style name="SplashTheme" parent="AppTheme">
-        <item name="android:windowBackground">@drawable/logo_v2_vertical</item>
+        <item name="android:windowBackground">@drawable/logo_vertical</item>
 
     </style>
     <style name="RoundedDialog" parent="Theme.AppCompat.Light.Dialog.Alert">
