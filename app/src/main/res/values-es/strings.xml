@@ -2686,5 +2686,4 @@ Leerán este mensaje tan pronto como se unan al grupo.</string>
     <string name="option_both_desc" lang="es">Ofrecer apoyo y recibirlo.</string>
     <string name="question_location" lang="es">¿Cuál es tu barrio?</string>
     <string name="input_location" lang="es">Dirección de ciudad o departamento</string>
-    <string name="needs_to_join_group" lang="es">Vous devez rejoindre le groupe pour effectuer cette action.</string>
 </resources>

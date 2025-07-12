@@ -2701,5 +2701,4 @@ Przeczytają tę wiadomość, gdy tylko dołączą do grupy.</string>
     <string name="option_both_desc" lang="pl">Wspierać i być wspieranym.</string>
     <string name="question_location" lang="pl">Jaka jest twoja dzielnica?</string>
     <string name="input_location" lang="pl">Adres miasta lub regionu</string>
-    <string name="needs_to_join_group" lang="pl">Vous devez rejoindre le groupe pour effectuer cette action.</string>
 </resources>

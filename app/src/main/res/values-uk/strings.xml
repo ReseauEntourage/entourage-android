@@ -2613,5 +2613,4 @@
     <string name="option_both_desc" lang="uk">Підтримувати та отримувати підтримку.</string>
     <string name="question_location" lang="uk">Який ваш район?</string>
     <string name="input_location" lang="uk">Адреса міста або області</string>
-    <string name="needs_to_join_group" lang="uk">Vous devez rejoindre le groupe pour effectuer cette action.</string>
 </resources>
