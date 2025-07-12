@@ -2698,6 +2698,5 @@ Ei vor citi acest mesaj imediat ce se vor alătura grupului.</string>
     <string name="option_both_desc" lang="ro">Oferă sprijin și primește-l.</string>
     <string name="question_location" lang="ro">Care este cartierul tău?</string>
     <string name="input_location" lang="ro">Adresă oraș sau județ</string>
-    <string name="needs_to_join_group" lang="ro">Vous devez rejoindre le groupe pour effectuer cette action.</string>
 
 </resources>

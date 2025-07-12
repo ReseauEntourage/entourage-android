@@ -2725,5 +2725,4 @@
     <string name="option_both_desc" lang="ar">تقديم الدعم وتلقيه.</string>
     <string name="question_location" lang="ar">ما هو حيك؟</string>
     <string name="input_location" lang="ar">عنوان المدينة أو المنطقة</string>
-    <string name="needs_to_join_group" lang="ar">Vous devez rejoindre le groupe pour effectuer cette action.</string>
 </resources>
