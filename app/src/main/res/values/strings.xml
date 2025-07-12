@@ -67,7 +67,7 @@
     <string name="home_title_headlines">À la une</string>
     <string name="home_title_actions">Demandes et initiatives</string>
     <string name="home_title_events">Événements</string>
-    <string name="home_title_none" />
+    <string name="home_title_none" translatable="false"/>
     <string name="home_title_actions_contrib">Contributions</string>
     <string name="home_title_actions_ask">Demandes</string>
 
@@ -2254,34 +2254,34 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="role_ambassador">Ambassadeur</string>
     <string name="role_admin">Ambassadeur</string>
 
-    <string name="disclaimer_link_public">https://blog.entourage.social/charte-ethique-grand-public/</string>
-    <string name="ambassadeur_link_public">https://site.entourage.social/agir-avec-nous/par-action/devenir-benevole/</string>
-    <string name="faq_link_public">https://site.entourage.social/blog/comment-utiliser-l-application-entourage#index-faq/</string>
+    <string name="disclaimer_link_public" translatable="false">https://blog.entourage.social/charte-ethique-grand-public/</string>
+    <string name="ambassadeur_link_public" translatable="false">https://site.entourage.social/agir-avec-nous/par-action/devenir-benevole/</string>
+    <string name="faq_link_public" translatable="false">https://site.entourage.social/blog/comment-utiliser-l-application-entourage#index-faq/</string>
 
-    <string name="market_url">market://details?id=%s</string>
-    <string name="playstore_url">https://play.google.com/store/apps/details?id=%s</string>
-    <string name="facebook_url">https://www.facebook.com/EntourageReseauCivique</string>
-    <string name="twitter_url">https://twitter.com/r_entourage</string>
-    <string name="instagram_url">https://www.instagram.com/reseauentourage/</string>
+    <string name="market_url" translatable="false">market://details?id=%s</string>
+    <string name="playstore_url" translatable="false">https://play.google.com/store/apps/details?id=%s</string>
+    <string name="facebook_url" translatable="false">https://www.facebook.com/EntourageReseauCivique</string>
+    <string name="twitter_url" translatable="false">https://twitter.com/r_entourage</string>
+    <string name="instagram_url" translatable="false">https://www.instagram.com/reseauentourage/</string>
 
-    <string name="terms_url">https://www.entourage.social/cgu</string>
-    <string name="website_url">https://www.entourage.social</string>
-    <string name="more_events_url">https://www.facebook.com/EntourageReseauCivique/events/</string>
-    <string name="privacy_policy_url">https://site.entourage.social/politique-de-confidentialite</string>
-    <string name="child_rule_url">https://site.entourage.social/normes-de-protection-des-enfants</string>
-    <string name="donate_default_link">https://entourage.iraiser.eu/~share?cid=44</string>
+    <string name="terms_url" translatable="false">https://www.entourage.social/cgu</string>
+    <string name="website_url" translatable="false">https://www.entourage.social</string>
+    <string name="more_events_url" translatable="false">https://www.facebook.com/EntourageReseauCivique/events/</string>
+    <string name="privacy_policy_url" translatable="false">https://site.entourage.social/politique-de-confidentialite</string>
+    <string name="child_rule_url" translatable="false">https://site.entourage.social/normes-de-protection-des-enfants</string>
+    <string name="donate_default_link" translatable="false">https://entourage.iraiser.eu/~share?cid=44</string>
 
-    <string name="contact_email">app@entourage.social</string>
+    <string name="contact_email" translatable="false">app@entourage.social</string>
 
-    <string name="redirect_link_format">%1$slinks/%2$s/redirect?token=%3$s</string>
-    <string name="redirect_link_no_token_format">%1$slinks/%2$s/redirect</string>
+    <string name="redirect_link_format" translatable="false">%1$slinks/%2$s/redirect?token=%3$s</string>
+    <string name="redirect_link_no_token_format" translatable="false">%1$slinks/%2$s/redirect</string>
 
-    <string name="url_share_entourage_bitly">https://bit.ly/applientourage</string>
+    <string name="url_share_entourage_bitly" translatable="false">https://bit.ly/applientourage</string>
 
-    <string name="url_linkedout">https://www.linkedout.fr</string>
-    <string name="url_app_suggest">https://entourage-asso.typeform.com/to/NRhT8vmj</string>
+    <string name="url_linkedout" translatable="false">https://www.linkedout.fr</string>
+    <string name="url_app_suggest" translatable="false">https://entourage-asso.typeform.com/to/NRhT8vmj</string>
 
-    <string name="url_app_partner">https://www.entourage.social/mecenes-et-partenaires/</string>
+    <string name="url_app_partner" translatable="false">https://www.entourage.social/mecenes-et-partenaires/</string>
     <string name="user_profile_display_title">PROFIL</string>
     <string name="user_button_confirm_changes">Confirmer</string>
     <string name="user_text_update_ok">Profil mis à jour</string>
@@ -2698,7 +2698,6 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="text_title_i_like">J\'aime</string>
     <string name="text_title_comment">Commenter</string>
 
-
     <string name="text_title_votes">Voir les votes</string>
 
     <!--    CREATE SURVEY-->
@@ -2757,8 +2756,6 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="onboarding_action_wish_event_contrib">Participer à des \névénements de convivialité</string>
     <string name="onboarding_action_wish_services_contrib">Solliciter un \ncoup de pouce</string>
     <string name="onboarding_action_wish_network_contrib">Rejoindre un groupe de \nvoisins et tisser des liens</string>
-
-
 
     <string name="onboarding_congrats_title">Votre expérience sur-mesure est prête !</string>
     <string name="onboarding_congrats_content">À partir de vos préférences et disponibilités, nous vous avons préparé une sélection d\’événements à votre image. C\’est le moment de passer à l\’action !</string>
@@ -3104,6 +3101,4 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="message_auto">Message automatique - </string>
     <string name="needs_to_join_group">Vous devez rejoindre le groupe pour effectuer cette action.</string>
 
-
 </resources>
-
