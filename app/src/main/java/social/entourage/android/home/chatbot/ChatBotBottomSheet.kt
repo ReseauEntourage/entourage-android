@@ -1,15 +1,18 @@
-package social.entourage.android.chatbot
+package social.entourage.android.home.chatbot
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import social.entourage.android.databinding.BottomSheetChatbotBinding
-import kotlinx.coroutines.*
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.launch
 import social.entourage.android.chatbot.api.MistralApi
-import social.entourage.android.chatbot.model.ChatMessage
+import social.entourage.android.databinding.BottomSheetChatbotBinding
 
 class ChatBotBottomSheet : BottomSheetDialogFragment() {
 

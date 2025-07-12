@@ -16,7 +16,6 @@ import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
@@ -29,18 +28,15 @@ import social.entourage.android.R
 import social.entourage.android.actions.ActionsPresenter
 import social.entourage.android.api.model.Action
 import social.entourage.android.api.model.ActionSectionFilters
-import social.entourage.android.api.model.Conversation
 import social.entourage.android.api.model.EventActionLocationFilters
 import social.entourage.android.api.model.Events
 import social.entourage.android.api.model.Group
-import social.entourage.android.api.model.GroupMember
 import social.entourage.android.api.model.Help
 import social.entourage.android.api.model.Pedago
-import social.entourage.android.api.model.SmallTalk
 import social.entourage.android.api.model.Summary
 import social.entourage.android.api.model.User
 import social.entourage.android.api.model.UserSmallTalkRequest
-import social.entourage.android.chatbot.ChatBotBottomSheet
+import social.entourage.android.home.chatbot.ChatBotBottomSheet
 import social.entourage.android.databinding.FragmentHomeBinding
 import social.entourage.android.discussions.DetailConversationActivity
 import social.entourage.android.enhanced_onboarding.EnhancedOnboarding
@@ -53,9 +49,7 @@ import social.entourage.android.notifications.InAppNotificationsActivity
 import social.entourage.android.notifications.NotificationDemandActivity
 import social.entourage.android.onboarding.onboard.OnboardingStartActivity
 import social.entourage.android.profile.ProfileFullActivity
-import social.entourage.android.small_talks.SmallTalkGuidelinesActivity
 import social.entourage.android.small_talks.SmallTalkIntroActivity
-import social.entourage.android.small_talks.SmallTalkListOtherBands
 import social.entourage.android.small_talks.SmallTalkViewModel
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.updatePaddingTopForEdgeToEdge

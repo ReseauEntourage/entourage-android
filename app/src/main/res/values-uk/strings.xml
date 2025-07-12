@@ -243,11 +243,11 @@
     <string name="communities">Групи</string>
     <string name="discover_groups">Я відкриваю</string>
     <string name="my_groups">Мої групи</string>
-    <string name="members_number">%s членів</string>
-    <string name="members_number_singular">Член %s</string>
-    <string name="member_number">Член %s</string>
-    <string name="future_outgoing_events_number">%s запланованих подій</string>
-    <string name="future_outgoing_events_number_singular">%s очікувана подія</string>
+    <string name="members_number">%d членів</string>
+    <string name="members_number_singular">Член %d</string>
+    <string name="member_number">Член %d</string>
+    <string name="future_outgoing_events_number">%d запланованих подій</string>
+    <string name="future_outgoing_events_number_singular">%d очікувана подія</string>
     <string name="search_group_hint">Пошук групи</string>
     <string name="group_list_empty_state_title">На жаль, навколо вас ще немає інших груп.</string>
     <string name="group_list_empty_state_subtitle">N\Не соромтеся створювати \nнові групи сусідів!</string>
@@ -400,7 +400,7 @@
     <string name="associated_group">Пов&amp;apos;язана група:</string>
     <string name="date_recurrence_event">%s . %s</string>
     <string name="start_and_end_time_event">Від %s до %s</string>
-    <string name="limited_places">Обмежена кількість місць: %s</string>
+    <string name="limited_places">Обмежена кількість місць: %d</string>
     <string name="created_at">Створено %s</string>
     <string name="updated_at">Змінено %s</string>
     <string name="canceled_at">Скасовано %s</string>
@@ -799,23 +799,18 @@
 
     <string name="country_azerbaijan_name">Азербайджан</string>
     <string name="country_azerbaijan_code">аз</string>
-    <string name="country_azerbaijan_number" translatable="false">994</string>
 
     <string name="country_bahrain_name">Бахрейн</string>
     <string name="country_bahrain_code">bh</string>
-    <string name="country_bahrain_number" translatable="false">973</string>
 
     <string name="country_bangladesh_name">Бангладеш</string>
     <string name="country_bangladesh_code">комікс</string>
-    <string name="country_bangladesh_number" translatable="false">880</string>
 
     <string name="country_belarus_name">Білорусь</string>
     <string name="country_belarus_code">за</string>
-    <string name="country_belarus_number" translatable="false">375</string>
 
     <string name="country_belgium_name">Бельгія</string>
     <string name="country_belgium_code">бути</string>
-    <string name="country_belgium_number" translatable="false">32</string>
     <string name="country_belgium_flag" translatable="false">🇧🇪</string>
 
     <string name="country_belize_name">Беліз</string>

@@ -147,7 +147,7 @@ class EditProfileActivity : BaseActivity(), AvatarUploadView {
 
     private fun setProgressThumbPosition(progress: Int) {
         binding.seekBarLayout.tvTrickleIndicator.text =
-            String.format(getString(R.string.progress_km), progress.toString())
+            String.format(getString(R.string.progress_km), progress)
         val bounds = binding.seekBarLayout.seekbar.thumb.bounds
         val offset = if (progress > progressLimit) paddingRightLimit else paddingRight
         binding.seekBarLayout.tvTrickleIndicator.x =

@@ -22,7 +22,6 @@
             android:id="@+id/scrollView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/header"
             app:layout_constraintTop_toBottomOf="@id/header">
 
             <LinearLayout

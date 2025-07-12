@@ -211,8 +211,8 @@ class GuideFilterFragment : BaseDialogFragment() {
 
     private fun setupFilters() {
         items = ArrayList()
-        for (i in 1 until PoiRenderer.CategoryType.values().size) {
-            val categoryType = PoiRenderer.CategoryType.values()[i]
+        for (i in 1 until PoiRenderer.CategoryType.entries.size) {
+            val categoryType = PoiRenderer.CategoryType.entries[i]
             if (categoryType != PoiRenderer.CategoryType.PARTNERS) {
                 items.add(GuideFilterItemAdapter.GuideFilterItem(categoryType, GuideFilter.instance.valueForCategoryId(categoryType.categoryId)))
             }

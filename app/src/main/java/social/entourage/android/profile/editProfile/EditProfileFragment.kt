@@ -108,7 +108,7 @@ class EditProfileFragment : Fragment(), EditProfileCallback,
         binding.seekBarLayout.tvTrickleIndicator.text =
             String.format(
                 getString(R.string.progress_km),
-                progress.toString()
+                progress
             )
         val bounds: Rect = binding.seekBarLayout.seekbar.thumb.dirtyBounds
         val paddingRight = if (progress > progressLimit) paddingRightLimit else paddingRight

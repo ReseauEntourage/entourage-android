@@ -214,11 +214,11 @@
     <string name="communities">Groups</string>
     <string name="discover_groups">All groups</string>
     <string name="my_groups">My groups</string>
-    <string name="members_number">%s members</string>
-    <string name="members_number_singular">%s member</string>
-    <string name="member_number">%s member</string>
-    <string name="future_outgoing_events_number">%s upcoming events</string>
-    <string name="future_outgoing_events_number_singular">%s upcoming event</string>
+    <string name="members_number">%d members</string>
+    <string name="members_number_singular">%d member</string>
+    <string name="member_number">%d member</string>
+    <string name="future_outgoing_events_number">%d upcoming events</string>
+    <string name="future_outgoing_events_number_singular">%d upcoming event</string>
     <string name="search_group_hint">Search for a group</string>
     <string name="group_list_empty_state_title">Oops, there are no other groups around you yet.</string>
     <string name="group_list_empty_state_subtitle">Don\'t hesitate to create \nnew groups of neighbors!</string>
@@ -369,7 +369,7 @@
     <string name="associated_group">Associated group:</string>
     <string name="date_recurrence_event">%s . %s</string>
     <string name="start_and_end_time_event">From %s to %s</string>
-    <string name="limited_places">Limited number of places: %s</string>
+    <string name="limited_places">Limited number of places: %d</string>
     <string name="created_at">Created on %s</string>
     <string name="updated_at">Modified on %s</string>
     <string name="canceled_at">Canceled on %s</string>
@@ -1411,7 +1411,7 @@
     <string name="params_block_user_conv_pop_bt_cancel">Cancel</string>
     <string name="params_block_user_conv_pop_validate_title">Block %s</string>
     <string name="params_block_user_conv_pop_validate_subtitle">This contact has been blocked.</string>
-    <string name="params_block_user_conv_pop_validate_bt">Ok</string>
+    <string name="params_block_user_conv_pop_validate_bt">OK</string>
     <string name="message_user_blocked_by_me_list">You have blocked this contact</string>
     <string name="message_user_blocked_by_me">You have blocked %s . You can no longer send him a message.</string>
     <string name="message_user_blocked_by_other">You can no longer send messages to %s . This conversation has been blocked.</string>
@@ -1427,7 +1427,7 @@
     <string name="params_unblock_user_pop_validate_title">Unlock %s</string>
     <string name="params_unblock_user_pop_validate_subtitle">This contact has just been unblocked, you can write to each other again.</string>
     <string name="params_unblock_users_pop_validate_subtitle">These contacts have just been unlocked, you can write to each other again.</string>
-    <string name="params_unblock_user_pop_validate_bt">Ok</string>
+    <string name="params_unblock_user_pop_validate_bt">OK</string>
     <string name="param_empty_blocked_user">You have not blocked any contacts.</string>
     <string name="pop_up_rugby_france_title">Let\'s experience the Rugby World Cup together</string>
     <string name="pop_up_rugby_france_content">The best encounters don\'t necessarily happen at the stadium! Join the group “Let’s experience sport together\”</string>
