@@ -29,8 +29,6 @@
     <string name="server_error">Mamy mały problem…\n Zostanie on naprawiony bardzo szybko ;)</string>
     <string name="no_browser_error">Nie zainstalowano żadnej przeglądarki n\</string>
 
-    <string name="badge_count_format">%1$d</string>
-
     <string name="empty_description"></string>
 
     <string name="preference_file_key">ENTOURAGE_GCM_DATA</string>
@@ -510,7 +508,6 @@ Przeczytają tę wiadomość, gdy tylko dołączą do grupy.</string>
     <string name="entourage_info_text_join_rejected">\u0020 odrzucony</string>
     <string name="entourage_info_text_join_cancelled_entourage">anulował swoją prośbę o dołączenie do grupy</string>
     <string name="entourage_info_text_join_quited_entourage">opuścić grupę</string>
-    <string name="entourage_info_text_join_html">&lt;font color=\"#FF9739\"&gt;%1$s &lt;/font&gt;%2$s</string>
     <string name="entourage_info_error_chat_message">Wiadomość nie została wysłana</string>
     <string name="entourage_info_options_stop">Załączyć</string>
     <string name="entourage_info_options_cancel_event">Anuluj wydarzenie \</string>
@@ -2058,29 +2055,6 @@ Przeczytają tę wiadomość, gdy tylko dołączą do grupy.</string>
     <string name="role_ambassador">Ambasador</string>
     <string name="role_admin">Ambasador</string>
 
-    <string name="disclaimer_link_public">https://www.entourage.social/blog/charte-ethique-entourage-local/</string>
-
-    <string name="market_url">market://details?id=%s</string>
-    <string name="playstore_url">https://play.google.com/store/apps/details?id=%s</string>
-    <string name="facebook_url">https://www.facebook.com/EntourageReseauCivique</string>
-    <string name="twitter_url">https://twitter.com/r_entourage</string>
-    <string name="instagram_url">https://www.instagram.com/reseauentourage/</string>
-
-    <string name="terms_url">https://www.entourage.social/cgu</string>
-    <string name="website_url">https://www.entourage.social</string>
-    <string name="more_events_url">https://www.facebook.com/EntourageReseauCivique/events/</string>
-
-    <string name="contact_email">aplikacja@entourage.social</string>
-
-    <string name="redirect_link_format">%1$slinks/%2$s/redirect?token=%3$s</string>
-    <string name="redirect_link_no_token_format">%1$slinks/%2$s/przekierowanie</string>
-
-    <string name="url_share_entourage_bitly">https://bit.ly/applientourage</string>
-
-    <string name="url_linkedout">https://www.linkedout.fr</string>
-    <string name="url_app_suggest">https://entourage-asso.typeform.com/to/NRhT8vmj</string>
-
-    <string name="url_app_partner">https://www.entourage.social/mecenes-et-partenaires/</string>
     <string name="user_profile_display_title">PROFIL</string>
     <string name="user_button_confirm_changes">Potwierdzać</string>
     <string name="user_text_update_ok">Profil zaktualizowany</string>
@@ -2440,8 +2414,8 @@ Przeczytają tę wiadomość, gdy tylko dołączą do grupy.</string>
 
     <string name="modify_image"><u>Edytuj moje zdjęcie</u></string>
     <string name="more"><u>Dowiedz się więcej</u></string>
-    <string name="posts_comment_number"><u>%s komentarze</u></string>
-    <string name="posts_comment_number_singular"><u>%s komentarz</u></string>
+    <string name="posts_comment_number"><u>%d komentarze</u></string>
+    <string name="posts_comment_number_singular"><u>%d komentarz</u></string>
     <string name="show_more_lined"><u>Pokaż więcej</u></string>
     <string name="welcome_one_sensib">Znajdź nasze treści z zakresu świadomości <u><font color="#FF9739">tutaj</font></u></string>
     <string name="action_show_charte"><u>Karta etyczna</u></string>
@@ -2581,8 +2555,8 @@ Przeczytają tę wiadomość, gdy tylko dołączą do grupy.</string>
     <string name="home_v2_subtitle_sensibilisation">Kilka propozycji do przeczytania na początek</string>
     <string name="interest_activites_onboarding">Ręczne \ndziałania</string>
     <string name="interest_activites_main_filter">Ręczne działania</string>
-    <string name="posts_vote_number"><u>%s głosów</u></string>
-    <string name="posts_vote_number_singular"><u>%s głos</u></string>
+    <string name="posts_vote_number"><u>%d głosów</u></string>
+    <string name="posts_vote_number_singular"><u>%d głos</u></string>
     <string name="my_onboarding">Personalizuj moje konto</string>
     <string name="actions_tab_mygroup">Moje ogłoszenia</string>
     <string name="create_survey">Utwórz ankietę</string>

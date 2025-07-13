@@ -1,4 +1,4 @@
-package social.entourage.android.profile.settings
+package social.entourage.android.profile.activities_settings
 
 import android.content.Context
 import android.content.Intent
@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import social.entourage.android.api.model.notification.InAppNotificationPermission
 import social.entourage.android.databinding.NewFragmentSettingsNotifsBinding
 import social.entourage.android.home.HomePresenter
+import social.entourage.android.profile.settings.ProfilFullViewModel
 
 class SettingsNotificationsActivity : AppCompatActivity() {
 

@@ -1,12 +1,15 @@
-package social.entourage.android.language
+package social.entourage.android.profile.activities_settings
 
-import android.content.Context
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.databinding.BottomFragmentLanguageFragmentBinding
+import social.entourage.android.language.LanguageAdapter
+import social.entourage.android.language.LanguageItem
+import social.entourage.android.language.LanguageManager
+import social.entourage.android.language.OnLanguageClicked
 import social.entourage.android.user.UserPresenter
 
 
@@ -32,7 +35,9 @@ class LanguageActivitySettings : AppCompatActivity(), OnLanguageClicked {
     }
 
     private fun initTranslationSwitch() {
-        val sharedPrefs = getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE)
+        val sharedPrefs = getSharedPreferences(getString(R.string.preference_file_key),
+            MODE_PRIVATE
+        )
         val isTranslatedByDefault = sharedPrefs.getBoolean("translatedByDefault", true)
         binding.switchTranslation.isChecked = isTranslatedByDefault
     }
@@ -40,7 +45,7 @@ class LanguageActivitySettings : AppCompatActivity(), OnLanguageClicked {
     private fun handleValidateClick() {
         binding.validate.setOnClickListener {
             // Sauvegarde de l'état du switch
-            val editor = getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE).edit()
+            val editor = getSharedPreferences(getString(R.string.preference_file_key), MODE_PRIVATE).edit()
             editor.putBoolean("translatedByDefault", binding.switchTranslation.isChecked)
             editor.apply()
 
@@ -58,14 +63,38 @@ class LanguageActivitySettings : AppCompatActivity(), OnLanguageClicked {
     private fun fillArray() {
         val currentLanguageCode = LanguageManager.loadLanguageFromPreferences(this)
         languages = mutableListOf(
-            LanguageItem("Français", isSelected = LanguageManager.mapLanguageToCode("Français") == currentLanguageCode),
-            LanguageItem("English", isSelected = LanguageManager.mapLanguageToCode("English") == currentLanguageCode),
-            LanguageItem("العربية", isSelected = LanguageManager.mapLanguageToCode("العربية") == currentLanguageCode),
-            LanguageItem("Українська", isSelected = LanguageManager.mapLanguageToCode("Українська") == currentLanguageCode),
-            LanguageItem("Español", isSelected = LanguageManager.mapLanguageToCode("Español") == currentLanguageCode),
-            LanguageItem("Deutsch", isSelected = LanguageManager.mapLanguageToCode("Deutsch") == currentLanguageCode),
-            LanguageItem("Română", isSelected = LanguageManager.mapLanguageToCode("Română") == currentLanguageCode),
-            LanguageItem("Polski", isSelected = LanguageManager.mapLanguageToCode("Polski") == currentLanguageCode)
+            LanguageItem(
+                "Français",
+                isSelected = LanguageManager.mapLanguageToCode("Français") == currentLanguageCode
+            ),
+            LanguageItem(
+                "English",
+                isSelected = LanguageManager.mapLanguageToCode("English") == currentLanguageCode
+            ),
+            LanguageItem(
+                "العربية",
+                isSelected = LanguageManager.mapLanguageToCode("العربية") == currentLanguageCode
+            ),
+            LanguageItem(
+                "Українська",
+                isSelected = LanguageManager.mapLanguageToCode("Українська") == currentLanguageCode
+            ),
+            LanguageItem(
+                "Español",
+                isSelected = LanguageManager.mapLanguageToCode("Español") == currentLanguageCode
+            ),
+            LanguageItem(
+                "Deutsch",
+                isSelected = LanguageManager.mapLanguageToCode("Deutsch") == currentLanguageCode
+            ),
+            LanguageItem(
+                "Română",
+                isSelected = LanguageManager.mapLanguageToCode("Română") == currentLanguageCode
+            ),
+            LanguageItem(
+                "Polski",
+                isSelected = LanguageManager.mapLanguageToCode("Polski") == currentLanguageCode
+            )
         )
     }
 

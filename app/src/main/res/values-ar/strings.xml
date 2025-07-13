@@ -28,7 +28,6 @@
     <string name="server_error">لدينا مشكلة صغيرة...\nسيتم تصحيحها بسرعة كبيرة ;)</string>
     <string name="no_browser_error">لم يتم تثبيت أي متصفح n\</string>
 
-    <string name="badge_count_format">%1$د</string>
     <string name="action_overlay_close">أغلق قائمة الإجراءات</string>
     <string name="plus_image_subtitle">الشيء الرئيسي هو الاجتماع!</string>
 
@@ -231,7 +230,7 @@
     <string name="members_number_singular">%d عضو</string>
     <string name="member_number">%d عضو</string>
     <string name="future_outgoing_events_number">%d من الفعالية المخطط لها</string>
-    <string name="future_outgoing_events_number_singular">الحدث المتوقع d%</string>
+    <string name="future_outgoing_events_number_singular">الحدث المتوقع %d</string>
     <string name="search_group_hint">ابحث عن مجموعة</string>
     <string name="group_list_empty_state_title">عفوًا، لا توجد مجموعات أخرى حولك حتى الآن.</string>
     <string name="group_list_empty_state_subtitle">N\لا تتردد في إنشاء \مجموعات جديدة من الجيران!</string>
@@ -2041,29 +2040,6 @@
     <string name="role_ambassador">سفير</string>
     <string name="role_admin">سفير</string>
 
-    <string name="disclaimer_link_public">https://www.entourage.social/blog/charte-ethique-entourage-local/</string>
-
-    <string name="market_url">السوق://details?id=%s</string>
-    <string name="playstore_url">https://play.google.com/store/apps/details?id=%s</string>
-    <string name="facebook_url">https://www.facebook.com/EntourageReseauCivique</string>
-    <string name="twitter_url">https://twitter.com/r_entourage</string>
-    <string name="instagram_url">https://www.instagram.com/reseauentourage/</string>
-
-    <string name="terms_url">https://www.entourage.social/cgu</string>
-    <string name="website_url">https://www.entourage.social</string>
-    <string name="more_events_url">https://www.facebook.com/EntourageReseauCivique/events/</string>
-
-    <string name="contact_email">app@entourage.social</string>
-
-    <string name="redirect_link_format">%1$slinks/%2$s/redirect?token=%3$s</string>
-    <string name="redirect_link_no_token_format">%1$slinks/%2$s/إعادة التوجيه</string>
-
-    <string name="url_share_entourage_bitly">https://bit.ly/applientourage</string>
-
-    <string name="url_linkedout">https://www.linkedout.fr</string>
-    <string name="url_app_suggest">https://entourage-asso.typeform.com/to/NRhT8vmj</string>
-
-    <string name="url_app_partner">https://www.entourage.social/mecenes-et-partenaires/</string>
     <string name="user_profile_display_title">حساب تعريفي</string>
     <string name="user_button_confirm_changes">أكد</string>
     <string name="user_text_update_ok">تحديث الملف الشخصي</string>
@@ -2480,7 +2456,6 @@
     <string name="zero">0</string>
     <string name="date_recurrence_event">%s . %s</string>
     <string name="profile_date_format">MM/yyyy</string>
-    <string name="entourage_info_text_join_html">&lt;font color=\"#FF9739\"&gt;%1$s &lt;/font&gt;%2$s</string>
     <string name="entourage_info_metadata_dateStart_hours_format_new">%1$s %2$s</string>
     <string name="entourage_cell_title">%1$s</string>
     <string name="entourage_cell_author">%1$s</string>

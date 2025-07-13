@@ -9,6 +9,7 @@ import social.entourage.android.EntourageApplication
 import social.entourage.android.api.request.UserRequest
 import social.entourage.android.api.request.UserResponse
 import social.entourage.android.authentication.AuthenticationController
+import social.entourage.android.profile.activities_settings.EditPasswordActivity
 
 class EditProfilePresenter {
 

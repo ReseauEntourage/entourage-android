@@ -28,9 +28,6 @@
     <string name="server_error">Nous avons un petit problème…\nIl sera très vite corrigé ;)</string>
     <string name="no_browser_error">Aucun navigateur n\'est installé</string>
 
-    <string name="badge_count_format">%1$d</string>
-
-
     <string name="preference_file_key">ENTOURAGE_GCM_DATA</string>
     <string name="action_overlay_close">Fermer le menu Actions</string>
     <string name="plus_image_subtitle">L’essentiel, c’est la rencontre !</string>
@@ -521,7 +518,6 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="entourage_info_text_join_rejected">\u0020 rejeté</string>
     <string name="entourage_info_text_join_cancelled_entourage">a annulé sa demande de rejoindre le groupe</string>
     <string name="entourage_info_text_join_quited_entourage">a quitté le groupe</string>
-    <string name="entourage_info_text_join_html"><![CDATA[<font color=\"#FF9739\">%1$s </font>%2$s]]></string>
     <string name="entourage_info_error_chat_message">Message non envoyé</string>
     <string name="entourage_info_options_stop">Clôturer</string>
     <string name="entourage_info_options_cancel_event">Annuler l\'événement</string>
@@ -2064,29 +2060,6 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="role_ambassador">Ambassadeur</string>
     <string name="role_admin">Ambassadeur</string>
 
-    <string name="disclaimer_link_public">https://www.entourage.social/blog/charte-ethique-entourage-local/</string>
-
-    <string name="market_url">market://details?id=%s</string>
-    <string name="playstore_url">https://play.google.com/store/apps/details?id=%s</string>
-    <string name="facebook_url">https://www.facebook.com/EntourageReseauCivique</string>
-    <string name="twitter_url">https://twitter.com/r_entourage</string>
-    <string name="instagram_url">https://www.instagram.com/reseauentourage/</string>
-
-    <string name="terms_url">https://www.entourage.social/cgu</string>
-    <string name="website_url">https://www.entourage.social</string>
-    <string name="more_events_url">https://www.facebook.com/EntourageReseauCivique/events/</string>
-
-    <string name="contact_email">app@entourage.social</string>
-
-    <string name="redirect_link_format">%1$slinks/%2$s/redirect?token=%3$s</string>
-    <string name="redirect_link_no_token_format">%1$slinks/%2$s/redirect</string>
-
-    <string name="url_share_entourage_bitly">https://bit.ly/applientourage</string>
-
-    <string name="url_linkedout">https://www.linkedout.fr</string>
-    <string name="url_app_suggest">https://entourage-asso.typeform.com/to/NRhT8vmj</string>
-
-    <string name="url_app_partner">https://www.entourage.social/mecenes-et-partenaires/</string>
     <string name="user_profile_display_title">PROFIL</string>
     <string name="user_button_confirm_changes">Confirmer</string>
     <string name="user_text_update_ok">Profil mis à jour</string>
@@ -2440,8 +2413,8 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
 
     <string name="modify_image"><u>Modifier ma photo</u></string>
     <string name="more"><u>En savoir plus</u></string>
-    <string name="posts_comment_number"><u>%s messages</u></string>
-    <string name="posts_comment_number_singular"><u>%s message</u></string>
+    <string name="posts_comment_number"><u>%d messages</u></string>
+    <string name="posts_comment_number_singular"><u>%d message</u></string>
     <string name="show_more_lined"><u>Voir plus</u></string>
     <string name="welcome_one_sensib">Retrouvez nos contenus de sensibilisation <u><font color="#FF9739">ici</font></u></string>
     <string name="action_show_charte"><u>Charte éthique</u></string>
@@ -2597,8 +2570,8 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="home_v2_title_sensibilisation">Se sensibiliser</string>
     <string name="home_v2_subtitle_sensibilisation">Quelques suggestions de lecture pour commencer</string>
     <string name="interest_activites_main_filter">Activités manuelles</string>
-    <string name="posts_vote_number"><u>%s votes</u></string>
-    <string name="posts_vote_number_singular"><u>%s vote</u></string>
+    <string name="posts_vote_number"><u>%d votes</u></string>
+    <string name="posts_vote_number_singular"><u>%d vote</u></string>
     <string name="my_onboarding">Personnaliser mon compte</string>
     <string name="actions_tab_mygroup">Mes annonces</string>
     <string name="participant_number_singular">%s participant</string>
