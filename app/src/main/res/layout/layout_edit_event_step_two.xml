@@ -10,7 +10,7 @@
 
         <include
             android:id="@+id/header_step"
-            layout="@layout/new_create_header"
+            layout="@layout/layout_create_header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -19,7 +19,7 @@
 
         <include
             android:id="@+id/event_date_title"
-            layout="@layout/new_create_title_item"
+            layout="@layout/layout_create_section_title_item"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -51,7 +51,7 @@
 
         <include
             android:id="@+id/recurrence_title"
-            layout="@layout/new_create_title_item"
+            layout="@layout/layout_create_section_title_item"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"

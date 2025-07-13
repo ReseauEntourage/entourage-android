@@ -126,7 +126,7 @@
 
                 <include
                     android:id="@+id/asso_profile_phone"
-                    layout="@layout/new_association_information_item"
+                    layout="@layout/item_association_information"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:visibility="gone"
@@ -137,7 +137,7 @@
 
                 <include
                     android:id="@+id/asso_profile_web"
-                    layout="@layout/new_association_information_item"
+                    layout="@layout/item_association_information"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:visibility="gone"
@@ -148,7 +148,7 @@
 
                 <include
                     android:id="@+id/asso_profile_address"
-                    layout="@layout/new_association_information_item"
+                    layout="@layout/item_association_information"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:visibility="gone"
@@ -159,7 +159,7 @@
 
                 <include
                     android:id="@+id/asso_profile_email"
-                    layout="@layout/new_association_information_item"
+                    layout="@layout/item_association_information"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:visibility="gone"

@@ -22,7 +22,7 @@
         android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/title"
+            android:id="@+id/section_title"
             style="@style/left_h2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -31,7 +31,7 @@
             tools:text="Title" />
 
         <TextView
-            android:id="@+id/mandatory"
+            android:id="@+id/section_mandatory"
             style="@style/left_legend"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

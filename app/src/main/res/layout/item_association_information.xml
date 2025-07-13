@@ -20,37 +20,37 @@
         android:paddingVertical="15dp">
 
         <ImageView
-            android:id="@+id/icon"
+            android:id="@+id/asso_info_icon"
             android:layout_width="15dp"
             android:layout_height="15dp"
             android:scaleType="fitStart"
             android:src="@{icon}"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintRight_toLeftOf="@id/layout"
+            app:layout_constraintRight_toLeftOf="@id/asso_info_layout"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintWidth_percent="0.1"
             tools:src="@drawable/new_edit_profile" />
 
         <LinearLayout
-            android:id="@+id/layout"
+            android:id="@+id/asso_info_layout"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/icon"
+            app:layout_constraintStart_toEndOf="@+id/asso_info_icon"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintWidth_percent="0.9">
 
             <TextView
-                android:id="@+id/title"
+                android:id="@+id/asso_info_title"
                 style="@style/profile_information_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@{title}" />
 
             <TextView
-                android:id="@+id/content"
+                android:id="@+id/asso_info_content"
                 style="@style/h4"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />

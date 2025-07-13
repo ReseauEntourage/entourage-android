@@ -25,7 +25,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/step"
+            android:id="@+id/header_create_step"
             style="@style/header_create_group"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -42,7 +42,7 @@
             android:layout_marginStart="10dp"
             android:text="@{step}"
             app:layout_constraintBottom_toBottomOf="@id/header"
-            app:layout_constraintStart_toEndOf="@id/step"
+            app:layout_constraintStart_toEndOf="@id/header_create_step"
             app:layout_constraintTop_toTopOf="@id/header" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

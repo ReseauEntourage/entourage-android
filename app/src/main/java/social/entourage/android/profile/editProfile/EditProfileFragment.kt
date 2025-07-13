@@ -134,9 +134,9 @@ class EditProfileFragment : Fragment(), EditProfileCallback,
     private fun initializeDescriptionCounter() {
         binding.description.counter.text = String.format(
             getString(R.string.description_counter),
-            binding.description.content.text?.length.toString()
+            binding.description.peiContent.text?.length.toString()
         )
-        binding.description.content.addTextChangedListener(object : TextWatcher {
+        binding.description.peiContent.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
 
             }
@@ -146,7 +146,7 @@ class EditProfileFragment : Fragment(), EditProfileCallback,
                     getString(R.string.description_counter),
                     s.length.toString()
                 )
-                descriptionRegistered = binding.description.content.text.toString()
+                descriptionRegistered = binding.description.peiContent.text.toString()
             }
 
             override fun afterTextChanged(s: Editable) { }
@@ -212,7 +212,7 @@ class EditProfileFragment : Fragment(), EditProfileCallback,
                 // Configuration des champs en fonction de la langue
                 configureTextViewForRTL(firstname.peeiContent, isArabic)
                 configureTextViewForRTL(lastname.peeiContent, isArabic)
-                configureTextViewForRTL(description.content, isArabic)
+                configureTextViewForRTL(description.peiContent, isArabic)
                 configureTextViewForRTL(birthday.peeiContent, isArabic)
                 configureTextViewForRTL(phone.peciContent, isArabic)
                 configureTextViewForRTL(email.peeiContent, isArabic)
@@ -222,9 +222,9 @@ class EditProfileFragment : Fragment(), EditProfileCallback,
                 lastname.peeiContent.setText(user.lastName)
 
                 if (descriptionRegistered.isEmpty()) {
-                    description.content.setText(user.about)
+                    description.peiContent.setText(user.about)
                 } else {
-                    description.content.setText(descriptionRegistered)
+                    description.peiContent.setText(descriptionRegistered)
                 }
 
                 birthday.peeiContent.transformIntoDatePicker(
@@ -289,7 +289,7 @@ class EditProfileFragment : Fragment(), EditProfileCallback,
     private fun onSaveProfile() {
         val firstname = binding.firstname.peeiContent.text.trimEnd()
         val lastname = binding.lastname.peeiContent.text.trimEnd()
-        val about = binding.description.content.text?.trimEnd()
+        val about = binding.description.peiContent.text?.trimEnd()
         val email = binding.email.peeiContent.text.trimEnd()
         val birthday = binding.birthday.peeiContent.text.trimEnd()
         val travelDistance = binding.seekBarLayout.seekbar.progress

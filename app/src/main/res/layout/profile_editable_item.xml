@@ -26,7 +26,7 @@
         android:paddingTop="25dp">
 
         <ImageView
-            android:id="@+id/icon"
+            android:id="@+id/pei_icon"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:paddingEnd="40dp"
@@ -43,12 +43,12 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintStart_toEndOf="@+id/icon"
+            app:layout_constraintStart_toEndOf="@+id/pei_icon"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintWidth_percent="0.8">
 
             <TextView
-                android:id="@+id/title"
+                android:id="@+id/pei_title"
                 style="@style/profile_information_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -56,7 +56,7 @@
                 tools:text="Title" />
 
             <EditText
-                android:id="@+id/content"
+                android:id="@+id/pei_content"
                 style="@style/input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

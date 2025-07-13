@@ -19,7 +19,7 @@
         android:layout_height="wrap_content">
 
         <ImageView
-            android:id="@+id/icon"
+            android:id="@+id/profile_city_icon"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:src="@{icon}"
@@ -36,24 +36,24 @@
             android:layout_height="match_parent"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/icon"
+            app:layout_constraintStart_toEndOf="@+id/profile_city_icon"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintWidth_percent="0.8">
 
             <TextView
-                android:id="@+id/title"
+                android:id="@+id/profile_city_title"
                 style="@style/profile_information_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@{title}"
-                tools:text="Date d'annif" />
+                tools:text="Péta aux schnocks" />
 
             <TextView
-                android:id="@+id/content"
+                android:id="@+id/profile_city_content"
                 style="@style/h4"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                tools:text="04/12" />
+                tools:text="A déterminer" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -77,7 +77,7 @@
         </LinearLayout>
 
         <View
-            android:id="@+id/divider"
+            android:id="@+id/profile_city_divider"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginTop="10dp"

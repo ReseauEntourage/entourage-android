@@ -23,7 +23,7 @@
         android:paddingHorizontal="25dp">
 
         <include
-            layout="@layout/new_create_header"
+            layout="@layout/layout_create_header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"

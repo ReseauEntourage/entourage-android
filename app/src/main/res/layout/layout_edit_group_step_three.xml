@@ -9,7 +9,7 @@
 
         <include
             android:id="@+id/egs3_header"
-            layout="@layout/new_create_header"
+            layout="@layout/layout_create_header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -59,7 +59,7 @@
 
         <include
             android:id="@+id/egs3_group_photo_title"
-            layout="@layout/new_create_title_item"
+            layout="@layout/layout_create_section_title_item"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"

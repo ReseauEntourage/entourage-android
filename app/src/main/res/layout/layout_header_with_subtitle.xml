@@ -27,13 +27,13 @@
             android:layout_marginBottom="11dp"
             android:padding="10dp"
             android:src="@drawable/new_back"
-            app:layout_constraintBottom_toTopOf="@id/divider"
+            app:layout_constraintBottom_toTopOf="@id/header_divider"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:src="@drawable/new_back" />
 
         <TextView
-            android:id="@+id/title"
+            android:id="@+id/header_title"
             style="@style/h2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -45,15 +45,15 @@
             tools:text="Notifications" />
 
         <TextView
-            android:id="@+id/subtitle"
+            android:id="@+id/header_subtitle"
             style="@style/profile_description"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginBottom="11dp"
-            app:layout_constraintBottom_toTopOf="@id/divider"
+            app:layout_constraintBottom_toTopOf="@id/header_divider"
             app:layout_constraintStart_toEndOf="@id/icon_back"
-            app:layout_constraintTop_toBottomOf="@id/title"
+            app:layout_constraintTop_toBottomOf="@id/header_title"
             tools:text="Notifications" />
 
         <ImageView
@@ -67,7 +67,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <View
-            android:id="@+id/divider"
+            android:id="@+id/header_divider"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@color/light_orange_opacity_50"
