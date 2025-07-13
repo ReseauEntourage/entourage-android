@@ -11,7 +11,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
-import social.entourage.android.chatbot.api.MistralApi
 import social.entourage.android.databinding.BottomSheetChatbotBinding
 
 class ChatBotBottomSheet : BottomSheetDialogFragment() {

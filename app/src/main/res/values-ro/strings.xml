@@ -29,8 +29,6 @@
     <string name="server_error">Avem o mică problemă... \n Va fi corectată foarte repede ;)</string>
     <string name="no_browser_error">Nu este instalat niciun browser n\</string>
 
-    <string name="badge_count_format">%1$d</string>
-
     <string name="empty_description"></string>
 
     <string name="preference_file_key">ENTOURAGE_GCM_DATA</string>
@@ -510,7 +508,6 @@ Ei vor citi acest mesaj imediat ce se vor alătura grupului.</string>
     <string name="entourage_info_text_join_rejected">\u0020 respins</string>
     <string name="entourage_info_text_join_cancelled_entourage">și-a anulat cererea de a se alătura grupului</string>
     <string name="entourage_info_text_join_quited_entourage">a părăsit grupul</string>
-    <string name="entourage_info_text_join_html">&lt;font color=\"#FF9739\"&gt;%1$s &lt;/font&gt;%2$s</string>
     <string name="entourage_info_error_chat_message">Mesajul nu a fost trimis</string>
     <string name="entourage_info_options_stop">A încadra</string>
     <string name="entourage_info_options_cancel_event">Anulați evenimentul \</string>
@@ -2055,29 +2052,6 @@ Ei vor citi acest mesaj imediat ce se vor alătura grupului.</string>
     <string name="role_ambassador">Ambasador</string>
     <string name="role_admin">Ambasador</string>
 
-    <string name="disclaimer_link_public">https://www.entourage.social/blog/charte-ethique-entourage-local/</string>
-
-    <string name="market_url">market://details?id=%s</string>
-    <string name="playstore_url">https://play.google.com/store/apps/details?id=%s</string>
-    <string name="facebook_url">https://www.facebook.com/EntourageReseauCivique</string>
-    <string name="twitter_url">https://twitter.com/r_entourage</string>
-    <string name="instagram_url">https://www.instagram.com/reseauentourage/</string>
-
-    <string name="terms_url">https://www.entourage.social/cgu</string>
-    <string name="website_url">https://www.entourage.social</string>
-    <string name="more_events_url">https://www.facebook.com/EntourageReseauCivique/events/</string>
-
-    <string name="contact_email">app@entourage.social</string>
-
-    <string name="redirect_link_format">%1$slinks/%2$s/redirect?token=%3$s</string>
-    <string name="redirect_link_no_token_format">%1$slinkuri/%2$s/redirecționare</string>
-
-    <string name="url_share_entourage_bitly">https://bit.ly/applientorage</string>
-
-    <string name="url_linkedout">https://www.linkedout.fr</string>
-    <string name="url_app_suggest">https://entourage-asso.typeform.com/to/NRhT8vmj</string>
-
-    <string name="url_app_partner">https://www.entourage.social/mecenes-et-partenaires/</string>
     <string name="user_profile_display_title">PROFIL</string>
     <string name="user_button_confirm_changes">A confirma</string>
     <string name="user_text_update_ok">profil actualizat</string>
@@ -2436,8 +2410,8 @@ Ei vor citi acest mesaj imediat ce se vor alătura grupului.</string>
 
     <string name="modify_image"><u>Editează fotografia mea</u></string>
     <string name="more"><u>Află mai multe</u></string>
-    <string name="posts_comment_number"><u>%s comentarii</u></string>
-    <string name="posts_comment_number_singular"><u>%s comentariu</u></string>
+    <string name="posts_comment_number"><u>%d comentarii</u></string>
+    <string name="posts_comment_number_singular"><u>%d comentariu</u></string>
     <string name="show_more_lined"><u>Afișează mai mult</u></string>
     <string name="welcome_one_sensib">Găsiți conținutul nostru de sensibilizare <u><font color="#FF9739">aici</font></u></string>
     <string name="action_show_charte"><u>Cartă etică</u></string>
@@ -2577,8 +2551,8 @@ Ei vor citi acest mesaj imediat ce se vor alătura grupului.</string>
     <string name="home_v2_subtitle_sensibilisation">Câteva sugestii de lectură pentru început</string>
     <string name="interest_activites_onboarding">Activități \nmanuale</string>
     <string name="interest_activites_main_filter">Activități manuale</string>
-    <string name="posts_vote_number"><u>%s voturi</u></string>
-    <string name="posts_vote_number_singular"><u>%s vot</u></string>
+    <string name="posts_vote_number"><u>%d voturi</u></string>
+    <string name="posts_vote_number_singular"><u>%d vot</u></string>
     <string name="my_onboarding">Personalizați contul meu</string>
     <string name="actions_tab_mygroup">Anunțurile mele</string>
     <string name="create_survey">Creează un sondaj</string>

@@ -8,8 +8,8 @@ import retrofit2.Callback
 import retrofit2.Response
 import social.entourage.android.Constants
 import social.entourage.android.EntourageApplication
+import social.entourage.android.api.model.guide.ClusterPoiResponse
 import social.entourage.android.api.model.guide.Poi
-import social.entourage.android.api.request.ClusterPoiResponse
 import social.entourage.android.api.request.PoiRequest
 import social.entourage.android.api.request.PoiResponse
 import social.entourage.android.authentication.AuthenticationController
@@ -17,7 +17,7 @@ import social.entourage.android.base.location.EntLocation
 import social.entourage.android.guide.filter.GuideFilter
 import timber.log.Timber
 import java.net.UnknownHostException
-import java.util.*
+import java.util.TreeMap
 
 /**
  * Presenter controlling the GuideMapFragment

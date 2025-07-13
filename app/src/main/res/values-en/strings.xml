@@ -25,7 +25,6 @@
     <string name="technical_error">We have a small problem…It will be fixed soon ;)</string>
     <string name="server_error">We have a small problem…It will be fixed very quickly ;)</string>
     <string name="no_browser_error">No browser is installed</string>
-    <string name="badge_count_format">%1$d</string>
     <string name="preference_file_key">ENTOURAGE_GCM_DATA</string>
     <string name="action_overlay_close">Close the actions menu</string>
     <string name="plus_image_subtitle">It\'s all about meeting people!</string>
@@ -462,7 +461,6 @@
     <string name="entourage_info_text_join_rejected">\u0020 rejected</string>
     <string name="entourage_info_text_join_cancelled_entourage">canceled his request to join the group</string>
     <string name="entourage_info_text_join_quited_entourage">left the group</string>
-    <string name="entourage_info_text_join_html">&amp;lt;font color</string>
     <string name="entourage_info_error_chat_message">Message not sent</string>
     <string name="entourage_info_options_stop">Close</string>
     <string name="entourage_info_options_cancel_event">Cancel event</string>
@@ -1215,22 +1213,6 @@
     <string name="member_type_organization">Marauder</string>
     <string name="role_ambassador">Ambassador</string>
     <string name="role_admin">Ambassador</string>
-    <string name="disclaimer_link_public">https://www.entourage.social/blog/charte-ethique-entourage-local/</string>
-    <string name="market_url">market://details?id=%s</string>
-    <string name="playstore_url">https://play.google.com/store/apps/details?id=%s</string>
-    <string name="facebook_url">https://www.facebook.com/EntourageReseauCivique</string>
-    <string name="twitter_url">https://twitter.com/r_entourage</string>
-    <string name="instagram_url">https://www.instagram.com/reseauentourage/</string>
-    <string name="terms_url">https://www.entourage.social/cgu</string>
-    <string name="website_url">https://www.entourage.social</string>
-    <string name="more_events_url">https://www.facebook.com/EntourageReseauCivique/events/</string>
-    <string name="contact_email">app@entourage.social</string>
-    <string name="redirect_link_format">%1$slinks/%2$s/redirect?token=%3$s</string>
-    <string name="redirect_link_no_token_format">%1$slinks/%2$s/redirect</string>
-    <string name="url_share_entourage_bitly">https://bit.ly/applientourage</string>
-    <string name="url_linkedout">https://www.linkedout.fr</string>
-    <string name="url_app_suggest">https://entourage-asso.typeform.com/to/NRhT8vmj</string>
-    <string name="url_app_partner">https://www.entourage.social/mecenes-et-partenaires/</string>
     <string name="user_profile_display_title">Profile</string>
     <string name="user_button_confirm_changes">Confirm</string>
     <string name="user_text_update_ok">Profile updated</string>
@@ -1544,8 +1526,8 @@
 
     <string name="modify_image"><u>Edit my photo</u></string>
     <string name="more"><u>Learn more</u></string>
-    <string name="posts_comment_number"><u>%s comments</u></string>
-    <string name="posts_comment_number_singular"><u>%s comment</u></string>
+    <string name="posts_comment_number"><u>%d comments</u></string>
+    <string name="posts_comment_number_singular"><u>%d comment</u></string>
     <string name="show_more_lined"><u>Show more</u></string>
     <string name="welcome_one_sensib">Find our awareness content <u><font color="#FF9739">here</font></u></string>
     <string name="action_show_charte"><u>Ethical Charter</u></string>
@@ -1689,8 +1671,8 @@
     <string name="home_v2_subtitle_sensibilisation">Some reading suggestions to get started</string>
     <string name="interest_activites_onboarding">Manual \nactivities</string>
     <string name="interest_activites_main_filter">Manual activities</string>
-    <string name="posts_vote_number"><u>%s votes</u></string>
-    <string name="posts_vote_number_singular"><u>%s vote</u></string>
+    <string name="posts_vote_number"><u>%d votes</u></string>
+    <string name="posts_vote_number_singular"><u>%d vote</u></string>
     <string name="my_onboarding">Customise my profile</string>
     <string name="actions_tab_mygroup">My listings</string>
     <string name="create_survey">Create a survey</string>

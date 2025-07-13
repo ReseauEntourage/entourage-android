@@ -4,6 +4,7 @@ import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
+import social.entourage.android.api.model.guide.ClusterPoiResponse
 import social.entourage.android.api.model.guide.Poi
 
 class PoiResponse (var pois: List<Poi>)

@@ -1,10 +1,11 @@
-package social.entourage.android.profile.settings
+package social.entourage.android.profile.activities_settings
 
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.view.View
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import com.google.android.material.snackbar.Snackbar
 import social.entourage.android.R
@@ -28,7 +29,7 @@ class HelpAboutActivity : BaseActivity() {
     }
 
     private fun initializeView() {
-        binding.licence.divider.visibility = android.view.View.GONE
+        binding.licence.divider.visibility = View.GONE
     }
 
     private fun populate() {

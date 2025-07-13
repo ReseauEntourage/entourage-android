@@ -14,19 +14,14 @@ import social.entourage.android.R
 import social.entourage.android.databinding.SettingItemSeparatorBinding
 import social.entourage.android.databinding.SettingsItemUserSectionBinding
 import social.entourage.android.enhanced_onboarding.EnhancedOnboarding
-import social.entourage.android.language.LanguageActivitySettings
-import social.entourage.android.language.LanguageBottomFragment
+import social.entourage.android.profile.activities_settings.LanguageActivitySettings
 import social.entourage.android.language.TranslationBottomFragment
 import social.entourage.android.profile.activities_settings.UnblockUsersActivity
-import social.entourage.android.profile.editProfile.EditPasswordActivity
+import social.entourage.android.profile.activities_settings.EditPasswordActivity
 import social.entourage.android.tools.utils.CustomAlertDialog
 import social.entourage.android.tools.view.WebViewFragment
-import social.entourage.android.profile.editProfile.EditPasswordFragment
-import social.entourage.android.profile.settings.HelpAboutActivity
-import social.entourage.android.profile.settings.HelpAboutFragment
-import social.entourage.android.profile.settings.SettingsNotificationsActivity
-import social.entourage.android.profile.settings.SettingsNotificationsFragment
-import social.entourage.android.profile.settings.UnblockUsersFragment
+import social.entourage.android.profile.activities_settings.HelpAboutActivity
+import social.entourage.android.profile.activities_settings.SettingsNotificationsActivity
 import social.entourage.android.tools.utils.VibrationUtil
 
 class SettingProfileFullAdapter(
