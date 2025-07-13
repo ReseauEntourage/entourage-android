@@ -67,19 +67,19 @@ class AssociationProfileFragment : Fragment() {
             }
             partner?.phone?.let {
                 assoProfilePhone.root.visibility = View.VISIBLE
-                assoProfilePhone.content.text = it
+                assoProfilePhone.assoInfoContent.text = it
             }
             partner?.websiteUrl?.let {
                 assoProfileWeb.root.visibility = View.VISIBLE
-                assoProfileWeb.content.text = it
+                assoProfileWeb.assoInfoContent.text = it
             }
             partner?.address?.let {
                 assoProfileAddress.root.visibility = View.VISIBLE
-                assoProfileAddress.content.text = it
+                assoProfileAddress.assoInfoContent.text = it
             }
             partner?.email?.let {
                 assoProfileEmail.root.visibility = View.VISIBLE
-                assoProfileEmail.content.text = it
+                assoProfileEmail.assoInfoContent.text = it
             }
             partner?.donationsNeeds?.let {
                 assoProfileDonation.root.visibility = View.VISIBLE

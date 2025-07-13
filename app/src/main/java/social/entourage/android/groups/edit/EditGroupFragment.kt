@@ -138,8 +138,8 @@ class EditGroupFragment : Fragment() {
             })
             handleEditTextChangedTextListener(stepOne.groupName)
             handleEditTextChangedTextListener(stepOne.groupDescription)
-            stepThree.egs3GroupPhotoTitle.title.text = getString(R.string.edit_photo)
-            stepThree.egs3GroupPhotoTitle.mandatory.visibility = View.GONE
+            stepThree.egs3GroupPhotoTitle.sectionTitle.text = getString(R.string.edit_photo)
+            stepThree.egs3GroupPhotoTitle.sectionMandatory.visibility = View.GONE
             stepThree.groupPhotoLabel.visibility = View.GONE
             stepThree.egs3AddPhoto.setOnClickListener {
                 ChooseGalleryPhotoModalFragment.newInstance(ImagesType.GROUPS)

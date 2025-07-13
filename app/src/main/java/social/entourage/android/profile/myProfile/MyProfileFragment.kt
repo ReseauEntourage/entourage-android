@@ -73,7 +73,7 @@ class MyProfileFragment : Fragment() {
     }
 
     private fun initializeView() {
-        binding.city.divider.visibility = View.INVISIBLE
+        binding.city.profileCityDivider.visibility = View.INVISIBLE
     }
 
     private fun updateUserView() {
@@ -120,7 +120,7 @@ class MyProfileFragment : Fragment() {
                 user.address?.displayAddress?.let {
                     if (it.isNotEmpty()) {
                         city.root.visibility = View.VISIBLE
-                        city.content.text = it
+                        city.profileCityContent.text = it
                     }
                 }
                 user.travelDistance?.let {

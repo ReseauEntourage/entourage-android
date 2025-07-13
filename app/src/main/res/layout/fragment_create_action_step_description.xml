@@ -21,7 +21,7 @@
 
             <include
                 android:id="@+id/header_step"
-                layout="@layout/new_create_header"
+                layout="@layout/layout_create_header"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
@@ -30,7 +30,7 @@
 
             <include
                 android:id="@+id/action_name_title"
-                layout="@layout/new_create_title_item"
+                layout="@layout/layout_create_section_title_item"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
@@ -55,7 +55,7 @@
 
                 <include
                     android:id="@+id/action_description_title"
-                    layout="@layout/new_create_title_item"
+                    layout="@layout/layout_create_section_title_item"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
@@ -102,7 +102,7 @@
 
                     <include
                         android:id="@+id/action_photo_title"
-                        layout="@layout/new_create_title_item"
+                        layout="@layout/layout_create_section_title_item"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:layout_constraintEnd_toEndOf="parent"

@@ -155,14 +155,14 @@ class EditProfileActivity : BaseActivity(), AvatarUploadView {
     }
 
     private fun initializeDescriptionCounter() {
-        binding.description.content.addTextChangedListener(object : TextWatcher {
+        binding.description.peiContent.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
                 updateDescriptionCounter(s.length)
             }
             override fun afterTextChanged(s: Editable) {}
         })
-        updateDescriptionCounter(binding.description.content.text?.length ?: 0)
+        updateDescriptionCounter(binding.description.peiContent.text?.length ?: 0)
     }
 
     private fun updateDescriptionCounter(length: Int) {
@@ -170,7 +170,7 @@ class EditProfileActivity : BaseActivity(), AvatarUploadView {
             getString(R.string.description_counter),
             length.toString()
         )
-        descriptionRegistered = binding.description.content.text.toString()
+        descriptionRegistered = binding.description.peiContent.text.toString()
     }
 
     private fun setupEditImageButton() {
@@ -285,7 +285,7 @@ class EditProfileActivity : BaseActivity(), AvatarUploadView {
             // Configuration RTL si nécessaire
             configureTextDirection(isArabic, firstname.peeiContent)
             configureTextDirection(isArabic, lastname.peeiContent)
-            configureTextDirection(isArabic, description.content)
+            configureTextDirection(isArabic, description.peiContent)
             configureTextDirection(isArabic, birthday.peeiContent)
             configureTextDirection(isArabic, phone.peciContent)
             configureTextDirection(isArabic, email.peeiContent)
@@ -295,9 +295,9 @@ class EditProfileActivity : BaseActivity(), AvatarUploadView {
             lastname.peeiContent.setText(user.lastName)
 
             if (descriptionRegistered.isEmpty()) {
-                description.content.setText(user.about)
+                description.peiContent.setText(user.about)
             } else {
-                description.content.setText(descriptionRegistered)
+                description.peiContent.setText(descriptionRegistered)
             }
 
             birthday.peeiContent.transformIntoDatePicker(
@@ -403,7 +403,7 @@ class EditProfileActivity : BaseActivity(), AvatarUploadView {
         if(checkEmail() && checkLastName()){
             val firstname = binding.firstname.peeiContent.text.trimEnd()
             val lastname = binding.lastname.peeiContent.text.trimEnd()
-            val about = binding.description.content.text?.trimEnd()
+            val about = binding.description.peiContent.text?.trimEnd()
             val email = binding.email.peeiContent.text.trimEnd()
             val birthday = binding.birthday.peeiContent.text.trimEnd()
             val travelDistance = binding.seekBarLayout.seekbar.progress
