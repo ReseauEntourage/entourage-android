@@ -1565,7 +1565,7 @@
     <string name="map_filter_entourage_contribution_text"><b>See contributions regarding:</b></string>
     <string name="custom_dialog_action_content_one_contrib">Is your action \"<![CDATA[<b>%1$s</b>]]>\" completed?</string>
     <string name="search_member_hint">Search a member</string>
-    <string name="terms_and_conditions_html">By clicking &lt;b&gt;Next&lt;/b&gt;, you agree to the &lt;a href=\'https://www.entourage.social/terms/\'&gt;Terms and Conditions&lt;/a&gt; and the &lt;a href=\'https://www.entourage.social/privacy-policy/\'&gt;Privacy Policy&lt;/a&gt;</string>
+    <string name="terms_and_conditions_html">By clicking &lt;b&gt;Next&lt;/b&gt;, you agree to the &lt;a href=\'https://www.entourage.social/cgu/\'&gt;Terms and Conditions&lt;/a&gt; and the &lt;a href=\'https://www.entourage.social/politique-de-confidentialite/\'&gt;Privacy Policy&lt;/a&gt;</string>
 
     <string name="action_crete_cat_about">Are you looking to offer a %s that does not fit into one of these categories? It seems that \ has no place on the network,but you can always</string>
     <string name="action_create_cat_about_link"> learn more here.</string>
