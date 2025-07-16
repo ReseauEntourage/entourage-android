@@ -22,6 +22,7 @@ app:
 meta:
   bitrise.io:
     stack: linux-docker-android-22.04
+    machine_type_id: elite
 trigger_map:
   - push_branch: develop
     workflow: dev_entourage
