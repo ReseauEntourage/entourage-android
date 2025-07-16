@@ -685,14 +685,6 @@ class HomeExpertTest {
         return jsonString
     }
 
-    private fun enableWifiAndData(enable: Boolean) {
-        val parameter = if (enable) "enable" else "disable"
-        InstrumentationRegistry.getInstrumentation().uiAutomation.apply {
-            executeShellCommand("svc wifi $parameter")
-            executeShellCommand("svc data $parameter")
-        }
-    }
-
     class ToastMatcher : TypeSafeMatcher<Root>() {
         override fun matchesSafely(item: Root?): Boolean {
             item?.windowLayoutParams?.get()?.type?.let { type ->

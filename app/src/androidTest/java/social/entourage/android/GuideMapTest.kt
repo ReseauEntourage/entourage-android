@@ -56,12 +56,4 @@ class GuideMapTest {
         //Enable wifi and data
         enableWifiAndData(true)
     }*/
-
-    private fun enableWifiAndData(enable: Boolean) {
-        val parameter = if (enable) "enable" else "disable"
-        InstrumentationRegistry.getInstrumentation().uiAutomation.apply {
-            executeShellCommand("svc wifi $parameter")
-            executeShellCommand("svc data $parameter")
-        }
-    }
 }

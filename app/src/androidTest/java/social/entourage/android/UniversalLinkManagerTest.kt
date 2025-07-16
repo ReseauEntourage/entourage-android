@@ -1,19 +1,28 @@
 
 import android.content.Intent
 import android.net.Uri
+import androidx.test.espresso.intent.Intents
+import androidx.test.espresso.intent.Intents.intended
+import androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
+import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import social.entourage.android.EntourageTestAfterLogin
+import social.entourage.android.MainActivity
 
 @RunWith(AndroidJUnit4::class)
-class UniversalLinkManagerPreprodTest {
+class UniversalLinkManagerPreprodTest : EntourageTestAfterLogin() {
 
     private val context = InstrumentationRegistry.getInstrumentation().targetContext
 
-
     private fun pauseForTwoSeconds() {
         Thread.sleep(4000) // Pause de 2 secondes pour afficher la vue
+    }
+    @Before
+    fun setUp() {
+        Intents.init()
     }
 
     @Test
@@ -32,6 +41,8 @@ class UniversalLinkManagerPreprodTest {
 
         // Attendre 2 secondes pour observer le résultat
         pauseForTwoSeconds()
+
+        intended(hasComponent(MainActivity::class.java.name))
     }
 
     @Test

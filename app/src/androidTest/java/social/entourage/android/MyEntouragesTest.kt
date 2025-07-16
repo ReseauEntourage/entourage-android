@@ -1,17 +1,24 @@
 package social.entourage.android
 
 import androidx.test.espresso.Espresso
+import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions
+import androidx.test.espresso.action.ViewActions.click
+import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.matcher.ViewMatchers
+import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
+import androidx.test.espresso.matcher.ViewMatchers.withId
+import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.rules.ActivityScenarioRule
-import androidx.test.platform.app.InstrumentationRegistry
+import org.hamcrest.Matchers.allOf
 import org.junit.Before
 import org.junit.Rule
+import org.junit.Test
 import social.entourage.android.onboarding.login.LoginActivity
 
 //TODO @LargeTest
 //TODO @RunWith(AndroidJUnit4::class)
-class MyEntouragesTest {
+class MyEntouragesTest : EntourageTestAfterLogin() {
 
     @Rule
     @JvmField
@@ -37,14 +44,14 @@ class MyEntouragesTest {
 
         Thread.sleep(4000)
     }
-    //TODO
-    /*@Test
+
+    @Test
     fun retrieveFeedsFailureNoInternetConnection() {
         //Disable wifi and data
         enableWifiAndData(false)
 
         //Try to retrieve feeds
-        val bottomBarMessagesButton = onView(allOf(withId(R.id.bottom_bar_mymessages), withContentDescription(R.string.action_my_messages), isDisplayed()))
+        val bottomBarMessagesButton = onView(allOf(withId(R.id.navigation_donations), isDisplayed()))
         bottomBarMessagesButton.perform(click())
 
         //Check that error is displayed
@@ -52,13 +59,5 @@ class MyEntouragesTest {
 
         //Enable wifi and data
         enableWifiAndData(true)
-    }*/
-
-    private fun enableWifiAndData(enable: Boolean) {
-        val parameter = if (enable) "enable" else "disable"
-        InstrumentationRegistry.getInstrumentation().uiAutomation.apply {
-            executeShellCommand("svc wifi $parameter")
-            executeShellCommand("svc data $parameter")
-        }
     }
 }

@@ -20,7 +20,7 @@ import social.entourage.android.onboarding.pre_onboarding.PreOnboardingStartActi
 
 @LargeTest
 @RunWith(AndroidJUnit4::class)
-class PreOnboardingTest {
+class PreOnboardingTest : EntourageTestBeforeLogin() {
 
     @Rule
     @JvmField
@@ -44,22 +44,14 @@ class PreOnboardingTest {
 
     @Before
     fun setUp() {
-        checkNoUserIsLoggedIn()
-    }
-
-    private fun checkNoUserIsLoggedIn() {
-        try {
-            activityRule.scenario.onActivity { activity ->
-                EntourageApplication[activity].authenticationController.logOutUser()
-            }
-        } catch (e: RuntimeException) {
-            e.printStackTrace()
+        activityRule.scenario.onActivity { activity ->
+            super.setUp(activity)
         }
     }
 
     @After
-    fun tearDown() {
-        checkNoUserIsLoggedIn()
+    override fun tearDown() {
+        super.tearDown()
     }
 
     @Test
