@@ -2404,7 +2404,7 @@
     <string name="menu_info_social">لتعيش <b>تضامنًا أكثر</b> تابع Entourage على شبكاتك!</string>
     <string name="custom_dialog_action_content_one_contrib">هل اكتملت مهمتك \"<![CDATA[<b>%1$s</b>]]>\"؟</string>
     <string name="search_member_hint">ابحث عن عضو</string>
-    <string name="terms_and_conditions_html">بالنقر على &lt;b&gt;التالي&lt;/b&gt;، فإنك توافق على &lt;a href=\'https://www.entourage.social</string>
+    <string name="terms_and_conditions_html">بالنقر على &lt;b&gt;التالي&lt;/b&gt;، فإنك توافق على &lt;a href=\'https://www.entourage.social/cgu/</string>
     <string name="action_crete_cat_about">هل تبحث عن تقديم %s لا يندرج ضمن هذه الفئات؟ يبدو أن \ ليس له مكان في الشبكة، لكن يمكنك دائمًا </string>
     <string name="action_create_cat_about_link"> معرفة المزيد هنا</string>
     <string name="report_modal_title_translate">ترجمة</string>

@@ -2418,7 +2418,7 @@ Leerán este mensaje tan pronto como se unan al grupo.</string>
     <string name="map_filter_entourage_contribution_text"><b>Ver las contribuciones sobre:</b></string>
     <string name="custom_dialog_action_content_one_contrib">¿Se ha completado tu acción \"<![CDATA[<b>%1$s</b>]]>\"?</string>
     <string name="search_member_hint">Buscar un miembro</string>
-    <string name="terms_and_conditions_html">Al hacer clic en &lt;b&gt;Siguiente&lt;/b&gt;, aceptas los &lt;a href=\'https://www.entourage.social/condiciones/\'&gt;Términos y Condiciones&lt;/a&gt; y la &lt;a href=\'https://www.entourage.social/politica-de-privacidad/\'&gt;Política de Privacidad&lt;/a&gt;</string>
+    <string name="terms_and_conditions_html">Al hacer clic en &lt;b&gt;Siguiente&lt;/b&gt;, aceptas los &lt;a href=\'https://www.entourage.social/cgu/\'&gt;Términos y Condiciones&lt;/a&gt; y la &lt;a href=\'https://www.entourage.social/politique-de-confidentialite/\'&gt;Política de Privacidad&lt;/a&gt;</string>
     <string name="action_crete_cat_about">¿Estás buscando ofrecer un %s que no encaja en ninguna de estas categorías? Parece que \ no tiene lugar en la red, pero siempre puedes.</string>
     <string name="action_create_cat_about_link"> aprender más aquí.</string>
     <string name="report_modal_title_translate">Traducir</string>

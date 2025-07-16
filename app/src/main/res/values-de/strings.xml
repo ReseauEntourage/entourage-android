@@ -2423,7 +2423,7 @@ Sie werden diese Nachricht lesen, sobald sie der Gruppe beitreten.</string>
     <string name="map_filter_entourage_contribution_text"><b>Beiträge bezüglich:</b></string>
     <string name="custom_dialog_action_content_one_contrib">Ist Ihre Aktion \"<![CDATA[<b>%1$s</b>]]>\" abgeschlossen?</string>
     <string name="search_member_hint">Ein Mitglied suchen</string>
-    <string name="terms_and_conditions_html">Durch Klicken auf &lt;b&gt;Weiter&lt;/b&gt; akzeptieren Sie die &lt;a href=\'https://www.entourage.social/agb/\'&gt;Allgemeinen Geschäftsbedingungen&lt;/a&gt; und die &lt;a href=\'https://www.entourage.social/datenschutz/\'&gt;Datenschutzrichtlinie&lt;/a&gt;</string>
+    <string name="terms_and_conditions_html">Durch Klicken auf &lt;b&gt;Weiter&lt;/b&gt; akzeptieren Sie die &lt;a href=\'https://www.entourage.social/cgu/\'&gt;Allgemeinen Geschäftsbedingungen&lt;/a&gt; und die &lt;a href=\'https://www.entourage.social/politique-de-confidentialite/\'&gt;Datenschutzrichtlinie&lt;/a&gt;</string>
     <string name="action_crete_cat_about">Möchtest du ein %s anbieten, das in keine dieser Kategorien passt? Es scheint, dass \ keinen Platz im Netzwerk hat, aber du kannst immer </string>
     <string name="action_create_cat_about_link"> mehr hier erfahren.</string>
     <string name="report_modal_title_translate">Übersetzen</string>

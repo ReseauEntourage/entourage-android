@@ -2430,7 +2430,7 @@ Ei vor citi acest mesaj imediat ce se vor alătura grupului.</string>
     <string name="map_filter_entourage_contribution_text"><b>Vezi contribuțiile referitoare la:</b></string>
     <string name="custom_dialog_action_content_one_contrib">Acțiunea ta \"<![CDATA[<b>%1$s</b>]]>\" este completă?</string>
     <string name="search_member_hint">Caută un membru</string>
-    <string name="terms_and_conditions_html">Făcând clic pe &lt;b&gt;Următorul&lt;/b&gt;, sunteți de acord cu &lt;a href=\'https://www.entourage.social/termeni/\'&gt;Termenii și Condițiile&lt;/a&gt; și &lt;a href=\'https://www.entourage.social/politica-de-confidențialitate/\'&gt;Politica de Confidențialitate&lt;/a&gt;</string>
+    <string name="terms_and_conditions_html">Făcând clic pe &lt;b&gt;Următorul&lt;/b&gt;, sunteți de acord cu &lt;a href=\'https://www.entourage.social/cgu/\'&gt;Termenii și Condițiile&lt;/a&gt; și &lt;a href=\'https://www.entourage.social/politique-de-confidentialite/\'&gt;Politica de Confidențialitate&lt;/a&gt;</string>
     <string name="action_crete_cat_about">Dorești să oferi un %s care nu se încadrează în niciuna dintre aceste categorii? Se pare că \ nu are loc în rețea, dar întotdeauna poți</string>
     <string name="action_create_cat_about_link"> afla mai multe aici.</string>
     <string name="report_modal_title_translate">Traduceți</string>

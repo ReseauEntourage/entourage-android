@@ -2437,7 +2437,7 @@
     <string name="map_filter_entourage_contribution_text"><b>Переглянути внески стосовно:</b></string>
     <string name="custom_dialog_action_content_one_contrib">Чи завершилася ваша діяльність \"<![CDATA[<b>%1$s</b>]]>\"?</string>
     <string name="search_member_hint">Шукати члена</string>
-    <string name="terms_and_conditions_html">Натискаючи &lt;b&gt;Далі&lt;/b&gt;, ви погоджуєтеся з &lt;a href=\'https://www.entourage.social/terms/\'&gt;Умовами користування&lt;/a&gt; та &lt;a href=\'https://www.entourage.social/privacy-policy/\'&gt;Політикою конфіденційності&lt;/a&gt;</string>
+    <string name="terms_and_conditions_html">Натискаючи &lt;b&gt;Далі&lt;/b&gt;, ви погоджуєтеся з &lt;a href=\'https://www.entourage.social/cgu/\'&gt;Умовами користування&lt;/a&gt; та &lt;a href=\'https://www.entourage.social/politique-de-confidentialite/\'&gt;Політикою конфіденційності&lt;/a&gt;</string>
     <string name="action_crete_cat_about">Шукаєте можливість запропонувати %s, яке не вписується в жодну з цих категорій? Здається, що \ не має місця в мережі, але ви завжди можете</string>
     <string name="action_create_cat_about_link"> дізнатися більше тут.</string>
     <string name="report_modal_title_translate">Перекласти</string>
