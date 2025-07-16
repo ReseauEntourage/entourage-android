@@ -12,49 +12,79 @@ import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
-import androidx.test.platform.app.InstrumentationRegistry
 import org.hamcrest.Matchers.allOf
+import org.junit.After
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import social.entourage.android.api.OnboardingAPI
 import social.entourage.android.onboarding.onboard.OnboardingStartActivity
 
 @LargeTest
 @RunWith(AndroidJUnit4::class)
-class SignUpTest {
+class SignUpTest : EntourageTestBeforeLogin() {
 
-    @Rule
-    @JvmField
+    @get:Rule
     var activityRule = ActivityScenarioRule(OnboardingStartActivity::class.java)
 
-    private val login = "0651234145"
-    private val password = "108674"
+    //private lateinit var device: UiDevice
+
+    @Before
+    fun setup() {
+        activityRule.scenario.onActivity { activity ->
+            super.setUp(activity)
+        }
+    }
+
+    @After
+    override fun tearDown() {
+        //just keep it for the annotation
+        super.tearDown()
+    }
 
     /****************************** Views ******************************/
 
     private val firstNameEt = onView(
-            allOf(withId(R.id.ui_onboard_names_et_firstname),
-                    isDisplayed()))
+        allOf(
+            withId(R.id.ui_onboard_names_et_firstname),
+            isDisplayed()
+        )
+    )
 
     private val lastNameEt = onView(
-            allOf(withId(R.id.ui_onboard_names_et_lastname),
-                    isDisplayed()))
+        allOf(
+            withId(R.id.ui_onboard_names_et_lastname),
+            isDisplayed()
+        )
+    )
 
     private val askCodeTv = onView(
-            allOf(withId(R.id.ui_onboard_code_tv_description),
-                    isDisplayed()))
+        allOf(
+            withId(R.id.ui_onboard_code_tv_description),
+            isDisplayed()
+        )
+    )
 
     private val phoneNumberEt = onView(
-            allOf(withId(R.id.ui_onboard_phone_et_phone),                    isDisplayed()))
+        allOf(
+            withId(R.id.ui_onboard_phone_et_phone),
+            isDisplayed()
+        )
+    )
 
     private val placeTitleTv = onView(
-            allOf(withId(R.id.ui_onboard_place_tv_title),
-                    isDisplayed()))
+        allOf(
+            withId(R.id.ui_onboard_place_tv_title),
+            isDisplayed()
+        )
+    )
 
     private val emailSubtitleTv = onView(
-            allOf(withId(R.id.ui_onboard_email),
-                    isDisplayed()))
+        allOf(
+            withId(R.id.ui_onboard_email),
+            isDisplayed()
+        )
+    )
 
     /*private val emailEt = onView(
             allOf(withId(R.id.ui_onboard_email_pwd_et_mail),
@@ -82,8 +112,11 @@ class SignUpTest {
                 isDisplayed()))*/
 
     private val nextButton = onView(
-            allOf(withId(R.id.ui_onboarding_bt_next),
-                    isDisplayed()))
+        allOf(
+            withId(R.id.ui_onboarding_bt_next),
+            isDisplayed()
+        )
+    )
 
     /****************************** OnboardingNamesFragment ******************************/
     /*@Test
@@ -166,11 +199,7 @@ class SignUpTest {
         phoneNumberEt.check(matches(isDisplayed()))
 
         //Check that OnboardingPasscodeFragment is not displayed
-        val inputCodeTitleTv = onView(allOf(
-            withId(R.id.ui_onboard_code_tv_description),
-            isDisplayed())
-        )
-        inputCodeTitleTv.check(doesNotExist())
+        askCodeTv.check(doesNotExist())
     }
 
     @Test
@@ -181,8 +210,8 @@ class SignUpTest {
         clickNextButton()
 
         //Check that error shows given message
-        val res = onView(withText(R.string.login_error_invalid_phone_format))
-        res.check(matches(isDisplayed()))
+        onView(withText(R.string.login_error_invalid_phone_format))
+            .check(matches(isDisplayed()))
     }
 
     @Test
@@ -193,8 +222,8 @@ class SignUpTest {
         clickNextButton()
 
         //Check that dialog shows given message
-        Thread.sleep(5000) //Wait for API response
-        onView(withText(R.string.login_already_registered_go_back)).check(matches(isDisplayed()))
+        onView(withText(R.string.login_already_registered_go_back))
+            .check(matches(isDisplayed()))
     }
 
     @Test
@@ -212,9 +241,6 @@ class SignUpTest {
             withText(R.string.login_error_network),
             isDisplayed()))
             .check(matches(withText(R.string.login_error_network)))
-
-        //Enable wifi and data
-        enableWifiAndData(true)
     }
 
     /****************************** OnboardingPasscodeFragment ******************************/
@@ -589,7 +615,7 @@ class SignUpTest {
 
     private fun clickNextButton() {
         nextButton.perform(click())
-        Thread.sleep(1000)
+        //device.waitForIdle(1000)
     }
 
     private fun fillValidNames() {
@@ -621,28 +647,9 @@ class SignUpTest {
         Thread.sleep(1000)
 
         clickNextButton()
-    }*/
-
-    private fun login(phoneNumber: String, codePwd: String) {
-        val authenticationController = EntourageApplication.get().authenticationController
-        OnboardingAPI.getInstance().login(phoneNumber, codePwd) { isOK, loginResponse, _ ->
-            if (isOK) {
-                loginResponse?.let {
-                    authenticationController.saveUser(loginResponse.user)
-                }
-                authenticationController.saveUserPhoneAndCode(phoneNumber, codePwd)
-
-                //set the tutorial as done
-                val sharedPreferences = EntourageApplication.get().sharedPreferences
-                (sharedPreferences.getStringSet(EntourageApplication.KEY_TUTORIAL_DONE, HashSet()) as HashSet<String>?)?.let {loggedNumbers ->
-                    loggedNumbers.add(phoneNumber)
-                    sharedPreferences.edit().putStringSet(EntourageApplication.KEY_TUTORIAL_DONE, loggedNumbers).apply()
-                }
-            }
-        }
     }
 
-    /*private fun pickLocation(locationInput: String) {
+    private fun pickLocation(locationInput: String) {
         val locationTv = onView(allOf(withId(R.id.ui_onboard_place_tv_location), isDisplayed()))
         locationTv.perform(click())
 
@@ -767,12 +774,4 @@ class SignUpTest {
 
         clickNextButton()
     }*/
-
-    private fun enableWifiAndData(enable: Boolean) {
-        val parameter = if (enable) "enable" else "disable"
-        InstrumentationRegistry.getInstrumentation().uiAutomation.apply {
-            executeShellCommand("svc wifi $parameter")
-            executeShellCommand("svc data $parameter")
-        }
-    }
 }

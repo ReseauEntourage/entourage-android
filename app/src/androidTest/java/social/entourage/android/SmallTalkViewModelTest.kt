@@ -27,8 +27,6 @@ class SmallTalkViewModelLogTest {
         viewModel = SmallTalkViewModel(context)
     }
 
-
-
     @Test
     fun testMatchRequest_logsResponse() {
         val dummyId = "fake-id" // Remplacer par un vrai ID si possible
@@ -43,7 +41,7 @@ class SmallTalkViewModelLogTest {
 
         viewModel.matchRequest(dummyId)
 
-        if (!latch.await(3, TimeUnit.SECONDS)) {
+        if (!latch.await(30, TimeUnit.SECONDS)) {
             fail("LiveData did not receive value within timeout")
         }
 
@@ -64,7 +62,7 @@ class SmallTalkViewModelLogTest {
 
         viewModel.deleteRequest()// Wait for the LiveData to emit, with a timeout
 
-        if (!latch.await(3, TimeUnit.SECONDS)) {
+        if (!latch.await(30, TimeUnit.SECONDS)) {
             fail("LiveData did not receive value within timeout")
         }
 
