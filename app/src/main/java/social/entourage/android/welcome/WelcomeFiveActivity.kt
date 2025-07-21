@@ -12,6 +12,7 @@ import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
 class WelcomeFiveActivity: BaseActivity() {
 
     private lateinit var binding:ActivityWelcomeFiveBinding
+    //TODO: replace with a link to the store ?
     val urlToShare = "https://s3-eu-west-1.amazonaws.com/entourage-ressources/store_redirection.html"
 
     override fun onCreate(savedInstanceState: Bundle?) {

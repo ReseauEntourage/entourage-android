@@ -30,8 +30,8 @@ object MistralApi {
         }
     }
 
-
     suspend fun ask(userMessage: String): String {
+        //TODO replace URLS with resources
         val contextPrompt = """
         Voici les sections de l'application Entourage :
         

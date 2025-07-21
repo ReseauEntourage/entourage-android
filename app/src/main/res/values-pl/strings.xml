@@ -2434,7 +2434,7 @@ Przeczytają tę wiadomość, gdy tylko dołączą do grupy.</string>
     <string name="map_filter_entourage_contribution_text"><b>Zobacz wkłady dotyczące:</b></string>
     <string name="custom_dialog_action_content_one_contrib">Czy Twoja akcja \"<![CDATA[<b>%1$s</b>]]>\" została zakończona?</string>
     <string name="search_member_hint">Szukaj członka</string>
-    <string name="terms_and_conditions_html">Klikając &lt;b&gt;Dalej&lt;/b&gt;, akceptujesz &lt;a href=\'https://www.entourage.social/cgu/\'&gt;Warunki korzystania&lt;/a&gt; oraz &lt;a href=\'https://www.entourage.social/politique-de-confidentialite/\'&gt;Politykę prywatności&lt;/a&gt;</string>
+    <string name="terms_and_conditions_html">Klikając &lt;b&gt;Dalej&lt;/b&gt;, akceptujesz &lt;a href=\'https://www.entourage.social/cgu\'&gt;Warunki korzystania&lt;/a&gt; oraz &lt;a href=\'https://www.entourage.social/politique-de-confidentialite\'&gt;Politykę prywatności&lt;/a&gt;</string>
     <string name="action_crete_cat_about">Czy chcesz zaoferować %s, które nie pasuje do żadnej z tych kategorii? Wygląda na to, że \ nie ma miejsca w sieci, ale zawsze możesz</string>
     <string name="action_create_cat_about_link"> dowiedzieć się więcej tutaj.</string>
     <string name="report_modal_title_translate">Tłumacz</string>
