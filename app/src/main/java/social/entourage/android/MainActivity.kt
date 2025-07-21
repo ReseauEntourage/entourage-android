@@ -187,6 +187,7 @@ class MainActivity : BaseSecuredActivity() {
         }
         if(shouldLaunchQuizz){
             shouldLaunchQuizz = false
+            //TODO replace with with an alias on our site
             val urlString = "https://kahoot.it/challenge/45371e80-fe50-4be5-afec-b37e3d50ede2_1733228323615"
             WebViewFragment.newInstance(urlString, 0, true)
                 .show(supportFragmentManager, WebViewFragment.TAG)
@@ -648,6 +649,7 @@ class MainActivity : BaseSecuredActivity() {
     }
 }
 
+//TODO rename this object
 enum class EntourageLink(val link: String) {
     HOME("https://preprod.entourage.social/app"),
     GROUP("https://preprod.entourage.social/app/groups/bb8c3e77aa95"),
