@@ -6,7 +6,6 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
-import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import com.google.android.material.snackbar.Snackbar
 import social.entourage.android.R
 import social.entourage.android.base.BaseActivity
@@ -70,7 +69,7 @@ class HelpAboutActivity : BaseActivity() {
     }
 
     private fun onOSSLicensesClicked() {
-        startActivity(Intent(this, OssLicensesMenuActivity::class.java))
+        //startActivity(Intent(this, OssLicensesMenuActivity::class.java))
     }
 
     private fun onRateUsClicked() {
