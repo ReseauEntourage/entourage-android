@@ -365,7 +365,7 @@ class DiscussionsMainFragment : Fragment() {
                 else -> "group"
             },
             title = m.name ?: "[Sans nom]",
-            lastMessage = m.lastChatMessage ?: LastMessage("Aucun message", null),
+            lastMessage = m.lastChatMessageText?.let { LastMessage(it, null) }, // conversion depuis String
             numberUnreadMessages = m.numberOfUnreadMessages ?: 0,
             memberCount = m.numberOfPeople ?: 0
         )

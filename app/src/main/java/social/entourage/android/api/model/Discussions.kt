@@ -190,7 +190,7 @@ data class ConversationMembership(
     @SerializedName("number_of_people") val numberOfPeople: Int?,
     @SerializedName("number_of_root_chat_messages") val numberOfRootMessages: Int?,
     @SerializedName("number_of_unread_messages") val numberOfUnreadMessages: Int?,
-    @SerializedName("last_chat_message") val lastChatMessage: LastMessage?
+    @SerializedName("last_chat_message") val lastChatMessageText: String? // ❗ Correction ici
 )
 
 data class ConversationMembershipsWrapper(
