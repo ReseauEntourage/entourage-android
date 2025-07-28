@@ -3,6 +3,7 @@ package social.entourage.android.discussions
 import android.animation.ObjectAnimator
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -18,6 +19,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.core.animation.doOnEnd
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.core.content.res.ResourcesCompat
@@ -332,6 +334,16 @@ class DetailConversationActivity : CommentActivity() {
         }
     }
 
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == 1001 && grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            // Permission accordée
+            Toast.makeText(this, "Permission caméra accordée", Toast.LENGTH_SHORT).show()
+        } else {
+            // Permission refusée
+            Toast.makeText(this, "La caméra nécessite une permission", Toast.LENGTH_LONG).show()
+        }
+    }
 
     private fun isAtBottom(): Boolean {
         val layoutManager = binding.comments.layoutManager as? LinearLayoutManager ?: return true
@@ -341,6 +353,9 @@ class DetailConversationActivity : CommentActivity() {
     }
 
     fun setOptions() {
+        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.CAMERA), 1001)
+        }
         var isOptionsVisible = false
 
         binding.optionButton.setOnClickListener {
@@ -378,10 +393,13 @@ class DetailConversationActivity : CommentActivity() {
 
         // Actions
         binding.optionCamera.layoutParent.setOnClickListener {
-            photoUri = createImageUri()
-            cameraLauncher.launch(photoUri)
+            if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+                photoUri = createImageUri()
+                cameraLauncher.launch(photoUri)
+            } else {
+                ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.CAMERA), 1001)
+            }
         }
-
         binding.optionGalery.layoutParent.setOnClickListener {
             galleryLauncher.launch("image/*")
         }
