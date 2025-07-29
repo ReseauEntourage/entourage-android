@@ -242,7 +242,7 @@ class DiscussionsMainFragment : Fragment() {
     private fun showDetail(position: Int) {
         val conversation = messagesList[position]
         VibrationUtil.vibrate(requireContext())
-        DetailConversationActivity.isSmallTalkMode = (currentFilterMode == FilterMode.SMALLTALKS)
+        DetailConversationActivity.isSmallTalkMode = (currentFilterMode == FilterMode.SMALLTALKS || conversation.type == "small_talk")
         if(DetailConversationActivity.isSmallTalkMode){
             DetailConversationActivity.smallTalkId = conversation.id.toString()
         }
