@@ -91,6 +91,9 @@ class DiscussionsListAdapter(
             }
 
             binding.name.text = conversation.title
+            if(conversation.memberCount > 2){
+                binding.name.text = conversation.title + " et ${conversation.memberCount}" + " membres"
+            }
             if(conversation.type == "outing"){
                binding.name.text = conversation.title
                 binding.date.visibility = View.GONE
