@@ -205,6 +205,7 @@ class CommentsListAdapter(
                 Glide.with(context)
                     .asBitmap()
                     .load(comment.imageUrl)
+                    .transform(CenterCrop(), RoundedCorners(Const.ROUNDED_CORNERS_IMAGES.px))
                     .into(object : com.bumptech.glide.request.target.CustomTarget<Bitmap>() {
                         override fun onResourceReady(resource: Bitmap, transition: com.bumptech.glide.request.transition.Transition<in Bitmap>?) {
                             val isPortrait = resource.height > resource.width

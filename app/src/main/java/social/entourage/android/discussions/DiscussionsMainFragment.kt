@@ -144,10 +144,18 @@ class DiscussionsMainFragment : Fragment() {
 
     private fun handleSwipeRefresh() {
         binding.swipeRefresh.setOnRefreshListener {
-            binding.progressBar.visibility = View.VISIBLE
-            reloadFromStart()
+            discussionsPresenter.fetchMemberships(currentFilterModeString(), reset = true)
         }
     }
+
+
+    private fun currentFilterModeString(): String? =
+        when (currentFilterMode) {
+            FilterMode.ALL       -> null
+            FilterMode.PRIVATE   -> "Conversation"
+            FilterMode.OUTINGS   -> "Outing"
+            FilterMode.SMALLTALKS-> "Smalltalk"
+        }
 
     private fun reloadFromStart() {
         messagesList.clear()
@@ -155,22 +163,20 @@ class DiscussionsMainFragment : Fragment() {
         discussionsPresenter.isLastPage = false
         discussionsPresenter.getAllMessages.value?.clear()
         binding.recyclerView.adapter?.notifyDataSetChanged()
+        discussionsPresenter.currentPageMemberships = 1
+        discussionsPresenter.isLastPageMemberships = false
         loadMessages()
     }
 
     private fun changeFilterMode(newMode: FilterMode, activeButton: View) {
-        if (currentFilterMode != newMode) {
-            currentFilterMode = newMode
-            resetMessagesList()
-        }
-
+        currentFilterMode = newMode
+        discussionsPresenter.fetchMemberships(currentFilterModeString(), reset = true)
         setFilterActive(activeButton)
         listOf(binding.filter1.root, binding.filter2.root, binding.filter3.root, binding.filter4.root)
             .filter { it != activeButton }
             .forEach { setFilterInactive(it) }
-
-        loadMessages()
     }
+
 
     private fun resetMessagesList() {
         messagesList.clear()
@@ -192,6 +198,10 @@ class DiscussionsMainFragment : Fragment() {
             setBackgroundResource(R.drawable.shape_filter_discussion_desactivated)
             setTextColor(resources.getColor(R.color.orange, null))
         }
+    }
+
+    private fun loadInitial() {
+        discussionsPresenter.fetchMemberships(currentFilterModeString(), reset = true)
     }
 
     // -------------------- LOGIQUE MESSAGES --------------------
@@ -313,8 +323,15 @@ class DiscussionsMainFragment : Fragment() {
 
     private val recyclerViewOnScrollListener = object : RecyclerView.OnScrollListener() {
         override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-            super.onScrolled(recyclerView, dx, dy)
-            handlePagination(recyclerView)
+            val lm = recyclerView.layoutManager as? LinearLayoutManager ?: return
+            val visible = lm.childCount
+            val total = lm.itemCount
+            val first = lm.findFirstVisibleItemPosition()
+            if (!discussionsPresenter.isLoadingMemberships && !discussionsPresenter.isLastPageMemberships) {
+                if (visible + first >= total && first >= 0 && total >= discussionsPresenter.perPageMemberships) {
+                    discussionsPresenter.fetchMemberships(currentFilterModeString())
+                }
+            }
         }
     }
 

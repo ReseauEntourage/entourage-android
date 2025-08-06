@@ -62,7 +62,10 @@ class DiscussionsPresenter:ViewModel() {
     var isLastPageComments = false
     var isLoadingComments = false
     val memberships = MutableLiveData<List<ConversationMembership>>()
-
+    var currentPageMemberships = 1
+    val perPageMemberships = 50
+    var isLastPageMemberships = false
+    var isLoadingMemberships = false
 
     fun getAllMessages(page: Int, per: Int) {
         isLoading = true
@@ -492,21 +495,37 @@ class DiscussionsPresenter:ViewModel() {
             })
     }
 
-    fun fetchMemberships(type: String?) {
-        EntourageApplication.get().apiModule.discussionsRequest.getConversationMemberships(type)
+    // In DiscussionsPresenter
+    fun fetchMemberships(type: String?, reset: Boolean = false) {
+        if (isLoadingMemberships) return
+        if (reset) {
+            currentPageMemberships = 1
+            isLastPageMemberships = false
+            memberships.value = emptyList()
+        }
+        if (isLastPageMemberships) return
+
+        isLoadingMemberships = true
+        EntourageApplication.get().apiModule.discussionsRequest
+            .getConversationMemberships(type, currentPageMemberships, perPageMemberships)
             .enqueue(object : Callback<ConversationMembershipsWrapper> {
                 override fun onResponse(
                     call: Call<ConversationMembershipsWrapper>,
                     response: Response<ConversationMembershipsWrapper>
                 ) {
-                    val parsed = response.body()?.memberships ?: emptyList()
-                    Timber.d("Memberships parsed: ${parsed.size}")
-                    memberships.postValue(parsed)
+                    val newItems = response.body()?.memberships.orEmpty()
+                    if (newItems.size < perPageMemberships) {
+                        isLastPageMemberships = true
+                    }
+                    val current = memberships.value.orEmpty().toMutableList()
+                    current.addAll(newItems)
+                    memberships.postValue(current)
+                    currentPageMemberships++
+                    isLoadingMemberships = false
                 }
 
                 override fun onFailure(call: Call<ConversationMembershipsWrapper>, t: Throwable) {
-                    Timber.e("Memberships call failed: ${t.message}")
-                    memberships.postValue(emptyList())
+                    isLoadingMemberships = false
                 }
             })
     }

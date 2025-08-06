@@ -419,7 +419,7 @@ class DetailConversationActivity : CommentActivity() {
         refreshMessagesRunnable = object : Runnable {
             override fun run() {
                 if (isSmallTalkMode) {
-                    smallTalkViewModel.listChatMessages(smallTalkId)
+                    smallTalkViewModel.listChatMessages(smallTalkId, page = 1)
                 } else {
                     discussionsPresenter.getPostComments(id)
                 }
