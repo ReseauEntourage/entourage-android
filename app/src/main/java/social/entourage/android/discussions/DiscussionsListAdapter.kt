@@ -61,6 +61,7 @@ class DiscussionsListAdapter(
                 conversation.type?.let { type ->
                     if (type == "outing") {
                         Timber.d("type : $type")
+
                         if (conversation.imageUrl.isNullOrBlank()) {
                             Glide.with(binding.image.context)
                                 .load(R.drawable.placeholder_my_event)
@@ -96,7 +97,6 @@ class DiscussionsListAdapter(
             }
             if(conversation.type == "outing"){
                binding.name.text = conversation.title
-                binding.date.visibility = View.GONE
             }else{
                 binding.date.visibility = View.VISIBLE
             }

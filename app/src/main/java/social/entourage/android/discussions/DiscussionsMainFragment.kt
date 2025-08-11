@@ -372,6 +372,7 @@ class DiscussionsMainFragment : Fragment() {
     }
 
     private fun membershipToConversation(m: ConversationMembership): Conversation {
+
         return Conversation(
             id = m.joinableId,
             type = when (m.joinableType?.lowercase()) {
@@ -381,10 +382,11 @@ class DiscussionsMainFragment : Fragment() {
                 "neighborhood" -> "group"
                 else -> "group"
             },
-            title = m.name ?: "[Sans nom]",
+            title = (m.name + " " + m.createdDateString()),
             lastMessage = m.lastChatMessageText?.let { LastMessage(it, null) }, // conversion depuis String
             numberUnreadMessages = m.numberOfUnreadMessages ?: 0,
             memberCount = m.numberOfPeople ?: 0
         )
     }
+
 }
