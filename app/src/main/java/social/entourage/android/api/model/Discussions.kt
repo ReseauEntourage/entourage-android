@@ -25,7 +25,7 @@ class Conversation(
     var title: String? = null,
     @SerializedName("image_url")
     var imageUrl: String? = null,
-
+    var subname: String? = null,
     @SerializedName("last_message")
     var lastMessage: LastMessage? = null,
     @SerializedName("number_of_unread_messages")

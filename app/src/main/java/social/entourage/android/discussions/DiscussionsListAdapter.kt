@@ -97,8 +97,11 @@ class DiscussionsListAdapter(
             }
             if(conversation.type == "outing"){
                binding.name.text = conversation.title
-            }else{
+                Timber.wtf("wtf date " + conversation.subname)
+                binding.date.text = conversation.subname
                 binding.date.visibility = View.VISIBLE
+            }else{
+                binding.date.visibility = View.GONE
             }
 
             if (conversation.getRolesWithPartnerFormated()?.isEmpty() == false) {
@@ -109,7 +112,6 @@ class DiscussionsListAdapter(
                 binding.role.isVisible = false
             }
 
-            binding.date.text = conversation.dateFormattedString(binding.root.context)
             binding.detail.text = conversation.getLastMessage()
 
             if (conversation.hasUnread()) {

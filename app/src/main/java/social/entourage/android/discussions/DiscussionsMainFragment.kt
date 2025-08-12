@@ -382,7 +382,8 @@ class DiscussionsMainFragment : Fragment() {
                 "neighborhood" -> "group"
                 else -> "group"
             },
-            title = (m.name + " " + m.createdDateString()),
+            title = (m.name),
+            subname = m.createdDateString(),
             lastMessage = m.lastChatMessageText?.let { LastMessage(it, null) }, // conversion depuis String
             numberUnreadMessages = m.numberOfUnreadMessages ?: 0,
             memberCount = m.numberOfPeople ?: 0
