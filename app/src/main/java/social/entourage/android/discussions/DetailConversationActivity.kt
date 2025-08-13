@@ -12,6 +12,7 @@ import android.text.Html
 import android.text.TextWatcher
 import android.view.View
 import android.view.animation.AnimationUtils
+import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
@@ -19,6 +20,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.core.text.HtmlCompat
 import androidx.core.view.isVisible
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -45,7 +47,6 @@ import social.entourage.android.discussions.members.MembersConversationFragment
 import social.entourage.android.events.EventsPresenter
 import social.entourage.android.events.details.feed.EventFeedActivity
 import social.entourage.android.profile.ProfileFullActivity
-import social.entourage.android.report.DataLanguageStock
 import social.entourage.android.small_talks.SmallTalkGuidelinesActivity
 import social.entourage.android.small_talks.SmallTalkViewModel
 import social.entourage.android.tools.log.AnalyticsEvents
@@ -237,12 +238,12 @@ class DetailConversationActivity : CommentActivity() {
 
     // ===== Header / UI divers =====
     private fun setCameraIcon() {
-        binding.header.iconCamera.isVisible = !smallTalk?.meetingUrl.isNullOrBlank()
-        binding.header.iconCamera.setImageResource(R.drawable.ic_camera)
+        binding.header.headerIconCamera.isVisible = !smallTalk?.meetingUrl.isNullOrBlank()
+        binding.header.headerIconCamera.setImageResource(R.drawable.ic_camera)
         val transparent = ContextCompat.getColor(this, R.color.transparent)
-        binding.header.cardIconCamera.setBackgroundColor(transparent)
-        binding.header.iconCamera.setBackgroundColor(transparent)
-        binding.header.iconCamera.setOnClickListener {
+        binding.header.headerCardIconCamera.setBackgroundColor(transparent)
+        binding.header.headerIconCamera.setBackgroundColor(transparent)
+        binding.header.headerIconCamera.setOnClickListener {
             Timber.d("SmallTalk meeting url: ${smallTalk?.meetingUrl}")
             AnalyticsEvents.logEvent(AnalyticsEvents.CLIC__SMALLTALK__VISIO_ICON)
             smallTalk?.meetingUrl?.let { url -> WebViewFragment.launchURL(this, url) }
@@ -561,10 +562,10 @@ class DetailConversationActivity : CommentActivity() {
                 )
             }
 
-            binding.header.ivEvent.visibility = View.GONE
+            binding.header.headerIvEvent.visibility = View.GONE
             val thumb = event.metadata?.portraitThumbnailUrl
             if (thumb.isNullOrBlank()) {
-                Glide.with(this).load(R.drawable.placeholder_my_event).into(binding.header.ivEvent)
+                Glide.with(this).load(R.drawable.placeholder_my_event).into(binding.header.headerIvEvent)
             } else {
                 Glide.with(this)
                     .load(thumb)
@@ -698,12 +699,12 @@ class DetailConversationActivity : CommentActivity() {
     }
 
     private fun setupHeader() {
-        binding.header.iconSettings.setImageDrawable(
+        binding.header.headerIconSettings.setImageDrawable(
             ContextCompat.getDrawable(this, R.drawable.new_settings)
         )
         val transparent = ContextCompat.getColor(this, R.color.transparent)
-        binding.header.cardIconSetting.setBackgroundColor(transparent)
-        binding.header.iconSettings.setBackgroundColor(transparent)
+        binding.header.headerCardIconSetting.setBackgroundColor(transparent)
+        binding.header.headerIconSettings.setBackgroundColor(transparent)
     }
 
     // ===== Mentions =====
