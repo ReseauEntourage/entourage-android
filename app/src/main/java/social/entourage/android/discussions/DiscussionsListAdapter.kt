@@ -61,6 +61,7 @@ class DiscussionsListAdapter(
                 conversation.type?.let { type ->
                     if (type == "outing") {
                         Timber.d("type : $type")
+
                         if (conversation.imageUrl.isNullOrBlank()) {
                             Glide.with(binding.image.context)
                                 .load(R.drawable.placeholder_my_event)
@@ -91,11 +92,16 @@ class DiscussionsListAdapter(
             }
 
             binding.name.text = conversation.title
+            if(conversation.memberCount > 2){
+                binding.name.text = conversation.title + " et ${conversation.memberCount}" + " membres"
+            }
             if(conversation.type == "outing"){
                binding.name.text = conversation.title
-                binding.date.visibility = View.GONE
-            }else{
+                Timber.wtf("wtf date " + conversation.subname)
+                binding.date.text = conversation.subname
                 binding.date.visibility = View.VISIBLE
+            }else{
+                binding.date.visibility = View.GONE
             }
 
             if (conversation.getRolesWithPartnerFormated()?.isEmpty() == false) {
@@ -106,7 +112,6 @@ class DiscussionsListAdapter(
                 binding.role.isVisible = false
             }
 
-            binding.date.text = conversation.dateFormattedString(binding.root.context)
             binding.detail.text = conversation.getLastMessage()
 
             if (conversation.hasUnread()) {

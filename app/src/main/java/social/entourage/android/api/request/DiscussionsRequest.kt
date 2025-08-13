@@ -114,7 +114,8 @@ interface DiscussionsRequest {
 
     @GET("conversations/memberships")
     fun getConversationMemberships(
-        @Query("type") type: String?
+        @Query("type") type: String?,
+        @Query("page") page: Int,
+        @Query("per") per: Int
     ): Call<ConversationMembershipsWrapper>
-
 }

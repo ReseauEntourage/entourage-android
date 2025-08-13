@@ -3,7 +3,9 @@ package social.entourage.android.api.model
 import com.google.gson.annotations.SerializedName
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
+import social.entourage.android.language.LanguageManager
 import social.entourage.android.tools.utils.Utils
+import java.text.SimpleDateFormat
 import java.util.*
 
 /**
@@ -23,7 +25,7 @@ class Conversation(
     var title: String? = null,
     @SerializedName("image_url")
     var imageUrl: String? = null,
-
+    var subname: String? = null,
     @SerializedName("last_message")
     var lastMessage: LastMessage? = null,
     @SerializedName("number_of_unread_messages")
@@ -185,13 +187,30 @@ data class ConversationMembership(
     @SerializedName("status") val status: String?,
     @SerializedName("joinable_status") val joinableStatus: String?,
     @SerializedName("name") val name: String?,
+    @SerializedName("subname") val subname: String?,
     @SerializedName("joinable_type") val joinableType: String?,
     @SerializedName("joinable_id") val joinableId: Int?,
     @SerializedName("number_of_people") val numberOfPeople: Int?,
     @SerializedName("number_of_root_chat_messages") val numberOfRootMessages: Int?,
     @SerializedName("number_of_unread_messages") val numberOfUnreadMessages: Int?,
-    @SerializedName("last_chat_message") val lastChatMessage: LastMessage?
-)
+    @SerializedName("last_chat_message") val lastChatMessageText: String? // ❗ Correction ici
+){
+    fun createdDateString(): String {
+        subname?.let { dateString ->
+            return try {
+                val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX", Locale.US)
+                val parsedDate = inputFormat.parse(dateString)
+
+                val outputFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+                parsedDate?.let { outputFormat.format(it) } ?: ""
+            } catch (e: Exception) {
+                ""
+            }
+        } ?: return ""
+    }
+
+}
+
 
 data class ConversationMembershipsWrapper(
     @SerializedName("memberships") val memberships: List<ConversationMembership>
