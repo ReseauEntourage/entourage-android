@@ -15,9 +15,9 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import social.entourage.android.BuildConfig
 import social.entourage.android.R
 import social.entourage.android.api.MetaDataRepository
-import social.entourage.android.groups.GroupModel
 import social.entourage.android.api.model.Tags
 import social.entourage.android.databinding.NewFragmentSettingsModalBinding
+import social.entourage.android.groups.GroupModel
 import social.entourage.android.groups.GroupPresenter
 import social.entourage.android.groups.details.rules.GroupRulesActivity
 import social.entourage.android.groups.edit.EditGroupActivity
@@ -25,9 +25,9 @@ import social.entourage.android.profile.myProfile.InterestsAdapter
 import social.entourage.android.report.DataLanguageStock
 import social.entourage.android.report.ReportModalFragment
 import social.entourage.android.report.ReportTypes
+import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.CustomAlertDialog
-import social.entourage.android.tools.log.AnalyticsEvents
 
 class GroupDetailsFragment : BottomSheetDialogFragment() {
 
@@ -73,12 +73,12 @@ class GroupDetailsFragment : BottomSheetDialogFragment() {
     private fun setView() {
         binding.header.title = getString(R.string.group_settings)
         binding.notificationAll.label = getString(R.string.group_notification_all)
-        binding.share.label.text = getString(R.string.group_share)
+        binding.share.profileSettingsItemLabel.text = getString(R.string.group_share)
         binding.notificationNewEvent.label = getString(R.string.notification_new_event)
         binding.notificationNewMessages.label = getString(R.string.notification_new_messages)
         binding.notificationNewMembers.label = getString(R.string.notification_new_members)
-        binding.edit.label.text = getString(R.string.edit_group_information)
-        binding.rules.label.text = getString(R.string.rules_group)
+        binding.edit.profileSettingsItemLabel.text = getString(R.string.edit_group_information)
+        binding.rules.profileSettingsItemLabel.text = getString(R.string.rules_group)
         binding.report.text = getString(R.string.report_group)
 
         if (group?.admin == true) {
@@ -95,7 +95,7 @@ class GroupDetailsFragment : BottomSheetDialogFragment() {
     }
 
     private fun handleShareButton(){
-        binding.share.layout.setOnClickListener {
+        binding.share.profileSettingsItemLayout.setOnClickListener {
             AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_GROUP_SHARE)
             val shareTitle = getString(R.string.share_title_group)
             val shareIntent = Intent(Intent.ACTION_SEND).apply {
@@ -129,11 +129,11 @@ class GroupDetailsFragment : BottomSheetDialogFragment() {
 
     private fun updateView() {
         MetaDataRepository.metaData.observe(requireActivity(), ::handleMetaData)
-        binding.rules.divider.visibility = View.GONE
-        binding.edit.divider.visibility = View.GONE
-        binding.notificationNewMembers.divider.visibility = View.GONE
+        binding.rules.profileSettingsItemDivider.visibility = View.GONE
+        binding.edit.profileSettingsItemDivider.visibility = View.GONE
+        binding.notificationNewMembers.notificationsCardDivider.visibility = View.GONE
         TextViewCompat.setTextAppearance(
-            binding.notificationAll.tvLabel,
+            binding.notificationAll.notificationsCardTvLabel,
             R.style.left_courant_bold_black
         )
         group?.let {
@@ -148,13 +148,13 @@ class GroupDetailsFragment : BottomSheetDialogFragment() {
     }
 
     private fun handleCloseButton() {
-        binding.header.iconCross.setOnClickListener {
+        binding.header.hbsIconCross.setOnClickListener {
             dismiss()
         }
     }
 
     private fun handleRulesButton() {
-        binding.rules.layout.setOnClickListener {
+        binding.rules.profileSettingsItemLayout.setOnClickListener {
             AnalyticsEvents.logEvent(
                 AnalyticsEvents.ACTION_GROUP_OPTION_RULES
             )

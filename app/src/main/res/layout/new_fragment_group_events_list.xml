@@ -19,7 +19,7 @@
 
             <include
                 android:id="@+id/header"
-                layout="@layout/new_header_with_subtitle"
+                layout="@layout/layout_header_with_subtitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layout_constraintBottom_toTopOf="@id/scrollView"

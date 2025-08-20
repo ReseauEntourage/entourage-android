@@ -15,9 +15,9 @@ import social.entourage.android.R
 import social.entourage.android.api.model.Group
 import social.entourage.android.databinding.NewGroupItemBinding
 import social.entourage.android.groups.details.feed.GroupFeedActivity
+import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.px
-import social.entourage.android.tools.log.AnalyticsEvents
 
 interface UpdateGroupInter{
     fun updateGroup()
@@ -87,8 +87,8 @@ class GroupsListAdapter(
                     )
                 }
                 if(this.futureOutingsCount == 0 || this.futureOutingsCount == 1){
-                    binding.futureOutgoingEvents.text = String.format(
-                        holder.itemView.context.getString(R.string.future_outgoing_events_number_singular),
+                    binding.futureOutgoingEvents.text =
+                        holder.itemView.context.getString(R.string.future_outgoing_events_number_singular,
                         this.futureOutingsCount)
                 }else{
                     binding.futureOutgoingEvents.text = String.format(

@@ -8,7 +8,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.snackbar.Snackbar
@@ -31,7 +30,7 @@ class HelpAboutFragment : BottomSheetDialogFragment() {
     ): View {
         _binding = NewFragmentHelpAboutBinding.inflate(inflater, container, false)
 
-        updatePaddingTopForEdgeToEdge(binding.header.layout)
+        updatePaddingTopForEdgeToEdge(binding.header.headerHelpLayout)
         return binding.root
     }
 
@@ -93,7 +92,7 @@ class HelpAboutFragment : BottomSheetDialogFragment() {
     }
 
     private fun onOSSLicensesClicked() {
-        startActivity(Intent(context, OssLicensesMenuActivity::class.java))
+        //startActivity(Intent(context, OssLicensesMenuActivity::class.java))
     }
 
     private fun onPrivacyClicked() {
@@ -173,7 +172,7 @@ class HelpAboutFragment : BottomSheetDialogFragment() {
     }
 
     private fun handleCloseButton() {
-        binding.header.iconCross.setOnClickListener {
+        binding.header.headerHelpIconCross.setOnClickListener {
             dismiss()
         }
     }

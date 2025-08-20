@@ -249,7 +249,7 @@
                             />
                         <include
                             android:id="@+id/joined"
-                            layout="@layout/new_profile_joined_layout"
+                            layout="@layout/profile_joined_layout"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_marginTop="12dp"

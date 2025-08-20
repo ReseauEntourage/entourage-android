@@ -7,7 +7,13 @@ import social.entourage.android.api.model.Tags
 import social.entourage.android.api.model.ReactionType
 import java.io.Serializable
 
-class MetaDataResponse(val tags: Tags,val reactions: MutableList<ReactionType>, val interests:MutableList<userConfig>, val involvements:MutableList<userConfig>, val concerns:MutableList<userConfig>,)
+class MetaDataResponse(
+    val tags: Tags,
+    val reactions: MutableList<ReactionType>,
+    val interests: MutableList<userConfig>,
+    val involvements: MutableList<userConfig>,
+    val concerns: MutableList<userConfig>,
+)
 
 class userConfig(
     @SerializedName("id")

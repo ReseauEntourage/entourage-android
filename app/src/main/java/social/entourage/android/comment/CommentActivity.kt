@@ -37,7 +37,6 @@ import social.entourage.android.tools.view.WebViewFragment
 import social.entourage.android.ui.ActionSheetFragment
 import social.entourage.android.ui.SheetMode
 import java.util.UUID
-import kotlin.getValue
 
 abstract class CommentActivity : BaseActivity(), onDissmissFragment {
 lateinit var binding: ActivityCommentsBinding
@@ -96,7 +95,7 @@ override fun onCreate(savedInstanceState: Bundle?) {
 
     handleSendButtonState()
 
-    updatePaddingTopForEdgeToEdge(binding.header.layout)
+    updatePaddingTopForEdgeToEdge(binding.header.headerLayout)
 }
 
 fun setIsEventTrue(){
@@ -317,10 +316,8 @@ fun updateView(emptyState: Boolean) {
     }
 }
 
-
-
 private fun handleBackButton() {
-    binding.header.iconBack.setOnClickListener {
+    binding.header.headerIconBack.setOnClickListener {
         finish()
     }
 }
@@ -342,10 +339,10 @@ private fun handleSendButtonState() {
 
 private fun setSettingsIcon() {
     binding.header.title = getString(R.string.comments_title)
-    binding.header.iconSettings.isVisible = true
-    binding.header.iconSettings.setImageResource(R.drawable.new_report_group)
-    binding.header.cardIconSetting.setBackgroundColor(ContextCompat.getColor(this, R.color.transparent))
-    binding.header.iconSettings.setBackgroundColor(ContextCompat.getColor(this, R.color.transparent))
+    binding.header.headerIconSettings.isVisible = true
+    binding.header.headerIconSettings.setImageResource(R.drawable.new_report_group)
+    binding.header.headerCardIconSetting.setBackgroundColor(ContextCompat.getColor(this, R.color.transparent))
+    binding.header.headerIconSettings.setBackgroundColor(ContextCompat.getColor(this, R.color.transparent))
 }
 
 // CommentActivity.kt
@@ -426,9 +423,6 @@ private fun setSettingsIcon() {
 
 private fun openEditTextKeyboard() {
 //        if (shouldOpenKeyboard) {
-//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-//                binding.commentMessage.setTextColor(getColor(R.color.black))
-//            }
 //            binding.commentMessage.focusAndShowKeyboard()
 //        }
 }

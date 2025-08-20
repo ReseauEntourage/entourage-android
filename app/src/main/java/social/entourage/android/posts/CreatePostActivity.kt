@@ -9,7 +9,6 @@ import android.text.Editable
 import android.text.Html
 import android.text.TextWatcher
 import android.view.View
-import android.view.ViewTreeObserver
 import android.view.animation.AccelerateDecelerateInterpolator
 import androidx.appcompat.app.AppCompatActivity
 import androidx.collection.ArrayMap
@@ -87,7 +86,7 @@ abstract class CreatePostActivity : AppCompatActivity() {
         // Ecoute du '@' dans l'EditText
         setupMentionTextWatcher()
 
-        updatePaddingTopForEdgeToEdge(binding.header.layout)
+        updatePaddingTopForEdgeToEdge(binding.header.headerLayout)
     }
 
     /**
@@ -279,7 +278,7 @@ abstract class CreatePostActivity : AppCompatActivity() {
     // Bouton back
     // --------------------------------------------------------------------
     private fun handleBackButton() {
-        binding.header.iconBack.setOnClickListener {
+        binding.header.headerIconBack.setOnClickListener {
             finish()
         }
     }

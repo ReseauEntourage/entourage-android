@@ -62,7 +62,7 @@ class ActionDetailActivity : AppCompatActivity(), OnDetailActionReceive {
         val _title = if (isDemand) getString(R.string.action_name_Demand) else getString(R.string.action_name_Contrib)
         setSettingsIcon(_title)
 
-        binding.header.iconBack.setOnClickListener {
+        binding.header.headerIconBack.setOnClickListener {
             finish()
         }
 
@@ -102,10 +102,10 @@ class ActionDetailActivity : AppCompatActivity(), OnDetailActionReceive {
 
 
     private fun setSettingsIcon(title:String?) {
-        binding.header.iconSettings.isVisible = true
-        binding.header.iconSettings.setImageResource(R.drawable.share_icon)
+        binding.header.headerIconSettings.isVisible = true
+        binding.header.headerIconSettings.setImageResource(R.drawable.share_icon)
         val whiteColor = ContextCompat.getColor(this, R.color.white)
-        binding.header.iconSettings.imageTintList = ColorStateList.valueOf(whiteColor)
+        binding.header.headerIconSettings.imageTintList = ColorStateList.valueOf(whiteColor)
         binding.header.headerTitle.maxLines = 2
         binding.header.headerTitle.ellipsize = TextUtils.TruncateAt.END
         binding.header.title = title
@@ -114,7 +114,7 @@ class ActionDetailActivity : AppCompatActivity(), OnDetailActionReceive {
 
     private fun handleShareButton(){
 
-        binding.header.iconSettings.setOnClickListener {
+        binding.header.headerIconSettings.setOnClickListener {
             val shareUrl = shareContent
             if(shareUrl.contains("contributions")){
                 AnalyticsEvents.logEvent(AnalyticsEvents.CONTRIB_SHARED)
@@ -134,7 +134,7 @@ class ActionDetailActivity : AppCompatActivity(), OnDetailActionReceive {
 
 
     override fun hideIconReport() {
-        binding.header.iconSettings.isVisible = false
+        binding.header.headerIconSettings.isVisible = false
     }
 
     override fun updateTitle(title: String?) {

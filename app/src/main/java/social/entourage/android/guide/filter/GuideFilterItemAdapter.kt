@@ -111,8 +111,8 @@ class GuideFilterItemAdapter(var context: Context) : BaseAdapter() {
     // ----------------------------------
     init {
         val guideFilter = instance
-        for (i in 1 until CategoryType.values().size) {
-            val categoryType = CategoryType.values()[i]
+        for (i in 1 until CategoryType.entries.size) {
+            val categoryType = CategoryType.entries[i]
             if (categoryType != CategoryType.PARTNERS) {
                 items.add(GuideFilterItem(categoryType, guideFilter.valueForCategoryId(categoryType.categoryId)))
             }

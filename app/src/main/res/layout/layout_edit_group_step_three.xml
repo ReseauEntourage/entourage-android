@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="25dp">
+
+        <include
+            android:id="@+id/egs3_header"
+            layout="@layout/layout_create_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:step="@{@string/stepThree}" />
+
+        <LinearLayout
+            android:id="@+id/egs3_group_message_welcome_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center_vertical"
+            android:orientation="vertical"
+            app:layout_constraintTop_toBottomOf="@id/egs3_header">
+
+            <TextView
+                android:id="@+id/egs3_title"
+                style="@style/left_h2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="5dp"
+                android:text="@string/group_welcome_message" />
+
+            <TextView
+                android:id="@+id/egs3_mandatory"
+                style="@style/left_legend"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/optional" />
+
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/egs3_group_message_welcome"
+            style="@style/input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="-4dp"
+            android:layout_marginTop="5dp"
+            android:backgroundTint="@color/light_orange_opacity_50"
+            android:hint="@string/group_welcome_message"
+            android:maxLines="4"
+            android:paddingTop="0dp"
+            android:inputType="textCapSentences|textMultiLine"
+            app:layout_constraintTop_toBottomOf="@id/egs3_group_message_welcome_title"
+            tools:text="content" />
+
+        <include
+            android:id="@+id/egs3_group_photo_title"
+            layout="@layout/layout_create_section_title_item"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            app:layout_constraintTop_toBottomOf="@id/egs3_group_message_welcome"
+            app:mandatory="@{@string/mandatory}"
+            app:title="@{@string/group_choose_photo}" />
+
+        <TextView
+            android:id="@+id/group_photo_label"
+            style="@style/left_legend"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:gravity="center"
+            android:text="@string/group_photo_label"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/egs3_group_photo_title"
+            tools:text="@string/group_photo_label" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/egs3_add_photo_layout"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/new_bg_choose_photo_group"
+            android:gravity="center"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/egs3_error">
+
+            <ImageView
+                android:id="@+id/egs3_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/new_choose_group_photo"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="17dp"
+                android:layout_marginEnd="17dp"
+                android:src="@drawable/new_plus"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <ImageView
+            android:id="@+id/egs3_add_photo"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_marginTop="12dp"
+            android:gravity="center"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/egs3_error" />
+
+        <include
+            android:id="@+id/egs3_error"
+            layout="@layout/new_error"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@id/group_photo_label" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

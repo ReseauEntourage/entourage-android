@@ -69,7 +69,7 @@ class CreateEventStepThreeFragment : Fragment() {
             val isEventFaceToFace = checkedId == R.id.face_to_face
             binding.layout.location.isVisible = isEventFaceToFace
             binding.layout.eventUrl.isVisible = !isEventFaceToFace
-            binding.layout.eventPlaceTitle.title.text =
+            binding.layout.eventPlaceTitle.sectionTitle.text =
                 getString(if (isEventFaceToFace) R.string.add_location else R.string.add_url)
             binding.layout.image.setImageDrawable(
                 AppCompatResources.getDrawable(

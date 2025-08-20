@@ -6,7 +6,7 @@
 
     <include
         android:id="@+id/layout"
-        layout="@layout/new_edit_event_step_five"
+        layout="@layout/layout_edit_event_step_five"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 </LinearLayout>

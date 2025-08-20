@@ -160,7 +160,7 @@
                         android:layout_height="wrap_content">
 
                         <LinearLayout
-                            android:id="@+id/layout"
+                            android:id="@+id/event_layout"
                             android:elevation="3dp"
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
@@ -331,6 +331,7 @@
                                         app:drawableTint="@color/black"
                                         app:drawableEndCompat="@drawable/share_icon" />
                                 </androidx.constraintlayout.widget.ConstraintLayout>
+
                                 <androidx.constraintlayout.widget.ConstraintLayout
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
@@ -390,77 +391,6 @@ purus dui, aliquet cursus tellus a, dictum hen." />
                                 app:uiCompass="true"
                                 app:uiZoomControls="true"
                                 app:zOrderOnTop="true" />
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:id="@+id/posts_layout_empty_state"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginHorizontal="4dp"
-                            android:layout_marginTop="15dp"
-                            android:layout_marginBottom="20dp"
-                            android:background="@drawable/new_bg_rounded_beige"
-                            android:orientation="vertical"
-                            android:padding="28dp"
-                            android:visibility="gone"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/posts">
-
-                            <ImageView
-                                android:id="@+id/image"
-                                android:layout_width="182dp"
-                                android:layout_height="112dp"
-                                android:layout_gravity="center"
-                                android:src="@drawable/new_illu_empty_state_event"
-                                app:layout_constraintBottom_toTopOf="@+id/title"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintTop_toTopOf="parent" />
-
-                            <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="16dp"
-                                android:layout_marginBottom="-15dp"
-                                android:src="@drawable/new_group_stars"
-                                app:layout_constraintBottom_toTopOf="@id/title"
-                                app:layout_constraintStart_toStartOf="parent" />
-
-                            <TextView
-                                android:id="@+id/title"
-                                style="@style/mini_header_black"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginHorizontal="32dp"
-                                android:layout_marginTop="10dp"
-                                android:text="@string/event_posts_empty_state_title"
-                                app:layout_constraintBottom_toTopOf="@id/title"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toBottomOf="@id/image" />
-
-                            <TextView
-                                android:id="@+id/subtitle"
-                                style="@style/h4"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginHorizontal="32dp"
-                                android:layout_marginTop="10dp"
-                                android:gravity="start"
-                                android:text="@string/event_posts_empty_state_subtitle"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toBottomOf="@+id/title" />
-
-                            <ImageView
-                                android:id="@+id/arrow"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="220dp"
-                                android:layout_marginTop="17dp"
-                                android:src="@drawable/new_arrow_create_group"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintEnd_toEndOf="parent" />
                         </LinearLayout>
 
                         <ProgressBar

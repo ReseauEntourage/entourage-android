@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable name="icon" type="android.graphics.drawable.Drawable" />
+        <variable name="label" type="java.lang.String" />
+        <variable name="subLabel" type="java.lang.String" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/profile_settings_item_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="20dp">
+
+        <ImageView
+            android:id="@+id/profile_settings_item_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginBottom="20dp"
+            android:src="@{icon}"
+            app:layout_constraintBottom_toTopOf="@id/profile_settings_item_divider"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/profile_settings_item_label"
+            style="@style/settings_items"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:text='@{label}'
+            android:textColor='@color/black'
+            app:layout_constraintEnd_toStartOf='@+id/profile_settings_item_arrow'
+            app:layout_constraintStart_toEndOf='@id/profile_settings_item_icon'
+            app:layout_constraintTop_toTopOf='parent' />
+
+        <TextView
+            android:id="@+id/profile_settings_item_sub_label"
+            style="@style/left_legend_grey"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="20dp"
+            android:text='@{subLabel}'
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf='@id/profile_settings_item_divider'
+            app:layout_constraintEnd_toStartOf='@+id/profile_settings_item_arrow'
+            app:layout_constraintStart_toStartOf='@id/profile_settings_item_label'
+            app:layout_constraintTop_toBottomOf='@id/profile_settings_item_label' />
+
+        <ImageView
+            android:id="@+id/profile_settings_item_arrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="20dp"
+            android:src="@drawable/new_arrow"
+            app:layout_constraintBottom_toTopOf="@id/profile_settings_item_divider"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:id="@+id/profile_settings_item_divider"
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/new_light_grey"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

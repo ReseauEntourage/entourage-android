@@ -1,7 +1,8 @@
-package social.entourage.android.notifications
+package social.entourage.android.tools
 
 import android.content.Context
 import social.entourage.android.api.model.notification.PushNotificationMessage
+import social.entourage.android.notifications.PushNotificationManager
 
 object MockNotificationGenerator {
 

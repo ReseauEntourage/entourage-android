@@ -1,4 +1,4 @@
-package social.entourage.android.profile.editProfile
+package social.entourage.android.profile.activities_settings
 
 import android.graphics.Typeface
 import android.os.Bundle
@@ -11,6 +11,7 @@ import com.google.android.material.snackbar.Snackbar
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.databinding.FragmentUserEditPasswordBinding
+import social.entourage.android.profile.editProfile.EditProfilePresenter
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.view.EntSnackbar
 

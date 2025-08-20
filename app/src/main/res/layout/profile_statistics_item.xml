@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="icon"
+            type="android.graphics.drawable.Drawable" />
+
+        <variable
+            name="label"
+            type="java.lang.String" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/new_rounded_background_statistics"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingHorizontal="15dp"
+        android:paddingVertical="8dp">
+
+        <ImageView
+            android:id="@+id/statistics_item_icon"
+            android:layout_width="35dp"
+            android:layout_height="20dp"
+            android:adjustViewBounds="true"
+            android:cropToPadding="true"
+            android:paddingRight="10dp"
+            android:src="@{icon}"
+            tools:src="@drawable/new_edit_profile" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/statistics_item_content"
+                style="@style/left_courant_bold_black"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="4" />
+
+            <TextView
+                android:id="@+id/statistics_item_title"
+                style="@style/left_courant_black"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@{label}"
+                tools:text="Events" />
+        </LinearLayout>
+    </LinearLayout>
+</layout>

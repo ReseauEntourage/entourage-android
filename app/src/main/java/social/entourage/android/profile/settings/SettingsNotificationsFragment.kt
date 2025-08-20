@@ -13,9 +13,9 @@ import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import social.entourage.android.R
+import social.entourage.android.api.model.notification.InAppNotificationPermission
 import social.entourage.android.databinding.NewFragmentSettingsNotifsBinding
 import social.entourage.android.home.HomePresenter
-import social.entourage.android.api.model.notification.InAppNotificationPermission
 
 class SettingsNotificationsFragment : BottomSheetDialogFragment() {
 
@@ -147,7 +147,7 @@ class SettingsNotificationsFragment : BottomSheetDialogFragment() {
     }
 
     private fun handleCloseButton() {
-        binding.header.iconCross.setOnClickListener {
+        binding.header.hbsIconCross.setOnClickListener {
             dismiss()
         }
     }

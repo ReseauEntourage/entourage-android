@@ -5,7 +5,6 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,13 +19,12 @@ import social.entourage.android.authentication.AuthenticationController
 import social.entourage.android.databinding.NewFragmentSettingsBinding
 import social.entourage.android.language.LanguageBottomFragment
 import social.entourage.android.language.TranslationBottomFragment
-import social.entourage.android.tools.utils.CustomAlertDialog
 import social.entourage.android.onboarding.pre_onboarding.PreOnboardingStartActivity
 import social.entourage.android.profile.editProfile.EditPasswordFragment
 import social.entourage.android.tools.log.AnalyticsEvents
+import social.entourage.android.tools.utils.CustomAlertDialog
 import social.entourage.android.tools.view.EntSnackbar
 import social.entourage.android.tools.view.WebViewFragment
-import timber.log.Timber
 
 class SettingsFragment : Fragment() {
 
@@ -51,9 +49,9 @@ class SettingsFragment : Fragment() {
     }
 
     private fun initializeView() {
-        binding.deleteAccount.divider.visibility = View.GONE
-        binding.deleteAccount.arrow.visibility = View.GONE
-        binding.signOut.arrow.visibility = View.GONE
+        binding.deleteAccount.profileSettingsItemDivider.visibility = View.GONE
+        binding.deleteAccount.profileSettingsItemArrow.visibility = View.GONE
+        binding.signOut.profileSettingsItemArrow.visibility = View.GONE
         binding.appVersion.text =
             getString(R.string.about_version_format, BuildConfig.VERSION_FULL_NAME)
         if (!BuildConfig.DEBUG) {
@@ -69,28 +67,28 @@ class SettingsFragment : Fragment() {
             )
         }
 
-        binding.share.arrow.visibility = View.INVISIBLE
-        binding.suggest.arrow.visibility = View.INVISIBLE
+        binding.share.profileSettingsItemArrow.visibility = View.INVISIBLE
+        binding.suggest.profileSettingsItemArrow.visibility = View.INVISIBLE
 
     }
 
     private fun addOnClickListeners() {
-        binding.language.layout.setOnClickListener {
+        binding.language.profileSettingsItemLayout.setOnClickListener {
             LanguageBottomFragment.newInstance().show(parentFragmentManager, LanguageBottomFragment.TAG)
         }
 
-        binding.translate.layout.setOnClickListener {
+        binding.translate.profileSettingsItemLayout.setOnClickListener {
             TranslationBottomFragment.newInstance().show(parentFragmentManager, LanguageBottomFragment.TAG)
         }
 
-        binding.notifications.layout.setOnClickListener {
+        binding.notifications.profileSettingsItemLayout.setOnClickListener {
             SettingsNotificationsFragment.newInstance()
                 .show(parentFragmentManager, SettingsNotificationsFragment.TAG)
         }
-        binding.share.layout.setOnClickListener {
+        binding.share.profileSettingsItemLayout.setOnClickListener {
             shareApplication()
         }
-        binding.deleteAccount.layout.setOnClickListener {
+        binding.deleteAccount.profileSettingsItemLayout.setOnClickListener {
             CustomAlertDialog.showWithCancelFirst(
                 requireContext(),
                 getString(R.string.delete_account_dialog_title),
@@ -98,7 +96,7 @@ class SettingsFragment : Fragment() {
                 getString(R.string.delete),
             ) { deleteAccount() }
         }
-        binding.signOut.layout.setOnClickListener {
+        binding.signOut.profileSettingsItemLayout.setOnClickListener {
             CustomAlertDialog.showWithCancelFirst(
                 requireContext(),
                 getString(R.string.sign_out_dialog_title),
@@ -106,14 +104,14 @@ class SettingsFragment : Fragment() {
                 getString(R.string.signing_out),
             ) { logout() }
         }
-        binding.helpAbout.layout.setOnClickListener {
+        binding.helpAbout.profileSettingsItemLayout.setOnClickListener {
             HelpAboutFragment.newInstance().show(parentFragmentManager, HelpAboutFragment.TAG)
         }
 
-        binding.helpBlock.layout.setOnClickListener {
+        binding.helpBlock.profileSettingsItemLayout.setOnClickListener {
             UnblockUsersFragment.newInstance().show(parentFragmentManager, UnblockUsersFragment.TAG)
         }
-        binding.suggest.layout.setOnClickListener {
+        binding.suggest.profileSettingsItemLayout.setOnClickListener {
             WebViewFragment.newInstance(getString(R.string.url_app_suggest), 0, true)
                 .show(parentFragmentManager, WebViewFragment.TAG)
         }

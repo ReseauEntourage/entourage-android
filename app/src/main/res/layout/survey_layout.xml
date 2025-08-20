@@ -19,7 +19,7 @@
         app:layout_constraintStart_toStartOf="parent">
 
     <ImageView
-        android:id="@+id/image"
+        android:id="@+id/author_image"
         android:layout_width="25dp"
         android:layout_height="25dp"
         tools:src="@drawable/new_illu_header_group"
@@ -32,8 +32,8 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:orientation="vertical"
-            app:layout_constraintTop_toTopOf="@+id/image"
-            app:layout_constraintStart_toEndOf="@+id/image">
+            app:layout_constraintTop_toTopOf="@+id/author_image"
+            app:layout_constraintStart_toEndOf="@+id/author_image">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -293,7 +293,7 @@
 
         <include
             android:id="@+id/reaction1"
-            layout="@layout/layout_item_reaction"
+            layout="@layout/item_reaction"
             android:layout_width="25dp"
             android:layout_height="25dp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -302,7 +302,7 @@
 
         <include
             android:id="@+id/reaction2"
-            layout="@layout/layout_item_reaction"
+            layout="@layout/item_reaction"
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:layout_marginStart="-5dp"
@@ -312,7 +312,7 @@
 
         <include
             android:id="@+id/reaction3"
-            layout="@layout/layout_item_reaction"
+            layout="@layout/item_reaction"
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:layout_marginStart="-5dp"
@@ -322,7 +322,7 @@
 
         <include
             android:id="@+id/reaction4"
-            layout="@layout/layout_item_reaction"
+            layout="@layout/item_reaction"
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:layout_marginStart="-5dp"
@@ -332,7 +332,7 @@
 
         <include
             android:id="@+id/reaction5"
-            layout="@layout/layout_item_reaction"
+            layout="@layout/item_reaction"
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:layout_marginStart="-5dp"

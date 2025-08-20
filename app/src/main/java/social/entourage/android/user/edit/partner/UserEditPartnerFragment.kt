@@ -75,6 +75,7 @@ class UserEditPartnerFragment  : BaseDialogFragment() {
             }
             if (hideKeyboard) {
                 // hide virtual keyboard
+                //TODO: use new parameters
                 (activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?)?.hideSoftInputFromWindow(
                     v.windowToken,
                     InputMethodManager.RESULT_UNCHANGED_SHOWN

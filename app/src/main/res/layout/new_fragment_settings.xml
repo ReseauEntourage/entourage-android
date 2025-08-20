@@ -22,7 +22,7 @@
 
                 <include
                     android:id="@+id/translate"
-                    layout="@layout/new_profile_settings_item"
+                    layout="@layout/layout_settings_item"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:visibility="visible"
@@ -31,7 +31,7 @@
 
                 <include
                     android:id="@+id/language"
-                    layout="@layout/new_profile_settings_item"
+                    layout="@layout/layout_settings_item"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     app:icon='@{@drawable/ic_language}'
@@ -39,7 +39,7 @@
 
                 <include
                     android:id="@+id/notifications"
-                    layout="@layout/new_profile_settings_item"
+                    layout="@layout/layout_settings_item"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     app:icon='@{@drawable/new_notification}'
@@ -47,7 +47,7 @@
 
                 <include
                     android:id="@+id/help_about"
-                    layout="@layout/new_profile_settings_item"
+                    layout="@layout/layout_settings_item"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     app:icon='@{@drawable/new_help_about}'
@@ -55,7 +55,7 @@
 
                 <include
                     android:id="@+id/help_block"
-                    layout="@layout/new_profile_settings_item"
+                    layout="@layout/layout_settings_item"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     app:icon='@{@drawable/new_block}'
@@ -63,7 +63,7 @@
 
                 <include
                     android:id="@+id/suggest"
-                    layout="@layout/new_profile_settings_item"
+                    layout="@layout/layout_settings_item"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     app:icon='@{@drawable/new_share}'
@@ -71,7 +71,7 @@
 
                 <include
                     android:id="@+id/share"
-                    layout="@layout/new_profile_settings_item"
+                    layout="@layout/layout_settings_item"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     app:icon='@{@drawable/new_share}'
@@ -133,7 +133,7 @@
 
                 <include
                     android:id="@+id/sign_out"
-                    layout="@layout/new_profile_settings_item"
+                    layout="@layout/layout_settings_item"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     app:icon='@{@drawable/new_sign_out}'
@@ -141,7 +141,7 @@
 
                 <include
                     android:id="@+id/delete_account"
-                    layout="@layout/new_profile_settings_item"
+                    layout="@layout/layout_settings_item"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     app:icon='@{@drawable/new_delete}'

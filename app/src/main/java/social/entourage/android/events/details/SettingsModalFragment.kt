@@ -87,7 +87,7 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
     private fun setView() {
         with(binding) {
             header.title = getString(R.string.event_settings)
-            header.iconCross.setOnClickListener { dismiss() }
+            header.hbsIconCross.setOnClickListener { dismiss() }
 
             notificationNewMessages.root.visibility = View.GONE
 
@@ -95,16 +95,16 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
             notificationNewEvent.label = getString(R.string.notification_new_publications)
             notificationNewMembers.label = getString(R.string.notification_new_members)
 
-            edit.label.text = getString(R.string.edit_event_information)
-            rules.label.text = getString(R.string.rules_event)
-            share.label.text = getString(R.string.share_event_settings)
-            editRecurrence.label.text = getString(R.string.modify_recurrence)
+            edit.profileSettingsItemLabel.text = getString(R.string.edit_event_information)
+            rules.profileSettingsItemLabel.text = getString(R.string.rules_event)
+            share.profileSettingsItemLabel.text = getString(R.string.share_event_settings)
+            editRecurrence.profileSettingsItemLabel.text = getString(R.string.modify_recurrence)
 
             report.text = getString(R.string.report_event)
             cancel.text = getString(R.string.cancel_event)
             leave.text = getString(R.string.leave_event)
 
-            TextViewCompat.setTextAppearance(notificationAll.tvLabel, R.style.left_courant_bold_black)
+            TextViewCompat.setTextAppearance(notificationAll.notificationsCardTvLabel, R.style.left_courant_bold_black)
 
             val me = EntourageApplication.me(requireContext())
             if (me?.roles?.isEmpty() == true) {
@@ -115,10 +115,10 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
 
     private fun updateView() {
         with(binding) {
-            rules.divider.visibility = View.GONE
-            edit.divider.visibility = View.GONE
-            editRecurrence.divider.visibility = View.GONE
-            notificationNewMembers.divider.visibility = View.GONE
+            rules.profileSettingsItemDivider.visibility = View.GONE
+            edit.profileSettingsItemDivider.visibility = View.GONE
+            editRecurrence.profileSettingsItemDivider.visibility = View.GONE
+            notificationNewMembers.notificationsCardDivider.visibility = View.GONE
 
             event?.let { e ->
                 name.text = e.title
@@ -159,11 +159,13 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
     }
 
     private fun handleCloseButton() {
-        binding.header.iconCross.setOnClickListener { dismiss() }
+        binding.header.hbsIconCross.setOnClickListener {
+            dismiss()
+        }
     }
 
     private fun handleRulesButton() {
-        binding.rules.layout.setOnClickListener {
+        binding.rules.profileSettingsItemLayout.setOnClickListener {
             val intent = Intent(context, GroupRulesActivity::class.java)
             intent.putExtra(Const.RULES_TYPE, Const.RULES_EVENT)
             startActivityForResult(intent, 0)
@@ -196,7 +198,7 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
     }
 
     private fun handleShareButton() {
-        binding.share.layout.setOnClickListener {
+        binding.share.profileSettingsItemLayout.setOnClickListener {
             AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_OPTION_SHARED)
             event?.let { e ->
                 val shareTitle = getString(R.string.share_title_event)

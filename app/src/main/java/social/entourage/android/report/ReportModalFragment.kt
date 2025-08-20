@@ -21,21 +21,21 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import social.entourage.android.R
-import social.entourage.android.api.MetaDataRepository
-import social.entourage.android.databinding.NewFragmentReportBinding
 import social.entourage.android.actions.ActionsPresenter
+import social.entourage.android.api.MetaDataRepository
 import social.entourage.android.api.model.TagMetaData
 import social.entourage.android.api.model.Tags
+import social.entourage.android.databinding.NewFragmentReportBinding
 import social.entourage.android.discussions.DetailConversationActivity
 import social.entourage.android.discussions.DiscussionsPresenter
 import social.entourage.android.events.EventsPresenter
 import social.entourage.android.groups.GroupPresenter
 import social.entourage.android.groups.details.feed.CallbackReportFragment
+import social.entourage.android.small_talks.SmallTalkViewModel
 import social.entourage.android.tools.log.AnalyticsEvents
-import social.entourage.android.user.UserPresenter
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.CustomAlertDialog
-import social.entourage.android.small_talks.SmallTalkViewModel
+import social.entourage.android.user.UserPresenter
 
 enum class ReportTypes(val code: Int) {
     REPORT_USER(0),
@@ -535,7 +535,7 @@ class ReportModalFragment : BottomSheetDialogFragment() {
     }
 
     private fun handleCloseButton() {
-        binding.header.iconCross.setOnClickListener {
+        binding.header.hbsIconCross.setOnClickListener {
             onClose(); dismiss()
         }
     }

@@ -6,7 +6,6 @@ import android.content.Intent
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,7 +18,6 @@ import social.entourage.android.api.model.EntourageUser
 import social.entourage.android.api.model.ReactionType
 import social.entourage.android.databinding.NewGroupMemberItemBinding
 import social.entourage.android.profile.ProfileFullActivity
-import social.entourage.android.user.UserProfileActivity
 import social.entourage.android.tools.utils.Const
 
 interface OnItemShowListener {
@@ -126,7 +124,7 @@ class MembersListAdapter(
             b.reaction.layoutItemReactionParent.visibility = View.VISIBLE
             Glide.with(context)
                 .load(reactionList[position].imageUrl)
-                .into(b.reaction.image)
+                .into(b.reaction.reactionImage)
         } else {
             b.reaction.layoutItemReactionParent.visibility = View.GONE
         }

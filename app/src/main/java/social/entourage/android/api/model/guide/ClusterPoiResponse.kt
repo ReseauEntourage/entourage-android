@@ -1,6 +1,4 @@
-package social.entourage.android.api.request
-
-import social.entourage.android.api.model.guide.Poi
+package social.entourage.android.api.model.guide
 
 class ClusterPoiResponse(
     var clusters: List<ClusterPoi>

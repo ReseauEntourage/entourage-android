@@ -24,7 +24,7 @@ class MyActionsListActivity : AppCompatActivity() {
     }
 
     private fun setBackButton() {
-        binding.header.iconBack.setOnClickListener {
+        binding.header.headerIconBack.setOnClickListener {
             finish()
         }
     }

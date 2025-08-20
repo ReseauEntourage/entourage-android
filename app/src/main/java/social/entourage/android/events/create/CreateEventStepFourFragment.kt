@@ -1,7 +1,6 @@
 package social.entourage.android.events.create
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -61,7 +60,7 @@ class CreateEventStepFourFragment : Fragment() {
                 selectedInterestIdList.add(it)
             }
         }
-        binding.layout.recyclerView.adapter?.notifyDataSetChanged()
+        binding.layout.egs2RecyclerView.adapter?.notifyDataSetChanged()
     }
 
     private fun adjustTextViewsForRTL(view: View) {
@@ -95,7 +94,7 @@ class CreateEventStepFourFragment : Fragment() {
                 CommunicationHandler.isButtonClickable.value = interestHaveBeenSelected()
             }
         }, true)
-        binding.layout.recyclerView.apply {
+        binding.layout.egs2RecyclerView.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = interestsListAdapter
         }
@@ -105,13 +104,13 @@ class CreateEventStepFourFragment : Fragment() {
         if (onClick) {
             when {
                 selectedInterestIdList.isEmpty() -> {
-                    binding.layout.error.root.visibility = View.VISIBLE
-                    binding.layout.error.errorMessage.text =
+                    binding.layout.egs2Error.root.visibility = View.VISIBLE
+                    binding.layout.egs2Error.errorMessage.text =
                         getString(R.string.error_categories_create_group)
                     CommunicationHandler.isCondition.value = false
                 }
                 else -> {
-                    binding.layout.error.root.visibility = View.GONE
+                    binding.layout.egs2Error.root.visibility = View.GONE
                     CommunicationHandler.isCondition.value = true
                     CommunicationHandler.event.interests(selectedInterestIdList)
                     interestsListAdapter.getOtherInterestCategory()
@@ -136,7 +135,7 @@ class CreateEventStepFourFragment : Fragment() {
 
     override fun onDestroy() {
         super.onDestroy()
-        binding.layout.error.root.visibility = View.GONE
+        binding.layout.egs2Error.root.visibility = View.GONE
     }
 
 }

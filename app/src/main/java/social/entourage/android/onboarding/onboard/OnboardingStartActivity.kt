@@ -8,7 +8,6 @@ import androidx.annotation.StringRes
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.MutableLiveData
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.api.OnboardingAPI
@@ -49,8 +48,6 @@ class OnboardingStartActivity : AppCompatActivity(), OnboardingStartCallback {
     private var isAsso = false
     private var temporaryPlaceAddress: User.Address? = null
 
-    val errorMessage = MutableLiveData<String>()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityOnboardingStartBinding.inflate(layoutInflater)
@@ -78,6 +75,7 @@ class OnboardingStartActivity : AppCompatActivity(), OnboardingStartCallback {
         if (currentFragmentPosition >= numberOfSteps) return
 
         goPrevious()
+        super.onBackPressed()
     }
 
     /********
@@ -100,15 +98,15 @@ class OnboardingStartActivity : AppCompatActivity(), OnboardingStartCallback {
                             showPopAlreadySigned()
                         }
                         error.contains("INVALID_PHONE_FORMAT") -> {
-                            errorMessage.value = getString(R.string.login_text_invalid_format)
+                            showLoginFail(LOGIN_ERROR_INVALID_PHONE_FORMAT)
                         }
                         else -> {
-                            errorMessage.value = getString(R.string.login_error_network)
+                            showLoginFail(LOGIN_ERROR_NETWORK)
                         }
                     }
                     return@createUser
                 }
-                errorMessage.value = getString(R.string.login_error_network)
+                showLoginFail(LOGIN_ERROR_NETWORK)
             }
         }
     }

@@ -37,7 +37,7 @@
 
                 <include
                     android:id="@+id/stepOne"
-                    layout="@layout/new_edit_profile_step_one"
+                    layout="@layout/layout_edit_group_step_one"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="30dp"
@@ -45,7 +45,7 @@
 
                 <include
                     android:id="@+id/stepTwo"
-                    layout="@layout/new_edit_profile_step_two"
+                    layout="@layout/layout_edit_group_step_two"
                     app:title="@{@string/choose_categories_group}"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
@@ -55,7 +55,7 @@
 
                 <include
                     android:id="@+id/stepThree"
-                    layout="@layout/new_edit_profile_step_three"
+                    layout="@layout/layout_edit_group_step_three"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="40dp"

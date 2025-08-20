@@ -29,8 +29,8 @@ class UnblockUsersActivity : AppCompatActivity() {
         binding = NewFragmentUnblockUsersBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        updatePaddingTopForEdgeToEdge(binding.header.layout)
-        binding.header.view.isVisible = false
+        updatePaddingTopForEdgeToEdge(binding.header.hbsLayout)
+        binding.header.hbsView.isVisible = false
         profilFullViewModel = ViewModelProvider(this).get(ProfilFullViewModel::class.java)
         initializeRecyclerView()
         handleCloseButton()
@@ -192,7 +192,7 @@ class UnblockUsersActivity : AppCompatActivity() {
      * Dans une activity, on peut simplement faire un finish().
      */
     private fun handleCloseButton() {
-        binding.header.iconCross.setOnClickListener {
+        binding.header.hbsIconCross.setOnClickListener {
             profilFullViewModel.updateProfile()
             finish()
         }

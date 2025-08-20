@@ -1,4 +1,4 @@
-package social.entourage.android.profile.settings
+package social.entourage.android.profile.activities_settings
 
 import android.content.Context
 import android.content.Intent
@@ -8,10 +8,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationManagerCompat
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
-import social.entourage.android.R
 import social.entourage.android.api.model.notification.InAppNotificationPermission
 import social.entourage.android.databinding.NewFragmentSettingsNotifsBinding
 import social.entourage.android.home.HomePresenter
+import social.entourage.android.profile.settings.ProfilFullViewModel
 
 class SettingsNotificationsActivity : AppCompatActivity() {
 
@@ -122,7 +122,7 @@ class SettingsNotificationsActivity : AppCompatActivity() {
     }
 
     private fun handleCloseButton() {
-        binding.header.iconCross.setOnClickListener {
+        binding.header.hbsIconCross.setOnClickListener {
             finish() // A la place de dismiss()
         }
     }

@@ -100,49 +100,49 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
     private fun configureUI() {
         binding.header.title = getString(R.string.discussion_settings_title)
         binding.header.iconBack?.isVisible = false
-        binding.header.iconCross.setOnClickListener { dismiss() }
+        binding.header.hbsIconCross.setOnClickListener { dismiss() }
 
         when (mode) {
             SheetMode.DISCUSSION_ONE_TO_ONE -> {
                 binding.profile.setLabel(getString(R.string.discussion_settings_profil))
-                binding.profile.subLabel.visibility = View.GONE
+                binding.profile.profileSettingsItemSubLabel.visibility = View.GONE
                 binding.layoutBlock.isVisible = !imBlocker
                 binding.block.text = getString(R.string.discussion_block_title)
                 binding.blockSub.text = getString(R.string.discussion_block_subtitle, username)
-                binding.quit.layout.isVisible = false
+                binding.quit.profileSettingsItemLayout.isVisible = false
                 binding.eventInfo.isVisible = false
             }
             SheetMode.DISCUSSION_GROUP -> {
                 binding.profile.setLabel(getString(R.string.discussion_settings_members))
-                binding.profile.subLabel.visibility = View.GONE
+                binding.profile.profileSettingsItemSubLabel.visibility = View.GONE
                 binding.layoutBlock.isVisible = false
-                binding.quit.layout.isVisible = true
+                binding.quit.profileSettingsItemLayout.isVisible = true
                 binding.quit.setLabel(getString(R.string.discussion_settings_quit))
-                binding.quit.label.setTextColor(ContextCompat.getColor(requireContext(), R.color.orange))
+                binding.quit.profileSettingsItemLabel.setTextColor(ContextCompat.getColor(requireContext(), R.color.orange))
                 binding.eventInfo.isVisible = false
             }
             SheetMode.GROUP -> {
                 binding.profile.setLabel(getString(R.string.discussion_settings_members))
-                binding.profile.subLabel.visibility = View.GONE
+                binding.profile.profileSettingsItemSubLabel.visibility = View.GONE
                 binding.layoutBlock.isVisible = false
-                binding.quit.layout.isVisible = true
+                binding.quit.profileSettingsItemLayout.isVisible = true
                 binding.quit.setLabel(getString(R.string.leave_group))
-                binding.quit.label.setTextColor(ContextCompat.getColor(requireContext(), R.color.orange))
+                binding.quit.profileSettingsItemLabel.setTextColor(ContextCompat.getColor(requireContext(), R.color.orange))
                 binding.eventInfo.isVisible = false
             }
             SheetMode.EVENT -> {
                 if (canManageParticipants) {
                     binding.profile.setLabel(getString(R.string.event_manage_participants_title))
                     binding.profile.setSubLabel(getString(R.string.event_manage_participants_subtitle))
-                    binding.profile.subLabel.visibility = View.VISIBLE
+                    binding.profile.profileSettingsItemSubLabel.visibility = View.VISIBLE
                 } else {
                     binding.profile.setLabel(getString(R.string.see_members))
-                    binding.profile.subLabel.visibility = View.GONE
+                    binding.profile.profileSettingsItemSubLabel.visibility = View.GONE
                 }
                 binding.layoutBlock.isVisible = false
-                binding.quit.layout.isVisible = true
+                binding.quit.profileSettingsItemLayout.isVisible = true
                 binding.quit.setLabel(getString(R.string.leave_event))
-                binding.quit.label.setTextColor(ContextCompat.getColor(requireContext(), R.color.orange))
+                binding.quit.profileSettingsItemLabel.setTextColor(ContextCompat.getColor(requireContext(), R.color.orange))
 
                 binding.eventInfo.isVisible = true
                 binding.eventTitle.text = eventTitle.orEmpty()
@@ -167,16 +167,16 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
 
                 // Copier le texte
                 binding.profile.setLabel("Copier le texte")
-                binding.profile.subLabel.visibility = View.GONE
+                binding.profile.profileSettingsItemSubLabel.visibility = View.GONE
 
                 // Signaler (caché si c’est mon message)
                 binding.report.text = "Signaler le message"
                 binding.layoutReport.isVisible = !isMyMessage
 
                 // Supprimer (si c'est mon message)
-                binding.quit.layout.isVisible = isMyMessage
+                binding.quit.profileSettingsItemLayout.isVisible = isMyMessage
                 binding.quit.setLabel("Supprimer mon message")
-                binding.quit.label.setTextColor(ContextCompat.getColor(requireContext(), R.color.orange))
+                binding.quit.profileSettingsItemLabel.setTextColor(ContextCompat.getColor(requireContext(), R.color.orange))
 
                 binding.layoutBlock.isVisible = false
                 binding.eventInfo.isVisible = false
@@ -190,7 +190,7 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
 
     private fun setupClicks() {
         // Ligne du haut (profile.layout)
-        binding.profile.layout.setOnClickListener {
+        binding.profile.profileSettingsItemLayout.setOnClickListener {
             when (mode) {
                 SheetMode.DISCUSSION_ONE_TO_ONE -> {
                     ProfileFullActivity.isMe = false
@@ -317,7 +317,7 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
         }
 
         // Bouton "Quitter / Supprimer"
-        binding.quit.layout.setOnClickListener {
+        binding.quit.profileSettingsItemLayout.setOnClickListener {
             when (mode) {
                 SheetMode.DISCUSSION_GROUP -> {
                     CustomAlertDialog.showWithCancelFirst(

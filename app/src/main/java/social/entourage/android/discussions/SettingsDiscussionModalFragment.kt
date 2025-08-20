@@ -88,12 +88,12 @@ class SettingsDiscussionModalFragment : BottomSheetDialogFragment() {
         binding.header.title = getString(R.string.discussion_settings_title)
 
         if (isOneToOne) {                       // 1–1
-            binding.profile.label.text    = getString(R.string.discussion_settings_profil)
+            binding.profile.profileSettingsItemLabel.text    = getString(R.string.discussion_settings_profil)
             binding.layoutBlock.isVisible = !imBlocker
             binding.block.text       = getString(R.string.discussion_block_title)
             binding.blockSub.text    = getString(R.string.discussion_block_subtitle, username)
         } else {                               // groupe
-            binding.profile.label.text = getString(R.string.discussion_settings_members)
+            binding.profile.profileSettingsItemLabel.text = getString(R.string.discussion_settings_members)
             binding.layoutBlock.isVisible = false
         }
 
@@ -110,9 +110,9 @@ class SettingsDiscussionModalFragment : BottomSheetDialogFragment() {
 
     private fun updateInputs() {
         val mustHideQuit = isCreator || isOneToOne || isEvent
-        binding.quit.layout.isVisible = !mustHideQuit
-        binding.quit.arrow.isVisible  = !mustHideQuit
-        if (!mustHideQuit) binding.quit.label.text = getString(R.string.discussion_settings_quit)
+        binding.quit.profileSettingsItemLayout.isVisible = !mustHideQuit
+        binding.quit.profileSettingsItemArrow.isVisible  = !mustHideQuit
+        if (!mustHideQuit) binding.quit.profileSettingsItemLabel.text = getString(R.string.discussion_settings_quit)
     }
 
     /* ─────────────────────────── Observers ─────────────────────────── */
@@ -133,7 +133,7 @@ class SettingsDiscussionModalFragment : BottomSheetDialogFragment() {
     /* ─────────────────────────── Listeners ─────────────────────────── */
 
     private fun handleCloseButton() {
-        binding.header.iconCross.setOnClickListener {
+        binding.header.hbsIconCross.setOnClickListener {
             dismiss()
             isSeveralPersonneInConversation = false
         }
@@ -142,7 +142,7 @@ class SettingsDiscussionModalFragment : BottomSheetDialogFragment() {
     private fun handleButtons() {
 
         /* ▶️ Profil (1-1) ou liste des membres (groupe) */
-        binding.profile.layout.setOnClickListener {
+        binding.profile.profileSettingsItemLayout.setOnClickListener {
             if (isOneToOne) {
                 ProfileFullActivity.isMe = false
                 ProfileFullActivity.userId = userId.toString()
@@ -182,7 +182,7 @@ class SettingsDiscussionModalFragment : BottomSheetDialogFragment() {
         }
 
         /* ▶️ Quitter la conversation */
-        binding.quit.layout.setOnClickListener {
+        binding.quit.profileSettingsItemLayout.setOnClickListener {
             CustomAlertDialog.showWithCancelFirst(
                 requireContext(),
                 getString(R.string.leave_conversation),

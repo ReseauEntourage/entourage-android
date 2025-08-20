@@ -10,7 +10,6 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -25,14 +24,14 @@ import com.takusemba.cropme.OnCropListener
 import social.entourage.android.R
 import social.entourage.android.databinding.NewFragmentChoosePhotoModalBinding
 import social.entourage.android.language.LanguageManager
-import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.log.AnalyticsEvents
+import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.Utils
 import timber.log.Timber
 import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Date
 
 class ChoosePhotoModalFragment : BottomSheetDialogFragment() {
 
@@ -242,7 +241,7 @@ class ChoosePhotoModalFragment : BottomSheetDialogFragment() {
 
 
     private fun handleCloseButton() {
-        binding.header.iconCross.setOnClickListener {
+        binding.header.hbsIconCross.setOnClickListener {
             dismiss()
         }
     }
@@ -280,9 +279,6 @@ class ChoosePhotoModalFragment : BottomSheetDialogFragment() {
         ActivityCompat.checkSelfPermission(context, permission) == PackageManager.PERMISSION_GRANTED
 
     private fun takePhoto() {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-            showTakePhotoActivity()
-        }
         activity?.let {
             if (hasPermission(
                     activity as Context,
@@ -297,19 +293,15 @@ class ChoosePhotoModalFragment : BottomSheetDialogFragment() {
     }
 
     private fun pickPhoto() {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-            showChoosePhotoActivity()
-        } else {
-            activity?.let {
-                if (hasPermission(
-                        activity as Context,
-                        readMediaPermission
-                    )
-                ) {
-                    showChoosePhotoActivity()
-                } else {
-                    permReqChoosePhotoLauncher.launch(readMediaPermission)
-                }
+        activity?.let {
+            if (hasPermission(
+                    activity as Context,
+                    readMediaPermission
+                )
+            ) {
+                showChoosePhotoActivity()
+            } else {
+                permReqChoosePhotoLauncher.launch(readMediaPermission)
             }
         }
     }

@@ -57,7 +57,7 @@
 
                     <include
                         android:id="@+id/firstname"
-                        layout="@layout/new_profile_edit_item"
+                        layout="@layout/profile_edit_editable_item"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:hint='@{@string/firstname}'
@@ -66,7 +66,7 @@
 
                     <include
                         android:id="@+id/lastname"
-                        layout="@layout/new_profile_edit_item"
+                        layout="@layout/profile_edit_editable_item"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:hint='@{@string/lastname}'
@@ -75,7 +75,7 @@
 
                     <include
                         android:id="@+id/description"
-                        layout="@layout/new_lined_edit_text"
+                        layout="@layout/profile_editable_item"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:icon='@{@drawable/new_description}'
@@ -83,7 +83,7 @@
 
                     <include
                         android:id="@+id/birthday"
-                        layout="@layout/new_profile_edit_item"
+                        layout="@layout/profile_edit_editable_item"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:hint='@{@string/date_format_profile_fr}'
@@ -92,7 +92,7 @@
 
                     <include
                         android:id="@+id/phone"
-                        layout="@layout/profile_edit_item_clickable"
+                        layout="@layout/profile_edit_clickable_item"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:icon='@{@drawable/new_phone}'
@@ -100,7 +100,7 @@
 
                     <include
                         android:id="@+id/language"
-                        layout="@layout/profile_edit_item_clickable"
+                        layout="@layout/profile_edit_clickable_item"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:icon='@{@drawable/planete}'
@@ -108,7 +108,7 @@
 
                     <include
                         android:id="@+id/email"
-                        layout="@layout/new_profile_edit_item"
+                        layout="@layout/profile_edit_editable_item"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:hint='@{@string/email}'
@@ -159,7 +159,7 @@
                         android:layout_height="wrap_content" />
 
                     <View
-                        android:id="@+id/divider"
+                        android:id="@+id/edit_profile_divider"
                         android:layout_width="match_parent"
                         android:layout_height="1px"
                         android:layout_marginTop="35dp"
@@ -170,7 +170,7 @@
 
                     <include
                         android:id="@+id/interests"
-                        layout="@layout/new_profile_settings_item"
+                        layout="@layout/layout_settings_item"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="20dp"
@@ -180,7 +180,7 @@
 
                     <include
                         android:id="@+id/personnalize"
-                        layout="@layout/new_profile_settings_item"
+                        layout="@layout/layout_settings_item"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="70dp"

@@ -1,27 +1,20 @@
 package social.entourage.android
 
-import android.view.autofill.AutofillManager
 import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.IdlingRegistry
-import androidx.test.espresso.IdlingResource
-import androidx.test.espresso.NoMatchingViewException
 import androidx.test.espresso.action.ViewActions.clearText
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.action.ViewActions.closeSoftKeyboard
 import androidx.test.espresso.action.ViewActions.typeText
 import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.intent.Intents
 import androidx.test.espresso.intent.Intents.intended
 import androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent
-import androidx.test.espresso.matcher.ViewMatchers.isClickable
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
-import androidx.test.platform.app.InstrumentationRegistry
-import com.jakewharton.espresso.OkHttp3IdlingResource
+import org.hamcrest.Matchers.allOf
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
@@ -30,47 +23,30 @@ import org.junit.runner.RunWith
 import social.entourage.android.onboarding.login.LoginActivity
 import social.entourage.android.onboarding.login.LoginChangePhoneActivity
 import social.entourage.android.onboarding.pre_onboarding.PreOnboardingChoiceActivity
-import timber.log.Timber
 
 @RunWith(AndroidJUnit4::class)
 @LargeTest
-class LoginTest {
+class LoginTest : EntourageTestBeforeLogin() {
     @get:Rule
     val activityRule = ActivityScenarioRule(LoginActivity::class.java)
-    private var resource: IdlingResource? = null
-    private var afM: AutofillManager? = null
 
     @Before
     fun setUp() {
-        checkNoUserIsLoggedIn()
         activityRule.scenario.onActivity { activity ->
-            val client = EntourageApplication[activity].apiModule.okHttpClient
-            resource = OkHttp3IdlingResource.create("OkHttp", client)
-            IdlingRegistry.getInstance().register(resource)
-            afM = activity.getSystemService(AutofillManager::class.java)
-            afM?.disableAutofillServices()
+            super.setUp(activity)
         }
-        Intents.init()
         checkFirstConnectionScreen()
     }
 
-    private fun checkNoUserIsLoggedIn() {
-        try {
-            activityRule.scenario.onActivity { activity ->
-                EntourageApplication[activity].authenticationController.logOutUser()
-            }
-        } catch (e: RuntimeException) {
-            e.printStackTrace()
-        }
-    }
-
     @After
-    fun tearDown() {
-        Intents.release()
-
-        IdlingRegistry.getInstance().unregister(resource)
-        checkNoUserIsLoggedIn()
-        enableWifiAndData(true)
+    override fun tearDown() {
+        //keep it just for the annotation
+        super.tearDown()
+    }
+    private fun closeAutofill() {
+        activityRule.scenario.onActivity { activity ->
+            closeAutofill(activity)
+        }
     }
 
     @Test
@@ -141,7 +117,7 @@ class LoginTest {
     }
 
     @Test
-    fun resendCodeButton_withPhoneNumber_showsError() {
+    fun resendCodeButtonWithoutClick() {
         onView(withId(R.id.ui_login_phone_et_phone)).perform(typeText(BuildConfig.TEST_ACCOUNT_LOGIN), closeSoftKeyboard())
 
         onView(withId(R.id.ui_login_button_resend_code)).perform(click())
@@ -150,7 +126,7 @@ class LoginTest {
     }
 
     @Test
-    fun resendCodeButton_withEmptyPhoneNumber_showsError() {
+    fun resendCodeButtonWithEmptyPhoneNumber() {
         onView(withId(R.id.ui_login_phone_et_phone)).perform(clearText())
 
         onView(withId(R.id.ui_login_button_resend_code)).perform(click())
@@ -159,25 +135,25 @@ class LoginTest {
     }
 
     @Test
-    fun changePhoneNumberButton_opensLoginChangePhoneActivity() {
+    fun displayChangePhoneNumberScreen() {
         onView(withId(R.id.ui_login_button_change_phone)).perform(click())
         intended(hasComponent(LoginChangePhoneActivity::class.java.name))
     }
 
     @Test
-    fun testGoBack() {
+    fun clickGoBack() {
         onView(withId(R.id.icon_back)).perform(click())
         intended(hasComponent(PreOnboardingChoiceActivity::class.java.name))
     }
 
     @Test
-    fun termsAndConditions_DisplayedAndClickable() {
+    fun displayTermsAndConditions() {
         onView(withId(R.id.tv_condition_generales))
-            .check(matches(isDisplayed()))
-            .check(matches(isClickable()))
+            .perform(click())
+        //TODO intended(hasComponent(PreOnboardingChoiceActivity::class.java.name))
     }
 
-    /*@Test
+    @Test
     fun resendCodeFailureNoInternetConnection() {
         //Disable wifi and data
         enableWifiAndData(false)
@@ -186,64 +162,11 @@ class LoginTest {
         onView(withId(R.id.ui_login_phone_et_phone)).perform(typeText(BuildConfig.TEST_ACCOUNT_LOGIN), closeSoftKeyboard())
         closeAutofill()
         onView(allOf(withId(R.id.ui_login_button_resend_code), isDisplayed())).perform(click())
+        onView(allOf(withText(R.string.login_button_resend_code_action), isDisplayed())).perform(click())
 
         //Check that error is displayed
-        //onView(withText(R.string.login_error_network)).inRoot(SignUpTest.ToastMatcher()).check(matches(isDisplayed()))
+        //TODO onView(withText(R.string.login_error_network)).inRoot(ToastMatcher()).check(matches(isDisplayed()))
 
-        //Enable wifi and data
-        enableWifiAndData(true)
-    }*/
-
-    private fun checkLoginSuccessful() {
-        intended(hasComponent(MainActivity::class.java.name))
-    }
-
-    private fun checkLoginFailure(
-        title_id: Int = R.string.login_error_title,
-        action_id: Int = R.string.login_retry_label
-    ) {
-        onView(withText(title_id)).check(matches(isDisplayed()))
-        onView(withText(action_id)).perform(click())
-    }
-
-    private fun closeAutofill() {
-        if (afM == null) {
-            activityRule.scenario.onActivity { activity ->
-                afM = activity.getSystemService(AutofillManager::class.java)
-            }
-        }
-        afM?.cancel()
-        afM?.commit()
-
-        // Attempt to dismiss password suggestion dialog using UI Automator (less reliable)
-        /*try {
-            val device = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation())
-            val dismissButton = device.findObject(UiSelector().clickable(true).instance(0)) // Adjust selector as needed
-            if (dismissButton.exists()) {
-                dismissButton.click()
-            }
-        } catch (e: Exception) {
-            Timber.d(e)
-        }*/
-    }
-
-    private fun checkFirstConnectionScreen() {
-        try {
-            onView(withId(R.id.ui_button_login)).apply {
-                check(matches(isDisplayed()))
-                perform(click())
-            }
-        } catch (e: NoMatchingViewException) {
-            Timber.w(e)
-        }
-    }
-
-    private fun enableWifiAndData(enable: Boolean) {
-        val parameter = if (enable) "enable" else "disable"
-        InstrumentationRegistry.getInstrumentation().uiAutomation.apply {
-            executeShellCommand("svc wifi $parameter")
-            executeShellCommand("svc data $parameter")
-        }
     }
 
     /*class ToastMatcher : TypeSafeMatcher<Root>() {

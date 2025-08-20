@@ -1,12 +1,10 @@
 package social.entourage.android.api.model
 
-import android.util.Log
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import social.entourage.android.api.model.feed.FeedItem
-import timber.log.Timber
 import java.io.Serializable
-import java.util.*
+import java.util.Date
 
 /**
  * Created by mihaiionescu on 24/02/16.
@@ -101,14 +99,14 @@ class EntourageUser : TimestampedObject(), Serializable {
     }
 
     fun getCommunityRoleWithPartnerFormated() : String? {
-        communityRoles?.let {
+        communityRoles?.let { roles->
             var roleStr = ""
 
             if (isAdmin()) {
                 roleStr = "Admin"
             }
 
-            for (role in it) {
+            for (role in roles) {
                 if(roleStr.isNotEmpty()) {
                     roleStr = "$roleStr • $role"
                 }
@@ -116,14 +114,14 @@ class EntourageUser : TimestampedObject(), Serializable {
                     roleStr = role
                 }
 
-                break
+                break //TODO: why do we get only the first role ?
             }
-            partner?.name?.let {
+            partner?.name?.let { partnerName->
                 if (roleStr.isNotEmpty()) {
-                    roleStr = "$roleStr • $it"
+                    roleStr = "$roleStr • $partnerName"
                 }
                 else {
-                    roleStr = it
+                    roleStr = partnerName
                 }
             }
             return roleStr

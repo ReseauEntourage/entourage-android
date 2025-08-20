@@ -326,76 +326,76 @@ class WelcomeThreeActivity: BaseActivity() {
             binding.titleWelcomeTwo.text = getString(R.string.welcome_three_title_with_demand)
             binding.tvTextOne.text = getString(R.string.welcome_three_text_one_with_demand)
             demandeExampleOne = allDemands[0]
-            binding.demandExampleOne.demandTitle.text = allDemands[0].title
+            binding.demandExampleOne.itemDemandExampleTitle.text = allDemands[0].title
             binding.demandExampleOne.layoutDemand.visibility = View.VISIBLE
-            binding.demandExampleOne.demandLocation.text = allDemands[0].metadata?.displayAddress
-            binding.demandExampleOne.demandSectionName.text = MetaDataRepository.getActionSectionNameFromId(allDemands[0].sectionName)
-            binding.demandExampleOne.demandSectionPic.setImageDrawable(this.getDrawable(ActionSection.getIconFromId(allDemands[0].sectionName)))
-            binding.demandExampleOne.demandUsername.text = allDemands[0].author?.userName
-            binding.demandExampleOne.demandLocation.text = allDemands[0].metadata?.displayAddress
-            binding.demandExampleOne.demandDate.text = allDemands[0].dateFormattedString(this)
+            binding.demandExampleOne.itemDemandExampleLocation.text = allDemands[0].metadata?.displayAddress
+            binding.demandExampleOne.itemDemandExampleSectionName.text = MetaDataRepository.getActionSectionNameFromId(allDemands[0].sectionName)
+            binding.demandExampleOne.itemDemandExampleSectionPic.setImageDrawable(this.getDrawable(ActionSection.getIconFromId(allDemands[0].sectionName)))
+            binding.demandExampleOne.itemDemandExampleUsername.text = allDemands[0].author?.userName
+            binding.demandExampleOne.itemDemandExampleLocation.text = allDemands[0].metadata?.displayAddress
+            binding.demandExampleOne.itemDemandExampleDate.text = allDemands[0].dateFormattedString(this)
 
             allDemands[0].author?.avatarURLAsString?.let { avatarURL ->
-                Glide.with(binding.demandExampleOne.demandPict.context)
+                Glide.with(binding.demandExampleOne.itemDemandExamplePict.context)
                     .load(avatarURL)
                     .error(R.drawable.placeholder_user)
                     .circleCrop()
-                    .into(binding.demandExampleOne.demandPict)
+                    .into(binding.demandExampleOne.itemDemandExamplePict)
             } ?: run {
-                Glide.with(binding.demandExampleOne.demandPict.context)
+                Glide.with(binding.demandExampleOne.itemDemandExamplePict.context)
                     .load(R.drawable.placeholder_user)
                     .circleCrop()
-                    .into(binding.demandExampleOne.demandPict)
+                    .into(binding.demandExampleOne.itemDemandExamplePict)
             }
 
             //FILL DEMAND THREE
             if(allDemands.size > 2){
                 demandeExampleThree = allDemands[2]
-                binding.demandExampleThree.demandTitle.text = allDemands[2].title
+                binding.demandExampleThree.itemDemandExampleTitle.text = allDemands[2].title
                 binding.demandExampleThree.layoutDemand.visibility = View.VISIBLE
-                binding.demandExampleThree.demandLocation.text = allDemands[2].metadata?.displayAddress
-                binding.demandExampleThree.demandSectionName.text = MetaDataRepository.getActionSectionNameFromId(allDemands[2].sectionName)
-                binding.demandExampleThree.demandSectionPic.setImageDrawable(this.getDrawable(ActionSection.getIconFromId(allDemands[2].sectionName)))
-                binding.demandExampleThree.demandUsername.text = allDemands[2].author?.userName
-                binding.demandExampleThree.demandLocation.text = allDemands[2].metadata?.displayAddress
-                binding.demandExampleThree.demandDate.text = allDemands[2].dateFormattedString(this)
+                binding.demandExampleThree.itemDemandExampleLocation.text = allDemands[2].metadata?.displayAddress
+                binding.demandExampleThree.itemDemandExampleSectionName.text = MetaDataRepository.getActionSectionNameFromId(allDemands[2].sectionName)
+                binding.demandExampleThree.itemDemandExampleSectionPic.setImageDrawable(this.getDrawable(ActionSection.getIconFromId(allDemands[2].sectionName)))
+                binding.demandExampleThree.itemDemandExampleUsername.text = allDemands[2].author?.userName
+                binding.demandExampleThree.itemDemandExampleLocation.text = allDemands[2].metadata?.displayAddress
+                binding.demandExampleThree.itemDemandExampleDate.text = allDemands[2].dateFormattedString(this)
 
                 allDemands[2].author?.avatarURLAsString?.let { avatarURL ->
-                    Glide.with(binding.demandExampleThree.demandPict.context)
+                    Glide.with(binding.demandExampleThree.itemDemandExamplePict.context)
                         .load(avatarURL)
                         .error(R.drawable.placeholder_user)
                         .circleCrop()
-                        .into(binding.demandExampleThree.demandPict)
+                        .into(binding.demandExampleThree.itemDemandExamplePict)
                 } ?: run {
-                    Glide.with(binding.demandExampleThree.demandPict.context)
+                    Glide.with(binding.demandExampleThree.itemDemandExamplePict.context)
                         .load(R.drawable.placeholder_user)
                         .circleCrop()
-                        .into(binding.demandExampleThree.demandPict)
+                        .into(binding.demandExampleThree.itemDemandExamplePict)
                 }
             }
             //FILL DEMAND TWO
             if(allDemands.size > 1){
                 demandeExampleTwo = allDemands[1]
-                binding.demandExampleTwo.demandTitle.text = allDemands[1].title
+                binding.demandExampleTwo.itemDemandExampleTitle.text = allDemands[1].title
                 binding.demandExampleTwo.layoutDemand.visibility = View.VISIBLE
-                binding.demandExampleTwo.demandLocation.text = allDemands[1].metadata?.displayAddress
-                binding.demandExampleTwo.demandSectionName.text = MetaDataRepository.getActionSectionNameFromId(allDemands[1].sectionName)
-                binding.demandExampleTwo.demandSectionPic.setImageDrawable(this.getDrawable(ActionSection.getIconFromId(allDemands[1].sectionName)))
-                binding.demandExampleTwo.demandUsername.text = allDemands[1].author?.userName
-                binding.demandExampleTwo.demandLocation.text = allDemands[1].metadata?.displayAddress
-                binding.demandExampleTwo.demandDate.text = allDemands[1].dateFormattedString(this)
+                binding.demandExampleTwo.itemDemandExampleLocation.text = allDemands[1].metadata?.displayAddress
+                binding.demandExampleTwo.itemDemandExampleSectionName.text = MetaDataRepository.getActionSectionNameFromId(allDemands[1].sectionName)
+                binding.demandExampleTwo.itemDemandExampleSectionPic.setImageDrawable(this.getDrawable(ActionSection.getIconFromId(allDemands[1].sectionName)))
+                binding.demandExampleTwo.itemDemandExampleUsername.text = allDemands[1].author?.userName
+                binding.demandExampleTwo.itemDemandExampleLocation.text = allDemands[1].metadata?.displayAddress
+                binding.demandExampleTwo.itemDemandExampleDate.text = allDemands[1].dateFormattedString(this)
 
                 allDemands[1].author?.avatarURLAsString?.let { avatarURL ->
-                    Glide.with(binding.demandExampleTwo.demandPict.context)
+                    Glide.with(binding.demandExampleTwo.itemDemandExamplePict.context)
                         .load(avatarURL)
                         .error(R.drawable.placeholder_user)
                         .circleCrop()
-                        .into(binding.demandExampleTwo.demandPict)
+                        .into(binding.demandExampleTwo.itemDemandExamplePict)
                 } ?: run {
-                    Glide.with(binding.demandExampleTwo.demandPict.context)
+                    Glide.with(binding.demandExampleTwo.itemDemandExamplePict.context)
                         .load(R.drawable.placeholder_user)
                         .circleCrop()
-                        .into(binding.demandExampleTwo.demandPict)
+                        .into(binding.demandExampleTwo.itemDemandExamplePict)
                 }
             }
         }else{
@@ -416,15 +416,15 @@ class WelcomeThreeActivity: BaseActivity() {
             binding.contribExampleOne.layoutContrib.visibility = View.VISIBLE
             binding.contribExampleTwo.layoutContrib.visibility = View.VISIBLE
             //FILL CONTRIB ONE
-            binding.contribExampleOne.name.text = getString(R.string.welcome_three_contrib_name)
-            binding.contribExampleOne.location.text = getString(R.string.welcome_three_contrib_location)
-            binding.contribExampleOne.date.text = getString(R.string.welcome_three_contrib_date)
+            binding.contribExampleOne.wceName.text = getString(R.string.welcome_three_contrib_name)
+            binding.contribExampleOne.wceLocation.text = getString(R.string.welcome_three_contrib_location)
+            binding.contribExampleOne.wceDate.text = getString(R.string.welcome_three_contrib_date)
             binding.contribExampleOne.distance.text = getString(R.string.welcome_three_contrib_distance)
-            binding.contribExampleOne.image.setImageDrawable(getDrawable(R.drawable.contrib_example_one))
+            binding.contribExampleOne.wceImage.setImageDrawable(getDrawable(R.drawable.contrib_example_one))
             //FILL CONTRIB TWO
-            binding.contribExampleTwo.name.text = getString(R.string.welcome_three_contrib_name_two)
-            binding.contribExampleTwo.location.text = getString(R.string.welcome_three_contrib_location)
-            binding.contribExampleTwo.date.text = getString(R.string.welcome_three_contrib_date)
+            binding.contribExampleTwo.wceName.text = getString(R.string.welcome_three_contrib_name_two)
+            binding.contribExampleTwo.wceLocation.text = getString(R.string.welcome_three_contrib_location)
+            binding.contribExampleTwo.wceDate.text = getString(R.string.welcome_three_contrib_date)
             binding.contribExampleTwo.distance.text = getString(R.string.welcome_three_contrib_distance)
 
         }

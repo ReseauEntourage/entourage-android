@@ -32,7 +32,14 @@ import kotlinx.coroutines.launch
 import social.entourage.android.BuildConfig
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
-import social.entourage.android.api.model.*
+import social.entourage.android.api.model.Conversation
+import social.entourage.android.api.model.EntourageUser
+import social.entourage.android.api.model.Events
+import social.entourage.android.api.model.GroupMember
+import social.entourage.android.api.model.Post
+import social.entourage.android.api.model.SmallTalk
+import social.entourage.android.api.model.User
+import social.entourage.android.api.model.toGroupMember
 import social.entourage.android.comment.CommentActivity
 import social.entourage.android.comment.CommentsListAdapter
 import social.entourage.android.comment.MentionAdapter
@@ -41,7 +48,6 @@ import social.entourage.android.events.EventsPresenter
 import social.entourage.android.events.details.feed.EventFeedActivity
 import social.entourage.android.groups.GroupPresenter
 import social.entourage.android.profile.ProfileFullActivity
-import social.entourage.android.report.DataLanguageStock
 import social.entourage.android.small_talks.SmallTalkGuidelinesActivity
 import social.entourage.android.small_talks.SmallTalkViewModel
 import social.entourage.android.tools.log.AnalyticsEvents
@@ -181,7 +187,7 @@ class DetailConversationActivity : CommentActivity() {
             }
         }
 
-        binding.header.iconSettings.setOnClickListener {
+        binding.header.headerIconSettings.setOnClickListener {
             buildAndShowActionSheet()
         }
 
@@ -298,12 +304,12 @@ class DetailConversationActivity : CommentActivity() {
 
     // ===== Header / UI divers =====
     private fun setCameraIcon() {
-        binding.header.iconCamera.isVisible = !smallTalk?.meetingUrl.isNullOrBlank()
-        binding.header.iconCamera.setImageResource(R.drawable.ic_camera)
+        binding.header.headerIconCamera.isVisible = !smallTalk?.meetingUrl.isNullOrBlank()
+        binding.header.headerIconCamera.setImageResource(R.drawable.ic_camera)
         val transparent = ContextCompat.getColor(this, R.color.transparent)
-        binding.header.cardIconCamera.setBackgroundColor(transparent)
-        binding.header.iconCamera.setBackgroundColor(transparent)
-        binding.header.iconCamera.setOnClickListener {
+        binding.header.headerCardIconCamera.setBackgroundColor(transparent)
+        binding.header.headerIconCamera.setBackgroundColor(transparent)
+        binding.header.headerIconCamera.setOnClickListener {
             Timber.d("SmallTalk meeting url: ${smallTalk?.meetingUrl}")
             AnalyticsEvents.logEvent(AnalyticsEvents.CLIC__SMALLTALK__VISIO_ICON)
             smallTalk?.meetingUrl?.let { url -> WebViewFragment.launchURL(this, url) }
@@ -622,16 +628,16 @@ class DetailConversationActivity : CommentActivity() {
                 )
             }
 
-            binding.header.ivEvent.visibility = View.GONE
+            binding.header.headerIvEvent.visibility = View.GONE
             val thumb = event.metadata?.portraitThumbnailUrl
             if (thumb.isNullOrBlank()) {
-                Glide.with(this).load(R.drawable.placeholder_my_event).into(binding.header.ivEvent)
+                Glide.with(this).load(R.drawable.placeholder_my_event).into(binding.header.headerIvEvent)
             } else {
                 Glide.with(this)
                     .load(thumb)
                     .transform(RoundedCorners(10))
                     .error(R.drawable.placeholder_my_event)
-                    .into(binding.header.ivEvent)
+                    .into(binding.header.headerIvEvent)
             }
             binding.header.headerSubtitle.visibility = View.VISIBLE
             binding.header.headerTitle.text = event.title
@@ -759,12 +765,12 @@ class DetailConversationActivity : CommentActivity() {
     }
 
     private fun setupHeader() {
-        binding.header.iconSettings.setImageDrawable(
+        binding.header.headerIconSettings.setImageDrawable(
             ContextCompat.getDrawable(this, R.drawable.new_settings)
         )
         val transparent = ContextCompat.getColor(this, R.color.transparent)
-        binding.header.cardIconSetting.setBackgroundColor(transparent)
-        binding.header.iconSettings.setBackgroundColor(transparent)
+        binding.header.headerCardIconSetting.setBackgroundColor(transparent)
+        binding.header.headerIconSettings.setBackgroundColor(transparent)
     }
 
     // ===== Mentions =====

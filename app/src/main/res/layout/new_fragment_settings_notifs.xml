@@ -11,7 +11,7 @@
 
         <include
             android:id="@+id/header"
-            layout="@layout/new_header_bottom_sheet"
+            layout="@layout/layout_header_bottom_sheet"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toTopOf="@id/title"
@@ -22,7 +22,6 @@
             android:id="@+id/scrollView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/header"
             app:layout_constraintTop_toBottomOf="@id/header">
 
             <LinearLayout

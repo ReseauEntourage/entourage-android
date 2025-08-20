@@ -9,7 +9,7 @@
 
         <include
             android:id="@+id/header"
-            layout="@layout/new_header_bottom_sheet"
+            layout="@layout/layout_header_bottom_sheet"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
@@ -60,7 +60,7 @@
 
                 <include
                     android:id="@+id/profile"
-                    layout="@layout/new_profile_settings_item"
+                    layout="@layout/layout_settings_item"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="25dp"
@@ -173,7 +173,7 @@
 
                 <include
                     android:id="@+id/quit"
-                    layout="@layout/new_profile_settings_item"
+                    layout="@layout/layout_settings_item"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="25dp"

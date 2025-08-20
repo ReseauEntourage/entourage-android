@@ -10,7 +10,7 @@
 
         <include
             android:id="@+id/header"
-            layout="@layout/new_header_bottom_sheet"
+            layout="@layout/layout_header_bottom_sheet"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
@@ -76,7 +76,7 @@
 
                 <include
                     android:id="@+id/notification_all"
-                    layout="@layout/new_notifications_layout"
+                    layout="@layout/item_notifications_card"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="25dp"
@@ -85,7 +85,7 @@
 
                 <include
                     android:id="@+id/notification_new_event"
-                    layout="@layout/new_notifications_layout"
+                    layout="@layout/item_notifications_card"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="25dp"
@@ -93,7 +93,7 @@
 
                 <include
                     android:id="@+id/notification_new_messages"
-                    layout="@layout/new_notifications_layout"
+                    layout="@layout/item_notifications_card"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="25dp"
@@ -101,7 +101,7 @@
 
                 <include
                     android:id="@+id/notification_new_members"
-                    layout="@layout/new_notifications_layout"
+                    layout="@layout/item_notifications_card"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="25dp"
@@ -116,7 +116,7 @@
 
                 <include
                     android:id="@+id/edit"
-                    layout="@layout/new_profile_settings_item"
+                    layout="@layout/layout_settings_item"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="25dp"
@@ -130,7 +130,7 @@
 
                 <include
                     android:id="@+id/edit_recurrence"
-                    layout="@layout/new_profile_settings_item"
+                    layout="@layout/layout_settings_item"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="25dp"
@@ -146,7 +146,7 @@
 
                 <include
                     android:id="@+id/share"
-                    layout="@layout/new_profile_settings_item"
+                    layout="@layout/layout_settings_item"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="25dp"
@@ -154,7 +154,7 @@
 
                 <include
                     android:id="@+id/rules"
-                    layout="@layout/new_profile_settings_item"
+                    layout="@layout/layout_settings_item"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="25dp"
