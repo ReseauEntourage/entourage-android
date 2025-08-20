@@ -152,10 +152,10 @@ class MembersActivity : BaseActivity() , AcceptPhotoDialogFragment.Listener {
         override fun onToggleParticipation(user: EntourageUser, isChecked: Boolean) {
             val userId = user.userId ?: return
             if (isChecked) {
-                // → participe
-                eventPresenter.participateForUser(id, userId)
+                // 👉 Toujours demander le droit à l'image AVANT de finaliser la participation
+                showAcceptPhotoDialog(userId)
             } else {
-                // → annule participation
+                // Annulation de participation
                 eventPresenter.cancelParticipationForUser(id, userId)
             }
         }
@@ -354,9 +354,12 @@ class MembersActivity : BaseActivity() , AcceptPhotoDialogFragment.Listener {
     override fun onAcceptPhotoForUser(userId: Int) {
         if (type != MembersType.EVENT) return
         eventPresenter.acceptPhotoForUser(id, userId)
+        eventPresenter.participateForUser(id, userId)
     }
 
     override fun onDeclinePhotoForUser(userId: Int) {
+        if (type != MembersType.EVENT) return
+        eventPresenter.participateForUser(id, userId)
 
     }
 
