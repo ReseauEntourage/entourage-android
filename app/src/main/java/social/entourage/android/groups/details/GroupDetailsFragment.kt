@@ -73,12 +73,12 @@ class GroupDetailsFragment : BottomSheetDialogFragment() {
     private fun setView() {
         binding.header.title = getString(R.string.group_settings)
         binding.notificationAll.label = getString(R.string.group_notification_all)
-        binding.share.label = getString(R.string.group_share)
+        binding.share.label.text = getString(R.string.group_share)
         binding.notificationNewEvent.label = getString(R.string.notification_new_event)
         binding.notificationNewMessages.label = getString(R.string.notification_new_messages)
         binding.notificationNewMembers.label = getString(R.string.notification_new_members)
-        binding.edit.label = getString(R.string.edit_group_information)
-        binding.rules.label = getString(R.string.rules_group)
+        binding.edit.label.text = getString(R.string.edit_group_information)
+        binding.rules.label.text = getString(R.string.rules_group)
         binding.report.text = getString(R.string.report_group)
 
         if (group?.admin == true) {

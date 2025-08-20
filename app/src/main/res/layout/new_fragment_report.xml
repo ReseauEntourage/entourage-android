@@ -87,7 +87,7 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     android:text="@string/report_modal_title_translate"
                     android:fontFamily="@font/nunitosans_bold"
-                    android:textColor="@color/orange"
+                    android:textColor="@color/black"
                     android:textSize="15sp"
                     />
                 <TextView
@@ -118,7 +118,8 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
                     android:id="@+id/iv_choose_copy"
-                    android:src="@drawable/ic_copy_texte"/>
+                    android:src="@drawable/ic_copy_texte"
+                    />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -129,7 +130,7 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     android:text="@string/copy_the_text"
                     android:fontFamily="@font/nunitosans_bold"
-                    android:textColor="@color/orange"
+                    android:textColor="@color/black"
                     android:textSize="15sp"
                     />
 

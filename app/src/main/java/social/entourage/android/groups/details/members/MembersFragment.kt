@@ -203,6 +203,11 @@ open class MembersFragment : Fragment() {
                 override fun onShowConversation(userId: Int) {
                     discussionPresenter.createOrGetConversation(userId.toString())
                 }
+
+                override fun onToggleParticipation(user: EntourageUser, isChecked: Boolean) {
+                    //Nothing to do
+
+                }
             })
             addItemDecoration(itemDecorator)
         }
@@ -238,6 +243,10 @@ open class MembersFragment : Fragment() {
             adapter = MembersListAdapter(requireContext(),membersListSearch, reactionList, object : OnItemShowListener {
                 override fun onShowConversation(userId: Int) {
                     discussionPresenter.createOrGetConversation(userId.toString())
+                }
+
+                override fun onToggleParticipation(user: EntourageUser, isChecked: Boolean) {
+                    //Nothing to do
                 }
             })
             addItemDecoration(itemDecorator)

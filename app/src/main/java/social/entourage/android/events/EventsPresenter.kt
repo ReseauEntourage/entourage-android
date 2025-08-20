@@ -75,6 +75,9 @@ class EventsPresenter : ViewModel() {
     private var isLoadingMembers        = false
     private var isLastMembersPage       = false
     val pagedEventMembers = MutableLiveData<MutableList<EntourageUser>>()   // nouvelle LD
+    val memberParticipationUpdated = MutableLiveData<Pair<Int, Boolean>>() // (userId, success)
+    val photoAcceptanceDone = MutableLiveData<Pair<Int, Boolean>>()        // (userId, success)
+    val memberParticipationCanceled = MutableLiveData<Pair<Int, Boolean>>() // (userId, success)
 
     var isLoading: Boolean = false
     var isLastPage: Boolean = false
@@ -864,7 +867,63 @@ class EventsPresenter : ViewModel() {
                 }
             })
     }
+    fun participateForUser(eventId: Int, userId: Int) {
+        EntourageApplication.get().apiModule.eventsRequest.participateForUser(eventId, userId)
+            .enqueue(object : Callback<EntourageUserResponse> {
+                override fun onResponse(
+                    call: Call<EntourageUserResponse>,
+                    response: Response<EntourageUserResponse>
+                ) {
+                    val ok = response.isSuccessful && response.body()?.user != null
+                    memberParticipationUpdated.postValue(userId to ok)
+                    if (ok) {
+                        RefreshController.shouldRefreshEventFragment = true
+                    }
+                }
 
+                override fun onFailure(call: Call<EntourageUserResponse>, t: Throwable) {
+                    memberParticipationUpdated.postValue(userId to false)
+                }
+            })
+    }
+
+    fun acceptPhotoForUser(eventId: Int, userId: Int) {
+        EntourageApplication.get().apiModule.eventsRequest.acceptPhotoForUser(eventId, userId)
+            .enqueue(object : Callback<ResponseBody> {
+                override fun onResponse(
+                    call: Call<ResponseBody>,
+                    response: Response<ResponseBody>
+                ) {
+                    photoAcceptanceDone.postValue(userId to response.isSuccessful)
+                }
+
+                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                    photoAcceptanceDone.postValue(userId to false)
+                }
+            })
+    }
+
+    fun cancelParticipationForUser(eventId: Int, userId: Int) {
+        EntourageApplication.get().apiModule.eventsRequest.cancelParticipationForUser(eventId, userId)
+            .enqueue(object : retrofit2.Callback<okhttp3.ResponseBody> {
+                override fun onResponse(
+                    call: retrofit2.Call<okhttp3.ResponseBody>,
+                    response: retrofit2.Response<okhttp3.ResponseBody>
+                ) {
+                    memberParticipationCanceled.postValue(userId to response.isSuccessful)
+                    if (response.isSuccessful) {
+                        RefreshController.shouldRefreshEventFragment = true
+                    }
+                }
+
+                override fun onFailure(
+                    call: retrofit2.Call<okhttp3.ResponseBody>,
+                    t: Throwable
+                ) {
+                    memberParticipationCanceled.postValue(userId to false)
+                }
+            })
+    }
 
 }
 

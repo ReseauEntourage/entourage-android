@@ -88,12 +88,12 @@ class SettingsDiscussionModalFragment : BottomSheetDialogFragment() {
         binding.header.title = getString(R.string.discussion_settings_title)
 
         if (isOneToOne) {                       // 1–1
-            binding.profile.label    = getString(R.string.discussion_settings_profil)
+            binding.profile.label.text    = getString(R.string.discussion_settings_profil)
             binding.layoutBlock.isVisible = !imBlocker
             binding.block.text       = getString(R.string.discussion_block_title)
             binding.blockSub.text    = getString(R.string.discussion_block_subtitle, username)
         } else {                               // groupe
-            binding.profile.label = getString(R.string.discussion_settings_members)
+            binding.profile.label.text = getString(R.string.discussion_settings_members)
             binding.layoutBlock.isVisible = false
         }
 
@@ -112,7 +112,7 @@ class SettingsDiscussionModalFragment : BottomSheetDialogFragment() {
         val mustHideQuit = isCreator || isOneToOne || isEvent
         binding.quit.layout.isVisible = !mustHideQuit
         binding.quit.arrow.isVisible  = !mustHideQuit
-        if (!mustHideQuit) binding.quit.label = getString(R.string.discussion_settings_quit)
+        if (!mustHideQuit) binding.quit.label.text = getString(R.string.discussion_settings_quit)
     }
 
     /* ─────────────────────────── Observers ─────────────────────────── */

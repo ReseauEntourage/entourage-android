@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
@@ -26,65 +25,57 @@
                     layout="@layout/new_profile_settings_item"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    app:color="@{@android:color/black}"
-                    app:icon="@{@drawable/ic_translate}"
-                    app:label="@{@string/translate}"
-                    android:visibility="visible"/>
+                    android:visibility="visible"
+                    app:icon='@{@drawable/ic_translate}'
+                    app:label='@{@string/translate}' />
 
                 <include
                     android:id="@+id/language"
                     layout="@layout/new_profile_settings_item"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    app:color="@{@android:color/black}"
-                    app:icon="@{@drawable/ic_language}"
-                    app:label="@{@string/title_language}" />
+                    app:icon='@{@drawable/ic_language}'
+                    app:label='@{@string/title_language}' />
 
                 <include
                     android:id="@+id/notifications"
                     layout="@layout/new_profile_settings_item"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    app:color="@{@android:color/black}"
-                    app:icon="@{@drawable/new_notification}"
-                    app:label="@{@string/notifications}" />
+                    app:icon='@{@drawable/new_notification}'
+                    app:label='@{@string/notifications}' />
 
                 <include
                     android:id="@+id/help_about"
                     layout="@layout/new_profile_settings_item"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    app:color="@{@android:color/black}"
-                    app:icon="@{@drawable/new_help_about}"
-                    app:label="@{@string/help_about}" />
+                    app:icon='@{@drawable/new_help_about}'
+                    app:label='@{@string/help_about}' />
 
                 <include
                     android:id="@+id/help_block"
                     layout="@layout/new_profile_settings_item"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    app:color="@{@android:color/black}"
-                    app:icon="@{@drawable/new_block}"
-                    app:label="@{@string/params_unblock_users_title}" />
+                    app:icon='@{@drawable/new_block}'
+                    app:label='@{@string/params_unblock_users_title}' />
 
                 <include
                     android:id="@+id/suggest"
                     layout="@layout/new_profile_settings_item"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    app:color="@{@android:color/black}"
-                    app:icon="@{@drawable/new_share}"
-                    app:label="@{@string/suggest}" />
+                    app:icon='@{@drawable/new_share}'
+                    app:label='@{@string/suggest}' />
 
                 <include
                     android:id="@+id/share"
                     layout="@layout/new_profile_settings_item"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    app:color="@{@android:color/black}"
-                    app:icon="@{@drawable/new_share}"
-                    app:label="@{@string/share}" />
-
+                    app:icon='@{@drawable/new_share}'
+                    app:label='@{@string/share}' />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/changePwd"
@@ -99,24 +90,24 @@
                         android:layout_marginStart="10dp"
                         android:layout_marginBottom="20dp"
                         android:src="@drawable/password"
-                        app:layout_constraintBottom_toTopOf="@id/divider"
+                        app:layout_constraintBottom_toTopOf='@id/divider'
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        tools:src="@drawable/password"
-                        app:tint="@color/accent" />
+                        app:tint='@color/accent'
+                        tools:src='@drawable/password' />
 
                     <TextView
-                        style="@style/settings_items"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="20dp"
                         android:layout_marginBottom="20dp"
-                        android:text="@string/user_edit_profile_change_pwd"
-                        android:textColor="@android:color/black"
-                        app:layout_constraintBottom_toTopOf="@id/divider"
-                        app:layout_constraintStart_toEndOf="@id/icon"
+                        android:text='@string/user_edit_profile_change_pwd'
+                        android:textColor='@android:color/black'
+                        style='@style/settings_items'
+                        app:layout_constraintBottom_toTopOf='@id/divider'
+                        app:layout_constraintStart_toEndOf='@id/icon'
                         app:layout_constraintTop_toTopOf="parent"
-                        tools:text="Notifications" />
+                        tools:text="Changer le mot de passe" />
 
                     <ImageView
                         android:id="@+id/arrow"
@@ -124,21 +115,20 @@
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="10dp"
                         android:layout_marginBottom="20dp"
-                        android:src="@drawable/new_arrow"
-                        app:layout_constraintBottom_toTopOf="@id/divider"
+                        android:src='@drawable/new_arrow'
+                        app:layout_constraintBottom_toTopOf='@id/divider'
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        tools:src="@drawable/new_arrow" />
+                        tools:src='@drawable/new_arrow' />
 
                     <View
                         android:id="@+id/divider"
                         android:layout_width="match_parent"
                         android:layout_height="1px"
-                        android:background="@color/light_orange"
+                        android:background='@color/light_orange'
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent" />
-
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <include
@@ -146,22 +136,20 @@
                     layout="@layout/new_profile_settings_item"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    app:color="@{@color/orange}"
-                    app:icon="@{@drawable/new_sign_out}"
-                    app:label="@{@string/sign_out}" />
+                    app:icon='@{@drawable/new_sign_out}'
+                    app:label='@{@string/sign_out}' />
 
                 <include
                     android:id="@+id/delete_account"
                     layout="@layout/new_profile_settings_item"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    app:color="@{@color/orange}"
-                    app:icon="@{@drawable/new_delete}"
-                    app:label="@{@string/delete_account}" />
+                    app:icon='@{@drawable/new_delete}'
+                    app:label='@{@string/delete_account}' />
 
                 <TextView
                     android:id="@+id/app_version"
-                    style="@style/version_number"
+                    style='@style/version_number'
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="100dp"
@@ -169,11 +157,11 @@
 
                 <TextView
                     android:id="@+id/app_debug_info"
-                    style="@style/version_number"
+                    style='@style/version_number'
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    tools:text="V8.1" />
+                    tools:text="debug info" />
 
             </LinearLayout>
         </ScrollView>

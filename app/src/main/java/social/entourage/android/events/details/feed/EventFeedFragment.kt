@@ -90,6 +90,7 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
     private val args: EventFeedFragmentArgs by navArgs()
     private var shouldShowPopUp = true
     private var mMap: GoogleMap? = null
+    private var iAmOrganiser = false
 
     private var memberList: MutableList<EntourageUser> = mutableListOf()
 
@@ -509,6 +510,9 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
             var numberOrganizer = 0
             var nameOrganizers = ""
             for(member in allMembers){
+                if(member.id.toInt() == EntourageApplication.get().me()?.id){
+                    iAmOrganiser = true
+                }
                 if(member.groupRole == "organizer"){
                     numberOrganizer += 1
                     if(numberOrganizer < 3){
@@ -601,6 +605,7 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
                 // Passage des arguments nécessaires
                 putExtra("ID", eventId) // Assure-toi que 'groupId' est un Int
                 putExtra("TYPE", MembersType.EVENT.code) // Utilise 'code' pour passer l'enum comme un Int
+                putExtra("ROLE", iAmOrganiser)
             }
             startActivity(intent)
             requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)

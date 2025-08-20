@@ -26,7 +26,6 @@ class MembersConversationListAdapter(
         notifyDataSetChanged()
     }
 
-
     inner class ViewHolder(val binding: NewGroupMemberItemBinding) :
         RecyclerView.ViewHolder(binding.root)
 
@@ -38,11 +37,9 @@ class MembersConversationListAdapter(
         )
         return ViewHolder(binding)
     }
-
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         with(holder) {
             with(membersList[position]) {
-
                 val isMe = EntourageApplication.get().me()?.id == id
                 binding.contact.visibility = if (isMe) View.INVISIBLE else View.VISIBLE
                 binding.name.text = displayName
@@ -54,7 +51,6 @@ class MembersConversationListAdapter(
                 else {
                     binding.ambassador.visibility = View.GONE
                 }
-
 
                 avatarUrl?.let { avatarURL ->
                     Glide.with(holder.itemView.context)
@@ -69,7 +65,6 @@ class MembersConversationListAdapter(
                         .circleCrop()
                         .into(binding.picture)
                 }
-
                 binding.layout.setOnClickListener { view ->
                     ProfileFullActivity.isMe = false
                     ProfileFullActivity.userId = this.id.toString()
@@ -88,7 +83,6 @@ class MembersConversationListAdapter(
             }
         }
     }
-
     override fun getItemCount(): Int {
         return membersList.size
     }

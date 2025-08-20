@@ -39,6 +39,7 @@ import social.entourage.android.comment.MentionAdapter
 import social.entourage.android.discussions.members.MembersConversationFragment
 import social.entourage.android.events.EventsPresenter
 import social.entourage.android.events.details.feed.EventFeedActivity
+import social.entourage.android.groups.GroupPresenter
 import social.entourage.android.profile.ProfileFullActivity
 import social.entourage.android.report.DataLanguageStock
 import social.entourage.android.small_talks.SmallTalkGuidelinesActivity
@@ -48,6 +49,8 @@ import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.Utils
 import social.entourage.android.tools.utils.VibrationUtil
 import social.entourage.android.tools.view.WebViewFragment
+import social.entourage.android.ui.ActionSheetFragment
+import social.entourage.android.ui.SheetMode
 import timber.log.Timber
 import java.io.File
 import java.text.SimpleDateFormat
@@ -67,6 +70,7 @@ class DetailConversationActivity : CommentActivity() {
     private val eventPresenter: EventsPresenter by lazy { EventsPresenter() }
     private val discussionsPresenter: DiscussionsPresenter by lazy { DiscussionsPresenter() }
     private val smallTalkViewModel: SmallTalkViewModel by viewModels()
+    private val groupPresenter: GroupPresenter by lazy { GroupPresenter() }
 
     // Launchers
     private lateinit var cameraLauncher: ActivityResultLauncher<Uri>
@@ -176,6 +180,11 @@ class DetailConversationActivity : CommentActivity() {
                 showThumbnail(uri)
             }
         }
+
+        binding.header.iconSettings.setOnClickListener {
+            buildAndShowActionSheet()
+        }
+
     }
 
     // ===== Refresh page 1 (append en bas) =====
@@ -189,6 +198,63 @@ class DetailConversationActivity : CommentActivity() {
         super.onPause()
         stopRefreshing()
     }
+
+// DetailConversationActivity.kt
+
+    // DetailConversationActivity.kt
+
+    private fun buildAndShowActionSheet() {
+        val mode = resolveSheetMode()
+        val sheet = when (mode) {
+            SheetMode.DISCUSSION_ONE_TO_ONE -> {
+                val otherUserId = detailConversation?.members
+                    ?.firstOrNull { it?.id != EntourageApplication.get().me()?.id }
+                    ?.id ?: 0
+                ActionSheetFragment.newDiscussion(
+                    conversationId = id,
+                    isOneToOne = true,
+                    userId = otherUserId,
+                    username = detailConversation?.title,
+                    blocked = detailConversation?.hasBlocker() == true && detailConversation?.imBlocker() == true
+                )
+            }
+            SheetMode.DISCUSSION_GROUP -> {
+                ActionSheetFragment.newDiscussion(
+                    conversationId = id,
+                    isOneToOne = false,
+                    userId = 0,
+                    username = null,
+                    blocked = false
+                )
+            }
+            // IMPORTANT : on passe aussi conversationId pour le bouton "Membres"
+            SheetMode.EVENT -> ActionSheetFragment.newEvent(
+                eventId = event?.id ?: (detailConversation?.id ?: 0),
+                conversationId = id
+            )
+            SheetMode.GROUP -> ActionSheetFragment.newGroup(detailConversation?.id ?: id)
+
+            // Nouveau: branche exhaustive pour l'enum élargie
+            SheetMode.MESSAGE_ACTIONS -> {
+                // Ce mode n'est normalement pas déclenché depuis l'icône "paramètres" d'en-tête.
+                // On fait un fallback safe vers la fiche du groupe (ou de la conv).
+                ActionSheetFragment.newGroup(detailConversation?.id ?: id)
+            }
+        }
+        sheet.show(supportFragmentManager, "ActionSheetFragment")
+    }
+
+
+
+    private fun resolveSheetMode(): SheetMode {
+        return when {
+            isSmallTalkMode -> SheetMode.DISCUSSION_GROUP
+            detailConversation?.memberCount == 2 -> SheetMode.DISCUSSION_ONE_TO_ONE
+            detailConversation?.type == "outing" -> SheetMode.EVENT
+            else -> SheetMode.GROUP
+        }
+    }
+
 
     private fun startRefreshing() {
         if (refreshRunnable != null) return

@@ -6,6 +6,7 @@ import android.util.Log
 import androidx.core.os.bundleOf
 import androidx.recyclerview.widget.LinearLayoutManager
 import social.entourage.android.api.model.Conversation
+import social.entourage.android.api.model.EntourageUser
 import social.entourage.android.api.model.Survey
 import social.entourage.android.api.model.SurveyResponsesListWrapper
 import social.entourage.android.base.BaseActivity
@@ -116,5 +117,10 @@ class ResponseSurveyActivity:BaseActivity(), OnItemShowListener {
 
     override fun onShowConversation(userId: Int) {
         discussionPresenter.createOrGetConversation(userId.toString())
+    }
+
+
+    override fun onToggleParticipation(user: EntourageUser, isChecked: Boolean) {
+        //Nothing to do
     }
 }

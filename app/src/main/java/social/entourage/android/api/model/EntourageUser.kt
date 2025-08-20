@@ -25,6 +25,9 @@ class EntourageUser : TimestampedObject(), Serializable {
     @SerializedName("confirmed_at")
     var confirmedAt : Boolean? = null
 
+    @SerializedName("participate_at")
+    var participateAt : Boolean? = null
+
     @SerializedName("avatar_url")
     var avatarURLAsString: String? = null
 
@@ -36,12 +39,18 @@ class EntourageUser : TimestampedObject(), Serializable {
     var groupRole: String? = null
         private set
 
+    @SerializedName("photo_acceptance")
+    var photoAcceptance: Boolean? = null
+        private set
+
     @SerializedName("community_roles")
     var communityRoles: List<String>? = null
         private set
     @SerializedName("roles")
     var roles: List<String>? = null
         private set
+
+
 
     var isDisplayedAsMember = false
 

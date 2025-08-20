@@ -24,6 +24,8 @@ import social.entourage.android.tools.utils.Const
 
 interface OnItemShowListener {
     fun onShowConversation(userId: Int)
+    fun onToggleParticipation(user: EntourageUser, isChecked: Boolean) // ← change
+
 }
 
 class MembersListAdapter(
@@ -31,11 +33,12 @@ class MembersListAdapter(
     private var membersList: List<EntourageUser>,
     private var reactionList: List<ReactionType>,
     private var onItemShowListener: OnItemShowListener,
+    private var iAmOrganiser: Boolean? = false ,
 
     ) : RecyclerView.Adapter<MembersListAdapter.ViewHolder>() {
-
     inner class ViewHolder(val binding: NewGroupMemberItemBinding) :
         RecyclerView.ViewHolder(binding.root)
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = NewGroupMemberItemBinding.inflate(
@@ -53,104 +56,120 @@ class MembersListAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        with(holder) {
-            with(membersList[position]) {
-                // Vérifier si le membre a le rôle "organizer"
-                if (groupRole == "organizer") {
-                    val isMe = EntourageApplication.get().me()?.id == userId
+        val b = holder.binding
+        val item = membersList[position]
 
-                    // Changer la couleur du fond du layout
-                    binding.layout.background = ContextCompat.getDrawable(context, R.drawable.background_organizer)
+        // -------- Checkbox participation (visibilité + état + listener) --------
+        val isMe = EntourageApplication.get().me()?.id == item.userId
+        if (iAmOrganiser == true && !isMe) {
+            b.checkboxConfirmation.visibility = View.VISIBLE
+            // état actuel : participe si participateAt ou confirmedAt non null
+            val isParticipating = (item.participateAt != null) || (item.confirmedAt != null)
 
-                    // Obtenir le label approprié à partir des ressources
-                    val roleLabel = if (!isMe) {
-                        context.getString(R.string.organizer_label)
-                    } else {
-                        context.getString(R.string.animateur_label)
-                    }
-
-                    // Créer un SpannableString pour ajouter le texte avec le label dynamique
-                    val nameText = displayName
-                    val spannable = SpannableString(nameText + roleLabel)
-
-                    spannable.setSpan(
-                        ForegroundColorSpan(ContextCompat.getColor(context, R.color.organizer_text)),
-                        nameText?.length ?: 0, // Start of the role label
-                        spannable.length, // End of the text
-                        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-                    )
-
-                    binding.name.text = spannable
-                } else {
-                    // Réinitialiser la couleur du fond et du texte pour les autres membres
-                    binding.layout.setBackgroundColor(ContextCompat.getColor(context, android.R.color.transparent))
-                    binding.name.text = displayName
-                    binding.name.setTextColor(ContextCompat.getColor(context, R.color.black))
-                }
-
-
-                // Vérifier si le membre a une réaction et l'afficher
-                if (reactionList.isNotEmpty()) {
-                    binding.reaction.layoutItemReactionParent.visibility = View.VISIBLE
-                    Glide.with(context)
-                        .load(reactionList[position].imageUrl)
-                        .into(binding.reaction.image)
-                } else {
-                    binding.reaction.layoutItemReactionParent.visibility = View.GONE
-                }
-
-                // Vérifier si le membre est l'utilisateur actuel pour masquer le bouton "Contact"
-                val isMe = EntourageApplication.get().me()?.id == userId
-                binding.contact.visibility = if (isMe) View.INVISIBLE else View.VISIBLE
-
-                // Ajouter un label si la participation est confirmée
-                if (membersList[position].confirmedAt != null) {
-                    binding.name.text = "${binding.name.text} - Participation confirmée"
-                }
-
-                // Gérer les rôles de la communauté
-                val roles = getCommunityRoleWithPartnerFormated()
-                if (roles != null) {
-                    binding.ambassador.visibility = View.VISIBLE
-                    binding.ambassador.text = roles
-                } else {
-                    binding.ambassador.visibility = View.GONE
-                }
-
-                // Charger l'avatar ou afficher le placeholder par défaut
-                avatarURLAsString?.let { avatarURL ->
-                    Glide.with(holder.itemView.context)
-                        .load(avatarURL)
-                        .placeholder(R.drawable.placeholder_user)
-                        .error(R.drawable.placeholder_user)
-                        .circleCrop()
-                        .into(binding.picture)
-                } ?: run {
-                    Glide.with(holder.itemView.context)
-                        .load(R.drawable.placeholder_user)
-                        .circleCrop()
-                        .into(binding.picture)
-                }
-
-                // Gestion du clic pour afficher le profil de l'utilisateur
-                binding.layout.setOnClickListener { view ->
-                    ProfileFullActivity.isMe = false
-                    ProfileFullActivity.userId = this.userId.toString()
-                    (view.context as? Activity)?.startActivityForResult(
-                        Intent(view.context, ProfileFullActivity::class.java).putExtra(
-                            Const.USER_ID,
-                            this.userId
-                        ), 0
-                    )
-                }
-
-                // Gestion du clic pour initier une conversation
-                binding.contact.setOnClickListener {
-                    onItemShowListener.onShowConversation(userId)
-                }
+            b.checkboxConfirmation.setOnCheckedChangeListener(null)
+            b.checkboxConfirmation.isChecked = isParticipating
+            b.checkboxConfirmation.setOnCheckedChangeListener { _, isChecked ->
+                // on délègue : Activity décidera d'appeler participate ou cancel_participation
+                onItemShowListener.onToggleParticipation(item, isChecked)
             }
+        } else {
+            // important pour le recyclage : enlever le listener avant de cacher
+            b.checkboxConfirmation.setOnCheckedChangeListener(null)
+            b.checkboxConfirmation.visibility = View.GONE
+        }
+
+        // -------- Nom + badge "organizer" (Spannable coloré) --------
+        val isOrganizer = item.groupRole == "organizer"
+        if (isOrganizer) {
+            b.layout.background = ContextCompat.getDrawable(context, R.drawable.background_organizer)
+
+            val roleLabel = if (isMe) {
+                context.getString(R.string.animateur_label)
+            } else {
+                context.getString(R.string.organizer_label)
+            }
+
+            val baseName = item.displayName ?: ""
+            val full = baseName + roleLabel
+            val spannable = SpannableString(full).apply {
+                setSpan(
+                    ForegroundColorSpan(ContextCompat.getColor(context, R.color.organizer_text)),
+                    baseName.length,
+                    full.length,
+                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                )
+            }
+            b.name.text = spannable
+        } else {
+            b.layout.setBackgroundColor(ContextCompat.getColor(context, android.R.color.transparent))
+            b.name.text = item.displayName
+            b.name.setTextColor(ContextCompat.getColor(context, R.color.black))
+        }
+
+        // Suffixe "Participation confirmée" si applicable (on garde la logique existante)
+        if (item.confirmedAt != null) {
+            b.name.text = "${b.name.text} - Participation confirmée"
+            // idéalement : b.name.text = context.getString(R.string.participation_confirmed_suffix, b.name.text)
+        }
+
+        // -------- Rôles communauté --------
+        val roles = item.getCommunityRoleWithPartnerFormated()
+        if (roles != null) {
+            b.ambassador.visibility = View.VISIBLE
+            b.ambassador.text = roles
+        } else {
+            b.ambassador.visibility = View.GONE
+        }
+
+        // -------- Réaction (index safe) --------
+        if (position < reactionList.size) {
+            b.reaction.layoutItemReactionParent.visibility = View.VISIBLE
+            Glide.with(context)
+                .load(reactionList[position].imageUrl)
+                .into(b.reaction.image)
+        } else {
+            b.reaction.layoutItemReactionParent.visibility = View.GONE
+        }
+
+        // -------- Avatar --------
+        item.avatarURLAsString?.let { url ->
+            Glide.with(holder.itemView.context)
+                .load(url)
+                .placeholder(R.drawable.placeholder_user)
+                .error(R.drawable.placeholder_user)
+                .circleCrop()
+                .into(b.picture)
+        } ?: run {
+            Glide.with(holder.itemView.context)
+                .load(R.drawable.placeholder_user)
+                .circleCrop()
+                .into(b.picture)
+        }
+
+        // -------- Contact (caché si moi) --------
+        b.contact.visibility = if (isMe || iAmOrganiser == true) View.GONE else View.VISIBLE
+
+        // -------- Click profil --------
+        b.layout.setOnClickListener { view ->
+            val pos = holder.bindingAdapterPosition
+            if (pos == RecyclerView.NO_POSITION) return@setOnClickListener
+            ProfileFullActivity.isMe = false
+            ProfileFullActivity.userId = item.userId.toString()
+            (view.context as? Activity)?.startActivityForResult(
+                Intent(view.context, ProfileFullActivity::class.java)
+                    .putExtra(Const.USER_ID, item.userId),
+                0
+            )
+        }
+
+        // -------- Click conversation --------
+        b.contact.setOnClickListener {
+            val pos = holder.bindingAdapterPosition
+            if (pos == RecyclerView.NO_POSITION) return@setOnClickListener
+            onItemShowListener.onShowConversation(item.userId)
         }
     }
+
 
 
     override fun getItemCount(): Int {

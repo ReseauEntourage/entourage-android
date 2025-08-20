@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
@@ -12,10 +11,8 @@
         <include
             android:id="@+id/header"
             layout="@layout/new_header_bottom_sheet"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toTopOf="@id/title"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
@@ -23,7 +20,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="vertical">
 
                 <LinearLayout
@@ -55,12 +52,8 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
                         android:layout_marginTop="20dp"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/description"
                         tools:itemCount="5"
                         tools:listitem="@layout/new_profile_interest_item" />
-
                 </LinearLayout>
 
                 <View
@@ -70,10 +63,7 @@
                     android:layout_marginHorizontal="15dp"
                     android:layout_marginBottom="16dp"
                     android:background="@color/light_orange_opacity_25"
-                    android:visibility="gone"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    android:visibility="gone" />
 
                 <TextView
                     android:id="@+id/notify_me"
@@ -122,10 +112,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:background="@color/light_orange_opacity_25"
-                    android:visibility="gone"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    android:visibility="gone" />
 
                 <include
                     android:id="@+id/edit"
@@ -134,16 +121,12 @@
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="25dp"
                     android:visibility="gone"
-                    app:color="@{@android:color/black}"
-                    app:icon="@{@drawable/new_notification}" />
+                    app:icon='@{@drawable/new_notification}' />
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="@color/light_orange_opacity_25"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    android:background="@color/light_orange_opacity_25" />
 
                 <include
                     android:id="@+id/edit_recurrence"
@@ -152,18 +135,14 @@
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="25dp"
                     android:visibility="gone"
-                    app:color="@{@android:color/black}"
-                    app:icon="@{@drawable/new_notification}" />
+                    app:icon='@{@drawable/new_notification}' />
 
                 <View
                     android:id="@+id/edit_recurrence_divider"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:background="@color/light_orange_opacity_25"
-                    android:visibility="gone"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    android:visibility="gone" />
 
                 <include
                     android:id="@+id/share"
@@ -171,8 +150,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="25dp"
-                    app:color="@{@android:color/black}"
-                    app:icon="@{@drawable/new_share}" />
+                    app:icon='@{@drawable/new_share}' />
 
                 <include
                     android:id="@+id/rules"
@@ -180,16 +158,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="25dp"
-                    app:color="@{@android:color/black}"
-                    app:icon="@{@drawable/new_notification}" />
+                    app:icon='@{@drawable/new_notification}' />
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="@color/light_orange_opacity_25"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    android:background="@color/light_orange_opacity_25" />
 
                 <TextView
                     android:id="@+id/report"
@@ -217,7 +191,6 @@
                     android:layout_marginStart="35dp"
                     android:paddingBottom="20dp"
                     android:visibility="gone" />
-
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
     </LinearLayout>

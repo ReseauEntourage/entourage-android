@@ -50,6 +50,8 @@ interface OnItemClickListener {
     fun onItemClick(comment: Post)
     fun onCommentReport(commentId: Int?, isForEvent: Boolean, isForGroup: Boolean, isMe: Boolean, commentLang: String)
     fun onShowWeb(url: String) // si tu veux ouvrir un navigateur ou gérer autrement
+    fun onMessageLongPress(comment: Post, isMe: Boolean)
+
 }
 
 class CommentsListAdapter(
@@ -268,11 +270,10 @@ class CommentsListAdapter(
                     bindingLeft.comment.visibility = View.VISIBLE
                 }
                 bindingLeft.commentImage.setOnLongClickListener {
-                    val commentLang = comment.contentTranslations?.fromLang ?: ""
-                    DataLanguageStock.updateContentToCopy(comment.content ?: "")
-                    onItemClick.onCommentReport(comment.id, isForEvent, isForGroup, isMe, commentLang)
+                    onItemClick.onMessageLongPress(comment, isMe)
                     true
                 }
+
             } else {
                 bindingLeft.commentImageContainer.visibility = View.GONE
                 bindingLeft.commentImage.setImageDrawable(null)
@@ -585,6 +586,8 @@ class CommentsListAdapter(
             binding.commentImageContainer.visibility = View.GONE
         }
 
+
+
         private fun handleReportLogicLeft(
             binding: LayoutCommentItemLeftBinding,
             comment: Post,
@@ -595,24 +598,18 @@ class CommentsListAdapter(
                 DataLanguageStock.updateContentToCopy(comment.content ?: "")
                 onItemClick.onCommentReport(comment.id, isForEvent, isForGroup, isMe, commentLang)
             }
-            // Long click => report
 
             if (comment.status !in listOf("deleted", "offensive", "offensible")) {
-                val commentLang = comment.contentTranslations?.fromLang ?: ""
-                binding.comment.setOnLongClickListener {
-                    DataLanguageStock.updateContentToCopy(comment.content ?: "")
-                    onItemClick.onCommentReport(comment.id, isForEvent,isForGroup, isMe, commentLang)
+                val onLong = View.OnLongClickListener {
+                    onItemClick.onMessageLongPress(comment, isMe)
                     true
                 }
+                binding.comment.setOnLongClickListener(onLong)
+                binding.commentImage.setOnLongClickListener(onLong)
             }
-            // Si c'est "moi" ou "isConversation", on masque "report"
-            if (isMe || isConversation) {
-                binding.report.visibility = View.GONE
-            } else {
-                binding.report.visibility = View.VISIBLE
-            }
-        }
 
+            binding.report.visibility = if (isMe || isConversation) View.GONE else View.VISIBLE
+        }
         private fun handleReportLogicRight(
             binding: LayoutCommentItemRightBinding,
             comment: Post,
@@ -621,22 +618,21 @@ class CommentsListAdapter(
             binding.report.setOnClickListener {
                 val commentLang = comment.contentTranslations?.fromLang ?: ""
                 DataLanguageStock.updateContentToCopy(comment.content ?: "")
-                onItemClick.onCommentReport(comment.id, isForEvent,isForGroup, isMe, commentLang)
+                onItemClick.onCommentReport(comment.id, isForEvent, isForGroup, isMe, commentLang)
             }
+
             if (comment.status !in listOf("deleted", "offensive", "offensible")) {
-                val commentLang = comment.contentTranslations?.fromLang ?: ""
-                binding.comment.setOnLongClickListener {
-                    DataLanguageStock.updateContentToCopy(comment.content ?: "")
-                    onItemClick.onCommentReport(comment.id, isForEvent,isForGroup, isMe, commentLang)
+                val onLong = View.OnLongClickListener {
+                    onItemClick.onMessageLongPress(comment, isMe)
                     true
                 }
+                binding.comment.setOnLongClickListener(onLong)
+                binding.commentImage.setOnLongClickListener(onLong)
             }
-            if (isMe || isConversation) {
-                binding.report.visibility = View.GONE
-            } else {
-                binding.report.visibility = View.VISIBLE
-            }
+
+            binding.report.visibility = if (isMe || isConversation) View.GONE else View.VISIBLE
         }
+
 
         private fun handleDateAndErrorLeft(
             binding: LayoutCommentItemLeftBinding,

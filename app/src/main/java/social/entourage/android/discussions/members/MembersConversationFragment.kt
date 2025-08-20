@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.textfield.TextInputLayout
 import social.entourage.android.R
 import social.entourage.android.api.model.Conversation
+import social.entourage.android.api.model.EntourageUser
 import social.entourage.android.api.model.GroupMember
 import social.entourage.android.api.model.User
 import social.entourage.android.api.model.toGroupMembers
@@ -77,11 +78,19 @@ class MembersConversationFragment : BaseDialogFragment() {
             override fun onShowConversation(userId: Int) {
                 discussionsPresenter.createOrGetConversation(userId.toString())
             }
+
+            override fun onToggleParticipation(user: EntourageUser, isChecked: Boolean) {
+                //Nothing to do
+            }
         })
 
         searchAdapter = MembersConversationListAdapter(searchMembersList, userCreatorId, object : OnItemShowListener {
             override fun onShowConversation(userId: Int) {
                 discussionsPresenter.createOrGetConversation(userId.toString())
+            }
+
+            override fun onToggleParticipation(user: EntourageUser, isChecked: Boolean) {
+                //Nothing to do
             }
         })
 
