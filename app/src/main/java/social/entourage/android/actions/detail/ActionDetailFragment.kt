@@ -7,7 +7,6 @@ import android.os.Build
 import android.os.Bundle
 import android.text.SpannableString
 import android.text.style.UnderlineSpan
-import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -48,7 +47,6 @@ import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.CustomAlertDialog
 import social.entourage.android.tools.utils.Utils.enableCopyOnLongClick
 import social.entourage.android.tools.utils.px
-import social.entourage.android.user.UserProfileActivity
 
 class ActionDetailFragment : Fragment(), OnMapReadyCallback {
     private var _binding: NewFragmentActionDetailBinding? = null

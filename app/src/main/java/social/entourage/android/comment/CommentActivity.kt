@@ -1,6 +1,5 @@
 package social.entourage.android.comment
 
-import android.content.Context
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -37,7 +36,6 @@ import social.entourage.android.tools.utils.scrollToPositionSmooth
 import social.entourage.android.tools.view.WebViewFragment
 import social.entourage.android.ui.ActionSheetFragment
 import social.entourage.android.ui.SheetMode
-import timber.log.Timber
 import java.util.UUID
 import kotlin.getValue
 

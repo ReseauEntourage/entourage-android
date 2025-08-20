@@ -7,14 +7,13 @@ import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
-import androidx.fragment.app.viewModels
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.databinding.NewFragmentSettingsDiscussionModalBinding
+import social.entourage.android.discussions.DetailConversationActivity
 import social.entourage.android.discussions.DiscussionsPresenter
 import social.entourage.android.discussions.members.MembersConversationFragment
 import social.entourage.android.events.EventsPresenter
@@ -24,10 +23,8 @@ import social.entourage.android.members.MembersType
 import social.entourage.android.profile.ProfileFullActivity
 import social.entourage.android.report.ReportModalFragment
 import social.entourage.android.report.ReportTypes
-import social.entourage.android.small_talks.SmallTalkViewModel
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.CustomAlertDialog
-import kotlin.getValue
 
 enum class SheetMode {
     GROUP, EVENT, DISCUSSION_ONE_TO_ONE, DISCUSSION_GROUP, MESSAGE_ACTIONS
@@ -41,7 +38,6 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
     private val discussionPresenter by lazy { DiscussionsPresenter() }
     private val eventsPresenter by lazy { EventsPresenter() }
     private val groupPresenter: GroupPresenter by lazy { GroupPresenter() }
-    private val smallTalkViewModel: SmallTalkViewModel by viewModels()
 
     private var mode: SheetMode = SheetMode.GROUP
     private var userId: Int = 0
@@ -205,7 +201,7 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
                     )
                 }
                 SheetMode.EVENT -> {
-                    val isAnimator = EntourageApplication.get().me()?.roles?.isNotEmpty()
+                    val isAnimator = EntourageApplication.get().me()?.roles?.isNotEmpty() == true
                     val intent = Intent(requireContext(), MembersActivity::class.java).apply {
                         putExtra("ID", eventId)
                         putExtra("TYPE", MembersType.EVENT.code)
@@ -274,7 +270,7 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
                     ).show(parentFragmentManager, ReportModalFragment.TAG)
                 }
                 SheetMode.MESSAGE_ACTIONS -> {
-                    // ✅ Report direct du MESSAGE (pas du fil)
+                    // Report depuis un long-press sur message
                     val plain = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                         Html.fromHtml(messageHtml.orEmpty(), Html.FROM_HTML_MODE_LEGACY).toString()
                     } else {
@@ -282,24 +278,40 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
                         Html.fromHtml(messageHtml.orEmpty()).toString()
                     }
 
-                    // Contexte (container) + type
-                    val (containerId, reportType) = when {
-                        isEventContext -> eventId to ReportTypes.REPORT_POST_EVENT
-                        isGroupContext -> groupId to ReportTypes.REPORT_POST
-                        else -> conversationId to ReportTypes.REPORT_COMMENT
-                    }
+                    val isConversationContext = !isEventContext && !isGroupContext
+                    if (isConversationContext) {
+                        val isSmallTalk = DetailConversationActivity.isSmallTalkMode
+                        val convOrSmallTalkId =
+                            if (isSmallTalk) DetailConversationActivity.smallTalkId else conversationId
 
-                    // ✅ reportedId = messageId ; groupId = containerId ; ouverture directe
-                    ReportModalFragment.newInstance(
-                        id = messageId,
-                        groupId = containerId,
-                        reportType = reportType,
-                        isFromMe = isMyMessage,
-                        isConv = !isEventContext && !isGroupContext,
-                        isOneToOne = false,
-                        contentCopied = plain,
-                        openDirectSignal = true
-                    ).show(parentFragmentManager, ReportModalFragment.TAG)
+                        ReportModalFragment.newInstance(
+                            id = convOrSmallTalkId,
+                            groupId = Const.DEFAULT_VALUE,
+                            reportType = ReportTypes.REPORT_CONVERSATION,
+                            isFromMe = isMyMessage,
+                            isConv = true,
+                            isOneToOne = false,
+                            contentCopied = plain,
+                            openDirectSignal = true,
+                            isSmallTalk = isSmallTalk
+                        ).show(parentFragmentManager, ReportModalFragment.TAG)
+                    } else {
+                        val (containerId, rType) = when {
+                            isEventContext -> eventId to ReportTypes.REPORT_POST_EVENT
+                            isGroupContext -> groupId to ReportTypes.REPORT_POST
+                            else -> 0 to ReportTypes.REPORT_POST
+                        }
+                        ReportModalFragment.newInstance(
+                            id = messageId,            // chat_message id (post/commentaire)
+                            groupId = containerId,     // neighborhoodId ou eventId
+                            reportType = rType,
+                            isFromMe = isMyMessage,
+                            isConv = false,
+                            isOneToOne = false,
+                            contentCopied = plain,
+                            openDirectSignal = true
+                        ).show(parentFragmentManager, ReportModalFragment.TAG)
+                    }
                 }
             }
         }
@@ -324,9 +336,7 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
                         getString(R.string.leave_group),
                         getString(R.string.leave_group_dialog_content),
                         getString(R.string.exit)
-                    ) {
-                        dismiss()
-                    }
+                    ) { dismiss() }
                 }
                 SheetMode.EVENT -> {
                     CustomAlertDialog.showWithCancelFirst(
@@ -341,18 +351,11 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
                     }
                 }
                 SheetMode.MESSAGE_ACTIONS -> {
-                    // Supprimer le message
                     if (messageId == 0) return@setOnClickListener
                     when {
-                        isEventContext && eventId != 0 -> {
-                            eventsPresenter.deletedEventPost(eventId, messageId)
-                        }
-                        isGroupContext && groupId != 0 -> {
-                            groupPresenter.deletedGroupPost(groupId, messageId)
-                        }
-                        else -> {
-                            discussionPresenter.deleteMessage(conversationId, messageId)
-                        }
+                        isEventContext && eventId != 0 -> eventsPresenter.deletedEventPost(eventId, messageId)
+                        isGroupContext && groupId != 0 -> groupPresenter.deletedGroupPost(groupId, messageId)
+                        else -> discussionPresenter.deleteMessage(conversationId, messageId)
                     }
                     (activity as? social.entourage.android.discussions.DetailConversationActivity)?.reloadView()
                     dismiss()
