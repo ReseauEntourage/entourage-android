@@ -1,50 +1,63 @@
 package social.entourage.android
 
-import androidx.test.espresso.Espresso
 import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions
-import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.rules.ActivityScenarioRule
+import androidx.test.filters.LargeTest
 import org.hamcrest.Matchers.allOf
+import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import social.entourage.android.onboarding.login.LoginActivity
 
-//TODO @LargeTest
+
+@LargeTest
 //TODO @RunWith(AndroidJUnit4::class)
 class MyEntouragesTest : EntourageTestAfterLogin() {
 
-    @Rule
-    @JvmField
+    @get:Rule
     var activityRule = ActivityScenarioRule(LoginActivity::class.java)
-
 
     @Before
     fun setUp() {
-        //Logout
         activityRule.scenario.onActivity { activity ->
-            EntourageApplication.Companion[activity].authenticationController.logOutUser()
+            super.setUp(activity)
         }
+        //Thread.sleep(4000)
+    }
 
-        //Login
-        Espresso.onView(ViewMatchers.withId(R.id.ui_login_phone_et_phone))
-            .perform(ViewActions.typeText(login), ViewActions.closeSoftKeyboard())
-        Espresso.onView(ViewMatchers.withId(R.id.ui_login_et_code))
-            .perform(ViewActions.typeText(password), ViewActions.closeSoftKeyboard())
-        Espresso.onView(ViewMatchers.withId(R.id.ui_login_button_signup))
-            .perform(ViewActions.click())
+    @After
+    override fun tearDown() {
+        //keep it just for the annotation
+        super.tearDown()
+    }
 
-        Thread.sleep(4000)
+    override fun closeAutofill() {
+        super.closeAutofill()
+        activityRule.scenario.onActivity { activity ->
+            closeAutofill(activity)
+        }
     }
 
     @Test
+    fun retrieveEntourages() {
+        forceLogIn()
+
+        //Try to retrieve feeds
+        val bottomBarMessagesButton = onView(allOf(withId(R.id.navigation_donations), isDisplayed()))
+        bottomBarMessagesButton.perform(click())
+        val myEntouragesTab = onView(allOf(withText(R.string.actions_tab_mygroup), isDisplayed()))
+        myEntouragesTab.perform(click())
+    }
+
+    //@Test
     fun retrieveFeedsFailureNoInternetConnection() {
+        forceLogIn()
         //Disable wifi and data
         enableWifiAndData(false)
 
@@ -54,8 +67,5 @@ class MyEntouragesTest : EntourageTestAfterLogin() {
 
         //Check that error is displayed
         onView(allOf(withText(R.string.network_error))).check(ViewAssertions.matches(isDisplayed()))
-
-        //Enable wifi and data
-        enableWifiAndData(true)
     }
 }

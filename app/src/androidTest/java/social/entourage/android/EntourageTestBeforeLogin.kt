@@ -1,6 +1,5 @@
 package social.entourage.android
 
-import android.view.autofill.AutofillManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.NoMatchingViewException
@@ -15,7 +14,6 @@ import androidx.test.espresso.matcher.ViewMatchers.withText
 import timber.log.Timber
 
 open class EntourageTestBeforeLogin : EntourageTestWithAPI() {
-    private var afM: AutofillManager? = null
     //private var activity: AppCompatActivity? = null
 
     protected fun checkNoUserIsLoggedIn(activity: AppCompatActivity?) {
@@ -39,8 +37,6 @@ open class EntourageTestBeforeLogin : EntourageTestWithAPI() {
         checkNoUserIsLoggedIn(activity)
         super.setUp(activity)
         Intents.init()
-        afM = activity.getSystemService(AutofillManager::class.java)
-        afM?.disableAutofillServices()
     }
 
     override fun tearDown() {
@@ -59,24 +55,4 @@ open class EntourageTestBeforeLogin : EntourageTestWithAPI() {
         onView(withText(titleId)).check(matches(isDisplayed()))
         onView(withText(actionId)).perform(click())
     }
-
-    protected fun closeAutofill(activity: AppCompatActivity?) {
-        if (afM == null) {
-            afM = activity?.getSystemService(AutofillManager::class.java)
-        }
-        afM?.cancel()
-        afM?.commit()
-
-        // Attempt to dismiss password suggestion dialog using UI Automator (less reliable)
-        /*try {
-            val device = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation())
-            val dismissButton = device.findObject(UiSelector().clickable(true).instance(0)) // Adjust selector as needed
-            if (dismissButton.exists()) {
-                dismissButton.click()
-            }
-        } catch (e: Exception) {
-            Timber.d(e)
-        }*/
-    }
-
 }

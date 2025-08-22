@@ -2,50 +2,47 @@ package social.entourage.android
 
 import androidx.appcompat.app.AppCompatActivity
 import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.NoMatchingViewException
 import androidx.test.espresso.action.ViewActions.click
-import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.action.ViewActions.closeSoftKeyboard
+import androidx.test.espresso.action.ViewActions.typeText
 import androidx.test.espresso.intent.Intents
-import androidx.test.espresso.intent.Intents.intended
-import androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent
-import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import social.entourage.android.api.OnboardingAPI
-import timber.log.Timber
 
 open class EntourageTestAfterLogin : EntourageTestWithAPI() {
     private val login: String = BuildConfig.TEST_ACCOUNT_LOGIN
     private val password: String = BuildConfig.TEST_ACCOUNT_PWD
 
 
-    protected fun checkUserIsLoggedIn(activity: AppCompatActivity?) {
-        activity?.let {
-            if (EntourageApplication[activity].authenticationController.isAuthenticated == false)
+    protected fun checkUserIsLoggedIn() {
+            if (!EntourageApplication.get().authenticationController.isAuthenticated) {
                 login(login, password)
-        }
+                //wait for response
+                //Thread.sleep(30000)
+            }
     }
 
     private fun login(phoneNumber: String, codePwd: String) {
         OnboardingAPI.getInstance().login(phoneNumber, codePwd) { isOK, loginResponse, _ ->
-            if (isOK) {
-                throw Exception("Login should fail")
+            if (!isOK) {
+                throw Exception("Login should not fail")
             }
         }
     }
 
-    protected fun checkFirstConnectionScreen() {
-        try {
-            onView(withId(R.id.ui_button_login)).apply {
-                check(matches(isDisplayed()))
-                perform(click())
-            }
-        } catch (e: NoMatchingViewException) {
-            Timber.w(e)
-        }
+    open fun closeAutofill() {
+    }
+
+    protected fun forceLogIn(){
+        onView(withId(R.id.ui_login_phone_et_phone)).perform(typeText(BuildConfig.TEST_ACCOUNT_LOGIN), closeSoftKeyboard())
+        closeAutofill()
+        onView(withId(R.id.ui_login_et_code)).perform(typeText(BuildConfig.TEST_ACCOUNT_PWD), closeSoftKeyboard())
+        closeAutofill()
+        onView(withId(R.id.ui_login_button_signup)).perform(click())
+        checkUserIsLoggedIn()
     }
 
     override fun setUp(activity: AppCompatActivity) {
-        checkUserIsLoggedIn(activity)
         super.setUp(activity)
         Intents.init()
     }
@@ -53,10 +50,6 @@ open class EntourageTestAfterLogin : EntourageTestWithAPI() {
     override fun tearDown() {
         Intents.release()
         super.tearDown()
-    }
-
-    protected fun checkLoginSuccessful() {
-        intended(hasComponent(MainActivity::class.java.name))
     }
 
 }
