@@ -1915,7 +1915,6 @@ Ei vor citi acest mesaj imediat ce se vor alătura grupului.</string>
     <string name="onboard_welcome_title_phone">Telefon*</string>
     <string name="onboard_welcome_title_email">E-mail</string>
     <string name="onboard_welcome_placeholder_email">adresa ta@mail.com</string>
-    <string name="onboard_welcome_placeholder_phone">0600000000</string>
     <string name="onboard_welcome_consent">Aș dori să primesc informații și sfaturi de la Entourage</string>
     <string name="onboard_welcome_info_mandatory">*Câmpuri obligatorii. Informațiile dumneavoastră vor rămâne confidențiale și nu vor fi niciodată comunicate unor terți.</string>
 

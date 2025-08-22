@@ -1921,7 +1921,6 @@
     <string name="onboard_welcome_title_phone">Телефон*</string>
     <string name="onboard_welcome_title_email">Електронна пошта</string>
     <string name="onboard_welcome_placeholder_email">youraddress@mail.com</string>
-    <string name="onboard_welcome_placeholder_phone">0600000000</string>
     <string name="onboard_welcome_consent">Я хотів би отримати інформацію та поради від Entourage</string>
     <string name="onboard_welcome_info_mandatory">*Обов&amp;apos;язкові поля. Ваша інформація залишатиметься конфіденційною та ніколи не буде передана третім особам.</string>
 

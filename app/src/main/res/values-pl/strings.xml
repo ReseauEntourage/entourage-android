@@ -1918,7 +1918,6 @@ Przeczytają tę wiadomość, gdy tylko dołączą do grupy.</string>
     <string name="onboard_welcome_title_phone">Telefon*</string>
     <string name="onboard_welcome_title_email">E-mail</string>
     <string name="onboard_welcome_placeholder_email">twójadres@mail.com</string>
-    <string name="onboard_welcome_placeholder_phone">0600000000</string>
     <string name="onboard_welcome_consent">Chcę otrzymywać informacje i porady od Entourage</string>
     <string name="onboard_welcome_info_mandatory">*Wymagane pola. Twoje dane pozostaną poufne i nigdy nie zostaną przekazane osobom trzecim.</string>
 

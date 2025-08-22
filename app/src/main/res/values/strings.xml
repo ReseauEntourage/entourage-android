@@ -2117,7 +2117,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="onboard_welcome_title_phone">Téléphone*</string>
     <string name="onboard_welcome_title_email">E-mail</string>
     <string name="onboard_welcome_placeholder_email">votreadresse@mail.com</string>
-    <string name="onboard_welcome_placeholder_phone">0600000000</string>
+    <string name="onboard_welcome_placeholder_phone" translatable="false">06XXXXXXXX</string>
     <string name="onboard_welcome_consent">Je souhaite recevoir des informations et des conseils de la part d’Entourage</string>
     <string name="onboard_welcome_info_mandatory">*Champs obligatoires. Vos informations resteront confidentielles et ne seront jamais communiquées à des tiers.</string>
 

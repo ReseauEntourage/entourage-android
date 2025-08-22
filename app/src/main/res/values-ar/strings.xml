@@ -1904,7 +1904,6 @@
     <string name="onboard_welcome_title_phone">هاتف*</string>
     <string name="onboard_welcome_title_email">بريد إلكتروني</string>
     <string name="onboard_welcome_placeholder_email">youraddress@mail.com</string>
-    <string name="onboard_welcome_placeholder_phone">0600000000</string>
     <string name="onboard_welcome_consent">أرغب في تلقي المعلومات والمشورة من Entourage</string>
     <string name="onboard_welcome_info_mandatory">*الحقول المطلوبة. ستبقى معلوماتك سرية ولن يتم نقلها إلى أطراف ثالثة أبدًا.</string>
 

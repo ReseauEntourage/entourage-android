@@ -1907,7 +1907,6 @@ Leerán este mensaje tan pronto como se unan al grupo.</string>
     <string name="onboard_welcome_title_phone">Teléfono*</string>
     <string name="onboard_welcome_title_email">Correo electrónico</string>
     <string name="onboard_welcome_placeholder_email">tudirección@mail.com</string>
-    <string name="onboard_welcome_placeholder_phone">0600000000</string>
     <string name="onboard_welcome_consent">Me gustaría recibir información y asesoramiento de Entourage</string>
     <string name="onboard_welcome_info_mandatory">*Campos obligatorios. Su información permanecerá confidencial y nunca será comunicada a terceros.</string>
 
