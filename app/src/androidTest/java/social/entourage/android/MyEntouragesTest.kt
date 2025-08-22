@@ -24,8 +24,6 @@ class MyEntouragesTest : EntourageTestAfterLogin() {
     @JvmField
     var activityRule = ActivityScenarioRule(LoginActivity::class.java)
 
-    private val login: String = "651234145"
-    private val password: String = "108674"
 
     @Before
     fun setUp() {

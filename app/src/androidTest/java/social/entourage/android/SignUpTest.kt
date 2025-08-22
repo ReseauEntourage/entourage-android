@@ -218,7 +218,7 @@ class SignUpTest : EntourageTestBeforeLogin() {
     fun alreadyUsedPhoneNumberTest() {
         fillValidNames()
 
-        phoneNumberEt.perform(typeText("0600000000"), closeSoftKeyboard())
+        phoneNumberEt.perform(typeText(BuildConfig.TEST_ACCOUNT_LOGIN), closeSoftKeyboard())
         clickNextButton()
 
         //Check that dialog shows given message

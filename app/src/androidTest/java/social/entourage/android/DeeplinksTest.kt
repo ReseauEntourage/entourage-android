@@ -69,7 +69,7 @@ open class DeepLinkingTest {
         }
 
         //User must be logged for the tests
-        login("0651234145", "108674")
+        login(BuildConfig.TEST_ACCOUNT_LOGIN, BuildConfig.TEST_ACCOUNT_PWD)
 
         //Wait for server response
         //Thread.sleep(4000)

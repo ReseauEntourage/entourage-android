@@ -14,8 +14,9 @@ import social.entourage.android.api.OnboardingAPI
 import timber.log.Timber
 
 open class EntourageTestAfterLogin : EntourageTestWithAPI() {
-    private val login = "0651234145"
-    private val password = "108674"
+    private val login: String = BuildConfig.TEST_ACCOUNT_LOGIN
+    private val password: String = BuildConfig.TEST_ACCOUNT_PWD
+
 
     protected fun checkUserIsLoggedIn(activity: AppCompatActivity?) {
         activity?.let {
