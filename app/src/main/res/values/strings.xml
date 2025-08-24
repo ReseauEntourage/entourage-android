@@ -3107,6 +3107,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="event_manage_participants_title">Inscrire les participants</string>
     <string name="event_manage_participants_subtitle">Validez la présence des participants à l’événement</string>
     <string name="event_guidelines">Charte des événements</string>
+    <string name="share_url_by">Partager l\'URL via</string>
 
     <plurals name="participants_count">
         <item quantity="one">%d participant</item>

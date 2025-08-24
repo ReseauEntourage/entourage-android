@@ -2696,6 +2696,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="question_location">Quel est votre quartier ?</string>
     <string name="input_location">Adresse ville ou département</string>
     <string name="needs_to_join_group">Vous devez rejoindre le groupe pour effectuer cette action.</string>
+    <string name="share_url_by">Partager l\'URL via</string>
 
 </resources>
 

@@ -47,6 +47,7 @@ class ActionDetailActivity : AppCompatActivity(), OnDetailActionReceive {
 
         val bundle = Bundle().apply {
             putInt(Const.ACTION_ID, id)
+            putString(Const.ACTION_TITLE, title)
             putBoolean(Const.IS_ACTION_DEMAND,isDemand)
             putBoolean(Const.IS_ACTION_MINE,isActionMine)
         }
@@ -59,8 +60,8 @@ class ActionDetailActivity : AppCompatActivity(), OnDetailActionReceive {
 
         navHostFragment.navController.setGraph(navGraph,bundle)
 
-        val _title = if (isDemand) getString(R.string.action_name_Demand) else getString(R.string.action_name_Contrib)
-        setSettingsIcon(_title)
+        val actionTitle = if (isDemand) getString(R.string.action_name_Demand) else getString(R.string.action_name_Contrib)
+        setSettingsIcon(actionTitle)
 
         binding.header.headerIconBack.setOnClickListener {
             finish()
@@ -127,7 +128,7 @@ class ActionDetailActivity : AppCompatActivity(), OnDetailActionReceive {
 
             }
             //TODO translate this
-            startActivity(Intent.createChooser(shareIntent, "Partager l'URL via"))
+            startActivity(Intent.createChooser(shareIntent, getString(R.string.share_url_by)))
         }
     }
 
