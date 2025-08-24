@@ -24,7 +24,7 @@ import social.entourage.android.onboarding.login.LoginActivity
 
 @LargeTest
 @RunWith(AndroidJUnit4::class)
-class UniversalLinkManagerPreprodTest : EntourageTestAfterLogin() {
+class UniversalLinkManagerTest : EntourageTestAfterLogin() {
 
     private val context = InstrumentationRegistry.getInstrumentation().targetContext
 
@@ -48,7 +48,7 @@ class UniversalLinkManagerPreprodTest : EntourageTestAfterLogin() {
     @Test
     fun testAppHomeLink() {
         forceLogIn()
-        val uri = Uri.parse("https://preprod.entourage.social/app/")
+        val uri = Uri.parse(URL)
         val intent = Intent(Intent.ACTION_VIEW, uri).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK
         }
@@ -61,7 +61,7 @@ class UniversalLinkManagerPreprodTest : EntourageTestAfterLogin() {
     fun testDemandDetailLink() {
         forceLogIn()
         // Créer l'URI que vous souhaitez simuler
-        val uri = Uri.parse("https://preprod.entourage.social/app/solicitations/eibewY3GW-ek")
+        val uri = Uri.parse(URL+"solicitations/eibewY3GW-ek")
 
         val intent = Intent(Intent.ACTION_VIEW, uri).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK // S'assurer que l'intent ouvre une nouvelle activité
@@ -80,7 +80,7 @@ class UniversalLinkManagerPreprodTest : EntourageTestAfterLogin() {
     @Test
     fun testGroupDetailLink() {
         forceLogIn()
-        val uri = Uri.parse("https://preprod.entourage.social/app/groups/bb8c3e77aa95")
+        val uri = Uri.parse(URL+"groups/bb8c3e77aa95")
         val intent = Intent(Intent.ACTION_VIEW, uri).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK
         }
@@ -98,7 +98,7 @@ class UniversalLinkManagerPreprodTest : EntourageTestAfterLogin() {
     @Test
     fun testOutingDetailLink() {
         forceLogIn()
-        val uri = Uri.parse("https://preprod.entourage.social/app/outings/ebJUCN-woYgM")
+        val uri = Uri.parse(URL+"outings/ebJUCN-woYgM")
         val intent = Intent(Intent.ACTION_VIEW, uri).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK
         }
@@ -115,7 +115,7 @@ class UniversalLinkManagerPreprodTest : EntourageTestAfterLogin() {
     @Test
     fun testGroupListLink() {
         forceLogIn()
-        val uri = Uri.parse("https://preprod.entourage.social/app/groups")
+        val uri = Uri.parse(URL+"groups")
         val intent = Intent(Intent.ACTION_VIEW, uri).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK
         }
@@ -132,7 +132,7 @@ class UniversalLinkManagerPreprodTest : EntourageTestAfterLogin() {
     @Test
     fun testOutingListLink() {
         forceLogIn()
-        val uri = Uri.parse("https://preprod.entourage.social/app/outings")
+        val uri = Uri.parse(URL+"outings")
         val intent = Intent(Intent.ACTION_VIEW, uri).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK
         }
@@ -149,7 +149,7 @@ class UniversalLinkManagerPreprodTest : EntourageTestAfterLogin() {
     @Test
     fun testConversationDetailLink() {
         forceLogIn()
-        val uri = Uri.parse("https://preprod.entourage.social/app/messages/er2BVAa5Vb4U")
+        val uri = Uri.parse(URL+"messages/er2BVAa5Vb4U")
         val intent = Intent(Intent.ACTION_VIEW, uri).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK
         }
@@ -160,7 +160,7 @@ class UniversalLinkManagerPreprodTest : EntourageTestAfterLogin() {
     @Test
     fun testCreateContributionLink() {
         forceLogIn()
-        val uri = Uri.parse("https://preprod.entourage.social/app/contributions/new")
+        val uri = Uri.parse(URL+"contributions/new")
         val intent = Intent(Intent.ACTION_VIEW, uri).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK
         }
@@ -182,7 +182,7 @@ class UniversalLinkManagerPreprodTest : EntourageTestAfterLogin() {
     @Test
     fun testCreateDemandLink() {
         forceLogIn()
-        val uri = Uri.parse("https://preprod.entourage.social/app/solicitations/new")
+        val uri = Uri.parse(URL+"solicitations/new")
         val intent = Intent(Intent.ACTION_VIEW, uri).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK
         }
@@ -204,7 +204,7 @@ class UniversalLinkManagerPreprodTest : EntourageTestAfterLogin() {
     @Test
     fun testContributionListLink() {
         forceLogIn()
-        val uri = Uri.parse("https://preprod.entourage.social/app/contributions")
+        val uri = Uri.parse(URL+"contributions")
         val intent = Intent(Intent.ACTION_VIEW, uri).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK
         }
@@ -223,7 +223,7 @@ class UniversalLinkManagerPreprodTest : EntourageTestAfterLogin() {
     @Test
     fun testDemandListLink() {
         forceLogIn()
-        val uri = Uri.parse("https://preprod.entourage.social/app/solicitations")
+        val uri = Uri.parse(URL+"solicitations")
         val intent = Intent(Intent.ACTION_VIEW, uri).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK
         }
@@ -241,7 +241,7 @@ class UniversalLinkManagerPreprodTest : EntourageTestAfterLogin() {
     @Test
     fun testContributionDetailLink() {
         forceLogIn()
-        val uri = Uri.parse("https://preprod.entourage.social/app/contributions/er2BVAa5Vb4U")
+        val uri = Uri.parse(URL+"contributions/er2BVAa5Vb4U")
         val intent = Intent(Intent.ACTION_VIEW, uri).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK
         }
@@ -254,5 +254,9 @@ class UniversalLinkManagerPreprodTest : EntourageTestAfterLogin() {
             withText(R.string.action_name_Contrib),
             isDisplayed()
         )).check(matches(isDisplayed()))
+    }
+
+    companion object {
+        const val URL = "https://preprod.entourage.social/app/"
     }
 }
