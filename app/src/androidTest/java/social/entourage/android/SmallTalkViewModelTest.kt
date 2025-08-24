@@ -11,12 +11,13 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import social.entourage.android.api.model.UserSmallTalkRequest
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 
 @LargeTest
 @RunWith(AndroidJUnit4::class)
-class SmallTalkViewModelLogTest {
+class SmallTalkViewModelTest {
 
     @get:Rule
     var instantTaskExecutorRule = InstantTaskExecutorRule()
@@ -30,8 +31,8 @@ class SmallTalkViewModelLogTest {
     }
 
     @Test
-    fun testMatchRequest_logsResponse() {
-        val dummyId = "fake-id" // Remplacer par un vrai ID si possible
+    fun testMatchRequest() {
+        val dummyId = "fake-id" // TODO : Remplacer par un vrai ID si possible
         val latch = CountDownLatch(1)
         var observedValue: Boolean? = null
 
@@ -72,13 +73,22 @@ class SmallTalkViewModelLogTest {
     }
 
     @Test
-    fun testListUserRequests_logsResponse() {
-        viewModel.listUserRequests()
+    fun testListUserRequests() {
+        val latch = CountDownLatch(1)
+        var observedValue: List<UserSmallTalkRequest>? = null
 
         viewModel.userRequests.observeForever {
+            observedValue = it
             Log.w("SmallTalkTest", "listUserRequests → count: ${it?.size}")
+            latch.countDown()
         }
 
-        Thread.sleep(3000)
+        viewModel.listUserRequests()
+
+        if (!latch.await(30, TimeUnit.SECONDS)) {
+            fail("LiveData did not receive value within timeout")
+        }
+
+        assertNotNull(observedValue)
     }
 }
