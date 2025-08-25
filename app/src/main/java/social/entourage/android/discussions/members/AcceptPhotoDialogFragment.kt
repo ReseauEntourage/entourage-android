@@ -3,6 +3,7 @@ package social.entourage.android.events
 import android.app.Dialog
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.ViewGroup
 import android.view.WindowManager
 import androidx.fragment.app.DialogFragment
 import social.entourage.android.databinding.DialogAcceptPhotoBinding
@@ -25,6 +26,15 @@ class AcceptPhotoDialogFragment : DialogFragment() {
             f.arguments = Bundle().apply { putInt(ARG_USER_ID, userId) }
             return f
         }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        dialog?.window?.setBackgroundDrawable(android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT))
+        dialog?.window?.setLayout(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT
+        )
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {

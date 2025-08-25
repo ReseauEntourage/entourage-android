@@ -67,6 +67,14 @@ class Conversation(
         return lastMessage?.text
     }
 
+    fun isLastMessageToday(): Boolean {
+        val d = lastMessage?.date ?: return false // pas de date => considère "pas aujourd'hui"
+        val calMsg = java.util.Calendar.getInstance().apply { time = d }
+        val calNow = java.util.Calendar.getInstance()
+        return calMsg.get(java.util.Calendar.YEAR) == calNow.get(java.util.Calendar.YEAR) &&
+                calMsg.get(java.util.Calendar.DAY_OF_YEAR) == calNow.get(java.util.Calendar.DAY_OF_YEAR)
+    }
+
     fun getRolesWithPartnerFormated() : String? {
         user?.roles?.let { roles ->
             var roleStr = ""
