@@ -103,7 +103,7 @@ class DetailConversationActivity : CommentActivity() {
 
     // Refresh (page 1 -> append en bas)
     private val refreshHandler = Handler(Looper.getMainLooper())
-    private val refreshIntervalMs = 5_000L
+    private val refreshIntervalMs = 3_000L
     private var refreshRunnable: Runnable? = null
 
     // Clé stable pour les items
@@ -495,35 +495,35 @@ class DetailConversationActivity : CommentActivity() {
 
     // ===== Envoi image =====
     private fun sendImageMessage(uri: Uri) {
-        val file: java.io.File = Utils.getFileFromUri(this, uri)
-            ?: run {
-                Toast.makeText(this, "Impossible de lire l'image", Toast.LENGTH_SHORT).show()
-                return
-            }
-
-        val content: String? = binding.commentMessage.text?.toString()?.trim().let { txt ->
-            if (txt.isNullOrEmpty()) null else txt
+        val file: File = Utils.getFileFromUri(this, uri) ?: run {
+            Toast.makeText(this, "Impossible de lire l'image", Toast.LENGTH_SHORT).show()
+            return
         }
+
+        // Use SAME logic as addComment(): keep HTML for mentions/links
+        val spanned = binding.commentMessage.editableText
+        val caption = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            Html.toHtml(spanned, Html.FROM_HTML_MODE_LEGACY)
+        } else {
+            @Suppress("DEPRECATION")
+            Html.toHtml(spanned)
+        }.trim().ifEmpty { null } // null if empty
 
         if (isSmallTalkMode) {
-            smallTalkViewModel.addMessageWithImage(smallTalkId, content, file)
+            smallTalkViewModel.addMessageWithImage(smallTalkId, caption, file)
         } else if (detailConversation?.type == "outing") {
             val eventId: Int = detailConversation?.id ?: return
-            eventPresenter.addPost(content, file, eventId)
+            eventPresenter.addPost(caption, file, eventId)
         } else {
-            val conversationId: Int? = detailConversation?.id
-            if (conversationId != null) {
-                discussionsPresenter.addCommentWithImage(conversationId, content, file)
-            } else {
-                Toast.makeText(this, "Conversation introuvable", Toast.LENGTH_SHORT).show()
-                return
-            }
+            val conversationId: Int = detailConversation?.id ?: return
+            discussionsPresenter.addCommentWithImage(conversationId, caption, file)
         }
 
-        binding.commentMessage.text?.clear()
+        binding.commentMessage.text.clear()
         binding.layoutPhoto.visibility = View.GONE
         binding.optionButton.visibility = View.VISIBLE
     }
+
 
     // ===== Détails conversation =====
     private fun handleDetailConversation(conversation: Conversation?) {

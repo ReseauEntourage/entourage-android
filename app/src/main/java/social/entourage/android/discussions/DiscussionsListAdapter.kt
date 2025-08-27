@@ -114,7 +114,7 @@ class DiscussionsListAdapter(
             // Dernier message (texte)
             binding.detail.text = conversation.getLastMessage()
 
-            // Non-lus : style existant conservé
+            // === Non-lus : style existant conservé ===
             if (conversation.hasUnread()) {
                 binding.nbUnread.visibility = View.VISIBLE
                 binding.nbUnread.text = "${conversation.numberUnreadMessages}"
@@ -125,48 +125,20 @@ class DiscussionsListAdapter(
                 binding.nbUnread.visibility = View.INVISIBLE
                 binding.date.setTextColor(binding.root.context.resources.getColor(R.color.dark_grey_opacity_40))
                 binding.detail.setTextColor(binding.root.context.resources.getColor(R.color.dark_grey_opacity_40))
-                binding.detail.setTypeface(binding.detail.typeface, Typeface.NORMAL)
+
+                // === Règle demandée : mettre le dernier message en gras si la date ≠ aujourd'hui ===
+                if (!isLastMessageToday(conversation)) {
+                    binding.detail.setTypeface(binding.detail.typeface, Typeface.BOLD)
+                } else {
+                    binding.detail.setTypeface(binding.detail.typeface, Typeface.NORMAL)
+                }
             }
 
             // Block info
             if (conversation.imBlocker()) {
                 binding.detail.text = binding.detail.resources.getText(R.string.message_user_blocked_by_me_list)
                 binding.detail.setTextColor(binding.detail.resources.getColor(R.color.red))
-            }
-
-            // === AJOUT : mettre en gras si le dernier message n'est PAS aujourd'hui ===
-            val notToday = !isLastMessageToday(conversation)
-
-            // Essaye d'utiliser la vraie fonte quicksand_bold si elle existe, sinon fallback BOLD
-            val ctx = binding.root.context
-            val quicksandBold = try {
-                ResourcesCompat.getFont(ctx, R.font.quicksand_bold)
-            } catch (_: Exception) {
-                null
-            }
-
-            // Titre
-            if (notToday) {
-                if (quicksandBold != null) {
-                    binding.name.typeface = quicksandBold
-                } else {
-                    binding.name.setTypeface(binding.name.typeface, Typeface.BOLD)
-                }
-            } else {
-                binding.name.setTypeface(binding.name.typeface, Typeface.NORMAL)
-            }
-
-            // (Optionnel) La date (visible pour outings) suit la même règle
-            if (binding.date.visibility == View.VISIBLE) {
-                if (notToday) {
-                    if (quicksandBold != null) {
-                        binding.date.typeface = quicksandBold
-                    } else {
-                        binding.date.setTypeface(binding.date.typeface, Typeface.BOLD)
-                    }
-                } else {
-                    binding.date.setTypeface(binding.date.typeface, Typeface.NORMAL)
-                }
+                binding.detail.setTypeface(binding.detail.typeface, Typeface.NORMAL) // garde la lisibilité
             }
         }
 

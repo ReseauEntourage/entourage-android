@@ -68,6 +68,7 @@ import social.entourage.android.tools.utils.Utils.enableCopyOnLongClick
 import social.entourage.android.tools.utils.VibrationUtil
 import social.entourage.android.tools.utils.px
 import social.entourage.android.tools.utils.underline
+import social.entourage.android.ui.ActionSheetFragment
 import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -437,14 +438,26 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
     }
 
     private fun handleSettingsButton() {
-        if(isAdded){
-            binding.iconSettings.setOnClickListener {
-                AnalyticsEvents.logEvent(AnalyticsEvents.Event_detail_action_param)
-                event?.let { event ->
-                    SettingsModalFragment.newInstance(event).show(parentFragmentManager, SettingsModalFragment.TAG)
-                }
+        if (!isAdded) return
 
-            }
+        binding.iconSettings.setOnClickListener {
+            // droits : organisateur / animateur (ton app : me.roles non vide)
+            val canManage = iAmOrganiser || (EntourageApplication.get().me()?.roles?.isNotEmpty() == true)
+
+            // infos d’entête pour la sheet (titre / #participants / adresse)
+            val title = event?.title
+            val participants = event?.membersCount ?: 0
+            val address = event?.metadata?.displayAddress
+
+            // conversationId: pas indispensable pour le mode EVENT de la sheet -> 0
+            ActionSheetFragment.newEvent(
+                eventId = eventId,
+                conversationId = 0,
+                canManageParticipants = canManage,
+                eventTitle = title,
+                participantsCount = participants,
+                eventAddress = address
+            ).show(parentFragmentManager, "ActionSheetEvent")
         }
     }
 

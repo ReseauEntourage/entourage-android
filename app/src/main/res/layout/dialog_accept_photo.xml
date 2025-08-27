@@ -69,6 +69,7 @@
                     android:text="@string/photo_right_decline"
                     android:background="@drawable/shape_button_v9_negative"
                     android:textAllCaps="false"
+                    android:layout_margin="10dp"
                     android:textSize="14sp" />
 
                 <Button
@@ -78,6 +79,7 @@
                     android:minWidth="0dp"
                     android:layout_marginStart="8dp"
                     android:paddingHorizontal="16dp"
+                    android:layout_margin="10dp"
                     android:background="@drawable/shape_button_v9_positive"
 
                     android:textColor="@android:color/white"
