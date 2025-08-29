@@ -1,5 +1,7 @@
 package social.entourage.android
 
+import android.os.Build
+import android.util.Log
 import android.view.autofill.AutofillManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.test.espresso.IdlingRegistry
@@ -15,6 +17,14 @@ open class EntourageTestWithAPI {
         val client = EntourageApplication[activity].apiModule.okHttpClient
         afM = activity.getSystemService(AutofillManager::class.java)
         afM?.disableAutofillServices()
+        if (SHOULD_DISABLE_GOOGLE_PWD_MGR && Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) { // Autofill settings are relevant
+            try {
+                val instrumentation = InstrumentationRegistry.getInstrumentation()
+                instrumentation.uiAutomation.executeShellCommand("settings put secure autofill_service null")
+            } catch (e: Exception) {
+                Log.e("TestSetup", "Failed to disable autofill_service via UiAutomation", e)
+            }
+        }
         resource = OkHttp3IdlingResource.create("OkHttp", client)
         IdlingRegistry.getInstance().register(resource)
         enableWifiAndData(true)
@@ -22,6 +32,14 @@ open class EntourageTestWithAPI {
 
     open fun tearDown() {
         IdlingRegistry.getInstance().unregister(resource)
+        if (SHOULD_DISABLE_GOOGLE_PWD_MGR && Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) { // Autofill settings are relevant
+            try {
+                val instrumentation = InstrumentationRegistry.getInstrumentation()
+                instrumentation.uiAutomation.executeShellCommand("settings put secure autofill_service com.google.android.gms/com.google.android.gms.autofill.service.AutofillService")
+            } catch (e: Exception) {
+                Log.e("TestSetup", "Failed to enable autofill_service via UiAutomation", e)
+            }
+        }
         enableWifiAndData(true)
     }
 
@@ -55,5 +73,6 @@ open class EntourageTestWithAPI {
 
     companion object {
         const val SHOULD_SET_WIFI_STATE = true
+        const val SHOULD_DISABLE_GOOGLE_PWD_MGR = true
     }
 }
