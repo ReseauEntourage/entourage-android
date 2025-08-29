@@ -8,7 +8,7 @@ import android.widget.TextView
 import social.entourage.android.BuildConfig
 import social.entourage.android.MainActivity
 import social.entourage.android.notifications.EntourageFirebaseMessagingService
-import java.util.*
+import java.util.Locale
 
 /**
  * Handles the deep links received by the app
@@ -117,8 +117,6 @@ object DeepLinksManager {
             activity.showGuide()
         } else if (key == DeepLinksView.EVENTS.view) {
             activity.showEvents()
-        } else if (key == DeepLinksView.MY_CONVERSATIONS.view) {
-            activity.showMyEntourages()
         } else if (key == DeepLinksView.CREATE_ACTION.view) {
             activity.showActionsTab()
         } else if (key == DeepLinksView.ENTOURAGE.view || key == DeepLinksView.ENTOURAGES.view || key == DeepLinksView.APPLINK_ACTION.view) {
@@ -149,7 +147,6 @@ object DeepLinksManager {
         //FILTERS("filters"),
         EVENTS("events"),
         GUIDE("guide"),
-        MY_CONVERSATIONS("messages"),
         CREATE_ACTION("create-action"),
         TUTORIAL("tutorial"),
         GUIDE_MAP("guidemap"),
