@@ -8,6 +8,7 @@ import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.intent.Intents.intended
 import androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
+import androidx.test.espresso.matcher.ViewMatchers.isSelected
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.rules.ActivityScenarioRule
@@ -147,6 +148,20 @@ class UniversalLinkManagerTest : EntourageTestAfterLogin() {
     }
 
     @Test
+    fun testWrongConversationDetailLink() {
+        forceLogIn()
+        val uri = Uri.parse(URL+"messages/er2BVAa5Vb4U")
+        val intent = Intent(Intent.ACTION_VIEW, uri).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        }
+        context.startActivity(intent)
+        onView(allOf(
+            withText(R.string.home_v2_title),
+            isDisplayed()
+        )).check(matches(isDisplayed()))
+    }
+
+    @Test
     fun testConversationDetailLink() {
         forceLogIn()
         val uri = Uri.parse(URL+"messages/er2BVAa5Vb4U")
@@ -154,7 +169,10 @@ class UniversalLinkManagerTest : EntourageTestAfterLogin() {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK
         }
         context.startActivity(intent)
-        //TODO What to check ?
+        onView(allOf(
+            withId(R.id.comments),
+            isDisplayed()
+        )).check(matches(isDisplayed()))
     }
 
     @Test
@@ -217,7 +235,11 @@ class UniversalLinkManagerTest : EntourageTestAfterLogin() {
             withText(R.string.actions_title),
             isDisplayed()
         )).check(matches(isDisplayed()))
-        //TODO check if right tab is selected
+        onView(allOf(
+            withText(R.string.actions_tab_contribs),
+            isDisplayed(),
+            isSelected()
+        )).check(matches(isDisplayed()))
     }
 
     @Test
@@ -235,7 +257,11 @@ class UniversalLinkManagerTest : EntourageTestAfterLogin() {
             withText(R.string.actions_title),
             isDisplayed()
         )).check(matches(isDisplayed()))
-        //TODO check if right tab is selected
+        onView(allOf(
+            withText(R.string.actions_tab_demands),
+            isDisplayed(),
+            isSelected()
+        )).check(matches(isDisplayed()))
     }
 
     @Test
