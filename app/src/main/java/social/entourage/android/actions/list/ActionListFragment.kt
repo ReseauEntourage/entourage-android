@@ -1,7 +1,6 @@
 package social.entourage.android.actions.list
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,11 +9,14 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import social.entourage.android.EntourageApplication
+import social.entourage.android.R
 import social.entourage.android.actions.ActionsPresenter
 import social.entourage.android.api.model.Action
 import social.entourage.android.api.model.EventActionLocationFilters
 import social.entourage.android.databinding.FragmentActionListBinding
 import social.entourage.android.main_filter.MainFilterActivity
+import social.entourage.android.tools.utils.CustomAlertDialog
+import timber.log.Timber
 
 class ActionListFragment : Fragment() {
 
@@ -30,12 +32,11 @@ class ActionListFragment : Fragment() {
     // Variables
     private var page: Int = 0
 
-    private var isContrib = false
     private var isSearching = false
 
     private var demandeActions: MutableList<Action> = mutableListOf()
 
-    private var currentSectionsFilters = MainFilterActivity.savedActionInterests
+//    private var currentSectionsFilters = MainFilterActivity.savedActionInterests
     var query = ""
 
     override fun onCreateView(
@@ -59,7 +60,6 @@ class ActionListFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        isContrib = actionsPresenter.isContrib
         reloadActions()
         binding.progressBar.visibility = View.VISIBLE
     }
@@ -75,45 +75,45 @@ class ActionListFragment : Fragment() {
         demandeActions.clear()
         actionAdapter.notifyDataSetChanged()
         actionsPresenter.isLastPage = false
-        loadAction()
-        Log.d("ActionListFragment", "reloadActions")
+        loadActions()
+        Timber.tag("ActionListFragment").d("reloadActions")
     }
 
-    fun loadAction() {
+    fun loadActions() {
         if (actionsPresenter.isLoading || actionsPresenter.isLastPage) return
         actionsPresenter.isLoading = true
 
         page++
         if (isSearching) {
-            if (isContrib) {
-                Log.d("ActionListFragment", "isSearching contrib")
+            if (actionsPresenter.isContrib) {
+                Timber.tag("ActionListFragment").d("isSearching contrib")
                 actionsPresenter.getAllContribsWithSearchQuery(query, page, EVENTS_PER_PAGE)
             } else {
-                Log.d("ActionListFragment", "isSearching demand")
+                Timber.tag("ActionListFragment").d("isSearching demand")
                 actionsPresenter.getAllDemandsWithSearchQuery(query, page, EVENTS_PER_PAGE)
             }
         } else if (MainFilterActivity.hasFilter) {
             val sections = MainFilterActivity.savedActionInterests.joinToString(",")
-            if (isContrib) {
-                Log.d("ActionListFragment", "sections contrib")
+            if (actionsPresenter.isContrib) {
+                Timber.tag("ActionListFragment").d("sections contrib")
                 actionsPresenter.getAllContribsWithFilter(page, EVENTS_PER_PAGE, MainFilterActivity.savedRadius, MainFilterActivity.savedLocation?.lat, MainFilterActivity.savedLocation?.lng, sections)
             } else {
-                Log.d("ActionListFragment", "sections demand")
+                Timber.tag("ActionListFragment").d("sections demand")
                 actionsPresenter.getAllDemandsWithFilter(page, EVENTS_PER_PAGE, MainFilterActivity.savedRadius, MainFilterActivity.savedLocation?.lat, MainFilterActivity.savedLocation?.lng, sections)
             }
         } else {
-            if (isContrib) {
-                Log.d("ActionListFragment", "all contrib")
+            if (actionsPresenter.isContrib) {
+                Timber.tag("ActionListFragment").d("all contrib")
                 actionsPresenter.getAllContribs(page, EVENTS_PER_PAGE, currentFilters.travel_distance(), currentFilters.latitude(), currentFilters.longitude(), null)
             } else {
-                Log.d("ActionListFragment", "all demand")
+                Timber.tag("ActionListFragment").d("all demand")
                 actionsPresenter.getAllDemands(page, EVENTS_PER_PAGE, currentFilters.travel_distance(), currentFilters.latitude(), currentFilters.longitude(), null)
             }
         }
     }
 
     private fun initializeAdapter() {
-        actionAdapter = ActionsListAdapter(myId, isContrib, requireContext())
+        actionAdapter = ActionsListAdapter(myId, requireContext())
     }
 
     private fun initializeRecyclerView() {
@@ -124,13 +124,13 @@ class ActionListFragment : Fragment() {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                     super.onScrolled(recyclerView, dx, dy)
 
-                    val layoutManager = recyclerView.layoutManager as LinearLayoutManager
-                    val totalItemCount = layoutManager.itemCount
-                    val visibleItemCount = layoutManager.childCount
-                    val firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition()
+//                    val layoutManager = recyclerView.layoutManager as LinearLayoutManager
+//                    val totalItemCount = layoutManager.itemCount
+//                    val visibleItemCount = layoutManager.childCount
+//                    val firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition()
 
                     if (!recyclerView.canScrollVertically(1) && !actionsPresenter.isLoading && !actionsPresenter.isLastPage) {
-                        loadAction()
+                        loadActions()
                     }
                 }
             })
@@ -146,6 +146,14 @@ class ActionListFragment : Fragment() {
     private fun observeActions() {
         actionsPresenter.getAllActions.observe(viewLifecycleOwner, { actions ->
             handleActions(actions)
+        })
+        actionsPresenter.errorLoadingActions.observe(viewLifecycleOwner, { error ->
+            if (error) {
+                actionsPresenter.isLoading = false
+                binding.progressBar.visibility = View.GONE
+                CustomAlertDialog.showWithoutActions(requireContext(), getString(R.string.error_generic), getString(R.string.network_error))
+                actionsPresenter.errorLoadingActions.value = false
+            }
         })
     }
 
@@ -165,7 +173,7 @@ class ActionListFragment : Fragment() {
             binding.recyclerView.visibility = View.VISIBLE
         }
         this.demandeActions.addAll(actions)
-        actionAdapter.resetData(demandeActions, isContrib)
+        actionAdapter.resetData(demandeActions, actionsPresenter.isContrib)
         binding.progressBar.visibility = View.GONE
     }
 

@@ -163,7 +163,7 @@ class CreateEventFragment : Fragment() {
     private fun showAlertDialogUpdateEventWithRecurrence() {
         val layoutInflater = LayoutInflater.from(requireContext())
         val customDialog: View =
-            layoutInflater.inflate(R.layout.new_custom_alert_dialog_cancel_event, null)
+            layoutInflater.inflate(R.layout.layout_custom_alert_dialog_cancel_event, null)
         val builder = AlertDialog.Builder(requireContext())
         builder.setView(customDialog)
         val alertDialog = builder.create()

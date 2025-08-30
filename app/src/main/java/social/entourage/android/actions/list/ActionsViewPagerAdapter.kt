@@ -4,12 +4,10 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import social.entourage.android.actions.ActionsPresenter
 import social.entourage.android.actions.list.me.MyActionsListFragment
 
 class ActionsViewPagerAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycle) :
     FragmentStateAdapter(fragmentManager, lifecycle) {
-    private val NB_TABS = 3
 
     override fun getItemCount(): Int {
         return NB_TABS
@@ -23,5 +21,9 @@ class ActionsViewPagerAdapter(fragmentManager: FragmentManager, lifecycle: Lifec
         }else{
             MyActionsListFragment()
         }
+    }
+
+    companion object {
+        const val NB_TABS = 3
     }
 }

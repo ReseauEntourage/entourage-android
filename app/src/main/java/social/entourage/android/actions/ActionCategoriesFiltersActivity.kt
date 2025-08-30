@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import social.entourage.android.actions.ActionsFragment.Companion.CATEGORIES_FILTERS
 import social.entourage.android.api.model.ActionSectionFilters
 import social.entourage.android.databinding.ActivityActionCatFiltersBinding
 import social.entourage.android.tools.updatePaddingTopForEdgeToEdge

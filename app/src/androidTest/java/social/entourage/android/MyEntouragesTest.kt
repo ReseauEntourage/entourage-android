@@ -4,6 +4,7 @@ import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
+import androidx.test.espresso.matcher.ViewMatchers.isSelected
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.rules.ActivityScenarioRule
@@ -53,9 +54,11 @@ class MyEntouragesTest : EntourageTestAfterLogin() {
         bottomBarMessagesButton.perform(click())
         val myEntouragesTab = onView(allOf(withText(R.string.actions_tab_mygroup), isDisplayed()))
         myEntouragesTab.perform(click())
+        onView(allOf(withText(R.string.actions_tab_mygroup), isDisplayed(), isSelected()))
+            .check(ViewAssertions.matches(isDisplayed()))
     }
 
-    //@Test
+    @Test
     fun retrieveFeedsFailureNoInternetConnection() {
         forceLogIn()
         //Disable wifi and data

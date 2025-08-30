@@ -236,7 +236,7 @@ class ActionLocationFilterActivity : AppCompatActivity() {
             Activity.RESULT_OK -> {
                 val place = data?.let { Autocomplete.getPlaceFromIntent(it) }
                 if (place == null || place.address == null) return@registerForActivityResult
-                var addressStr = place.address.toString()
+                var addressStr : String = place.address
                 val lastCommaIndex = addressStr.lastIndexOf(',')
                 if (lastCommaIndex > 0) {
                     addressStr = addressStr.substring(0, lastCommaIndex)

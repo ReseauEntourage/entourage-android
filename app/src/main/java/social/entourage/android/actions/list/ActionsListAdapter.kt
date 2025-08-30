@@ -27,11 +27,9 @@ import social.entourage.android.tools.utils.px
 
 class ActionsListAdapter(
     var userId: Int?,
-    private val isContrib:Boolean,
+    //private val isContrib:Boolean,
     var context: Context
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-    val TYPE_CONTRIB = 0
-    val TYPE_DEMAND = 1
     var groupsList: MutableList<Action> = mutableListOf()
     var isModContrib = false
     fun resetData(groupsList: MutableList<Action>, isContrib: Boolean) {
@@ -162,5 +160,10 @@ class ActionsListAdapter(
 
     override fun getItemCount(): Int {
         return groupsList.size
+    }
+
+    companion object {
+        const val TYPE_CONTRIB = 0
+        const val TYPE_DEMAND = 1
     }
 }

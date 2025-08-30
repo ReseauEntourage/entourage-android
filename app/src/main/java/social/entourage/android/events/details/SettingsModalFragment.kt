@@ -303,7 +303,7 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
 
     private fun showAlertDialogCancelEventWithRecurrence() {
         val custom = LayoutInflater.from(requireContext())
-            .inflate(R.layout.new_custom_alert_dialog_cancel_event, null)
+            .inflate(R.layout.layout_custom_alert_dialog_cancel_event, null)
         val dialog = AlertDialog.Builder(requireContext()).setView(custom).create()
 
         val btnYes = custom.findViewById<Button>(R.id.yes)
