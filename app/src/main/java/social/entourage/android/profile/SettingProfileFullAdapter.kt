@@ -143,8 +143,7 @@ class SettingProfileFullAdapter(
                                 context.getString(R.string.delete_account_dialog_content),
                                 context.getString(R.string.delete)
                             ) {
-                                EntourageApplication.get().apiModule.userRequest.deleteUser()
-
+                                EntourageApplication.get().deleteAccount()
                                 (context as Activity).finish()
                             }
                         }

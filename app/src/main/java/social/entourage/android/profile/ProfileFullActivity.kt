@@ -32,6 +32,7 @@ import social.entourage.android.home.HomePresenter
 import social.entourage.android.language.LanguageManager
 import social.entourage.android.profile.editProfile.EditPhotoActivity
 import social.entourage.android.profile.settings.ProfilFullViewModel
+import social.entourage.android.profile.settings.SettingsPresenter
 import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.VibrationUtil
