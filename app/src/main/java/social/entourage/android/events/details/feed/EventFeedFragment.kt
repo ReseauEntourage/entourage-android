@@ -470,6 +470,7 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
 
     private fun handleAboutButton() {
         binding.btnAddCalendar.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.add_to_calendar_yes_clicked)
             shouldAddToAgenda = false
             val startMillis: Long = Calendar.getInstance().run {
                 time = event?.metadata?.startsAt ?: time
