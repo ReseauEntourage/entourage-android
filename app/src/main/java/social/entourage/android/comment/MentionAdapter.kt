@@ -27,7 +27,7 @@ class MentionAdapter(
         return id.toLong()
     }
 
-    override fun getItemCount(): Int = users.size // ← plus de limite
+    override fun getItemCount(): Int = users.size
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MentionViewHolder {
         val view = LayoutInflater.from(parent.context)
