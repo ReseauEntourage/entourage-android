@@ -248,7 +248,7 @@
                 android:id="@+id/option_button"
                 android:layout_gravity="start"
                 android:background="@drawable/ic_conversation_more_option"
-                android:visibility="visible"/>
+                android:visibility="gone"/>
 
             <EditText
                 android:id="@+id/comment_message"

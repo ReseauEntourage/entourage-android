@@ -330,6 +330,7 @@ class DetailConversationActivity : CommentActivity() {
 
     private fun setupOptionMenu() {
         var isOptionsVisible = false
+
         binding.optionButton.setOnClickListener {
             isOptionsVisible = !isOptionsVisible
             if (isOptionsVisible) {
@@ -555,8 +556,10 @@ class DetailConversationActivity : CommentActivity() {
             }
         }
 
-        if (conversation.type == "outing" && !isSmallTalkMode) {
+        if (conversation.type == "outing") {
             binding.optionButton.visibility = View.VISIBLE
+        }else {
+            binding.optionButton.visibility = View.GONE
         }
         if (conversation.type == "outing" || isSmallTalkMode) {
             binding.layoutEventConv.visibility = View.VISIBLE
@@ -587,6 +590,7 @@ class DetailConversationActivity : CommentActivity() {
         }
         if (conversation.memberCount > 2 && conversation.members != null) {
             val currentUserId = EntourageApplication.get().me()?.id
+
             val names = conversation.members
                 .filter { it?.id != currentUserId }
                 .take(5)
