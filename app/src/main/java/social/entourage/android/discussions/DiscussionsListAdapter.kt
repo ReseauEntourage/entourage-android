@@ -27,6 +27,11 @@ class DiscussionsListAdapter(
     private var onItemClickListener: OnItemClick
 ) : RecyclerView.Adapter<DiscussionsListAdapter.ViewHolder>() {
 
+    fun resetData(){
+        messagesList = emptyList()
+        notifyDataSetChanged()
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DiscussionsListAdapter.ViewHolder {
         val view = LayoutConversationHomeItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(view)

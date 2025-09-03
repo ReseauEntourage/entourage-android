@@ -157,12 +157,14 @@ class DiscussionsMainFragment : Fragment() {
             FilterMode.SMALLTALKS-> "Smalltalk"
         }
 
+
+
     private fun reloadFromStart() {
-        messagesList.clear()
+        resetMessagesList()
         page = 0
         discussionsPresenter.isLastPage = false
         discussionsPresenter.getAllMessages.value?.clear()
-        binding.recyclerView.adapter?.notifyDataSetChanged()
+       // discussionsAdapter.resetData()
         discussionsPresenter.currentPageMemberships = 1
         discussionsPresenter.isLastPageMemberships = false
         loadMessages()
@@ -210,7 +212,6 @@ class DiscussionsMainFragment : Fragment() {
         binding.swipeRefresh.isRefreshing = false
         binding.progressBar.visibility = View.VISIBLE
 
-        // Plus de pagination ici : la nouvelle route ne la supporte pas encore
         when (currentFilterMode) {
             FilterMode.ALL -> discussionsPresenter.fetchMemberships(null)
             FilterMode.PRIVATE -> discussionsPresenter.fetchMemberships("Conversation")
