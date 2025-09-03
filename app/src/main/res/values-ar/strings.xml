@@ -2284,47 +2284,47 @@
     <string name="pop_up_rugby_france_content">أفضل اللقاءات لا تحدث بالضرورة في الملعب! انضم إلى مجموعة \ "دعونا نمارس الرياضة معًا\"</string>
 
     <!-- New Home string -->
-    <string name="home_v2_title">التطبيق الذي يعيد إنشاء الروابط بين الجيران</string>
+    <string name="home_title">التطبيق الذي يعيد إنشاء الروابط بين الجيران</string>
 
-    <string name="home_v2_title_action"> تقديم يد العون والمساعدة</string>
-    <string name="home_v2_subtitle_action">جيرانك بحاجة إليك!</string>
-    <string name="home_v2_btn_more_action">رؤية جميع طلب مساعدة</string>
+    <string name="home_title_action"> تقديم يد العون والمساعدة</string>
+    <string name="home_subtitle_action">جيرانك بحاجة إليك!</string>
+    <string name="home_btn_more_action">رؤية جميع طلب مساعدة</string>
 
-    <string name="home_v2_title_action_contrib">هل تحتاج إلى d\ يد المساعدة؟</string>
-    <string name="home_v2_subtitle_action_contrib">اكتشف ما يقدمه جيرانك!</string>
-    <string name="home_v2_btn_more_action_contrib">رؤية جميع المساهمات</string>
+    <string name="home_title_action_contrib">هل تحتاج إلى d\ يد المساعدة؟</string>
+    <string name="home_subtitle_action_contrib">اكتشف ما يقدمه جيرانك!</string>
+    <string name="home_btn_more_action_contrib">رؤية جميع المساهمات</string>
 
-    <string name="home_v2_title_event">المشاركة في حدث تضامني</string>
-    <string name="home_v2_subtitle_event">الكثير من التضامن في مكان قريب</string>
-    <string name="home_v2_btn_more_event">رؤية جميع الفعالية</string>
+    <string name="home_title_event">المشاركة في حدث تضامني</string>
+    <string name="home_subtitle_event">الكثير من التضامن في مكان قريب</string>
+    <string name="home_btn_more_event">رؤية جميع الفعالية</string>
     <string name="tag_other">آخر</string>
 
-    <string name="home_v2_title_group">مجموعات جيرانك</string>
-    <string name="home_v2_subtitle_group">تبادل مع جيرانك من جميع مناحي الحياة</string>
-    <string name="home_v2_btn_more_group">رؤية كافة المجموعات</string>
+    <string name="home_title_group">مجموعات جيرانك</string>
+    <string name="home_subtitle_group">تبادل مع جيرانك من جميع مناحي الحياة</string>
+    <string name="home_btn_more_group">رؤية كافة المجموعات</string>
 
-    <string name="home_v2_title_map">اكتشف عناوين مفيدة</string>
-    <string name="home_v2_subtitle_map">جميع الهياكل التضامنية في مكان قريب</string>
-    <string name="home_v2_button_map">اكتشف الخريطة</string>
+    <string name="home_title_map">اكتشف عناوين مفيدة</string>
+    <string name="home_subtitle_map">جميع الهياكل التضامنية في مكان قريب</string>
+    <string name="home_button_map">اكتشف الخريطة</string>
 
-    <string name="home_v2_title_pedago">كل ما تحتاج إلى معرفته لاتخاذ الإجراءات اللازمة</string>
-    <string name="home_v2_subtitle_pedago">محاربة عدم الاستقرار مثل كل شيء، يمكن تعلمه!</string>
-    <string name="home_v2_btn_more_pedago">عرض جميع المقالات</string>
+    <string name="home_title_pedago">كل ما تحتاج إلى معرفته لاتخاذ الإجراءات اللازمة</string>
+    <string name="home_subtitle_pedago">محاربة عدم الاستقرار مثل كل شيء، يمكن تعلمه!</string>
+    <string name="home_btn_more_pedago">عرض جميع المقالات</string>
 
     <string name="home_v2_pedago_item_tag_all">الجميع</string>
     <string name="home_v2_pedago_item_tag_act">لكي تمثل</string>
     <string name="home_v2_pedago_item_tag_inspire">يلهم</string>
     <string name="home_v2_pedago_item_tag_understand">لفهم</string>
 
-    <string name="home_v2_title_help">أنت ضائع ؟</string>
-    <string name="home_v2_subtitle_help">لا داعي للذعر، ابدأ خطوة بخطوة!</string>
+    <string name="home_title_help">أنت ضائع ؟</string>
+    <string name="home_subtitle_help">لا داعي للذعر، ابدأ خطوة بخطوة!</string>
     <string name="home_v2_btn_more_help">عرض جميع المقالات</string>
 
     <string name="home_v2_help_title_one">كيفية إنشاء مجموعة؟</string>
     <string name="home_v2_help_title_two">كيفية إنشاء حدث؟</string>
-    <string name="home_v2_help_title_three">سؤال؟\nاتصل بـ%s</string>
+    <string name="home_help_title_three">سؤال؟\nاتصل بـ%s</string>
 
-    <string name="home_v2_pedag_item_lenght_title">"قراءة %d دقيقة</string>
+    <string name="home_v2_pedago_item_length_title">"قراءة %d دقيقة</string>
 
     <string name="home_v2_hz_item_title">"مرحبًا، يبدو المكان هادئًا بعض الشيء هنا...</string>
     <string name="home_v2_hz_item_subtitle">"ماذا لو جلبت القليل من التضامن إلى مدينتك؟ تمنحك Entourage المفاتيح للبدء!</string>
@@ -2576,8 +2576,8 @@
     <string name="event_search_hint">البحث عن حدث</string>
     <string name="action_search_hint">البحث عن عمل</string>
     <string name="search_participant_hint">البحث عن مشارك</string>
-    <string name="home_v2_title_sensibilisation">التوعية</string>
-    <string name="home_v2_subtitle_sensibilisation">بعض الاقتراحات للقراءة للبدء</string>
+    <string name="home_title_sensibilisation">التوعية</string>
+    <string name="home_subtitle_sensibilisation">بعض الاقتراحات للقراءة للبدء</string>
     <string name="interest_activites_onboarding">أنشطة \nيدوية</string>
     <string name="interest_activites_main_filter">أنشطة يدوية</string>
     <string name="my_onboarding">تخصيص حسابي</string>

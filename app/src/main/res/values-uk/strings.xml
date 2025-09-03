@@ -2302,47 +2302,47 @@
     <string name="pop_up_rugby_france_content">Найкращі зустрічі не обов&amp;apos;язково відбуваються на стадіоні! Приєднуйтесь до групи \ «Давайте разом займатися спортом\»</string>
 
     <!-- New Home string -->
-    <string name="home_v2_title">Програма L\, яка відтворює зв’язки між сусідами</string>
+    <string name="home_title">Програма L\, яка відтворює зв’язки між сусідами</string>
 
-    <string name="home_v2_title_action">Дайте поштовх</string>
-    <string name="home_v2_subtitle_action">Ви потрібні своїм сусідам!</string>
-    <string name="home_v2_btn_more_action">Переглянути всі запити</string>
+    <string name="home_title_action">Дайте поштовх</string>
+    <string name="home_subtitle_action">Ви потрібні своїм сусідам!</string>
+    <string name="home_btn_more_action">Переглянути всі запити</string>
 
-    <string name="home_v2_title_action_contrib">Потрібна допомога d\?</string>
-    <string name="home_v2_subtitle_action_contrib">Дізнайтеся, що пропонують ваші сусіди!</string>
-    <string name="home_v2_btn_more_action_contrib">Переглянути всі внески</string>
+    <string name="home_title_action_contrib">Потрібна допомога d\?</string>
+    <string name="home_subtitle_action_contrib">Дізнайтеся, що пропонують ваші сусіди!</string>
+    <string name="home_btn_more_action_contrib">Переглянути всі внески</string>
 
-    <string name="home_v2_title_event">Взяти участь в акції солідарності</string>
-    <string name="home_v2_subtitle_event">Багато солідарності поруч</string>
-    <string name="home_v2_btn_more_event">Переглянути всі події</string>
+    <string name="home_title_event">Взяти участь в акції солідарності</string>
+    <string name="home_subtitle_event">Багато солідарності поруч</string>
+    <string name="home_btn_more_event">Переглянути всі події</string>
     <string name="tag_other">Інший</string>
 
-    <string name="home_v2_title_group">Ваші групи сусідів</string>
-    <string name="home_v2_subtitle_group">Обмінюйтеся з сусідами з усіх верств суспільства</string>
-    <string name="home_v2_btn_more_group">Переглянути всі групи</string>
+    <string name="home_title_group">Ваші групи сусідів</string>
+    <string name="home_subtitle_group">Обмінюйтеся з сусідами з усіх верств суспільства</string>
+    <string name="home_btn_more_group">Переглянути всі групи</string>
 
-    <string name="home_v2_title_map">Відкрийте для себе корисні адреси</string>
-    <string name="home_v2_subtitle_map">Всі споруди солідарності поруч</string>
-    <string name="home_v2_button_map">Карта місць солідарності</string>
+    <string name="home_title_map">Відкрийте для себе корисні адреси</string>
+    <string name="home_subtitle_map">Всі споруди солідарності поруч</string>
+    <string name="home_button_map">Карта місць солідарності</string>
 
-    <string name="home_v2_title_pedago">Усе, що вам потрібно знати, щоб діяти</string>
-    <string name="home_v2_subtitle_pedago">Боротьба з нестабільністю – це як усе, цьому можна навчитися!</string>
-    <string name="home_v2_btn_more_pedago">Переглянути всі статті</string>
+    <string name="home_title_pedago">Усе, що вам потрібно знати, щоб діяти</string>
+    <string name="home_subtitle_pedago">Боротьба з нестабільністю – це як усе, цьому можна навчитися!</string>
+    <string name="home_btn_more_pedago">Переглянути всі статті</string>
 
     <string name="home_v2_pedago_item_tag_all">все</string>
     <string name="home_v2_pedago_item_tag_act">Діяти</string>
     <string name="home_v2_pedago_item_tag_inspire">Надихайте</string>
     <string name="home_v2_pedago_item_tag_understand">Зрозуміти</string>
 
-    <string name="home_v2_title_help">Ви заблукали?</string>
-    <string name="home_v2_subtitle_help">Не панікуйте, починайте крок за кроком!</string>
+    <string name="home_title_help">Ви заблукали?</string>
+    <string name="home_subtitle_help">Не панікуйте, починайте крок за кроком!</string>
     <string name="home_v2_btn_more_help">Переглянути всі статті</string>
 
     <string name="home_v2_help_title_one">Як створити групу?</string>
     <string name="home_v2_help_title_two">Як створити подію?</string>
-    <string name="home_v2_help_title_three">Питання? \nЗв’язатися з %s</string>
+    <string name="home_help_title_three">Питання? \nЗв’язатися з %s</string>
 
-    <string name="home_v2_pedag_item_lenght_title">«Прочитано %d хв</string>
+    <string name="home_v2_pedago_item_length_title">«Прочитано %d хв</string>
 
     <string name="home_v2_hz_item_title">«Гей, тут, здається, трохи тихо…</string>
     <string name="home_v2_hz_item_subtitle">"Що, якби ви принесли трохи солідарності у своє місто? Entourage дасть вам ключі, щоб почати!</string>
