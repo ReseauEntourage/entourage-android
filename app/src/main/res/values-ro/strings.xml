@@ -2296,47 +2296,47 @@ Ei vor citi acest mesaj imediat ce se vor alătura grupului.</string>
     <string name="pop_up_rugby_france_content">Cele mai bune întâlniri nu au loc neapărat pe stadion! Alăturați-vă grupului \ „Să trăim împreună sportul\”</string>
 
     <!-- New Home string -->
-    <string name="home_v2_title">Aplicația L\ care recreează legături între vecini</string>
+    <string name="home_title">Aplicația L\ care recreează legături între vecini</string>
 
-    <string name="home_v2_title_action">Da un impuls</string>
-    <string name="home_v2_subtitle_action">Vecinii tăi au nevoie de tine!</string>
-    <string name="home_v2_btn_more_action">Vezi toate cererile</string>
+    <string name="home_title_action">Da un impuls</string>
+    <string name="home_subtitle_action">Vecinii tăi au nevoie de tine!</string>
+    <string name="home_btn_more_action">Vezi toate cererile</string>
 
-    <string name="home_v2_title_action_contrib">Aveți nevoie de o mână de ajutor d\?</string>
-    <string name="home_v2_subtitle_action_contrib">Află ce oferă vecinii tăi!</string>
-    <string name="home_v2_btn_more_action_contrib">Vedeți toate contribuțiile</string>
+    <string name="home_title_action_contrib">Aveți nevoie de o mână de ajutor d\?</string>
+    <string name="home_subtitle_action_contrib">Află ce oferă vecinii tăi!</string>
+    <string name="home_btn_more_action_contrib">Vedeți toate contribuțiile</string>
 
-    <string name="home_v2_title_event">Participați la un eveniment de solidaritate</string>
-    <string name="home_v2_subtitle_event">Multă solidaritate în apropiere</string>
-    <string name="home_v2_btn_more_event">Vezi toate evenimentele</string>
+    <string name="home_title_event">Participați la un eveniment de solidaritate</string>
+    <string name="home_subtitle_event">Multă solidaritate în apropiere</string>
+    <string name="home_btn_more_event">Vezi toate evenimentele</string>
     <string name="tag_other">Alte</string>
 
-    <string name="home_v2_title_group">Grupurile voastre de vecini</string>
-    <string name="home_v2_subtitle_group">Schimbă cu vecinii tăi din toate categoriile sociale</string>
-    <string name="home_v2_btn_more_group">Vedeți toate grupurile</string>
+    <string name="home_title_group">Grupurile voastre de vecini</string>
+    <string name="home_subtitle_group">Schimbă cu vecinii tăi din toate categoriile sociale</string>
+    <string name="home_btn_more_group">Vedeți toate grupurile</string>
 
-    <string name="home_v2_title_map">Descoperiți adrese utile</string>
-    <string name="home_v2_subtitle_map">Toate structurile de solidaritate din apropiere</string>
-    <string name="home_v2_button_map">Descoperă harta</string>
+    <string name="home_title_map">Descoperiți adrese utile</string>
+    <string name="home_subtitle_map">Toate structurile de solidaritate din apropiere</string>
+    <string name="home_button_map">Descoperă harta</string>
 
-    <string name="home_v2_title_pedago">Tot ce trebuie să știi pentru a acționa</string>
-    <string name="home_v2_subtitle_pedago">Combaterea precarității este ca orice, se poate învăța!</string>
-    <string name="home_v2_btn_more_pedago">Vezi toate articolele</string>
+    <string name="home_title_pedago">Tot ce trebuie să știi pentru a acționa</string>
+    <string name="home_subtitle_pedago">Combaterea precarității este ca orice, se poate învăța!</string>
+    <string name="home_btn_more_pedago">Vezi toate articolele</string>
 
     <string name="home_v2_pedago_item_tag_all">Toate</string>
     <string name="home_v2_pedago_item_tag_act">A acționa</string>
     <string name="home_v2_pedago_item_tag_inspire">A inspira</string>
     <string name="home_v2_pedago_item_tag_understand">A întelege</string>
 
-    <string name="home_v2_title_help">Esti pierdut ?</string>
-    <string name="home_v2_subtitle_help">Nu intrați în panică, începeți pas cu pas!</string>
+    <string name="home_title_help">Esti pierdut ?</string>
+    <string name="home_subtitle_help">Nu intrați în panică, începeți pas cu pas!</string>
     <string name="home_v2_btn_more_help">Vezi toate articolele</string>
 
     <string name="home_v2_help_title_one">Cum se creează un grup?</string>
     <string name="home_v2_help_title_two">Cum se creează un eveniment?</string>
-    <string name="home_v2_help_title_three">O întrebare?\nContactați %s</string>
+    <string name="home_help_title_three">O întrebare?\nContactați %s</string>
 
-    <string name="home_v2_pedag_item_lenght_title">„%d min. de citire</string>
+    <string name="home_v2_pedago_item_length_title">„%d min. de citire</string>
 
     <string name="home_v2_hz_item_title">„Hei, pare puțin liniștit pe aici...</string>
     <string name="home_v2_hz_item_subtitle">„Dacă ai aduce puțină solidaritate în orașul tău? Entourage îți dă cheile pentru a începe!</string>
@@ -2546,8 +2546,8 @@ Ei vor citi acest mesaj imediat ce se vor alătura grupului.</string>
     <string name="event_search_hint">Căutați un eveniment</string>
     <string name="action_search_hint">Căutați o acțiune</string>
     <string name="search_participant_hint">Căutați un participant</string>
-    <string name="home_v2_title_sensibilisation">Informați-vă</string>
-    <string name="home_v2_subtitle_sensibilisation">Câteva sugestii de lectură pentru început</string>
+    <string name="home_title_sensibilisation">Informați-vă</string>
+    <string name="home_subtitle_sensibilisation">Câteva sugestii de lectură pentru început</string>
     <string name="interest_activites_onboarding">Activități \nmanuale</string>
     <string name="interest_activites_main_filter">Activități manuale</string>
     <string name="posts_vote_number"><u>%d voturi</u></string>

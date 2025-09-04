@@ -2299,47 +2299,47 @@ Przeczytają tę wiadomość, gdy tylko dołączą do grupy.</string>
     <string name="pop_up_rugby_france_content">Najlepsze spotkania niekoniecznie zdarzają się na stadionie! Dołącz do grupy \ „Wspólnie doświadczajmy sportu\”</string>
 
     <!-- New Home string -->
-    <string name="home_v2_title">Aplikacja L\, która odtwarza połączenia pomiędzy sąsiadami</string>
+    <string name="home_title">Aplikacja L\, która odtwarza połączenia pomiędzy sąsiadami</string>
 
-    <string name="home_v2_title_action">Daj impuls</string>
-    <string name="home_v2_subtitle_action">Twoi sąsiedzi Cię potrzebują!</string>
-    <string name="home_v2_btn_more_action">Zobacz wszystkie prośby</string>
+    <string name="home_title_action">Daj impuls</string>
+    <string name="home_subtitle_action">Twoi sąsiedzi Cię potrzebują!</string>
+    <string name="home_btn_more_action">Zobacz wszystkie prośby</string>
 
-    <string name="home_v2_title_action_contrib">Potrzebujesz pomocy d\?</string>
-    <string name="home_v2_subtitle_action_contrib">Dowiedz się, co oferują Twoi sąsiedzi!</string>
-    <string name="home_v2_btn_more_action_contrib">Zobacz wszystkie wpisy</string>
+    <string name="home_title_action_contrib">Potrzebujesz pomocy d\?</string>
+    <string name="home_subtitle_action_contrib">Dowiedz się, co oferują Twoi sąsiedzi!</string>
+    <string name="home_btn_more_action_contrib">Zobacz wszystkie wpisy</string>
 
-    <string name="home_v2_title_event">Weź udział w wydarzeniu solidarnościowym</string>
-    <string name="home_v2_subtitle_event">W pobliżu mnóstwo solidarności</string>
-    <string name="home_v2_btn_more_event">Zobacz wszystkie wydarzenia</string>
+    <string name="home_title_event">Weź udział w wydarzeniu solidarnościowym</string>
+    <string name="home_subtitle_event">W pobliżu mnóstwo solidarności</string>
+    <string name="home_btn_more_event">Zobacz wszystkie wydarzenia</string>
     <string name="tag_other">Inny</string>
 
-    <string name="home_v2_title_group">Twoje grupy sąsiadów</string>
-    <string name="home_v2_subtitle_group">Wymieniaj się z sąsiadami ze wszystkich środowisk</string>
-    <string name="home_v2_btn_more_group">Zobacz wszystkie grupy</string>
+    <string name="home_title_group">Twoje grupy sąsiadów</string>
+    <string name="home_subtitle_group">Wymieniaj się z sąsiadami ze wszystkich środowisk</string>
+    <string name="home_btn_more_group">Zobacz wszystkie grupy</string>
 
-    <string name="home_v2_title_map">Odkryj przydatne adresy</string>
-    <string name="home_v2_subtitle_map">Wszystkie struktury solidarnościowe w pobliżu</string>
-    <string name="home_v2_button_map">Odkryj mapę</string>
+    <string name="home_title_map">Odkryj przydatne adresy</string>
+    <string name="home_subtitle_map">Wszystkie struktury solidarnościowe w pobliżu</string>
+    <string name="home_button_map">Odkryj mapę</string>
 
-    <string name="home_v2_title_pedago">Wszystko, co musisz wiedzieć, aby podjąć działania</string>
-    <string name="home_v2_subtitle_pedago">Walka z niepewnością jest jak ze wszystkim, można się jej nauczyć!</string>
-    <string name="home_v2_btn_more_pedago">Zobacz wszystkie artykuły</string>
+    <string name="home_title_pedago">Wszystko, co musisz wiedzieć, aby podjąć działania</string>
+    <string name="home_subtitle_pedago">Walka z niepewnością jest jak ze wszystkim, można się jej nauczyć!</string>
+    <string name="home_btn_more_pedago">Zobacz wszystkie artykuły</string>
 
     <string name="home_v2_pedago_item_tag_all">Wszystko</string>
     <string name="home_v2_pedago_item_tag_act">Działać</string>
     <string name="home_v2_pedago_item_tag_inspire">Inspirować</string>
     <string name="home_v2_pedago_item_tag_understand">Rozumieć</string>
 
-    <string name="home_v2_title_help">Zgubiłeś się ?</string>
-    <string name="home_v2_subtitle_help">Nie panikuj, zacznij krok po kroku!</string>
+    <string name="home_title_help">Zgubiłeś się ?</string>
+    <string name="home_subtitle_help">Nie panikuj, zacznij krok po kroku!</string>
     <string name="home_v2_btn_more_help">Zobacz wszystkie artykuły</string>
 
     <string name="home_v2_help_title_one">Jak stworzyć grupę?</string>
     <string name="home_v2_help_title_two">Jak stworzyć wydarzenie?</string>
-    <string name="home_v2_help_title_three">Masz pytanie?\nSkontaktuj się z %s</string>
+    <string name="home_help_title_three">Masz pytanie?\nSkontaktuj się z %s</string>
 
-    <string name="home_v2_pedag_item_lenght_title">„%d min odczytu</string>
+    <string name="home_v2_pedago_item_length_title">„%d min odczytu</string>
 
     <string name="home_v2_hz_item_title">„Hej, wydaje się, że jest tu trochę cicho…</string>
     <string name="home_v2_hz_item_subtitle">"A co by było, gdybyś wniósł do swojego miasta odrobinę solidarności? Entourage daje Ci klucze do rozpoczęcia!</string>
@@ -2550,8 +2550,8 @@ Przeczytają tę wiadomość, gdy tylko dołączą do grupy.</string>
     <string name="event_search_hint">Szukaj wydarzenia</string>
     <string name="action_search_hint">Szukaj akcji</string>
     <string name="search_participant_hint">Szukaj uczestnika</string>
-    <string name="home_v2_title_sensibilisation">Uzyskaj informacje</string>
-    <string name="home_v2_subtitle_sensibilisation">Kilka propozycji do przeczytania na początek</string>
+    <string name="home_title_sensibilisation">Uzyskaj informacje</string>
+    <string name="home_subtitle_sensibilisation">Kilka propozycji do przeczytania na początek</string>
     <string name="interest_activites_onboarding">Ręczne \ndziałania</string>
     <string name="interest_activites_main_filter">Ręczne działania</string>
     <string name="posts_vote_number"><u>%d głosów</u></string>

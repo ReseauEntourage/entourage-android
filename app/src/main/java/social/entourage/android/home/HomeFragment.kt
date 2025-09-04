@@ -36,12 +36,12 @@ import social.entourage.android.api.model.Pedago
 import social.entourage.android.api.model.Summary
 import social.entourage.android.api.model.User
 import social.entourage.android.api.model.UserSmallTalkRequest
-import social.entourage.android.home.chatbot.ChatBotBottomSheet
 import social.entourage.android.databinding.FragmentHomeBinding
 import social.entourage.android.discussions.DetailConversationActivity
 import social.entourage.android.enhanced_onboarding.EnhancedOnboarding
 import social.entourage.android.events.create.CommunicationHandler
 import social.entourage.android.guide.GDSMainActivity
+import social.entourage.android.home.chatbot.ChatBotBottomSheet
 import social.entourage.android.home.pedago.OnItemClick
 import social.entourage.android.home.pedago.PedagoDetailActivity
 import social.entourage.android.home.pedago.PedagoListActivity
@@ -58,7 +58,6 @@ import social.entourage.android.tools.utils.CustomAlertDialog
 import social.entourage.android.tools.view.WebViewFragment
 import social.entourage.android.user.UserPresenter
 import timber.log.Timber
-import kotlin.jvm.java
 
 class HomeFragment: Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocationUpdate {
 
@@ -394,7 +393,7 @@ class HomeFragment: Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocatio
                 AnalyticsEvents.logEvent(AnalyticsEvents.user_have_notif_and_token)
             }
             FirebaseMessaging.getInstance().token.addOnFailureListener { exception ->
-                Timber.e("FCM Token", "Failed to retrieve token", exception)
+                Timber.e("FCM Token: Failed to retrieve token :%s", exception)
                 AnalyticsEvents.logEvent(AnalyticsEvents.user_have_notif_and_no_token + "_" + user?.id)
             }
         } else {
@@ -644,9 +643,9 @@ class HomeFragment: Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocatio
 
         if(allAction.size > 0 ){
             if(isContribution){
-                binding.homeTitleAction.text = getString(R.string.home_v2_title_action_contrib)
-                binding.homeSubtitleAction.text = getString(R.string.home_v2_subtitle_action_contrib)
-                binding.titleButtonAction.text = getString(R.string.home_v2_btn_more_action_contrib)
+                binding.homeTitleAction.text = getString(R.string.home_title_action_contrib)
+                binding.homeSubtitleAction.text = getString(R.string.home_subtitle_action_contrib)
+                binding.titleButtonAction.text = getString(R.string.home_btn_more_action_contrib)
                 binding.btnMoreAction.setOnClickListener {
                     AnalyticsEvents.logEvent(AnalyticsEvents.Action_Home_Contrib_All)
                     val mainActivity = (requireActivity() as? MainActivity)
@@ -774,7 +773,7 @@ class HomeFragment: Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocatio
     private fun handleHelps(summary: Summary){
         if(isAdded){
             doTotalchecksumToDisplayHomeFirstTime()
-            val formattedString = requireContext().getString(R.string.home_v2_help_title_three, summary.moderator?.displayName)
+            val formattedString = requireContext().getString(R.string.home_help_title_three, summary.moderator?.displayName)
             //val help1 = Help(requireContext().getString(R.string.home_v2_help_title_one) , R.drawable.first_help_item_illu)
             //val help2 = Help(requireContext().getString(R.string.home_v2_help_title_two) , R.drawable.ic_home_v2_create_group)
             val help3 = Help(formattedString , R.drawable.first_help_item_illu)
