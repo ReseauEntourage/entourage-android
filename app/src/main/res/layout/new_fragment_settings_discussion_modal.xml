@@ -1,27 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-
         <include
             android:id="@+id/header"
             layout="@layout/layout_header_bottom_sheet"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
-
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
-
                 <LinearLayout
                     android:id="@+id/eventInfo"
                     android:layout_width="match_parent"
@@ -32,7 +27,6 @@
                     android:layout_marginBottom="8dp"
                     android:orientation="vertical"
                     android:visibility="gone">
-
                     <TextView
                         android:id="@+id/eventTitle"
                         style="@style/settings_items"
@@ -40,7 +34,6 @@
                         android:layout_height="wrap_content"
                         android:textColor="@color/black"
                         android:visibility="gone" />
-
                     <TextView
                         android:id="@+id/eventParticipants"
                         style="@style/left_legend_grey"
@@ -48,7 +41,6 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
                         android:visibility="gone" />
-
                     <TextView
                         android:id="@+id/eventAddress"
                         style="@style/left_legend_grey"
@@ -57,7 +49,6 @@
                         android:layout_marginTop="2dp"
                         android:visibility="gone" />
                 </LinearLayout>
-
                 <include
                     android:id="@+id/profile"
                     layout="@layout/layout_settings_item"
@@ -66,7 +57,14 @@
                     android:layout_marginStart="25dp"
                     android:layout_marginEnd="25dp"
                     app:icon='@{@drawable/new_icn_profile_orange}' />
-
+                <include
+                    android:id="@+id/rules"
+                    layout="@layout/layout_settings_item"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="25dp"
+                    android:layout_marginEnd="25dp"
+                    app:icon='@{@drawable/ic_chartes_rules}' />
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/layout_report"
                     android:layout_width="match_parent"
@@ -74,7 +72,6 @@
                     android:layout_marginStart="25dp"
                     android:layout_marginEnd="25dp"
                     android:paddingTop="20dp">
-
                     <ImageView
                         android:id="@+id/icon"
                         android:layout_width="wrap_content"
@@ -85,7 +82,6 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         app:srcCompat="@drawable/new_icn_report_orange" />
-
                     <TextView
                         android:id="@+id/report"
                         style="@style/report"
@@ -96,7 +92,6 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf='@id/icon'
                         app:layout_constraintTop_toTopOf="parent" />
-
                     <TextView
                         android:id="@+id/report_sub"
                         style="@style/left_legend_grey"
@@ -108,7 +103,6 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf='@id/report'
                         app:layout_constraintTop_toBottomOf='@id/report' />
-
                     <View
                         android:id="@+id/divider"
                         android:layout_width="match_parent"
@@ -118,7 +112,6 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
-
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/layout_block"
                     android:layout_width="match_parent"
@@ -127,7 +120,6 @@
                     android:layout_marginEnd="25dp"
                     android:paddingTop="20dp"
                     android:visibility="gone">
-
                     <ImageView
                         android:id="@+id/iconBlock"
                         android:layout_width="wrap_content"
@@ -138,7 +130,6 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         app:srcCompat="@drawable/new_block" />
-
                     <TextView
                         android:id="@+id/block"
                         style="@style/report"
@@ -148,7 +139,6 @@
                         android:textColor="@color/black"
                         app:layout_constraintStart_toEndOf='@id/iconBlock'
                         app:layout_constraintTop_toTopOf="parent" />
-
                     <TextView
                         android:id="@+id/block_sub"
                         style="@style/left_legend_grey"
@@ -160,7 +150,6 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf='@id/block'
                         app:layout_constraintTop_toBottomOf='@id/block' />
-
                     <View
                         android:id="@+id/divider_block"
                         android:layout_width="match_parent"
@@ -170,7 +159,6 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
-
                 <include
                     android:id="@+id/quit"
                     layout="@layout/layout_settings_item"

@@ -18,6 +18,7 @@ import social.entourage.android.discussions.DiscussionsPresenter
 import social.entourage.android.discussions.members.MembersConversationFragment
 import social.entourage.android.events.EventsPresenter
 import social.entourage.android.groups.GroupPresenter
+import social.entourage.android.groups.details.rules.GroupRulesActivity
 import social.entourage.android.members.MembersActivity
 import social.entourage.android.members.MembersType
 import social.entourage.android.profile.ProfileFullActivity
@@ -31,14 +32,11 @@ enum class SheetMode {
 }
 
 class ActionSheetFragment : BottomSheetDialogFragment() {
-
     private var _binding: NewFragmentSettingsDiscussionModalBinding? = null
     private val binding get() = _binding!!
-
     private val discussionPresenter by lazy { DiscussionsPresenter() }
     private val eventsPresenter by lazy { EventsPresenter() }
     private val groupPresenter: GroupPresenter by lazy { GroupPresenter() }
-
     private var mode: SheetMode = SheetMode.GROUP
     private var userId: Int = 0
     private var conversationId: Int = 0
@@ -47,11 +45,9 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
     private var username: String? = null
     private var imBlocker = false
     private var canManageParticipants: Boolean = false
-
     private var eventTitle: String? = null
     private var eventParticipantsCount: Int = 0
     private var eventAddress: String? = null
-
     // Message actions
     private var messageId: Int = 0
     private var messageHtml: String? = null
@@ -73,7 +69,6 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
             eventTitle = getString(ARG_EVENT_TITLE)
             eventParticipantsCount = getInt(ARG_EVENT_PARTICIPANTS, 0)
             eventAddress = getString(ARG_EVENT_ADDRESS)
-
             // message actions
             messageId = getInt(ARG_MESSAGE_ID, 0)
             messageHtml = getString(ARG_MESSAGE_HTML)
@@ -101,7 +96,6 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
         binding.header.title = getString(R.string.discussion_settings_title)
         binding.header.iconBack?.isVisible = false
         binding.header.hbsIconCross.setOnClickListener { dismiss() }
-
         when (mode) {
             SheetMode.DISCUSSION_ONE_TO_ONE -> {
                 binding.profile.setLabel(getString(R.string.discussion_settings_profil))
@@ -111,6 +105,7 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
                 binding.blockSub.text = getString(R.string.discussion_block_subtitle, username)
                 binding.quit.profileSettingsItemLayout.isVisible = false
                 binding.eventInfo.isVisible = false
+                binding.rules.profileSettingsItemLayout.isVisible = false
             }
             SheetMode.DISCUSSION_GROUP -> {
                 binding.profile.setLabel(getString(R.string.discussion_settings_members))
@@ -120,6 +115,7 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
                 binding.quit.setLabel(getString(R.string.discussion_settings_quit))
                 binding.quit.profileSettingsItemLabel.setTextColor(ContextCompat.getColor(requireContext(), R.color.orange))
                 binding.eventInfo.isVisible = false
+                binding.rules.profileSettingsItemLayout.isVisible = false
             }
             SheetMode.GROUP -> {
                 binding.profile.setLabel(getString(R.string.discussion_settings_members))
@@ -129,6 +125,7 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
                 binding.quit.setLabel(getString(R.string.leave_group))
                 binding.quit.profileSettingsItemLabel.setTextColor(ContextCompat.getColor(requireContext(), R.color.orange))
                 binding.eventInfo.isVisible = false
+                binding.rules.profileSettingsItemLayout.isVisible = false
             }
             SheetMode.EVENT -> {
                 if (canManageParticipants) {
@@ -143,11 +140,9 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
                 binding.quit.profileSettingsItemLayout.isVisible = true
                 binding.quit.setLabel(getString(R.string.leave_event))
                 binding.quit.profileSettingsItemLabel.setTextColor(ContextCompat.getColor(requireContext(), R.color.orange))
-
                 binding.eventInfo.isVisible = true
                 binding.eventTitle.text = eventTitle.orEmpty()
                 binding.eventTitle.isVisible = eventTitle?.isNotBlank() == true
-
                 if (eventParticipantsCount > 0) {
                     binding.eventParticipants.text = resources.getQuantityString(
                         R.plurals.participants_count,
@@ -158,31 +153,25 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
                 } else {
                     binding.eventParticipants.isVisible = false
                 }
-
                 binding.eventAddress.text = eventAddress.orEmpty()
                 binding.eventAddress.isVisible = eventAddress?.isNotBlank() == true
+                binding.rules.profileSettingsItemLayout.isVisible = true
+                binding.rules.setLabel(getString(R.string.action_show_charte))
             }
             SheetMode.MESSAGE_ACTIONS -> {
                 binding.header.title = "Actions du message"
-
-                // Copier le texte
                 binding.profile.setLabel("Copier le texte")
                 binding.profile.profileSettingsItemSubLabel.visibility = View.GONE
-
-                // Signaler (caché si c’est mon message)
                 binding.report.text = "Signaler le message"
                 binding.layoutReport.isVisible = !isMyMessage
-
-                // Supprimer (si c'est mon message)
                 binding.quit.profileSettingsItemLayout.isVisible = isMyMessage
                 binding.quit.setLabel("Supprimer mon message")
                 binding.quit.profileSettingsItemLabel.setTextColor(ContextCompat.getColor(requireContext(), R.color.orange))
-
                 binding.layoutBlock.isVisible = false
                 binding.eventInfo.isVisible = false
+                binding.rules.profileSettingsItemLayout.isVisible = false
             }
         }
-
         if (mode != SheetMode.MESSAGE_ACTIONS) {
             binding.report.text = getString(R.string.discussion_settings_signal)
         }
@@ -215,7 +204,6 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
                         .show(parentFragmentManager, "")
                 }
                 SheetMode.MESSAGE_ACTIONS -> {
-                    // Copier le texte (HTML -> texte brut)
                     val plain = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                         Html.fromHtml(messageHtml.orEmpty(), Html.FROM_HTML_MODE_LEGACY).toString()
                     } else {
@@ -229,7 +217,14 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
                 }
             }
         }
-
+        // Bouton "Charte de l'événement"
+        binding.rules.profileSettingsItemLayout.setOnClickListener {
+            val intent = Intent(requireContext(), GroupRulesActivity::class.java).apply {
+                putExtra(Const.RULES_TYPE, Const.RULES_EVENT)
+            }
+            startActivity(intent)
+            dismiss()
+        }
         // Bouton "Signaler"
         binding.layoutReport.setOnClickListener {
             when (mode) {
@@ -270,20 +265,17 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
                     ).show(parentFragmentManager, ReportModalFragment.TAG)
                 }
                 SheetMode.MESSAGE_ACTIONS -> {
-                    // Report depuis un long-press sur message
                     val plain = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                         Html.fromHtml(messageHtml.orEmpty(), Html.FROM_HTML_MODE_LEGACY).toString()
                     } else {
                         @Suppress("DEPRECATION")
                         Html.fromHtml(messageHtml.orEmpty()).toString()
                     }
-
                     val isConversationContext = !isEventContext && !isGroupContext
                     if (isConversationContext) {
                         val isSmallTalk = DetailConversationActivity.isSmallTalkMode
                         val convOrSmallTalkId =
                             if (isSmallTalk) DetailConversationActivity.smallTalkId else conversationId
-
                         ReportModalFragment.newInstance(
                             id = convOrSmallTalkId,
                             groupId = Const.DEFAULT_VALUE,
@@ -302,8 +294,8 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
                             else -> 0 to ReportTypes.REPORT_POST
                         }
                         ReportModalFragment.newInstance(
-                            id = messageId,            // chat_message id (post/commentaire)
-                            groupId = containerId,     // neighborhoodId ou eventId
+                            id = messageId,
+                            groupId = containerId,
                             reportType = rType,
                             isFromMe = isMyMessage,
                             isConv = false,
@@ -315,7 +307,6 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
                 }
             }
         }
-
         // Bouton "Quitter / Supprimer"
         binding.quit.profileSettingsItemLayout.setOnClickListener {
             when (mode) {
@@ -363,7 +354,6 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
                 else -> Unit
             }
         }
-
         // Bouton "Bloquer"
         binding.layoutBlock.setOnClickListener {
             if (mode == SheetMode.DISCUSSION_ONE_TO_ONE) {

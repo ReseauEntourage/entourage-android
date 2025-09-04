@@ -62,7 +62,6 @@ class MembersActivity : BaseActivity() , AcceptPhotoDialogFragment.Listener {
         val typeCode = intent.getIntExtra("TYPE", MembersType.GROUP.code)
         type = MembersType.values().firstOrNull { it.code == typeCode } ?: MembersType.GROUP
         iAmOrganiser = intent.getBooleanExtra("ROLE", false)
-
         setupToolbar()
         setupLists()
         setupSearchBar()

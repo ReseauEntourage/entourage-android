@@ -196,14 +196,11 @@ class EventUtils {
                 "vêtement" -> return context.getString(R.string.action_clothes_name)
                 "équipement" -> return context.getString(R.string.action_equipment_name)
                 "produit d'hygiène" -> return context.getString(R.string.action_hygiene_name)
-
                 "social" -> return context.getString(R.string.action_social_name)
                 "services" -> return context.getString(R.string.action_services_name)
                 "clothes" -> return context.getString(R.string.action_clothes_name)
                 "equipment" -> return context.getString(R.string.action_equipment_name)
                 "hygiene" -> return context.getString(R.string.action_hygiene_name)
-
-
                 else -> return context.getString(R.string.interest_other)
             }
         }
