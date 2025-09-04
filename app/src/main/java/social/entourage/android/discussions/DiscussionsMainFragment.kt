@@ -359,7 +359,6 @@ class DiscussionsMainFragment : Fragment() {
 
         messagesList.clear()
         memberships?.let { list ->
-            Timber.wtf("wtf message list size : ${list.size}")
             messagesList.addAll(list.map { membershipToConversation(it) })
         }
 

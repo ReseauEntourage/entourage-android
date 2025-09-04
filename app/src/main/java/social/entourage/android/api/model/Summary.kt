@@ -33,6 +33,9 @@ class Summary : Serializable {
     @SerializedName("outing_participations_count")
     var outingParticipationsCount: Int? = null
 
+    @SerializedName("signable_permission")
+    var signablePermission : Boolean? = null
+
     @SerializedName("neighborhood_participations_count")
     var neighborhoodParticipationsCount: Int? = null
 

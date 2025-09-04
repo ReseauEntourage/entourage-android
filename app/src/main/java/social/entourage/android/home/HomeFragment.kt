@@ -745,6 +745,10 @@ class HomeFragment: Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocatio
         EnhancedOnboarding.preference = summary.preference ?: ""
         onActionUnclosed(summary)
         handleHelps(summary)
+        Timber.wtf("wtf signablePermission " + summary.signablePermission)
+        if (summary.signablePermission != null ){
+            HomeFragment.signablePermission = summary.signablePermission!!
+        }
         val me = EntourageApplication.me(activity)
         if(summary.preference == null || me?.address == null){
             OnboardingStartActivity.FRAGMENT_NUMBER = 3
@@ -1007,6 +1011,7 @@ class HomeFragment: Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocatio
     }
     companion object {
         var isContribProfile = false
+        var signablePermission = false
     }
 
     override fun onHomeChangeLocationUpdateClearFragment() {

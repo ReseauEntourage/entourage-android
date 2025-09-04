@@ -60,6 +60,9 @@ data class Events(
     @field:SerializedName("confirmed_member")
     val confirmedMember : Boolean? = null,
 
+    @field:SerializedName("signable")
+    val signable: Boolean? = null,
+
     @field:SerializedName("confirmed_members_count")
     val confirmedMembersCount: Int? = null,
 

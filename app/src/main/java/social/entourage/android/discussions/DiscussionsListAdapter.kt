@@ -1,6 +1,7 @@
 package social.entourage.android.discussions
 
 import android.graphics.Typeface
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -63,8 +64,9 @@ class DiscussionsListAdapter(
                 }
             } else {
                 conversation.type?.let { type ->
+                    Log.wtf("wtf" , "type : $type")
+                    Log.wtf("wtf" , "conversation.imageUrl : ${conversation.imageUrl}")
                     if (type == "outing") {
-                        Timber.d("type : $type")
                         if (conversation.imageUrl.isNullOrBlank()) {
                             Glide.with(binding.image.context)
                                 .load(R.drawable.placeholder_my_event)
@@ -101,7 +103,6 @@ class DiscussionsListAdapter(
             }
 
             if (conversation.type == "outing") {
-                Timber.wtf("wtf date " + conversation.subname)
                 binding.date.text = conversation.subname
                 binding.date.visibility = View.VISIBLE
             } else {
