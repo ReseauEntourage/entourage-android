@@ -107,7 +107,7 @@ class DetailConversationActivity : CommentActivity() {
 
     // Refresh (page 1 -> append en bas)
     private val refreshHandler = Handler(Looper.getMainLooper())
-    private val refreshIntervalMs = 3_000L
+    private val refreshIntervalMs = 1_500L
     private var refreshRunnable: Runnable? = null
 
     // Clé stable pour les items
@@ -144,7 +144,6 @@ class DetailConversationActivity : CommentActivity() {
             smallTalkViewModel.getSmallTalk(smallTalkId)
             smallTalkViewModel.loadInitialMessages(smallTalkId) // page 1 initiale
             smallTalkViewModel.listSmallTalkParticipants(smallTalkId)
-
             binding.btnSeeEvent.text = getString(R.string.small_talk_btn_charte)
             binding.ivBtnEvent.apply {
                 imageTintList = null
@@ -216,6 +215,7 @@ class DetailConversationActivity : CommentActivity() {
 
     private fun buildAndShowActionSheet() {
         val mode = resolveSheetMode()
+        Timber.wtf("wtf mode: $mode")
         val sheet = when (mode) {
             SheetMode.DISCUSSION_ONE_TO_ONE -> {
                 val otherUserId = detailConversation?.members
@@ -266,24 +266,29 @@ class DetailConversationActivity : CommentActivity() {
         }
     }
 
-
     private fun startRefreshing() {
         if (refreshRunnable != null) return
         refreshRunnable = object : Runnable {
             override fun run() {
-                // ⛔️ Ne pas réactualiser la page 1 pendant la pagination
                 if (!isLoadingOlder) {
                     if (isSmallTalkMode) {
                         smallTalkViewModel.listChatMessages(smallTalkId, page = 1)
                     } else {
                         discussionsPresenter.getPostComments(id) // page 1
                     }
+                    // Ajoutez un délai pour laisser le temps à la liste de se mettre à jour
+                    Handler(Looper.getMainLooper()).postDelayed({
+                        if (isAtBottom()) {
+                            scrollAfterLayout()
+                        }
+                    }, 300) // Délai court pour laisser le temps à la liste de se recharger
                 }
                 refreshHandler.postDelayed(this, refreshIntervalMs)
             }
         }
         refreshHandler.postDelayed(refreshRunnable!!, refreshIntervalMs)
     }
+
 
     private fun stopRefreshing() {
         refreshRunnable?.let { refreshHandler.removeCallbacks(it) }
@@ -505,16 +510,13 @@ class DetailConversationActivity : CommentActivity() {
             Toast.makeText(this, "Impossible de lire l'image", Toast.LENGTH_SHORT).show()
             return
         }
-
-        // Use SAME logic as addComment(): keep HTML for mentions/links
         val spanned = binding.commentMessage.editableText
         val caption = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             Html.toHtml(spanned, Html.FROM_HTML_MODE_LEGACY)
         } else {
             @Suppress("DEPRECATION")
             Html.toHtml(spanned)
-        }.trim().ifEmpty { null } // null if empty
-
+        }.trim().ifEmpty { null }
         if (isSmallTalkMode) {
             smallTalkViewModel.addMessageWithImage(smallTalkId, caption, file)
         } else if (detailConversation?.type == "outing") {
@@ -524,11 +526,13 @@ class DetailConversationActivity : CommentActivity() {
             val conversationId: Int = detailConversation?.id ?: return
             discussionsPresenter.addCommentWithImage(conversationId, caption, file)
         }
-
         binding.commentMessage.text.clear()
         binding.layoutPhoto.visibility = View.GONE
         binding.optionButton.visibility = View.VISIBLE
+        // Force le scroll après l'envoi
+        scrollAfterLayout()
     }
+
 
 
     // ===== Détails conversation =====
@@ -663,7 +667,6 @@ class DetailConversationActivity : CommentActivity() {
             photoUri = null
             return
         }
-
         val spanned = binding.commentMessage.editableText
         val html = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             Html.toHtml(spanned, Html.FROM_HTML_MODE_LEGACY)
@@ -672,7 +675,6 @@ class DetailConversationActivity : CommentActivity() {
             Html.toHtml(spanned)
         }
         val content = if (html.contains("<a href=")) html else spanned.toString()
-
         if (isSmallTalkMode) {
             smallTalkViewModel.createChatMessage(smallTalkId, content)
         } else {
@@ -689,10 +691,12 @@ class DetailConversationActivity : CommentActivity() {
             )
             discussionsPresenter.addComment(id, comment)
         }
-
         binding.commentMessage.text.clear()
         Utils.hideKeyboard(this)
+        // Force le scroll après l'envoi
+        scrollAfterLayout()
     }
+
 
     // ===== Réception des messages =====
     override fun handleGetPostComments(allComments: MutableList<Post>?) {
