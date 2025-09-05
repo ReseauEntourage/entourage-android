@@ -1,12 +1,8 @@
 package social.entourage.android.discussions
 
-import android.app.NotificationManager
-import android.content.Context
 import android.content.Intent
 import android.graphics.Typeface
-import android.os.Build
 import android.os.Bundle
-import android.provider.Settings
 import android.text.SpannableString
 import android.text.Spanned
 import android.text.style.StyleSpan
@@ -15,13 +11,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import androidx.core.app.NotificationManagerCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import social.entourage.android.*
-import social.entourage.android.api.model.*
+import social.entourage.android.EntourageApplication
+import social.entourage.android.R
+import social.entourage.android.RefreshController
+import social.entourage.android.api.model.Conversation
+import social.entourage.android.api.model.ConversationMembership
+import social.entourage.android.api.model.LastMessage
+import social.entourage.android.api.model.SmallTalk
 import social.entourage.android.databinding.NewFragmentMessagesBinding
 import social.entourage.android.events.create.CommunicationHandler
 import social.entourage.android.home.CommunicationHandlerBadgeViewModel
@@ -319,12 +321,7 @@ class DiscussionsMainFragment : Fragment() {
     }
 
     private fun checkNotificationsState() {
-        val notificationManager = requireContext().getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        val areNotificationsEnabled = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            notificationManager.areNotificationsEnabled()
-        } else {
-            Settings.Secure.getInt(requireContext().contentResolver, "notification_sound", 1) == 1
-        }
+        val areNotificationsEnabled = NotificationManagerCompat.from(requireContext()).areNotificationsEnabled()
 
         if (!areNotificationsEnabled) {
             binding.layoutAskNotif.visibility = View.VISIBLE

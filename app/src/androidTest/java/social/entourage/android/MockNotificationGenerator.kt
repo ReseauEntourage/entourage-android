@@ -1,10 +1,13 @@
-package social.entourage.android.tools
+package social.entourage.android
 
 import android.content.Context
+import social.entourage.android.api.model.notification.PushNotificationContent
 import social.entourage.android.api.model.notification.PushNotificationMessage
 import social.entourage.android.notifications.PushNotificationManager
 
 object MockNotificationGenerator {
+
+    const val message_conversation = "Vous avez un nouveau message dans la conversation"
 
     fun createContributionNotification(context: Context) {
         val contributionContent = """
@@ -39,12 +42,12 @@ object MockNotificationGenerator {
                 "joinable_id": 2,
                 "joinable_type": "Entourage",
                 "user_id": 124,
-                "type": "NEW_CHAT_MESSAGE",
+                "type": "${PushNotificationContent.TYPE_NEW_CHAT_MESSAGE}",
                 "instance": "conversations",
                 "instance_id": 2,
                 "tracking": "private_chat_message_on_create"
             },
-            "message": "Vous avez un nouveau message dans la conversation"
+            "message": "$message_conversation"
         }
         """.trimIndent()
 

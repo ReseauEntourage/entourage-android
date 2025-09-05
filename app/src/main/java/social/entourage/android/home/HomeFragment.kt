@@ -328,8 +328,7 @@ class HomeFragment: Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocatio
     }
 
     private fun checkNotifAndSendToken() {
-        val notificationManager = NotificationManagerCompat.from(requireContext())
-        val areNotificationsEnabled = notificationManager.areNotificationsEnabled()
+        val areNotificationsEnabled = NotificationManagerCompat.from(requireContext()).areNotificationsEnabled()
         val sharedPreferences = requireActivity().getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE)
         val editor = sharedPreferences.edit()
 
@@ -385,8 +384,7 @@ class HomeFragment: Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocatio
     }
 
     private fun checkNotificationStatus() {
-        val notificationManager = NotificationManagerCompat.from(requireContext())
-        val areNotificationsEnabled = notificationManager.areNotificationsEnabled()
+        val areNotificationsEnabled = NotificationManagerCompat.from(requireContext()).areNotificationsEnabled()
         if (areNotificationsEnabled) {
             AnalyticsEvents.logEvent(AnalyticsEvents.has_user_activated_notif)
             FirebaseMessaging.getInstance().token.addOnSuccessListener { _ ->
