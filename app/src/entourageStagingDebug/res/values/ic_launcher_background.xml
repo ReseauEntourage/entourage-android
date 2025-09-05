@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="ic_launcher_background">#344055</color>
+    <color name="ic_launcher_background">@color/custom_button_accent_pressed</color>
 </resources>

@@ -1,0 +1,8 @@
+<resources>
+
+    <string name="facebook_app_id" translatable="false">276507866203529</string>
+    <string name="facebook_client_token" translatable="false">d78bdee06c1847a804f6c8d1a306aecc</string>
+
+    <string name="app_name" translatable="false">EntStaging</string>
+
+</resources>

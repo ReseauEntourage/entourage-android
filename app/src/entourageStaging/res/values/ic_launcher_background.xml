@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="ic_launcher_background">#A53A3C</color>
+    <color name="ic_launcher_background">@color/custom_button_accent_focused</color>
 </resources>
