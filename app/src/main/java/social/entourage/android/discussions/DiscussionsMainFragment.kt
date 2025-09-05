@@ -45,6 +45,7 @@ class DiscussionsMainFragment : Fragment() {
 
     private var _binding: NewFragmentMessagesBinding? = null
     private val binding get() = _binding!!
+    private var isFromDetail = false
 
     private val discussionsPresenter: DiscussionsPresenter by lazy { DiscussionsPresenter() }
     private val smallTalkViewModel: SmallTalkViewModel by lazy {
@@ -57,6 +58,7 @@ class DiscussionsMainFragment : Fragment() {
     private var currentFilterMode: FilterMode = FilterMode.ALL
     private var page = 0
     private var isFromRefresh = false
+    private val readConversationIds = mutableSetOf<Int>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = NewFragmentMessagesBinding.inflate(inflater, container, false)
@@ -84,7 +86,10 @@ class DiscussionsMainFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        reloadFromStart()
+        // Recharge uniquement si on ne revient pas d'un détail
+        if (!isFromDetail) {
+            reloadFromStart()
+        }
         if (RefreshController.shouldRefreshFragment) {
             RefreshController.shouldRefreshFragment = false
             isFromRefresh = true
@@ -93,11 +98,12 @@ class DiscussionsMainFragment : Fragment() {
         checkNotificationsState()
     }
 
+
     override fun onStop() {
         super.onStop()
-        messagesList.clear()
         page = 0
     }
+
 
     // -------------------- INIT UI --------------------
 
@@ -129,18 +135,21 @@ class DiscussionsMainFragment : Fragment() {
     }
 
     private fun initializeRecyclerView() {
-        discussionsAdapter = DiscussionsListAdapter(messagesList, object : OnItemClick {
-            override fun onItemClick(position: Int) {
-                showDetail(position)
-            }
-        })
-
+        discussionsAdapter = DiscussionsListAdapter(messagesList).apply {
+            setOnItemClickListener(object : DiscussionsListAdapter.OnItemClickListener {
+                override fun onItemClick(position: Int, conversation: Conversation) {
+                    showDetail(position) // Appel existant (compatibilité)
+                }
+            })
+        }
         binding.recyclerView.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = discussionsAdapter
             addOnScrollListener(recyclerViewOnScrollListener)
         }
     }
+
+
 
     private fun handleSwipeRefresh() {
         binding.swipeRefresh.setOnRefreshListener {
@@ -223,9 +232,18 @@ class DiscussionsMainFragment : Fragment() {
     private fun handleResponseGetDiscussions(allGroups: MutableList<Conversation>?) {
         if (page == 1) messagesList.clear()
         allGroups?.let { messagesList.addAll(it) }
+
+        // Réappliquez l'état "lu" après un rechargement
+        messagesList.forEach { conv ->
+            if (readConversationIds.contains(conv.id ?: 0)) {  // Utilise directement l'Int
+                conv.numberUnreadMessages = 0
+            }
+        }
+
         binding.progressBar.visibility = View.GONE
         binding.recyclerView.adapter?.notifyDataSetChanged()
     }
+
 
     private fun handleResponseGetSmallTalks(allSmallTalks: List<SmallTalk>?) {
         messagesList.clear()
@@ -252,9 +270,17 @@ class DiscussionsMainFragment : Fragment() {
 
     private fun showDetail(position: Int) {
         val conversation = messagesList[position]
+        // 1. Marquez comme lu
+        conversation.numberUnreadMessages = 0
+        conversation.id?.let { id ->
+            readConversationIds.add(id) // Pas besoin de conversion, on utilise directement l'Int
+        }
+        discussionsAdapter.notifyItemChanged(position)
+
+        // 2. Lancez l'activité
         VibrationUtil.vibrate(requireContext())
         DetailConversationActivity.isSmallTalkMode = (currentFilterMode == FilterMode.SMALLTALKS || conversation.type == "small_talk")
-        if(DetailConversationActivity.isSmallTalkMode){
+        if (DetailConversationActivity.isSmallTalkMode) {
             DetailConversationActivity.smallTalkId = conversation.id.toString()
         }
         startActivity(
@@ -271,9 +297,16 @@ class DiscussionsMainFragment : Fragment() {
                 )
             )
         )
-        messagesList[position].numberUnreadMessages = 0
-        discussionsPresenter.getAllMessages.postValue(messagesList)
+        isFromDetail = true // Active le flag
     }
+
+
+
+    override fun onPause() {
+        super.onPause()
+        isFromDetail = false // Réinitialise le flag
+    }
+
 
     // -------------------- OUTILS --------------------
 
@@ -356,14 +389,19 @@ class DiscussionsMainFragment : Fragment() {
     private fun handleResponseGetMemberships(memberships: List<ConversationMembership>?) {
         binding.progressBar.visibility = View.GONE
         binding.swipeRefresh.isRefreshing = false
-
         messagesList.clear()
         memberships?.let { list ->
             messagesList.addAll(list.map { membershipToConversation(it) })
+            // Réappliquez l'état "lu" aux conversations déjà marquées
+            messagesList.forEach { conv ->
+                if (readConversationIds.contains(conv.id ?: 0)) {  // Utilise directement l'Int
+                    conv.numberUnreadMessages = 0
+                }
+            }
         }
-
         binding.recyclerView.adapter?.notifyDataSetChanged()
     }
+
     private fun handleImageViewAnimation() {
         binding.appBar.addOnOffsetChangedListener { appBarLayout, verticalOffset ->
             val ratio = abs(verticalOffset).toFloat() / appBarLayout.totalScrollRange

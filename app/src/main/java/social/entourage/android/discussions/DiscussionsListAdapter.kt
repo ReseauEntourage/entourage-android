@@ -1,12 +1,9 @@
 package social.entourage.android.discussions
 
 import android.graphics.Typeface
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.res.ResourcesCompat
-import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
@@ -15,44 +12,57 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import social.entourage.android.R
 import social.entourage.android.api.model.Conversation
 import social.entourage.android.databinding.LayoutConversationHomeItemBinding
-import timber.log.Timber
-import java.util.Calendar
-import java.util.TimeZone
-
-interface OnItemClick {
-    fun onItemClick(position: Int)
-}
+import java.util.*
 
 class DiscussionsListAdapter(
-    private var messagesList: List<Conversation>,
-    private var onItemClickListener: OnItemClick
+    private val messagesList: MutableList<Conversation>
 ) : RecyclerView.Adapter<DiscussionsListAdapter.ViewHolder>() {
 
-    fun resetData(){
-        messagesList = emptyList()
+    interface OnItemClickListener {
+        fun onItemClick(position: Int, conversation: Conversation)
+    }
+
+    private var onItemClickListener: OnItemClickListener? = null
+
+    fun setOnItemClickListener(listener: OnItemClickListener) {
+        onItemClickListener = listener
+    }
+
+    fun resetData() {
+        messagesList.clear()
         notifyDataSetChanged()
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DiscussionsListAdapter.ViewHolder {
-        val view = LayoutConversationHomeItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return ViewHolder(view)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val binding = LayoutConversationHomeItemBinding.inflate(
+            LayoutInflater.from(parent.context),
+            parent,
+            false
+        )
+        return ViewHolder(binding)
     }
 
-    inner class ViewHolder(val binding: LayoutConversationHomeItemBinding) :
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        holder.bind(messagesList[position])
+    }
+
+    override fun getItemCount(): Int = messagesList.size
+
+    inner class ViewHolder(private val binding: LayoutConversationHomeItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(conversation: Conversation, position: Int) {
-
+        fun bind(conversation: Conversation) {
+            // Gestion du clic
             binding.layout.setOnClickListener {
-                onItemClickListener.onItemClick(position)
+                onItemClickListener?.onItemClick(adapterPosition, conversation)
             }
 
-            // === Image / avatar ===
+            // === Affichage de l'image/avatar ===
             if (conversation.isOneToOne()) {
-                binding.imagePicto.isVisible = false
-                conversation.user?.imageUrl?.let {
+                binding.imagePicto.visibility = View.GONE
+                conversation.user?.imageUrl?.let { url ->
                     Glide.with(binding.image.context)
-                        .load(it)
+                        .load(url)
                         .error(R.drawable.placeholder_user)
                         .transform(CenterCrop(), CircleCrop())
                         .into(binding.image)
@@ -64,8 +74,6 @@ class DiscussionsListAdapter(
                 }
             } else {
                 conversation.type?.let { type ->
-                    Log.wtf("wtf" , "type : $type")
-                    Log.wtf("wtf" , "conversation.imageUrl : ${conversation.imageUrl}")
                     if (type == "outing") {
                         if (conversation.imageUrl.isNullOrBlank()) {
                             Glide.with(binding.image.context)
@@ -80,9 +88,9 @@ class DiscussionsListAdapter(
                                 .into(binding.image)
                         }
                     } else {
-                        conversation.user?.imageUrl?.let {
+                        conversation.user?.imageUrl?.let { url ->
                             Glide.with(binding.image.context)
-                                .load(it)
+                                .load(url)
                                 .error(R.drawable.placeholder_user)
                                 .transform(CenterCrop(), CircleCrop())
                                 .into(binding.image)
@@ -96,10 +104,11 @@ class DiscussionsListAdapter(
                 }
             }
 
-            // === Titre / sous-infos ===
-            binding.name.text = conversation.title
-            if (conversation.memberCount > 2) {
-                binding.name.text = conversation.title + " et ${conversation.memberCount}" + " membres"
+            // === Titre et sous-infos ===
+            binding.name.text = if (conversation.memberCount > 2) {
+                "${conversation.title} et ${conversation.memberCount} membres"
+            } else {
+                conversation.title
             }
 
             if (conversation.type == "outing") {
@@ -109,21 +118,21 @@ class DiscussionsListAdapter(
                 binding.date.visibility = View.GONE
             }
 
-            // Rôles
-            if (conversation.getRolesWithPartnerFormated()?.isEmpty() == false) {
-                binding.role.isVisible = true
+            // === Rôles ===
+            if (!conversation.getRolesWithPartnerFormated().isNullOrEmpty()) {
+                binding.role.visibility = View.VISIBLE
                 binding.role.text = conversation.getRolesWithPartnerFormated()
             } else {
-                binding.role.isVisible = false
+                binding.role.visibility = View.GONE
             }
 
-            // Dernier message (texte)
+            // === Dernier message ===
             binding.detail.text = conversation.getLastMessage()
 
-            // === Non-lus : style existant conservé ===
+            // === État "lu/non lu" ===
             if (conversation.hasUnread()) {
                 binding.nbUnread.visibility = View.VISIBLE
-                binding.nbUnread.text = "${conversation.numberUnreadMessages}"
+                binding.nbUnread.text = conversation.numberUnreadMessages.toString()
                 binding.date.setTextColor(binding.root.context.resources.getColor(R.color.orange))
                 binding.detail.setTextColor(binding.root.context.resources.getColor(R.color.black))
                 binding.detail.setTypeface(binding.detail.typeface, Typeface.BOLD)
@@ -131,8 +140,6 @@ class DiscussionsListAdapter(
                 binding.nbUnread.visibility = View.INVISIBLE
                 binding.date.setTextColor(binding.root.context.resources.getColor(R.color.dark_grey_opacity_40))
                 binding.detail.setTextColor(binding.root.context.resources.getColor(R.color.dark_grey_opacity_40))
-
-                // === Règle demandée : mettre le dernier message en gras si la date ≠ aujourd'hui ===
                 if (!isLastMessageToday(conversation)) {
                     binding.detail.setTypeface(binding.detail.typeface, Typeface.BOLD)
                 } else {
@@ -140,36 +147,22 @@ class DiscussionsListAdapter(
                 }
             }
 
-            // Block info
+            // === Info de blocage ===
             if (conversation.imBlocker()) {
-                binding.detail.text = binding.detail.resources.getText(R.string.message_user_blocked_by_me_list)
-                binding.detail.setTextColor(binding.detail.resources.getColor(R.color.red))
-                binding.detail.setTypeface(binding.detail.typeface, Typeface.NORMAL) // garde la lisibilité
+                binding.detail.text = binding.root.resources.getText(R.string.message_user_blocked_by_me_list)
+                binding.detail.setTextColor(binding.root.resources.getColor(R.color.red))
+                binding.detail.setTypeface(binding.detail.typeface, Typeface.NORMAL)
             }
         }
 
-        /**
-         * Retourne true si la date du dernier message de la conversation est "aujourd'hui" (en TZ locale).
-         * Si la date est absente → retourne false (=> on affichera en gras comme demandé).
-         */
         private fun isLastMessageToday(conversation: Conversation): Boolean {
-            val d = conversation.lastMessage?.date ?: return false
-            val tz = TimeZone.getDefault()
-            val calMsg = Calendar.getInstance(tz).apply { time = d }
-            val calNow = Calendar.getInstance(tz)
+            val date = conversation.lastMessage?.date ?: return false
+            val timeZone = TimeZone.getDefault()
+            val calMsg = Calendar.getInstance(timeZone).apply { time = date }
+            val calNow = Calendar.getInstance(timeZone)
             return calMsg.get(Calendar.ERA) == calNow.get(Calendar.ERA) &&
                     calMsg.get(Calendar.YEAR) == calNow.get(Calendar.YEAR) &&
                     calMsg.get(Calendar.DAY_OF_YEAR) == calNow.get(Calendar.DAY_OF_YEAR)
         }
-    }
-
-    override fun onBindViewHolder(holder: DiscussionsListAdapter.ViewHolder, position: Int) {
-        if (position >= 0 && position < messagesList.size) {
-            holder.bind(messagesList[position], position)
-        }
-    }
-
-    override fun getItemCount(): Int {
-        return messagesList.size
     }
 }
