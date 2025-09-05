@@ -25,6 +25,7 @@ import social.entourage.android.api.model.Events
 import social.entourage.android.api.model.Post
 import social.entourage.android.api.model.CompleteReactionsResponse
 import social.entourage.android.api.model.ReactionWrapper
+import social.entourage.android.ui.ActionSheetFragment
 import timber.log.Timber
 import java.io.File
 import java.io.IOException
@@ -350,11 +351,12 @@ class EventsPresenter : ViewModel() {
                     if (response.isSuccessful) {
                         response.body()?.let { eventWrapper ->
                             getEvent.value = eventWrapper.event
+                            if(getEvent.value?.signable != null){
+                                ActionSheetFragment.isSignable = getEvent.value?.signable!!
+                            }
                         }
                     }
-
                 }
-
                 override fun onFailure(call: Call<EventWrapper>, t: Throwable) {
                     Timber.wtf("wtf error " + t.message)
                 }

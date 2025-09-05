@@ -389,7 +389,7 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
         private const val ARG_IS_MY_MESSAGE = "isMyMessage"
         private const val ARG_IS_EVENT_CONTEXT = "isEventContext"
         private const val ARG_IS_GROUP_CONTEXT = "isGroupContext"
-
+        var isSignable = false
         fun newGroup(groupId: Int) = ActionSheetFragment().apply {
             arguments = Bundle().apply {
                 putString(ARG_MODE, SheetMode.GROUP.name)
