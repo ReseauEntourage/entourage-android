@@ -209,53 +209,67 @@ class DetailConversationActivity : CommentActivity() {
         stopRefreshing()
     }
 
-// DetailConversationActivity.kt
-
-    // DetailConversationActivity.kt
-
     private fun buildAndShowActionSheet() {
         val mode = resolveSheetMode()
-        Timber.wtf("wtf mode: $mode")
-        val sheet = when (mode) {
-            SheetMode.DISCUSSION_ONE_TO_ONE -> {
-                val otherUserId = detailConversation?.members
-                    ?.firstOrNull { it?.id != EntourageApplication.get().me()?.id }
-                    ?.id ?: 0
-                ActionSheetFragment.newDiscussion(
-                    conversationId = id,
-                    isOneToOne = true,
-                    userId = otherUserId,
-                    username = detailConversation?.title,
-                    blocked = detailConversation?.hasBlocker() == true && detailConversation?.imBlocker() == true
-                )
-            }
-            SheetMode.DISCUSSION_GROUP -> {
-                ActionSheetFragment.newDiscussion(
-                    conversationId = id,
-                    isOneToOne = false,
-                    userId = 0,
-                    username = null,
-                    blocked = false
-                )
-            }
-            // IMPORTANT : on passe aussi conversationId pour le bouton "Membres"
-            SheetMode.EVENT -> ActionSheetFragment.newEvent(
-                eventId = event?.id ?: (detailConversation?.id ?: 0),
-                conversationId = id
-            )
-            SheetMode.GROUP -> ActionSheetFragment.newGroup(detailConversation?.id ?: id)
+        Timber.d("Mode résolu : $mode, event = $event, eventId = ${event?.id}, detailConversationId = ${detailConversation?.id}")
 
-            // Nouveau: branche exhaustive pour l'enum élargie
-            SheetMode.MESSAGE_ACTIONS -> {
-                // Ce mode n'est normalement pas déclenché depuis l'icône "paramètres" d'en-tête.
-                // On fait un fallback safe vers la fiche du groupe (ou de la conv).
-                ActionSheetFragment.newGroup(detailConversation?.id ?: id)
+        // Si on est en mode EVENT, on vérifie que eventId est valide
+        if (mode == SheetMode.EVENT) {
+            val eventId = event?.id ?: detailConversation?.id ?: 0
+            if (eventId <= 0) {
+                Timber.e("Impossible d'ouvrir l'ActionSheet en mode EVENT : eventId invalide ($eventId)")
+                Toast.makeText(this, "Impossible d'ouvrir les paramètres de l'événement", Toast.LENGTH_SHORT).show()
+                return // On ne continue pas si eventId est invalide
             }
+
+            // On passe TOUS les arguments nécessaires (comme dans EventFeedFragment)
+            ActionSheetFragment.newEvent(
+                eventId = eventId,
+                conversationId = id,
+                canManageParticipants = false, // À adapter selon ta logique métier
+                eventTitle = event?.title ?: "",
+                participantsCount = event?.membersCount ?: 0,
+                eventAddress = event?.metadata?.displayAddress ?: ""
+            ).show(supportFragmentManager, "ActionSheetFragment")
+
+        } else {
+            // Pour les autres modes (GROUP, DISCUSSION_ONE_TO_ONE, DISCUSSION_GROUP)
+            val sheet = when (mode) {
+                SheetMode.DISCUSSION_ONE_TO_ONE -> {
+                    val otherUserId = detailConversation?.members
+                        ?.firstOrNull { it?.id != EntourageApplication.get().me()?.id }
+                        ?.id ?: 0
+                    ActionSheetFragment.newDiscussion(
+                        conversationId = id,
+                        isOneToOne = true,
+                        userId = otherUserId,
+                        username = detailConversation?.title,
+                        blocked = detailConversation?.hasBlocker() == true && detailConversation?.imBlocker() == true
+                    )
+                }
+                SheetMode.DISCUSSION_GROUP -> {
+                    ActionSheetFragment.newDiscussion(
+                        conversationId = id,
+                        isOneToOne = false,
+                        userId = 0,
+                        username = null,
+                        blocked = false
+                    )
+                }
+                SheetMode.GROUP -> {
+                    ActionSheetFragment.newGroup(detailConversation?.id ?: id)
+                }
+                SheetMode.MESSAGE_ACTIONS -> {
+                    ActionSheetFragment.newGroup(detailConversation?.id ?: id)
+                }
+                else -> {
+                    Timber.e("Mode non géré : $mode, fallback vers GROUP")
+                    ActionSheetFragment.newGroup(detailConversation?.id ?: id)
+                }
+            }
+            sheet.show(supportFragmentManager, "ActionSheetFragment")
         }
-        sheet.show(supportFragmentManager, "ActionSheetFragment")
     }
-
-
 
     private fun resolveSheetMode(): SheetMode {
         return when {
