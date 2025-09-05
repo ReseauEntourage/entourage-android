@@ -61,8 +61,8 @@ android {
         }
     }
 
-    compileSdk = 35
-    buildToolsVersion = "35.0.1"
+    compileSdk = 36
+    buildToolsVersion = "36.0.0"
 
     val localTestAccountLogin = System.getenv("TEST_ACCOUNT_LOGIN")?.let { login -> "\""+ login+ "\"" }
         ?: findProperty("entourageTestLogin") as String?
@@ -85,7 +85,7 @@ android {
         applicationId = "social.entourage.android"
 
         minSdk = 23 /*November 2015: Android 6.0, MarshMallow*/
-        targetSdk = 35
+        targetSdk = 36
 
         // Making either of these two values dynamic in the defaultConfig will
         // require a full APK build and reinstallation because the AndroidManifest.xml
@@ -294,8 +294,8 @@ dependencies {
 
     implementation("com.google.android.flexbox:flexbox:3.0.0")
     // Kotlin
-    implementation("androidx.navigation:navigation-fragment-ktx:2.9.1")
-    implementation("androidx.navigation:navigation-ui-ktx:2.9.1")
+    implementation("androidx.navigation:navigation-fragment-ktx:2.9.3")
+    implementation("androidx.navigation:navigation-ui-ktx:2.9.3")
     implementation("com.github.IntruderShanky:Sectioned-RecyclerView:2.1.1")
 
     implementation("com.airbnb.android:lottie:6.6.7")
@@ -314,10 +314,10 @@ dependencies {
     implementation("com.leinardi.android:speed-dial:3.3.0")
     implementation("com.google.firebase:firebase-database")
 
-    implementation("io.ktor:ktor-client-core:3.2.2")
-    implementation("io.ktor:ktor-client-okhttp:3.2.2")
-    implementation("io.ktor:ktor-client-content-negotiation:3.2.2")
-    implementation("io.ktor:ktor-serialization-kotlinx-json:3.2.2")
+    implementation("io.ktor:ktor-client-core:3.2.3")
+    implementation("io.ktor:ktor-client-okhttp:3.2.3")
+    implementation("io.ktor:ktor-client-content-negotiation:3.2.3")
+    implementation("io.ktor:ktor-serialization-kotlinx-json:3.2.3")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.9.0")
 
     //UNCOMMENT FOR VIDEO CALL FEATURE
