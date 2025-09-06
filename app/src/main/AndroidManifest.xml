@@ -173,9 +173,6 @@
             android:name=".welcome.WelcomeFiveActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustPan" />
-        <activity
-            android:name=".user.UserProfileActivity"
-            android:exported="false" />
         <activity android:name=".profile.editProfile.EditPhotoActivity"
             android:exported="false" />
         <activity

@@ -13,7 +13,7 @@ import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import social.entourage.android.R
 import social.entourage.android.api.model.Group
-import social.entourage.android.databinding.NewFragmentCreateGroupBinding
+import social.entourage.android.databinding.FragmentCreateGroupBinding
 import social.entourage.android.groups.GroupPresenter
 import social.entourage.android.groups.details.feed.CreatePostGroupActivity
 import social.entourage.android.tools.log.AnalyticsEvents
@@ -25,8 +25,8 @@ import social.entourage.android.tools.utils.previousPage
 
 class CreateGroupFragment : Fragment() {
 
-    private var _binding: NewFragmentCreateGroupBinding? = null
-    val binding: NewFragmentCreateGroupBinding get() = _binding!!
+    private var _binding: FragmentCreateGroupBinding? = null
+    val binding: FragmentCreateGroupBinding get() = _binding!!
     private val viewModel: CommunicationHandlerViewModel by activityViewModels()
     private lateinit var viewPager: ViewPager2
     private val groupPresenter: GroupPresenter by lazy { GroupPresenter() }
@@ -37,7 +37,7 @@ class CreateGroupFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = NewFragmentCreateGroupBinding.inflate(inflater, container, false)
+        _binding = FragmentCreateGroupBinding.inflate(inflater, container, false)
 
         updatePaddingTopForEdgeToEdge(binding.header.layout)
         return binding.root

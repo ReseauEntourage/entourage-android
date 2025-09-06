@@ -24,7 +24,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 import social.entourage.android.R
 import social.entourage.android.RefreshController
 import social.entourage.android.api.model.Events
-import social.entourage.android.databinding.NewFragmentCreateEventBinding
+import social.entourage.android.databinding.FragmentCreateEventBinding
 import social.entourage.android.events.EventsPresenter
 import social.entourage.android.events.create.CommunicationHandler.canExitEventCreation
 import social.entourage.android.tools.log.AnalyticsEvents
@@ -38,8 +38,8 @@ import timber.log.Timber
 
 class CreateEventFragment : Fragment() {
 
-    private var _binding: NewFragmentCreateEventBinding? = null
-    val binding: NewFragmentCreateEventBinding get() = _binding!!
+    private var _binding: FragmentCreateEventBinding? = null
+    val binding: FragmentCreateEventBinding get() = _binding!!
     private var event: Events? = null
 
     private lateinit var viewPager: ViewPager2
@@ -52,7 +52,7 @@ class CreateEventFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = NewFragmentCreateEventBinding.inflate(inflater, container, false)
+        _binding = FragmentCreateEventBinding.inflate(inflater, container, false)
 
         updatePaddingTopForEdgeToEdge(binding.header.layout)
         return binding.root

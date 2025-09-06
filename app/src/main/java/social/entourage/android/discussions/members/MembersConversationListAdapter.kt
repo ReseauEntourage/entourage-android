@@ -12,7 +12,6 @@ import social.entourage.android.api.model.GroupMember
 import social.entourage.android.databinding.NewGroupMemberItemBinding
 import social.entourage.android.groups.details.members.OnItemShowListener
 import social.entourage.android.profile.ProfileFullActivity
-import social.entourage.android.user.UserProfileActivity
 import social.entourage.android.tools.utils.Const
 
 class MembersConversationListAdapter(
