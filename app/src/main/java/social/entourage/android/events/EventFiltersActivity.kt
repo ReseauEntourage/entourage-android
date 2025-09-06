@@ -29,7 +29,6 @@ import social.entourage.android.RefreshController
 import social.entourage.android.api.model.Address
 import social.entourage.android.api.model.EventActionLocationFilters
 import social.entourage.android.api.model.EventFilterType
-import social.entourage.android.base.location.LocationProvider
 import social.entourage.android.base.location.LocationUtils
 import social.entourage.android.databinding.ActivityEventFiltersBinding
 import social.entourage.android.events.list.DiscoverEventsListFragment
@@ -339,7 +338,7 @@ class EventFiltersActivity : AppCompatActivity() {
             binding.locationName.text = getString(R.string.onboard_place_getting_current_location)
             mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
             mFusedLocationClient?.requestLocationUpdates(
-                LocationProvider.createLocationRequest(),
+                LocationUtils.createLocationRequest(),
                 mLocationCallback,
                 null
             )

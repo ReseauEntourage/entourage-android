@@ -16,7 +16,7 @@ import java.util.Locale
 
 class ActivityChooseLanguage:BaseActivity() {
 
-    private lateinit var binding:ActivityChooseLanguageLayoutBinding
+    private lateinit var binding: ActivityChooseLanguageLayoutBinding
     private val userPresenter: UserPresenter by lazy { UserPresenter() }
 
     override fun onCreate(savedInstanceState: Bundle?) {

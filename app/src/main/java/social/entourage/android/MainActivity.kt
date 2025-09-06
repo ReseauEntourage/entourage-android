@@ -37,7 +37,6 @@ import social.entourage.android.api.model.formatEventStartTime
 import social.entourage.android.api.model.notification.PushNotificationMessage
 import social.entourage.android.api.request.userConfig
 import social.entourage.android.base.BaseSecuredActivity
-import social.entourage.android.base.location.EntLocation
 import social.entourage.android.databinding.ActivityMainBinding
 import social.entourage.android.deeplinks.UniversalLinkManager
 import social.entourage.android.events.EventsPresenter
@@ -83,7 +82,7 @@ class MainActivity : BaseSecuredActivity() {
         initializeNavBar()
         if (authenticationController.isAuthenticated) {
             //refresh the user info from the server
-            presenter.updateUserLocation(EntLocation.currentLocation)
+            presenter.updateUser()
         }
         handleUniversalLinkFromMain(this.intent)
 

@@ -3,9 +3,8 @@ package social.entourage.android.api.model
 import android.location.Location
 import com.google.android.gms.maps.model.LatLng
 import com.google.gson.annotations.SerializedName
-import social.entourage.android.base.location.EntLocation.currentLocation
 import java.io.Serializable
-import java.util.*
+import java.util.Date
 
 class LocationPoint : Serializable {
     // ----------------------------------
@@ -48,12 +47,14 @@ class LocationPoint : Serializable {
         return result[0]
     }
 
-    fun distanceToCurrentLocation(maxDistanceToShow: Float): String {
+    fun distanceToCurrentLocation(maxDistanceToShow: Float, currentLocation: LocationPoint?): String {
         currentLocation?.let {currentLocation ->
-            val distance = distanceTo(LocationPoint(currentLocation.latitude, currentLocation.longitude))
+            val distance = distanceTo(currentLocation)
             if (distance < maxDistanceToShow) {
                 return if (distance < 1000.0f) {
                     String.format("%.0f m", distance)
+                } else if (distance < 10000.0f) {
+                    String.format("%.1f km", distance / 1000.0f)
                 } else {
                     String.format("%.0f km", distance / 1000.0f)
                 }

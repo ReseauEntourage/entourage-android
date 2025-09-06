@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import social.entourage.android.api.model.LocationPoint
 import social.entourage.android.api.model.guide.Poi
 import social.entourage.android.databinding.LayoutPoiCardBinding
 import social.entourage.android.databinding.LayoutSearchPoiEmptyBinding
@@ -12,7 +13,7 @@ import social.entourage.android.guide.poi.PoiViewHolder
 /**
  * Created by Jr (MJ-DEVS) on 24/11/2020.
  */
-class GDSSearchAdapter(var items: ArrayList<Poi>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class GDSSearchAdapter(var items: ArrayList<Poi>, val currentLocation: LocationPoint?): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     var isAlreadySend = false
     fun updateAdapter(items: ArrayList<Poi>) {
@@ -35,7 +36,7 @@ class GDSSearchAdapter(var items: ArrayList<Poi>): RecyclerView.Adapter<Recycler
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        (holder as? PoiViewHolder)?.populate(items[position])
+        (holder as? PoiViewHolder)?.populate(items[position], currentLocation)
     }
 
     override fun getItemCount(): Int {
