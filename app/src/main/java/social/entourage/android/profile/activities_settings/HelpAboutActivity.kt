@@ -9,17 +9,17 @@ import android.view.View
 import com.google.android.material.snackbar.Snackbar
 import social.entourage.android.R
 import social.entourage.android.base.BaseActivity
-import social.entourage.android.databinding.NewFragmentHelpAboutBinding
+import social.entourage.android.databinding.ActivityHelpAboutBinding
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.view.EntSnackbar
 
 class HelpAboutActivity : BaseActivity() {
 
-    private lateinit var binding: NewFragmentHelpAboutBinding
+    private lateinit var binding: ActivityHelpAboutBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = NewFragmentHelpAboutBinding.inflate(layoutInflater)
+        binding = ActivityHelpAboutBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         initializeView()

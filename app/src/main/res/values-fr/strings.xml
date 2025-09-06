@@ -110,7 +110,6 @@
     <string name="notifications">Notifications</string>
     <string name="help_about">Aide et à propos</string>
     <string name="unblock">Débloquer des membres</string>
-    <string name="sign_out">Se déconnecter</string>
     <string name="delete_account">Supprimer mon compte</string>
     <string name="share_app">Bonjour ! Grâce au réseau Entourage, je participe à des actions solidaires entre voisins avec et sans domicile. Rejoins-moi : https://bit.ly/applientourage</string>
     <string name="edit_profile">Modifier mes informations</string>
@@ -504,8 +503,6 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="about_privacy">Politique de Confidentialité</string>
     <string name="about_website">Site web d’Entourage</string>
     <string name="about_email">Contactez Entourage</string>
-    <string name="about_version_format">v%1$s</string>
-    <string name="about_debug_info_format">build: staging/%1$s\nFIId: %2$s</string>
     <string name="about_clearing_entourage_cache">Données d\'historique locales effacées</string>
     <string name="about_rate_app">Noter l\'app</string>
     <string name="about_share_app">Partager l\'app</string>

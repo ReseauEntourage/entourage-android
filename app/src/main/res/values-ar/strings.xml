@@ -107,7 +107,6 @@
     <string name="notifications">إشعارات</string>
     <string name="help_about">مساعدة وحول</string>
     <string name="unblock">إلغاء حظر الأعضاء</string>
-    <string name="sign_out">تسجيل الخروج</string>
     <string name="delete_account">احذف حسابي</string>
     <string name="share_app">صباح الخير ! بفضل شبكة Entourage، أشارك في أعمال التضامن بين الجيران الذين لديهم منازل والذين ليس لديهم منازل. انضم إلي: https://bit.ly/applientourage</string>
     <string name="edit_profile">تحرير المعلومات الخاصة بي</string>
@@ -484,8 +483,6 @@
     <string name="about_privacy">سياسة الخصوصية</string>
     <string name="about_website">موقع حاشية</string>
     <string name="about_email">اتصل بالحاشية</string>
-    <string name="about_version_format">الخامس%1$s</string>
-    <string name="about_debug_info_format">البنية: التدريج/%1$s\nFIId: %2$s</string>
     <string name="about_clearing_entourage_cache">تم مسح بيانات سجل d\ المحلية</string>
     <string name="about_rate_app">قيم تطبيق \</string>
     <string name="about_share_app">شارك تطبيق\</string>

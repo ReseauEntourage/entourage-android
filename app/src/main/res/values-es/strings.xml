@@ -113,7 +113,6 @@
     <string name="notifications">Notificaciones</string>
     <string name="help_about">Ayuda y acerca de</string>
     <string name="unblock">Desbloquear miembros</string>
-    <string name="sign_out">Desconectarse</string>
     <string name="delete_account">Borrar mi cuenta</string>
     <string name="share_app">Buenos dias ! Gracias a la red Entourage participo en acciones solidarias entre vecinos con y sin vivienda. Únase a mí: https://bit.ly/applientourage</string>
     <string name="edit_profile">Editar mi información</string>
@@ -496,8 +495,6 @@ Leerán este mensaje tan pronto como se unan al grupo.</string>
     <string name="about_privacy">Política de confidencialidad</string>
     <string name="about_website">sitio web del séquito</string>
     <string name="about_email">Contacto Entorno</string>
-    <string name="about_version_format">%1$s</string>
-    <string name="about_debug_info_format">compilación: preparación/%1$s\nFIId: %2$s</string>
     <string name="about_clearing_entourage_cache">Se borraron los datos del historial local de d\</string>
     <string name="about_rate_app">Califica la aplicación \</string>
     <string name="about_share_app">Comparte la aplicación \</string>

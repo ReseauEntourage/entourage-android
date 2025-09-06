@@ -94,7 +94,6 @@
     <string name="notifications">Notifications</string>
     <string name="help_about">Help and support</string>
     <string name="unblock">Unblock members</string>
-    <string name="sign_out">Sign out</string>
     <string name="delete_account">Delete my account</string>
     <string name="share_app">Hello ! Thanks to the Entourage network, I participate in solidarity actions between neighbors with and without homes. Join me: https://bit.ly/applientourage</string>
     <string name="edit_profile">Edit my profile</string>
@@ -449,8 +448,6 @@
     <string name="about_privacy">Privacy Policy</string>
     <string name="about_website">Entourage website</string>
     <string name="about_email">Contact Entourage</string>
-    <string name="about_version_format">v%1$s</string>
-    <string name="about_debug_info_format">build: staging/%1$s\nFIId: %2$s</string>
     <string name="about_clearing_entourage_cache">Local history data cleared</string>
     <string name="about_rate_app">Rate the app</string>
     <string name="about_share_app">Share the app;</string>

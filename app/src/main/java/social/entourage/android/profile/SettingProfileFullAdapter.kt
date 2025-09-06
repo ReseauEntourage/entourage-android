@@ -14,7 +14,7 @@ import social.entourage.android.R
 import social.entourage.android.databinding.SettingItemSeparatorBinding
 import social.entourage.android.databinding.SettingsItemUserSectionBinding
 import social.entourage.android.enhanced_onboarding.EnhancedOnboarding
-import social.entourage.android.profile.activities_settings.LanguageActivitySettings
+import social.entourage.android.profile.activities_settings.LanguageSettingsActivity
 import social.entourage.android.language.TranslationBottomFragment
 import social.entourage.android.profile.activities_settings.UnblockUsersActivity
 import social.entourage.android.profile.activities_settings.EditPasswordActivity
@@ -109,7 +109,7 @@ class SettingProfileFullAdapter(
                     VibrationUtil.vibrate(context)
                     when (item.title) {
                         context.getString(R.string.settings_language_title) -> {
-                            val intent = Intent(context, LanguageActivitySettings::class.java)
+                            val intent = Intent(context, LanguageSettingsActivity::class.java)
                             context.startActivity(intent)
                         }
                         context.getString(R.string.translation_auto_title) -> {

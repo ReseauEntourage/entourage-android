@@ -17,7 +17,6 @@ class Summary : Serializable {
     @SerializedName("id")
     var id: Int? = null
 
-
     @SerializedName("display_name")
     var displayName: String? = null
 

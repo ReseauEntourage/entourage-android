@@ -8,8 +8,6 @@ import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.authentication.AuthenticationController
 import social.entourage.android.onboarding.pre_onboarding.PreOnboardingLanguage
-import social.entourage.android.onboarding.pre_onboarding.PreOnboardingStartActivity
-import timber.log.Timber
 
 /**
  * Base Activity that only runs if the user is currently logged in

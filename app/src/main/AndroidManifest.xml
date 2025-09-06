@@ -86,7 +86,7 @@
             android:name=".welcome.WelcomeTwoActivity"
             android:exported="false" />
 
-        <activity android:name="social.entourage.android.profile.activities_settings.LanguageActivitySettings"/>
+        <activity android:name="social.entourage.android.profile.activities_settings.LanguageSettingsActivity"/>
         <activity android:name="social.entourage.android.profile.activities_settings.SettingsNotificationsActivity"/>
         <activity android:name="social.entourage.android.profile.activities_settings.EditPasswordActivity"/>
         <activity android:name="social.entourage.android.profile.activities_settings.HelpAboutActivity"/>
@@ -278,19 +278,10 @@
                  <category android:name="android.intent.category.DEFAULT" />
                  <category android:name="android.intent.category.BROWSABLE" />
                  <data android:scheme="${deepLinksScheme}" />
-             </intent-filter>        </activity>
-
-         <activity
-             android:name="com.google.android.gms.oss.licenses.OssLicensesMenuActivity"
-             android:theme="@style/EntourageOSSLicenses.Theme" />
-         <activity
-             android:name="com.google.android.gms.oss.licenses.OssLicensesActivity"
-             android:theme="@style/EntourageOSSLicenses.Theme" />
+             </intent-filter>
+         </activity>
          <activity android:name=".involvement.ShareActivity" />
          <activity android:name=".involvement.RateActivity" />
-         <activity
-             android:name=".profile.ProfileActivity"
-             android:windowSoftInputMode="adjustPan" />
          <activity
              android:name=".onboarding.pre_onboarding.PreOnboardingChoiceActivity"
              android:screenOrientation="portrait" />

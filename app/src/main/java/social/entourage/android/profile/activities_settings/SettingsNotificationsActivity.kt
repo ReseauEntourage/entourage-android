@@ -9,13 +9,13 @@ import androidx.core.app.NotificationManagerCompat
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
 import social.entourage.android.api.model.notification.InAppNotificationPermission
-import social.entourage.android.databinding.NewFragmentSettingsNotifsBinding
+import social.entourage.android.databinding.ActivitySettingsNotificationsBinding
 import social.entourage.android.home.HomePresenter
 import social.entourage.android.profile.settings.ProfilFullViewModel
 
 class SettingsNotificationsActivity : AppCompatActivity() {
 
-    private lateinit var binding: NewFragmentSettingsNotifsBinding
+    private lateinit var binding: ActivitySettingsNotificationsBinding
     private lateinit var profilFullViewModel: ProfilFullViewModel
 
     private val homePresenter: HomePresenter by lazy { HomePresenter() }
@@ -24,7 +24,7 @@ class SettingsNotificationsActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = NewFragmentSettingsNotifsBinding.inflate(layoutInflater)
+        binding = ActivitySettingsNotificationsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         profilFullViewModel = ViewModelProvider(this).get(ProfilFullViewModel::class.java)

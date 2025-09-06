@@ -113,7 +113,6 @@
     <string name="notifications">Сповіщення</string>
     <string name="help_about">Довідка та Про</string>
     <string name="unblock">Розблокувати учасників</string>
-    <string name="sign_out">Вийти з аккаунта</string>
     <string name="delete_account">Видалити мій обліковий запис</string>
     <string name="share_app">Добрий ранок ! Завдяки мережі Entourage я беру участь в акціях солідарності між сусідами без дому та без нього. Приєднуйтесь до мене: https://bit.ly/applientourage</string>
     <string name="edit_profile">Редагувати мою інформацію</string>
@@ -499,8 +498,6 @@
     <string name="about_privacy">Політика конфіденційності</string>
     <string name="about_website">Сайт Entourage</string>
     <string name="about_email">Зв&amp;apos;яжіться з Entourage</string>
-    <string name="about_version_format">v%1$s</string>
-    <string name="about_debug_info_format">збірка: постановка/%1$s\nFIId: %2$s</string>
     <string name="about_clearing_entourage_cache">Дані локальної історії d\ видалено</string>
     <string name="about_rate_app">Оцініть програму \</string>
     <string name="about_share_app">Поділіться додатком \</string>

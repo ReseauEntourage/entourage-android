@@ -113,7 +113,6 @@
     <string name="notifications">Notificări</string>
     <string name="help_about">Ajutor și Despre</string>
     <string name="unblock">Deblocați membrii</string>
-    <string name="sign_out">Sign out</string>
     <string name="delete_account">Sterge contul meu</string>
     <string name="share_app">Buna dimineata ! Datorită rețelei Entourage, particip la acțiuni de solidaritate între vecinii cu și fără locuință. Alăturați-vă mie: https://bit.ly/applientorage</string>
     <string name="edit_profile">Editează-mi informațiile</string>
@@ -494,8 +493,6 @@ Ei vor citi acest mesaj imediat ce se vor alătura grupului.</string>
     <string name="about_privacy">Politica de confidențialitate</string>
     <string name="about_website">Site-ul Entourage</string>
     <string name="about_email">Contactați Anturaj</string>
-    <string name="about_version_format">v%1$s</string>
-    <string name="about_debug_info_format">build: staging/%1$s\nFIId: %2$s</string>
     <string name="about_clearing_entourage_cache">Datele istorice locale d\ au fost șterse</string>
     <string name="about_rate_app">Evaluați aplicația \</string>
     <string name="about_share_app">Distribuiți aplicația \</string>

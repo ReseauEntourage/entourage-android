@@ -5,7 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
-import social.entourage.android.databinding.BottomFragmentLanguageFragmentBinding
+import social.entourage.android.databinding.ActivityLanguageSettingsBinding
 import social.entourage.android.language.LanguageAdapter
 import social.entourage.android.language.LanguageItem
 import social.entourage.android.language.LanguageManager
@@ -13,15 +13,15 @@ import social.entourage.android.language.OnLanguageClicked
 import social.entourage.android.user.UserPresenter
 
 
-class LanguageActivitySettings : AppCompatActivity(), OnLanguageClicked {
-    private lateinit var binding: BottomFragmentLanguageFragmentBinding
+class LanguageSettingsActivity : AppCompatActivity(), OnLanguageClicked {
+    private lateinit var binding: ActivityLanguageSettingsBinding
     private var languages: MutableList<LanguageItem> = mutableListOf()
     private lateinit var adapter: LanguageAdapter
     private val userPresenter: UserPresenter by lazy { UserPresenter() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = BottomFragmentLanguageFragmentBinding.inflate(layoutInflater)
+        binding = ActivityLanguageSettingsBinding.inflate(layoutInflater)
         setContentView(binding.root)
         fillArray()
         handleValidateClick()

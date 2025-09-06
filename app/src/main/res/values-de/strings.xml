@@ -111,7 +111,6 @@
     <string name="notifications">Benachrichtigungen</string>
     <string name="help_about">Hilfe und Info</string>
     <string name="unblock">Mitglieder entsperren</string>
-    <string name="sign_out">Abmelden</string>
     <string name="delete_account">Mein Konto löschen</string>
     <string name="share_app">Guten Morgen ! Dank des Entourage-Netzwerks beteilige ich mich an Solidaritätsaktionen zwischen Nachbarn mit und ohne Obdach. Begleiten Sie mich: https://bit.ly/applientourage</string>
     <string name="edit_profile">Bearbeiten Sie meine Informationen</string>
@@ -495,8 +494,6 @@ Sie werden diese Nachricht lesen, sobald sie der Gruppe beitreten.</string>
     <string name="about_privacy">Datenschutzrichtlinie</string>
     <string name="about_website">Entourage-Website</string>
     <string name="about_email">Kontaktieren Sie Entourage</string>
-    <string name="about_version_format">v%1$s</string>
-    <string name="about_debug_info_format">Build: staging/%1$s\nFIId: %2$s</string>
     <string name="about_clearing_entourage_cache">Lokale d\-Verlaufsdaten gelöscht</string>
     <string name="about_rate_app">Bewerten Sie die \-App</string>
     <string name="about_share_app">Teilen Sie die \-App</string>
