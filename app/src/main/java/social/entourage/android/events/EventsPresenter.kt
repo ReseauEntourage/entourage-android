@@ -1,6 +1,7 @@
 package social.entourage.android.events
 
 import android.util.Log
+import android.widget.Toast
 import androidx.collection.ArrayMap
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -773,6 +774,7 @@ class EventsPresenter : ViewModel() {
                         Log.d("EventsPresenter", "Participation confirmée avec succès.")
                         isUserConfirmedParticipating.value = true
                     } else {
+                        Toast.makeText(EntourageApplication.get(), "Échec de la confirmation de participation.", Toast.LENGTH_SHORT).show()
                         Log.d("EventsPresenter", "Échec de la confirmation de participation.")
                         isUserConfirmedParticipating.value = false
                     }
