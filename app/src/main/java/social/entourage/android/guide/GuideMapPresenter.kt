@@ -3,17 +3,17 @@ package social.entourage.android.guide
 import android.location.Location
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.CameraPosition
+import com.google.android.gms.maps.model.LatLng
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import social.entourage.android.Constants
 import social.entourage.android.EntourageApplication
+import social.entourage.android.EntourageApplication.Companion.get
 import social.entourage.android.api.model.guide.ClusterPoiResponse
 import social.entourage.android.api.model.guide.Poi
 import social.entourage.android.api.request.PoiRequest
 import social.entourage.android.api.request.PoiResponse
 import social.entourage.android.authentication.AuthenticationController
-import social.entourage.android.base.location.EntLocation
 import social.entourage.android.guide.filter.GuideFilter
 import timber.log.Timber
 import java.net.UnknownHostException
@@ -29,8 +29,20 @@ class GuideMapPresenter (private val fragment: GuideMapFragment) {
     private val poiRequest: PoiRequest
         get() = EntourageApplication.get().apiModule.poiRequest
 
-    private var previousEmptyListPopupLocation: Location? = null
+    //private var previousEmptyListPopupLocation: Location? = null
     private var poisMap: MutableMap<String, Poi> = TreeMap()
+
+
+    var previousCameraLocation: Location? = null
+    var lastCameraPosition: CameraPosition
+    var previousCameraZoom = 10.0f
+
+    init {
+        val address = get().authenticationController.me?.address
+        val lat = LatLng(address?.latitude ?: INITIAL_LATITUDE, address?.longitude ?: INITIAL_LONGITUDE)
+        lastCameraPosition = CameraPosition(lat, INITIAL_CAMERA_FACTOR, 0.0F, 0.0F)
+        //currentCameraPosition = CameraPosition(lat, INITIAL_CAMERA_FACTOR, 0.0F, 0.0F)
+    }
 
     // ----------------------------------
     // PUBLIC METHODS
@@ -39,7 +51,10 @@ class GuideMapPresenter (private val fragment: GuideMapFragment) {
         //updatePoisNearby();
     }
 
-    fun updatePoisNearby(map: GoogleMap?) {
+    // ----------------------------------
+    // PRIVATE METHODS
+    // ----------------------------------
+    private fun updatePoisNearby(map: GoogleMap?) {
         val distance: Float
         if (map != null) {
             val region = map.projection.visibleRegion
@@ -52,9 +67,6 @@ class GuideMapPresenter (private val fragment: GuideMapFragment) {
         }
     }
 
-    // ----------------------------------
-    // PRIVATE METHODS
-    // ----------------------------------
     private fun retrievePoisNearby(currentPosition: CameraPosition, mapDistance: Float) {
         val location = currentPosition.target
         val distance: Double = mapDistance./*coerceAtMost(1f).*/toDouble()
@@ -74,17 +86,6 @@ class GuideMapPresenter (private val fragment: GuideMapFragment) {
                 if (t is UnknownHostException) fragment.showErrorMessage()
             }
         })
-    }
-
-    fun updatePreviousEmptyListPopupLocation(cameraPosition: CameraPosition) {
-        val currentLocation = EntLocation.cameraPositionToLocation(null, cameraPosition)
-        previousEmptyListPopupLocation?.let {
-            // Show the popup only we moved from the last position we show it
-            if (it.distanceTo(currentLocation) < Constants.EMPTY_POPUP_DISPLAY_LIMIT) {
-                return
-            }
-        }
-        previousEmptyListPopupLocation = currentLocation
     }
 
     fun clear() {
@@ -145,4 +146,17 @@ class GuideMapPresenter (private val fragment: GuideMapFragment) {
     var isShowInfoPOIsPopup: Boolean
         get() = authenticationController.isShowInfoPOIsPopup
         set(shouldShowInfoPOIsPopup) {authenticationController.isShowInfoPOIsPopup = shouldShowInfoPOIsPopup}
+
+    fun cameraPositionToLocation(provider: String?, cameraPosition: CameraPosition): Location {
+        val location = Location(provider)
+        location.latitude = cameraPosition.target.latitude
+        location.longitude = cameraPosition.target.longitude
+        return location
+    }
+
+    companion object {
+        private const val INITIAL_LATITUDE = 48.841636
+        private const val INITIAL_LONGITUDE = 2.335899
+        const val INITIAL_CAMERA_FACTOR = 15f
+    }
 }

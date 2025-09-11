@@ -1,7 +1,6 @@
 package social.entourage.android
 
 import android.content.Intent
-import android.location.Location
 import androidx.collection.ArrayMap
 import okhttp3.ResponseBody
 import retrofit2.Call
@@ -86,12 +85,12 @@ class MainPresenter(private val activity: MainActivity) {
         }
     }
 
-    fun updateUserLocation(location: Location?) {
+    fun updateUser() {
         val deviceId = deviceID ?: return
         val user = ArrayMap<String, Any>()
-        if (location != null) {
-            user[KEY_DEVICE_LOCATION] = location
-        }
+//        if (location != null) {
+//            user[KEY_DEVICE_LOCATION] = location
+//        }
         user[KEY_DEVICE_ID] = deviceId
         user[KEY_DEVICE_TYPE] = ANDROID_DEVICE
         val call = userRequest.updateUser(user)

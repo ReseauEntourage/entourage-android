@@ -17,7 +17,8 @@
     <uses-feature
         android:name="android.hardware.camera"
         android:required="false" />
-    <uses-feature android:name="android.hardware.location.gps" />
+    <uses-feature android:name="android.hardware.location.gps"
+        android:required="false" />
 
     <permission
         android:name="${applicationId}.permission.MAPS_RECEIVE"
@@ -178,10 +179,13 @@
         <activity
             android:name=".home.pedago.PedagoListActivity"
             android:exported="false" />
+
+        <!-- abstract class declared here to make sure child classes work -->
         <activity
             android:name=".comment.CommentActivity"
             android:windowSoftInputMode="adjustPan"
             android:exported="false" />
+
         <activity
             android:name=".groups.details.rules.GroupRulesActivity"
             android:exported="false" />
@@ -198,6 +202,7 @@
             android:name=".groups.create.CreateGroupActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustPan" />
+        <!-- abstract class declared here to make sure child classes work -->
         <activity
             android:name="social.entourage.android.posts.CreatePostActivity"
             android:exported="false"

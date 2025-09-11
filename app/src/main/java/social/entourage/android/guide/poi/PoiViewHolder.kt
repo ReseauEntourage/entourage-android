@@ -47,17 +47,17 @@ class PoiViewHolder(val binding: LayoutPoiCardBinding) : RecyclerView.ViewHolder
         }
     }
 
-    fun populate(data: TimestampedObject) {
+    fun populate(data: TimestampedObject, lastLocation: LocationPoint?) {
         if (data is Poi) {
-            populatePoi(data)
+            populatePoi(data, lastLocation)
         }
     }
 
-    private fun populatePoi(newPoi: Poi) {
+    private fun populatePoi(newPoi: Poi, lastLocation: LocationPoint?) {
         this.poi = newPoi
         binding.poiCardTitle.text = newPoi.name ?: ""
         binding.poiCardAddress.text = newPoi.address ?: ""
-        binding.poiCardDistance.text = LocationPoint(newPoi.latitude, newPoi.longitude).distanceToCurrentLocation(Constants.DISTANCE_MAX_DISPLAY)
+        binding.poiCardDistance.text = LocationPoint(newPoi.latitude, newPoi.longitude).distanceToCurrentLocation(Constants.DISTANCE_MAX_DISPLAY, lastLocation)
         binding.poiCardCallButton.visibility = if (!showCallButton || newPoi.phone.isNullOrEmpty()) View.GONE else View.VISIBLE
     }
 }

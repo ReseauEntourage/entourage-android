@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.maps.OnMapReadyCallback
+import social.entourage.android.api.model.LocationPoint
 import social.entourage.android.api.model.TimestampedObject
 import social.entourage.android.base.location.LocationUtils
 import social.entourage.android.databinding.LayoutFeedFullMapCardBinding
@@ -18,6 +19,7 @@ import timber.log.Timber
  */
 class PoisAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private val items: ArrayList<TimestampedObject> = ArrayList()
+    var lastLocation: LocationPoint? = null
 
     override fun getItemCount(): Int {
         return items.size + positionOffset
@@ -59,7 +61,7 @@ class PoisAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             (holder as? MapViewHolder)?.populate()
         }
         else {
-            (holder as? PoiViewHolder)?.populate(items[position - positionOffset])
+            (holder as? PoiViewHolder)?.populate(items[position - positionOffset], lastLocation)
         }
     }
 
