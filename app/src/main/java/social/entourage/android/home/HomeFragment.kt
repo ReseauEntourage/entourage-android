@@ -742,7 +742,6 @@ class HomeFragment: Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocatio
         EnhancedOnboarding.preference = summary.preference ?: ""
         onActionUnclosed(summary)
         handleHelps(summary)
-        Timber.wtf("wtf signablePermission " + summary.signablePermission)
         if (summary.signablePermission != null ){
             HomeFragment.signablePermission = summary.signablePermission!!
         }

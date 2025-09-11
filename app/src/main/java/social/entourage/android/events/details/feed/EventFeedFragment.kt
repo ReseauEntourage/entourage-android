@@ -178,6 +178,7 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
             event = it
             if(it.signable != null){
                 signable = it.signable
+                ActionSheetFragment.isSignable = signable
             }
             updateView()
             if(shouldAddToAgenda){

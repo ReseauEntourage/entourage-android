@@ -172,10 +172,13 @@ open class MembersFragment : Fragment() {
                     override fun onShowConversation(userId: Int) {
                         discussionPresenter.createOrGetConversation(userId.toString())
                     }
-
-                    override fun onToggleParticipation(user: EntourageUser, isChecked: Boolean) {
+                    override fun onToggleParticipation(user: EntourageUser, isChecked: Boolean, photoAcceptance: Boolean?) {
                         if (type == MembersType.EVENT && id != null && isChecked) {
                             eventPresenter.participateForUser(id!!, user.userId)
+                            if (photoAcceptance == false) {
+                                // TODO: Afficher la pop-up de droit à l'image (à implémenter si nécessaire dans le fragment)
+                                // Exemple : showAcceptPhotoDialog(user.userId)
+                            }
                         }
                     }
                 },
@@ -192,16 +195,19 @@ open class MembersFragment : Fragment() {
             layoutManager = LinearLayoutManager(context)
             adapter = MembersListAdapter(
                 requireContext(),
-                membersListSearch,
+                membersList,
                 reactionList,
                 object : OnItemShowListener {
                     override fun onShowConversation(userId: Int) {
                         discussionPresenter.createOrGetConversation(userId.toString())
                     }
-
-                    override fun onToggleParticipation(user: EntourageUser, isChecked: Boolean) {
+                    override fun onToggleParticipation(user: EntourageUser, isChecked: Boolean, photoAcceptance: Boolean?) {
                         if (type == MembersType.EVENT && id != null && isChecked) {
                             eventPresenter.participateForUser(id!!, user.userId)
+                            if (photoAcceptance == false) {
+                                // TODO: Afficher la pop-up de droit à l'image (à implémenter si nécessaire dans le fragment)
+                                // Exemple : showAcceptPhotoDialog(user.userId)
+                            }
                         }
                     }
                 },

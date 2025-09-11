@@ -17,12 +17,15 @@ import social.entourage.android.R
 import social.entourage.android.api.model.EntourageUser
 import social.entourage.android.api.model.ReactionType
 import social.entourage.android.databinding.NewGroupMemberItemBinding
+import social.entourage.android.home.HomeFragment
 import social.entourage.android.profile.ProfileFullActivity
 import social.entourage.android.tools.utils.Const
+import social.entourage.android.ui.ActionSheetFragment
+import timber.log.Timber
 
 interface OnItemShowListener {
     fun onShowConversation(userId: Int)
-    fun onToggleParticipation(user: EntourageUser, isChecked: Boolean) // ← change
+    fun onToggleParticipation(user: EntourageUser, isChecked: Boolean, photoAcceptance: Boolean?)
 
 }
 
@@ -59,7 +62,8 @@ class MembersListAdapter(
 
         // -------- Checkbox participation (visibilité + état + listener) --------
         val isMe = EntourageApplication.get().me()?.id == item.userId
-        if (iAmOrganiser == true && !isMe) {
+        if (HomeFragment.signablePermission && ActionSheetFragment.isSignable && !isMe) {
+
             b.checkboxConfirmation.visibility = View.VISIBLE
             // état actuel : participe si participateAt ou confirmedAt non null
             val isParticipating = (item.participateAt != null) || (item.confirmedAt != null)
@@ -68,7 +72,7 @@ class MembersListAdapter(
             b.checkboxConfirmation.isChecked = isParticipating
             b.checkboxConfirmation.setOnCheckedChangeListener { _, isChecked ->
                 // on délègue : Activity décidera d'appeler participate ou cancel_participation
-                onItemShowListener.onToggleParticipation(item, isChecked)
+                onItemShowListener.onToggleParticipation(item, isChecked, item.photoAcceptance)
             }
         } else {
             // important pour le recyclage : enlever le listener avant de cacher

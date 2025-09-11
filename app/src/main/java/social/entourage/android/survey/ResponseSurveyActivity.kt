@@ -120,7 +120,7 @@ class ResponseSurveyActivity:BaseActivity(), OnItemShowListener {
     }
 
 
-    override fun onToggleParticipation(user: EntourageUser, isChecked: Boolean) {
+    override fun onToggleParticipation(user: EntourageUser, isChecked: Boolean, photoAcceptance: Boolean?) {
         //Nothing to do
     }
 }

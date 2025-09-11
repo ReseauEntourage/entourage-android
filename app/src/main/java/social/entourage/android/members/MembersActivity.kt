@@ -150,17 +150,23 @@ class MembersActivity : BaseActivity() , AcceptPhotoDialogFragment.Listener {
         override fun onShowConversation(userId: Int) {
             discussionPresenter.createOrGetConversation(userId.toString())
         }
-        override fun onToggleParticipation(user: EntourageUser, isChecked: Boolean) {
+        override fun onToggleParticipation(user: EntourageUser, isChecked: Boolean, photoAcceptance: Boolean?) {
             val userId = user.userId ?: return
             if (isChecked) {
-                // 👉 Toujours demander le droit à l'image AVANT de finaliser la participation
-                showAcceptPhotoDialog(userId)
+                if (type == MembersType.EVENT) {
+                    eventPresenter.participateForUser(id, userId)
+                    // Afficher la pop-up uniquement si photoAcceptance est false
+                    Timber.wtf("wtf photoAcceptance : $photoAcceptance")
+                    if (photoAcceptance == null || !photoAcceptance) {
+                        showAcceptPhotoDialog(userId)
+                    }
+                }
             } else {
-                // Annulation de participation
                 eventPresenter.cancelParticipationForUser(id, userId)
             }
         }
     }
+
 
     private fun needsPhotoConsent(user: EntourageUser): Boolean {
         // TODO: adapte selon ton modèle :
