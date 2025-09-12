@@ -37,35 +37,38 @@ class OnboardingAPI {
     /**********************
      * Create user
      */
-    fun createUser(tempUser: User,hasConsent:Boolean, listener:(isOK:Boolean, error:String?) -> Unit) {
-
+    fun createUser(tempUser: User, hasConsent: Boolean, listener: (isOK: Boolean, error: String?) -> Unit) {
         val user: MutableMap<String, Any> = ArrayMap()
         user["phone"] = tempUser.phone ?: ""
         user["first_name"] = tempUser.firstName ?: ""
-        user["last_name"] = tempUser.lastName ?:""
+        user["last_name"] = tempUser.lastName ?: ""
         user["email"] = tempUser.email ?: ""
         user["newsletter_subscription"] = hasConsent
+
+        // Ajout des champs gender et birthday, en suivant le format des exemples
+        tempUser.gender?.let { user["gender"] = it }
+        tempUser.birthday?.let { user["birthday"] = it }
+
         val request = ArrayMap<String, Any>()
         request["user"] = user
-        val call = onboardingService.registerUser(request)
 
+        val call = onboardingService.registerUser(request)
         call.enqueue(object : Callback<UserResponse> {
             override fun onResponse(call: Call<UserResponse>, response: Response<UserResponse>) {
                 if (response.isSuccessful) {
                     Timber.d("Response ok create user ?")
-                    listener(true,null)
+                    listener(true, null)
                 } else {
                     Timber.d("Response nok create user")
                     if (response.errorBody() != null) {
                         val errorString = response.errorBody()?.string()
                         Timber.d("Response nok create user error : $errorString")
-                        listener(false,errorString)
+                        listener(false, errorString)
                     }
                 }
             }
-
             override fun onFailure(call: Call<UserResponse>, t: Throwable) {
-                listener(false,null)
+                listener(false, null)
             }
         })
     }
@@ -196,36 +199,56 @@ class OnboardingAPI {
         })
     }
 
-    fun updateUserGoal(goalString:String, email:String?, hasConsent:Boolean?, listener:(isOK:Boolean, userResponse: UserResponse?) -> Unit) {
-
+    fun updateUserGoal(
+        goalString: String,
+        email: String?,
+        hasConsent: Boolean?,
+        gender: String?,
+        birthday: String?,
+        discoverySource: String?,  // Valeurs en français ("Bouche à oreille", etc.)
+        company: String?,
+        event: String?,
+        listener: (isOK: Boolean, userResponse: UserResponse?) -> Unit
+    ) {
         val user = ArrayMap<String, Any>()
         user["goal"] = goalString
-        if (hasConsent != null) {
-            user["newsletter_subscription"] = hasConsent
-        }
 
-        if (email?.isNotEmpty() == true){
-            user["email"] = email
+        // Champs existants
+        hasConsent?.let { user["newsletter_subscription"] = it }
+        email?.takeIf { it.isNotEmpty() }?.let { user["email"] = it }
+
+        // Nouveaux champs (valeurs en français)
+        gender?.let { user["gender"] = it }
+        birthday?.let { user["birthday"] = it }
+        discoverySource?.let { user["discovery_source"] = it }
+
+        // Ajout des champs entreprise/événement uniquement si discoverySource est "Sensibilisation entreprise"
+        if (discoverySource == "Sensibilisation entreprise") {
+            company?.let { user["company"] = it }
+            event?.let { user["event"] = it }
         }
 
         val request = ArrayMap<String, Any>()
         request["user"] = user
+
         val call = onboardingService.updateUser(request)
         call.enqueue(object : Callback<UserResponse> {
             override fun onResponse(call: Call<UserResponse>, response: Response<UserResponse>) {
                 if (response.isSuccessful) {
-                    listener(true,response.body())
-                }
-                else {
-                    listener(false,null)
+                    listener(true, response.body())
+                } else {
+                    listener(false, null)
                 }
             }
-
             override fun onFailure(call: Call<UserResponse>, t: Throwable) {
-                listener(false,null)
+                listener(false, null)
             }
         })
     }
+
+
+
+
 
     fun updateUserPhoto(avatarKey:String, listener: (isOK: Boolean, userResponse: UserResponse?) -> Unit) {
         val user = ArrayMap<String, Any>()

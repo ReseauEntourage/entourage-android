@@ -915,6 +915,21 @@ class EventsPresenter : ViewModel() {
                 }
             })
     }
+    fun declinePhotoForUser(eventId: Int, userId: Int) {
+        EntourageApplication.get().apiModule.eventsRequest.declinePhotoForUser(eventId, userId)
+            .enqueue(object : Callback<ResponseBody> {
+                override fun onResponse(
+                    call: Call<ResponseBody>,
+                    response: Response<ResponseBody>
+                ) {
+                    photoAcceptanceDone.postValue(userId to response.isSuccessful)
+                }
+
+                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                    photoAcceptanceDone.postValue(userId to false)
+                }
+            })
+    }
 
     fun cancelParticipationForUser(eventId: Int, userId: Int) {
         EntourageApplication.get().apiModule.eventsRequest.cancelParticipationForUser(eventId, userId)

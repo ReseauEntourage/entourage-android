@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".onboarding.onboard.OnboardingPhase1Fragment">
 
     <ScrollView
@@ -17,16 +17,50 @@
             android:paddingStart="16dp"
             android:paddingEnd="16dp">
 
+            <!-- Genre -->
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/textViewGender"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:fontFamily="@font/quicksand_bold"
+                    android:text="@string/onboard_welcome_title_gender"
+                    android:textColor="@color/black"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <Spinner
+                    android:id="@+id/ui_onboard_spinner_gender"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginEnd="32dp"
+                    android:layout_marginTop="5dp"
+                    android:backgroundTint="@color/orange_opacity_50"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/textViewGender" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <!-- Prénom -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp">
 
                 <TextView
                     android:id="@+id/textView2"
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginStart="32dp"
-                    android:layout_marginTop="16dp"
                     android:fontFamily="@font/quicksand_bold"
                     android:text="@string/onboard_welcome_title_firstname"
                     android:textColor="@color/black"
@@ -40,6 +74,8 @@
                     android:layout_width="0dp"
                     android:layout_height="40dp"
                     android:layout_marginStart="32dp"
+                    android:layout_marginEnd="32dp"
+                    android:layout_marginTop="5dp"
                     android:backgroundTint="@color/orange_opacity_50"
                     android:ems="10"
                     android:fontFamily="@font/nunitosans_regular"
@@ -51,43 +87,37 @@
                     android:textSize="15sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView2" />
+                    app:layout_constraintTop_toBottomOf="@id/textView2" />
 
                 <TextView
                     android:id="@+id/error_message_firstname"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginEnd="32dp"
                     android:layout_marginTop="5dp"
                     android:fontFamily="@font/nunitosans_regular"
                     android:text="@string/user_edit_profile_invalid_firstname"
                     android:textColor="@color/tomato"
                     android:textSize="12sp"
                     android:visibility="gone"
-                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="@+id/ui_onboard_names_et_firstname"
-                    app:layout_constraintTop_toBottomOf="@+id/ui_onboard_names_et_firstname"
-                    tools:visibility="visible" />
-
-                <ImageView
-                    android:id="@+id/imageView5"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/new_icn_profile_orange"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView2" />
+                    app:layout_constraintTop_toBottomOf="@id/ui_onboard_names_et_firstname"
+                    tools:visibility="visible" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
+            <!-- Nom -->
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp">
 
                 <TextView
                     android:id="@+id/textView35"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="32dp"
-                    android:layout_marginTop="24dp"
                     android:fontFamily="@font/quicksand_bold"
                     android:text="@string/onboard_welcome_title_lastname"
                     android:textColor="@color/black"
@@ -101,6 +131,8 @@
                     android:layout_width="0dp"
                     android:layout_height="40dp"
                     android:layout_marginStart="32dp"
+                    android:layout_marginEnd="32dp"
+                    android:layout_marginTop="5dp"
                     android:backgroundTint="@color/orange_opacity_50"
                     android:ems="10"
                     android:fontFamily="@font/nunitosans_regular"
@@ -113,13 +145,14 @@
                     android:textSize="15sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView35" />
+                    app:layout_constraintTop_toBottomOf="@id/textView35" />
 
                 <TextView
                     android:id="@+id/error_message_lastname"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="32dp"
+                    android:layout_marginEnd="32dp"
                     android:layout_marginTop="5dp"
                     android:fontFamily="@font/nunitosans_regular"
                     android:text="@string/user_edit_profile_invalid_lastname"
@@ -128,7 +161,7 @@
                     android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/ui_onboard_names_et_lastname"
+                    app:layout_constraintTop_toBottomOf="@id/ui_onboard_names_et_lastname"
                     tools:visibility="visible" />
 
                 <TextView
@@ -136,23 +169,78 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="32dp"
+                    android:layout_marginEnd="32dp"
+                    android:layout_marginTop="8dp"
                     android:fontFamily="@font/nunitosans_regular"
                     android:text="@string/onboard_welcome_info"
                     android:textColor="@color/pre_onboard_black"
                     android:textSize="13sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/error_message_lastname" />
+                    app:layout_constraintTop_toBottomOf="@id/error_message_lastname" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
+            <!-- Date d'anniversaire -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintLayoutBirthdate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp">
+
+                <TextView
+                    android:id="@+id/textViewBirthdate"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:fontFamily="@font/quicksand_bold"
+                    android:text="@string/onboard_welcome_title_birthdate"
+                    android:textColor="@color/black"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <EditText
+                    android:id="@+id/ui_onboard_birthdate"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginEnd="32dp"
+                    android:layout_marginTop="5dp"
+                    android:backgroundTint="@color/orange_opacity_50"
+                    android:ems="10"
+                    android:focusable="false"
+                    android:fontFamily="@font/nunitosans_regular"
+                    android:hint="@string/onboard_welcome_placeholder_birthdate"
+                    android:inputType="date"
+                    android:paddingStart="0dp"
+                    android:paddingEnd="12dp"
+                    android:textColor="@color/black"
+                    android:textSize="15sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/textViewBirthdate" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <!-- Téléphone -->
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/constraintLayout17"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                android:layout_marginTop="16dp">
+
+                <TextView
+                    android:id="@+id/textView9"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:fontFamily="@font/quicksand_bold"
+                    android:text="@string/onboard_welcome_title_phone"
+                    android:textColor="@color/onboard_black_36"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <social.entourage.android.tools.view.countrycodepicker.CountryCodePicker
                     android:id="@+id/ui_onboard_phone_ccp_code"
@@ -173,7 +261,7 @@
                     app:ccp_textColor="@color/pre_onboard_black"
                     app:ccp_textSize="14sp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView7" />
+                    app:layout_constraintTop_toBottomOf="@id/textView9" />
 
                 <EditText
                     android:id="@+id/ui_onboard_phone_et_phone"
@@ -181,7 +269,7 @@
                     android:layout_width="0dp"
                     android:layout_height="40dp"
                     android:layout_marginStart="16dp"
-                    android:layout_marginEnd="16dp"
+                    android:layout_marginEnd="32dp"
                     android:autofillHints="phoneNumber"
                     android:backgroundTint="@color/light_orange_opacity_50"
                     android:hint="@string/onboard_welcome_placeholder_phone"
@@ -189,83 +277,45 @@
                     android:maxLines="1"
                     android:paddingTop="0dp"
                     android:textSize="15sp"
-                    app:layout_constraintBottom_toTopOf="@+id/error_message_phone"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/ui_onboard_phone_ccp_code"
-                    app:layout_constraintTop_toTopOf="@+id/ui_onboard_phone_ccp_code" />
-
-                <TextView
-                    android:id="@+id/textView7"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="24dp"
-                    android:fontFamily="@font/quicksand_bold"
-                    android:text="@string/onboard_welcome_title_country"
-                    android:textColor="@color/pre_onboard_black"
-                    android:textSize="15sp"
-                    android:textStyle="bold"
-                    app:layout_constraintStart_toStartOf="@+id/ui_onboard_phone_ccp_code"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:visibility="invisible"/>
-
-                <TextView
-                    android:id="@+id/textView9"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/quicksand_bold"
-                    android:text="@string/onboard_welcome_title_phone"
-                    android:textColor="@color/onboard_black_36"
-                    android:textSize="15sp"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="@+id/textView7"
-                    app:layout_constraintStart_toStartOf="@+id/ui_onboard_phone_et_phone"
-                    app:layout_constraintTop_toTopOf="@+id/textView7" />
-
-                <ImageView
-                    android:id="@+id/imageView40"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/ui_onboard_phone_ccp_code"
-                    app:srcCompat="@drawable/new_phone" />
+                    app:layout_constraintStart_toEndOf="@id/ui_onboard_phone_ccp_code"
+                    app:layout_constraintTop_toTopOf="@id/ui_onboard_phone_ccp_code" />
 
                 <TextView
                     android:id="@+id/error_message_phone"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="32dp"
+                    android:layout_marginEnd="32dp"
+                    android:layout_marginTop="5dp"
                     android:fontFamily="@font/nunitosans_regular"
                     android:text="@string/user_edit_profile_invalid_phone"
                     android:textColor="@color/tomato"
                     android:textSize="12sp"
                     android:visibility="gone"
-                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/ui_onboard_phone_et_phone"
                     tools:visibility="visible" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
+            <!-- Email -->
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <ImageView
-                    android:id="@+id/imageView4"
-                    android:layout_width="20dp"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView3"
-                    app:srcCompat="@drawable/new_email" />
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp">
 
                 <TextView
                     android:id="@+id/textView3"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="40dp"
+                    android:layout_marginStart="32dp"
+                    android:fontFamily="@font/quicksand_bold"
                     android:text="@string/onboard_welcome_title_email"
                     android:textColor="@color/onboard_black_36"
+                    android:textSize="15sp"
                     android:textStyle="bold"
-                    app:layout_constraintStart_toStartOf="@+id/ui_onboard_email"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <EditText
@@ -274,6 +324,7 @@
                     android:layout_width="0dp"
                     android:layout_height="40dp"
                     android:layout_marginStart="32dp"
+                    android:layout_marginEnd="32dp"
                     android:layout_marginTop="5dp"
                     android:autofillHints="textEmailAddress"
                     android:backgroundTint="@color/light_orange_opacity_50"
@@ -283,13 +334,15 @@
                     android:paddingTop="0dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView3" />
+                    app:layout_constraintTop_toBottomOf="@id/textView3" />
 
                 <TextView
                     android:id="@+id/error_message_email"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="32dp"
+                    android:layout_marginEnd="32dp"
+                    android:layout_marginTop="5dp"
                     android:fontFamily="@font/nunitosans_regular"
                     android:text="@string/user_edit_profile_invalid_email"
                     android:textColor="@color/tomato"
@@ -297,24 +350,26 @@
                     android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/ui_onboard_email"
+                    app:layout_constraintTop_toBottomOf="@id/ui_onboard_email"
                     tools:visibility="visible" />
 
                 <CheckBox
                     android:id="@+id/ui_onboard_consent_check"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
                     android:layout_marginTop="10dp"
                     android:buttonTint="@color/orange"
                     android:checked="false"
-                    app:layout_constraintStart_toStartOf="@+id/ui_onboard_email"
-                    app:layout_constraintTop_toBottomOf="@+id/error_message_email" />
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/error_message_email" />
 
                 <TextView
                     android:id="@+id/ui_onboard_names_tv_info2"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
+                    android:layout_marginEnd="32dp"
                     android:layout_marginBottom="16dp"
                     android:fontFamily="@font/nunitosans_regular"
                     android:text="@string/onboard_welcome_consent"
@@ -322,21 +377,155 @@
                     android:textSize="13sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/ui_onboard_consent_check"
-                    app:layout_constraintTop_toTopOf="@+id/ui_onboard_consent_check" />
+                    app:layout_constraintStart_toEndOf="@id/ui_onboard_consent_check"
+                    app:layout_constraintTop_toTopOf="@id/ui_onboard_consent_check" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
+            <!-- Comment vous nous avez connu ? -->
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/textViewHowDidYouHear"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:fontFamily="@font/quicksand_bold"
+                    android:text="@string/onboard_welcome_title_how_did_you_hear"
+                    android:textColor="@color/onboard_black_36"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <Spinner
+                    android:id="@+id/ui_onboard_spinner_how_did_you_hear"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginEnd="32dp"
+                    android:layout_marginTop="5dp"
+                    android:backgroundTint="@color/light_orange_opacity_50"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/textViewHowDidYouHear" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <!-- Nom de votre entreprise -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintLayoutCompany"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/textViewCompanyName"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:fontFamily="@font/quicksand_bold"
+                    android:text="@string/onboard_welcome_title_company_name"
+                    android:textColor="@color/onboard_black_36"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <Spinner
+                    android:id="@+id/ui_onboard_spinner_company"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginEnd="32dp"
+                    android:layout_marginTop="5dp"
+                    android:backgroundTint="@color/light_orange_opacity_50"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/textViewCompanyName" />
+
+                <TextView
+                    android:id="@+id/error_message_company"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginEnd="32dp"
+                    android:layout_marginTop="5dp"
+                    android:fontFamily="@font/nunitosans_regular"
+                    android:text="@string/onboard_welcome_error_company_name"
+                    android:textColor="@color/tomato"
+                    android:textSize="12sp"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/ui_onboard_spinner_company" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <!-- Événement auquel vous participez -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintLayoutEvent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/textViewEventName"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:fontFamily="@font/quicksand_bold"
+                    android:text="@string/onboard_welcome_title_event_name"
+                    android:textColor="@color/onboard_black_36"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <Spinner
+                    android:id="@+id/ui_onboard_spinner_event"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginEnd="32dp"
+                    android:layout_marginTop="5dp"
+                    android:backgroundTint="@color/light_orange_opacity_50"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/textViewEventName" />
+
+                <TextView
+                    android:id="@+id/error_message_event"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginEnd="32dp"
+                    android:layout_marginTop="5dp"
+                    android:fontFamily="@font/nunitosans_regular"
+                    android:text="@string/onboard_welcome_error_event_name"
+                    android:textColor="@color/tomato"
+                    android:textSize="12sp"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/ui_onboard_spinner_event" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <!-- Info obligatoire -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
-                    android:layout_marginTop="16dp"
                     android:layout_marginEnd="16dp"
-                    android:layout_marginBottom="16dp"
                     android:background="@drawable/bg_onboard_consent"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -361,7 +550,6 @@
                         app:layout_constraintTop_toTopOf="parent" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
-
         </LinearLayout>
     </ScrollView>
 </FrameLayout>

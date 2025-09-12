@@ -23,47 +23,48 @@ import social.entourage.android.tools.view.countrycodepicker.Country
 import timber.log.Timber
 
 class OnboardingStartActivity : AppCompatActivity(), OnboardingStartCallback {
-    private lateinit var binding : ActivityOnboardingStartBinding
+    private lateinit var binding: ActivityOnboardingStartBinding
     private val LOGIN_ERROR_UNAUTHORIZED = -1
     private val LOGIN_ERROR_INVALID_PHONE_FORMAT = -2
     private val LOGIN_ERROR_UNKNOWN = -9998
     private val LOGIN_ERROR_NETWORK = -9999
-
     lateinit var authenticationController: AuthenticationController
     private lateinit var alertDialog: CustomProgressDialog
-
     private var currentFragmentPosition = 1
     private val numberOfSteps = 3
-
     private var temporaryUser = User()
     private var temporaryCountrycode: Country? = null
     private var temporaryPhone: String? = null
     private var temporaryPasscode: String? = null
     private var temporaryEmail: String? = null
+    private var temporaryGender: String? = null  // Nouveau champ pour le genre
+    private var temporaryBirthdate: String? = null  // Nouveau champ pour la date d'anniversaire
     private var hasConsent = false
-
     private var isEntour = false
     private var isBeEntour = false
     private var Both = false
     private var isAsso = false
     private var temporaryPlaceAddress: User.Address? = null
+    private var temporaryHowDidYouHear: String? = null
+    private var temporaryCompany: String? = null
+    private var temporaryEvent: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityOnboardingStartBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        if(FRAGMENT_NUMBER != 0) {
+        if (FRAGMENT_NUMBER != 0) {
             currentFragmentPosition = FRAGMENT_NUMBER
         }
-        temporaryCountrycode = Country(getString(R.string.country_france_code),
+        temporaryCountrycode = Country(
+            getString(R.string.country_france_code),
             getString(R.string.country_france_number),
             getString(R.string.country_france_name),
-            getString(R.string.country_france_flag))
-
+            getString(R.string.country_france_flag)
+        )
         authenticationController = EntourageApplication.get().authenticationController
         alertDialog = CustomProgressDialog(this)
         temporaryUser = User()
-
         if (savedInstanceState == null) {
             changeFragment()
         }
@@ -73,7 +74,6 @@ class OnboardingStartActivity : AppCompatActivity(), OnboardingStartCallback {
     @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
         if (currentFragmentPosition >= numberOfSteps) return
-
         goPrevious()
         super.onBackPressed()
     }
@@ -81,13 +81,15 @@ class OnboardingStartActivity : AppCompatActivity(), OnboardingStartCallback {
     /********
      * Network
      */
-    fun setEmail(email: String){
+    fun setEmail(email: String) {
         temporaryEmail = email
         temporaryUser.email = email
     }
+
     private fun callSignup() {
         alertDialog.show(R.string.onboard_waiting_dialog)
         OnboardingAPI.getInstance().createUser(temporaryUser, hasConsent) { isOK, error ->
+            Timber.wtf("wtf error $error")
             alertDialog.dismiss()
             if (isOK) {
                 showSmsAndGo(R.string.login_smscode_sent)
@@ -126,7 +128,6 @@ class OnboardingStartActivity : AppCompatActivity(), OnboardingStartCallback {
                         authenticationController.saveUser(loginResponse.user)
                     }
                     authenticationController.saveUserPhoneAndCode(phoneNumber, temporaryPasscode)
-
                     //set the tutorial as done
                     val sharedPreferences = EntourageApplication.get().sharedPreferences
                     (sharedPreferences.getStringSet(
@@ -172,7 +173,6 @@ class OnboardingStartActivity : AppCompatActivity(), OnboardingStartCallback {
 
     private fun updateAddress() {
         alertDialog.show(R.string.onboard_waiting_dialog)
-
         temporaryPlaceAddress?.let {
             OnboardingAPI.getInstance().updateAddress(it, false) { isOK, userResponse ->
                 if (isOK) {
@@ -197,30 +197,39 @@ class OnboardingStartActivity : AppCompatActivity(), OnboardingStartCallback {
         var userType = UserTypeSelection.NEIGHBOUR
         if (isAsso) {
             userType = UserTypeSelection.ASSOS
-        }
-        else if (isBeEntour) {
+        } else if (isBeEntour) {
             userType = UserTypeSelection.ALONE
-        }else if (isEntour) {
+        } else if (isEntour) {
             userType = UserTypeSelection.NEIGHBOUR
-        }else if (Both) {
+        } else if (Both) {
             userType = UserTypeSelection.BOTH
         }
         val currentGoal = userType.getGoalString()
-        OnboardingAPI.getInstance().updateUserGoal(currentGoal,temporaryEmail,hasConsent) { isOK, userResponse ->
+        OnboardingAPI.getInstance().updateUserGoal(
+            currentGoal,
+            temporaryEmail,
+            hasConsent,
+            temporaryGender,
+            temporaryBirthdate,
+            temporaryHowDidYouHear,
+            temporaryCompany,
+            temporaryEvent
+        ) { isOK, userResponse ->
             if (isOK && userResponse != null) {
                 authenticationController.saveUser(userResponse.user)
             }
             alertDialog.dismiss()
-
             updateAddress()
         }
     }
 
+
+
     /***********
      * Network Messages + actions
      */
-
     private fun showLoginFail(errorCode: Int) {
+        Timber.wtf("errorCode " + errorCode)
         @StringRes val errorMessage: Int = when (errorCode) {
             LOGIN_ERROR_INVALID_PHONE_FORMAT -> {
                 R.string.login_error_invalid_phone_format
@@ -251,7 +260,6 @@ class OnboardingStartActivity : AppCompatActivity(), OnboardingStartCallback {
             .setMessage(R.string.login_already_registered_go_back)
             .setPositiveButton(R.string.button_OK) { dialog, _ ->
                 dialog.dismiss()
-
                 val intent = Intent(this, PreOnboardingChoiceActivity::class.java)
                 intent.putExtra("isFromOnboarding", true)
                 startActivity(intent)
@@ -274,7 +282,6 @@ class OnboardingStartActivity : AppCompatActivity(), OnboardingStartCallback {
     /***********
      * Navigation
      */
-
     private fun goNext() {
         Timber.d("***** Go next = $currentFragmentPosition")
         when (currentFragmentPosition) {
@@ -312,20 +319,24 @@ class OnboardingStartActivity : AppCompatActivity(), OnboardingStartCallback {
             1 -> OnboardingPhase1Fragment.newInstance(
                 temporaryUser.firstName,
                 temporaryUser.lastName,
+                temporaryGender,
+                temporaryBirthdate,
                 temporaryCountrycode,
                 temporaryPhone,
                 temporaryEmail,
-                hasConsent
+                hasConsent,
+                temporaryHowDidYouHear,
+                temporaryCompany,
+                temporaryEvent
             )
             2 -> OnboardingPhase2Fragment.newInstance(
                 temporaryPhone,
                 temporaryCountrycode
             )
-            3 -> OnboardingPhase3Fragment.newInstance( isEntour,isBeEntour,isAsso, temporaryPlaceAddress)
+            3 -> OnboardingPhase3Fragment.newInstance(isEntour, isBeEntour, isAsso, temporaryPlaceAddress)
             else -> Fragment()
         }
-
-        binding.iconBack.visibility = if ( currentFragmentPosition >= PositionsType.Type.pos) {
+        binding.iconBack.visibility = if (currentFragmentPosition >= PositionsType.Type.pos) {
             View.GONE
         } else {
             View.VISIBLE
@@ -338,28 +349,23 @@ class OnboardingStartActivity : AppCompatActivity(), OnboardingStartCallback {
         } catch (e: IllegalStateException) {
             Timber.e(e)
         }
-
         updateButtons()
     }
 
     /********
      * Views Update
      */
-
     private fun setupViews() {
         binding.uiOnboardingBtNext.setOnClickListener {
             goNext()
         }
-
         binding.uiOnboardingBtPrevious.setOnClickListener {
             goPrevious()
         }
-
         binding.iconBack.setOnClickListener {
             startActivity(Intent(this, PreOnboardingChoiceActivity::class.java))
             finish()
         }
-
         binding.uiOnboardingBtPrevious.visibility = View.INVISIBLE
         binding.uiOnboardingBtNext.disable()
     }
@@ -372,11 +378,17 @@ class OnboardingStartActivity : AppCompatActivity(), OnboardingStartCallback {
             }
             PositionsType.Type.pos -> {
                 binding.uiOnboardingBtPrevious.visibility = View.INVISIBLE
-                if(FRAGMENT_NUMBER != 0) {
+                if (FRAGMENT_NUMBER != 0) {
                     val meUser = EntourageApplication.me(this)
-                    binding.uiHeaderTitle.text = String.format(getString(R.string.onboard_welcome_title_phase3),meUser?.firstName)
+                    binding.uiHeaderTitle.text = String.format(
+                        getString(R.string.onboard_welcome_title_phase3),
+                        meUser?.firstName
+                    )
                 } else {
-                    binding.uiHeaderTitle.text = String.format(getString(R.string.onboard_welcome_title_phase3),temporaryUser.firstName)
+                    binding.uiHeaderTitle.text = String.format(
+                        getString(R.string.onboard_welcome_title_phase3),
+                        temporaryUser.firstName
+                    )
                 }
             }
             else -> {
@@ -386,16 +398,30 @@ class OnboardingStartActivity : AppCompatActivity(), OnboardingStartCallback {
         }
     }
 
+    private fun formatBirthdateForAPI(displayDate: String?): String? {
+        if (displayDate.isNullOrEmpty()) return null
+        val parts = displayDate.split("-")
+        if (parts.size != 3) return null
+        val day = parts[0]
+        val month = parts[1]
+        val year = parts[2]
+        return "$year-$month-$day" // Format yyyy-MM-dd
+    }
     /********
      * Implement Callback
      */
     override fun validateNames(
         firstname: String?,
         lastname: String?,
+        gender: String?,
+        birthdate: String?,
         country: Country?,
         phoneNumber: String?,
         email: String?,
-        hasConsent: Boolean
+        hasConsent: Boolean,
+        howDidYouHear: String?,
+        company: String?,
+        event: String?
     ) {
         temporaryUser.firstName = firstname
         temporaryUser.lastName = lastname
@@ -403,8 +429,20 @@ class OnboardingStartActivity : AppCompatActivity(), OnboardingStartCallback {
         temporaryPhone = phoneNumber
         temporaryEmail = email
         this.hasConsent = hasConsent
-
         temporaryUser.phone = null
+        // Mapping des valeurs affichées vers les valeurs attendues par le back
+        temporaryGender = when (gender) {
+            "Homme" -> "male"
+            "Femme" -> "female"
+            "Non binaire" -> "not_binary"
+            else -> null
+        }
+        temporaryBirthdate = birthdate // Déjà au format dd-MM-yyyy
+        temporaryHowDidYouHear = howDidYouHear
+        temporaryCompany = company
+        temporaryEvent = event
+        gender?.let { temporaryUser.gender = temporaryGender }
+        birthdate?.let { temporaryUser.birthday = formatBirthdateForAPI(it) } // Format yyyy-MM-dd
         if (phoneNumber != null) {
             val phoneWithCode = Utils.checkPhoneNumberFormat(country?.phoneCode, phoneNumber)
             if (phoneWithCode != null) {
@@ -413,21 +451,26 @@ class OnboardingStartActivity : AppCompatActivity(), OnboardingStartCallback {
         }
     }
 
+
     override fun validatePasscode(password: String?) {
         temporaryPasscode = password
     }
 
-    override fun updateUsertypeAndAddress(isEntour:Boolean, isBeEntour:Boolean,both:Boolean, isAsso:Boolean,address: User.Address?) {
+    override fun updateUsertypeAndAddress(
+        isEntour: Boolean,
+        isBeEntour: Boolean,
+        both: Boolean,
+        isAsso: Boolean,
+        address: User.Address?
+    ) {
         this.isEntour = isEntour
         this.isBeEntour = isBeEntour
         this.Both = both
         this.isAsso = isAsso
         this.temporaryPlaceAddress = address
-
         if ((isEntour || isBeEntour || isAsso || both) && address != null) {
             updateButtonNext(true)
-        }
-        else {
+        } else {
             updateButtonNext(false)
         }
     }
@@ -435,8 +478,7 @@ class OnboardingStartActivity : AppCompatActivity(), OnboardingStartCallback {
     override fun updateButtonNext(isValid: Boolean) {
         if (isValid) {
             binding.uiOnboardingBtNext.enable()
-        }
-        else {
+        } else {
             binding.uiOnboardingBtNext.disable()
         }
     }
