@@ -233,6 +233,12 @@ interface EventsRequest {
         @Path("id") userId: Int
     ): Call<ResponseBody>
 
+    @POST("outings/{outing_id}/users/{id}/cancel_photo_acceptance")
+    fun declinePhotoForUser(
+        @Path("outing_id") eventId: Int,
+        @Path("id") userId: Int
+    ): Call<ResponseBody>
+
     @POST("outings/{outing_id}/users/{id}/cancel_participation")
     fun cancelParticipationForUser(
         @Path("outing_id") eventId: Int,

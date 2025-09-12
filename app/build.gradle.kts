@@ -320,6 +320,12 @@ dependencies {
     implementation("io.ktor:ktor-serialization-kotlinx-json:3.2.3")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.9.0")
 
+    implementation("io.ktor:ktor-client-core:3.2.3")
+    implementation("io.ktor:ktor-client-android:3.2.3")
+    implementation("io.ktor:ktor-client-serialization:3.2.3")
+    implementation("io.ktor:ktor-serialization-kotlinx-json:3.2.3")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.9.0")
+
     //UNCOMMENT FOR VIDEO CALL FEATURE
     //implementation("com.dafruits:webrtc:123.0.0")
 }

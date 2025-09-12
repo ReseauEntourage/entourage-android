@@ -2108,8 +2108,8 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
 
     <string name="onboard_welcome_title">Bienvenue !</string>
     <string name="onboard_welcome_info">Seule la première lettre sera visible</string>
-    <string name="onboard_welcome_placeholder_firstname">Votre prénom</string>
-    <string name="onboard_welcome_placeholder_lastname">Votre nom</string>
+    <string name="onboard_welcome_placeholder_firstname">Marie</string>
+    <string name="onboard_welcome_placeholder_lastname">Dupont</string>
     <string name="onboard_welcome_title_firstname">Prénom*</string>
     <string name="onboard_welcome_title_lastname">Nom*</string>
     <string name="onboard_welcome_title_country">Pays*</string>
@@ -3112,5 +3112,41 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
         <item quantity="one">%d participant</item>
         <item quantity="other">%d participants</item>
     </plurals>
+
+    <string-array name="gender_options">
+        <item>Homme</item>
+        <item>Femme</item>
+        <item>Non-binaire</item>
+    </string-array>
+    <string name="onboard_welcome_title_gender">Genre</string>
+    <string name="onboard_welcome_title_birthdate">Date d\'anniversaire</string>
+    <string name="onboard_welcome_placeholder_birthdate">JJ/MM/AAAA</string>
+
+    <string name="onboard_welcome_title_how_did_you_hear">Comment vous nous avez connu ?</string>
+    <string name="onboard_welcome_title_company_name">Nom de votre entreprise</string>
+    <string name="onboard_welcome_title_event_name">Événement auquel vous participez</string>
+    <string name="onboard_welcome_placeholder_company_name">Sélectionnez une entreprise</string>
+    <string name="onboard_welcome_placeholder_event_name">Sélectionnez un événement</string>
+    <string name="onboard_welcome_error_company_name">Merci de sélectionner une entreprise.</string>
+    <string name="onboard_welcome_error_event_name">Merci de sélectionner un événement.</string>
+    <string name="onboard_welcome_error_load_failed">Impossible de charger la liste, veuillez réessayer.</string>
+    <string name="onboard_welcome_error_invalid_value">Valeur invalide, merci de sélectionner dans la liste.</string>
+    <string name="onboard_welcome_how_did_you_hear_word_of_mouth">Bouche à oreille</string>
+    <string name="onboard_welcome_how_did_you_hear_internet">Internet</string>
+    <string name="onboard_welcome_how_did_you_hear_tv_media">Télévision / média</string>
+    <string name="onboard_welcome_how_did_you_hear_social_media">Réseaux sociaux</string>
+    <string name="onboard_welcome_how_did_you_hear_corporate_awareness">Sensibilisation entreprise</string>
+    <string name="onboard_welcome_company_a">Entreprise A</string>
+    <string name="onboard_welcome_company_b">Entreprise B</string>
+    <string name="onboard_welcome_company_c">Entreprise C</string>
+    <string name="onboard_welcome_company_d">Entreprise D</string>
+    <string name="onboard_welcome_company_e">Entreprise E</string>
+    <string name="onboard_welcome_event_1">Événement 1</string>
+    <string name="onboard_welcome_event_2">Événement 2</string>
+    <string name="onboard_welcome_event_3">Événement 3</string>
+    <string name="onboard_welcome_event_4">Événement 4</string>
+    <string name="onboard_welcome_event_5">Événement 5</string>
+
+
 
 </resources>

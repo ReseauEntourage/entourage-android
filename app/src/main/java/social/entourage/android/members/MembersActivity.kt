@@ -157,7 +157,7 @@ class MembersActivity : BaseActivity() , AcceptPhotoDialogFragment.Listener {
                     eventPresenter.participateForUser(id, userId)
                     // Afficher la pop-up uniquement si photoAcceptance est false
                     Timber.wtf("wtf photoAcceptance : $photoAcceptance")
-                    if (photoAcceptance == null || !photoAcceptance) {
+                    if (photoAcceptance == null ){
                         showAcceptPhotoDialog(userId)
                     }
                 }
@@ -366,6 +366,7 @@ class MembersActivity : BaseActivity() , AcceptPhotoDialogFragment.Listener {
 
     override fun onDeclinePhotoForUser(userId: Int) {
         if (type != MembersType.EVENT) return
+        eventPresenter.declinePhotoForUser(id, userId)
         eventPresenter.participateForUser(id, userId)
 
     }
