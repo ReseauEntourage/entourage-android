@@ -3,15 +3,12 @@ package social.entourage.android.onboarding.pre_onboarding
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.view.View.LAYOUT_DIRECTION_LTR
-import android.view.View.LAYOUT_DIRECTION_RTL
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.view.ViewCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import social.entourage.android.EntourageApplication
 import social.entourage.android.MainActivity
@@ -24,7 +21,7 @@ class PreOnboardingStartActivity : AppCompatActivity() {
     private var arrayViewDots = ArrayList<ImageView>()
     var currentDotPosition = 0
 
-    private lateinit var mAdapter: PreOnboardingRVAdapter
+    //private lateinit var mAdapter: PreOnboardingRVAdapter
     private lateinit var binding: ActivityIntroCarouselBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -71,7 +68,6 @@ class PreOnboardingStartActivity : AppCompatActivity() {
     private fun goNext() {
 
         if (EntourageApplication.get().authenticationController.isAuthenticated) {
-            EntourageApplication.get().sharedPreferences.edit().putBoolean(EntourageApplication.KEY_MIGRATION_V7_OK,true).apply()
             val intent = Intent(this, MainActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
             startActivity(intent)
