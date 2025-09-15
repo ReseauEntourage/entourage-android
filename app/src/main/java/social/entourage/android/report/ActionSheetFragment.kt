@@ -190,6 +190,7 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
                     )
                 }
                 SheetMode.EVENT -> {
+                    MembersConversationFragment.isFromDiscussion = false
                     val isAnimator = EntourageApplication.get().me()?.roles?.isNotEmpty() == true
                     val intent = Intent(requireContext(), MembersActivity::class.java).apply {
                         putExtra("ID", eventId)
@@ -200,6 +201,7 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
                     dismiss()
                 }
                 SheetMode.DISCUSSION_GROUP, SheetMode.GROUP -> {
+                    MembersConversationFragment.isFromDiscussion = true
                     MembersConversationFragment.newInstance(conversationId)
                         .show(parentFragmentManager, "")
                 }

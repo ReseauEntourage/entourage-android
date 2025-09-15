@@ -268,6 +268,7 @@ class MembersConversationFragment : BaseDialogFragment() {
     companion object {
         private const val ARG_CONVID = "conversationid"
         const val TAG = "MembersConversationFragment"
+        var isFromDiscussion = false
 
         fun newInstance(conversationId: Int?): MembersConversationFragment {
             return MembersConversationFragment().apply {

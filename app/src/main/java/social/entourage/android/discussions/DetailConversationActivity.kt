@@ -274,7 +274,9 @@ class DetailConversationActivity : CommentActivity() {
     private fun resolveSheetMode(): SheetMode {
         return when {
             isSmallTalkMode -> SheetMode.DISCUSSION_GROUP
+            event != null -> SheetMode.EVENT
             detailConversation?.memberCount == 2 -> SheetMode.DISCUSSION_ONE_TO_ONE
+            (detailConversation?.memberCount ?: 0) > 2 -> SheetMode.DISCUSSION_GROUP
             detailConversation?.type == "outing" -> SheetMode.EVENT
             else -> SheetMode.GROUP
         }
