@@ -942,6 +942,7 @@ class DetailConversationActivity : CommentActivity() {
     override fun onDestroy() {
         super.onDestroy()
         isSmallTalkMode = false
+        MembersConversationFragment.isFromDiscussion = false
         smallTalkId = ""
         stopRefreshing()
         mentionSearchJob?.cancel()
