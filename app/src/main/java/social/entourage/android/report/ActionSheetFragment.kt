@@ -24,6 +24,7 @@ import social.entourage.android.members.MembersType
 import social.entourage.android.profile.ProfileFullActivity
 import social.entourage.android.report.ReportModalFragment
 import social.entourage.android.report.ReportTypes
+import social.entourage.android.small_talks.SmallTalkViewModel
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.CustomAlertDialog
 
@@ -37,6 +38,7 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
     private val discussionPresenter by lazy { DiscussionsPresenter() }
     private val eventsPresenter by lazy { EventsPresenter() }
     private val groupPresenter: GroupPresenter by lazy { GroupPresenter() }
+    private lateinit var smallTalkViewModel: SmallTalkViewModel
     private var mode: SheetMode = SheetMode.GROUP
     private var userId: Int = 0
     private var conversationId: Int = 0
@@ -76,6 +78,7 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
             isEventContext = getBoolean(ARG_IS_EVENT_CONTEXT, false)
             isGroupContext = getBoolean(ARG_IS_GROUP_CONTEXT, false)
         }
+        smallTalkViewModel = SmallTalkViewModel(EntourageApplication.get())
     }
 
     override fun onCreateView(
@@ -313,14 +316,26 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
         binding.quit.profileSettingsItemLayout.setOnClickListener {
             when (mode) {
                 SheetMode.DISCUSSION_GROUP -> {
-                    CustomAlertDialog.showWithCancelFirst(
-                        requireContext(),
-                        getString(R.string.leave_conversation),
-                        getString(R.string.leave_conversation_dialog_content),
-                        getString(R.string.exit)
-                    ) {
-                        discussionPresenter.leaveConverstion(conversationId)
-                        dismiss()
+                    if(DetailConversationActivity.isSmallTalkMode){
+                        CustomAlertDialog.showWithCancelFirst(
+                            requireContext(),
+                            getString(R.string.leave_conversation),
+                            getString(R.string.leave_conversation_dialog_content),
+                            getString(R.string.exit)
+                        ) {
+                            smallTalkViewModel.leaveSmallTalk(conversationId.toString())
+                            dismiss()
+                        }
+                    }else{
+                        CustomAlertDialog.showWithCancelFirst(
+                            requireContext(),
+                            getString(R.string.leave_conversation),
+                            getString(R.string.leave_conversation_dialog_content),
+                            getString(R.string.exit)
+                        ) {
+                            discussionPresenter.leaveConverstion(conversationId)
+                            dismiss()
+                        }
                     }
                 }
                 SheetMode.GROUP -> {

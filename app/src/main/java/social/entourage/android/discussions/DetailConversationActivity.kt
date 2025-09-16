@@ -131,7 +131,6 @@ class DetailConversationActivity : CommentActivity() {
         discussionsPresenter.detailConversation.observe(this) { handleDetailConversation(it) }
         eventPresenter.getEvent.observe(this) { handleGetEvent(it) }
         eventPresenter.getMembersSearch.observe(this) { handleMembersSearch(it) }
-
         binding.comments.layoutManager = LinearLayoutManager(this)
         setupScrollPagination()
 
