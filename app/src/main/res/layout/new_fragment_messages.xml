@@ -145,6 +145,7 @@
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
                         android:orientation="horizontal"
                         >
                         <include
@@ -163,6 +164,13 @@
                             app:layout_constraintTop_toTopOf="parent" />
                         <include
                             android:id="@+id/filter_3"
+                            layout="@layout/layout_discussion_filter"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintBottom_toTopOf="@id/recycler_view"
+                            app:layout_constraintTop_toTopOf="parent" />
+                        <include
+                            android:id="@+id/filter_4"
                             layout="@layout/layout_discussion_filter"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"

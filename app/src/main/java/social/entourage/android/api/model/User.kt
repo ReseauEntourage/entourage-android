@@ -7,14 +7,18 @@ import com.google.gson.annotations.SerializedName
 import social.entourage.android.R.string
 import social.entourage.android.api.model.feed.FeedItemAuthor
 import timber.log.Timber
-import java.io.*
-import java.util.*
+import java.io.ByteArrayInputStream
+import java.io.ByteArrayOutputStream
+import java.io.ObjectInputStream
+import java.io.ObjectOutputStream
+import java.io.Serializable
+import java.util.Date
 
 class User : Serializable {
     // ----------------------------------
     // ATTRIBUTES (Serialized)
     // ----------------------------------
-    val id: Int
+    var id: Int
     var email: String? = null
 
     @SerializedName("first_name")
@@ -25,6 +29,8 @@ class User : Serializable {
 
     @SerializedName("birthday")
     var birthday: String? = null
+    @SerializedName("gender")
+    var gender: String? = null
 
     @SerializedName("interests")
     var interests: ArrayList<String> = ArrayList()
@@ -163,6 +169,8 @@ class User : Serializable {
         return roles?.contains(USER_ROLE_ETHICS_CHARTER_SIGNED) == true
     }
 
+
+
     fun getFormattedInterests(context: Context): String {
         val interestsString = StringBuilder()
         var isFirst = true
@@ -282,5 +290,32 @@ class User : Serializable {
                 -1
             }
         }
+        fun fromGroupMember(member: GroupMember): User {
+            val user = User()
+            user.id = if (member.id != null) member.id!! else 0
+            user.avatarURL = member.avatarUrl
+            user.email = "" // facultatif
+            user.about = ""
+            try {
+                val displayNameField = User::class.java.getDeclaredField("displayName")
+                displayNameField.isAccessible = true
+                displayNameField[user] = member.displayName
+            } catch (e: java.lang.Exception) {
+                e.printStackTrace()
+            }
+            return user
+        }
     }
+}
+
+fun User.toGroupMember(): GroupMember {
+    return GroupMember(
+        id = this.id,
+        displayName = this.displayName,
+        avatarUrl = this.avatarURL
+    )
+}
+
+fun List<User>.toGroupMembers(): List<GroupMember> {
+    return map { it.toGroupMember() }
 }

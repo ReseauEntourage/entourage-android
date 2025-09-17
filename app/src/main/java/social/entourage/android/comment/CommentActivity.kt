@@ -30,6 +30,7 @@ import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.Utils
 import social.entourage.android.tools.utils.scrollToPositionSmooth
 import social.entourage.android.tools.view.WebViewFragment
+import timber.log.Timber
 import java.util.UUID
 
 abstract class CommentActivity : BaseActivity(), onDissmissFragment {
@@ -133,6 +134,7 @@ protected fun handleCommentPosted(post: Post?) {
 }
 
 fun updateView(emptyState: Boolean) {
+    Timber.wtf("wtf isMember $isMember")
     if (emptyState) {
         binding.emptyState.visibility = View.GONE
         binding.comments.visibility = if (currentParentPost != null) View.VISIBLE else View.GONE

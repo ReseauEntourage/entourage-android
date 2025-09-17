@@ -115,8 +115,8 @@
                     app:layout_constraintStart_toStartOf="parent"/>
                 
                 <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
                     android:id="@+id/iv_btn_event"
                     android:src="@drawable/new_calendar"
                     app:layout_constraintStart_toStartOf="@+id/btn_see_event"
@@ -207,7 +207,15 @@
             android:paddingHorizontal="28dp"
             android:paddingBottom="20dp"
             android:weightSum="1"
-            app:layout_constraintBottom_toBottomOf="parent">
+            app:layout_constraintBottom_toTopOf="@+id/layout_option">
+
+            <ImageButton
+                android:layout_width="46dp"
+                android:layout_height="46dp"
+                android:id="@+id/option_button"
+                android:layout_gravity="start"
+                android:background="@drawable/ic_conversation_more_option"
+                android:visibility="gone"/>
 
             <EditText
                 android:id="@+id/comment_message"
@@ -218,6 +226,7 @@
                 android:background="@drawable/new_bg_rounded_button_orange_beige_stroke_slim"
                 android:hint="@string/discussbis"
                 android:padding="13dp"
+                android:layout_marginStart="7dp"
                 android:inputType="textCapSentences|textMultiLine"
                 android:textColorHint="@color/orange"
                 android:textColor="@color/black" />
@@ -233,6 +242,36 @@
                 android:src="@drawable/new_contact_white" />
 
         </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layout_option"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginBottom="10dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/iv_thumbnail"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginStart="20dp"
+                android:scaleType="centerCrop"
+                android:visibility="gone" />
+
+            <include
+                android:id="@+id/option_camera"
+                layout="@layout/item_conversation_option"
+               />
+
+            <include
+                android:id="@+id/option_galery"
+                layout="@layout/item_conversation_option"
+                />
+        </LinearLayout>
+
 
         <!-- 5) Bloc "post_blocked" si commentaire bloqué -->
         <LinearLayout

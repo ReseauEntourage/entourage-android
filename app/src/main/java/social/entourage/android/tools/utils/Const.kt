@@ -19,6 +19,7 @@ object Const {
     const val POST_ID = "postID"
     const val POST_AUTHOR_ID = "postAuthorID"
     const val GROUP_UI = "groupUI"
+    const val CONVERSATION_ID = "CONVERSATION_ID"
     const val EVENT_UI = "eventUI"
     const val DATE_FORMAT_FILE_NAME = "yyyyMMdd_HHmmss"
     const val AMBASSADOR = "ambassador"

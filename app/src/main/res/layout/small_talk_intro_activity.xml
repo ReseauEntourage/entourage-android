@@ -34,7 +34,7 @@
                 android:layout_width="122dp"
                 android:layout_height="122dp"
                 android:layout_gravity="center"
-                android:src="@drawable/ic_smalltalk_intro"
+                android:src="@drawable/ic_trio"
                 android:layout_margin="20dp" />
 
             <TextView

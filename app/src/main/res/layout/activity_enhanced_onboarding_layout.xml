@@ -5,15 +5,20 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/fragment_container"/>
+        android:layout_height="0dp"
+        android:id="@+id/fragment_container"
+        app:layout_constraintTop_toBottomOf="@+id/btn_back"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
     <ImageView
         android:layout_width="25dp"
         android:layout_height="25dp"
         android:id="@+id/btn_back"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_margin="20dp"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginVertical="30dp"
         android:src="@drawable/ic_back_onboarding"
         />
 

@@ -1,16 +1,15 @@
-<?xml version="1.0" encoding="utf-8"?>
 <ripple xmlns:android="http://schemas.android.com/apk/res/android"
-    android:color="@color/orange"> <!-- Couleur de l'effet ripple -->
+    android:color="#26FF9739"> <!-- ripple orange clair (15% opacité) -->
 
-    <!-- Masque de l'effet (zone touchée) -->
+    <!-- Zone touchée pour le ripple -->
     <item android:id="@android:id/mask">
         <shape android:shape="rectangle">
-            <solid android:color="@color/orange" />
+            <solid android:color="#FFFFFFFF" /> <!-- Important : mask blanc opaque -->
             <corners android:radius="32dp"/>
         </shape>
     </item>
 
-    <!-- Fond normal du bouton -->
+    <!-- Fond du bouton : transparent avec bordure orange -->
     <item>
         <shape android:shape="rectangle">
             <solid android:color="@android:color/transparent" />
@@ -18,5 +17,4 @@
             <corners android:radius="32dp"/>
         </shape>
     </item>
-
 </ripple>

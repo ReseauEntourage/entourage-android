@@ -440,6 +440,7 @@ object PushNotificationManager {
             "survey_response_on_create"
         )
         if ((instance == "outings" || instance == "outing") && isDiscussionTracking) {
+            DetailConversationActivity.isSmallTalkMode = false
             val intent = Intent(context, DetailConversationActivity::class.java).apply {
                 putExtras(
                     bundleOf(

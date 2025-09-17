@@ -24,7 +24,7 @@ class EntourageUserListResponse {
     var users: List<EntourageUser>? = null
 }
 
-class ChatMessageWrapper (@SerializedName("chat_message") var chatMessage: ChatMessage)
+class ChatMessageWrapper (@SerializedName("chat_message") var chatMessage: Post)
 class ShareMessageWrapper (@SerializedName("chat_message") var chatMessage: ShareMessage)
 class ChatMessageResponse {
     @SerializedName("chat_message")

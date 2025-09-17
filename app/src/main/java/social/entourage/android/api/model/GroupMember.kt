@@ -15,3 +15,11 @@ data class GroupMember(
         return "GroupMember(id=$id, displayName=$displayName, avatarUrl=$avatarUrl)"
     }
 }
+
+fun GroupMember.toUser(): User {
+    return User.fromGroupMember(this)
+}
+
+fun List<GroupMember>.toUsers(): List<User> {
+    return map { it.toUser() }
+}

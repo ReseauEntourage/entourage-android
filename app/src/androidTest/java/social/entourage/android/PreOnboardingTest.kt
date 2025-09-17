@@ -10,7 +10,6 @@ import androidx.test.espresso.action.Press
 import androidx.test.espresso.action.Swipe
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -197,14 +196,6 @@ class PreOnboardingTest {
         button2.check(matches(isDisplayed()))
     }
 
-    private fun swipeLeftFromPage(startIndex: Int) {
-        imagesRecyclerView.perform(
-                RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(startIndex, GeneralSwipeAction(
-                        Swipe.SLOW, GeneralLocation.CENTER_RIGHT, GeneralLocation.CENTER_LEFT,
-                        Press.FINGER))
-        )
-        Thread.sleep(1000)
-    }
 
     private fun childAtPosition(
             parentMatcher: Matcher<View>, position: Int): Matcher<View> {

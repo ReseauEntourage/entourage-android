@@ -101,6 +101,9 @@ interface EventsRequest {
     @GET("outings/{id}")
     fun getEvent(@Path("id") eventId: String): Call<EventWrapper>
 
+    @GET("outings/smalltalk")
+    fun getEventSmallTalk(): Call<EventWrapper>
+
     @POST("outings/{event_id}/users")
     fun participate(
         @Path("event_id") eventId: Int

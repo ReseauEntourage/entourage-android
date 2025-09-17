@@ -327,6 +327,9 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
             initializeInterests()
             eventDescription.visibility = View.VISIBLE
             eventDescription.text = event?.description
+            if(event?.descriptionTranslations != null){
+                eventDescription.text = event?.descriptionTranslations?.translation
+            }
             binding.location.icon = AppCompatResources.getDrawable(
                 requireContext(),
                 if (event?.online == true) R.drawable.new_web else R.drawable.new_location
@@ -581,6 +584,7 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
 
     fun goDiscussion(){
         VibrationUtil.vibrate(requireContext())
+        DetailConversationActivity.isSmallTalkMode = false
         startActivity(
             Intent(context, DetailConversationActivity::class.java)
                 .addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)

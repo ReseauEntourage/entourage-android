@@ -8,25 +8,25 @@ import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
-import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.databinding.FragmentOnboardingInterestsLayoutBinding
 import social.entourage.android.enhanced_onboarding.EnhancedOnboarding
-import social.entourage.android.enhanced_onboarding.OnboardingViewModel
 import social.entourage.android.enhanced_onboarding.InterestForAdapter
+import social.entourage.android.enhanced_onboarding.OnboardingViewModel
+import social.entourage.android.enhanced_onboarding.fragments.OnboardingInterestsAdapter
 import social.entourage.android.main_filter.MainFilterActivity
 import social.entourage.android.tools.log.AnalyticsEvents
-import timber.log.Timber
 
 class OnboardingInterestFragment : Fragment() {
 
     private lateinit var binding: FragmentOnboardingInterestsLayoutBinding
     private lateinit var viewModel: OnboardingViewModel
+    private lateinit var adapter: OnboardingInterestsAdapter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentOnboardingInterestsLayoutBinding.inflate(inflater, container, false)
-        viewModel = ViewModelProvider(requireActivity()).get(OnboardingViewModel::class.java)
-        viewModel.interests.observe( viewLifecycleOwner, ::handleInterestLoad)
+        viewModel = ViewModelProvider(requireActivity())[OnboardingViewModel::class.java]
+        viewModel.interests.observe(viewLifecycleOwner, ::handleInterestLoad)
         AnalyticsEvents.logEvent(AnalyticsEvents.onboarding_interests_view)
         return binding.root
     }
@@ -35,31 +35,32 @@ class OnboardingInterestFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setupRecyclerView()
         loadAndSendInterests()
+
         binding.buttonConfigureLater.setOnClickListener {
             AnalyticsEvents.logEvent(AnalyticsEvents.onboarding_interests_config_later_clic)
             viewModel.registerAndQuit()
         }
+
         binding.buttonStart.setOnClickListener {
             AnalyticsEvents.logEvent(AnalyticsEvents.onboarding_interests_next_clic)
-            if(EnhancedOnboarding.isFromSettingsinterest) {
+            if (EnhancedOnboarding.isFromSettingsinterest) {
                 viewModel.registerAndQuit()
-            }else{
+            } else {
                 viewModel.setOnboardingFourthStep(true)
             }
         }
+
         binding.tvTitle.text = getString(R.string.onboarding_interest_title)
         binding.tvDescription.text = getString(R.string.onboarding_interest_content)
-        binding.parentNestedScrollView.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
-            if (scrollY == 0) {
-                viewModel.toggleBtnBack(true)
-            } else {
-                viewModel.toggleBtnBack(false)
-            }
+
+        binding.parentNestedScrollView.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { _, _, scrollY, _, _ ->
+            viewModel.toggleBtnBack(scrollY == 0)
         })
-        if(EnhancedOnboarding.isFromSettingsinterest) {
+
+        if (EnhancedOnboarding.isFromSettingsinterest) {
             binding.buttonStart.text = getString(R.string.validate)
             binding.buttonConfigureLater.text = getString(R.string.cancel)
-        }else{
+        } else {
             binding.buttonStart.text = getString(R.string.onboarding_btn_next)
         }
     }
@@ -71,9 +72,16 @@ class OnboardingInterestFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
-        binding.rvInterests.layoutManager = GridLayoutManager(requireContext(), 2)
-        binding.rvInterests.isNestedScrollingEnabled = false
+        adapter = OnboardingInterestsAdapter(
+            isFromInterest = true,
+            onInterestClicked = ::onInterestClicked
+        )
 
+        binding.rvInterests.apply {
+            layoutManager = GridLayoutManager(requireContext(), 2)
+            adapter = this@OnboardingInterestFragment.adapter
+            isNestedScrollingEnabled = false
+        }
     }
 
     private fun loadAndSendInterests() {
@@ -174,9 +182,7 @@ class OnboardingInterestFragment : Fragment() {
         viewModel.setInterests(interests)
     }
 
-
-
-    fun getIconForInterest(id: String): Int {
+    private fun getIconForInterest(id: String): Int {
         return when (id) {
             "sport" -> R.drawable.ic_onboarding_interest_sport
             "animaux" -> R.drawable.ic_onboarding_interest_name_animaux
@@ -192,28 +198,17 @@ class OnboardingInterestFragment : Fragment() {
         }
     }
 
-
     private fun handleInterestLoad(interests: List<InterestForAdapter>) {
-        // Vérifie si l'adapter est déjà défini
-        if (binding.rvInterests.adapter == null) {
-            binding.rvInterests.adapter = OnboardingInterestsAdapter(requireContext(), true, interests, ::onInterestClicked)
-        } else {
-            // Si l'adapter existe déjà, mets à jour simplement les données
-            (binding.rvInterests.adapter as? OnboardingInterestsAdapter)?.let { adapter ->
-                adapter.interests = interests
-                adapter.notifyDataSetChanged()
-            }
-        }
+        adapter.submitList(interests)
     }
+
     private fun onInterestClicked(interest: InterestForAdapter) {
         viewModel.updateInterest(interest)
+
         if (interest.isSelected) {
-            // Si déjà sélectionné, on retire l'ID
             MainFilterActivity.savedGroupInterestsFromOnboarding.remove(interest.id)
         } else {
-            // Sinon, on ajoute l'ID
             MainFilterActivity.savedGroupInterestsFromOnboarding.add(interest.id)
         }
     }
 }
-

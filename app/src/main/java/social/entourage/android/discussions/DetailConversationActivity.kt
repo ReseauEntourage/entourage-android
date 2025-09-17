@@ -1,30 +1,37 @@
 package social.entourage.android.discussions
 
+import android.animation.ObjectAnimator
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.Editable
 import android.text.Html
-import android.text.TextUtils
 import android.text.TextWatcher
 import android.view.View
+import android.view.animation.AnimationUtils
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
+import androidx.core.animation.doOnEnd
 import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.text.HtmlCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.google.gson.Gson
 import kotlinx.coroutines.launch
 import social.entourage.android.BuildConfig
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
-import social.entourage.android.api.model.Conversation
-import social.entourage.android.api.model.EntourageUser
-import social.entourage.android.api.model.Events
-import social.entourage.android.api.model.GroupMember
-import social.entourage.android.api.model.Post
+import social.entourage.android.api.model.*
 import social.entourage.android.comment.CommentActivity
 import social.entourage.android.comment.CommentsListAdapter
 import social.entourage.android.comment.MentionAdapter
@@ -34,94 +41,169 @@ import social.entourage.android.events.details.feed.EventFeedActivity
 import social.entourage.android.language.LanguageManager
 import social.entourage.android.profile.ProfileFullActivity
 import social.entourage.android.report.DataLanguageStock
+import social.entourage.android.small_talks.SmallTalkGuidelinesActivity
+import social.entourage.android.small_talks.SmallTalkListOtherBands
+import social.entourage.android.small_talks.SmallTalkViewModel
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.Utils
 import social.entourage.android.tools.utils.VibrationUtil
+import social.entourage.android.tools.view.WebViewFragment
 import timber.log.Timber
+import java.io.File
 import java.text.SimpleDateFormat
-import java.util.Calendar
-import java.util.Date
-import java.util.Locale
-import java.util.UUID
+import java.util.*
 
-/**
- * Classe gérant le détail d’une conversation : liste de messages, mentions, etc.
- */
 class DetailConversationActivity : CommentActivity() {
 
-    // --- Variables existantes ---
+    companion object {
+        /** Mettre à true pour échanger les messages via SmallTalkViewModel */
+        var isSmallTalkMode: Boolean = false
+        var smallTalkId: String = ""
+    }
+    // Présenters & ViewModel
+    private val eventPresenter: EventsPresenter by lazy { EventsPresenter() }
+    private val discussionsPresenter: DiscussionsPresenter by lazy { DiscussionsPresenter() }
+    private val smallTalkViewModel: SmallTalkViewModel by viewModels()
+    private var refreshMessagesRunnable: Runnable? = null
+    private val refreshHandler = android.os.Handler()
+    private val refreshIntervalMs = 5000L // 5 secondes
+    private lateinit var cameraLauncher: ActivityResultLauncher<Uri>
+    private lateinit var galleryLauncher: ActivityResultLauncher<String>
+    private var photoUri: Uri? = null
+    private var detailConversation: Conversation? = null
+    private var smallTalk: SmallTalk? = null
+
+    // UI state
     private var hasToShowFirstMessage = false
     var hasSeveralpeople = false
-    private val eventPresenter: EventsPresenter by lazy { EventsPresenter() }
-
-    // Nom de la conversation pour mise à jour du header
     private var conversationTitle: String? = null
-
-    // --- Pour la logique de mention ---
-    private var allMembers: List<GroupMember> = emptyList()  // liste brute
-    private var lastMentionStartIndex = -1                  // dernier '@' détecté
-
-    // Adapter pour suggestions de mention (utilise EntourageUser, on mappe en interne)
+    private var allMembers: List<GroupMember> = emptyList()
+    private var lastMentionStartIndex = -1
     private val mentionAdapter: MentionAdapter by lazy {
-        MentionAdapter(emptyList()) { user ->
-            insertMentionIntoEditText(user)
-        }
+        MentionAdapter(emptyList()) { user -> insertMentionIntoEditText(user) }
     }
 
-    // --- Instanciation du Presenter (selon ton architecture) ---
-    private val discussionsPresenter: DiscussionsPresenter by lazy {
-        // Selon ta config (ViewModelProvider ou injection)
-        DiscussionsPresenter()
-    }
-
-    // -----------------------------------------------------------------------------------
-    // cycle de vie
-    // -----------------------------------------------------------------------------------
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        // Récupération éventuelle de certains extras
+        isMember = isSmallTalkMode
         hasToShowFirstMessage = intent.getBooleanExtra(Const.HAS_TO_SHOW_MESSAGE, false)
         binding.emptyState.visibility = View.GONE
-        // Observateurs sur le Presenter
-        with(discussionsPresenter) {
-            // Observateur : liste des commentaires
-            getAllComments.observe(this@DetailConversationActivity) { handleGetPostComments(it) }
-            // Observateur : commentaire posté
-            commentPosted.observe(this@DetailConversationActivity) { handleCommentPosted(it) }
-            // Observateur : détail conversation
-            detailConversation.observe(this@DetailConversationActivity) { handleDetailConversation(it) }
-            eventPresenter.getEvent.observe(this@DetailConversationActivity) { handleGetEvent(it) }
+        setOptions()
+        setupHeader()
+        setupMentionList()
+        setupMentionTextWatcher()
+
+        // Toujours charger le détail de la conversation (titre, membres, événement…)
+        discussionsPresenter.detailConversation.observe(this) { handleDetailConversation(it) }
+        eventPresenter.getEvent.observe(this) { handleGetEvent(it) }
+
+        // Messages : selon le mode
+        if (isSmallTalkMode) {
+            smallTalkViewModel.smallTalkDetail.observe(this){handleSmallTakDetail(it)}
+            smallTalkViewModel.messages.observe(this) { handleSmallTalkMessages(it) }
+            smallTalkViewModel.participants.observe(this) { handleParticipants(it) }
+            smallTalkViewModel.createdMessage.observe(this) {
+                scrollAfterLayout()
+            }
+            smallTalkViewModel.getSmallTalk(smallTalkId)
+            smallTalkViewModel.listChatMessages(smallTalkId)
+            smallTalkViewModel.listSmallTalkParticipants(smallTalkId)
+            binding.btnSeeEvent.text = getString(R.string.small_talk_btn_charte)
+            binding.ivBtnEvent.apply {
+                // 1. On enlève toute ColorStateList ou ColorFilter attachée
+                imageTintList = null           // API 21+
+                imageTintMode = null           // facultatif : remet aussi le PorterDuff
+                clearColorFilter()             // au cas où un ColorFilter avait été mis
+
+                // 2. Puis on place le drawable
+                setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_book))
+            }
+            binding.layoutEventConv.visibility = View.VISIBLE
+            binding.btnSeeEvent.setOnClickListener {
+                VibrationUtil.vibrate(this)
+                startActivity(
+                    Intent(this, SmallTalkGuidelinesActivity::class.java)
+                )
+            }
+
+        } else {
+            discussionsPresenter.getDetailConversation(id)
+            discussionsPresenter.getAllComments.observe(this) { handleGetPostComments(it) }
+            discussionsPresenter.commentPosted.observe(this) { handleCommentPosted(it) }
+            discussionsPresenter.getPostComments(id)
+        }
+        //Camera and galery init
+        cameraLauncher = registerForActivityResult(ActivityResultContracts.TakePicture()) { success ->
+            if (success && photoUri != null) {
+                showThumbnail(photoUri!!)
+            }
         }
 
-
-        // Charger la conversation et ses messages
-        discussionsPresenter.getDetailConversation(id)
-        discussionsPresenter.getPostComments(id)
-
-        // Configuration du header
-        binding.header.iconSettings.setImageDrawable(resources.getDrawable(R.drawable.new_settings))
-        binding.header.cardIconSetting.setBackgroundColor(ContextCompat.getColor(this, R.color.transparent))
-        binding.header.iconSettings.setBackgroundColor(ContextCompat.getColor(this, R.color.transparent))
-
-        // Ouvrir le profil auteur si conversation 1-to-1
-
-
-        // Mise en place de la RecyclerView pour les suggestions de mention
-        binding.mentionSuggestionsRecycler.layoutManager = LinearLayoutManager(this)
-        binding.mentionSuggestionsRecycler.adapter = mentionAdapter
-        setupMentionTextWatcher() // Détection du "@"
+        galleryLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+            if (uri != null) {
+                showThumbnail(uri)
+            }
+        }
     }
 
     override fun onResume() {
         super.onResume()
         AnalyticsEvents.logEvent(AnalyticsEvents.Message_view_detail)
+        startRefreshingMessages()
+
     }
 
-    /**
-     * Pour forcer un reload (par ex. après suppression)
-     */
+
+
+    private fun generateJitsiUrl(displayName: String, roomName: String = "Bonnes ondes " + smallTalk?.uuid): String {
+        val encodedDisplayName = displayName
+            .replace(" ", "%20")
+            .replace("\"", "%22")
+        val baseUrl = "https://meet.jit.si/$roomName"
+        val params = "#userInfo.displayName=%22$encodedDisplayName%22&config.startWithAudioMuted=false&config.startWithVideoMuted=false"
+        return "$baseUrl$params"
+    }
+
+/*    private fun setCameraIcon() {
+        val roomName = "Bonnes ondes " + smallTalk?.uuid
+        val displayName = "Invité"
+
+        val url = generateJitsiUrl(displayName, roomName)
+        //smallTalk?.meetingUrl = url
+
+        binding.header.iconCamera.isVisible = true
+        binding.header.iconCamera.setImageResource(R.drawable.ic_camera)
+        binding.header.cardIconCamera.setBackgroundColor(ContextCompat.getColor(this, R.color.transparent))
+        binding.header.iconCamera.setBackgroundColor(ContextCompat.getColor(this, R.color.transparent))
+
+        binding.header.iconCamera.setOnClickListener {
+            Timber.wtf("📹 Lancement visio Jitsi URL : $url")
+            AnalyticsEvents.logEvent(AnalyticsEvents.CLIC__SMALLTALK__VISIO_ICON)
+            WebViewFragment.launchURL(this, url)
+        }
+    }*/
+
+    private fun setCameraIcon() {
+        binding.header.iconCamera.isVisible = !smallTalk?.meetingUrl.isNullOrBlank()
+        binding.header.iconCamera.setImageResource(R.drawable.ic_camera)
+        binding.header.cardIconCamera.setBackgroundColor(ContextCompat.getColor(this, R.color.transparent))
+        binding.header.iconCamera.setBackgroundColor(ContextCompat.getColor(this, R.color.transparent))
+
+        binding.header.iconCamera.setOnClickListener {
+            Timber.wtf("eho url : ${smallTalk?.meetingUrl}")
+            AnalyticsEvents.logEvent(AnalyticsEvents.CLIC__SMALLTALK__VISIO_ICON)
+            smallTalk?.meetingUrl?.let { url ->
+                WebViewFragment.launchURL(this, url)
+            }
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        stopRefreshingMessages()
+    }
+
     override fun reloadView() {
         lifecycleScope.launch {
             shouldOpenKeyboard = false
@@ -129,21 +211,175 @@ class DetailConversationActivity : CommentActivity() {
         }
     }
 
-    /**
-     * Pour activer la traduction d’un item précis
-     */
+    private fun isAtBottom(): Boolean {
+        val layoutManager = binding.comments.layoutManager as? LinearLayoutManager ?: return true
+        val lastVisibleItem = layoutManager.findLastCompletelyVisibleItemPosition()
+        val totalItemCount = layoutManager.itemCount
+        return lastVisibleItem >= totalItemCount - 2 // on tolère 1-2 items de marge
+    }
+
+    fun setOptions() {
+        var isOptionsVisible = false
+
+        binding.optionButton.setOnClickListener {
+            isOptionsVisible = !isOptionsVisible
+
+            if (isOptionsVisible) {
+                // Animation du layout
+                val slideIn = AnimationUtils.loadAnimation(this, R.anim.slide_in_up)
+                binding.layoutOption.startAnimation(slideIn)
+                binding.layoutOption.visibility = View.VISIBLE
+
+                // Rotation du bouton
+                val rotate = ObjectAnimator.ofFloat(binding.optionButton, View.ROTATION, 0f, 180f)
+                rotate.duration = 300
+                rotate.doOnEnd {
+                    binding.optionButton.setImageDrawable(getDrawable(R.drawable.ic_conversation_more_option))
+                }
+                rotate.start()
+
+            } else {
+                // Animation de sortie
+                val slideOut = AnimationUtils.loadAnimation(this, R.anim.slide_out_down)
+                binding.layoutOption.startAnimation(slideOut)
+
+                // Cache le layout après l’animation
+                Handler(Looper.getMainLooper()).postDelayed({
+                    binding.layoutOption.visibility = View.GONE
+                }, 250)
+
+                // Rotation retour
+                val rotateBack = ObjectAnimator.ofFloat(binding.optionButton, View.ROTATION, 180f, 0f)
+                rotateBack.duration = 300
+                rotateBack.start()
+            }
+        }
+
+        // Initialisation des options
+        binding.optionCamera.ivOption.setImageDrawable(getDrawable(R.drawable.ic_conversation_option_photo))
+        binding.optionGalery.ivOption.setImageDrawable(getDrawable(R.drawable.ic_conversation_option_galerie))
+        binding.optionCamera.tvOption.setText(R.string.discussion_option_camera)
+        binding.optionGalery.tvOption.setText(R.string.discussion_option_gallery)
+        binding.optionCamera.layoutParent.setOnClickListener {
+            photoUri = createImageUri()
+            cameraLauncher.launch(photoUri)
+        }
+
+        binding.optionGalery.layoutParent.setOnClickListener {
+            galleryLauncher.launch("image/*")
+        }
+    }
+
+    private fun createImageUri(): Uri {
+        val image = File.createTempFile("camera_img", ".jpg", cacheDir).apply {
+            createNewFile()
+            deleteOnExit()
+        }
+        return FileProvider.getUriForFile(this, "${packageName}.fileprovider", image)
+    }
+
+
+    private fun startRefreshingMessages() {
+        refreshMessagesRunnable = object : Runnable {
+            override fun run() {
+                if (isSmallTalkMode) {
+                    smallTalkViewModel.listChatMessages(smallTalkId)
+                } else {
+                    discussionsPresenter.getPostComments(id)
+                }
+                refreshHandler.postDelayed(this, refreshIntervalMs)
+            }
+        }
+        refreshHandler.postDelayed(refreshMessagesRunnable!!, refreshIntervalMs)
+    }
+
+    private fun stopRefreshingMessages() {
+        refreshMessagesRunnable?.let { refreshHandler.removeCallbacks(it) }
+    }
+
     override fun translateView(id: Int) {
         (binding.comments.adapter as? CommentsListAdapter)?.translateItem(id)
     }
 
-    // -----------------------------------------------------------------------------------
-    // détail de la conversation
-    // -----------------------------------------------------------------------------------
+    // --- Header setup ---
+    private fun setupHeader() {
+        binding.header.iconSettings.setImageDrawable(resources.getDrawable(R.drawable.new_settings))
+        binding.header.cardIconSetting.setBackgroundColor(ContextCompat.getColor(this, R.color.transparent))
+        binding.header.iconSettings.setBackgroundColor(ContextCompat.getColor(this, R.color.transparent))
+    }
+
+    private fun handleSmallTakDetail(smallTalk: SmallTalk?) {
+        Timber.wtf("wtf smallTalk : " + Gson().toJson(smallTalk))
+        binding.postBlocked.isVisible = false
+        smallTalkId = smallTalk?.id.toString()
+        this.smallTalk = smallTalk
+        setCameraIcon()
+
+    }
+    // --- SmallTalk messages mapping ---
+    private fun handleSmallTalkMessages(messages: List<Post>?) {
+        handleGetPostComments(messages?.toMutableList())
+    }
+
+    private fun showThumbnail(uri: Uri) {
+        binding.ivThumbnail.setImageURI(uri)
+        if (binding.ivThumbnail.visibility != View.VISIBLE) {
+            binding.ivThumbnail.alpha = 0f
+            binding.ivThumbnail.visibility = View.VISIBLE
+            binding.ivThumbnail.animate()
+                .alpha(1f)
+                .setDuration(300)
+                .start()
+        }
+        binding.comment.background = ResourcesCompat.getDrawable(
+            resources,
+            R.drawable.new_circle_orange_button_fill,
+            null
+        )
+        binding.comment.isEnabled = true
+    }
+
+    private fun handleParticipants(participants: List<User>?) {
+        val currentUserId = EntourageApplication.get().me()?.id
+        val names = participants
+            ?.filter { it?.id != currentUserId }
+            ?.take(5)
+            ?.mapNotNull { it?.displayName }
+            ?.map { if (it.length > 2) it.dropLast(3) else it }
+        binding.header.title = names?.joinToString(", ") ?: ""
+        allMembers = participants?.map { it.toGroupMember() } ?: emptyList()
+    }
+
+    private fun sendImageMessage(uri: Uri) {
+        val file = Utils.getFileFromUri(this, uri) ?: return
+        val content = binding.commentMessage.text?.toString()?.takeIf { it.isNotBlank() }
+
+        when {
+            isSmallTalkMode -> {
+                smallTalkViewModel.addMessageWithImage(smallTalkId, content, file)
+            }
+            detailConversation?.type == "outing" -> {
+                val eventId = detailConversation?.id ?: return
+                eventPresenter.addPost(content, file, eventId)
+            }
+            else -> {
+                detailConversation?.id?.toInt()?.let { discussionsPresenter.addCommentWithImage(it, content, file) }
+            }
+        }
+
+        binding.commentMessage.text.clear()
+        binding.ivThumbnail.visibility = View.GONE
+    }
+
+
+    // --- Discussion detail (inchangé) ---
     private fun handleDetailConversation(conversation: Conversation?) {
         conversation ?: return
-        if(conversation.memberCount > 2){
-            Timber.wtf("wtf conversation member count " + conversation.memberCount)
-            this.isOne2One = false
+        this.detailConversation = conversation
+        isMember = conversation.member == true
+        updateView(false)
+        if (conversation.memberCount > 2) {
+            isOne2One = false
         }
         if (isOne2One) {
             binding.header.headerTitle.setOnClickListener {
@@ -155,246 +391,162 @@ class DetailConversationActivity : CommentActivity() {
                     0
                 )
             }
-        }else{
+        } else {
             binding.header.headerTitle.setOnClickListener {
-                MembersConversationFragment.newInstance(this.id).show(supportFragmentManager, "")
+                MembersConversationFragment.newInstance(id).show(supportFragmentManager, "")
             }
         }
-        if(conversation.type == "outing"){
+
+        if (conversation.type == "outing" || isSmallTalkMode ) {
             binding.layoutEventConv.visibility = View.VISIBLE
             binding.layoutInfoNewDiscussion.visibility = View.GONE
             conversation.id?.let { eventPresenter.getEvent(it.toString()) }
-        }else{
+        } else {
             binding.layoutEventConv.visibility = View.GONE
             binding.header.headerSubtitle.visibility = View.GONE
             SettingsDiscussionModalFragment.isEvent = false
         }
 
-        // Parcourt la liste de messages pour détecter l'éventuel rôle "Équipe Entourage"
-        conversation.message?.forEach { message ->
-            message.userRole?.let { role ->
+        conversation.message?.forEach { msg ->
+            msg.userRole?.let { role ->
                 if (role.contains("Équipe Entourage")) {
                     hasToShowFirstMessage = false
                 }
             }
         }
 
-        // Vérifie si on doit afficher la pop d’info
         checkAndShowPopWarning()
 
-        // Mise à jour du titre de la conversation (header)
         conversationTitle = conversation.title
         binding.header.title = conversationTitle
 
-        // Nombre de membres
         val memberCount = conversation.members?.size ?: 0
         if (memberCount > 2) {
             hasSeveralpeople = true
             val displayName = conversation.user?.displayName ?: ""
-            val convMemberCount = conversation.memberCount
-            binding.header.title = "$displayName + ${convMemberCount - 1} membres"
+            binding.header.title = "$displayName + ${conversation.memberCount - 1} membres"
         }
         if (conversation.memberCount > 2 && conversation.members != null) {
             val currentUserId = EntourageApplication.get().me()?.id
             val names = conversation.members
-                .filter { it?.id != currentUserId } // exclure le current user
-                .take(5) // prendre les 5 premiers autres membres
-                .mapNotNull { it?.displayName } // éviter les nulls
-                .map {
-                    if (it.length > 2) it.dropLast(3) else it
-                }
-
-            val namesText = names.joinToString(", ")
-            binding.header.title = namesText
+                .filter { it?.id != currentUserId }
+                .take(5)
+                .mapNotNull { it?.displayName }
+                .map { if (it.length > 2) it.dropLast(3) else it }
+            binding.header.title = names.joinToString(", ")
         } else {
             binding.header.title = conversation.title
         }
-
-        // Bloqueurs ?
         if (conversation.hasBlocker()) {
             binding.postBlocked.isVisible = true
-            val _name = conversationTitle ?: ""
+            val name = conversationTitle ?: ""
             binding.commentBlocked.hint = if (conversation.imBlocker()) {
-                String.format(getString(R.string.message_user_blocked_by_me), _name)
+                String.format(getString(R.string.message_user_blocked_by_me), name)
             } else {
-                String.format(getString(R.string.message_user_blocked_by_other), _name)
+                String.format(getString(R.string.message_user_blocked_by_other), name)
             }
         } else {
             binding.postBlocked.isVisible = false
         }
-
-
-        // -- RÉCUPÉRATION DES MEMBRES POUR LES MENTIONS --
-        // conversation.members est de type ArrayList<GroupMember>?
-        // On le stocke dans allMembers
         allMembers = conversation.members ?: emptyList()
     }
 
+    // --- Event detail (inchangé) ---
     private fun handleGetEvent(event: Events?) {
         binding.emptyState.visibility = View.GONE
         event?.let {
             SettingsDiscussionModalFragment.isEvent = true
             binding.header.headerTitle.setOnClickListener {
                 VibrationUtil.vibrate(this)
-                val intent = Intent(this, EventFeedActivity::class.java)
-                intent.putExtra(Const.EVENT_ID,event.id)
-                intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
-                startActivity(intent)
+                startActivity(
+                    Intent(this, EventFeedActivity::class.java)
+                        .putExtra(Const.EVENT_ID, event.id)
+                        .addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+                )
             }
             binding.btnSeeEvent.setOnClickListener {
-               VibrationUtil.vibrate(this)
-               val intent = Intent(this, EventFeedActivity::class.java)
-                intent.putExtra(Const.EVENT_ID,event.id)
-               intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
-                startActivity(intent)
-           }
+                VibrationUtil.vibrate(this)
+                startActivity(
+                    Intent(this, EventFeedActivity::class.java)
+                        .putExtra(Const.EVENT_ID, event.id)
+                        .addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+                )
+            }
             if (event.metadata?.portraitThumbnailUrl.isNullOrBlank()) {
                 binding.header.ivEvent.visibility = View.GONE
-                Glide.with(this)
-                    .load(R.drawable.placeholder_my_event)
-                    .into(binding.header.ivEvent)
+                Glide.with(this).load(R.drawable.placeholder_my_event).into(binding.header.ivEvent)
             } else {
                 binding.header.ivEvent.visibility = View.GONE
-
-
-
-
-
-
-
-
-
-
-
                 Glide.with(this)
                     .load(event.metadata?.portraitThumbnailUrl)
-                    .transform(RoundedCorners(10)) // Ajout des arrondis de 5dp
-                    .error(R.drawable.placeholder_my_event) // Si l'URL est invalide, charger le placeholder
+                    .transform(RoundedCorners(10))
+                    .error(R.drawable.placeholder_my_event)
                     .into(binding.header.ivEvent)
             }
-            Timber.wtf("wtf event date " + event.metadata?.startsAt )
             binding.header.headerSubtitle.visibility = View.VISIBLE
             binding.header.headerTitle.text = event.title
             binding.header.headerSubtitle.text = formatDate(event.metadata?.startsAt.toString())
             binding.emptyState.visibility = View.GONE
         }
     }
-    fun formatDate(inputDate: String): String {
-        val locale = Locale.getDefault()
-        val inputFormat = SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.US)
 
-        // Parser la date en objet Date
-        val date: Date? = inputFormat.parse(inputDate)
-        if (date == null) return ""
-
-        // Transformer en Calendar pour extraire jour, mois et année
-        val calendar = Calendar.getInstance()
-        calendar.time = date
-
-        val dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK)
-        val month = calendar.get(Calendar.MONTH).toInt() // Ajout de `.toInt()` pour éviter l'erreur
-        val day = calendar.get(Calendar.DAY_OF_MONTH)
-        val year = calendar.get(Calendar.YEAR)
-
-        val dayString = when (dayOfWeek) {
-            Calendar.MONDAY -> this.getString(R.string.enhanced_onboarding_time_disponibility_day_monday)
-            Calendar.TUESDAY -> this.getString(R.string.enhanced_onboarding_time_disponibility_day_tuesday)
-            Calendar.WEDNESDAY -> this.getString(R.string.enhanced_onboarding_time_disponibility_day_wednesday)
-            Calendar.THURSDAY -> this.getString(R.string.enhanced_onboarding_time_disponibility_day_thursday)
-            Calendar.FRIDAY -> this.getString(R.string.enhanced_onboarding_time_disponibility_day_friday)
-            Calendar.SATURDAY -> this.getString(R.string.enhanced_onboarding_time_disponibility_day_saturday)
-            Calendar.SUNDAY -> this.getString(R.string.enhanced_onboarding_time_disponibility_day_sunday)
-            else -> ""
-        }
-
-        val monthString = when (month) {
-            Calendar.JANUARY -> this.getString(R.string.january)
-            Calendar.FEBRUARY -> this.getString(R.string.february)
-            Calendar.MARCH -> this.getString(R.string.march)
-            Calendar.APRIL -> this.getString(R.string.april)
-            Calendar.MAY -> this.getString(R.string.may)
-            Calendar.JUNE -> this.getString(R.string.june)
-            Calendar.JULY -> this.getString(R.string.july)
-            Calendar.AUGUST -> this.getString(R.string.august)
-            Calendar.SEPTEMBER -> this.getString(R.string.september)
-            Calendar.OCTOBER -> this.getString(R.string.october)
-            Calendar.NOVEMBER -> this.getString(R.string.november)
-            Calendar.DECEMBER -> this.getString(R.string.december)
-            else -> ""
-        }
-
-        return "$dayString $day $monthString $year"
-    }
-
-    private fun checkAndShowPopWarning() {
-        if (hasToShowFirstMessage) {
-            // Affiche le layout d’information si nécessaire
-            binding.layoutInfoNewDiscussion.isVisible = true
-            binding.uiIvCloseNew.setOnClickListener {
-                binding.layoutInfoNewDiscussion.visibility = View.GONE
-            }
-        }
-    }
-
-    // -----------------------------------------------------------------------------------
-    // ajout de commentaire
-    // -----------------------------------------------------------------------------------
+    // --- Envoi message / commentaire ---
     override fun addComment() {
-        // 1) Récupère le contenu Spanned de l'EditText
-        val spannedText = binding.commentMessage.editableText
+        val selectedUri = photoUri
+        if (selectedUri != null && binding.ivThumbnail.isVisible) {
+            sendImageMessage(selectedUri)
+            photoUri = null
+            return
+        }
 
-        // 2) Convertit ce contenu en HTML pour conserver d’éventuelles balises <a>
-        val fullHtml = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            Html.toHtml(spannedText, Html.FROM_HTML_MODE_LEGACY)
+        val spanned = binding.commentMessage.editableText
+        val html = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            Html.toHtml(spanned, Html.FROM_HTML_MODE_LEGACY)
         } else {
-            Html.toHtml(spannedText)
+            Html.toHtml(spanned)
+        }
+        val content = if (html.contains("<a href=")) html else spanned.toString()
+
+        if (isSmallTalkMode) {
+            smallTalkViewModel.createChatMessage(smallTalkId, content)
+        } else {
+            val currentUserId = EntourageApplication.me(this)?.id ?: 0
+            val currentUserAvatar = EntourageApplication.me(this)?.avatarURL
+            val user = EntourageUser().apply {
+                userId = currentUserId
+                avatarURLAsString = currentUserAvatar
+            }
+            comment = Post(
+                idInternal = UUID.randomUUID(),
+                content = content,
+                user = user
+            )
+            discussionsPresenter.addComment(id, comment)
         }
 
-        // 3) Vérifie la présence d’une balise <a href="...">
-        val hasLink = fullHtml.contains("<a href=")
-
-        // 4) Contenu final
-        val finalContent = if (hasLink) fullHtml else spannedText.toString()
-
-        // 5) Construit le Post pour l’envoi
-        val currentUserId = EntourageApplication.me(this)?.id ?: 0
-        val currentUserAvatar = EntourageApplication.me(this)?.avatarURL
-        val user = EntourageUser().apply {
-            userId = currentUserId
-            avatarURLAsString = currentUserAvatar
-        }
-        comment = Post(
-            idInternal = UUID.randomUUID(),
-            content = finalContent,
-            user = user
-        )
-
-        // 6) Appel au Presenter pour poster
-        discussionsPresenter.addComment(id, comment)
-
-        // 7) Nettoyage du champ
         binding.commentMessage.text.clear()
         Utils.hideKeyboard(this)
     }
 
-    // -----------------------------------------------------------------------------------
-    // récupération de la liste de commentaires
-    // -----------------------------------------------------------------------------------
+
+    // --- Récupération / affichage commentaires ---
     override fun handleGetPostComments(allComments: MutableList<Post>?) {
         val newComments = sortAndExtractDays(allComments, this)
+        val wasAtBottom = isAtBottom()
         commentsList.clear()
         newComments?.let { commentsList.addAll(it) }
+        binding.comments.adapter?.notifyDataSetChanged()
 
+        if (wasAtBottom) scrollAfterLayout() // 👈 garde uniquement cette ligne pour scroller
         binding.progressBar.visibility = View.GONE
         newComments?.isEmpty()?.let { updateView(it) }
-        scrollAfterLayout()
     }
-
     override fun handleReportPost(id: Int, commentLang: String) {
         binding.header.iconSettings.setOnClickListener {
+            SettingsDiscussionModalFragment.isSmallTalk = isSmallTalkMode
             DataLanguageStock.updatePostLanguage(commentLang)
             AnalyticsEvents.logEvent(AnalyticsEvents.Message_action_param)
-            SettingsDiscussionModalFragment.isSeveralPersonneInConversation = this.hasSeveralpeople
+            SettingsDiscussionModalFragment.isSeveralPersonneInConversation = hasSeveralpeople
             SettingsDiscussionModalFragment.newInstance(
                 postAuthorID,
                 id,
@@ -405,52 +557,32 @@ class DetailConversationActivity : CommentActivity() {
         }
     }
 
-    /**
-     * Ajoute dans la liste un séparateur par date, comme dans tes autres activités
-     */
-    fun sortAndExtractDays(allEvents: MutableList<Post>?, context: Context): MutableList<Post>? {
-        val languageCode = LanguageManager.loadLanguageFromPreferences(context)
-        val locale = Locale(languageCode)
-        val groupedEvents = allEvents?.groupBy { it.getFormatedStr() }
-        val newList = ArrayList<Post>()
-        groupedEvents?.forEach { (formattedStr, posts) ->
-            val datePost = Post().apply {
-                isDatePostOnly = true
-                datePostText = formattedStr.capitalize(locale)
-            }
-            newList.add(datePost)
-            newList.addAll(posts)
-        }
-        return newList
+    // --- Suppression de message (appel adapter) ---
+    fun deleteMessage(messageId: String) {
+        if (isSmallTalkMode) smallTalkViewModel.deleteChatMessage(smallTalkId, messageId)
+        else discussionsPresenter.deleteMessage(id, messageId.toInt())
     }
 
-    fun updateDiscussion() {
-        discussionsPresenter.getDetailConversation(id)
+    // --- Mentions infra ---
+    private fun setupMentionList() {
+        binding.mentionSuggestionsRecycler.layoutManager = LinearLayoutManager(this)
+        binding.mentionSuggestionsRecycler.adapter = mentionAdapter
     }
 
-    // -----------------------------------------------------------------------------------
-    // LOGIQUE DE DÉTECTION DU "@" POUR LES MENTIONS
-    // -----------------------------------------------------------------------------------
     private fun setupMentionTextWatcher() {
         binding.commentMessage.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun afterTextChanged(s: Editable?) {}
-
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 if (s == null) return
-
                 val cursorPos = binding.commentMessage.selectionStart
                 val substring = s.subSequence(0, cursorPos)
                 val lastAt = substring.lastIndexOf('@')
-
                 if (lastAt >= 0) {
-                    val mentionQuery = substring.substring(lastAt + 1, cursorPos)
+                    val query = substring.substring(lastAt + 1, cursorPos)
                     lastMentionStartIndex = lastAt
-                    if (mentionQuery.isEmpty()) {
-                        showMentionSuggestions(allMembers)
-                    } else {
-                        filterAndShowMentions(mentionQuery)
-                    }
+                    if (query.isEmpty()) showMentionSuggestions(allMembers)
+                    else filterAndShowMentions(query)
                 } else {
                     hideMentionSuggestions()
                     lastMentionStartIndex = -1
@@ -459,71 +591,118 @@ class DetailConversationActivity : CommentActivity() {
         })
     }
 
-    /**
-     * Filtre la liste des `GroupMember` en fonction de `query`.
-     * Comme le `MentionAdapter` gère des `EntourageUser`, on convertit.
-     */
-    private fun filterAndShowMentions(query: String) {
-        val filtered = allMembers.filter { gm ->
-            gm.displayName?.contains(query, ignoreCase = true) == true
-        }.take(5)
-
-        showMentionSuggestions(filtered)
-    }
-
-    /**
-     * Convertit la liste de `GroupMember` en liste de `EntourageUser`
-     * et l’envoie à l’adapter.
-     */
     private fun showMentionSuggestions(members: List<GroupMember>) {
         if (members.isEmpty()) {
             hideMentionSuggestions()
             return
         }
         binding.mentionSuggestionsContainer.visibility = View.VISIBLE
-
-        // Récupérer l'utilisateur courant
         val me = EntourageApplication.me(this)
-        // Filtrer les membres pour retirer l'utilisateur courant avant la conversion
-        val entourageUsers = members
-            .filter { gm -> gm.id != me?.id } // ou gm.id != me.id, selon votre implémentation
-            .map { gm ->
-                EntourageUser().apply {
-                    userId = gm.id ?: 0
-                    displayName = gm.displayName
-                    avatarURLAsString = gm.avatarUrl
-                }
+        val users = members.filter { it.id != me?.id }.map {
+            EntourageUser().apply {
+                userId = it.id ?: 0
+                displayName = it.displayName
+                avatarURLAsString = it.avatarUrl
             }
-        mentionAdapter.updateList(entourageUsers)
+        }
+        mentionAdapter.updateList(users)
     }
 
+    private fun filterAndShowMentions(query: String) {
+        val filtered = allMembers.filter { it.displayName?.contains(query, true) == true }.take(5)
+        showMentionSuggestions(filtered)
+    }
 
     private fun hideMentionSuggestions() {
         binding.mentionSuggestionsContainer.visibility = View.GONE
     }
 
-    /**
-     * Insère la mention au format HTML <a href="...">@Nom</a> dans l’EditText.
-     */
     private fun insertMentionIntoEditText(user: EntourageUser) {
         val cursorPos = binding.commentMessage.selectionStart
         val editable = binding.commentMessage.editableText ?: return
         if (lastMentionStartIndex < 0) return
-
-        var baseUrl = "https://" + BuildConfig.DEEP_LINKS_URL
-        baseUrl = baseUrl.removeSuffix("/")
-
-
-        val mentionHtml = """<a href="$baseUrl/app/users/${user.userId}">@${user.displayName}</a>"""
-        val mentionSpanned = HtmlCompat.fromHtml(mentionHtml, HtmlCompat.FROM_HTML_MODE_LEGACY)
-
-        // On remplace depuis '@' jusqu'au curseur par la mention
-        editable.replace(lastMentionStartIndex, cursorPos, mentionSpanned)
-
-        // Positionne le curseur juste après la mention
-        binding.commentMessage.setSelection(lastMentionStartIndex + mentionSpanned.length)
-
+        val baseUrl = "https://${BuildConfig.DEEP_LINKS_URL}".removeSuffix("/")
+        val html = """<a href="$baseUrl/app/users/${user.userId}">@${user.displayName}</a>"""
+        val span = HtmlCompat.fromHtml(html, HtmlCompat.FROM_HTML_MODE_LEGACY)
+        editable.replace(lastMentionStartIndex, cursorPos, span)
+        binding.commentMessage.setSelection(lastMentionStartIndex + span.length)
         hideMentionSuggestions()
         lastMentionStartIndex = -1
     }
+
+    // --- Utilitaires ---
+    fun sortAndExtractDays(allEvents: MutableList<Post>?, context: Context): MutableList<Post>? {
+        val code = LanguageManager.loadLanguageFromPreferences(context)
+        val loc = Locale(code)
+        val grouped = allEvents?.groupBy { it.getFormatedStr() }
+        val out = ArrayList<Post>()
+        grouped?.forEach { (dateStr, posts) ->
+            val sep = Post().apply {
+                isDatePostOnly = true
+                datePostText = dateStr.replaceFirstChar { it.uppercaseChar() }
+            }
+            out.add(sep)
+            out.addAll(posts)
+        }
+        return out
+    }
+
+    fun formatDate(inputDate: String): String {
+        val fmt = SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.US)
+        val date = fmt.parse(inputDate) ?: return ""
+        val cal = Calendar.getInstance().apply { time = date }
+        val day = cal.get(Calendar.DAY_OF_MONTH)
+        val dow = cal.get(Calendar.DAY_OF_WEEK)
+        val mon = cal.get(Calendar.MONTH)
+        val year = cal.get(Calendar.YEAR)
+        val dayName = when (dow) {
+            Calendar.MONDAY -> getString(R.string.enhanced_onboarding_time_disponibility_day_monday)
+            Calendar.TUESDAY -> getString(R.string.enhanced_onboarding_time_disponibility_day_tuesday)
+            Calendar.WEDNESDAY -> getString(R.string.enhanced_onboarding_time_disponibility_day_wednesday)
+            Calendar.THURSDAY -> getString(R.string.enhanced_onboarding_time_disponibility_day_thursday)
+            Calendar.FRIDAY -> getString(R.string.enhanced_onboarding_time_disponibility_day_friday)
+            Calendar.SATURDAY -> getString(R.string.enhanced_onboarding_time_disponibility_day_saturday)
+            Calendar.SUNDAY -> getString(R.string.enhanced_onboarding_time_disponibility_day_sunday)
+            else -> ""
+        }
+        val monName = when (mon) {
+            Calendar.JANUARY -> getString(R.string.january)
+            Calendar.FEBRUARY -> getString(R.string.february)
+            Calendar.MARCH -> getString(R.string.march)
+            Calendar.APRIL -> getString(R.string.april)
+            Calendar.MAY -> getString(R.string.may)
+            Calendar.JUNE -> getString(R.string.june)
+            Calendar.JULY -> getString(R.string.july)
+            Calendar.AUGUST -> getString(R.string.august)
+            Calendar.SEPTEMBER -> getString(R.string.september)
+            Calendar.OCTOBER -> getString(R.string.october)
+            Calendar.NOVEMBER -> getString(R.string.november)
+            Calendar.DECEMBER -> getString(R.string.december)
+            else -> ""
+        }
+        return "$dayName $day $monName $year"
+    }
+
+    private fun checkAndShowPopWarning() {
+        if (hasToShowFirstMessage) {
+            binding.layoutInfoNewDiscussion.isVisible = true
+            binding.uiIvCloseNew.setOnClickListener {
+                binding.layoutInfoNewDiscussion.visibility = View.GONE
+            }
+        }
+    }
+
+    fun updateDiscussion() {
+        discussionsPresenter.getDetailConversation(id)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        isSmallTalkMode = false
+        smallTalkId = ""
+    }
+
+
+
+
 }

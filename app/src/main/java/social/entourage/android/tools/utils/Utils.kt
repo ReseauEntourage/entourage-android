@@ -62,6 +62,13 @@ object Utils {
         }
     }
 
+    fun getFileFromUri(context: Context, uri: Uri): File? {
+        val inputStream = context.contentResolver.openInputStream(uri) ?: return null
+        val tempFile = File.createTempFile("upload_", ".jpg", context.cacheDir)
+        tempFile.outputStream().use { fileOut -> inputStream.copyTo(fileOut) }
+        return tempFile
+    }
+
     fun hideKeyboard(activity: Activity) {
         val view = activity.findViewById<View>(android.R.id.content)
         if (view != null) {

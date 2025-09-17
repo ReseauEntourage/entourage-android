@@ -142,6 +142,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginTop="@dimen/entourage_little_margin_top"
         android:paddingTop="@dimen/entourage_margin_top"
+        android:scrollbars="vertical"
         android:background="@drawable/home_v2_scrollview_shape"
         android:fillViewport="true">
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -183,12 +184,38 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 />
 
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/home_title_small_talk"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/rv_home_sensibilisation"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginEnd="16dp"
+                android:layout_marginStart="@dimen/entourage_marginstart"
+                android:layout_marginTop="28dp"
+                android:fontFamily="@font/quicksand_bold"
+                android:textSize="@dimen/entourage_font_large"
+                android:textColor="@color/grey_dark"
+                android:text="@string/home_v2_title_small_talk"
+                />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/rv_home_small_talk"
+                android:layout_marginTop="@dimen/entourage_little_margin_top"
+                app:layout_constraintTop_toBottomOf="@+id/home_title_small_talk"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                />
+
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:id="@+id/home_title_action"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/rv_home_sensibilisation"
+            app:layout_constraintTop_toBottomOf="@+id/rv_home_small_talk"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginEnd="16dp"
             android:layout_marginStart="@dimen/entourage_marginstart"

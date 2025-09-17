@@ -799,6 +799,27 @@ class EventsPresenter : ViewModel() {
                 }
             })
     }
+
+    fun getEventSmallTalk() {
+        EntourageApplication.get().apiModule.eventsRequest.getEventSmallTalk()
+            .enqueue(object : Callback<EventWrapper> {
+                override fun onResponse(
+                    call: Call<EventWrapper>,
+                    response: Response<EventWrapper>
+                ) {
+                    if (response.isSuccessful) {
+                        response.body()?.let { eventWrapper ->
+                            getEvent.value = eventWrapper.event
+                        }
+                    }
+
+                }
+
+                override fun onFailure(call: Call<EventWrapper>, t: Throwable) {
+                    Timber.wtf("wtf error " + t.message)
+                }
+            })
+    }
 }
 
 

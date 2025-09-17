@@ -127,6 +127,7 @@ object NotificationActionManager {
             InstanceType.CONTRIBUTIONS -> showContribution(context,supportFragmentManager,id)
             InstanceType.SOLICITATIONS -> showSolicitation(context,supportFragmentManager,id)
             InstanceType.CONVERSATIONS -> showConversation(context,supportFragmentManager,id)
+            InstanceType.SMALLTALK -> showSmallTalk(context,supportFragmentManager,id)
             InstanceType.PARTNERS -> showPartner(context,id)
             InstanceType.NONE -> return
 
@@ -188,6 +189,7 @@ object NotificationActionManager {
             InstanceType.NONE -> R.drawable.ic_new_placeholder_notif
             InstanceType.NEIGHBORHOODS_POSTS -> return R.drawable.placeholder_user
             InstanceType.OUTING_POSTS -> return R.drawable.placeholder_user
+            InstanceType.SMALLTALK -> return R.drawable.placeholder_user
         }
         return R.drawable.ic_new_placeholder_notif
     }
@@ -209,6 +211,23 @@ object NotificationActionManager {
         )
     }
     private fun showConversation(context:Context,supportFragmentManager: FragmentManager, id: Int) {
+        DetailConversationActivity.isSmallTalkMode = false
+        context.startActivity(
+            Intent(context, DetailConversationActivity::class.java)
+                .putExtras(
+                    bundleOf(
+                        Const.ID to id,
+                        Const.SHOULD_OPEN_KEYBOARD to false,
+                        Const.IS_CONVERSATION_1TO1 to true,
+                        Const.IS_MEMBER to true,
+                        Const.IS_CONVERSATION to true
+                    )
+                )
+        )
+    }
+    private fun showSmallTalk(context:Context,supportFragmentManager: FragmentManager, id: Int) {
+        DetailConversationActivity.isSmallTalkMode = true
+        DetailConversationActivity.smallTalkId = id.toString()
         context.startActivity(
             Intent(context, DetailConversationActivity::class.java)
                 .putExtras(
@@ -302,6 +321,7 @@ object NotificationActionManager {
         CONTRIBUTIONS,
         SOLICITATIONS,
         CONVERSATIONS,
+        SMALLTALK,
         PARTNERS,
         NONE
     }
@@ -319,7 +339,9 @@ object NotificationActionManager {
             "contributions", "contribution" -> InstanceType.CONTRIBUTIONS
             "solicitations", "solicitation" -> InstanceType.SOLICITATIONS
             "conversations", "conversation" -> InstanceType.CONVERSATIONS
+            "smalltalk", "user_smalltalk " -> InstanceType.SMALLTALK
             "partners" -> InstanceType.PARTNERS
+
             else -> InstanceType.NONE
         }
     }

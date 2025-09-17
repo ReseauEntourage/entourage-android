@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:background="@color/organizer_background"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_small_talk_guidelines"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/organizer_background">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/container_beige"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+            <TextView
+                android:id="@+id/tv_small_talk_title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="0dp"
+                android:fontFamily="@font/quicksand_bold"
+                android:text="@string/small_talk_guidelines_title"
+                android:textColor="@color/black"
+                android:textSize="24sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Guide et charte des bandes solidaires" />
+            <ImageView
+                android:id="@+id/iv_small_talk_illu"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginTop="16dp"
+                android:src="@drawable/ic_home_search_small_talk"
+                app:layout_constraintDimensionRatio="1:1"
+                app:layout_constraintWidth_percent="0.40"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_small_talk_title" />
+
+
+            <TextView
+                android:id="@+id/tv_small_talk_intro"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:fontFamily="@font/nunitosans_regular"
+                android:text="@string/small_talk_guidelines_intro"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                android:layout_marginTop="20dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/iv_small_talk_illu"
+                tools:text="Les Bandes solidaires vous connectent régulièrement..." />
+
+            <include
+                android:id="@+id/card_small_talk_what_is"
+                layout="@layout/item_home_small_talk_info_card"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_small_talk_intro" />
+
+            <include
+                android:id="@+id/card_small_talk_what_is_not"
+                layout="@layout/item_home_small_talk_info_card_uncheck"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/card_small_talk_what_is" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/container_white"
+            android:layout_marginTop="24dp"
+            android:padding="16dp"
+            app:layout_constraintTop_toBottomOf="@id/container_beige"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:background="@color/white">
+            <TextView
+                android:id="@+id/tv_small_talk_ethics_title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/small_talk_ethics_title"
+                tools:text="La charte éthique Entourage"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:fontFamily="@font/quicksand_bold"
+                android:textColor="@color/black"
+                android:textSize="24sp" />
+
+            <include
+                layout="@layout/item_home_small_talk_ethic"
+                android:id="@+id/card_small_talk_ethics_1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/tv_small_talk_ethics_title"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="12dp" />
+
+            <include
+                layout="@layout/item_home_small_talk_ethic"
+                android:id="@+id/card_small_talk_ethics_2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/card_small_talk_ethics_1"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="8dp" />
+
+            <include
+                layout="@layout/item_home_small_talk_ethic"
+                android:id="@+id/card_small_talk_ethics_3"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/card_small_talk_ethics_2"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="8dp" />
+
+            <include
+                layout="@layout/item_home_small_talk_ethic"
+                android:id="@+id/card_small_talk_ethics_4"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/card_small_talk_ethics_3"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="8dp" />
+            <Button
+                android:id="@+id/btn_small_talk_close"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/small_talk_btn_close"
+                android:textAllCaps="false"
+                android:textColor="@android:color/white"
+                android:background="@drawable/shape_button_v9_positive"
+                android:fontFamily="@font/quicksand_bold"
+                app:layout_constraintTop_toBottomOf="@id/card_small_talk_ethics_4"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="16dp" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</ScrollView>

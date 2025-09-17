@@ -22,7 +22,8 @@
     <dimen name="entourage_margin_start_inner_item">10dp</dimen>
     <dimen name="entourage_little_margin_five">4dp</dimen>
     <dimen name="entourage_margin_section">28dp</dimen>
-
+    <dimen name="page_margin">0dp</dimen>
+    <dimen name="offset">24dp</dimen>
 
 
     <dimen name="activity_horizontal_margin">16dp</dimen>
@@ -32,24 +33,16 @@
     <dimen name="carousel_title">24sp</dimen>
     <dimen name="carousel_content">17sp</dimen>
     <dimen name="carousel_padding">20dp</dimen>
-
     <dimen name="act_button_right_padding">10dp</dimen>
     <dimen name="entourage_category_icon_padding">6dp</dimen>
     <dimen name="dp_70">100dp</dimen>
-
     <dimen name="newsfeed_map_height">255dp</dimen>
     <dimen name="solidarity_guide_map_height">155dp</dimen>
-
     <dimen name="mymessages_padding">4dp</dimen>
     <dimen name="newsfeed_padding">4dp</dimen>
-
     <dimen name="entourage_map_marker">50dp</dimen>
-
     <!-- Entourage padding -->
     <dimen name="entourage_padding_10">10dp</dimen>
-
-
-
     <dimen name="badge_size">10sp</dimen>
 
     <!-- Top Bar sizes -->
@@ -95,6 +88,11 @@
     <dimen name="design_bottom_navigation_height" tools:override="true">@dimen/tabs_height</dimen>
     <dimen name="horizontal_offset">22dp</dimen>
     <dimen name="horizontal_offset_home">15dp</dimen>
+
+
+
+
+
 
 
 </resources>

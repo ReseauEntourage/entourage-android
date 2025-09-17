@@ -196,6 +196,7 @@ class EnhancedOnboarding : BaseActivity() {
                 isFromSettingsinterest = false
                 MainActivity.shouldLaunchEvent = false
                 MainActivity.shouldLaunchProfile = true
+
             }
             if (MainActivity.isFromProfile) {
                 MainActivity.shouldLaunchEvent = false

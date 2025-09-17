@@ -25,7 +25,6 @@ class ReadPoiPresenter(private val fragment: ReadPoiFragment) {
 
     fun getPoiDetail(poiUuid: String) {
         val call = poiRequest.getPoiDetail(poiUuid)
-        Log.wtf("wtf" , "getPoiDetail"  + poiUuid)
         call.enqueue(object : Callback<PoiDetailResponse> {
             override fun onResponse(call: Call<PoiDetailResponse>, response: Response<PoiDetailResponse>) {
                 response.body()?.poi?.let { poi ->

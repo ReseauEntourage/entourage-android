@@ -774,6 +774,83 @@ object AnalyticsEvents {
     const val popup_biencommun_vote = "popup_biencommun_vote"
     const val add_to_calendar_yes_clicked = "add_to_calendar_yes_clicked"
 
+//    AnalyticsEvents.logEvent(AnalyticsEvents.Message_action_param)
+
+    // SmallTalk - Présentation
+    const val VIEW__SMALLTALK__PRESENTATION = "smalltalk_view_presentation_screen"
+    const val CLIC__SMALLTALK__PRESENTATION_START = "smalltalk_click_start_presentation_screen"
+    const val CLIC__SMALLTALK__PRESENTATION_CANCEL = "smalltalk_click_cancel_presentation_screen"
+
+    // SmallTalk - Format
+    const val VIEW__SMALLTALK__FORMAT = "smalltalk_view_format_screen"
+    const val CLIC__SMALLTALK__FORMAT_NEXT = "smalltalk_click_next_format_screen"
+    const val CLIC__SMALLTALK__FORMAT_PREVIOUS = "smalltalk_click_previous_format_screen"
+
+    // SmallTalk - Localité
+    const val VIEW__SMALLTALK__LOCALITY = "smalltalk_view_locality_screen"
+    // SmallTalk - Genre
+    const val VIEW__SMALLTALK__GENDER = "smalltalk_view_gender_screen"
+
+    // SmallTalk - Mixité
+    const val VIEW__SMALLTALK__MIXITE = "smalltalk_view_mixite_screen"
+
+    // SmallTalk - Intérêts
+    const val VIEW__SMALLTALK__INTERESTS = "smalltalk_view_interests_screen"
+
+    // SmallTalk - Photo
+    const val VIEW__SMALLTALK__PHOTO = "smalltalk_view_profile_photo_screen"
+    const val CLIC__SMALLTALK__PHOTO_FINISH = "smalltalk_click_finish_profile_photo_screen"
+    const val CLIC__SMALLTALK__PHOTO_PREVIOUS = "smalltalk_click_previous_profile_photo_screen"
+
+    // SmallTalk - Match
+    const val VIEW__SMALLTALK__MATCH = "smalltalk_view_match_screen"
+    const val CLIC__SMALLTALK__MATCH_CHAT = "smalltalk_click_chat_match_screen"
+
+    // SmallTalk - Suggestions
+    const val VIEW__SMALLTALK__SUGGESTIONS = "smalltalk_view_suggestions_screen"
+    const val CLIC__SMALLTALK__SUGGESTIONS_WAIT = "smalltalk_click_wait_suggestions_screen"
+    const val CLIC__SMALLTALK__SUGGESTIONS_JOIN = "smalltalk_click_join_suggestions_screen"
+
+    // SmallTalk - No suggestions
+    const val VIEW__SMALLTALK__NO_SUGGESTIONS = "smalltalk_view_no_suggestions_screen"
+    const val CLIC__SMALLTALK__NO_SUGGESTIONS_EVENT = "smalltalk_click_event_no_suggestions_screen"
+    const val CLIC__SMALLTALK__NO_SUGGESTIONS_HOME = "smalltalk_click_home_no_suggestions_screen"
+
+    // SmallTalk - Charte
+    const val VIEW__SMALLTALK__CHARTER = "smalltalk_view_charter_screen"
+
+    // SmallTalk - Visio
+    const val CLIC__SMALLTALK__VISIO_ICON = "smalltalk_click_visio_icon_chat_screen"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     val TAG: String? = AnalyticsEvents::class.java.simpleName
 

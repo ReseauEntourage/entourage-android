@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="150dp"
+    android:layout_marginTop="10dp"
+    android:layout_marginHorizontal="10dp"
+    android:background="@drawable/background_organizer"
+    android:padding="16dp">
+
+    <ImageView
+        android:id="@+id/iv_home_small_talk_icon_match"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:src="@drawable/ic_home_search_small_talk"
+        app:layout_constraintTop_toTopOf="@+id/tv_home_small_talk_subtitle_match"
+        app:layout_constraintBottom_toBottomOf="@+id/button_start"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_home_small_talk_subtitle_match"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/small_talk_subtitle_match"
+        android:fontFamily="@font/nunitosans_regular"
+        android:textSize="14sp"
+        android:textColor="@color/grey_dark"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toEndOf="@id/iv_home_small_talk_icon_match"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="4dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"/>
+
+    <Button
+        android:id="@+id/button_start"
+        style="?android:attr/borderlessButtonStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="47dp"
+        android:layout_weight="1"
+        android:background="@drawable/shape_button_v9_positive"
+        android:elevation="0dp"
+        android:fontFamily="@font/quicksand_bold"
+        android:paddingVertical="5dp"
+        android:text="@string/small_talk_button_match"
+        android:textAllCaps="false"
+        app:layout_constraintTop_toBottomOf="@+id/tv_home_small_talk_subtitle_match"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:textColor="@android:color/white"
+        android:layout_marginTop="10dp"
+        android:textSize="14sp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

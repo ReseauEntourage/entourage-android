@@ -105,6 +105,10 @@
             android:exported="false"/>
         <activity android:name=".survey.ResponseSurveyActivity"
             android:exported="false"/>
+        <activity android:name=".small_talks.SmallTalkNoBandFound"
+            android:exported="false"/>
+        <activity android:name=".comment.ImageZoomActivity"
+            />
         <activity
             android:name=".home.pedago.PedagoDetailActivity"
             android:exported="false" />
@@ -322,7 +326,14 @@
             android:name=".small_talks.SmallTalkListOtherBands"
             android:windowSoftInputMode="adjustPan"
             />
-
+        <activity
+            android:name=".small_talks.SmallTalkGuidelinesActivity"
+            android:windowSoftInputMode="adjustPan"
+            />
+        <activity
+            android:name=".small_talks.SmallTalkGroupFoundActivity"
+            android:windowSoftInputMode="adjustPan"
+            />
 
         <service
              android:name=".service.EntService"

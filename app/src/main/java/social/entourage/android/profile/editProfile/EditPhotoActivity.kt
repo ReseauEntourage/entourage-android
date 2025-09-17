@@ -23,6 +23,7 @@ import social.entourage.android.databinding.ActivityEditPhotoBinding
 import social.entourage.android.language.LanguageManager
 import social.entourage.android.onboarding.onboard.OnboardingEditPhotoFragment
 import social.entourage.android.profile.ProfilePresenter
+import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.user.AvatarUpdatePresenter
 import social.entourage.android.user.AvatarUploadPresenter
 import social.entourage.android.user.AvatarUploadRepository
@@ -135,6 +136,26 @@ class EditPhotoActivity : BaseActivity(), PhotoEditInterface, AvatarUploadView {
     }
 
     private fun setupViews() {
+        if(!isFromSmallTalk){
+            binding.progressViewBar.visibility = View.GONE
+            binding.buttonSmalltalkContinu.visibility = View.GONE
+            binding.buttonSmalltalkPrevious.visibility = View.GONE
+        }else{
+            AnalyticsEvents.logEvent(AnalyticsEvents.VIEW__SMALLTALK__PHOTO)
+            binding.header.layout.visibility = View.GONE
+            binding.title.text = getString(R.string.edit_photo_title)
+            binding.subtitle.text = getString(R.string.edit_photo_subtitle)
+        }
+        binding.buttonSmalltalkPrevious.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.CLIC__SMALLTALK__PHOTO_PREVIOUS)
+            setResult(RESULT_CANCELED)
+            finish()
+        }
+        binding.buttonSmalltalkContinu.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.CLIC__SMALLTALK__PHOTO_FINISH)
+            setResult(RESULT_OK)
+            finish()
+        }
         binding.buttonGallery.setOnClickListener {
             if (PermissionChecker.checkSelfPermission(
                     this,
@@ -227,11 +248,11 @@ class EditPhotoActivity : BaseActivity(), PhotoEditInterface, AvatarUploadView {
             val delayMillis = 2000L
             binding.header.iconBack.postDelayed({
                 binding.progressBar.visibility = View.GONE
+                isFromSmallTalk = false
                 finish()
             }, delayMillis)
         }
     }
-
 
 
 
@@ -243,6 +264,7 @@ class EditPhotoActivity : BaseActivity(), PhotoEditInterface, AvatarUploadView {
     companion object {
         const val PICK_IMAGE_REQUEST = 1
         const val TAKE_PHOTO_REQUEST = 2
+        var isFromSmallTalk = false
     }
 
     override fun onPhotoEdited(photoURI: Uri?, photoSource: Int) {

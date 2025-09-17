@@ -40,6 +40,8 @@ class Conversation(
     val hasPersonalPost: Boolean? = null,
     @SerializedName("members")
     val members: ArrayList<GroupMember>? = null,
+    @SerializedName("member")
+    val member: Boolean? = null,
     @SerializedName("members_count")
     val memberCount: Int = 0,
     @SerializedName("creator")
