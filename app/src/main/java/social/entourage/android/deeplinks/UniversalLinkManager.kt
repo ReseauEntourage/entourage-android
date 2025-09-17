@@ -29,8 +29,8 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
     /*private const val prodURL = "https://www.entourage.social"
     private const val stagingURL = "https://www.entourage.social"*/
 
-     val prodURL = "www.entourage.social"
-     val stagingURL = "preprod.entourage.social"
+    val prodURL = "www.entourage.social"
+    val stagingURL = "preprod.entourage.social"
     private var conversationId: String = ""
     val presenter:UniversalLinkPresenter = UniversalLinkPresenter(this)
 

@@ -75,6 +75,7 @@ class DiscussionsMainFragment : Fragment() {
         discussionsPresenter.getAllMessages.observe(viewLifecycleOwner, ::handleResponseGetDiscussions)
         discussionsPresenter.unreadMessages.observe(requireActivity(), ::updateUnreadCount)
         smallTalkViewModel.smallTalks.observe(viewLifecycleOwner, ::handleResponseGetSmallTalks)
+        discussionsPresenter.memberships.observe(viewLifecycleOwner, ::handleResponseGetMemberships)
 
         handleImageViewAnimation()
 
@@ -143,10 +144,18 @@ class DiscussionsMainFragment : Fragment() {
 
     private fun handleSwipeRefresh() {
         binding.swipeRefresh.setOnRefreshListener {
-            binding.progressBar.visibility = View.VISIBLE
-            reloadFromStart()
+            discussionsPresenter.fetchMemberships(currentFilterModeString(), reset = true)
         }
     }
+
+
+    private fun currentFilterModeString(): String? =
+        when (currentFilterMode) {
+            FilterMode.ALL       -> null
+            FilterMode.PRIVATE   -> "Conversation"
+            FilterMode.OUTINGS   -> "Outing"
+            FilterMode.SMALLTALKS-> "Smalltalk"
+        }
 
     private fun reloadFromStart() {
         messagesList.clear()
@@ -154,22 +163,20 @@ class DiscussionsMainFragment : Fragment() {
         discussionsPresenter.isLastPage = false
         discussionsPresenter.getAllMessages.value?.clear()
         binding.recyclerView.adapter?.notifyDataSetChanged()
+        discussionsPresenter.currentPageMemberships = 1
+        discussionsPresenter.isLastPageMemberships = false
         loadMessages()
     }
 
     private fun changeFilterMode(newMode: FilterMode, activeButton: View) {
-        if (currentFilterMode != newMode) {
-            currentFilterMode = newMode
-            resetMessagesList()
-        }
-
+        currentFilterMode = newMode
+        discussionsPresenter.fetchMemberships(currentFilterModeString(), reset = true)
         setFilterActive(activeButton)
         listOf(binding.filter1.root, binding.filter2.root, binding.filter3.root, binding.filter4.root)
             .filter { it != activeButton }
             .forEach { setFilterInactive(it) }
-
-        loadMessages()
     }
+
 
     private fun resetMessagesList() {
         messagesList.clear()
@@ -193,19 +200,22 @@ class DiscussionsMainFragment : Fragment() {
         }
     }
 
+    private fun loadInitial() {
+        discussionsPresenter.fetchMemberships(currentFilterModeString(), reset = true)
+    }
+
     // -------------------- LOGIQUE MESSAGES --------------------
 
     private fun loadMessages() {
         binding.swipeRefresh.isRefreshing = false
         binding.progressBar.visibility = View.VISIBLE
 
-        page += 1
-
+        // Plus de pagination ici : la nouvelle route ne la supporte pas encore
         when (currentFilterMode) {
-            FilterMode.ALL -> discussionsPresenter.fetchAllConversations(page, messagesPerPage)
-            FilterMode.PRIVATE -> discussionsPresenter.fetchPrivateConversations(page, messagesPerPage)
-            FilterMode.OUTINGS -> discussionsPresenter.fetchOutingConversations(page, messagesPerPage)
-            FilterMode.SMALLTALKS -> smallTalkViewModel.listSmallTalks()
+            FilterMode.ALL -> discussionsPresenter.fetchMemberships(null)
+            FilterMode.PRIVATE -> discussionsPresenter.fetchMemberships("Conversation")
+            FilterMode.OUTINGS -> discussionsPresenter.fetchMemberships("Outing")
+            FilterMode.SMALLTALKS -> discussionsPresenter.fetchMemberships("Smalltalk")
         }
     }
 
@@ -219,7 +229,6 @@ class DiscussionsMainFragment : Fragment() {
     private fun handleResponseGetSmallTalks(allSmallTalks: List<SmallTalk>?) {
         messagesList.clear()
         allSmallTalks?.let { list ->
-            Timber.wtf("wtf small talks size ${list.size}")
             messagesList.addAll(list.map { smallTalkToConversation(it) })
         }
         binding.progressBar.visibility = View.GONE
@@ -227,7 +236,6 @@ class DiscussionsMainFragment : Fragment() {
     }
 
     private fun smallTalkToConversation(smallTalk: SmallTalk): Conversation {
-        Timber.wtf("small talk name ${smallTalk.name}")
         return Conversation(
             id = smallTalk.id,
             uuid_v2 = smallTalk.uuid,
@@ -244,7 +252,7 @@ class DiscussionsMainFragment : Fragment() {
     private fun showDetail(position: Int) {
         val conversation = messagesList[position]
         VibrationUtil.vibrate(requireContext())
-        DetailConversationActivity.isSmallTalkMode = (currentFilterMode == FilterMode.SMALLTALKS)
+        DetailConversationActivity.isSmallTalkMode = (currentFilterMode == FilterMode.SMALLTALKS || conversation.type == "small_talk")
         if(DetailConversationActivity.isSmallTalkMode){
             DetailConversationActivity.smallTalkId = conversation.id.toString()
         }
@@ -315,8 +323,15 @@ class DiscussionsMainFragment : Fragment() {
 
     private val recyclerViewOnScrollListener = object : RecyclerView.OnScrollListener() {
         override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-            super.onScrolled(recyclerView, dx, dy)
-            handlePagination(recyclerView)
+            val lm = recyclerView.layoutManager as? LinearLayoutManager ?: return
+            val visible = lm.childCount
+            val total = lm.itemCount
+            val first = lm.findFirstVisibleItemPosition()
+            if (!discussionsPresenter.isLoadingMemberships && !discussionsPresenter.isLastPageMemberships) {
+                if (visible + first >= total && first >= 0 && total >= discussionsPresenter.perPageMemberships) {
+                    discussionsPresenter.fetchMemberships(currentFilterModeString())
+                }
+            }
         }
     }
 
@@ -337,10 +352,42 @@ class DiscussionsMainFragment : Fragment() {
         }
     }
 
+    private fun handleResponseGetMemberships(memberships: List<ConversationMembership>?) {
+        binding.progressBar.visibility = View.GONE
+        binding.swipeRefresh.isRefreshing = false
+
+        messagesList.clear()
+        memberships?.let { list ->
+            Timber.wtf("wtf message list size : ${list.size}")
+            messagesList.addAll(list.map { membershipToConversation(it) })
+        }
+
+        binding.recyclerView.adapter?.notifyDataSetChanged()
+    }
     private fun handleImageViewAnimation() {
         binding.appBar.addOnOffsetChangedListener { appBarLayout, verticalOffset ->
             val ratio = abs(verticalOffset).toFloat() / appBarLayout.totalScrollRange
             binding.img.alpha = 1f - ratio
         }
     }
+
+    private fun membershipToConversation(m: ConversationMembership): Conversation {
+
+        return Conversation(
+            id = m.joinableId,
+            type = when (m.joinableType?.lowercase()) {
+                "outing" -> "outing"
+                "conversation" -> "private"
+                "smalltalk" -> "small_talk"
+                "neighborhood" -> "group"
+                else -> "group"
+            },
+            title = (m.name),
+            subname = m.createdDateString(),
+            lastMessage = m.lastChatMessageText?.let { LastMessage(it, null) }, // conversion depuis String
+            numberUnreadMessages = m.numberOfUnreadMessages ?: 0,
+            memberCount = m.numberOfPeople ?: 0
+        )
+    }
+
 }

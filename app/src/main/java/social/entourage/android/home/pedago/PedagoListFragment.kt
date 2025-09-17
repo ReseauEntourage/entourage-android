@@ -46,8 +46,6 @@ class PedagoListFragment : Fragment() {
         AnalyticsEvents.logEvent(AnalyticsEvents.Pedago_View)
         pedagoAdapter = PedagoListAdapter(requireContext(), sections, object : OnItemClick {
             override fun onItemClick(pedagogicalContent: Pedago) {
-                Timber.wtf("wtf" + Gson().toJson(pedagogicalContent))
-                Timber.wtf("wtf" + pedagogicalContent.html)
                 if (pedagogicalContent.id != null) {
                     PedagoDetailActivity.setPedagoId(pedagogicalContent.id)
                     PedagoDetailActivity.setHtmlContent(pedagogicalContent.html?:"")

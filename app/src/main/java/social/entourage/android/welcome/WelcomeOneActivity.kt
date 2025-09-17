@@ -29,6 +29,7 @@ import java.lang.ref.WeakReference
 class WelcomeOneActivity:BaseActivity(), OnVideoLoaCallback {
 
     private lateinit var binding: ActivityLayoutWelcomeOneBinding
+    //TODO: replace with a resource
     private var videoLink = "https://www.youtube.com/watch?v=IYUo5WAZxXs"
 
     override fun onCreate(savedInstanceState: Bundle?) {

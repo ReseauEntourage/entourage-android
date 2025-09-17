@@ -201,7 +201,7 @@ Découvrez les initiatives de votre quartier et tissez des liens avec vos voisin
     <string name="edit_group">Modifier le groupe</string>
     <string name="error_mandatory_fields">Veuillez remplir tous les champs obligatoires</string>
     <string name="error_categories_create_group">Une catégorie doit être sélectionnée.</string>
-    <string name="error_categories_create_group_image">Veuillez sélectionnez une image</string>
+    <string name="error_categories_create_group_image">Veuillez sélectionner une image</string>
     <string name="error_empty_other_category_create_group">Veuillez préciser la catégorie divers</string>
     <string name="error_lastname">Le nom doit comporter au moins 2 lettres.</string>
     <string name="error_email">e-mail invalide</string>
@@ -459,7 +459,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
 
     <!-- WELCOME PAGES -->
     <string name="welcome_one_title">Bienvenue sur le réseau \nsocial, vraiment social</string>
-    <string name="welcome_one_content">Pour beaucoup, la rue est un lieu de passage.\nPour certains, c\'est un quotidien.\nAlors pour commencer, rencontrez celles et ceux qui la vivent tous les jours.</string>
+    <string name="welcome_one_content">Pour beaucoup, la rue est un lieu de passage.\nPour certains, c\'est un quotidien.\nAlors pour commencer, rencontrer celles et ceux qui la vivent tous les jours.</string>
 
     <string name="welcome_two_title">C\'est le moment de se lancer !</string>
     <string name="welcome_two_text_one_corrected">Un réseau social, c\'est mieux à plusieurs !\nPrésentez-vous auprès de %s</string>
@@ -1533,11 +1533,11 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="birthday_date_format">dd-MM</string>
     <string name="events_date">dd/MM/yyyy</string>
     <string name="events_time">HH\'h\'mm</string>
-    <string name="duration_month">%s mois</string>
-    <string name="duration_weeks">%s sem</string>
-    <string name="duration_days">%s j</string>
-    <string name="duration_hours">%s h</string>
-    <string name="duration_minutes">%s min</string>
+    <string name="duration_month">%d mois</string>
+    <string name="duration_weeks">%d sem</string>
+    <string name="duration_days">%d j</string>
+    <string name="duration_hours">%d h</string>
+    <string name="duration_minutes">%d min</string>
     <string name="duration_secondes">à l\'instant</string>
 
     <!--    STRING Entourage-->
@@ -1793,7 +1793,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="event_filter_profile">À l\'adresse renseignée dans mon profil</string>
     <string name="event_filter_google">À une nouvelle adresse</string>
     <string name="event_filter_gps">Autour de ma position actuelle</string>
-    <string name="event_filter_error_place">Veuillez sélectionnez une adresse</string>
+    <string name="event_filter_error_place">Veuillez sélectionner une adresse</string>
     <string name="search_filter">Rechercher :</string>
 
     <string name="event_location_title">Localisez votre événement</string>
@@ -2647,7 +2647,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="map_filter_entourage_contribution_text"><b>Voir les contributions concernant :</b></string>
     <string name="custom_dialog_action_content_one_contrib">Votre action \"<![CDATA[<b>%1$s</b>]]>\" est-elle terminée ?</string>
     <string name="search_member_hint">Chercher un membre</string>
-    <string name="terms_and_conditions_html">En cliquant sur &lt;b&gt;Suivant&lt;/b&gt;, vous acceptez les &lt;a href=\'https://www.entourage.social/cgu/\'&gt;Conditions Générales d\'Utilisation&lt;/a&gt; et la &lt;a href=\'https://www.entourage.social/politique-de-confidentialite/\'&gt;Politique de Confidentialité&lt;/a&gt;</string>
+    <string name="terms_and_conditions_html">En cliquant sur &lt;b&gt;Suivant&lt;/b&gt;, vous acceptez les &lt;a href=\'https://www.entourage.social/cgu\'&gt;Conditions Générales d\'Utilisation&lt;/a&gt; et la &lt;a href=\'https://www.entourage.social/politique-de-confidentialite\'&gt;Politique de Confidentialité&lt;/a&gt;</string>
     <string name="action_crete_cat_about">Vous cherchez à proposer une %s qui ne rentre pas dans l\'une de ces catégories ? Il semble qu\'elle n\'ait pas sa place sur le réseau,mais vous pouvez toujours </string>
     <string name="action_create_cat_about_link"> en savoir plus par ici.</string>
     <string name="report_modal_title_translate">Traduire</string>
@@ -2910,6 +2910,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="option_both_desc">Proposer du soutien et en recevoir</string>
     <string name="question_location">Quel est votre quartier ?</string>
     <string name="input_location">Adresse ville ou département</string>
+    <string name="needs_to_join_group">Vous devez rejoindre le groupe pour effectuer cette action.</string>
 
 </resources>
 

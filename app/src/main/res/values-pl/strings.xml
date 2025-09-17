@@ -1507,13 +1507,12 @@ Przeczytają tę wiadomość, gdy tylko dołączą do grupy.</string>
     <string name="x_days_ago">%s dni temu</string>
     <string name="date_this_month">ten miesiąc</string>
     <string name="x_months_ago">%s miesięcy temu</string>
-
-    <string name="duration_month">%s miesiąca</string>
-    <string name="duration_weeks">%s tydzień</string>
-    <string name="duration_days">%s j</string>
-    <string name="duration_hours">%s godz</string>
-    <string name="duration_minutes">%s min</string>
-    <string name="duration_secondes">w momencie \</string>
+    <string name="duration_month">%d miesiąca</string>
+    <string name="duration_weeks">%d tydzień</string>
+    <string name="duration_days">%d j</string>
+    <string name="duration_hours">%d godz</string>
+    <string name="duration_minutes">%d min</string>
+    <string name="duration_secondes">w momencie</string>
 
     <!--    STRING Entourage-->
 
@@ -2638,7 +2637,7 @@ Przeczytają tę wiadomość, gdy tylko dołączą do grupy.</string>
     <string name="map_filter_entourage_contribution_text"><b>Zobacz wkłady dotyczące:</b></string>
     <string name="custom_dialog_action_content_one_contrib">Czy Twoja akcja \"<![CDATA[<b>%1$s</b>]]>\" została zakończona?</string>
     <string name="search_member_hint">Szukaj członka</string>
-    <string name="terms_and_conditions_html">Klikając &lt;b&gt;Dalej&lt;/b&gt;, akceptujesz &lt;a href=\'https://www.entourage.social/regulamin/\'&gt;Warunki korzystania&lt;/a&gt; oraz &lt;a href=\'https://www.entourage.social/polityka-prywatnosci/\'&gt;Politykę prywatności&lt;/a&gt;</string>
+    <string name="terms_and_conditions_html">Klikając &lt;b&gt;Dalej&lt;/b&gt;, akceptujesz &lt;a href=\'https://www.entourage.social/cgu\'&gt;Warunki korzystania&lt;/a&gt; oraz &lt;a href=\'https://www.entourage.social/politique-de-confidentialite\'&gt;Politykę prywatności&lt;/a&gt;</string>
     <string name="action_crete_cat_about">Czy chcesz zaoferować %s, które nie pasuje do żadnej z tych kategorii? Wygląda na to, że \ nie ma miejsca w sieci, ale zawsze możesz</string>
     <string name="action_create_cat_about_link"> dowiedzieć się więcej tutaj.</string>
     <string name="report_modal_title_translate">Tłumacz</string>
@@ -2879,4 +2878,5 @@ Przeczytają tę wiadomość, gdy tylko dołączą do grupy.</string>
     <string name="option_both_desc" lang="pl">Wspierać i być wspieranym.</string>
     <string name="question_location" lang="pl">Jaka jest twoja dzielnica?</string>
     <string name="input_location" lang="pl">Adres miasta lub regionu</string>
+    <string name="needs_to_join_group" lang="pl">Vous devez rejoindre le groupe pour effectuer cette action.</string>
 </resources>

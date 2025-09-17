@@ -9,6 +9,8 @@ import social.entourage.android.api.model.Conversation
 import social.entourage.android.api.model.GroupMember
 import social.entourage.android.api.model.User
 import social.entourage.android.api.model.UserBlockedUser
+import social.entourage.android.api.model.ConversationMembership
+import social.entourage.android.api.model.ConversationMembershipsWrapper
 
 /**
  * Created by - on 15/11/2022.
@@ -110,4 +112,10 @@ interface DiscussionsRequest {
         @Body request: RequestContent
     ): Call<PrepareAddPostResponse>
 
+    @GET("conversations/memberships")
+    fun getConversationMemberships(
+        @Query("type") type: String?,
+        @Query("page") page: Int,
+        @Query("per") per: Int
+    ): Call<ConversationMembershipsWrapper>
 }

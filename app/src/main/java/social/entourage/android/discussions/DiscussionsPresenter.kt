@@ -15,6 +15,8 @@ import social.entourage.android.EntourageApplication
 import social.entourage.android.api.request.*
 import social.entourage.android.home.UnreadMessages
 import social.entourage.android.api.model.Conversation
+import social.entourage.android.api.model.ConversationMembership
+import social.entourage.android.api.model.ConversationMembershipsWrapper
 import social.entourage.android.api.model.GroupMember
 import social.entourage.android.api.model.Post
 import social.entourage.android.api.model.User
@@ -59,7 +61,11 @@ class DiscussionsPresenter:ViewModel() {
     val perPageComments = 50
     var isLastPageComments = false
     var isLoadingComments = false
-
+    val memberships = MutableLiveData<List<ConversationMembership>>()
+    var currentPageMemberships = 1
+    val perPageMemberships = 50
+    var isLastPageMemberships = false
+    var isLoadingMemberships = false
 
     fun getAllMessages(page: Int, per: Int) {
         isLoading = true
@@ -414,37 +420,46 @@ class DiscussionsPresenter:ViewModel() {
     private fun uploadFile(groupId: Int, file: File, presignedUrl: String, uploadKey: String, message: String?) {
         val requestBody = file.asRequestBody("image/jpeg".toMediaTypeOrNull())
         val request = Request.Builder().url(presignedUrl).put(requestBody).build()
+
         EntourageApplication.get().apiModule.okHttpClient.newCall(request).enqueue(object : okhttp3.Callback {
             override fun onFailure(call: okhttp3.Call, e: IOException) {
-                // Optionnel : gérer l’échec
+                Timber.e("Upload failed: ${e.message}")
             }
+
             override fun onResponse(call: okhttp3.Call, response: okhttp3.Response) {
                 if (!response.isSuccessful) {
-                    // Optionnel : log ou état d’échec
+                    Timber.e("Upload image failed. HTTP ${response.code}")
                     return
                 }
+
                 val chatMessageMap = ArrayMap<String, Any>()
                 chatMessageMap["image_url"] = uploadKey
-                if (!message.isNullOrBlank()) {
-                    chatMessageMap["content"] = message
-                }
+                chatMessageMap["message_type"] = "image"
+                chatMessageMap["content"] = message ?: "📷"
+
                 val rootMap = ArrayMap<String, Any>()
                 rootMap["chat_message"] = chatMessageMap
+
+                Timber.d("POST /chat_messages payload: $rootMap")
 
                 EntourageApplication.get().apiModule.discussionsRequest
                     .addPost(groupId, rootMap)
                     .enqueue(object : Callback<PostWrapper> {
                         override fun onResponse(call: Call<PostWrapper>, response: Response<PostWrapper>) {
+                            Timber.d("Réponse message avec image: ${response.body()?.post}")
                             commentPosted.postValue(response.body()?.post)
                         }
 
                         override fun onFailure(call: Call<PostWrapper>, t: Throwable) {
+                            Timber.e("Erreur lors de l’envoi du message image: ${t.message}")
                             commentPosted.postValue(null)
                         }
                     })
             }
         })
     }
+
+
 
     fun loadInitialComments(convId: Int) {
         currentPageComments = 1
@@ -476,6 +491,41 @@ class DiscussionsPresenter:ViewModel() {
                 }
                 override fun onFailure(call: Call<PostListWrapper>, t: Throwable) {
                     isLoadingComments = false
+                }
+            })
+    }
+
+    // In DiscussionsPresenter
+    fun fetchMemberships(type: String?, reset: Boolean = false) {
+        if (isLoadingMemberships) return
+        if (reset) {
+            currentPageMemberships = 1
+            isLastPageMemberships = false
+            memberships.value = emptyList()
+        }
+        if (isLastPageMemberships) return
+
+        isLoadingMemberships = true
+        EntourageApplication.get().apiModule.discussionsRequest
+            .getConversationMemberships(type, currentPageMemberships, perPageMemberships)
+            .enqueue(object : Callback<ConversationMembershipsWrapper> {
+                override fun onResponse(
+                    call: Call<ConversationMembershipsWrapper>,
+                    response: Response<ConversationMembershipsWrapper>
+                ) {
+                    val newItems = response.body()?.memberships.orEmpty()
+                    if (newItems.size < perPageMemberships) {
+                        isLastPageMemberships = true
+                    }
+                    val current = memberships.value.orEmpty().toMutableList()
+                    current.addAll(newItems)
+                    memberships.postValue(current)
+                    currentPageMemberships++
+                    isLoadingMemberships = false
+                }
+
+                override fun onFailure(call: Call<ConversationMembershipsWrapper>, t: Throwable) {
+                    isLoadingMemberships = false
                 }
             })
     }

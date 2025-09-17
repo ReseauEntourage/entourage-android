@@ -197,6 +197,39 @@
             app:layout_constraintBottom_toBottomOf="parent" />
 
         <!-- 4) Bloc pour poster un commentaire, collé en bas -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:id="@+id/layout_photo"
+            android:background="@color/light_beige"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/post_comment"
+            android:visibility="gone">
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/iv_photo_preview"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:visibility="gone"
+                />
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:id="@+id/btn_quit_photo"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:src="@drawable/icon_cross"
+                app:tint="@color/orange"
+                android:background="@drawable/bg_beige_round_15"
+                android:padding="8dp"
+                android:layout_marginTop="40dp"
+                android:layout_marginEnd="20dp"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
         <LinearLayout
             android:id="@+id/post_comment"
             android:layout_width="match_parent"
@@ -204,7 +237,7 @@
             android:layout_gravity="end"
             android:gravity="center_vertical"
             android:orientation="horizontal"
-            android:paddingHorizontal="28dp"
+            android:paddingHorizontal="10dp"
             android:paddingBottom="20dp"
             android:weightSum="1"
             app:layout_constraintBottom_toTopOf="@+id/layout_option">
@@ -223,13 +256,14 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@drawable/new_bg_rounded_button_orange_beige_stroke_slim"
+                android:background="@drawable/bg_rounded_button_grey_stroke_slim"
                 android:hint="@string/discussbis"
                 android:padding="13dp"
                 android:layout_marginStart="7dp"
                 android:inputType="textCapSentences|textMultiLine"
-                android:textColorHint="@color/orange"
-                android:textColor="@color/black" />
+                android:textColorHint="@color/grey_onboarding_item_border"
+                android:textColor="@color/black"
+                />
 
             <ImageButton
                 android:id="@+id/comment"

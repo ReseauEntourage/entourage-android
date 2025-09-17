@@ -678,12 +678,12 @@
     <string name="x_days_ago">%s days ago</string>
     <string name="date_this_month">this month</string>
     <string name="x_months_ago">%s months ago</string>
-    <string name="duration_month">%s month</string>
-    <string name="duration_weeks">%s week</string>
-    <string name="duration_days">%s j</string>
-    <string name="duration_hours">%s h</string>
-    <string name="duration_minutes">%s min</string>
-    <string name="duration_secondes">at the \ moment</string>
+    <string name="duration_month">%d month</string>
+    <string name="duration_weeks">%d week</string>
+    <string name="duration_days">%d j</string>
+    <string name="duration_hours">%d h</string>
+    <string name="duration_minutes">%d min</string>
+    <string name="duration_secondes">at the moment</string>
     <string name="entourage_create_action_title">Action</string>
     <string name="entourage_create_outing_title">Event</string>
     <string name="entourage_create_type_label">Category</string>
@@ -1565,7 +1565,7 @@
     <string name="map_filter_entourage_contribution_text"><b>See contributions regarding:</b></string>
     <string name="custom_dialog_action_content_one_contrib">Is your action \"<![CDATA[<b>%1$s</b>]]>\" completed?</string>
     <string name="search_member_hint">Search a member</string>
-    <string name="terms_and_conditions_html">By clicking &lt;b&gt;Next&lt;/b&gt;, you agree to the &lt;a href=\'https://www.entourage.social/terms/\'&gt;Terms and Conditions&lt;/a&gt; and the &lt;a href=\'https://www.entourage.social/privacy-policy/\'&gt;Privacy Policy&lt;/a&gt;</string>
+    <string name="terms_and_conditions_html">By clicking &lt;b&gt;Next&lt;/b&gt;, you agree to the &lt;a href=\'https://www.entourage.social/cgu\'&gt;Terms and Conditions&lt;/a&gt; and the &lt;a href=\'https://www.entourage.social/politique-de-confidentialite\'&gt;Privacy Policy&lt;/a&gt;</string>
 
     <string name="action_crete_cat_about">Are you looking to offer a %s that does not fit into one of these categories? It seems that \ has no place on the network,but you can always</string>
     <string name="action_create_cat_about_link"> learn more here.</string>
@@ -1813,6 +1813,7 @@
     <string name="option_both_desc" lang="en">Offer support and receive it.</string>
     <string name="question_location" lang="en">What is your neighborhood?</string>
     <string name="input_location" lang="en">City or department address</string>
+    <string name="needs_to_join_group" lang="en">You must join the group to do this action.</string>
 
 
 </resources>

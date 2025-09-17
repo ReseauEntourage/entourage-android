@@ -3,6 +3,8 @@ package social.entourage.android.members
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
@@ -31,41 +33,28 @@ import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.Utils
 
-/**
- * Unique Activity affichant la liste des membres (ou participants) d’un
- * groupe / évènement avec :
- *  • Pagination inf : chargement par page à mesure du scroll (implémentée
- *    dans GroupPresenter / EventsPresenter).
- *  • Recherche locale + API.
- *  • Affichage des réacteurs (isFromReact).
- *  • Lancement d’une conversation 1‑to‑1.
- */
 class MembersActivity : BaseActivity() {
 
     private lateinit var binding: NewFragmentMembersBinding
-
-    // --- Données ---
     private val membersList: MutableList<EntourageUser> = mutableListOf()
     private val membersListSearch: MutableList<EntourageUser> = mutableListOf()
     private val reactionList: MutableList<ReactionType> = mutableListOf()
-
     private var id: Int = Const.DEFAULT_VALUE
     private var type: MembersType = MembersType.GROUP
 
-    // --- Presenters ---
     private val groupPresenter: GroupPresenter by lazy { GroupPresenter() }
     private val eventPresenter: EventsPresenter by lazy { EventsPresenter() }
     private val discussionPresenter: DiscussionsPresenter by lazy { DiscussionsPresenter() }
 
-    // --- Lifecycle ---
+    private val searchHandler = Handler(Looper.getMainLooper())
+    private val SEARCH_DELAY: Long = 500 // Délai de 500 millisecondes
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = NewFragmentMembersBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         AnalyticsEvents.logEvent(AnalyticsEvents.VIEW_GROUP_MEMBER_SHOW_LIST)
 
-        // Params
         id = intent.getIntExtra("ID", Const.DEFAULT_VALUE)
         val typeCode = intent.getIntExtra("TYPE", MembersType.GROUP.code)
         type = MembersType.values().firstOrNull { it.code == typeCode } ?: MembersType.GROUP
@@ -87,10 +76,6 @@ class MembersActivity : BaseActivity() {
         super.onDestroy()
     }
 
-    // ---------------------------------------------------------------------
-    // Initialisation UI
-    // ---------------------------------------------------------------------
-
     private fun setupToolbar() {
         binding.iconBack.setOnClickListener { finish() }
     }
@@ -101,7 +86,6 @@ class MembersActivity : BaseActivity() {
             ContextCompat.getDrawable(this@MembersActivity, R.drawable.new_divider)?.let { setDrawable(it) }
         }
 
-        // Liste principale (avec pagination)
         binding.recyclerView.apply {
             layoutManager = LinearLayoutManager(ctx)
             adapter = MembersListAdapter(ctx, membersList, reactionList, conversationCallback())
@@ -109,7 +93,6 @@ class MembersActivity : BaseActivity() {
             addOnScrollListener(paginationScrollListener())
         }
 
-        // Liste pour la recherche
         binding.searchRecyclerView.apply {
             layoutManager = LinearLayoutManager(ctx)
             adapter = MembersListAdapter(ctx, membersListSearch, reactionList, conversationCallback())
@@ -118,27 +101,35 @@ class MembersActivity : BaseActivity() {
     }
 
     private fun setupSearchBar() {
-        // Validation clavier
-        binding.searchBar.setOnEditorActionListener { _, actionId, _ ->
-            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                performRemoteSearch(binding.searchBar.text.toString())
-                true
-            } else false
-        }
-
         // FOCUS ➜ on passe sur la liste search
-        binding.searchBar.setOnFocusChangeListener { _, _ ->
-            AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_GROUP_MEMBER_SEARCH_START)
-            switchToSearchMode()
+        binding.searchBar.setOnFocusChangeListener { _, hasFocus ->
+            if (hasFocus) {
+                AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_GROUP_MEMBER_SEARCH_START)
+                switchToSearchMode()
+            }
         }
 
-        // Gestion croix / texte
+        // Gestion croix / texte et déclenchement de la recherche à chaque changement de texte
         binding.searchBar.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
-                binding.searchBarLayout.endIconMode = if (s.isNullOrEmpty())
-                    TextInputLayout.END_ICON_NONE else TextInputLayout.END_ICON_CUSTOM
+                binding.searchBarLayout.endIconMode = if (s.isNullOrEmpty()) {
+                    TextInputLayout.END_ICON_NONE
+                } else {
+                    TextInputLayout.END_ICON_CUSTOM
+                }
+
+                s?.let {
+                    searchHandler.removeCallbacksAndMessages(null)
+                    searchHandler.postDelayed({
+                        if (it.toString().isNotBlank()) {
+                            performRemoteSearch(it.toString())
+                        }
+                    }, SEARCH_DELAY)
+                }
             }
+
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
         })
 
@@ -155,20 +146,12 @@ class MembersActivity : BaseActivity() {
         }
     }
 
-    // ---------------------------------------------------------------------
-    // Observateurs LiveData
-    // ---------------------------------------------------------------------
-
     private fun setupObservers() {
-        // Conversation 1‑to‑1
         discussionPresenter.newConversation.observe(this, ::openConversation)
-
         if (isFromReact) {
-            // Réactions uniquement
             observeReactions()
             return
         }
-
         when (type) {
             MembersType.GROUP -> {
                 observeGroupMembers()
@@ -204,10 +187,6 @@ class MembersActivity : BaseActivity() {
         eventPresenter.getMembersSearch.observe(this, ::handleSearchList)
     }
 
-    // ---------------------------------------------------------------------
-    // Chargements / pagination
-    // ---------------------------------------------------------------------
-
     private fun loadFirstPage() {
         if (isFromReact) {
             binding.layoutSearchbar.visibility = View.GONE
@@ -217,7 +196,6 @@ class MembersActivity : BaseActivity() {
             }
             return
         }
-
         when (type) {
             MembersType.GROUP -> {
                 groupPresenter.resetMembersPaging()
@@ -230,10 +208,9 @@ class MembersActivity : BaseActivity() {
         }
     }
 
-    /** ScrollListener déclenchant le chargement de la page suivante. */
     private fun paginationScrollListener() = object : RecyclerView.OnScrollListener() {
         override fun onScrolled(rv: RecyclerView, dx: Int, dy: Int) {
-            if (dy <= 0 || isFromReact) return // haut ou mode réactions
+            if (dy <= 0 || isFromReact) return
             val lm = rv.layoutManager as LinearLayoutManager
             val shouldLoadMore = (lm.childCount + lm.findFirstVisibleItemPosition()) >= lm.itemCount - 3
             if (shouldLoadMore) {
@@ -245,10 +222,6 @@ class MembersActivity : BaseActivity() {
         }
     }
 
-    // ---------------------------------------------------------------------
-    // Callbacks : mise à jour UI
-    // ---------------------------------------------------------------------
-
     private fun updateMainList(newData: MutableList<EntourageUser>) {
         membersList.clear()
         membersList.addAll(newData)
@@ -258,7 +231,8 @@ class MembersActivity : BaseActivity() {
     }
 
     private fun handleReactions(resp: CompleteReactionsResponse) {
-        membersList.clear(); reactionList.clear()
+        membersList.clear()
+        reactionList.clear()
         resp.user_reactions.forEach { ur ->
             membersList += ur.user
             val match = MainActivity.reactionsList?.find { it.id == ur.reaction_id }
@@ -271,7 +245,8 @@ class MembersActivity : BaseActivity() {
     }
 
     private fun handleSearchList(list: MutableList<EntourageUser>?) {
-        membersListSearch.clear(); list?.let { membersListSearch.addAll(it) }
+        membersListSearch.clear()
+        list?.let { membersListSearch.addAll(it) }
         binding.progressBar.visibility = View.GONE
         val empty = membersListSearch.isEmpty()
         binding.emptyStateLayout.visibility = if (empty) View.VISIBLE else View.GONE
@@ -286,18 +261,13 @@ class MembersActivity : BaseActivity() {
         binding.title.setText(R.string.group_list_empty_state_title)
     }
 
-    // ---------------------------------------------------------------------
-    // Recherche distante
-    // ---------------------------------------------------------------------
-
     private fun performRemoteSearch(query: String) {
         if (query.isBlank()) return
         AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_GROUP_MEMBER_SEARCH_VALIDATE)
-        Utils.hideKeyboard(this)
         showLoader()
         when (type) {
-            MembersType.GROUP -> groupPresenter.getGroupMembersSearch(query)
-            MembersType.EVENT -> eventPresenter.getEventMembersSearch(query)
+            MembersType.GROUP -> groupPresenter.searchGroupMembers(id,query)
+            MembersType.EVENT -> eventPresenter.searchEventMembers(id,query)
         }
     }
 
@@ -314,14 +284,10 @@ class MembersActivity : BaseActivity() {
     }
 
     private fun exitSearchMode() {
-        Utils.hideKeyboard(this)
         binding.searchRecyclerView.visibility = View.GONE
         updateEmptyState(membersList.isEmpty())
     }
 
-    // ---------------------------------------------------------------------
-    // Conversation 1‑to‑1
-    // ---------------------------------------------------------------------
     private fun openConversation(conv: Conversation?) {
         conv ?: return
         DetailConversationActivity.isSmallTalkMode = false
@@ -341,9 +307,6 @@ class MembersActivity : BaseActivity() {
         )
     }
 
-    // ---------------------------------------------------------------------
-    // Helpers
-    // ---------------------------------------------------------------------
     private fun updateHeaderTexts() {
         if (isFromReact) {
             binding.headerTitle.setText(R.string.see_member_react)
@@ -367,8 +330,6 @@ class MembersActivity : BaseActivity() {
     }
 }
 
-// -------------------------------------------------------------------------
-// ENUM
-// -------------------------------------------------------------------------
-
-enum class MembersType(val code: Int) { GROUP(0), EVENT(1) }
+enum class MembersType(val code: Int) {
+    GROUP(0), EVENT(1)
+}

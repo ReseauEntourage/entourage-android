@@ -26,5 +26,8 @@ class ImageZoomActivity : BaseActivity() {
         binding.fullscreenImage.setOnClickListener {
             finish()
         }
+        binding.btnQuitPhoto.setOnClickListener {
+            finish()
+        }
     }
 }

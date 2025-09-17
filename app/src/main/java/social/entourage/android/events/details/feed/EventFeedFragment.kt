@@ -59,7 +59,6 @@ import social.entourage.android.members.MembersActivity
 import social.entourage.android.profile.myProfile.InterestsAdapter
 import social.entourage.android.survey.ResponseSurveyActivity
 import social.entourage.android.survey.SurveyPresenter
-import social.entourage.android.tools.image_viewer.ImageDialogActivity
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
 import social.entourage.android.tools.utils.Const
@@ -149,13 +148,16 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
             }
         }
         binding.btnAddCalendar.post {
-            val calendarDrawable = ContextCompat.getDrawable(requireContext(), R.drawable.new_calendar)
-            calendarDrawable?.let {
-                val sizeInPx = TypedValue.applyDimension(
-                    TypedValue.COMPLEX_UNIT_DIP, 14f, resources.displayMetrics
-                ).toInt()
-                it.setBounds(0, 0, sizeInPx, sizeInPx)
-                binding.btnAddCalendar.setCompoundDrawablesRelative(null, null, it, null)
+            try {
+                ContextCompat.getDrawable(requireContext(), R.drawable.new_calendar)?.let {
+                    val sizeInPx = TypedValue.applyDimension(
+                        TypedValue.COMPLEX_UNIT_DIP, 14f, resources.displayMetrics
+                    ).toInt()
+                    it.setBounds(0, 0, sizeInPx, sizeInPx)
+                    binding.btnAddCalendar.setCompoundDrawablesRelative(null, null, it, null)
+                }
+            } catch (e: IllegalStateException) {
+                Timber.e(e, "Error setting calendar icon")
             }
         }
 
@@ -168,7 +170,6 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
 
     private fun handleResponseGetEvent(getEvent: Events?) {
         getEvent?.let {
-            Timber.wtf("wtf event id : ${it.id}")
             event = it
             updateView()
             if(shouldAddToAgenda){
@@ -423,7 +424,7 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
 
     private fun handleSurveyPostResponse(success: Boolean) {
         if(isAdded && !success){
-            showToast("Erreur serveur, veuillez réessayer plus tard")
+            showToast(getString(R.string.entourage_report_error_send_failed))
         }
     }
 
@@ -487,13 +488,13 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
                 type = "text/plain"
                 putExtra(Intent.EXTRA_TEXT, shareTitle + "\n" + event?.title + ": " + "\n" + createShareUrl())
             }
-            startActivity(Intent.createChooser(shareIntent, "Partager l'URL via"))
+            startActivity(Intent.createChooser(shareIntent, getString(R.string.entourage_share_intent_title)))
         }
     }
 
     private fun createShareUrl():String{
         val deepLinksHostName = BuildConfig.DEEP_LINKS_URL
-        return "https://" + deepLinksHostName + "/app/outings/" + event?.uuid_v2
+        return """https://$deepLinksHostName/app/outings/${event?.uuid_v2}"""
     }
 
     private fun getPrincipalMember(){
@@ -724,9 +725,9 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
     override fun deleteReaction(post: Post) {
         if(this.event?.member == false){
             AlertDialog.Builder(context) // Utilise 'this' si c'est dans une activité, ou 'getActivity()' si c'est dans un fragment
-                .setTitle("Attention")
-                .setMessage("Vous devez rejoindre le groupe pour effectuer cette action.")
-                .setPositiveButton("Retour") { dialog, which ->
+                .setTitle(getString(R.string.attention_pop_title))
+                .setMessage(getString(R.string.needs_to_join_group))
+                .setPositiveButton(getString(R.string.back)) { dialog, which ->
                     // Code à exécuter lorsque le bouton "Retour" est cliqué.
                     // Si tu ne veux rien faire, tu peux laisser ce bloc vide.
                 }

@@ -528,7 +528,7 @@
     <style name="left_courant_orange">
         <item name="android:textSize">@dimen/profile_description</item>
         <item name="android:fontFamily">@font/nunitosans_regular</item>
-        <item name="android:textColor">@color/orange</item>
+        <item name="android:textColor">@color/grey</item>
     </style>
 
     <style name="group_member_subtitle">

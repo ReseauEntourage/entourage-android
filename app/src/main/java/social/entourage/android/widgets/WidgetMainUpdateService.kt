@@ -8,6 +8,7 @@ import android.net.Uri
 import android.os.Handler
 import android.os.Looper
 import android.widget.RemoteViews
+import social.entourage.android.BuildConfig
 import social.entourage.android.R
 import social.entourage.android.events.EventsPresenter
 
@@ -25,7 +26,7 @@ class WidgetMainUpdateService : IntentService("WidgetMainUpdateService") {
                 val count = eventList?.size ?: 0
                 views.setTextViewText(R.id.eventCountText, "$count évènements à venir")
 
-                val deeplinkIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://preprod.entourage.social/app/outings"))
+                val deeplinkIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://"+BuildConfig.DEEP_LINKS_URL+"/app/outings"))
                 val pendingIntent = PendingIntent.getActivity(
                     this,
                     0,

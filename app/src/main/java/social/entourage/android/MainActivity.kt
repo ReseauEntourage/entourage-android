@@ -187,6 +187,7 @@ class MainActivity : BaseSecuredActivity() {
         }
         if(shouldLaunchQuizz){
             shouldLaunchQuizz = false
+            //TODO replace with with an alias on our site
             val urlString = "https://kahoot.it/challenge/45371e80-fe50-4be5-afec-b37e3d50ede2_1733228323615"
             WebViewFragment.newInstance(urlString, 0, true)
                 .show(supportFragmentManager, WebViewFragment.TAG)
@@ -506,6 +507,7 @@ class MainActivity : BaseSecuredActivity() {
     fun goConv(){
         navController.navigate(R.id.navigation_messages)
     }
+
     fun goContrib(){
         val bundle = bundleOf("isActionDemand" to false) // Mettez ici la valeur souhaitée pour "isActionDemand"
         navController.navigate(R.id.navigation_donations, bundle)
@@ -558,7 +560,6 @@ class MainActivity : BaseSecuredActivity() {
     }
 
     private fun addBadge(count : Int) {
-//        Timber.wtf("wtf passed here 1 count : $count")
 
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.nav_view)
         val badge: BadgeDrawable = bottomNavigationView.getOrCreateBadge(
@@ -574,7 +575,6 @@ class MainActivity : BaseSecuredActivity() {
         }
     }
     private fun addGroupBadge(count : Int) {
-//        Timber.wtf("wtf passed here 2 count : $count")
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.nav_view)
         val badge: BadgeDrawable = bottomNavigationView.getOrCreateBadge(
             R.id.navigation_groups)
@@ -649,7 +649,7 @@ class MainActivity : BaseSecuredActivity() {
     }
 }
 
-
+//TODO rename this object
 enum class EntourageLink(val link: String) {
     HOME("https://preprod.entourage.social/app"),
     GROUP("https://preprod.entourage.social/app/groups/bb8c3e77aa95"),

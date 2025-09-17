@@ -12,6 +12,7 @@ import social.entourage.android.databinding.SmallTalkOtherBandsBinding
 import social.entourage.android.discussions.DetailConversationActivity
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
+import timber.log.Timber
 
 enum class OtherBandType {
     DIFFERENT_LOCATION,
@@ -76,6 +77,7 @@ class SmallTalkListOtherBands : BaseActivity() {
     /** Observe la liste des demandes avec un (presque) match. */
     private fun observeAlmostMatches() {
         viewModel.almostMatches.observe(this) { userRequests ->
+            Timber.wtf("wtf user requests : " + userRequests.size)
             if (userRequests.isEmpty()) {
                 startActivity(Intent(this, SmallTalkNoBandFound::class.java))
                 finish()

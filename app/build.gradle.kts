@@ -1,3 +1,4 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import java.io.ByteArrayOutputStream
 
 plugins {
@@ -30,7 +31,7 @@ android {
 
     // App versions
     val versionMajor = 12
-    val versionMinor = 1
+    val versionMinor = 4
     val versionPatch = "git rev-list HEAD --count".runCommand().toInt()
     val versionBranchName = "git rev-parse --abbrev-ref HEAD".runCommand()
     val versionCodeInt = (versionMajor * 100 + versionMinor) * 10000 + versionPatch % 10000
@@ -45,8 +46,8 @@ android {
     val deepLinksURLStaging = "preprod.entourage.social"
 
     tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-        kotlinOptions {
-            jvmTarget = "11"
+        compilerOptions {
+            jvmTarget.set(JvmTarget.JVM_11)
         }
     }
 
@@ -262,8 +263,8 @@ dependencies {
     kapt("com.github.bumptech.glide:compiler:4.16.0")
 
     //entourageImplementation facebookDependencies.values()
-    implementation("com.facebook.android:facebook-android-sdk:18.0.1")
-    implementation("com.facebook.android:facebook-core:18.0.1")
+    implementation("com.facebook.android:facebook-android-sdk:18.0.3")
+    implementation("com.facebook.android:facebook-core:18.0.3")
     compileOnly("org.glassfish:javax.annotation:10.0-b28")
 
     // Instrumentation tests

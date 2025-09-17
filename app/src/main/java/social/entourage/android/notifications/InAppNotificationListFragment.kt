@@ -161,7 +161,6 @@ class InAppNotificationListFragment : Fragment() {
                     else {
                         itemSelected = -1
                     }
-                    Timber.wtf("wtf instance name $instance")
                     if(instance != null) {
                         NotificationActionManager.presentAction(requireContext(),parentFragmentManager,instance,instanceId,postId,stage, notifContext = notifContext )
                     } else{

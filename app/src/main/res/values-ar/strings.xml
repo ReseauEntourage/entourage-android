@@ -1484,11 +1484,11 @@
     <string name="x_days_ago">قبل %s من الأيام</string>
     <string name="date_this_month">هذا الشهر</string>
     <string name="x_months_ago">قبل %s من الأشهر</string>
-    <string name="duration_month">%s شهرًا</string>
-    <string name="duration_weeks">%s أسبوع</string>
-    <string name="duration_days">%s ي</string>
-    <string name="duration_hours">%s ح</string>
-    <string name="duration_minutes">%s دقيقة</string>
+    <string name="duration_month">%d شهرًا</string>
+    <string name="duration_weeks">%d أسبوع</string>
+    <string name="duration_days">%d ي</string>
+    <string name="duration_hours">%d ح</string>
+    <string name="duration_minutes">%d دقيقة</string>
     <string name="duration_secondes">في لحظة \</string>
 
     <!--    STRING Entourage-->
@@ -2603,7 +2603,7 @@
     <string name="menu_info_social">لتعيش <b>تضامنًا أكثر</b> تابع Entourage على شبكاتك!</string>
     <string name="custom_dialog_action_content_one_contrib">هل اكتملت مهمتك \"<![CDATA[<b>%1$s</b>]]>\"؟</string>
     <string name="search_member_hint">ابحث عن عضو</string>
-    <string name="terms_and_conditions_html">بالنقر على &lt;b&gt;التالي&lt;/b&gt;، فإنك توافق على &lt;a href=\'https://www.entourage.social</string>
+    <string name="terms_and_conditions_html">بالنقر على &lt;b&gt;التالي&lt;/b&gt;، فإنك توافق على &lt;a href=\'https://www.entourage.social/cgu</string>
     <string name="action_crete_cat_about">هل تبحث عن تقديم %s لا يندرج ضمن هذه الفئات؟ يبدو أن \ ليس له مكان في الشبكة، لكن يمكنك دائمًا </string>
     <string name="action_create_cat_about_link"> معرفة المزيد هنا</string>
     <string name="report_modal_title_translate">ترجمة</string>
@@ -2902,4 +2902,5 @@
     <string name="option_both_desc" lang="ar">تقديم الدعم وتلقيه.</string>
     <string name="question_location" lang="ar">ما هو حيك؟</string>
     <string name="input_location" lang="ar">عنوان المدينة أو المنطقة</string>
+    <string name="needs_to_join_group" lang="ar">Vous devez rejoindre le groupe pour effectuer cette action.</string>
 </resources>

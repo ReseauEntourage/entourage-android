@@ -5,6 +5,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.graphics.*
+import android.graphics.drawable.Drawable
 import android.graphics.drawable.VectorDrawable
 import android.os.Build
 import android.text.*
@@ -154,91 +155,162 @@ class CommentsListAdapter(
                 isTranslatedByDefault
             }
 
-            // Récupère la chaîne final
+            // Récupère le contenu
             var contentToShow = getFinalContent(comment, isTranslated)
+            if (contentToShow.isNullOrEmpty()) contentToShow = ""
 
-            // Gère statuts "deleted"/"offensif"
+            // Cas "deleted"/"offensive"
             if (comment.status in listOf("deleted", "offensive", "offensible")) {
                 handleDeletedOrOffensiveLeft(bindingLeft, comment, isMe)
                 return
             } else {
-                // Masquer l'icône de suppression si le commentaire n'est pas en état "deleted"
                 bindingLeft.comment.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null)
             }
 
-            if (contentToShow.isNullOrEmpty()) contentToShow = ""
-
-            // On parse le HTML
+            // HTML → Spanned + Clickables
             val spanned = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 Html.fromHtml(contentToShow, Html.FROM_HTML_MODE_LEGACY)
             } else {
                 Html.fromHtml(contentToShow)
             }
-
-            // On remplace les URLSpan par des ClickableSpan (pour gérer le clic deep link)
             val clickableSpannable = makeLinksClickable(spanned)
 
-            // On assigne le texte final
+            // Affichage du texte
             bindingLeft.comment.text = clickableSpannable
             bindingLeft.comment.movementMethod = LinkMovementMethod.getInstance()
             bindingLeft.comment.linksClickable = true
 
-            // Couleur de fond (orange si c'est moi, sinon beige)
-            bindingLeft.comment.background = if (isMe) {
+            // Couleurs
+            bindingLeft.comment.background = if (isMe)
                 ContextCompat.getDrawable(context, R.drawable.new_comment_background_orange)
-            } else {
+            else
                 ContextCompat.getDrawable(context, R.drawable.new_comment_background_beige)
-            }
-
-            // Couleur du texte normal
             bindingLeft.comment.setTextColor(ContextCompat.getColor(context, R.color.black))
-            // Couleur des liens
             bindingLeft.comment.setLinkTextColor(ContextCompat.getColor(context, R.color.bright_blue))
 
-            // Bouton "report" + long clic => signale
+            // Actions
             handleReportLogicLeft(bindingLeft, comment, isMe)
-
-            // Date + gestion "error" si pas de date
             handleDateAndErrorLeft(bindingLeft, comment)
-
-            // Gère l'auteur (photo, nom...)
             handleUserLeft(bindingLeft, comment, isMe)
 
-            // Si isConversation => couleur orange pour userName + date
+            // Style conversation
             if (isConversation) {
-                bindingLeft.authorName.setTextColor(
-                    ContextCompat.getColor(context, R.color.light_orange)
-                )
-                bindingLeft.publicationDate.setTextColor(
-                    ContextCompat.getColor(context, R.color.light_orange)
-                )
+                bindingLeft.authorName.setTextColor(ContextCompat.getColor(context, R.color.light_orange))
+                bindingLeft.publicationDate.setTextColor(ContextCompat.getColor(context, R.color.light_orange))
             }
+
+            // Gestion de l'image
             if (!comment.imageUrl.isNullOrEmpty()) {
                 bindingLeft.commentImageContainer.visibility = View.VISIBLE
                 Glide.with(context)
+                    .asBitmap()
                     .load(comment.imageUrl)
-                    .into(bindingLeft.commentImage)
+                    .transform(CenterCrop(), RoundedCorners(Const.ROUNDED_CORNERS_IMAGES.px))
+                    .into(object : com.bumptech.glide.request.target.CustomTarget<Bitmap>() {
+                        override fun onResourceReady(resource: Bitmap, transition: com.bumptech.glide.request.transition.Transition<in Bitmap>?) {
+                            val isPortrait = resource.height > resource.width
+                            val screenWidth = (context as Activity).resources.displayMetrics.widthPixels
+                            val currentImageParams = bindingLeft.commentImage.layoutParams
+                            val newImageParams = when (currentImageParams) {
+                                is ViewGroup.MarginLayoutParams -> currentImageParams.apply {
+                                    width = if (isPortrait) screenWidth / 2 else ViewGroup.LayoutParams.MATCH_PARENT
+                                    height = ViewGroup.LayoutParams.WRAP_CONTENT
+                                }
+                                else -> ViewGroup.MarginLayoutParams(
+                                    if (isPortrait) screenWidth / 2 else ViewGroup.LayoutParams.MATCH_PARENT,
+                                    ViewGroup.LayoutParams.WRAP_CONTENT
+                                ).also {
+                                    if (currentImageParams is ViewGroup.MarginLayoutParams) {
+                                        it.setMargins(
+                                            currentImageParams.leftMargin,
+                                            currentImageParams.topMargin,
+                                            currentImageParams.rightMargin,
+                                            currentImageParams.bottomMargin
+                                        )
+                                    }
+                                }
+                            }
+                            bindingLeft.commentImage.layoutParams = newImageParams
+                            bindingLeft.commentImage.setImageBitmap(resource)
+                            val currentContainerParams = bindingLeft.messageContainer.layoutParams
+                            val newContainerParams = when (currentContainerParams) {
+                                is ViewGroup.MarginLayoutParams -> currentContainerParams.apply {
+                                    width = newImageParams.width
+                                }
+                                else -> ViewGroup.MarginLayoutParams(newImageParams.width, currentContainerParams.height).also {
+                                    if (currentContainerParams is ViewGroup.MarginLayoutParams) {
+                                        it.setMargins(
+                                            currentContainerParams.leftMargin,
+                                            currentContainerParams.topMargin,
+                                            currentContainerParams.rightMargin,
+                                            currentContainerParams.bottomMargin
+                                        )
+                                    }
+                                }
+                            }
+                            bindingLeft.messageContainer.layoutParams = newContainerParams
+                        }
 
+                        override fun onLoadCleared(placeholder: Drawable?) {
+                            bindingLeft.commentImage.setImageDrawable(placeholder)
+                        }
+                    })
                 bindingLeft.commentImage.setOnClickListener {
                     val intent = Intent(context, ImageZoomActivity::class.java)
                     intent.putExtra("image_url", comment.imageUrl)
                     context.startActivity(intent)
                 }
+                val hasOnlyImage = contentToShow.isBlank() && !comment.imageUrl.isNullOrEmpty()
+                if (hasOnlyImage) {
+                    bindingLeft.comment.visibility = View.GONE
+                    bindingLeft.messageContainer.setBackgroundResource(0)
+                } else {
+                    bindingLeft.comment.visibility = View.VISIBLE
+                }
+                bindingLeft.commentImage.setOnLongClickListener {
+                    val commentLang = comment.contentTranslations?.fromLang ?: ""
+                    DataLanguageStock.updateContentToCopy(comment.content ?: "")
+                    onItemClick.onCommentReport(comment.id, isForEvent, isForGroup, isMe, commentLang)
+                    true
+                }
             } else {
                 bindingLeft.commentImageContainer.visibility = View.GONE
+                bindingLeft.commentImage.setImageDrawable(null)
+                bindingLeft.comment.visibility = View.VISIBLE
             }
-            bindingLeft.comment.layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT
+
+            // Taille dynamique
+            val currentCommentParams = bindingLeft.comment.layoutParams
+            val newCommentParams = when (currentCommentParams) {
+                is ViewGroup.MarginLayoutParams -> currentCommentParams.apply {
+                    height = ViewGroup.LayoutParams.WRAP_CONTENT
+                }
+                else -> ViewGroup.MarginLayoutParams(currentCommentParams.width, ViewGroup.LayoutParams.WRAP_CONTENT).also {
+                    if (currentCommentParams is ViewGroup.MarginLayoutParams) {
+                        it.setMargins(
+                            currentCommentParams.leftMargin,
+                            currentCommentParams.topMargin,
+                            currentCommentParams.rightMargin,
+                            currentCommentParams.bottomMargin
+                        )
+                    }
+                }
+            }
+            bindingLeft.comment.layoutParams = newCommentParams
             bindingLeft.comment.requestLayout()
-            Timber.wtf("wtf message type : ${comment.messageType}")
-            if(comment.messageType == "auto" /*|| comment.messageType == "broadcast"*/){
+
+            // Style auto
+            if (comment.messageType == "auto") {
                 bindingLeft.messageContainer.setBackgroundResource(R.drawable.comment_message_auto_background)
                 bindingLeft.comment.setBackgroundResource(R.drawable.comment_message_auto_background)
                 bindingLeft.authorName.text = binding.root.context.getString(R.string.message_auto)
-            }else{
+            } else {
                 bindingLeft.messageContainer.setBackgroundResource(R.drawable.new_comment_background_beige)
                 bindingLeft.comment.setBackgroundResource(R.drawable.new_comment_background_beige)
             }
         }
+
+
 
 
         // ----------------------------------------------------------------------------------------
@@ -262,17 +334,15 @@ class CommentsListAdapter(
 
             // Récupère la chaîne final
             var contentToShow = getFinalContent(comment, isTranslated)
+            if (contentToShow.isNullOrEmpty()) contentToShow = ""
 
             // Gère statuts "deleted"/"offensif"
             if (comment.status in listOf("deleted", "offensive", "offensible")) {
                 handleDeletedOrOffensiveRight(bindingRight, comment, isMe)
                 return
             } else {
-                // Masquer l'icône de suppression si le commentaire n'est pas en état "deleted"
                 bindingRight.comment.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null)
             }
-
-            if (contentToShow.isNullOrEmpty()) contentToShow = ""
 
             // On parse en HTML
             val spanned = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -298,6 +368,7 @@ class CommentsListAdapter(
 
             // Couleur du texte normal
             bindingRight.comment.setTextColor(ContextCompat.getColor(context, R.color.black))
+
             // Couleur des liens
             bindingRight.comment.setLinkTextColor(ContextCompat.getColor(context, R.color.bright_blue))
 
@@ -319,32 +390,49 @@ class CommentsListAdapter(
                     ContextCompat.getColor(context, R.color.light_orange)
                 )
             }
+
             if (!comment.imageUrl.isNullOrEmpty()) {
                 bindingRight.commentImageContainer.visibility = View.VISIBLE
                 Glide.with(context)
+                    .asBitmap()
                     .load(comment.imageUrl)
-                    .into(bindingRight.commentImage)
+                    .into(object : com.bumptech.glide.request.target.CustomTarget<Bitmap>() {
+                        override fun onResourceReady(resource: Bitmap, transition: com.bumptech.glide.request.transition.Transition<in Bitmap>?) {
+                            val isPortrait = resource.height > resource.width
+                            val screenWidth = (context as Activity).resources.displayMetrics.widthPixels
+                            val layoutParams = bindingRight.commentImage.layoutParams
+                            layoutParams.width = if (isPortrait) screenWidth / 2 else ViewGroup.LayoutParams.MATCH_PARENT
+                            layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT
+                            bindingRight.commentImage.layoutParams = layoutParams
+                            bindingRight.commentImage.setImageBitmap(resource)
+                        }
 
+                        override fun onLoadCleared(placeholder: Drawable?) {
+                            bindingRight.commentImage.setImageDrawable(placeholder)
+                        }
+                    })
                 bindingRight.commentImage.setOnClickListener {
                     val intent = Intent(context, ImageZoomActivity::class.java)
                     intent.putExtra("image_url", comment.imageUrl)
                     context.startActivity(intent)
                 }
+                val hasOnlyImage = contentToShow.isBlank() && !comment.imageUrl.isNullOrEmpty()
+                if (hasOnlyImage) {
+                    bindingRight.comment.visibility = View.GONE
+                    bindingRight.messageContainer.setBackgroundResource(0)
+                } else {
+                    bindingRight.comment.visibility = View.VISIBLE
+                }
+                bindingRight.commentImage.setOnLongClickListener {
+                    val commentLang = comment.contentTranslations?.fromLang ?: ""
+                    DataLanguageStock.updateContentToCopy(comment.content ?: "")
+                    onItemClick.onCommentReport(comment.id, isForEvent, isForGroup, isMe, commentLang)
+                    true
+                }
             } else {
                 bindingRight.commentImageContainer.visibility = View.GONE
+                bindingRight.comment.visibility = View.VISIBLE
             }
-            val lp = binding.messageContainer.layoutParams as ConstraintLayout.LayoutParams
-            if (comment.imageUrl.isNullOrEmpty()) {
-                // Pas d’image → width = wrap_content
-                lp.matchConstraintPercentWidth = -1f   // -1 ou 0 désactive le %
-            } else {
-                // Image → on force 85 %
-                lp.matchConstraintPercentWidth = 0.85f
-            }
-            binding.messageContainer.layoutParams = lp
-            binding.messageContainer.requestLayout()
-            binding.comment.layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT
-            binding.comment.requestLayout()
         }
 
 
@@ -403,6 +491,7 @@ class CommentsListAdapter(
             comment: Post,
             isMe: Boolean
         ) {
+            // Icône grise
             val drawable = ContextCompat.getDrawable(context, R.drawable.ic_comment_deleted)
             val vectorDrawable = DrawableCompat.wrap(drawable!!) as VectorDrawable
             val width = 12
@@ -417,22 +506,47 @@ class CommentsListAdapter(
                 PorterDuff.Mode.SRC_IN
             )
             grayDrawable.setBounds(8, 0, scaledDrawable.width - 8, scaledDrawable.height)
+
+            // Applique l’icône au commentaire
             binding.comment.setCompoundDrawablesWithIntrinsicBounds(grayDrawable, null, null, null)
             binding.comment.compoundDrawablePadding = 16
-            binding.commentImage.visibility = View.GONE
-            if (isOne2One || DetailConversationActivity.isSmallTalkMode) {
-                binding.comment.text = context.getString(R.string.deleted_message)
-            } else {
-                binding.comment.text = context.getString(R.string.deleted_comment)
+
+            // Texte
+            binding.comment.text = when {
+                comment.status == "offensive" || comment.status == "offensible" ->
+                    context.getString(R.string.offensive_message)
+                isOne2One || DetailConversationActivity.isSmallTalkMode ->
+                    context.getString(R.string.deleted_message)
+                else ->
+                    context.getString(R.string.deleted_comment)
             }
-            if (comment.status in listOf("offensive", "offensible")) {
-                binding.comment.text = context.getString(R.string.offensive_message)
-            }
+
+            // Fond gris
             binding.messageContainer.setBackgroundResource(R.drawable.new_comment_background_grey)
             binding.comment.background =
                 ContextCompat.getDrawable(context, R.drawable.new_comment_background_grey)
+
+            // Couleur grise
             binding.comment.setTextColor(ContextCompat.getColor(context, R.color.grey_deleted_icon))
+
+            // Cache image
+            binding.commentImage.setImageDrawable(null)
+            binding.commentImageContainer.visibility = View.GONE
+
+            // Sécurise le layoutParams sans cast foireux
+            val layoutParams = binding.messageContainer.layoutParams
+            val safeParams = if (layoutParams is ViewGroup.MarginLayoutParams) {
+                layoutParams
+            } else {
+                ViewGroup.MarginLayoutParams(layoutParams)
+            }
+            safeParams.width = ViewGroup.LayoutParams.WRAP_CONTENT
+            binding.messageContainer.layoutParams = safeParams
+            binding.comment.layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT
+            binding.comment.requestLayout()
         }
+
+
 
         private fun handleDeletedOrOffensiveRight(
             binding: LayoutCommentItemRightBinding,
@@ -468,6 +582,7 @@ class CommentsListAdapter(
             binding.comment.background =
                 ContextCompat.getDrawable(context, R.drawable.new_comment_background_grey)
             binding.comment.setTextColor(ContextCompat.getColor(context, R.color.grey_deleted_icon))
+            binding.commentImageContainer.visibility = View.GONE
         }
 
         private fun handleReportLogicLeft(
