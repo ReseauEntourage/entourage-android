@@ -8,8 +8,10 @@
     <color name="accent">@color/orange</color>
     <color name="dodger_blue">#3a97ff</color>
     <color name="bright_blue">#007aff</color>
+    <color name="blue_message_auto">#EBF6F9</color>
     <color name="silver">#c9c9ce</color>
     <color name="tomato">#ee3e3a</color>
+
 
     <color name="orange_light_separator_event">#FF9C5D</color>
     <color name="orange_onboarding_item_selected_border">#80FF9C5D</color>

@@ -16,7 +16,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -28,6 +30,9 @@ import social.entourage.android.databinding.NewFragmentReportBinding
 import social.entourage.android.actions.ActionsPresenter
 import social.entourage.android.api.model.TagMetaData
 import social.entourage.android.api.model.Tags
+import social.entourage.android.discussions.DetailConversationActivity
+import social.entourage.android.discussions.DetailConversationActivity.Companion.isSmallTalkMode
+import social.entourage.android.discussions.DetailConversationActivity.Companion.smallTalkId
 import social.entourage.android.discussions.DiscussionsPresenter
 import social.entourage.android.events.EventsPresenter
 import social.entourage.android.groups.GroupPresenter
@@ -38,6 +43,8 @@ import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.CustomAlertDialog
 import timber.log.Timber
 import social.entourage.android.report.DataLanguageStock
+import social.entourage.android.small_talks.SmallTalkViewModel
+import kotlin.getValue
 
 enum class ReportTypes(val code: Int) {
     REPORT_USER(0),
@@ -63,11 +70,13 @@ class ReportModalFragment() : BottomSheetDialogFragment() {
     private val eventPresenter: EventsPresenter by lazy { EventsPresenter() }
     private val actionPresenter: ActionsPresenter by lazy { ActionsPresenter() }
     private val discussionsPresenter: DiscussionsPresenter by lazy { DiscussionsPresenter() }
+    private val smallTalkViewModel: SmallTalkViewModel by viewModels()
     private var reportedId: Int? = Const.DEFAULT_VALUE
     private var groupId: Int? = Const.DEFAULT_VALUE
     private var reportType: Int? = Const.DEFAULT_VALUE
     private var title: String = ""
     private var isEventComment = false
+    private var isGroupComment = false
     private var callback: CallbackReportFragment? = null
     private var isFromMe: Boolean? = false
     private var isMyLanguage: Boolean? = false
@@ -99,6 +108,7 @@ class ReportModalFragment() : BottomSheetDialogFragment() {
         discussionsPresenter.isConversationReported.observe(requireActivity(), ::handleReportResponse)
         discussionsPresenter.isConversationDeleted.observe(requireActivity(), ::handleDeletedResponse)
         discussionsPresenter.isMessageDeleted.observe(requireActivity(),::handleDeletedResponse)
+        smallTalkViewModel.messageDeleteResult.observe(requireActivity(),::handleDeletedResponse)
         groupPresenter.isPostDeleted.observe(requireActivity(),::handleDeletedResponse)
         eventPresenter.isEventDeleted.observe(requireActivity(),::handleDeletedResponse)
 
@@ -363,6 +373,9 @@ class ReportModalFragment() : BottomSheetDialogFragment() {
     fun setEventComment(){
         isEventComment = true
     }
+    fun setGroupComment(){
+        isGroupComment = true
+    }
 
     private fun setView() {
         binding.next.visibility = View.VISIBLE
@@ -420,6 +433,7 @@ class ReportModalFragment() : BottomSheetDialogFragment() {
                 onClose()
                 dismiss()
             }else{
+
                 showToast(getString(R.string.delete_error_send_failed))
                 callback?.onSuppressPost(reportedId!!)
                 onClose()
@@ -568,11 +582,19 @@ class ReportModalFragment() : BottomSheetDialogFragment() {
                     groupPresenter.deletedGroupPost(it, id)
                 }
                 ReportTypes.REPORT_COMMENT.code -> groupId?.let { it ->
-                    discussionsPresenter.deleteMessage(it, id)
+                    if(isGroupComment){
+                        groupPresenter.deletedGroupPost(it, id)
+                    }
+                    if(DetailConversationActivity.isSmallTalkMode){
+                        smallTalkViewModel.deleteChatMessage(smallTalkId, id.toString())
+                    }else {
+                        discussionsPresenter.deleteMessage(it, id) // ➜ Discussion
+                    }
                 }
                 ReportTypes.REPORT_POST_EVENT.code -> groupId?.let { it ->
                     eventPresenter.deletedEventPost(it, id)
                 }
+
                 else -> R.string.report_member
             }
         }

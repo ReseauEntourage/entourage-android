@@ -64,6 +64,7 @@ import social.entourage.android.tools.utils.CustomAlertDialog
 import social.entourage.android.tools.view.WebViewFragment
 import social.entourage.android.user.UserPresenter
 import timber.log.Timber
+import kotlin.jvm.java
 
 class HomeFragment: Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocationUpdate {
 
@@ -118,6 +119,7 @@ class HomeFragment: Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocatio
         }
     }
 
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -169,6 +171,8 @@ class HomeFragment: Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocatio
             },
             onMatchingClick = {
                 //TOAST d'attente
+                //TODO REMOVE TESTING CODE
+                //smallTalkViewModel.deleteRequest()
                 Toast.makeText(requireContext(), getString(R.string.small_talk_subtitle_waiting), Toast.LENGTH_SHORT).show()
             },
             requireContext()
@@ -418,10 +422,9 @@ class HomeFragment: Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocatio
     }
 
     private fun updateUnreadCount(unreadMessages: UnreadMessages?) {
-        val count:Int = unreadMessages?.unreadCount ?: 0
         EntourageApplication.get().mainActivity?.let {
             val viewModel = ViewModelProvider(it)[CommunicationHandlerBadgeViewModel::class.java]
-            viewModel.badgeCount.postValue(UnreadMessages(count))
+            viewModel.badgeCount.postValue(unreadMessages)
         }
         CommunicationHandler.resetValues()
     }
@@ -435,7 +438,7 @@ class HomeFragment: Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocatio
     private fun callToInitHome(){
         if(isAdded){
             EntourageApplication.get().me()?.id?.let { meId ->
-                homePresenter.getMyGroups(pagegroup, nbOfItemForHozrizontalList, meId)
+                //homePresenter.getMyGroups(pagegroup, nbOfItemForHozrizontalList, meId)
                 homePresenter.getAllEvents(
                     pageEvent,
                     nbOfItemForHozrizontalList,
@@ -470,7 +473,7 @@ class HomeFragment: Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocatio
 
     private fun doTotalchecksumToDisplayHomeFirstTime(){
         totalchecksum++
-        if(totalchecksum == 5){
+        if(totalchecksum == 4){
             binding.homeNestedScrollView.visibility = View.VISIBLE
             binding.homeHeader.visibility = View.VISIBLE
             binding.progressBar.visibility = View.GONE
@@ -576,7 +579,7 @@ class HomeFragment: Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocatio
     private fun setObservations() {
         homePresenter.summary.observe(viewLifecycleOwner, ::updateContributionsView)
         homePresenter.getAllEvents.observe(viewLifecycleOwner, ::handleEvent)
-        homePresenter.getAllMyGroups.observe(viewLifecycleOwner, ::handleGroup)
+        //homePresenter.getAllMyGroups.observe(viewLifecycleOwner, ::handleGroup)
         homePresenter.getAllActions.observe(viewLifecycleOwner, ::handleAction)
         homePresenter.pedagogicalContent.observe(viewLifecycleOwner, ::handlePedago)
         homePresenter.pedagogicalInitialContent.observe(viewLifecycleOwner, ::handleInitialPedago)
@@ -592,10 +595,10 @@ class HomeFragment: Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocatio
         doTotalchecksumToDisplayHomeFirstTime()
 
         if(allGroup.size > 0 ){
-            binding.btnMoreGroup.visibility = View.VISIBLE
-            binding.rvHomeGroup.visibility = View.VISIBLE
-            binding.homeSubtitleGroup.visibility = View.VISIBLE
-            binding.homeTitleGroup.visibility = View.VISIBLE
+            binding.btnMoreGroup.visibility = View.GONE
+            binding.rvHomeGroup.visibility = View.GONE
+            binding.homeSubtitleGroup.visibility = View.GONE
+            binding.homeTitleGroup.visibility = View.GONE
         }else{
             binding.btnMoreGroup.visibility = View.GONE
             binding.rvHomeGroup.visibility = View.GONE
@@ -626,7 +629,7 @@ class HomeFragment: Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocatio
             }
             binding.btnMoreEvent.visibility = View.VISIBLE
             binding.rvHomeEvent.visibility = View.VISIBLE
-            binding.homeSubtitleEvent.visibility = View.VISIBLE
+            binding.homeSubtitleEvent.visibility = View.GONE
             binding.homeTitleEvent.visibility = View.VISIBLE
         }else{
             isEventsEmpty = true
@@ -659,7 +662,7 @@ class HomeFragment: Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocatio
             isActionEmpty = false
             binding.btnMoreAction.visibility = View.VISIBLE
             binding.rvHomeAction.visibility = View.VISIBLE
-            binding.homeSubtitleAction.visibility = View.VISIBLE
+            binding.homeSubtitleAction.visibility = View.GONE
             binding.homeTitleAction.visibility = View.VISIBLE
         }else{
             isActionEmpty = true
@@ -682,7 +685,7 @@ class HomeFragment: Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocatio
         doTotalchecksumToDisplayHomeFirstTime()
         if(allPedago.size > 0 ){
             binding.rvHomeSensibilisation.visibility = View.VISIBLE
-            binding.homeSubtitleSensibilisation.visibility = View.VISIBLE
+            binding.homeSubtitleSensibilisation.visibility = View.GONE
             binding.homeTitleSensibilisation.visibility = View.VISIBLE
             setMarginTop(binding.homeTitleAction, 16)
 
@@ -704,7 +707,7 @@ class HomeFragment: Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocatio
         if(allPedago.size > 0 ){
             binding.btnMorePedago.visibility = View.VISIBLE
             binding.rvHomePedago.visibility = View.VISIBLE
-            binding.homeSubtitlePedago.visibility = View.VISIBLE
+            binding.homeSubtitlePedago.visibility = View.GONE
             binding.homeTitlePedago.visibility = View.VISIBLE
         }else{
             binding.btnMorePedago.visibility = View.GONE

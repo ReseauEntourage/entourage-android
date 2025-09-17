@@ -15,4 +15,8 @@ class CommunicationHandlerBadgeViewModel : ViewModel() {
 class UnreadMessages(
     @SerializedName("unread_count")
     var unreadCount: Int? = null,
+    @SerializedName("unread_conversations_count")
+    var unreadConversationsCount: Int? = null,
+    @SerializedName("unread_neighborhoods_count")
+    var unreadNeighborhoodsCount: Int? = null,
 )

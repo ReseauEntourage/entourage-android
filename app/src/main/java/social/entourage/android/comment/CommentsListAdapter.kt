@@ -28,6 +28,7 @@ import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.api.model.Post
 import social.entourage.android.databinding.*
+import social.entourage.android.discussions.DetailConversationActivity
 import social.entourage.android.language.LanguageManager
 import social.entourage.android.profile.ProfileFullActivity
 import social.entourage.android.report.DataLanguageStock
@@ -46,7 +47,7 @@ enum class CommentsTypes(val code: Int) {
 
 interface OnItemClickListener {
     fun onItemClick(comment: Post)
-    fun onCommentReport(commentId: Int?, isForEvent: Boolean, isMe: Boolean, commentLang: String)
+    fun onCommentReport(commentId: Int?, isForEvent: Boolean, isForGroup: Boolean, isMe: Boolean, commentLang: String)
     fun onShowWeb(url: String) // si tu veux ouvrir un navigateur ou gérer autrement
 }
 
@@ -61,6 +62,7 @@ class CommentsListAdapter(
 ) : RecyclerView.Adapter<CommentsListAdapter.ViewHolder>() {
 
     var isForEvent: Boolean = false
+    var isForGroup: Boolean = false
 
     // Pour savoir si l'utilisateur veut la version traduite ou originale
     // On inverse si l'ID est dans translationExceptions
@@ -87,6 +89,21 @@ class CommentsListAdapter(
     fun setForEvent() {
         isForEvent = true
     }
+    fun setForGroup() {
+        isForGroup = true
+    }
+
+
+    private fun findFirstMessagePosition(): Int {
+        val total = itemCount
+        for (i in 0 until total) {
+            val vt = getItemViewType(i)
+            if (vt == CommentsTypes.TYPE_LEFT.code || vt == CommentsTypes.TYPE_RIGHT.code) {
+                return i
+            }
+        }
+        return total
+    }
 
     fun translateItem(commentId: Int) {
         // On inverse la logique pour cet ID
@@ -102,7 +119,20 @@ class CommentsListAdapter(
 
         @SuppressLint("SetTextI18n")
         fun bindDate(comment: Post) {
-            (binding as LayoutCommentItemDateBinding).publicationDay.text = comment.datePostText
+            val bindingDate = binding as LayoutCommentItemDateBinding
+            val pos = bindingAdapterPosition
+            val firstMsgPos = findFirstMessagePosition()
+
+            // Tous les séparateurs avant celui juste avant le premier message : on les dégage
+            if (pos < firstMsgPos - 1) {
+                bindingDate.root.layoutParams = RecyclerView.LayoutParams(0, 0)
+                bindingDate.root.visibility = View.GONE
+                return
+            }
+
+            // sinon, on affiche normalement
+            bindingDate.root.visibility = View.VISIBLE
+            bindingDate.publicationDay.text = comment.datePostText
         }
 
         // ----------------------------------------------------------------------------------------
@@ -131,6 +161,9 @@ class CommentsListAdapter(
             if (comment.status in listOf("deleted", "offensive", "offensible")) {
                 handleDeletedOrOffensiveLeft(bindingLeft, comment, isMe)
                 return
+            } else {
+                // Masquer l'icône de suppression si le commentaire n'est pas en état "deleted"
+                bindingLeft.comment.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null)
             }
 
             if (contentToShow.isNullOrEmpty()) contentToShow = ""
@@ -194,9 +227,19 @@ class CommentsListAdapter(
             } else {
                 bindingLeft.commentImageContainer.visibility = View.GONE
             }
-            binding.comment.layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT
-            binding.comment.requestLayout()
+            bindingLeft.comment.layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT
+            bindingLeft.comment.requestLayout()
+            Timber.wtf("wtf message type : ${comment.messageType}")
+            if(comment.messageType == "auto" /*|| comment.messageType == "broadcast"*/){
+                bindingLeft.messageContainer.setBackgroundResource(R.drawable.comment_message_auto_background)
+                bindingLeft.comment.setBackgroundResource(R.drawable.comment_message_auto_background)
+                bindingLeft.authorName.text = binding.root.context.getString(R.string.message_auto)
+            }else{
+                bindingLeft.messageContainer.setBackgroundResource(R.drawable.new_comment_background_beige)
+                bindingLeft.comment.setBackgroundResource(R.drawable.new_comment_background_beige)
+            }
         }
+
 
         // ----------------------------------------------------------------------------------------
         // bindRight : Affiche un commentaire "à droite"
@@ -224,6 +267,9 @@ class CommentsListAdapter(
             if (comment.status in listOf("deleted", "offensive", "offensible")) {
                 handleDeletedOrOffensiveRight(bindingRight, comment, isMe)
                 return
+            } else {
+                // Masquer l'icône de suppression si le commentaire n'est pas en état "deleted"
+                bindingRight.comment.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null)
             }
 
             if (contentToShow.isNullOrEmpty()) contentToShow = ""
@@ -299,8 +345,8 @@ class CommentsListAdapter(
             binding.messageContainer.requestLayout()
             binding.comment.layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT
             binding.comment.requestLayout()
-
         }
+
 
         // ----------------------------------------------------------------------------------------
         // bindDetails : affichage du "post parent" (TYPE_DETAIL)
@@ -373,8 +419,8 @@ class CommentsListAdapter(
             grayDrawable.setBounds(8, 0, scaledDrawable.width - 8, scaledDrawable.height)
             binding.comment.setCompoundDrawablesWithIntrinsicBounds(grayDrawable, null, null, null)
             binding.comment.compoundDrawablePadding = 16
-
-            if (isOne2One) {
+            binding.commentImage.visibility = View.GONE
+            if (isOne2One || DetailConversationActivity.isSmallTalkMode) {
                 binding.comment.text = context.getString(R.string.deleted_message)
             } else {
                 binding.comment.text = context.getString(R.string.deleted_comment)
@@ -382,6 +428,7 @@ class CommentsListAdapter(
             if (comment.status in listOf("offensive", "offensible")) {
                 binding.comment.text = context.getString(R.string.offensive_message)
             }
+            binding.messageContainer.setBackgroundResource(R.drawable.new_comment_background_grey)
             binding.comment.background =
                 ContextCompat.getDrawable(context, R.drawable.new_comment_background_grey)
             binding.comment.setTextColor(ContextCompat.getColor(context, R.color.grey_deleted_icon))
@@ -409,7 +456,7 @@ class CommentsListAdapter(
             binding.comment.setCompoundDrawablesWithIntrinsicBounds(grayDrawable, null, null, null)
             binding.comment.compoundDrawablePadding = 16
 
-            if (isOne2One) {
+            if (isOne2One || DetailConversationActivity.isSmallTalkMode) {
                 binding.comment.text = context.getString(R.string.deleted_message)
             } else {
                 binding.comment.text = context.getString(R.string.deleted_comment)
@@ -417,6 +464,7 @@ class CommentsListAdapter(
             if (comment.status in listOf("offensive", "offensible")) {
                 binding.comment.text = context.getString(R.string.offensive_message)
             }
+            binding.messageContainer.setBackgroundResource(R.drawable.new_comment_background_grey)
             binding.comment.background =
                 ContextCompat.getDrawable(context, R.drawable.new_comment_background_grey)
             binding.comment.setTextColor(ContextCompat.getColor(context, R.color.grey_deleted_icon))
@@ -430,14 +478,15 @@ class CommentsListAdapter(
             binding.report.setOnClickListener {
                 val commentLang = comment.contentTranslations?.fromLang ?: ""
                 DataLanguageStock.updateContentToCopy(comment.content ?: "")
-                onItemClick.onCommentReport(comment.id, isForEvent, isMe, commentLang)
+                onItemClick.onCommentReport(comment.id, isForEvent, isForGroup, isMe, commentLang)
             }
             // Long click => report
+
             if (comment.status !in listOf("deleted", "offensive", "offensible")) {
                 val commentLang = comment.contentTranslations?.fromLang ?: ""
                 binding.comment.setOnLongClickListener {
                     DataLanguageStock.updateContentToCopy(comment.content ?: "")
-                    onItemClick.onCommentReport(comment.id, isForEvent, isMe, commentLang)
+                    onItemClick.onCommentReport(comment.id, isForEvent,isForGroup, isMe, commentLang)
                     true
                 }
             }
@@ -457,13 +506,13 @@ class CommentsListAdapter(
             binding.report.setOnClickListener {
                 val commentLang = comment.contentTranslations?.fromLang ?: ""
                 DataLanguageStock.updateContentToCopy(comment.content ?: "")
-                onItemClick.onCommentReport(comment.id, isForEvent, isMe, commentLang)
+                onItemClick.onCommentReport(comment.id, isForEvent,isForGroup, isMe, commentLang)
             }
             if (comment.status !in listOf("deleted", "offensive", "offensible")) {
                 val commentLang = comment.contentTranslations?.fromLang ?: ""
                 binding.comment.setOnLongClickListener {
                     DataLanguageStock.updateContentToCopy(comment.content ?: "")
-                    onItemClick.onCommentReport(comment.id, isForEvent, isMe, commentLang)
+                    onItemClick.onCommentReport(comment.id, isForEvent,isForGroup, isMe, commentLang)
                     true
                 }
             }

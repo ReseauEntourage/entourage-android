@@ -72,6 +72,7 @@ import social.entourage.android.tools.utils.CustomTypefaceSpan
 import social.entourage.android.tools.utils.Utils.enableCopyOnLongClick
 import social.entourage.android.tools.utils.VibrationUtil
 import social.entourage.android.tools.utils.px
+import timber.log.Timber
 import kotlin.math.abs
 import kotlin.math.max
 
@@ -352,53 +353,58 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface, Surv
 
     private fun handleResponseGetGroupPosts(allPosts: MutableList<Post>?) {
         CoroutineScope(Dispatchers.Main).launch {
-            binding.swipeRefresh.isRefreshing = false
-            binding.progressBar.visibility = View.GONE
-            isLoading = false
+            try {
+                binding.swipeRefresh.isRefreshing = false
+                binding.progressBar.visibility = View.GONE
+                isLoading = false
 
-            allPosts?.let {
-                allPostsList.addAll(allPosts)
+                allPosts?.let {
+                    allPostsList.addAll(allPosts)
 
-                it.forEach { post ->
-                    if (post.read == true || post.read == null) {
-                        oldPostsList.add(post)
-                    } else {
-                        newPostsList.add(post)
+                    it.forEach { post ->
+                        if (post.read == true || post.read == null) {
+                            oldPostsList.add(post)
+                        } else {
+                            newPostsList.add(post)
+                        }
                     }
                 }
-            }
 
-            // Filtrer les posts supprimés
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                newPostsList.removeIf { post -> post.status == "deleted" }
-                oldPostsList.removeIf { post -> post.status == "deleted" }
-            }
+                // Filtrer les posts supprimés
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    newPostsList.removeIf { post -> post.status == "deleted" }
+                    oldPostsList.removeIf { post -> post.status == "deleted" }
+                }
 
-            if (newPostsList.isEmpty() && oldPostsList.isEmpty()) {
-                binding.postsLayoutEmptyState.visibility = View.VISIBLE
-                binding.postsNewRecyclerview.visibility = View.GONE
-                binding.postsOldRecyclerview.visibility = View.GONE
-            }
-            if (newPostsList.isNotEmpty()) {
-                binding.postsNew.root.visibility = View.VISIBLE
-                binding.postsNewRecyclerview.visibility = View.VISIBLE
-                binding.postsLayoutEmptyState.visibility = View.GONE
-                binding.postsNewRecyclerview.adapter?.notifyDataSetChanged()
-            } else {
-                binding.postsNew.root.visibility = View.GONE
-                binding.postsNewRecyclerview.visibility = View.GONE
-            }
+                if (newPostsList.isEmpty() && oldPostsList.isEmpty()) {
+                    binding.postsLayoutEmptyState.visibility = View.VISIBLE
+                    binding.postsNewRecyclerview.visibility = View.GONE
+                    binding.postsOldRecyclerview.visibility = View.GONE
+                }
+                if (newPostsList.isNotEmpty()) {
+                    binding.postsNew.root.visibility = View.VISIBLE
+                    binding.postsNewRecyclerview.visibility = View.VISIBLE
+                    binding.postsLayoutEmptyState.visibility = View.GONE
+                    binding.postsNewRecyclerview.adapter?.notifyDataSetChanged()
+                } else {
+                    binding.postsNew.root.visibility = View.GONE
+                    binding.postsNewRecyclerview.visibility = View.GONE
+                }
 
-            if (oldPostsList.isNotEmpty()) {
-                // Si on a des newPosts, on affiche le bloc « Anciens messages »
-                if (newPostsList.isNotEmpty()) binding.postsOld.root.visibility = View.VISIBLE
-                else binding.postsOld.root.visibility = View.GONE
+                if (oldPostsList.isNotEmpty()) {
+                    // Si on a des newPosts, on affiche le bloc « Anciens messages »
+                    if (newPostsList.isNotEmpty()) binding.postsOld.root.visibility = View.VISIBLE
+                    else binding.postsOld.root.visibility = View.GONE
 
-                binding.postsOldRecyclerview.visibility = View.VISIBLE
-                binding.postsLayoutEmptyState.visibility = View.GONE
-                binding.postsOldRecyclerview.adapter?.notifyDataSetChanged()
-            } else {
-                binding.postsOldRecyclerview.visibility = View.GONE
+                    binding.postsOldRecyclerview.visibility = View.VISIBLE
+                    binding.postsLayoutEmptyState.visibility = View.GONE
+                    binding.postsOldRecyclerview.adapter?.notifyDataSetChanged()
+                } else {
+                    binding.postsOldRecyclerview.visibility = View.GONE
+                }
+
+            } catch (e: NullPointerException) {
+                Timber.e("Error in coroutine handleResponseGetGroupPosts")
             }
         }
     }

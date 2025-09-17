@@ -120,9 +120,12 @@ interface GroupRequest {
         @Path("neighborhood_id") groupId: Int
     ): Call<EntourageUserResponse>
 
+    // social.entourage.android.api.request.GroupRequest
     @GET("neighborhoods/{neighborhood_id}/users")
     fun getMembers(
-        @Path("neighborhood_id") groupId: Int
+        @Path("neighborhood_id") groupId: Int,
+        @Query("page") page: Int? = null,
+        @Query("per")  per:  Int? = null
     ): Call<MembersWrapper>
 
     @GET("neighborhoods/{neighborhood_id}/chat_messages")

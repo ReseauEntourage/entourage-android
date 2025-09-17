@@ -234,7 +234,7 @@ object PushNotificationManager {
         val pushNotificationMessageList: List<PushNotificationMessage>? = pushNotifications[pushNotificationMessage.hash]
         val count = pushNotificationMessageList?.size ?: 0
         if(count>0) {
-            pushNotificationMessageList?.first()?.let {pushNotificationMessage.pushNotificationId = it.pushNotificationId}
+            pushNotificationMessageList?.firstOrNull()?.let {pushNotificationMessage.pushNotificationId = it.pushNotificationId}
         }
         val pushNotifString = Gson().toJson(pushNotificationMessage)
         val pushNotif = Gson().fromJson(pushNotifString, PushNotificationContent::class.java)

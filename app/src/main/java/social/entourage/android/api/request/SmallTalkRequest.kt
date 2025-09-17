@@ -161,6 +161,8 @@ interface SmallTalkRequest {
 
     @POST("user_smalltalks/force_match")
     fun forceMatchUserSmallTalkRequest(
-        @Query("user_smalltalk_id") smallTalkId: Int? = null      // nullable → param optionnel
+        @Query("user_smalltalk_id") smallTalkId: Int? = null,      // nullable → param optionnel
+        @Query("unmatch") unmatch: String?
     ): Call<SmallTalkMatchResponse>
 }
+                                      

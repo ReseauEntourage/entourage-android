@@ -38,6 +38,13 @@ class GroupCommentActivity : CommentActivity() {
         groupPresenter.getAllComments.observe(this, ::handleGetPostComments)
         groupPresenter.commentPosted.observe(this, ::handleCommentPosted)
         groupPresenter.getCurrentParentPost.observe(this, ::handleParentPost)
+        // Observers pour la suppression de post
+        groupPresenter.isPostDeleted.observe(this, { isDeleted ->
+            if (isDeleted) {
+                // Rafraîchir la liste des commentaires ou des posts
+                groupPresenter.getPostComments(id, postId)
+            }
+        })
 
         // Charge les commentaires du groupe
         groupPresenter.getPostComments(id, postId)
@@ -51,7 +58,7 @@ class GroupCommentActivity : CommentActivity() {
                 showMentionSuggestions(members)
             }
         }
-
+        setAdapterForGroup()
         // LayoutManager pour la liste de suggestions (mentions)
         binding.mentionSuggestionsRecycler.layoutManager = LinearLayoutManager(this)
 
@@ -60,6 +67,11 @@ class GroupCommentActivity : CommentActivity() {
 
         // Détection du "@" dans l'EditText
         setupMentionTextWatcher()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        this.isGroup = true
     }
 
     // ---------------------------------------------------------------------------
@@ -121,6 +133,9 @@ class GroupCommentActivity : CommentActivity() {
             recreate()
         }
     }
+    private fun setAdapterForGroup() {
+        (binding.comments.adapter as? CommentsListAdapter)?.setForGroup()
+    }
 
     override fun translateView(id: Int) {
         val adapter = binding.comments.adapter as? CommentsListAdapter
@@ -141,7 +156,9 @@ class GroupCommentActivity : CommentActivity() {
     override fun handleGetPostComments(allComments: MutableList<Post>?) {
         commentsList.clear()
         allComments?.let { commentsList.addAll(it) }
-
+        for(comment in commentsList){
+            Timber.d("handleGetPostComments: ${comment.status}")
+        }
         updateView(commentsList.isEmpty())
 
         if (currentParentPost == null) {

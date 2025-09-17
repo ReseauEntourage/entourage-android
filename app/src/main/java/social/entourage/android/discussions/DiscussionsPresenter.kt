@@ -53,6 +53,12 @@ class DiscussionsPresenter:ViewModel() {
 
     var hasUserUnblock = MutableLiveData<Boolean>()
     var hasUserjoined = MutableLiveData<Boolean>()
+    val messageDeleted = MutableLiveData<String>()
+
+    var currentPageComments = 1
+    val perPageComments = 50
+    var isLastPageComments = false
+    var isLoadingComments = false
 
 
     fun getAllMessages(page: Int, per: Int) {
@@ -438,5 +444,39 @@ class DiscussionsPresenter:ViewModel() {
                     })
             }
         })
+    }
+
+    fun loadInitialComments(convId: Int) {
+        currentPageComments = 1
+        isLastPageComments = false
+        fetchComments(convId, 1)
+    }
+
+    fun loadMoreComments(convId: Int) {
+        if (isLoadingComments || isLastPageComments) return
+        currentPageComments++
+        fetchComments(convId, currentPageComments)
+    }
+
+    private fun fetchComments(convId: Int, page: Int) {
+        isLoadingComments = true
+        EntourageApplication.get().apiModule.discussionsRequest
+            .getMessagesFor(convId, page, perPageComments)
+            .enqueue(object : Callback<PostListWrapper> {
+                override fun onResponse(call: Call<PostListWrapper>, resp: Response<PostListWrapper>) {
+                    val posts = resp.body()?.posts ?: emptyList()
+                    if (page == 1) getAllComments.value = posts.toMutableList()
+                    else {
+                        val current = getAllComments.value ?: mutableListOf()
+                        current.addAll(0, posts)  // on insère au début
+                        getAllComments.value = current
+                    }
+                    if (posts.size < perPageComments) isLastPageComments = true
+                    isLoadingComments = false
+                }
+                override fun onFailure(call: Call<PostListWrapper>, t: Throwable) {
+                    isLoadingComments = false
+                }
+            })
     }
 }

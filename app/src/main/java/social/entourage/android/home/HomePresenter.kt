@@ -32,7 +32,7 @@ class HomePresenter: ViewModel() {
     var notificationsInApp = MutableLiveData<MutableList<InAppNotification>?>()
     var notificationInApp = MutableLiveData<InAppNotification?>()
 
-    var getAllMyGroups = MutableLiveData<MutableList<Group>>()
+    //var getAllMyGroups = MutableLiveData<MutableList<Group>>()
     var getAllEvents = MutableLiveData<MutableList<Events>>()
     var getAllActions = MutableLiveData<MutableList<Action>>()
 
@@ -61,23 +61,23 @@ class HomePresenter: ViewModel() {
             })
     }
 
-    fun getMyGroups(page: Int, per: Int, userId: Int) {
-        EntourageApplication.get().apiModule.groupRequest.getMyGroups(userId, page, per)
-            .enqueue(object : Callback<GroupsListWrapper> {
-                override fun onResponse(
-                    call: Call<GroupsListWrapper>,
-                    response: Response<GroupsListWrapper>
-                ) {
-                    response.body()?.let { allGroupsWrapper ->
-                        if (allGroupsWrapper.allGroups.size < groupPerPage) isLastPageGroup = true
-                        getAllMyGroups.value = allGroupsWrapper.allGroups
-                    }
-                }
-
-                override fun onFailure(call: Call<GroupsListWrapper>, t: Throwable) {
-                }
-            })
-    }
+//    fun getMyGroups(page: Int, per: Int, userId: Int) {
+//        EntourageApplication.get().apiModule.groupRequest.getMyGroups(userId, page, per)
+//            .enqueue(object : Callback<GroupsListWrapper> {
+//                override fun onResponse(
+//                    call: Call<GroupsListWrapper>,
+//                    response: Response<GroupsListWrapper>
+//                ) {
+//                    response.body()?.let { allGroupsWrapper ->
+//                        if (allGroupsWrapper.allGroups.size < groupPerPage) isLastPageGroup = true
+//                        getAllMyGroups.value = allGroupsWrapper.allGroups
+//                    }
+//                }
+//
+//                override fun onFailure(call: Call<GroupsListWrapper>, t: Throwable) {
+//                }
+//            })
+//    }
 
     fun getAllEvents(page: Int, per: Int,distance:Int?,latitude:Double?,longitude:Double?,period:String) {
         EntourageApplication.get().apiModule.eventsRequest.getAllEvents(page, per,distance,latitude,longitude,period)

@@ -13,6 +13,7 @@ import android.text.Html
 import android.text.TextWatcher
 import android.view.View
 import android.view.animation.AnimationUtils
+import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
@@ -24,6 +25,7 @@ import androidx.core.text.HtmlCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.google.gson.Gson
@@ -60,6 +62,7 @@ class DetailConversationActivity : CommentActivity() {
         /** Mettre à true pour échanger les messages via SmallTalkViewModel */
         var isSmallTalkMode: Boolean = false
         var smallTalkId: String = ""
+        var shouldResetToHome: Boolean = false
     }
     // Présenters & ViewModel
     private val eventPresenter: EventsPresenter by lazy { EventsPresenter() }
@@ -67,13 +70,13 @@ class DetailConversationActivity : CommentActivity() {
     private val smallTalkViewModel: SmallTalkViewModel by viewModels()
     private var refreshMessagesRunnable: Runnable? = null
     private val refreshHandler = android.os.Handler()
-    private val refreshIntervalMs = 5000L // 5 secondes
+    private val refreshIntervalMs = 3000L // 5 secondes
     private lateinit var cameraLauncher: ActivityResultLauncher<Uri>
     private lateinit var galleryLauncher: ActivityResultLauncher<String>
     private var photoUri: Uri? = null
     private var detailConversation: Conversation? = null
     private var smallTalk: SmallTalk? = null
-
+    private var itemDeletedId = ""
     // UI state
     private var hasToShowFirstMessage = false
     var hasSeveralpeople = false
@@ -83,6 +86,17 @@ class DetailConversationActivity : CommentActivity() {
     private val mentionAdapter: MentionAdapter by lazy {
         MentionAdapter(emptyList()) { user -> insertMentionIntoEditText(user) }
     }
+    private var isLoadingOlder = false
+    private var storedFirstPos = 0
+    private var storedOffset = 0
+
+    private var event: Events? = null
+    private fun Post.diffKey(): String =
+        if (isDatePostOnly) {
+            "SEP_$datePostText"                // séparateur de jour
+        } else {
+            (id?.toString() ?: idInternal.toString())
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -93,30 +107,31 @@ class DetailConversationActivity : CommentActivity() {
         setupHeader()
         setupMentionList()
         setupMentionTextWatcher()
+        observeDeletedMessage()
 
         // Toujours charger le détail de la conversation (titre, membres, événement…)
         discussionsPresenter.detailConversation.observe(this) { handleDetailConversation(it) }
         eventPresenter.getEvent.observe(this) { handleGetEvent(it) }
 
-        // Messages : selon le mode
+        binding.comments.layoutManager = LinearLayoutManager(this)
+        setupScrollPagination() // 👈 Ajout scroll top pagination
+
         if (isSmallTalkMode) {
-            smallTalkViewModel.smallTalkDetail.observe(this){handleSmallTakDetail(it)}
+            smallTalkViewModel.smallTalkDetail.observe(this) { handleSmallTakDetail(it) }
             smallTalkViewModel.messages.observe(this) { handleSmallTalkMessages(it) }
             smallTalkViewModel.participants.observe(this) { handleParticipants(it) }
             smallTalkViewModel.createdMessage.observe(this) {
                 scrollAfterLayout()
             }
             smallTalkViewModel.getSmallTalk(smallTalkId)
-            smallTalkViewModel.listChatMessages(smallTalkId)
+            smallTalkViewModel.loadInitialMessages(smallTalkId) // 👈 Nouveau chargement avec pagination
             smallTalkViewModel.listSmallTalkParticipants(smallTalkId)
+
             binding.btnSeeEvent.text = getString(R.string.small_talk_btn_charte)
             binding.ivBtnEvent.apply {
-                // 1. On enlève toute ColorStateList ou ColorFilter attachée
-                imageTintList = null           // API 21+
-                imageTintMode = null           // facultatif : remet aussi le PorterDuff
-                clearColorFilter()             // au cas où un ColorFilter avait été mis
-
-                // 2. Puis on place le drawable
+                imageTintList = null
+                imageTintMode = null
+                clearColorFilter()
                 setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_book))
             }
             binding.layoutEventConv.visibility = View.VISIBLE
@@ -131,9 +146,10 @@ class DetailConversationActivity : CommentActivity() {
             discussionsPresenter.getDetailConversation(id)
             discussionsPresenter.getAllComments.observe(this) { handleGetPostComments(it) }
             discussionsPresenter.commentPosted.observe(this) { handleCommentPosted(it) }
-            discussionsPresenter.getPostComments(id)
+            discussionsPresenter.loadInitialComments(id)
+            discussionsPresenter.getAllComments.observe(this) { handleGetPostComments(it) }
         }
-        //Camera and galery init
+
         cameraLauncher = registerForActivityResult(ActivityResultContracts.TakePicture()) { success ->
             if (success && photoUri != null) {
                 showThumbnail(photoUri!!)
@@ -147,6 +163,117 @@ class DetailConversationActivity : CommentActivity() {
         }
     }
 
+    private fun loadMoreDiscussionComments() {
+        discussionsPresenter.loadMoreComments(id)
+    }
+
+    private fun setupScrollPagination() {
+        binding.comments.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(rv: RecyclerView, dx: Int, dy: Int) {
+                // scroll vers le haut et on ne peut plus scroller au-dessus ⇒ top atteint
+                if (dy < 0 && !rv.canScrollVertically(-1) && !isLoadingOlder) {
+                    isLoadingOlder = true
+                    val lm = rv.layoutManager as LinearLayoutManager
+                    storedFirstPos = lm.findFirstVisibleItemPosition()
+                    storedOffset = lm.findViewByPosition(storedFirstPos)?.top ?: 0
+
+                    if (isSmallTalkMode) {
+                        smallTalkViewModel.loadMoreMessagesIfPossible(smallTalkId)
+                    } else {
+                        discussionsPresenter.loadMoreComments(id)
+                    }
+                }
+            }
+        })
+    }
+    private fun formatAndAddOlder(
+        newItems: List<Post>,
+        prevFirstPos: Int,
+        prevOffset: Int
+    ) {
+        // 1) si pas de nouveaux messages => pas de chargement
+        if (newItems.isEmpty()) {
+            isLoadingOlder = false
+            return
+        }
+
+        // 2) on regroupe + trie + extrait les séparateurs de date
+        //    (assure un ordre chronologique)
+        val incoming = sortAndExtractDays(newItems.toMutableList(), this) ?: run {
+            isLoadingOlder = false
+            return
+        }
+
+        // 3) on cherche le premier séparateur de date déjà présent
+        //    (indépendamment de la présence ou non d’un detailPost en index 0)
+        val firstExistingDate = commentsList.firstOrNull { it.isDatePostOnly }
+        //    et on compare avec le premier de incoming
+        if (incoming.firstOrNull()?.isDatePostOnly == true
+            && firstExistingDate != null
+            && incoming.first().datePostText == firstExistingDate.datePostText
+        ) {
+            // même jour => on vire le séparateur “en double”
+            incoming.removeAt(0)
+        }
+
+        // 4) insertion en tête
+        commentsList.addAll(0, incoming)
+        binding.comments.adapter?.notifyItemRangeInserted(0, incoming.size)
+
+        // 5) restauration de la position de scroll pour éviter le “jump”
+        val lm = binding.comments.layoutManager as LinearLayoutManager
+        lm.scrollToPositionWithOffset(prevFirstPos + incoming.size, prevOffset)
+
+        // 6) fin du chargement “older”
+        isLoadingOlder = false
+    }
+
+    /**
+     * Trie par createdTime, groupe par date formatée, puis injecte
+     * un Post séparateur avant chaque groupe.
+     */
+    fun sortAndExtractDays(allEvents: MutableList<Post>?, context: Context): MutableList<Post>? {
+        if (allEvents == null) return null
+
+        // 1) tri chronologique
+        val sorted = allEvents.sortedBy { it.createdTime }
+
+        // 2) groupement par date “jj MMMM yyyy”
+        val grouped = sorted.groupBy { it.getFormatedStr() }
+
+        // 3) pour chaque date, on crée un Post “séparateur” + on ajoute les messages
+        val out = mutableListOf<Post>()
+        grouped.forEach { (dateStr, posts) ->
+            // séparateur de jour
+            val sep = Post().apply {
+                isDatePostOnly = true
+                datePostText = dateStr.replaceFirstChar { it.uppercaseChar() }
+            }
+            out += sep
+            out += posts
+        }
+        return out
+    }
+
+
+
+    private fun observeDeletedMessage() {
+
+        eventPresenter.isEventDeleted.observe(this) { isDeleted ->
+            if (isDeleted) {
+                eventPresenter.getEvent(this.event?.id.toString())
+            }
+        }
+
+        discussionsPresenter.isMessageDeleted.observe(this) { isDeleted ->
+            if (isDeleted) {
+                discussionsPresenter.getPostComments(id)
+            }
+        }
+    }
+
+
+
     override fun onResume() {
         super.onResume()
         AnalyticsEvents.logEvent(AnalyticsEvents.Message_view_detail)
@@ -154,42 +281,11 @@ class DetailConversationActivity : CommentActivity() {
 
     }
 
-
-
-    private fun generateJitsiUrl(displayName: String, roomName: String = "Bonnes ondes " + smallTalk?.uuid): String {
-        val encodedDisplayName = displayName
-            .replace(" ", "%20")
-            .replace("\"", "%22")
-        val baseUrl = "https://meet.jit.si/$roomName"
-        val params = "#userInfo.displayName=%22$encodedDisplayName%22&config.startWithAudioMuted=false&config.startWithVideoMuted=false"
-        return "$baseUrl$params"
-    }
-
-/*    private fun setCameraIcon() {
-        val roomName = "Bonnes ondes " + smallTalk?.uuid
-        val displayName = "Invité"
-
-        val url = generateJitsiUrl(displayName, roomName)
-        //smallTalk?.meetingUrl = url
-
-        binding.header.iconCamera.isVisible = true
-        binding.header.iconCamera.setImageResource(R.drawable.ic_camera)
-        binding.header.cardIconCamera.setBackgroundColor(ContextCompat.getColor(this, R.color.transparent))
-        binding.header.iconCamera.setBackgroundColor(ContextCompat.getColor(this, R.color.transparent))
-
-        binding.header.iconCamera.setOnClickListener {
-            Timber.wtf("📹 Lancement visio Jitsi URL : $url")
-            AnalyticsEvents.logEvent(AnalyticsEvents.CLIC__SMALLTALK__VISIO_ICON)
-            WebViewFragment.launchURL(this, url)
-        }
-    }*/
-
     private fun setCameraIcon() {
         binding.header.iconCamera.isVisible = !smallTalk?.meetingUrl.isNullOrBlank()
         binding.header.iconCamera.setImageResource(R.drawable.ic_camera)
         binding.header.cardIconCamera.setBackgroundColor(ContextCompat.getColor(this, R.color.transparent))
         binding.header.iconCamera.setBackgroundColor(ContextCompat.getColor(this, R.color.transparent))
-
         binding.header.iconCamera.setOnClickListener {
             Timber.wtf("eho url : ${smallTalk?.meetingUrl}")
             AnalyticsEvents.logEvent(AnalyticsEvents.CLIC__SMALLTALK__VISIO_ICON)
@@ -205,11 +301,26 @@ class DetailConversationActivity : CommentActivity() {
     }
 
     override fun reloadView() {
-        lifecycleScope.launch {
-            shouldOpenKeyboard = false
-            recreate()
+        shouldOpenKeyboard = false
+
+        when {
+            isSmallTalkMode -> {
+                smallTalkViewModel.listChatMessages(smallTalkId)
+            }
+            detailConversation?.type == "outing" -> {
+                // recharge les commentaires de la discussion…
+                discussionsPresenter.getPostComments(id)
+                // …et si tu veux mettre à jour aussi l’entête événement
+                detailConversation?.id
+                    ?.toString()
+                    ?.let { eventPresenter.getEvent(it) }
+            }
+            else -> {
+                discussionsPresenter.getPostComments(id)
+            }
         }
     }
+
 
     private fun isAtBottom(): Boolean {
         val layoutManager = binding.comments.layoutManager as? LinearLayoutManager ?: return true
@@ -279,6 +390,7 @@ class DetailConversationActivity : CommentActivity() {
     }
 
 
+
     private fun startRefreshingMessages() {
         refreshMessagesRunnable = object : Runnable {
             override fun run() {
@@ -318,6 +430,7 @@ class DetailConversationActivity : CommentActivity() {
     }
     // --- SmallTalk messages mapping ---
     private fun handleSmallTalkMessages(messages: List<Post>?) {
+
         handleGetPostComments(messages?.toMutableList())
     }
 
@@ -455,6 +568,7 @@ class DetailConversationActivity : CommentActivity() {
     private fun handleGetEvent(event: Events?) {
         binding.emptyState.visibility = View.GONE
         event?.let {
+            this.event = event
             SettingsDiscussionModalFragment.isEvent = true
             binding.header.headerTitle.setOnClickListener {
                 VibrationUtil.vibrate(this)
@@ -531,16 +645,77 @@ class DetailConversationActivity : CommentActivity() {
 
     // --- Récupération / affichage commentaires ---
     override fun handleGetPostComments(allComments: MutableList<Post>?) {
-        val newComments = sortAndExtractDays(allComments, this)
-        val wasAtBottom = isAtBottom()
-        commentsList.clear()
-        newComments?.let { commentsList.addAll(it) }
-        binding.comments.adapter?.notifyDataSetChanged()
+        allComments ?: return
+        for(comment in allComments){
+            Timber.wtf("wtf comment : " + comment?.messageType)
+        }
+        if (isLoadingOlder) {
+            // Extrait les vrais « plus anciens » et insère en tête
+            val incoming = sortAndExtractDays(allComments, this) ?: return
+            val existingKeys = HashSet<String>(commentsList.size).apply {
+                commentsList.forEach { add(it.diffKey()) }
+            }
+            val toInsert = incoming.filter { existingKeys.add(it.diffKey()) }
+            formatAndAddOlder(toInsert, storedFirstPos, storedOffset)
+            return
+        }
 
-        if (wasAtBottom) scrollAfterLayout() // 👈 garde uniquement cette ligne pour scroller
+        // Cas normal : ajout en bas (refresh ou premier chargement)
+        val incoming = sortAndExtractDays(allComments, this) ?: return
+        val wasAtBottom = isAtBottom()
+        val existingKeys = HashSet<String>(commentsList.size).apply {
+            commentsList.forEach { add(it.diffKey()) }
+        }
+
+        // --- 🔁 Mise à jour des messages déjà présents (statut, contenu) ---
+        val incomingMap = allComments.associateBy { it.diffKey() }
+        commentsList.forEachIndexed { index, existing ->
+            val updated = incomingMap[existing.diffKey()]
+            if (updated != null &&
+                (existing.status != updated.status || existing.content != updated.content || existing.contentHtml != updated.contentHtml)
+            ) {
+                commentsList[index] = updated
+                binding.comments.adapter?.notifyItemChanged(index + if (currentParentPost != null) 1 else 0)
+            }
+        }
+
+        // --- ➕ Nouveaux messages à ajouter ---
+        val toAdd = incoming.filter { existingKeys.add(it.diffKey()) }.toMutableList()
+
+        // --- 🧹 Nettoyage : suppression de la dernière cellule "date" si elle est seule ---
+        if (toAdd.isNotEmpty() && toAdd.last().isDatePostOnly) {
+            val lastDate = toAdd.last().datePostText
+            val lastDateIndex = toAdd.indexOfLast { it.isDatePostOnly && it.datePostText == lastDate }
+            val hasMessagesAfter = toAdd.anyIndexed { i, post ->
+                i > lastDateIndex && !post.isDatePostOnly
+            }
+            if (!hasMessagesAfter) {
+                toAdd.removeAt(toAdd.lastIndex)
+            }
+        }
+
+        if (toAdd.isEmpty()) {
+            binding.progressBar.visibility = View.GONE
+            return
+        }
+
+        val insertPos = commentsList.size
+        commentsList.addAll(toAdd)
+        binding.comments.adapter?.notifyItemRangeInserted(insertPos, toAdd.size)
+
+        if (wasAtBottom) scrollAfterLayout()
         binding.progressBar.visibility = View.GONE
-        newComments?.isEmpty()?.let { updateView(it) }
+        updateView(commentsList.isEmpty())
     }
+
+    private inline fun <T> List<T>.anyIndexed(predicate: (Int, T) -> Boolean): Boolean {
+        forEachIndexed { index, item ->
+            if (predicate(index, item)) return true
+        }
+        return false
+    }
+
+
     override fun handleReportPost(id: Int, commentLang: String) {
         binding.header.iconSettings.setOnClickListener {
             SettingsDiscussionModalFragment.isSmallTalk = isSmallTalkMode
@@ -555,12 +730,6 @@ class DetailConversationActivity : CommentActivity() {
                 discussionsPresenter.detailConversation.value?.imBlocker()
             ).show(supportFragmentManager, SettingsDiscussionModalFragment.TAG)
         }
-    }
-
-    // --- Suppression de message (appel adapter) ---
-    fun deleteMessage(messageId: String) {
-        if (isSmallTalkMode) smallTalkViewModel.deleteChatMessage(smallTalkId, messageId)
-        else discussionsPresenter.deleteMessage(id, messageId.toInt())
     }
 
     // --- Mentions infra ---
@@ -628,23 +797,6 @@ class DetailConversationActivity : CommentActivity() {
         binding.commentMessage.setSelection(lastMentionStartIndex + span.length)
         hideMentionSuggestions()
         lastMentionStartIndex = -1
-    }
-
-    // --- Utilitaires ---
-    fun sortAndExtractDays(allEvents: MutableList<Post>?, context: Context): MutableList<Post>? {
-        val code = LanguageManager.loadLanguageFromPreferences(context)
-        val loc = Locale(code)
-        val grouped = allEvents?.groupBy { it.getFormatedStr() }
-        val out = ArrayList<Post>()
-        grouped?.forEach { (dateStr, posts) ->
-            val sep = Post().apply {
-                isDatePostOnly = true
-                datePostText = dateStr.replaceFirstChar { it.uppercaseChar() }
-            }
-            out.add(sep)
-            out.addAll(posts)
-        }
-        return out
     }
 
     fun formatDate(inputDate: String): String {

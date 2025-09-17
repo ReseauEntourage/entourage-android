@@ -8,7 +8,6 @@ import android.content.IntentSender
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.Toast
@@ -30,13 +29,11 @@ import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.UpdateAvailability
 import com.google.firebase.messaging.FirebaseMessaging
-import com.google.gson.Gson
 import social.entourage.android.actions.create.CreateActionActivity
 import social.entourage.android.api.MetaDataRepository
 import social.entourage.android.api.model.Events
 import social.entourage.android.api.model.ReactionType
 import social.entourage.android.api.model.formatEventStartTime
-import social.entourage.android.api.model.notification.PushNotificationContent
 import social.entourage.android.api.model.notification.PushNotificationMessage
 import social.entourage.android.api.request.userConfig
 import social.entourage.android.base.BaseSecuredActivity
@@ -46,8 +43,8 @@ import social.entourage.android.deeplinks.UniversalLinkManager
 import social.entourage.android.events.EventsPresenter
 import social.entourage.android.guide.GDSMainActivity
 import social.entourage.android.home.CommunicationHandlerBadgeViewModel
-import social.entourage.android.home.UnreadMessages
 import social.entourage.android.home.EventConfirmationDialogFragment
+import social.entourage.android.home.UnreadMessages
 import social.entourage.android.language.LanguageManager
 import social.entourage.android.main_filter.MainFilterActivity
 import social.entourage.android.notifications.NotificationActionManager
@@ -153,7 +150,8 @@ class MainActivity : BaseSecuredActivity() {
     }
 
     private fun handleUpdateBadgeResponse(unreadMessages: UnreadMessages) {
-        addBadge(unreadMessages.unreadCount ?: 0)
+        addBadge(unreadMessages.unreadConversationsCount ?: 0)
+        addGroupBadge(unreadMessages.unreadNeighborhoodsCount ?: 0)
     }
 
     override fun onResume() {
@@ -346,7 +344,7 @@ class MainActivity : BaseSecuredActivity() {
             val msgObject = bundle.getString("object")
             val rawContent = bundle.getString("content")
             if (rawContent != null) {
-                val pushNotificationContent = Gson().fromJson(rawContent, PushNotificationContent::class.java)
+                //val pushNotificationContent = Gson().fromJson(rawContent, PushNotificationContent::class.java)
                 val pushNotificationMessage = PushNotificationMessage(
                     author = author,
                     msgObject = msgObject,
@@ -356,16 +354,14 @@ class MainActivity : BaseSecuredActivity() {
                 )
                 pushNotificationMessage.content?.extra?.let { extra ->
                     extra.instance?.let { instance ->
-                        extra.instanceId?.let { id ->
-                            NotificationActionManager.presentAction(
-                                this, supportFragmentManager, instance, id, extra.postId, popup = extra.popup, tracking = extra.tracking
-                            )
-                        }
+                        NotificationActionManager.presentAction(
+                            this, supportFragmentManager, instance, extra.instanceId ?:0 , extra.postId, popup = extra.popup, tracking = extra.tracking
+                        )
                     }
                 }
             } else {
             }
-        } ?: Log.wtf("wtf notif", "extras null")
+        } ?: Timber.d("wtf notif", "extras null")
         intent = null
     }
 
@@ -561,6 +557,8 @@ class MainActivity : BaseSecuredActivity() {
     }
 
     private fun addBadge(count : Int) {
+//        Timber.wtf("wtf passed here 1 count : $count")
+
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.nav_view)
         val badge: BadgeDrawable = bottomNavigationView.getOrCreateBadge(
             R.id.navigation_messages)
@@ -572,6 +570,21 @@ class MainActivity : BaseSecuredActivity() {
         badge.badgeTextColor = resources.getColor(R.color.white)
         if (count == 0) {
             bottomNavigationView.removeBadge(R.id.navigation_messages)
+        }
+    }
+    private fun addGroupBadge(count : Int) {
+//        Timber.wtf("wtf passed here 2 count : $count")
+        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.nav_view)
+        val badge: BadgeDrawable = bottomNavigationView.getOrCreateBadge(
+            R.id.navigation_groups)
+        badge.number = count
+        badge.isVisible = true
+        badge.maxCharacterCount = 2
+        badge.verticalOffsetWithText = 10
+        badge.backgroundColor = resources.getColor(R.color.tomato)
+        badge.badgeTextColor = resources.getColor(R.color.white)
+        if (count == 0) {
+            bottomNavigationView.removeBadge(R.id.navigation_groups)
         }
     }
 

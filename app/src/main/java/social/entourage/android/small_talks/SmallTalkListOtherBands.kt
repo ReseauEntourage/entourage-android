@@ -48,6 +48,7 @@ class SmallTalkListOtherBands : BaseActivity() {
             if (result?.match == true && result.smalltalkId != null) {
                 val intent = Intent(this, DetailConversationActivity::class.java).apply {
                     DetailConversationActivity.isSmallTalkMode = true
+                    DetailConversationActivity.shouldResetToHome = true
                     DetailConversationActivity.smallTalkId = result.smalltalkId.toString()
                 }
                 startActivity(intent)
@@ -70,8 +71,6 @@ class SmallTalkListOtherBands : BaseActivity() {
             startActivity(intent)
             finish()
         }
-
-
     }
 
     /** Observe la liste des demandes avec un (presque) match. */
@@ -86,9 +85,21 @@ class SmallTalkListOtherBands : BaseActivity() {
             binding.recyclerView.apply {
                 layoutManager = LinearLayoutManager(this@SmallTalkListOtherBands)
                 adapter = OtherBandsAdapter(userRequests) { request ->
+                    var unmatch:String = ""
+                    if(!request.hasMatchedFormat){
+                        unmatch = "match_format"
+                    }
+                    if(!request.hasMatchedGender){
+                        unmatch = "match_gender"
+                    }
+                    if(!request.hasMatchedLocality){
+                        unmatch = "match_locality"
+                    }
+
                     // 👉 Toujours un forceMatch AVANT d’entrer dans DetailConversationActivity
                     viewModel.forceMatchRequest(
-                        smallTalkId = request.userSmallTalkId
+                        smallTalkId = request.userSmallTalkId,
+                        unmatch = unmatch
                     )
                 }
             }

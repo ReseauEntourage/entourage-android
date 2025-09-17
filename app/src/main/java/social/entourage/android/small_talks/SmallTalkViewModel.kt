@@ -46,6 +46,11 @@ class SmallTalkViewModel(application: Application) : AndroidViewModel(applicatio
     val smallTalkDetail = MutableLiveData<SmallTalk?>()
     val almostMatches = MutableLiveData<List<UserSmallTalkRequestWithMatchData>>()
     val shouldLeave = MutableLiveData<Boolean>()
+    val messageDeleteResult = MutableLiveData<Boolean>()
+    private var currentPage = 1
+    private val messagesPerPage = 50
+    private var isLoading = false
+    private var isLastPage = false
 
     private val steps = listOf(
         SmallTalkStep(
@@ -230,8 +235,8 @@ class SmallTalkViewModel(application: Application) : AndroidViewModel(applicatio
         })
     }
 
-    fun forceMatchRequest(smallTalkId: Int? = null) {
-        request.forceMatchUserSmallTalkRequest(smallTalkId)
+    fun forceMatchRequest(smallTalkId: Int? = null, unmatch: String? = null) {
+        request.forceMatchUserSmallTalkRequest(smallTalkId,unmatch)
             .enqueue(object : Callback<SmallTalkMatchResponse> {
                 override fun onResponse(
                     call: Call<SmallTalkMatchResponse>,
@@ -277,17 +282,61 @@ class SmallTalkViewModel(application: Application) : AndroidViewModel(applicatio
     /**
      * 4️⃣ Liste des messages d’un smalltalk
      */
-    fun listChatMessages(id: String, page: Int? = null, per: Int? = null) {
+    fun loadInitialMessages(smallTalkId: String) {
+        currentPage = 1
+        isLastPage = false
+        listChatMessages(smallTalkId, currentPage, messagesPerPage, reset = true)
+    }
+
+    fun loadMoreMessagesIfPossible(smallTalkId: String) {
+        Timber.wtf("wtf isloading : $isLoading , isLastPage : $isLastPage")
+        if (isLoading || isLastPage) return
+        currentPage += 1
+        listChatMessages(smallTalkId, currentPage, messagesPerPage)
+    }
+
+    fun listChatMessages(id: String, page: Int? = null, per: Int? = null, reset: Boolean = false) {
+        isLoading = true
         request.listChatMessages(id, page, per).enqueue(object : Callback<ChatMessageListWrapper> {
             override fun onResponse(call: Call<ChatMessageListWrapper>, response: Response<ChatMessageListWrapper>) {
-                messages.value = response.body()?.messages ?: emptyList()
+                val newMessages = response.body()?.messages ?: emptyList()
+                isLoading = false
+                isLastPage = newMessages.size < (per ?: messagesPerPage)
+
+                if (reset) {
+                    messages.value = newMessages
+                } else {
+                    // Récupérer la liste actuelle des messages
+                    val currentMessages = messages.value ?: emptyList()
+
+                    // Créer une copie mutable de la liste actuelle
+                    val updatedMessages = currentMessages.toMutableList()
+
+                    // Parcourir les nouveaux messages
+                    newMessages.forEach { newMessage ->
+                        // Vérifier si le message existe déjà dans la liste actuelle
+                        val index = updatedMessages.indexOfFirst { it.id == newMessage.id }
+
+                        if (index != -1) {
+                            // Si le message existe déjà, le mettre à jour
+                            updatedMessages[index] = newMessage
+                        } else {
+                            // Sinon, ajouter le nouveau message à la liste
+                            updatedMessages.add(newMessage)
+                        }
+                    }
+
+                    // Mettre à jour la liste des messages
+                    messages.value = updatedMessages
+                }
             }
+
             override fun onFailure(call: Call<ChatMessageListWrapper>, t: Throwable) {
-                messages.value = emptyList()
+                isLoading = false
             }
         })
     }
-
+    
     /**
      * 5️⃣ Créer un message
      */
@@ -324,11 +373,13 @@ class SmallTalkViewModel(application: Application) : AndroidViewModel(applicatio
     fun deleteChatMessage(smallTalkId: String, messageId: String) {
         request.deleteChatMessage(smallTalkId, messageId).enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
-                // Après suppression, on rafraîchit la liste
-                listChatMessages(smallTalkId)
+                // Après suppression, on renvoie le résultat et l'ID du message
+                messageDeleteResult.postValue(response.isSuccessful,)
             }
+
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                // Optionnel : gérer l’erreur
+                // En cas d'échec, on renvoie false et l'ID du message
+                messageDeleteResult.postValue(false)
             }
         })
     }

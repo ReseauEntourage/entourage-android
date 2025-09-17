@@ -74,15 +74,16 @@ class SmallTalkActivity : BaseActivity() {
         setupRecyclerView()
         setupButtons()
         observeViewModel()
-
+        updateNextButtonState(false)
     }
 
     private fun setupRecyclerView() {
         adapter = OnboardingInterestsAdapter(
             isFromInterest = false,
-            onInterestClicked = { /* handled internally */ }
+            onInterestClicked = {
+                updateNextButtonState(adapter.currentList.any { it.isSelected })
+            }
         )
-
         binding.rvSmallTalk.apply {
             layoutManager = GridLayoutManager(this@SmallTalkActivity, 1)
             adapter = this@SmallTalkActivity.adapter
@@ -94,6 +95,10 @@ class SmallTalkActivity : BaseActivity() {
         }
     }
 
+    private fun updateNextButtonState(hasSelection: Boolean) {
+        binding.buttonStart.alpha = if (hasSelection) 1.0f else 0.5f
+    }
+
     private fun observeViewModel() {
         viewModel.currentStep.observe(this) { step ->
             binding.title.text = step.title
@@ -101,7 +106,6 @@ class SmallTalkActivity : BaseActivity() {
             val isInterestStep = viewModel.isLastStep()
             adapter.forceSingleSelectionForSmallTalk = !isInterestStep
             adapter.isFromInterestLocal = isInterestStep
-
             (binding.rvSmallTalk.layoutManager as? GridLayoutManager)?.spanCount = if (isInterestStep) 2 else 1
 
             val updatedItems = when {
@@ -111,17 +115,24 @@ class SmallTalkActivity : BaseActivity() {
                     step.items.map { it.copy(isSelected = it.id == restoredId) }
                 }
             }
-            // 1️⃣ Soumission d'une liste vide
+
+            // Soumission d'une liste vide
             adapter.submitList(emptyList())
 
-            // 2️⃣ Post une mise à jour un peu plus tard (après le "clear")
+            // Post une mise à jour un peu plus tard (après le "clear")
             binding.rvSmallTalk.post {
                 adapter.submitList(updatedItems)
+                updateNextButtonState(updatedItems.any { it.isSelected })
                 binding.rvSmallTalk.scheduleLayoutAnimation()
+                // Mettre à jour l'état du bouton en fonction des éléments sélectionnés
+                //updateNextButtonState(adapter.currentList.any { it.isSelected })
             }
             animateProgressTo(viewModel.getStepProgress())
         }
-        viewModel.shouldLeave.observe(this) { shouldLeave -> if (shouldLeave) finish() }
+
+        viewModel.shouldLeave.observe(this) { shouldLeave ->
+            if (shouldLeave) finish()
+        }
 
         viewModel.currentStepIndex.observe(this) { stepIndex ->
             binding.buttonStart.text = getString(
@@ -129,7 +140,9 @@ class SmallTalkActivity : BaseActivity() {
                 else R.string.onboarding_btn_next
             )
         }
+
     }
+
 
     private fun setupButtons() {
         binding.buttonStart.setOnClickListener {
@@ -189,6 +202,7 @@ class SmallTalkActivity : BaseActivity() {
                 }
                 4 -> { // Step INTERESTS
                     //update["match_interest"] = true
+
                     AnalyticsEvents.logEvent(AnalyticsEvents.VIEW__SMALLTALK__INTERESTS)
                     val selectedInterestIds = selectedItems.mapNotNull { it.id }
                     val userUpdate = ArrayMap<String, Any>()
@@ -199,6 +213,7 @@ class SmallTalkActivity : BaseActivity() {
                         override fun onResponse(call: Call<UserResponse>, response: Response<UserResponse>) {}
                         override fun onFailure(call: Call<UserResponse>, t: Throwable) {}
                     })
+
                 }
             }
 
@@ -220,7 +235,7 @@ class SmallTalkActivity : BaseActivity() {
                 overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
                 isFinished = true
                 finish()
-            } else {
+            }else{
                 viewModel.goToNextStep()
             }
         }

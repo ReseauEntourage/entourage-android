@@ -65,7 +65,7 @@ class GroupRulesActivity : AppCompatActivity() {
                 val line4 = Rules(getString(R.string.event_CGU_4_title),getString(R.string.event_CGU_4))
                 cgus = arrayListOf(line1,line2,line3,line4)
             }
-            Const.RULES_ACTION -> {
+            Const.RULES_ACTION ->  {
                 rule_description = getString(R.string.action_params_cgu_description)
                 rule_title = getString(R.string.action_params_cgu_title)
                 val line1 = Rules(getString(R.string.action_CGU_1_title),getString(R.string.action_CGU_1))

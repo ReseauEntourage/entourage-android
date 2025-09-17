@@ -40,7 +40,7 @@ class CreateActionFragment : Fragment() {
     private var isDemand = false
     private var actionEdited: Action? = null
     private var isAlreadySend = false
-    private var hasADefaultGroup = true
+    private var hasADefaultGroup = true //TODO: should it be false by default?
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -93,16 +93,16 @@ class CreateActionFragment : Fragment() {
 
         //Listener for choose item
         viewModel.sectionsList.observe(viewLifecycleOwner, Observer { list ->
-            val _t = viewModel.sectionsList.value?.firstOrNull { it.isSelected }
-            handleButtonState(_t != null)
+            val firstSelected = viewModel.sectionsList.value?.firstOrNull { it.isSelected }
+            handleButtonState(firstSelected != null)
         })
 
         actionPresenter.isActionUpdated.observe(viewLifecycleOwner, ::isActionUpdated)
         actionPresenter.newActionCreated.observe(viewLifecycleOwner, ::handleCreateActionResponse)
         groupPresenter = ViewModelProvider(requireActivity()).get(GroupPresenter::class.java)
-        groupPresenter.getGroup.observe(viewLifecycleOwner, { group ->
-            handleResponseGetGroups(group)
-        })
+        groupPresenter.getGroup.observe(viewLifecycleOwner) { group ->
+            handleResponseGetGroup(group)
+        }
         groupPresenter.getDefaultGroup()
     }
 
@@ -155,14 +155,14 @@ class CreateActionFragment : Fragment() {
         }.attach()
         viewPager?.currentItem = currentPos ?: 0
         var btnTitle = ""
-        val isSharingTimeSelected = viewModel.sectionsList.value?.first()?.isSelected == true
+        val isSharingTimeSelected = viewModel.sectionsList.value?.firstOrNull()?.isSelected == true
         //check first if section list if sharing time
-        if(currentPos == NB_TABS - 2 && !isSharingTimeSelected && hasADefaultGroup){
-            btnTitle =  getString(R.string.create)
+        btnTitle = if(currentPos == NB_TABS - 2 && !isSharingTimeSelected && hasADefaultGroup){
+            getString(R.string.create)
         }else if(currentPos == NB_TABS - 1){
-           btnTitle =  getString(R.string.create)
+            getString(R.string.create)
         }else{
-            btnTitle =  getString(R.string.new_next)
+            getString(R.string.new_next)
         }
 
         binding.next.text = btnTitle
@@ -198,7 +198,7 @@ class CreateActionFragment : Fragment() {
     }
 
     private fun handleButtonState(isButtonActive: Boolean?) {
-        val isActive = isButtonActive ?: false // Si isButtonActive est null, considérez-le comme false.
+        val isActive = isButtonActive == true // Si isButtonActive est null, considérez-le comme false.
         val background = ContextCompat.getDrawable(
             requireContext(),
             if (isActive) R.drawable.new_rounded_button_light_orange else R.drawable.new_bg_rounded_inactive_button_light_orange
@@ -218,7 +218,7 @@ class CreateActionFragment : Fragment() {
 
     private fun handleIsCondition(isCondition: Boolean) {
         if (isCondition) {
-            val isSharingTimeSelected = viewModel.sectionsList.value?.first()?.isSelected == true
+            val isSharingTimeSelected = viewModel.sectionsList.value?.firstOrNull()?.isSelected == true
             if (viewPager?.currentItem == NB_TABS - 1 || (viewPager?.currentItem == NB_TABS - 2 && !isSharingTimeSelected && hasADefaultGroup) ) {
                 if (viewModel.actionEdited != null) {
                     if (isAlreadySend) return
@@ -263,17 +263,13 @@ class CreateActionFragment : Fragment() {
         }
     }
 
-    private fun handleResponseGetGroups(groups: Group) {
-        if (groups == null ) {
-            hasADefaultGroup = false
-        }else{
-            hasADefaultGroup = true
-        }
+    private fun handleResponseGetGroup(group: Group) {
+        hasADefaultGroup = true
     }
 
     private fun handleValidate() {
         binding.next.setOnClickListener {
-            val isSharingTimeSelected = viewModel.sectionsList.value?.first()?.isSelected == true
+            val isSharingTimeSelected = viewModel.sectionsList.value?.firstOrNull()?.isSelected == true
             if (viewPager?.currentItem == NB_TABS - 2 && !isSharingTimeSelected && hasADefaultGroup) {
                 viewModel.isCondition.postValue(true)
             } else if (binding.viewPager.currentItem == NB_TABS - 1) {

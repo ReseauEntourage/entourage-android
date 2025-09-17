@@ -226,6 +226,7 @@ fun Activity.updatePaddingTopForEdgeToEdge(viewTop:View){
         val insets = windowInsets.getInsets(androidx.core.view.WindowInsetsCompat.Type.statusBars())
         view.updatePadding(
             top = insets.top
+
         )
         // Return the original insets so they aren’t consumed
         windowInsets

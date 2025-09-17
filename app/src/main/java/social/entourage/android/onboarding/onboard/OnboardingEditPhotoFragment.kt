@@ -16,8 +16,8 @@ import androidx.fragment.app.DialogFragment
 import com.takusemba.cropme.OnCropListener
 import social.entourage.android.R
 import social.entourage.android.databinding.FragmentOnboardingEditPhotoBinding
-import social.entourage.android.tools.utils.Utils
 import social.entourage.android.tools.rotate
+import social.entourage.android.tools.utils.Utils
 import social.entourage.android.user.edit.photo.PhotoEditInterface
 import timber.log.Timber
 import java.io.File
@@ -26,7 +26,6 @@ import java.io.IOException
 class OnboardingEditPhotoFragment : DialogFragment() {
 
     private lateinit var binding: FragmentOnboardingEditPhotoBinding
-    private val ROTATE_DEGREES_STEP = -90f
     private var currentAngle = 0f
 
     private var mListener: PhotoEditInterface? = null
@@ -102,9 +101,11 @@ class OnboardingEditPhotoFragment : DialogFragment() {
 
             override fun onFailure(e: Exception) {
                 Timber.w(e)
-                Toast.makeText(activity, R.string.user_photo_error_no_photo, Toast.LENGTH_SHORT).show()
-                binding.uiPhotoEditProgressBar.visibility = View.GONE
-                binding.uiEditPhotoValidate.isEnabled = true
+                activity?.let { activity->
+                    Toast.makeText(activity, R.string.user_photo_error_no_photo, Toast.LENGTH_SHORT).show()
+                    binding.uiPhotoEditProgressBar.visibility = View.GONE
+                    binding.uiEditPhotoValidate.isEnabled = true
+                }
             }
         })
 
@@ -171,6 +172,8 @@ class OnboardingEditPhotoFragment : DialogFragment() {
         const val TAG = "social.entourage.android.onboarding.OnboardingEditPhotoFragment"
         private const val PHOTO_PARAM = "social.entourage.android.photo_param"
         private const val PHOTO_SOURCE = "social.entourage.android.photo_source"
+
+        private const val ROTATE_DEGREES_STEP = -90f
 
         fun newInstance(photoUri: Uri?, photoSource: Int): OnboardingEditPhotoFragment {
             return OnboardingEditPhotoFragment().apply {

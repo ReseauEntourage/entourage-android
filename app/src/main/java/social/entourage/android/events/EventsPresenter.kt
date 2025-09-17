@@ -30,6 +30,8 @@ import java.io.File
 import java.io.IOException
 
 class EventsPresenter : ViewModel() {
+    val MEMBERS_PER_PAGE = 30
+
     var getAllMyEvents = MutableLiveData<MutableList<Events>>()
     var getAllEvents = MutableLiveData<MutableList<Events>>()
     var getFilteredEvents = MutableLiveData<MutableList<Events>>()
@@ -68,7 +70,11 @@ class EventsPresenter : ViewModel() {
     var isSearchMode = false
     var haveChanged = false
     var havelaunchedCreation = false
-
+    val messageDeleted = MutableLiveData<String>()
+    private var currentMembersPage      = 1
+    private var isLoadingMembers        = false
+    private var isLastMembersPage       = false
+    val pagedEventMembers = MutableLiveData<MutableList<EntourageUser>>()   // nouvelle LD
 
     var isLoading: Boolean = false
     var isLastPage: Boolean = false
@@ -820,7 +826,49 @@ class EventsPresenter : ViewModel() {
                 }
             })
     }
+
+    fun resetEventMembersPaging() {
+        currentMembersPage   = 1
+        isLastMembersPage    = false
+        pagedEventMembers.value = mutableListOf()
+    }
+
+    fun loadEventMembers(eventId: Int) {
+        if (isLoadingMembers || isLastMembersPage) return
+        isLoadingMembers = true
+
+        EntourageApplication.get()
+            .apiModule
+            .eventsRequest
+            .getMembers(eventId, currentMembersPage, MEMBERS_PER_PAGE)
+            .enqueue(object : Callback<MembersWrapper> {
+
+                override fun onResponse(
+                    call: Call<MembersWrapper>,
+                    resp: Response<MembersWrapper>
+                ) {
+                    isLoadingMembers = false
+                    if (resp.isSuccessful) {
+                        val newData = resp.body()?.users ?: mutableListOf()
+                        if (newData.size < MEMBERS_PER_PAGE) isLastMembersPage = true
+                        currentMembersPage++
+
+                        val merged = pagedEventMembers.value ?: mutableListOf()
+                        merged.addAll(newData)
+                        pagedEventMembers.value = merged
+                    }
+                }
+
+                override fun onFailure(call: Call<MembersWrapper>, t: Throwable) {
+                    isLoadingMembers = false
+                }
+            })
+    }
+
+
 }
+
+
 
 
 data class JoinRoleBody(
