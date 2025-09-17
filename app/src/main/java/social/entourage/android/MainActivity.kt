@@ -149,7 +149,8 @@ class MainActivity : BaseSecuredActivity() {
         }
     }
 
-    private fun handleUpdateBadgeResponse(unreadMessages: UnreadMessages) {
+    private fun handleUpdateBadgeResponse(unreadMessages: UnreadMessages?) {
+        if (unreadMessages == null) return
         addBadge(unreadMessages.unreadConversationsCount ?: 0)
         addGroupBadge(unreadMessages.unreadNeighborhoodsCount ?: 0)
     }
