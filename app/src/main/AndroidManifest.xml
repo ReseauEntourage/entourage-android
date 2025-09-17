@@ -8,6 +8,7 @@
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" android:maxSdkVersion="28"/>
 
 
     <uses-feature
@@ -85,6 +86,7 @@
         <activity
             android:name=".welcome.WelcomeTwoActivity"
             android:exported="false" />
+
         <activity android:name="social.entourage.android.language.LanguageActivitySettings"/>
         <activity android:name="social.entourage.android.profile.settings.SettingsNotificationsActivity"/>
         <activity android:name="social.entourage.android.profile.editProfile.EditPasswordActivity"/>

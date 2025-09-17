@@ -6,15 +6,14 @@ import android.graphics.PorterDuff
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
 import androidx.fragment.app.DialogFragment
 import com.takusemba.cropme.OnCropListener
-
 import social.entourage.android.R
 import social.entourage.android.databinding.FragmentOnboardingEditPhotoBinding
 import social.entourage.android.tools.utils.Utils
@@ -25,6 +24,7 @@ import java.io.File
 import java.io.IOException
 
 class OnboardingEditPhotoFragment : DialogFragment() {
+
     private lateinit var binding: FragmentOnboardingEditPhotoBinding
     private val ROTATE_DEGREES_STEP = -90f
     private var currentAngle = 0f
@@ -34,10 +34,6 @@ class OnboardingEditPhotoFragment : DialogFragment() {
     private var photoSource = 0
     private var photoFile: File? = null
 
-    //**********//**********//**********
-    // Lifecycle
-    //**********//**********//**********
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -46,8 +42,7 @@ class OnboardingEditPhotoFragment : DialogFragment() {
         }
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentOnboardingEditPhotoBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -55,16 +50,6 @@ class OnboardingEditPhotoFragment : DialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupViews()
-    }
-
-    @Deprecated("Deprecated in Java")
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        if (dialog == null) {
-            showsDialog = false
-        }
-
-        super.onActivityCreated(savedInstanceState)
-        dialog?.window?.attributes?.windowAnimations = R.style.CustomDialogFragmentFromRight
     }
 
     override fun onStart() {
@@ -81,29 +66,25 @@ class OnboardingEditPhotoFragment : DialogFragment() {
         mListener = null
     }
 
-    fun cropToSquare(bitmap: Bitmap): Bitmap {
-        val size = Math.min(bitmap.width, bitmap.height)
+    private fun cropToSquare(bitmap: Bitmap): Bitmap {
+        val size = minOf(bitmap.width, bitmap.height)
         val x = (bitmap.width - size) / 2
         val y = (bitmap.height - size) / 2
         return Bitmap.createBitmap(bitmap, x, y, size, size)
     }
 
-    //**********//**********//**********
-    // Methods
-    //**********//**********//**********
-
     private fun setupViews() {
-        context?.let { context ->
-            binding.uiPhotoEditProgressBar.indeterminateDrawable?.setColorFilter(ContextCompat.getColor(context, R.color.white), PorterDuff.Mode.SRC_ATOP)
+        context?.let {
+            binding.uiPhotoEditProgressBar.indeterminateDrawable?.setColorFilter(
+                ContextCompat.getColor(it, R.color.white),
+                PorterDuff.Mode.SRC_ATOP
+            )
         }
 
-        photoUri?.let {
-            try {
-                binding.cropView.setUri(it)
-
-            } catch(e: IOException) {
-                Timber.e(e)
-            }
+        try {
+            photoUri?.let { binding.cropView.setUri(it) }
+        } catch (e: IOException) {
+            Timber.e(e)
         }
 
         binding.cropView.addOnCropListener(object : OnCropListener {
@@ -111,21 +92,19 @@ class OnboardingEditPhotoFragment : DialogFragment() {
                 binding.uiPhotoEditProgressBar.visibility = View.GONE
                 try {
                     val squareBitmap = cropToSquare(bitmap)
-                    saveBitmap(squareBitmap)
+                    saveBitmapSecure(squareBitmap)
                     updateProfilePicture()
                 } catch (e: IOException) {
+                    Timber.e(e)
                     Toast.makeText(activity, R.string.user_photo_error_not_saved, Toast.LENGTH_SHORT).show()
                 }
             }
 
             override fun onFailure(e: Exception) {
-                try {
-                    Toast.makeText(activity, R.string.user_photo_error_no_photo, Toast.LENGTH_SHORT).show()
-                    binding.uiPhotoEditProgressBar.visibility = View.GONE
-                    binding.uiEditPhotoValidate.isEnabled = true
-                } catch (e2: Exception) {
-                    Timber.w(e2)
-                }
+                Timber.w(e)
+                Toast.makeText(activity, R.string.user_photo_error_no_photo, Toast.LENGTH_SHORT).show()
+                binding.uiPhotoEditProgressBar.visibility = View.GONE
+                binding.uiEditPhotoValidate.isEnabled = true
             }
         })
 
@@ -142,7 +121,7 @@ class OnboardingEditPhotoFragment : DialogFragment() {
             binding.uiPhotoEditProgressBar.visibility = View.VISIBLE
             try {
                 binding.cropView.crop()
-            } catch(e: Exception) {
+            } catch (e: Exception) {
                 Timber.e(e)
             }
         }
@@ -150,24 +129,37 @@ class OnboardingEditPhotoFragment : DialogFragment() {
 
     private fun rotateImage() {
         currentAngle += ROTATE_DEGREES_STEP
-        photoUri?.let { photoUri->
+        photoUri?.let { uri ->
             try {
-                activity?.contentResolver?.let { contentResolver ->
-                    saveBitmap(Utils.getBitmapFromUri(photoUri, contentResolver).rotate(currentAngle))
+                activity?.contentResolver?.let { resolver ->
+                    val rotatedBitmap = Utils.getBitmapFromUri(uri, resolver).rotate(currentAngle)
+                    saveBitmapSecure(rotatedBitmap)
                 }
-            } catch(e: IOException) {
+            } catch (e: IOException) {
                 Timber.e(e)
             }
         }
     }
 
-    private fun saveBitmap(bitmap: Bitmap) {
+    private fun saveBitmapSecure(bitmap: Bitmap) {
+        // Sauvegarde dans filesDir pour éviter les problèmes de permission
+        val fileName = "cropped_photo_${System.currentTimeMillis()}.jpg"
+        val file = File(requireContext().filesDir, fileName)
+
+        Utils.saveBitmapToFile(bitmap, file, requireContext())
+        photoFile = file
         binding.cropView.setBitmap(bitmap)
-        photoFile = Utils.saveBitmapToFile(bitmap, photoFile, requireContext())
     }
 
     private fun updateProfilePicture() {
-        mListener?.onPhotoEdited(Uri.fromFile(photoFile), photoSource)
+        if (photoFile != null) {
+            val safeUri = FileProvider.getUriForFile(
+                requireContext(),
+                "${requireContext().packageName}.fileprovider",
+                photoFile!!
+            )
+            mListener?.onPhotoEdited(safeUri, photoSource)
+        }
         dismissAllowingStateLoss()
     }
 
@@ -175,21 +167,18 @@ class OnboardingEditPhotoFragment : DialogFragment() {
         mListener = callback
     }
 
-    //**********//**********//**********
-    // Companion
-    //**********//**********//**********
-
     companion object {
         const val TAG = "social.entourage.android.onboarding.OnboardingEditPhotoFragment"
         private const val PHOTO_PARAM = "social.entourage.android.photo_param"
         private const val PHOTO_SOURCE = "social.entourage.android.photo_source"
 
-        fun newInstance(photoUri: Uri?, photoSource: Int) =
-            OnboardingEditPhotoFragment().apply {
+        fun newInstance(photoUri: Uri?, photoSource: Int): OnboardingEditPhotoFragment {
+            return OnboardingEditPhotoFragment().apply {
                 arguments = Bundle().apply {
                     putParcelable(PHOTO_PARAM, photoUri)
                     putInt(PHOTO_SOURCE, photoSource)
                 }
             }
+        }
     }
 }

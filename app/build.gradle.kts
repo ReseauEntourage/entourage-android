@@ -29,8 +29,8 @@ android {
     val targetCompatibilityVersion = JavaVersion.VERSION_11
 
     // App versions
-    val versionMajor = 11
-    val versionMinor = 2
+    val versionMajor = 12
+    val versionMinor = 0
     val versionPatch = "git rev-list HEAD --count".runCommand().toInt()
     val versionBranchName = "git rev-parse --abbrev-ref HEAD".runCommand()
     val versionCodeInt = (versionMajor * 100 + versionMinor) * 10000 + versionPatch % 10000
@@ -220,8 +220,6 @@ dependencies {
     implementation("androidx.preference:preference-ktx:1.2.1")
     implementation("androidx.compose.ui:ui-text-android:1.7.8")
 
-    //implementation devDependencies.values()
-    //implementation("net.danlew:android.joda:2.12.5")
     implementation("com.squareup:tape:1.2.3")
     implementation("com.jakewharton.timber:timber:5.0.1")
 
