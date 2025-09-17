@@ -268,7 +268,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="welcome_message_title">Félicitations, vous êtes membre du groupe !</string>
     <string name="welcome_message_btn_title">Je me présente</string>
     <string name="member">Membre</string>
-    <string name="members_location">%s membres. %s</string>
+    <string name="members_location">%d membres. %s</string>
 
 
     <string name="group_settings">Paramètres du groupe</string>
@@ -1946,7 +1946,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
 
     <string name="login_smscode_sent">SMS envoyé</string>
 
-    <string name="error_login_phone_length">Le numéro de téléphone doit faire au minimum %s chiffres</string>
+    <string name="error_login_phone_length">Le numéro de téléphone doit faire au minimum %d chiffres</string>
     <string name="error_login_code_lenght">Le code doit faire 6 chiffres</string>
     <string name="login_title">Connexion</string>
     <string name="login_phone_placeholder">Numéro de téléphone</string>
@@ -2152,7 +2152,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="onboard_sms_title">Entrez le code reçu par SMS</string>
 
     <string name="attention_pop_title">Attention</string>
-    <string name="onboard_sms_pop_alert">Veuillez patienter encore %s sec avant de renouveler la demande.</string>
+    <string name="onboard_sms_pop_alert">Veuillez patienter encore %d sec avant de renouveler la demande.</string>
     <string name="onboard_sms_no_pwd">Veuillez remplir le password</string>
     <string name="onboard_type_title">Enchantés, %s.</string>
     <string name="onboard_type_sub">Comment voulez-vous personnaliser l’application ?</string>
@@ -2973,6 +2973,72 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="question_location">Quel est votre quartier ?</string>
     <string name="input_location">Adresse ville ou département</string>
 
+    <!-- Section Papotages Smalltalks -->
+
+    <string name="onboarding_title">Prêts pour intégrer une bande solidaire ?</string>
+    <string name="onboarding_start_button">Je commence</string>
+    <string name="onboarding_intro_html">
+    <![CDATA[
+    <p>Les <b>Bandes solidaires</b> vous connectent rapidement avec un ou plusieurs membres...</p>
+    <p><b>• Vous répondez à quelques questions</b> : sur vous, vos centres d’intérêts</p>
+    <p><b>• On vous trouve des personnes compatibles</b> : grâce à votre localisation et vos réponses</p>
+    <p><b>• Une conversation de groupe s’ouvre dans l’app</b> : pour faire connaissance pendant quelques jours</p>
+    <p><b>• Vous décidez ensemble d’un moment pour vous rencontrer</b> : en visio ou en vrai, comme vous préférez</p>
+    ]]>
+    </string>
+
+    <!-- Step 1: Format de discussion -->
+    <string name="small_talk_step_title_1">Quel format de discussion te convient le mieux ?</string>
+    <string name="small_talk_step_subtitle_1">Vous pouvez choisir de papoter à deux ou en petit groupe...</string>
+    <string name="small_talk_step1_item1_title">En duo</string>
+    <string name="small_talk_step1_item1_subtitle">Pour un échange simple et intimiste</string>
+    <string name="small_talk_step1_item2_title">En petit groupe</string>
+    <string name="small_talk_step1_item2_subtitle">Pour discuter à plusieurs, dans une ambiance conviviale</string>
+
+    <!-- Step 2: Proximité -->
+    <string name="small_talk_step_title_2">Avec qui aimeriez-vous échanger ?</string>
+    <string name="small_talk_step_subtitle_2">Des personnes de votre région ou de toute la France...</string>
+    <string name="small_talk_step2_item1_title">Des personnes proches de chez moi</string>
+    <string name="small_talk_step2_item1_subtitle">Pour des échanges locaux et des rencontres en vrai, près de chez vous</string>
+    <string name="small_talk_step2_item2_title">Des personnes de toute la France</string>
+    <string name="small_talk_step2_item2_subtitle">Pour échanger avec des profils variés, découvrir d’autres horizons</string>
+
+    <!-- Step 3: Genre -->
+    <string name="small_talk_step_title_3">Quel genre vous correspond le mieux ?</string>
+    <string name="small_talk_step_subtitle_3">Cette info nous aide à personnaliser vos rencontres</string>
+    <string name="small_talk_step3_item1_title">Homme</string>
+    <string name="small_talk_step3_item2_title">Femme</string>
+    <string name="small_talk_step3_item3_title">Non binaire</string>
+
+    <!-- Step 4: Confort selon le genre -->
+    <string name="small_talk_step_title_4">Avec qui vous sentez-vous le plus à l’aise pour échanger ?</string>
+    <string name="small_talk_step_subtitle_4">Cette question concerne uniquement le genre : hommes, femmes, non binaires. Toutes les bandes sont socialement mixtes.</string>
+    <string name="small_talk_step4_item1_title">Peu importe</string>
+    <string name="small_talk_step4_item1_subtitle">Je suis à l’aise pour échanger avec tout le monde, quel que soit le genre</string>
+    <string name="small_talk_step4_item2_title">Avec des personnes du même genre</string>
+    <string name="small_talk_step4_item2_subtitle">Je préfère échanger avec des personnes qui partagent le même genre que moi</string>
+
+    <!-- Step 4: small talk searching activity -->
+
+    <string name="small_talk_searching_title">On te trouve une bande qui te correspond</string>
+    <string name="small_talk_searching_intro">On vous prépare une belle rencontre… juste le temps de trouver les bons partenaires. Encore un petit instant, ça arrive !</string>
+
+    <string name="small_talk_searching_step_1">On regarde où se trouvent les membres disponibles…</string>
+    <string name="small_talk_searching_step_2">On cherche des personnes qui partagent vos centres d’intérêt…</string>
+    <string name="small_talk_searching_step_3">On prend en compte vos préférences pour former un groupe où chacun se sent à l’aise.</string>
+    <string name="small_talk_searching_step_4">On vérifie que tout colle bien…</string>
+
+    <!--small talk other bands activity -->
+
+    <string name="small_talk_other_band_title">Nous n’avons pas trouvé de bande avec vos critères</string>
+    <string name="small_talk_other_band_subtitle">Vous pouvez choisir de rejoindre une bande proche de vos critères ou attendre qu’une bande vous soit proposée…</string>
+    <string name="small_talk_other_band_different_location">Cette bande ne correspond pas à votre choix de proximité géographique</string>
+    <string name="small_talk_other_band_different_interests">Cette bande regroupe des personnes aux centres d’intérêt différents</string>
+    <string name="small_talk_other_band_duo">Cette bande fonctionne en binôme</string>
+    <string name="small_talk_other_band_group">Cette bande est composée de 3 personnes ou plus</string>
+    <string name="small_talk_other_band_with">Avec %1$s</string>
+    <string name="small_talk_other_band_join">Rejoindre</string>
+    <string name="small_talk_other_band_wait">Je préfère attendre</string>
 
 </resources>
 

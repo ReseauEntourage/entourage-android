@@ -108,6 +108,7 @@
                     android:textAllCaps="false"
                     android:textColor="@color/white"
                     android:fontFamily="@font/quicksand_bold"
+                    android:textSize="13sp"
                     android:layout_marginHorizontal="20dp"
                     android:paddingHorizontal="50dp"
                     app:layout_constraintTop_toTopOf="parent"

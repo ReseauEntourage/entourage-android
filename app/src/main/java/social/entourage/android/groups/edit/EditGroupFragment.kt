@@ -10,9 +10,6 @@ import android.view.ViewGroup
 import android.widget.EditText
 import androidx.collection.ArrayMap
 import androidx.core.content.ContextCompat
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.navArgs
@@ -35,6 +32,7 @@ import social.entourage.android.groups.details.feed.FeedFragmentArgs
 import social.entourage.android.profile.editProfile.InterestsListAdapter
 import social.entourage.android.profile.editProfile.OnItemCheckListener
 import social.entourage.android.tools.log.AnalyticsEvents
+import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.Utils
 import social.entourage.android.tools.utils.px
@@ -83,15 +81,7 @@ class EditGroupFragment : Fragment() {
             AnalyticsEvents.VIEW_GROUP_OPTION_EDITION
         )
 
-        ViewCompat.setOnApplyWindowInsetsListener(binding.header.layout) { view, windowInsets ->
-            // Get the insets for the statusBars() type:
-            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.statusBars())
-            view.updatePadding(
-                top = insets.top
-            )
-            // Return the original insets so they aren’t consumed
-            windowInsets
-        }
+        updatePaddingTopForEdgeToEdge(binding.header.layout)
         return binding.root
     }
 

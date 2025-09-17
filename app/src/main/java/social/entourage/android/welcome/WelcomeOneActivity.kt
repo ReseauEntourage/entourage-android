@@ -17,15 +17,13 @@ import android.view.ViewGroup
 import android.webkit.WebChromeClient
 import android.webkit.WebView
 import android.webkit.WebViewClient
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.updatePadding
 import social.entourage.android.MainActivity
 import social.entourage.android.R
 import social.entourage.android.base.BaseActivity
 import social.entourage.android.databinding.ActivityLayoutWelcomeOneBinding
 import social.entourage.android.home.pedago.PedagoListActivity
 import social.entourage.android.tools.log.AnalyticsEvents
+import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
 import java.lang.ref.WeakReference
 
 class WelcomeOneActivity:BaseActivity(), OnVideoLoaCallback {
@@ -49,16 +47,7 @@ class WelcomeOneActivity:BaseActivity(), OnVideoLoaCallback {
         AnalyticsEvents.logEvent("View_WelcomeOfferHelp_Day1")
 
         setContentView(binding.root)
-        // Listen for WindowInsets
-        ViewCompat.setOnApplyWindowInsetsListener(binding.layoutContent) { view, windowInsets ->
-            // Get the insets for the statusBars() type:
-            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.statusBars())
-            view.updatePadding(
-                top = insets.top
-            )
-            // Return the original insets so they aren’t consumed
-            windowInsets
-        }
+        updatePaddingTopForEdgeToEdge(binding.layoutContent)
     }
 
     fun setTitle(){

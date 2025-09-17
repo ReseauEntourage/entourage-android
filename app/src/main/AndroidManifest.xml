@@ -306,8 +306,25 @@
          <activity
              android:name=".profile.EditProfileActivity"
              android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".small_talks.SmallTalkIntroActivity"
+            android:windowSoftInputMode="adjustPan"
+            />
+        <activity
+            android:name=".small_talks.SmallTalkActivity"
+            android:windowSoftInputMode="adjustPan"
+            />
+        <activity
+            android:name=".small_talks.SmallTalkingSearchingActivity"
+            android:windowSoftInputMode="adjustPan"
+            />
+        <activity
+            android:name=".small_talks.SmallTalkListOtherBands"
+            android:windowSoftInputMode="adjustPan"
+            />
 
-         <service
+
+        <service
              android:name=".service.EntService"
              android:exported="false" />
          <service

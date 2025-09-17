@@ -254,7 +254,18 @@ class DetailConversationActivity : CommentActivity() {
                     .load(R.drawable.placeholder_my_event)
                     .into(binding.header.ivEvent)
             } else {
-                binding.header.ivEvent.visibility = View.VISIBLE
+                binding.header.ivEvent.visibility = View.GONE
+
+
+
+
+
+
+
+
+
+
+
                 Glide.with(this)
                     .load(event.metadata?.portraitThumbnailUrl)
                     .transform(RoundedCorners(10)) // Ajout des arrondis de 5dp

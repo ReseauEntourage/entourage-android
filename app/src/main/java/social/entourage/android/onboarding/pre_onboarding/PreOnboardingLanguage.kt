@@ -2,9 +2,6 @@ package social.entourage.android.onboarding.pre_onboarding
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.updatePadding
 import androidx.recyclerview.widget.LinearLayoutManager
 import social.entourage.android.R
 import social.entourage.android.base.BaseActivity
@@ -13,6 +10,7 @@ import social.entourage.android.language.LanguageAdapter
 import social.entourage.android.language.LanguageItem
 import social.entourage.android.language.LanguageManager
 import social.entourage.android.language.OnLanguageClicked
+import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
 import java.util.Locale
 
 class PreOnboardingLanguage:BaseActivity(), OnLanguageClicked {
@@ -32,16 +30,7 @@ class PreOnboardingLanguage:BaseActivity(), OnLanguageClicked {
         binding.rvLangue.adapter = adapter
         setContentView(binding.root)
 
-        // Listen for WindowInsets
-        ViewCompat.setOnApplyWindowInsetsListener(binding.layoutTitle) { view, windowInsets ->
-            // Get the insets for the statusBars() type:
-            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.statusBars())
-            view.updatePadding(
-                top = insets.top
-            )
-            // Return the original insets so they aren’t consumed
-            windowInsets
-        }
+        updatePaddingTopForEdgeToEdge(binding.layoutTitle)
     }
     private fun fillArray() {
         val phoneLanguageCode = Locale.getDefault().language

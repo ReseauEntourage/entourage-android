@@ -270,7 +270,7 @@ class User : Serializable {
         const val USER_GOAL_NEIGHBOUR = "offer_help"
         const val USER_GOAL_ALONE = "ask_for_help"
         const val USER_GOAL_ASSO = "organization"
-        const val USER_GOAL_BOTH = "offer_and_ask_help "
+        const val USER_GOAL_BOTH = "ask_and_offer_help"
         const val USER_GOAL_NONE = ""
 
         private fun getStringId(resourceName: String): Int {

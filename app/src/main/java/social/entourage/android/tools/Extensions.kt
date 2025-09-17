@@ -1,20 +1,17 @@
 package social.entourage.android.tools
 
+import android.app.Activity
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.Matrix
 import android.graphics.PorterDuff
 import android.os.Build
-import android.os.VibrationEffect
-import android.os.Vibrator
-import android.os.VibratorManager
 import android.text.Html
 import android.text.SpannableString
 import android.text.Spanned
 import android.text.method.LinkMovementMethod
 import android.text.style.URLSpan
-import android.text.util.Linkify
 import android.util.Patterns
 import android.view.View
 import android.view.inputmethod.InputMethodManager
@@ -23,14 +20,16 @@ import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.core.content.res.ResourcesCompat
-import social.entourage.android.MainActivity
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updatePadding
+import androidx.fragment.app.Fragment
 import social.entourage.android.R
 import social.entourage.android.api.model.Action
 import social.entourage.android.api.model.Events
 import social.entourage.android.base.BaseActivity
 import social.entourage.android.events.EventModel
 import timber.log.Timber
-import java.util.*
+import java.util.Date
 import kotlin.math.roundToInt
 
 /**
@@ -62,8 +61,6 @@ fun TextView.setHyperlinkClickable() {
 
 fun TextView.displayHtml(textContent: String) {
     var processedText = textContent
-
-    // Si le texte ne contient pas déjà une balise <a> (cas des URL brutes), on les transforme
     if (!processedText.contains("<a", ignoreCase = true)) {
         val matcher = Patterns.WEB_URL.matcher(processedText)
         val sb = StringBuffer()
@@ -74,24 +71,21 @@ fun TextView.displayHtml(textContent: String) {
         matcher.appendTail(sb)
         processedText = sb.toString()
     }
-
-    // 🔧 Étape supplémentaire : nettoyage des <p> et remplacement des \n par <br>
     processedText = processedText
-        .replace(Regex("<p[^>]*>"), "")     // supprime les balises <p>
-        .replace("</p>", "")                // supprime les </p>
-        .replace("\n", "<br>")              // convertit les \n en <br>
+        .replace(Regex("<p[^>]*>"), "")
+        .replace("</p>", "<br>")
+        .replace("\n", "<br>")
 
-    // 🔄 Conversion en Spanned avec prise en compte des <br> et <a>
     text = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
         Html.fromHtml(processedText, Html.FROM_HTML_MODE_LEGACY)
     } else {
         @Suppress("DEPRECATION")
         Html.fromHtml(processedText)
     }
-
-    // 🎯 Rends les liens et mentions cliquables (URLSpan → ClickableSpan)
     setHyperlinkClickable()
 }
+
+
 
 
 fun ImageButton.disable() {
@@ -211,5 +205,43 @@ fun Action.displayDistance(context:Context):String{
             }
         }
     return ""
+}
+
+fun Activity.updatePaddingBottomForEdgeToEdge(viewTop:View){
+    // Listen for WindowInsets
+    androidx.core.view.ViewCompat.setOnApplyWindowInsetsListener(viewTop) { view, windowInsets ->
+        // Get the insets for the statusBars() type:
+        val insets = windowInsets.getInsets(WindowInsetsCompat.Type.navigationBars())
+        view.layoutParams.height = insets.bottom +view.minimumHeight
+        view.updatePadding(bottom =  insets.bottom)
+        // Return the original insets so they aren’t consumed
+        windowInsets
+    }
+}
+
+fun Activity.updatePaddingTopForEdgeToEdge(viewTop:View){
+    // Listen for WindowInsets
+    androidx.core.view.ViewCompat.setOnApplyWindowInsetsListener(viewTop) { view, windowInsets ->
+        // Get the insets for the statusBars() type:
+        val insets = windowInsets.getInsets(androidx.core.view.WindowInsetsCompat.Type.statusBars())
+        view.updatePadding(
+            top = insets.top
+        )
+        // Return the original insets so they aren’t consumed
+        windowInsets
+    }
+}
+
+fun Fragment.updatePaddingTopForEdgeToEdge(viewTop:View){
+    // Listen for WindowInsets
+    androidx.core.view.ViewCompat.setOnApplyWindowInsetsListener(viewTop) { view, windowInsets ->
+        // Get the insets for the statusBars() type:
+        val insets = windowInsets.getInsets(androidx.core.view.WindowInsetsCompat.Type.statusBars())
+        view.updatePadding(
+            top = insets.top
+        )
+        // Return the original insets so they aren’t consumed
+        windowInsets
+    }
 }
 

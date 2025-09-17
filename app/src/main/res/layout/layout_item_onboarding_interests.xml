@@ -5,7 +5,8 @@
     android:layout_height="wrap_content"
     android:id="@+id/view"
     android:padding="15dp"
-    android:layout_margin="5dp">
+    android:layout_marginHorizontal="10dp"
+    android:layout_marginVertical="15dp">
 
     <androidx.cardview.widget.CardView
         android:layout_width="wrap_content"
@@ -47,10 +48,9 @@
         app:layout_constraintStart_toEndOf="@id/id_card_imageview"
         app:layout_constraintBottom_toBottomOf="@+id/id_card_imageview"
         app:layout_constraintEnd_toStartOf="@+id/ivInterestCheck"
-
         android:layout_marginStart="10dp"
         android:fontFamily="@font/nunitosans_regular"
-        android:textColor="@color/black"
+        android:textColor="@color/grey"
         android:textSize="15sp"
         android:text="title" />
 

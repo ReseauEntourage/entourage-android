@@ -6,9 +6,6 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.updatePadding
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
@@ -31,6 +28,7 @@ import social.entourage.android.events.EventsPresenter
 import social.entourage.android.events.list.EVENTS_PER_PAGE
 import social.entourage.android.language.LanguageManager
 import social.entourage.android.tools.log.AnalyticsEvents
+import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.px
 import java.text.SimpleDateFormat
@@ -60,16 +58,7 @@ class WelcomeThreeActivity: BaseActivity() {
         actionsPresenter.getAllActions.observe(this, ::handleResponseGetDemands)
         setOnVisibilityGone()
         setContentView(binding.root)
-        // Listen for WindowInsets
-        ViewCompat.setOnApplyWindowInsetsListener(binding.layoutContent) { view, windowInsets ->
-            // Get the insets for the statusBars() type:
-            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.statusBars())
-            view.updatePadding(
-                top = insets.top
-            )
-            // Return the original insets so they aren’t consumed
-            windowInsets
-        }
+        updatePaddingTopForEdgeToEdge(binding.layoutContent)
     }
 
     override fun onResume() {

@@ -2,13 +2,11 @@ package social.entourage.android.welcome
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.updatePadding
 import social.entourage.android.MainActivity
 import social.entourage.android.base.BaseActivity
 import social.entourage.android.databinding.ActivityLayoutWelcomeFourBinding
 import social.entourage.android.tools.log.AnalyticsEvents
+import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
 import social.entourage.android.tools.view.WebViewFragment
 
 class WelcomeFourActivity: BaseActivity() {
@@ -31,16 +29,7 @@ class WelcomeFourActivity: BaseActivity() {
             this.finish()
         }
         setContentView(binding.root)
-        // Listen for WindowInsets
-        ViewCompat.setOnApplyWindowInsetsListener(binding.layoutContent) { view, windowInsets ->
-            // Get the insets for the statusBars() type:
-            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.statusBars())
-            view.updatePadding(
-                top = insets.top
-            )
-            // Return the original insets so they aren’t consumed
-            windowInsets
-        }
+        updatePaddingTopForEdgeToEdge(binding.layoutContent)
     }
 
     @Deprecated("Deprecated in kt 1.9.0")

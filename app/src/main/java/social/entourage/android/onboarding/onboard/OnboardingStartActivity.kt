@@ -45,6 +45,7 @@ class OnboardingStartActivity : AppCompatActivity(), OnboardingStartCallback {
 
     private var isEntour = false
     private var isBeEntour = false
+    private var Both = false
     private var isAsso = false
     private var temporaryPlaceAddress: User.Address? = null
 
@@ -203,12 +204,10 @@ class OnboardingStartActivity : AppCompatActivity(), OnboardingStartCallback {
             userType = UserTypeSelection.ALONE
         }else if (isEntour) {
             userType = UserTypeSelection.NEIGHBOUR
-        }else if (isBeEntour && isEntour) {
+        }else if (Both) {
             userType = UserTypeSelection.BOTH
         }
-
         val currentGoal = userType.getGoalString()
-
         OnboardingAPI.getInstance().updateUserGoal(currentGoal,temporaryEmail,hasConsent) { isOK, userResponse ->
             if (isOK && userResponse != null) {
                 authenticationController.saveUser(userResponse.user)
@@ -420,13 +419,14 @@ class OnboardingStartActivity : AppCompatActivity(), OnboardingStartCallback {
         temporaryPasscode = password
     }
 
-    override fun updateUsertypeAndAddress(isEntour:Boolean, isBeEntour:Boolean, isAsso:Boolean,address: User.Address?) {
+    override fun updateUsertypeAndAddress(isEntour:Boolean, isBeEntour:Boolean,both:Boolean, isAsso:Boolean,address: User.Address?) {
         this.isEntour = isEntour
         this.isBeEntour = isBeEntour
+        this.Both = both
         this.isAsso = isAsso
         this.temporaryPlaceAddress = address
 
-        if ((isEntour || isBeEntour || isAsso) && address != null) {
+        if ((isEntour || isBeEntour || isAsso || both) && address != null) {
             updateButtonNext(true)
         }
         else {

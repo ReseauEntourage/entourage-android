@@ -16,9 +16,6 @@ import androidx.activity.OnBackPressedCallback
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -36,6 +33,7 @@ import social.entourage.android.home.HomeGroupAdapter
 import social.entourage.android.main_filter.MainFilterActivity
 import social.entourage.android.main_filter.MainFilterMode
 import social.entourage.android.tools.log.AnalyticsEvents
+import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
 
 class GroupsFragment : Fragment(), UpdateGroupInter {
 
@@ -150,16 +148,7 @@ class GroupsFragment : Fragment(), UpdateGroupInter {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentGroupsBinding.inflate(inflater, container, false)
-        // Listen for WindowInsets
-        ViewCompat.setOnApplyWindowInsetsListener(binding.appBar) { view, windowInsets ->
-            // Get the insets for the statusBars() type:
-            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.statusBars())
-            view.updatePadding(
-                top = insets.top
-            )
-            // Return the original insets so they aren’t consumed
-            windowInsets
-        }
+        updatePaddingTopForEdgeToEdge(binding.appBar)
         return binding.root
     }
 
@@ -487,7 +476,7 @@ class GroupsFragment : Fragment(), UpdateGroupInter {
     private fun setupScrollViewListener() {
         binding.nestedScrollView.setOnScrollChangeListener { _, _, scrollY, _, oldScrollY ->
             val newFontSize = calculateFontSize(scrollY)
-            //TODO : binding.titleMyGroups.textSize = newFontSize
+            binding.titleMyGroups.textSize = newFontSize
             handleButtonBehavior(scrollY <= oldScrollY)
             if (!binding.nestedScrollView.canScrollVertically(1) && !presenter.isLastPage && !isLoading) {
                 isLoading = true

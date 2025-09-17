@@ -64,8 +64,12 @@ android {
     compileSdk = 35
     buildToolsVersion = "35.0.1"
 
-    val localTestAccountLogin = "\"" + (System.getenv("TEST_ACCOUNT_LOGIN") ?: "") + "\""
-    val localTestAccountPwd = "\"" + (System.getenv("TEST_ACCOUNT_PWD") ?: "") + "\""
+    val localTestAccountLogin = System.getenv("TEST_ACCOUNT_LOGIN")?.let { login -> "\""+ login+ "\"" }
+        ?: findProperty("entourageTestLogin") as String?
+        ?: "\"\""
+    val localTestAccountPwd = System.getenv("TEST_ACCOUNT_PWD")?.let { login -> "\""+ login+ "\"" }
+        ?: findProperty("entourageTestPwd") as String?
+        ?: "\"\""
 
     buildFeatures.buildConfig = true
 
@@ -191,15 +195,12 @@ android {
         }
     }
 
-    useLibrary("android.test.runner")
     lint {
         abortOnError = false
         disable += listOf("InvalidPackage")
     }
     namespace = "social.entourage.android"
 }
-
-
 
 dependencies {
     implementation("androidx.core:core-ktx:1.15.0")
@@ -267,29 +268,27 @@ dependencies {
     implementation("com.facebook.android:facebook-core:18.0.1")
     compileOnly("org.glassfish:javax.annotation:10.0-b28")
 
+    // Instrumentation tests
 
-    //androidTestImplementation testDependencies.values()
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
-    androidTestImplementation("androidx.test.espresso:espresso-contrib:3.6.1")
-    androidTestImplementation("androidx.test.espresso:espresso-accessibility:3.6.1")
-    androidTestImplementation("androidx.test.espresso:espresso-web:3.6.1")
-    androidTestImplementation("androidx.test.espresso.idling:idling-concurrent:3.6.1")
-    androidTestImplementation("androidx.test.espresso:espresso-idling-resource:3.6.1")
-    androidTestImplementation("androidx.test.espresso:espresso-intents:3.6.1")
+    androidTestImplementation("androidx.test.ext:junit:1.1.5")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+    androidTestImplementation("androidx.test:runner:1.5.2")
+    androidTestImplementation("androidx.test:rules:1.5.0")
+
     androidTestImplementation("androidx.test.uiautomator:uiautomator:2.3.0")
+    //androidTestImplementation("androidx.test.espresso:espresso-contrib:3.5.1")
+    //androidTestImplementation("androidx.test.espresso.idling:idling-concurrent:3.5.1")
+    //androidTestImplementation("androidx.test.espresso:espresso-idling-resource:3.5.1")
+    androidTestImplementation("androidx.test.espresso:espresso-intents:3.5.1")
+    androidTestImplementation("com.jakewharton.espresso:okhttp3-idling-resource:1.0.0")
 
-    //androidTestImplementation("com.jakewharton.espresso:okhttp3-idling-resource:1.0.0")
-    //,exclude: [group: "com.squareup.okhttp3"                    ]
-    androidTestImplementation("androidx.test.ext:junit:1.2.1")
-    androidTestImplementation("androidx.test:runner:1.6.2")
-    androidTestImplementation("androidx.test:rules:1.6.1")
-
+    // Unit tests
     testImplementation("junit:junit:4.13.2")
-    testImplementation("org.mockito:mockito-core:4.0.0")
-    testImplementation("org.mockito.kotlin:mockito-kotlin:4.0.0")
-    androidTestImplementation("org.mockito:mockito-android:4.0.0")
-    androidTestImplementation("androidx.test.ext:junit:1.2.1")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
+    testImplementation("androidx.test.ext:junit:1.1.5")
+    testImplementation("androidx.test:core:1.5.0")
+    testImplementation("org.mockito:mockito-core:3.12.4") // For mocking
+
+
 
     implementation("com.google.android.flexbox:flexbox:3.0.0")
     // Kotlin
@@ -321,5 +320,4 @@ dependencies {
 
     //UNCOMMENT FOR VIDEO CALL FEATURE
     //implementation("com.dafruits:webrtc:123.0.0")
-
 }

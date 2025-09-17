@@ -677,17 +677,21 @@ class CommentsListAdapter(
     // Ici on les supprime purement et simplement.
     // --------------------------------------------------------------------------------------------
     private fun fixHtmlSpacing(html: String): String {
-        var result = html
-        result = result.replaceFirst("^\\n+", "").replaceFirst("\\n+$", "")
-        result = result.replace(Regex("\\s+$"), "")
-        result = result.replace(Regex("<p[^>]*>"), "").replace(Regex("</p>"), "")
+        // On nettoie les espaces et sauts de ligne en début/fin de chaîne
+        var result = html.trim()
+        // On remplace les balises <p> par des <br> pour conserver un saut de ligne
+        result = result.replace(Regex("<p[^>]*>"), "<br>")
+        result = result.replace(Regex("</p>"), "")
+
+        // On remplace chaque retour à la ligne par <br>
         result = result.replace("\n", "<br>")
-        result = result.replaceFirst("^(<br>\\s*)+", "").replaceFirst("(<br>\\s*)+$", "")
-        result = result.replace(Regex("(<br>\\s*)+"), "<br>")
-        result = result.trim()
+        // On ne regroupe PAS les <br> consécutifs, on laisse ainsi plusieurs <br> pour conserver les sauts multiples.
+        // Vous pouvez éventuellement retirer les éventuels <br> inutiles en début ou fin de chaîne si besoin.
+        result = result.replaceFirst("^(<br>\\s*)+", "")
+        result = result.replaceFirst("(<br>\\s*)+$", "")
+
         return result
     }
-    
     // --------------------------------------------------------------------------------------------
     // Convertit un Spanned contenant des URLSpan en un SpannableStringBuilder contenant
     // des ClickableSpan. Ainsi on peut gérer soi-même les clics (ex: deeplink in-app).

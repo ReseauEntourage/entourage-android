@@ -12,9 +12,6 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.updatePadding
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
@@ -35,6 +32,7 @@ import social.entourage.android.home.HomePresenter
 import social.entourage.android.language.LanguageManager
 import social.entourage.android.profile.editProfile.EditPhotoActivity
 import social.entourage.android.profile.settings.ProfilFullViewModel
+import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.VibrationUtil
 import social.entourage.android.user.UserPresenter
@@ -76,16 +74,7 @@ class ProfileFullActivity : BaseActivity()  {
         setBackButton()
         setConfettiView()
         setContentView(binding.root)
-        // Listen for WindowInsets
-        ViewCompat.setOnApplyWindowInsetsListener(binding.profileContent) { view, windowInsets ->
-            // Get the insets for the statusBars() type:
-            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.statusBars())
-            view.updatePadding(
-                top = insets.top
-            )
-            // Return the original insets so they aren’t consumed
-            windowInsets
-        }
+        updatePaddingTopForEdgeToEdge(binding.profileContent)
     }
 
     override fun onResume() {

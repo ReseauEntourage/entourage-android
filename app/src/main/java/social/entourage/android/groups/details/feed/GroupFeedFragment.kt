@@ -9,7 +9,6 @@ import android.os.Bundle
 import android.text.Spannable
 import android.text.SpannableStringBuilder
 import android.text.style.ForegroundColorSpan
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,10 +17,7 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.os.bundleOf
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
-import androidx.core.view.updatePadding
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
@@ -69,6 +65,7 @@ import social.entourage.android.survey.ResponseSurveyActivity
 import social.entourage.android.survey.SurveyPresenter
 import social.entourage.android.tools.image_viewer.ImageDialogActivity
 import social.entourage.android.tools.log.AnalyticsEvents
+import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.CustomAlertDialog
 import social.entourage.android.tools.utils.CustomTypefaceSpan
@@ -77,8 +74,6 @@ import social.entourage.android.tools.utils.VibrationUtil
 import social.entourage.android.tools.utils.px
 import kotlin.math.abs
 import kotlin.math.max
-
-const val rotationDegree = 135F
 
 class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface, SurveyInteractionListener {
 
@@ -95,7 +90,6 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface, Surv
 
     private var isLoading = false
     private var page: Int = 0
-    private val ITEM_PER_PAGE = 10
     private var hasShownWelcomeMessage = false
     private var surveyPresenter: SurveyPresenter = SurveyPresenter()
 
@@ -118,16 +112,7 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface, Surv
     ): View {
         _binding = FragmentFeedGroupBinding.inflate(inflater, container, false)
         AnalyticsEvents.logEvent(AnalyticsEvents.VIEW_GROUP_FEED_SHOW)
-        // Listen for WindowInsets
-        ViewCompat.setOnApplyWindowInsetsListener(binding.toolbarHeader) { view, windowInsets ->
-            // Get the insets for the statusBars() type:
-            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.statusBars())
-            view.updatePadding(
-                top = insets.top
-            )
-            // Return the original insets so they aren’t consumed
-            windowInsets
-        }
+        updatePaddingTopForEdgeToEdge(binding.toolbarHeader)
         return binding.root
     }
 
@@ -250,11 +235,6 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface, Surv
         // groupPresenter.getGroupMembers(groupId)
         groupPresenter.getGroup(groupId)
     }
-    override fun onDestroy() {
-        super.onDestroy()
-        Log.d("BACK_STACK", "FeedActivity a été détruite !")
-    }
-
 
     private fun handleResponseGetGroupMembers(allMembers: MutableList<EntourageUser>?) {
         memberList.addAll(allMembers ?: emptyList())
@@ -746,7 +726,7 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface, Surv
             Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
         )
         spannable.setSpan(
-            CustomTypefaceSpan(regularFont),
+            regularFont?.let { CustomTypefaceSpan(it) },
             0,
             truncatedText.length,
             Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
@@ -768,7 +748,7 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface, Surv
                     Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
                 )
                 fullSpannable.setSpan(
-                    CustomTypefaceSpan(regularFont),
+                    regularFont?.let { it1 -> CustomTypefaceSpan(it1) },
                     0,
                     description.length,
                     Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
@@ -952,6 +932,7 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface, Surv
         binding.appBar.addOnOffsetChangedListener { appBarLayout, verticalOffset ->
             val res: Float = abs(verticalOffset).toFloat() / appBarLayout.totalScrollRange
             binding.toolbarLayout.alpha = 1f - res
+            binding.groupImage.alpha = 1f - res
             binding.groupImageToolbar.alpha = res
             binding.groupNameToolbar.alpha = res
         }
@@ -1036,7 +1017,7 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface, Surv
         })
     }
 
-    fun requestInAppReview(context: Context) {
+    private fun requestInAppReview(context: Context) {
         val manager = ReviewManagerFactory.create(context)
         val request = manager.requestReviewFlow()
         request.addOnCompleteListener { task ->
@@ -1085,6 +1066,7 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface, Surv
 
     companion object {
         var isFromCreation = false
+        private const val ITEM_PER_PAGE = 10
     }
 }
 

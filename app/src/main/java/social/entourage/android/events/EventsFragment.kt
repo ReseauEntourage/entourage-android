@@ -11,10 +11,7 @@ import android.widget.TextView
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.doOnPreDraw
-import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import social.entourage.android.EntourageApplication
@@ -32,6 +29,7 @@ import social.entourage.android.home.UnreadMessages
 import social.entourage.android.main_filter.MainFilterActivity
 import social.entourage.android.main_filter.MainFilterMode
 import social.entourage.android.tools.log.AnalyticsEvents
+import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.HighlightOverlayView
 
@@ -42,8 +40,6 @@ class EventsFragment : Fragment() {
     private var currentFilters = EventActionLocationFilters()
     private var activityResultLauncher: ActivityResultLauncher<Intent>? = null
     private var isFromFilters = false
-    private var statusBarHeight = 0
-
 
     //TODO title same size as
     val binding: FragmentEventsBinding get() = _binding!!
@@ -77,17 +73,7 @@ class EventsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentEventsBinding.inflate(inflater, container, false)
-        // Listen for WindowInsets
-        ViewCompat.setOnApplyWindowInsetsListener(binding.topEventLayout) { view, windowInsets ->
-            // Get the insets for the statusBars() type:
-            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.statusBars())
-            statusBarHeight = insets.top
-            view.updatePadding(
-                top = insets.top
-            )
-            // Return the original insets so they aren’t consumed
-            windowInsets
-        }
+        updatePaddingTopForEdgeToEdge(binding.topEventLayout)
         return binding.root
     }
 

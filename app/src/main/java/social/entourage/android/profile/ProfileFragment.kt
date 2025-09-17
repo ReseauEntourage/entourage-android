@@ -4,9 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
@@ -19,6 +16,7 @@ import social.entourage.android.R
 import social.entourage.android.api.request.UserResponse
 import social.entourage.android.databinding.NewFragmentProfileBinding
 import social.entourage.android.tools.log.AnalyticsEvents
+import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
 
 class ProfileFragment : Fragment() {
 
@@ -31,15 +29,7 @@ class ProfileFragment : Fragment() {
     ): View {
         _binding = NewFragmentProfileBinding.inflate(inflater, container, false)
 
-        ViewCompat.setOnApplyWindowInsetsListener(binding.profileHeader) { view, windowInsets ->
-            // Get the insets for the statusBars() type:
-            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.statusBars())
-            view.updatePadding(
-                top = insets.top
-            )
-            // Return the original insets so they aren’t consumed
-            windowInsets
-        }
+        updatePaddingTopForEdgeToEdge(binding.profileHeader)
         return binding.root
     }
 
