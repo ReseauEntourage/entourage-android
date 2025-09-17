@@ -27,7 +27,7 @@ import social.entourage.android.MainActivity
 import social.entourage.android.R
 import social.entourage.android.api.model.EventActionLocationFilters
 import social.entourage.android.api.model.Events
-import social.entourage.android.databinding.NewFragmentDiscoverEventsListBinding
+import social.entourage.android.databinding.FragmentDiscoverEventsListBinding
 import social.entourage.android.events.EventFiltersActivity
 import social.entourage.android.events.EventsPresenter
 import social.entourage.android.home.HomeEventAdapter
@@ -38,8 +38,8 @@ const val EVENTS_PER_PAGE = 20
 
 class DiscoverEventsListFragment : Fragment() {
 
-    private var _binding: NewFragmentDiscoverEventsListBinding? = null
-    val binding: NewFragmentDiscoverEventsListBinding get() = _binding!!
+    private var _binding: FragmentDiscoverEventsListBinding? = null
+    val binding: FragmentDiscoverEventsListBinding get() = _binding!!
 
     private lateinit var eventsPresenter: EventsPresenter
     private var myId: Int? = null
@@ -81,7 +81,7 @@ class DiscoverEventsListFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = NewFragmentDiscoverEventsListBinding.inflate(inflater, container, false)
+        _binding = FragmentDiscoverEventsListBinding.inflate(inflater, container, false)
         return binding.root
     }
 

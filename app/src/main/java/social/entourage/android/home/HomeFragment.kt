@@ -16,7 +16,6 @@ import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
@@ -29,23 +28,20 @@ import social.entourage.android.R
 import social.entourage.android.actions.ActionsPresenter
 import social.entourage.android.api.model.Action
 import social.entourage.android.api.model.ActionSectionFilters
-import social.entourage.android.api.model.Conversation
 import social.entourage.android.api.model.EventActionLocationFilters
 import social.entourage.android.api.model.Events
 import social.entourage.android.api.model.Group
-import social.entourage.android.api.model.GroupMember
 import social.entourage.android.api.model.Help
 import social.entourage.android.api.model.Pedago
-import social.entourage.android.api.model.SmallTalk
 import social.entourage.android.api.model.Summary
 import social.entourage.android.api.model.User
 import social.entourage.android.api.model.UserSmallTalkRequest
-import social.entourage.android.chatbot.ChatBotBottomSheet
 import social.entourage.android.databinding.FragmentHomeBinding
 import social.entourage.android.discussions.DetailConversationActivity
 import social.entourage.android.enhanced_onboarding.EnhancedOnboarding
 import social.entourage.android.events.create.CommunicationHandler
 import social.entourage.android.guide.GDSMainActivity
+import social.entourage.android.home.chatbot.ChatBotBottomSheet
 import social.entourage.android.home.pedago.OnItemClick
 import social.entourage.android.home.pedago.PedagoDetailActivity
 import social.entourage.android.home.pedago.PedagoListActivity
@@ -53,9 +49,7 @@ import social.entourage.android.notifications.InAppNotificationsActivity
 import social.entourage.android.notifications.NotificationDemandActivity
 import social.entourage.android.onboarding.onboard.OnboardingStartActivity
 import social.entourage.android.profile.ProfileFullActivity
-import social.entourage.android.small_talks.SmallTalkGuidelinesActivity
 import social.entourage.android.small_talks.SmallTalkIntroActivity
-import social.entourage.android.small_talks.SmallTalkListOtherBands
 import social.entourage.android.small_talks.SmallTalkViewModel
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
@@ -64,7 +58,6 @@ import social.entourage.android.tools.utils.CustomAlertDialog
 import social.entourage.android.tools.view.WebViewFragment
 import social.entourage.android.user.UserPresenter
 import timber.log.Timber
-import kotlin.jvm.java
 
 class HomeFragment: Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocationUpdate {
 
@@ -335,8 +328,7 @@ class HomeFragment: Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocatio
     }
 
     private fun checkNotifAndSendToken() {
-        val notificationManager = NotificationManagerCompat.from(requireContext())
-        val areNotificationsEnabled = notificationManager.areNotificationsEnabled()
+        val areNotificationsEnabled = NotificationManagerCompat.from(requireContext()).areNotificationsEnabled()
         val sharedPreferences = requireActivity().getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE)
         val editor = sharedPreferences.edit()
 
@@ -392,15 +384,14 @@ class HomeFragment: Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocatio
     }
 
     private fun checkNotificationStatus() {
-        val notificationManager = NotificationManagerCompat.from(requireContext())
-        val areNotificationsEnabled = notificationManager.areNotificationsEnabled()
+        val areNotificationsEnabled = NotificationManagerCompat.from(requireContext()).areNotificationsEnabled()
         if (areNotificationsEnabled) {
             AnalyticsEvents.logEvent(AnalyticsEvents.has_user_activated_notif)
             FirebaseMessaging.getInstance().token.addOnSuccessListener { _ ->
                 AnalyticsEvents.logEvent(AnalyticsEvents.user_have_notif_and_token)
             }
             FirebaseMessaging.getInstance().token.addOnFailureListener { exception ->
-                Timber.e("FCM Token", "Failed to retrieve token", exception)
+                Timber.e("FCM Token: Failed to retrieve token :%s", exception)
                 AnalyticsEvents.logEvent(AnalyticsEvents.user_have_notif_and_no_token + "_" + user?.id)
             }
         } else {
@@ -650,9 +641,9 @@ class HomeFragment: Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocatio
 
         if(allAction.size > 0 ){
             if(isContribution){
-                binding.homeTitleAction.text = getString(R.string.home_v2_title_action_contrib)
-                binding.homeSubtitleAction.text = getString(R.string.home_v2_subtitle_action_contrib)
-                binding.titleButtonAction.text = getString(R.string.home_v2_btn_more_action_contrib)
+                binding.homeTitleAction.text = getString(R.string.home_title_action_contrib)
+                binding.homeSubtitleAction.text = getString(R.string.home_subtitle_action_contrib)
+                binding.titleButtonAction.text = getString(R.string.home_btn_more_action_contrib)
                 binding.btnMoreAction.setOnClickListener {
                     AnalyticsEvents.logEvent(AnalyticsEvents.Action_Home_Contrib_All)
                     val mainActivity = (requireActivity() as? MainActivity)
@@ -751,6 +742,9 @@ class HomeFragment: Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocatio
         EnhancedOnboarding.preference = summary.preference ?: ""
         onActionUnclosed(summary)
         handleHelps(summary)
+        if (summary.signablePermission != null ){
+            HomeFragment.signablePermission = summary.signablePermission!!
+        }
         val me = EntourageApplication.me(activity)
         if(summary.preference == null || me?.address == null){
             OnboardingStartActivity.FRAGMENT_NUMBER = 3
@@ -776,7 +770,7 @@ class HomeFragment: Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocatio
     private fun handleHelps(summary: Summary){
         if(isAdded){
             doTotalchecksumToDisplayHomeFirstTime()
-            val formattedString = requireContext().getString(R.string.home_v2_help_title_three, summary.moderator?.displayName)
+            val formattedString = requireContext().getString(R.string.home_help_title_three, summary.moderator?.displayName)
             //val help1 = Help(requireContext().getString(R.string.home_v2_help_title_one) , R.drawable.first_help_item_illu)
             //val help2 = Help(requireContext().getString(R.string.home_v2_help_title_two) , R.drawable.ic_home_v2_create_group)
             val help3 = Help(formattedString , R.drawable.first_help_item_illu)
@@ -1013,6 +1007,7 @@ class HomeFragment: Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocatio
     }
     companion object {
         var isContribProfile = false
+        var signablePermission = false
     }
 
     override fun onHomeChangeLocationUpdateClearFragment() {

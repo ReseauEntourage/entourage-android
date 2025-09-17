@@ -5,7 +5,6 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
-import android.os.Build
 import android.os.Handler
 import android.os.Looper
 import android.text.SpannableString
@@ -25,10 +24,9 @@ import social.entourage.android.MainActivity
 import social.entourage.android.R
 import social.entourage.android.api.model.EntourageUser
 import social.entourage.android.api.model.Post
-import social.entourage.android.api.model.Survey
 import social.entourage.android.api.model.Reaction
 import social.entourage.android.api.model.ReactionType
-import social.entourage.android.api.model.User
+import social.entourage.android.api.model.Survey
 import social.entourage.android.databinding.NewLayoutPostBinding
 import social.entourage.android.databinding.SurveyLayoutBinding
 import social.entourage.android.language.LanguageManager
@@ -37,8 +35,6 @@ import social.entourage.android.report.DataLanguageStock
 import social.entourage.android.survey.ResponseSurveyActivity
 import social.entourage.android.tools.displayHtml
 import social.entourage.android.tools.log.AnalyticsEvents
-import social.entourage.android.tools.setHyperlinkClickable
-import social.entourage.android.user.UserProfileActivity
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.VibrationUtil
 import social.entourage.android.tools.utils.px
@@ -213,7 +209,7 @@ class PostAdapter(
             .placeholder(R.drawable.placeholder_user)
             .error(R.drawable.placeholder_user)
             .circleCrop()
-            .into(surveyHolder.binding.image)
+            .into(surveyHolder.binding.authorImage)
 
         // On affiche la question
         surveyHolder.binding.surveyQuestion.text = post.content ?: "Question non disponible"
@@ -327,9 +323,7 @@ class PostAdapter(
                 else -> // "deleted"
                     surveyHolder.binding.surveyQuestion.text = context.getText(R.string.deleted_publi)
             }
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                surveyHolder.binding.surveyQuestion.setTextColor(context.getColor(R.color.deleted_grey))
-            }
+            surveyHolder.binding.surveyQuestion.setTextColor(context.getColor(R.color.deleted_grey))
             surveyHolder.binding.surveyQuestion.visibility = View.VISIBLE
             // On cache tout le reste
             surveyHolder.binding.btnReportPost.visibility = View.GONE
@@ -435,7 +429,7 @@ class PostAdapter(
                 if (index < reactionsLayouts.size) {
                     val foundType = reactionTypes?.find { it.id == r.reactionId }
                     foundType?.let {
-                        Glide.with(context).load(it.imageUrl).into(reactionViews[index].image)
+                        Glide.with(context).load(it.imageUrl).into(reactionViews[index].reactionImage)
                         reactionsLayouts[index].visibility = View.VISIBLE
                     }
                 }
@@ -676,7 +670,7 @@ class PostAdapter(
             if (index < reactionsLayouts.size) {
                 val foundType = reactionTypes?.find { it.id == r.reactionId }
                 foundType?.let {
-                    Glide.with(context).load(it.imageUrl).into(reactionViews[index].image)
+                    Glide.with(context).load(it.imageUrl).into(reactionViews[index].reactionImage)
                     reactionsLayouts[index].visibility = View.VISIBLE
                 }
             }
@@ -890,9 +884,7 @@ class PostAdapter(
                 else -> // "deleted"
                     binding.postMessage.text = context.getText(R.string.deleted_publi)
             }
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                binding.postMessage.setTextColor(context.getColor(R.color.deleted_grey))
-            }
+            binding.postMessage.setTextColor(context.getColor(R.color.deleted_grey))
             binding.postMessage.visibility = View.VISIBLE
             // On désactive tout un tas d’éléments
             binding.btnReportPost.visibility = View.GONE

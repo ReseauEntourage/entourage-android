@@ -34,7 +34,7 @@
         <attr format="boolean" name="ccp_setCountryByTimeZone"/>
         <attr format="boolean" name="ccp_alternative_layout"/>
     </declare-styleable>
-    <declare-styleable name="EntourageTitleView">
+    <declare-styleable name="CustomTitleView">
         <attr name="entourageTitle" format="string"/>
         <attr name="entourageTitleCloseDrawable" format="reference"/>
         <attr name="entourageTitleCloseDrawableTint" format="reference"/>

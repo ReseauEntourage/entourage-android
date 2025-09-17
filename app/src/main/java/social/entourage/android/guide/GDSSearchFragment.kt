@@ -12,7 +12,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import social.entourage.android.EntourageApplication
-import social.entourage.android.R
+import social.entourage.android.api.model.LocationPoint
 import social.entourage.android.api.model.guide.Poi
 import social.entourage.android.api.request.PoiResponse
 import social.entourage.android.base.BaseDialogFragment
@@ -31,6 +31,7 @@ class GDSSearchFragment : BaseDialogFragment(), PoiListFragment {
     private val MIN_CHARS_SEARCH = 3
     private var latitude: Double = 0.0
     private var longitude: Double = 0.0
+    private var currentLocation: LocationPoint? = null
     private var distance: Double = 0.0
 
     var arrayPois = ArrayList<Poi>()
@@ -41,6 +42,7 @@ class GDSSearchFragment : BaseDialogFragment(), PoiListFragment {
         arguments?.let {
             latitude = it.getDouble(ARG_LAT)
             longitude = it.getDouble(ARG_LONG)
+            currentLocation = LocationPoint(latitude, longitude)
             distance = it.getDouble(ARG_DIST
             )
         }
@@ -101,7 +103,7 @@ class GDSSearchFragment : BaseDialogFragment(), PoiListFragment {
     }
 
     fun setupRecyclerView(){
-        rvAdapter = GDSSearchAdapter(arrayPois)
+        rvAdapter = GDSSearchAdapter(arrayPois, currentLocation)
         binding.uiRecyclerView?.setHasFixedSize(true)
         val layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
 
@@ -111,7 +113,7 @@ class GDSSearchFragment : BaseDialogFragment(), PoiListFragment {
     }
 
     fun sendSearch() {
-        if (binding.uiEtSearch?.text?.length ?: 0 < MIN_CHARS_SEARCH) return
+        if ((binding.uiEtSearch?.text?.length ?: 0) < MIN_CHARS_SEARCH) return
         view?.hideKeyboard()
         binding.uiEtSearch?.clearFocus()
 

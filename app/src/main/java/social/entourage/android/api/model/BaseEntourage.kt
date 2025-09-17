@@ -7,19 +7,22 @@ import androidx.annotation.ColorRes
 import androidx.annotation.StringRes
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
-import com.google.android.gms.maps.model.LatLng
-import com.google.gson.*
+import com.google.gson.GsonBuilder
+import com.google.gson.JsonDeserializationContext
+import com.google.gson.JsonDeserializer
+import com.google.gson.JsonElement
+import com.google.gson.JsonParseException
 import com.google.gson.annotations.SerializedName
 import social.entourage.android.R
 import social.entourage.android.api.model.feed.FeedItem
-import social.entourage.android.base.location.EntLocation
 import social.entourage.android.entourage.category.EntourageCategoryManager
 import timber.log.Timber
 import java.io.Serializable
 import java.lang.reflect.Type
 import java.text.SimpleDateFormat
-import java.util.*
-import kotlin.math.floor
+import java.util.Calendar
+import java.util.Date
+import java.util.Locale
 
 /**
  * Created by Mihai Ionescu on 06/07/2018.
@@ -128,30 +131,6 @@ open class BaseEntourage : FeedItem, Serializable {
 
     open fun isEvent() : Boolean {
         return false
-    }
-    /**
-     * Returns the distance from the entourage starting point to the current location
-     * If the current location or the starting point is null, it returns zero
-     * @return distance in kilometers
-     */
-    fun distanceToCurrentLocation(): Int {
-        val newLocation = EntLocation.currentLocation ?: return 0
-        val distance = this.location?.distanceTo(LocationPoint(newLocation.latitude, newLocation.longitude)) ?:0.0f
-        return floor(distance /1000.0f).toInt()
-    }
-
-    /**
-     * Returns the distance from the entourage starting point to the given location
-     * If the location or the starting point is null, it returns Integer.MAX_VALUE
-     * @return distance in meters
-     */
-    fun distanceToLocation(newLocation: LatLng?): Int {
-        if (newLocation == null) {
-            return Int.MAX_VALUE
-        }
-        val distance: Float = this.location?.distanceTo(LocationPoint(newLocation.latitude, newLocation.longitude))
-                ?: return Int.MAX_VALUE
-        return floor(distance).toInt()
     }
 
     // ----------------------------------

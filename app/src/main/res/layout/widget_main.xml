@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_logo_entourage_onboarding_new"
-        android:contentDescription="@string/app_name" />
+        android:contentDescription="@string/full_app_name" />
 
     <TextView
         android:id="@+id/eventCountText"

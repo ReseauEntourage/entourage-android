@@ -13,6 +13,7 @@ import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
 import android.text.style.URLSpan
 import android.text.util.Linkify
+import android.transition.Transition
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -25,6 +26,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
+import com.bumptech.glide.request.target.CustomTarget
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.api.model.Post
@@ -50,6 +52,8 @@ interface OnItemClickListener {
     fun onItemClick(comment: Post)
     fun onCommentReport(commentId: Int?, isForEvent: Boolean, isForGroup: Boolean, isMe: Boolean, commentLang: String)
     fun onShowWeb(url: String) // si tu veux ouvrir un navigateur ou gérer autrement
+    fun onMessageLongPress(comment: Post, isMe: Boolean)
+
 }
 
 class CommentsListAdapter(
@@ -199,67 +203,65 @@ class CommentsListAdapter(
                 bindingLeft.publicationDate.setTextColor(ContextCompat.getColor(context, R.color.light_orange))
             }
 
-            // Gestion de l'image
             if (!comment.imageUrl.isNullOrEmpty()) {
                 bindingLeft.commentImageContainer.visibility = View.VISIBLE
+
+                // 1. Récupérer la largeur de l'écran
+                val screenWidth = context.resources.displayMetrics.widthPixels
+                val targetWidth = screenWidth / 2 // On veut exactement la moitié de l'écran
+
                 Glide.with(context)
                     .asBitmap()
                     .load(comment.imageUrl)
                     .transform(CenterCrop(), RoundedCorners(Const.ROUNDED_CORNERS_IMAGES.px))
-                    .into(object : com.bumptech.glide.request.target.CustomTarget<Bitmap>() {
-                        override fun onResourceReady(resource: Bitmap, transition: com.bumptech.glide.request.transition.Transition<in Bitmap>?) {
-                            val isPortrait = resource.height > resource.width
-                            val screenWidth = (context as Activity).resources.displayMetrics.widthPixels
-                            val currentImageParams = bindingLeft.commentImage.layoutParams
-                            val newImageParams = when (currentImageParams) {
-                                is ViewGroup.MarginLayoutParams -> currentImageParams.apply {
-                                    width = if (isPortrait) screenWidth / 2 else ViewGroup.LayoutParams.MATCH_PARENT
-                                    height = ViewGroup.LayoutParams.WRAP_CONTENT
-                                }
-                                else -> ViewGroup.MarginLayoutParams(
-                                    if (isPortrait) screenWidth / 2 else ViewGroup.LayoutParams.MATCH_PARENT,
-                                    ViewGroup.LayoutParams.WRAP_CONTENT
-                                ).also {
-                                    if (currentImageParams is ViewGroup.MarginLayoutParams) {
-                                        it.setMargins(
-                                            currentImageParams.leftMargin,
-                                            currentImageParams.topMargin,
-                                            currentImageParams.rightMargin,
-                                            currentImageParams.bottomMargin
-                                        )
-                                    }
-                                }
+                    .into(object : CustomTarget<Bitmap>() {
+                        override fun onResourceReady(
+                            resource: Bitmap,
+                            transition: com.bumptech.glide.request.transition.Transition<in Bitmap>?
+                        ) {
+                            // 2. Calculer la hauteur proportionnelle
+                            val ratio = resource.height.toFloat() / resource.width.toFloat()
+                            val targetHeight = (targetWidth * ratio).toInt()
+
+                            // 3. Redimensionner le Bitmap
+                            val scaledBitmap = Bitmap.createScaledBitmap(
+                                resource,
+                                targetWidth,
+                                targetHeight,
+                                true
+                            )
+
+                            // 4. Appliquer le Bitmap redimensionné à l'ImageView
+                            bindingLeft.commentImage.setImageBitmap(scaledBitmap)
+
+                            // 5. Mettre à jour les dimensions de l'ImageView
+                            val imageParams = bindingLeft.commentImage.layoutParams
+                            imageParams.width = targetWidth
+                            imageParams.height = targetHeight
+                            bindingLeft.commentImage.layoutParams = imageParams
+                            bindingLeft.commentImage.requestLayout()
+
+                            // 6. Ajuste la largeur du conteneur parent (message_container)
+                            val containerParams = bindingLeft.messageContainer.layoutParams
+                            if (containerParams is ViewGroup.MarginLayoutParams) {
+                                containerParams.width = targetWidth
+                                bindingLeft.messageContainer.layoutParams = containerParams
                             }
-                            bindingLeft.commentImage.layoutParams = newImageParams
-                            bindingLeft.commentImage.setImageBitmap(resource)
-                            val currentContainerParams = bindingLeft.messageContainer.layoutParams
-                            val newContainerParams = when (currentContainerParams) {
-                                is ViewGroup.MarginLayoutParams -> currentContainerParams.apply {
-                                    width = newImageParams.width
-                                }
-                                else -> ViewGroup.MarginLayoutParams(newImageParams.width, currentContainerParams.height).also {
-                                    if (currentContainerParams is ViewGroup.MarginLayoutParams) {
-                                        it.setMargins(
-                                            currentContainerParams.leftMargin,
-                                            currentContainerParams.topMargin,
-                                            currentContainerParams.rightMargin,
-                                            currentContainerParams.bottomMargin
-                                        )
-                                    }
-                                }
-                            }
-                            bindingLeft.messageContainer.layoutParams = newContainerParams
                         }
 
                         override fun onLoadCleared(placeholder: Drawable?) {
                             bindingLeft.commentImage.setImageDrawable(placeholder)
                         }
                     })
+
+                // 7. Gestion du clic sur l'image (zoom)
                 bindingLeft.commentImage.setOnClickListener {
                     val intent = Intent(context, ImageZoomActivity::class.java)
                     intent.putExtra("image_url", comment.imageUrl)
                     context.startActivity(intent)
                 }
+
+                // 8. Gestion du cas "image seule" (pas de texte)
                 val hasOnlyImage = contentToShow.isBlank() && !comment.imageUrl.isNullOrEmpty()
                 if (hasOnlyImage) {
                     bindingLeft.comment.visibility = View.GONE
@@ -267,10 +269,10 @@ class CommentsListAdapter(
                 } else {
                     bindingLeft.comment.visibility = View.VISIBLE
                 }
+
+                // 9. Gestion du long clic (report)
                 bindingLeft.commentImage.setOnLongClickListener {
-                    val commentLang = comment.contentTranslations?.fromLang ?: ""
-                    DataLanguageStock.updateContentToCopy(comment.content ?: "")
-                    onItemClick.onCommentReport(comment.id, isForEvent, isForGroup, isMe, commentLang)
+                    onItemClick.onMessageLongPress(comment, isMe)
                     true
                 }
             } else {
@@ -278,6 +280,8 @@ class CommentsListAdapter(
                 bindingLeft.commentImage.setImageDrawable(null)
                 bindingLeft.comment.visibility = View.VISIBLE
             }
+
+
 
             // Taille dynamique
             val currentCommentParams = bindingLeft.comment.layoutParams
@@ -398,15 +402,23 @@ class CommentsListAdapter(
                     .load(comment.imageUrl)
                     .into(object : com.bumptech.glide.request.target.CustomTarget<Bitmap>() {
                         override fun onResourceReady(resource: Bitmap, transition: com.bumptech.glide.request.transition.Transition<in Bitmap>?) {
-                            val isPortrait = resource.height > resource.width
                             val screenWidth = (context as Activity).resources.displayMetrics.widthPixels
-                            val layoutParams = bindingRight.commentImage.layoutParams
-                            layoutParams.width = if (isPortrait) screenWidth / 2 else ViewGroup.LayoutParams.MATCH_PARENT
-                            layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT
-                            bindingRight.commentImage.layoutParams = layoutParams
+                            val maxImageWidth = screenWidth / 2
+                            val maxImageHeight = 800 // Valeur en pixels, à adapter selon ton design (ex: 300dp)
+
+                            // Calcule la hauteur proportionnelle pour les images portrait/paysage
+                            val isPortrait = resource.height > resource.width
+                            val ratio = resource.height.toFloat() / resource.width.toFloat()
+                            val finalWidth = if (isPortrait) maxImageWidth else screenWidth
+                            val finalHeight = (finalWidth * ratio).toInt().coerceAtMost(maxImageHeight)
+
+                            // Applique les dimensions à l'ImageView
+                            val imageLayoutParams = bindingRight.commentImage.layoutParams
+                            imageLayoutParams.width = finalWidth
+                            imageLayoutParams.height = finalHeight
+                            bindingRight.commentImage.layoutParams = imageLayoutParams
                             bindingRight.commentImage.setImageBitmap(resource)
                         }
-
                         override fun onLoadCleared(placeholder: Drawable?) {
                             bindingRight.commentImage.setImageDrawable(placeholder)
                         }
@@ -431,6 +443,7 @@ class CommentsListAdapter(
                 }
             } else {
                 bindingRight.commentImageContainer.visibility = View.GONE
+                bindingRight.commentImage.setImageDrawable(null)
                 bindingRight.comment.visibility = View.VISIBLE
             }
         }
@@ -585,6 +598,8 @@ class CommentsListAdapter(
             binding.commentImageContainer.visibility = View.GONE
         }
 
+
+
         private fun handleReportLogicLeft(
             binding: LayoutCommentItemLeftBinding,
             comment: Post,
@@ -595,24 +610,18 @@ class CommentsListAdapter(
                 DataLanguageStock.updateContentToCopy(comment.content ?: "")
                 onItemClick.onCommentReport(comment.id, isForEvent, isForGroup, isMe, commentLang)
             }
-            // Long click => report
 
             if (comment.status !in listOf("deleted", "offensive", "offensible")) {
-                val commentLang = comment.contentTranslations?.fromLang ?: ""
-                binding.comment.setOnLongClickListener {
-                    DataLanguageStock.updateContentToCopy(comment.content ?: "")
-                    onItemClick.onCommentReport(comment.id, isForEvent,isForGroup, isMe, commentLang)
+                val onLong = View.OnLongClickListener {
+                    onItemClick.onMessageLongPress(comment, isMe)
                     true
                 }
+                binding.comment.setOnLongClickListener(onLong)
+                binding.commentImage.setOnLongClickListener(onLong)
             }
-            // Si c'est "moi" ou "isConversation", on masque "report"
-            if (isMe || isConversation) {
-                binding.report.visibility = View.GONE
-            } else {
-                binding.report.visibility = View.VISIBLE
-            }
-        }
 
+            binding.report.visibility = if (isMe || isConversation) View.GONE else View.VISIBLE
+        }
         private fun handleReportLogicRight(
             binding: LayoutCommentItemRightBinding,
             comment: Post,
@@ -621,22 +630,21 @@ class CommentsListAdapter(
             binding.report.setOnClickListener {
                 val commentLang = comment.contentTranslations?.fromLang ?: ""
                 DataLanguageStock.updateContentToCopy(comment.content ?: "")
-                onItemClick.onCommentReport(comment.id, isForEvent,isForGroup, isMe, commentLang)
+                onItemClick.onCommentReport(comment.id, isForEvent, isForGroup, isMe, commentLang)
             }
+
             if (comment.status !in listOf("deleted", "offensive", "offensible")) {
-                val commentLang = comment.contentTranslations?.fromLang ?: ""
-                binding.comment.setOnLongClickListener {
-                    DataLanguageStock.updateContentToCopy(comment.content ?: "")
-                    onItemClick.onCommentReport(comment.id, isForEvent,isForGroup, isMe, commentLang)
+                val onLong = View.OnLongClickListener {
+                    onItemClick.onMessageLongPress(comment, isMe)
                     true
                 }
+                binding.comment.setOnLongClickListener(onLong)
+                binding.commentImage.setOnLongClickListener(onLong)
             }
-            if (isMe || isConversation) {
-                binding.report.visibility = View.GONE
-            } else {
-                binding.report.visibility = View.VISIBLE
-            }
+
+            binding.report.visibility = if (isMe || isConversation) View.GONE else View.VISIBLE
         }
+
 
         private fun handleDateAndErrorLeft(
             binding: LayoutCommentItemLeftBinding,
@@ -930,5 +938,22 @@ class CommentsListAdapter(
             }, start, end, flags)
         }
         return sb
+    }
+
+    private fun calculateAspectRatio(width: Int, height: Int, maxWidth: Int, maxHeight: Int): Pair<Int, Int> {
+        val ratio = width.toFloat() / height.toFloat()
+        return if (width > maxWidth || height > maxHeight) {
+            if (ratio > 1) { // Paysage
+                val newWidth = minOf(width, maxWidth)
+                val newHeight = (newWidth / ratio).toInt()
+                Pair(newWidth, newHeight)
+            } else { // Portrait
+                val newHeight = minOf(height, maxHeight)
+                val newWidth = (newHeight * ratio).toInt()
+                Pair(newWidth, newHeight)
+            }
+        } else {
+            Pair(width, height) // Pas besoin de redimensionner
+        }
     }
 }

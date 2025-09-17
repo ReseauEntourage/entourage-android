@@ -19,7 +19,7 @@ import social.entourage.android.RefreshController
 import social.entourage.android.actions.ActionsPresenter
 import social.entourage.android.api.model.Action
 import social.entourage.android.api.model.Group
-import social.entourage.android.databinding.NewFragmentCreateActionBinding
+import social.entourage.android.databinding.FragmentCreateActionBinding
 import social.entourage.android.groups.GroupPresenter
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
@@ -30,8 +30,8 @@ import social.entourage.android.tools.utils.previousPage
 
 class CreateActionFragment : Fragment() {
 
-    private var _binding: NewFragmentCreateActionBinding? = null
-    val binding: NewFragmentCreateActionBinding get() = _binding!!
+    private var _binding: FragmentCreateActionBinding? = null
+    val binding: FragmentCreateActionBinding get() = _binding!!
     private val viewModel: CommunicationActionHandlerViewModel by activityViewModels()
     private var viewPager: ViewPager2? = null
     private val actionPresenter: ActionsPresenter by lazy { ActionsPresenter() }
@@ -66,7 +66,7 @@ class CreateActionFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = NewFragmentCreateActionBinding.inflate(inflater, container, false)
+        _binding = FragmentCreateActionBinding.inflate(inflater, container, false)
 
         updatePaddingTopForEdgeToEdge(binding.layout)
         return binding.root

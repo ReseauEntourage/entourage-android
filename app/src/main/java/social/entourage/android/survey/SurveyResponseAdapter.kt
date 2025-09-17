@@ -1,26 +1,17 @@
 package social.entourage.android.survey
 
-import android.app.Activity
 import android.content.Context
-import android.content.Intent
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.google.gson.Gson
-import com.google.gson.annotations.SerializedName
 import social.entourage.android.EntourageApplication
 import social.entourage.android.api.model.Survey
-import social.entourage.android.api.model.SurveyResponse
 import social.entourage.android.api.model.SurveyResponseUser
 import social.entourage.android.api.model.SurveyResponsesListWrapper
 import social.entourage.android.databinding.LayoutSectionSurveyResponseItemBinding
 import social.entourage.android.databinding.LayoutVoterSurveyResponseItemBinding
 import social.entourage.android.groups.details.members.OnItemShowListener
-import social.entourage.android.tools.utils.Const
-import social.entourage.android.user.UserProfileActivity
-
 
 class SurveyResponseAdapter(
     private val survey: Survey,
@@ -137,5 +128,3 @@ class SurveyResponseAdapter(
 
 class SectionViewHolder(val binding: LayoutSectionSurveyResponseItemBinding) : RecyclerView.ViewHolder(binding.root)
 class ItemViewHolder(val binding: LayoutVoterSurveyResponseItemBinding) : RecyclerView.ViewHolder(binding.root)
-
-

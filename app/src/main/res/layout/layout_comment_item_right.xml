@@ -28,6 +28,7 @@
         android:background="@drawable/new_comment_background_light_orange"
         android:paddingBottom="0dp"
         android:layout_marginBottom="0dp"
+        android:layout_marginEnd="10dp"
         app:layout_constraintStart_toEndOf="@id/report"
         app:layout_constraintEnd_toStartOf="@id/image"
         app:layout_constraintTop_toTopOf="parent"

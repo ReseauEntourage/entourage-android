@@ -18,9 +18,9 @@ import social.entourage.android.api.model.Image
 import social.entourage.android.databinding.NewFragmentCreateGroupStepThreeBinding
 import social.entourage.android.groups.choosePhoto.ChooseGalleryPhotoModalFragment
 import social.entourage.android.groups.choosePhoto.ImagesType
+import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.px
-import social.entourage.android.tools.log.AnalyticsEvents
 
 class CreateGroupStepThreeFragment : Fragment() {
 
@@ -45,12 +45,12 @@ class CreateGroupStepThreeFragment : Fragment() {
         if (onClick) {
             if (selectedImage == null) {
                 viewModel.isCondition.value = false
-                binding.layout.error.root.visibility = View.VISIBLE
-                binding.layout.error.errorMessage.text =
+                binding.layout.egs3Error.root.visibility = View.VISIBLE
+                binding.layout.egs3Error.errorMessage.text =
                     getString(R.string.error_categories_create_group_image)
             } else {
                 viewModel.isCondition.value = true
-                binding.layout.error.root.visibility = View.GONE
+                binding.layout.egs3Error.root.visibility = View.GONE
                 viewModel.clickNext.removeObservers(viewLifecycleOwner)
             }
         }
@@ -66,7 +66,7 @@ class CreateGroupStepThreeFragment : Fragment() {
     }
 
     private fun setWelcomeMessage() {
-        binding.layout.groupMessageWelcome.addTextChangedListener(object : TextWatcher {
+        binding.layout.egs3GroupMessageWelcome.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
 
             }
@@ -83,19 +83,19 @@ class CreateGroupStepThreeFragment : Fragment() {
 
     private fun handleChoosePhoto() {
         val choosePhotoModalFragment = ChooseGalleryPhotoModalFragment.newInstance(ImagesType.GROUPS)
-        binding.layout.addPhotoLayout.setOnClickListener {
+        binding.layout.egs3AddPhotoLayout.setOnClickListener {
             AnalyticsEvents.logEvent(
                 AnalyticsEvents.ACTION_NEW_GROUP_STEP3_ADD_PICTURE)
             choosePhotoModalFragment.show(parentFragmentManager, ChooseGalleryPhotoModalFragment.TAG)
         }
-        binding.layout.addPhoto.setOnClickListener {
+        binding.layout.egs3AddPhoto.setOnClickListener {
             choosePhotoModalFragment.show(parentFragmentManager, ChooseGalleryPhotoModalFragment.TAG)
         }
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        binding.layout.error.root.visibility = View.GONE
+        binding.layout.egs3Error.root.visibility = View.GONE
     }
 
     private fun onFragmentResult() {
@@ -104,12 +104,12 @@ class CreateGroupStepThreeFragment : Fragment() {
             viewModel.isButtonClickable.value = imageHasBeenSelected()
             viewModel.group.neighborhoodImageId(selectedImage?.id)
             selectedImage?.imageUrl.let { imageUrl ->
-                binding.layout.addPhotoLayout.visibility = View.GONE
-                binding.layout.addPhoto.visibility = View.VISIBLE
+                binding.layout.egs3AddPhotoLayout.visibility = View.GONE
+                binding.layout.egs3AddPhoto.visibility = View.VISIBLE
                 Glide.with(requireActivity())
                     .load(Uri.parse(imageUrl))
                     .transform(CenterCrop(), RoundedCorners(Const.ROUNDED_CORNERS_IMAGES.px))
-                    .into(binding.layout.addPhoto)
+                    .into(binding.layout.egs3AddPhoto)
             }
         }
     }

@@ -2,71 +2,71 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/profile"
-    app:startDestination="@+id/profile_fragment">
+    app:startDestination="@+id/association_fragment">
 
-    <fragment
-        android:id="@+id/profile_fragment"
-        android:name="social.entourage.android.profile.ProfileFragment">
-        <action
-            android:id="@+id/action_profile_fragment_to_help_about_fragment"
-            app:destination="@id/help_about_fragment"
-            app:enterAnim="@anim/slide_in_from_right"
-            app:popExitAnim="@anim/slide_out_to_right" />
-        <action
-            android:id="@+id/action_profile_fragment_to_edit_profile_fragment"
-            app:destination="@id/edit_profile_fragment"
-            app:enterAnim="@anim/slide_in_from_right"
-            app:popExitAnim="@anim/slide_out_to_right" />
-        <action
-            android:id="@+id/action_profile_fragment_to_association_fragment"
-            app:destination="@id/association_fragment"
-            app:enterAnim="@anim/slide_in_from_right"
-            app:popExitAnim="@anim/slide_out_to_right" />
-    </fragment>
+<!--    <fragment-->
+<!--        android:id="@+id/profile_fragment"-->
+<!--        android:name="social.entourage.android.profile.ProfileFragment">-->
+<!--        <action-->
+<!--            android:id="@+id/action_profile_fragment_to_help_about_fragment"-->
+<!--            app:destination="@id/help_about_fragment"-->
+<!--            app:enterAnim="@anim/slide_in_from_right"-->
+<!--            app:popExitAnim="@anim/slide_out_to_right" />-->
+<!--        <action-->
+<!--            android:id="@+id/action_profile_fragment_to_edit_profile_fragment"-->
+<!--            app:destination="@id/edit_profile_fragment"-->
+<!--            app:enterAnim="@anim/slide_in_from_right"-->
+<!--            app:popExitAnim="@anim/slide_out_to_right" />-->
+<!--        <action-->
+<!--            android:id="@+id/action_profile_fragment_to_association_fragment"-->
+<!--            app:destination="@id/association_fragment"-->
+<!--            app:enterAnim="@anim/slide_in_from_right"-->
+<!--            app:popExitAnim="@anim/slide_out_to_right" />-->
+<!--    </fragment>-->
 
-    <fragment
-        android:id="@+id/help_about_fragment"
-        android:name="social.entourage.android.profile.settings.HelpAboutFragment" />
+<!--    <fragment-->
+<!--        android:id="@+id/help_about_fragment"-->
+<!--        android:name="social.entourage.android.profile.settings.HelpAboutFragment" />-->
 
-    <fragment
-        android:id="@+id/settings_fragment"
-        android:name="social.entourage.android.profile.settings.SettingsFragment" />
+<!--    <fragment-->
+<!--        android:id="@+id/settings_fragment"-->
+<!--        android:name="social.entourage.android.profile.settings.SettingsFragment" />-->
 
-    <fragment
-        android:id="@+id/edit_profile_fragment"
-        android:name="social.entourage.android.profile.editProfile.EditProfileFragment">
-        <action
-            android:id="@+id/action_edit_profile_fragment_to_edit_profile_interest_fragment"
-            app:destination="@id/edit_profile_interest_fragment"
-            app:enterAnim="@anim/slide_in_from_right"
-            app:popExitAnim="@anim/slide_out_to_right" />
-        <action
-            android:id="@+id/action_edit_profile_fragment_to_choose_photo_fragment"
-            app:destination="@id/edit_profile_image_fragment"
-            app:enterAnim="@anim/slide_in_from_right"
-            app:popExitAnim="@anim/slide_out_to_right" />
-        <action
-            android:id="@+id/action_edit_profile_fragment_to_edit_action_zone_fragment"
-            app:destination="@id/edit_action_zone_fragment"
-            app:enterAnim="@anim/slide_in_from_right"
-            app:popExitAnim="@anim/slide_out_to_right" />
-    </fragment>
+<!--    <fragment-->
+<!--        android:id="@+id/edit_profile_fragment"-->
+<!--        android:name="social.entourage.android.profile.editProfile.EditProfileFragment">-->
+<!--        <action-->
+<!--            android:id="@+id/action_edit_profile_fragment_to_edit_profile_interest_fragment"-->
+<!--            app:destination="@id/edit_profile_interest_fragment"-->
+<!--            app:enterAnim="@anim/slide_in_from_right"-->
+<!--            app:popExitAnim="@anim/slide_out_to_right" />-->
+<!--        <action-->
+<!--            android:id="@+id/action_edit_profile_fragment_to_choose_photo_fragment"-->
+<!--            app:destination="@id/edit_profile_image_fragment"-->
+<!--            app:enterAnim="@anim/slide_in_from_right"-->
+<!--            app:popExitAnim="@anim/slide_out_to_right" />-->
+<!--        <action-->
+<!--            android:id="@+id/action_edit_profile_fragment_to_edit_action_zone_fragment"-->
+<!--            app:destination="@id/edit_action_zone_fragment"-->
+<!--            app:enterAnim="@anim/slide_in_from_right"-->
+<!--            app:popExitAnim="@anim/slide_out_to_right" />-->
+<!--    </fragment>-->
 
-    <fragment
-        android:id="@+id/edit_profile_interest_fragment"
-        android:name="social.entourage.android.profile.editProfile.EditInterestsFragment" />
+<!--    <fragment-->
+<!--        android:id="@+id/edit_profile_interest_fragment"-->
+<!--        android:name="social.entourage.android.profile.editProfile.EditInterestsFragment" />-->
 
-    <fragment
-        android:id="@+id/edit_profile_image_fragment"
-        android:name="social.entourage.android.user.edit.photo.ChooseProfilePhotoFragment" />
+<!--    <fragment-->
+<!--        android:id="@+id/edit_profile_image_fragment"-->
+<!--        android:name="social.entourage.android.user.edit.photo.ChooseProfilePhotoFragment" />-->
 
-    <fragment
-        android:id="@+id/edit_action_zone_fragment"
-        android:name="social.entourage.android.user.edit.place.UserEditActionZoneFragment">
-        <argument
-            android:name="setGroupLocation"
-            app:argType="boolean" />
-    </fragment>
+<!--    <fragment-->
+<!--        android:id="@+id/edit_action_zone_fragment"-->
+<!--        android:name="social.entourage.android.user.edit.place.UserEditActionZoneFragment">-->
+<!--        <argument-->
+<!--            android:name="setGroupLocation"-->
+<!--            app:argType="boolean" />-->
+<!--    </fragment>-->
 
     <fragment
         android:id="@+id/association_fragment"
@@ -78,8 +78,9 @@
             android:name="isFromNotif"
             app:argType="boolean" />
     </fragment>
-    <action
-        android:id="@+id/action_global_edit_profile_fragment"
-        app:destination="@id/edit_profile_fragment" />
+
+<!--    <action-->
+<!--        android:id="@+id/action_global_edit_profile_fragment"-->
+<!--        app:destination="@id/edit_profile_fragment" />-->
 
 </navigation>

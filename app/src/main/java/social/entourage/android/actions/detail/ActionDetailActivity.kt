@@ -47,6 +47,7 @@ class ActionDetailActivity : AppCompatActivity(), OnDetailActionReceive {
 
         val bundle = Bundle().apply {
             putInt(Const.ACTION_ID, id)
+            putString(Const.ACTION_TITLE, title)
             putBoolean(Const.IS_ACTION_DEMAND,isDemand)
             putBoolean(Const.IS_ACTION_MINE,isActionMine)
         }
@@ -59,10 +60,10 @@ class ActionDetailActivity : AppCompatActivity(), OnDetailActionReceive {
 
         navHostFragment.navController.setGraph(navGraph,bundle)
 
-        val _title = if (isDemand) getString(R.string.action_name_Demand) else getString(R.string.action_name_Contrib)
-        setSettingsIcon(_title)
+        val actionTitle = if (isDemand) getString(R.string.action_name_Demand) else getString(R.string.action_name_Contrib)
+        setSettingsIcon(actionTitle)
 
-        binding.header.iconBack.setOnClickListener {
+        binding.header.headerIconBack.setOnClickListener {
             finish()
         }
 
@@ -102,10 +103,10 @@ class ActionDetailActivity : AppCompatActivity(), OnDetailActionReceive {
 
 
     private fun setSettingsIcon(title:String?) {
-        binding.header.iconSettings.isVisible = true
-        binding.header.iconSettings.setImageResource(R.drawable.share_icon)
+        binding.header.headerIconSettings.isVisible = true
+        binding.header.headerIconSettings.setImageResource(R.drawable.share_icon)
         val whiteColor = ContextCompat.getColor(this, R.color.white)
-        binding.header.iconSettings.imageTintList = ColorStateList.valueOf(whiteColor)
+        binding.header.headerIconSettings.imageTintList = ColorStateList.valueOf(whiteColor)
         binding.header.headerTitle.maxLines = 2
         binding.header.headerTitle.ellipsize = TextUtils.TruncateAt.END
         binding.header.title = title
@@ -114,7 +115,7 @@ class ActionDetailActivity : AppCompatActivity(), OnDetailActionReceive {
 
     private fun handleShareButton(){
 
-        binding.header.iconSettings.setOnClickListener {
+        binding.header.headerIconSettings.setOnClickListener {
             val shareUrl = shareContent
             if(shareUrl.contains("contributions")){
                 AnalyticsEvents.logEvent(AnalyticsEvents.CONTRIB_SHARED)
@@ -127,14 +128,14 @@ class ActionDetailActivity : AppCompatActivity(), OnDetailActionReceive {
 
             }
             //TODO translate this
-            startActivity(Intent.createChooser(shareIntent, "Partager l'URL via"))
+            startActivity(Intent.createChooser(shareIntent, getString(R.string.share_url_by)))
         }
     }
 
 
 
     override fun hideIconReport() {
-        binding.header.iconSettings.isVisible = false
+        binding.header.headerIconSettings.isVisible = false
     }
 
     override fun updateTitle(title: String?) {

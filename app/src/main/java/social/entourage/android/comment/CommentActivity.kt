@@ -8,6 +8,7 @@ import android.text.Html
 import android.text.TextWatcher
 import android.view.View
 import android.view.ViewTreeObserver.OnGlobalLayoutListener
+import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
@@ -21,16 +22,20 @@ import social.entourage.android.base.BaseActivity
 import social.entourage.android.databinding.ActivityCommentsBinding
 import social.entourage.android.deeplinks.UniversalLinkManager
 import social.entourage.android.discussions.DiscussionsPresenter
+import social.entourage.android.events.EventsPresenter
+import social.entourage.android.groups.GroupPresenter
 import social.entourage.android.report.DataLanguageStock
 import social.entourage.android.report.ReportModalFragment
 import social.entourage.android.report.ReportTypes
 import social.entourage.android.report.onDissmissFragment
+import social.entourage.android.small_talks.SmallTalkViewModel
 import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.Utils
 import social.entourage.android.tools.utils.scrollToPositionSmooth
 import social.entourage.android.tools.view.WebViewFragment
-import timber.log.Timber
+import social.entourage.android.ui.ActionSheetFragment
+import social.entourage.android.ui.SheetMode
 import java.util.UUID
 
 abstract class CommentActivity : BaseActivity(), onDissmissFragment {
@@ -57,12 +62,18 @@ protected var isFromNotif = false
 var currentParentPost:Post? = null
 private val universalLinkManager = UniversalLinkManager(this)
 var photoUri: Uri? = null
+private val eventPresenter: EventsPresenter by lazy { EventsPresenter() }
+private val discussionsPresenter: DiscussionsPresenter by lazy { DiscussionsPresenter() }
+private val smallTalkViewModel: SmallTalkViewModel by viewModels()
+private val groupPresenter: GroupPresenter by lazy { GroupPresenter() }
 
 override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
 
     binding = ActivityCommentsBinding.inflate(layoutInflater)
     setContentView(binding.root)
+
+
 
     viewModel = ViewModelProvider(this).get(DiscussionsPresenter::class.java)
     id = intent.getIntExtra(Const.ID, Const.DEFAULT_VALUE)
@@ -81,16 +92,10 @@ override fun onCreate(savedInstanceState: Bundle?) {
     handleBackButton()
     setSettingsIcon()
     val postLang = comment?.contentTranslations?.fromLang ?: ""
-    if (isConversation) {
-        handleReportPost(id,postLang)
-    }
-    else {
-        handleReportPost(postId,postLang)
-    }
 
     handleSendButtonState()
 
-    updatePaddingTopForEdgeToEdge(binding.header.layout)
+    updatePaddingTopForEdgeToEdge(binding.header.headerLayout)
 }
 
 fun setIsEventTrue(){
@@ -159,55 +164,115 @@ fun updateView(emptyState: Boolean) {
     }
 }
 
-private fun initializeComments() {
-    binding.comments.apply {
-        layoutManager = LinearLayoutManager(context)
-        val meId = EntourageApplication.get().me()?.id ?: postAuthorID
-        adapter = CommentsListAdapter(context, commentsList, meId,isOne2One,isConversation,currentParentPost, object : OnItemClickListener {
-            override fun onItemClick(comment: Post) {
-                addComment()
-                commentsList.remove(comment)
-            }
-            override fun onCommentReport(commentId: Int?, isForEvent: Boolean, isForGroup:Boolean, isMe:Boolean,commentLang:String) {
-                if(isForEvent){
-                    commentId?.let { handleReport(it, ReportTypes.REPORT_POST_EVENT, true, false, isMe, commentLang) }
-                }else if(isForGroup){
-                    commentId?.let { handleReport(it, ReportTypes.REPORT_POST, false, true, isMe, commentLang) }
-                }else{
-                    commentId?.let { handleReport(it, ReportTypes.REPORT_COMMENT , false, false, isMe,commentLang) }
-                }
-            }
+    // CommentActivity.kt
+    private fun reportComment(
+        commentId: Int?,
+        isForEvent: Boolean,
+        isForGroup: Boolean,
+        isMe: Boolean,
+        commentLang: String,
+        messageHtml: String? = null
+    ) {
+        commentId ?: return
 
-            override fun onShowWeb(url: String) {
-                /*//TODO remove test Here test with launching WebViewActivityForTest activity
-                WebViewActivityForTest.EXTRA_URL = url
-                startActivity(Intent(context, WebViewActivityForTest::class.java))
-                return*/
+        val (containerId, type) = when {
+            isForEvent -> id to ReportTypes.REPORT_POST_EVENT
+            isForGroup -> id to ReportTypes.REPORT_POST
+            else       -> id to ReportTypes.REPORT_COMMENT
+        }
 
-                if(url.contains("www.entourage.social") || url.contains("preprod.entourage.social")){
-                    val uri = Uri.parse(url)
-                    universalLinkManager.handleUniversalLink(uri)
-                    return
-                }
-                var urlNew = url
-                if (url.contains("http:")) {
-                    urlNew = url.replace("http","https")
-                }
-                //TODO CORRECTION CHARTE LIST
-                if (!url.contains("http:") && !url.contains("https:")) {
-                    urlNew = "https://$url"
-                }
-                WebViewFragment.newInstance(urlNew, 0, true)
-                    .show(supportFragmentManager, WebViewFragment.TAG)
-            }
-        })
-        (adapter as? CommentsListAdapter)?.initiateList()
+        val plain = when {
+            !messageHtml.isNullOrBlank() && Build.VERSION.SDK_INT >= Build.VERSION_CODES.N ->
+                Html.fromHtml(messageHtml, Html.FROM_HTML_MODE_LEGACY).toString()
+            !messageHtml.isNullOrBlank() ->
+                @Suppress("DEPRECATION") Html.fromHtml(messageHtml).toString()
+            else -> ""
+        }
+        if (plain.isNotBlank()) DataLanguageStock.updateContentToCopy(plain)
+
+        ReportModalFragment.newInstance(
+            id = commentId,                       // ✅ reportedId = le message
+            groupId = containerId,                // ✅ groupId = contexte (conv/groupe/event)
+            reportType = type,
+            isFromMe = isMe,
+            isConv = !(isForEvent || isForGroup),
+            isOneToOne = (isConversation && isOne2One),
+            contentCopied = plain,
+            openDirectSignal = true               // ✅ ouvre directement le step "signalement"
+        ).show(supportFragmentManager, ReportModalFragment.TAG)
     }
-}
 
 
 
-private fun handleCommentAction() {
+    private fun initializeComments() {
+        binding.comments.apply {
+            layoutManager = LinearLayoutManager(context)
+            val meId = EntourageApplication.get().me()?.id ?: postAuthorID
+            adapter = CommentsListAdapter(
+                context,
+                commentsList,
+                meId,
+                isOne2One,
+                isConversation,
+                currentParentPost,
+                object : OnItemClickListener {
+                    override fun onItemClick(comment: Post) {
+                        addComment()
+                        commentsList.remove(comment)
+                    }
+
+                    override fun onCommentReport(
+                        commentId: Int?,
+                        isForEvent: Boolean,
+                        isForGroup: Boolean,
+                        isMe: Boolean,
+                        commentLang: String
+                    ) {
+                        commentId ?: return
+                        reportComment(commentId, isForEvent, isForGroup, isMe, commentLang, null)
+                    }
+
+                    override fun onShowWeb(url: String) {
+                        WebViewFragment.newInstance(
+                            if (!url.startsWith("http")) "https://$url" else url,
+                            0,
+                            true
+                        ).show(supportFragmentManager, WebViewFragment.TAG)
+                    }
+
+                    override fun onMessageLongPress(comment: Post, isMe: Boolean) {
+                        showMessageOptions(comment, isMe)
+                    }
+                }
+            )
+            (adapter as? CommentsListAdapter)?.initiateList()
+        }
+    }
+
+    private fun showMessageOptions(comment: Post, isMe: Boolean) {
+        val conversationId = if (isConversation) id else 0
+        val groupId = if (isGroup) id else 0
+        val eventId = if (isEvent) id else 0
+
+        val sheet = ActionSheetFragment.newMessageActions(
+            conversationId = conversationId,
+            groupId = groupId,
+            eventId = eventId,
+            messageId = comment.id ?: 0,
+            messageHtml = comment.content ?: comment.contentHtml,
+            isMyMessage = isMe,
+            isEventContext = isEvent,
+            isGroupContext = isGroup
+        )
+        sheet.show(supportFragmentManager, "MessageActionsSheet")
+    }
+
+
+
+
+
+
+    private fun handleCommentAction() {
     binding.comment.setOnClickListener {
         // Convertir le contenu de l'EditText en HTML pour préserver les retours à la ligne
         val message = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -251,10 +316,8 @@ private fun handleCommentAction() {
     }
 }
 
-
-
 private fun handleBackButton() {
-    binding.header.iconBack.setOnClickListener {
+    binding.header.headerIconBack.setOnClickListener {
         finish()
     }
 }
@@ -276,52 +339,90 @@ private fun handleSendButtonState() {
 
 private fun setSettingsIcon() {
     binding.header.title = getString(R.string.comments_title)
-    binding.header.iconSettings.isVisible = true
-    binding.header.iconSettings.setImageResource(R.drawable.new_report_group)
-    binding.header.cardIconSetting.setBackgroundColor(ContextCompat.getColor(this, R.color.transparent))
-    binding.header.iconSettings.setBackgroundColor(ContextCompat.getColor(this, R.color.transparent))
+    binding.header.headerIconSettings.isVisible = true
+    binding.header.headerIconSettings.setImageResource(R.drawable.new_report_group)
+    binding.header.headerCardIconSetting.setBackgroundColor(ContextCompat.getColor(this, R.color.transparent))
+    binding.header.headerIconSettings.setBackgroundColor(ContextCompat.getColor(this, R.color.transparent))
 }
 
-protected fun handleReport(id: Int, type: ReportTypes, isEventComment :Boolean, isGroupComment:Boolean, isMe:Boolean, commentLang:String) {
-    val fromLang =  commentLang
-    var isNotTranslatable = false
-    if (fromLang == null || fromLang.equals("")){
-        DataLanguageStock.updatePostLanguage(fromLang)
-    }else{
-        isNotTranslatable = true
-    }
+// CommentActivity.kt
 
-    var description = comment?.content ?: ""
-    val reportGroupBottomDialogFragment =
-        ReportModalFragment.newInstance(id, this.id, type, isMe ,true, this.isOne2One, contentCopied = DataLanguageStock.contentToCopy, isNotTranslatable = isNotTranslatable)
-    if(isEventComment){
-        reportGroupBottomDialogFragment.setEventComment()
-    }
-    if(isGroupComment){
-        reportGroupBottomDialogFragment.setGroupComment()
-    }
-    reportGroupBottomDialogFragment.setDismissCallback(this)
-    reportGroupBottomDialogFragment.show(
-        supportFragmentManager,
-        ReportModalFragment.TAG
-    )
-}
+    // CommentActivity.kt
+    protected fun handleReport(
+        reportTargetId: Int,     // id du message/post signalé
+        type: ReportTypes,
+        isEventComment: Boolean,
+        isGroupComment: Boolean,
+        isMe: Boolean,
+        commentLang: String
+    ) {
+        // NB: this.id = l'ID "contexte" de l'écran courant (conversation / groupe / event)
+        val conversationId = this.id
 
-protected open fun handleReportPost(id: Int, commentLang: String) {
-    binding.header.iconSettings.setOnClickListener {
-        if(isEvent){
-            handleReport(id, ReportTypes.REPORT_POST_EVENT, isEvent, isGroup, false/*checkIsME*/,commentLang)
-        }else{
-            handleReport(id, ReportTypes.REPORT_POST, isEvent, isGroup, false/*checkIsME*/,commentLang)
+        val mode = when {
+            isConversation && isOne2One -> SheetMode.DISCUSSION_ONE_TO_ONE
+            isConversation && !isOne2One -> SheetMode.DISCUSSION_GROUP
+            isEvent -> SheetMode.EVENT
+            isGroup -> SheetMode.GROUP
+            else -> SheetMode.GROUP
         }
+
+        val sheet = when (mode) {
+            SheetMode.DISCUSSION_ONE_TO_ONE -> {
+                ActionSheetFragment.newDiscussion(
+                    conversationId = conversationId,   // <-- pas le reportTargetId !
+                    isOneToOne = true,
+                    userId = postAuthorID,
+                    username = titleName,
+                    blocked = false // à brancher si tu as l'info
+                )
+            }
+            SheetMode.DISCUSSION_GROUP -> {
+                ActionSheetFragment.newDiscussion(
+                    conversationId = conversationId,
+                    isOneToOne = false,
+                    userId = 0,
+                    username = null,
+                    blocked = false
+                )
+            }
+            SheetMode.EVENT -> {
+                // Si tu as un vrai eventId séparé, remplace conversationId par cette variable
+                ActionSheetFragment.newEvent(
+                    eventId = conversationId,
+                    conversationId = conversationId
+                )
+            }
+            SheetMode.GROUP -> {
+                ActionSheetFragment.newGroup(
+                    groupId = conversationId
+                )
+            }
+            SheetMode.MESSAGE_ACTIONS -> {
+                // Branche "exhaustive" : on ouvre directement le sheet d’actions de message.
+                // Ici on n’a pas le HTML du message : on passe null pour le copier/coller (ou récupère via DataLanguageStock si tu veux).
+                ActionSheetFragment.newMessageActions(
+                    conversationId = if (isConversation) conversationId else 0,
+                    groupId = if (isGroupComment) conversationId else 0,
+                    eventId = if (isEventComment) conversationId else 0,
+                    messageId = reportTargetId,
+                    messageHtml = null,            // ou DataLanguageStock.getContentToCopy() si dispo
+                    isMyMessage = isMe,
+                    isEventContext = isEventComment,
+                    isGroupContext = isGroupComment
+                )
+            }
+        }
+
+        sheet.show(supportFragmentManager, "ActionSheetFragment")
     }
-}
+
+
+
+
 
 private fun openEditTextKeyboard() {
 //        if (shouldOpenKeyboard) {
-//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-//                binding.commentMessage.setTextColor(getColor(R.color.black))
-//            }
 //            binding.commentMessage.focusAndShowKeyboard()
 //        }
 }

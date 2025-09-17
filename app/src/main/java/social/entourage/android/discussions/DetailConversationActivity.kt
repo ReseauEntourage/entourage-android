@@ -19,7 +19,11 @@ import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.core.text.HtmlCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsAnimationCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
+import androidx.core.view.updatePadding
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -32,15 +36,22 @@ import kotlinx.coroutines.launch
 import social.entourage.android.BuildConfig
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
-import social.entourage.android.api.model.*
+import social.entourage.android.api.model.Conversation
+import social.entourage.android.api.model.EntourageUser
+import social.entourage.android.api.model.Events
+import social.entourage.android.api.model.GroupMember
+import social.entourage.android.api.model.Post
+import social.entourage.android.api.model.SmallTalk
+import social.entourage.android.api.model.User
+import social.entourage.android.api.model.toGroupMember
 import social.entourage.android.comment.CommentActivity
 import social.entourage.android.comment.CommentsListAdapter
 import social.entourage.android.comment.MentionAdapter
 import social.entourage.android.discussions.members.MembersConversationFragment
 import social.entourage.android.events.EventsPresenter
 import social.entourage.android.events.details.feed.EventFeedActivity
+import social.entourage.android.groups.GroupPresenter
 import social.entourage.android.profile.ProfileFullActivity
-import social.entourage.android.report.DataLanguageStock
 import social.entourage.android.small_talks.SmallTalkGuidelinesActivity
 import social.entourage.android.small_talks.SmallTalkViewModel
 import social.entourage.android.tools.log.AnalyticsEvents
@@ -48,6 +59,8 @@ import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.Utils
 import social.entourage.android.tools.utils.VibrationUtil
 import social.entourage.android.tools.view.WebViewFragment
+import social.entourage.android.ui.ActionSheetFragment
+import social.entourage.android.ui.SheetMode
 import timber.log.Timber
 import java.io.File
 import java.text.SimpleDateFormat
@@ -67,6 +80,7 @@ class DetailConversationActivity : CommentActivity() {
     private val eventPresenter: EventsPresenter by lazy { EventsPresenter() }
     private val discussionsPresenter: DiscussionsPresenter by lazy { DiscussionsPresenter() }
     private val smallTalkViewModel: SmallTalkViewModel by viewModels()
+    private val groupPresenter: GroupPresenter by lazy { GroupPresenter() }
 
     // Launchers
     private lateinit var cameraLauncher: ActivityResultLauncher<Uri>
@@ -93,7 +107,7 @@ class DetailConversationActivity : CommentActivity() {
 
     // Refresh (page 1 -> append en bas)
     private val refreshHandler = Handler(Looper.getMainLooper())
-    private val refreshIntervalMs = 5_000L
+    private val refreshIntervalMs = 1_500L
     private var refreshRunnable: Runnable? = null
 
     // Clé stable pour les items
@@ -130,7 +144,6 @@ class DetailConversationActivity : CommentActivity() {
             smallTalkViewModel.getSmallTalk(smallTalkId)
             smallTalkViewModel.loadInitialMessages(smallTalkId) // page 1 initiale
             smallTalkViewModel.listSmallTalkParticipants(smallTalkId)
-
             binding.btnSeeEvent.text = getString(R.string.small_talk_btn_charte)
             binding.ivBtnEvent.apply {
                 imageTintList = null
@@ -176,6 +189,12 @@ class DetailConversationActivity : CommentActivity() {
                 showThumbnail(uri)
             }
         }
+
+        binding.header.headerIconSettings.setOnClickListener {
+            buildAndShowActionSheet()
+        }
+
+
     }
 
     // ===== Refresh page 1 (append en bas) =====
@@ -190,23 +209,102 @@ class DetailConversationActivity : CommentActivity() {
         stopRefreshing()
     }
 
+    private fun buildAndShowActionSheet() {
+        val mode = resolveSheetMode()
+        Timber.d("Mode résolu : $mode, event = $event, eventId = ${event?.id}, detailConversationId = ${detailConversation?.id}")
+
+        // Si on est en mode EVENT, on vérifie que eventId est valide
+        if (mode == SheetMode.EVENT) {
+            val eventId = event?.id ?: detailConversation?.id ?: 0
+            if (eventId <= 0) {
+                Timber.e("Impossible d'ouvrir l'ActionSheet en mode EVENT : eventId invalide ($eventId)")
+                Toast.makeText(this, "Impossible d'ouvrir les paramètres de l'événement", Toast.LENGTH_SHORT).show()
+                return // On ne continue pas si eventId est invalide
+            }
+
+            // On passe TOUS les arguments nécessaires (comme dans EventFeedFragment)
+            ActionSheetFragment.newEvent(
+                eventId = eventId,
+                conversationId = id,
+                canManageParticipants = false, // À adapter selon ta logique métier
+                eventTitle = event?.title ?: "",
+                participantsCount = event?.membersCount ?: 0,
+                eventAddress = event?.metadata?.displayAddress ?: ""
+            ).show(supportFragmentManager, "ActionSheetFragment")
+
+        } else {
+            // Pour les autres modes (GROUP, DISCUSSION_ONE_TO_ONE, DISCUSSION_GROUP)
+            val sheet = when (mode) {
+                SheetMode.DISCUSSION_ONE_TO_ONE -> {
+                    val otherUserId = detailConversation?.members
+                        ?.firstOrNull { it?.id != EntourageApplication.get().me()?.id }
+                        ?.id ?: 0
+                    ActionSheetFragment.newDiscussion(
+                        conversationId = id,
+                        isOneToOne = true,
+                        userId = otherUserId,
+                        username = detailConversation?.title,
+                        blocked = detailConversation?.hasBlocker() == true && detailConversation?.imBlocker() == true
+                    )
+                }
+                SheetMode.DISCUSSION_GROUP -> {
+                    ActionSheetFragment.newDiscussion(
+                        conversationId = id,
+                        isOneToOne = false,
+                        userId = 0,
+                        username = null,
+                        blocked = false
+                    )
+                }
+                SheetMode.GROUP -> {
+                    ActionSheetFragment.newGroup(detailConversation?.id ?: id)
+                }
+                SheetMode.MESSAGE_ACTIONS -> {
+                    ActionSheetFragment.newGroup(detailConversation?.id ?: id)
+                }
+                else -> {
+                    Timber.e("Mode non géré : $mode, fallback vers GROUP")
+                    ActionSheetFragment.newGroup(detailConversation?.id ?: id)
+                }
+            }
+            sheet.show(supportFragmentManager, "ActionSheetFragment")
+        }
+    }
+
+    private fun resolveSheetMode(): SheetMode {
+        return when {
+            isSmallTalkMode -> SheetMode.DISCUSSION_GROUP
+            event != null -> SheetMode.EVENT
+            detailConversation?.memberCount == 2 -> SheetMode.DISCUSSION_ONE_TO_ONE
+            (detailConversation?.memberCount ?: 0) > 2 -> SheetMode.DISCUSSION_GROUP
+            detailConversation?.type == "outing" -> SheetMode.EVENT
+            else -> SheetMode.GROUP
+        }
+    }
+
     private fun startRefreshing() {
         if (refreshRunnable != null) return
         refreshRunnable = object : Runnable {
             override fun run() {
-                // ⛔️ Ne pas réactualiser la page 1 pendant la pagination
                 if (!isLoadingOlder) {
                     if (isSmallTalkMode) {
                         smallTalkViewModel.listChatMessages(smallTalkId, page = 1)
                     } else {
                         discussionsPresenter.getPostComments(id) // page 1
                     }
+                    // Ajoutez un délai pour laisser le temps à la liste de se mettre à jour
+                    Handler(Looper.getMainLooper()).postDelayed({
+                        if (isAtBottom()) {
+                            scrollAfterLayout()
+                        }
+                    }, 300) // Délai court pour laisser le temps à la liste de se recharger
                 }
                 refreshHandler.postDelayed(this, refreshIntervalMs)
             }
         }
         refreshHandler.postDelayed(refreshRunnable!!, refreshIntervalMs)
     }
+
 
     private fun stopRefreshing() {
         refreshRunnable?.let { refreshHandler.removeCallbacks(it) }
@@ -232,12 +330,12 @@ class DetailConversationActivity : CommentActivity() {
 
     // ===== Header / UI divers =====
     private fun setCameraIcon() {
-        binding.header.iconCamera.isVisible = !smallTalk?.meetingUrl.isNullOrBlank()
-        binding.header.iconCamera.setImageResource(R.drawable.ic_camera)
+        binding.header.headerIconCamera.isVisible = !smallTalk?.meetingUrl.isNullOrBlank()
+        binding.header.headerIconCamera.setImageResource(R.drawable.ic_camera)
         val transparent = ContextCompat.getColor(this, R.color.transparent)
-        binding.header.cardIconCamera.setBackgroundColor(transparent)
-        binding.header.iconCamera.setBackgroundColor(transparent)
-        binding.header.iconCamera.setOnClickListener {
+        binding.header.headerCardIconCamera.setBackgroundColor(transparent)
+        binding.header.headerIconCamera.setBackgroundColor(transparent)
+        binding.header.headerIconCamera.setOnClickListener {
             Timber.d("SmallTalk meeting url: ${smallTalk?.meetingUrl}")
             AnalyticsEvents.logEvent(AnalyticsEvents.CLIC__SMALLTALK__VISIO_ICON)
             smallTalk?.meetingUrl?.let { url -> WebViewFragment.launchURL(this, url) }
@@ -253,6 +351,7 @@ class DetailConversationActivity : CommentActivity() {
 
     private fun setupOptionMenu() {
         var isOptionsVisible = false
+
         binding.optionButton.setOnClickListener {
             isOptionsVisible = !isOptionsVisible
             if (isOptionsVisible) {
@@ -423,35 +522,34 @@ class DetailConversationActivity : CommentActivity() {
 
     // ===== Envoi image =====
     private fun sendImageMessage(uri: Uri) {
-        val file: java.io.File = Utils.getFileFromUri(this, uri)
-            ?: run {
-                Toast.makeText(this, "Impossible de lire l'image", Toast.LENGTH_SHORT).show()
-                return
-            }
-
-        val content: String? = binding.commentMessage.text?.toString()?.trim().let { txt ->
-            if (txt.isNullOrEmpty()) null else txt
+        val file: File = Utils.getFileFromUri(this, uri) ?: run {
+            Toast.makeText(this, "Impossible de lire l'image", Toast.LENGTH_SHORT).show()
+            return
         }
-
+        val spanned = binding.commentMessage.editableText
+        val caption = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            Html.toHtml(spanned, Html.FROM_HTML_MODE_LEGACY)
+        } else {
+            @Suppress("DEPRECATION")
+            Html.toHtml(spanned)
+        }.trim().ifEmpty { null }
         if (isSmallTalkMode) {
-            smallTalkViewModel.addMessageWithImage(smallTalkId, content, file)
+            smallTalkViewModel.addMessageWithImage(smallTalkId, caption, file)
         } else if (detailConversation?.type == "outing") {
             val eventId: Int = detailConversation?.id ?: return
-            eventPresenter.addPost(content, file, eventId)
+            eventPresenter.addPost(caption, file, eventId)
         } else {
-            val conversationId: Int? = detailConversation?.id
-            if (conversationId != null) {
-                discussionsPresenter.addCommentWithImage(conversationId, content, file)
-            } else {
-                Toast.makeText(this, "Conversation introuvable", Toast.LENGTH_SHORT).show()
-                return
-            }
+            val conversationId: Int = detailConversation?.id ?: return
+            discussionsPresenter.addCommentWithImage(conversationId, caption, file)
         }
-
-        binding.commentMessage.text?.clear()
+        binding.commentMessage.text.clear()
         binding.layoutPhoto.visibility = View.GONE
         binding.optionButton.visibility = View.VISIBLE
+        // Force le scroll après l'envoi
+        scrollAfterLayout()
     }
+
+
 
     // ===== Détails conversation =====
     private fun handleDetailConversation(conversation: Conversation?) {
@@ -478,8 +576,10 @@ class DetailConversationActivity : CommentActivity() {
             }
         }
 
-        if (conversation.type == "outing" && !isSmallTalkMode) {
+        if (conversation.type == "outing") {
             binding.optionButton.visibility = View.VISIBLE
+        }else {
+            binding.optionButton.visibility = View.GONE
         }
         if (conversation.type == "outing" || isSmallTalkMode) {
             binding.layoutEventConv.visibility = View.VISIBLE
@@ -510,6 +610,7 @@ class DetailConversationActivity : CommentActivity() {
         }
         if (conversation.memberCount > 2 && conversation.members != null) {
             val currentUserId = EntourageApplication.get().me()?.id
+
             val names = conversation.members
                 .filter { it?.id != currentUserId }
                 .take(5)
@@ -556,16 +657,16 @@ class DetailConversationActivity : CommentActivity() {
                 )
             }
 
-            binding.header.ivEvent.visibility = View.GONE
+            binding.header.headerIvEvent.visibility = View.GONE
             val thumb = event.metadata?.portraitThumbnailUrl
             if (thumb.isNullOrBlank()) {
-                Glide.with(this).load(R.drawable.placeholder_my_event).into(binding.header.ivEvent)
+                Glide.with(this).load(R.drawable.placeholder_my_event).into(binding.header.headerIvEvent)
             } else {
                 Glide.with(this)
                     .load(thumb)
                     .transform(RoundedCorners(10))
                     .error(R.drawable.placeholder_my_event)
-                    .into(binding.header.ivEvent)
+                    .into(binding.header.headerIvEvent)
             }
             binding.header.headerSubtitle.visibility = View.VISIBLE
             binding.header.headerTitle.text = event.title
@@ -582,7 +683,6 @@ class DetailConversationActivity : CommentActivity() {
             photoUri = null
             return
         }
-
         val spanned = binding.commentMessage.editableText
         val html = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             Html.toHtml(spanned, Html.FROM_HTML_MODE_LEGACY)
@@ -591,7 +691,6 @@ class DetailConversationActivity : CommentActivity() {
             Html.toHtml(spanned)
         }
         val content = if (html.contains("<a href=")) html else spanned.toString()
-
         if (isSmallTalkMode) {
             smallTalkViewModel.createChatMessage(smallTalkId, content)
         } else {
@@ -608,10 +707,12 @@ class DetailConversationActivity : CommentActivity() {
             )
             discussionsPresenter.addComment(id, comment)
         }
-
         binding.commentMessage.text.clear()
         Utils.hideKeyboard(this)
+        // Force le scroll après l'envoi
+        scrollAfterLayout()
     }
+
 
     // ===== Réception des messages =====
     override fun handleGetPostComments(allComments: MutableList<Post>?) {
@@ -693,12 +794,12 @@ class DetailConversationActivity : CommentActivity() {
     }
 
     private fun setupHeader() {
-        binding.header.iconSettings.setImageDrawable(
+        binding.header.headerIconSettings.setImageDrawable(
             ContextCompat.getDrawable(this, R.drawable.new_settings)
         )
         val transparent = ContextCompat.getColor(this, R.color.transparent)
-        binding.header.cardIconSetting.setBackgroundColor(transparent)
-        binding.header.iconSettings.setBackgroundColor(transparent)
+        binding.header.headerCardIconSetting.setBackgroundColor(transparent)
+        binding.header.headerIconSettings.setBackgroundColor(transparent)
     }
 
     // ===== Mentions =====
@@ -841,6 +942,7 @@ class DetailConversationActivity : CommentActivity() {
     override fun onDestroy() {
         super.onDestroy()
         isSmallTalkMode = false
+        MembersConversationFragment.isFromDiscussion = false
         smallTalkId = ""
         stopRefreshing()
         mentionSearchJob?.cancel()

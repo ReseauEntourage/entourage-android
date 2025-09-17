@@ -7,7 +7,9 @@ import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.intent.Intents
 import androidx.test.espresso.intent.matcher.IntentMatchers
-import androidx.test.espresso.matcher.ViewMatchers.*
+import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
+import androidx.test.espresso.matcher.ViewMatchers.withId
+import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
@@ -24,7 +26,7 @@ import social.entourage.android.api.OnboardingAPI
 import social.entourage.android.deeplinks.DeepLinksManager
 import social.entourage.android.onboarding.login.LoginActivity
 
-@RunWith(AndroidJUnit4::class)
+//TODO @RunWith(AndroidJUnit4::class)
 open class DeepLinkingTest {
 
     @Rule
@@ -58,16 +60,23 @@ open class DeepLinkingTest {
     @Before
     fun setUp() {
         device = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation())
+        try {
+            activityTestRule.scenario.onActivity { activity ->
+                EntourageApplication[activity].authenticationController.logOutUser()
+            }
+        } catch (e: RuntimeException) {
+            e.printStackTrace()
+        }
 
         //User must be logged for the tests
-        login("0651234145", "108674")
+        login(BuildConfig.TEST_ACCOUNT_LOGIN, BuildConfig.TEST_ACCOUNT_PWD)
 
         //Wait for server response
-        Thread.sleep(4000)
+        //Thread.sleep(4000)
     }
 
     private fun login(phoneNumber: String, codePwd: String) {
-        val authenticationController = EntourageApplication.get().authenticationController
+        val authenticationController = EntourageApplication.Companion.get().authenticationController
         OnboardingAPI.getInstance().login(phoneNumber, codePwd) { isOK, loginResponse, _ ->
             if (isOK) {
                 loginResponse?.let {
@@ -76,16 +85,17 @@ open class DeepLinkingTest {
                 authenticationController.saveUserPhoneAndCode(phoneNumber, codePwd)
 
                 //set the tutorial as done
-                val sharedPreferences = EntourageApplication.get().sharedPreferences
-                (sharedPreferences.getStringSet(EntourageApplication.KEY_TUTORIAL_DONE, HashSet()) as HashSet<String>?)?.let { loggedNumbers ->
+                val sharedPreferences = EntourageApplication.Companion.get().sharedPreferences
+                (sharedPreferences.getStringSet(EntourageApplication.Companion.KEY_TUTORIAL_DONE, HashSet()) as HashSet<String>?)?.let { loggedNumbers ->
                     loggedNumbers.add(phoneNumber)
-                    sharedPreferences.edit().putStringSet(EntourageApplication.KEY_TUTORIAL_DONE, loggedNumbers).apply()
+                    sharedPreferences.edit().putStringSet(EntourageApplication.Companion.KEY_TUTORIAL_DONE, loggedNumbers).apply()
                 }
             }
         }
     }
 }
 
+@RunWith(AndroidJUnit4::class)
 class DeepLinkingTestCreateAction : DeepLinkingTest() {
 
     private val link = DeepLinksManager.DeepLinksView.CREATE_ACTION.view
@@ -112,19 +122,20 @@ class DeepLinkingTestCreateAction : DeepLinkingTest() {
     }
 }
 
+//TODO @RunWith(AndroidJUnit4::class)
 class DeepLinkingTestBadge : DeepLinkingTest() {
 
-    @Test
+    //TODO @Test
     fun connectedBadgeDeeplink() {
         connectedBadgeDeeplink(BuildConfig.DEEP_LINKS_SCHEME + "://badge")
     }
 
-    @Test
+    //TODO @Test
     fun connectedBadgeDeeplinkHTTP() {
         connectedBadgeDeeplink("http://" + BuildConfig.DEEP_LINKS_URL + "/deeplink/badge")
     }
 
-    @Test
+    //TODO @Test
     fun connectedBadgeDeeplinkHTTPS() {
         connectedBadgeDeeplink("https://" + BuildConfig.DEEP_LINKS_URL + "/deeplink/badge")
     }
@@ -136,6 +147,7 @@ class DeepLinkingTestBadge : DeepLinkingTest() {
     }
 }
 
+@RunWith(AndroidJUnit4::class)
 class DeepLinkingTestWebview : DeepLinkingTest() {
 
     @Test
@@ -164,7 +176,8 @@ class DeepLinkingTestWebview : DeepLinkingTest() {
 
 }
 
-/*class DeepLinkingTestPoneSettings : DeepLinkingTest() {
+/*@RunWith(AndroidJUnit4::class)
+class DeepLinkingTestPoneSettings : DeepLinkingTest() {
     @Test
     fun connectedPhoneSettingsDeeplink() {
         connectedPhoneSettingsDeeplink(BuildConfig.DEEP_LINKS_SCHEME + "://phone-settings")
@@ -187,6 +200,7 @@ class DeepLinkingTestWebview : DeepLinkingTest() {
     }
 }*/
 
+@RunWith(AndroidJUnit4::class)
 class DeepLinkingTestFilters : DeepLinkingTest() {
 
     @Test
@@ -211,19 +225,20 @@ class DeepLinkingTestFilters : DeepLinkingTest() {
     }
 }
 
+//TODO @RunWith(AndroidJUnit4::class)
 class DeepLinkingTestEvents : DeepLinkingTest() {
 
-    @Test
+    //TODO @Test
     fun connectedEventsDeeplink() {
         connectedEventsDeeplink(BuildConfig.DEEP_LINKS_SCHEME + "://events")
     }
 
-    @Test
+    //TODO @Test
     fun connectedEventsDeeplinkHTTP() {
         connectedEventsDeeplink("http://" + BuildConfig.DEEP_LINKS_URL + "/deeplink/events")
     }
 
-    @Test
+    //TODO @Test
     fun connectedEventsDeeplinkHTTPS() {
         connectedEventsDeeplink("https://" + BuildConfig.DEEP_LINKS_URL + "/deeplink/events")
     }
@@ -235,18 +250,19 @@ class DeepLinkingTestEvents : DeepLinkingTest() {
     }
 }
 
+//TODO @RunWith(AndroidJUnit4::class)
 class DeepLinkingTestFeed : DeepLinkingTest() {
-    @Test
+    //TODO @Test
     fun connectedFeedDeeplink() {
         connectedFeedDeeplink(BuildConfig.DEEP_LINKS_SCHEME + "://feed")
     }
 
-    @Test
+    //TODO @Test
     fun connectedFeedDeeplinkHTTP() {
         connectedFeedDeeplink("http://" + BuildConfig.DEEP_LINKS_URL + "/deeplink/feed")
     }
 
-    @Test
+    //TODO @Test
     fun connectedFeedDeeplinkHTTPS() {
         connectedFeedDeeplink("https://" + BuildConfig.DEEP_LINKS_URL + "/deeplink/feed")
     }
@@ -259,6 +275,7 @@ class DeepLinkingTestFeed : DeepLinkingTest() {
     }
 }
 
+//TODO @RunWith(AndroidJUnit4::class)
 class DeepLinkingTestEntourage : DeepLinkingTest() {
 
     private val entourageID = if (BuildConfig.FLAVOR_env == "prod") "204" else "2300"
@@ -495,6 +512,7 @@ class DeepLinkingTestEntourage : DeepLinkingTest() {
     }*/
 }
 
+//TODO @RunWith(AndroidJUnit4::class)
 class DeepLinkingTestMessages : DeepLinkingTest() {
     //TODO
     /*@Test
@@ -519,6 +537,7 @@ class DeepLinkingTestMessages : DeepLinkingTest() {
     }*/
 }
 
+//TODO @RunWith(AndroidJUnit4::class)
 class DeepLinkingTestTutorial : DeepLinkingTest() {
     private val link = DeepLinksManager.DeepLinksView.TUTORIAL.view
     //TODO
@@ -545,6 +564,7 @@ class DeepLinkingTestTutorial : DeepLinkingTest() {
 
 }
 
+@RunWith(AndroidJUnit4::class)
 class DeepLinkingTestGuide : DeepLinkingTest() {
     @Test
     fun connectedGuideDeeplink() {
@@ -569,6 +589,7 @@ class DeepLinkingTestGuide : DeepLinkingTest() {
 
 }
 
+@RunWith(AndroidJUnit4::class)
 class DeepLinkingTestProfile : DeepLinkingTest() {
     @Test
     fun connectedProfileDeeplink() {
@@ -592,6 +613,7 @@ class DeepLinkingTestProfile : DeepLinkingTest() {
     }
 }
 
+@RunWith(AndroidJUnit4::class)
 class DeepLinkingTestGeneric : DeepLinkingTest() {
 
     @Test

@@ -20,6 +20,7 @@ import social.entourage.android.base.BaseActivity
 import social.entourage.android.notifications.PushNotificationManager
 import social.entourage.android.onboarding.login.LoginActivity
 import social.entourage.android.onboarding.pre_onboarding.PreOnboardingStartActivity
+import social.entourage.android.profile.settings.SettingsPresenter
 import social.entourage.android.tools.LibrariesSupport
 import social.entourage.android.tools.log.AnalyticsEvents
 import timber.log.Timber
@@ -34,6 +35,7 @@ class EntourageApplication : MultiDexApplication() {
     lateinit var authenticationController: AuthenticationController
     lateinit var complexPreferences: ComplexPreferences
     lateinit var apiModule: ApiModule
+    private val settingsPresenter = SettingsPresenter()
 
     // ----------------------------------
     // LIFECYCLE
@@ -89,6 +91,11 @@ class EntourageApplication : MultiDexApplication() {
     fun finishLoginActivity() {
         Timber.d("Finishing login activity")
         loginActivity?.finish()
+    }
+
+     fun deleteAccount() {
+        settingsPresenter.deleteAccount()
+
     }
 
     fun logOut() {

@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
     <include
         android:id="@+id/header0"
-        layout="@layout/new_header_bottom_sheet"
+        layout="@layout/layout_header_bottom_sheet"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
     <LinearLayout
@@ -18,7 +18,7 @@
 
         <include
             android:id="@+id/header"
-            layout="@layout/new_header_bottom_sheet"
+            layout="@layout/layout_header_bottom_sheet"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:title="@{@string/select_photo}" />

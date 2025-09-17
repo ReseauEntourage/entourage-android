@@ -8,7 +8,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import social.entourage.android.R
 import social.entourage.android.api.model.UserBlockedUser
-import social.entourage.android.databinding.NewFragmentUnblockUsersBinding
+import social.entourage.android.databinding.ActivityUnblockUsersBinding
 import social.entourage.android.discussions.DiscussionsPresenter
 import social.entourage.android.profile.settings.OnItemCheckListener
 import social.entourage.android.profile.settings.ProfilFullViewModel
@@ -18,7 +18,7 @@ import social.entourage.android.tools.utils.CustomAlertDialog
 
 class UnblockUsersActivity : AppCompatActivity() {
 
-    private lateinit var binding: NewFragmentUnblockUsersBinding
+    private lateinit var binding: ActivityUnblockUsersBinding
     private lateinit var profilFullViewModel: ProfilFullViewModel
 
     private val discussionsPresenter: DiscussionsPresenter by lazy { DiscussionsPresenter() }
@@ -26,11 +26,11 @@ class UnblockUsersActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = NewFragmentUnblockUsersBinding.inflate(layoutInflater)
+        binding = ActivityUnblockUsersBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        updatePaddingTopForEdgeToEdge(binding.header.layout)
-        binding.header.view.isVisible = false
+        updatePaddingTopForEdgeToEdge(binding.header.hbsLayout)
+        binding.header.hbsView.isVisible = false
         profilFullViewModel = ViewModelProvider(this).get(ProfilFullViewModel::class.java)
         initializeRecyclerView()
         handleCloseButton()
@@ -192,7 +192,7 @@ class UnblockUsersActivity : AppCompatActivity() {
      * Dans une activity, on peut simplement faire un finish().
      */
     private fun handleCloseButton() {
-        binding.header.iconCross.setOnClickListener {
+        binding.header.hbsIconCross.setOnClickListener {
             profilFullViewModel.updateProfile()
             finish()
         }

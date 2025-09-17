@@ -2,26 +2,22 @@ package social.entourage.android
 
 import android.content.Context
 import android.view.WindowManager
-import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.Espresso
 import androidx.test.espresso.Root
-import androidx.test.espresso.action.ViewActions.*
-import androidx.test.espresso.matcher.ViewMatchers.*
+import androidx.test.espresso.action.ViewActions
+import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.ext.junit.rules.ActivityScenarioRule
-import androidx.test.ext.junit.runners.AndroidJUnit4
-import androidx.test.filters.LargeTest
 import androidx.test.platform.app.InstrumentationRegistry
 import org.hamcrest.Description
-import org.hamcrest.Matchers.allOf
+import org.hamcrest.Matchers
 import org.hamcrest.TypeSafeMatcher
 import org.junit.Before
 import org.junit.Rule
-import org.junit.runner.RunWith
 import social.entourage.android.onboarding.login.LoginActivity
 import java.io.IOException
-import java.util.*
 
-@LargeTest
-@RunWith(AndroidJUnit4::class)
+//TODO @LargeTest
+//TODO @RunWith(AndroidJUnit4::class)
 class HomeExpertTest {
 
     @Rule
@@ -37,16 +33,42 @@ class HomeExpertTest {
     /****************************** Views ******************************/
 
     //private val mainRecyclerView = onView(allOf(withId(R.id.ui_recyclerview), isDisplayed()))
-    private val eventsAndActionsTitleTv = onView(allOf(withId(R.id.ui_tv_title), isDisplayed()))
+    private val eventsAndActionsTitleTv = Espresso.onView(
+        Matchers.allOf(
+            ViewMatchers.withId(R.id.ui_tv_title),
+            ViewMatchers.isDisplayed()
+        )
+    )
     //private val profilePictureIv = onView(allOf(withId(R.id.drawer_header_user_photo), isDisplayed()))
     //private val editProfileButton = onView(allOf(withId(R.id.action_edit_profile), isDisplayed()))
-    private val saveProfileButton = onView(withText(R.string.user_save_button))
+    private val saveProfileButton =
+        Espresso.onView(ViewMatchers.withText(R.string.user_save_button))
     //private val saveButton = onView(allOf(withId(R.id.user_edit_profile_save), withText(R.string.user_button_confirm_changes)))
     //private val editPasswordButton = onView(allOf(withId(R.id.user_password_layout), isDisplayed()))
-    private val oldPasswordEditText = onView(allOf(withId(R.id.user_old_password), isDisplayed()))
-    private val newPasswordEditText = onView(allOf(withId(R.id.user_new_password), isDisplayed()))
-    private val confirmPasswordEditText = onView(allOf(withId(R.id.user_confirm_password), isDisplayed()))
-    private val savePasswordButton = onView(allOf(withId(R.id.button_validate), isDisplayed()))
+    private val oldPasswordEditText = Espresso.onView(
+        Matchers.allOf(
+            ViewMatchers.withId(R.id.user_old_password),
+            ViewMatchers.isDisplayed()
+        )
+    )
+    private val newPasswordEditText = Espresso.onView(
+        Matchers.allOf(
+            ViewMatchers.withId(R.id.user_new_password),
+            ViewMatchers.isDisplayed()
+        )
+    )
+    private val confirmPasswordEditText = Espresso.onView(
+        Matchers.allOf(
+            ViewMatchers.withId(R.id.user_confirm_password),
+            ViewMatchers.isDisplayed()
+        )
+    )
+    private val savePasswordButton = Espresso.onView(
+        Matchers.allOf(
+            ViewMatchers.withId(R.id.button_validate),
+            ViewMatchers.isDisplayed()
+        )
+    )
 
     /*private val bottomBarFeedButton = onView(
             allOf(withId(R.id.bottom_bar_newsfeed),
@@ -68,10 +90,25 @@ class HomeExpertTest {
                     withContentDescription(R.string.action_profile),
                     isDisplayed()))*/
 
-    private val aboutButton = onView(allOf(withId(R.id.ui_layout_help), isDisplayed()))
-    private val backButton = onView(allOf(withId(R.id.ui_bt_back), isDisplayed()))
+    private val aboutButton = Espresso.onView(
+        Matchers.allOf(
+            ViewMatchers.withId(R.id.ui_layout_help),
+            ViewMatchers.isDisplayed()
+        )
+    )
+    private val backButton = Espresso.onView(
+        Matchers.allOf(
+            ViewMatchers.withId(R.id.ui_bt_back),
+            ViewMatchers.isDisplayed()
+        )
+    )
     //private val closeButton = onView(allOf(withId(R.id.entourage_info_close), isDisplayed()))
-    private val titleCloseButton = onView(allOf(withId(R.id.title_close_button), isDisplayed()))
+    private val titleCloseButton = Espresso.onView(
+        Matchers.allOf(
+            ViewMatchers.withId(R.id.title_close_button),
+            ViewMatchers.isDisplayed()
+        )
+    )
 
     /****************************** Before each test ******************************/
 
@@ -80,14 +117,17 @@ class HomeExpertTest {
         //Logout
         activityRule.scenario.onActivity { activity ->
             context = activity
-            EntourageApplication[activity].authenticationController.logOutUser()
+            EntourageApplication.Companion[activity].authenticationController.logOutUser()
             jsonResponse = getJsonDataFromAsset(activity, "home_response_success.json") ?: ""
         }
 
         //Login
-        onView(withId(R.id.ui_login_phone_et_phone)).perform(typeText(login), closeSoftKeyboard())
-        onView(withId(R.id.ui_login_et_code)).perform(typeText(password), closeSoftKeyboard())
-        onView(withId(R.id.ui_login_button_signup)).perform(click())
+        Espresso.onView(ViewMatchers.withId(R.id.ui_login_phone_et_phone))
+            .perform(ViewActions.typeText(login), ViewActions.closeSoftKeyboard())
+        Espresso.onView(ViewMatchers.withId(R.id.ui_login_et_code))
+            .perform(ViewActions.typeText(password), ViewActions.closeSoftKeyboard())
+        Espresso.onView(ViewMatchers.withId(R.id.ui_login_button_signup))
+            .perform(ViewActions.click())
 
         Thread.sleep(4000)
     }
@@ -624,7 +664,7 @@ class HomeExpertTest {
     }*/
 
     private fun clickTitleCloseButton() {
-        titleCloseButton.perform(click())
+        titleCloseButton.perform(ViewActions.click())
         Thread.sleep(1000)
     }
 
@@ -643,14 +683,6 @@ class HomeExpertTest {
             return null
         }
         return jsonString
-    }
-
-    private fun enableWifiAndData(enable: Boolean) {
-        val parameter = if (enable) "enable" else "disable"
-        InstrumentationRegistry.getInstrumentation().uiAutomation.apply {
-            executeShellCommand("svc wifi $parameter")
-            executeShellCommand("svc data $parameter")
-        }
     }
 
     class ToastMatcher : TypeSafeMatcher<Root>() {

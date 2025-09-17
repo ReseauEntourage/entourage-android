@@ -12,18 +12,22 @@ import com.bumptech.glide.request.RequestOptions
 import social.entourage.android.R
 import social.entourage.android.api.model.EntourageUser
 
-/**
- * Adapter pour afficher la liste de suggestions de mention (@) sous forme de RecyclerView.
- * La liste est limitée à 3 éléments.
- */
 class MentionAdapter(
     private var users: List<EntourageUser>,
     private val onItemClick: (EntourageUser) -> Unit
 ) : RecyclerView.Adapter<MentionAdapter.MentionViewHolder>() {
 
-    // Limite à 7 utilisateurs maximum
-    //TODO Change here for number of mention
-    override fun getItemCount(): Int = minOf(5, users.size)
+    init {
+        setHasStableIds(true)
+    }
+
+    override fun getItemId(position: Int): Long {
+        // Évite les clignotements lors des updates
+        val id = users.getOrNull(position)?.id ?: users.getOrNull(position)?.userId ?: 0
+        return id.toLong()
+    }
+
+    override fun getItemCount(): Int = users.size
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MentionViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -35,9 +39,6 @@ class MentionAdapter(
         holder.bind(users[position], position, onItemClick)
     }
 
-    /**
-     * Met à jour la liste des utilisateurs et notifie le changement.
-     */
     fun updateList(newUsers: List<EntourageUser>) {
         users = newUsers
         notifyDataSetChanged()
@@ -48,21 +49,18 @@ class MentionAdapter(
         private val nameTextView: TextView = itemView.findViewById(R.id.nameTextView)
 
         fun bind(user: EntourageUser, position: Int, onItemClick: (EntourageUser) -> Unit) {
-            // Affiche le nom de l'utilisateur
             nameTextView.text = user.displayName ?: "Utilisateur ${user.userId}"
-            val bgColorRes = R.color.beige_clair
-            itemView.setBackgroundColor(ContextCompat.getColor(itemView.context, bgColorRes))
-            // Charge l'avatar en utilisant Glide avec transformation de cercle et placeholder
+            itemView.setBackgroundColor(ContextCompat.getColor(itemView.context, R.color.beige_clair))
+
             Glide.with(itemView)
                 .load(user.avatarURLAsString)
                 .placeholder(R.drawable.placeholder_user)
                 .error(R.drawable.placeholder_user)
                 .apply(RequestOptions.circleCropTransform())
                 .into(avatarImageView)
-            // Gestion du clic : appelle le callback
+
             itemView.setOnClickListener {
-                val bgColorRes = R.color.beige
-                itemView.setBackgroundColor(ContextCompat.getColor(itemView.context, bgColorRes))
+                itemView.setBackgroundColor(ContextCompat.getColor(itemView.context, R.color.beige))
                 onItemClick(user)
             }
         }

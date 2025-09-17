@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import social.entourage.android.actions.ActionsFragment.Companion.CATEGORIES_FILTERS
 import social.entourage.android.api.model.ActionSectionFilters
 import social.entourage.android.databinding.ActivityActionCatFiltersBinding
 import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
@@ -27,14 +28,14 @@ class ActionCategoriesFiltersActivity : AppCompatActivity() {
 
         setupViews()
         initializeActionCat()
-        updatePaddingTopForEdgeToEdge(binding.header.layout)
+        updatePaddingTopForEdgeToEdge(binding.header.headerLayout)
     }
 
     private fun setupViews() {
         binding.validate.button.setOnClickListener {
             onSaveFilters()
         }
-        binding.header.iconBack.setOnClickListener {
+        binding.header.headerIconBack.setOnClickListener {
             onCancel()
         }
     }

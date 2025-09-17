@@ -8,22 +8,21 @@ import androidx.fragment.app.FragmentManager
 import androidx.navigation.NavArgument
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import social.entourage.android.api.model.guide.Poi
-import social.entourage.android.guide.GDSMainActivity
-import social.entourage.android.guide.poi.ReadPoiFragment
 import social.entourage.android.actions.create.CreateActionActivity
 import social.entourage.android.actions.detail.ActionDetailActivity
-import social.entourage.android.discussions.DetailConversationActivity
-import social.entourage.android.events.create.CreateEventActivity
-import social.entourage.android.groups.create.CreateGroupActivity
-import social.entourage.android.groups.details.feed.GroupFeedActivity
-import social.entourage.android.home.pedago.PedagoDetailActivity
 import social.entourage.android.api.model.ActionSummary
 import social.entourage.android.api.model.HomeActionParams
 import social.entourage.android.api.model.HomeType
+import social.entourage.android.api.model.guide.Poi
+import social.entourage.android.discussions.DetailConversationActivity
+import social.entourage.android.events.create.CreateEventActivity
 import social.entourage.android.events.details.feed.EventCommentActivity
+import social.entourage.android.groups.create.CreateGroupActivity
 import social.entourage.android.groups.details.feed.GroupCommentActivity
-import social.entourage.android.profile.ProfileActivity
+import social.entourage.android.groups.details.feed.GroupFeedActivity
+import social.entourage.android.guide.GDSMainActivity
+import social.entourage.android.guide.poi.ReadPoiFragment
+import social.entourage.android.home.pedago.PedagoDetailActivity
 import social.entourage.android.profile.ProfileFullActivity
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.Utils
@@ -91,7 +90,7 @@ object Navigation {
             }
             HomeType.PROFILE -> when (action) {
                 ActionSummary.SHOW ->
-                    return Intent(context, ProfileActivity::class.java).putExtra(
+                    return Intent(context, ProfileFullActivity::class.java).putExtra(
                         Const.GO_TO_EDIT_PROFILE,
                         true
                     )

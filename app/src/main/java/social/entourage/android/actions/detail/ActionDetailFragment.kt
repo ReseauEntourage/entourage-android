@@ -7,7 +7,6 @@ import android.os.Build
 import android.os.Bundle
 import android.text.SpannableString
 import android.text.style.UnderlineSpan
-import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -34,7 +33,7 @@ import social.entourage.android.api.model.Action
 import social.entourage.android.api.model.ActionSection
 import social.entourage.android.api.model.ActionUtils
 import social.entourage.android.api.model.Conversation
-import social.entourage.android.databinding.NewFragmentActionDetailBinding
+import social.entourage.android.databinding.FragmentActionDetailBinding
 import social.entourage.android.discussions.DetailConversationActivity
 import social.entourage.android.discussions.DiscussionsPresenter
 import social.entourage.android.groups.details.rules.GroupRulesActivity
@@ -48,11 +47,10 @@ import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.CustomAlertDialog
 import social.entourage.android.tools.utils.Utils.enableCopyOnLongClick
 import social.entourage.android.tools.utils.px
-import social.entourage.android.user.UserProfileActivity
 
 class ActionDetailFragment : Fragment(), OnMapReadyCallback {
-    private var _binding: NewFragmentActionDetailBinding? = null
-    val binding: NewFragmentActionDetailBinding get() = _binding!!
+    private var _binding: FragmentActionDetailBinding? = null
+    val binding: FragmentActionDetailBinding get() = _binding!!
 
     private var mCallback:OnDetailActionReceive? = null
 
@@ -86,7 +84,7 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = NewFragmentActionDetailBinding.inflate(inflater,container,false)
+        _binding = FragmentActionDetailBinding.inflate(inflater,container,false)
 
         //mMap = binding.uiMapview
         binding.uiMapview.onCreate(savedInstanceState)
@@ -178,7 +176,7 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
         }else{
             AnalyticsEvents.logEvent("Action__Demand__Report")
         }
-        var description = action?.description ?: ""
+        val description = action?.description ?: ""
         val reportGroupBottomDialogFragment =
             ReportModalFragment.newInstance(actionId, id, type,isMine,false, false, contentCopied = description)
         reportGroupBottomDialogFragment.show(
@@ -323,12 +321,12 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
 
     private fun updateViews() {
         action?.let {
-            var isArabic = false
-             isArabic = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            val isArabic = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 resources.configuration.locales[0].language == "ar"
             } else {
                 resources.configuration.locale.language == "ar"
             }
+
             if (isArabic) {
                 binding.uiUserName.layoutDirection = View.LAYOUT_DIRECTION_RTL
                 binding.uiLocation.layoutDirection = View.LAYOUT_DIRECTION_RTL

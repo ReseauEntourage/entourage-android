@@ -123,7 +123,7 @@
 
                 <include
                     android:id="@+id/demand_example_one"
-                    layout="@layout/demande_welcome_example"
+                    layout="@layout/item_welcome_example"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:layout_constraintStart_toStartOf="parent"
@@ -134,7 +134,7 @@
 
                 <include
                     android:id="@+id/demand_example_two"
-                    layout="@layout/demande_welcome_example"
+                    layout="@layout/item_welcome_example"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:layout_constraintStart_toStartOf="parent"
@@ -145,7 +145,7 @@
 
                 <include
                     android:id="@+id/demand_example_three"
-                    layout="@layout/demande_welcome_example"
+                    layout="@layout/item_welcome_example"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:layout_constraintStart_toStartOf="parent"

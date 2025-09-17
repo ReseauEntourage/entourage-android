@@ -98,15 +98,15 @@ class EditGroupFragment : Fragment() {
         with(binding) {
             stepOne.groupName.setText(group.name)
             stepOne.groupDescription.setText(group.description)
-            stepThree.groupMessageWelcome.setText(group.welcomeMessage)
-            stepThree.addPhotoLayout.visibility = View.GONE
-            stepThree.addPhoto.visibility = View.VISIBLE
+            stepThree.egs3GroupMessageWelcome.setText(group.welcomeMessage)
+            stepThree.egs3AddPhotoLayout.visibility = View.GONE
+            stepThree.egs3AddPhoto.visibility = View.VISIBLE
             group.imageUrl?.let {
                 Glide.with(requireActivity())
                     .load(Uri.parse(it))
                     .transform(CenterCrop(), RoundedCorners(Const.ROUNDED_CORNERS_IMAGES.px))
                     .placeholder(R.drawable.placeholder_user)
-                    .into(stepThree.addPhoto)
+                    .into(stepThree.egs3AddPhoto)
             }
         }
     }
@@ -138,10 +138,10 @@ class EditGroupFragment : Fragment() {
             })
             handleEditTextChangedTextListener(stepOne.groupName)
             handleEditTextChangedTextListener(stepOne.groupDescription)
-            stepThree.groupPhotoTitle.title.text = getString(R.string.edit_photo)
-            stepThree.groupPhotoTitle.mandatory.visibility = View.GONE
+            stepThree.egs3GroupPhotoTitle.sectionTitle.text = getString(R.string.edit_photo)
+            stepThree.egs3GroupPhotoTitle.sectionMandatory.visibility = View.GONE
             stepThree.groupPhotoLabel.visibility = View.GONE
-            stepThree.addPhoto.setOnClickListener {
+            stepThree.egs3AddPhoto.setOnClickListener {
                 ChooseGalleryPhotoModalFragment.newInstance(ImagesType.GROUPS)
                     .show(parentFragmentManager, ChooseGalleryPhotoModalFragment.TAG)
             }
@@ -166,7 +166,7 @@ class EditGroupFragment : Fragment() {
     }
 
     private fun initializeInterests() {
-        binding.stepTwo.recyclerView.apply {
+        binding.stepTwo.egs2RecyclerView.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = InterestsListAdapter(interestsList, object : OnItemCheckListener {
                 override fun onItemCheck(item: Interest) {
@@ -197,18 +197,18 @@ class EditGroupFragment : Fragment() {
                 selectedInterestIdList.add(it)
             }
         }
-        binding.stepTwo.recyclerView.adapter?.notifyDataSetChanged()
+        binding.stepTwo.egs2RecyclerView.adapter?.notifyDataSetChanged()
     }
 
     private fun onFragmentResult() {
         setFragmentResultListener(Const.REQUEST_KEY_CHOOSE_PHOTO) { _, bundle ->
             selectedImage = bundle.getParcelable(Const.CHOOSE_PHOTO_PATH)
             selectedImage?.imageUrl.let { imageUrl ->
-                binding.stepThree.addPhoto.visibility = View.VISIBLE
+                binding.stepThree.egs3AddPhoto.visibility = View.VISIBLE
                 Glide.with(requireActivity())
                     .load(Uri.parse(imageUrl))
                     .transform(CenterCrop(), RoundedCorners(Const.ROUNDED_CORNERS_IMAGES.px))
-                    .into(binding.stepThree.addPhoto)
+                    .into(binding.stepThree.egs3AddPhoto)
             }
         }
     }
@@ -229,11 +229,11 @@ class EditGroupFragment : Fragment() {
     private fun checkInterestsList(): Boolean {
         with(binding) {
             return if (isInterestsListValid()) {
-                stepTwo.error.root.visibility = View.GONE
+                stepTwo.egs2Error.root.visibility = View.GONE
                 true
             } else {
-                stepTwo.error.root.visibility = View.VISIBLE
-                stepTwo.error.errorMessage.text = getString(R.string.error_categories_create_group)
+                stepTwo.egs2Error.root.visibility = View.VISIBLE
+                stepTwo.egs2Error.errorMessage.text = getString(R.string.error_categories_create_group)
                 false
             }
         }
@@ -268,7 +268,7 @@ class EditGroupFragment : Fragment() {
                 with(binding) {
                     editedGroup["name"] = stepOne.groupName.text.trimEnd()
                     editedGroup["description"] = stepOne.groupDescription.text.trimEnd()
-                    editedGroup["welcome_message"] = stepThree.groupMessageWelcome.text.trimEnd()
+                    editedGroup["welcome_message"] = stepThree.egs3GroupMessageWelcome.text.trimEnd()
                     selectedImage?.let { image ->
                         editedGroup["neighborhood_image_id"] = image.id as Int
                     }

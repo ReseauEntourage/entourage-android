@@ -2,7 +2,6 @@ package social.entourage.android.actions
 
 import android.content.Context
 import android.net.Uri
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -14,11 +13,21 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import social.entourage.android.EntourageApplication
-import social.entourage.android.actions.list.ActionListFragment
-import social.entourage.android.api.request.*
-import social.entourage.android.home.UnreadMessages
 import social.entourage.android.api.model.Action
 import social.entourage.android.api.model.ActionCancel
+import social.entourage.android.api.request.ContribCancelWrapper
+import social.entourage.android.api.request.ContribWrapper
+import social.entourage.android.api.request.ContribsListWrapper
+import social.entourage.android.api.request.DemandCancelWrapper
+import social.entourage.android.api.request.DemandWrapper
+import social.entourage.android.api.request.DemandsListWrapper
+import social.entourage.android.api.request.MyActionsListWrapper
+import social.entourage.android.api.request.PrepareAddPostResponse
+import social.entourage.android.api.request.Report
+import social.entourage.android.api.request.ReportWrapper
+import social.entourage.android.api.request.RequestContent
+import social.entourage.android.api.request.UnreadCountWrapper
+import social.entourage.android.home.UnreadMessages
 import social.entourage.android.tools.utils.Utils
 import timber.log.Timber
 import java.io.File
@@ -26,9 +35,8 @@ import java.io.IOException
 
 class ActionsPresenter : ViewModel() {
 
-    val EVENTS_PER_PAGE = 10
-
     var getAllActions = MutableLiveData<MutableList<Action>>()
+    var errorLoadingActions = MutableLiveData<Boolean>()
     var getAction = MutableLiveData<Action?>()
 
     var isActionReported = MutableLiveData<Boolean>()
@@ -45,7 +53,7 @@ class ActionsPresenter : ViewModel() {
     val searchQuery = MutableLiveData<String>()
     val actionSearch = MutableLiveData<MutableList<Action>>()
     var isLastPageSearch = false
-    var isContrib = false
+    var isContrib = true
     var isMine = false
     fun onSearchQueryChanged(query: String) {
         searchQuery.value = query
@@ -63,7 +71,9 @@ class ActionsPresenter : ViewModel() {
                         getAllActions.value = allActionsWrapper.allActions
                     }
                 }
-                override fun onFailure(call: Call<ContribsListWrapper>, t: Throwable) {}
+                override fun onFailure(call: Call<ContribsListWrapper>, t: Throwable) {
+                    errorLoadingActions.value = true
+                }
             })
     }
 
@@ -80,6 +90,7 @@ class ActionsPresenter : ViewModel() {
                     }
                 }
                 override fun onFailure(call: Call<DemandsListWrapper>, t: Throwable) {
+                    errorLoadingActions.value = true
                 }
             })
     }
@@ -96,7 +107,9 @@ class ActionsPresenter : ViewModel() {
                         getAllActions.value = allActionsWrapper.allActions
                     }
                 }
-                override fun onFailure(call: Call<MyActionsListWrapper>, t: Throwable) {}
+                override fun onFailure(call: Call<MyActionsListWrapper>, t: Throwable) {
+                    errorLoadingActions.value = true
+                }
             })
     }
 
@@ -475,7 +488,9 @@ class ActionsPresenter : ViewModel() {
                         getAllActions.value = allActionsWrapper.allActions
                     }
                 }
-                override fun onFailure(call: Call<ContribsListWrapper>, t: Throwable) {}
+                override fun onFailure(call: Call<ContribsListWrapper>, t: Throwable) {
+                    errorLoadingActions.value = true
+                }
             })
     }
 
@@ -488,7 +503,9 @@ class ActionsPresenter : ViewModel() {
                         getAllActions.value = allActionsWrapper.allActions
                     }
                 }
-                override fun onFailure(call: Call<DemandsListWrapper>, t: Throwable) {}
+                override fun onFailure(call: Call<DemandsListWrapper>, t: Throwable) {
+                    errorLoadingActions.value = true
+                }
             })
     }
     fun getAllContribsWithSearchQuery(query: String, page: Int, per: Int) {
@@ -502,7 +519,7 @@ class ActionsPresenter : ViewModel() {
                 }
 
                 override fun onFailure(call: Call<ContribsListWrapper>, t: Throwable) {
-                    // Gérer l'échec
+                    errorLoadingActions.value = true
                 }
             })
     }
@@ -518,8 +535,12 @@ class ActionsPresenter : ViewModel() {
                 }
 
                 override fun onFailure(call: Call<DemandsListWrapper>, t: Throwable) {
-                    // Gérer l'échec
+                    errorLoadingActions.value = true
                 }
             })
+    }
+
+    companion object {
+        const val EVENTS_PER_PAGE = 10
     }
 }

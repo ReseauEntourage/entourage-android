@@ -63,7 +63,7 @@
 
             <include
                 android:id="@+id/card_small_talk_what_is"
-                layout="@layout/item_home_small_talk_info_card"
+                layout="@layout/layout_home_small_talk_info_whatitis_card"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
@@ -73,7 +73,7 @@
 
             <include
                 android:id="@+id/card_small_talk_what_is_not"
-                layout="@layout/item_home_small_talk_info_card_uncheck"
+                layout="@layout/layout_home_small_talk_info_whatitisnot_card"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"

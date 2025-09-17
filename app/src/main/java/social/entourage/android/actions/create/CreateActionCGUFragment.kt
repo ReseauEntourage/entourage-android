@@ -10,15 +10,15 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import social.entourage.android.R
 import social.entourage.android.api.model.Action
 import social.entourage.android.api.model.Rules
-import social.entourage.android.databinding.NewFragmentCreateActionCguBinding
+import social.entourage.android.databinding.FragmentCreateActionCguBinding
 import social.entourage.android.groups.details.rules.RulesListAdapter
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
 
 class CreateActionCGUFragment : Fragment() {
 
-    private var _binding: NewFragmentCreateActionCguBinding? = null
-    val binding: NewFragmentCreateActionCguBinding get() = _binding!!
+    private var _binding: FragmentCreateActionCguBinding? = null
+    val binding: FragmentCreateActionCguBinding get() = _binding!!
 
     private var isDemand = false
     private var actionEdited: Action? = null
@@ -36,7 +36,7 @@ class CreateActionCGUFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = NewFragmentCreateActionCguBinding.inflate(inflater, container, false)
+        _binding = FragmentCreateActionCguBinding.inflate(inflater, container, false)
 
         updatePaddingTopForEdgeToEdge(binding.layout)
         return binding.root

@@ -1,67 +1,74 @@
 package social.entourage.android
 
 import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.action.ViewActions.*
+import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions
-import androidx.test.espresso.matcher.ViewMatchers.*
+import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
+import androidx.test.espresso.matcher.ViewMatchers.isSelected
+import androidx.test.espresso.matcher.ViewMatchers.withId
+import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.rules.ActivityScenarioRule
-import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
-import androidx.test.platform.app.InstrumentationRegistry
 import org.hamcrest.Matchers.allOf
+import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.junit.runner.RunWith
 import social.entourage.android.onboarding.login.LoginActivity
 
+
 @LargeTest
-@RunWith(AndroidJUnit4::class)
-class MyEntouragesTest {
+//TODO @RunWith(AndroidJUnit4::class)
+class MyEntouragesTest : EntourageTestAfterLogin() {
 
-    @Rule
-    @JvmField
+    @get:Rule
     var activityRule = ActivityScenarioRule(LoginActivity::class.java)
-
-    private val login: String = "651234145"
-    private val password: String = "108674"
 
     @Before
     fun setUp() {
-        //Logout
         activityRule.scenario.onActivity { activity ->
-            EntourageApplication[activity].authenticationController.logOutUser()
+            super.setUp(activity)
         }
-
-        //Login
-        onView(withId(R.id.ui_login_phone_et_phone)).perform(typeText(login), closeSoftKeyboard())
-        onView(withId(R.id.ui_login_et_code)).perform(typeText(password), closeSoftKeyboard())
-        onView(withId(R.id.ui_login_button_signup)).perform(click())
-
-        Thread.sleep(4000)
+        //Thread.sleep(4000)
     }
-    //TODO
-    /*@Test
+
+    @After
+    override fun tearDown() {
+        //keep it just for the annotation
+        super.tearDown()
+    }
+
+    override fun closeAutofill() {
+        super.closeAutofill()
+        activityRule.scenario.onActivity { activity ->
+            closeAutofill(activity)
+        }
+    }
+
+    @Test
+    fun retrieveEntourages() {
+        forceLogIn()
+
+        //Try to retrieve feeds
+        val bottomBarMessagesButton = onView(allOf(withId(R.id.navigation_donations), isDisplayed()))
+        bottomBarMessagesButton.perform(click())
+        val myEntouragesTab = onView(allOf(withText(R.string.actions_tab_mygroup), isDisplayed()))
+        myEntouragesTab.perform(click())
+        onView(allOf(withText(R.string.actions_tab_mygroup), isDisplayed(), isSelected()))
+            .check(ViewAssertions.matches(isDisplayed()))
+    }
+
+    @Test
     fun retrieveFeedsFailureNoInternetConnection() {
+        forceLogIn()
         //Disable wifi and data
         enableWifiAndData(false)
 
         //Try to retrieve feeds
-        val bottomBarMessagesButton = onView(allOf(withId(R.id.bottom_bar_mymessages), withContentDescription(R.string.action_my_messages), isDisplayed()))
+        val bottomBarMessagesButton = onView(allOf(withId(R.id.navigation_donations), isDisplayed()))
         bottomBarMessagesButton.perform(click())
 
         //Check that error is displayed
         onView(allOf(withText(R.string.network_error))).check(ViewAssertions.matches(isDisplayed()))
-
-        //Enable wifi and data
-        enableWifiAndData(true)
-    }*/
-
-    private fun enableWifiAndData(enable: Boolean) {
-        val parameter = if (enable) "enable" else "disable"
-        InstrumentationRegistry.getInstrumentation().uiAutomation.apply {
-            executeShellCommand("svc wifi $parameter")
-            executeShellCommand("svc data $parameter")
-        }
     }
 }

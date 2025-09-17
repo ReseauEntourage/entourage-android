@@ -60,6 +60,9 @@ data class Events(
     @field:SerializedName("confirmed_member")
     val confirmedMember : Boolean? = null,
 
+    @field:SerializedName("signable")
+    val signable: Boolean? = null,
+
     @field:SerializedName("confirmed_members_count")
     val confirmedMembersCount: Int? = null,
 
@@ -193,14 +196,11 @@ class EventUtils {
                 "vêtement" -> return context.getString(R.string.action_clothes_name)
                 "équipement" -> return context.getString(R.string.action_equipment_name)
                 "produit d'hygiène" -> return context.getString(R.string.action_hygiene_name)
-
                 "social" -> return context.getString(R.string.action_social_name)
                 "services" -> return context.getString(R.string.action_services_name)
                 "clothes" -> return context.getString(R.string.action_clothes_name)
                 "equipment" -> return context.getString(R.string.action_equipment_name)
                 "hygiene" -> return context.getString(R.string.action_hygiene_name)
-
-
                 else -> return context.getString(R.string.interest_other)
             }
         }

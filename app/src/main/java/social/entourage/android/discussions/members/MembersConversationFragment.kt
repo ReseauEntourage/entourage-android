@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.textfield.TextInputLayout
 import social.entourage.android.R
 import social.entourage.android.api.model.Conversation
+import social.entourage.android.api.model.EntourageUser
 import social.entourage.android.api.model.GroupMember
 import social.entourage.android.api.model.User
 import social.entourage.android.api.model.toGroupMembers
@@ -77,11 +78,27 @@ class MembersConversationFragment : BaseDialogFragment() {
             override fun onShowConversation(userId: Int) {
                 discussionsPresenter.createOrGetConversation(userId.toString())
             }
+
+            override fun onToggleParticipation(
+                user: EntourageUser,
+                isChecked: Boolean,
+                photoAcceptance: Boolean?
+            ) {
+                //Nothing to do
+            }
         })
 
         searchAdapter = MembersConversationListAdapter(searchMembersList, userCreatorId, object : OnItemShowListener {
             override fun onShowConversation(userId: Int) {
                 discussionsPresenter.createOrGetConversation(userId.toString())
+            }
+
+            override fun onToggleParticipation(
+                user: EntourageUser,
+                isChecked: Boolean,
+                photoAcceptance: Boolean?
+            ) {
+                //Nothing to do
             }
         })
 
@@ -114,7 +131,7 @@ class MembersConversationFragment : BaseDialogFragment() {
     }
 
     private fun setupListeners() {
-        binding.header.iconBack.setOnClickListener { dismiss() }
+        binding.header.headerIconBack.setOnClickListener { dismiss() }
 
         binding.searchBar.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
@@ -251,6 +268,7 @@ class MembersConversationFragment : BaseDialogFragment() {
     companion object {
         private const val ARG_CONVID = "conversationid"
         const val TAG = "MembersConversationFragment"
+        var isFromDiscussion = false
 
         fun newInstance(conversationId: Int?): MembersConversationFragment {
             return MembersConversationFragment().apply {

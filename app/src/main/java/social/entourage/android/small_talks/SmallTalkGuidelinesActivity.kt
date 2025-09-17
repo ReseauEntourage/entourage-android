@@ -1,7 +1,6 @@
 package social.entourage.android.small_talks
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import social.entourage.android.R
 import social.entourage.android.base.BaseActivity
 import social.entourage.android.databinding.ActivitySmallTalkGuidelinesBinding
@@ -33,10 +32,10 @@ class SmallTalkGuidelinesActivity : BaseActivity() {
         binding.cardSmallTalkWhatIs.tvSmallTalkInfo3.text = getString(R.string.small_talk_what_it_is_item_3)
 
         // Section "Ce que ce n’est pas"
-        binding.cardSmallTalkWhatIsNot.tvSmallTalkInfoTitle.text = getString(R.string.small_talk_what_it_is_not_title)
-        binding.cardSmallTalkWhatIsNot.tvSmallTalkInfo1.text = getString(R.string.small_talk_what_it_is_not_item_1)
-        binding.cardSmallTalkWhatIsNot.tvSmallTalkInfo2.text = getString(R.string.small_talk_what_it_is_not_item_2)
-        binding.cardSmallTalkWhatIsNot.tvSmallTalkInfo3.text = getString(R.string.small_talk_what_it_is_not_item_3)
+        binding.cardSmallTalkWhatIsNot.tvSmallTalkInfoNotTitle.text = getString(R.string.small_talk_what_it_is_not_title)
+        binding.cardSmallTalkWhatIsNot.tvSmallTalkInfoNot1.text = getString(R.string.small_talk_what_it_is_not_item_1)
+        binding.cardSmallTalkWhatIsNot.tvSmallTalkInfoNot2.text = getString(R.string.small_talk_what_it_is_not_item_2)
+        binding.cardSmallTalkWhatIsNot.tvSmallTalkInfoNot3.text = getString(R.string.small_talk_what_it_is_not_item_3)
 
         // Cartes de la charte
         binding.cardSmallTalkEthics1.tvSmallTalkEthicTitle.text = getString(R.string.small_talk_ethics_1_title)

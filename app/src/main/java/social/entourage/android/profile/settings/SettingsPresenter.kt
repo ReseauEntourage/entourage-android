@@ -19,6 +19,7 @@ class SettingsPresenter {
                     response: Response<UserResponse>
                 ) {
                     accountDeleted.value = true
+                    EntourageApplication.get().logOut()
                 }
 
                 override fun onFailure(call: Call<UserResponse>, t: Throwable) {

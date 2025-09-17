@@ -37,7 +37,6 @@ import social.entourage.android.api.model.formatEventStartTime
 import social.entourage.android.api.model.notification.PushNotificationMessage
 import social.entourage.android.api.request.userConfig
 import social.entourage.android.base.BaseSecuredActivity
-import social.entourage.android.base.location.EntLocation
 import social.entourage.android.databinding.ActivityMainBinding
 import social.entourage.android.deeplinks.UniversalLinkManager
 import social.entourage.android.events.EventsPresenter
@@ -83,7 +82,7 @@ class MainActivity : BaseSecuredActivity() {
         initializeNavBar()
         if (authenticationController.isAuthenticated) {
             //refresh the user info from the server
-            presenter.updateUserLocation(EntLocation.currentLocation)
+            presenter.updateUser()
         }
         handleUniversalLinkFromMain(this.intent)
 
@@ -608,10 +607,6 @@ class MainActivity : BaseSecuredActivity() {
         //TODO bottomBar?.showEvents()
     }
 
-    fun showMyEntourages() {
-        //TODO bottomBar?.showMyEntourages()
-    }
-
     fun showActionsTab() {
         //TODO infoFragment?.dismiss()
         //TODO bottomBar?.showActionsTab()
@@ -647,19 +642,4 @@ class MainActivity : BaseSecuredActivity() {
         var shouldLaunchWelcomeGroup:Boolean = false
 
     }
-}
-
-//TODO rename this object
-enum class EntourageLink(val link: String) {
-    HOME("https://preprod.entourage.social/app"),
-    GROUP("https://preprod.entourage.social/app/groups/bb8c3e77aa95"),
-    OUTING("https://preprod.entourage.social/app/outings/ebJUCN-woYgM"),
-    OUTINGS_LIST("https://preprod.entourage.social/app/outings"),
-    MESSAGE("https://preprod.entourage.social/app/messages/er2BVAa5Vb4U"),
-    NEW_CONTRIBUTION("https://preprod.entourage.social/app/contributions/new"),
-    NEW_SOLICITATION("https://preprod.entourage.social/app/solicitations/new"),
-    CONTRIBUTIONS_LIST("https://preprod.entourage.social/app/contributions"),
-    SOLICITATIONS_LIST("https://preprod.entourage.social/app/solicitations"),
-    CONTRIBUTION_DETAIL("https://preprod.entourage.social/app/contributions/er2BVAa5Vb4U"),
-    SOLICITATION_DETAIL("https://preprod.entourage.social/app/solicitations/eibewY3GW-ek")
 }

@@ -10,41 +10,32 @@ import android.content.DialogInterface
 import android.os.Build
 import android.os.Bundle
 import android.util.DisplayMetrics
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.FrameLayout
 import android.widget.Toast
-import androidx.activity.viewModels
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import social.entourage.android.R
-import social.entourage.android.api.MetaDataRepository
-import social.entourage.android.databinding.NewFragmentReportBinding
 import social.entourage.android.actions.ActionsPresenter
+import social.entourage.android.api.MetaDataRepository
 import social.entourage.android.api.model.TagMetaData
 import social.entourage.android.api.model.Tags
+import social.entourage.android.databinding.NewFragmentReportBinding
 import social.entourage.android.discussions.DetailConversationActivity
-import social.entourage.android.discussions.DetailConversationActivity.Companion.isSmallTalkMode
-import social.entourage.android.discussions.DetailConversationActivity.Companion.smallTalkId
 import social.entourage.android.discussions.DiscussionsPresenter
 import social.entourage.android.events.EventsPresenter
 import social.entourage.android.groups.GroupPresenter
 import social.entourage.android.groups.details.feed.CallbackReportFragment
+import social.entourage.android.small_talks.SmallTalkViewModel
 import social.entourage.android.tools.log.AnalyticsEvents
-import social.entourage.android.user.UserPresenter
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.CustomAlertDialog
-import timber.log.Timber
-import social.entourage.android.report.DataLanguageStock
-import social.entourage.android.small_talks.SmallTalkViewModel
-import kotlin.getValue
+import social.entourage.android.user.UserPresenter
 
 enum class ReportTypes(val code: Int) {
     REPORT_USER(0),
@@ -58,22 +49,25 @@ enum class ReportTypes(val code: Int) {
     REPORT_POST_EVENT(8)
 }
 
-
-class ReportModalFragment() : BottomSheetDialogFragment() {
+class ReportModalFragment : BottomSheetDialogFragment() {
 
     private var signalList: MutableList<TagMetaData> = ArrayList()
     private var _binding: NewFragmentReportBinding? = null
     val binding: NewFragmentReportBinding get() = _binding!!
+
     private var selectedSignalsIdList: MutableList<String> = mutableListOf()
+
     private val userPresenter: UserPresenter by lazy { UserPresenter() }
     private val groupPresenter: GroupPresenter by lazy { GroupPresenter() }
     private val eventPresenter: EventsPresenter by lazy { EventsPresenter() }
     private val actionPresenter: ActionsPresenter by lazy { ActionsPresenter() }
     private val discussionsPresenter: DiscussionsPresenter by lazy { DiscussionsPresenter() }
     private val smallTalkViewModel: SmallTalkViewModel by viewModels()
+
     private var reportedId: Int? = Const.DEFAULT_VALUE
     private var groupId: Int? = Const.DEFAULT_VALUE
     private var reportType: Int? = Const.DEFAULT_VALUE
+
     private var title: String = ""
     private var isEventComment = false
     private var isGroupComment = false
@@ -83,8 +77,9 @@ class ReportModalFragment() : BottomSheetDialogFragment() {
     private var isNotTranslatable: Boolean? = false
     private var isFromConv: Boolean? = false
     private var isOneToOne: Boolean? = false
-    private var dismissCallback:onDissmissFragment? = null
-    private var contentCopied:String? = null
+    private var isSmallTalk: Boolean = false
+    private var dismissCallback: onDissmissFragment? = null
+    private var contentCopied: String? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -97,37 +92,49 @@ class ReportModalFragment() : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initializeInterests()
-        getReportedIdAndType()
+        readArgs()
         MetaDataRepository.metaData.observe(requireActivity(), ::handleMetaData)
+
+        // Observers
         userPresenter.isUserReported.observe(requireActivity(), ::handleReportResponse)
         groupPresenter.isGroupReported.observe(requireActivity(), ::handleReportResponse)
         groupPresenter.isPostReported.observe(requireActivity(), ::handleReportResponse)
         eventPresenter.isEventReported.observe(requireActivity(), ::handleReportResponse)
         eventPresenter.isEventPostReported.observe(requireActivity(), ::handleReportResponse)
         actionPresenter.isActionReported.observe(requireActivity(), ::handleReportResponse)
+
         discussionsPresenter.isConversationReported.observe(requireActivity(), ::handleReportResponse)
         discussionsPresenter.isConversationDeleted.observe(requireActivity(), ::handleDeletedResponse)
-        discussionsPresenter.isMessageDeleted.observe(requireActivity(),::handleDeletedResponse)
-        smallTalkViewModel.messageDeleteResult.observe(requireActivity(),::handleDeletedResponse)
-        groupPresenter.isPostDeleted.observe(requireActivity(),::handleDeletedResponse)
-        eventPresenter.isEventDeleted.observe(requireActivity(),::handleDeletedResponse)
+        discussionsPresenter.isMessageDeleted.observe(requireActivity(), ::handleDeletedResponse)
+        smallTalkViewModel.messageDeleteResult.observe(requireActivity(), ::handleDeletedResponse)
 
         setupViewStep1()
         handleCloseButton()
         setStartView()
 
-        if(reportType == ReportTypes.REPORT_USER.code){
+        // Drapeaux d’aide UI
+        when (reportType) {
+            ReportTypes.REPORT_POST_EVENT.code -> isEventComment = true
+            ReportTypes.REPORT_POST.code -> isGroupComment = true
+        }
+
+        // Ouvre directement l’étape de signalement si demandé
+        if (arguments?.getBoolean(ARG_OPEN_DIRECT_SIGNAL, false) == true ||
+            reportType == ReportTypes.REPORT_USER.code ||
+            reportType == ReportTypes.REPORT_GROUP.code ||
+            reportType == ReportTypes.REPORT_EVENT.code ||
+            reportType == ReportTypes.REPORT_CONVERSATION.code
+        ) {
             setAfterChoose()
             setView()
         }
-        //Use to force refresh layout
+
         setPeekHeight(0.7)
     }
 
-    fun setDismissCallback(callback:onDissmissFragment){
+    fun setDismissCallback(callback: onDissmissFragment) {
         this.dismissCallback = callback
     }
-
 
     private fun getWindowHeight(): Int {
         val displayMetrics = DisplayMetrics()
@@ -143,7 +150,7 @@ class ReportModalFragment() : BottomSheetDialogFragment() {
         return displayMetrics.heightPixels
     }
 
-    private fun setPeekHeight(ratio:Double){
+    private fun setPeekHeight(ratio: Double) {
         dialog?.setOnShowListener {
             val bottomSheetDialog = dialog as BottomSheetDialog
             val bottomSheet = bottomSheetDialog.findViewById<View>(com.google.android.material.R.id.design_bottom_sheet)
@@ -162,193 +169,174 @@ class ReportModalFragment() : BottomSheetDialogFragment() {
         }
     }
 
-    fun setCallback(callback:CallbackReportFragment){
+    fun setCallback(callback: CallbackReportFragment) {
         this.callback = callback
     }
-    fun setAfterChoose(){
 
-        val animSignal= ObjectAnimator.ofFloat(binding.layoutChooseSignal, "alpha", 1.0f,0.0F)
-        val animSupress = ObjectAnimator.ofFloat(binding.layoutChooseSuppress, "alpha", 1.0f,0.0F)
-        val animCopy = ObjectAnimator.ofFloat(binding.layoutChooseCopy, "alpha", 1.0f,0.0F)
-        val animTranslate = ObjectAnimator.ofFloat(binding.layoutChooseTranslate, "alpha", 1.0f,0.0F)
-        animSignal.duration = 100
-        animSupress.duration = 100
-        animCopy.duration = 100
-        animTranslate.duration = 100
-        animSignal.addListener(object : AnimatorListenerAdapter() {
+    fun setAfterChoose() {
+        val anims = listOf(
+            ObjectAnimator.ofFloat(binding.layoutChooseSignal, "alpha", 1f, 0f),
+            ObjectAnimator.ofFloat(binding.layoutChooseSuppress, "alpha", 1f, 0f),
+            ObjectAnimator.ofFloat(binding.layoutChooseCopy, "alpha", 1f, 0f),
+            ObjectAnimator.ofFloat(binding.layoutChooseTranslate, "alpha", 1f, 0f)
+        )
+        anims.forEach { it.duration = 100 }
+
+        fun hideAndResize(v: View) {
+            v.visibility = View.GONE
+            val view = binding.root
+            val behavior = BottomSheetBehavior.from(view.parent as View)
+            val peekheight = view.height
+            behavior.peekHeight = peekheight
+            setPeekHeight(0.7)
+        }
+
+        anims[0].addListener(object : AnimatorListenerAdapter() {
             override fun onAnimationEnd(animation: Animator, isReverse: Boolean) {
                 binding.layoutChooseSignal.visibility = View.GONE
                 binding.next.visibility = View.VISIBLE
             }
         })
-        animSupress.addListener(object : AnimatorListenerAdapter() {
+        anims[1].addListener(object : AnimatorListenerAdapter() {
             override fun onAnimationEnd(animation: Animator, isReverse: Boolean) {
-                binding.layoutChooseSuppress.visibility = View.GONE
-                val view = binding.root
-                val behavior = BottomSheetBehavior.from(view.parent as View)
-                val peekheight = view.height
-                behavior.peekHeight = peekheight
-                setPeekHeight(0.7)
+                hideAndResize(binding.layoutChooseSuppress)
             }
         })
-        animCopy.addListener(object : AnimatorListenerAdapter() {
+        anims[2].addListener(object : AnimatorListenerAdapter() {
             override fun onAnimationEnd(animation: Animator, isReverse: Boolean) {
-                binding.layoutChooseCopy.visibility = View.GONE
-                val view = binding.root
-                val behavior = BottomSheetBehavior.from(view.parent as View)
-                val peekheight = view.height
-                behavior.peekHeight = peekheight
-                setPeekHeight(0.7)
+                hideAndResize(binding.layoutChooseCopy)
             }
         })
-        animTranslate.addListener(object : AnimatorListenerAdapter() {
+        anims[3].addListener(object : AnimatorListenerAdapter() {
             override fun onAnimationEnd(animation: Animator, isReverse: Boolean) {
-                binding.layoutChooseTranslate.visibility = View.GONE
-                val view = binding.root
-                val behavior = BottomSheetBehavior.from(view.parent as View)
-                val peekheight = view.height
-                behavior.peekHeight = peekheight
-                setPeekHeight(0.7)
+                hideAndResize(binding.layoutChooseTranslate)
             }
         })
-        animSignal.start()
-        animSupress.start()
-        animCopy.start()
-        animTranslate.start()
+
+        anims.forEach { it.start() }
     }
-    fun setStartView(){
+
+    fun setStartView() {
+        // Renseigne les flags UI (sûr, pas d'unresolved ref)
         getIsFromMe()
         getIsNotTranslatable()
         getContentCopied()
         getIsMyLanguage()
         getIsFromConv()
         getIsOneToOne()
-        if(contentCopied == null || contentCopied.isNullOrEmpty()){
+
+        // Copier
+        if (contentCopied.isNullOrEmpty()) {
             binding.layoutChooseCopy.visibility = View.GONE
-        }else{
+        } else {
             binding.layoutChooseCopy.setOnClickListener {
                 AnalyticsEvents.logEvent(AnalyticsEvents.Clic_CopyPaste_Settings)
                 val clipboard = context?.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
                 val clip = ClipData.newPlainText(requireContext().getString(R.string.copied_text), contentCopied)
                 clipboard.setPrimaryClip(clip)
                 Toast.makeText(context, context?.getString(R.string.copied_text), Toast.LENGTH_SHORT).show()
-                true
                 DataLanguageStock.deleteContentToCopy()
                 onClose()
                 dismiss()
             }
         }
-            binding.layoutChooseTranslate.visibility = View.VISIBLE
-        if(reportType == ReportTypes.REPORT_COMMENT.code || reportType == ReportTypes.REPORT_POST_EVENT.code){
-            binding.layoutChooseTranslate.visibility = View.VISIBLE
-        }else{
-            binding.layoutChooseTranslate.visibility = View.GONE
-        }
-        if(DataLanguageStock.postLanguage == DataLanguageStock.userLanguage || (isFromMe == true)  ){
-            binding.layoutChooseTranslate.visibility = View.GONE
-        }else{
-            binding.layoutChooseTranslate.visibility = View.VISIBLE
-        }
-        if(isNotTranslatable == true){
-            binding.layoutChooseTranslate.visibility = View.GONE
-        }
 
-        if (reportType == ReportTypes.REPORT_GROUP.code){
-            setAfterChoose()
-            setView()
-            return
-        }
-        if (reportType == ReportTypes.REPORT_EVENT.code){
-            setAfterChoose()
-            setView()
-            return
-        }
-        if (reportType == ReportTypes.REPORT_CONVERSATION.code){
+        // Traduire (pertinent seulement pour un message/comm)
+        binding.layoutChooseTranslate.visibility = View.VISIBLE
+        val isCommentType =
+            reportType == ReportTypes.REPORT_COMMENT.code || reportType == ReportTypes.REPORT_POST_EVENT.code
+        binding.layoutChooseTranslate.visibility =
+            if (isCommentType &&
+                DataLanguageStock.postLanguage != DataLanguageStock.userLanguage &&
+                isFromMe != true &&
+                isNotTranslatable != true
+            ) View.VISIBLE else View.GONE
+
+        // Les types conversation / group / event ouvrent direct la 2e vue
+        if (reportType == ReportTypes.REPORT_GROUP.code ||
+            reportType == ReportTypes.REPORT_EVENT.code ||
+            reportType == ReportTypes.REPORT_CONVERSATION.code
+        ) {
             setAfterChoose()
             setView()
             return
         }
 
-        if(isFromMe == false){
+        if (isFromMe == false) {
             binding.layoutChooseSuppress.visibility = View.GONE
             binding.layoutChooseSignal.visibility = View.VISIBLE
             binding.next.visibility = View.GONE
-        }else{
+        } else {
             binding.layoutChooseSuppress.visibility = View.VISIBLE
             binding.layoutChooseSignal.visibility = View.GONE
             binding.next.visibility = View.GONE
         }
+
         var logEventTitleView = AnalyticsEvents.POST_SUPPRESSED
         var logEventTitleClick = AnalyticsEvents.SUPPRESS_CLICK
         binding.header.title = getString(R.string.title_param_post)
-        if(reportType == ReportTypes.REPORT_DEMAND.code || reportType == ReportTypes.REPORT_CONTRIB.code){
-            binding.header.title = getString(R.string.action_title_header_signal_problem)
-        }
 
-        if(isFromConv == true){
-            binding.header.title = getString(R.string.title_param_comment)
-            logEventTitleView = AnalyticsEvents.Delete_comm
-            logEventTitleClick = AnalyticsEvents.Click_delete_comm
-            if(isOneToOne == true){
+        if (isFromConv == true) {
+            binding.header.title = if (isOneToOne == true) {
                 logEventTitleView = AnalyticsEvents.Delete_mess
                 logEventTitleClick = AnalyticsEvents.Click_delete_mess
-                binding.header.title = getString(R.string.title_param_message)
+                getString(R.string.title_param_message)
+            } else {
+                logEventTitleView = AnalyticsEvents.Delete_comm
+                logEventTitleClick = AnalyticsEvents.Click_delete_comm
+                getString(R.string.title_param_comment)
             }
         }
-        if(this.isFromConv == true){
-            if(isOneToOne == true){
-                binding.titleSupressPost.text = getString(R.string.discussion_choose_supress_message)
-            }else{
-                binding.titleSupressPost.text = getString(R.string.discussion_choose_supress_commentary)
-            }
+
+        if (this.isFromConv == true) {
+            binding.titleSupressPost.text = if (isOneToOne == true)
+                getString(R.string.discussion_choose_supress_message)
+            else
+                getString(R.string.discussion_choose_supress_commentary)
         }
+
         binding.layoutChooseSuppress.setOnClickListener {
             AnalyticsEvents.logEvent(logEventTitleView)
-            if(this.isFromConv == true){
-                var title = ""
-                var message = ""
-                var btnTitle = ""
-                if(isOneToOne == true){
-                    title = getString(R.string.discussion_supress_the_message)
-                    message = getString(R.string.discussion_ask_supress_message)
-                    btnTitle = getString(R.string.discussion_button_supress)
-                }else{
-                    title = getString(R.string.discussion_supress_the_comment)
-                    message = getString(R.string.discussion_ask_supress_comment)
-                    btnTitle = getString(R.string.discussion_button_supress)
-                }
+            if (this.isFromConv == true) {
+                val (title, message, btn) =
+                    if (isOneToOne == true)
+                        Triple(getString(R.string.discussion_supress_the_message),
+                            getString(R.string.discussion_ask_supress_message),
+                            getString(R.string.discussion_button_supress))
+                    else
+                        Triple(getString(R.string.discussion_supress_the_comment),
+                            getString(R.string.discussion_ask_supress_comment),
+                            getString(R.string.discussion_button_supress))
 
                 CustomAlertDialog.showWithCancelFirst(
                     requireContext(),
-                    title,
-                    message,
-                    btnTitle
-                    ,{
-                        //ON CANCEL DO NOTHING YET
-                    },{
+                    title, message, btn,
+                    { /* cancel */ },
+                    {
                         AnalyticsEvents.logEvent(logEventTitleClick)
                         deleteMessage()
                         dismissCallback?.reloadView()
                         onClose()
                         dismiss()
-                    })
-            }else{
+                    }
+                )
+            } else {
                 CustomAlertDialog.showWithCancelFirst(
                     requireContext(),
                     getString(R.string.discussion_supress_the_post),
                     getString(R.string.discussion_ask_supress),
-                    getString(R.string.discussion_button_supress)
-                    ,{
-                        //ON CANCEL DO NOTHING YET
-                    },{
+                    getString(R.string.discussion_button_supress),
+                    { /* cancel */ },
+                    {
                         AnalyticsEvents.logEvent(logEventTitleClick)
                         deleteMessage()
                         dismissCallback?.reloadView()
-
-                    })
+                    }
+                )
             }
         }
-        if(reportType == ReportTypes.REPORT_DEMAND.code || reportType == ReportTypes.REPORT_CONTRIB.code){
+
+        if (reportType == ReportTypes.REPORT_DEMAND.code || reportType == ReportTypes.REPORT_CONTRIB.code) {
             binding.tvChooseSignal.text = getString(R.string.discussion_entraide_signal)
         }
         binding.layoutChooseSignal.setOnClickListener {
@@ -356,9 +344,9 @@ class ReportModalFragment() : BottomSheetDialogFragment() {
             setView()
         }
         binding.layoutChooseTranslate.setOnClickListener {
-            if(reportedId != null){
-                dismissCallback?.translateView(reportedId!!)
-                callback?.onTranslatePost(reportedId!!)
+            reportedId?.let { id ->
+                dismissCallback?.translateView(id)
+                callback?.onTranslatePost(id)
             }
             onClose()
             dismiss()
@@ -370,12 +358,8 @@ class ReportModalFragment() : BottomSheetDialogFragment() {
         onClose()
     }
 
-    fun setEventComment(){
-        isEventComment = true
-    }
-    fun setGroupComment(){
-        isGroupComment = true
-    }
+    fun setEventComment() { isEventComment = true }
+    fun setGroupComment() { isGroupComment = true }
 
     private fun setView() {
         binding.next.visibility = View.VISIBLE
@@ -394,53 +378,42 @@ class ReportModalFragment() : BottomSheetDialogFragment() {
                 else -> R.string.report_member
             }
         )
-        if(isEventComment){
-            title = getString(R.string.report_comment)
-        }
+        if (isEventComment) title = getString(R.string.report_comment)
         binding.header.title = title
-
     }
 
     private fun handleReportResponse(success: Boolean) {
-        if(isAdded){
-            if(success){
-                if(reportType == ReportTypes.REPORT_EVENT.code){
-                    AnalyticsEvents.logEvent("Action_EventOption_ReportConfirmation")
-                }else if(reportType == ReportTypes.REPORT_CONTRIB.code){
-                    AnalyticsEvents.logEvent("Action__Contrib__Report_Confirmation")
-                }else if(reportType == ReportTypes.REPORT_DEMAND.code){
-                    AnalyticsEvents.logEvent("Action__Demand__Report_Confirmation")
-                }else if (reportType == ReportTypes.REPORT_GROUP.code){
-                    AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_GROUP_REPORT)
-                }
+        if (!isAdded) return
+        if (success) {
+            when (reportType) {
+                ReportTypes.REPORT_EVENT.code -> AnalyticsEvents.logEvent("Action_EventOption_ReportConfirmation")
+                ReportTypes.REPORT_CONTRIB.code -> AnalyticsEvents.logEvent("Action__Contrib__Report_Confirmation")
+                ReportTypes.REPORT_DEMAND.code -> AnalyticsEvents.logEvent("Action__Demand__Report_Confirmation")
+                ReportTypes.REPORT_GROUP.code -> AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_GROUP_REPORT)
             }
-            if (success) CustomAlertDialog.showOnlyOneButton(
+            CustomAlertDialog.showOnlyOneButton(
                 requireContext(),
                 title,
                 getString(R.string.report_sent),
                 getString(R.string.button_OK)
             )
-            else showToast(getString(R.string.user_report_error_send_failed))
-            dismiss()
+        } else {
+            showToast(getString(R.string.user_report_error_send_failed))
         }
+        dismiss()
     }
 
     private fun handleDeletedResponse(success: Boolean) {
-        if(isAdded){
-            if (success){
+        if (isAdded) {
+            if (success) {
                 showToast(getString(R.string.delete_success_send))
-                callback?.onSuppressPost(reportedId!!)
-                onClose()
-                dismiss()
-            }else{
-
+            } else {
                 showToast(getString(R.string.delete_error_send_failed))
-                callback?.onSuppressPost(reportedId!!)
-                onClose()
-                dismiss()
             }
+            callback?.onSuppressPost(reportedId ?: 0)
+            onClose()
+            dismiss()
         }
-        dismiss()
     }
 
     private fun handleMetaData(tags: Tags?) {
@@ -449,46 +422,25 @@ class ReportModalFragment() : BottomSheetDialogFragment() {
         binding.recyclerView.adapter?.notifyDataSetChanged()
     }
 
-    private fun getReportedIdAndType() {
+    private fun readArgs() {
         reportedId = arguments?.getInt(Const.REPORTED_ID)
         groupId = arguments?.getInt(Const.GROUP_ID)
         reportType = arguments?.getInt(Const.REPORT_TYPE)
-    }
-    fun getIsFromMe(){
         isFromMe = arguments?.getBoolean(Const.IS_FROM_ME)
-    }
-    fun getContentCopied(){
         contentCopied = arguments?.getString(Const.CONTENT_COPIED)
-
-    }
-
-    fun getIsMyLanguage(){
         isMyLanguage = arguments?.getBoolean(Const.IS_MY_LANGUAGE)
-    }
-    fun getIsNotTranslatable(){
-
         isNotTranslatable = arguments?.getBoolean(Const.IS_NOT_TRANSLATABLE)
-    }
-    fun getIsFromConv(){
         isFromConv = arguments?.getBoolean(Const.IS_FROM_CONV)
-
-    }
-    fun getIsOneToOne(){
         isOneToOne = arguments?.getBoolean(Const.IS_ONE_TO_ONE)
-
+        isSmallTalk = arguments?.getBoolean(ARG_IS_SMALL_TALK, false) ?: false
     }
 
     private fun initializeInterests() {
         binding.recyclerView.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = ReportListAdapter(signalList, object : OnItemCheckListener {
-                override fun onItemCheck(item: TagMetaData) {
-                    item.id?.let { selectedSignalsIdList.add(it) }
-                }
-
-                override fun onItemUncheck(item: TagMetaData) {
-                    selectedSignalsIdList.remove(item.id)
-                }
+                override fun onItemCheck(item: TagMetaData) { item.id?.let { selectedSignalsIdList.add(it) } }
+                override fun onItemUncheck(item: TagMetaData) { selectedSignalsIdList.remove(item.id) }
             })
         }
     }
@@ -498,10 +450,7 @@ class ReportModalFragment() : BottomSheetDialogFragment() {
         binding.divider.visibility = View.VISIBLE
         binding.recyclerView.visibility = View.VISIBLE
         binding.next.visibility = View.VISIBLE
-        binding.next.setOnClickListener {
-            if (selectedSignalsIdList.isNotEmpty())
-                setupViewStep2()
-        }
+        binding.next.setOnClickListener { if (selectedSignalsIdList.isNotEmpty()) setupViewStep2() }
         binding.message.visibility = View.GONE
         binding.back.visibility = View.GONE
         binding.send.visibility = View.GONE
@@ -512,61 +461,43 @@ class ReportModalFragment() : BottomSheetDialogFragment() {
         binding.message.visibility = View.VISIBLE
         binding.back.visibility = View.VISIBLE
         binding.send.visibility = View.VISIBLE
-        binding.back.setOnClickListener {
-            setupViewStep1()
-        }
+        binding.back.setOnClickListener { setupViewStep1() }
 
         binding.send.setOnClickListener {
             reportedId?.let { id ->
                 when (reportType) {
                     ReportTypes.REPORT_USER.code -> userPresenter.sendReport(
-                        id,
-                        binding.message.text.toString(),
-                        selectedSignalsIdList
+                        id, binding.message.text.toString(), selectedSignalsIdList
                     )
                     ReportTypes.REPORT_GROUP.code -> groupPresenter.sendReport(
-                        id,
-                        binding.message.text.toString(),
-                        selectedSignalsIdList
+                        id, binding.message.text.toString(), selectedSignalsIdList
                     )
-                    ReportTypes.REPORT_POST.code, ReportTypes.REPORT_COMMENT.code -> groupId?.let { it ->
+                    ReportTypes.REPORT_POST.code,
+                    ReportTypes.REPORT_COMMENT.code -> groupId?.let { gid ->
                         groupPresenter.sendReportPost(
-                            it,
-                            id,
-                            binding.message.text.toString(),
-                            selectedSignalsIdList
+                            gid, id, binding.message.text.toString(), selectedSignalsIdList
                         )
                     }
-                    ReportTypes.REPORT_POST_EVENT.code-> groupId?.let { it ->
+                    ReportTypes.REPORT_POST_EVENT.code -> groupId?.let { eid ->
                         eventPresenter.sendPostReport(
-                            it,
-                            id,
-                            binding.message.text.toString(),
-                            selectedSignalsIdList
+                            eid, id, binding.message.text.toString(), selectedSignalsIdList
                         )
                     }
-
                     ReportTypes.REPORT_EVENT.code -> eventPresenter.sendReport(
-                        id,
-                        binding.message.text.toString(),
-                        selectedSignalsIdList
+                        id, binding.message.text.toString(), selectedSignalsIdList
                     )
                     ReportTypes.REPORT_CONTRIB.code -> actionPresenter.sendReport(
-                        id,
-                        binding.message.text.toString(),
-                        selectedSignalsIdList,false
+                        id, binding.message.text.toString(), selectedSignalsIdList, false
                     )
                     ReportTypes.REPORT_DEMAND.code -> actionPresenter.sendReport(
-                        id,
-                        binding.message.text.toString(),
-                        selectedSignalsIdList, true
+                        id, binding.message.text.toString(), selectedSignalsIdList, true
                     )
-                    ReportTypes.REPORT_CONVERSATION.code -> discussionsPresenter.sendReport(
-                        id,
-                        binding.message.text.toString(),
-                        selectedSignalsIdList
-                    )
-                    else -> R.string.report_member
+                    ReportTypes.REPORT_CONVERSATION.code -> {
+                        // classique ou SmallTalk (même méthode ici)
+                        discussionsPresenter.sendReport(
+                            id, binding.message.text.toString(), selectedSignalsIdList
+                        )
+                    }
                 }
             }
         }
@@ -575,27 +506,22 @@ class ReportModalFragment() : BottomSheetDialogFragment() {
         binding.next.visibility = View.GONE
     }
 
-    fun deleteMessage(){
+    fun deleteMessage() {
         reportedId?.let { id ->
             when (reportType) {
-                ReportTypes.REPORT_POST.code -> groupId?.let { it ->
-                    groupPresenter.deletedGroupPost(it, id)
-                }
-                ReportTypes.REPORT_COMMENT.code -> groupId?.let { it ->
-                    if(isGroupComment){
-                        groupPresenter.deletedGroupPost(it, id)
+                ReportTypes.REPORT_POST.code -> groupId?.let { gid -> groupPresenter.deletedGroupPost(gid, id) }
+                ReportTypes.REPORT_COMMENT.code -> groupId?.let { gid ->
+                    if (isGroupComment) {
+                        groupPresenter.deletedGroupPost(gid, id)
                     }
-                    if(DetailConversationActivity.isSmallTalkMode){
-                        smallTalkViewModel.deleteChatMessage(smallTalkId, id.toString())
-                    }else {
-                        discussionsPresenter.deleteMessage(it, id) // ➜ Discussion
+                    if (DetailConversationActivity.isSmallTalkMode) {
+                        smallTalkViewModel.deleteChatMessage(DetailConversationActivity.smallTalkId.toString(), id.toString())
+                    } else {
+                        discussionsPresenter.deleteMessage(gid, id)
                     }
                 }
-                ReportTypes.REPORT_POST_EVENT.code -> groupId?.let { it ->
-                    eventPresenter.deletedEventPost(it, id)
-                }
-
-                else -> R.string.report_member
+                ReportTypes.REPORT_POST_EVENT.code -> groupId?.let { eid -> eventPresenter.deletedEventPost(eid, id) }
+                else -> { /* no-op */ }
             }
         }
     }
@@ -606,67 +532,78 @@ class ReportModalFragment() : BottomSheetDialogFragment() {
 
     private fun onClose() {
         selectedSignalsIdList.clear()
-        userPresenter.isUserReported = MutableLiveData()
-        groupPresenter.isGroupReported = MutableLiveData()
-        eventPresenter.isEventReported = MutableLiveData()
-        actionPresenter.isActionReported = MutableLiveData()
-        discussionsPresenter.isConversationReported = MutableLiveData()
     }
 
     private fun handleCloseButton() {
-        binding.header.iconCross.setOnClickListener {
-            onClose()
-            dismiss()
+        binding.header.hbsIconCross.setOnClickListener {
+            onClose(); dismiss()
+        }
+    }
+
+    // --- Helpers pour éviter les "unresolved reference" ---
+    private fun getIsFromMe() { /* déjà chargé via readArgs() */ }
+    private fun getIsNotTranslatable() { /* déjà chargé via readArgs() */ }
+    private fun getIsMyLanguage() { /* déjà chargé via readArgs() */ }
+    private fun getIsFromConv() { /* déjà chargé via readArgs() */ }
+    private fun getIsOneToOne() { /* déjà chargé via readArgs() */ }
+    private fun getContentCopied() {
+        if (contentCopied.isNullOrEmpty()) {
+            val cached = DataLanguageStock.contentToCopy
+            if (!cached.isNullOrEmpty()) contentCopied = cached
         }
     }
 
     companion object {
         const val TAG = "ReportModalFragment"
-        fun newInstance(id: Int, groupId: Int, reportType: ReportTypes , isFromMe:Boolean, isConv:Boolean, isOneToOne:Boolean, isMyLanguage:Boolean? = null, isNotTranslatable:Boolean? = null, contentCopied:String): ReportModalFragment {
+        private const val ARG_OPEN_DIRECT_SIGNAL = "open_direct_signal"
+        private const val ARG_IS_SMALL_TALK = "is_small_talk"
+
+        // ✅ Signature unique et simple: reportType = enum (pas d’Int)
+        fun newInstance(
+            id: Any,
+            groupId: Int,
+            reportType: ReportTypes,
+            isFromMe: Boolean,
+            isConv: Boolean,
+            isOneToOne: Boolean,
+            contentCopied: String,
+            isMyLanguage: Boolean? = null,
+            isNotTranslatable: Boolean? = null,
+            openDirectSignal: Boolean = false,
+            isSmallTalk: Boolean = false
+        ): ReportModalFragment {
             val fragment = ReportModalFragment()
-            val args = Bundle()
-            args.putInt(Const.REPORTED_ID, id)
-            args.putInt(Const.GROUP_ID, groupId)
-            args.putBoolean(Const.IS_FROM_ME, isFromMe)
-            args.putString(Const.CONTENT_COPIED, contentCopied)
-            if(isMyLanguage != null){
-                args.putBoolean(Const.IS_MY_LANGUAGE, isMyLanguage)
+            val args = Bundle().apply {
+                putInt(Const.REPORTED_ID, id as Int)
+                putInt(Const.GROUP_ID, groupId)
+                putBoolean(Const.IS_FROM_ME, isFromMe)
+                putString(Const.CONTENT_COPIED, contentCopied)
+                isMyLanguage?.let { putBoolean(Const.IS_MY_LANGUAGE, it) }
+                isNotTranslatable?.let { putBoolean(Const.IS_NOT_TRANSLATABLE, it) }
+                putInt(Const.REPORT_TYPE, reportType.code)
+                putBoolean(Const.IS_FROM_CONV, isConv)
+                putBoolean(Const.IS_ONE_TO_ONE, isOneToOne)
+                putBoolean(ARG_OPEN_DIRECT_SIGNAL, openDirectSignal)
+                putBoolean(ARG_IS_SMALL_TALK, isSmallTalk)
             }
-            if(isNotTranslatable != null){
-                args.putBoolean(Const.IS_NOT_TRANSLATABLE, isNotTranslatable)
-            }
-            args.putInt(Const.REPORT_TYPE, reportType.code)
-            args.putInt(Const.REPORT_TYPE, reportType.code)
-            args.putBoolean(Const.IS_FROM_CONV, isConv)
-            args.putBoolean(Const.IS_ONE_TO_ONE, isOneToOne)
             fragment.arguments = args
             return fragment
         }
     }
 }
 
-
-interface onDissmissFragment{
+interface onDissmissFragment {
     fun reloadView()
-    fun translateView(id:Int)
+    fun translateView(id: Int)
 }
 
 public object DataLanguageStock {
     var userLanguage: String = "default"
     var postLanguage: String = "default"
-    var contentToCopy:String = ""
+    var contentToCopy: String = ""
 
-    fun updateUserLanguage(language: String) {
-        userLanguage = language
-    }
-
-    fun updatePostLanguage(language: String) {
-        postLanguage = language
-    }
-    fun updateContentToCopy(content:String){
-        contentToCopy = content
-    }
-    fun deleteContentToCopy(){
-        contentToCopy = ""
-    }
+    fun updateUserLanguage(language: String) { userLanguage = language }
+    fun updatePostLanguage(language: String) { postLanguage = language }
+    fun updateContentToCopy(content: String) { contentToCopy = content }
+    fun deleteContentToCopy() { contentToCopy = "" }
 }

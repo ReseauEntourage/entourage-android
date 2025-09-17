@@ -124,7 +124,7 @@
             app:layout_constraintStart_toEndOf="@+id/avatar"
             app:layout_constraintEnd_toStartOf="@+id/ui_layout_notif"
             android:textAlignment="center"
-            android:text="@string/home_v2_title"
+            android:text="@string/home_title"
             android:fontFamily="@font/quicksand_bold"
             android:textColor="@color/white"
             android:textSize="@dimen/entourage_font_very_small"
@@ -143,7 +143,7 @@
         android:layout_marginTop="@dimen/entourage_little_margin_top"
         android:paddingTop="@dimen/entourage_margin_top"
         android:scrollbars="vertical"
-        android:background="@drawable/home_v2_scrollview_shape"
+        android:background="@drawable/home_scrollview_shape"
         android:fillViewport="true">
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -161,7 +161,7 @@
                 android:fontFamily="@font/quicksand_bold"
                 android:textSize="@dimen/entourage_font_large"
                 android:textColor="@color/grey_dark"
-                android:text="@string/home_v2_title_sensibilisation"
+                android:text="@string/home_title_sensibilisation"
                 />
             <TextView
                 android:layout_width="wrap_content"
@@ -173,7 +173,7 @@
                 android:fontFamily="@font/nunitosans_regular"
                 android:textSize="@dimen/entourage_font_small"
                 android:visibility="gone"
-                android:text="@string/home_v2_subtitle_sensibilisation"
+                android:text="@string/home_subtitle_sensibilisation"
                 />
             <androidx.recyclerview.widget.RecyclerView
                 android:layout_width="match_parent"
@@ -198,7 +198,7 @@
                 android:fontFamily="@font/quicksand_bold"
                 android:textSize="@dimen/entourage_font_large"
                 android:textColor="@color/grey_dark"
-                android:text="@string/home_v2_title_small_talk"
+                android:text="@string/home_title_small_talk"
                 />
 
             <androidx.recyclerview.widget.RecyclerView
@@ -224,7 +224,7 @@
             android:fontFamily="@font/quicksand_bold"
             android:textSize="@dimen/entourage_font_large"
             android:textColor="@color/grey_dark"
-            android:text="@string/home_v2_title_action"
+            android:text="@string/home_title_action"
             />
             <TextView
                 android:layout_width="wrap_content"
@@ -235,7 +235,7 @@
                 android:layout_marginStart="@dimen/entourage_marginstart"
                 android:fontFamily="@font/nunitosans_regular"
                 android:textSize="@dimen/entourage_font_small"
-                android:text="@string/home_v2_subtitle_action"
+                android:text="@string/home_subtitle_action"
                 android:visibility="gone"
                 />
             <androidx.recyclerview.widget.RecyclerView
@@ -263,7 +263,7 @@
                     android:fontFamily="@font/quicksand_bold"
                     android:textSize="@dimen/entourage_font_small"
                     android:textColor="@color/light_orange"
-                    android:text="@string/home_v2_btn_more_action"
+                    android:text="@string/home_btn_more_action"
                     android:layout_marginEnd="@dimen/entourage_little_margin_end" />
                 <ImageView
                     android:layout_width="25dp"
@@ -285,7 +285,7 @@
                 android:fontFamily="@font/quicksand_bold"
                 android:textSize="@dimen/entourage_font_large"
                 android:textColor="@color/grey_dark"
-                android:text="@string/home_v2_title_event"
+                android:text="@string/home_title_event"
                 />
             <TextView
                 android:layout_width="wrap_content"
@@ -296,7 +296,7 @@
                 android:layout_marginStart="@dimen/entourage_marginstart"
                 android:fontFamily="@font/nunitosans_regular"
                 android:textSize="@dimen/entourage_font_small"
-                android:text="@string/home_v2_subtitle_event"
+                android:text="@string/home_subtitle_event"
                 android:visibility="gone"
                 />
             <androidx.recyclerview.widget.RecyclerView
@@ -323,7 +323,7 @@
                     android:fontFamily="@font/quicksand_bold"
                     android:textSize="@dimen/entourage_font_small"
                     android:textColor="@color/light_orange"
-                    android:text="@string/home_v2_btn_more_event"
+                    android:text="@string/home_btn_more_event"
                     android:layout_marginEnd="@dimen/entourage_little_margin_end" />
                 <ImageView
                     android:layout_width="25dp"
@@ -345,7 +345,7 @@
                 android:fontFamily="@font/quicksand_bold"
                 android:textSize="@dimen/entourage_font_large"
                 android:textColor="@color/grey_dark"
-                android:text="@string/home_v2_title_group"
+                android:text="@string/home_title_group"
                 android:visibility="gone"
                 />
             <TextView
@@ -357,7 +357,7 @@
                 android:layout_marginStart="@dimen/entourage_marginstart"
                 android:fontFamily="@font/nunitosans_regular"
                 android:textSize="@dimen/entourage_font_small"
-                android:text="@string/home_v2_subtitle_group"
+                android:text="@string/home_subtitle_group"
                 android:visibility="gone"
                 />
             <androidx.recyclerview.widget.RecyclerView
@@ -387,7 +387,7 @@
                     android:fontFamily="@font/quicksand_bold"
                     android:textSize="@dimen/entourage_font_small"
                     android:textColor="@color/light_orange"
-                    android:text="@string/home_v2_btn_more_group"
+                    android:text="@string/home_btn_more_group"
                     android:layout_marginEnd="@dimen/entourage_little_margin_end" />
                 <ImageView
                     android:layout_width="25dp"
@@ -409,7 +409,7 @@
                 android:fontFamily="@font/quicksand_bold"
                 android:textSize="@dimen/entourage_font_large"
                 android:textColor="@color/grey_dark"
-                android:text="@string/home_v2_title_map"
+                android:text="@string/home_title_map"
                 />
             <TextView
                 android:layout_width="wrap_content"
@@ -420,7 +420,7 @@
                 android:layout_marginStart="@dimen/entourage_marginstart"
                 android:fontFamily="@font/nunitosans_regular"
                 android:textSize="@dimen/entourage_font_small"
-                android:text="@string/home_v2_subtitle_map"
+                android:text="@string/home_subtitle_map"
                 android:visibility="gone"
                 />
             
@@ -474,7 +474,7 @@
                     android:layout_marginEnd="20dp"
                     android:layout_marginStart="@dimen/entourage_little_margin_five"
                     android:fontFamily="@font/quicksand_bold"
-                    android:text="@string/home_v2_button_map"
+                    android:text="@string/home_button_map"
                     android:textColor="@color/white"
                     android:textAlignment="center"
                     android:textSize="@dimen/entourage_font_small"
@@ -497,7 +497,7 @@
                 android:fontFamily="@font/quicksand_bold"
                 android:textSize="@dimen/entourage_font_large"
                 android:textColor="@color/grey_dark"
-                android:text="@string/home_v2_title_pedago"
+                android:text="@string/home_title_pedago"
                 />
             <TextView
                 android:layout_width="wrap_content"
@@ -508,7 +508,7 @@
                 android:layout_marginStart="@dimen/entourage_marginstart"
                 android:fontFamily="@font/nunitosans_regular"
                 android:textSize="@dimen/entourage_font_small"
-                android:text="@string/home_v2_subtitle_pedago"
+                android:text="@string/home_subtitle_pedago"
                 android:visibility="gone"
                 />
             <androidx.recyclerview.widget.RecyclerView
@@ -535,7 +535,7 @@
                     android:fontFamily="@font/quicksand_bold"
                     android:textSize="@dimen/entourage_font_small"
                     android:textColor="@color/light_orange"
-                    android:text="@string/home_v2_btn_more_pedago"
+                    android:text="@string/home_btn_more_pedago"
                     android:layout_marginEnd="@dimen/entourage_little_margin_end" />
                 <ImageView
                     android:layout_width="25dp"
@@ -545,7 +545,7 @@
             </LinearLayout>
             <include
                 android:id="@+id/item_hz"
-                layout="@layout/home_v2_hors_zone"
+                layout="@layout/home_hors_zone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layout_constraintStart_toStartOf="parent"
@@ -576,7 +576,7 @@
                     android:fontFamily="@font/quicksand_bold"
                     android:textSize="@dimen/entourage_font_large"
                     android:textColor="@color/grey_dark"
-                    android:text="@string/home_v2_title_help"
+                    android:text="@string/home_title_help"
                     />
                 <TextView
                     android:layout_width="wrap_content"
@@ -587,7 +587,7 @@
                     android:layout_marginStart="@dimen/entourage_marginstart"
                     android:fontFamily="@font/nunitosans_regular"
                     android:textSize="@dimen/entourage_font_small"
-                    android:text="@string/home_v2_subtitle_help"
+                    android:text="@string/home_subtitle_help"
                     android:visibility="gone"
                     />
                 <androidx.recyclerview.widget.RecyclerView

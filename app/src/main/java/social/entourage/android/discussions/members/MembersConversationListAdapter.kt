@@ -10,9 +10,9 @@ import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.api.model.GroupMember
 import social.entourage.android.databinding.NewGroupMemberItemBinding
+import social.entourage.android.discussions.DetailConversationActivity
 import social.entourage.android.groups.details.members.OnItemShowListener
 import social.entourage.android.profile.ProfileFullActivity
-import social.entourage.android.user.UserProfileActivity
 import social.entourage.android.tools.utils.Const
 
 class MembersConversationListAdapter(
@@ -26,7 +26,6 @@ class MembersConversationListAdapter(
         notifyDataSetChanged()
     }
 
-
     inner class ViewHolder(val binding: NewGroupMemberItemBinding) :
         RecyclerView.ViewHolder(binding.root)
 
@@ -38,11 +37,9 @@ class MembersConversationListAdapter(
         )
         return ViewHolder(binding)
     }
-
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         with(holder) {
             with(membersList[position]) {
-
                 val isMe = EntourageApplication.get().me()?.id == id
                 binding.contact.visibility = if (isMe) View.INVISIBLE else View.VISIBLE
                 binding.name.text = displayName
@@ -54,7 +51,9 @@ class MembersConversationListAdapter(
                 else {
                     binding.ambassador.visibility = View.GONE
                 }
-
+                if (DetailConversationActivity.isSmallTalkMode || MembersConversationFragment.isFromDiscussion) {
+                    binding.checkboxConfirmation.visibility = View.GONE
+                }
 
                 avatarUrl?.let { avatarURL ->
                     Glide.with(holder.itemView.context)
@@ -69,7 +68,6 @@ class MembersConversationListAdapter(
                         .circleCrop()
                         .into(binding.picture)
                 }
-
                 binding.layout.setOnClickListener { view ->
                     ProfileFullActivity.isMe = false
                     ProfileFullActivity.userId = this.id.toString()
@@ -88,7 +86,6 @@ class MembersConversationListAdapter(
             }
         }
     }
-
     override fun getItemCount(): Int {
         return membersList.size
     }

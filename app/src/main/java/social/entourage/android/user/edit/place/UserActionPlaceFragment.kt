@@ -7,7 +7,6 @@ import android.content.Intent
 import android.location.Geocoder
 import android.location.Location
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,7 +26,6 @@ import social.entourage.android.R
 import social.entourage.android.RefreshController
 import social.entourage.android.api.model.User
 import social.entourage.android.base.BaseDialogFragment
-import social.entourage.android.base.location.LocationProvider
 import social.entourage.android.base.location.LocationUtils
 import social.entourage.android.databinding.FragmentSelectPlaceBinding
 import timber.log.Timber
@@ -181,7 +179,7 @@ open class UserActionPlaceFragment : BaseDialogFragment() {
                 getString(R.string.onboard_place_getting_current_location)
             mFusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
             mFusedLocationClient?.requestLocationUpdates(
-                LocationProvider.createLocationRequest(),
+                LocationUtils.createLocationRequest(),
                 mLocationCallback,
                 null
             )

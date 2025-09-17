@@ -54,6 +54,7 @@ import social.entourage.android.events.details.SettingsModalFragment
 import social.entourage.android.groups.details.feed.CallbackReportFragment
 import social.entourage.android.groups.details.feed.GroupMembersPhotosAdapter
 import social.entourage.android.groups.details.members.MembersType
+import social.entourage.android.home.HomeFragment
 import social.entourage.android.language.LanguageManager
 import social.entourage.android.members.MembersActivity
 import social.entourage.android.profile.myProfile.InterestsAdapter
@@ -68,10 +69,12 @@ import social.entourage.android.tools.utils.Utils.enableCopyOnLongClick
 import social.entourage.android.tools.utils.VibrationUtil
 import social.entourage.android.tools.utils.px
 import social.entourage.android.tools.utils.underline
+import social.entourage.android.ui.ActionSheetFragment
 import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import kotlin.math.abs
+import kotlin.math.sign
 
 
 class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
@@ -90,6 +93,8 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
     private val args: EventFeedFragmentArgs by navArgs()
     private var shouldShowPopUp = true
     private var mMap: GoogleMap? = null
+    private var iAmOrganiser = false
+    private var signable = false
 
     private var memberList: MutableList<EntourageUser> = mutableListOf()
 
@@ -114,10 +119,10 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
         surveyPresenter.isSurveyVoted.observe(requireActivity(), ::handleSurveyPostResponse)
         eventPresenter.getMembers.observe(viewLifecycleOwner, ::handleResponseGetMembers)
         getPrincipalMember()
+        handleSettingsButton()
         handleMembersButton()
         fragmentResult()
         handleBackButton()
-        handleSettingsButton()
         handleAboutButton()
         handleParticipateButton()
         onFragmentResult()
@@ -171,6 +176,10 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
     private fun handleResponseGetEvent(getEvent: Events?) {
         getEvent?.let {
             event = it
+            if(it.signable != null){
+                signable = it.signable
+                ActionSheetFragment.isSignable = signable
+            }
             updateView()
             if(shouldAddToAgenda){
                 val startMillis: Long = Calendar.getInstance().run {
@@ -436,14 +445,26 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
     }
 
     private fun handleSettingsButton() {
-        if(isAdded){
-            binding.iconSettings.setOnClickListener {
-                AnalyticsEvents.logEvent(AnalyticsEvents.Event_detail_action_param)
-                event?.let { event ->
-                    SettingsModalFragment.newInstance(event).show(parentFragmentManager, SettingsModalFragment.TAG)
-                }
+        if (!isAdded) return
 
-            }
+        binding.iconSettings.setOnClickListener {
+            // droits : organisateur / animateur (ton app : me.roles non vide)
+            val canManage = HomeFragment.signablePermission && event?.signable == true
+
+            // infos d’entête pour la sheet (titre / #participants / adresse)
+            val title = event?.title
+            val participants = event?.membersCount ?: 0
+            val address = event?.metadata?.displayAddress
+
+            // conversationId: pas indispensable pour le mode EVENT de la sheet -> 0
+            ActionSheetFragment.newEvent(
+                eventId = eventId,
+                conversationId = 0,
+                canManageParticipants = canManage,
+                eventTitle = title,
+                participantsCount = participants,
+                eventAddress = address
+            ).show(parentFragmentManager, "ActionSheetEvent")
         }
     }
 
@@ -456,6 +477,7 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
 
     private fun handleAboutButton() {
         binding.btnAddCalendar.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.add_to_calendar_yes_clicked)
             shouldAddToAgenda = false
             val startMillis: Long = Calendar.getInstance().run {
                 time = event?.metadata?.startsAt ?: time
@@ -509,6 +531,9 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
             var numberOrganizer = 0
             var nameOrganizers = ""
             for(member in allMembers){
+                if(member.id.toInt() == EntourageApplication.get().me()?.id){
+                    iAmOrganiser = true
+                }
                 if(member.groupRole == "organizer"){
                     numberOrganizer += 1
                     if(numberOrganizer < 3){
@@ -597,10 +622,12 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
 
     private fun handleMembersButton() {
         binding.members.setOnClickListener {
+            Timber.wtf("signable : $signable")
             val intent = Intent(context, MembersActivity::class.java).apply {
                 // Passage des arguments nécessaires
                 putExtra("ID", eventId) // Assure-toi que 'groupId' est un Int
                 putExtra("TYPE", MembersType.EVENT.code) // Utilise 'code' pour passer l'enum comme un Int
+                putExtra("ROLE", (signable && HomeFragment.signablePermission))
             }
             startActivity(intent)
             requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)

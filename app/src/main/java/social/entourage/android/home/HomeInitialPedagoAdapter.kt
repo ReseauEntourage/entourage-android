@@ -66,7 +66,7 @@ class HomeInitialPedagoAdapter(private var onItemClickListener: OnItemClick): Re
         }
         pedago.duration.let {
             val context = holder.binding.root.context
-            val formattedString = context.getString(R.string.home_v2_pedag_item_lenght_title, it)
+            val formattedString = context.getString(R.string.home_v2_pedago_item_length_title, it)
             holder.binding.tvLenghtPedagoItem.text = formattedString
             if(it == null ){
                 holder.binding.tvLenghtPedagoItem.visibility = View.GONE

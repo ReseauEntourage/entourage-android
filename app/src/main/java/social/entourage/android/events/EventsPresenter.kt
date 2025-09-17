@@ -1,6 +1,7 @@
 package social.entourage.android.events
 
 import android.util.Log
+import android.widget.Toast
 import androidx.collection.ArrayMap
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -25,6 +26,7 @@ import social.entourage.android.api.model.Events
 import social.entourage.android.api.model.Post
 import social.entourage.android.api.model.CompleteReactionsResponse
 import social.entourage.android.api.model.ReactionWrapper
+import social.entourage.android.ui.ActionSheetFragment
 import timber.log.Timber
 import java.io.File
 import java.io.IOException
@@ -75,6 +77,9 @@ class EventsPresenter : ViewModel() {
     private var isLoadingMembers        = false
     private var isLastMembersPage       = false
     val pagedEventMembers = MutableLiveData<MutableList<EntourageUser>>()   // nouvelle LD
+    val memberParticipationUpdated = MutableLiveData<Pair<Int, Boolean>>() // (userId, success)
+    val photoAcceptanceDone = MutableLiveData<Pair<Int, Boolean>>()        // (userId, success)
+    val memberParticipationCanceled = MutableLiveData<Pair<Int, Boolean>>() // (userId, success)
 
     var isLoading: Boolean = false
     var isLastPage: Boolean = false
@@ -347,11 +352,12 @@ class EventsPresenter : ViewModel() {
                     if (response.isSuccessful) {
                         response.body()?.let { eventWrapper ->
                             getEvent.value = eventWrapper.event
+                            if(getEvent.value?.signable != null){
+                                ActionSheetFragment.isSignable = getEvent.value?.signable!!
+                            }
                         }
                     }
-
                 }
-
                 override fun onFailure(call: Call<EventWrapper>, t: Throwable) {
                     Timber.wtf("wtf error " + t.message)
                 }
@@ -526,16 +532,16 @@ class EventsPresenter : ViewModel() {
         isSendingCreatePost = true
         EntourageApplication.get().apiModule.eventsRequest.addPost(eventId, params)
             .enqueue(object : Callback<PostWrapper> {
-                override fun onResponse(
-                    call: Call<PostWrapper>,
-                    response: Response<PostWrapper>
-                ) {
-                    hasPost.value = response.isSuccessful
-                }
-
-                override fun onFailure(call: Call<PostWrapper>, t: Throwable) {
-                    hasPost.value = false
+                override fun onResponse(call: Call<PostWrapper>, response: Response<PostWrapper>) {
+                    // release the lock on BOTH paths
                     isSendingCreatePost = false
+                    hasPost.value = response.isSuccessful
+                    // Optionally expose the created post if needed:
+                    // commentPosted.value = response.body()?.post
+                }
+                override fun onFailure(call: Call<PostWrapper>, t: Throwable) {
+                    isSendingCreatePost = false
+                    hasPost.value = false
                 }
             })
     }
@@ -549,28 +555,37 @@ class EventsPresenter : ViewModel() {
     ) {
         val client: OkHttpClient = EntourageApplication.get().apiModule.okHttpClient
         val requestBody = file.asRequestBody("image/jpeg".toMediaTypeOrNull())
-        val request = Request.Builder()
-            .url(presignedUrl)
-            .put(requestBody)
-            .build()
+        val request = Request.Builder().url(presignedUrl).put(requestBody).build()
+
         client.newCall(request).enqueue(object : okhttp3.Callback {
             override fun onFailure(call: okhttp3.Call, e: IOException) {
-                Timber.e("response ${e.message}")
+                Timber.e("uploadFile failure: ${e.message}")
                 isSendingCreatePost = false
             }
 
             override fun onResponse(call: okhttp3.Call, response: okhttp3.Response) {
-                val messageChat = ArrayMap<String, Any>()
-                messageChat["image_url"] = uploadKey
-                if (!message.isNullOrBlank() && !message.isNullOrEmpty())
-                    messageChat["content"] = message
-                val chatMessage = ArrayMap<String, Any>()
-                chatMessage["chat_message"] = messageChat
+                if (!response.isSuccessful) {
+                    Timber.e("uploadFile http ${response.code}")
+                    isSendingCreatePost = false
+                    return
+                }
+                // Build payload only after a successful upload
+                val messageChat = ArrayMap<String, Any>().apply {
+                    put("image_url", uploadKey ?: "")
+                    if (!message.isNullOrBlank()) {
+                        put("content", message)
+                    }
+                }
+                val chatMessage = ArrayMap<String, Any>().apply {
+                    put("chat_message", messageChat)
+                }
+                // Hand off to the JSON create call (it will toggle the flag itself)
                 isSendingCreatePost = false
                 addPost(eventId, chatMessage)
             }
         })
     }
+
 
     fun getCurrentParentPost(eventId: Int, postId: Int) {
         EntourageApplication.get().apiModule.eventsRequest.getPostDetail(eventId, postId, "high")
@@ -759,6 +774,7 @@ class EventsPresenter : ViewModel() {
                         Log.d("EventsPresenter", "Participation confirmée avec succès.")
                         isUserConfirmedParticipating.value = true
                     } else {
+                        Toast.makeText(EntourageApplication.get(), "Échec de la confirmation de participation.", Toast.LENGTH_SHORT).show()
                         Log.d("EventsPresenter", "Échec de la confirmation de participation.")
                         isUserConfirmedParticipating.value = false
                     }
@@ -864,7 +880,78 @@ class EventsPresenter : ViewModel() {
                 }
             })
     }
+    fun participateForUser(eventId: Int, userId: Int) {
+        EntourageApplication.get().apiModule.eventsRequest.participateForUser(eventId, userId)
+            .enqueue(object : Callback<EntourageUserResponse> {
+                override fun onResponse(
+                    call: Call<EntourageUserResponse>,
+                    response: Response<EntourageUserResponse>
+                ) {
+                    val ok = response.isSuccessful && response.body()?.user != null
+                    memberParticipationUpdated.postValue(userId to ok)
+                    if (ok) {
+                        RefreshController.shouldRefreshEventFragment = true
+                    }
+                }
 
+                override fun onFailure(call: Call<EntourageUserResponse>, t: Throwable) {
+                    memberParticipationUpdated.postValue(userId to false)
+                }
+            })
+    }
+
+    fun acceptPhotoForUser(eventId: Int, userId: Int) {
+        EntourageApplication.get().apiModule.eventsRequest.acceptPhotoForUser(eventId, userId)
+            .enqueue(object : Callback<ResponseBody> {
+                override fun onResponse(
+                    call: Call<ResponseBody>,
+                    response: Response<ResponseBody>
+                ) {
+                    photoAcceptanceDone.postValue(userId to response.isSuccessful)
+                }
+
+                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                    photoAcceptanceDone.postValue(userId to false)
+                }
+            })
+    }
+    fun declinePhotoForUser(eventId: Int, userId: Int) {
+        EntourageApplication.get().apiModule.eventsRequest.declinePhotoForUser(eventId, userId)
+            .enqueue(object : Callback<ResponseBody> {
+                override fun onResponse(
+                    call: Call<ResponseBody>,
+                    response: Response<ResponseBody>
+                ) {
+                    photoAcceptanceDone.postValue(userId to response.isSuccessful)
+                }
+
+                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                    photoAcceptanceDone.postValue(userId to false)
+                }
+            })
+    }
+
+    fun cancelParticipationForUser(eventId: Int, userId: Int) {
+        EntourageApplication.get().apiModule.eventsRequest.cancelParticipationForUser(eventId, userId)
+            .enqueue(object : retrofit2.Callback<okhttp3.ResponseBody> {
+                override fun onResponse(
+                    call: retrofit2.Call<okhttp3.ResponseBody>,
+                    response: retrofit2.Response<okhttp3.ResponseBody>
+                ) {
+                    memberParticipationCanceled.postValue(userId to response.isSuccessful)
+                    if (response.isSuccessful) {
+                        RefreshController.shouldRefreshEventFragment = true
+                    }
+                }
+
+                override fun onFailure(
+                    call: retrofit2.Call<okhttp3.ResponseBody>,
+                    t: Throwable
+                ) {
+                    memberParticipationCanceled.postValue(userId to false)
+                }
+            })
+    }
 
 }
 

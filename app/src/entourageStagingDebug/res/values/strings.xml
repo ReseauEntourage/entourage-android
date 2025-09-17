@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name" translatable="false">EntourDBG</string>
+    <string name="app_name" translatable="false">EntDBGStaging</string>
+    <string name="about_debug_info_format" translatable="false">build: staging/%1$s\nFIId: %2$s</string>
 
 </resources>

@@ -15,6 +15,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
@@ -42,12 +43,6 @@ import social.entourage.android.main_filter.MainFilterMode
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
 import social.entourage.android.tools.utils.Const
-
-const val CONTRIBUTIONS_TAB = 0
-const val DEMANDS_TAB = 1
-
-const val LOCATION_FILTERS = "locationFilters"
-const val CATEGORIES_FILTERS = "categoriesFilters"
 
 class ActionsFragment : Fragment() {
 
@@ -81,17 +76,16 @@ class ActionsFragment : Fragment() {
     }
 
     private fun updateFilters() {
-        // Implémentation de mise à jour des filtres
+        //TODO Implémentation de mise à jour des filtres
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         presenter = ViewModelProvider(requireActivity()).get(ActionsPresenter::class.java)
-        var isDemand = false
+        var isDemand = !HomeFragment.isContribProfile
         arguments?.let {
-            isDemand = it.getBoolean(Const.IS_ACTION_DEMAND, false)
+            isDemand = it.getBoolean(Const.IS_ACTION_DEMAND)
         }
-        isDemand = !HomeFragment.isContribProfile
         ViewPagerDefaultPageController.shouldSelectActionDemand = isDemand
     }
 
@@ -152,15 +146,15 @@ class ActionsFragment : Fragment() {
             initializeTab()
             RefreshController.shouldRefreshEventFragment = false
         }
-        if (MainFilterActivity.savedActionInterests.size > 0) {
+        if (MainFilterActivity.savedActionInterests.isNotEmpty()) {
             binding.cardFilterNumber.visibility = View.VISIBLE
             binding.tvNumberOfFilter.text = MainFilterActivity.savedActionInterests.size.toString()
-            binding.uiLayoutFilter.background = resources.getDrawable(R.drawable.bg_unselected_filter)
-            binding.uiLayoutSearch.background = resources.getDrawable(R.drawable.bg_unselected_filter)
+            binding.uiLayoutFilter.background = ResourcesCompat.getDrawable(resources, R.drawable.bg_unselected_filter, null)
+            binding.uiLayoutSearch.background = ResourcesCompat.getDrawable(resources, R.drawable.bg_unselected_filter, null)
         } else {
             binding.cardFilterNumber.visibility = View.GONE
-            binding.uiLayoutFilter.background = resources.getDrawable(R.drawable.bg_unselected_filter)
-            binding.uiLayoutSearch.background = resources.getDrawable(R.drawable.bg_unselected_filter)
+            binding.uiLayoutFilter.background = ResourcesCompat.getDrawable(resources, R.drawable.bg_unselected_filter, null)
+            binding.uiLayoutSearch.background = ResourcesCompat.getDrawable(resources, R.drawable.bg_unselected_filter, null)
         }
         binding.createAction.close()
         binding.overlayView.visibility = View.GONE
@@ -396,5 +390,12 @@ class ActionsFragment : Fragment() {
                 binding.overlayView.visibility = if (isOpen) View.VISIBLE else View.GONE
             }
         })
+    }
+
+    companion object {
+        const val CONTRIBUTIONS_TAB = 0
+        const val DEMANDS_TAB = 1
+        const val LOCATION_FILTERS = "locationFilters"
+        const val CATEGORIES_FILTERS = "categoriesFilters"
     }
 }

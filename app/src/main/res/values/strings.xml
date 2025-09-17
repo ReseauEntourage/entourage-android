@@ -1,6 +1,7 @@
 <resources>
 
-    <string name="app_name">Entourage</string>
+    <string name="app_name" translatable="false">Entourage</string>
+    <string name="full_app_name">Entourage</string>
     <string name="button_loading">Chargement…</string>
     <string name="error_not_yet_implemented">Indisponible</string>
     <string name="error_google_play_store_not_installed">Le Google Play Store n\'est pas intallé</string>
@@ -28,9 +29,6 @@
     <string name="technical_error">Nous avons un petit problème…\nIl sera bientôt corrigé ;)</string>
     <string name="server_error">Nous avons un petit problème…\nIl sera très vite corrigé ;)</string>
     <string name="no_browser_error">Aucun navigateur n\'est installé</string>
-
-    <string name="badge_count_format">%1$d</string>
-
 
     <string name="preference_file_key">ENTOURAGE_GCM_DATA</string>
     <string name="action_overlay_close">Fermer le menu Actions</string>
@@ -66,7 +64,7 @@
     <string name="home_title_headlines">À la une</string>
     <string name="home_title_actions">Demandes et initiatives</string>
     <string name="home_title_events">Événements</string>
-    <string name="home_title_none" />
+    <string name="home_title_none" translatable="false"/>
     <string name="home_title_actions_contrib">Contributions</string>
     <string name="home_title_actions_ask">Demandes</string>
 
@@ -115,7 +113,6 @@
     <string name="notifications">Notifications</string>
     <string name="help_about">Aide et à propos</string>
     <string name="unblock">Débloquer des membres</string>
-    <string name="sign_out">Se déconnecter</string>
     <string name="delete_account">Supprimer mon compte</string>
     <string name="share_app">Bonjour ! Grâce au réseau Entourage, je participe à des actions solidaires entre voisins avec et sans domicile. Rejoins-moi : https://bit.ly/applientourage</string>
     <string name="edit_profile">Modifier mes informations</string>
@@ -146,7 +143,7 @@
 
     <string name="sign_out_dialog_title">Déconnexion</string>
     <string name="sign_out_dialog_content">Voulez-vous vous déconnecter ?</string>
-    <string name="progress_km">%s km</string>
+    <string name="progress_km">%d km</string>
     <string name="modify_interests_subtitle">Séléctionnez une ou plusieurs catégories qui vous intéresse.</string>
     <string name="add_image">Ajouter une photo</string>
     <string name="add_image_title">Vous n\'avez pas encore de photo de profil</string>
@@ -247,13 +244,11 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="communities">Groupes</string>
     <string name="discover_groups">Je découvre</string>
     <string name="my_groups">Mes groupes</string>
-    <string name="members_number">%s membres</string>
-    <string name="members_number_singular">%s membre</string>
-
-
-    <string name="member_number">%s membre</string>
-    <string name="future_outgoing_events_number">%s événements prévus</string>
-    <string name="future_outgoing_events_number_singular">%s événement prévu</string>
+    <string name="members_number">%d membres</string>
+    <string name="members_number_singular">%d membre</string>
+    <string name="member_number">%d membre</string>
+    <string name="future_outgoing_events_number">%d événements prévus</string>
+    <string name="future_outgoing_events_number_singular">%d événement prévu</string>
     <string name="search_group_hint">Rechercher un groupe</string>
     <string name="group_list_empty_state_title">Oups, il n\'y a pas encore d\'autres groupes autour de vous.</string>
     <string name="group_list_empty_state_subtitle">N\'hésitez pas à créer de \nnouveaux groupes de voisins !</string>
@@ -402,7 +397,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="feed_event_time">HH\'h\'mm</string>
     <string name="participate">Participer</string>
     <string name="participating">Je participe</string>
-    <string name="geoUri">http://maps.google.com/maps?q=loc:%s</string>
+    <string name="geoUri" translatable="false">https://maps.google.com/maps?q=loc:%s</string>
     <string name="event_settings">Paramètres de l\'événement</string>
     <string name="event_notification_all">Toute l\'activité de l\'événement</string>
     <string name="notification_new_publications">Les nouvelles publications</string>
@@ -419,7 +414,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="associated_group">Groupe associé :</string>
     <string name="date_recurrence_event">%s . %s</string>
     <string name="start_and_end_time_event">De %s à %s</string>
-    <string name="limited_places">Nombre de places limitées : %s</string>
+    <string name="limited_places">Nombre de places limitées : %d</string>
     <string name="created_at">Créé le %s</string>
     <string name="updated_at">Modifié le %s</string>
     <string name="canceled_at">Annulé le %s</string>
@@ -516,8 +511,8 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="about_privacy">Politique de Confidentialité</string>
     <string name="about_website">Site web d’Entourage</string>
     <string name="about_email">Contactez Entourage</string>
-    <string name="about_version_format">v%1$s</string>
-    <string name="about_debug_info_format">build: staging/%1$s\nFIId: %2$s</string>
+    <string name="about_version_format" translatable="false">%1$s ©2025\nv%2$s</string>
+    <string name="about_debug_info_format" translatable="false">build: prod/%1$s\nFIId: %2$s</string>
     <string name="about_clearing_entourage_cache">Données d\'historique locales effacées</string>
     <string name="about_rate_app">Noter l\'app</string>
     <string name="about_share_app">Partager l\'app</string>
@@ -530,7 +525,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="entourage_info_text_join_rejected">\u0020 rejeté</string>
     <string name="entourage_info_text_join_cancelled_entourage">a annulé sa demande de rejoindre le groupe</string>
     <string name="entourage_info_text_join_quited_entourage">a quitté le groupe</string>
-    <string name="entourage_info_text_join_html"><![CDATA[<font color=\"#FF9739\">%1$s </font>%2$s]]></string>
+    <string name="entourage_info_text_join_html" translatable="false"><![CDATA[<font color=\"#FF9739\">%1$s </font>%2$s]]></string>
     <string name="entourage_info_error_chat_message">Message non envoyé</string>
     <string name="entourage_info_options_stop">Clôturer</string>
     <string name="entourage_info_options_cancel_event">Annuler l\'événement</string>
@@ -2113,15 +2108,15 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
 
     <string name="onboard_welcome_title">Bienvenue !</string>
     <string name="onboard_welcome_info">Seule la première lettre sera visible</string>
-    <string name="onboard_welcome_placeholder_firstname">Votre prénom</string>
-    <string name="onboard_welcome_placeholder_lastname">Votre nom</string>
+    <string name="onboard_welcome_placeholder_firstname">Marie</string>
+    <string name="onboard_welcome_placeholder_lastname">Dupont</string>
     <string name="onboard_welcome_title_firstname">Prénom*</string>
     <string name="onboard_welcome_title_lastname">Nom*</string>
     <string name="onboard_welcome_title_country">Pays*</string>
     <string name="onboard_welcome_title_phone">Téléphone*</string>
     <string name="onboard_welcome_title_email">E-mail</string>
     <string name="onboard_welcome_placeholder_email">votreadresse@mail.com</string>
-    <string name="onboard_welcome_placeholder_phone">0600000000</string>
+    <string name="onboard_welcome_placeholder_phone" translatable="false">06XXXXXXXX</string>
     <string name="onboard_welcome_consent">Je souhaite recevoir des informations et des conseils de la part d’Entourage</string>
     <string name="onboard_welcome_info_mandatory">*Champs obligatoires. Vos informations resteront confidentielles et ne seront jamais communiquées à des tiers.</string>
 
@@ -2259,11 +2254,11 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="ambassadeur_link_public" translatable="false">https://www.entourage.social/agir-avec-nous/par-action/devenir-benevole</string>
     <string name="faq_link_public" translatable="false">https://www.entourage.social/blog/lantiseche-tout-savoir-pour-bien-commencer-sur-lapp-entourage</string>
 
-    <string name="market_url">market://details?id=%s</string>
-    <string name="playstore_url">https://play.google.com/store/apps/details?id=%s</string>
-    <string name="facebook_url">https://www.facebook.com/EntourageReseauCivique</string>
-    <string name="twitter_url">https://twitter.com/r_entourage</string>
-    <string name="instagram_url">https://www.instagram.com/reseauentourage/</string>
+    <string name="market_url" translatable="false">market://details?id=%s</string>
+    <string name="playstore_url" translatable="false">https://play.google.com/store/apps/details?id=%s</string>
+    <string name="facebook_url" translatable="false">https://www.facebook.com/EntourageReseauCivique</string>
+    <string name="twitter_url" translatable="false">https://twitter.com/r_entourage</string>
+    <string name="instagram_url" translatable="false">https://www.instagram.com/reseauentourage/</string>
 
     <string name="terms_url" translatable="false">https://www.entourage.social/cgu</string>
     <string name="website_url" translatable="false">https://www.entourage.social</string>
@@ -2272,12 +2267,12 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="child_rule_url" translatable="false">https://www.entourage.social/normes-de-protection-des-enfants</string>
     <string name="donate_default_link" translatable="false">https://don.entourage.social/dons/~mon-don</string>
 
-    <string name="contact_email">app@entourage.social</string>
+    <string name="contact_email" translatable="false">app@entourage.social</string>
 
-    <string name="redirect_link_format">%1$slinks/%2$s/redirect?token=%3$s</string>
-    <string name="redirect_link_no_token_format">%1$slinks/%2$s/redirect</string>
+    <string name="redirect_link_format" translatable="false">%1$slinks/%2$s/redirect?token=%3$s</string>
+    <string name="redirect_link_no_token_format" translatable="false">%1$slinks/%2$s/redirect</string>
 
-    <string name="url_share_entourage_bitly">https://bit.ly/applientourage</string>
+    <string name="url_share_entourage_bitly" translatable="false">https://bit.ly/applientourage</string>
 
     <string name="url_linkedout" translatable="false">https://www.entourage-pro.fr</string>
     <string name="url_app_suggest" translatable="false">https://entourage-asso.typeform.com/to/NRhT8vmj</string>
@@ -2499,7 +2494,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
 
     <string name="params_block_user_conv_pop_validate_title">Bloquer %s</string>
     <string name="params_block_user_conv_pop_validate_subtitle">Ce contact a bien été bloqué.</string>
-    <string name="params_block_user_conv_pop_validate_bt">Ok</string>
+    <string name="params_block_user_conv_pop_validate_bt">OK</string>
 
     <string name="message_user_blocked_by_me_list">Vous avez bloqué ce contact</string>
     <string name="message_user_blocked_by_me">Vous avez bloqué %s . Vous ne pouvez plus lui envoyer de message.</string>
@@ -2520,7 +2515,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="params_unblock_user_pop_validate_title">Débloquer %s</string>
     <string name="params_unblock_user_pop_validate_subtitle">Ce contact vient d\'être débloqué, vous pouvez à nouveau vous écrire.</string>
     <string name="params_unblock_users_pop_validate_subtitle">Ces contacts viennent d\'être débloqués, vous pouvez à nouveau vous écrire.</string>
-    <string name="params_unblock_user_pop_validate_bt">Ok</string>
+    <string name="params_unblock_user_pop_validate_bt">OK</string>
 
     <string name="param_empty_blocked_user">Vous n\'avez bloqué aucun contact.</string>
 
@@ -2528,48 +2523,48 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="pop_up_rugby_france_content">Les plus belles rencontres ne se font pas forcément au stade ! Rejoignez le groupe \"Vivons le sport ensemble\"</string>
 
     <!-- New Home string -->
-    <string name="home_v2_title">L\'app qui recrée du lien entre voisins</string>
+    <string name="home_title">L\'app qui recrée du lien entre voisins</string>
 
-    <string name="home_v2_title_action">Donner un coup de pouce</string>
-    <string name="home_v2_subtitle_action">Vos voisins ont besoin de vous !</string>
-    <string name="home_v2_btn_more_action">Voir toutes les demandes</string>
+    <string name="home_title_action">Donner un coup de pouce</string>
+    <string name="home_subtitle_action">Vos voisins ont besoin de vous !</string>
+    <string name="home_btn_more_action">Voir toutes les demandes</string>
 
-    <string name="home_v2_title_action_contrib">Besoin d\'un coup de pouce ?</string>
-    <string name="home_v2_subtitle_action_contrib">Découvrez ce que proposent vos voisins !</string>
-    <string name="home_v2_btn_more_action_contrib">Voir toutes les contributions</string>
+    <string name="home_title_action_contrib">Besoin d\'un coup de pouce ?</string>
+    <string name="home_subtitle_action_contrib">Découvrez ce que proposent vos voisins !</string>
+    <string name="home_btn_more_action_contrib">Voir toutes les contributions</string>
 
-    <string name="home_v2_title_event">Participer à un événement solidaire</string>
-    <string name="home_v2_subtitle_event">Le plein de solidarité à proximité</string>
-    <string name="home_v2_btn_more_event">Voir tous les événements</string>
+    <string name="home_title_event">Participer à un événement solidaire</string>
+    <string name="home_subtitle_event">Le plein de solidarité à proximité</string>
+    <string name="home_btn_more_event">Voir tous les événements</string>
     <string name="tag_other">Autre</string>
 
-    <string name="home_v2_title_group">Vos groupes de voisins</string>
-    <string name="home_v2_subtitle_group">Échanger avec vos voisins de tous horizons</string>
-    <string name="home_v2_btn_more_group">Voir tous les groupes</string>
+    <string name="home_title_group">Vos groupes de voisins</string>
+    <string name="home_subtitle_group">Échanger avec vos voisins de tous horizons</string>
+    <string name="home_btn_more_group">Voir tous les groupes</string>
 
-    <string name="home_v2_title_map">Découvrir des adresses utiles</string>
-    <string name="home_v2_subtitle_map">Toutes les structures solidaires à proximité</string>
-    <string name="home_v2_button_map">Carte des lieux solidaires</string>
+    <string name="home_title_map">Découvrir des adresses utiles</string>
+    <string name="home_subtitle_map">Toutes les structures solidaires à proximité</string>
+    <string name="home_button_map">Carte des lieux solidaires</string>
 
-    <string name="home_v2_title_pedago">Tout savoir pour passer à l‘action</string>
-    <string name="home_v2_subtitle_pedago">Combattre la précarité, c’est comme tout, ça s’apprend !</string>
-    <string name="home_v2_btn_more_pedago">Consulter tous les articles</string>
+    <string name="home_title_pedago">Tout savoir pour passer à l‘action</string>
+    <string name="home_subtitle_pedago">Combattre la précarité, c’est comme tout, ça s’apprend !</string>
+    <string name="home_btn_more_pedago">Consulter tous les articles</string>
 
     <string name="home_v2_pedago_item_tag_all">Tout</string>
     <string name="home_v2_pedago_item_tag_act">Agir</string>
     <string name="home_v2_pedago_item_tag_inspire">Inspirer</string>
     <string name="home_v2_pedago_item_tag_understand">Comprendre</string>
 
-    <string name="home_v2_title_help">Vous êtes perdu ?</string>
-    <string name="home_v2_subtitle_help">Pas de panique, commencez pas à pas !</string>
+    <string name="home_title_help">Vous êtes perdu ?</string>
+    <string name="home_subtitle_help">Pas de panique, commencez pas à pas !</string>
     <string name="home_v2_btn_more_help">Consulter tous les articles</string>
 
     <string name="home_v2_help_title_one">Comment créer un groupe ?</string>
     <string name="home_v2_help_title_two">Comment créer un événement ?</string>
-    <string name="home_v2_help_title_three">Une question ?\nContactez %s</string>
+    <string name="home_help_title_three">Une question ?\nContactez %s</string>
 
 
-    <string name="home_v2_pedag_item_lenght_title">"%d min de lecture</string>
+    <string name="home_v2_pedago_item_length_title">"%d min de lecture</string>
 
     <string name="home_v2_hz_item_title">"Tiens, ça semble un peu calme par ici…</string>
     <string name="home_v2_hz_item_subtitle">"Et si vous mettiez un peu de solidarité dans votre ville ? Entourage vous donne les clés pour vous lancer !</string>
@@ -2637,8 +2632,8 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
 
     <string name="modify_image"><u>Modifier ma photo</u></string>
     <string name="more"><u>En savoir plus</u></string>
-    <string name="posts_comment_number"><u>%s messages</u></string>
-    <string name="posts_comment_number_singular"><u>%s messages</u></string>
+    <string name="posts_comment_number"><u>%d messages</u></string>
+    <string name="posts_comment_number_singular"><u>%d message</u></string>
 
     <string name="show_more_lined"><u>Voir plus</u></string>
     <string name="welcome_one_sensib">Retrouvez nos contenus de sensibilisation <u><font color="#FF9739">ici</font></u></string>
@@ -2699,7 +2694,6 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="text_title_i_like">J\'aime</string>
     <string name="text_title_comment">Commenter</string>
 
-
     <string name="text_title_votes">Voir les votes</string>
 
     <!--    CREATE SURVEY-->
@@ -2759,8 +2753,6 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="onboarding_action_wish_services_contrib">Solliciter un \ncoup de pouce</string>
     <string name="onboarding_action_wish_network_contrib">Rejoindre un groupe de \nvoisins et tisser des liens</string>
 
-
-
     <string name="onboarding_congrats_title">Votre expérience sur-mesure est prête !</string>
     <string name="onboarding_congrats_content">À partir de vos préférences et disponibilités, nous vous avons préparé une sélection d\’événements à votre image. C\’est le moment de passer à l\’action !</string>
     <string name="onboarding_congrats_leave">Parcourir les événements</string>
@@ -2819,12 +2811,12 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="search_participant_hint">Chercher un participant</string>
 
     <string name="onboard_waiting_dialog"></string>
-    <string name="home_v2_title_sensibilisation">Se sensibiliser</string>
-    <string name="home_v2_subtitle_sensibilisation">Quelques suggestions de lecture pour commencer</string>
+    <string name="home_title_sensibilisation">Se sensibiliser</string>
+    <string name="home_subtitle_sensibilisation">Quelques suggestions de lecture pour commencer</string>
     <string name="interest_activites_onboarding">Activités \nmanuelles</string>
     <string name="interest_activites_main_filter">Activités manuelles</string>
-    <string name="posts_vote_number"><u>%s votes</u></string>
-    <string name="posts_vote_number_singular"><u>%s vote</u></string>
+    <string name="posts_vote_number"><u>%d votes</u></string>
+    <string name="posts_vote_number_singular"><u>%d vote</u></string>
     <string name="my_onboarding">Personnaliser mon compte</string>
     <string name="actions_tab_mygroup">Mes annonces</string>
     <string name="create_survey">Créer un sondage</string>
@@ -3056,7 +3048,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="small_talk_group_found_subtitle">Découvrez les personnes de votre groupe</string>
 
     <!-- Accueil -->
-    <string name="home_v2_title_small_talk">Partager des « Bonnes Ondes » !</string>
+    <string name="home_title_small_talk">Partager des « Bonnes Ondes » !</string>
     <string name="small_talk_subtitle_match">Découvrez un nouveau moyen de discuter et de créer des liens qui durent dans le temps !</string>
     <string name="small_talk_button_match">Discuter</string>
     <string name="small_talk_title_waiting">Bientôt de nouvelles rencontres</string>
@@ -3105,6 +3097,56 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="message_auto">Message automatique - </string>
     <string name="needs_to_join_group">Vous devez rejoindre le groupe pour effectuer cette action.</string>
 
+    <string name="photo_right_title">Acceptez-vous l’utilisation de votre image selon les modalités ci-dessous ?</string>
+    <string name="photo_right_body">Conformément aux dispositions relatives au droit à l\'image,\nj\'autorise Entourage et ses prestataires techniques à réaliser des prises de vue photographiques, des vidéos ou des captations numériques lors des évènements de l\'association Entourage pendant une durée illimitée, jusqu\'à ce que je rétracte mon consentement.\n\nLes images pourront être exploitées et utilisées directement par la structure sous toute forme et tous supports, pour un territoire illimité, sans limitation de durée, intégralement ou par extraits et notamment : presse, livre, supports numérique, exposition, publicité, projection publique, concours, site internet, réseaux sociaux.\n\nLe bénéficiaire de l\'autorisation s\'interdit expressément de procéder à une exploitation des photographies susceptible de porter atteinte à la vie privée ou à la réputation, et d\'utiliser les photographies, vidéos ou captations numériques de la présente, dans tout support ou toute exploitation préjudiciable.\n\nJe reconnais être entièrement rempli de mes droits et je ne pourrai prétendre à aucune rémunération pour l\'exploitation des présents, et ce fait attribution expresse de juridiction aux tribunaux français.\n\nJe garantis que ni moi, ni le cas échéant la personne que je représente, n\'est lié par un contrat exclusif relatif à l\'utilisation de mon image ou de mon nom.\n\nPour tout litige né de l\'interprétation ou de l\'exécution des présentes, il est fait attribution expresse de juridiction aux tribunaux français.</string>
+    <string name="photo_right_decline">Je n’accepte pas</string>
+    <string name="photo_right_accept">J’accepte</string>
+    <string name="photo_right_saved">Droit à l’image enregistré.</string>
+    <string name="error_generic">Une erreur est survenue.</string>
+    <string name="event_manage_participants_title">Inscrire les participants</string>
+    <string name="event_manage_participants_subtitle">Validez la présence des participants à l’événement</string>
+    <string name="event_guidelines">Charte des événements</string>
+    <string name="share_url_by">Partager l\'URL via</string>
+
+    <plurals name="participants_count">
+        <item quantity="one">%d participant</item>
+        <item quantity="other">%d participants</item>
+    </plurals>
+
+    <string-array name="gender_options">
+        <item>Homme</item>
+        <item>Femme</item>
+        <item>Non-binaire</item>
+    </string-array>
+    <string name="onboard_welcome_title_gender">Genre</string>
+    <string name="onboard_welcome_title_birthdate">Date d\'anniversaire</string>
+    <string name="onboard_welcome_placeholder_birthdate">JJ/MM/AAAA</string>
+
+    <string name="onboard_welcome_title_how_did_you_hear">Comment vous nous avez connu ?</string>
+    <string name="onboard_welcome_title_company_name">Nom de votre entreprise</string>
+    <string name="onboard_welcome_title_event_name">Événement auquel vous participez</string>
+    <string name="onboard_welcome_placeholder_company_name">Sélectionnez une entreprise</string>
+    <string name="onboard_welcome_placeholder_event_name">Sélectionnez un événement</string>
+    <string name="onboard_welcome_error_company_name">Merci de sélectionner une entreprise.</string>
+    <string name="onboard_welcome_error_event_name">Merci de sélectionner un événement.</string>
+    <string name="onboard_welcome_error_load_failed">Impossible de charger la liste, veuillez réessayer.</string>
+    <string name="onboard_welcome_error_invalid_value">Valeur invalide, merci de sélectionner dans la liste.</string>
+    <string name="onboard_welcome_how_did_you_hear_word_of_mouth">Bouche à oreille</string>
+    <string name="onboard_welcome_how_did_you_hear_internet">Internet</string>
+    <string name="onboard_welcome_how_did_you_hear_tv_media">Télévision / média</string>
+    <string name="onboard_welcome_how_did_you_hear_social_media">Réseaux sociaux</string>
+    <string name="onboard_welcome_how_did_you_hear_corporate_awareness">Sensibilisation entreprise</string>
+    <string name="onboard_welcome_company_a">Entreprise A</string>
+    <string name="onboard_welcome_company_b">Entreprise B</string>
+    <string name="onboard_welcome_company_c">Entreprise C</string>
+    <string name="onboard_welcome_company_d">Entreprise D</string>
+    <string name="onboard_welcome_company_e">Entreprise E</string>
+    <string name="onboard_welcome_event_1">Événement 1</string>
+    <string name="onboard_welcome_event_2">Événement 2</string>
+    <string name="onboard_welcome_event_3">Événement 3</string>
+    <string name="onboard_welcome_event_4">Événement 4</string>
+    <string name="onboard_welcome_event_5">Événement 5</string>
+
+
 
 </resources>
-

@@ -10,10 +10,10 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
+import social.entourage.android.api.model.Events
 import social.entourage.android.databinding.NewFragmentGroupEventsListBinding
 import social.entourage.android.events.create.CreateEventActivity
 import social.entourage.android.groups.GroupPresenter
-import social.entourage.android.api.model.Events
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.Utils
 
@@ -51,7 +51,7 @@ class GroupEventsListFragment : Fragment() {
     }
 
     private fun setView() {
-        binding.header.subtitle.text = args.groupName
+        binding.header.headerSubtitle.text = args.groupName
     }
 
     private fun setBackButton() {

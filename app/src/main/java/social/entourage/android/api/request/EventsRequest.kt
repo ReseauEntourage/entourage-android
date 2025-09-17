@@ -221,4 +221,28 @@ interface EventsRequest {
         @Query("per") per: Int
     ): Call<EventsListWrapper>
 
+    @POST("outings/{outing_id}/users/{id}/participate")
+    fun participateForUser(
+        @Path("outing_id") eventId: Int,
+        @Path("id") userId: Int
+    ): Call<EntourageUserResponse>
+
+    @POST("outings/{outing_id}/users/{id}/photo_acceptance")
+    fun acceptPhotoForUser(
+        @Path("outing_id") eventId: Int,
+        @Path("id") userId: Int
+    ): Call<ResponseBody>
+
+    @POST("outings/{outing_id}/users/{id}/cancel_photo_acceptance")
+    fun declinePhotoForUser(
+        @Path("outing_id") eventId: Int,
+        @Path("id") userId: Int
+    ): Call<ResponseBody>
+
+    @POST("outings/{outing_id}/users/{id}/cancel_participation")
+    fun cancelParticipationForUser(
+        @Path("outing_id") eventId: Int,
+        @Path("id") userId: Int
+    ): Call<okhttp3.ResponseBody>
+
 }

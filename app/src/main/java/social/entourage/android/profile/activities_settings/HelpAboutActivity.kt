@@ -1,27 +1,25 @@
-package social.entourage.android.profile.settings
+package social.entourage.android.profile.activities_settings
 
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.widget.Toast
-import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
+import android.view.View
 import com.google.android.material.snackbar.Snackbar
-import social.entourage.android.Constants
 import social.entourage.android.R
 import social.entourage.android.base.BaseActivity
-import social.entourage.android.databinding.NewFragmentHelpAboutBinding
+import social.entourage.android.databinding.ActivityHelpAboutBinding
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.view.EntSnackbar
 
 class HelpAboutActivity : BaseActivity() {
 
-    private lateinit var binding: NewFragmentHelpAboutBinding
+    private lateinit var binding: ActivityHelpAboutBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = NewFragmentHelpAboutBinding.inflate(layoutInflater)
+        binding = ActivityHelpAboutBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         initializeView()
@@ -30,7 +28,7 @@ class HelpAboutActivity : BaseActivity() {
     }
 
     private fun initializeView() {
-        binding.licence.divider.visibility = android.view.View.GONE
+        binding.licence.divider.visibility = View.GONE
     }
 
     private fun populate() {
@@ -71,7 +69,7 @@ class HelpAboutActivity : BaseActivity() {
     }
 
     private fun onOSSLicensesClicked() {
-        startActivity(Intent(this, OssLicensesMenuActivity::class.java))
+        //startActivity(Intent(this, OssLicensesMenuActivity::class.java))
     }
 
     private fun onRateUsClicked() {
@@ -139,7 +137,7 @@ class HelpAboutActivity : BaseActivity() {
     }
 
     private fun handleCloseButton() {
-        binding.header.iconCross.setOnClickListener {
+        binding.header.headerHelpIconCross.setOnClickListener {
             finish()
         }
     }

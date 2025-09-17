@@ -24,7 +24,7 @@
         android:id="@+id/message_container"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="7dp"
+        android:layout_marginStart="10dp"
         android:layout_marginBottom="0dp"
         android:orientation="vertical"
         android:background="@drawable/new_comment_background_beige"

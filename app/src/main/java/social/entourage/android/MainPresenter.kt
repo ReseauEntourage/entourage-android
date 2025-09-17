@@ -1,8 +1,6 @@
 package social.entourage.android
 
 import android.content.Intent
-import android.location.Location
-import android.widget.Toast
 import androidx.collection.ArrayMap
 import okhttp3.ResponseBody
 import retrofit2.Call
@@ -16,7 +14,6 @@ import social.entourage.android.api.request.UserResponse
 import social.entourage.android.authentication.AuthenticationController
 import social.entourage.android.configuration.Configuration
 import social.entourage.android.onboarding.pre_onboarding.PreOnboardingLanguage
-import social.entourage.android.onboarding.pre_onboarding.PreOnboardingStartActivity
 import timber.log.Timber
 
 /**
@@ -88,12 +85,12 @@ class MainPresenter(private val activity: MainActivity) {
         }
     }
 
-    fun updateUserLocation(location: Location?) {
+    fun updateUser() {
         val deviceId = deviceID ?: return
         val user = ArrayMap<String, Any>()
-        if (location != null) {
-            user[KEY_DEVICE_LOCATION] = location
-        }
+//        if (location != null) {
+//            user[KEY_DEVICE_LOCATION] = location
+//        }
         user[KEY_DEVICE_ID] = deviceId
         user[KEY_DEVICE_TYPE] = ANDROID_DEVICE
         val call = userRequest.updateUser(user)

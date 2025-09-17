@@ -15,6 +15,7 @@ import androidx.core.os.bundleOf
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
+import com.google.android.material.snackbar.Snackbar
 import social.entourage.android.BuildConfig
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
@@ -35,6 +36,7 @@ import social.entourage.android.profile.settings.ProfilFullViewModel
 import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.VibrationUtil
+import social.entourage.android.tools.view.EntSnackbar
 import social.entourage.android.user.UserPresenter
 import java.text.SimpleDateFormat
 import kotlin.random.Random
@@ -192,8 +194,6 @@ class ProfileFullActivity : BaseActivity()  {
             VibrationUtil.vibrate(this)
             val intent = Intent(this, EditPhotoActivity::class.java)
             startActivity(intent)
-
-            
         }
         if(isMe){
             binding.btnModifyPhotoProfile.visibility = View.VISIBLE
@@ -236,6 +236,7 @@ class ProfileFullActivity : BaseActivity()  {
             }
         }
     }
+
     private fun setBackButton(){
         binding.iconBack.setOnClickListener{
             VibrationUtil.vibrate(this)
@@ -475,9 +476,6 @@ class ProfileFullActivity : BaseActivity()  {
         binding.rvSectionProfile.adapter = adapter
     }
 
-
-
-
     private fun initializeStats() {
         if(user == null){
 
@@ -539,13 +537,13 @@ class ProfileFullActivity : BaseActivity()  {
         // Date d'inscription
         user?.createdAt?.let { createdAt ->
             val locale = LanguageManager.getLocaleFromPreferences(this)
-            binding.joined.date.text = SimpleDateFormat(
+            binding.joined.profileJoinedDate.text = SimpleDateFormat(
                 this.getString(R.string.profile_date_format),
                 locale
             ).format(createdAt)
-            binding.joined.date.visibility = View.VISIBLE
+            binding.joined.profileJoinedDate.visibility = View.VISIBLE
         } ?: run {
-            binding.joined.date.visibility = View.GONE
+            binding.joined.profileJoinedDate.visibility = View.GONE
         }
 
         // Email
@@ -560,7 +558,6 @@ class ProfileFullActivity : BaseActivity()  {
             } ?: run {
                 binding.tvMail.visibility = View.GONE
             }
-
 
             user?.phone.let { phone ->
                 if (phone?.isNotBlank()!!) {
@@ -595,7 +592,6 @@ class ProfileFullActivity : BaseActivity()  {
             }
         }
 
-
         // À propos
         user?.about?.let { about ->
             if (about.isNotBlank()) {
@@ -612,14 +608,36 @@ class ProfileFullActivity : BaseActivity()  {
             binding.tvDescription.setTextColor(ContextCompat.getColor(this, R.color.grey)) // Placeholder en gris
             binding.tvDescription.visibility = View.VISIBLE
         }
+
         binding.appVersion.text =
-            getString(R.string.about_version_format, BuildConfig.VERSION_FULL_NAME)
+            getString(R.string.about_version_format,
+                getString(R.string.app_name),
+                BuildConfig.VERSION_FULL_NAME)
+        binding.appVersion.setOnLongClickListener {
+            // Copier le FIID dans le presse-papiers
+            val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as android.content.ClipboardManager
+            val clip = android.content.ClipData.newPlainText("FIId", EntourageApplication.get().sharedPreferences.getString(
+                EntourageApplication.KEY_REGISTRATION_ID,
+                null
+            ))
+            clipboard.setPrimaryClip(clip)
+
+            // Afficher un message de confirmation
+            val snackbar = EntSnackbar.make(
+                binding.root,
+                R.string.copied_text,
+                Snackbar.LENGTH_SHORT
+            )
+            snackbar.show()
+            true
+        }
         if (!BuildConfig.DEBUG) {
             binding.appDebugInfo.visibility = View.INVISIBLE
         } else {
             binding.appDebugInfo.visibility = View.VISIBLE
             binding.appDebugInfo.text = getString(
-                R.string.about_debug_info_format, BuildConfig.VERSION_DISPLAY_BRANCH_NAME,
+                R.string.about_debug_info_format,
+                BuildConfig.VERSION_DISPLAY_BRANCH_NAME,
                 EntourageApplication.get().sharedPreferences.getString(
                     EntourageApplication.KEY_REGISTRATION_ID,
                     null
@@ -627,9 +645,7 @@ class ProfileFullActivity : BaseActivity()  {
             )
         }
         binding.progressBar.visibility = View.GONE
-
     }
-
 
     private fun updateUserView() {
         with(binding) {

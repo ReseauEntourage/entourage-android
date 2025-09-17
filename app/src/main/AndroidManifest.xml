@@ -17,7 +17,8 @@
     <uses-feature
         android:name="android.hardware.camera"
         android:required="false" />
-    <uses-feature android:name="android.hardware.location.gps" />
+    <uses-feature android:name="android.hardware.location.gps"
+        android:required="false" />
 
     <permission
         android:name="${applicationId}.permission.MAPS_RECEIVE"
@@ -62,7 +63,6 @@
         android:localeConfig="@xml/locales_config"
         >
 
-
         <receiver android:name=".notifications.NotificationActionReceiver"
             android:exported="true"/>
 
@@ -87,10 +87,10 @@
             android:name=".welcome.WelcomeTwoActivity"
             android:exported="false" />
 
-        <activity android:name="social.entourage.android.language.LanguageActivitySettings"/>
-        <activity android:name="social.entourage.android.profile.settings.SettingsNotificationsActivity"/>
-        <activity android:name="social.entourage.android.profile.editProfile.EditPasswordActivity"/>
-        <activity android:name="social.entourage.android.profile.settings.HelpAboutActivity"/>
+        <activity android:name="social.entourage.android.profile.activities_settings.LanguageSettingsActivity"/>
+        <activity android:name="social.entourage.android.profile.activities_settings.SettingsNotificationsActivity"/>
+        <activity android:name="social.entourage.android.profile.activities_settings.EditPasswordActivity"/>
+        <activity android:name="social.entourage.android.profile.activities_settings.HelpAboutActivity"/>
         <activity android:name="social.entourage.android.profile.activities_settings.UnblockUsersActivity"/>
         <activity
             android:name=".welcome.WelcomeThreeActivity"
@@ -174,18 +174,18 @@
             android:name=".welcome.WelcomeFiveActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustPan" />
-        <activity
-            android:name=".user.UserProfileActivity"
-            android:exported="false" />
         <activity android:name=".profile.editProfile.EditPhotoActivity"
             android:exported="false" />
         <activity
             android:name=".home.pedago.PedagoListActivity"
             android:exported="false" />
+
+        <!-- abstract class declared here to make sure child classes work -->
         <activity
             android:name=".comment.CommentActivity"
             android:windowSoftInputMode="adjustPan"
             android:exported="false" />
+
         <activity
             android:name=".groups.details.rules.GroupRulesActivity"
             android:exported="false" />
@@ -202,6 +202,7 @@
             android:name=".groups.create.CreateGroupActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustPan" />
+        <!-- abstract class declared here to make sure child classes work -->
         <activity
             android:name="social.entourage.android.posts.CreatePostActivity"
             android:exported="false"
@@ -254,7 +255,7 @@
                  <action android:name="android.intent.action.MAIN" />
                  <category android:name="android.intent.category.LAUNCHER" />
              </intent-filter>
-             <intent-filter android:autoVerify="true" tools:targetApi="m">
+             <intent-filter android:autoVerify="true">
                  <action android:name="android.intent.action.VIEW" />
                  <category android:name="android.intent.category.DEFAULT" />
                  <category android:name="android.intent.category.BROWSABLE" />
@@ -264,7 +265,7 @@
                  <data android:pathPrefix="/deeplink/" />
                  <data android:pathPrefix="/entourages/" />
              </intent-filter>
-             <intent-filter android:autoVerify="true" tools:targetApi="m">
+             <intent-filter android:autoVerify="true">
                  <action android:name="android.intent.action.VIEW" />
                  <category android:name="android.intent.category.DEFAULT" />
                  <category android:name="android.intent.category.BROWSABLE" />
@@ -279,19 +280,10 @@
                  <category android:name="android.intent.category.DEFAULT" />
                  <category android:name="android.intent.category.BROWSABLE" />
                  <data android:scheme="${deepLinksScheme}" />
-             </intent-filter>        </activity>
-
-         <activity
-             android:name="com.google.android.gms.oss.licenses.OssLicensesMenuActivity"
-             android:theme="@style/EntourageOSSLicenses.Theme" />
-         <activity
-             android:name="com.google.android.gms.oss.licenses.OssLicensesActivity"
-             android:theme="@style/EntourageOSSLicenses.Theme" />
+             </intent-filter>
+         </activity>
          <activity android:name=".involvement.ShareActivity" />
          <activity android:name=".involvement.RateActivity" />
-         <activity
-             android:name=".profile.ProfileActivity"
-             android:windowSoftInputMode="adjustPan" />
          <activity
              android:name=".onboarding.pre_onboarding.PreOnboardingChoiceActivity"
              android:screenOrientation="portrait" />

@@ -20,7 +20,7 @@
             android:src="@drawable/placeholder_user" />
         <include
             android:id="@+id/reaction"
-            layout="@layout/layout_item_reaction"
+            layout="@layout/item_reaction"
             android:layout_width="25dp"
             android:layout_height="25dp"
             app:layout_constraintTop_toTopOf="parent"

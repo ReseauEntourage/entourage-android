@@ -25,15 +25,19 @@ import social.entourage.android.base.BaseActivity
 import social.entourage.android.databinding.NewFragmentMembersBinding
 import social.entourage.android.discussions.DetailConversationActivity
 import social.entourage.android.discussions.DiscussionsPresenter
+import social.entourage.android.events.AcceptPhotoDialogFragment
 import social.entourage.android.events.EventsPresenter
 import social.entourage.android.groups.GroupPresenter
 import social.entourage.android.groups.details.members.MembersListAdapter
 import social.entourage.android.groups.details.members.OnItemShowListener
+import social.entourage.android.home.HomeFragment
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.Utils
+import social.entourage.android.ui.ActionSheetFragment
+import timber.log.Timber
 
-class MembersActivity : BaseActivity() {
+class MembersActivity : BaseActivity() , AcceptPhotoDialogFragment.Listener {
 
     private lateinit var binding: NewFragmentMembersBinding
     private val membersList: MutableList<EntourageUser> = mutableListOf()
@@ -48,6 +52,7 @@ class MembersActivity : BaseActivity() {
 
     private val searchHandler = Handler(Looper.getMainLooper())
     private val SEARCH_DELAY: Long = 500 // Délai de 500 millisecondes
+    private var iAmOrganiser = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,7 +63,8 @@ class MembersActivity : BaseActivity() {
         id = intent.getIntExtra("ID", Const.DEFAULT_VALUE)
         val typeCode = intent.getIntExtra("TYPE", MembersType.GROUP.code)
         type = MembersType.values().firstOrNull { it.code == typeCode } ?: MembersType.GROUP
-
+        //iAmOrganiser = intent.getBooleanExtra("ROLE", false)
+        iAmOrganiser = ActionSheetFragment.isSignable && HomeFragment.signablePermission
         setupToolbar()
         setupLists()
         setupSearchBar()
@@ -88,7 +94,7 @@ class MembersActivity : BaseActivity() {
 
         binding.recyclerView.apply {
             layoutManager = LinearLayoutManager(ctx)
-            adapter = MembersListAdapter(ctx, membersList, reactionList, conversationCallback())
+            adapter = MembersListAdapter(ctx, membersList, reactionList, conversationCallback(), iAmOrganiser = iAmOrganiser)
             addItemDecoration(divider)
             addOnScrollListener(paginationScrollListener())
         }
@@ -144,6 +150,34 @@ class MembersActivity : BaseActivity() {
         override fun onShowConversation(userId: Int) {
             discussionPresenter.createOrGetConversation(userId.toString())
         }
+        override fun onToggleParticipation(user: EntourageUser, isChecked: Boolean, photoAcceptance: Boolean?) {
+            val userId = user.userId ?: return
+            if (isChecked) {
+                if (type == MembersType.EVENT) {
+                    eventPresenter.participateForUser(id, userId)
+                    // Afficher la pop-up uniquement si photoAcceptance est false
+                    Timber.wtf("wtf photoAcceptance : $photoAcceptance")
+                    if (photoAcceptance == null ){
+                        showAcceptPhotoDialog(userId)
+                    }
+                }
+            } else {
+                eventPresenter.cancelParticipationForUser(id, userId)
+            }
+        }
+    }
+
+
+    private fun needsPhotoConsent(user: EntourageUser): Boolean {
+        // TODO: adapte selon ton modèle :
+        // exemples possibles : user.photoConsent == null || user.photo_right_known == false
+        return user.photoAcceptance == null // ← à ajuster
+    }
+
+    private fun showAcceptPhotoDialog(userId: Int) {
+        val f = AcceptPhotoDialogFragment.newInstance(userId)
+        // MembersActivity implémente le Listener :
+        f.show(supportFragmentManager, "accept_photo_dialog")
     }
 
     private fun setupObservers() {
@@ -322,6 +356,19 @@ class MembersActivity : BaseActivity() {
                 binding.searchBar.hint = getString(R.string.search_participant_hint)
             }
         }
+    }
+
+    override fun onAcceptPhotoForUser(userId: Int) {
+        if (type != MembersType.EVENT) return
+        eventPresenter.acceptPhotoForUser(id, userId)
+        eventPresenter.participateForUser(id, userId)
+    }
+
+    override fun onDeclinePhotoForUser(userId: Int) {
+        if (type != MembersType.EVENT) return
+        eventPresenter.declinePhotoForUser(id, userId)
+        eventPresenter.participateForUser(id, userId)
+
     }
 
     companion object {

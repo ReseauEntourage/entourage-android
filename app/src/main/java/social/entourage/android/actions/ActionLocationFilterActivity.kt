@@ -29,7 +29,6 @@ import social.entourage.android.RefreshController
 import social.entourage.android.api.model.Address
 import social.entourage.android.api.model.EventActionLocationFilters
 import social.entourage.android.api.model.EventFilterType
-import social.entourage.android.base.location.LocationProvider
 import social.entourage.android.base.location.LocationUtils
 import social.entourage.android.databinding.ActivityActionLocationFiltersBinding
 import social.entourage.android.events.list.DiscoverEventsListFragment
@@ -99,12 +98,12 @@ class ActionLocationFilterActivity : AppCompatActivity() {
         binding.layoutPlace.setOnClickListener {
             onPlaceSearch()
         }
-        binding.header.iconBack.setOnClickListener {
+        binding.header.headerIconBack.setOnClickListener {
             setResult(Activity.RESULT_CANCELED)
             finish()
         }
 
-        updatePaddingTopForEdgeToEdge(binding.header.layout)
+        updatePaddingTopForEdgeToEdge(binding.header.headerLayout)
     }
 
     private fun onSaveFilters() {
@@ -199,11 +198,7 @@ class ActionLocationFilterActivity : AppCompatActivity() {
      * Thumbbar
      */
     private fun setProgressThumb(progress: Int) {
-        binding.tvTrickleIndicator.text =
-            String.format(
-                getString(R.string.progress_km),
-                progress.toString()
-            )
+        binding.tvTrickleIndicator.text = getString(R.string.progress_km, progress)
         val bounds: Rect = binding.seekbar.thumb.dirtyBounds
         val paddingRight = if (progress > progressLimit) paddingRightLimit else paddingRight
         binding.tvTrickleIndicator.x =
@@ -240,7 +235,7 @@ class ActionLocationFilterActivity : AppCompatActivity() {
             Activity.RESULT_OK -> {
                 val place = data?.let { Autocomplete.getPlaceFromIntent(it) }
                 if (place == null || place.address == null) return@registerForActivityResult
-                var addressStr = place.address.toString()
+                var addressStr : String = place.address
                 val lastCommaIndex = addressStr.lastIndexOf(',')
                 if (lastCommaIndex > 0) {
                     addressStr = addressStr.substring(0, lastCommaIndex)
@@ -336,7 +331,7 @@ class ActionLocationFilterActivity : AppCompatActivity() {
             binding.locationName.text = getString(R.string.onboard_place_getting_current_location)
             mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
             mFusedLocationClient?.requestLocationUpdates(
-                LocationProvider.createLocationRequest(),
+                LocationUtils.createLocationRequest(),
                 mLocationCallback,
                 null
             )
