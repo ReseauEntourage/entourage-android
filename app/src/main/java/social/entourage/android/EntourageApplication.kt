@@ -5,15 +5,14 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.multidex.MultiDexApplication
 import com.google.firebase.analytics.FirebaseAnalytics
 import social.entourage.android.api.ApiModule
-import social.entourage.android.api.model.notification.PushNotificationMessage
-import social.entourage.android.api.model.notification.PushNotificationContent
 import social.entourage.android.api.model.TimestampedObject
 import social.entourage.android.api.model.User
+import social.entourage.android.api.model.notification.PushNotificationContent
+import social.entourage.android.api.model.notification.PushNotificationMessage
 import social.entourage.android.authentication.AuthenticationController
 import social.entourage.android.authentication.ComplexPreferences
 import social.entourage.android.base.BaseActivity
@@ -192,7 +191,7 @@ class EntourageApplication : MultiDexApplication() {
         const val KEY_REGISTRATION_ID = "ENTOURAGE_REGISTRATION_ID"
         const val KEY_NOTIFICATIONS_ENABLED = "ENTOURAGE_NOTIFICATION_ENABLED_V8"
         const val KEY_GEOLOCATION_ENABLED = "ENTOURAGE_GEOLOCATION_ENABLED"
-        const val KEY_MIGRATION_V7_OK = "ENTOURAGE_MIGRATION_V7_OK"
+        //const val KEY_MIGRATION_V7_OK = "ENTOURAGE_MIGRATION_V7_OK"
 
         const val KEY_IS_FROM_ONBOARDING = "isFromOnboarding"
         const val KEY_ONBOARDING_USER_TYPE = "userType"
