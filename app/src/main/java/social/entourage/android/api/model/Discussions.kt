@@ -197,11 +197,12 @@ data class ConversationMembership(
     @SerializedName("name") val name: String?,
     @SerializedName("subname") val subname: String?,
     @SerializedName("joinable_type") val joinableType: String?,
+    @SerializedName("image_url") val imageUrl: String?,
     @SerializedName("joinable_id") val joinableId: Int?,
     @SerializedName("number_of_people") val numberOfPeople: Int?,
     @SerializedName("number_of_root_chat_messages") val numberOfRootMessages: Int?,
     @SerializedName("number_of_unread_messages") val numberOfUnreadMessages: Int?,
-    @SerializedName("last_chat_message") val lastChatMessageText: String? // ❗ Correction ici
+    @SerializedName("last_chat_message") val lastChatMessageText: String?
 ){
     fun createdDateString(): String {
         subname?.let { dateString ->

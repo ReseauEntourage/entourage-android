@@ -418,6 +418,7 @@ class DiscussionsMainFragment : Fragment() {
                 else -> "group"
             },
             title = (m.name),
+            imageUrl = m.imageUrl,
             subname = m.createdDateString(),
             lastMessage = m.lastChatMessageText?.let { LastMessage(it, null) }, // conversion depuis String
             numberUnreadMessages = m.numberOfUnreadMessages ?: 0,
