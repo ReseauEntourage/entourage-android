@@ -38,6 +38,7 @@ import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.VibrationUtil
 import social.entourage.android.tools.utils.px
+import timber.log.Timber
 import java.text.SimpleDateFormat
 
 interface SurveyInteractionListener {
@@ -848,7 +849,9 @@ class PostAdapter(
             binding.tvAmbassador.visibility = View.VISIBLE
             binding.tvAmbassador.text = rolesStringBuilder.toString()
         }
-
+        if (rolesStringBuilder.toString().contains("Association")) {
+            binding.tvAmbassador.text = post.user?.partner?.name
+        }
         // Clic profil
         binding.name.setOnClickListener {
             showUserDetail(binding.name.context, post.user?.userId)
