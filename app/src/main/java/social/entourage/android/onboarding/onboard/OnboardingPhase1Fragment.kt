@@ -322,10 +322,13 @@ class OnboardingPhase1Fragment : Fragment() {
     }
 
     private fun isValidCompanyEvent(): Boolean {
-        // Si le label n’a pas pu être initialisé (vue pas prête), on ne bloque pas (true)
-        val corp = labelCorporateAwareness ?: return true
-        if (howDidYouHear != corp) return true
-        return !company.isNullOrEmpty() && !event.isNullOrEmpty()
+        if(isAdded){
+            // Si le label n’a pas pu être initialisé (vue pas prête), on ne bloque pas (true)
+            val corp = labelCorporateAwareness ?: return true
+            if (howDidYouHear != corp) return true
+            return !company.isNullOrEmpty() && !event.isNullOrEmpty()
+        }
+        return true
     }
 
     fun checkAndValidateInput(): Boolean {
