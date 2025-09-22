@@ -41,7 +41,12 @@ private const val ARG_COMPANY = "company"
 private const val ARG_EVENT = "event"
 
 class OnboardingPhase1Fragment : Fragment() {
-    private lateinit var binding: FragmentOnboardingPhase1Binding
+
+    // --- Binding sécurisé ---
+    private var _binding: FragmentOnboardingPhase1Binding? = null
+    private val binding get() = _binding!!
+
+    // --- State ---
     private var firstname: String? = null
     private var lastname: String? = null
     private var gender: String? = null
@@ -60,6 +65,9 @@ class OnboardingPhase1Fragment : Fragment() {
     private val eventList = mutableMapOf<String, List<SalesforceEvent>>()
     private var selectedEnterpriseId: String? = null
     private var isLoading = false
+
+    // On mémorise le label “entreprise” une seule fois pour éviter getString() à chaud plus tard
+    private var labelCorporateAwareness: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -81,13 +89,17 @@ class OnboardingPhase1Fragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        binding = FragmentOnboardingPhase1Binding.inflate(inflater, container, false)
+    ): View {
+        _binding = FragmentOnboardingPhase1Binding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        // Mémorise les libellés dès que la vue est disponible (contexte garanti ici)
+        labelCorporateAwareness = getString(R.string.onboard_welcome_how_did_you_hear_corporate_awareness)
+
         setupViews()
         AnalyticsEvents.logEvent(AnalyticsEvents.Onboard_name)
     }
@@ -102,6 +114,20 @@ class OnboardingPhase1Fragment : Fragment() {
         callback = null
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        // évite les NPE / leaks
+        _binding = null
+    }
+
+    // --- Helpers de sûreté UI ---
+    private fun isViewUsable(): Boolean = isAdded && _binding != null && view != null
+
+    private inline fun safeUI(block: () -> Unit) {
+        if (isViewUsable()) block()
+    }
+
+    // --- UI setup ---
     private fun setEditTextAlignmentBasedOnLocale() {
         val locale = Locale.getDefault()
         val editTexts = listOf(
@@ -173,22 +199,18 @@ class OnboardingPhase1Fragment : Fragment() {
         }
 
         // Date d'anniversaire
-        binding.uiOnboardBirthdate.setOnClickListener {
-            showDatePicker()
-        }
+        binding.uiOnboardBirthdate.setOnClickListener { showDatePicker() }
 
-        // Clavier
-        activity?.let {
-            KeyboardVisibilityEvent.setEventListener(it) { isOpen ->
-                if (isOpen) showErrorMessage(false)
-                else updateButtonNext()
+        // Clavier — protège si détaché
+        activity?.let { act ->
+            KeyboardVisibilityEvent.setEventListener(act) { isOpen ->
+                if (!isViewUsable()) return@setEventListener
+                if (isOpen) showErrorMessage(false) else updateButtonNext()
             }
         }
 
         // Consentement
-        binding.uiOnboardConsentCheck.setOnCheckedChangeListener { _, _ ->
-            updateButtonNext()
-        }
+        binding.uiOnboardConsentCheck.setOnCheckedChangeListener { _, _ -> updateButtonNext() }
 
         // Remplir les champs
         binding.uiOnboardConsentCheck.isChecked = hasConsent
@@ -203,7 +225,8 @@ class OnboardingPhase1Fragment : Fragment() {
         // Écouteurs
         binding.uiOnboardEmail.addTextChangedListener(object : android.text.TextWatcher {
             override fun afterTextChanged(s: android.text.Editable?) {
-                (requireActivity() as OnboardingStartActivity).setEmail(s.toString())
+                // Ne pas crasher si activity est null / détachée
+                (activity as? OnboardingStartActivity)?.setEmail(s?.toString().orEmpty())
             }
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
@@ -223,7 +246,7 @@ class OnboardingPhase1Fragment : Fragment() {
     }
 
     private fun updateCompanyEventVisibility() {
-        val isEnterprise = howDidYouHear == getString(R.string.onboard_welcome_how_did_you_hear_corporate_awareness)
+        val isEnterprise = howDidYouHear == labelCorporateAwareness
         binding.constraintLayoutCompany.visibility = if (isEnterprise) View.VISIBLE else View.GONE
         binding.constraintLayoutEvent.visibility = if (isEnterprise) View.VISIBLE else View.GONE
         if (!isEnterprise) {
@@ -238,10 +261,14 @@ class OnboardingPhase1Fragment : Fragment() {
         val year = calendar.get(Calendar.YEAR)
         val month = calendar.get(Calendar.MONTH)
         val day = calendar.get(Calendar.DAY_OF_MONTH)
-        DatePickerDialog(requireContext(), { _, y, m, d ->
-            birthdate = "$d/${m+1}/$y"
-            binding.uiOnboardBirthdate.setText(birthdate)
-            updateButtonNext()
+        // Utilise context? pour éviter crash si détaché (au pire, ne montre pas le picker)
+        val ctx = context ?: return
+        DatePickerDialog(ctx, { _, y, m, d ->
+            birthdate = "$d/${m + 1}/$y"
+            safeUI {
+                binding.uiOnboardBirthdate.setText(birthdate)
+                updateButtonNext()
+            }
         }, year, month, day).show()
     }
 
@@ -256,6 +283,7 @@ class OnboardingPhase1Fragment : Fragment() {
     }
 
     fun updateButtonNext() {
+        if (!isViewUsable()) return
         if (checkAndValidateInput()) {
             showErrorMessage(false)
             showCompanyEventError(false)
@@ -263,11 +291,11 @@ class OnboardingPhase1Fragment : Fragment() {
             callback?.validateNames(
                 binding.uiOnboardNamesEtFirstname.text.toString(),
                 binding.uiOnboardNamesEtLastname.text.toString(),
-                binding.uiOnboardSpinnerGender.selectedItem.toString(),
-                formatBirthdateForAPI(binding.uiOnboardBirthdate.text.toString()),
+                binding.uiOnboardSpinnerGender.selectedItem?.toString(),
+                formatBirthdateForAPI(binding.uiOnboardBirthdate.text?.toString()),
                 binding.uiOnboardPhoneCcpCode.selectedCountry,
-                binding.uiOnboardPhoneEtPhone.text.toString(),
-                binding.uiOnboardEmail.text.toString(),
+                binding.uiOnboardPhoneEtPhone.text?.toString(),
+                binding.uiOnboardEmail.text?.toString(),
                 binding.uiOnboardConsentCheck.isChecked,
                 howDidYouHear,
                 company,
@@ -275,7 +303,8 @@ class OnboardingPhase1Fragment : Fragment() {
             )
         } else {
             if (!binding.uiOnboardNamesEtFirstname.text.isNullOrEmpty() &&
-                !binding.uiOnboardNamesEtLastname.text.isNullOrEmpty()) {
+                !binding.uiOnboardNamesEtLastname.text.isNullOrEmpty()
+            ) {
                 showErrorMessage(true)
                 showCompanyEventError(true)
             }
@@ -288,32 +317,48 @@ class OnboardingPhase1Fragment : Fragment() {
     private fun isValidLastname() = (binding.uiOnboardNamesEtLastname.text?.length ?: 0) >= minChars
     private fun isValidPhone() = (binding.uiOnboardPhoneEtPhone.text?.length ?: 0) >= minCharsPhone
     private fun isValidEmail(): Boolean {
-        val email = binding.uiOnboardEmail.text.toString()
+        val email = binding.uiOnboardEmail.text?.toString().orEmpty()
         return if (email.isNotEmpty()) email.isValidEmail() else true
     }
 
     private fun isValidCompanyEvent(): Boolean {
-        if (howDidYouHear != getString(R.string.onboard_welcome_how_did_you_hear_corporate_awareness)) return true
+        // Si le label n’a pas pu être initialisé (vue pas prête), on ne bloque pas (true)
+        val corp = labelCorporateAwareness ?: return true
+        if (howDidYouHear != corp) return true
         return !company.isNullOrEmpty() && !event.isNullOrEmpty()
     }
 
     fun checkAndValidateInput(): Boolean {
-        return isValidFirstname() && isValidLastname() && isValidPhone() && isValidEmail() && isValidCompanyEvent()
+        return isValidFirstname() &&
+                isValidLastname() &&
+                isValidPhone() &&
+                isValidEmail() &&
+                isValidCompanyEvent()
     }
 
     private fun showErrorMessage(show: Boolean) {
-        binding.errorMessageFirstname.visibility = if (show && !isValidFirstname()) View.VISIBLE else View.GONE
-        binding.errorMessageLastname.visibility = if (show && !isValidLastname()) View.VISIBLE else View.GONE
-        binding.errorMessagePhone.visibility = if (show && !isValidPhone()) View.VISIBLE else View.GONE
-        binding.errorMessageEmail.visibility = if (show && !isValidEmail()) View.VISIBLE else View.GONE
+        if (!isViewUsable()) return
+        binding.errorMessageFirstname.visibility =
+            if (show && !isValidFirstname()) View.VISIBLE else View.GONE
+        binding.errorMessageLastname.visibility =
+            if (show && !isValidLastname()) View.VISIBLE else View.GONE
+        binding.errorMessagePhone.visibility =
+            if (show && !isValidPhone()) View.VISIBLE else View.GONE
+        binding.errorMessageEmail.visibility =
+            if (show && !isValidEmail()) View.VISIBLE else View.GONE
     }
 
     private fun showCompanyEventError(show: Boolean) {
-        binding.errorMessageCompany.visibility = if (show && company.isNullOrEmpty() && howDidYouHear == getString(R.string.onboard_welcome_how_did_you_hear_corporate_awareness)) View.VISIBLE else View.GONE
-        binding.errorMessageEvent.visibility = if (show && event.isNullOrEmpty() && howDidYouHear == getString(R.string.onboard_welcome_how_did_you_hear_corporate_awareness)) View.VISIBLE else View.GONE
+        if (!isViewUsable()) return
+        val corp = labelCorporateAwareness
+        val isCorp = corp != null && howDidYouHear == corp
+        binding.errorMessageCompany.visibility =
+            if (show && company.isNullOrEmpty() && isCorp) View.VISIBLE else View.GONE
+        binding.errorMessageEvent.visibility =
+            if (show && event.isNullOrEmpty() && isCorp) View.VISIBLE else View.GONE
     }
 
-    // ====================== NOUVELLES FONCTIONS POUR KTOR ======================
+    // ====================== KTOR ======================
 
     private fun loadEnterprises() {
         if (isLoading) return
@@ -323,15 +368,21 @@ class OnboardingPhase1Fragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             try {
                 val enterprises = fetchEnterprises()
+                if (!isViewUsable()) return@launch
                 enterpriseList.clear()
                 enterpriseList.addAll(enterprises)
                 updateEnterpriseSpinner()
             } catch (e: Exception) {
-                showError(getString(R.string.onboard_welcome_error_load_failed))
-                // En cas d'erreur, utilise les valeurs en dur comme fallback
+                if (!isViewUsable()) {
+                    isLoading = false
+                    showLoading(false)
+                    return@launch
+                }
+                //TODO RESET THIS LINE
+                //showError(getString(R.string.onboard_welcome_error_load_failed))
                 fallbackToHardcodedEnterprises()
             } finally {
-                showLoading(false)
+                if (isViewUsable()) showLoading(false)
                 isLoading = false
             }
         }
@@ -345,14 +396,19 @@ class OnboardingPhase1Fragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             try {
                 val events = fetchEventsForEnterprise(enterpriseId)
+                if (!isViewUsable()) return@launch
                 eventList[enterpriseId] = events
                 updateEventSpinner(enterpriseId)
             } catch (e: Exception) {
+                if (!isViewUsable()) {
+                    isLoading = false
+                    showLoading(false)
+                    return@launch
+                }
                 showError(getString(R.string.onboard_welcome_error_load_failed))
-                // En cas d'erreur, utilise les valeurs en dur comme fallback
                 fallbackToHardcodedEvents()
             } finally {
-                showLoading(false)
+                if (isViewUsable()) showLoading(false)
                 isLoading = false
             }
         }
@@ -381,6 +437,7 @@ class OnboardingPhase1Fragment : Fragment() {
     }
 
     private fun updateEnterpriseSpinner() {
+        if (!isViewUsable()) return
         val enterpriseNames = enterpriseList.map { it.Name }
         ArrayAdapter(
             requireContext(),
@@ -391,7 +448,7 @@ class OnboardingPhase1Fragment : Fragment() {
             binding.uiOnboardSpinnerCompany.adapter = adapter
             binding.uiOnboardSpinnerCompany.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                    val selectedEnterprise = enterpriseList[position]
+                    val selectedEnterprise = enterpriseList.getOrNull(position) ?: return
                     selectedEnterpriseId = selectedEnterprise.Id
                     company = selectedEnterprise.Name
                     loadEventsForEnterprise(selectedEnterprise.Id)
@@ -403,6 +460,7 @@ class OnboardingPhase1Fragment : Fragment() {
     }
 
     private fun updateEventSpinner(enterpriseId: String) {
+        if (!isViewUsable()) return
         val events = eventList[enterpriseId] ?: emptyList()
         val eventNames = events.map { it.Name }
         ArrayAdapter(
@@ -423,16 +481,17 @@ class OnboardingPhase1Fragment : Fragment() {
     }
 
     private fun fallbackToHardcodedEnterprises() {
-        // Valeurs en dur en cas d'échec de l'API
+        if (!isViewUsable()) return
+        val ctx = context ?: return
         val companyOptions = listOf(
-            getString(R.string.onboard_welcome_company_a),
-            getString(R.string.onboard_welcome_company_b),
-            getString(R.string.onboard_welcome_company_c),
-            getString(R.string.onboard_welcome_company_d),
-            getString(R.string.onboard_welcome_company_e)
+            ctx.getString(R.string.onboard_welcome_company_a),
+            ctx.getString(R.string.onboard_welcome_company_b),
+            ctx.getString(R.string.onboard_welcome_company_c),
+            ctx.getString(R.string.onboard_welcome_company_d),
+            ctx.getString(R.string.onboard_welcome_company_e)
         )
         ArrayAdapter(
-            requireContext(),
+            ctx,
             android.R.layout.simple_spinner_item,
             companyOptions
         ).also { adapter ->
@@ -449,16 +508,17 @@ class OnboardingPhase1Fragment : Fragment() {
     }
 
     private fun fallbackToHardcodedEvents() {
-        // Valeurs en dur en cas d'échec de l'API
+        if (!isViewUsable()) return
+        val ctx = context ?: return
         val eventOptions = listOf(
-            getString(R.string.onboard_welcome_event_1),
-            getString(R.string.onboard_welcome_event_2),
-            getString(R.string.onboard_welcome_event_3),
-            getString(R.string.onboard_welcome_event_4),
-            getString(R.string.onboard_welcome_event_5)
+            ctx.getString(R.string.onboard_welcome_event_1),
+            ctx.getString(R.string.onboard_welcome_event_2),
+            ctx.getString(R.string.onboard_welcome_event_3),
+            ctx.getString(R.string.onboard_welcome_event_4),
+            ctx.getString(R.string.onboard_welcome_event_5)
         )
         ArrayAdapter(
-            requireContext(),
+            ctx,
             android.R.layout.simple_spinner_item,
             eventOptions
         ).also { adapter ->
@@ -475,12 +535,14 @@ class OnboardingPhase1Fragment : Fragment() {
     }
 
     private fun showLoading(show: Boolean) {
-        // Implémente un indicateur de chargement si nécessaire
         // Exemple: binding.progressBar.visibility = if (show) View.VISIBLE else View.GONE
+        if (!isViewUsable()) return
+        // TODO: implémenter si nécessaire
     }
 
     private fun showError(message: String) {
-        //Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+        // Utiliser un Toast sûr
+        context?.let { Toast.makeText(it, message, Toast.LENGTH_SHORT).show() }
     }
 
     companion object {
