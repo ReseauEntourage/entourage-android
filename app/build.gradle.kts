@@ -6,6 +6,7 @@ plugins {
     kotlin("android")
     //id("kotlin-android-extensions")
     id("com.google.firebase.crashlytics")
+    kotlin("plugin.serialization")
     //id("com.google.firebase.firebase-perf")
     kotlin("kapt")
     id("androidx.navigation.safeargs")

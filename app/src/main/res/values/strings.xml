@@ -3136,16 +3136,6 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="onboard_welcome_how_did_you_hear_tv_media">Télévision / média</string>
     <string name="onboard_welcome_how_did_you_hear_social_media">Réseaux sociaux</string>
     <string name="onboard_welcome_how_did_you_hear_corporate_awareness">Sensibilisation entreprise</string>
-    <string name="onboard_welcome_company_a">Entreprise A</string>
-    <string name="onboard_welcome_company_b">Entreprise B</string>
-    <string name="onboard_welcome_company_c">Entreprise C</string>
-    <string name="onboard_welcome_company_d">Entreprise D</string>
-    <string name="onboard_welcome_company_e">Entreprise E</string>
-    <string name="onboard_welcome_event_1">Événement 1</string>
-    <string name="onboard_welcome_event_2">Événement 2</string>
-    <string name="onboard_welcome_event_3">Événement 3</string>
-    <string name="onboard_welcome_event_4">Événement 4</string>
-    <string name="onboard_welcome_event_5">Événement 5</string>
 
 
 

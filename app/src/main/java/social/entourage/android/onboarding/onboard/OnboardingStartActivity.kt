@@ -89,7 +89,6 @@ class OnboardingStartActivity : AppCompatActivity(), OnboardingStartCallback {
     private fun callSignup() {
         alertDialog.show(R.string.onboard_waiting_dialog)
         OnboardingAPI.getInstance().createUser(temporaryUser, hasConsent) { isOK, error ->
-            Timber.wtf("wtf error $error")
             alertDialog.dismiss()
             if (isOK) {
                 showSmsAndGo(R.string.login_smscode_sent)
