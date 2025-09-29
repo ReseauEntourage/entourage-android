@@ -105,7 +105,7 @@ class DiscussionsListAdapter(
             }
 
             // === Titre et sous-infos ===
-            binding.name.text = if (conversation.memberCount > 2) {
+            binding.name.text = if (conversation.memberCount > 2 && conversation.type != "outing") {
                 "${conversation.title} et ${conversation.memberCount} membres"
             } else {
                 conversation.title
