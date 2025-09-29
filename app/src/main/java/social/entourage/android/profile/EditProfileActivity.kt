@@ -413,7 +413,7 @@ class EditProfileActivity : BaseActivity(), AvatarUploadView {
             editedUser["email"] = email
             editedUser["last_name"] = lastname
 
-            editedUser["birthday"] = birthday
+            editedUser["birthdate"] = birthday
             editedUser["travel_distance"] = travelDistance
             editProfilePresenter.updateUser(editedUser)
         }

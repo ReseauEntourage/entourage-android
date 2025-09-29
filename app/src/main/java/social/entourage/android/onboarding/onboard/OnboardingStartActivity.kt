@@ -194,25 +194,23 @@ class OnboardingStartActivity : AppCompatActivity(), OnboardingStartCallback {
     private fun updateGoal() {
         alertDialog.show(R.string.onboard_waiting_dialog)
         var userType = UserTypeSelection.NEIGHBOUR
-        if (isAsso) {
-            userType = UserTypeSelection.ASSOS
-        } else if (isBeEntour) {
-            userType = UserTypeSelection.ALONE
-        } else if (isEntour) {
-            userType = UserTypeSelection.NEIGHBOUR
-        } else if (Both) {
-            userType = UserTypeSelection.BOTH
-        }
+        if (isAsso) userType = UserTypeSelection.ASSOS
+        else if (isBeEntour) userType = UserTypeSelection.ALONE
+        else if (isEntour) userType = UserTypeSelection.NEIGHBOUR
+        else if (Both) userType = UserTypeSelection.BOTH
+
         val currentGoal = userType.getGoalString()
+
         OnboardingAPI.getInstance().updateUserGoal(
             currentGoal,
             temporaryEmail,
             hasConsent,
             temporaryGender,
-            temporaryBirthdate,
+            // On s'assure d'envoyer yyyy-MM-dd au back
+            temporaryBirthdate?.let { formatBirthdateForAPI(it) },
             temporaryHowDidYouHear,
-            temporaryCompany,
-            temporaryEvent
+            temporaryCompany, // 👈 ID entreprise
+            temporaryEvent    // 👈 ID event
         ) { isOK, userResponse ->
             if (isOK && userResponse != null) {
                 authenticationController.saveUser(userResponse.user)
@@ -221,6 +219,7 @@ class OnboardingStartActivity : AppCompatActivity(), OnboardingStartCallback {
             updateAddress()
         }
     }
+
 
 
 
@@ -412,15 +411,15 @@ class OnboardingStartActivity : AppCompatActivity(), OnboardingStartCallback {
     override fun validateNames(
         firstname: String?,
         lastname: String?,
-        gender: String?,
-        birthdate: String?,
+        gender: String?,            // "male" / "female" / "secret"
+        birthdate: String?,         // dd-MM-yyyy (depuis le fragment)
         country: Country?,
         phoneNumber: String?,
         email: String?,
         hasConsent: Boolean,
-        howDidYouHear: String?,
-        company: String?,
-        event: String?
+        howDidYouHear: String?,     // clé ("entreprise", ...)
+        company: String?,           // 👈 ID entreprise
+        event: String?              // 👈 ID event
     ) {
         temporaryUser.firstName = firstname
         temporaryUser.lastName = lastname
@@ -429,19 +428,18 @@ class OnboardingStartActivity : AppCompatActivity(), OnboardingStartCallback {
         temporaryEmail = email
         this.hasConsent = hasConsent
         temporaryUser.phone = null
-        // Mapping des valeurs affichées vers les valeurs attendues par le back
-        temporaryGender = when (gender) {
-            "Homme" -> "male"
-            "Femme" -> "female"
-            "Non binaire" -> "not_binary"
-            else -> null
-        }
-        temporaryBirthdate = birthdate // Déjà au format dd-MM-yyyy
+
+        temporaryGender = gender
+        gender?.let { temporaryUser.gender = it }
+
+        // dd-MM-yyyy -> yyyy-MM-dd (pour stocker dans User)
+        temporaryBirthdate = birthdate
+        birthdate?.let { temporaryUser.birthday = formatBirthdateForAPI(it) } // yyyy-MM-dd
+
         temporaryHowDidYouHear = howDidYouHear
-        temporaryCompany = company
-        temporaryEvent = event
-        gender?.let { temporaryUser.gender = temporaryGender }
-        birthdate?.let { temporaryUser.birthday = formatBirthdateForAPI(it) } // Format yyyy-MM-dd
+        temporaryCompany = company   // IDs
+        temporaryEvent = event       // IDs
+
         if (phoneNumber != null) {
             val phoneWithCode = Utils.checkPhoneNumberFormat(country?.phoneCode, phoneNumber)
             if (phoneWithCode != null) {
@@ -449,6 +447,8 @@ class OnboardingStartActivity : AppCompatActivity(), OnboardingStartCallback {
             }
         }
     }
+
+
 
 
     override fun validatePasscode(password: String?) {

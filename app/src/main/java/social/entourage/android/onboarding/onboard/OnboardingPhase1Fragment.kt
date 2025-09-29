@@ -283,6 +283,33 @@ class OnboardingPhase1Fragment : Fragment() {
         }
     }
 
+    private fun updateEnterpriseSpinner() {
+        if (!isViewUsable()) return
+        val ctx = binding.root.context
+        val names = enterpriseList.map { it.Name }
+
+        ArrayAdapter(ctx, android.R.layout.simple_spinner_item, names).also { adapter ->
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            binding.uiOnboardSpinnerCompany.adapter = adapter
+
+            // Pré-sélection si l'ID est déjà présent (on stocke l'ID dans `company`)
+            val preIndex = enterpriseList.indexOfFirst { it.Id == company }
+            if (preIndex >= 0) binding.uiOnboardSpinnerCompany.setSelection(preIndex)
+
+            binding.uiOnboardSpinnerCompany.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                    val selected = enterpriseList.getOrNull(position) ?: return
+                    selectedEnterpriseId = selected.Id
+                    company = selected.Id            // ⚠️ on stocke l'ID pour l'envoi back
+                    loadEventsForEnterprise(selected.Id)
+                    updateButtonNext()
+                }
+                override fun onNothingSelected(parent: AdapterView<*>?) {}
+            }
+        }
+    }
+
+
     // ---------- Events ----------
     private fun loadEventsForEnterprise(enterpriseId: String) {
         if (isLoading) return
@@ -374,27 +401,6 @@ class OnboardingPhase1Fragment : Fragment() {
         }
     }
 
-    private fun updateEnterpriseSpinner() {
-        if (!isViewUsable()) return
-        val ctx = binding.root.context
-        val names = enterpriseList.map { it.Name }
-
-        ArrayAdapter(ctx, android.R.layout.simple_spinner_item, names).also { adapter ->
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            binding.uiOnboardSpinnerCompany.adapter = adapter
-
-            binding.uiOnboardSpinnerCompany.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                    val selected = enterpriseList.getOrNull(position) ?: return
-                    selectedEnterpriseId = selected.Id
-                    company = selected.Name
-                    loadEventsForEnterprise(selected.Id)
-                    updateButtonNext()
-                }
-                override fun onNothingSelected(parent: AdapterView<*>?) {}
-            }
-        }
-    }
 
     private fun updateEventSpinner(enterpriseId: String) {
         if (!isViewUsable()) return
@@ -407,16 +413,20 @@ class OnboardingPhase1Fragment : Fragment() {
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             binding.uiOnboardSpinnerEvent.adapter = adapter
 
+            // Pré-sélection si l'ID est déjà présent (on stocke l'ID dans `event`)
+            val preIndex = events.indexOfFirst { it.Id == event }
+            if (preIndex >= 0) binding.uiOnboardSpinnerEvent.setSelection(preIndex)
+
             binding.uiOnboardSpinnerEvent.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                    // si l’API attend l’Id, remplace par events[position].Id
-                    event = events.getOrNull(position)?.Name
+                    event = events.getOrNull(position)?.Id   // ⚠️ on stocke l'ID pour l'envoi back
                     updateButtonNext()
                 }
                 override fun onNothingSelected(parent: AdapterView<*>?) {}
             }
         }
     }
+
 
     private fun clearSpinner(spinner: Spinner) {
         if (!isViewUsable()) return
@@ -432,8 +442,8 @@ class OnboardingPhase1Fragment : Fragment() {
         binding.constraintLayoutEvent.visibility   = if (isEnterprise) View.VISIBLE else View.GONE
 
         if (!isEnterprise) {
-            company = null
-            event = null
+            company = null   // ⚠️ on vide l'ID
+            event = null     // ⚠️ on vide l'ID
             selectedEnterpriseId = null
             clearSpinner(binding.uiOnboardSpinnerCompany)
             clearSpinner(binding.uiOnboardSpinnerEvent)
@@ -476,14 +486,14 @@ class OnboardingPhase1Fragment : Fragment() {
                 binding.uiOnboardNamesEtFirstname.text.toString(),
                 binding.uiOnboardNamesEtLastname.text.toString(),
                 genderKey,
-                formatBirthdateForAPI(binding.uiOnboardBirthdate.text?.toString()),
+                formatBirthdateForAPI(binding.uiOnboardBirthdate.text?.toString()), // dd-MM-yyyy
                 binding.uiOnboardPhoneCcpCode.selectedCountry,
                 binding.uiOnboardPhoneEtPhone.text?.toString(),
                 binding.uiOnboardEmail.text?.toString(),
                 binding.uiOnboardConsentCheck.isChecked,
                 howDidYouHearKey,
-                company,
-                event
+                company, // 👈 ID entreprise
+                event    // 👈 ID event
             )
         } else {
             if (!binding.uiOnboardNamesEtFirstname.text.isNullOrEmpty() &&
@@ -497,6 +507,7 @@ class OnboardingPhase1Fragment : Fragment() {
         }
     }
 
+
     private fun isValidFirstname() = (binding.uiOnboardNamesEtFirstname.text?.length ?: 0) >= minChars
     private fun isValidLastname() = (binding.uiOnboardNamesEtLastname.text?.length ?: 0) >= minChars
     private fun isValidPhone()    = (binding.uiOnboardPhoneEtPhone.text?.length ?: 0) >= minCharsPhone
@@ -508,8 +519,10 @@ class OnboardingPhase1Fragment : Fragment() {
     private fun isValidCompanyEvent(): Boolean {
         val needsCorp = enterpriseModeKey != null && howDidYouHearKey == enterpriseModeKey
         if (!needsCorp) return true
+        // Ici `company` et `event` contiennent des IDs
         return !company.isNullOrEmpty() && !event.isNullOrEmpty()
     }
+
 
     fun checkAndValidateInput(): Boolean {
         return isValidFirstname() &&

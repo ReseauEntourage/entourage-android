@@ -18,6 +18,7 @@ import social.entourage.android.api.model.EntourageUser
 import social.entourage.android.api.model.ReactionType
 import social.entourage.android.databinding.NewGroupMemberItemBinding
 import social.entourage.android.home.HomeFragment
+import social.entourage.android.members.MembersActivity
 import social.entourage.android.profile.ProfileFullActivity
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.ui.ActionSheetFragment
@@ -62,7 +63,7 @@ class MembersListAdapter(
 
         // -------- Checkbox participation (visibilité + état + listener) --------
         val isMe = EntourageApplication.get().me()?.id == item.userId
-        if (HomeFragment.signablePermission && ActionSheetFragment.isSignable && !isMe) {
+        if (HomeFragment.signablePermission && ActionSheetFragment.isSignable && !isMe && !MembersActivity.isFromReact) {
 
             b.checkboxConfirmation.visibility = View.VISIBLE
             // état actuel : participe si participateAt ou confirmedAt non null

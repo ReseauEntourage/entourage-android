@@ -45,9 +45,8 @@ class OnboardingAPI {
         user["email"] = tempUser.email ?: ""
         user["newsletter_subscription"] = hasConsent
 
-        // Ajout des champs gender et birthday, en suivant le format des exemples
         tempUser.gender?.let { user["gender"] = it }
-        tempUser.birthday?.let { user["birthday"] = it }
+        tempUser.birthday?.let { user["birthdate"] = it } // ✅ birthdate (clé API)
 
         val request = ArrayMap<String, Any>()
         request["user"] = user
@@ -59,12 +58,9 @@ class OnboardingAPI {
                     Timber.d("Response ok create user ?")
                     listener(true, null)
                 } else {
-                    Timber.d("Response nok create user")
-                    if (response.errorBody() != null) {
-                        val errorString = response.errorBody()?.string()
-                        Timber.d("Response nok create user error : $errorString")
-                        listener(false, errorString)
-                    }
+                    val errorString = response.errorBody()?.string()
+                    Timber.d("Response nok create user error : $errorString")
+                    listener(false, errorString)
                 }
             }
             override fun onFailure(call: Call<UserResponse>, t: Throwable) {
@@ -72,6 +68,7 @@ class OnboardingAPI {
             }
         })
     }
+
 
     /**********************
      * Login
@@ -204,29 +201,23 @@ class OnboardingAPI {
         email: String?,
         hasConsent: Boolean?,
         gender: String?,
-        birthday: String?,
-        discoverySource: String?,  // Valeurs en français ("Bouche à oreille", etc.)
-        company: String?,
-        event: String?,
+        birthday: String?,          // yyyy-MM-dd
+        discoverySource: String?,   // clé ("entreprise", ...)
+        companyId: String?,         // ID entreprise
+        eventId: String?,           // ID event
         listener: (isOK: Boolean, userResponse: UserResponse?) -> Unit
     ) {
         val user = ArrayMap<String, Any>()
         user["goal"] = goalString
 
-        // Champs existants
         hasConsent?.let { user["newsletter_subscription"] = it }
         email?.takeIf { it.isNotEmpty() }?.let { user["email"] = it }
+        gender?.takeIf { it.isNotEmpty() }?.let { user["gender"] = it }
+        birthday?.takeIf { it.isNotEmpty() }?.let { user["birthdate"] = it } // ✅ birthdate
 
-        // Nouveaux champs (valeurs en français)
-        gender?.let { user["gender"] = it }
-        birthday?.let { user["birthday"] = it }
-        discoverySource?.let { user["discovery_source"] = it }
-
-        // Ajout des champs entreprise/événement uniquement si discoverySource est "Sensibilisation entreprise"
-        if (discoverySource == "Sensibilisation entreprise") {
-            company?.let { user["company"] = it }
-            event?.let { user["event"] = it }
-        }
+        discoverySource?.takeIf { it.isNotEmpty() }?.let { user["discovery_source"] = it }
+        companyId?.takeIf { it.isNotBlank() }?.let { user["company_id"] = it } // ✅ IDs
+        eventId?.takeIf { it.isNotBlank() }?.let { user["event_id"] = it }     // ✅ IDs
 
         val request = ArrayMap<String, Any>()
         request["user"] = user
@@ -245,6 +236,8 @@ class OnboardingAPI {
             }
         })
     }
+
+
 
 
 

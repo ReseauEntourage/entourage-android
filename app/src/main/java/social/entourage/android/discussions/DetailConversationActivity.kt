@@ -281,6 +281,10 @@ class DetailConversationActivity : CommentActivity() {
         }
     }
 
+    private fun isClassicDiscussion(): Boolean {
+        return !isSmallTalkMode && detailConversation?.type != "outing"
+    }
+
     private fun startRefreshing() {
         if (refreshRunnable != null) return
         refreshRunnable = object : Runnable {
@@ -716,11 +720,9 @@ class DetailConversationActivity : CommentActivity() {
     // ===== Réception des messages =====
     override fun handleGetPostComments(allComments: MutableList<Post>?) {
         allComments ?: return
-
         val formatted = sortAndExtractDays(allComments, this) ?: return
 
         if (isLoadingOlder) {
-            // Résultat d'une pagination -> PREPEND en haut
             val existingKeys = HashSet<String>(commentsList.size).apply {
                 commentsList.forEach { add(it.diffKey()) }
             }
@@ -733,7 +735,21 @@ class DetailConversationActivity : CommentActivity() {
             return
         }
 
-        // Page 1 (timer/reload) -> APPEND en bas des nouveaux uniquement
+        val indexByKey = HashMap<String, Int>(commentsList.size)
+        commentsList.forEachIndexed { idx, p -> indexByKey[p.diffKey()] = idx }
+        formatted.forEach { serverItem ->
+            if (!serverItem.isDatePostOnly) {
+                val idx = indexByKey[serverItem.diffKey()]
+                if (idx != null && idx in commentsList.indices) {
+                    val local = commentsList[idx]
+                    if (hasMeaningfulDiff(local, serverItem)) {
+                        commentsList[idx] = serverItem
+                        binding.comments.adapter?.notifyItemChanged(idx)
+                    }
+                }
+            }
+        }
+
         val existingKeys = HashSet<String>(commentsList.size).apply {
             commentsList.forEach { add(it.diffKey()) }
         }
@@ -743,7 +759,6 @@ class DetailConversationActivity : CommentActivity() {
             return
         }
 
-        // Dédoublonnage du séparateur à la jonction bas
         val lastExistingDate = commentsList.lastOrNull { it.isDatePostOnly }?.datePostText
         if (toAppend.firstOrNull()?.isDatePostOnly == true &&
             lastExistingDate != null &&
@@ -765,6 +780,16 @@ class DetailConversationActivity : CommentActivity() {
         binding.progressBar.visibility = View.GONE
         updateView(commentsList.isEmpty())
     }
+
+    private fun hasMeaningfulDiff(local: Post, remote: Post): Boolean {
+        return local.status != remote.status ||
+                (local.content ?: "") != (remote.content ?: "") ||
+                (local.contentHtml ?: "") != (remote.contentHtml ?: "") ||
+                (local.imageUrl ?: "") != (remote.imageUrl ?: "") ||
+                (local.contentTranslations?.translation ?: "") != (remote.contentTranslations?.translation ?: "") ||
+                (local.contentTranslationsHtml?.translation ?: "") != (remote.contentTranslationsHtml?.translation ?: "")
+    }
+
 
     // ===== Utils =====
     fun sortAndExtractDays(allEvents: MutableList<Post>?, context: android.content.Context): MutableList<Post>? {
@@ -926,7 +951,7 @@ class DetailConversationActivity : CommentActivity() {
     }
 
     private fun checkAndShowPopWarning() {
-        if (hasToShowFirstMessage) {
+        if (hasToShowFirstMessage && !isClassicDiscussion()) {
             binding.layoutInfoNewDiscussion.isVisible = true
             binding.uiIvCloseNew.setOnClickListener {
                 binding.layoutInfoNewDiscussion.visibility = View.GONE
