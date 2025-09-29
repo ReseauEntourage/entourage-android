@@ -3118,9 +3118,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
         <item>Femme</item>
         <item>Non-binaire</item>
     </string-array>
-    <string name="onboard_welcome_title_gender">Genre</string>
-    <string name="onboard_welcome_title_birthdate">Date d\'anniversaire</string>
-    <string name="onboard_welcome_placeholder_birthdate">JJ/MM/AAAA</string>
+    <string name="onboard_welcome_title_gender">Je suis</string>
 
     <string name="onboard_welcome_title_how_did_you_hear">Comment nous avez-vous connu? </string>
     <string name="onboard_welcome_title_company_name">Nom de votre entreprise</string>
@@ -3136,7 +3134,20 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="onboard_welcome_how_did_you_hear_tv_media">Télévision / média</string>
     <string name="onboard_welcome_how_did_you_hear_social_media">Réseaux sociaux</string>
     <string name="onboard_welcome_how_did_you_hear_corporate_awareness">Sensibilisation entreprise</string>
-
+    <string name="onboard_welcome_title_birthdate">Date d\'anniversaire</string>
+    <string name="onboard_welcome_placeholder_birthdate">JJ/MM/AAAA</string>
+    <string name="onboard_welcome_placeholder_select_in_list">Sélectionner dans la liste</string>
+    <string name="onboard_welcome_gender_female">Femme</string>
+    <string name="onboard_welcome_gender_male">Homme</string>
+    <string name="onboard_welcome_gender_other">Autre</string>
+    <string name="onboard_welcome_placeholder_firstname_new">Ex. : Marie</string>
+    <string name="onboard_welcome_placeholder_lastname_new">Ex. : Dupont</string>
+    <string name="onboard_welcome_placeholder_phone_new">06 XX XX XX XX</string>
+    <string name="onboard_welcome_title_firstname_required">Prénom*</string>
+    <string name="onboard_welcome_title_lastname_required">Nom*</string>
+    <string name="onboard_welcome_title_phone_required">Téléphone*</string>
+    <string name="onboard_welcome_placeholder_email_new">Ex. : marie.dupont@email.com</string>
+    <string name="onboard_welcome_placeholder_gender">Sélectionner dans la liste</string>
 
 
 </resources>

@@ -17,7 +17,7 @@
             android:paddingStart="16dp"
             android:paddingEnd="16dp">
 
-            <!-- Genre -->
+            <!-- Je suis (facultatif) -->
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -40,17 +40,19 @@
                 <Spinner
                     android:id="@+id/ui_onboard_spinner_gender"
                     android:layout_width="0dp"
-                    android:layout_height="40dp"
+                    android:layout_height="48dp"
                     android:layout_marginStart="32dp"
                     android:layout_marginEnd="32dp"
                     android:layout_marginTop="5dp"
-                    android:backgroundTint="@color/orange_opacity_50"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp"
+                    android:background="@drawable/bg_spinner_outline"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/textViewGender" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <!-- Prénom -->
+            <!-- Prénom* -->
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -62,7 +64,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="32dp"
                     android:fontFamily="@font/quicksand_bold"
-                    android:text="@string/onboard_welcome_title_firstname"
+                    android:text="@string/onboard_welcome_title_firstname_required"
                     android:textColor="@color/black"
                     android:textSize="15sp"
                     android:textStyle="bold"
@@ -72,19 +74,19 @@
                 <EditText
                     android:id="@+id/ui_onboard_names_et_firstname"
                     android:layout_width="0dp"
-                    android:layout_height="40dp"
+                    android:layout_height="48dp"
                     android:layout_marginStart="32dp"
                     android:layout_marginEnd="32dp"
                     android:layout_marginTop="5dp"
-                    android:backgroundTint="@color/orange_opacity_50"
                     android:ems="10"
                     android:fontFamily="@font/nunitosans_regular"
-                    android:hint="@string/onboard_welcome_placeholder_firstname"
+                    android:hint="@string/onboard_welcome_placeholder_firstname_new"
                     android:inputType="textCapSentences|textMultiLine"
-                    android:paddingStart="0dp"
+                    android:paddingStart="12dp"
                     android:paddingEnd="12dp"
                     android:textColor="@color/black"
                     android:textSize="15sp"
+                    android:backgroundTint="@color/orange_opacity_50"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/textView2" />
@@ -107,7 +109,7 @@
                     tools:visibility="visible" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <!-- Nom -->
+            <!-- Nom* -->
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -119,7 +121,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="32dp"
                     android:fontFamily="@font/quicksand_bold"
-                    android:text="@string/onboard_welcome_title_lastname"
+                    android:text="@string/onboard_welcome_title_lastname_required"
                     android:textColor="@color/black"
                     android:textSize="15sp"
                     android:textStyle="bold"
@@ -129,20 +131,20 @@
                 <EditText
                     android:id="@+id/ui_onboard_names_et_lastname"
                     android:layout_width="0dp"
-                    android:layout_height="40dp"
+                    android:layout_height="48dp"
                     android:layout_marginStart="32dp"
                     android:layout_marginEnd="32dp"
                     android:layout_marginTop="5dp"
-                    android:backgroundTint="@color/orange_opacity_50"
                     android:ems="10"
                     android:fontFamily="@font/nunitosans_regular"
-                    android:hint="@string/onboard_welcome_placeholder_lastname"
+                    android:hint="@string/onboard_welcome_placeholder_lastname_new"
                     android:imeOptions="actionDone"
                     android:inputType="textCapSentences|textMultiLine"
-                    android:paddingStart="0dp"
+                    android:paddingStart="12dp"
                     android:paddingEnd="12dp"
                     android:textColor="@color/black"
                     android:textSize="15sp"
+                    android:backgroundTint="@color/orange_opacity_50"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/textView35" />
@@ -180,7 +182,7 @@
                     app:layout_constraintTop_toBottomOf="@id/error_message_lastname" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <!-- Date d'anniversaire -->
+            <!-- Date d'anniversaire (facultatif) -->
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/constraintLayoutBirthdate"
                 android:layout_width="match_parent"
@@ -204,26 +206,26 @@
                 <EditText
                     android:id="@+id/ui_onboard_birthdate"
                     android:layout_width="0dp"
-                    android:layout_height="40dp"
+                    android:layout_height="48dp"
                     android:layout_marginStart="32dp"
                     android:layout_marginEnd="32dp"
                     android:layout_marginTop="5dp"
-                    android:backgroundTint="@color/orange_opacity_50"
                     android:ems="10"
                     android:focusable="false"
                     android:fontFamily="@font/nunitosans_regular"
                     android:hint="@string/onboard_welcome_placeholder_birthdate"
                     android:inputType="date"
-                    android:paddingStart="0dp"
+                    android:paddingStart="12dp"
                     android:paddingEnd="12dp"
                     android:textColor="@color/black"
                     android:textSize="15sp"
+                    android:backgroundTint="@color/orange_opacity_50"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/textViewBirthdate" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <!-- Téléphone -->
+            <!-- Téléphone* -->
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/constraintLayout17"
                 android:layout_width="match_parent"
@@ -236,7 +238,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="32dp"
                     android:fontFamily="@font/quicksand_bold"
-                    android:text="@string/onboard_welcome_title_phone"
+                    android:text="@string/onboard_welcome_title_phone_required"
                     android:textColor="@color/onboard_black_36"
                     android:textSize="15sp"
                     android:textStyle="bold"
@@ -247,11 +249,10 @@
                     android:id="@+id/ui_onboard_phone_ccp_code"
                     style="@style/input"
                     android:layout_width="40dp"
-                    android:layout_height="32dp"
+                    android:layout_height="48dp"
                     android:layout_marginStart="32dp"
                     android:layout_marginTop="5dp"
-                    android:backgroundTint="@color/light_orange_opacity_50"
-                    android:gravity="center_horizontal|center_vertical"
+                    android:gravity="center"
                     app:ccp_alternative_layout="false"
                     app:ccp_backgroundColor="@color/partner_logo_transparent"
                     app:ccp_defaultNameCode="FR"
@@ -268,16 +269,17 @@
                     android:id="@+id/ui_onboard_phone_et_phone"
                     style="@style/input"
                     android:layout_width="0dp"
-                    android:layout_height="40dp"
+                    android:layout_height="48dp"
                     android:layout_marginStart="16dp"
                     android:layout_marginEnd="32dp"
                     android:autofillHints="phoneNumber"
-                    android:backgroundTint="@color/light_orange_opacity_50"
-                    android:hint="@string/onboard_welcome_placeholder_phone"
+                    android:hint="@string/onboard_welcome_placeholder_phone_new"
                     android:inputType="phone"
                     android:maxLines="1"
-                    android:paddingTop="0dp"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp"
                     android:textSize="15sp"
+                    android:backgroundTint="@color/light_orange_opacity_50"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@id/ui_onboard_phone_ccp_code"
                     app:layout_constraintTop_toTopOf="@id/ui_onboard_phone_ccp_code" />
@@ -300,7 +302,7 @@
                     tools:visibility="visible" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <!-- Email -->
+            <!-- Email (facultatif) -->
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -323,16 +325,17 @@
                     android:id="@+id/ui_onboard_email"
                     style="@style/input"
                     android:layout_width="0dp"
-                    android:layout_height="40dp"
+                    android:layout_height="48dp"
                     android:layout_marginStart="32dp"
                     android:layout_marginEnd="32dp"
                     android:layout_marginTop="5dp"
                     android:autofillHints="textEmailAddress"
-                    android:backgroundTint="@color/light_orange_opacity_50"
-                    android:hint="@string/onboard_welcome_placeholder_email"
+                    android:hint="@string/onboard_welcome_placeholder_email_new"
                     android:inputType="textEmailAddress"
                     android:maxLines="1"
-                    android:paddingTop="0dp"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp"
+                    android:backgroundTint="@color/light_orange_opacity_50"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/textView3" />
@@ -353,36 +356,9 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/ui_onboard_email"
                     tools:visibility="visible" />
-
-                <CheckBox
-                    android:id="@+id/ui_onboard_consent_check"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="32dp"
-                    android:layout_marginTop="10dp"
-                    android:buttonTint="@color/orange"
-                    android:checked="false"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/error_message_email" />
-
-                <TextView
-                    android:id="@+id/ui_onboard_names_tv_info2"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginEnd="32dp"
-                    android:layout_marginBottom="16dp"
-                    android:fontFamily="@font/nunitosans_regular"
-                    android:text="@string/onboard_welcome_consent"
-                    android:textColor="@color/pre_onboard_black"
-                    android:textSize="13sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/ui_onboard_consent_check"
-                    app:layout_constraintTop_toTopOf="@id/ui_onboard_consent_check" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <!-- Comment vous nous avez connu ? -->
+            <!-- Comment nous avez-vous connu ? -->
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -405,14 +381,47 @@
                 <Spinner
                     android:id="@+id/ui_onboard_spinner_how_did_you_hear"
                     android:layout_width="0dp"
-                    android:layout_height="40dp"
+                    android:layout_height="48dp"
                     android:layout_marginStart="32dp"
                     android:layout_marginEnd="32dp"
                     android:layout_marginTop="5dp"
-                    android:backgroundTint="@color/light_orange_opacity_50"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp"
+                    android:background="@drawable/bg_spinner_outline"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/textViewHowDidYouHear" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <!-- Opt-in (déplacé sous "Comment nous avez-vous connu ?") -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp">
+
+                <CheckBox
+                    android:id="@+id/ui_onboard_consent_check"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:buttonTint="@color/orange"
+                    android:checked="false"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/ui_onboard_names_tv_info2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="32dp"
+                    android:fontFamily="@font/nunitosans_regular"
+                    android:text="@string/onboard_welcome_consent"
+                    android:textColor="@color/pre_onboard_black"
+                    android:textSize="13sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/ui_onboard_consent_check"
+                    app:layout_constraintTop_toTopOf="@id/ui_onboard_consent_check" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <!-- Nom de votre entreprise -->
@@ -421,7 +430,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:visibility="visible">
+                android:visibility="gone">
 
                 <TextView
                     android:id="@+id/textViewCompanyName"
@@ -439,11 +448,13 @@
                 <Spinner
                     android:id="@+id/ui_onboard_spinner_company"
                     android:layout_width="0dp"
-                    android:layout_height="40dp"
+                    android:layout_height="48dp"
                     android:layout_marginStart="32dp"
                     android:layout_marginEnd="32dp"
                     android:layout_marginTop="5dp"
-                    android:backgroundTint="@color/light_orange_opacity_50"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp"
+                    android:background="@drawable/bg_spinner_outline"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/textViewCompanyName" />
@@ -471,7 +482,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:visibility="visible">
+                android:visibility="gone">
 
                 <TextView
                     android:id="@+id/textViewEventName"
@@ -489,11 +500,13 @@
                 <Spinner
                     android:id="@+id/ui_onboard_spinner_event"
                     android:layout_width="0dp"
-                    android:layout_height="40dp"
+                    android:layout_height="48dp"
                     android:layout_marginStart="32dp"
                     android:layout_marginEnd="32dp"
                     android:layout_marginTop="5dp"
-                    android:backgroundTint="@color/light_orange_opacity_50"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp"
+                    android:background="@drawable/bg_spinner_outline"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/textViewEventName" />
