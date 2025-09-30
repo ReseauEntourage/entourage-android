@@ -16,13 +16,10 @@ class GroupRulesActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        AnalyticsEvents.logEvent(
-            AnalyticsEvents.VIEW_GROUP_OPTION_RULES)
+        AnalyticsEvents.logEvent(AnalyticsEvents.VIEW_GROUP_OPTION_RULES)
         binding = ActivityGroupRulesBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         val ruleType = intent.getStringExtra(Const.RULES_TYPE)
-
         populateList(ruleType)
         initializeGroups()
         handleBackButton()
@@ -36,44 +33,51 @@ class GroupRulesActivity : AppCompatActivity() {
     }
 
     private fun handleBackButton() {
-        binding.header.headerIconBack.setOnClickListener {
-            finish()
-        }
+        binding.header.headerIconBack.setOnClickListener { finish() }
     }
 
-    private fun populateList(ruleType:String?) {
+    private fun populateList(ruleType: String?) {
         var cgus = ArrayList<Rules>()
         var rule_description = ""
         var rule_title = ""
-        when(ruleType) {
+        when (ruleType) {
             Const.RULES_GROUP -> {
                 rule_description = getString(R.string.group_params_cgu_description)
                 rule_title = getString(R.string.group_params_cgu_title)
-                val line1 = Rules(getString(R.string.neighborhood_CGU_1_title),getString(R.string.neighborhood_CGU_1))
-                val line2 = Rules(getString(R.string.neighborhood_CGU_2_title),getString(R.string.neighborhood_CGU_2))
-                val line3 = Rules(getString(R.string.neighborhood_CGU_3_title),getString(R.string.neighborhood_CGU_3))
-                val line4 = Rules(getString(R.string.neighborhood_CGU_4_title),getString(R.string.neighborhood_CGU_4))
-                val line5 = Rules(getString(R.string.neighborhood_CGU_5_title),getString(R.string.neighborhood_CGU_5))
-                cgus = arrayListOf(line1,line2,line3,line4,line5)
+                val line1 = Rules(getString(R.string.neighborhood_CGU_1_title), getString(R.string.neighborhood_CGU_1))
+                val line2 = Rules(getString(R.string.neighborhood_CGU_2_title), getString(R.string.neighborhood_CGU_2))
+                val line3 = Rules(getString(R.string.neighborhood_CGU_3_title), getString(R.string.neighborhood_CGU_3))
+                val line4 = Rules(getString(R.string.neighborhood_CGU_4_title), getString(R.string.neighborhood_CGU_4))
+                val line5 = Rules(getString(R.string.neighborhood_CGU_5_title), getString(R.string.neighborhood_CGU_5))
+                cgus = arrayListOf(line1, line2, line3, line4, line5)
             }
             Const.RULES_EVENT -> {
                 rule_description = getString(R.string.event_params_cgu_description)
                 rule_title = getString(R.string.event_params_cgu_title)
-                val line1 = Rules(getString(R.string.event_CGU_1_title),getString(R.string.event_CGU_1))
-                val line2 = Rules(getString(R.string.event_CGU_2_title),getString(R.string.event_CGU_2))
-                val line3 = Rules(getString(R.string.event_CGU_3_title),getString(R.string.event_CGU_3))
-                val line4 = Rules(getString(R.string.event_CGU_4_title),getString(R.string.event_CGU_4))
-                cgus = arrayListOf(line1,line2,line3,line4)
+
+                val sectionPos = Rules(getString(R.string.event_CGU_section_positive), "")
+                val r1 = Rules(getString(R.string.event_CGU_1_title), getString(R.string.event_CGU_1))
+                val r2 = Rules(getString(R.string.event_CGU_2_title), getString(R.string.event_CGU_2))
+                val r3 = Rules(getString(R.string.event_CGU_3_title), getString(R.string.event_CGU_3))
+                val r4 = Rules(getString(R.string.event_CGU_4_title), getString(R.string.event_CGU_4))
+
+                val sectionNeg = Rules(getString(R.string.event_CGU_section_negative), "")
+                val r5 = Rules(getString(R.string.event_CGU_5_title), getString(R.string.event_CGU_5))
+                val r6 = Rules(getString(R.string.event_CGU_6_title), getString(R.string.event_CGU_6))
+                val r7 = Rules(getString(R.string.event_CGU_7_title), getString(R.string.event_CGU_7))
+                val r8 = Rules(getString(R.string.event_CGU_8_title), getString(R.string.event_CGU_8))
+
+                cgus = arrayListOf(sectionPos, r1, r2, r3, r4, sectionNeg, r5, r6, r7, r8)
             }
-            Const.RULES_ACTION ->  {
+            Const.RULES_ACTION -> {
                 rule_description = getString(R.string.action_params_cgu_description)
                 rule_title = getString(R.string.action_params_cgu_title)
-                val line1 = Rules(getString(R.string.action_CGU_1_title),getString(R.string.action_CGU_1))
-                val line2 = Rules(getString(R.string.action_CGU_2_title),getString(R.string.action_CGU_2))
-                val line3 = Rules(getString(R.string.action_CGU_3_title),getString(R.string.action_CGU_3))
-                val line4 = Rules(getString(R.string.action_CGU_4_title),getString(R.string.action_CGU_4))
-                val line5 = Rules(getString(R.string.action_CGU_5_title),getString(R.string.action_CGU_5))
-                cgus = arrayListOf(line1,line2,line3,line4,line5)
+                val line1 = Rules(getString(R.string.action_CGU_1_title), getString(R.string.action_CGU_1))
+                val line2 = Rules(getString(R.string.action_CGU_2_title), getString(R.string.action_CGU_2))
+                val line3 = Rules(getString(R.string.action_CGU_3_title), getString(R.string.action_CGU_3))
+                val line4 = Rules(getString(R.string.action_CGU_4_title), getString(R.string.action_CGU_4))
+                val line5 = Rules(getString(R.string.action_CGU_5_title), getString(R.string.action_CGU_5))
+                cgus = arrayListOf(line1, line2, line3, line4, line5)
             }
         }
         rulesList = cgus
@@ -82,5 +86,4 @@ class GroupRulesActivity : AppCompatActivity() {
         binding.ruleDescription.text = rule_description
         binding.header.title = rule_title
     }
-
 }
