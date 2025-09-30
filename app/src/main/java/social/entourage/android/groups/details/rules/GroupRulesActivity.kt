@@ -1,6 +1,7 @@
 package social.entourage.android.groups.details.rules
 
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -82,7 +83,7 @@ class GroupRulesActivity : AppCompatActivity() {
         }
         rulesList = cgus
         binding.recyclerView.adapter?.notifyDataSetChanged()
-        binding.ruleDescription.isVisible = rule_description.isNotEmpty()
+        binding.ruleDescription.isVisible = rule_description.isNotEmpty() && ruleType != Const.RULES_EVENT
         binding.ruleDescription.text = rule_description
         binding.header.title = rule_title
     }
