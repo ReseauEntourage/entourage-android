@@ -6,6 +6,8 @@ import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.*
 import social.entourage.android.api.model.Conversation
+import social.entourage.android.api.model.ConversationImageSingleWrapper
+import social.entourage.android.api.model.ConversationImagesWrapper
 import social.entourage.android.api.model.GroupMember
 import social.entourage.android.api.model.User
 import social.entourage.android.api.model.UserBlockedUser
@@ -118,4 +120,16 @@ interface DiscussionsRequest {
         @Query("page") page: Int,
         @Query("per") per: Int
     ): Call<ConversationMembershipsWrapper>
+
+    @GET("conversations/{conversation_id}/images")
+    fun getConversationImages(
+        @Path("conversation_id") conversationId: Int
+    ): Call<ConversationImagesWrapper>
+
+    @GET("conversations/{conversation_id}/images/{chat_message_id}")
+    fun getConversationImage(
+        @Path("conversation_id") conversationId: Int,
+        @Path("chat_message_id") chatMessageId: Int
+    ): Call<ConversationImageSingleWrapper>
+
 }

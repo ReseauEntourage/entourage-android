@@ -65,6 +65,14 @@
                     android:layout_marginStart="25dp"
                     android:layout_marginEnd="25dp"
                     app:icon='@{@drawable/ic_chartes_rules}' />
+                <include
+                    android:id="@+id/photos"
+                    layout="@layout/layout_settings_item"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="25dp"
+                    android:layout_marginEnd="25dp"
+                    app:icon='@{@drawable/ic_option_photo_list}' />
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/layout_report"
                     android:layout_width="match_parent"

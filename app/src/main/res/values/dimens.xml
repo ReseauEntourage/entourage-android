@@ -24,6 +24,7 @@
     <dimen name="entourage_margin_section">28dp</dimen>
     <dimen name="page_margin">0dp</dimen>
     <dimen name="offset">24dp</dimen>
+    <dimen name="grid_spacing_8">8dp</dimen>
 
 
     <dimen name="activity_horizontal_margin">16dp</dimen>

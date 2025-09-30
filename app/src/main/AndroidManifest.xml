@@ -124,6 +124,10 @@
             android:windowSoftInputMode="adjustPan"
             android:exported="false" />
         <activity
+            android:name=".discussions.imageviewier.ImageListActivity"
+            android:windowSoftInputMode="adjustPan"
+            android:exported="false" />
+        <activity
             android:name=".actions.ActionLocationFilterActivity"
             android:exported="false" />
         <activity

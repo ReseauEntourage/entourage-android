@@ -27,6 +27,8 @@ import social.entourage.android.report.ReportTypes
 import social.entourage.android.small_talks.SmallTalkViewModel
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.CustomAlertDialog
+import social.entourage.android.discussions.imageviewier.ImageListActivity
+
 
 enum class SheetMode {
     GROUP, EVENT, DISCUSSION_ONE_TO_ONE, DISCUSSION_GROUP, MESSAGE_ACTIONS
@@ -109,6 +111,7 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
                 binding.quit.profileSettingsItemLayout.isVisible = false
                 binding.eventInfo.isVisible = false
                 binding.rules.profileSettingsItemLayout.isVisible = false
+                binding.photos.profileSettingsItemLayout.isVisible = false
             }
             SheetMode.DISCUSSION_GROUP -> {
                 binding.profile.setLabel(getString(R.string.discussion_settings_members))
@@ -119,6 +122,7 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
                 binding.quit.profileSettingsItemLabel.setTextColor(ContextCompat.getColor(requireContext(), R.color.orange))
                 binding.eventInfo.isVisible = false
                 binding.rules.profileSettingsItemLayout.isVisible = false
+                binding.photos.profileSettingsItemLayout.isVisible = false
             }
             SheetMode.GROUP -> {
                 binding.profile.setLabel(getString(R.string.discussion_settings_members))
@@ -129,6 +133,7 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
                 binding.quit.profileSettingsItemLabel.setTextColor(ContextCompat.getColor(requireContext(), R.color.orange))
                 binding.eventInfo.isVisible = false
                 binding.rules.profileSettingsItemLayout.isVisible = false
+                binding.photos.profileSettingsItemLayout.isVisible = false
             }
             SheetMode.EVENT -> {
                 if (canManageParticipants) {
@@ -160,6 +165,8 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
                 binding.eventAddress.isVisible = eventAddress?.isNotBlank() == true
                 binding.rules.profileSettingsItemLayout.isVisible = true
                 binding.rules.setLabel(getString(R.string.action_show_charte))
+                binding.photos.profileSettingsItemLayout.isVisible = true
+                binding.photos.setLabel("Voir les photos")
             }
             SheetMode.MESSAGE_ACTIONS -> {
                 binding.header.title = "Actions du message"
@@ -173,6 +180,7 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
                 binding.layoutBlock.isVisible = false
                 binding.eventInfo.isVisible = false
                 binding.rules.profileSettingsItemLayout.isVisible = false
+                binding.photos.profileSettingsItemLayout.isVisible = false
             }
         }
         if (mode != SheetMode.MESSAGE_ACTIONS) {
@@ -181,7 +189,6 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
     }
 
     private fun setupClicks() {
-        // Ligne du haut (profile.layout)
         binding.profile.profileSettingsItemLayout.setOnClickListener {
             when (mode) {
                 SheetMode.DISCUSSION_ONE_TO_ONE -> {
@@ -222,7 +229,7 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
                 }
             }
         }
-        // Bouton "Charte de l'événement"
+
         binding.rules.profileSettingsItemLayout.setOnClickListener {
             val intent = Intent(requireContext(), GroupRulesActivity::class.java).apply {
                 putExtra(Const.RULES_TYPE, Const.RULES_EVENT)
@@ -230,7 +237,17 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
             startActivity(intent)
             dismiss()
         }
-        // Bouton "Signaler"
+
+        binding.photos.profileSettingsItemLayout.setOnClickListener {
+            if (mode == SheetMode.EVENT && conversationId > 0) {
+                startActivity(
+                    Intent(requireContext(), ImageListActivity::class.java)
+                        .putExtra("conversation_id", conversationId)
+                )
+                dismiss()
+            }
+        }
+
         binding.layoutReport.setOnClickListener {
             when (mode) {
                 SheetMode.GROUP -> {
@@ -312,11 +329,11 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
                 }
             }
         }
-        // Bouton "Quitter / Supprimer"
+
         binding.quit.profileSettingsItemLayout.setOnClickListener {
             when (mode) {
                 SheetMode.DISCUSSION_GROUP -> {
-                    if(DetailConversationActivity.isSmallTalkMode){
+                    if (DetailConversationActivity.isSmallTalkMode) {
                         CustomAlertDialog.showWithCancelFirst(
                             requireContext(),
                             getString(R.string.leave_conversation),
@@ -326,7 +343,7 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
                             smallTalkViewModel.leaveSmallTalk(conversationId.toString())
                             dismiss()
                         }
-                    }else{
+                    } else {
                         CustomAlertDialog.showWithCancelFirst(
                             requireContext(),
                             getString(R.string.leave_conversation),
@@ -371,7 +388,7 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
                 else -> Unit
             }
         }
-        // Bouton "Bloquer"
+
         binding.layoutBlock.setOnClickListener {
             if (mode == SheetMode.DISCUSSION_ONE_TO_ONE) {
                 val desc = getString(R.string.params_block_user_conv_pop_message, username)

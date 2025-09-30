@@ -67,6 +67,12 @@ class DiscussionsPresenter:ViewModel() {
     var isLastPageMemberships = false
     var isLoadingMemberships = false
 
+    var conversationImages = MutableLiveData<List<social.entourage.android.api.model.ConversationImage>>()
+    var isLoadingImages = MutableLiveData<Boolean>().apply { value = false }
+
+    var largeImage = MutableLiveData<social.entourage.android.api.model.ConversationImage?>()
+    var isLoadingLargeImage = MutableLiveData<Boolean>().apply { value = false }
+
     fun getAllMessages(page: Int, per: Int) {
         isLoading = true
         EntourageApplication.get().apiModule.discussionsRequest.getAllConversations(page, per)
@@ -457,6 +463,54 @@ class DiscussionsPresenter:ViewModel() {
                     })
             }
         })
+    }
+
+    fun fetchConversationImages(conversationId: Int) {
+        if (isLoadingImages.value == true) return
+        isLoadingImages.postValue(true)
+        EntourageApplication.get().apiModule.discussionsRequest
+            .getConversationImages(conversationId)
+            .enqueue(object : Callback<social.entourage.android.api.model.ConversationImagesWrapper> {
+                override fun onResponse(
+                    call: Call<social.entourage.android.api.model.ConversationImagesWrapper>,
+                    response: Response<social.entourage.android.api.model.ConversationImagesWrapper>
+                ) {
+                    val list = response.body()?.images ?: emptyList()
+                    conversationImages.postValue(list)
+                    isLoadingImages.postValue(false)
+                }
+
+                override fun onFailure(
+                    call: Call<social.entourage.android.api.model.ConversationImagesWrapper>,
+                    t: Throwable
+                ) {
+                    conversationImages.postValue(emptyList())
+                    isLoadingImages.postValue(false)
+                }
+            })
+        fun fetchConversationLargeImage(conversationId: Int, chatMessageId: Int) {
+            if (isLoadingLargeImage.value == true) return
+            isLoadingLargeImage.postValue(true)
+            EntourageApplication.get().apiModule.discussionsRequest
+                .getConversationImage(conversationId, chatMessageId)
+                .enqueue(object : Callback<social.entourage.android.api.model.ConversationImageSingleWrapper> {
+                    override fun onResponse(
+                        call: Call<social.entourage.android.api.model.ConversationImageSingleWrapper>,
+                        response: Response<social.entourage.android.api.model.ConversationImageSingleWrapper>
+                    ) {
+                        largeImage.postValue(response.body()?.image)
+                        isLoadingLargeImage.postValue(false)
+                    }
+
+                    override fun onFailure(
+                        call: Call<social.entourage.android.api.model.ConversationImageSingleWrapper>,
+                        t: Throwable
+                    ) {
+                        largeImage.postValue(null)
+                        isLoadingLargeImage.postValue(false)
+                    }
+                })
+        }
     }
 
 
