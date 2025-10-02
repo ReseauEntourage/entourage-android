@@ -164,7 +164,7 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
                 binding.eventAddress.text = eventAddress.orEmpty()
                 binding.eventAddress.isVisible = eventAddress?.isNotBlank() == true
                 binding.rules.profileSettingsItemLayout.isVisible = true
-                binding.rules.setLabel(getString(R.string.action_show_charte))
+                binding.rules.setLabel(getString(R.string.event_params_cgu_title))
                 binding.photos.profileSettingsItemLayout.isVisible = true
                 binding.photos.setLabel("Voir les photos")
             }

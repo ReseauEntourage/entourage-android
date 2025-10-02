@@ -769,7 +769,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="event_CGU_6">Toute forme de violence (verbale, physique ou morale) est proscrite. Cela inclut les insultes, moqueries, et menaces.</string>
     <string name="event_CGU_7_title">Abus de substances</string>
     <string name="event_CGU_7">Chacun est responsable de sa consommation. Si votre comportement nuit à la sécurité et au bien-être des autres, vous serez invité à quitter l\'événement.</string>
-    <string name="event_CGU_8_title">Attitudes intolérantes, sexistes et discriminantes</string>
+    <string name="event_CGU_8_title">Attitudes intolérantes, sexistes et discriminantes\n</string>
     <string name="event_CGU_8">Toute forme de discrimination, moquerie ou jugement malveillant est inacceptable. Respectez les particularités de chacun.</string>
 
     <string name="action_params_cgu_title">Charte éthique</string>
