@@ -3135,8 +3135,6 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="onboard_welcome_title_how_did_you_hear">Comment nous avez-vous connu? </string>
     <string name="onboard_welcome_title_company_name">Nom de votre entreprise</string>
     <string name="onboard_welcome_title_event_name">Événement auquel vous participez</string>
-    <string name="onboard_welcome_placeholder_company_name">Sélectionnez une entreprise</string>
-    <string name="onboard_welcome_placeholder_event_name">Sélectionnez un événement</string>
     <string name="onboard_welcome_error_company_name">Merci de sélectionner une entreprise.</string>
     <string name="onboard_welcome_error_event_name">Merci de sélectionner un événement.</string>
     <string name="onboard_welcome_error_load_failed">Impossible de charger la liste, veuillez réessayer.</string>
@@ -3148,7 +3146,6 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="onboard_welcome_how_did_you_hear_corporate_awareness">Sensibilisation entreprise</string>
     <string name="onboard_welcome_title_birthdate">Date d\'anniversaire</string>
     <string name="onboard_welcome_placeholder_birthdate">JJ/MM/AAAA</string>
-    <string name="onboard_welcome_placeholder_select_in_list">Sélectionner dans la liste</string>
     <string name="onboard_welcome_gender_female">Femme</string>
     <string name="onboard_welcome_gender_male">Homme</string>
     <string name="onboard_welcome_gender_other">Autre</string>
@@ -3159,7 +3156,6 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="onboard_welcome_title_lastname_required">Nom*</string>
     <string name="onboard_welcome_title_phone_required">Téléphone*</string>
     <string name="onboard_welcome_placeholder_email_new">Ex. : marie.dupont@email.com</string>
-    <string name="onboard_welcome_placeholder_gender">Sélectionner dans la liste</string>
 
     <string name="image_option_title">Photos de la conversation</string>
 

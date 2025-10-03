@@ -8,562 +8,338 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:fillViewport="true">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:paddingStart="16dp"
-            android:paddingEnd="16dp">
+            android:paddingEnd="16dp"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp">
 
-            <!-- Je suis (facultatif) -->
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <!-- Genre (dropdown) -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_gender"
+                style="@style/Ent.TextInputLayout.Outlined.Dropdown"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:visibility="visible">
+                android:hint="@string/onboard_welcome_title_gender"
+                app:endIconMode="dropdown_menu">
 
-                <TextView
-                    android:id="@+id/textViewGender"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="32dp"
-                    android:fontFamily="@font/quicksand_bold"
-                    android:text="@string/onboard_welcome_title_gender"
-                    android:textColor="@color/black"
-                    android:textSize="15sp"
-                    android:textStyle="bold"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <Spinner
+                <com.google.android.material.textfield.MaterialAutoCompleteTextView
                     android:id="@+id/ui_onboard_spinner_gender"
-                    android:layout_width="0dp"
-                    android:layout_height="48dp"
-                    android:layout_marginStart="32dp"
-                    android:layout_marginEnd="32dp"
-                    android:layout_marginTop="5dp"
-                    android:paddingStart="12dp"
-                    android:paddingEnd="12dp"
-                    android:background="@drawable/bg_spinner_outline"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/textViewGender" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                    style="@style/Ent.TextField"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="none"
+                    android:focusable="true"
+                    android:importantForAutofill="no"
+                    android:popupBackground="@color/white"/>
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <!-- Prénom* -->
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <!-- Prénom -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_firstname"
+                style="@style/Ent.TextInputLayout.Outlined"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp">
+                android:hint="@string/onboard_welcome_title_firstname_required"
+                app:placeholderText="@string/onboard_welcome_placeholder_firstname_new"
+                android:layout_marginTop="12dp">
 
-                <TextView
-                    android:id="@+id/textView2"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="32dp"
-                    android:fontFamily="@font/quicksand_bold"
-                    android:text="@string/onboard_welcome_title_firstname_required"
-                    android:textColor="@color/black"
-                    android:textSize="15sp"
-                    android:textStyle="bold"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <EditText
+                <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/ui_onboard_names_et_firstname"
-                    android:layout_width="0dp"
-                    android:layout_height="48dp"
-                    android:layout_marginStart="32dp"
-                    android:layout_marginEnd="32dp"
-                    android:layout_marginTop="5dp"
-                    android:ems="10"
-                    android:fontFamily="@font/nunitosans_regular"
-                    android:hint="@string/onboard_welcome_placeholder_firstname_new"
-                    android:inputType="textCapSentences|textMultiLine"
-                    android:paddingStart="12dp"
-                    android:paddingEnd="12dp"
-                    android:textColor="@color/black"
-                    android:textSize="15sp"
-                    android:backgroundTint="@color/orange_opacity_50"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/textView2" />
-
-                <TextView
-                    android:id="@+id/error_message_firstname"
-                    android:layout_width="0dp"
+                    style="@style/Ent.TextField"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="32dp"
-                    android:layout_marginEnd="32dp"
-                    android:layout_marginTop="5dp"
-                    android:fontFamily="@font/nunitosans_regular"
-                    android:text="@string/user_edit_profile_invalid_firstname"
-                    android:textColor="@color/tomato"
-                    android:textSize="12sp"
-                    android:visibility="gone"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/ui_onboard_names_et_firstname"
-                    tools:visibility="visible" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                    android:inputType="textCapWords|textPersonName"/>
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <!-- Nom* -->
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <TextView
+                android:id="@+id/error_message_firstname"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp">
+                android:layout_marginTop="4dp"
+                android:fontFamily="@font/nunitosans_regular"
+                android:text="@string/user_edit_profile_invalid_firstname"
+                android:textColor="@color/tomato"
+                android:textSize="12sp"
+                android:visibility="gone"
+                tools:visibility="gone"/>
 
-                <TextView
-                    android:id="@+id/textView35"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="32dp"
-                    android:fontFamily="@font/quicksand_bold"
-                    android:text="@string/onboard_welcome_title_lastname_required"
-                    android:textColor="@color/black"
-                    android:textSize="15sp"
-                    android:textStyle="bold"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+            <!-- Nom -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_lastname"
+                style="@style/Ent.TextInputLayout.Outlined"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/onboard_welcome_title_lastname_required"
+                app:placeholderText="@string/onboard_welcome_placeholder_lastname_new"
+                android:layout_marginTop="12dp">
 
-                <EditText
+                <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/ui_onboard_names_et_lastname"
-                    android:layout_width="0dp"
-                    android:layout_height="48dp"
-                    android:layout_marginStart="32dp"
-                    android:layout_marginEnd="32dp"
-                    android:layout_marginTop="5dp"
-                    android:ems="10"
-                    android:fontFamily="@font/nunitosans_regular"
-                    android:hint="@string/onboard_welcome_placeholder_lastname_new"
+                    style="@style/Ent.TextField"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:imeOptions="actionDone"
-                    android:inputType="textCapSentences|textMultiLine"
-                    android:paddingStart="12dp"
-                    android:paddingEnd="12dp"
-                    android:textColor="@color/black"
-                    android:textSize="15sp"
-                    android:backgroundTint="@color/orange_opacity_50"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/textView35" />
+                    android:inputType="textCapWords|textPersonName"/>
+            </com.google.android.material.textfield.TextInputLayout>
 
-                <TextView
-                    android:id="@+id/error_message_lastname"
-                    android:layout_width="0dp"
+            <TextView
+                android:id="@+id/error_message_lastname"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:fontFamily="@font/nunitosans_regular"
+                android:text="@string/user_edit_profile_invalid_lastname"
+                android:textColor="@color/tomato"
+                android:textSize="12sp"
+                android:visibility="gone"
+                tools:visibility="gone"/>
+
+            <TextView
+                android:id="@+id/ui_onboard_names_tv_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:fontFamily="@font/nunitosans_regular"
+                android:text="@string/onboard_welcome_info"
+                android:textColor="@color/pre_onboard_black"
+                android:textSize="13sp"/>
+
+            <!-- Date d'anniversaire -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_birthdate"
+                style="@style/Ent.TextInputLayout.Outlined"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/onboard_welcome_title_birthdate"
+                app:endIconMode="custom"
+                app:endIconDrawable="@drawable/new_calendar_grey"
+                android:layout_marginTop="12dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/ui_onboard_birthdate"
+                    style="@style/Ent.TextField"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="32dp"
-                    android:layout_marginEnd="32dp"
-                    android:layout_marginTop="5dp"
-                    android:fontFamily="@font/nunitosans_regular"
-                    android:text="@string/user_edit_profile_invalid_lastname"
-                    android:textColor="@color/tomato"
-                    android:textSize="12sp"
-                    android:visibility="gone"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/ui_onboard_names_et_lastname"
-                    tools:visibility="visible" />
+                    android:focusable="false"
+                    android:clickable="true"
+                    android:inputType="none"/>
+            </com.google.android.material.textfield.TextInputLayout>
 
-                <TextView
-                    android:id="@+id/ui_onboard_names_tv_info"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="32dp"
-                    android:layout_marginEnd="32dp"
-                    android:layout_marginTop="8dp"
-                    android:fontFamily="@font/nunitosans_regular"
-                    android:text="@string/onboard_welcome_info"
-                    android:textColor="@color/pre_onboard_black"
-                    android:textSize="13sp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/error_message_lastname" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <!-- Date d'anniversaire (facultatif) -->
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/constraintLayoutBirthdate"
+            <!-- Téléphone -->
+            <LinearLayout
+                android:id="@+id/phone_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:visibility="visible">
-
-                <TextView
-                    android:id="@+id/textViewBirthdate"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="32dp"
-                    android:fontFamily="@font/quicksand_bold"
-                    android:text="@string/onboard_welcome_title_birthdate"
-                    android:textColor="@color/black"
-                    android:textSize="15sp"
-                    android:textStyle="bold"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <EditText
-                    android:id="@+id/ui_onboard_birthdate"
-                    android:layout_width="0dp"
-                    android:layout_height="48dp"
-                    android:layout_marginStart="32dp"
-                    android:layout_marginEnd="32dp"
-                    android:layout_marginTop="5dp"
-                    android:ems="10"
-                    android:focusable="false"
-                    android:fontFamily="@font/nunitosans_regular"
-                    android:hint="@string/onboard_welcome_placeholder_birthdate"
-                    android:inputType="date"
-                    android:paddingStart="12dp"
-                    android:paddingEnd="12dp"
-                    android:textColor="@color/black"
-                    android:textSize="15sp"
-                    android:backgroundTint="@color/orange_opacity_50"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/textViewBirthdate" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <!-- Téléphone* -->
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/constraintLayout17"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp">
-
-                <TextView
-                    android:id="@+id/textView9"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="32dp"
-                    android:fontFamily="@font/quicksand_bold"
-                    android:text="@string/onboard_welcome_title_phone_required"
-                    android:textColor="@color/onboard_black_36"
-                    android:textSize="15sp"
-                    android:textStyle="bold"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                android:orientation="horizontal">
 
                 <social.entourage.android.tools.view.countrycodepicker.CountryCodePicker
                     android:id="@+id/ui_onboard_phone_ccp_code"
-                    style="@style/input"
-                    android:layout_width="40dp"
-                    android:layout_height="48dp"
-                    android:layout_marginStart="32dp"
-                    android:layout_marginTop="5dp"
-                    android:gravity="center"
+                    android:layout_width="56dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="8dp"
                     app:ccp_alternative_layout="false"
-                    app:ccp_backgroundColor="@color/partner_logo_transparent"
                     app:ccp_defaultNameCode="FR"
                     app:ccp_hideNameCode="true"
                     app:ccp_hidePhoneCode="true"
                     app:ccp_selectionDialogShowSearch="false"
                     app:ccp_showFlag="false"
-                    app:ccp_textColor="@color/pre_onboard_black"
-                    app:ccp_textSize="14sp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/textView9" />
+                    app:ccp_textSize="14sp" />
 
-                <EditText
-                    android:id="@+id/ui_onboard_phone_et_phone"
-                    style="@style/input"
-                    android:layout_width="0dp"
-                    android:layout_height="48dp"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginEnd="32dp"
-                    android:autofillHints="phoneNumber"
-                    android:hint="@string/onboard_welcome_placeholder_phone_new"
-                    android:inputType="phone"
-                    android:maxLines="1"
-                    android:paddingStart="12dp"
-                    android:paddingEnd="12dp"
-                    android:textSize="15sp"
-                    android:backgroundTint="@color/light_orange_opacity_50"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/ui_onboard_phone_ccp_code"
-                    app:layout_constraintTop_toTopOf="@id/ui_onboard_phone_ccp_code" />
-
-                <TextView
-                    android:id="@+id/error_message_phone"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_phone"
+                    style="@style/Ent.TextInputLayout.Outlined"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="32dp"
-                    android:layout_marginEnd="32dp"
-                    android:layout_marginTop="5dp"
-                    android:fontFamily="@font/nunitosans_regular"
-                    android:text="@string/user_edit_profile_invalid_phone"
-                    android:textColor="@color/tomato"
-                    android:textSize="12sp"
-                    android:visibility="gone"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/ui_onboard_phone_et_phone"
-                    tools:visibility="visible" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                    android:layout_weight="1"
+                    android:hint="@string/onboard_welcome_title_phone_required"
+                    app:placeholderText="@string/onboard_welcome_placeholder_phone_new">
 
-            <!-- Email (facultatif) -->
-            <androidx.constraintlayout.widget.ConstraintLayout
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/ui_onboard_phone_et_phone"
+                        style="@style/Ent.TextField"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:autofillHints="phoneNumber"
+                        android:inputType="phone"
+                        android:maxLines="1"/>
+                </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/error_message_phone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp">
+                android:layout_marginTop="4dp"
+                android:fontFamily="@font/nunitosans_regular"
+                android:text="@string/user_edit_profile_invalid_phone"
+                android:textColor="@color/tomato"
+                android:textSize="12sp"
+                android:visibility="gone"
+                tools:visibility="gone"/>
 
-                <TextView
-                    android:id="@+id/textView3"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="32dp"
-                    android:fontFamily="@font/quicksand_bold"
-                    android:text="@string/onboard_welcome_title_email"
-                    android:textColor="@color/onboard_black_36"
-                    android:textSize="15sp"
-                    android:textStyle="bold"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+            <!-- Email -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_email"
+                style="@style/Ent.TextInputLayout.Outlined"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/onboard_welcome_title_email"
+                app:placeholderText="@string/onboard_welcome_placeholder_email_new"
+                android:layout_marginTop="12dp">
 
-                <EditText
+                <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/ui_onboard_email"
-                    style="@style/input"
-                    android:layout_width="0dp"
-                    android:layout_height="48dp"
-                    android:layout_marginStart="32dp"
-                    android:layout_marginEnd="32dp"
-                    android:layout_marginTop="5dp"
-                    android:autofillHints="textEmailAddress"
-                    android:hint="@string/onboard_welcome_placeholder_email_new"
-                    android:inputType="textEmailAddress"
-                    android:maxLines="1"
-                    android:paddingStart="12dp"
-                    android:paddingEnd="12dp"
-                    android:backgroundTint="@color/light_orange_opacity_50"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/textView3" />
-
-                <TextView
-                    android:id="@+id/error_message_email"
-                    android:layout_width="0dp"
+                    style="@style/Ent.TextField"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="32dp"
-                    android:layout_marginEnd="32dp"
-                    android:layout_marginTop="5dp"
-                    android:fontFamily="@font/nunitosans_regular"
-                    android:text="@string/user_edit_profile_invalid_email"
-                    android:textColor="@color/tomato"
-                    android:textSize="12sp"
-                    android:visibility="gone"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/ui_onboard_email"
-                    tools:visibility="visible" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                    android:autofillHints="emailAddress"
+                    android:inputType="textEmailAddress"
+                    android:maxLines="1"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:id="@+id/error_message_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:fontFamily="@font/nunitosans_regular"
+                android:text="@string/user_edit_profile_invalid_email"
+                android:textColor="@color/tomato"
+                android:textSize="12sp"
+                android:visibility="gone"
+                tools:visibility="gone"/>
 
             <!-- Comment nous avez-vous connu ? -->
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_hear"
+                style="@style/Ent.TextInputLayout.Outlined.Dropdown"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:visibility="visible">
+                android:hint="@string/onboard_welcome_title_how_did_you_hear"
+                app:endIconMode="dropdown_menu"
+                android:layout_marginTop="12dp">
 
-                <TextView
-                    android:id="@+id/textViewHowDidYouHear"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="32dp"
-                    android:fontFamily="@font/quicksand_bold"
-                    android:text="@string/onboard_welcome_title_how_did_you_hear"
-                    android:textColor="@color/onboard_black_36"
-                    android:textSize="15sp"
-                    android:textStyle="bold"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <Spinner
+                <com.google.android.material.textfield.MaterialAutoCompleteTextView
                     android:id="@+id/ui_onboard_spinner_how_did_you_hear"
-                    android:layout_width="0dp"
-                    android:layout_height="48dp"
-                    android:layout_marginStart="32dp"
-                    android:layout_marginEnd="32dp"
-                    android:layout_marginTop="5dp"
-                    android:paddingStart="12dp"
-                    android:paddingEnd="12dp"
-                    android:background="@drawable/bg_spinner_outline"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/textViewHowDidYouHear" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                    style="@style/Ent.TextField"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="none"
+                    android:focusable="true"
+                    android:importantForAutofill="no"
+                    android:popupBackground="@color/white"/>
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <!-- Opt-in (déplacé sous "Comment nous avez-vous connu ?") -->
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <!-- Opt-in -->
+            <com.google.android.material.checkbox.MaterialCheckBox
+                android:id="@+id/ui_onboard_consent_check"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp">
+                android:layout_marginTop="12dp"
+                android:text="@string/onboard_welcome_consent"
+                android:fontFamily="@font/nunitosans_regular"
+                android:textSize="13sp"
+                app:buttonTint="@color/orange"
+                app:useMaterialThemeColors="false"/>
 
-                <CheckBox
-                    android:id="@+id/ui_onboard_consent_check"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="32dp"
-                    android:buttonTint="@color/orange"
-                    android:checked="false"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/ui_onboard_names_tv_info2"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginEnd="32dp"
-                    android:fontFamily="@font/nunitosans_regular"
-                    android:text="@string/onboard_welcome_consent"
-                    android:textColor="@color/pre_onboard_black"
-                    android:textSize="13sp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/ui_onboard_consent_check"
-                    app:layout_constraintTop_toTopOf="@id/ui_onboard_consent_check" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <!-- Nom de votre entreprise -->
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/constraintLayoutCompany"
+            <!-- Company -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_company"
+                style="@style/Ent.TextInputLayout.Outlined.Dropdown"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:visibility="gone">
+                android:hint="@string/onboard_welcome_title_company_name"
+                app:endIconMode="dropdown_menu"
+                android:visibility="gone"
+                android:layout_marginTop="12dp">
 
-                <TextView
-                    android:id="@+id/textViewCompanyName"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="32dp"
-                    android:fontFamily="@font/quicksand_bold"
-                    android:text="@string/onboard_welcome_title_company_name"
-                    android:textColor="@color/onboard_black_36"
-                    android:textSize="15sp"
-                    android:textStyle="bold"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <Spinner
+                <com.google.android.material.textfield.MaterialAutoCompleteTextView
                     android:id="@+id/ui_onboard_spinner_company"
-                    android:layout_width="0dp"
-                    android:layout_height="48dp"
-                    android:layout_marginStart="32dp"
-                    android:layout_marginEnd="32dp"
-                    android:layout_marginTop="5dp"
-                    android:paddingStart="12dp"
-                    android:paddingEnd="12dp"
-                    android:background="@drawable/bg_spinner_outline"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/textViewCompanyName" />
-
-                <TextView
-                    android:id="@+id/error_message_company"
-                    android:layout_width="0dp"
+                    style="@style/Ent.TextField"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="32dp"
-                    android:layout_marginEnd="32dp"
-                    android:layout_marginTop="5dp"
-                    android:fontFamily="@font/nunitosans_regular"
-                    android:text="@string/onboard_welcome_error_company_name"
-                    android:textColor="@color/tomato"
-                    android:textSize="12sp"
-                    android:visibility="gone"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/ui_onboard_spinner_company" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                    android:inputType="none"
+                    android:focusable="true"
+                    android:popupBackground="@color/white"/>
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <!-- Événement auquel vous participez -->
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/constraintLayoutEvent"
+            <TextView
+                android:id="@+id/error_message_company"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:visibility="gone">
+                android:layout_marginTop="4dp"
+                android:fontFamily="@font/nunitosans_regular"
+                android:text="@string/onboard_welcome_error_company_name"
+                android:textColor="@color/tomato"
+                android:textSize="12sp"
+                android:visibility="gone"
+                tools:visibility="gone"/>
 
-                <TextView
-                    android:id="@+id/textViewEventName"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="32dp"
-                    android:fontFamily="@font/quicksand_bold"
-                    android:text="@string/onboard_welcome_title_event_name"
-                    android:textColor="@color/onboard_black_36"
-                    android:textSize="15sp"
-                    android:textStyle="bold"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+            <!-- Event -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_event"
+                style="@style/Ent.TextInputLayout.Outlined.Dropdown"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/onboard_welcome_title_event_name"
+                app:endIconMode="dropdown_menu"
+                android:visibility="gone"
+                android:layout_marginTop="12dp">
 
-                <Spinner
+                <com.google.android.material.textfield.MaterialAutoCompleteTextView
                     android:id="@+id/ui_onboard_spinner_event"
-                    android:layout_width="0dp"
-                    android:layout_height="48dp"
-                    android:layout_marginStart="32dp"
-                    android:layout_marginEnd="32dp"
-                    android:layout_marginTop="5dp"
-                    android:paddingStart="12dp"
-                    android:paddingEnd="12dp"
-                    android:background="@drawable/bg_spinner_outline"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/textViewEventName" />
-
-                <TextView
-                    android:id="@+id/error_message_event"
-                    android:layout_width="0dp"
+                    style="@style/Ent.TextField"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="32dp"
-                    android:layout_marginEnd="32dp"
-                    android:layout_marginTop="5dp"
-                    android:fontFamily="@font/nunitosans_regular"
-                    android:text="@string/onboard_welcome_error_event_name"
-                    android:textColor="@color/tomato"
-                    android:textSize="12sp"
-                    android:visibility="gone"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/ui_onboard_spinner_event" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                    android:inputType="none"
+                    android:focusable="true"
+                    android:popupBackground="@color/white"/>
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <!-- Info obligatoire -->
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <TextView
+                android:id="@+id/error_message_event"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:fontFamily="@font/nunitosans_regular"
+                android:text="@string/onboard_welcome_error_event_name"
+                android:textColor="@color/tomato"
+                android:textSize="12sp"
+                android:visibility="gone"
+                tools:visibility="gone"/>
+
+            <!-- Bloc info -->
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:layout_marginBottom="16dp">
+                android:layout_marginBottom="16dp"
+                app:cardCornerRadius="12dp"
+                app:cardUseCompatPadding="true"
+                app:cardBackgroundColor="@color/partner_logo_transparent">
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="0dp"
+                <TextView
+                    android:id="@+id/ui_onboard_names_tv_info3"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginEnd="16dp"
-                    android:background="@drawable/bg_onboard_consent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
+                    android:paddingTop="12dp"
+                    android:paddingBottom="12dp"
+                    android:fontFamily="@font/nunitosans_regular"
+                    android:text="@string/onboard_welcome_info_mandatory"
+                    android:textColor="@color/pre_onboard_black"
+                    android:textSize="12sp" />
+            </com.google.android.material.card.MaterialCardView>
 
-                    <TextView
-                        android:id="@+id/ui_onboard_names_tv_info3"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginEnd="16dp"
-                        android:layout_marginBottom="8dp"
-                        android:fontFamily="@font/nunitosans_regular"
-                        android:text="@string/onboard_welcome_info_mandatory"
-                        android:textColor="@color/pre_onboard_black"
-                        android:textSize="12sp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
-            </androidx.constraintlayout.widget.ConstraintLayout>
         </LinearLayout>
     </ScrollView>
 </FrameLayout>

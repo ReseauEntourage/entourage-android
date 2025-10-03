@@ -3,16 +3,14 @@ package social.entourage.android.onboarding.onboard
 import android.app.DatePickerDialog
 import android.content.Context
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.AdapterView
+import android.view.*
 import android.widget.ArrayAdapter
 import android.widget.EditText
-import android.widget.Spinner
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import kotlinx.coroutines.launch
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent
 import social.entourage.android.R
@@ -64,6 +62,7 @@ class OnboardingPhase1Fragment : Fragment() {
     private data class LabeledOption(val key: String, val label: String)
     private var hearOptions: List<LabeledOption> = emptyList()
     private var enterpriseModeKey: String? = null
+    private var isDatePickerShowing = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -118,7 +117,21 @@ class OnboardingPhase1Fragment : Fragment() {
     private fun setupViews() {
         setEditTextAlignmentBasedOnLocale()
 
-        binding.uiOnboardBirthdate.setOnClickListener { showDatePicker() }
+        // ==== Champ date : pas de clavier, clic uniquement ====
+        binding.uiOnboardBirthdate.apply {
+            // Empêche le clavier coûte que coûte
+            keyListener = null
+            try { showSoftInputOnFocus = false } catch (_: Throwable) {}
+            isCursorVisible = false
+            isLongClickable = false
+            setTextIsSelectable(false)
+
+            // On ne prend pas le focus (sinon certains OEM affichent le clavier)
+            isFocusable = false
+            isFocusableInTouchMode = false
+
+            setOnClickListener { showDatePicker() }
+        }
 
         activity?.let { act ->
             KeyboardVisibilityEvent.setEventListener(act) { isOpen ->
@@ -128,10 +141,9 @@ class OnboardingPhase1Fragment : Fragment() {
         }
 
         binding.uiOnboardConsentCheck.setOnCheckedChangeListener { _, _ -> updateButtonNext() }
-
-        //binding.uiOnboardConsentCheck.text = getString(R.string.onboard_welcome_opt_in)
-
         binding.uiOnboardConsentCheck.isChecked = hasConsent
+
+        // Préremplissage
         binding.uiOnboardEmail.setText(email)
         binding.uiOnboardPhoneCcpCode.selectedCountry = country
         binding.uiOnboardPhoneCcpCode.selectedCountry?.flagTxt = country?.flagTxt
@@ -140,6 +152,7 @@ class OnboardingPhase1Fragment : Fragment() {
         binding.uiOnboardNamesEtFirstname.setText(firstname)
         binding.uiOnboardBirthdate.setText(birthdate)
 
+        // Email change → propage à l'activité
         binding.uiOnboardEmail.addTextChangedListener(object : android.text.TextWatcher {
             override fun afterTextChanged(s: android.text.Editable?) {
                 (activity as? OnboardingStartActivity)?.setEmail(s?.toString().orEmpty())
@@ -148,6 +161,7 @@ class OnboardingPhase1Fragment : Fragment() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
         })
 
+        // Country picker
         binding.uiOnboardPhoneCcpCode.countryCodePickerListener = object : CountryCodePickerListener {
             override fun updatedCountry(newCountry: Country) {
                 country = newCountry
@@ -155,10 +169,11 @@ class OnboardingPhase1Fragment : Fragment() {
             }
         }
 
-        binding.constraintLayoutCompany.visibility = View.GONE
-        binding.constraintLayoutEvent.visibility = View.GONE
+        // Cachés au départ
+        binding.tilCompany.isVisible = false
+        binding.tilEvent.isVisible = false
 
-        setupFixedGenderSpinner()
+        setupFixedGenderDropdown()
 
         updateButtonNext()
     }
@@ -177,15 +192,16 @@ class OnboardingPhase1Fragment : Fragment() {
     private fun setEditTextGravity(editText: EditText?, locale: Locale) {
         editText?.let {
             if (locale.language == "ar") {
-                it.gravity = android.view.Gravity.CENTER_VERTICAL or android.view.Gravity.END
+                it.gravity = Gravity.CENTER_VERTICAL or Gravity.END
                 it.textAlignment = View.TEXT_ALIGNMENT_VIEW_END
             } else {
-                it.gravity = android.view.Gravity.CENTER_VERTICAL or android.view.Gravity.START
+                it.gravity = Gravity.CENTER_VERTICAL or Gravity.START
                 it.textAlignment = View.TEXT_ALIGNMENT_VIEW_START
             }
         }
     }
 
+    // ====== Chargements distants ======
     private fun loadMetadata() {
         viewLifecycleOwner.lifecycleScope.launch {
             showLoading(true)
@@ -207,7 +223,7 @@ class OnboardingPhase1Fragment : Fragment() {
                     l.contains("entreprise") || l.contains("corporate")
                 }?.key
 
-            runCatching { setupHowDidYouHearSpinner(hearOptions) }
+            runCatching { setupHowDidYouHearDropdown(hearOptions) }
                 .onFailure { showError("UI error (howDidYouHear)") }
 
             showLoading(false)
@@ -230,7 +246,7 @@ class OnboardingPhase1Fragment : Fragment() {
             enterpriseList.clear()
             enterpriseList.addAll(enterprises)
 
-            runCatching { updateEnterpriseSpinner() }
+            runCatching { updateEnterpriseDropdown() }
                 .onFailure { showError("UI error (entreprises)") }
 
             isLoading = false
@@ -253,7 +269,7 @@ class OnboardingPhase1Fragment : Fragment() {
 
             eventListByEnterpriseId[enterpriseId] = events
 
-            runCatching { updateEventSpinner(enterpriseId) }
+            runCatching { updateEventDropdown(enterpriseId) }
                 .onFailure { showError("UI error (events)") }
 
             isLoading = false
@@ -261,6 +277,7 @@ class OnboardingPhase1Fragment : Fragment() {
         }
     }
 
+    // ====== Dropdowns Material (remplacent les Spinners) ======
     private fun findPreselectIndex(options: List<LabeledOption>, keyOrLabel: String?): Int {
         if (keyOrLabel.isNullOrBlank()) return -1
         val needle = keyOrLabel.trim()
@@ -269,149 +286,211 @@ class OnboardingPhase1Fragment : Fragment() {
         return options.indexOfFirst { it.label.equals(needle, ignoreCase = true) }
     }
 
-    private fun setupFixedGenderSpinner() {
+    private fun setupFixedGenderDropdown() {
         if (!isViewUsable()) return
         val ctx = binding.root.context
-        val placeholder = getString(R.string.onboard_welcome_placeholder_select_in_list)
 
         val fixed = listOf(
             LabeledOption("female", getString(R.string.onboard_welcome_gender_female)),
             LabeledOption("male", getString(R.string.onboard_welcome_gender_male)),
             LabeledOption("other", getString(R.string.onboard_welcome_gender_other))
         )
+        val labels = fixed.map { it.label }
 
-        val labelsWithPlaceholder = listOf(placeholder) + fixed.map { it.label }
+        val view = binding.uiOnboardSpinnerGender as MaterialAutoCompleteTextView
+        view.setAdapter(ArrayAdapter(ctx, android.R.layout.simple_list_item_1, labels))
 
-        ArrayAdapter(ctx, android.R.layout.simple_spinner_item, labelsWithPlaceholder).also { adapter ->
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            binding.uiOnboardSpinnerGender.adapter = adapter
+        // préselect exact (clé OU libellé)
+        val pre = findPreselectIndex(fixed, genderKey)
+        view.setText(if (pre >= 0) fixed[pre].label else "", /*filter*/ false)
 
-            val pre = findPreselectIndex(fixed, genderKey)
-            binding.uiOnboardSpinnerGender.setSelection(if (pre >= 0) pre + 1 else 0)
-
-            binding.uiOnboardSpinnerGender.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                    genderKey = if (position == 0) null else fixed.getOrNull(position - 1)?.key
-                    updateButtonNext()
-                }
-                override fun onNothingSelected(parent: AdapterView<*>?) {}
-            }
+        view.setOnItemClickListener { _, _, position, _ ->
+            genderKey = fixed.getOrNull(position)?.key
+            updateButtonNext()
         }
     }
 
-    private fun setupHowDidYouHearSpinner(options: List<LabeledOption>) {
+    private fun setupHowDidYouHearDropdown(options: List<LabeledOption>) {
         if (!isViewUsable()) return
         val ctx = binding.root.context
-        val placeholder = getString(R.string.onboard_welcome_placeholder_select_in_list)
-        val labels = listOf(placeholder) + options.map { it.label }
+        val labels = options.map { it.label }
 
-        ArrayAdapter(ctx, android.R.layout.simple_spinner_item, labels).also { adapter ->
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            binding.uiOnboardSpinnerHowDidYouHear.adapter = adapter
+        val view = binding.uiOnboardSpinnerHowDidYouHear as MaterialAutoCompleteTextView
+        view.setAdapter(ArrayAdapter(ctx, android.R.layout.simple_list_item_1, labels))
 
-            val pre = findPreselectIndex(options, howDidYouHearKey)
-            binding.uiOnboardSpinnerHowDidYouHear.setSelection(if (pre >= 0) pre + 1 else 0)
+        val pre = findPreselectIndex(options, howDidYouHearKey)
+        view.setText(if (pre >= 0) options[pre].label else "", false)
 
-            binding.uiOnboardSpinnerHowDidYouHear.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                    howDidYouHearKey = if (position == 0) null else options.getOrNull(position - 1)?.key
-                    updateCompanyEventVisibility()
-                    updateButtonNext()
-                }
-                override fun onNothingSelected(parent: AdapterView<*>?) {}
-            }
+        view.setOnItemClickListener { _, _, position, _ ->
+            howDidYouHearKey = options.getOrNull(position)?.key
+            updateCompanyEventVisibility()
+            updateButtonNext()
         }
     }
 
-    private fun updateEnterpriseSpinner() {
+    private fun updateEnterpriseDropdown() {
         if (!isViewUsable()) return
         val ctx = binding.root.context
-        val placeholder = getString(R.string.onboard_welcome_placeholder_company_name)
-        val names = listOf(placeholder) + enterpriseList.map { it.Name }
+        val names = enterpriseList.map { it.Name }
 
-        ArrayAdapter(ctx, android.R.layout.simple_spinner_item, names).also { adapter ->
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            binding.uiOnboardSpinnerCompany.adapter = adapter
+        val view = binding.uiOnboardSpinnerCompany as MaterialAutoCompleteTextView
+        view.setAdapter(ArrayAdapter(ctx, android.R.layout.simple_list_item_1, names))
 
-            val preIndex = enterpriseList.indexOfFirst { it.Id == company }
-            binding.uiOnboardSpinnerCompany.setSelection(if (preIndex >= 0) preIndex + 1 else 0)
-
-            binding.uiOnboardSpinnerCompany.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                    if (position == 0) {
-                        selectedEnterpriseId = null
-                        company = null
-                        clearSpinner(binding.uiOnboardSpinnerEvent)
-                        updateButtonNext()
-                        return
-                    }
-                    val selected = enterpriseList.getOrNull(position - 1) ?: return
-                    selectedEnterpriseId = selected.Id
-                    company = selected.Id
-                    loadEventsForEnterprise(selected.Id)
-                    updateButtonNext()
-                }
-                override fun onNothingSelected(parent: AdapterView<*>?) {}
+        // préselect par ID (company contient un Id)
+        val preIndex = enterpriseList.indexOfFirst { it.Id == company }
+        if (preIndex >= 0) {
+            view.setText(enterpriseList[preIndex].Name, false)
+            selectedEnterpriseId = enterpriseList[preIndex].Id
+            // charge les events liés si pas déjà faits
+            if (!eventListByEnterpriseId.containsKey(selectedEnterpriseId!!)) {
+                loadEventsForEnterprise(selectedEnterpriseId!!)
+            } else {
+                updateEventDropdown(selectedEnterpriseId!!)
             }
+        } else {
+            view.setText("", false)
+            selectedEnterpriseId = null
+        }
+
+        view.setOnItemClickListener { _, _, position, _ ->
+            val selected = enterpriseList.getOrNull(position) ?: return@setOnItemClickListener
+            selectedEnterpriseId = selected.Id
+            company = selected.Id
+            // on recharge la liste d’événements associée
+            loadEventsForEnterprise(selected.Id)
+            updateButtonNext()
         }
     }
 
-    private fun updateEventSpinner(enterpriseId: String) {
+    private fun updateEventDropdown(enterpriseId: String) {
         if (!isViewUsable()) return
         val ctx = binding.root.context
-        val placeholder = getString(R.string.onboard_welcome_placeholder_event_name)
         val events = eventListByEnterpriseId[enterpriseId] ?: emptyList()
-        val names = listOf(placeholder) + events.map { it.Name }
+        val names = events.map { it.Name }
 
-        ArrayAdapter(ctx, android.R.layout.simple_spinner_item, names).also { adapter ->
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            binding.uiOnboardSpinnerEvent.adapter = adapter
+        val view = binding.uiOnboardSpinnerEvent as MaterialAutoCompleteTextView
+        view.setAdapter(ArrayAdapter(ctx, android.R.layout.simple_list_item_1, names))
 
-            val preIndex = events.indexOfFirst { it.Id == event }
-            binding.uiOnboardSpinnerEvent.setSelection(if (preIndex >= 0) preIndex + 1 else 0)
+        // préselect par Id (event contient un Id)
+        val preIndex = events.indexOfFirst { it.Id == event }
+        view.setText(if (preIndex >= 0) events[preIndex].Name else "", false)
 
-            binding.uiOnboardSpinnerEvent.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                    event = if (position == 0) null else events.getOrNull(position - 1)?.Id
-                    updateButtonNext()
-                }
-                override fun onNothingSelected(parent: AdapterView<*>?) {}
-            }
+        view.setOnItemClickListener { _, _, position, _ ->
+            event = events.getOrNull(position)?.Id
+            updateButtonNext()
         }
     }
 
-    private fun clearSpinner(spinner: Spinner) {
-        if (!isViewUsable()) return
-        val ctx = binding.root.context
-        spinner.adapter = ArrayAdapter(ctx, android.R.layout.simple_spinner_item, emptyList<String>()).apply {
-            setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        }
+
+
+
+    private fun clearDropdown(dropdown: MaterialAutoCompleteTextView) {
+        dropdown.setAdapter(ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, emptyList<String>()))
+        dropdown.setText("", false)
     }
 
     private fun updateCompanyEventVisibility() {
         val isEnterprise = enterpriseModeKey != null && howDidYouHearKey == enterpriseModeKey
-        binding.constraintLayoutCompany.visibility = if (isEnterprise) View.VISIBLE else View.GONE
-        binding.constraintLayoutEvent.visibility = if (isEnterprise) View.VISIBLE else View.GONE
+        binding.tilCompany.isVisible = isEnterprise
+        binding.tilEvent.isVisible = isEnterprise
         if (!isEnterprise) {
             company = null
             event = null
             selectedEnterpriseId = null
-            clearSpinner(binding.uiOnboardSpinnerCompany)
-            clearSpinner(binding.uiOnboardSpinnerEvent)
+            clearDropdown(binding.uiOnboardSpinnerCompany as MaterialAutoCompleteTextView)
+            clearDropdown(binding.uiOnboardSpinnerEvent as MaterialAutoCompleteTextView)
         }
     }
 
+    // ====== Date ======
     private fun showDatePicker() {
+        if (!isViewUsable() || isDatePickerShowing) return
+        isDatePickerShowing = true
+
+        val ctx = requireContext()
         val cal = Calendar.getInstance()
-        val ctx = context ?: return
-        DatePickerDialog(ctx, { _, y, m, d ->
-            birthdate = String.format(Locale.getDefault(), "%02d/%02d/%04d", d, m + 1, y)
-            safeUI {
-                binding.uiOnboardBirthdate.setText(birthdate)
-                updateButtonNext()
+
+        // Pré-remplir depuis le champ si au format dd/MM/yyyy
+        binding.uiOnboardBirthdate.text?.toString()
+            ?.takeIf { it.matches(Regex("""\d{2}/\d{2}/\d{4}""")) }
+            ?.split("/")?.let { (dd, mm, yyyy) ->
+                runCatching {
+                    cal.set(yyyy.toInt(), mm.toInt() - 1, dd.toInt())
+                }
             }
-        }, cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH)).show()
+
+        // On crée le dialog SANS OnDateSetListener => on gère nous-mêmes l'auto-close
+        val dlg = DatePickerDialog(
+            ctx, /* listener = */ null,
+            cal.get(Calendar.YEAR),
+            cal.get(Calendar.MONTH),
+            cal.get(Calendar.DAY_OF_MONTH)
+        )
+
+        val dp = dlg.datePicker
+
+        // --- MODE CALENDRIER : auto-close quand l'utilisateur tape un jour ---
+        var calendarHooked = false
+        try {
+            val cv = dp.calendarView   // null si en mode "spinners"
+            if (cv != null) {
+                calendarHooked = true
+                cv.setOnDateChangeListener { _, y, m, d ->
+                    val newDate = String.format(Locale.getDefault(), "%02d/%02d/%04d", d, m + 1, y)
+                    birthdate = newDate
+                    safeUI {
+                        binding.uiOnboardBirthdate.setText(newDate)
+                        binding.uiOnboardBirthdate.clearFocus()
+                        updateButtonNext()
+                    }
+                    dlg.dismiss()
+                }
+            }
+        } catch (_: Throwable) { /* certains OEM plantent si pas en mode calendrier */ }
+
+        // --- MODE SPINNERS : auto-close dès que la date change (1er changement) ---
+        if (!calendarHooked) {
+            var first = true
+            dp.init(
+                cal.get(Calendar.YEAR),
+                cal.get(Calendar.MONTH),
+                cal.get(Calendar.DAY_OF_MONTH)
+            ) { _, y, m, d ->
+                if (first) { first = false; return@init } // ignore l'init
+                val newDate = String.format(Locale.getDefault(), "%02d/%02d/%04d", d, m + 1, y)
+                birthdate = newDate
+                safeUI {
+                    binding.uiOnboardBirthdate.setText(newDate)
+                    binding.uiOnboardBirthdate.clearFocus()
+                    updateButtonNext()
+                }
+                dlg.dismiss()
+            }
+        }
+
+        // --- Fallback : si l'utilisateur appuie sur OK, on prend la valeur sélectionnée ---
+        dlg.setOnShowListener {
+            dlg.getButton(DatePickerDialog.BUTTON_POSITIVE)?.setOnClickListener {
+                val y = dp.year
+                val m = dp.month
+                val d = dp.dayOfMonth
+                val newDate = String.format(Locale.getDefault(), "%02d/%02d/%04d", d, m + 1, y)
+                birthdate = newDate
+                safeUI {
+                    binding.uiOnboardBirthdate.setText(newDate)
+                    binding.uiOnboardBirthdate.clearFocus()
+                    updateButtonNext()
+                }
+                dlg.dismiss()
+            }
+        }
+
+        // Quel que soit le chemin (auto-close ou cancel), on libère le flag
+        dlg.setOnDismissListener { isDatePickerShowing = false }
+        dlg.show()
     }
+
+
 
     private fun formatBirthdateForAPI(displayDate: String?): String? {
         if (displayDate.isNullOrEmpty()) return null
@@ -423,12 +502,29 @@ class OnboardingPhase1Fragment : Fragment() {
         return "$day-$month-$year"
     }
 
+    // ====== Validation ======
     fun updateButtonNext() {
         if (!isViewUsable()) return
-        if (checkAndValidateInput()) {
+        val ok = checkAndValidateInput()
+
+        // Gestion des erreurs de formulaire
+        if (ok) {
             showErrorMessage(false)
             showCompanyEventError(false)
-            callback?.updateButtonNext(true)
+        } else {
+            if (!binding.uiOnboardNamesEtFirstname.text.isNullOrEmpty() &&
+                !binding.uiOnboardNamesEtLastname.text.isNullOrEmpty()
+            ) {
+                showErrorMessage(true)
+                showCompanyEventError(true)
+            }
+        }
+
+        // On notifie l'activité de l'état du bouton suivant
+        callback?.updateButtonNext(ok)
+
+        // On envoie les infos uniquement si tout est valide
+        if (ok) {
             callback?.validateNames(
                 binding.uiOnboardNamesEtFirstname.text.toString(),
                 binding.uiOnboardNamesEtLastname.text.toString(),
@@ -443,14 +539,10 @@ class OnboardingPhase1Fragment : Fragment() {
                 event
             )
         } else {
-            if (!binding.uiOnboardNamesEtFirstname.text.isNullOrEmpty() &&
-                !binding.uiOnboardNamesEtLastname.text.isNullOrEmpty()
-            ) {
-                showErrorMessage(true)
-                showCompanyEventError(true)
-            }
-            callback?.updateButtonNext(false)
-            callback?.validateNames(null, null, null, null, null, null, null, false, null, null, null)
+            callback?.validateNames(
+                null, null, null, null, null, null, null,
+                false, null, null, null
+            )
         }
     }
 
@@ -478,33 +570,26 @@ class OnboardingPhase1Fragment : Fragment() {
 
     private fun showErrorMessage(show: Boolean) {
         if (!isViewUsable()) return
-        binding.errorMessageFirstname.visibility =
-            if (show && !isValidFirstname()) View.VISIBLE else View.GONE
-        binding.errorMessageLastname.visibility =
-            if (show && !isValidLastname()) View.VISIBLE else View.GONE
-        binding.errorMessagePhone.visibility =
-            if (show && !isValidPhone()) View.VISIBLE else View.GONE
-        binding.errorMessageEmail.visibility =
-            if (show && !isValidEmail()) View.VISIBLE else View.GONE
+        binding.errorMessageFirstname.isVisible = show && !isValidFirstname()
+        binding.errorMessageLastname.isVisible = show && !isValidLastname()
+        binding.errorMessagePhone.isVisible = show && !isValidPhone()
+        binding.errorMessageEmail.isVisible = show && !isValidEmail()
     }
 
     private fun showCompanyEventError(show: Boolean) {
         if (!isViewUsable()) return
         val needsCorp = enterpriseModeKey != null && howDidYouHearKey == enterpriseModeKey
-        binding.errorMessageCompany.visibility =
-            if (show && company.isNullOrEmpty() && needsCorp) View.VISIBLE else View.GONE
-        binding.errorMessageEvent.visibility =
-            if (show && event.isNullOrEmpty() && needsCorp) View.VISIBLE else View.GONE
+        binding.errorMessageCompany.isVisible = show && company.isNullOrEmpty() && needsCorp
+        binding.errorMessageEvent.isVisible = show && event.isNullOrEmpty() && needsCorp
     }
 
     private fun showLoading(show: Boolean) {
         if (!isViewUsable()) return
+        // loader si besoin
     }
 
     private fun showError(message: String) {
-        context?.let {
-            Toast.makeText(it, message, Toast.LENGTH_SHORT).show()
-        }
+        context?.let { Toast.makeText(it, message, Toast.LENGTH_SHORT).show() }
     }
 
     companion object {
