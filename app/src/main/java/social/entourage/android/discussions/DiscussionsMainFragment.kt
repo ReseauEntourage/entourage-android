@@ -10,7 +10,6 @@ import android.text.style.UnderlineSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
@@ -24,7 +23,8 @@ import social.entourage.android.api.model.Conversation
 import social.entourage.android.api.model.ConversationMembership
 import social.entourage.android.api.model.LastMessage
 import social.entourage.android.api.model.SmallTalk
-import social.entourage.android.databinding.NewFragmentMessagesBinding
+import social.entourage.android.databinding.FragmentMessagesBinding
+import social.entourage.android.databinding.LayoutDiscussionFilterBinding
 import social.entourage.android.events.create.CommunicationHandler
 import social.entourage.android.home.CommunicationHandlerBadgeViewModel
 import social.entourage.android.home.UnreadMessages
@@ -34,18 +34,15 @@ import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.VibrationUtil
-import timber.log.Timber
 import kotlin.math.abs
 
 enum class FilterMode {
     ALL, PRIVATE, OUTINGS, SMALLTALKS
 }
 
-const val messagesPerPage = 25
-
 class DiscussionsMainFragment : Fragment() {
 
-    private var _binding: NewFragmentMessagesBinding? = null
+    private var _binding: FragmentMessagesBinding? = null
     private val binding get() = _binding!!
     private var isFromDetail = false
 
@@ -63,7 +60,7 @@ class DiscussionsMainFragment : Fragment() {
     private val readConversationIds = mutableSetOf<Int>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        _binding = NewFragmentMessagesBinding.inflate(inflater, container, false)
+        _binding = FragmentMessagesBinding.inflate(inflater, container, false)
         updatePaddingTopForEdgeToEdge(binding.appBar)
         return binding.root
     }
@@ -100,37 +97,35 @@ class DiscussionsMainFragment : Fragment() {
         checkNotificationsState()
     }
 
-
     override fun onStop() {
         super.onStop()
         page = 0
     }
 
-
     // -------------------- INIT UI --------------------
 
     private fun initializeSearchBar() {
-        binding.filter1.buttonStart.text = getString(R.string.filter_all)
-        binding.filter2.buttonStart.text = getString(R.string.filter_discussions)
-        binding.filter3.buttonStart.text = getString(R.string.filter_events)
-        binding.filter4.buttonStart.text = getString(R.string.filter_band_solidarity)
+        binding.filterAll.buttonStart.text = getString(R.string.filter_all)
+        binding.filterDiscussions.buttonStart.text = getString(R.string.filter_discussions)
+        binding.filterEvents.buttonStart.text = getString(R.string.filter_events)
+        binding.filterSmalltalks.buttonStart.text = getString(R.string.filter_band_solidarity)
 
-        setFilterActive(binding.filter1.root)
-        setFilterInactive(binding.filter2.root)
-        setFilterInactive(binding.filter3.root)
-        setFilterInactive(binding.filter4.root)
+        setFilterActive(binding.filterAll)
+        setFilterInactive(binding.filterDiscussions)
+        setFilterInactive(binding.filterEvents)
+        setFilterInactive(binding.filterSmalltalks)
 
-        binding.filter1.buttonStart.setOnClickListener {
-            changeFilterMode(FilterMode.ALL, binding.filter1.root)
+        binding.filterAll.buttonStart.setOnClickListener {
+            changeFilterMode(FilterMode.ALL, binding.filterAll)
         }
-        binding.filter2.buttonStart.setOnClickListener {
-            changeFilterMode(FilterMode.PRIVATE, binding.filter2.root)
+        binding.filterDiscussions.buttonStart.setOnClickListener {
+            changeFilterMode(FilterMode.PRIVATE, binding.filterDiscussions)
         }
-        binding.filter3.buttonStart.setOnClickListener {
-            changeFilterMode(FilterMode.OUTINGS, binding.filter3.root)
+        binding.filterEvents.buttonStart.setOnClickListener {
+            changeFilterMode(FilterMode.OUTINGS, binding.filterEvents)
         }
-        binding.filter4.buttonStart.setOnClickListener {
-            changeFilterMode(FilterMode.SMALLTALKS, binding.filter4.root)
+        binding.filterSmalltalks.buttonStart.setOnClickListener {
+            changeFilterMode(FilterMode.SMALLTALKS, binding.filterSmalltalks)
         }
 
         binding.filterLayout.visibility = View.VISIBLE
@@ -151,14 +146,11 @@ class DiscussionsMainFragment : Fragment() {
         }
     }
 
-
-
     private fun handleSwipeRefresh() {
         binding.swipeRefresh.setOnRefreshListener {
             discussionsPresenter.fetchMemberships(currentFilterModeString(), reset = true)
         }
     }
-
 
     private fun currentFilterModeString(): String? =
         when (currentFilterMode) {
@@ -167,8 +159,6 @@ class DiscussionsMainFragment : Fragment() {
             FilterMode.OUTINGS   -> "Outing"
             FilterMode.SMALLTALKS-> "Smalltalk"
         }
-
-
 
     private fun reloadFromStart() {
         resetMessagesList()
@@ -181,12 +171,12 @@ class DiscussionsMainFragment : Fragment() {
         loadMessages()
     }
 
-    private fun changeFilterMode(newMode: FilterMode, activeButton: View) {
+    private fun changeFilterMode(newMode: FilterMode, activeFilter: LayoutDiscussionFilterBinding) {
         currentFilterMode = newMode
         discussionsPresenter.fetchMemberships(currentFilterModeString(), reset = true)
-        setFilterActive(activeButton)
-        listOf(binding.filter1.root, binding.filter2.root, binding.filter3.root, binding.filter4.root)
-            .filter { it != activeButton }
+        setFilterActive(activeFilter)
+        listOf(binding.filterAll, binding.filterDiscussions, binding.filterEvents, binding.filterSmalltalks)
+            .filter { it != activeFilter }
             .forEach { setFilterInactive(it) }
     }
 
@@ -199,22 +189,18 @@ class DiscussionsMainFragment : Fragment() {
         binding.recyclerView.adapter?.notifyDataSetChanged()
     }
 
-    private fun setFilterActive(view: View) {
-        view.findViewById<Button>(R.id.button_start).apply {
+    private fun setFilterActive(view: LayoutDiscussionFilterBinding) {
+        view.buttonStart.apply {
             setBackgroundResource(R.drawable.shape_filter_discussion_activated)
             setTextColor(resources.getColor(android.R.color.white, null))
         }
     }
 
-    private fun setFilterInactive(view: View) {
-        view.findViewById<Button>(R.id.button_start).apply {
+    private fun setFilterInactive(view: LayoutDiscussionFilterBinding) {
+        view.buttonStart.apply {
             setBackgroundResource(R.drawable.shape_filter_discussion_desactivated)
             setTextColor(resources.getColor(R.color.orange, null))
         }
-    }
-
-    private fun loadInitial() {
-        discussionsPresenter.fetchMemberships(currentFilterModeString(), reset = true)
     }
 
     // -------------------- LOGIQUE MESSAGES --------------------
@@ -302,13 +288,10 @@ class DiscussionsMainFragment : Fragment() {
         isFromDetail = true // Active le flag
     }
 
-
-
     override fun onPause() {
         super.onPause()
         isFromDetail = false // Réinitialise le flag
     }
-
 
     // -------------------- OUTILS --------------------
 
@@ -362,23 +345,6 @@ class DiscussionsMainFragment : Fragment() {
                 if (visible + first >= total && first >= 0 && total >= discussionsPresenter.perPageMemberships) {
                     discussionsPresenter.fetchMemberships(currentFilterModeString())
                 }
-            }
-        }
-    }
-
-    private fun handlePagination(recyclerView: RecyclerView) {
-        val layoutManager = recyclerView.layoutManager as? LinearLayoutManager ?: return
-
-        val visibleItemCount = layoutManager.childCount
-        val totalItemCount = layoutManager.itemCount
-        val firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition()
-
-        if (!discussionsPresenter.isLoading && !discussionsPresenter.isLastPage) {
-            if (visibleItemCount + firstVisibleItemPosition >= totalItemCount &&
-                firstVisibleItemPosition >= 0 &&
-                totalItemCount >= messagesPerPage
-            ) {
-                loadMessages()
             }
         }
     }

@@ -362,7 +362,7 @@ class MainActivity : BaseSecuredActivity() {
                 }
             } else {
             }
-        } ?: Timber.d("wtf notif", "extras null")
+        } ?: Timber.d("wtf notif :extras null")
         intent = null
     }
 
