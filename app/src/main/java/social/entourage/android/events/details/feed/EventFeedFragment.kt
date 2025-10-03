@@ -448,23 +448,35 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
         if (!isAdded) return
 
         binding.iconSettings.setOnClickListener {
-            // droits : organisateur / animateur (ton app : me.roles non vide)
+            // droits : organisateur / animateur (selon tes règles existantes)
             val canManage = HomeFragment.signablePermission && event?.signable == true
 
-            // infos d’entête pour la sheet (titre / #participants / adresse)
+            // infos d’entête pour la sheet
             val title = event?.title
             val participants = event?.membersCount ?: 0
             val address = event?.metadata?.displayAddress
 
-            // conversationId: pas indispensable pour le mode EVENT de la sheet -> 0
-            ActionSheetFragment.newEvent(
-                eventId = eventId,
-                conversationId = 0,
-                canManageParticipants = canManage,
-                eventTitle = title,
-                participantsCount = participants,
-                eventAddress = address
-            ).show(parentFragmentManager, "ActionSheetEvent")
+            // Si l’objet Events est dispo → édition sûre (EVENT_UI)
+            val sheet = event?.let { ev ->
+                ActionSheetFragment.newEvent(
+                    event = ev,
+                    conversationId = 0,
+                    canManageParticipants = canManage
+                )
+            } ?: run {
+                // Sinon, on force l’affichage du bouton (fallback en passant EVENT_ID au clic)
+                ActionSheetFragment.newEvent(
+                    eventId = eventId,
+                    conversationId = 0,
+                    canManageParticipants = canManage,
+                    eventTitle = title,
+                    participantsCount = participants,
+                    eventAddress = address,
+                    forceShowEdit = true
+                )
+            }
+
+            sheet.show(parentFragmentManager, "ActionSheetEvent")
         }
     }
 
