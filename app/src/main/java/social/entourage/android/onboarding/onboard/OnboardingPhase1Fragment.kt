@@ -403,6 +403,7 @@ class OnboardingPhase1Fragment : Fragment() {
     }
 
     // ====== Date ======
+// ====== Date ======
     private fun showDatePicker() {
         if (!isViewUsable() || isDatePickerShowing) return
         isDatePickerShowing = true
@@ -414,81 +415,63 @@ class OnboardingPhase1Fragment : Fragment() {
         binding.uiOnboardBirthdate.text?.toString()
             ?.takeIf { it.matches(Regex("""\d{2}/\d{2}/\d{4}""")) }
             ?.split("/")?.let { (dd, mm, yyyy) ->
-                runCatching {
-                    cal.set(yyyy.toInt(), mm.toInt() - 1, dd.toInt())
-                }
+                runCatching { cal.set(yyyy.toInt(), mm.toInt() - 1, dd.toInt()) }
             }
 
-        // On crée le dialog SANS OnDateSetListener => on gère nous-mêmes l'auto-close
-        val dlg = DatePickerDialog(
-            ctx, /* listener = */ null,
-            cal.get(Calendar.YEAR),
-            cal.get(Calendar.MONTH),
-            cal.get(Calendar.DAY_OF_MONTH)
-        )
+        val startY = cal.get(Calendar.YEAR)
+        val startM = cal.get(Calendar.MONTH)
+        val startD = cal.get(Calendar.DAY_OF_MONTH)
 
+        // Pas de listener ici : on gère nous-mêmes l'auto-close
+        val dlg = DatePickerDialog(ctx, null, startY, startM, startD)
         val dp = dlg.datePicker
 
-        // --- MODE CALENDRIER : auto-close quand l'utilisateur tape un jour ---
+        fun commit(y: Int, m: Int, d: Int) {
+            val newDate = String.format(Locale.getDefault(), "%02d/%02d/%04d", d, m + 1, y)
+            birthdate = newDate
+            safeUI {
+                binding.uiOnboardBirthdate.setText(newDate)
+                binding.uiOnboardBirthdate.clearFocus()
+                updateButtonNext()
+            }
+            dlg.dismiss()
+        }
+
+        // --- MODE CALENDRIER : un tap sur un jour -> commit immédiat
         var calendarHooked = false
         try {
-            val cv = dp.calendarView   // null si en mode "spinners"
-            if (cv != null) {
+            val cv = dp.calendarView
+            if (cv != null && cv.visibility == View.VISIBLE) {
                 calendarHooked = true
                 cv.setOnDateChangeListener { _, y, m, d ->
-                    val newDate = String.format(Locale.getDefault(), "%02d/%02d/%04d", d, m + 1, y)
-                    birthdate = newDate
-                    safeUI {
-                        binding.uiOnboardBirthdate.setText(newDate)
-                        binding.uiOnboardBirthdate.clearFocus()
-                        updateButtonNext()
-                    }
-                    dlg.dismiss()
+                    commit(y, m, d)
                 }
             }
-        } catch (_: Throwable) { /* certains OEM plantent si pas en mode calendrier */ }
+        } catch (_: Throwable) {
+            // certains OEM peuvent lancer ici si pas de CalendarView
+        }
 
-        // --- MODE SPINNERS : auto-close dès que la date change (1er changement) ---
+        // --- MODE SPINNERS : commit sur premier changement != date de départ
         if (!calendarHooked) {
-            var first = true
-            dp.init(
-                cal.get(Calendar.YEAR),
-                cal.get(Calendar.MONTH),
-                cal.get(Calendar.DAY_OF_MONTH)
-            ) { _, y, m, d ->
-                if (first) { first = false; return@init } // ignore l'init
-                val newDate = String.format(Locale.getDefault(), "%02d/%02d/%04d", d, m + 1, y)
-                birthdate = newDate
-                safeUI {
-                    binding.uiOnboardBirthdate.setText(newDate)
-                    binding.uiOnboardBirthdate.clearFocus()
-                    updateButtonNext()
-                }
-                dlg.dismiss()
+            dp.init(startY, startM, startD) { _, y, m, d ->
+                // Ignore les callbacks qui redonnent la date de départ (init)
+                if (y == startY && m == startM && d == startD) return@init
+                commit(y, m, d)
             }
         }
 
-        // --- Fallback : si l'utilisateur appuie sur OK, on prend la valeur sélectionnée ---
+        // Bouton OK (fallback si l'utilisateur confirme au lieu de tap)
         dlg.setOnShowListener {
             dlg.getButton(DatePickerDialog.BUTTON_POSITIVE)?.setOnClickListener {
-                val y = dp.year
-                val m = dp.month
-                val d = dp.dayOfMonth
-                val newDate = String.format(Locale.getDefault(), "%02d/%02d/%04d", d, m + 1, y)
-                birthdate = newDate
-                safeUI {
-                    binding.uiOnboardBirthdate.setText(newDate)
-                    binding.uiOnboardBirthdate.clearFocus()
-                    updateButtonNext()
-                }
-                dlg.dismiss()
+                commit(dp.year, dp.month, dp.dayOfMonth)
             }
         }
 
-        // Quel que soit le chemin (auto-close ou cancel), on libère le flag
+        // Libère le flag quel que soit le chemin (OK, tap, cancel)
         dlg.setOnDismissListener { isDatePickerShowing = false }
         dlg.show()
     }
+
 
 
 
