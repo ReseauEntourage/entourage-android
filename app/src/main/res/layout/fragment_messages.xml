@@ -149,28 +149,28 @@
                         android:orientation="horizontal"
                         >
                         <include
-                            android:id="@+id/filter_1"
+                            android:id="@+id/filter_all"
                             layout="@layout/layout_discussion_filter"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             app:layout_constraintBottom_toTopOf="@id/recycler_view"
                             app:layout_constraintTop_toTopOf="parent" />
                         <include
-                            android:id="@+id/filter_2"
+                            android:id="@+id/filter_discussions"
                             layout="@layout/layout_discussion_filter"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             app:layout_constraintBottom_toTopOf="@id/recycler_view"
                             app:layout_constraintTop_toTopOf="parent" />
                         <include
-                            android:id="@+id/filter_3"
+                            android:id="@+id/filter_events"
                             layout="@layout/layout_discussion_filter"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             app:layout_constraintBottom_toTopOf="@id/recycler_view"
                             app:layout_constraintTop_toTopOf="parent" />
                         <include
-                            android:id="@+id/filter_4"
+                            android:id="@+id/filter_smalltalks"
                             layout="@layout/layout_discussion_filter"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
