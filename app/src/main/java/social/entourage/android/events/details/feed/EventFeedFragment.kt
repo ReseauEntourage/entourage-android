@@ -176,6 +176,9 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
     private fun handleResponseGetEvent(getEvent: Events?) {
         getEvent?.let {
             event = it
+            if(event?.author?.userID == EntourageApplication.get().me()?.id){
+                iAmOrganiser = true
+            }
             if(it.signable != null){
                 signable = it.signable
                 ActionSheetFragment.isSignable = signable
@@ -462,7 +465,8 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
                     event = ev,
                     conversationId = 0,
                     canManageParticipants = canManage,
-                    fromEventFeed = true
+                    fromEventFeed = true,
+                    isEventCreator = iAmOrganiser
                 )
             } ?: run {
                 // Sinon, on force l’affichage du bouton (fallback en passant EVENT_ID au clic)
@@ -474,7 +478,8 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
                     participantsCount = participants,
                     eventAddress = address,
                     forceShowEdit = true,
-                    fromEventFeed = true
+                    fromEventFeed = true,
+                    isEventCreator = iAmOrganiser
                 )
             }
 
@@ -545,9 +550,7 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
             var numberOrganizer = 0
             var nameOrganizers = ""
             for(member in allMembers){
-                if(member.id.toInt() == EntourageApplication.get().me()?.id){
-                    iAmOrganiser = true
-                }
+
                 if(member.groupRole == "organizer"){
                     numberOrganizer += 1
                     if(numberOrganizer < 3){

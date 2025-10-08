@@ -56,6 +56,7 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
     private var eventParticipantsCount: Int = 0
     private var eventAddress: String? = null
     private var forceShowEdit: Boolean = false
+    private var isEventCreator: Boolean = false // NEW
 
     // Message actions
     private var messageId: Int = 0
@@ -90,6 +91,7 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
             isEventContext = getBoolean(ARG_IS_EVENT_CONTEXT, false)
             isGroupContext = getBoolean(ARG_IS_GROUP_CONTEXT, false)
             headerFromEventFeed = getBoolean(ARG_HEADER_FROM_EVENT_FEED, false) // <— NEW
+            isEventCreator = getBoolean(ARG_IS_EVENT_CREATOR, false) // NEW
 
             @Suppress("DEPRECATION")
             if (containsKey(Const.EVENT_UI)) {
@@ -411,7 +413,8 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
         private const val ARG_IS_EVENT_CONTEXT = "isEventContext"
         private const val ARG_IS_GROUP_CONTEXT = "isGroupContext"
         private const val ARG_FORCE_SHOW_EDIT = "forceShowEdit"
-        private const val ARG_HEADER_FROM_EVENT_FEED = "headerFromEventFeed" // <— NEW
+        private const val ARG_HEADER_FROM_EVENT_FEED = "headerFromEventFeed"
+        private const val ARG_IS_EVENT_CREATOR = "isEventCreator"
 
         var isSignable = false
 
@@ -454,7 +457,8 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
             participantsCount: Int = 0,
             eventAddress: String? = null,
             forceShowEdit: Boolean = false,
-            fromEventFeed: Boolean = false
+            fromEventFeed: Boolean = false,
+            isEventCreator: Boolean = false
         ) = ActionSheetFragment().apply {
             arguments = Bundle().apply {
                 putString(ARG_MODE, SheetMode.EVENT.name)
@@ -466,6 +470,7 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
                 putString(ARG_EVENT_ADDRESS, eventAddress)
                 putBoolean(ARG_FORCE_SHOW_EDIT, forceShowEdit)
                 putBoolean(ARG_HEADER_FROM_EVENT_FEED, fromEventFeed)
+                putBoolean(ARG_IS_EVENT_CREATOR, isEventCreator)
             }
         }
 
@@ -475,6 +480,7 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
             conversationId: Int,
             canManageParticipants: Boolean = false,
             fromEventFeed: Boolean = false,
+            isEventCreator: Boolean = false
         ) = ActionSheetFragment().apply {
             arguments = Bundle().apply {
                 putString(ARG_MODE, SheetMode.EVENT.name)
@@ -486,6 +492,7 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
                 putInt(ARG_EVENT_ID, event.id ?: 0)
                 putSerializable(Const.EVENT_UI, event)
                 putBoolean(ARG_HEADER_FROM_EVENT_FEED, fromEventFeed)
+                putBoolean(ARG_IS_EVENT_CREATOR, isEventCreator)
             }
         }
 
