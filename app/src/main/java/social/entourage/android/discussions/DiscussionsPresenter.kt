@@ -12,15 +12,9 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import social.entourage.android.EntourageApplication
+import social.entourage.android.api.model.*
 import social.entourage.android.api.request.*
 import social.entourage.android.home.UnreadMessages
-import social.entourage.android.api.model.Conversation
-import social.entourage.android.api.model.ConversationMembership
-import social.entourage.android.api.model.ConversationMembershipsWrapper
-import social.entourage.android.api.model.GroupMember
-import social.entourage.android.api.model.Post
-import social.entourage.android.api.model.User
-import social.entourage.android.api.model.UserBlockedUser
 import timber.log.Timber
 import java.io.File
 import java.io.IOException
@@ -28,7 +22,7 @@ import java.io.IOException
 /**
  * Created by - on 15/11/2022.
  */
-class DiscussionsPresenter:ViewModel() {
+class DiscussionsPresenter : ViewModel() {
 
     var getAllMessages = MutableLiveData<MutableList<Conversation>>()
     var isLoading: Boolean = false
@@ -61,6 +55,7 @@ class DiscussionsPresenter:ViewModel() {
     val perPageComments = 50
     var isLastPageComments = false
     var isLoadingComments = false
+
     val memberships = MutableLiveData<List<ConversationMembership>>()
     var currentPageMemberships = 1
     val perPageMemberships = 50
@@ -135,7 +130,7 @@ class DiscussionsPresenter:ViewModel() {
 
     fun getPostComments(conversationId: Int) {
         //TODO: pagination after MVP
-        EntourageApplication.get().apiModule.discussionsRequest.getMessagesFor(conversationId,1,200)
+        EntourageApplication.get().apiModule.discussionsRequest.getMessagesFor(conversationId, 1, 200)
             .enqueue(object : Callback<PostListWrapper> {
                 override fun onResponse(
                     call: Call<PostListWrapper>,
@@ -152,9 +147,9 @@ class DiscussionsPresenter:ViewModel() {
             })
     }
 
-    fun createOrGetConversation(userId:String) {
-        val params = ArrayMap<String,Any>()
-        val userParam = ArrayMap<String,Any>()
+    fun createOrGetConversation(userId: String) {
+        val params = ArrayMap<String, Any>()
+        val userParam = ArrayMap<String, Any>()
         userParam["user_id"] = userId
         params["conversation"] = userParam
         EntourageApplication.get().apiModule.discussionsRequest.createOrGetConversation(params)
@@ -223,8 +218,11 @@ class DiscussionsPresenter:ViewModel() {
         getMembersSearch.value = listTmp
     }
 
-    fun sendReport(id: Int, reason: String,
-                   selectedSignalsIdList: MutableList<String>) {
+    fun sendReport(
+        id: Int,
+        reason: String,
+        selectedSignalsIdList: MutableList<String>
+    ) {
         val userRequest = EntourageApplication.get().apiModule.discussionsRequest
         val call = userRequest.reportConversation(
             id, ReportWrapper(Report(reason, selectedSignalsIdList))
@@ -257,7 +255,7 @@ class DiscussionsPresenter:ViewModel() {
 
     //BLock user
 
-    fun blockUser(userId:Int) {
+    fun blockUser(userId: Int) {
         val userRequest = EntourageApplication.get().apiModule.discussionsRequest
         val call = userRequest.blockUser(userId)
         call.enqueue(object : Callback<UserBlockedWrapper> {
@@ -265,7 +263,10 @@ class DiscussionsPresenter:ViewModel() {
                 hasBlockUser.value = false
             }
 
-            override fun onResponse(call: Call<UserBlockedWrapper>, response: Response<UserBlockedWrapper>) {
+            override fun onResponse(
+                call: Call<UserBlockedWrapper>,
+                response: Response<UserBlockedWrapper>
+            ) {
                 hasBlockUser.value = response.isSuccessful
             }
         })
@@ -279,7 +280,10 @@ class DiscussionsPresenter:ViewModel() {
                 getBlockedUsers.value = null
             }
 
-            override fun onResponse(call: Call<UsersBlockedWrapper>, response: Response<UsersBlockedWrapper>) {
+            override fun onResponse(
+                call: Call<UsersBlockedWrapper>,
+                response: Response<UsersBlockedWrapper>
+            ) {
                 getBlockedUsers.value = response.body()?.blockedUsers
             }
         })
@@ -287,7 +291,7 @@ class DiscussionsPresenter:ViewModel() {
 
     fun unblockUsers(usersId: ArrayList<Int>) {
 
-        val param = ArrayMap<String,Any>()
+        val param = ArrayMap<String, Any>()
         param["blocked_user_ids"] = usersId
         val userRequest = EntourageApplication.get().apiModule.discussionsRequest
         val call = userRequest.unblockUsers(param)
@@ -488,6 +492,7 @@ class DiscussionsPresenter:ViewModel() {
                     isLoadingImages.postValue(false)
                 }
             })
+        // NOTE : Fonction imbriquée gardée à l'identique (même comportement qu'avant)
         fun fetchConversationLargeImage(conversationId: Int, chatMessageId: Int) {
             if (isLoadingLargeImage.value == true) return
             isLoadingLargeImage.postValue(true)
@@ -512,8 +517,6 @@ class DiscussionsPresenter:ViewModel() {
                 })
         }
     }
-
-
 
     fun loadInitialComments(convId: Int) {
         currentPageComments = 1
@@ -549,13 +552,14 @@ class DiscussionsPresenter:ViewModel() {
             })
     }
 
-    // In DiscussionsPresenter
+    // ✅ Accumulation contrôlée + reset explicite pour éviter les doublons
     fun fetchMemberships(type: String?, reset: Boolean = false) {
         if (isLoadingMemberships) return
+
         if (reset) {
             currentPageMemberships = 1
             isLastPageMemberships = false
-            memberships.value = emptyList()
+            memberships.value = emptyList() // <— on efface la LiveData pour repartir proprement
         }
         if (isLastPageMemberships) return
 
@@ -568,12 +572,20 @@ class DiscussionsPresenter:ViewModel() {
                     response: Response<ConversationMembershipsWrapper>
                 ) {
                     val newItems = response.body()?.memberships.orEmpty()
+
                     if (newItems.size < perPageMemberships) {
                         isLastPageMemberships = true
                     }
-                    val current = memberships.value.orEmpty().toMutableList()
-                    current.addAll(newItems)
-                    memberships.postValue(current)
+
+                    // Si on est à la page 1 (ou après un reset), on repart d'une base vide
+                    val base = if (currentPageMemberships == 1) {
+                        emptyList()
+                    } else {
+                        memberships.value.orEmpty()
+                    }
+                    val merged = base.toMutableList().apply { addAll(newItems) }
+
+                    memberships.postValue(merged)
                     currentPageMemberships++
                     isLoadingMemberships = false
                 }

@@ -88,8 +88,10 @@ class DiscussionsMainFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        // Recharge uniquement si on ne revient pas d'un détail
-        if (!isFromDetail) {
+        // IMPORTANT : on ne recharge pas si on revient du détail ; on consomme le flag ici
+        if (isFromDetail) {
+            isFromDetail = false
+        } else {
             reloadFromStart()
         }
         if (RefreshController.shouldRefreshFragment) {
@@ -100,12 +102,10 @@ class DiscussionsMainFragment : Fragment() {
         checkNotificationsState()
     }
 
-
     override fun onStop() {
         super.onStop()
         page = 0
     }
-
 
     // -------------------- INIT UI --------------------
 
@@ -151,45 +151,44 @@ class DiscussionsMainFragment : Fragment() {
         }
     }
 
-
-
     private fun handleSwipeRefresh() {
         binding.swipeRefresh.setOnRefreshListener {
+            // Reset propre côté presenter (évite accumulation/duplication)
             discussionsPresenter.fetchMemberships(currentFilterModeString(), reset = true)
         }
     }
 
-
     private fun currentFilterModeString(): String? =
         when (currentFilterMode) {
-            FilterMode.ALL       -> null
-            FilterMode.PRIVATE   -> "Conversation"
-            FilterMode.OUTINGS   -> "Outing"
-            FilterMode.SMALLTALKS-> "Smalltalk"
+            FilterMode.ALL        -> null
+            FilterMode.PRIVATE    -> "Conversation"
+            FilterMode.OUTINGS    -> "Outing"
+            FilterMode.SMALLTALKS -> "Smalltalk"
         }
-
-
 
     private fun reloadFromStart() {
         resetMessagesList()
         page = 0
         discussionsPresenter.isLastPage = false
         discussionsPresenter.getAllMessages.value?.clear()
-       // discussionsAdapter.resetData()
+
         discussionsPresenter.currentPageMemberships = 1
         discussionsPresenter.isLastPageMemberships = false
-        loadMessages()
+
+        // ✅ déclenche un refetch propre qui efface la LiveData d'accumulation
+        binding.progressBar.visibility = View.VISIBLE
+        discussionsPresenter.fetchMemberships(currentFilterModeString(), reset = true)
     }
 
     private fun changeFilterMode(newMode: FilterMode, activeButton: View) {
         currentFilterMode = newMode
+        // ✅ reset à chaque changement de filtre
         discussionsPresenter.fetchMemberships(currentFilterModeString(), reset = true)
         setFilterActive(activeButton)
         listOf(binding.filter1.root, binding.filter2.root, binding.filter3.root, binding.filter4.root)
             .filter { it != activeButton }
             .forEach { setFilterInactive(it) }
     }
-
 
     private fun resetMessagesList() {
         messagesList.clear()
@@ -224,9 +223,9 @@ class DiscussionsMainFragment : Fragment() {
         binding.progressBar.visibility = View.VISIBLE
 
         when (currentFilterMode) {
-            FilterMode.ALL -> discussionsPresenter.fetchMemberships(null)
-            FilterMode.PRIVATE -> discussionsPresenter.fetchMemberships("Conversation")
-            FilterMode.OUTINGS -> discussionsPresenter.fetchMemberships("Outing")
+            FilterMode.ALL        -> discussionsPresenter.fetchMemberships(null)
+            FilterMode.PRIVATE    -> discussionsPresenter.fetchMemberships("Conversation")
+            FilterMode.OUTINGS    -> discussionsPresenter.fetchMemberships("Outing")
             FilterMode.SMALLTALKS -> discussionsPresenter.fetchMemberships("Smalltalk")
         }
     }
@@ -237,7 +236,7 @@ class DiscussionsMainFragment : Fragment() {
 
         // Réappliquez l'état "lu" après un rechargement
         messagesList.forEach { conv ->
-            if (readConversationIds.contains(conv.id ?: 0)) {  // Utilise directement l'Int
+            if (readConversationIds.contains(conv.id ?: 0)) {
                 conv.numberUnreadMessages = 0
             }
         }
@@ -245,7 +244,6 @@ class DiscussionsMainFragment : Fragment() {
         binding.progressBar.visibility = View.GONE
         binding.recyclerView.adapter?.notifyDataSetChanged()
     }
-
 
     private fun handleResponseGetSmallTalks(allSmallTalks: List<SmallTalk>?) {
         messagesList.clear()
@@ -275,7 +273,7 @@ class DiscussionsMainFragment : Fragment() {
         // 1. Marquez comme lu
         conversation.numberUnreadMessages = 0
         conversation.id?.let { id ->
-            readConversationIds.add(id) // Pas besoin de conversion, on utilise directement l'Int
+            readConversationIds.add(id)
         }
         discussionsAdapter.notifyItemChanged(position)
 
@@ -299,16 +297,14 @@ class DiscussionsMainFragment : Fragment() {
                 )
             )
         )
-        isFromDetail = true // Active le flag
+        // ✅ on signale qu'on part au détail ; on NE remettra PAS ce flag à false dans onPause()
+        isFromDetail = true
     }
-
-
 
     override fun onPause() {
         super.onPause()
-        isFromDetail = false // Réinitialise le flag
+        // Ne PAS remettre isFromDetail à false ici ; on veut le consommer dans onResume()
     }
-
 
     // -------------------- OUTILS --------------------
 
@@ -391,7 +387,7 @@ class DiscussionsMainFragment : Fragment() {
             messagesList.addAll(list.map { membershipToConversation(it) })
             // Réappliquez l'état "lu" aux conversations déjà marquées
             messagesList.forEach { conv ->
-                if (readConversationIds.contains(conv.id ?: 0)) {  // Utilise directement l'Int
+                if (readConversationIds.contains(conv.id ?: 0)) {
                     conv.numberUnreadMessages = 0
                 }
             }
@@ -407,15 +403,14 @@ class DiscussionsMainFragment : Fragment() {
     }
 
     private fun membershipToConversation(m: ConversationMembership): Conversation {
-
         return Conversation(
             id = m.joinableId,
             type = when (m.joinableType?.lowercase()) {
-                "outing" -> "outing"
+                "outing"       -> "outing"
                 "conversation" -> "private"
-                "smalltalk" -> "small_talk"
+                "smalltalk"    -> "small_talk"
                 "neighborhood" -> "group"
-                else -> "group"
+                else           -> "group"
             },
             title = (m.name),
             imageUrl = m.imageUrl,
@@ -425,5 +420,4 @@ class DiscussionsMainFragment : Fragment() {
             memberCount = m.numberOfPeople ?: 0
         )
     }
-
 }
