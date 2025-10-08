@@ -472,7 +472,8 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
                     eventTitle = title,
                     participantsCount = participants,
                     eventAddress = address,
-                    forceShowEdit = true
+                    forceShowEdit = true,
+                    fromEventFeed = true
                 )
             }
 

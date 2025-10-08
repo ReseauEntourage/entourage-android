@@ -63,6 +63,7 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
     private var isMyMessage: Boolean = false
     private var isEventContext: Boolean = false
     private var isGroupContext: Boolean = false
+    private var headerFromEventFeed: Boolean = false   // <— NEW
 
     // Pour “Modifier l’événement”
     private var eventObj: Events? = null
@@ -88,6 +89,7 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
             isMyMessage = getBoolean(ARG_IS_MY_MESSAGE, false)
             isEventContext = getBoolean(ARG_IS_EVENT_CONTEXT, false)
             isGroupContext = getBoolean(ARG_IS_GROUP_CONTEXT, false)
+            headerFromEventFeed = getBoolean(ARG_HEADER_FROM_EVENT_FEED, false) // <— NEW
 
             @Suppress("DEPRECATION")
             if (containsKey(Const.EVENT_UI)) {
@@ -213,6 +215,9 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
 
         if (mode != SheetMode.MESSAGE_ACTIONS) {
             binding.report.text = getString(R.string.discussion_settings_signal)
+        }
+        if (headerFromEventFeed && mode == SheetMode.EVENT) {
+            binding.header.title = getString(R.string.event_settings) // "Paramètres de l’événement"
         }
     }
 
@@ -405,6 +410,7 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
         private const val ARG_IS_EVENT_CONTEXT = "isEventContext"
         private const val ARG_IS_GROUP_CONTEXT = "isGroupContext"
         private const val ARG_FORCE_SHOW_EDIT = "forceShowEdit"
+        private const val ARG_HEADER_FROM_EVENT_FEED = "headerFromEventFeed" // <— NEW
 
         var isSignable = false
 
@@ -446,7 +452,8 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
             eventTitle: String? = null,
             participantsCount: Int = 0,
             eventAddress: String? = null,
-            forceShowEdit: Boolean = false
+            forceShowEdit: Boolean = false,
+            fromEventFeed: Boolean = false
         ) = ActionSheetFragment().apply {
             arguments = Bundle().apply {
                 putString(ARG_MODE, SheetMode.EVENT.name)
@@ -457,6 +464,7 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
                 putInt(ARG_EVENT_PARTICIPANTS, participantsCount)
                 putString(ARG_EVENT_ADDRESS, eventAddress)
                 putBoolean(ARG_FORCE_SHOW_EDIT, forceShowEdit)
+                putBoolean(ARG_HEADER_FROM_EVENT_FEED, fromEventFeed)
             }
         }
 

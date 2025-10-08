@@ -14,10 +14,10 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:padding="10dp"
-        android:src="@drawable/new_back"
+        android:src="@drawable/ic_back_onboarding"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:src="@drawable/new_back" />
+        tools:src="@drawable/ic_back_onboarding" />
 
     <TextView
         android:layout_width="wrap_content"
