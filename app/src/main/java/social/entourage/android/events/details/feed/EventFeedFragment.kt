@@ -461,7 +461,8 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
                 ActionSheetFragment.newEvent(
                     event = ev,
                     conversationId = 0,
-                    canManageParticipants = canManage
+                    canManageParticipants = canManage,
+                    fromEventFeed = true
                 )
             } ?: run {
                 // Sinon, on force l’affichage du bouton (fallback en passant EVENT_ID au clic)

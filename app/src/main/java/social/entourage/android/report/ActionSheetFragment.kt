@@ -216,8 +216,9 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
         if (mode != SheetMode.MESSAGE_ACTIONS) {
             binding.report.text = getString(R.string.discussion_settings_signal)
         }
-        if (headerFromEventFeed && mode == SheetMode.EVENT) {
+        if (headerFromEventFeed) {
             binding.header.title = getString(R.string.event_settings) // "Paramètres de l’événement"
+            binding.photos.profileSettingsItemLayout.visibility = View.GONE
         }
     }
 
@@ -472,7 +473,8 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
         fun newEvent(
             event: Events,
             conversationId: Int,
-            canManageParticipants: Boolean = false
+            canManageParticipants: Boolean = false,
+            fromEventFeed: Boolean = false,
         ) = ActionSheetFragment().apply {
             arguments = Bundle().apply {
                 putString(ARG_MODE, SheetMode.EVENT.name)
@@ -483,6 +485,7 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
                 putString(ARG_EVENT_ADDRESS, event.metadata?.displayAddress)
                 putInt(ARG_EVENT_ID, event.id ?: 0)
                 putSerializable(Const.EVENT_UI, event)
+                putBoolean(ARG_HEADER_FROM_EVENT_FEED, fromEventFeed)
             }
         }
 
