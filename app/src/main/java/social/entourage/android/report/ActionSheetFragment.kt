@@ -222,6 +222,9 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
             binding.header.title = getString(R.string.event_settings) // "Paramètres de l’événement"
             binding.photos.profileSettingsItemLayout.visibility = View.GONE
         }
+        if(!isEventCreator){
+            binding.edit.profileSettingsItemLayout.isVisible = false
+        }
     }
 
     private fun setupClicks() {
