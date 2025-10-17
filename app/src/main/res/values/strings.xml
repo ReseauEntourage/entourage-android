@@ -3158,6 +3158,8 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="onboard_welcome_placeholder_email_new">Ex. : marie.dupont@email.com</string>
 
     <string name="image_option_title">Photos de la conversation</string>
-
+    <string name="delete_event">Supprimer l’événement</string>
+    <string name="delete_event_title">Supprimer l’événement ?</string>
+    <string name="delete_event_confirmation">Cette action est irréversible. Les participants seront informés.</string>
 
 </resources>
