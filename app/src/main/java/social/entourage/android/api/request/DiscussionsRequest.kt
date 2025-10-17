@@ -126,6 +126,13 @@ interface DiscussionsRequest {
         @Path("conversation_id") conversationId: Int
     ): Call<ConversationImagesWrapper>
 
+    @GET("conversations/{conversation_id}/images")
+    fun getConversationImages(
+        @Path("conversation_id") conversationId: Int,
+        @Query("page") page: Int,
+        @Query("per") per: Int
+    ): Call<ConversationImagesWrapper>
+
     @GET("conversations/{conversation_id}/images/{chat_message_id}")
     fun getConversationImage(
         @Path("conversation_id") conversationId: Int,
