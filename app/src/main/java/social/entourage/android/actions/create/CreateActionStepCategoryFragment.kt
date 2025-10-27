@@ -139,8 +139,8 @@ class CreateActionStepCategoryFragment : Fragment() {
     }
 
     override fun onDestroy() {
+        _binding?.error?.root?.visibility = View.GONE
         super.onDestroy()
-        binding.error.root.visibility = View.GONE
     }
 
     private fun setupViewWithEdit() {

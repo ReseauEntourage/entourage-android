@@ -102,7 +102,11 @@ class OnboardingEditPhotoFragment : DialogFragment() {
             override fun onFailure(e: Exception) {
                 Timber.w(e)
                 activity?.let { activity->
-                    Toast.makeText(activity, R.string.user_photo_error_no_photo, Toast.LENGTH_SHORT).show()
+                    try {
+                        Toast.makeText(activity, R.string.user_photo_error_no_photo, Toast.LENGTH_SHORT).show()
+                    } catch (ee: Exception) {
+                        Timber.e(ee)
+                    }
                     binding.uiPhotoEditProgressBar.visibility = View.GONE
                     binding.uiEditPhotoValidate.isEnabled = true
                 }
