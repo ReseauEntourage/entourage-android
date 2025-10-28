@@ -4,61 +4,37 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/new_profile_header_orange"
+    android:id="@+id/layout_onboarding_activity"
     android:fitsSystemWindows="true"
     tools:context=".onboarding.onboard.OnboardingStartActivity">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingHorizontal="15dp"
-        android:minHeight="60dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <ImageView
-            android:id="@+id/icon_back"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:padding="10dp"
-            android:src="@drawable/new_back_white"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:src="@drawable/new_back_white" />
-
-        <TextView
-            android:id="@+id/ui_header_title"
-            style="@style/h1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:layout_marginEnd="24dp"
-            android:layout_marginBottom="4dp"
-            android:maxLines="2"
-            android:text="@string/login_title"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/icon_back"
-            app:layout_constraintTop_toTopOf="parent" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
     <FrameLayout
         android:id="@+id/ui_main_container"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginHorizontal="7dp"
-        android:layout_marginBottom="16dp"
         android:background="@drawable/new_bg_rounded_beige"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        app:layout_constraintBottom_toTopOf="@+id/ui_onboarding_bt_next"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/layout" />
+        app:layout_constraintTop_toBottomOf="@+id/ui_header_title"
+        />
 
+
+    <TextView
+        android:id="@+id/ui_header_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:maxLines="2"
+        android:fontFamily="@font/quicksand_bold"
+        android:textSize="20sp"
+        android:layout_marginStart="20dp"
+        android:textColor="@color/black"
+        android:text="@string/sign_title"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
     <Button
         android:id="@+id/ui_onboarding_bt_next"
         style="@style/h2_white"

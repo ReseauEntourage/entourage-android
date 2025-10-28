@@ -2,137 +2,240 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/layout_main"
     tools:context=".onboarding.onboard.OnboardingPhase2Fragment">
 
     <TextView
-        android:id="@+id/ui_onboard_code_tv_phone_mod"
-        android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:layout_marginStart="8dp"
-        android:gravity="center_vertical"
-        android:text="@string/mod_phone_code"
-        android:textColor="@color/accent"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="@+id/ui_onboard_code_tv_phone"
-        app:layout_constraintStart_toEndOf="@+id/ui_onboard_code_tv_phone"
-        app:layout_constraintTop_toTopOf="@+id/ui_onboard_code_tv_phone" />
-
-    <TextView
-        android:id="@+id/ui_onboard_code_tv_phone"
+        android:id="@+id/tv_title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:fontFamily="sans-serif-light"
-        android:text="0000000000"
-        android:textColor="@color/onboard_black_36"
-        android:textSize="16sp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="16dp"
+        android:text="@string/onboard_sms_title"
+        android:fontFamily="@font/quicksand_bold"
+        android:textColor="@color/black"
+        android:textSize="20sp"
         android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="@+id/ui_onboard_code_tv_description"
-        app:layout_constraintTop_toBottomOf="@+id/ui_onboard_code_tv_description" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/ui_onboard_code_tv_description"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="6dp"
         android:layout_marginEnd="16dp"
-        android:fontFamily="sans-serif-light"
         android:text="@string/onboard_sms_sub"
+        android:fontFamily="@font/nunitosans_regular"
         android:textColor="@color/onboard_black_36"
-        android:textSize="16sp"
+        android:textSize="15sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/tv_title" />
 
-    <EditText
-        android:id="@+id/ui_onboard_code"
-        style="@style/input"
-        android:layout_width="0dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="32dp"
-        android:autofillHints="phoneNumber"
-        android:backgroundTint="@color/light_orange_opacity_50"
-        android:hint="@string/onboard_code_placeholder"
-        android:inputType="phone"
-        android:maxLines="1"
-        android:paddingTop="0dp"
+    <TextView
+        android:id="@+id/ui_onboard_code_tv_phone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="6dp"
+        android:textColor="@color/onboard_black_36"
+        android:fontFamily="@font/nunitosans_regular"
         android:textSize="15sp"
-        app:layout_constraintEnd_toEndOf="@+id/ui_onboard_code_tv_description"
-        app:layout_constraintStart_toStartOf="@+id/ui_onboard_code_tv_phone"
-        app:layout_constraintTop_toBottomOf="@+id/ui_onboard_code_tv_phone" />
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ui_onboard_code_tv_description"
+        tools:text="+33 6 92 29 20 21" />
+
+    <TextView
+        android:id="@+id/ui_onboard_code_tv_phone_mod"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="@string/mod_phone_code"
+        android:textColor="@color/accent"
+        android:fontFamily="@font/nunitosans_regular"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toBottomOf="@+id/ui_onboard_code_tv_phone"
+        app:layout_constraintStart_toEndOf="@+id/ui_onboard_code_tv_phone"
+        app:layout_constraintTop_toTopOf="@+id/ui_onboard_code_tv_phone" />
+
+    <LinearLayout
+        android:id="@+id/otp_container"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ui_onboard_code_tv_phone">
+
+        <EditText
+            android:id="@+id/et_code_1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/otp_box"
+            android:gravity="center"
+            android:inputType="number"
+            android:hint="0"
+            android:maxLength="1"
+            android:textSize="20sp"
+            android:importantForAutofill="yes"
+            android:autofillHints="oneTimeCode" />
+        <Space android:layout_width="12dp" android:layout_height="match_parent" />
+        <EditText
+            android:id="@+id/et_code_2"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:hint="0"
+            android:background="@drawable/otp_box"
+            android:gravity="center"
+            android:inputType="number"
+            android:maxLength="1"
+            android:textSize="20sp" />
+        <Space android:layout_width="12dp" android:layout_height="match_parent" />
+        <EditText
+            android:id="@+id/et_code_3"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:hint="0"
+            android:background="@drawable/otp_box"
+            android:gravity="center"
+            android:inputType="number"
+            android:maxLength="1"
+            android:textSize="20sp" />
+        <Space android:layout_width="12dp" android:layout_height="match_parent" />
+        <EditText
+            android:id="@+id/et_code_4"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:hint="0"
+            android:background="@drawable/otp_box"
+            android:gravity="center"
+            android:inputType="number"
+            android:maxLength="1"
+            android:textSize="20sp" />
+        <Space android:layout_width="12dp" android:layout_height="match_parent" />
+        <EditText
+            android:id="@+id/et_code_5"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:hint="0"
+            android:background="@drawable/otp_box"
+            android:gravity="center"
+            android:inputType="number"
+            android:maxLength="1"
+            android:textSize="20sp" />
+        <Space android:layout_width="12dp" android:layout_height="match_parent" />
+        <EditText
+            android:id="@+id/et_code_6"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:hint="0"
+            android:background="@drawable/otp_box"
+            android:gravity="center"
+            android:inputType="number"
+            android:maxLength="1"
+            android:textSize="20sp" />
+    </LinearLayout>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/card_retry"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="16dp"
+        app:cardElevation="1dp"
+        app:cardBackgroundColor="@color/white"
+        app:cardCornerRadius="10dp"
+        app:strokeColor="@color/grey_onboarding_item_border"
+        app:strokeWidth="1dp"
+        app:layout_constraintTop_toBottomOf="@id/otp_container"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <TextView
+                android:id="@+id/tv_retry_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/onboard_black_36"
+                android:textSize="13sp"
+                android:fontFamily="@font/nunitosans_regular"
+                tools:text="Vous n'avez pas reçu votre code de connexion ?" />
+
+            <TextView
+                android:id="@+id/tv_retry_link"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:text="@string/onboard_retry_link"
+                android:textColor="@color/accent"
+                android:fontFamily="@font/nunitosans_regular"
+                android:textSize="13sp" />
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <TextView
+        android:id="@+id/ui_onboard_bt_help_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="28dp"
+        android:text="@string/onboard_help_title"
+        android:fontFamily="@font/nunitosans_regular"
+        android:textColor="@color/onboard_black_36"
+        android:textSize="12sp"
+        app:layout_constraintTop_toBottomOf="@+id/card_retry"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <Button
         android:id="@+id/ui_onboard_bt_help"
         style="@style/TransparentButton"
         android:layout_width="wrap_content"
-        android:layout_height="60dp"
-        android:layout_marginBottom="16dp"
-        android:background="@color/transparent"
-        android:fontFamily="sans-serif-light"
-        android:paddingStart="16dp"
-        android:paddingTop="8dp"
-        android:paddingEnd="16dp"
-        android:paddingBottom="8dp"
-        android:text="@string/onboard_sms_help"
-        android:textColor="@color/accent"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toTopOf="@+id/tv_condition_generales"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <TextView
-        android:id="@+id/ui_onboard_bt_code_retry"
-        android:layout_width="wrap_content"
-        android:layout_height="30dp"
-        android:layout_marginTop="32dp"
-        android:background="@drawable/new_layout_button_round_transp_orange_30"
+        android:layout_height="wrap_content"
+        android:text="@string/onboard_help_link"
         android:fontFamily="@font/nunitosans_regular"
-        android:gravity="center_vertical"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
-        android:text="@string/onboard_sms_wait_retry_end"
-        android:textAllCaps="false"
+
         android:textColor="@color/accent"
-        android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:textSize="12sp"
+        app:layout_constraintTop_toBottomOf="@+id/ui_onboard_bt_help_title"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ui_onboard_code" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <TextView
-        android:id="@+id/ui_onboard_code_retry"
-        android:layout_width="wrap_content"
-        android:layout_height="30dp"
-        android:layout_marginTop="32dp"
-        android:fontFamily="@font/nunitosans_regular"
-        android:gravity="center_vertical"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
-        android:text="@string/onboard_sms_wait_retry_end"
-        android:textAllCaps="false"
-        android:textColor="@color/onboard_black_36"
-        android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ui_onboard_code" />
-
-    <TextView
+        android:id="@+id/tv_condition_generales"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/tv_condition_generales"
-        android:textSize="10sp"
-        android:maxLines="3"
-        android:textColor="@color/grey"
-        android:fontFamily="@font/nunitosans_regular"
-        android:textAlignment="center"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"
-        android:layout_marginBottom="16dp"
-        android:layout_marginTop="8dp"/>
+        android:layout_marginBottom="100dp"
+        android:layout_marginTop="12dp"
+        android:maxLines="3"
+        android:textAlignment="center"
+        android:textColor="@color/grey"
+        android:textSize="10sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

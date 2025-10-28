@@ -111,25 +111,23 @@ class OnboardingPhase1Fragment : Fragment() {
         loadEnterprises()
     }
 
+    // ---- Helpers sûrs ----
     private fun isViewUsable(): Boolean = isAdded && _binding != null && view != null
     private inline fun safeUI(block: () -> Unit) { if (isViewUsable()) block() }
+    private fun safeGetString(resId: Int): String? = context?.getString(resId)
 
     private fun setupViews() {
         setEditTextAlignmentBasedOnLocale()
 
         // ==== Champ date : pas de clavier, clic uniquement ====
         binding.uiOnboardBirthdate.apply {
-            // Empêche le clavier coûte que coûte
             keyListener = null
             try { showSoftInputOnFocus = false } catch (_: Throwable) {}
             isCursorVisible = false
             isLongClickable = false
             setTextIsSelectable(false)
-
-            // On ne prend pas le focus (sinon certains OEM affichent le clavier)
             isFocusable = false
             isFocusableInTouchMode = false
-
             setOnClickListener { showDatePicker() }
         }
 
@@ -209,7 +207,9 @@ class OnboardingPhase1Fragment : Fragment() {
             val metadata = runCatching { PreonboardingApiModuleKtorClient.fetchSummaryBeforeLogin() }
                 .onFailure { e ->
                     Timber.wtf("metadata ${e.javaClass.simpleName}")
-                    showError(getString(R.string.onboard_welcome_error_load_failed) + " (metadata)")
+                    context?.let { ctx ->
+                        showError(ctx.getString(R.string.onboard_welcome_error_load_failed) + " (metadata)")
+                    }
                 }
                 .getOrNull() ?: run { showLoading(false); return@launch }
 
@@ -237,7 +237,11 @@ class OnboardingPhase1Fragment : Fragment() {
 
         viewLifecycleOwner.lifecycleScope.launch {
             val enterprises = runCatching { PreonboardingApiModuleKtorClient.fetchEnterprises() }
-                .onFailure { showError(getString(R.string.onboard_welcome_error_load_failed) + " (entreprises)") }
+                .onFailure {
+                    context?.let { ctx ->
+                        showError(ctx.getString(R.string.onboard_welcome_error_load_failed) + " (entreprises)")
+                    }
+                }
                 .getOrNull()
 
             if (!isViewUsable()) { isLoading = false; showLoading(false); return@launch }
@@ -261,7 +265,11 @@ class OnboardingPhase1Fragment : Fragment() {
 
         viewLifecycleOwner.lifecycleScope.launch {
             val events = runCatching { PreonboardingApiModuleKtorClient.fetchEventsForEnterprise(enterpriseId) }
-                .onFailure { showError(getString(R.string.onboard_welcome_error_load_failed) + " (events)") }
+                .onFailure {
+                    context?.let { ctx ->
+                        showError(ctx.getString(R.string.onboard_welcome_error_load_failed) + " (events)")
+                    }
+                }
                 .getOrNull()
 
             if (!isViewUsable()) { isLoading = false; showLoading(false); return@launch }
@@ -381,11 +389,9 @@ class OnboardingPhase1Fragment : Fragment() {
         }
     }
 
-
-
-
     private fun clearDropdown(dropdown: MaterialAutoCompleteTextView) {
-        dropdown.setAdapter(ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, emptyList<String>()))
+        val ctx = dropdown.context ?: return
+        dropdown.setAdapter(ArrayAdapter(ctx, android.R.layout.simple_list_item_1, emptyList<String>()))
         dropdown.setText("", false)
     }
 
@@ -403,12 +409,11 @@ class OnboardingPhase1Fragment : Fragment() {
     }
 
     // ====== Date ======
-// ====== Date ======
     private fun showDatePicker() {
         if (!isViewUsable() || isDatePickerShowing) return
         isDatePickerShowing = true
 
-        val ctx = requireContext()
+        val ctx = context ?: run { isDatePickerShowing = false; return }
         val cal = Calendar.getInstance()
 
         // Pré-remplir depuis le champ si au format dd/MM/yyyy
@@ -454,7 +459,6 @@ class OnboardingPhase1Fragment : Fragment() {
         // --- MODE SPINNERS : commit sur premier changement != date de départ
         if (!calendarHooked) {
             dp.init(startY, startM, startD) { _, y, m, d ->
-                // Ignore les callbacks qui redonnent la date de départ (init)
                 if (y == startY && m == startM && d == startD) return@init
                 commit(y, m, d)
             }
@@ -471,9 +475,6 @@ class OnboardingPhase1Fragment : Fragment() {
         dlg.setOnDismissListener { isDatePickerShowing = false }
         dlg.show()
     }
-
-
-
 
     private fun formatBirthdateForAPI(displayDate: String?): String? {
         if (displayDate.isNullOrEmpty()) return null

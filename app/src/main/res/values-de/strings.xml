@@ -2658,5 +2658,6 @@ Sie werden diese Nachricht lesen, sobald sie der Gruppe beitreten.</string>
     <string name="option_both_desc" lang="de">Unterstützen und unterstützt werden.</string>
     <string name="question_location" lang="de">Was ist Ihr Viertel?</string>
     <string name="input_location" lang="de">Stadt oder Bezirksadresse</string>
+    <string name="sign_title">Registrierung</string>
 
 </resources>

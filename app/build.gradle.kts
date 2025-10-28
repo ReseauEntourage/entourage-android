@@ -326,7 +326,7 @@ dependencies {
     implementation("io.ktor:ktor-client-serialization:3.2.3")
     implementation("io.ktor:ktor-serialization-kotlinx-json:3.2.3")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.9.0")
-
+    implementation("com.google.android.gms:play-services-auth-api-phone:18.3.0")
     //UNCOMMENT FOR VIDEO CALL FEATURE
     //implementation("com.dafruits:webrtc:123.0.0")
 }

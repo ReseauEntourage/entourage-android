@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/view"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="22dp"
+    android:layout_marginVertical="12dp"
+    android:padding="15dp">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/id_card_imageview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        app:cardCornerRadius="40dp"
+        app:layout_constraintBottom_toTopOf="@id/separator"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/ivInterestIcon"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:background="@color/beige"
+            app:layout_constraintDimensionRatio="1:1"
+            tools:src="@drawable/onboarding_entour" />
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:id="@+id/tvInterestTitleFromRight"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:fontFamily="@font/quicksand_bold"
+        android:textColor="@color/black"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toTopOf="@+id/tvInterestSubTitleFromRight"
+        app:layout_constraintEnd_toStartOf="@+id/ivInterestCheck"
+        app:layout_constraintStart_toEndOf="@id/id_card_imageview"
+        app:layout_constraintTop_toTopOf="@id/id_card_imageview"
+        tools:text="@string/option_surround" />
+
+    <TextView
+        android:id="@+id/tvInterestSubTitleFromRight"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:fontFamily="@font/nunitosans_regular"
+        android:textColor="@color/grey"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toBottomOf="@+id/id_card_imageview"
+        app:layout_constraintEnd_toStartOf="@+id/ivInterestCheck"
+        app:layout_constraintStart_toEndOf="@id/id_card_imageview"
+        app:layout_constraintTop_toBottomOf="@+id/tvInterestTitleFromRight"
+        tools:text="@string/option_surround_desc" />
+
+    <View
+        android:id="@+id/separator"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="10dp"
+        android:background="@color/beige"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/id_card_imageview" />
+
+    <TextView
+        android:id="@+id/tvInterestTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:fontFamily="@font/quicksand_bold"
+        android:text=""
+        android:textColor="@color/black"
+        android:textSize="15sp"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/id_card_imageview" />
+
+    <ImageView
+        android:id="@+id/ivInterestCheck"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_onboarding_uncheck"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/id_card_imageview" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

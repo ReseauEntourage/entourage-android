@@ -1792,6 +1792,7 @@
     <string name="question_location" lang="en">What is your neighborhood?</string>
     <string name="input_location" lang="en">City or department address</string>
     <string name="needs_to_join_group" lang="en">You must join the group to do this action.</string>
+    <string name="sign_title">Sign up</string>
 
 
 </resources>

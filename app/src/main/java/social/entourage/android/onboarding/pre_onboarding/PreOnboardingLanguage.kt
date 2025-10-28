@@ -30,7 +30,7 @@ class PreOnboardingLanguage:BaseActivity(), OnLanguageClicked {
         binding.rvLangue.adapter = adapter
         setContentView(binding.root)
 
-        updatePaddingTopForEdgeToEdge(binding.layoutTitle)
+        updatePaddingTopForEdgeToEdge(binding.layoutLanguage)
     }
     private fun fillArray() {
         val phoneLanguageCode = Locale.getDefault().language
@@ -67,7 +67,6 @@ class PreOnboardingLanguage:BaseActivity(), OnLanguageClicked {
 
     private fun updateTexts() {
         binding.titleName.text = getString(R.string.select_language)
-        binding.titleLanguage.text = getString(R.string.welcome_user)
         //Modify button width
         binding.validate.text = getString(R.string.new_next)
     }

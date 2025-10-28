@@ -2696,4 +2696,5 @@
     <string name="option_both_desc" lang="ar">تقديم الدعم وتلقيه.</string>
     <string name="question_location" lang="ar">ما هو حيك؟</string>
     <string name="input_location" lang="ar">عنوان المدينة أو المنطقة</string>
+    <string name="sign_title">التسجيل</string>
 </resources>

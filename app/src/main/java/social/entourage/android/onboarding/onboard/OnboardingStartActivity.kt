@@ -17,6 +17,7 @@ import social.entourage.android.databinding.ActivityOnboardingStartBinding
 import social.entourage.android.onboarding.pre_onboarding.PreOnboardingChoiceActivity
 import social.entourage.android.tools.disable
 import social.entourage.android.tools.enable
+import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
 import social.entourage.android.tools.utils.Utils
 import social.entourage.android.tools.view.CustomProgressDialog
 import social.entourage.android.tools.view.countrycodepicker.Country
@@ -71,6 +72,8 @@ class OnboardingStartActivity : AppCompatActivity(), OnboardingStartCallback {
             changeFragment()
         }
         setupViews()
+        updatePaddingTopForEdgeToEdge(binding.layoutOnboardingActivity)
+
     }
 
     @Deprecated("Deprecated in Java")
@@ -195,6 +198,7 @@ class OnboardingStartActivity : AppCompatActivity(), OnboardingStartCallback {
 
     private fun updateGoal() {
         alertDialog.show(R.string.onboard_waiting_dialog)
+
         var userType = UserTypeSelection.NEIGHBOUR
         if (isAsso) userType = UserTypeSelection.ASSOS
         else if (isBeEntour) userType = UserTypeSelection.ALONE
@@ -208,19 +212,22 @@ class OnboardingStartActivity : AppCompatActivity(), OnboardingStartCallback {
             temporaryEmail,
             hasConsent,
             temporaryGender,
-            // On s'assure d'envoyer yyyy-MM-dd au back
             temporaryBirthdate?.let { formatBirthdateForAPI(it) },
             temporaryHowDidYouHear,
-            temporaryCompany, // 👈 ID entreprise
-            temporaryEvent    // 👈 ID event
+            temporaryCompany,
+            temporaryEvent
         ) { isOK, userResponse ->
             if (isOK && userResponse != null) {
                 authenticationController.saveUser(userResponse.user)
             }
             alertDialog.dismiss()
-            updateAddress()
+
+            // 👉 on va directement vers l’écran de choix de zone
+            startActivity(Intent(this, OnboardingZoneChoiceActivity::class.java))
+            // finish() // si tu veux fermer l’onboarding ici
         }
     }
+
 
 
 
@@ -342,8 +349,6 @@ class OnboardingStartActivity : AppCompatActivity(), OnboardingStartCallback {
             else -> Fragment()
         }
 
-        binding.iconBack.visibility =
-            if (currentFragmentPosition >= PositionsType.Type.pos) View.GONE else View.VISIBLE
 
         try {
             supportFragmentManager
@@ -368,10 +373,6 @@ class OnboardingStartActivity : AppCompatActivity(), OnboardingStartCallback {
 
         binding.uiOnboardingBtNext.setOnClickListener { goNext() }
         binding.uiOnboardingBtPrevious.setOnClickListener { goPrevious() }
-        binding.iconBack.setOnClickListener {
-            startActivity(Intent(this, PreOnboardingChoiceActivity::class.java))
-            finish()
-        }
 
         binding.uiOnboardingBtPrevious.visibility = View.INVISIBLE
         // démarrer désactivé mais avec la bonne apparence
@@ -383,7 +384,10 @@ class OnboardingStartActivity : AppCompatActivity(), OnboardingStartCallback {
         when (currentFragmentPosition) {
             PositionsType.NamesPhone.pos -> {
                 binding.uiOnboardingBtPrevious.visibility = View.INVISIBLE
-                binding.uiHeaderTitle.text = getString(R.string.onboard_welcome_title)
+            }
+            PositionsType.Passcode.pos -> {
+                binding.uiOnboardingBtPrevious.visibility = View.INVISIBLE
+                binding.uiHeaderTitle.text = getString(R.string.onboard_welcome_title_phase2)
             }
             PositionsType.Type.pos -> {
                 binding.uiOnboardingBtPrevious.visibility = View.INVISIBLE
@@ -401,11 +405,11 @@ class OnboardingStartActivity : AppCompatActivity(), OnboardingStartCallback {
                 }
             }
             else -> {
-                binding.uiOnboardingBtPrevious.visibility = View.VISIBLE
-                binding.uiHeaderTitle.text = getString(R.string.onboard_welcome_title_phase2)
+                binding.uiOnboardingBtPrevious.visibility = View.INVISIBLE
             }
         }
     }
+
 
     private fun formatBirthdateForAPI(displayDate: String?): String? {
         if (displayDate.isNullOrEmpty()) return null
@@ -466,24 +470,22 @@ class OnboardingStartActivity : AppCompatActivity(), OnboardingStartCallback {
         temporaryPasscode = password
     }
 
-    override fun updateUsertypeAndAddress(
+    override fun updateUsertype(
         isEntour: Boolean,
         isBeEntour: Boolean,
         both: Boolean,
         isAsso: Boolean,
-        address: User.Address?
+
     ) {
         this.isEntour = isEntour
         this.isBeEntour = isBeEntour
         this.Both = both
         this.isAsso = isAsso
-        this.temporaryPlaceAddress = address
-        if ((isEntour || isBeEntour || isAsso || both) && address != null) {
-            updateButtonNext(true)
-        } else {
-            updateButtonNext(false)
-        }
+        // ✅ On valide si AU MOINS un profil est choisi
+        val isValidNow = (isEntour || isBeEntour || isAsso || both)
+        updateButtonNext(isValidNow)
     }
+
 
     private fun setNextEnabled(enabled: Boolean) {
         binding.uiOnboardingBtNext.isEnabled = enabled

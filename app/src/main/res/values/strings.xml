@@ -1957,6 +1957,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="error_login_phone_length">Le numéro de téléphone doit faire au minimum %d chiffres</string>
     <string name="error_login_code_lenght">Le code doit faire 6 chiffres</string>
     <string name="login_title">Connexion</string>
+    <string name="sign_title">Vos informations personnelles</string>
     <string name="login_phone_placeholder">Numéro de téléphone</string>
     <string name="login_placeholder_code">Saisir votre code</string>
     <string name="login_button_connect">Je me connecte</string>
@@ -2978,6 +2979,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="option_both_desc">Proposer du soutien et en recevoir</string>
     <string name="question_location">Quel est votre quartier ?</string>
     <string name="input_location">Adresse ville ou département</string>
+    <string name="onboard_phase3_asso_desc">Je souhaite collaborer avec Entourage, créer des événements et orienter des bénéficiaires</string>
 
     <!-- Section Papotages Smalltalks -->
 
@@ -3162,4 +3164,14 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="delete_event_title">Supprimer l’événement ?</string>
     <string name="delete_event_confirmation">Cette action est irréversible. Les participants seront informés.</string>
 
+    <string name="onboarding_zone_title">Votre localisation</string>
+    <string name="onboarding_zone_subtitle">Cette information nous permet d’affiner les actions qui vous seront proposées proche de chez vous.</string>
+    <string name="onboarding_zone_city_hint">Ex. : Valence</string>
+    <string name="onboarding_zone_radius_label">Dans un rayon de</string>
+    <string name="onboarding_zone_home_pin">Domicile</string>
+    <string name="km_suffix">%1$d km</string>
+
+    <string name="onboard_retry_link">Recevoir un nouveau code par sms</string>
+    <string name="onboard_help_title">Besoin d’aide ?</string>
+    <string name="onboard_help_link">Contacter l’équipe entourage</string>
 </resources>

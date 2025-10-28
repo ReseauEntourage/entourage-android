@@ -1938,7 +1938,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="onboard_phase3_be_entour_title">Être entouré</string>
     <string name="onboard_phase3_be_entour_subtitle">Je suis en situation de vulnérabilité et recherche du soutien.</string>
     <string name="onboard_phase3_place_title">Quel est votre quartier ?</string>
-    <string name="onboard_phase3_asso_title">Je suis une association</string>
+    <string name="onboard_phase3_asso_title">Je travaille au sein d’une association</string>
 
     <string name="onboard_end_title">Bienvenue dans la Communauté Entourage </string>
     <string name="onboard_end_subtitle">Félicitations, vous voilà prêt à faire vivre la solidarité autour de vous.</string>
