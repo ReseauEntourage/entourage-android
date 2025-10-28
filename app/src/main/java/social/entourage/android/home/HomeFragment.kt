@@ -746,12 +746,15 @@ class HomeFragment: Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocatio
             HomeFragment.signablePermission = summary.signablePermission!!
         }
         val me = EntourageApplication.me(activity)
-        if(summary.preference == null || me?.address == null){
-            OnboardingStartActivity.FRAGMENT_NUMBER = 3
-            //launch onboarding activity
-            val intent = Intent(requireActivity(), OnboardingStartActivity::class.java)
-            startActivity(intent)
-            requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+
+        if(false && false ){
+            if(summary.preference == null || me?.address == null){
+                OnboardingStartActivity.FRAGMENT_NUMBER = 3
+                //launch onboarding activity
+                val intent = Intent(requireActivity(), OnboardingStartActivity::class.java)
+                startActivity(intent)
+                requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+            }
         }
         isContribution = summary.preference.equals("contribution")
 

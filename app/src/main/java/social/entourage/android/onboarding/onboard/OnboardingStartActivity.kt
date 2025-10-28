@@ -222,9 +222,12 @@ class OnboardingStartActivity : AppCompatActivity(), OnboardingStartCallback {
             }
             alertDialog.dismiss()
 
-            // 👉 on va directement vers l’écran de choix de zone
-            startActivity(Intent(this, OnboardingZoneChoiceActivity::class.java))
-            // finish() // si tu veux fermer l’onboarding ici
+            val typeForZone = when {
+                isAsso -> OnboardingZoneChoiceActivity.UserType.ASSO
+                isBeEntour -> OnboardingZoneChoiceActivity.UserType.BE_ENTOUR
+                else -> OnboardingZoneChoiceActivity.UserType.ENTOUR
+            }
+            startActivity(OnboardingZoneChoiceActivity.newIntent(this, typeForZone))
         }
     }
 

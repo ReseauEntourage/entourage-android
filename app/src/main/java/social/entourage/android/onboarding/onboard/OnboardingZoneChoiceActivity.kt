@@ -1,10 +1,13 @@
 package social.entourage.android.onboarding.onboard
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.SeekBar
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -19,6 +22,8 @@ import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRe
 import com.google.android.libraries.places.api.net.PlacesClient
 import kotlin.math.cos
 import social.entourage.android.R
+import social.entourage.android.api.OnboardingAPI
+import social.entourage.android.api.model.User
 import social.entourage.android.databinding.ActivityOnboardingZoneChoiceBinding
 import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
 
@@ -33,20 +38,25 @@ class OnboardingZoneChoiceActivity : AppCompatActivity(), OnMapReadyCallback {
     private var marker: Marker? = null
     private var circle: Circle? = null
     private var currentLatLng: LatLng? = null
-    private var radiusKm: Int = 20 // valeur par défaut
+    private var radiusKm: Int = 20
+
+    private var selectedUserType: UserType = UserType.ENTOUR
+    private var lastPlaceId: String? = null
+    private var lastDisplayAddress: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityOnboardingZoneChoiceBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Places
+        selectedUserType = intent.getStringExtra(EXTRA_USER_TYPE)
+            ?.let { runCatching { UserType.valueOf(it) }.getOrNull() } ?: UserType.ENTOUR
+
         if (!Places.isInitialized()) {
             Places.initialize(applicationContext, getString(R.string.google_api_key))
         }
         placesClient = Places.createClient(this)
 
-        // MapFragment -> utilise bien l'id de TON layout: map_fragment
         val mapFragment = SupportMapFragment.newInstance()
         supportFragmentManager.beginTransaction()
             .replace(R.id.map_fragment, mapFragment)
@@ -59,7 +69,6 @@ class OnboardingZoneChoiceActivity : AppCompatActivity(), OnMapReadyCallback {
         setupButtons()
     }
 
-    // ---------------- MAP ----------------
     override fun onMapReady(googleMap: GoogleMap) {
         map = googleMap.apply {
             uiSettings.isMapToolbarEnabled = false
@@ -80,7 +89,6 @@ class OnboardingZoneChoiceActivity : AppCompatActivity(), OnMapReadyCallback {
     private fun placeMarkerAndCircle(position: LatLng, title: String?) {
         val m = map ?: return
 
-        // Marker
         if (marker == null) {
             marker = m.addMarker(
                 MarkerOptions()
@@ -92,7 +100,6 @@ class OnboardingZoneChoiceActivity : AppCompatActivity(), OnMapReadyCallback {
             marker?.title = title
         }
 
-        // Circle
         val radiusMeters = (radiusKm * 1000).toDouble()
         if (circle == null) {
             circle = m.addCircle(
@@ -100,7 +107,7 @@ class OnboardingZoneChoiceActivity : AppCompatActivity(), OnMapReadyCallback {
                     .center(position)
                     .radius(radiusMeters)
                     .strokeWidth(0f)
-                    .fillColor(0x55FF7F00.toInt()) // orange translucide
+                    .fillColor(0x55FF7F00.toInt())
             )
         } else {
             circle?.center = position
@@ -108,6 +115,7 @@ class OnboardingZoneChoiceActivity : AppCompatActivity(), OnMapReadyCallback {
         }
 
         currentLatLng = position
+        lastDisplayAddress = title ?: lastDisplayAddress
         zoomToCircle(position, radiusMeters)
     }
 
@@ -133,9 +141,7 @@ class OnboardingZoneChoiceActivity : AppCompatActivity(), OnMapReadyCallback {
         return LatLngBounds(sw, ne)
     }
 
-    // ---------------- UI ----------------
     private fun setupUi() {
-        // utilise tes strings existantes
         binding.tvTitle.text = getString(R.string.onboarding_zone_title)
         binding.tvSubtitle.text = getString(R.string.onboarding_zone_subtitle)
         updateRadiusLabel()
@@ -145,12 +151,35 @@ class OnboardingZoneChoiceActivity : AppCompatActivity(), OnMapReadyCallback {
             binding.mapCard.requestLayout()
         }
         updatePaddingTopForEdgeToEdge(binding.layoutChoiceZone)
-
     }
 
     private fun setupButtons() {
-        binding.buttonConfigureLater.setOnClickListener { finish() }
-        binding.buttonStart.setOnClickListener { finish() }
+        binding.buttonConfigureLater.setOnClickListener {
+            if (selectedUserType == UserType.ASSO) {
+                Toast.makeText(this, R.string.onboard_asso_todo, Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            startActivity(Intent(this, OnboardingEndActivity::class.java))
+            finish()
+        }
+        binding.buttonStart.setOnClickListener {
+            if (selectedUserType == UserType.ASSO) {
+                Toast.makeText(this, R.string.onboard_asso_todo, Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            val addr = buildPrimaryAddress() ?: run {
+                Toast.makeText(this, R.string.onboarding_zone_pick_location_first, Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            OnboardingAPI.getInstance().updateAddress(addr, false) { isOK, _ ->
+                if (isOK) {
+                    startActivity(Intent(this, OnboardingEndActivity::class.java))
+                    finish()
+                } else {
+                    Toast.makeText(this, R.string.user_action_zone_send_failed, Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
     }
 
     private fun setupSeekbar() {
@@ -168,11 +197,9 @@ class OnboardingZoneChoiceActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     private fun updateRadiusLabel() {
-        // tv_radius_value dans TON layout
         binding.tvRadiusValue.text = getString(R.string.km_suffix, radiusKm)
     }
 
-    // ------------- AUTOCOMPLETE -------------
     private fun setupAutocomplete() {
         val actv = binding.autoCompleteCityName as AutoCompleteTextView
         actv.threshold = 1
@@ -224,11 +251,38 @@ class OnboardingZoneChoiceActivity : AppCompatActivity(), OnMapReadyCallback {
             .addOnSuccessListener { rsp ->
                 val place = rsp.place
                 val latLng = place.latLng ?: return@addOnSuccessListener
-                binding.autoCompleteCityName.setText(place.name ?: place.address ?: "")
-                placeMarkerAndCircle(latLng, place.name ?: place.address)
+                val label = place.name ?: place.address ?: ""
+                lastPlaceId = place.id
+                lastDisplayAddress = label
+                binding.autoCompleteCityName.setText(label)
+                placeMarkerAndCircle(latLng, label)
             }
             .addOnFailureListener { e ->
                 Log.e("ZoneActivity", "fetchPlace error: ${e.message}", e)
             }
+    }
+
+    private fun buildPrimaryAddress(): User.Address? {
+        val latLng = currentLatLng ?: return null
+        return if (!lastPlaceId.isNullOrBlank()) {
+            User.Address(lastPlaceId)
+        } else {
+            val label = lastDisplayAddress?.takeIf { it.isNotBlank() }
+                ?: binding.autoCompleteCityName.text?.toString()?.takeIf { it.isNotBlank() }
+                ?: ""
+            User.Address(latLng.latitude, latLng.longitude, label)
+        }
+    }
+
+
+    enum class UserType { ENTOUR, BE_ENTOUR, ASSO }
+
+    companion object {
+        private const val EXTRA_USER_TYPE = "extra_user_type"
+
+        fun newIntent(context: Context, userType: UserType): Intent {
+            return Intent(context, OnboardingZoneChoiceActivity::class.java)
+                .putExtra(EXTRA_USER_TYPE, userType.name)
+        }
     }
 }

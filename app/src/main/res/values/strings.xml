@@ -3174,4 +3174,8 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="onboard_retry_link">Recevoir un nouveau code par sms</string>
     <string name="onboard_help_title">Besoin d’aide ?</string>
     <string name="onboard_help_link">Contacter l’équipe entourage</string>
+
+    <string name="onboard_asso_todo">À définir pour le mode asso</string>
+    <string name="onboarding_zone_pick_location_first">Choisis une localisation d’abord</string>
+
 </resources>
