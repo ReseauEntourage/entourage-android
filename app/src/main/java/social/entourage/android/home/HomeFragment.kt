@@ -747,7 +747,7 @@ class HomeFragment: Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocatio
         }
         val me = EntourageApplication.me(activity)
 
-        if(false && false ){
+        if(false){
             if(summary.preference == null || me?.address == null){
                 OnboardingStartActivity.FRAGMENT_NUMBER = 3
                 //launch onboarding activity
