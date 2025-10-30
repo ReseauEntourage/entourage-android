@@ -28,5 +28,4 @@ class OnboardingEndActivity : AppCompatActivity() {
         }
         startActivity(intent)
     }
-
 }

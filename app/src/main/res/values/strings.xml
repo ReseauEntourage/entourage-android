@@ -3178,4 +3178,15 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="onboard_asso_todo">À définir pour le mode asso</string>
     <string name="onboarding_zone_pick_location_first">Choisis une localisation d’abord</string>
 
+    <!-- Choix association -->
+    <string name="onboard_asso_title">Sélectionnez votre association</string>
+    <string name="onboard_asso_subtitle">Choisissez dans la liste. Si elle n’apparaît pas, saisissez-la.</string>
+    <string name="onboard_asso_dropdown_hint">Nom de votre association</string>
+    <string name="onboard_asso_info">Votre association ne figure pas dans la liste. Créez-en une nouvelle.</string>
+    <string name="onboard_asso_other_label">Nom de votre association</string>
+    <string name="onboard_asso_other_placeholder">Ex. : Utopia 56 ou Femmes solidaires</string>
+    <string name="onboard_asso_pick_first">Sélectionnez d’abord une association</string>
+    <string name="onboard_asso_other_required">Veuillez renseigner le nom de votre association</string>
+
+
 </resources>
