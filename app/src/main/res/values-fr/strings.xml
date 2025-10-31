@@ -270,7 +270,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="group_posts_empty_state_title">Il n\'y a pas (encore) de publication sur ce groupe</string>
     <string name="group_posts_empty_state_subtitle">Pourquoi ne pas lancer la discussion avec vos voisins ?</string>
     <string name="posts">Fil d’actualité</string>
-    <string name="see_members">Voir les membres</string>
+    <string name="see_members">Liste des participants</string>
     <string name="leave_group">Quitter le groupe</string>
     <string name="edit_group_information">Modifier les informations du groupe</string>
     <string name="notification_new_event">Les nouveaux événements</string>
