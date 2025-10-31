@@ -213,6 +213,7 @@ class HomeFragment: Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocatio
         updateAvatar()
         userPresenter.user.observe(viewLifecycleOwner, userObserver)
 
+
         if(MainActivity.shouldLaunchOnboarding){
             MainActivity.shouldLaunchOnboarding = false
             //launch onboarding activity

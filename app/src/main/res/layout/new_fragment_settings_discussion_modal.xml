@@ -29,11 +29,11 @@
                     android:visibility="gone">
                     <TextView
                         android:id="@+id/eventTitle"
-                        style="@style/settings_items"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textColor="@color/black"
-                        android:fontFamily="@font/nunitosans_regular"
+                        android:fontFamily="@font/nunitosans_bold"
+                        android:textSize="15sp"
                         android:visibility="gone" />
                     <TextView
                         android:id="@+id/eventParticipants"
