@@ -2663,7 +2663,7 @@ Leerán este mensaje tan pronto como se unan al grupo.</string>
     <!-- Varios -->
     <string name="contact_email">contact@entourage.social</string>
     <string name="error_no_email">No se encontró ninguna app de correo electrónico</string>
-    <string name="terms_and_conditions_html"><![CDATA[Al registrarte, aceptas nuestros <u>Términos de uso</u> y nuestra <u>Política de privacidad</u>.]]></string>
+    <string name="terms_and_conditions_html"><![CDATA[Al registrarte, aceptas nuestros <a href="https://www.entourage.social/conditions-generales-dutilisation">Términos de Uso</a> y nuestra <a href="https://www.entourage.social/politique-de-confidentialite">Política de Privacidad</a>.]]></string>
     <string name="onboard_welcome_title_gender">Soy</string>
     <string name="onboard_welcome_title_how_did_you_hear">¿Cómo nos conociste?</string>
     <string name="onboard_welcome_title_company_name">Nombre de tu empresa</string>

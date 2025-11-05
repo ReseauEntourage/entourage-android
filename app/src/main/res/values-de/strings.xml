@@ -2666,7 +2666,7 @@ Sie werden diese Nachricht lesen, sobald sie der Gruppe beitreten.</string>
     <!-- Verschiedenes -->
     <string name="contact_email">contact@entourage.social</string>
     <string name="error_no_email">Keine E-Mail-App gefunden</string>
-    <string name="terms_and_conditions_html"><![CDATA[Mit der Registrierung akzeptierst du unsere <u>Nutzungsbedingungen</u> und unsere <u>Datenschutzerklärung</u>.]]></string>
+    <string name="terms_and_conditions_html"><![CDATA[Mit der Registrierung akzeptieren Sie unsere <a href="https://www.entourage.social/conditions-generales-dutilisation">Nutzungsbedingungen</a> und unsere <a href="https://www.entourage.social/politique-de-confidentialite">Datenschutzerklärung</a>.]]></string>
     <string name="onboard_welcome_title_gender">Ich bin</string>
     <string name="onboard_welcome_title_how_did_you_hear">Wie hast du von uns erfahren?</string>
     <string name="onboard_welcome_title_company_name">Name deines Unternehmens</string>

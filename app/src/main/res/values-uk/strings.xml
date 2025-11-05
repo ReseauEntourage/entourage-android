@@ -2591,7 +2591,7 @@
     <!-- Різне -->
     <string name="contact_email">contact@entourage.social</string>
     <string name="error_no_email">Не знайдено застосунку електронної пошти</string>
-    <string name="terms_and_conditions_html"><![CDATA[Реєструючись, ви приймаєте наші <u>Умови користування</u> та <u>Політику конфіденційності</u>.]]></string>
+    <string name="terms_and_conditions_html"><![CDATA[Реєструючись, ви приймаєте наші <a href="https://www.entourage.social/conditions-generales-dutilisation">Умови використання</a> та нашу <a href="https://www.entourage.social/politique-de-confidentialite">Політику конфіденційності</a>.]]></string>
     <string name="onboard_welcome_title_gender">Я</string>
     <string name="onboard_welcome_title_how_did_you_hear">Звідки ви про нас дізналися?</string>
     <string name="onboard_welcome_title_company_name">Назва вашої компанії</string>

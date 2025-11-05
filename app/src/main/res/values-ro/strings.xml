@@ -2677,7 +2677,7 @@ Ei vor citi acest mesaj imediat ce se vor alătura grupului.</string>
     <!-- Diverse -->
     <string name="contact_email">contact@entourage.social</string>
     <string name="error_no_email">Nicio aplicaţie de e-mail găsită</string>
-    <string name="terms_and_conditions_html"><![CDATA[Prin înscriere, accepţi <u>Termenii de utilizare</u> şi <u>Politica de confidenţialitate</u>.]]></string>
+    <string name="terms_and_conditions_html"><![CDATA[Prin înregistrare, accepți <a href="https://www.entourage.social/conditions-generales-dutilisation">Termenii de Utilizare</a> și <a href="https://www.entourage.social/politique-de-confidentialite">Politica noastră de Confidențialitate</a>.]]></string>
     <string name="onboard_welcome_title_gender">Sunt</string>
     <string name="onboard_welcome_title_how_did_you_hear">Cum ne-ai cunoscut?</string>
     <string name="onboard_welcome_title_company_name">Numele companiei tale</string>

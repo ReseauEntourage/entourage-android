@@ -257,6 +257,8 @@ class OnboardingPhase2Fragment : Fragment() {
             else
                 Html.fromHtml(text)
         binding.tvConditionGenerales.movementMethod = LinkMovementMethod.getInstance()
+        binding.tvConditionGenerales.linksClickable = true
+        binding.tvConditionGenerales.movementMethod = LinkMovementMethod.getInstance()
     }
 
 

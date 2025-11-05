@@ -2680,7 +2680,7 @@ Przeczytają tę wiadomość, gdy tylko dołączą do grupy.</string>
     <!-- Różne -->
     <string name="contact_email">contact@entourage.social</string>
     <string name="error_no_email">Nie znaleziono aplikacji e-mail</string>
-    <string name="terms_and_conditions_html"><![CDATA[Rejestrując się, akceptujesz nasze <u>Warunki korzystania</u> oraz <u>Politykę prywatności</u>.]]></string>
+    <string name="terms_and_conditions_html"><![CDATA[Rejestrując się, akceptujesz nasze <a href="https://www.entourage.social/conditions-generales-dutilisation">Warunki korzystania</a> oraz naszą <a href="https://www.entourage.social/politique-de-confidentialite">Politykę prywatności</a>.]]></string>
     <string name="onboard_welcome_title_gender">Jestem</string>
     <string name="onboard_welcome_title_how_did_you_hear">Skąd nas znasz?</string>
     <string name="onboard_welcome_title_company_name">Nazwa twojej firmy</string>

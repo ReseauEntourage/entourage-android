@@ -3204,6 +3204,5 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <!-- Divers (déjà présents chez toi normalement) -->
     <string name="contact_email">contact@entourage.social</string>
     <string name="error_no_email">Aucune application e-mail trouvée</string>
-    <string name="terms_and_conditions_html"><![CDATA[En vous inscrivant, vous acceptez nos <u>Conditions Générales d’Utilisation</u> et notre <u>Politique de confidentialité</u>.]]></string>
-
+    <string name="terms_and_conditions_html"><![CDATA[En vous inscrivant, vous acceptez nos<a href="https://www.entourage.social/conditions-generales-dutilisation">Conditions Générales d’Utilisation</a>et notre<a href="https://www.entourage.social/politique-de-confidentialite">Politique de confidentialité</a>.]]></string>
 </resources>

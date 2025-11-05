@@ -2704,7 +2704,7 @@
     <!-- متفرقات -->
     <string name="contact_email">contact@entourage.social</string>
 <!--    <string name="error_no_email">لم يتم العثور على تطبيق بريد إلكتروني</string>-->
-    <string name="terms_and_conditions_html"><![CDATA[بتسجيلك، فإنك تقبل <u>شروط الاستخدام</u> و<u>سياسة الخصوصية</u> الخاصة بنا.]]></string>
+    <string name="terms_and_conditions_html"><![CDATA[من خلال التسجيل، فإنك توافق على <a href="https://www.entourage.social/conditions-generales-dutilisation">شروط الاستخدام</a> و <a href="https://www.entourage.social/politique-de-confidentialite">سياسة الخصوصية</a>.]]></string>
     <string name="onboard_welcome_title_gender">أنا</string>
     <string name="onboard_welcome_title_how_did_you_hear">كيف عرفت بنا؟</string>
     <string name="onboard_welcome_title_company_name">اسم شركتك</string>
