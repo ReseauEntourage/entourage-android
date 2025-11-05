@@ -7,13 +7,13 @@
     android:id="@+id/layout_choice_zone"
     android:focusable="true"
     android:focusableInTouchMode="true"
+    android:descendantFocusability="beforeDescendants"
     android:fillViewport="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <!-- Header -->
         <TextView
             android:id="@+id/tv_title"
             android:layout_width="0dp"
@@ -44,7 +44,6 @@
             app:layout_constraintTop_toBottomOf="@id/tv_title"
             android:text="@string/onboarding_zone_subtitle"/>
 
-        <!-- Champ ville -->
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/layoutCity"
             android:layout_width="0dp"
@@ -76,7 +75,6 @@
                 app:layout_constraintTop_toTopOf="parent"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <!-- Rayon -->
         <TextView
             android:id="@+id/tv_radius_label"
             android:layout_width="wrap_content"
@@ -124,7 +122,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_radius_label"/>
 
-        <!-- Carte -->
         <androidx.cardview.widget.CardView
             android:id="@+id/map_card"
             android:layout_width="0dp"
@@ -144,7 +141,6 @@
                 android:layout_height="match_parent" />
         </androidx.cardview.widget.CardView>
 
-        <!-- Boutons bas (tes boutons) -->
         <LinearLayout
             android:id="@+id/bottom_buttons"
             android:layout_width="0dp"
@@ -153,8 +149,7 @@
             android:padding="20dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            >
+            app:layout_constraintStart_toStartOf="parent">
 
             <Button
                 android:id="@+id/button_configure_later"

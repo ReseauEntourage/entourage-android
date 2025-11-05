@@ -3,6 +3,8 @@ package social.entourage.android.onboarding.onboard
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.inputmethod.InputMethodManager
 import android.widget.ArrayAdapter
@@ -47,6 +49,7 @@ class OnboardingZoneChoiceActivity : AppCompatActivity(), OnMapReadyCallback {
     private var lastPlaceId: String? = null
     private var lastDisplayAddress: String? = null
     private var suppressAutocomplete = false
+    private var queryGen = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -168,7 +171,8 @@ class OnboardingZoneChoiceActivity : AppCompatActivity(), OnMapReadyCallback {
     private fun setupAutocomplete() {
         val actv = binding.autoCompleteCityName as AutoCompleteTextView
         actv.threshold = 1
-        actv.setAdapter(ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line))
+        val baseAdapter = ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, mutableListOf())
+        actv.setAdapter(baseAdapter)
 
         actv.setOnItemClickListener { _, _, position, _ ->
             val prediction = predictions.getOrNull(position) ?: return@setOnItemClickListener
@@ -177,28 +181,29 @@ class OnboardingZoneChoiceActivity : AppCompatActivity(), OnMapReadyCallback {
             suppressAutocomplete = true
             actv.setText(label, false)
             actv.setSelection(label.length)
+            actv.dismissDropDown()
+            actv.clearFocus()
+            window?.decorView?.clearFocus()
+            binding.layoutChoiceZone.requestFocus()
 
-            actv.post {
-                actv.dismissDropDown()
-                // Donne le focus au conteneur global -> l'ACTV perd le focus et la dropdown se ferme
-                binding.layoutChoiceZone.requestFocus()
-                val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                imm.hideSoftInputFromWindow(actv.windowToken, 0)
-            }
+            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(actv.windowToken, 0)
 
+            queryGen++
             fetchPlaceDetails(prediction.placeId)
-            actv.postDelayed({ suppressAutocomplete = false }, 120)
+            actv.postDelayed({ suppressAutocomplete = false }, 300)
         }
+
         actv.setOnFocusChangeListener { v, hasFocus ->
             if (!hasFocus) {
                 (v as AutoCompleteTextView).dismissDropDown()
             }
         }
 
-        actv.addTextChangedListener(object : android.text.TextWatcher {
+        actv.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-            override fun afterTextChanged(s: android.text.Editable?) {
+            override fun afterTextChanged(s: Editable?) {
                 if (suppressAutocomplete) return
                 val q = s?.toString()?.trim().orEmpty()
                 if (q.length >= 1) fetchAutocompletePredictions(q)
@@ -207,6 +212,7 @@ class OnboardingZoneChoiceActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     private fun fetchAutocompletePredictions(query: String) {
+        val myGen = ++queryGen
         val request = FindAutocompletePredictionsRequest.builder()
             .setQuery(query)
             .setCountries("FR")
@@ -214,11 +220,18 @@ class OnboardingZoneChoiceActivity : AppCompatActivity(), OnMapReadyCallback {
 
         placesClient.findAutocompletePredictions(request)
             .addOnSuccessListener { response ->
+                val actv = (binding.autoCompleteCityName as AutoCompleteTextView)
+                if (suppressAutocomplete || !actv.hasFocus() || myGen != queryGen) return@addOnSuccessListener
                 predictions = response.autocompletePredictions
                 val suggestions = predictions.map { it.getFullText(null).toString() }
-                val actv = (binding.autoCompleteCityName as AutoCompleteTextView)
-                val adapter = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, suggestions)
-                actv.setAdapter(adapter)
+                val adapter: ArrayAdapter<String> =
+                    (actv.adapter as? ArrayAdapter<String>)
+                        ?: ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, mutableListOf()).also {
+                            actv.setAdapter(it)
+                        }
+
+                adapter.clear()
+                adapter.addAll(suggestions)
                 adapter.notifyDataSetChanged()
                 if (suggestions.isNotEmpty()) actv.showDropDown()
             }
@@ -249,18 +262,12 @@ class OnboardingZoneChoiceActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private fun placeMarkerAndCircle(position: LatLng, title: String?) {
         val m = map ?: return
-
         if (marker == null) {
-            marker = m.addMarker(
-                MarkerOptions()
-                    .position(position)
-                    .title(title ?: "Localisation")
-            )
+            marker = m.addMarker(MarkerOptions().position(position).title(title ?: "Localisation"))
         } else {
             marker?.position = position
             marker?.title = title
         }
-
         val radiusMeters = (radiusKm * 1000).toDouble()
         if (circle == null) {
             circle = m.addCircle(
@@ -274,7 +281,6 @@ class OnboardingZoneChoiceActivity : AppCompatActivity(), OnMapReadyCallback {
             circle?.center = position
             circle?.radius = radiusMeters
         }
-
         currentLatLng = position
         lastDisplayAddress = title ?: lastDisplayAddress
         zoomToCircle(position, radiusMeters)
@@ -312,16 +318,6 @@ class OnboardingZoneChoiceActivity : AppCompatActivity(), OnMapReadyCallback {
                 ?: binding.autoCompleteCityName.text?.toString()?.takeIf { it.isNotBlank() }
                 ?: ""
             User.Address(latLng.latitude, latLng.longitude, label)
-        }
-    }
-
-    private fun hideKeyboardAndClearFocus() {
-        val actv = binding.autoCompleteCityName as AutoCompleteTextView
-        actv.post {
-            actv.dismissDropDown()
-            actv.clearFocus()
-            val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.hideSoftInputFromWindow(actv.windowToken, 0)
         }
     }
 
