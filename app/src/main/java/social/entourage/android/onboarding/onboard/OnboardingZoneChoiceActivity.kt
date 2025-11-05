@@ -105,10 +105,10 @@ class OnboardingZoneChoiceActivity : AppCompatActivity(), OnMapReadyCallback {
         }
 
         binding.buttonStart.setOnClickListener {
-            if (selectedUserType == UserType.ASSO) {
+/*            if (selectedUserType == UserType.ASSO) {
                 Toast.makeText(this, R.string.onboard_asso_todo, Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
-            }
+            }*/
 
             val addr = buildPrimaryAddress() ?: run {
                 Toast.makeText(
