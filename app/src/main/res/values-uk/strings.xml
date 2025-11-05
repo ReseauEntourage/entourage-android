@@ -8,7 +8,6 @@
     <string name="error_application_update">Версія d\ "Встановлено Entourage n\" більше не підтримується. Щоб продовжити користуватися нашими послугами та отримати найкращий досвід, будь ласка, оновіть до останньої версії, натиснувши це посилання.</string>
     <string name="button_update_version">Оновити</string>
     <string name="title_update_version">ДОСТУПНЕ ОНОВЛЕННЯ</string>
-    <string name="error_no_email">Електронна пошта не налаштована</string>
     <string name="yes">Так</string>
     <string name="no">Немає</string>
     <string name="button_OK">в порядку</string>
@@ -1928,7 +1927,7 @@
     <string name="mod_phone_code">- Щоб змінити</string>
     <string name="onboard_code_placeholder">00000000</string>
 
-    <string name="onboard_welcome_title_phase3">У захваті від %s!</string>
+    <string name="onboard_welcome_title_phase3">Виберіть свій профіль</string>
 
     <string name="onboard_phase3_entour_desc">Крім зустрічей з людьми, як ви хочете зробити внесок у спільноту Entourage?</string>
     <string name="onboard_phase3_entour_title">Підтримати інших</string>
@@ -1936,7 +1935,6 @@
     <string name="onboard_phase3_be_entour_title">Отримати підтримку</string>
     <string name="onboard_phase3_be_entour_subtitle">Я перебуваю в уразливій ситуації та шукаю підтримки.</string>
     <string name="onboard_phase3_place_title">Який ваш район?</string>
-    <string name="onboard_phase3_asso_title">Я асоціація</string>
 
     <string name="onboard_end_title">Ласкаво просимо до спільноти Entourage</string>
     <string name="onboard_end_subtitle">Вітаємо, ви готові принести солідарність у життя навколо вас.</string>
@@ -2433,7 +2431,6 @@
     <string name="map_filter_entourage_contribution_text"><b>Переглянути внески стосовно:</b></string>
     <string name="custom_dialog_action_content_one_contrib">Чи завершилася ваша діяльність \"<![CDATA[<b>%1$s</b>]]>\"?</string>
     <string name="search_member_hint">Шукати члена</string>
-    <string name="terms_and_conditions_html">Натискаючи &lt;b&gt;Далі&lt;/b&gt;, ви погоджуєтеся з &lt;a href=\'https://www.entourage.social/cgu\'&gt;Умовами користування&lt;/a&gt; та &lt;a href=\'https://www.entourage.social/politique-de-confidentialite\'&gt;Політикою конфіденційності&lt;/a&gt;</string>
     <string name="action_crete_cat_about">Шукаєте можливість запропонувати %s, яке не вписується в жодну з цих категорій? Здається, що \ не має місця в мережі, але ви завжди можете</string>
     <string name="action_create_cat_about_link"> дізнатися більше тут.</string>
     <string name="report_modal_title_translate">Перекласти</string>
@@ -2574,14 +2571,82 @@
     <string name="title_button_see_event">Знайдіть усю інформацію про подію тут</string>
     <string name="welcome" lang="uk">Ласкаво просимо %1$s!</string>
     <string name="question" lang="uk">Як ви хочете допомогти спільноті Entourage?</string>
-    <string name="option_surround" lang="uk">Підтримка</string>
-    <string name="option_surround_desc" lang="uk">Я хочу підтримувати своїх сусідів, яким це потрібно.</string>
-    <string name="option_supported" lang="uk">Бути підтриманим</string>
-    <string name="option_supported_desc" lang="uk">Я у вразливій ситуації і шукаю підтримки.</string>
+
     <string name="option_both" lang="uk">Обидва</string>
     <string name="option_both_desc" lang="uk">Підтримувати та отримувати підтримку.</string>
     <string name="question_location" lang="uk">Який ваш район?</string>
     <string name="input_location" lang="uk">Адреса міста або області</string>
     <string name="sign_title">Реєстрація</string>
+    <string name="onboard_profile_title">Виберіть свій профіль</string>
+
+    <string name="option_surround">Хочу отримати підтримку</string>
+    <string name="option_surround_desc">Я переживаю складний період (пошук роботи, сумніви, нестабільна ситуація тощо) і хотів(-ла) би зустріти людей, які могли б мене підтримати.</string>
+
+    <string name="option_supported">Хочу допомагати поруч</string>
+    <string name="option_supported_desc">Хочу долучатися і підтримувати людей поблизу мого місця проживання.</string>
+
+    <string name="onboard_phase3_asso_title">Я працюю в громадській організації</string>
+    <string name="onboard_phase3_asso_desc">Хочу співпрацювати з Entourage, проводити події та скеровувати отримувачів допомоги.</string>
+
+    <!-- Різне -->
+    <string name="contact_email">contact@entourage.social</string>
+    <string name="error_no_email">Не знайдено застосунку електронної пошти</string>
+    <string name="terms_and_conditions_html"><![CDATA[Реєструючись, ви приймаєте наші <u>Умови користування</u> та <u>Політику конфіденційності</u>.]]></string>
+    <string name="onboard_welcome_title_gender">Я</string>
+    <string name="onboard_welcome_title_how_did_you_hear">Звідки ви про нас дізналися?</string>
+    <string name="onboard_welcome_title_company_name">Назва вашої компанії</string>
+    <string name="onboard_welcome_title_event_name">Подія, у якій ви берете участь</string>
+    <string name="onboard_welcome_error_company_name">Будь ласка, виберіть компанію.</string>
+    <string name="onboard_welcome_error_event_name">Будь ласка, виберіть подію.</string>
+    <string name="onboard_welcome_error_load_failed">Не вдалося завантажити список. Спробуйте ще раз.</string>
+    <string name="onboard_welcome_error_invalid_value">Некоректне значення. Виберіть зі списку.</string>
+    <string name="onboard_welcome_how_did_you_hear_word_of_mouth">Сарафанне радіо</string>
+    <string name="onboard_welcome_how_did_you_hear_internet">Інтернет</string>
+    <string name="onboard_welcome_how_did_you_hear_tv_media">Телебачення / медіа</string>
+    <string name="onboard_welcome_how_did_you_hear_social_media">Соціальні мережі</string>
+    <string name="onboard_welcome_how_did_you_hear_corporate_awareness">Інформування в компаніях</string>
+    <string name="onboard_welcome_title_birthdate">Дата народження</string>
+    <string name="onboard_welcome_placeholder_birthdate">ДД/ММ/РРРР</string>
+    <string name="onboard_welcome_gender_female">Жінка</string>
+    <string name="onboard_welcome_gender_male">Чоловік</string>
+    <string name="onboard_welcome_gender_other">Інше</string>
+    <string name="onboard_welcome_placeholder_firstname_new">напр.: Марія</string>
+    <string name="onboard_welcome_placeholder_lastname_new">напр.: Іваненко</string>
+    <string name="onboard_welcome_placeholder_phone_new">06 XX XX XX XX</string>
+    <string name="onboard_welcome_title_firstname_required">Ім\'я*</string>
+    <string name="onboard_welcome_title_lastname_required">Прізвище*</string>
+    <string name="onboard_welcome_title_phone_required">Телефон*</string>
+    <string name="onboard_welcome_placeholder_email_new">напр.: maria.ivanenko@email.com</string>
+
+    <string name="image_option_title">Фотографії розмови</string>
+    <string name="delete_event">Видалити подію</string>
+    <string name="delete_event_title">Видалити подію?</string>
+    <string name="delete_event_confirmation">Цю дію не можна скасувати. Учасників буде поінформовано.</string>
+
+    <string name="onboarding_zone_title">Ваше розташування</string>
+    <string name="onboarding_zone_subtitle">Ця інформація допомагає нам пропонувати дії поруч із вами.</string>
+    <string name="onboarding_zone_city_hint">напр.: Valence</string>
+    <string name="onboarding_zone_radius_label">У радіусі</string>
+    <string name="onboarding_zone_home_pin">Дім</string>
+    <string name="km_suffix">%1$d км</string>
+
+    <string name="onboard_retry_link">Отримати новий код через SMS</string>
+    <string name="onboard_help_title">Потрібна допомога?</string>
+    <string name="onboard_help_link">Зв\'язатися з командою Entourage</string>
+
+    <string name="onboard_asso_todo">Потрібно визначити для режиму організації</string>
+    <string name="onboarding_zone_pick_location_first">Спочатку виберіть місце</string>
+
+    <string name="onboard_asso_title">Виберіть вашу організацію</string>
+    <string name="onboard_asso_subtitle">Виберіть зі списку. Якщо її немає, введіть назву.</string>
+    <string name="onboard_asso_dropdown_hint">Назва вашої організації</string>
+    <string name="onboard_asso_info">Вашої організації немає в списку. Створіть нову.</string>
+    <string name="onboard_asso_other_label">Назва вашої організації</string>
+    <string name="onboard_asso_other_placeholder">напр.: Utopia 56 або Femmes solidaires</string>
+    <string name="onboard_asso_pick_first">Спочатку виберіть організацію</string>
+    <string name="onboard_asso_other_required">Вкажіть назву вашої організації</string>
+
+    <string name="onboard_sms_wait_title">Ви ще не отримали код для входу?</string>
+    <string name="onboard_sms_wait_countdown">Ви зможете запросити новий код через %1$s</string>
 
 </resources>

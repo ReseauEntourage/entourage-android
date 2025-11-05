@@ -35,44 +35,33 @@ import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
 
 class OnboardingZoneChoiceActivity : AppCompatActivity(), OnMapReadyCallback {
 
-    // ViewBinding
     private lateinit var binding: ActivityOnboardingZoneChoiceBinding
-
-    // Google Places / Maps
     private lateinit var placesClient: PlacesClient
     private var map: GoogleMap? = null
     private var predictions: List<AutocompletePrediction> = emptyList()
-
-    // Carte / UI state
     private var marker: Marker? = null
     private var circle: Circle? = null
     private var currentLatLng: LatLng? = null
     private var radiusKm: Int = 20
-
-    // Choix du type utilisateur (défini à l'écran précédent)
     private var selectedUserType: UserType = UserType.ENTOUR
-
-    // Mémoire d’adresse sélectionnée
     private var lastPlaceId: String? = null
     private var lastDisplayAddress: String? = null
+    private var suppressAutocomplete = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityOnboardingZoneChoiceBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Récupération du type choisi (ENTOUR / BE_ENTOUR / ASSO)
         selectedUserType = intent.getStringExtra(EXTRA_USER_TYPE)
             ?.let { runCatching { UserType.valueOf(it) }.getOrNull() }
             ?: UserType.ENTOUR
 
-        // Places init
         if (!Places.isInitialized()) {
             Places.initialize(applicationContext, getString(R.string.google_api_key))
         }
         placesClient = Places.createClient(this)
 
-        // Map
         val mapFragment = SupportMapFragment.newInstance()
         supportFragmentManager.beginTransaction()
             .replace(R.id.map_fragment, mapFragment)
@@ -85,8 +74,6 @@ class OnboardingZoneChoiceActivity : AppCompatActivity(), OnMapReadyCallback {
         setupButtons()
     }
 
-    // ---------------- MAP ----------------
-
     override fun onMapReady(googleMap: GoogleMap) {
         map = googleMap.apply {
             uiSettings.isMapToolbarEnabled = false
@@ -97,25 +84,19 @@ class OnboardingZoneChoiceActivity : AppCompatActivity(), OnMapReadyCallback {
         updateRadiusLabel()
     }
 
-    // ---------------- UI Helpers ----------------
-
     private fun setupUi() {
         binding.tvTitle.text = getString(R.string.onboarding_zone_title)
         binding.tvSubtitle.text = getString(R.string.onboarding_zone_subtitle)
         updateRadiusLabel()
-
-        // hauteur de la carte ≈ 33% écran
         binding.mapCard.post {
             val h = resources.displayMetrics.heightPixels
             binding.mapCard.layoutParams.height = (h * 0.33f).toInt()
             binding.mapCard.requestLayout()
         }
-
         updatePaddingTopForEdgeToEdge(binding.layoutChoiceZone)
     }
 
     private fun setupButtons() {
-        // "Plus tard" : si ASSO -> TODO toast, sinon on va vers l’écran de fin
         binding.buttonConfigureLater.setOnClickListener {
             if (selectedUserType == UserType.ASSO) {
                 Toast.makeText(this, R.string.onboard_asso_todo, Toast.LENGTH_SHORT).show()
@@ -125,8 +106,6 @@ class OnboardingZoneChoiceActivity : AppCompatActivity(), OnMapReadyCallback {
             finish()
         }
 
-        // "Commencer" : si ASSO -> TODO toast
-        // sinon: 1) update travel_distance, 2) update address, 3) OnboardingEnd
         binding.buttonStart.setOnClickListener {
             if (selectedUserType == UserType.ASSO) {
                 Toast.makeText(this, R.string.onboard_asso_todo, Toast.LENGTH_SHORT).show()
@@ -142,7 +121,6 @@ class OnboardingZoneChoiceActivity : AppCompatActivity(), OnMapReadyCallback {
                 return@setOnClickListener
             }
 
-            // 1) D’abord la distance
             OnboardingAPI.getInstance().updateTravelDistance(radiusKm) { okDist, _ ->
                 if (!okDist) {
                     Toast.makeText(
@@ -153,7 +131,6 @@ class OnboardingZoneChoiceActivity : AppCompatActivity(), OnMapReadyCallback {
                     return@updateTravelDistance
                 }
 
-                // 2) Puis l’adresse
                 OnboardingAPI.getInstance().updateAddress(addr, false) { isOK, _ ->
                     if (isOK) {
                         startActivity(Intent(this, OnboardingEndActivity::class.java))
@@ -175,7 +152,7 @@ class OnboardingZoneChoiceActivity : AppCompatActivity(), OnMapReadyCallback {
         updateRadiusLabel()
         binding.radiusSeek.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-                radiusKm = progress.coerceAtLeast(1) // min 1 km
+                radiusKm = progress.coerceAtLeast(1)
                 updateRadiusLabel()
                 updateCircleRadius()
             }
@@ -188,8 +165,6 @@ class OnboardingZoneChoiceActivity : AppCompatActivity(), OnMapReadyCallback {
         binding.tvRadiusValue.text = getString(R.string.km_suffix, radiusKm)
     }
 
-    // ---------------- AUTOCOMPLETE ----------------
-
     private fun setupAutocomplete() {
         val actv = binding.autoCompleteCityName as AutoCompleteTextView
         actv.threshold = 1
@@ -197,15 +172,34 @@ class OnboardingZoneChoiceActivity : AppCompatActivity(), OnMapReadyCallback {
 
         actv.setOnItemClickListener { _, _, position, _ ->
             val prediction = predictions.getOrNull(position) ?: return@setOnItemClickListener
-            hideKeyboardAndClearFocus()
+            val label = prediction.getFullText(null).toString()
+
+            suppressAutocomplete = true
+            actv.setText(label, false)
+            actv.setSelection(label.length)
+
+            actv.post {
+                actv.dismissDropDown()
+                // Donne le focus au conteneur global -> l'ACTV perd le focus et la dropdown se ferme
+                binding.layoutChoiceZone.requestFocus()
+                val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                imm.hideSoftInputFromWindow(actv.windowToken, 0)
+            }
+
             fetchPlaceDetails(prediction.placeId)
-            actv.dismissDropDown()
+            actv.postDelayed({ suppressAutocomplete = false }, 120)
+        }
+        actv.setOnFocusChangeListener { v, hasFocus ->
+            if (!hasFocus) {
+                (v as AutoCompleteTextView).dismissDropDown()
+            }
         }
 
         actv.addTextChangedListener(object : android.text.TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
             override fun afterTextChanged(s: android.text.Editable?) {
+                if (suppressAutocomplete) return
                 val q = s?.toString()?.trim().orEmpty()
                 if (q.length >= 1) fetchAutocompletePredictions(q)
             }
@@ -244,15 +238,14 @@ class OnboardingZoneChoiceActivity : AppCompatActivity(), OnMapReadyCallback {
                 val label = place.name ?: place.address ?: ""
                 lastPlaceId = place.id
                 lastDisplayAddress = label
-                binding.autoCompleteCityName.setText(label)
+                binding.autoCompleteCityName.setText(label, false)
+                binding.autoCompleteCityName.setSelection(label.length)
                 placeMarkerAndCircle(latLng, label)
             }
             .addOnFailureListener { e ->
                 Log.e("ZoneActivity", "fetchPlace error: ${e.message}", e)
             }
     }
-
-    // ---------------- MAP Drawing ----------------
 
     private fun placeMarkerAndCircle(position: LatLng, title: String?) {
         val m = map ?: return
@@ -275,7 +268,7 @@ class OnboardingZoneChoiceActivity : AppCompatActivity(), OnMapReadyCallback {
                     .center(position)
                     .radius(radiusMeters)
                     .strokeWidth(0f)
-                    .fillColor(0x55FF7F00.toInt()) // orange translucide
+                    .fillColor(0x55FF7F00.toInt())
             )
         } else {
             circle?.center = position
@@ -309,13 +302,6 @@ class OnboardingZoneChoiceActivity : AppCompatActivity(), OnMapReadyCallback {
         return LatLngBounds(sw, ne)
     }
 
-    // ---------------- Address build ----------------
-
-    /**
-     * Construit l’adresse primaire pour l’API en respectant tes deux constructeurs :
-     * - User.Address(googlePlaceId: String?)
-     * - User.Address(latitude: Double, longitude: Double, displayAddress: String?)
-     */
     private fun buildPrimaryAddress(): User.Address? {
         val latLng = currentLatLng ?: return null
         return if (!lastPlaceId.isNullOrBlank()) {
@@ -329,16 +315,15 @@ class OnboardingZoneChoiceActivity : AppCompatActivity(), OnMapReadyCallback {
         }
     }
 
-    // ---------------- UX helpers ----------------
-
     private fun hideKeyboardAndClearFocus() {
         val actv = binding.autoCompleteCityName as AutoCompleteTextView
-        actv.clearFocus()
-        val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.hideSoftInputFromWindow(actv.windowToken, 0)
+        actv.post {
+            actv.dismissDropDown()
+            actv.clearFocus()
+            val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(actv.windowToken, 0)
+        }
     }
-
-    // ---------------- Types & Companion ----------------
 
     enum class UserType { ENTOUR, BE_ENTOUR, ASSO }
 

@@ -17,19 +17,17 @@ import social.entourage.android.tools.log.AnalyticsEvents
 private const val ARG_ENTOUR = "entour"
 private const val ARG_BEENTOUR = "beentour"
 private const val ARG_ASSO = "asso"
-private const val ARG_ADDRESS = "address" // gardé pour compat, non utilisé ici
+private const val ARG_ADDRESS = "address" // compat
 
 class OnboardingPhase3Fragment : Fragment() {
 
     private lateinit var binding: FragmentOnboardingPhase3Binding
     private var callback: OnboardingStartCallback? = null
 
-    // état initial passé par le parent
     private var isEntour = false
     private var isBeEntour = false
     private var isAsso = false
 
-    // adapter
     private lateinit var adapter: ProfileChoiceAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,7 +36,6 @@ class OnboardingPhase3Fragment : Fragment() {
             isEntour = it.getBoolean(ARG_ENTOUR)
             isBeEntour = it.getBoolean(ARG_BEENTOUR)
             isAsso = it.getBoolean(ARG_ASSO)
-            // l’adresse est ignorée dorénavant, on la gèrera dans une étape dédiée
         }
     }
 
@@ -64,11 +61,13 @@ class OnboardingPhase3Fragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        //binding.tvTitle.text = getString(R.string.onboard_profile_title)
+
         AnalyticsEvents.logEvent(AnalyticsEvents.Onboard_profile)
         EnhancedOnboarding.shouldNotDisplayCampain = true
 
         setupRecycler()
-        propagateSelectionToParent() // active/désactive "Suivant" au chargement
+        propagateSelectionToParent()
     }
 
     private fun setupRecycler() {
@@ -77,7 +76,6 @@ class OnboardingPhase3Fragment : Fragment() {
         adapter = ProfileChoiceAdapter(
             items = items,
             onClick = { clicked ->
-                // sélection exclusive : un seul choix à la fois
                 isEntour = clicked.type == ProfileChoiceType.ENTOUR
                 isBeEntour = clicked.type == ProfileChoiceType.BE_ENTOUR
                 isAsso = clicked.type == ProfileChoiceType.ASSO
@@ -94,44 +92,39 @@ class OnboardingPhase3Fragment : Fragment() {
         }
     }
 
-    private fun buildInitialItems(): List<ProfileChoice> {
-        return listOf(
+    private fun buildInitialItems(): List<ProfileChoice> =
+        listOf(
             ProfileChoice(
                 type = ProfileChoiceType.BE_ENTOUR,
-                titleRes = R.string.option_supported,
-                subtitleRes = R.string.option_supported_desc,
-                iconRes = R.drawable.onboarding_been_entour,
+                titleRes = R.string.option_surround,
+                subtitleRes = R.string.option_surround_desc,
+                iconRes = R.drawable.ic_been_entoured_onboarding,
                 selected = isBeEntour
             ),
             ProfileChoice(
                 type = ProfileChoiceType.ENTOUR,
-                titleRes = R.string.option_surround,
-                subtitleRes = R.string.option_surround_desc,
+                titleRes = R.string.option_supported,
+                subtitleRes = R.string.option_supported_desc,
                 iconRes = R.drawable.onboarding_entour,
                 selected = isEntour
             ),
             ProfileChoice(
                 type = ProfileChoiceType.ASSO,
                 titleRes = R.string.onboard_phase3_asso_title,
-                subtitleRes = R.string.onboard_phase3_asso_desc, // ajoute cette string si besoin
-                iconRes = R.drawable.onboarding_asso,            // icône à fournir dans tes drawables
+                subtitleRes = R.string.onboard_phase3_asso_desc,
+                iconRes = R.drawable.onboarding_asso,
                 selected = isAsso
             )
         )
-    }
 
     private fun propagateSelectionToParent() {
-        // On n’envoie plus d’adresse ici (NULL), elle sera gérée plus tard.
         callback?.updateUsertype(
             isEntour = isEntour,
             isBeEntour = isBeEntour,
-            both = false,               // on supprime l’option “les deux” dans ce nouvel écran
+            both = false,
             isAsso = isAsso
         )
-
-        // On peut aussi piloter l’état du bouton "Suivant" directement :
-        val hasAnySelection = isEntour || isBeEntour || isAsso
-        callback?.updateButtonNext(hasAnySelection)
+        callback?.updateButtonNext(isEntour || isBeEntour || isAsso)
     }
 
     companion object {
@@ -146,7 +139,6 @@ class OnboardingPhase3Fragment : Fragment() {
                 putBoolean(ARG_ENTOUR, isEntour)
                 putBoolean(ARG_BEENTOUR, isBeentour)
                 putBoolean(ARG_ASSO, isAsso)
-                // ARG_ADDRESS conservé pour compat, mais non utilisé
             }
         }
     }

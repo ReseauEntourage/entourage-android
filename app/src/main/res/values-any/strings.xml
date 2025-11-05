@@ -1924,13 +1924,13 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="onboard_welcome_info_mandatory">*Champs obligatoires. Vos informations resteront confidentielles et ne seront jamais communiquées à des tiers.</string>
 
     <string name="onboard_welcome_title_phase2">Entrez le code reçu par SMS</string>
-    <string name="onboard_sms_sub">Un SMS vient juste de vous être envoyé au :</string>
+    <string name="onboard_sms_sub">Un SMS vient de vous être envoyé au :</string>
     <string name="onboard_sms_wait_retry">Pas de code ? Réessayez dans %s</string>
     <string name="onboard_sms_wait_retry_end">Renvoyer un code</string>
     <string name="mod_phone_code">- Modifier</string>
     <string name="onboard_code_placeholder">00000000</string>
 
-    <string name="onboard_welcome_title_phase3">Enchantés %s !</string>
+    <string name="onboard_welcome_title_phase3">Choisissez votre profil </string>
 
     <string name="onboard_phase3_entour_desc">En plus de faire des rencontres humaines, comment souhaitez-vous contribuer au sein de la Communauté Entourage ? </string>
     <string name="onboard_phase3_entour_title">Entourer</string>

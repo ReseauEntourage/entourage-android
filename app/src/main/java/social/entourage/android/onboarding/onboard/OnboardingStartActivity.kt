@@ -395,16 +395,10 @@ class OnboardingStartActivity : AppCompatActivity(), OnboardingStartCallback {
             PositionsType.Type.pos -> {
                 binding.uiOnboardingBtPrevious.visibility = View.INVISIBLE
                 if (FRAGMENT_NUMBER != 0) {
-                    val meUser = EntourageApplication.me(this)
-                    binding.uiHeaderTitle.text = String.format(
-                        getString(R.string.onboard_welcome_title_phase3),
-                        meUser?.firstName
-                    )
+                    binding.uiHeaderTitle.text = getString(R.string.onboard_welcome_title_phase3)
+
                 } else {
-                    binding.uiHeaderTitle.text = String.format(
-                        getString(R.string.onboard_welcome_title_phase3),
-                        temporaryUser.firstName
-                    )
+                    binding.uiHeaderTitle.text = getString(R.string.onboard_welcome_title_phase3)
                 }
             }
             else -> {

@@ -7,7 +7,6 @@
     <string name="error_application_update">The version of Entourage you have installed is no longer supported. To continue using our services and enjoy the best possible experience, please update to the latest version by clicking on the following link.</string>
     <string name="button_update_version">Update</string>
     <string name="title_update_version">Update available</string>
-    <string name="error_no_email">No mailbox configured</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="button_OK">OK</string>
@@ -1109,14 +1108,13 @@
     <string name="onboard_sms_wait_retry_end">Resend code</string>
     <string name="mod_phone_code">- Edit</string>
     <string name="onboard_code_placeholder">0</string>
-    <string name="onboard_welcome_title_phase3">Delighted %s!</string>
+    <string name="onboard_welcome_title_phase3">Choose your profile</string>
     <string name="onboard_phase3_entour_desc">Beyond meeting new people, how would you like to contribute to the Entourage community?</string>
     <string name="onboard_phase3_entour_title">Support Others</string>
     <string name="onboard_phase3_entour_subtitle">I would like to offer support to my neighbors in need.</string>
     <string name="onboard_phase3_be_entour_title">Receive support</string>
     <string name="onboard_phase3_be_entour_subtitle">I am in a vulnerable situation and seeking support.</string>
     <string name="onboard_phase3_place_title">In which area do you live?</string>
-    <string name="onboard_phase3_asso_title">I am an association</string>
     <string name="onboard_end_title">Welcome to the Entourage Community</string>
     <string name="onboard_end_subtitle">Congratulations, you are ready to bring solidarity to life around you.</string>
     <string name="onboard_end_bt">Start the human adventure</string>
@@ -1543,7 +1541,6 @@
     <string name="map_filter_entourage_contribution_text"><b>See contributions regarding:</b></string>
     <string name="custom_dialog_action_content_one_contrib">Is your action \"<![CDATA[<b>%1$s</b>]]>\" completed?</string>
     <string name="search_member_hint">Search a member</string>
-    <string name="terms_and_conditions_html">By clicking &lt;b&gt;Next&lt;/b&gt;, you agree to the &lt;a href=\'https://www.entourage.social/cgu\'&gt;Terms and Conditions&lt;/a&gt; and the &lt;a href=\'https://www.entourage.social/politique-de-confidentialite\'&gt;Privacy Policy&lt;/a&gt;</string>
 
     <string name="action_crete_cat_about">Are you looking to offer a %s that does not fit into one of these categories? It seems that \ has no place on the network,but you can always</string>
     <string name="action_create_cat_about_link"> learn more here.</string>
@@ -1783,16 +1780,85 @@
     <string name="title_button_see_event">Find all event information here</string>
     <string name="welcome" lang="en">Welcome %1$s!</string>
     <string name="question" lang="en">In addition to making human connections, how would you like to contribute to the Entourage Community?</string>
-    <string name="option_surround" lang="en">Support</string>
-    <string name="option_surround_desc" lang="en">I want to offer support to my neighbors in need.</string>
-    <string name="option_supported" lang="en">Be supported</string>
-    <string name="option_supported_desc" lang="en">I am in a vulnerable situation and looking for support.</string>
     <string name="option_both" lang="en">Both</string>
     <string name="option_both_desc" lang="en">Offer support and receive it.</string>
     <string name="question_location" lang="en">What is your neighborhood?</string>
     <string name="input_location" lang="en">City or department address</string>
     <string name="needs_to_join_group" lang="en">You must join the group to do this action.</string>
     <string name="sign_title">Sign up</string>
+    <string name="onboard_profile_title">Choose your profile</string>
+
+    <string name="option_surround">I want to be supported</string>
+    <string name="option_surround_desc">I am going through a difficult time (job search, period of doubt, precarious situation, etc.) and I would like to meet people to support me.</string>
+
+    <string name="option_supported">I want to help near me</string>
+    <string name="option_supported_desc">I would like to get involved and support people living near my home.</string>
+
+    <string name="onboard_phase3_asso_title">I work within an association</string>
+    <string name="onboard_phase3_asso_desc">I want to collaborate with Entourage, create events, and refer beneficiaries.</string>
+
+    <!-- Misc -->
+    <string name="contact_email">contact@entourage.social</string>
+    <string name="error_no_email">No email app found</string>
+    <string name="terms_and_conditions_html"><![CDATA[By signing up, you accept our <u>Terms of Use</u> and our <u>Privacy Policy</u>.]]></string>
+
+    <string name="onboard_welcome_title_gender">I am</string>
+    <string name="onboard_welcome_title_how_did_you_hear">How did you hear about us?</string>
+    <string name="onboard_welcome_title_company_name">Your company name</string>
+    <string name="onboard_welcome_title_event_name">Event you are attending</string>
+    <string name="onboard_welcome_error_company_name">Please select a company.</string>
+    <string name="onboard_welcome_error_event_name">Please select an event.</string>
+    <string name="onboard_welcome_error_load_failed">Unable to load the list. Please try again.</string>
+    <string name="onboard_welcome_error_invalid_value">Invalid value. Please select from the list.</string>
+    <string name="onboard_welcome_how_did_you_hear_word_of_mouth">Word of mouth</string>
+    <string name="onboard_welcome_how_did_you_hear_internet">Internet</string>
+    <string name="onboard_welcome_how_did_you_hear_tv_media">Television / media</string>
+    <string name="onboard_welcome_how_did_you_hear_social_media">Social media</string>
+    <string name="onboard_welcome_how_did_you_hear_corporate_awareness">Corporate outreach</string>
+    <string name="onboard_welcome_title_birthdate">Date of birth</string>
+    <string name="onboard_welcome_placeholder_birthdate">DD/MM/YYYY</string>
+    <string name="onboard_welcome_gender_female">Female</string>
+    <string name="onboard_welcome_gender_male">Male</string>
+    <string name="onboard_welcome_gender_other">Other</string>
+    <string name="onboard_welcome_placeholder_firstname_new">e.g.: Mary</string>
+    <string name="onboard_welcome_placeholder_lastname_new">e.g.: Doe</string>
+    <string name="onboard_welcome_placeholder_phone_new">06 XX XX XX XX</string>
+    <string name="onboard_welcome_title_firstname_required">First name*</string>
+    <string name="onboard_welcome_title_lastname_required">Last name*</string>
+    <string name="onboard_welcome_title_phone_required">Phone*</string>
+    <string name="onboard_welcome_placeholder_email_new">e.g.: mary.dupont@email.com</string>
+
+    <string name="image_option_title">Conversation photos</string>
+    <string name="delete_event">Delete the event</string>
+    <string name="delete_event_title">Delete the event?</string>
+    <string name="delete_event_confirmation">This action is irreversible. Participants will be informed.</string>
+
+    <string name="onboarding_zone_title">Your location</string>
+    <string name="onboarding_zone_subtitle">This information helps us tailor the actions suggested near you.</string>
+    <string name="onboarding_zone_city_hint">e.g.: Valence</string>
+    <string name="onboarding_zone_radius_label">Within a radius of</string>
+    <string name="onboarding_zone_home_pin">Home</string>
+    <string name="km_suffix">%1$d km</string>
+
+    <string name="onboard_retry_link">Receive a new code by SMS</string>
+    <string name="onboard_help_title">Need help?</string>
+    <string name="onboard_help_link">Contact the Entourage team</string>
+
+    <string name="onboard_asso_todo">To be defined for association mode</string>
+    <string name="onboarding_zone_pick_location_first">Choose a location first</string>
+
+    <string name="onboard_asso_title">Select your association</string>
+    <string name="onboard_asso_subtitle">Choose from the list. If it does not appear, enter it.</string>
+    <string name="onboard_asso_dropdown_hint">Your association name</string>
+    <string name="onboard_asso_info">Your association is not in the list. Create a new one.</string>
+    <string name="onboard_asso_other_label">Your association name</string>
+    <string name="onboard_asso_other_placeholder">e.g.: Utopia 56 or Femmes solidaires</string>
+    <string name="onboard_asso_pick_first">Select an association first</string>
+    <string name="onboard_asso_other_required">Please enter your association name</string>
+
+    <string name="onboard_sms_wait_title">Haven\'t received your login code?</string>
+    <string name="onboard_sms_wait_countdown">You can request a new code in %1$s</string>
+
 
 
 </resources>

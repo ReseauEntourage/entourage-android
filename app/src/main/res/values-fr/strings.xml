@@ -7,7 +7,6 @@
     <string name="error_application_update">La version d\'Entourage installée n\'est plus supportée. Pour pouvoir continuer à utiliser nos services et profiter de la meilleure expérience possible, veuillez la mettre à jour avec la dernière version en cliquant sur le lien suivant.</string>
     <string name="button_update_version">Mettre à jour</string>
     <string name="title_update_version">MISE A JOUR DISPONIBLE</string>
-    <string name="error_no_email">Aucune messagerie mail configurée</string>
     <string name="yes">Oui</string>
     <string name="no">Non</string>
     <string name="button_OK">OK</string>
@@ -1936,13 +1935,13 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="onboard_welcome_info_mandatory">*Champs obligatoires. Vos informations resteront confidentielles et ne seront jamais communiquées à des tiers.</string>
 
     <string name="onboard_welcome_title_phase2">Entrez le code reçu par SMS</string>
-    <string name="onboard_sms_sub">Un SMS vient juste de vous être envoyé au :</string>
+    <string name="onboard_sms_sub">Un SMS vient de vous être envoyé au :</string>
     <string name="onboard_sms_wait_retry">Pas de code ? Réessayez dans %s</string>
     <string name="onboard_sms_wait_retry_end">Renvoyer un code</string>
     <string name="mod_phone_code">- Modifier</string>
     <string name="onboard_code_placeholder">00000000</string>
 
-    <string name="onboard_welcome_title_phase3">Enchantés %s !</string>
+    <string name="onboard_welcome_title_phase3">Choisissez votre profil </string>
 
     <string name="onboard_phase3_entour_desc">En plus de faire des rencontres humaines, comment souhaitez-vous contribuer au sein de la Communauté Entourage ? </string>
     <string name="onboard_phase3_entour_title">Entourer</string>
@@ -1950,7 +1949,6 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="onboard_phase3_be_entour_title">Être entouré</string>
     <string name="onboard_phase3_be_entour_subtitle">Je suis en situation de vulnérabilité et recherche du soutien.</string>
     <string name="onboard_phase3_place_title">Quel est votre quartier ?</string>
-    <string name="onboard_phase3_asso_title">Je suis une association</string>
 
     <string name="onboard_end_title">Bienvenue dans la Communauté Entourage </string>
     <string name="onboard_end_subtitle">Félicitations, vous voilà prêt à faire vivre la solidarité autour de vous.</string>
@@ -2441,7 +2439,6 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="map_filter_entourage_contribution_text"><b>Voir les contributions concernant :</b></string>
     <string name="custom_dialog_action_content_one_contrib">Votre action \"<![CDATA[<b>%1$s</b>]]>\" est-elle terminée ?</string>
     <string name="search_member_hint">Chercher un membre</string>
-    <string name="terms_and_conditions_html">En cliquant sur &lt;b&gt;Suivant&lt;/b&gt;, vous acceptez les &lt;a href=\'https://www.entourage.social/cgu\'&gt;Conditions Générales d\'Utilisation&lt;/a&gt; et la &lt;a href=\'https://www.entourage.social/politique-de-confidentialite\'&gt;Politique de Confidentialité&lt;/a&gt;</string>
     <string name="action_crete_cat_about">Vous cherchez à proposer une %s qui ne rentre pas dans l\'une de ces catégories ? Il semble qu\'elle n\'ait pas sa place sur le réseau,mais vous pouvez toujours </string>
     <string name="action_create_cat_about_link"> en savoir plus par ici.</string>
     <string name="report_modal_title_translate">Traduire</string>
@@ -2696,10 +2693,6 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="title_button_see_event">Retrouvez toutes les informations de l’événement ici</string>
     <string name="welcome">Enchantés %1$s !</string>
     <string name="question">En plus de faire des rencontres humaines, comment souhaitez-vous contribuer au sein de la Communauté Entourage ?</string>
-    <string name="option_surround">Entourer</string>
-    <string name="option_surround_desc">Je souhaite proposer du soutien à mes voisin(e)s qui en ont besoin.</string>
-    <string name="option_supported">Être entouré</string>
-    <string name="option_supported_desc">Je suis en situation de vulnérabilité et recherche du soutien</string>
     <string name="option_both">Les deux</string>
     <string name="option_both_desc">Proposer du soutien et en recevoir</string>
     <string name="question_location">Quel est votre quartier ?</string>
@@ -2707,6 +2700,22 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="needs_to_join_group">Vous devez rejoindre le groupe pour effectuer cette action.</string>
     <string name="share_url_by">Partager l\'URL via</string>
     <string name="sign_title">Vos informations personnelles</string>
+    <!-- Phase 3 - Choix profil -->
+    <string name="onboard_profile_title">Choisissez votre profil</string>
+
+    <string name="option_surround">Je souhaite être entouré</string>
+    <string name="option_surround_desc">Je traverse une période difficile (recherche d’emploi, période de doute, situation précaire…) et j’aimerais rencontrer des personnes pour me soutenir.</string>
+
+    <string name="option_supported">Je souhaite aider près de chez moi</string>
+    <string name="option_supported_desc">J’aimerais pouvoir m’investir et soutenir des personnes proches de mon lieu de vie.</string>
+
+    <string name="onboard_phase3_asso_title">Je travaille au sein d’une association</string>
+    <string name="onboard_phase3_asso_desc">Je souhaite collaborer avec Entourage, créer des événements et orienter des bénéficiaires.</string>
+
+    <!-- Divers (déjà présents chez toi normalement) -->
+    <string name="contact_email">contact@entourage.social</string>
+    <string name="error_no_email">Aucune application e-mail trouvée</string>
+    <string name="terms_and_conditions_html"><![CDATA[En vous inscrivant, vous acceptez nos <u>Conditions Générales d’Utilisation</u> et notre <u>Politique de confidentialité</u>.]]></string>
 
 </resources>
 
