@@ -17,7 +17,6 @@
         android:layout_marginTop="5dp"
         android:layout_marginBottom="5dp"
         app:cardCornerRadius="40dp"
-        app:layout_constraintBottom_toTopOf="@id/separator"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -48,7 +47,7 @@
         android:id="@+id/tvInterestSubTitleFromRight"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
+        android:layout_marginStart="13dp"
         android:fontFamily="@font/nunitosans_regular"
         android:textColor="@color/grey"
         android:textSize="15sp"

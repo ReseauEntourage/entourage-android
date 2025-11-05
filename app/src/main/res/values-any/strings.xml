@@ -189,7 +189,7 @@ Découvrez les initiatives de votre quartier et tissez des liens avec vos voisin
     <string name="new_next">Suivant</string>
     <string name="back">Retour</string>
     <string name="cancel_event_continue">Continuer</string>
-    <string name="previous">Précedent</string>
+    <string name="previous">Précédent</string>
     <string name="add_location_subtitle">Entourage ne communique pas cette adresse aux utilisateurs.</string>
     <string name="new_group">Nouveau groupe</string>
     <string name="new_event">Nouvel événement</string>
@@ -2376,7 +2376,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
 
     <string name="translate">"Traduction</string>
     <string name="title_language">"Langue</string>
-    <string name="select_language">"Sélectionner la langue</string>
+    <string name="select_language">"Sélectionner votre langue</string>
     <string name="all_event">"Tous les événements"</string>
     <string name="all_my_event">"Mes événements"</string>
 

@@ -8,8 +8,6 @@
     android:layout_height="match_parent"
     tools:context=".onboarding.onboard.OnboardingPhase2Fragment">
 
-
-
     <TextView
         android:id="@+id/ui_onboard_code_tv_description"
         android:layout_width="0dp"
@@ -190,7 +188,7 @@
                 android:fontFamily="@font/nunitosans_regular"
                 android:textAlignment="center"
                 android:textColor="@color/onboard_black_36"
-                android:textSize="13sp"
+                android:textSize="15sp"
                 tools:text="Vous pourrez demander un nouveau code dans 00:25" />
 
             <TextView
@@ -202,7 +200,7 @@
                 android:fontFamily="@font/nunitosans_regular"
                 android:text="@string/onboard_retry_link"
                 android:textColor="@color/accent"
-                android:textSize="13sp" />
+                android:textSize="15sp" />
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
 
@@ -214,7 +212,7 @@
         android:fontFamily="@font/quicksand_bold"
         android:text="@string/onboard_help_title"
         android:textColor="@color/onboard_black_36"
-        android:textSize="13sp"
+        android:textSize="15sp"
         app:layout_constraintBottom_toTopOf="@+id/ui_onboard_bt_help"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
@@ -227,7 +225,7 @@
         android:text="@string/onboard_help_link"
         android:fontFamily="@font/nunitosans_regular"
         android:textColor="@color/black"
-        android:textSize="13sp"
+        android:textSize="15sp"
 
         app:layout_constraintBottom_toTopOf="@+id/tv_condition_generales"
         app:layout_constraintStart_toStartOf="parent"

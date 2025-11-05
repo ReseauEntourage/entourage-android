@@ -193,7 +193,7 @@ Découvrez les initiatives de votre quartier et tissez des liens avec vos voisin
     <string name="btn_end">Terminer</string>
     <string name="back">Retour</string>
     <string name="cancel_event_continue">Continuer</string>
-    <string name="previous">Précedent</string>
+    <string name="previous">Précédent</string>
     <string name="add_location_subtitle">Entourage ne communique pas cette adresse aux utilisateurs.</string>
     <string name="new_group">Nouveau groupe</string>
     <string name="new_event">Nouvel événement</string>
@@ -2589,7 +2589,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
 
     <string name="translate">"Traduction</string>
     <string name="title_language">"Langue</string>
-    <string name="select_language">"Sélectionner la langue</string>
+    <string name="select_language">"Sélectionner votre langue</string>
     <string name="all_event">"Tous les événements"</string>
     <string name="all_my_event">"Mes événements"</string>
 
@@ -3159,9 +3159,9 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="onboarding_zone_home_pin">Domicile</string>
     <string name="km_suffix">%1$d km</string>
 
-    <string name="onboard_retry_link">Recevoir un nouveau code par sms</string>
+    <string name="onboard_retry_link">Recevoir un nouveau code par SMS</string>
     <string name="onboard_help_title">Besoin d’aide ?</string>
-    <string name="onboard_help_link">Contacter l’équipe entourage</string>
+    <string name="onboard_help_link">Contacter l’équipe Entourage</string>
 
     <string name="onboard_asso_todo">À définir pour le mode asso</string>
     <string name="onboarding_zone_pick_location_first">Sélectionnez une localité pour continuer</string>
@@ -3176,7 +3176,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="onboard_asso_pick_first">Sélectionnez d’abord une association</string>
     <string name="onboard_asso_other_required">Veuillez renseigner le nom de votre association</string>
     <!-- Attente / renvoi du code -->
-    <string name="onboard_sms_wait_title">Vous n\'avez pas reçu votre code de connexion\'?</string>
+    <string name="onboard_sms_wait_title">Vous n\'avez pas reçu votre code de connexion?</string>
     <string name="onboard_sms_wait_countdown">Vous pourrez demander un nouveau code dans %1$s</string>
 
 
@@ -3195,7 +3195,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="option_surround">Je souhaite être entouré</string>
     <string name="option_surround_desc">Je traverse une période difficile (recherche d’emploi, période de doute, situation précaire…) et j’aimerais rencontrer des personnes pour me soutenir.</string>
 
-    <string name="option_supported">Je souhaite aider près de\nchez moi</string>
+    <string name="option_supported">Je souhaite aider\n près de chez moi</string>
     <string name="option_supported_desc">J’aimerais pouvoir m’investir et soutenir des personnes proches de mon lieu de vie.</string>
 
     <string name="onboard_phase3_asso_title">Je travaille au sein d’une association</string>

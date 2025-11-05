@@ -101,12 +101,7 @@ class OnboardingZoneChoiceActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private fun setupButtons() {
         binding.buttonConfigureLater.setOnClickListener {
-            if (selectedUserType == UserType.ASSO) {
-                Toast.makeText(this, R.string.onboard_asso_todo, Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
-            startActivity(Intent(this, OnboardingEndActivity::class.java))
-            finish()
+            this.onBackPressed()
         }
 
         binding.buttonStart.setOnClickListener {
