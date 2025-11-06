@@ -267,7 +267,7 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
             binding.edit.profileSettingsItemLayout.isVisible = false
         }
         //remove if not part of event
-        if(EventFeedActivity.isFromMyEvent == false) {
+        if(EventFeedActivity.isFromMyEvent == false && mode == SheetMode.EVENT){
             binding.quit.profileSettingsItemLayout.isVisible = false
         }
     }
