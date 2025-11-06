@@ -20,6 +20,7 @@ import social.entourage.android.discussions.imageviewier.ImageListActivity
 import social.entourage.android.discussions.members.MembersConversationFragment
 import social.entourage.android.events.EventsPresenter
 import social.entourage.android.events.create.CreateEventActivity
+import social.entourage.android.events.details.feed.EventFeedActivity
 import social.entourage.android.groups.GroupPresenter
 import social.entourage.android.groups.details.rules.GroupRulesActivity
 import social.entourage.android.members.MembersActivity
@@ -264,6 +265,10 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
         // Si pas créateur, on masque l’édition (déjà pris en compte ci-dessus, on double-sécurise)
         if (!isEventCreator && mode == SheetMode.EVENT) {
             binding.edit.profileSettingsItemLayout.isVisible = false
+        }
+        //remove if not part of event
+        if(EventFeedActivity.isFromMyEvent == false) {
+            binding.quit.profileSettingsItemLayout.isVisible = false
         }
     }
 

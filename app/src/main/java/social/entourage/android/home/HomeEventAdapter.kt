@@ -119,6 +119,7 @@ class HomeEventAdapter(
         holder.binding.layoutItemHomeEvent.setOnClickListener { view ->
             EventsFragment.isFromDetails = true
             AnalyticsEvents.logEvent(AnalyticsEvents.Action_Home_Event_Detail)
+            EventFeedActivity.isFromMyEvent = true
             (view.context as? Activity)?.startActivityForResult(
                 Intent(
                     view.context,
