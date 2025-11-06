@@ -524,24 +524,17 @@ class MainActivity : BaseSecuredActivity() {
         navController = navHostFragment.navController
 
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.nav_view)
-
-
         bottomNavigationView.itemIconTintList = null
+
+        // Laisse NavigationUI synchroniser le menu avec le NavController
         bottomNavigationView.setupWithNavController(navController)
 
+        // Si tu veux logguer les clics, fais-le SANS naviguer toi-même :
         bottomNavigationView.setOnItemSelectedListener { item ->
             when (item.itemId) {
-                R.id.navigation_home -> {
-                    AnalyticsEvents.logEvent(AnalyticsEvents.Action_Tabbar_home)
-                    navController.navigate(R.id.navigation_home)
-
-                }
-                R.id.navigation_donations -> {
-                    AnalyticsEvents.logEvent(AnalyticsEvents.Action_Tabbar_help)
-                }
-                R.id.navigation_messages -> {
-                    AnalyticsEvents.logEvent(AnalyticsEvents.Action_Tabbar_messages)
-                }
+                R.id.navigation_home -> AnalyticsEvents.logEvent(AnalyticsEvents.Action_Tabbar_home)
+                R.id.navigation_donations -> AnalyticsEvents.logEvent(AnalyticsEvents.Action_Tabbar_help)
+                R.id.navigation_messages -> AnalyticsEvents.logEvent(AnalyticsEvents.Action_Tabbar_messages)
                 R.id.navigation_groups -> {
                     AnalyticsEvents.logEvent(AnalyticsEvents.Action_Tabbar_groups)
                     MainFilterActivity.resetAllFilters(this)
@@ -551,12 +544,11 @@ class MainActivity : BaseSecuredActivity() {
                     MainFilterActivity.resetAllFilters(this)
                 }
             }
-
-            val navController: NavController =
-            androidx.navigation.Navigation.findNavController(this, R.id.nav_host_fragment_activity_main)
+            // LA navigation est faite ici par NavigationUI, toi tu ne navigues pas ailleurs.
             NavigationUI.onNavDestinationSelected(item, navController)
         }
     }
+
 
     private fun addBadge(count : Int) {
 
