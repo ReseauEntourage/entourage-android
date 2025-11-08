@@ -142,6 +142,9 @@ class OnboardingEditPhotoFragment : DialogFragment() {
                 }
             } catch (e: IOException) {
                 Timber.e(e)
+            } catch (e: SecurityException) {
+                //TODO add a dialog to say that you don't have the right to do this
+                Timber.e(e)
             }
         }
     }
