@@ -27,6 +27,7 @@ import social.entourage.android.tools.utils.CustomAlertDialog
 import social.entourage.android.tools.utils.Utils
 import social.entourage.android.tools.utils.nextPage
 import social.entourage.android.tools.utils.previousPage
+import timber.log.Timber
 
 class CreateActionFragment : Fragment() {
 
@@ -120,11 +121,15 @@ class CreateActionFragment : Fragment() {
                         AnalyticsEvents.logEvent(AnalyticsEvents.Help_create_contrib_end)
                     }
                 }
-                val action =
-                    CreateActionFragmentDirections.actionCreateActionFragmentToCreateActionSuccessFragment(
-                        it.id!!,it.title!!,it.isDemand()
-                    )
-                findNavController().navigate(action)
+                try {
+                    val action =
+                        CreateActionFragmentDirections.actionCreateActionFragmentToCreateActionSuccessFragment(
+                            it.id!!,it.title!!,it.isDemand()
+                        )
+                    findNavController().navigate(action)
+                } catch (e: Exception) {
+                    Timber.e(e)
+                }
             }
         }
     }
