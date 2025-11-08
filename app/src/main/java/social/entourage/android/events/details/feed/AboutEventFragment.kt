@@ -487,8 +487,8 @@ class AboutEventFragment : Fragment(), OnMapReadyCallback {
     }
 
     override fun onDestroy() {
-        super.onDestroy()
         binding.mapView.onDestroy()
+        super.onDestroy()
     }
 
     override fun onLowMemory() {

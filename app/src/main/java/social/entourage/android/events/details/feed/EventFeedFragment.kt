@@ -831,8 +831,8 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
     }
 
     override fun onDestroy() {
-        super.onDestroy()
         binding.mapView.onDestroy()
+        super.onDestroy()
     }
 
     override fun onLowMemory() {

@@ -436,8 +436,8 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
     }
 
     override fun onDestroy() {
-        super.onDestroy()
         binding.uiMapview.onDestroy()
+        super.onDestroy()
     }
 
     override fun onLowMemory() {
