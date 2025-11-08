@@ -333,7 +333,7 @@ class DiscussionsPresenter : ViewModel() {
                 }
 
                 override fun onFailure(call: Call<PrepareAddPostResponse>, t: Throwable) {
-                    Timber.wtf("t : %s", t.message)
+                    Timber.e(t, "Failed to prepare add post")
                 }
             })
     }
