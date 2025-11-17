@@ -477,8 +477,8 @@ class ProfileFullActivity : BaseActivity()  {
     }
 
     private fun initializeStats() {
+        //TODO : we keep this just to be sure ???
         if(user == null){
-
             return
         }
 
@@ -487,7 +487,7 @@ class ProfileFullActivity : BaseActivity()  {
         }else{
             binding.myActivityTv.text = getString(R.string.his_activity)
         }
-        user?.stats?.let { stats ->
+        user.stats?.let { stats ->
             // Contributions
             if (stats.neighborhoodsCount > 0) {
                 binding.contribContent.text = stats.neighborhoodsCount.toString()
@@ -512,7 +512,7 @@ class ProfileFullActivity : BaseActivity()  {
         }
 
         // Rôles
-        user?.roles?.let { roles ->
+        user.roles?.let { roles ->
             binding.tagUser.visibility = if (roles.contains("Ambassadeur") || roles.contains("Équipe Entourage") || roles.contains("Association")) {
                 View.VISIBLE
             } else {
@@ -527,7 +527,7 @@ class ProfileFullActivity : BaseActivity()  {
                 binding.tvTagHomeV2EventItem.text = getString(R.string.ambassador)
                 binding.ivAssoBadge.visibility = View.GONE
             }else if(roles.contains("Équipe Entourage")){
-                binding.tvTagHomeV2EventItem.text = user?.partner?.name
+                binding.tvTagHomeV2EventItem.text = user.partner?.name
                 binding.ivAssoBadge.visibility = View.VISIBLE
             }else if(roles.contains("Association")){
                 binding.tvTagHomeV2EventItem.text = user.partner?.name
@@ -535,7 +535,7 @@ class ProfileFullActivity : BaseActivity()  {
             }
         }
         // Date d'inscription
-        user?.createdAt?.let { createdAt ->
+        user.createdAt?.let { createdAt ->
             val locale = LanguageManager.getLocaleFromPreferences(this)
             binding.joined.profileJoinedDate.text = SimpleDateFormat(
                 this.getString(R.string.profile_date_format),
@@ -548,7 +548,7 @@ class ProfileFullActivity : BaseActivity()  {
 
         // Email
         if(isMe){
-            user?.email?.let { email ->
+            user.email?.let { email ->
                 if (email.isNotBlank()) {
                     binding.tvMail.text = email
                     binding.tvMail.visibility = View.VISIBLE
@@ -559,8 +559,8 @@ class ProfileFullActivity : BaseActivity()  {
                 binding.tvMail.visibility = View.GONE
             }
 
-            user?.phone.let { phone ->
-                if (phone?.isNotBlank()!!) {
+            user.phone?.let { phone ->
+                if (phone.isNotBlank()) {
                     binding.tvPhone.text = phone
                     binding.tvPhone.visibility = View.VISIBLE
                 } else {
@@ -571,7 +571,7 @@ class ProfileFullActivity : BaseActivity()  {
             }
 
             // Adresse et distance
-            user?.address?.let { address ->
+            user.address?.let { address ->
                 if (address.displayAddress.isNotBlank() && user.travelDistance != null) {
                     binding.tvZone.text = "${address.displayAddress} - Rayon de ${user.travelDistance} km"
                     binding.tvZone.visibility = View.VISIBLE
@@ -584,7 +584,7 @@ class ProfileFullActivity : BaseActivity()  {
         }else{
             binding.tvMail.visibility = View.GONE
             binding.tvPhone.visibility = View.GONE
-            user?.address?.let { address ->
+            user.address?.let { address ->
                 binding.tvZone.text = address.displayAddress
             }
             if(user.address == null) {
@@ -593,7 +593,7 @@ class ProfileFullActivity : BaseActivity()  {
         }
 
         // À propos
-        user?.about?.let { about ->
+        user.about?.let { about ->
             if (about.isNotBlank()) {
                 binding.tvDescription.text = about
                 binding.tvDescription.setTextColor(ContextCompat.getColor(this, R.color.black)) // Couleur normale
