@@ -132,8 +132,8 @@ class CreateEventStepThreeFragment : Fragment() {
     }
 
     override fun onDestroy() {
-        super.onDestroy()
         _binding?.layout?.error?.root?.visibility = View.GONE
+        super.onDestroy()
     }
 
     private fun handleNextButtonState() {
