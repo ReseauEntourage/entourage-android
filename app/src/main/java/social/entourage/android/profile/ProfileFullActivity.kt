@@ -24,7 +24,7 @@ import social.entourage.android.api.model.EventUtils
 import social.entourage.android.api.model.User
 import social.entourage.android.api.model.UserBlockedUser
 import social.entourage.android.api.model.notification.InAppNotificationPermission
-import social.entourage.android.base.BaseActivity
+import social.entourage.android.base.BaseSecuredActivity
 import social.entourage.android.databinding.ActivityLayoutProfileBinding
 import social.entourage.android.discussions.DetailConversationActivity
 import social.entourage.android.discussions.DiscussionsPresenter
@@ -42,7 +42,7 @@ import java.text.SimpleDateFormat
 import kotlin.random.Random
 
 
-class ProfileFullActivity : BaseActivity()  {
+class ProfileFullActivity : BaseSecuredActivity()  {
 
     private lateinit var binding: ActivityLayoutProfileBinding
     private lateinit var user: User
@@ -82,7 +82,8 @@ class ProfileFullActivity : BaseActivity()  {
     override fun onResume() {
         super.onResume()
         binding.progressBar.visibility = View.VISIBLE
-        if(isMe){
+        // we keep this test in case lateinit hasn't worked
+        if(isMe && user !=null){
             userPresenter.getUser(user.id.toString())
         }else{
             userPresenter.getUser(userId)
