@@ -263,7 +263,7 @@ class DiscussionsMainFragment : Fragment() {
     }
 
     private fun showDetail(position: Int) {
-        if(position >= messagesList.size) {
+        if (position >= messagesList.size) {
             Timber.e("Position out of bound in DiscussionsMainFragment:ShowDetail")
             return
         }
