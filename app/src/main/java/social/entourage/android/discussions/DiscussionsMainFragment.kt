@@ -34,6 +34,7 @@ import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.VibrationUtil
+import timber.log.Timber
 import kotlin.math.abs
 
 enum class FilterMode {
@@ -262,6 +263,10 @@ class DiscussionsMainFragment : Fragment() {
     }
 
     private fun showDetail(position: Int) {
+        if(position >= messagesList.size) {
+            Timber.e("Position out of bound in DiscussionsMainFragment:ShowDetail")
+            return
+        }
         val conversation = messagesList[position]
         // 1. Marquez comme lu
         conversation.numberUnreadMessages = 0
