@@ -47,7 +47,7 @@ import social.entourage.android.home.UnreadMessages
 import social.entourage.android.language.LanguageManager
 import social.entourage.android.main_filter.MainFilterActivity
 import social.entourage.android.notifications.NotificationActionManager
-import social.entourage.android.profile.ProfileFullActivity
+import social.entourage.android.profile.MyProfileFullActivity
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.updatePaddingBottomForEdgeToEdge
 import social.entourage.android.tools.utils.Const
@@ -238,7 +238,7 @@ class MainActivity : BaseSecuredActivity() {
         updateLanguage()
         val id = EntourageApplication.me(this)?.id
          if (id != null) {
-             userPresenter.getUser(id.toString())
+             userPresenter.getUser(id)
          }
         if(id != null){
             userPresenter.updateLanguage(id, LanguageManager.loadLanguageFromPreferences(this))
@@ -582,8 +582,7 @@ class MainActivity : BaseSecuredActivity() {
 
     fun showProfile() {
         AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_PROFILE_MODPROFIL)
-        ProfileFullActivity.isMe = true
-        startActivityForResult(Intent(this, ProfileFullActivity::class.java), 0)
+        startActivityForResult(Intent(this, MyProfileFullActivity::class.java), 0)
     }
 
     fun showFeed() {

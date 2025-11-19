@@ -23,6 +23,7 @@ import social.entourage.android.groups.details.feed.GroupFeedActivity
 import social.entourage.android.guide.GDSMainActivity
 import social.entourage.android.guide.poi.ReadPoiFragment
 import social.entourage.android.home.pedago.PedagoDetailActivity
+import social.entourage.android.profile.MyProfileFullActivity
 import social.entourage.android.profile.ProfileFullActivity
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.Utils
@@ -111,11 +112,15 @@ object Navigation {
                 )
             }
             HomeType.USER -> when (action) {
-                        ActionSummary.SHOW ->
+                ActionSummary.SHOW -> {
+                    if (params.id == EntourageApplication.get().me()?.id) {
+                        return Intent(context, MyProfileFullActivity::class.java)
+                    }
                     return Intent(context, ProfileFullActivity::class.java).putExtra(
                         Const.USER_ID,
                         params.id
                     )
+                }
                 else -> {}
             }
             HomeType.OUTING -> when (action) {

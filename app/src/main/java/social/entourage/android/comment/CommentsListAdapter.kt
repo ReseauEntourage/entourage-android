@@ -4,20 +4,23 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.graphics.*
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.PorterDuff
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.VectorDrawable
 import android.os.Build
-import android.text.*
+import android.text.Html
+import android.text.Spannable
+import android.text.SpannableStringBuilder
+import android.text.Spanned
+import android.text.TextPaint
 import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
 import android.text.style.URLSpan
-import android.text.util.Linkify
-import android.transition.Transition
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.recyclerview.widget.RecyclerView
@@ -30,7 +33,10 @@ import com.bumptech.glide.request.target.CustomTarget
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.api.model.Post
-import social.entourage.android.databinding.*
+import social.entourage.android.databinding.LayoutCommentDetailPostTopBinding
+import social.entourage.android.databinding.LayoutCommentItemDateBinding
+import social.entourage.android.databinding.LayoutCommentItemLeftBinding
+import social.entourage.android.databinding.LayoutCommentItemRightBinding
 import social.entourage.android.discussions.DetailConversationActivity
 import social.entourage.android.language.LanguageManager
 import social.entourage.android.profile.ProfileFullActivity
@@ -720,8 +726,6 @@ class CommentsListAdapter(
             }
             binding.image.setOnClickListener {
                 comment.user?.userId?.let { userId ->
-                    ProfileFullActivity.isMe = false
-                    ProfileFullActivity.userId = userId.toString()
                     (binding.image.context as? Activity)?.startActivityForResult(
                         Intent(binding.image.context, ProfileFullActivity::class.java).putExtra(
                             Const.USER_ID, userId
@@ -756,8 +760,6 @@ class CommentsListAdapter(
             }
             binding.image.setOnClickListener {
                 comment.user?.userId?.let { userId ->
-                    ProfileFullActivity.isMe = false
-                    ProfileFullActivity.userId = userId.toString()
                     (binding.image.context as? Activity)?.startActivityForResult(
                         Intent(binding.image.context, ProfileFullActivity::class.java).putExtra(
                             Const.USER_ID, userId

@@ -38,63 +38,76 @@ import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.VibrationUtil
 import social.entourage.android.tools.view.EntSnackbar
 import social.entourage.android.user.UserPresenter
+import timber.log.Timber
 import java.text.SimpleDateFormat
 import kotlin.random.Random
 
 
-class ProfileFullActivity : BaseSecuredActivity()  {
+abstract class OpenProfileFullActivity : BaseSecuredActivity()  {
 
-    private lateinit var binding: ActivityLayoutProfileBinding
-    private lateinit var user: User
+    protected lateinit var binding: ActivityLayoutProfileBinding
+    protected var user: User? = null
     private val userPresenter: UserPresenter by lazy { UserPresenter() }
     private val homePresenter: HomePresenter by lazy { HomePresenter() }
     private lateinit var profilFullViewModel:ProfilFullViewModel
-    private val discussionsPresenter: DiscussionsPresenter by lazy { DiscussionsPresenter() }
+    protected val discussionsPresenter: DiscussionsPresenter by lazy { DiscussionsPresenter() }
 
-    var notifSubTitle = ""
-    var notifBlocked = ""
+    private var notifSubTitle = ""
+    private var notifBlocked = ""
+
+    protected abstract fun getUserId(): Int
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLayoutProfileBinding.inflate(layoutInflater)
         binding.containerProfile.visibility = View.GONE
         profilFullViewModel = ViewModelProvider(this).get(ProfilFullViewModel::class.java)
-        user = EntourageApplication.me(this) ?: return
+        //user = EntourageApplication.me(this) ?: return
         userPresenter.user.observe(this, ::updateUser)
         homePresenter.notificationsPermission.observe(this, ::updateNotifParam)
         discussionsPresenter.getBlockedUsers.observe(this,::handleResponseBlocked)
         profilFullViewModel.hasToUpdate.observe(this, :: updateProfile)
         discussionsPresenter.newConversation.observe(this, ::handleGetConversation)
-        discussionsPresenter.getBlockedUsers()
         binding.progressBar.visibility = View.VISIBLE
-        initializeStats()
-        updateUserView()
-        setButtonListeners()
+
+        //init user related info
+        initUserInfo()
+        //Init common elements
         setModifyButton()
-        setSignalButton()
-        setScrollEffects()
+        setScrollEffects(this is MyProfileFullActivity)
         setBackButton()
         setConfettiView()
+
         setContentView(binding.root)
         updatePaddingTopForEdgeToEdge(binding.profileContent)
     }
 
+    private fun initUserInfo() {
+        discussionsPresenter.getBlockedUsers()
+        initializeStats()
+        updateUserView()
+        setButtonListeners()
+        setSignalButton()
+    }
+
     override fun onResume() {
         super.onResume()
-        binding.progressBar.visibility = View.VISIBLE
-        // we keep this test in case lateinit hasn't worked
-        if(isMe && user !=null){
-            userPresenter.getUser(user.id.toString())
-        }else{
-            userPresenter.getUser(userId)
+        // we keep this test in case init hasn't worked, should not happen
+        if(user == null) {
+            binding.progressBar.visibility = View.VISIBLE
+            Timber.e("user is null in resume Profile Screen")
+            userPresenter.getUser(getUserId())
         }
-        discussionsPresenter.getBlockedUsers()
         EnhancedOnboarding.isFromSettingsWishes = false
         EnhancedOnboarding.isFromSettingsDisponibility = false
         EnhancedOnboarding.isFromSettingsinterest = false
         EnhancedOnboarding.isFromSettingsActionCategorie = false
-
     }
+
+    protected abstract fun setSignalButton()
+    protected abstract fun setButtonListeners()
+    protected abstract fun setModifyButton()
+
     private fun handleResponseBlocked(blockedUsers:MutableList<UserBlockedUser>?) {
         if(blockedUsers.isNullOrEmpty()){
             notifBlocked = getString(R.string.settings_unblock_contacts_subtitle)
@@ -104,10 +117,11 @@ class ProfileFullActivity : BaseSecuredActivity()  {
         homePresenter.getNotificationsPermissions()
     }
 
+
     private fun handleGetConversation(conversation: Conversation?) {
         conversation?.let {
             DetailConversationActivity.isSmallTalkMode = false
-            startActivityForResult(
+            startActivity(
                 Intent(this, DetailConversationActivity::class.java)
                     .putExtras(
                         bundleOf(
@@ -120,7 +134,7 @@ class ProfileFullActivity : BaseSecuredActivity()  {
                             Const.IS_CONVERSATION to true,
                             Const.HAS_TO_SHOW_MESSAGE to conversation.hasToShowFirstMessage()
                         )
-                    ), 0
+                    )
             )
         }
     }
@@ -147,14 +161,13 @@ class ProfileFullActivity : BaseSecuredActivity()  {
         }else{
             notifSubTitle = getString(R.string.no_notifications_active)
         }
-        setupRecyclerView()
-        updateUserView()
-        initializeStats()
+        setupRecyclerView(this is MyProfileFullActivity)
+        //initUserInfo()
         binding.containerProfile.visibility = View.VISIBLE
     }
 
     private fun setConfettiView() {
-        binding.layoutAchievement.setOnClickListener { view ->
+        binding.layoutAchievement.setOnClickListener { _ ->
             //VibrationUtil.vibrate(this)
             //showConfetti(view)
         }
@@ -163,62 +176,15 @@ class ProfileFullActivity : BaseSecuredActivity()  {
     private fun updateUser(user:User){
         notifSubTitle = ""
         notifBlocked = ""
+        val forceInit = this.user?.id != user.id
         this.user = user
-        discussionsPresenter.getBlockedUsers()
-
-    }
-
-    private fun setButtonListeners() {
-        binding.buttonModify.setOnClickListener {
-            if(isMe){
-                VibrationUtil.vibrate(this)
-                val intent = Intent(this, EditProfileActivity::class.java)
-                startActivity(intent)
-                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
-            }else{
-                VibrationUtil.vibrate(this)
-                discussionsPresenter.createOrGetConversation(userId)
-            }
-
-        }
-        if(isMe){
-            binding.buttonModify.visibility = View.VISIBLE
-            binding.buttonModify.text = getString(R.string.edit)
-        }else{
-            binding.buttonModify.visibility = View.VISIBLE
-            binding.buttonModify.text = getString(R.string.profil_full_send_message)
+        if(forceInit) {
+            Timber.e("user reinit")
+            initUserInfo()
         }
     }
 
-    private fun setModifyButton() {
-        binding.btnModifyPhotoProfile.setOnClickListener {
-            VibrationUtil.vibrate(this)
-            val intent = Intent(this, EditPhotoActivity::class.java)
-            startActivity(intent)
-        }
-        if(isMe){
-            binding.btnModifyPhotoProfile.visibility = View.VISIBLE
-        }else{
-            binding.btnModifyPhotoProfile.visibility = View.GONE
-        }
-    }
-
-    private fun setSignalButton(){
-        if(isMe){
-            binding.iconOption.visibility = View.GONE
-        }else{
-            binding.iconOption.visibility = View.VISIBLE
-            binding.iconOption.setOnClickListener {
-                VibrationUtil.vibrate(this)
-                val bottomSheet = UserOptionsBottomSheet()
-                UserOptionsBottomSheet.user = user
-                bottomSheet.show(supportFragmentManager, "UserOptionsBottomSheet")
-            }
-        }
-
-    }
-
-    private fun setScrollEffects() {
+    private fun setScrollEffects(isMe: Boolean) {
         binding.profileNestedScrollView.setOnScrollChangeListener { _, _, scrollY, _, _ ->
             val minScale = 0.3f // Reduced minimum scale
             val scale = (1f - scrollY / 500f).coerceIn(minScale, 1f)
@@ -245,382 +211,356 @@ class ProfileFullActivity : BaseSecuredActivity()  {
         }
     }
 
-    private fun setupRecyclerView() {
-        val items = mutableListOf<ProfileSectionItem>()
+    private fun setupRecyclerView(isMe: Boolean) {
+        user?.let { user ->
+            val items = mutableListOf<ProfileSectionItem>()
 
-        // -- 1) Titre de la section préférences : "Mes préférences" ou "Ses préférences"
-        val preferencesTitleRes = if (isMe) {
-            R.string.preferences_section_title
-        } else {
-            R.string.preferences_section_title_others
-        }
-        items.add(ProfileSectionItem.Separator(getString(preferencesTitleRes)))
-
-        // -- 2) Intérêts : "Mes centres d'intérêt" ou "Ses centres d'intérêt"
-        val interestsTitleRes = if (isMe) {
-            R.string.preferences_interest_title
-        } else {
-            R.string.preferences_interest_title_others
-        }
-        val interestsText = if (user.interests.isNotEmpty()) {
-            user.interests.joinToString(", ") { interest ->
-                EventUtils.showTagTranslated(this, interest)
-            }
-        } else {
-            getString(R.string.no_data_available)
-        }
-        items.add(
-            ProfileSectionItem.Item(
-                iconRes = R.drawable.ic_profile_interests,
-                title = getString(interestsTitleRes),
-                subtitle = interestsText
-            )
-        )
-
-        // -- 3) Envies d'agir : "Mes envies d'agir" ou "Ses envies d'agir"
-        val actionTitleRes = if (isMe) {
-            R.string.preferences_action_title
-        } else {
-            R.string.preferences_action_title_others
-        }
-        val involvementsText = if (user.involvements.isNotEmpty()) {
-            user.involvements.joinToString(", ") { involvement ->
-                when (involvement.lowercase()) {
-                    "outings"       -> getString(R.string.onboarding_action_wish_event)
-                    "both_actions"  -> getString(R.string.onboarding_action_wish_services)
-                    "neighborhoods" -> getString(R.string.onboarding_action_wish_network)
-                    "resources"     -> getString(R.string.onboarding_action_wish_pedago)
-                    else            -> getString(R.string.interest_other)
-                }
-            }
-        } else {
-            getString(R.string.no_data_available)
-        }
-        items.add(
-            ProfileSectionItem.Item(
-                iconRes = R.drawable.ic_profile_action,
-                title = getString(actionTitleRes),
-                subtitle = involvementsText
-            )
-        )
-
-        // -- 4) Catégories d'entraide : "Mes catégories d'entraide" ou "Ses catégories d'entraide"
-        val categoriesTitleRes = if (isMe) {
-            R.string.preferences_action_categories_title
-        } else {
-            R.string.preferences_action_categories_title_others
-        }
-        val categoriesMap = mapOf(
-            "sharing_time"       to getString(R.string.onboarding_category_sharing_time),
-            "material_donations" to getString(R.string.onboarding_category_donation),
-            "services"           to getString(R.string.onboarding_category_services)
-        )
-        val categoriesText = if (user.concerns.isNotEmpty()) {
-            user.concerns.joinToString(", ") { concern ->
-                categoriesMap[concern] ?: getString(R.string.interest_other)
-            }
-        } else {
-            getString(R.string.no_data_available)
-        }
-        items.add(
-            ProfileSectionItem.Item(
-                iconRes = R.drawable.ic_name_don_materiel,
-                title = getString(categoriesTitleRes),
-                subtitle = categoriesText
-            )
-        )
-
-        // -- 5) Disponibilités : "Mes disponibilités" ou "Ses disponibilités"
-        val availabilityTitleRes = if (isMe) {
-            R.string.preferences_availability_title
-        } else {
-            R.string.preferences_availability_title_others
-        }
-        // Disponibilité
-        val daysMap = mapOf(
-            "1" to getString(R.string.enhanced_onboarding_time_disponibility_day_monday),
-            "2" to getString(R.string.enhanced_onboarding_time_disponibility_day_tuesday),
-            "3" to getString(R.string.enhanced_onboarding_time_disponibility_day_wednesday),
-            "4" to getString(R.string.enhanced_onboarding_time_disponibility_day_thursday),
-            "5" to getString(R.string.enhanced_onboarding_time_disponibility_day_friday),
-            "6" to getString(R.string.enhanced_onboarding_time_disponibility_day_saturday),
-            "7" to getString(R.string.enhanced_onboarding_time_disponibility_day_sunday)
-        )
-        val timeSlotsMap = mapOf(
-            "09:00-12:00" to getString(R.string.enhanced_onboarding_time_disponibility_time_morning),
-            "14:00-18:00" to getString(R.string.enhanced_onboarding_time_disponibility_time_afternoon),
-            "18:00-21:00" to getString(R.string.enhanced_onboarding_time_disponibility_time_evening)
-        )
-        val availabilityText = if (user.availability.isNotEmpty()) {
-            user.availability.entries.joinToString(" ; ") { (day, times) ->
-                val dayName = daysMap[day] ?: day
-                val timeSlots = times.joinToString(", ") { time ->
-                    timeSlotsMap[time] ?: time
-                }
-                "$dayName : $timeSlots"
-            }
-        } else {
-            getString(R.string.no_data_available)
-        }
-        items.add(
-            ProfileSectionItem.Item(
-                iconRes = R.drawable.ic_profile_availability,
-                title = getString(availabilityTitleRes),
-                subtitle = availabilityText
-            )
-        )
-
-        // -- 6) Section Paramètres (seulement si c'est mon profil)
-        if (isMe) {
-            items.add(ProfileSectionItem.Separator(getString(R.string.settings_section_title)))
-
-            // Langue
-            val currentLanguageCode = LanguageManager.loadLanguageFromPreferences(this)
-            val currentLanguageName = LanguageManager.languageMap.entries.firstOrNull {
-                it.value == currentLanguageCode
-            }?.key ?: getString(R.string.unknown_language)
-
-            items.add(
-                ProfileSectionItem.Item(
-                    iconRes = R.drawable.ic_profile_language,
-                    title = getString(R.string.settings_language_title),
-                    subtitle = currentLanguageName
-                )
-            )
-
-            // Vérifier si la traduction automatique est activée
-            val sharedPrefs = getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE)
-            val isTranslatedByDefault = sharedPrefs.getBoolean("translatedByDefault", true)
-            val translationSubtitle = if (isTranslatedByDefault) {
-                getString(R.string.translation_auto_enabled)
+            // -- 1) Titre de la section préférences : "Mes préférences" ou "Ses préférences"
+            val preferencesTitleRes = if (isMe) {
+                R.string.preferences_section_title
             } else {
-                getString(R.string.translation_auto_disabled)
+                R.string.preferences_section_title_others
             }
-            // (Si tu l’utilises quelque part, tu peux l’ajouter à la liste...)
+            items.add(ProfileSectionItem.Separator(getString(preferencesTitleRes)))
 
-            // Notifications
+            // -- 2) Intérêts : "Mes centres d'intérêt" ou "Ses centres d'intérêt"
+            val interestsTitleRes = if (isMe) {
+                R.string.preferences_interest_title
+            } else {
+                R.string.preferences_interest_title_others
+            }
+            val interestsText = if (user.interests.isNotEmpty()) {
+                user.interests.joinToString(", ") { interest ->
+                    EventUtils.showTagTranslated(this, interest)
+                }
+            } else {
+                getString(R.string.no_data_available)
+            }
             items.add(
                 ProfileSectionItem.Item(
-                    iconRes = R.drawable.ic_profile_notifications,
-                    title = getString(R.string.settings_notifications_title),
-                    subtitle = notifSubTitle
+                    iconRes = R.drawable.ic_profile_interests,
+                    title = getString(interestsTitleRes),
+                    subtitle = interestsText
                 )
             )
 
-            // Aide
+            // -- 3) Envies d'agir : "Mes envies d'agir" ou "Ses envies d'agir"
+            val actionTitleRes = if (isMe) {
+                R.string.preferences_action_title
+            } else {
+                R.string.preferences_action_title_others
+            }
+            val involvementsText = if (user.involvements.isNotEmpty()) {
+                user.involvements.joinToString(", ") { involvement ->
+                    when (involvement.lowercase()) {
+                        "outings" -> getString(R.string.onboarding_action_wish_event)
+                        "both_actions" -> getString(R.string.onboarding_action_wish_services)
+                        "neighborhoods" -> getString(R.string.onboarding_action_wish_network)
+                        "resources" -> getString(R.string.onboarding_action_wish_pedago)
+                        else -> getString(R.string.interest_other)
+                    }
+                }
+            } else {
+                getString(R.string.no_data_available)
+            }
             items.add(
                 ProfileSectionItem.Item(
-                    iconRes = R.drawable.ic_profile_help,
-                    title = getString(R.string.settings_help_title),
-                    subtitle = getString(R.string.settings_help_subtitle)
+                    iconRes = R.drawable.ic_profile_action,
+                    title = getString(actionTitleRes),
+                    subtitle = involvementsText
                 )
             )
 
-            // Déblocage
+            // -- 4) Catégories d'entraide : "Mes catégories d'entraide" ou "Ses catégories d'entraide"
+            val categoriesTitleRes = if (isMe) {
+                R.string.preferences_action_categories_title
+            } else {
+                R.string.preferences_action_categories_title_others
+            }
+            val categoriesMap = mapOf(
+                "sharing_time" to getString(R.string.onboarding_category_sharing_time),
+                "material_donations" to getString(R.string.onboarding_category_donation),
+                "services" to getString(R.string.onboarding_category_services)
+            )
+            val categoriesText = if (user.concerns.isNotEmpty()) {
+                user.concerns.joinToString(", ") { concern ->
+                    categoriesMap[concern] ?: getString(R.string.interest_other)
+                }
+            } else {
+                getString(R.string.no_data_available)
+            }
             items.add(
                 ProfileSectionItem.Item(
-                    iconRes = R.drawable.ic_profile_unblock_contacts,
-                    title = getString(R.string.settings_unblock_contacts_title),
-                    subtitle = notifBlocked
+                    iconRes = R.drawable.ic_name_don_materiel,
+                    title = getString(categoriesTitleRes),
+                    subtitle = categoriesText
                 )
             )
 
-            // Feedback
+            // -- 5) Disponibilités : "Mes disponibilités" ou "Ses disponibilités"
+            val availabilityTitleRes = if (isMe) {
+                R.string.preferences_availability_title
+            } else {
+                R.string.preferences_availability_title_others
+            }
+            // Disponibilité
+            val daysMap = mapOf(
+                "1" to getString(R.string.enhanced_onboarding_time_disponibility_day_monday),
+                "2" to getString(R.string.enhanced_onboarding_time_disponibility_day_tuesday),
+                "3" to getString(R.string.enhanced_onboarding_time_disponibility_day_wednesday),
+                "4" to getString(R.string.enhanced_onboarding_time_disponibility_day_thursday),
+                "5" to getString(R.string.enhanced_onboarding_time_disponibility_day_friday),
+                "6" to getString(R.string.enhanced_onboarding_time_disponibility_day_saturday),
+                "7" to getString(R.string.enhanced_onboarding_time_disponibility_day_sunday)
+            )
+            val timeSlotsMap = mapOf(
+                "09:00-12:00" to getString(R.string.enhanced_onboarding_time_disponibility_time_morning),
+                "14:00-18:00" to getString(R.string.enhanced_onboarding_time_disponibility_time_afternoon),
+                "18:00-21:00" to getString(R.string.enhanced_onboarding_time_disponibility_time_evening)
+            )
+            val availabilityText = if (user.availability.isNotEmpty()) {
+                user.availability.entries.joinToString(" ; ") { (day, times) ->
+                    val dayName = daysMap[day] ?: day
+                    val timeSlots = times.joinToString(", ") { time ->
+                        timeSlotsMap[time] ?: time
+                    }
+                    "$dayName : $timeSlots"
+                }
+            } else {
+                getString(R.string.no_data_available)
+            }
             items.add(
                 ProfileSectionItem.Item(
-                    iconRes = R.drawable.ic_profile_feedback,
-                    title = getString(R.string.settings_feedback_title),
-                    subtitle = ""
+                    iconRes = R.drawable.ic_profile_availability,
+                    title = getString(availabilityTitleRes),
+                    subtitle = availabilityText
                 )
             )
 
-            // Partage
-            items.add(
-                ProfileSectionItem.Item(
-                    iconRes = R.drawable.ic_profile_share,
-                    title = getString(R.string.settings_share_title),
-                    subtitle = ""
-                )
-            )
+            // -- 6) Section Paramètres (seulement si c'est mon profil)
+            if (isMe) {
+                items.add(ProfileSectionItem.Separator(getString(R.string.settings_section_title)))
 
-            // Changer mot de passe
-            items.add(
-                ProfileSectionItem.Item(
-                    iconRes = R.drawable.ic_profile_change_password,
-                    title = getString(R.string.settings_password_title),
-                    subtitle = ""
-                )
-            )
+                // Langue
+                val currentLanguageCode = LanguageManager.loadLanguageFromPreferences(this)
+                val currentLanguageName = LanguageManager.languageMap.entries.firstOrNull {
+                    it.value == currentLanguageCode
+                }?.key ?: getString(R.string.unknown_language)
 
-            // Déconnexion
-            items.add(
-                ProfileSectionItem.Item(
-                    iconRes = R.drawable.ic_profile_logout,
-                    title = getString(R.string.logout_button),
-                    subtitle = ""
+                items.add(
+                    ProfileSectionItem.Item(
+                        iconRes = R.drawable.ic_profile_language,
+                        title = getString(R.string.settings_language_title),
+                        subtitle = currentLanguageName
+                    )
                 )
-            )
 
-            // Suppression de compte
-            items.add(
-                ProfileSectionItem.Item(
-                    iconRes = R.drawable.ic_profile_delete_account,
-                    title = getString(R.string.delete_account_button),
-                    subtitle = ""
+                // Vérifier si la traduction automatique est activée
+//                val sharedPrefs = getSharedPreferences(
+//                    getString(R.string.preference_file_key),
+//                    Context.MODE_PRIVATE
+//                )
+//                val isTranslatedByDefault = sharedPrefs.getBoolean("translatedByDefault", true)
+//                val translationSubtitle = if (isTranslatedByDefault) {
+//                    getString(R.string.translation_auto_enabled)
+//                } else {
+//                    getString(R.string.translation_auto_disabled)
+//                }
+                // (Si tu l’utilises quelque part, tu peux l’ajouter à la liste...)
+
+                // Notifications
+                items.add(
+                    ProfileSectionItem.Item(
+                        iconRes = R.drawable.ic_profile_notifications,
+                        title = getString(R.string.settings_notifications_title),
+                        subtitle = notifSubTitle
+                    )
                 )
-            )
+
+                // Aide
+                items.add(
+                    ProfileSectionItem.Item(
+                        iconRes = R.drawable.ic_profile_help,
+                        title = getString(R.string.settings_help_title),
+                        subtitle = getString(R.string.settings_help_subtitle)
+                    )
+                )
+
+                // Déblocage
+                items.add(
+                    ProfileSectionItem.Item(
+                        iconRes = R.drawable.ic_profile_unblock_contacts,
+                        title = getString(R.string.settings_unblock_contacts_title),
+                        subtitle = notifBlocked
+                    )
+                )
+
+                // Feedback
+                items.add(
+                    ProfileSectionItem.Item(
+                        iconRes = R.drawable.ic_profile_feedback,
+                        title = getString(R.string.settings_feedback_title),
+                        subtitle = ""
+                    )
+                )
+
+                // Partage
+                items.add(
+                    ProfileSectionItem.Item(
+                        iconRes = R.drawable.ic_profile_share,
+                        title = getString(R.string.settings_share_title),
+                        subtitle = ""
+                    )
+                )
+
+                // Changer mot de passe
+                items.add(
+                    ProfileSectionItem.Item(
+                        iconRes = R.drawable.ic_profile_change_password,
+                        title = getString(R.string.settings_password_title),
+                        subtitle = ""
+                    )
+                )
+
+                // Déconnexion
+                items.add(
+                    ProfileSectionItem.Item(
+                        iconRes = R.drawable.ic_profile_logout,
+                        title = getString(R.string.logout_button),
+                        subtitle = ""
+                    )
+                )
+
+                // Suppression de compte
+                items.add(
+                    ProfileSectionItem.Item(
+                        iconRes = R.drawable.ic_profile_delete_account,
+                        title = getString(R.string.delete_account_button),
+                        subtitle = ""
+                    )
+                )
+            }
+
+            // -- 7) Initialisation de l'adapter
+            val adapter = SettingProfileFullAdapter(items, this, this.supportFragmentManager, isMe)
+            binding.rvSectionProfile.layoutManager = LinearLayoutManager(this)
+            binding.rvSectionProfile.adapter = adapter
         }
-
-        // -- 7) Initialisation de l'adapter
-        val adapter = SettingProfileFullAdapter(items, this, this.supportFragmentManager)
-        binding.rvSectionProfile.layoutManager = LinearLayoutManager(this)
-        binding.rvSectionProfile.adapter = adapter
     }
 
-    private fun initializeStats() {
-        //TODO : we keep this just to be sure ???
-        if(user == null){
-            return
-        }
+    protected open fun initializeStats() {
+        user?.let { user ->
 
-        if(isMe){
-            binding.myActivityTv.text = getString(R.string.my_activity)
-        }else{
-            binding.myActivityTv.text = getString(R.string.his_activity)
-        }
-        user.stats?.let { stats ->
-            // Contributions
-            if (stats.neighborhoodsCount > 0) {
-                binding.contribContent.text = stats.neighborhoodsCount.toString()
-                binding.titleContrib.text = getString(R.string.contributions_group)
-                binding.contribContent.visibility = View.VISIBLE
-                binding.titleContrib.visibility = View.VISIBLE
-            } else {
+            user.stats?.let { stats ->
+                // Contributions
+                if (stats.neighborhoodsCount > 0) {
+                    binding.contribContent.text = stats.neighborhoodsCount.toString()
+                    binding.titleContrib.text = getString(R.string.contributions_group)
+                    binding.contribContent.visibility = View.VISIBLE
+                    binding.titleContrib.visibility = View.VISIBLE
+                }
+                // Événements
+                if (stats.outingsCount > 0) {
+                    binding.eventContent.text = stats.outingsCount.toString()
+                    binding.titleEvent.text = getString(R.string.contributions_event)
+                    binding.eventContent.visibility = View.VISIBLE
+                    binding.titleEvent.visibility = View.VISIBLE
+                }
+                // Icônes (toujours visibles dans cet exemple)
+                binding.iconContrib.setImageResource(R.drawable.icon_navbar_groupe_inactif)
+                binding.iconEvent.setImageResource(R.drawable.icon_navbar_calendrier_inactif)
+            }
 
+            // Rôles
+            user.roles?.let { roles ->
+                binding.tagUser.visibility =
+                    if (roles.contains("Ambassadeur") || roles.contains("Équipe Entourage") || roles.contains(
+                            "Association"
+                        )
+                    ) {
+                        View.VISIBLE
+                    } else {
+                        View.GONE
+                    }
+                binding.ivAssoBadge.visibility =
+                    if (roles.contains("Équipe Entourage") || roles.contains("Association")) {
+                        View.VISIBLE
+                    } else {
+                        View.GONE
+                    }
+                if (roles.contains("Ambassadeur")) {
+                    binding.tvTagHomeV2EventItem.text = getString(R.string.ambassador)
+                    binding.ivAssoBadge.visibility = View.GONE
+                } else if (roles.contains("Équipe Entourage")) {
+                    binding.tvTagHomeV2EventItem.text = user.partner?.name
+                    binding.ivAssoBadge.visibility = View.VISIBLE
+                } else if (roles.contains("Association")) {
+                    binding.tvTagHomeV2EventItem.text = user.partner?.name
+                    binding.ivAssoBadge.visibility = View.VISIBLE
+                }
             }
-            // Événements
-            if (stats.outingsCount > 0) {
-                binding.eventContent.text = stats.outingsCount.toString()
-                binding.titleEvent.text = getString(R.string.contributions_event)
-                binding.eventContent.visibility = View.VISIBLE
-                binding.titleEvent.visibility = View.VISIBLE
-            } else {
+            // Date d'inscription
+            user.createdAt?.let { createdAt ->
+                val locale = LanguageManager.getLocaleFromPreferences(this)
+                binding.joined.profileJoinedDate.text = SimpleDateFormat(
+                    this.getString(R.string.profile_date_format),
+                    locale
+                ).format(createdAt)
+                binding.joined.profileJoinedDate.visibility = View.VISIBLE
+            } ?: run {
+                binding.joined.profileJoinedDate.visibility = View.GONE
+            }
 
-            }
-            // Icônes (toujours visibles dans cet exemple)
-            binding.iconContrib.setImageResource(R.drawable.icon_navbar_groupe_inactif)
-            binding.iconEvent.setImageResource(R.drawable.icon_navbar_calendrier_inactif)
-        }
-
-        // Rôles
-        user.roles?.let { roles ->
-            binding.tagUser.visibility = if (roles.contains("Ambassadeur") || roles.contains("Équipe Entourage") || roles.contains("Association")) {
-                View.VISIBLE
-            } else {
-                View.GONE
-            }
-            binding.ivAssoBadge.visibility = if (roles.contains("Équipe Entourage") || roles.contains("Association")) {
-                View.VISIBLE
-            } else {
-                View.GONE
-            }
-            if(roles.contains("Ambassadeur")){
-                binding.tvTagHomeV2EventItem.text = getString(R.string.ambassador)
-                binding.ivAssoBadge.visibility = View.GONE
-            }else if(roles.contains("Équipe Entourage")){
-                binding.tvTagHomeV2EventItem.text = user.partner?.name
-                binding.ivAssoBadge.visibility = View.VISIBLE
-            }else if(roles.contains("Association")){
-                binding.tvTagHomeV2EventItem.text = user.partner?.name
-                binding.ivAssoBadge.visibility = View.VISIBLE
-            }
-        }
-        // Date d'inscription
-        user.createdAt?.let { createdAt ->
-            val locale = LanguageManager.getLocaleFromPreferences(this)
-            binding.joined.profileJoinedDate.text = SimpleDateFormat(
-                this.getString(R.string.profile_date_format),
-                locale
-            ).format(createdAt)
-            binding.joined.profileJoinedDate.visibility = View.VISIBLE
-        } ?: run {
-            binding.joined.profileJoinedDate.visibility = View.GONE
-        }
-
-        // Email
-        if(isMe){
-            user.email?.let { email ->
-                if (email.isNotBlank()) {
-                    binding.tvMail.text = email
-                    binding.tvMail.visibility = View.VISIBLE
+            // À propos
+            user.about?.let { about ->
+                if (about.isNotBlank()) {
+                    binding.tvDescription.text = about
+                    binding.tvDescription.setTextColor(
+                        ContextCompat.getColor(
+                            this,
+                            R.color.black
+                        )
+                    ) // Couleur normale
+                    binding.tvDescription.visibility = View.VISIBLE
                 } else {
-                    binding.tvMail.visibility = View.GONE
+                    binding.tvDescription.text =
+                        this.getString(R.string.placeholder_description_profile)
+                    binding.tvDescription.setTextColor(
+                        ContextCompat.getColor(
+                            this,
+                            R.color.grey
+                        )
+                    ) // Placeholder en gris
+                    binding.tvDescription.visibility = View.VISIBLE
                 }
             } ?: run {
-                binding.tvMail.visibility = View.GONE
-            }
-
-            user.phone?.let { phone ->
-                if (phone.isNotBlank()) {
-                    binding.tvPhone.text = phone
-                    binding.tvPhone.visibility = View.VISIBLE
-                } else {
-                    binding.tvPhone.visibility = View.GONE
-                }
-            } ?: run {
-                binding.tvPhone.visibility = View.GONE
-            }
-
-            // Adresse et distance
-            user.address?.let { address ->
-                if (address.displayAddress.isNotBlank() && user.travelDistance != null) {
-                    binding.tvZone.text = "${address.displayAddress} - Rayon de ${user.travelDistance} km"
-                    binding.tvZone.visibility = View.VISIBLE
-                } else {
-                    binding.tvZone.visibility = View.GONE
-                }
-            } ?: run {
-                binding.tvZone.visibility = View.GONE
-            }
-        }else{
-            binding.tvMail.visibility = View.GONE
-            binding.tvPhone.visibility = View.GONE
-            user.address?.let { address ->
-                binding.tvZone.text = address.displayAddress
-            }
-            if(user.address == null) {
-                binding.tvZone.visibility = View.GONE
-            }
-        }
-
-        // À propos
-        user.about?.let { about ->
-            if (about.isNotBlank()) {
-                binding.tvDescription.text = about
-                binding.tvDescription.setTextColor(ContextCompat.getColor(this, R.color.black)) // Couleur normale
-                binding.tvDescription.visibility = View.VISIBLE
-            } else {
-                binding.tvDescription.text = this.getString(R.string.placeholder_description_profile)
-                binding.tvDescription.setTextColor(ContextCompat.getColor(this, R.color.grey)) // Placeholder en gris
+                binding.tvDescription.text =
+                    this.getString(R.string.placeholder_description_profile)
+                binding.tvDescription.setTextColor(
+                    ContextCompat.getColor(
+                        this,
+                        R.color.grey
+                    )
+                ) // Placeholder en gris
                 binding.tvDescription.visibility = View.VISIBLE
             }
-        } ?: run {
-            binding.tvDescription.text = this.getString(R.string.placeholder_description_profile)
-            binding.tvDescription.setTextColor(ContextCompat.getColor(this, R.color.grey)) // Placeholder en gris
-            binding.tvDescription.visibility = View.VISIBLE
         }
-
         binding.appVersion.text =
-            getString(R.string.about_version_format,
+            getString(
+                R.string.about_version_format,
                 getString(R.string.app_name),
-                BuildConfig.VERSION_FULL_NAME)
+                BuildConfig.VERSION_FULL_NAME
+            )
         binding.appVersion.setOnLongClickListener {
             // Copier le FIID dans le presse-papiers
-            val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as android.content.ClipboardManager
-            val clip = android.content.ClipData.newPlainText("FIId", EntourageApplication.get().sharedPreferences.getString(
-                EntourageApplication.KEY_REGISTRATION_ID,
-                null
-            ))
+            val clipboard =
+                getSystemService(Context.CLIPBOARD_SERVICE) as android.content.ClipboardManager
+            val clip = android.content.ClipData.newPlainText(
+                "FIId", EntourageApplication.get().sharedPreferences.getString(
+                    EntourageApplication.KEY_REGISTRATION_ID,
+                    null
+                )
+            )
             clipboard.setPrimaryClip(clip)
 
             // Afficher un message de confirmation
@@ -649,30 +589,34 @@ class ProfileFullActivity : BaseSecuredActivity()  {
     }
 
     private fun updateUserView() {
-        with(binding) {
-            tvName.text = user.displayName
-            ivProfile.let { photoView ->
-                user.avatarURL?.let { avatarURL ->
-                    Glide.with(binding.ivProfile)
-                        .load(avatarURL)
-                        .placeholder(R.drawable.placeholder_user)
-                        .error(R.drawable.placeholder_user)
-                        .circleCrop()
-                        .into(photoView)
-                } ?: run {
-                    photoView.setImageResource(R.drawable.placeholder_user)
+        user?.let { user ->
+            with(binding) {
+                tvName.text = user.displayName
+                ivProfile.let { photoView ->
+                    user.avatarURL?.let { avatarURL ->
+                        Timber.e("avatarURL: $avatarURL")
+                        Glide.with(photoView)
+                            .load(avatarURL)
+                            .placeholder(R.drawable.placeholder_user)
+                            .error(R.drawable.placeholder_user)
+                            .circleCrop()
+                            .into(photoView)
+                    } ?: run {
+                        photoView.setImageResource(R.drawable.placeholder_user)
+                    }
                 }
-            }
-            ivAssoBadge.let { photoView ->
-                val imgUrl = user.partner?.smallLogoUrl
-                Glide.with(binding.ivProfile)
-                    .load(imgUrl)
-                    .placeholder(R.drawable.placeholder_user)
-                    .error(R.drawable.placeholder_user)
-                    .circleCrop()
-                    .into(photoView)
-            } ?: run {
-                binding.ivProfile.setImageResource(R.drawable.placeholder_user)
+                ivAssoBadge.let { photoView ->
+                    user.partner?.smallLogoUrl?.let { imgUrl ->
+                        Glide.with(photoView)
+                            .load(imgUrl)
+                            .placeholder(R.drawable.placeholder_user)
+                            .error(R.drawable.placeholder_user)
+                            .circleCrop()
+                            .into(photoView)
+                    } ?: run {
+                        photoView.setImageResource(R.drawable.placeholder_user)
+                    }
+                }
             }
         }
     }
@@ -766,16 +710,136 @@ class ProfileFullActivity : BaseSecuredActivity()  {
         explosionAnimator.start()
     }
 
-    fun updateProfile(hasToUpdate:Boolean){
+    private fun updateProfile(hasToUpdate:Boolean){
         if(hasToUpdate){
-            userPresenter.getUser(user.id.toString())
+            userPresenter.getUser(getUserId())
+        }
+    }
+}
+
+class MyProfileFullActivity : OpenProfileFullActivity() {
+    override fun getUserId(): Int {
+        return id
+    }
+
+    private var id:Int = 0
+
+    init {
+        user = EntourageApplication.get().me()
+        user?.let { user -> id = user.id }
+    }
+
+    override fun setSignalButton(){
+        binding.iconOption.visibility = View.GONE
+    }
+
+    override fun setModifyButton() {
+        binding.btnModifyPhotoProfile.setOnClickListener {
+            VibrationUtil.vibrate(this)
+            val intent = Intent(this, EditPhotoActivity::class.java)
+            startActivity(intent)
+        }
+        binding.btnModifyPhotoProfile.visibility = View.VISIBLE
+    }
+
+    override fun setButtonListeners() {
+        binding.buttonModify.setOnClickListener {
+            VibrationUtil.vibrate(this)
+            val intent = Intent(this, EditProfileActivity::class.java)
+            startActivity(intent)
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+        }
+        binding.buttonModify.visibility = View.VISIBLE
+        binding.buttonModify.text = getString(R.string.edit)
+    }
+
+    override fun initializeStats() {
+        super.initializeStats()
+        user?.let { user ->
+            binding.myActivityTv.text = getString(R.string.my_activity)
+            // Email
+            user.email?.let { email ->
+                if (email.isNotBlank()) {
+                    binding.tvMail.text = email
+                    binding.tvMail.visibility = View.VISIBLE
+                } else {
+                    binding.tvMail.visibility = View.GONE
+                }
+            } ?: run {
+                binding.tvMail.visibility = View.GONE
+            }
+
+            user.phone?.let { phone ->
+                if (phone.isNotBlank()) {
+                    binding.tvPhone.text = phone
+                    binding.tvPhone.visibility = View.VISIBLE
+                } else {
+                    binding.tvPhone.visibility = View.GONE
+                }
+            } ?: run {
+                binding.tvPhone.visibility = View.GONE
+            }
+
+            // Adresse et distance
+            user.address?.let { address ->
+                if (address.displayAddress.isNotBlank() && user.travelDistance != null) {
+                    binding.tvZone.text =
+                        "${address.displayAddress} - Rayon de ${user.travelDistance} km"
+                    binding.tvZone.visibility = View.VISIBLE
+                } else {
+                    binding.tvZone.visibility = View.GONE
+                }
+            } ?: run {
+                binding.tvZone.visibility = View.GONE
+            }
+        }
+    }
+}
+
+class ProfileFullActivity : OpenProfileFullActivity() {
+    private var id:Int = 0
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        id = intent.getIntExtra(Const.USER_ID,0)
+    }
+
+    override fun getUserId(): Int {
+        return id
+    }
+
+    override fun setSignalButton() {
+        binding.iconOption.visibility = View.VISIBLE
+        binding.iconOption.setOnClickListener {
+            VibrationUtil.vibrate(this)
+            val bottomSheet = UserOptionsBottomSheet()
+            UserOptionsBottomSheet.user = user
+            bottomSheet.show(supportFragmentManager, "UserOptionsBottomSheet")
         }
     }
 
-
-    companion object {
-        var isMe:Boolean = false
-        var userId:String = ""
+    override fun setModifyButton() {
+        binding.btnModifyPhotoProfile.visibility = View.GONE
     }
 
+    override fun setButtonListeners() {
+        binding.buttonModify.setOnClickListener {
+            VibrationUtil.vibrate(this)
+            discussionsPresenter.createOrGetConversation(getUserId().toString())
+        }
+        binding.buttonModify.visibility = View.VISIBLE
+        binding.buttonModify.text = getString(R.string.profil_full_send_message)
+    }
+
+    override fun initializeStats() {
+        super.initializeStats()
+        binding.myActivityTv.text = getString(R.string.his_activity)
+        binding.tvMail.visibility = View.GONE
+        binding.tvPhone.visibility = View.GONE
+        user?.address?.let { address ->
+            binding.tvZone.text = address.displayAddress
+        } ?: {
+            binding.tvZone.visibility = View.GONE
+        }
+    }
 }

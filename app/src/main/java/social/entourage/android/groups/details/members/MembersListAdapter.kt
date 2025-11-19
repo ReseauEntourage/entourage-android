@@ -22,7 +22,6 @@ import social.entourage.android.members.MembersActivity
 import social.entourage.android.profile.ProfileFullActivity
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.ui.ActionSheetFragment
-import timber.log.Timber
 
 interface OnItemShowListener {
     fun onShowConversation(userId: Int)
@@ -156,8 +155,6 @@ class MembersListAdapter(
         b.layout.setOnClickListener { view ->
             val pos = holder.bindingAdapterPosition
             if (pos == RecyclerView.NO_POSITION) return@setOnClickListener
-            ProfileFullActivity.isMe = false
-            ProfileFullActivity.userId = item.userId.toString()
             (view.context as? Activity)?.startActivityForResult(
                 Intent(view.context, ProfileFullActivity::class.java)
                     .putExtra(Const.USER_ID, item.userId),

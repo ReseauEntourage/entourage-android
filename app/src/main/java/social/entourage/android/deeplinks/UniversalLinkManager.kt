@@ -50,26 +50,31 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
                 pathSegments.contains("users") -> {
                     if (pathSegments.size > 2) {
                         val userId = pathSegments[2]
-                        ProfileFullActivity.isMe = false
-                        ProfileFullActivity.userId = userId
-                        val intent = Intent(context, ProfileFullActivity::class.java)
-                        context.startActivity(intent)
-                        (context as Activity).overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
-
+                        try {
+                            val intent = Intent(context, ProfileFullActivity::class.java)
+                            intent.putExtra(Const.USER_ID, userId.toInt())
+                            context.startActivity(intent)
+                            (context as Activity).overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+                        } catch (e: NumberFormatException) {
+                            Timber.e("NumberFormatException")
+                        }
                     }
                 }
                 pathSegments.contains("user") -> {
                     if (pathSegments.size > 2) {
                         val userId = pathSegments[2]
-                        ProfileFullActivity.isMe = false
-                        ProfileFullActivity.userId = userId
-                        val intent = Intent(context, ProfileFullActivity::class.java)
-                        context.startActivity(intent)
-                        (context as Activity).overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
-
+//                        ProfileFullActivity.isMe = false
+                        //ProfileFullActivity.userId = userId
+                        try {
+                            val intent = Intent(context, ProfileFullActivity::class.java)
+                            intent.putExtra(Const.USER_ID, userId.toInt())
+                            context.startActivity(intent)
+                            (context as Activity).overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+                        } catch (e: NumberFormatException) {
+                            Timber.e("NumberFormatException")
+                        }
                     }
                 }
-
                 pathSegments.contains("charte-ethique-entourage") ->{
                     val chartIntent = Intent(Intent.ACTION_VIEW, Uri.parse(context.getString(R.string.disclaimer_link_public)))
                     context.startActivity(chartIntent)
@@ -120,14 +125,13 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
                             ),0
                     )
                 }*/
-                    pathSegments.contains("chart-event") -> {
-                        val intent = Intent(context, GroupRulesActivity::class.java).apply {
-                            putExtra(Const.RULES_TYPE, Const.RULES_EVENT)
-                        }
-                        (context as Activity).startActivity(intent)
+                pathSegments.contains("chart-event") -> {
+                    val intent = Intent(context, GroupRulesActivity::class.java).apply {
+                        putExtra(Const.RULES_TYPE, Const.RULES_EVENT)
                     }
-
-                    pathSegments.contains("outings") -> {
+                    (context as Activity).startActivity(intent)
+                }
+                pathSegments.contains("outings") -> {
                     if (pathSegments.size > 3) {
                         val outingId = pathSegments[2]
                         EventFeedFragment.shouldAddToAgenda = true
@@ -160,7 +164,6 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
                         (context as Activity).overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
                     }
                 }
-
                 pathSegments.contains("solicitations") -> {
                     if (pathSegments.contains("new")) {
                         val intent = Intent(context, CreateActionActivity::class.java)
@@ -218,7 +221,6 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
                         }
                     }
 
-
                     when (context) {
                         is MainActivity -> {
                             context.startActivity(intent)
@@ -241,8 +243,8 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
                     }
                 }
             }
-            }
         }
+    }
 
     override fun onRetrievedEvent(event: Events) {
         (context as? Activity)?.startActivityForResult(
