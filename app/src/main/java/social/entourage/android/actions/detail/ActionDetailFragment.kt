@@ -1,7 +1,6 @@
 package social.entourage.android.actions.detail
 
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
@@ -26,6 +25,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.actions.ActionsPresenter
 import social.entourage.android.actions.create.CreateActionActivity
@@ -120,9 +120,7 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
         }
     }
     private fun setupTranslationButton() {
-        val sharedPrefs = requireActivity().getSharedPreferences(
-            getString(R.string.preference_file_key), Context.MODE_PRIVATE
-        )
+        val sharedPrefs = EntourageApplication.get(context).sharedPreferences
 
         if(DataLanguageStock.userLanguage == action?.descriptionTranslations?.fromLang){
             binding.layoutCsTranslate.visibility = View.GONE

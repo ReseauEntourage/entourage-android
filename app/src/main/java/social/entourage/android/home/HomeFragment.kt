@@ -339,7 +339,7 @@ class HomeFragment: Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocatio
 
     private fun checkNotifAndSendToken() {
         val areNotificationsEnabled = NotificationManagerCompat.from(requireContext()).areNotificationsEnabled()
-        val sharedPreferences = requireActivity().getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE)
+        val sharedPreferences = EntourageApplication.get().sharedPreferences
         val editor = sharedPreferences.edit()
 
         // Récupérer le compteur actuel de connexions
@@ -371,7 +371,7 @@ class HomeFragment: Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocatio
 
 
     private fun increaseCounter(){
-        val sharedPreferences = requireActivity().getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE)
+        val sharedPreferences = EntourageApplication.get().sharedPreferences
         var count = sharedPreferences.getInt("COUNT_DISCUSSION_ASK", 0)
         sharedPreferences.edit().putInt("COUNT_DISCUSSION_ASK", ++count).apply()
         //toast the count
@@ -379,7 +379,7 @@ class HomeFragment: Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocatio
 
     private fun sendUserDiscussionStatus() {
         if (isAdded) {
-            val sharedPreferences = requireActivity().getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE)
+            val sharedPreferences = EntourageApplication.get().sharedPreferences
             //Add true in cookie DiscussionInterested
             val isInterested = sharedPreferences.getBoolean("DISCUSSION_INTERESTED", false)
             val userRefused = sharedPreferences.getBoolean("USER_REFUSED_POPUP", false)

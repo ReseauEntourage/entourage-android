@@ -8,9 +8,10 @@ import java.lang.reflect.Type
 /**
  * Source : https://github.com/fsilvestremorais/android-complex-preferences/blob/master/ComplexPreferences/src/br/com/kots/mob/complex/preferences/ComplexPreferences.java
  */
-class ComplexPreferences constructor(context: Context, namePreferences: String, mode: Int) {
+class ComplexPreferences(context: Context, namePreferences: String, mode: Int) {
     private val preferences: SharedPreferences
     private val editor: SharedPreferences.Editor
+
     fun putObject(key: String, `object`: Any?) {
         require(key.isNotEmpty()) { "key is empty or null" }
         editor.putString(key, if (`object` == null) "" else GSON.toJson(`object`))
@@ -22,19 +23,19 @@ class ComplexPreferences constructor(context: Context, namePreferences: String, 
 
     fun <T> getObject(key: String, a: Class<T>?): T? {
         val gson = preferences.getString(key, null) ?: return null
-        try {
-            return GSON.fromJson(gson, a)
+        return try {
+            GSON.fromJson(gson, a)
         } catch (e: Exception) {
-            return null
+            null
         }
     }
 
     fun <T> getObjectFromType(key: String, t: Type): T? {
         val gson = preferences.getString(key, null) ?: return null
-        try {
-            return GSON.fromJson<T>(gson, t)
+        return try {
+            GSON.fromJson(gson, t)
         } catch (e: Exception) {
-            return null
+            null
         }
     }
 
@@ -43,7 +44,7 @@ class ComplexPreferences constructor(context: Context, namePreferences: String, 
     }
 
     init {
-        val safeNamePreferences: String = if (namePreferences.isEmpty()) "complex_preferences"  else namePreferences
+        val safeNamePreferences = namePreferences.ifEmpty { "complex_preferences" }
         preferences = context.getSharedPreferences(safeNamePreferences, mode)
         editor = preferences.edit()
     }

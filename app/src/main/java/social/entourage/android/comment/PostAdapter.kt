@@ -72,10 +72,9 @@ class PostAdapter(
     }
 
     fun initiateList() {
-        val translatedByDefault = context.getSharedPreferences(
-            context.getString(R.string.preference_file_key),
-            Context.MODE_PRIVATE
-        ).getBoolean("translatedByDefault", false)
+        val translatedByDefault = EntourageApplication.get()
+            .sharedPreferences
+            .getBoolean("translatedByDefault", false)
 
         if (translatedByDefault) {
             postsList.forEach {

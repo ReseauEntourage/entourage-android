@@ -19,6 +19,7 @@ class AuthenticationController() {
     init {
         user = appSharedPref.getObject(PREF_KEY_USER, User::class.java)
         if (user?.token == null) {
+            //TODO is this the right way to do it ?
             user = null
         }
 
@@ -64,18 +65,6 @@ class AuthenticationController() {
     val isAuthenticated: Boolean
         get() = user != null
 
-    fun isTutorialDone(): Boolean {
-        user?.let { user ->
-            val sharedPreferences = EntourageApplication.get().sharedPreferences
-            val loggedNumbers = sharedPreferences.getStringSet(
-                EntourageApplication.KEY_TUTORIAL_DONE,
-                HashSet()
-            ) as HashSet<String>?
-            return loggedNumbers?.contains(user.phone) ?: false
-        }
-        return false
-    }
-
     private fun loadUserPreferences() {
         val type = object : TypeToken<Map<Int?, UserPreferences?>?>() {}.type
         userPreferencesHashMap =
@@ -117,34 +106,6 @@ class AuthenticationController() {
 
     ///////////////////////////////
     // userPreferences
-    var entourageDisclaimerShown: Boolean
-        get() = userPreferences.isEntourageDisclaimerShown
-        set(isEntourageDisclaimerShown) {
-            userPreferences.isEntourageDisclaimerShown = isEntourageDisclaimerShown
-            saveUserPreferences()
-        }
-
-    var isOnboardingUser: Boolean
-        get() = userPreferences.isOnboardingUser
-        set(isOnboardingUser) {
-            userPreferences.isOnboardingUser = isOnboardingUser
-            saveUserPreferences()
-        }
-
-    var editActionZoneShown: Boolean
-        get() = userPreferences.isEditActionZoneShown
-        set(isEditActionZoneShown) {
-            userPreferences.isEditActionZoneShown = isEditActionZoneShown
-            saveUserPreferences()
-        }
-
-    var isShowNoEntouragesPopup: Boolean
-        get() = userPreferences.isShowNoEntouragesPopup
-        set(showNoEntouragesPopup) {
-            userPreferences.isShowNoEntouragesPopup = showNoEntouragesPopup
-            saveUserPreferences()
-        }
-
     var isShowNoPOIsPopup: Boolean
         get() = userPreferences.isShowNoPOIsPopup
         set(showNoPOIsPopup) {
@@ -158,24 +119,6 @@ class AuthenticationController() {
             userPreferences.isShowInfoPOIsPopup = showInfoPOIsPopup
             saveUserPreferences()
         }
-
-    val mapFilter: MapFilter
-        get() {
-            return userPreferences.mapFilter ?: MapFilter().apply {
-                this.setDefaultValues()
-            }.also {
-                userPreferences.mapFilter = it
-                saveUserPreferences()
-            }
-        }
-
-    fun saveMapFilter() {
-        saveUserPreferences()
-    }
-
-    fun saveMyEntouragesFilter() {
-        saveUserPreferences()
-    }
 
     private fun saveCurrentUser() {
         appSharedPref.putObject(PREF_KEY_USER, user)

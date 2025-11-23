@@ -35,9 +35,7 @@ class LanguageSettingsActivity : AppCompatActivity(), OnLanguageClicked {
     }
 
     private fun initTranslationSwitch() {
-        val sharedPrefs = getSharedPreferences(getString(R.string.preference_file_key),
-            MODE_PRIVATE
-        )
+        val sharedPrefs = EntourageApplication.get().sharedPreferences
         val isTranslatedByDefault = sharedPrefs.getBoolean("translatedByDefault", true)
         binding.switchTranslation.isChecked = isTranslatedByDefault
     }
@@ -45,7 +43,7 @@ class LanguageSettingsActivity : AppCompatActivity(), OnLanguageClicked {
     private fun handleValidateClick() {
         binding.validate.setOnClickListener {
             // Sauvegarde de l'état du switch
-            val editor = getSharedPreferences(getString(R.string.preference_file_key), MODE_PRIVATE).edit()
+            val editor = EntourageApplication.get().sharedPreferences.edit()
             editor.putBoolean("translatedByDefault", binding.switchTranslation.isChecked)
             editor.apply()
 

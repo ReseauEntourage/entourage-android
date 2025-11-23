@@ -17,7 +17,15 @@ abstract class BaseSecuredActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        checkConnexion()
+    }
 
+    override fun onResume() {
+        super.onResume()
+        checkConnexion()
+    }
+
+    private fun checkConnexion() {
         if (authenticationController.isAuthenticated) {
             entApp?.finishLoginActivity()
         } else {
@@ -25,6 +33,7 @@ abstract class BaseSecuredActivity : BaseActivity() {
             finish()
         }
     }
+
 
     override fun getLink(linkId: String): String {
         return authenticationController.me?.token?.let {
