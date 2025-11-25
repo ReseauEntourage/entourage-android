@@ -2,6 +2,7 @@ package social.entourage.android.profile.activities_settings
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.edit
 import androidx.recyclerview.widget.LinearLayoutManager
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
@@ -43,9 +44,9 @@ class LanguageSettingsActivity : AppCompatActivity(), OnLanguageClicked {
     private fun handleValidateClick() {
         binding.validate.setOnClickListener {
             // Sauvegarde de l'état du switch
-            val editor = EntourageApplication.get().sharedPreferences.edit()
-            editor.putBoolean("translatedByDefault", binding.switchTranslation.isChecked)
-            editor.apply()
+            EntourageApplication.get().sharedPreferences.edit {
+                putBoolean("translatedByDefault", binding.switchTranslation.isChecked)
+            }
 
             // Mettre à jour le profil / logique si nécessaire
             // val id = EntourageApplication.me(this)?.id

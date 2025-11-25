@@ -2,6 +2,7 @@ package social.entourage.android
 
 import android.content.Intent
 import androidx.collection.ArrayMap
+import androidx.core.content.edit
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
@@ -54,9 +55,9 @@ class MainPresenter(private val activity: MainActivity) {
         get() = EntourageApplication.get().sharedPreferences
             .getString(EntourageApplication.KEY_REGISTRATION_ID, null)
         private set(pushNotificationToken) {
-            val editor = EntourageApplication.get().sharedPreferences.edit()
-            editor.putString(EntourageApplication.KEY_REGISTRATION_ID, pushNotificationToken)
-            editor.apply()
+            EntourageApplication.get().sharedPreferences.edit {
+                putString(EntourageApplication.KEY_REGISTRATION_ID, pushNotificationToken)
+            }
         }
 
     // ----------------------------------

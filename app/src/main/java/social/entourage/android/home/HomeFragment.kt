@@ -13,6 +13,7 @@ import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.core.animation.doOnEnd
 import androidx.core.app.NotificationManagerCompat
+import androidx.core.content.edit
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
@@ -340,7 +341,6 @@ class HomeFragment: Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocatio
     private fun checkNotifAndSendToken() {
         val areNotificationsEnabled = NotificationManagerCompat.from(requireContext()).areNotificationsEnabled()
         val sharedPreferences = EntourageApplication.get().sharedPreferences
-        val editor = sharedPreferences.edit()
 
         // Récupérer le compteur actuel de connexions
         var connectionCount = sharedPreferences.getInt("connectionCount", 0)
@@ -350,15 +350,17 @@ class HomeFragment: Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocatio
 
             // Réinitialiser le compteur de connexions si les notifications sont activées
             connectionCount = 0
-            editor.putInt("connectionCount", connectionCount)
-            editor.apply()
+            sharedPreferences.edit {
+                putInt("connectionCount", connectionCount)
+            }
         } else {
             deleteToken()
 
             // Incrémenter le compteur de connexions
             connectionCount++
-            editor.putInt("connectionCount", connectionCount)
-            editor.apply()
+            sharedPreferences.edit {
+                putInt("connectionCount", connectionCount)
+            }
 
             // Afficher la vue d'autorisation la 2e et la 10e fois
             if (connectionCount == 2 || connectionCount == 5 || connectionCount == 10) {
@@ -369,11 +371,10 @@ class HomeFragment: Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocatio
         }
     }
 
-
     private fun increaseCounter(){
         val sharedPreferences = EntourageApplication.get().sharedPreferences
         var count = sharedPreferences.getInt("COUNT_DISCUSSION_ASK", 0)
-        sharedPreferences.edit().putInt("COUNT_DISCUSSION_ASK", ++count).apply()
+        sharedPreferences.edit { putInt("COUNT_DISCUSSION_ASK", ++count) }
         //toast the count
     }
 

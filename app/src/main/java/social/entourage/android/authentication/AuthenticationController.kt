@@ -19,8 +19,7 @@ class AuthenticationController() {
     init {
         user = appSharedPref.getObject(PREF_KEY_USER, User::class.java)
         if (user?.token == null) {
-            //TODO is this the right way to do it ?
-            user = null
+            logOutUser()
         }
 
         loadUserPreferences()
