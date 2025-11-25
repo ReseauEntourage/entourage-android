@@ -4,15 +4,19 @@ import androidx.collection.ArrayMap
 import com.google.gson.annotations.SerializedName
 import okhttp3.ResponseBody
 import retrofit2.Call
-import retrofit2.http.*
+import retrofit2.http.Body
+import retrofit2.http.DELETE
+import retrofit2.http.GET
+import retrofit2.http.HTTP
+import retrofit2.http.POST
+import retrofit2.http.Path
+import retrofit2.http.Query
 import social.entourage.android.api.model.Conversation
 import social.entourage.android.api.model.ConversationImageSingleWrapper
 import social.entourage.android.api.model.ConversationImagesWrapper
-import social.entourage.android.api.model.GroupMember
-import social.entourage.android.api.model.User
-import social.entourage.android.api.model.UserBlockedUser
-import social.entourage.android.api.model.ConversationMembership
 import social.entourage.android.api.model.ConversationMembershipsWrapper
+import social.entourage.android.api.model.GroupMember
+import social.entourage.android.api.model.UserBlockedUser
 
 /**
  * Created by - on 15/11/2022.

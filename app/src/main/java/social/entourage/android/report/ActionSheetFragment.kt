@@ -277,8 +277,6 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
         binding.profile.profileSettingsItemLayout.setOnClickListener {
             when (mode) {
                 SheetMode.DISCUSSION_ONE_TO_ONE -> {
-                    ProfileFullActivity.isMe = false
-                    ProfileFullActivity.userId = userId.toString()
                     startActivity(
                         Intent(requireContext(), ProfileFullActivity::class.java)
                             .putExtra(Const.USER_ID, userId)

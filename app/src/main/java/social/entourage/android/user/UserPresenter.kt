@@ -1,7 +1,5 @@
 package social.entourage.android.user
 
-import android.location.Location
-import android.util.Log
 import androidx.collection.ArrayMap
 import androidx.lifecycle.MutableLiveData
 import okhttp3.ResponseBody
@@ -23,8 +21,8 @@ class UserPresenter {
     var isLanguageChanged = MutableLiveData<Boolean>()
 
 
-    fun getUser(userId: String) {
-        EntourageApplication.get().apiModule.userRequest.getUser(userId)
+    fun getUser(userId: Int) {
+        EntourageApplication.get().apiModule.userRequest.getUser(userId.toString())
             .enqueue(object : Callback<UserResponse> {
                 override fun onResponse(
                     call: Call<UserResponse>,

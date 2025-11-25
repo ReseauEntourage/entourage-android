@@ -253,8 +253,6 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
         }
 
         binding.layoutUser.setOnClickListener {
-            ProfileFullActivity.isMe = false
-            ProfileFullActivity.userId = action?.author?.userID.toString()
             startActivityForResult(Intent(context, ProfileFullActivity::class.java).putExtra(
                 Const.USER_ID,
                 action?.author?.userID
