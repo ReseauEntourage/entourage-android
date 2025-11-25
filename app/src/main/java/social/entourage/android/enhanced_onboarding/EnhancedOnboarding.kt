@@ -17,22 +17,17 @@ import social.entourage.android.enhanced_onboarding.fragments.OnboardingCongrats
 import social.entourage.android.enhanced_onboarding.fragments.OnboardingDisponibilityFragment
 import social.entourage.android.enhanced_onboarding.fragments.OnboardingInterestFragment
 import social.entourage.android.enhanced_onboarding.fragments.OnboardingPresentationFragment
-import social.entourage.android.user.UserPresenter
 
 class EnhancedOnboarding : BaseActivity() {
 
     private lateinit var binding: ActivityEnhancedOnboardingLayoutBinding
     private lateinit var viewModel: OnboardingViewModel
-    private val userPresenter: UserPresenter by lazy { UserPresenter() }
+    //private val userPresenter: UserPresenter by lazy { UserPresenter() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityEnhancedOnboardingLayoutBinding.inflate(layoutInflater)
         viewModel = ViewModelProvider(this).get(OnboardingViewModel::class.java)
-        //TODO is this the right order ???
-        viewModel.user?.id?.let { id ->
-            userPresenter.getUser( id)
-        }
         viewModel.user = EntourageApplication.me(this)
 
         // Observateurs pour chaque étape
@@ -44,14 +39,13 @@ class EnhancedOnboarding : BaseActivity() {
         viewModel.onboardingFifthStep.observe(this, ::handleOnboardingFifthStep)
         viewModel.onboardingShouldQuit.observe(this, ::handleOnboardingShouldQuit)
         viewModel.shouldDismissBtnBack.observe(this, ::toggleBtnBack)
-        userPresenter.user.observe(this, ::updateUser)
+        //userPresenter.user.observe(this, ::updateUser)
 
         setContentView(binding.root)
     }
 
     override fun onResume() {
         super.onResume()
-        viewModel.user?.id?.let {id -> userPresenter.getUser(id)}
 
         // Gestion du clic sur le bouton retour
         binding.btnBack.setOnClickListener {
