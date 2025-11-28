@@ -61,3 +61,46 @@ class Partner : BaseOrganization(), Serializable {
         private const val serialVersionUID = -8314133395611710517L
     }
 }
+
+data class PartnerResponse(
+    @SerializedName("partner") val partner: Partner
+)
+data class PartnerCreateBody(
+    @SerializedName("name")
+    val name: String,
+
+    @SerializedName("description")
+    val description: String? = null,
+
+    @SerializedName("phone")
+    val phone: String? = null,
+
+    @SerializedName("address")
+    val address: String? = null,
+
+    @SerializedName("latitude")
+    val latitude: Double? = null,
+
+    @SerializedName("longitude")
+    val longitude: Double? = null,
+
+    @SerializedName("website_url")
+    val websiteUrl: String? = null,
+
+    @SerializedName("email")
+    val email: String? = null,
+
+    @SerializedName("donations_needs")
+    val donationsNeeds: String? = null,
+
+    @SerializedName("volunteers_needs")
+    val volunteersNeeds: String? = null,
+
+    @SerializedName("staff")
+    val staff: Boolean = false
+)
+
+data class PartnerCreateWrapper(
+    @SerializedName("partner")
+    val partner: PartnerCreateBody
+)

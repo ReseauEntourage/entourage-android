@@ -105,10 +105,20 @@ class OnboardingZoneChoiceActivity : AppCompatActivity(), OnMapReadyCallback {
         }
 
         binding.buttonStart.setOnClickListener {
-/*            if (selectedUserType == UserType.ASSO) {
-                Toast.makeText(this, R.string.onboard_asso_todo, Toast.LENGTH_SHORT).show()
+            val latLng = currentLatLng
+            if (latLng == null) {
+                Toast.makeText(
+                    this,
+                    R.string.onboarding_zone_pick_location_first,
+                    Toast.LENGTH_SHORT
+                ).show()
                 return@setOnClickListener
-            }*/
+            }
+
+            val label = lastDisplayAddress
+                ?.takeIf { it.isNotBlank() }
+                ?: binding.autoCompleteCityName.text?.toString()?.takeIf { it.isNotBlank() }
+                ?: ""
 
             val addr = buildPrimaryAddress() ?: run {
                 Toast.makeText(
@@ -131,8 +141,21 @@ class OnboardingZoneChoiceActivity : AppCompatActivity(), OnMapReadyCallback {
 
                 OnboardingAPI.getInstance().updateAddress(addr, false) { isOK, _ ->
                     if (isOK) {
-                        startActivity(Intent(this, OnboardingEndActivity::class.java))
-                        finish()
+                        if (selectedUserType == UserType.ASSO) {
+                            // On passe l’adresse + lat/lng à l’écran d’onboarding asso
+                            startActivity(
+                                PartnerOnboardingActivity.newIntent(
+                                    context = this,
+                                    address = label,
+                                    lat = latLng.latitude,
+                                    lng = latLng.longitude
+                                )
+                            )
+                            finish()
+                        } else {
+                            startActivity(Intent(this, OnboardingEndActivity::class.java))
+                            finish()
+                        }
                     } else {
                         Toast.makeText(
                             this,
@@ -148,12 +171,18 @@ class OnboardingZoneChoiceActivity : AppCompatActivity(), OnMapReadyCallback {
     private fun setupSeekbar() {
         binding.radiusSeek.progress = radiusKm
         updateRadiusLabel()
-        binding.radiusSeek.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+        binding.radiusSeek.setOnSeekBarChangeListener(object :
+            SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(
+                seekBar: SeekBar?,
+                progress: Int,
+                fromUser: Boolean
+            ) {
                 radiusKm = progress.coerceAtLeast(1)
                 updateRadiusLabel()
                 updateCircleRadius()
             }
+
             override fun onStartTrackingTouch(seekBar: SeekBar?) {}
             override fun onStopTrackingTouch(seekBar: SeekBar?) {}
         })
@@ -166,7 +195,11 @@ class OnboardingZoneChoiceActivity : AppCompatActivity(), OnMapReadyCallback {
     private fun setupAutocomplete() {
         val actv = binding.autoCompleteCityName as AutoCompleteTextView
         actv.threshold = 1
-        val baseAdapter = ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, mutableListOf())
+        val baseAdapter = ArrayAdapter<String>(
+            this,
+            android.R.layout.simple_dropdown_item_1line,
+            mutableListOf()
+        )
         actv.setAdapter(baseAdapter)
 
         actv.setOnItemClickListener { _, _, position, _ ->
@@ -181,7 +214,8 @@ class OnboardingZoneChoiceActivity : AppCompatActivity(), OnMapReadyCallback {
             window?.decorView?.clearFocus()
             binding.layoutChoiceZone.requestFocus()
 
-            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            val imm =
+                getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(actv.windowToken, 0)
 
             queryGen++
@@ -196,8 +230,22 @@ class OnboardingZoneChoiceActivity : AppCompatActivity(), OnMapReadyCallback {
         }
 
         actv.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+            override fun beforeTextChanged(
+                s: CharSequence?,
+                start: Int,
+                count: Int,
+                after: Int
+            ) {
+            }
+
+            override fun onTextChanged(
+                s: CharSequence?,
+                start: Int,
+                before: Int,
+                count: Int
+            ) {
+            }
+
             override fun afterTextChanged(s: Editable?) {
                 if (suppressAutocomplete) return
                 val q = s?.toString()?.trim().orEmpty()
@@ -218,10 +266,15 @@ class OnboardingZoneChoiceActivity : AppCompatActivity(), OnMapReadyCallback {
                 val actv = (binding.autoCompleteCityName as AutoCompleteTextView)
                 if (suppressAutocomplete || !actv.hasFocus() || myGen != queryGen) return@addOnSuccessListener
                 predictions = response.autocompletePredictions
-                val suggestions = predictions.map { it.getFullText(null).toString() }
+                val suggestions =
+                    predictions.map { it.getFullText(null).toString() }
                 val adapter: ArrayAdapter<String> =
                     (actv.adapter as? ArrayAdapter<String>)
-                        ?: ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, mutableListOf()).also {
+                        ?: ArrayAdapter<String>(
+                            this,
+                            android.R.layout.simple_dropdown_item_1line,
+                            mutableListOf()
+                        ).also {
                             actv.setAdapter(it)
                         }
 
@@ -231,18 +284,24 @@ class OnboardingZoneChoiceActivity : AppCompatActivity(), OnMapReadyCallback {
                 if (suggestions.isNotEmpty()) actv.showDropDown()
             }
             .addOnFailureListener { e ->
-                Log.e("ZoneActivity", "findAutocompletePredictions error: ${e.message}", e)
+                Log.e(
+                    "ZoneActivity",
+                    "findAutocompletePredictions error: ${e.message}",
+                    e
+                )
             }
     }
 
     private fun fetchPlaceDetails(placeId: String) {
-        val fields = listOf(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG, Place.Field.ADDRESS)
+        val fields =
+            listOf(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG, Place.Field.ADDRESS)
         val request = FetchPlaceRequest.builder(placeId, fields).build()
 
         placesClient.fetchPlace(request)
             .addOnSuccessListener { rsp ->
                 val place = rsp.place
-                val latLng = place.latLng ?: return@addOnSuccessListener
+                val latLng =
+                    place.latLng ?: return@addOnSuccessListener
                 val label = place.name ?: place.address ?: ""
                 lastPlaceId = place.id
                 lastDisplayAddress = label
@@ -258,7 +317,10 @@ class OnboardingZoneChoiceActivity : AppCompatActivity(), OnMapReadyCallback {
     private fun placeMarkerAndCircle(position: LatLng, title: String?) {
         val m = map ?: return
         if (marker == null) {
-            marker = m.addMarker(MarkerOptions().position(position).title(title ?: "Localisation"))
+            marker = m.addMarker(
+                MarkerOptions().position(position)
+                    .title(title ?: "Localisation")
+            )
         } else {
             marker?.position = position
             marker?.title = title
@@ -297,7 +359,8 @@ class OnboardingZoneChoiceActivity : AppCompatActivity(), OnMapReadyCallback {
         val lat = center.latitude
         val lng = center.longitude
         val latOffset = radiusMeters / 111_320.0
-        val lngOffset = radiusMeters / (111_320.0 * cos(Math.toRadians(lat)))
+        val lngOffset =
+            radiusMeters / (111_320.0 * cos(Math.toRadians(lat)))
         val sw = LatLng(lat - latOffset, lng - lngOffset)
         val ne = LatLng(lat + latOffset, lng + lngOffset)
         return LatLngBounds(sw, ne)
@@ -310,7 +373,8 @@ class OnboardingZoneChoiceActivity : AppCompatActivity(), OnMapReadyCallback {
         } else {
             val label = lastDisplayAddress
                 ?.takeIf { it.isNotBlank() }
-                ?: binding.autoCompleteCityName.text?.toString()?.takeIf { it.isNotBlank() }
+                ?: binding.autoCompleteCityName.text?.toString()
+                    ?.takeIf { it.isNotBlank() }
                 ?: ""
             User.Address(latLng.latitude, latLng.longitude, label)
         }
