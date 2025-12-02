@@ -84,6 +84,9 @@ data class Events(
     @field:SerializedName("public")
     val jsonMemberPublic: Boolean? = null,
 
+    @field:SerializedName("manageable_by_current_user")
+    val manageableByCurrentUser: Boolean? = null,
+
     @field:SerializedName("updated_at")
     val updatedAt: Date? = null,
 

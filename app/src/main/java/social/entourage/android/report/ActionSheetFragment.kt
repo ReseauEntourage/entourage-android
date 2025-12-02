@@ -57,7 +57,8 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
     private var eventParticipantsCount: Int = 0
     private var eventAddress: String? = null
     private var forceShowEdit: Boolean = false
-    private var isEventCreator: Boolean = false // NEW
+    private var isEventCreator: Boolean = false
+    private var canEditEvent: Boolean = false // NEW: vient de manageable_by_current_user
 
     // Message actions
     private var messageId: Int = 0
@@ -65,7 +66,7 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
     private var isMyMessage: Boolean = false
     private var isEventContext: Boolean = false
     private var isGroupContext: Boolean = false
-    private var headerFromEventFeed: Boolean = false   // <— NEW
+    private var headerFromEventFeed: Boolean = false
 
     // Pour “Modifier l’événement”
     private var eventObj: Events? = null
@@ -91,8 +92,9 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
             isMyMessage = getBoolean(ARG_IS_MY_MESSAGE, false)
             isEventContext = getBoolean(ARG_IS_EVENT_CONTEXT, false)
             isGroupContext = getBoolean(ARG_IS_GROUP_CONTEXT, false)
-            headerFromEventFeed = getBoolean(ARG_HEADER_FROM_EVENT_FEED, false) // <— NEW
-            isEventCreator = getBoolean(ARG_IS_EVENT_CREATOR, false) // NEW
+            headerFromEventFeed = getBoolean(ARG_HEADER_FROM_EVENT_FEED, false)
+            isEventCreator = getBoolean(ARG_IS_EVENT_CREATOR, false)
+            canEditEvent = getBoolean(ARG_CAN_EDIT_EVENT, false) // NEW
 
             @Suppress("DEPRECATION")
             if (containsKey(Const.EVENT_UI)) {
@@ -108,7 +110,11 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
         smallTalkViewModel = SmallTalkViewModel(EntourageApplication.get())
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         _binding = NewFragmentSettingsDiscussionModalBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -124,7 +130,7 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
         binding.header.iconBack?.isVisible = false
         binding.header.hbsIconCross.setOnClickListener { dismiss() }
 
-        // Masquer l’item “edit” par défaut (on ne l’affichera que si eventObj != null ou forceShowEdit = true)
+        // Masquer l’item “edit” par défaut
         binding.edit.profileSettingsItemLayout.isVisible = false
 
         when (mode) {
@@ -134,7 +140,8 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
 
                 binding.layoutBlock.isVisible = !imBlocker
                 binding.block.text = getString(R.string.discussion_block_title)
-                binding.blockSub.text = getString(R.string.discussion_block_subtitle, username)
+                binding.blockSub.text =
+                    getString(R.string.discussion_block_subtitle, username)
 
                 binding.quit.profileSettingsItemLayout.isVisible = false
                 binding.eventInfo.isVisible = false
@@ -195,7 +202,9 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
                 // Libellé et couleur du bouton selon le créateur
                 if (isEventCreator) {
                     binding.quit.setLabel(getString(R.string.delete_event))
-                    binding.quit.profileSettingsItemLabel.setTextColor(ContextCompat.getColor(requireContext(), R.color.orange))
+                    binding.quit.profileSettingsItemLabel.setTextColor(
+                        ContextCompat.getColor(requireContext(), R.color.orange)
+                    )
                 } else {
                     binding.quit.setLabel(getString(R.string.leave_event))
                     binding.quit.profileSettingsItemLabel.setTextColor(
@@ -211,7 +220,11 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
                 binding.eventParticipants.isVisible = count > 0
                 if (count > 0) {
                     binding.eventParticipants.text =
-                        resources.getQuantityString(R.plurals.participants_count, count, count)
+                        resources.getQuantityString(
+                            R.plurals.participants_count,
+                            count,
+                            count
+                        )
                 }
 
                 binding.eventAddress.text = eventAddress.orEmpty()
@@ -223,9 +236,13 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
                 binding.photos.profileSettingsItemLayout.isVisible = true
                 binding.photos.setLabel("Voir les photos")
 
-                // Bouton "Modifier l’événement" si objet complet OU flag forceShowEdit, et seulement pour le créateur
-                binding.edit.profileSettingsItemLayout.isVisible = (eventObj != null || forceShowEdit) && isEventCreator
-                if (binding.edit.profileSettingsItemLayout.isVisible) {
+                // Bouton "Modifier l’événement" :
+                // visible si on a un eventObj OU forceShowEdit,
+                // ET si user est créateur OU manageable_by_current_user = true
+                val showEdit =
+                    (eventObj != null || forceShowEdit) && (isEventCreator || canEditEvent)
+                binding.edit.profileSettingsItemLayout.isVisible = showEdit
+                if (showEdit) {
                     binding.edit.setLabel(getString(R.string.edit_event_information))
                 }
             }
@@ -258,16 +275,17 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
         }
 
         if (headerFromEventFeed) {
-            binding.header.title = getString(R.string.event_settings) // "Paramètres de l’événement"
+            binding.header.title = getString(R.string.event_settings)
             binding.photos.profileSettingsItemLayout.visibility = View.GONE
         }
 
-        // Si pas créateur, on masque l’édition (déjà pris en compte ci-dessus, on double-sécurise)
-        if (!isEventCreator && mode == SheetMode.EVENT) {
+        // Double sécurité : si ni créateur ni manageable_by_current_user, on masque l’édition
+        if (!isEventCreator && !canEditEvent && mode == SheetMode.EVENT) {
             binding.edit.profileSettingsItemLayout.isVisible = false
         }
-        //remove if not part of event
-        if(EventFeedActivity.isFromMyEvent == false && mode == SheetMode.EVENT){
+
+        // remove if not part of event
+        if (EventFeedActivity.isFromMyEvent == false && mode == SheetMode.EVENT) {
             binding.quit.profileSettingsItemLayout.isVisible = false
         }
     }
@@ -285,7 +303,8 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
 
                 SheetMode.EVENT -> {
                     MembersConversationFragment.isFromDiscussion = false
-                    val isAnimator = EntourageApplication.get().me()?.roles?.isNotEmpty() == true
+                    val isAnimator =
+                        EntourageApplication.get().me()?.roles?.isNotEmpty() == true
                     startActivity(
                         Intent(requireContext(), MembersActivity::class.java).apply {
                             putExtra("ID", eventId)
@@ -304,14 +323,22 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
 
                 SheetMode.MESSAGE_ACTIONS -> {
                     val plain = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                        Html.fromHtml(messageHtml.orEmpty(), Html.FROM_HTML_MODE_LEGACY).toString()
+                        Html.fromHtml(
+                            messageHtml.orEmpty(),
+                            Html.FROM_HTML_MODE_LEGACY
+                        ).toString()
                     } else {
                         @Suppress("DEPRECATION")
                         Html.fromHtml(messageHtml.orEmpty()).toString()
                     }
                     val cm = requireContext()
                         .getSystemService(android.content.Context.CLIPBOARD_SERVICE) as android.content.ClipboardManager
-                    cm.setPrimaryClip(android.content.ClipData.newPlainText("message", plain))
+                    cm.setPrimaryClip(
+                        android.content.ClipData.newPlainText(
+                            "message",
+                            plain
+                        )
+                    )
                     dismiss()
                 }
             }
@@ -398,7 +425,10 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
 
                 SheetMode.MESSAGE_ACTIONS -> {
                     val plain = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                        Html.fromHtml(messageHtml.orEmpty(), Html.FROM_HTML_MODE_LEGACY).toString()
+                        Html.fromHtml(
+                            messageHtml.orEmpty(),
+                            Html.FROM_HTML_MODE_LEGACY
+                        ).toString()
                     } else {
                         @Suppress("DEPRECATION")
                         Html.fromHtml(messageHtml.orEmpty()).toString()
@@ -408,7 +438,8 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
                     if (isConversationContext) {
                         val isSmallTalk = DetailConversationActivity.isSmallTalkMode
                         val convOrSmallTalkId =
-                            if (isSmallTalk) DetailConversationActivity.smallTalkId else conversationId
+                            if (isSmallTalk) DetailConversationActivity.smallTalkId
+                            else conversationId
 
                         ReportModalFragment.newInstance(
                             id = convOrSmallTalkId,
@@ -512,9 +543,12 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
                 SheetMode.MESSAGE_ACTIONS -> {
                     if (messageId == 0) return@setOnClickListener
                     when {
-                        isEventContext && eventId != 0 -> eventsPresenter.deletedEventPost(eventId, messageId)
-                        isGroupContext && groupId != 0 -> groupPresenter.deletedGroupPost(groupId, messageId)
-                        else -> discussionPresenter.deleteMessage(conversationId, messageId)
+                        isEventContext && eventId != 0 ->
+                            eventsPresenter.deletedEventPost(eventId, messageId)
+                        isGroupContext && groupId != 0 ->
+                            groupPresenter.deletedGroupPost(groupId, messageId)
+                        else ->
+                            discussionPresenter.deleteMessage(conversationId, messageId)
                     }
                     (activity as? DetailConversationActivity)?.reloadView()
                     dismiss()
@@ -527,7 +561,8 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
         // Bloquer (1to1)
         binding.layoutBlock.setOnClickListener {
             if (mode == SheetMode.DISCUSSION_ONE_TO_ONE) {
-                val desc = getString(R.string.params_block_user_conv_pop_message, username)
+                val desc =
+                    getString(R.string.params_block_user_conv_pop_message, username)
                 CustomAlertDialog.showButtonClickedWithCrossClose(
                     requireContext(),
                     getString(R.string.params_block_user_conv_pop_title),
@@ -562,6 +597,7 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
         private const val ARG_FORCE_SHOW_EDIT = "forceShowEdit"
         private const val ARG_HEADER_FROM_EVENT_FEED = "headerFromEventFeed"
         private const val ARG_IS_EVENT_CREATOR = "isEventCreator"
+        private const val ARG_CAN_EDIT_EVENT = "canEditEvent" // NEW
 
         var isSignable = false
 
@@ -605,7 +641,8 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
             eventAddress: String? = null,
             forceShowEdit: Boolean = false,
             fromEventFeed: Boolean = false,
-            isEventCreator: Boolean = false
+            isEventCreator: Boolean = false,
+            canEditEvent: Boolean = false // NEW
         ) = ActionSheetFragment().apply {
             arguments = Bundle().apply {
                 putString(ARG_MODE, SheetMode.EVENT.name)
@@ -618,6 +655,7 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
                 putBoolean(ARG_FORCE_SHOW_EDIT, forceShowEdit)
                 putBoolean(ARG_HEADER_FROM_EVENT_FEED, fromEventFeed)
                 putBoolean(ARG_IS_EVENT_CREATOR, isEventCreator)
+                putBoolean(ARG_CAN_EDIT_EVENT, canEditEvent)
             }
         }
 
@@ -627,7 +665,8 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
             conversationId: Int,
             canManageParticipants: Boolean = false,
             fromEventFeed: Boolean = false,
-            isEventCreator: Boolean = false
+            isEventCreator: Boolean = false,
+            canEditEvent: Boolean = false // NEW
         ) = ActionSheetFragment().apply {
             arguments = Bundle().apply {
                 putString(ARG_MODE, SheetMode.EVENT.name)
@@ -640,6 +679,7 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
                 putSerializable(Const.EVENT_UI, event)
                 putBoolean(ARG_HEADER_FROM_EVENT_FEED, fromEventFeed)
                 putBoolean(ARG_IS_EVENT_CREATOR, isEventCreator)
+                putBoolean(ARG_CAN_EDIT_EVENT, canEditEvent)
             }
         }
 
@@ -653,7 +693,8 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
             arguments = Bundle().apply {
                 putString(
                     ARG_MODE,
-                    if (isOneToOne) SheetMode.DISCUSSION_ONE_TO_ONE.name else SheetMode.DISCUSSION_GROUP.name
+                    if (isOneToOne) SheetMode.DISCUSSION_ONE_TO_ONE.name
+                    else SheetMode.DISCUSSION_GROUP.name
                 )
                 putInt(ARG_CONV_ID, conversationId)
                 putInt(ARG_USER_ID, userId)
