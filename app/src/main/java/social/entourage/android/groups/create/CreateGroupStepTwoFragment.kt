@@ -112,7 +112,7 @@ class CreateGroupStepTwoFragment : Fragment() {
     }
 
     override fun onDestroy() {
-        super.onDestroy()
         binding.layout.egs2Error.root.visibility = View.GONE
+        super.onDestroy()
     }
 }

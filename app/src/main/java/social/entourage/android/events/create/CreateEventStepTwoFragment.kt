@@ -112,10 +112,10 @@ class CreateEventStepTwoFragment : Fragment() {
     }
 
     override fun onDestroy() {
-        super.onDestroy()
         if(_binding!=null) {
             binding.layout.error.root.visibility = View.GONE
         }
+        super.onDestroy()
     }
 
     private fun handleOnClickNext(onClick: Boolean) {

@@ -14,20 +14,21 @@ import social.entourage.android.R
 import social.entourage.android.databinding.SettingItemSeparatorBinding
 import social.entourage.android.databinding.SettingsItemUserSectionBinding
 import social.entourage.android.enhanced_onboarding.EnhancedOnboarding
-import social.entourage.android.profile.activities_settings.LanguageSettingsActivity
 import social.entourage.android.language.TranslationBottomFragment
-import social.entourage.android.profile.activities_settings.UnblockUsersActivity
 import social.entourage.android.profile.activities_settings.EditPasswordActivity
-import social.entourage.android.tools.utils.CustomAlertDialog
-import social.entourage.android.tools.view.WebViewFragment
 import social.entourage.android.profile.activities_settings.HelpAboutActivity
+import social.entourage.android.profile.activities_settings.LanguageSettingsActivity
 import social.entourage.android.profile.activities_settings.SettingsNotificationsActivity
+import social.entourage.android.profile.activities_settings.UnblockUsersActivity
+import social.entourage.android.tools.utils.CustomAlertDialog
 import social.entourage.android.tools.utils.VibrationUtil
+import social.entourage.android.tools.view.WebViewFragment
 
 class SettingProfileFullAdapter(
     private val items: List<ProfileSectionItem>,
     private val context: Context,
-    private val parentFragmentManager: androidx.fragment.app.FragmentManager
+    private val parentFragmentManager: androidx.fragment.app.FragmentManager,
+    private val isMe: Boolean
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     companion object {
@@ -99,13 +100,13 @@ class SettingProfileFullAdapter(
             } else {
                 binding.ivArrowUserSection.scaleX = 1f // Orientation normale
             }
-            if(ProfileFullActivity.isMe == false){
+            if(!isMe){
                 binding.ivArrowUserSection.visibility = android.view.View.GONE
             }
             // Handle Clicks
             binding.root.setOnClickListener {
 
-                if(ProfileFullActivity.isMe){
+                if(isMe){
                     VibrationUtil.vibrate(context)
                     when (item.title) {
                         context.getString(R.string.settings_language_title) -> {

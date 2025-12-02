@@ -49,6 +49,7 @@ import social.entourage.android.home.pedago.PedagoListActivity
 import social.entourage.android.notifications.InAppNotificationsActivity
 import social.entourage.android.notifications.NotificationDemandActivity
 import social.entourage.android.onboarding.onboard.OnboardingStartActivity
+import social.entourage.android.profile.MyProfileFullActivity
 import social.entourage.android.profile.ProfileFullActivity
 import social.entourage.android.small_talks.SmallTalkIntroActivity
 import social.entourage.android.small_talks.SmallTalkViewModel
@@ -232,10 +233,9 @@ class HomeFragment: Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocatio
         actionsPresenter.getUnreadCount()
         if(MainActivity.shouldLaunchProfile){
             MainActivity.shouldLaunchProfile = false
-            ProfileFullActivity.isMe = true
             AnalyticsEvents.logEvent(AnalyticsEvents.Action__Tab__Profil)
             startActivityForResult(
-                Intent(context, ProfileFullActivity::class.java), 0
+                Intent(context, MyProfileFullActivity::class.java), 0
             )
         }
         testNotifDemandePage()
@@ -451,7 +451,7 @@ class HomeFragment: Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocatio
                 homePresenter.getPedagogicalResources()
                 homePresenter.getInitialPedagogicalResources()
                 homePresenter.getNotificationsCount()
-                userPresenter.getUser(meId.toString())
+                userPresenter.getUser(meId)
             }
         }
     }
@@ -856,10 +856,9 @@ class HomeFragment: Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocatio
     private fun setProfileButton(){
         binding.avatar.setOnClickListener {
             AnalyticsEvents.logEvent(AnalyticsEvents.Action__Tab__Profil)
-            ProfileFullActivity.isMe = true
             startActivityForResult(
                 //Intent(context, ProfileActivity::class.java), 0
-                Intent(context, ProfileFullActivity::class.java), 0
+                Intent(context, MyProfileFullActivity::class.java), 0
             )
         }
 
@@ -927,8 +926,6 @@ class HomeFragment: Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocatio
         }
         if(position == 0){
             AnalyticsEvents.logEvent(AnalyticsEvents.Action__Home__Moderator)
-            ProfileFullActivity.isMe = false
-            ProfileFullActivity.userId = moderatorId.toString()
             startActivity(
                 Intent(context, ProfileFullActivity::class.java).putExtra(
                     Const.USER_ID,

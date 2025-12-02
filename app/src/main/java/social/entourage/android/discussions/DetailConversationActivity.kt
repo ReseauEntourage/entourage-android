@@ -19,11 +19,7 @@ import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.core.text.HtmlCompat
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsAnimationCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
-import androidx.core.view.updatePadding
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -51,6 +47,7 @@ import social.entourage.android.discussions.members.MembersConversationFragment
 import social.entourage.android.events.EventsPresenter
 import social.entourage.android.events.details.feed.EventFeedActivity
 import social.entourage.android.groups.GroupPresenter
+import social.entourage.android.profile.MyProfileFullActivity
 import social.entourage.android.profile.ProfileFullActivity
 import social.entourage.android.small_talks.SmallTalkGuidelinesActivity
 import social.entourage.android.small_talks.SmallTalkViewModel
@@ -596,19 +593,25 @@ class DetailConversationActivity : CommentActivity() {
                     return@setOnClickListener
                 }
 
-                ProfileFullActivity.isMe = (otherUserId == meId)
-                ProfileFullActivity.userId = otherUserId.toString()
-
+                val isMe = (otherUserId == meId)
                 Timber.i(
                     "[DetailConversation] Opening ProfileFullActivity — userId=%s, isMe=%s",
-                    otherUserId, ProfileFullActivity.isMe
+                    otherUserId, isMe
                 )
 
-                startActivityForResult(
-                    Intent(this, ProfileFullActivity::class.java)
-                        .putExtra(Const.USER_ID, otherUserId),
-                    0
-                )
+                if(isMe) {
+                    startActivityForResult(
+                        Intent(this, MyProfileFullActivity::class.java),
+                        0
+                    )
+                } else {
+                    //ProfileFullActivity.userId = otherUserId.toString()
+                    startActivityForResult(
+                        Intent(this, ProfileFullActivity::class.java)
+                            .putExtra(Const.USER_ID, otherUserId),
+                        0
+                    )
+                }
             }
         } else {
             // Groupe / multi / outing : ouvre la liste des membres

@@ -1,6 +1,5 @@
 package social.entourage.android.discussions
 
-import android.util.Log
 import androidx.collection.ArrayMap
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -12,8 +11,23 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import social.entourage.android.EntourageApplication
-import social.entourage.android.api.model.*
-import social.entourage.android.api.request.*
+import social.entourage.android.api.model.Conversation
+import social.entourage.android.api.model.ConversationMembership
+import social.entourage.android.api.model.ConversationMembershipsWrapper
+import social.entourage.android.api.model.GroupMember
+import social.entourage.android.api.model.Post
+import social.entourage.android.api.model.UserBlockedUser
+import social.entourage.android.api.request.DiscussionDetailWrapper
+import social.entourage.android.api.request.PostListWrapper
+import social.entourage.android.api.request.PostWrapper
+import social.entourage.android.api.request.PrepareAddPostResponse
+import social.entourage.android.api.request.Report
+import social.entourage.android.api.request.ReportWrapper
+import social.entourage.android.api.request.RequestContent
+import social.entourage.android.api.request.UnreadCountWrapper
+import social.entourage.android.api.request.UserBlockedWrapper
+import social.entourage.android.api.request.UserListWithConversationWrapper
+import social.entourage.android.api.request.UsersBlockedWrapper
 import social.entourage.android.home.UnreadMessages
 import timber.log.Timber
 import java.io.File
@@ -48,8 +62,6 @@ class DiscussionsPresenter : ViewModel() {
     var getBlockedUsers = MutableLiveData<MutableList<UserBlockedUser>?>()
 
     var hasUserUnblock = MutableLiveData<Boolean>()
-    var hasUserjoined = MutableLiveData<Boolean>()
-    val messageDeleted = MutableLiveData<String>()
 
     var currentPageComments = 1
     val perPageComments = 50
@@ -67,27 +79,6 @@ class DiscussionsPresenter : ViewModel() {
 
     var largeImage = MutableLiveData<social.entourage.android.api.model.ConversationImage?>()
     var isLoadingLargeImage = MutableLiveData<Boolean>().apply { value = false }
-
-    fun getAllMessages(page: Int, per: Int) {
-        isLoading = true
-        EntourageApplication.get().apiModule.discussionsRequest.getAllConversations(page, per)
-            .enqueue(object : Callback<DiscussionsListWrapper> {
-                override fun onResponse(
-                    call: Call<DiscussionsListWrapper>,
-                    response: Response<DiscussionsListWrapper>
-                ) {
-                    response.body()?.let { allConversationsWrapper ->
-                        if (allConversationsWrapper.allConversations.size < messagesPerPage) isLastPage = true
-                        getAllMessages.value = allConversationsWrapper.allConversations
-                    }
-                    isLoading = false
-                }
-
-                override fun onFailure(call: Call<DiscussionsListWrapper>, t: Throwable) {
-                    isLoading = false
-                }
-            })
-    }
 
     //Detail Conversation:
     fun addComment(groupId: Int, comment: Post?) {
@@ -306,86 +297,6 @@ class DiscussionsPresenter : ViewModel() {
         })
     }
 
-    fun addUserToConversation(conversationId: String) {
-        EntourageApplication.get().apiModule.discussionsRequest.addUserToConversation(conversationId)
-            .enqueue(object : Callback<ResponseBody> {
-                override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
-                    if (response.isSuccessful) {
-                        hasUserjoined.postValue(true)
-                    } else {
-                        hasUserjoined.postValue(false)
-                    }
-                }
-
-                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                    hasUserjoined.postValue(false)
-                }
-            })
-    }
-
-    fun fetchAllConversations(page: Int, per: Int) {
-        isLoading = true
-        EntourageApplication.get().apiModule.discussionsRequest.getAllConversations(page, per)
-            .enqueue(object : Callback<DiscussionsListWrapper> {
-                override fun onResponse(
-                    call: Call<DiscussionsListWrapper>,
-                    response: Response<DiscussionsListWrapper>
-                ) {
-                    response.body()?.let { wrapper ->
-                        if (wrapper.allConversations.size < per) isLastPage = true
-                        getAllMessages.value = wrapper.allConversations
-                    }
-                    isLoading = false
-                }
-
-                override fun onFailure(call: Call<DiscussionsListWrapper>, t: Throwable) {
-                    isLoading = false
-                }
-            })
-    }
-
-    fun fetchPrivateConversations(page: Int, per: Int) {
-        isLoading = true
-        EntourageApplication.get().apiModule.discussionsRequest.getPrivateConversations(page, per)
-            .enqueue(object : Callback<DiscussionsListWrapper> {
-                override fun onResponse(
-                    call: Call<DiscussionsListWrapper>,
-                    response: Response<DiscussionsListWrapper>
-                ) {
-                    response.body()?.let { wrapper ->
-                        if (wrapper.allConversations.size < per) isLastPage = true
-                        getAllMessages.value = wrapper.allConversations
-                    }
-                    isLoading = false
-                }
-
-                override fun onFailure(call: Call<DiscussionsListWrapper>, t: Throwable) {
-                    isLoading = false
-                }
-            })
-    }
-
-    fun fetchOutingConversations(page: Int, per: Int) {
-        isLoading = true
-        EntourageApplication.get().apiModule.discussionsRequest.getOutingConversations(page, per)
-            .enqueue(object : Callback<DiscussionsListWrapper> {
-                override fun onResponse(
-                    call: Call<DiscussionsListWrapper>,
-                    response: Response<DiscussionsListWrapper>
-                ) {
-                    response.body()?.let { wrapper ->
-                        if (wrapper.allConversations.size < per) isLastPage = true
-                        getAllMessages.value = wrapper.allConversations
-                    }
-                    isLoading = false
-                }
-
-                override fun onFailure(call: Call<DiscussionsListWrapper>, t: Throwable) {
-                    isLoading = false
-                }
-            })
-    }
-
     fun fetchUsersForConversation(conversationId: Int) {
         EntourageApplication.get().apiModule.discussionsRequest
             .getUsersForConversation(conversationId)
@@ -422,7 +333,7 @@ class DiscussionsPresenter : ViewModel() {
                 }
 
                 override fun onFailure(call: Call<PrepareAddPostResponse>, t: Throwable) {
-                    Log.wtf("wtf", "t : " + t.message )
+                    Timber.e(t, "Failed to prepare add post")
                 }
             })
     }

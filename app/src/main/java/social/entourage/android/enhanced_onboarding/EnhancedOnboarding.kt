@@ -29,7 +29,10 @@ class EnhancedOnboarding : BaseActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityEnhancedOnboardingLayoutBinding.inflate(layoutInflater)
         viewModel = ViewModelProvider(this).get(OnboardingViewModel::class.java)
-        userPresenter.getUser(viewModel.user?.id.toString())
+        //TODO is this the right order ???
+        viewModel.user?.id?.let { id ->
+            userPresenter.getUser( id)
+        }
         viewModel.user = EntourageApplication.me(this)
 
         // Observateurs pour chaque étape
@@ -48,7 +51,7 @@ class EnhancedOnboarding : BaseActivity() {
 
     override fun onResume() {
         super.onResume()
-        userPresenter.getUser(viewModel.user?.id.toString())
+        viewModel.user?.id?.let {id -> userPresenter.getUser(id)}
 
         // Gestion du clic sur le bouton retour
         binding.btnBack.setOnClickListener {

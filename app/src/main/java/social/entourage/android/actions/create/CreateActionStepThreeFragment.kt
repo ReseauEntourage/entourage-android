@@ -9,8 +9,8 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import social.entourage.android.R
-import social.entourage.android.databinding.NewFragmentCreateActionStepThreeBinding
 import social.entourage.android.api.model.MetadataActionLocation
+import social.entourage.android.databinding.NewFragmentCreateActionStepThreeBinding
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.user.edit.place.UserEditActionZoneFragment
 
@@ -105,8 +105,8 @@ class CreateActionStepThreeFragment : Fragment(), UserEditActionZoneFragment.Fra
     }
 
     override fun onDestroy() {
-        super.onDestroy()
         binding.error.root.visibility = View.GONE
+        super.onDestroy()
     }
 
     override fun onUserEditActionZoneFragmentDismiss() {

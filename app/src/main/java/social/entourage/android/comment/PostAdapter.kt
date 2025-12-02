@@ -38,7 +38,6 @@ import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.VibrationUtil
 import social.entourage.android.tools.utils.px
-import timber.log.Timber
 import java.text.SimpleDateFormat
 
 interface SurveyInteractionListener {
@@ -1067,9 +1066,7 @@ class PostAdapter(
     }
 
     private fun showUserDetail(context: Context, userId: Int?) {
-        ProfileFullActivity.isMe = false
         userId?.let {
-            ProfileFullActivity.userId = it.toString()
             (context as? Activity)?.startActivity(
                 Intent(context, ProfileFullActivity::class.java)
                     .putExtra(Const.USER_ID, it)
