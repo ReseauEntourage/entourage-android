@@ -154,6 +154,7 @@ class HomeFragment: Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocatio
                 }
             }
         })
+        
         homeSmallTalkAdapter = HomeSmallTalkAdapter(
             onStartClick = {
                 startActivity(Intent(requireContext(), SmallTalkIntroActivity::class.java))
