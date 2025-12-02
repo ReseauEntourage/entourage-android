@@ -99,6 +99,9 @@ data class UserSmallTalkRequest(
     @SerializedName("smalltalk_id")
     val smalltalkId: Int? = null,
 
+    @SerializedName("number_of_unread_messages")
+    val numberOfUnreadMessages: Int? = null,
+
     @SerializedName("match_format")
     val matchFormat: String? = null, // "one" ou "many"
 
