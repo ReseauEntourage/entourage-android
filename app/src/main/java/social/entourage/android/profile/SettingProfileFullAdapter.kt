@@ -134,8 +134,7 @@ class SettingProfileFullAdapter(
                             context.startActivity(intent)
                         }
                         context.getString(R.string.settings_help_title) -> {
-                            val intent = Intent(context, HelpAboutActivity::class.java)
-                            context.startActivity(intent)
+                            HelpAboutActivity.start(context)
                         }
                         context.getString(R.string.delete_account_button) -> {
                             CustomAlertDialog.showWithCancelFirst(
