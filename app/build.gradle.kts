@@ -322,6 +322,6 @@ dependencies {
     implementation("com.google.android.gms:play-services-auth-api-phone:18.3.0")
     //UNCOMMENT FOR VIDEO CALL FEATURE
     //implementation("com.dafruits:webrtc:123.0.0")
-    implementation("com.mikepenz:aboutlibraries-core:11.2.0")
-    implementation("com.mikepenz:aboutlibraries:11.2.0")
+    implementation("com.mikepenz:aboutlibraries-core:12.2.4")
+    implementation("com.mikepenz:aboutlibraries:12.2.4")
 }
