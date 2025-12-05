@@ -92,6 +92,8 @@
         <activity android:name="social.entourage.android.profile.activities_settings.SettingsNotificationsActivity"/>
         <activity android:name="social.entourage.android.profile.activities_settings.EditPasswordActivity"/>
         <activity android:name="social.entourage.android.profile.activities_settings.HelpAboutActivity"/>
+        <activity android:name="social.entourage.android.profile.oss.OSSLibsActivity"
+            android:exported="false"/>
         <activity android:name=".onboarding.onboard.OnboardingZoneChoiceActivity"
             android:exported="false" />
         <activity android:name=".onboarding.onboard.PartnerOnboardingActivity"

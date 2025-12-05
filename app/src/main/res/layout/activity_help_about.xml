@@ -34,81 +34,78 @@
                     android:orientation="vertical"
                     android:paddingHorizontal="@dimen/padding_horizontal">
 
-
-
                     <include
                         android:id="@+id/ethic"
-                        layout="@layout/new_about_item"
+                        layout="@layout/item_about"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:label="@{@string/ethics}" />
+
                     <include
                         android:id="@+id/partner"
-                        layout="@layout/new_about_item"
+                        layout="@layout/item_about"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:label="@{@string/about_partner}" />
 
                     <include
                         android:id="@+id/ambassador_program"
-                        layout="@layout/new_about_item"
+                        layout="@layout/item_about"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:label="@{@string/ambassador_program}" />
 
                     <include
                         android:id="@+id/donation"
-                        layout="@layout/new_about_item"
+                        layout="@layout/item_about"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:label="@{@string/donation}" />
 
                     <include
                         android:id="@+id/faq"
-                        layout="@layout/new_about_item"
+                        layout="@layout/item_about"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:label="@{@string/faq}" />
 
                     <include
                         android:id="@+id/feedback"
-                        layout="@layout/new_about_item"
+                        layout="@layout/item_about"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:label="@{@string/feedback}" />
 
                     <include
                         android:id="@+id/cgu"
-                        layout="@layout/new_about_item"
+                        layout="@layout/item_about"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:label="@{@string/cgu}" />
 
                     <include
                         android:id="@+id/confidentiality"
-                        layout="@layout/new_about_item"
+                        layout="@layout/item_about"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:label="@{@string/confidentiality}" />
 
                     <include
                         android:id="@+id/child_rules"
-                        layout="@layout/new_about_item"
+                        layout="@layout/item_about"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:label="@{@string/child_rules}" />
 
                     <include
-                        android:id="@+id/licence"
-                        layout="@layout/new_about_item"
+                        android:id="@+id/oss"
+                        layout="@layout/item_about"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        app:label="@{@string/licence}" />
+                        app:label="@{@string/about_oss_licenses}" />
 
                 </LinearLayout>
-
             </ScrollView>
         </LinearLayout>
-
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>
