@@ -10,7 +10,7 @@ plugins {
     kotlin("kapt")
     id("androidx.navigation.safeargs")
     id("com.google.gms.google-services")
-    id("com.mikepenz.aboutlibraries.plugin")
+    id("com.mikepenz.aboutlibraries.plugin.android")
 }
 
 fun String.runCommand(currentWorkingDir: File = file("./")): String {
@@ -322,6 +322,6 @@ dependencies {
     implementation("com.google.android.gms:play-services-auth-api-phone:18.3.0")
     //UNCOMMENT FOR VIDEO CALL FEATURE
     //implementation("com.dafruits:webrtc:123.0.0")
-    implementation("com.mikepenz:aboutlibraries-core:12.2.4")
-    implementation("com.mikepenz:aboutlibraries:12.2.4")
+    implementation("com.mikepenz:aboutlibraries-core:13.1.0")
+    implementation("com.mikepenz:aboutlibraries:13.1.0")
 }
