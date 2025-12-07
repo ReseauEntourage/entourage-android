@@ -1,0 +1,181 @@
+[versions]
+
+androidxCore = "1.16.0"
+okhttp = "5.1.0"
+
+androidxAnnotation = "1.9.1"
+androidxAppcompat = "1.7.1"
+androidxBrowser = "1.8.0"
+androidxCardview = "1.0.0"
+androidxCoordinatorlayout = "1.3.0"
+androidxConstraintlayout = "2.2.1"
+androidxFragment = "1.8.9"
+androidxMultidex = "2.0.1"
+androidxRecyclerview = "1.4.0"
+androidxPreference = "1.2.1"
+androidxComposeUiText = "1.8.3"
+
+tape = "1.2.3"
+timber = "5.0.1"
+
+firebaseBom = "33.16.0"
+playAppUpdate = "2.1.0"
+
+maps = "19.2.0"
+location = "21.3.0"
+places = "4.3.1"
+
+retrofit = "3.0.0"
+
+materialDatetimepicker = "4.2.3"
+fab = "1.6.4"
+cropme = "2.0.8"
+mapsUtils = "5.2.0"
+material = "1.12.0"
+glide = "4.16.0"
+shortcutBadger = "1.1.22"
+keyboardvisibilityevent = "3.0.0-RC3"
+espressoCore = "3.7.0"
+
+facebook = "18.0.3"
+glassfish = "10.0-b28"
+
+junit = "1.3.0"
+runner = "1.7.0"
+rules = "1.7.0"
+coreKtx = "1.7.0"
+
+uiautomator = "2.3.0"
+intents = "3.7.0"
+okhttp3IdlingResource = "1.0.0"
+coreTesting = "2.2.0"
+
+junit4 = "4.13.2"
+mockito = "5.19.0"
+mockitoInline = "5.2.0"
+mockitoKotlin = "6.0.0"
+
+flexbox = "3.0.0"
+navigation = "2.9.3"
+sectionedRecyclerview = "2.1.1"
+
+lottie = "6.6.7"
+
+photoview = "2.3.0"
+transition = "1.6.0"
+
+assetDelivery = "2.3.0"
+featureDelivery = "2.1.0"
+review = "2.0.2"
+speedDial = "3.3.0"
+
+ktor = "3.2.3"
+kotlinxSerialization = "1.9.0"
+
+authApiPhone = "18.3.0"
+
+aboutlibraries = "13.1.0"
+
+[libraries]
+
+androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "androidxCore" }
+okhttp-bom = { module = "com.squareup.okhttp3:okhttp-bom", version.ref = "okhttp" }
+
+androidx-annotation = { module = "androidx.annotation:annotation", version.ref = "androidxAnnotation" }
+androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "androidxAppcompat" }
+androidx-browser = { module = "androidx.browser:browser", version.ref = "androidxBrowser" }
+androidx-cardview = { module = "androidx.cardview:cardview", version.ref = "androidxCardview" }
+androidx-coordinatorlayout = { module = "androidx.coordinatorlayout:coordinatorlayout", version.ref = "androidxCoordinatorlayout" }
+androidx-constraintlayout = { module = "androidx.constraintlayout:constraintlayout", version.ref = "androidxConstraintlayout" }
+androidx-fragment-ktx = { module = "androidx.fragment:fragment-ktx", version.ref = "androidxFragment" }
+androidx-multidex = { module = "androidx.multidex:multidex", version.ref = "androidxMultidex" }
+androidx-recyclerview = { module = "androidx.recyclerview:recyclerview", version.ref = "androidxRecyclerview" }
+androidx-preference-ktx = { module = "androidx.preference:preference-ktx", version.ref = "androidxPreference" }
+androidx-compose-ui-text = { module = "androidx.compose.ui:ui-text-android", version.ref = "androidxComposeUiText" }
+
+tape = { module = "com.squareup:tape", version.ref = "tape" }
+timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
+
+firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
+firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
+firebase-messaging = { module = "com.google.firebase:firebase-messaging" }
+play-app-update-ktx = { module = "com.google.android.play:app-update-ktx", version.ref = "playAppUpdate" }
+firebase-inappmessaging-display = { module = "com.google.firebase:firebase-inappmessaging-display" }
+firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics" }
+firebase-config = { module = "com.google.firebase:firebase-config" }
+firebase-database = { module = "com.google.firebase:firebase-database" }
+
+gms-maps = { module = "com.google.android.gms:play-services-maps", version.ref = "maps" }
+gms-location = { module = "com.google.android.gms:play-services-location", version.ref = "location" }
+places = { module = "com.google.android.libraries.places:places", version.ref = "places" }
+
+retrofit-converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "retrofit" }
+retrofit-retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
+okhttp-okhttp = { module = "com.squareup.okhttp3:okhttp" }
+okhttp-logging-interceptor = { module = "com.squareup.okhttp3:logging-interceptor" }
+
+material-datetimepicker = { module = "com.wdullaer:materialdatetimepicker", version.ref = "materialDatetimepicker" }
+fab = { module = "com.github.clans:fab", version.ref = "fab" }
+cropme = { module = "com.github.takusemba:cropme", version.ref = "cropme" }
+maps-utils-ktx = { module = "com.google.maps.android:maps-utils-ktx", version.ref = "mapsUtils" }
+material = { module = "com.google.android.material:material", version.ref = "material" }
+glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
+shortcut-badger = { module = "me.leolin:ShortcutBadger", version.ref = "shortcutBadger" }
+keyboard-visibility-event = { module = "net.yslibrary.keyboardvisibilityevent:keyboardvisibilityevent", version.ref = "keyboardvisibilityevent" }
+espresso-core = { module = "androidx.test.espresso:espresso-core", version.ref = "espressoCore" }
+glide-compiler = { module = "com.github.bumptech.glide:compiler", version.ref = "glide" }
+
+facebook-android-sdk = { module = "com.facebook.android:facebook-android-sdk", version.ref = "facebook" }
+facebook-core = { module = "com.facebook.android:facebook-core", version.ref = "facebook" }
+glassfish-javax-annotation = { module = "org.glassfish:javax.annotation", version.ref = "glassfish" }
+
+androidx-test-ext-junit = { module = "androidx.test.ext:junit", version.ref = "junit" }
+androidx-test-runner = { module = "androidx.test:runner", version.ref = "runner" }
+androidx-test-rules = { module = "androidx.test:rules", version.ref = "rules" }
+androidx-test-core-ktx = { module = "androidx.test:core-ktx", version.ref = "coreKtx" }
+
+androidx-test-uiautomator = { module = "androidx.test.uiautomator:uiautomator", version.ref = "uiautomator" }
+androidx-test-espresso-intents = { module = "androidx.test.espresso:espresso-intents", version.ref = "intents" }
+okhttp3-idling-resource = { module = "com.jakewharton.espresso:okhttp3-idling-resource", version.ref = "okhttp3IdlingResource" }
+androidx-arch-core-testing = { module = "androidx.arch.core:core-testing", version.ref = "coreTesting" }
+
+junit4 = { module = "junit:junit", version.ref = "junit4" }
+mockito-core = { module = "org.mockito:mockito-core", version.ref = "mockito" }
+mockito-inline = { module = "org.mockito:mockito-inline", version.ref = "mockitoInline" }
+mockito-kotlin = { module = "org.mockito.kotlin:mockito-kotlin", version.ref = "mockitoKotlin" }
+
+flexbox = { module = "com.google.android.flexbox:flexbox", version.ref = "flexbox" }
+navigation-fragment-ktx = { module = "androidx.navigation:navigation-fragment-ktx", version.ref = "navigation" }
+navigation-ui-ktx = { module = "androidx.navigation:navigation-ui-ktx", version.ref = "navigation" }
+sectioned-recyclerview = { module = "com.github.IntruderShanky:Sectioned-RecyclerView", version.ref = "sectionedRecyclerview" }
+
+lottie = { module = "com.airbnb.android:lottie", version.ref = "lottie" }
+
+photoview = { module = "com.github.chrisbanes:PhotoView", version.ref = "photoview" }
+transition = { module = "androidx.transition:transition", version.ref = "transition" }
+
+play-asset-delivery = { module = "com.google.android.play:asset-delivery", version.ref = "assetDelivery" }
+play-asset-delivery-ktx = { module = "com.google.android.play:asset-delivery-ktx", version.ref = "assetDelivery" }
+play-feature-delivery = { module = "com.google.android.play:feature-delivery", version.ref = "featureDelivery" }
+play-feature-delivery-ktx = { module = "com.google.android.play:feature-delivery-ktx", version.ref = "featureDelivery" }
+play-review = { module = "com.google.android.play:review", version.ref = "review" }
+play-review-ktx = { module = "com.google.android.play:review-ktx", version.ref = "review" }
+speed-dial = { module = "com.leinardi.android:speed-dial", version.ref = "speedDial" }
+
+ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
+ktor-client-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktor" }
+ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor" }
+ktor-serialization-kotlinx-json = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
+kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerialization" }
+ktor-client-android = { module = "io.ktor:ktor-client-android", version.ref = "ktor" }
+ktor-client-serialization = { module = "io.ktor:ktor-client-serialization", version.ref = "ktor" }
+
+gms-auth-api-phone = { module = "com.google.android.gms:play-services-auth-api-phone", version.ref = "authApiPhone" }
+
+aboutlibraries-core = { module = "com.mikepenz:aboutlibraries-core", version.ref = "aboutlibraries" }
+aboutlibraries = { module = "com.mikepenz:aboutlibraries", version.ref = "aboutlibraries" }
+
+[bundles]
+
+ktor = ["ktor-client-core", "ktor-client-okhttp", "ktor-client-content-negotiation", "ktor-serialization-kotlinx-json", "ktor-client-android", "ktor-client-serialization"]
+
