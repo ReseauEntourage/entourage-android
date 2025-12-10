@@ -2,7 +2,6 @@ package social.entourage.android
 
 import android.Manifest
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.content.IntentSender
 import android.net.Uri
@@ -244,11 +243,9 @@ class MainActivity : BaseSecuredActivity() {
             userPresenter.updateLanguage(id, LanguageManager.loadLanguageFromPreferences(this))
             LanguageManager.setLocale(this, LanguageManager.loadLanguageFromPreferences(this))
         }
-         val sharedPrefs = this.getSharedPreferences(
-             getString(R.string.preference_file_key), Context.MODE_PRIVATE
-         )
+         val sharedPrefs = EntourageApplication.get().sharedPreferences
          if(!sharedPrefs.contains("translatedByDefault")){
-             val editor = this.getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE).edit()
+             val editor = sharedPrefs.edit()
              editor.putBoolean("translatedByDefault", true)
              editor.apply()
          }
