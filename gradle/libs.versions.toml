@@ -185,6 +185,7 @@ aboutlibraries = { module = "com.mikepenz:aboutlibraries", version.ref = "aboutl
 [bundles]
 
 ktor = ["ktor-client-core", "ktor-client-okhttp", "ktor-client-content-negotiation", "ktor-serialization-kotlinx-json", "ktor-client-android", "ktor-client-serialization"]
+oss = ["aboutlibraries", "aboutlibraries-core"]
 
 [plugins]
 
