@@ -18,7 +18,7 @@ androidxComposeUiText = "1.8.3"
 tape = "1.2.3"
 timber = "5.0.1"
 
-firebaseBom = "33.16.0"
+firebaseBom = "34.6.0"
 playAppUpdate = "2.1.0"
 
 maps = "19.2.0"
@@ -106,7 +106,6 @@ timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
 firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
 firebase-messaging = { module = "com.google.firebase:firebase-messaging" }
-play-app-update-ktx = { module = "com.google.android.play:app-update-ktx", version.ref = "playAppUpdate" }
 firebase-inappmessaging-display = { module = "com.google.firebase:firebase-inappmessaging-display" }
 firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics" }
 firebase-config = { module = "com.google.firebase:firebase-config" }
@@ -161,6 +160,7 @@ lottie = { module = "com.airbnb.android:lottie", version.ref = "lottie" }
 photoview = { module = "com.github.chrisbanes:PhotoView", version.ref = "photoview" }
 transition = { module = "androidx.transition:transition", version.ref = "transition" }
 
+play-app-update-ktx = { module = "com.google.android.play:app-update-ktx", version.ref = "playAppUpdate" }
 play-asset-delivery = { module = "com.google.android.play:asset-delivery", version.ref = "assetDelivery" }
 play-asset-delivery-ktx = { module = "com.google.android.play:asset-delivery-ktx", version.ref = "assetDelivery" }
 play-feature-delivery = { module = "com.google.android.play:feature-delivery", version.ref = "featureDelivery" }
