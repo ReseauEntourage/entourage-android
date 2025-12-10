@@ -219,7 +219,6 @@ dependencies {
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.analytics)
     implementation(libs.firebase.messaging)
-    implementation(libs.play.app.update.ktx)
     implementation(libs.firebase.inappmessaging.display)
     implementation(libs.firebase.crashlytics)
     implementation(libs.firebase.config)
@@ -285,6 +284,7 @@ dependencies {
     implementation(libs.play.feature.delivery.ktx)
     implementation(libs.play.review)
     implementation(libs.play.review.ktx)
+    implementation(libs.play.app.update.ktx)
     implementation(libs.speed.dial)
     implementation(libs.firebase.database)
 
