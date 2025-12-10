@@ -279,7 +279,6 @@ dependencies {
     implementation(libs.photoview)
     implementation(libs.transition)
 
-    implementation(libs.play.app.update.ktx)
     implementation(libs.play.asset.delivery)
     implementation(libs.play.asset.delivery.ktx)
     implementation(libs.play.feature.delivery)
