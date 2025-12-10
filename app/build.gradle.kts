@@ -1,16 +1,14 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
-    id("com.android.application")
-    kotlin("android")
-    //id("kotlin-android-extensions")
-    id("com.google.firebase.crashlytics")
-    kotlin("plugin.serialization")
-    //id("com.google.firebase.firebase-perf")
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.firebase.crashlytics)
+    alias(libs.plugins.kotlin.plugin.serialization)
     kotlin("kapt")
-    id("androidx.navigation.safeargs")
-    id("com.google.gms.google-services")
-    id("com.mikepenz.aboutlibraries.plugin.android")
+    alias(libs.plugins.navigation.safeargs)
+    alias(libs.plugins.google.services)
+    alias(libs.plugins.aboutlibraries)
 }
 
 fun String.runCommand(currentWorkingDir: File = file("./")): String {

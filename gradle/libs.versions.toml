@@ -51,7 +51,7 @@ okhttp3IdlingResource = "1.0.0"
 coreTesting = "2.2.0"
 
 junit4 = "4.13.2"
-mockito = "5.19.0"
+mockito = "5.20.0"
 mockitoInline = "5.2.0"
 mockitoKotlin = "6.0.0"
 
@@ -75,6 +75,13 @@ kotlinxSerialization = "1.9.0"
 authApiPhone = "18.3.0"
 
 aboutlibraries = "13.1.0"
+
+android-application = "8.13.1"
+google-services = "4.4.3"
+firebase-crashlytics = "3.0.4"
+kotlin-plugin-serialization = "2.1.0"
+kotlin-android = "2.1.0"
+navigation-safeargs = "2.9.1"
 
 [libraries]
 
@@ -179,3 +186,12 @@ aboutlibraries = { module = "com.mikepenz:aboutlibraries", version.ref = "aboutl
 
 ktor = ["ktor-client-core", "ktor-client-okhttp", "ktor-client-content-negotiation", "ktor-serialization-kotlinx-json", "ktor-client-android", "ktor-client-serialization"]
 
+[plugins]
+
+android-application = { id = "com.android.application", version.ref = "android-application" }
+google-services = { id = "com.google.gms.google-services", version.ref = "google-services" }
+firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebase-crashlytics" }
+kotlin-plugin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin-plugin-serialization" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin-android" }
+navigation-safeargs = { id = "androidx.navigation.safeargs", version.ref = "navigation-safeargs" }
+aboutlibraries = { id = "com.mikepenz.aboutlibraries.plugin.android", version.ref = "aboutlibraries" }
