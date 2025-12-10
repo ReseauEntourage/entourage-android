@@ -294,6 +294,5 @@ dependencies {
 
     implementation(libs.gms.auth.api.phone)
 
-    implementation(libs.aboutlibraries.core)
-    implementation(libs.aboutlibraries)
+    implementation(libs.bundles.oss)
 }
