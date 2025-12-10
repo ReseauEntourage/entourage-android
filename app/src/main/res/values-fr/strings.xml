@@ -27,7 +27,6 @@
     <string name="server_error">Nous avons un petit problème…\nIl sera très vite corrigé ;)</string>
     <string name="no_browser_error">Aucun navigateur n\'est installé</string>
 
-    <string name="preference_file_key">ENTOURAGE_GCM_DATA</string>
     <string name="action_overlay_close">Fermer le menu Actions</string>
     <string name="plus_image_subtitle">L’essentiel, c’est la rencontre !</string>
 

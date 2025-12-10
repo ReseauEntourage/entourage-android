@@ -6,6 +6,7 @@ import android.content.SharedPreferences
 import android.os.Handler
 import android.os.Looper
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.content.edit
 import androidx.multidex.MultiDexApplication
 import com.google.firebase.analytics.FirebaseAnalytics
 import social.entourage.android.api.ApiModule
@@ -29,7 +30,7 @@ import timber.log.Timber
  */
 class EntourageApplication : MultiDexApplication() {
     private val activities: ArrayList<BaseActivity> = ArrayList()
-    lateinit var sharedPreferences: SharedPreferences
+    //lateinit var sharedPreferences: SharedPreferences
     private lateinit var librariesSupport: LibrariesSupport
     lateinit var authenticationController: AuthenticationController
     lateinit var complexPreferences: ComplexPreferences
@@ -49,12 +50,11 @@ class EntourageApplication : MultiDexApplication() {
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true)
         librariesSupport = LibrariesSupport()
         librariesSupport.setupLibraries(this)
-        setupSharedPreferences()
     }
 
-    private fun setupSharedPreferences() {
-        sharedPreferences = getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE)
-    }
+    val sharedPreferences: SharedPreferences
+        get() = getSharedPreferences(PREF_KEY_ENTOURAGE, MODE_PRIVATE)
+
 
     val firebase: FirebaseAnalytics
         get() = librariesSupport.firebaseAnalytics
@@ -101,21 +101,25 @@ class EntourageApplication : MultiDexApplication() {
         authenticationController.me?.let { me ->
             //remove user phone
             mainActivity?.deleteApplicationInfo(){
-                val sharedPreferences = sharedPreferences
-                val editor = sharedPreferences.edit()
                 authenticationController.logOutUser()
-                (sharedPreferences.getStringSet(KEY_TUTORIAL_DONE,HashSet()) as HashSet<String?>?)?.let { loggedNumbers ->
-                    loggedNumbers.remove(me.phone)
-                    editor.putStringSet(KEY_TUTORIAL_DONE, loggedNumbers)
+                //val sharedPreferences = sharedPreferences
+                sharedPreferences.edit {
+                    (sharedPreferences.getStringSet(
+                        KEY_TUTORIAL_DONE,
+                        HashSet()
+                    ) as HashSet<String?>?)?.let {
+                        val loggedNumbers = HashSet(it)
+                        loggedNumbers.remove(me.phone)
+                        putStringSet(KEY_TUTORIAL_DONE, loggedNumbers)
+                    }
+                    remove(KEY_REGISTRATION_ID)
+                    remove(KEY_NOTIFICATIONS_ENABLED)
+                    remove(KEY_GEOLOCATION_ENABLED)
+                    remove(KEY_NO_MORE_DEMAND)
+                    remove(isFirstTimeHome)
+                    putInt(KEY_NB_OF_LAUNCH, 0)
+                    putBoolean("translatedByDefault", true)
                 }
-                editor.remove(KEY_REGISTRATION_ID)
-                editor.remove(KEY_NOTIFICATIONS_ENABLED)
-                editor.remove(KEY_GEOLOCATION_ENABLED)
-                editor.remove(KEY_NO_MORE_DEMAND)
-                editor.remove(isFirstTimeHome)
-                editor.putInt(KEY_NB_OF_LAUNCH, 0)
-                editor.putBoolean("translatedByDefault", true)
-                editor.apply()
                 removeAllPushNotifications()
                 AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_LOGOUT)
                 mainActivity?.let {
@@ -199,6 +203,9 @@ class EntourageApplication : MultiDexApplication() {
         const val KEY_NB_OF_LAUNCH = "nbOfLaunch"
         const val KEY_NO_MORE_DEMAND = "noMoreDemand"
         const val isFirstTimeHome = "noMoreDemand"
+
+        // PREFS
+        private const val PREF_KEY_ENTOURAGE = "ENTOURAGE_GCM_DATA"
 
         // ----------------------------------
         // MEMBERS

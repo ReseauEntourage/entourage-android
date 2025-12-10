@@ -1,5 +1,4 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-import java.io.ByteArrayOutputStream
 
 plugins {
     id("com.android.application")
@@ -15,13 +14,10 @@ plugins {
 }
 
 fun String.runCommand(currentWorkingDir: File = file("./")): String {
-    val byteOut = ByteArrayOutputStream()
-    project.exec {
+    return providers.exec {
         workingDir = currentWorkingDir
         commandLine = this@runCommand.split("\\s".toRegex())
-        standardOutput = byteOut
-    }
-    return String(byteOut.toByteArray()).trim()
+    }.standardOutput.asText.get().trim()
 }
 
 android {

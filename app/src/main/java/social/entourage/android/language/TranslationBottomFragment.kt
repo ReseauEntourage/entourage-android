@@ -1,6 +1,5 @@
 package social.entourage.android.language
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +7,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.databinding.TranslationBottomFragmentLayoutBinding
 import social.entourage.android.profile.settings.ProfilFullViewModel
@@ -45,11 +45,11 @@ class TranslationBottomFragment: BottomSheetDialogFragment() {
     }
 
     fun initView() {
-        val sharedPrefs = requireActivity().getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE)
+        val sharedPrefs = EntourageApplication.get().sharedPreferences
         val isTranslatedByDefault = sharedPrefs.getBoolean("translatedByDefault", true)
         binding.switchTranslation.isChecked = isTranslatedByDefault
         binding.validate.setOnClickListener {
-            val editor = requireActivity().getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE).edit()
+            val editor = sharedPrefs.edit()
             editor.putBoolean("translatedByDefault", binding.switchTranslation.isChecked)
             editor.apply()
             profilFullViewModel.updateProfile()

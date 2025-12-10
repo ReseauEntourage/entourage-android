@@ -81,10 +81,8 @@ class CommentsListAdapter(
 
     fun initiateList() {
         // Vérifie la config "translatedByDefault"
-        val translatedByDefault = context.getSharedPreferences(
-            context.getString(R.string.preference_file_key),
-            Context.MODE_PRIVATE
-        ).getBoolean("translatedByDefault", true)
+        val translatedByDefault = EntourageApplication.get().sharedPreferences
+            .getBoolean("translatedByDefault", true)
 
         // Marque tout post qui a "contentTranslations" comme potentiellement traduisible
         if (translatedByDefault) {
@@ -154,10 +152,7 @@ class CommentsListAdapter(
             val isMe = (comment.user?.userId == EntourageApplication.get().me()?.id)
 
             // Détermine si on veut la version traduite ou originale
-            val sharedPrefs = context.getSharedPreferences(
-                context.getString(R.string.preference_file_key),
-                Context.MODE_PRIVATE
-            )
+            val sharedPrefs = EntourageApplication.get().sharedPreferences
             val isTranslatedByDefault = sharedPrefs.getBoolean("translatedByDefault", true)
             val isTranslated = if (translationExceptions.contains(comment.id)) {
                 !isTranslatedByDefault
@@ -331,10 +326,7 @@ class CommentsListAdapter(
             val isMe = (comment.user?.userId == EntourageApplication.get().me()?.id)
 
             // Détermine si on veut la version traduite ou originale
-            val sharedPrefs = context.getSharedPreferences(
-                context.getString(R.string.preference_file_key),
-                Context.MODE_PRIVATE
-            )
+            val sharedPrefs = EntourageApplication.get().sharedPreferences
             val isTranslatedByDefault = sharedPrefs.getBoolean("translatedByDefault", true)
             val isTranslated = if (translationExceptions.contains(comment.id)) {
                 !isTranslatedByDefault

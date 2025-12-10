@@ -17,6 +17,7 @@ class PreOnboardingLanguage:BaseActivity(), OnLanguageClicked {
     private lateinit var binding: PreOnboardingActivityLayoutBinding
     private var languages: MutableList<LanguageItem> = mutableListOf()
     private lateinit var adapter: LanguageAdapter
+
     override fun onCreate(savedInstanceState: Bundle?) {
         val phoneLanguageCode = Locale.getDefault().language
         LanguageManager.setLocale(this, phoneLanguageCode)
@@ -32,6 +33,7 @@ class PreOnboardingLanguage:BaseActivity(), OnLanguageClicked {
 
         updatePaddingTopForEdgeToEdge(binding.layoutLanguage)
     }
+
     private fun fillArray() {
         val phoneLanguageCode = Locale.getDefault().language
         LanguageManager.saveLanguageToPreferences(this,phoneLanguageCode)
@@ -48,7 +50,6 @@ class PreOnboardingLanguage:BaseActivity(), OnLanguageClicked {
             LanguageItem("Polski", isSelected = LanguageManager.mapLanguageToCode("Polski") == phoneLanguageCode)
         )
     }
-
 
     override fun onLangChanged(langItem: LanguageItem) {
         val langCode = LanguageManager.mapLanguageToCode(langItem.lang)

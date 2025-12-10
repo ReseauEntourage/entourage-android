@@ -112,6 +112,7 @@ class HomeSmallTalkAdapter(
                 binding.ivHomeSmallTalkAvatar4
             )
 
+
             // Reset toutes les images avant de charger
             avatars.forEach { imageView ->
                 Glide.with(imageView.context).clear(imageView)
@@ -129,6 +130,17 @@ class HomeSmallTalkAdapter(
                         .circleCrop()
                         .into(imageView)
                 }
+            }
+
+            if(userSmallTalkRequest.numberOfUnreadMessages != null){
+                if(userSmallTalkRequest.numberOfUnreadMessages > 0 ){
+                    binding.cardNewsGroup.visibility = View.VISIBLE
+                    binding.tvNewsGroup.text = userSmallTalkRequest.numberOfUnreadMessages.toString()
+                } else {
+                    binding.cardNewsGroup.visibility = View.GONE
+                }
+            }else {
+                binding.cardNewsGroup.visibility = View.GONE
             }
 
             // Mettre les noms dans le TextView
