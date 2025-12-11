@@ -4,7 +4,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.firebase.crashlytics)
-    alias(libs.plugins.kotlin.plugin.serialization)
+    alias(libs.plugins.kotlin.serialization)
     kotlin("kapt")
     alias(libs.plugins.navigation.safeargs)
     alias(libs.plugins.google.services)
@@ -211,28 +211,34 @@ dependencies {
     implementation(libs.androidx.multidex)
     implementation(libs.androidx.recyclerview)
     implementation(libs.androidx.preference.ktx)
-    implementation(libs.androidx.compose.ui.text)
+    implementation(libs.androidx.compose.ui.text.android)
 
     implementation(libs.tape)
     implementation(libs.timber)
 
+    //https://firebase.google.com/support/release-notes/android
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.analytics)
     implementation(libs.firebase.messaging)
     implementation(libs.firebase.inappmessaging.display)
     implementation(libs.firebase.crashlytics)
     implementation(libs.firebase.config)
+    //implementation("com.google.firebase:firebase-perf")
 
-    implementation(libs.gms.maps)
-    implementation(libs.gms.location)
+    //implementation gmsDependencies.values()
+    implementation(libs.play.services.maps)
+    implementation(libs.play.services.location) //v19 needs refactoring
+    //implementation("com.google.android.libraries.places:places-compat:2.6.0")
     implementation(libs.places)
 
+    //implementation networkDependencies.values()
     implementation(libs.retrofit.converter.gson)
-    implementation(libs.retrofit.retrofit)
-    implementation(libs.okhttp.okhttp)
-    implementation(libs.okhttp.logging.interceptor)
+    implementation(libs.retrofit)
+    implementation(libs.okhttp)
+    implementation(libs.logging.interceptor)
 
-    implementation(libs.material.datetimepicker)
+    //implementation uiDependencies.values()
+    implementation(libs.material.datetime.picker)
     implementation(libs.fab)
     implementation(libs.cropme)
     implementation(libs.maps.utils.ktx)
@@ -243,55 +249,60 @@ dependencies {
     implementation(libs.espresso.core)
     kapt(libs.glide.compiler)
 
+    //entourageImplementation facebookDependencies.values()
     implementation(libs.facebook.android.sdk)
     implementation(libs.facebook.core)
-    compileOnly(libs.glassfish.javax.annotation)
+    compileOnly(libs.javax.annotation)
 
     // Instrumentation tests
+
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.espresso.core)
     androidTestImplementation(libs.androidx.test.runner)
     androidTestImplementation(libs.androidx.test.rules)
     androidTestImplementation(libs.androidx.test.core.ktx)
 
-    androidTestImplementation(libs.androidx.test.uiautomator)
-    androidTestImplementation(libs.androidx.test.espresso.intents)
+    androidTestImplementation(libs.androidx.uiautomator)
+    androidTestImplementation(libs.espresso.intents)
     androidTestImplementation(libs.okhttp3.idling.resource)
     androidTestImplementation(libs.androidx.arch.core.testing)
 
     // Unit tests
-    testImplementation(libs.junit4)
+    testImplementation(libs.junit)
     testImplementation(libs.androidx.test.ext.junit)
-    testImplementation(libs.androidx.test.core.ktx)
+    testImplementation(libs.test.core)
     testImplementation(libs.mockito.core)
     testImplementation(libs.mockito.inline)
     testImplementation(libs.mockito.kotlin)
 
 
     implementation(libs.flexbox)
+    // Kotlin
     implementation(libs.navigation.fragment.ktx)
     implementation(libs.navigation.ui.ktx)
     implementation(libs.sectioned.recyclerview)
 
     implementation(libs.lottie)
 
+    //photoview to click and zoom
     implementation(libs.photoview)
-    implementation(libs.transition)
+    implementation(libs.transition) // Remplacez 'x.x.x' par la dernière version disponible.
 
+    implementation(libs.play.app.update.ktx)
     implementation(libs.play.asset.delivery)
     implementation(libs.play.asset.delivery.ktx)
     implementation(libs.play.feature.delivery)
     implementation(libs.play.feature.delivery.ktx)
     implementation(libs.play.review)
     implementation(libs.play.review.ktx)
-    implementation(libs.play.app.update.ktx)
     implementation(libs.speed.dial)
     implementation(libs.firebase.database)
 
     implementation(libs.bundles.ktor)
     implementation(libs.kotlinx.serialization.json)
-
-    implementation(libs.gms.auth.api.phone)
+    implementation(libs.play.services.auth.api.phone)
+    //UNCOMMENT FOR VIDEO CALL FEATURE
+    //implementation("com.dafruits:webrtc:123.0.0")
 
     implementation(libs.bundles.oss)
 }
