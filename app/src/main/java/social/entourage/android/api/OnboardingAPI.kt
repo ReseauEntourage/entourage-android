@@ -251,8 +251,8 @@ class OnboardingAPI {
         birthday?.takeIf { it.isNotEmpty() }?.let { user["birthdate"] = it }
 
         discoverySource?.takeIf { it.isNotEmpty() }?.let { user["discovery_source"] = it }
-        companyId?.takeIf { it.isNotBlank() }?.let { user["company"] = it }
-        eventId?.takeIf { it.isNotBlank() }?.let { user["event"] = it }
+        companyId?.takeIf { it.isNotBlank() }?.let { user["sf_entreprise_id"] = it }
+        eventId?.takeIf { it.isNotBlank() }?.let { user["sf_campaign_id"] = it }
 
         val request = ArrayMap<String, Any>()
         request["user"] = user
