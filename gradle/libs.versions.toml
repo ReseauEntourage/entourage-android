@@ -1,6 +1,6 @@
 
 [versions]
-androidx-core = "1.16.0"
+androidx-core = "1.17.0"
 okhttp-bom = "5.1.0"
 androidx-annotation = "1.9.1"
 androidx-appcompat = "1.7.1"
