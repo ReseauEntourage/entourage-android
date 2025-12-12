@@ -59,7 +59,7 @@ ktor = "3.2.3"
 aboutlibraries = "13.1.0"
 
 android-application = "8.13.1"
-google-services = "4.4.3"
+google-services = "4.4.4"
 firebase-crashlytics = "3.0.4"
 kotlin-plugin-serialization = "2.1.0"
 kotlin-android = "2.1.0"
