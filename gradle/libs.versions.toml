@@ -54,7 +54,7 @@ asset-delivery = "2.3.0"
 feature-delivery = "2.1.0"
 review = "2.0.2"
 speed-dial = "3.3.0"
-ktor = "3.2.3"
+ktor = "3.3.3"
 
 aboutlibraries = "13.1.0"
 
