@@ -55,6 +55,15 @@ feature-delivery = "2.1.0"
 review = "2.0.2"
 speed-dial = "3.3.0"
 ktor = "3.2.3"
+
+aboutlibraries = "13.1.0"
+
+android-application = "8.13.1"
+google-services = "4.4.3"
+firebase-crashlytics = "3.0.4"
+kotlin-plugin-serialization = "2.1.0"
+kotlin-android = "2.1.0"
+navigation-safeargs = "2.9.1"
 kotlinx-serialization-json = "1.9.0"
 play-services-auth-api-phone = "18.3.0"
 
@@ -81,6 +90,7 @@ play-app-update-ktx = { module = "com.google.android.play:app-update-ktx", versi
 firebase-inappmessaging-display = { module = "com.google.firebase:firebase-inappmessaging-display" }
 firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics" }
 firebase-config = { module = "com.google.firebase:firebase-config" }
+firebase-database = { module = "com.google.firebase:firebase-database" }
 play-services-maps = { module = "com.google.android.gms:play-services-maps", version.ref = "play-services-maps" }
 play-services-location = { module = "com.google.android.gms:play-services-location", version.ref = "play-services-location" }
 places = { module = "com.google.android.libraries.places:places", version.ref = "places" }
@@ -128,7 +138,6 @@ play-feature-delivery-ktx = { module = "com.google.android.play:feature-delivery
 play-review = { module = "com.google.android.play:review", version.ref = "review" }
 play-review-ktx = { module = "com.google.android.play:review-ktx", version.ref = "review" }
 speed-dial = { module = "com.leinardi.android:speed-dial", version.ref = "speed-dial" }
-firebase-database = { module = "com.google.firebase:firebase-database" }
 ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
 ktor-client-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktor" }
 ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor" }
@@ -136,13 +145,19 @@ ktor-serialization-kotlinx-json = { module = "io.ktor:ktor-serialization-kotlinx
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization-json" }
 ktor-client-android = { module = "io.ktor:ktor-client-android", version.ref = "ktor" }
 ktor-client-serialization = { module = "io.ktor:ktor-client-serialization", version.ref = "ktor" }
+aboutlibraries-core = { module = "com.mikepenz:aboutlibraries-core", version.ref = "aboutlibraries" }
+aboutlibraries = { module = "com.mikepenz:aboutlibraries", version.ref = "aboutlibraries" }
 play-services-auth-api-phone = { module = "com.google.android.gms:play-services-auth-api-phone", version.ref = "play-services-auth-api-phone" }
 
-[plugins]
-android-application = { id = "com.android.application", version = "8.13.1" }
-kotlin-android = { id = "org.jetbrains.kotlin.android", version = "2.1.0" }
-firebase-crashlytics = { id = "com.google.firebase.crashlytics", version = "3.0.4" }
-kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version = "2.1.0" }
-navigation-safeargs = { id = "androidx.navigation.safeargs", version = "2.9.1" }
-google-services = { id = "com.google.gms.google-services", version = "4.4.3" }
+[bundles]
+ktor = ["ktor-client-core", "ktor-client-okhttp", "ktor-client-content-negotiation", "ktor-serialization-kotlinx-json", "ktor-client-android", "ktor-client-serialization"]
+oss = ["aboutlibraries", "aboutlibraries-core"]
 
+[plugins]
+android-application = { id = "com.android.application", version.ref = "android-application" }
+google-services = { id = "com.google.gms.google-services", version.ref = "google-services" }
+firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebase-crashlytics" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin-plugin-serialization" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin-android" }
+navigation-safeargs = { id = "androidx.navigation.safeargs", version.ref = "navigation-safeargs" }
+aboutlibraries = { id = "com.mikepenz.aboutlibraries.plugin.android", version.ref = "aboutlibraries" }

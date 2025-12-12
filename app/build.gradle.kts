@@ -1,4 +1,3 @@
-
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
@@ -9,7 +8,7 @@ plugins {
     kotlin("kapt")
     alias(libs.plugins.navigation.safeargs)
     alias(libs.plugins.google.services)
-
+    alias(libs.plugins.aboutlibraries)
 }
 
 fun String.runCommand(currentWorkingDir: File = file("./")): String {
@@ -217,13 +216,10 @@ dependencies {
     implementation(libs.tape)
     implementation(libs.timber)
 
-
     //https://firebase.google.com/support/release-notes/android
     implementation(platform(libs.firebase.bom))
-    //implementation firebaseDependencies.values()
     implementation(libs.firebase.analytics)
     implementation(libs.firebase.messaging)
-    implementation(libs.play.app.update.ktx)
     implementation(libs.firebase.inappmessaging.display)
     implementation(libs.firebase.crashlytics)
     implementation(libs.firebase.config)
@@ -234,9 +230,6 @@ dependencies {
     implementation(libs.play.services.location) //v19 needs refactoring
     //implementation("com.google.android.libraries.places:places-compat:2.6.0")
     implementation(libs.places)
-
-    //https://developers.google.com/android/guides/opensource
-    //implementation("com.google.android.gms:play-services-oss-licenses:17.1.0")
 
     //implementation networkDependencies.values()
     implementation(libs.retrofit.converter.gson)
@@ -270,9 +263,6 @@ dependencies {
     androidTestImplementation(libs.androidx.test.core.ktx)
 
     androidTestImplementation(libs.androidx.uiautomator)
-    //androidTestImplementation("androidx.test.espresso:espresso-contrib:3.5.1")
-    //androidTestImplementation("androidx.test.espresso.idling:idling-concurrent:3.5.1")
-    //androidTestImplementation("androidx.test.espresso:espresso-idling-resource:3.5.1")
     androidTestImplementation(libs.espresso.intents)
     androidTestImplementation(libs.okhttp3.idling.resource)
     androidTestImplementation(libs.androidx.arch.core.testing)
@@ -308,18 +298,11 @@ dependencies {
     implementation(libs.speed.dial)
     implementation(libs.firebase.database)
 
-    implementation(libs.ktor.client.core)
-    implementation(libs.ktor.client.okhttp)
-    implementation(libs.ktor.client.content.negotiation)
-    implementation(libs.ktor.serialization.kotlinx.json)
-    implementation(libs.kotlinx.serialization.json)
-
-    implementation(libs.ktor.client.core)
-    implementation(libs.ktor.client.android)
-    implementation(libs.ktor.client.serialization)
-    implementation(libs.ktor.serialization.kotlinx.json)
+    implementation(libs.bundles.ktor)
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.play.services.auth.api.phone)
     //UNCOMMENT FOR VIDEO CALL FEATURE
     //implementation("com.dafruits:webrtc:123.0.0")
+
+    implementation(libs.bundles.oss)
 }
