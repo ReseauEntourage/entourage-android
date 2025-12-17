@@ -50,6 +50,7 @@ import social.entourage.android.home.pedago.PedagoListActivity
 import social.entourage.android.notifications.InAppNotificationsActivity
 import social.entourage.android.notifications.NotificationDemandActivity
 import social.entourage.android.onboarding.onboard.OnboardingStartActivity
+import social.entourage.android.onboarding.onboard.OnboardingZoneChoiceActivity
 import social.entourage.android.profile.MyProfileFullActivity
 import social.entourage.android.profile.ProfileFullActivity
 import social.entourage.android.small_talks.SmallTalkIntroActivity
@@ -62,11 +63,10 @@ import social.entourage.android.tools.view.WebViewFragment
 import social.entourage.android.user.UserPresenter
 import timber.log.Timber
 
-class HomeFragment: Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocationUpdate {
+class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocationUpdate {
 
-    //VAR
-    private lateinit var binding:FragmentHomeBinding
-    private lateinit var homePresenter:HomePresenter
+    private lateinit var binding: FragmentHomeBinding
+    private lateinit var homePresenter: HomePresenter
     private var homeGroupAdapter = HomeGroupAdapter()
     private lateinit var homeEventAdapter: HomeEventAdapter
     private lateinit var homeSmallTalkAdapter: HomeSmallTalkAdapter
@@ -75,7 +75,7 @@ class HomeFragment: Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocatio
     private lateinit var homeHelpAdapter: HomeHelpAdapter
     private var homePedagoAdapter: HomePedagoAdapter? = null
     private var homeInitialPedagoAdapter: HomeInitialPedagoAdapter? = null
-    private lateinit var  mainPresenter: MainPresenter
+    private lateinit var mainPresenter: MainPresenter
     private var pagegroup = 0
     private var pageEvent = 0
     private var nbOfItemForHozrizontalList = 10
@@ -85,11 +85,9 @@ class HomeFragment: Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocatio
     private var user: User? = null
     private val NEW_MARGIN = 10
     private val DEFAULT_MARGIN = 80
-    //private val NEW_MARGIN_LOGO = 10
-    //private val DEFAULT_MARGIN_LOGO = 30
     private var isAnimating = false
-    private var pedagoItemForCreateEvent:Pedago? = null
-    private var pedagoItemForCreateGroup:Pedago? = null
+    private var pedagoItemForCreateEvent: Pedago? = null
+    private var pedagoItemForCreateGroup: Pedago? = null
     private var checksum = 0
     private var totalchecksum = 0
     private var isEventsEmpty = false
@@ -103,6 +101,8 @@ class HomeFragment: Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocatio
     private var currentRequests: List<UserSmallTalkRequest> = emptyList()
     private val userObserver = Observer<User> { updateUser(it) }
 
+    private var hasLaunchedMissingInfoThisSession = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         requireActivity().onBackPressedDispatcher.addCallback(this) {
@@ -115,7 +115,6 @@ class HomeFragment: Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocatio
             }
         }
     }
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -131,25 +130,25 @@ class HomeFragment: Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocatio
         actionsPresenter = ViewModelProvider(requireActivity()).get(ActionsPresenter::class.java)
         homeHelpAdapter = HomeHelpAdapter(this)
         homeEventAdapter = HomeEventAdapter(requireContext())
+
         homePedagoAdapter = HomePedagoAdapter(object : OnItemClick {
             override fun onItemClick(pedagogicalContent: Pedago) {
                 if (pedagogicalContent.html != null && pedagogicalContent.id != null) {
                     val intent = Intent(requireActivity(), PedagoDetailActivity::class.java)
                     intent.putExtra(Const.ID, pedagogicalContent.id)
                     PedagoDetailActivity.setPedagoId(pedagogicalContent.id)
-                    //intent.putExtra(Const.HTML_CONTENT, pedagogicalContent.html)
                     requireActivity().startActivity(intent)
                     requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
                 }
             }
         })
-        homeInitialPedagoAdapter= HomeInitialPedagoAdapter(object : OnItemClick {
+
+        homeInitialPedagoAdapter = HomeInitialPedagoAdapter(object : OnItemClick {
             override fun onItemClick(pedagogicalContent: Pedago) {
                 if (pedagogicalContent.html != null && pedagogicalContent.id != null) {
                     val intent = Intent(requireActivity(), PedagoDetailActivity::class.java)
                     intent.putExtra(Const.ID, pedagogicalContent.id)
                     PedagoDetailActivity.setPedagoId(pedagogicalContent.id)
-                    //intent.putExtra(Const.HTML_CONTENT, pedagogicalContent.html)
                     requireActivity().startActivity(intent)
                     requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
                 }
@@ -167,22 +166,20 @@ class HomeFragment: Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocatio
                 startActivity(intent)
             },
             onMatchingClick = {
-                //TOAST d'attente
-                //TODO REMOVE TESTING CODE
-                //smallTalkViewModel.deleteRequest()
                 Toast.makeText(requireContext(), getString(R.string.small_talk_subtitle_waiting), Toast.LENGTH_SHORT).show()
             },
             requireContext()
         )
+
         binding.rvHomeSmallTalk.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         binding.rvHomeSmallTalk.adapter = homeSmallTalkAdapter
+
         AnalyticsEvents.logEvent(AnalyticsEvents.View__Home)
-        if(EnhancedOnboarding.shouldNotDisplayCampain == true){
-            //HERE DO NOTHING AS WE DONT WANT TO PROC FIREBASE CAMPAIN MESSAGE TO  NEW USER
-        }else{
-            //HERE IS THE FIREBASE EVENT TO PROC MESSAGE TO USERS
+        if (EnhancedOnboarding.shouldNotDisplayCampain == true) {
+        } else {
             AnalyticsEvents.logEvent(AnalyticsEvents.home_activate_firebase_message)
         }
+
         setRecyclerViews()
         setSeeAllButtons()
         setObservations()
@@ -195,16 +192,16 @@ class HomeFragment: Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocatio
         checkNotifAndSendToken()
         adjustChevronForRTL()
         updatePaddingTopForEdgeToEdge(binding.homeHeader)
+
         binding.chatbotButton.setOnClickListener {
             ChatBotBottomSheet().show(parentFragmentManager, "chatbot")
         }
-        // 2) observe les LiveData small-talk
+
         smallTalkViewModel.userRequests.observe(viewLifecycleOwner) { requests ->
             currentRequests = requests
             composeSmallTalkItemsSimplified()
         }
 
-        // 3) déclenche le chargement dès que tu veux (par ex. en onResume)
         loadSmallTalkItems()
 
         return binding.root
@@ -216,63 +213,51 @@ class HomeFragment: Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocatio
         updateAvatar()
         userPresenter.user.observe(viewLifecycleOwner, userObserver)
 
-
-        if(MainActivity.shouldLaunchOnboarding){
+        if (MainActivity.shouldLaunchOnboarding) {
             MainActivity.shouldLaunchOnboarding = false
-            //launch onboarding activity
             val intent = Intent(requireActivity(), EnhancedOnboarding::class.java)
             startActivity(intent)
             requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
         }
-
     }
 
     override fun onResume() {
         super.onResume()
+        hasLaunchedMissingInfoThisSession = false
         checksum = 0
         resetFilter()
         callToInitHome()
         actionsPresenter.getUnreadCount()
-        if(MainActivity.shouldLaunchProfile){
+        if (MainActivity.shouldLaunchProfile) {
             MainActivity.shouldLaunchProfile = false
             AnalyticsEvents.logEvent(AnalyticsEvents.Action__Tab__Profil)
-            startActivityForResult(
-                Intent(context, MyProfileFullActivity::class.java), 0
-            )
+            startActivityForResult(Intent(context, MyProfileFullActivity::class.java), 0)
         }
         testNotifDemandePage()
-        //testToken()
         sendUserDiscussionStatus()
-//        val intent = Intent(requireContext(), SmallTalkIntroActivity::class.java)
-//        startActivity(intent)
-//        requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
         loadSmallTalkItems()
-
     }
 
-    /** Remplace loadDummySmallTalkItems() */
+    override fun onDestroyView() {
+        super.onDestroyView()
+        userPresenter.user.removeObserver(userObserver)
+    }
+
     private fun loadSmallTalkItems() {
         isRequestLoaded = false
         smallTalkViewModel.listUserRequests()
     }
 
-    /** Compose la liste finale dès que les deux appels sont terminés */
     private fun composeSmallTalkItemsSimplified() {
         val items = mutableListOf<HomeSmallTalkItem>()
-        // On filtre les requêtes qui ont un smalltalk associé
         val matchedRequests = currentRequests.filter { it.smalltalkId != null }
-        // On les transforme directement en ConversationItem
         val matchedItems = matchedRequests.map { userRequest ->
             HomeSmallTalkItem.ConversationItem(userRequest)
         }
-        // Ajout à la liste finale
         items.addAll(matchedItems)
-        // On détecte s’il existe une requête en attente de match
         val hasUnmatchedRequest = currentRequests.any { it.smalltalkId == null }
-        // On décide quoi ajouter en plus
         when {
             matchedItems.size >= 3 -> {
-                // Rien à ajouter si on a déjà 3 conversations
             }
             hasUnmatchedRequest -> {
                 items.add(HomeSmallTalkItem.Waiting)
@@ -281,16 +266,14 @@ class HomeFragment: Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocatio
                 items.add(HomeSmallTalkItem.MatchPossible)
             }
         }
-        // On pousse la liste à l’adapter
         homeSmallTalkAdapter.submitList(items)
     }
 
-
-    private fun testNotifDemandePage(){
+    private fun testNotifDemandePage() {
         binding.ivLogoHome.setOnLongClickListener {
-        val intent = Intent(requireContext(), SmallTalkIntroActivity::class.java)
-        startActivity(intent)
-        requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+            val intent = Intent(requireContext(), SmallTalkIntroActivity::class.java)
+            startActivity(intent)
+            requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
             true
         }
     }
@@ -298,28 +281,17 @@ class HomeFragment: Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocatio
     private fun testToken() {
         binding.ivLogoHome.setOnLongClickListener {
             FirebaseMessaging.getInstance().token.addOnSuccessListener { token ->
-                // Copier le token dans le presse-papiers
                 val clipboard = requireContext().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
                 val clip = ClipData.newPlainText("FCM Token", token)
                 clipboard.setPrimaryClip(clip)
-
-                // Afficher le Toast
                 Toast.makeText(requireContext(), "Token copié dans le presse-papiers", Toast.LENGTH_LONG).show()
             }
             true
         }
     }
 
-    /*private fun testIRLNotification(){
-        binding.ivLogoHome.setOnLongClickListener {
-            MockNotificationGenerator.createAllMockNotifications(requireContext())
-            true
-      }
-    }*/
-
     private fun adjustChevronForRTL() {
         val isRTL = resources.configuration.layoutDirection == View.LAYOUT_DIRECTION_RTL
-
         if (isRTL) {
             binding.chevron1.scaleX = -1f
             binding.chevron2.scaleX = -1f
@@ -333,62 +305,38 @@ class HomeFragment: Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocatio
         }
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        // ✅ Nettoyer pour éviter le "same observer with different lifecycles"
-        userPresenter.user.removeObserver(userObserver)
-    }
-
     private fun checkNotifAndSendToken() {
         val areNotificationsEnabled = NotificationManagerCompat.from(requireContext()).areNotificationsEnabled()
         val sharedPreferences = EntourageApplication.get().sharedPreferences
-
-        // Récupérer le compteur actuel de connexions
         var connectionCount = sharedPreferences.getInt("connectionCount", 0)
 
         if (areNotificationsEnabled) {
             sendToken()
-
-            // Réinitialiser le compteur de connexions si les notifications sont activées
             connectionCount = 0
             sharedPreferences.edit {
                 putInt("connectionCount", connectionCount)
             }
         } else {
             deleteToken()
-
-            // Incrémenter le compteur de connexions
             connectionCount++
             sharedPreferences.edit {
                 putInt("connectionCount", connectionCount)
             }
-
-            // Afficher la vue d'autorisation la 2e et la 10e fois
-            if (connectionCount == 2 || connectionCount == 5 || connectionCount == 10) {
-                val intent = Intent(requireContext(), NotificationDemandActivity::class.java)
-                this.startActivity(intent)
-                requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
-            }
         }
     }
 
-    private fun increaseCounter(){
+    private fun increaseCounter() {
         val sharedPreferences = EntourageApplication.get().sharedPreferences
         var count = sharedPreferences.getInt("COUNT_DISCUSSION_ASK", 0)
         sharedPreferences.edit { putInt("COUNT_DISCUSSION_ASK", ++count) }
-        //toast the count
     }
 
     private fun sendUserDiscussionStatus() {
         if (isAdded) {
             val sharedPreferences = EntourageApplication.get().sharedPreferences
-            //Add true in cookie DiscussionInterested
             val isInterested = sharedPreferences.getBoolean("DISCUSSION_INTERESTED", false)
             val userRefused = sharedPreferences.getBoolean("USER_REFUSED_POPUP", false)
-            //val count = sharedPreferences.getInt("COUNT_DISCUSSION_ASK", 0)
-
             if (userRefused) {
-                // L'utilisateur a refusé, on ne fait rien
                 return
             }
             userPresenter.updateUser(isInterested)
@@ -412,16 +360,15 @@ class HomeFragment: Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocatio
         }
     }
 
-    private fun sendToken(){
+    private fun sendToken() {
         FirebaseMessaging.getInstance().token.addOnSuccessListener { token ->
             mainPresenter.updateApplicationInfo(token)
         }
     }
 
-    private fun deleteToken(){
-       mainPresenter.deleteApplicationInfo {
-
-       }
+    private fun deleteToken() {
+        mainPresenter.deleteApplicationInfo {
+        }
     }
 
     private fun updateUnreadCount(unreadMessages: UnreadMessages?) {
@@ -438,10 +385,9 @@ class HomeFragment: Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocatio
         view.layoutParams = layoutParams
     }
 
-    private fun callToInitHome(){
-        if(isAdded){
+    private fun callToInitHome() {
+        if (isAdded) {
             EntourageApplication.get().me()?.id?.let { meId ->
-                //homePresenter.getMyGroups(pagegroup, nbOfItemForHozrizontalList, meId)
                 homePresenter.getAllEvents(
                     pageEvent,
                     nbOfItemForHozrizontalList,
@@ -458,12 +404,12 @@ class HomeFragment: Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocatio
         }
     }
 
-    private fun checkSumEventAction(){
+    private fun checkSumEventAction() {
         checksum++
-        if (checksum == 2){
-            if(isEventsEmpty && isActionEmpty){
+        if (checksum == 2) {
+            if (isEventsEmpty && isActionEmpty) {
                 binding.itemHz.layoutItemHz.visibility = View.VISIBLE
-            }else{
+            } else {
                 binding.itemHz.layoutItemHz.visibility = View.GONE
             }
         }
@@ -474,21 +420,21 @@ class HomeFragment: Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocatio
         }
     }
 
-    private fun doTotalchecksumToDisplayHomeFirstTime(){
+    private fun doTotalchecksumToDisplayHomeFirstTime() {
         totalchecksum++
-        if(totalchecksum == 4){
+        if (totalchecksum == 4) {
             binding.homeNestedScrollView.visibility = View.VISIBLE
             binding.homeHeader.visibility = View.VISIBLE
             binding.progressBar.visibility = View.GONE
         }
     }
 
-    private fun resetFilter(){
+    private fun resetFilter() {
         currentFilters = EventActionLocationFilters()
         currentSectionsFilters = ActionSectionFilters()
     }
 
-    private fun disapearAllAtBeginning(){
+    private fun disapearAllAtBeginning() {
         binding.homeNestedScrollView.visibility = View.GONE
         binding.homeHeader.visibility = View.GONE
         binding.btnMoreGroup.visibility = View.GONE
@@ -499,55 +445,49 @@ class HomeFragment: Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocatio
         binding.rvHomeEvent.visibility = View.GONE
         binding.homeSubtitleEvent.visibility = View.GONE
         binding.homeTitleEvent.visibility = View.GONE
-
         binding.btnMoreAction.visibility = View.GONE
         binding.rvHomeAction.visibility = View.GONE
         binding.homeSubtitleAction.visibility = View.GONE
         binding.homeTitleAction.visibility = View.GONE
-
         binding.btnMorePedago.visibility = View.GONE
         binding.rvHomePedago.visibility = View.GONE
         binding.homeSubtitlePedago.visibility = View.GONE
         binding.homeTitlePedago.visibility = View.GONE
     }
 
-    private fun setRecyclerViews(){
-        //Group RV
+    private fun setRecyclerViews() {
         val settingGrouplayoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        val offsetInPixels = resources.getDimensionPixelSize(R.dimen.horizontal_offset_home) // Define this in your resources
+        val offsetInPixels = resources.getDimensionPixelSize(R.dimen.horizontal_offset_home)
 
         binding.rvHomeGroup.adapter = homeGroupAdapter
         binding.rvHomeGroup.layoutManager = settingGrouplayoutManager
         binding.rvHomeGroup.setPadding(offsetInPixels, 0, 0, 0)
         binding.rvHomeGroup.clipToPadding = false
-        //Event RV
+
         val settingEventlayoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         binding.rvHomeEvent.adapter = homeEventAdapter
         binding.rvHomeEvent.layoutManager = settingEventlayoutManager
         binding.rvHomeEvent.setPadding(offsetInPixels, 0, 0, 0)
         binding.rvHomeEvent.clipToPadding = false
-        //Action RV
+
         val settingActionlayoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         binding.rvHomeAction.adapter = homeActionAdapter
         binding.rvHomeAction.layoutManager = settingActionlayoutManager
-        //Pedago RV
+
         val settingPedagolayoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         binding.rvHomePedago.adapter = homePedagoAdapter
         binding.rvHomePedago.layoutManager = settingPedagolayoutManager
 
-        //Initial Pedago RV
         binding.rvHomeSensibilisation.adapter = homeInitialPedagoAdapter
         binding.rvHomeSensibilisation.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         binding.rvHomeSensibilisation.setPadding(offsetInPixels, 0, 0, 0)
 
-        //Help RV
         val settingHelplayoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         binding.rvHomeHelp.adapter = homeHelpAdapter
         binding.rvHomeHelp.layoutManager = settingHelplayoutManager
-
     }
 
-    private fun setSeeAllButtons(){
+    private fun setSeeAllButtons() {
         val mainActivity = (requireActivity() as? MainActivity)
         binding.btnMoreGroup.setOnClickListener {
             AnalyticsEvents.logEvent(AnalyticsEvents.Action_Home_Group_All)
@@ -570,19 +510,33 @@ class HomeFragment: Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocatio
         }
     }
 
-    private fun setNotifButton(){
+    private fun setNotifButton() {
         binding.uiLayoutNotif.setOnClickListener {
             AnalyticsEvents.logEvent(AnalyticsEvents.Action__Home__Notif)
             val intent = Intent(requireContext(), InAppNotificationsActivity::class.java)
-            intent.putExtra(Const.NOTIF_COUNT,homePresenter.notifsCount.value)
+            intent.putExtra(Const.NOTIF_COUNT, homePresenter.notifsCount.value)
             startActivityForResult(intent, 0)
+        }
+    }
+
+    private fun setMapButton() {
+        binding.homeButtonMap.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Action__Home__Map)
+            val intent = Intent(requireContext(), GDSMainActivity::class.java)
+            startActivityForResult(intent, 0)
+        }
+    }
+
+    private fun setProfileButton() {
+        binding.avatar.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Action__Tab__Profil)
+            startActivityForResult(Intent(context, MyProfileFullActivity::class.java), 0)
         }
     }
 
     private fun setObservations() {
         homePresenter.summary.observe(viewLifecycleOwner, ::updateContributionsView)
         homePresenter.getAllEvents.observe(viewLifecycleOwner, ::handleEvent)
-        //homePresenter.getAllMyGroups.observe(viewLifecycleOwner, ::handleGroup)
         homePresenter.getAllActions.observe(viewLifecycleOwner, ::handleAction)
         homePresenter.pedagogicalContent.observe(viewLifecycleOwner, ::handlePedago)
         homePresenter.pedagogicalInitialContent.observe(viewLifecycleOwner, ::handleInitialPedago)
@@ -590,51 +544,39 @@ class HomeFragment: Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocatio
         actionsPresenter.unreadMessages.observe(viewLifecycleOwner, ::updateUnreadCount)
     }
 
-
-    fun handleGroup(allGroup: MutableList<Group>?){
-        if(allGroup == null){
+    fun handleGroup(allGroup: MutableList<Group>?) {
+        if (allGroup == null) {
             return
         }
         doTotalchecksumToDisplayHomeFirstTime()
 
-        if(allGroup.size > 0 ){
-            binding.btnMoreGroup.visibility = View.GONE
-            binding.rvHomeGroup.visibility = View.GONE
-            binding.homeSubtitleGroup.visibility = View.GONE
-            binding.homeTitleGroup.visibility = View.GONE
-        }else{
-            binding.btnMoreGroup.visibility = View.GONE
-            binding.rvHomeGroup.visibility = View.GONE
-            binding.homeSubtitleGroup.visibility = View.GONE
-            binding.homeTitleGroup.visibility = View.GONE
-        }
-        this.homeGroupAdapter.resetData(allGroup)
+        binding.btnMoreGroup.visibility = View.GONE
+        binding.rvHomeGroup.visibility = View.GONE
+        binding.homeSubtitleGroup.visibility = View.GONE
+        binding.homeTitleGroup.visibility = View.GONE
 
+        this.homeGroupAdapter.resetData(allGroup)
     }
 
-    fun handleEvent(allEvent: MutableList<Events>?){
-        if(allEvent == null){
+    fun handleEvent(allEvent: MutableList<Events>?) {
+        if (allEvent == null) {
             return
         }
         doTotalchecksumToDisplayHomeFirstTime()
 
-        if(allEvent.size > 0 ){
-            val _offline_events:MutableList<Events> = mutableListOf()
-            for(event in allEvent){
-                if(event.online == false){
-                    _offline_events.add(event)
+        if (allEvent.size > 0) {
+            val offlineEvents: MutableList<Events> = mutableListOf()
+            for (event in allEvent) {
+                if (event.online == false) {
+                    offlineEvents.add(event)
                 }
             }
-            if(_offline_events.size == 0){
-                isEventsEmpty = true
-            }else{
-                isEventsEmpty = false
-            }
+            isEventsEmpty = offlineEvents.size == 0
             binding.btnMoreEvent.visibility = View.VISIBLE
             binding.rvHomeEvent.visibility = View.VISIBLE
             binding.homeSubtitleEvent.visibility = View.GONE
             binding.homeTitleEvent.visibility = View.VISIBLE
-        }else{
+        } else {
             isEventsEmpty = true
             binding.btnMoreEvent.visibility = View.GONE
             binding.rvHomeEvent.visibility = View.GONE
@@ -643,16 +585,16 @@ class HomeFragment: Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocatio
         }
         checkSumEventAction()
         this.homeEventAdapter.resetData(allEvent)
-
     }
-    fun handleAction(allAction: MutableList<Action>?){
-        if(allAction == null){
+
+    fun handleAction(allAction: MutableList<Action>?) {
+        if (allAction == null) {
             return
         }
         doTotalchecksumToDisplayHomeFirstTime()
 
-        if(allAction.size > 0 ){
-            if(isContribution){
+        if (allAction.size > 0) {
+            if (isContribution) {
                 binding.homeTitleAction.text = getString(R.string.home_title_action_contrib)
                 binding.homeSubtitleAction.text = getString(R.string.home_subtitle_action_contrib)
                 binding.titleButtonAction.text = getString(R.string.home_btn_more_action_contrib)
@@ -667,78 +609,73 @@ class HomeFragment: Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocatio
             binding.rvHomeAction.visibility = View.VISIBLE
             binding.homeSubtitleAction.visibility = View.GONE
             binding.homeTitleAction.visibility = View.VISIBLE
-        }else{
+        } else {
             isActionEmpty = true
             binding.btnMoreAction.visibility = View.GONE
             binding.rvHomeAction.visibility = View.GONE
             binding.homeSubtitleAction.visibility = View.GONE
             binding.homeTitleAction.visibility = View.GONE
         }
-        if(!isContribution){
+        if (!isContribution) {
             checkSumEventAction()
         }
         this.homeActionAdapter.resetData(allAction)
-
     }
 
-    fun handleInitialPedago(allPedago: MutableList<Pedago>?){
-        if(allPedago == null) {
+    fun handleInitialPedago(allPedago: MutableList<Pedago>?) {
+        if (allPedago == null) {
             return
         }
         doTotalchecksumToDisplayHomeFirstTime()
-        if(allPedago.size > 0 ){
+        if (allPedago.size > 0) {
             binding.rvHomeSensibilisation.visibility = View.VISIBLE
             binding.homeSubtitleSensibilisation.visibility = View.GONE
             binding.homeTitleSensibilisation.visibility = View.VISIBLE
             setMarginTop(binding.homeTitleAction, 16)
-
-        }else{
+        } else {
             binding.rvHomeSensibilisation.visibility = View.GONE
             binding.homeSubtitleSensibilisation.visibility = View.GONE
             binding.homeTitleSensibilisation.visibility = View.GONE
             setMarginTop(binding.homeTitleAction, 0)
-
         }
         this.homeInitialPedagoAdapter?.resetData(allPedago)
-
     }
-    fun handlePedago(allPedago: MutableList<Pedago>?){
-        if(allPedago == null) {
+
+    fun handlePedago(allPedago: MutableList<Pedago>?) {
+        if (allPedago == null) {
             return
         }
         doTotalchecksumToDisplayHomeFirstTime()
-        if(allPedago.size > 0 ){
+        if (allPedago.size > 0) {
             binding.btnMorePedago.visibility = View.VISIBLE
             binding.rvHomePedago.visibility = View.VISIBLE
             binding.homeSubtitlePedago.visibility = View.GONE
             binding.homeTitlePedago.visibility = View.VISIBLE
-        }else{
+        } else {
             binding.btnMorePedago.visibility = View.GONE
             binding.rvHomePedago.visibility = View.GONE
             binding.homeSubtitlePedago.visibility = View.GONE
             binding.homeTitlePedago.visibility = View.GONE
         }
-        val pedagos:MutableList<Pedago> = mutableListOf()
-        for(pedago in allPedago){
-            if (pedagos.size > 1){
+
+        val pedagos: MutableList<Pedago> = mutableListOf()
+        for (pedago in allPedago) {
+            if (pedagos.size > 1) {
                 break
             }
-            if(pedago.watched == false){
+            if (pedago.watched == false) {
                 pedagos.add(pedago)
             }
         }
-        /*for (k in 0 until 2) {
-            pedagos.add(allPedago[k])
-        }*/
-        for(pedago in allPedago) {
 
+        for (pedago in allPedago) {
             pedago.id?.let { id ->
                 val createEventId: Int = BuildConfig.PEDAGO_CREATE_EVENT_ID
                 val createGroupId: Int = BuildConfig.PEDAGO_CREATE_GROUP_ID
-                if(id == createEventId) {
+                if (id == createEventId) {
                     this.pedagoItemForCreateEvent = pedago
                 }
-                if(id == createGroupId) {
+                if (id == createGroupId) {
                     this.pedagoItemForCreateGroup = pedago
                 }
             }
@@ -746,7 +683,6 @@ class HomeFragment: Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocatio
 
         this.homePedagoAdapter?.resetData(pedagos)
         homePresenter.getSummary()
-
     }
 
     private fun updateContributionsView(summary: Summary) {
@@ -754,44 +690,42 @@ class HomeFragment: Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocatio
         EnhancedOnboarding.preference = summary.preference ?: ""
         onActionUnclosed(summary)
         handleHelps(summary)
-        if (summary.signablePermission != null ){
-            HomeFragment.signablePermission = summary.signablePermission!!
-        }
-        val me = EntourageApplication.me(activity)
-
-        if(false){
-            if(summary.preference == null || me?.address == null){
-                OnboardingStartActivity.FRAGMENT_NUMBER = 3
-                //launch onboarding activity
-                val intent = Intent(requireActivity(), OnboardingStartActivity::class.java)
-                startActivity(intent)
-                requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
-            }
+        if (summary.signablePermission != null) {
+            signablePermission = summary.signablePermission!!
         }
         isContribution = summary.preference.equals("contribution")
-
         isContribProfile = isContribution
-        if(isContribution){
-            if(!homeActionAdapter.getIsContrib()){
+        if (isContribution) {
+            if (!homeActionAdapter.getIsContrib()) {
                 homeActionAdapter = HomeActionAdapter(isContribution)
             }
             binding.rvHomeAction.adapter = homeActionAdapter
-            homePresenter.getAllContribs(0,nbOfItemForVerticalList,currentFilters.travel_distance(),currentFilters.latitude(),currentFilters.longitude(),currentSectionsFilters.getSectionsForWS())
-        }else{
-            homePresenter.getAllDemands(0,nbOfItemForVerticalList,currentFilters.travel_distance(),currentFilters.latitude(),currentFilters.longitude(),currentSectionsFilters.getSectionsForWS())
+            homePresenter.getAllContribs(
+                0,
+                nbOfItemForVerticalList,
+                currentFilters.travel_distance(),
+                currentFilters.latitude(),
+                currentFilters.longitude(),
+                currentSectionsFilters.getSectionsForWS()
+            )
+        } else {
+            homePresenter.getAllDemands(
+                0,
+                nbOfItemForVerticalList,
+                currentFilters.travel_distance(),
+                currentFilters.latitude(),
+                currentFilters.longitude(),
+                currentSectionsFilters.getSectionsForWS()
+            )
         }
     }
 
-    private fun handleHelps(summary: Summary){
-        if(isAdded){
+    private fun handleHelps(summary: Summary) {
+        if (isAdded) {
             doTotalchecksumToDisplayHomeFirstTime()
             val formattedString = requireContext().getString(R.string.home_help_title_three, summary.moderator?.displayName)
-            //val help1 = Help(requireContext().getString(R.string.home_v2_help_title_one) , R.drawable.first_help_item_illu)
-            //val help2 = Help(requireContext().getString(R.string.home_v2_help_title_two) , R.drawable.ic_home_v2_create_group)
-            val help3 = Help(formattedString , R.drawable.first_help_item_illu)
-            val helps:MutableList<Help> = mutableListOf()
-            //helps.add(help1)
-            //helps.add(help2)
+            val help3 = Help(formattedString, R.drawable.first_help_item_illu)
+            val helps: MutableList<Help> = mutableListOf()
             helps.add(help3)
             homeHelpAdapter.resetData(helps, summary)
         }
@@ -799,31 +733,18 @@ class HomeFragment: Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocatio
 
     private fun updateNotifsCount(count: Int) {
         if (count > 0) {
-            // Set the notification number text
-            if(count > 9){
-                binding.tvNumberOfFilter.text = "9+"
-            }else{
-                binding.tvNumberOfFilter.text = count.toString()
-            }
-            // Make the notification number layout visible
+            binding.tvNumberOfFilter.text = if (count > 9) "9+" else count.toString()
             binding.cardNotifNumber.visibility = View.VISIBLE
         } else {
-            // Hide the notification number layout if there are no notifications
             binding.cardNotifNumber.visibility = View.INVISIBLE
         }
 
-        // Optionally, you can maintain the default notification icon without change
         context?.resources?.let { resources ->
             binding.uiBellNotif.setImageDrawable(
-                ResourcesCompat.getDrawable(
-                    resources,
-                    R.drawable.ic_new_notif_off, // Assuming this is your default notification icon
-                    null
-                )
+                ResourcesCompat.getDrawable(resources, R.drawable.ic_new_notif_off, null)
             )
         }
     }
-
 
     private fun updateAvatar() {
         with(binding) {
@@ -837,33 +758,14 @@ class HomeFragment: Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocatio
                 } ?: run {
                     photoView.setImageResource(R.drawable.placeholder_user)
                 }
-
             }
         }
     }
-    private fun updateUser(user:User){
+
+    private fun updateUser(user: User) {
         this.user = user
         updateAvatar()
-
-    }
-
-    private fun setMapButton(){
-        binding.homeButtonMap.setOnClickListener {
-            AnalyticsEvents.logEvent(AnalyticsEvents.Action__Home__Map)
-            val intent = Intent(requireContext(), GDSMainActivity::class.java)
-            startActivityForResult(intent, 0)
-        }
-    }
-
-    private fun setProfileButton(){
-        binding.avatar.setOnClickListener {
-            AnalyticsEvents.logEvent(AnalyticsEvents.Action__Tab__Profil)
-            startActivityForResult(
-                //Intent(context, ProfileActivity::class.java), 0
-                Intent(context, MyProfileFullActivity::class.java), 0
-            )
-        }
-
+        maybeLaunchMissingInfoFlow()
     }
 
     private fun setNestedScrollViewAnimation() {
@@ -871,12 +773,11 @@ class HomeFragment: Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocatio
             val layoutParamsHomeHeader = binding.homeHeader.layoutParams as ViewGroup.MarginLayoutParams
 
             if (isAnimating) {
-                return@OnScrollChangeListener // Ne faites rien si une animation est déjà en cours
+                return@OnScrollChangeListener
             }
 
             if (scrollY == 0) {
                 isAnimating = false
-                // Réinitialisez les valeurs ici si scrollY revient à 0
                 layoutParamsHomeHeader.topMargin = DEFAULT_MARGIN
                 binding.homeHeader.layoutParams = layoutParamsHomeHeader
                 binding.homeTitle.visibility = View.VISIBLE
@@ -891,7 +792,10 @@ class HomeFragment: Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocatio
     }
 
     private fun startAnimation(layoutParamsHomeHeader: ViewGroup.MarginLayoutParams, titleVisibility: Int) {
-        val animator = ValueAnimator.ofInt(layoutParamsHomeHeader.topMargin, if (titleVisibility == View.GONE) NEW_MARGIN else DEFAULT_MARGIN).apply {
+        val animator = ValueAnimator.ofInt(
+            layoutParamsHomeHeader.topMargin,
+            if (titleVisibility == View.GONE) NEW_MARGIN else DEFAULT_MARGIN
+        ).apply {
             duration = 100
             addUpdateListener { animation ->
                 val animatedValue = animation.animatedValue as Int
@@ -906,9 +810,8 @@ class HomeFragment: Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocatio
         animator.start()
     }
 
-
-    override fun onItemClick(position: Int, moderatorId:Int) {
-        if(position == 2){
+    override fun onItemClick(position: Int, moderatorId: Int) {
+        if (position == 2) {
             AnalyticsEvents.logEvent(AnalyticsEvents.Action_Home_CreateGroup)
             val intent = Intent(requireActivity(), PedagoDetailActivity::class.java)
             intent.putExtra(Const.ID, pedagoItemForCreateGroup?.id)
@@ -917,7 +820,7 @@ class HomeFragment: Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocatio
             requireActivity().startActivity(intent)
             requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
         }
-        if(position == 1){
+        if (position == 1) {
             AnalyticsEvents.logEvent(AnalyticsEvents.Action_Home_CreateEvent)
             val intent = Intent(requireActivity(), PedagoDetailActivity::class.java)
             intent.putExtra(Const.ID, pedagoItemForCreateEvent?.id)
@@ -926,7 +829,7 @@ class HomeFragment: Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocatio
             requireActivity().startActivity(intent)
             requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
         }
-        if(position == 0){
+        if (position == 0) {
             AnalyticsEvents.logEvent(AnalyticsEvents.Action__Home__Moderator)
             startActivity(
                 Intent(context, ProfileFullActivity::class.java).putExtra(
@@ -937,10 +840,9 @@ class HomeFragment: Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocatio
         }
     }
 
-
-    private fun onActionUnclosed(summary: Summary){
+    private fun onActionUnclosed(summary: Summary) {
         summary.unclosedAction?.let { unclosedAction ->
-            if(unclosedAction.actionType == "solicitation"){
+            if (unclosedAction.actionType == "solicitation") {
                 AnalyticsEvents.logEvent(AnalyticsEvents.View__StateDemandPop__Day10)
                 unclosedAction.title?.let { contentText ->
                     CustomAlertDialog.showForLastActionOneDemand(
@@ -952,14 +854,16 @@ class HomeFragment: Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocatio
                         onNo = {
                             AnalyticsEvents.logEvent(AnalyticsEvents.Clic__StateDemandPop__No__Day10)
                             AnalyticsEvents.logEvent(AnalyticsEvents.View__StateDemandPop__No__Day10)
-                            CustomAlertDialog.showForLastActionTwo(requireContext(),
+                            CustomAlertDialog.showForLastActionTwo(
+                                requireContext(),
                                 getString(R.string.custom_dialog_action_title_two),
                                 getString(R.string.custom_dialog_action_content_two_demande),
                                 getString(R.string.custom_dialog_action_two_button_contrib),
                                 onYes = {
                                     (activity as MainActivity).goContrib()
                                     AnalyticsEvents.logEvent(AnalyticsEvents.Clic__SeeDemand__Day10)
-                                })
+                                }
+                            )
                         },
                         onYes = {
                             AnalyticsEvents.logEvent(AnalyticsEvents.Clic__StateDemandPop__Yes__Day10)
@@ -976,7 +880,7 @@ class HomeFragment: Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocatio
                     )
                 }
             }
-            if(unclosedAction.actionType == "contribution"){
+            if (unclosedAction.actionType == "contribution") {
                 AnalyticsEvents.logEvent(AnalyticsEvents.View__StateContribPop__Day10)
                 unclosedAction.title?.let { contentText ->
                     CustomAlertDialog.showForLastActionOneContrib(
@@ -988,26 +892,26 @@ class HomeFragment: Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocatio
                         onNo = {
                             AnalyticsEvents.logEvent(AnalyticsEvents.Clic__StateContribPop__No__Day10)
                             AnalyticsEvents.logEvent(AnalyticsEvents.View__StateContribPop__No__Day10)
-                            CustomAlertDialog.showForLastActionTwo(requireContext(),
+                            CustomAlertDialog.showForLastActionTwo(
+                                requireContext(),
                                 getString(R.string.custom_dialog_action_title_two),
                                 getString(R.string.custom_dialog_action_content_two_contrib),
                                 getString(R.string.custom_dialog_action_two_button_demand),
                                 onYes = {
                                     (activity as MainActivity).goDemand()
                                     AnalyticsEvents.logEvent(AnalyticsEvents.Clic__SeeContrib__Day10)
-
-                                })
-
+                                }
+                            )
                         },
                         onYes = {
                             AnalyticsEvents.logEvent(AnalyticsEvents.Clic__StateContribPop__Yes__Day10)
                             AnalyticsEvents.logEvent(AnalyticsEvents.View__DeleteContribPop__Day10)
-                            unclosedAction.id?.let {id
+                            unclosedAction.id?.let { id ->
                                 actionsPresenter.cancelAction(id, false, true, "")
                                 CustomAlertDialog.showForLastActionThree(
                                     requireContext(),
-                                    getString(R.string.custom_dialog_action_title_three),
-                                    getString(R.string.custom_dialog_action_content_three_contrib)
+                                    getString(R.string.custom_dialog_action_content_three_contrib),
+                                    ""
                                 )
                             }
                         }
@@ -1015,19 +919,68 @@ class HomeFragment: Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocatio
                 }
             }
         }
-
-    }
-    companion object {
-        var isContribProfile = false
-        var signablePermission = false
     }
 
     override fun onHomeChangeLocationUpdateClearFragment() {
         binding.frameLayoutChangeLocation.visibility = View.GONE
         callToInitHome()
     }
+
+    private fun maybeLaunchMissingInfoFlow() {
+        if (!isAdded) return
+        if (hasLaunchedMissingInfoThisSession) return
+
+        val u = user ?: return
+
+        val missingGoal = u.goal.isNullOrBlank()
+        if (missingGoal) {
+            hasLaunchedMissingInfoThisSession = true
+            OnboardingStartActivity.FRAGMENT_NUMBER = 3
+            val intent = Intent(requireActivity(), OnboardingStartActivity::class.java)
+            startActivity(intent)
+            requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+            return
+        }
+
+        val missingAddress = u.address == null
+        if (missingAddress) {
+            hasLaunchedMissingInfoThisSession = true
+            val userType = when {
+                u.isUserTypeAsso -> OnboardingZoneChoiceActivity.UserType.ASSO
+                u.isUserTypeAlone -> OnboardingZoneChoiceActivity.UserType.BE_ENTOUR
+                else -> OnboardingZoneChoiceActivity.UserType.ENTOUR
+            }
+            val intent = OnboardingZoneChoiceActivity.newIntent(requireContext(), userType)
+            startActivity(intent)
+            requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+            return
+        }
+
+        val areNotifsEnabled = NotificationManagerCompat.from(requireContext()).areNotificationsEnabled()
+        if (!areNotifsEnabled) {
+            hasLaunchedMissingInfoThisSession = true
+            val intent = Intent(requireContext(), NotificationDemandActivity::class.java)
+            startActivity(intent)
+            requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+            return
+        }
+
+        val missingInterests = u.interests.isEmpty() && u.involvements.isEmpty() && u.concerns.isEmpty()
+        if (missingInterests) {
+            hasLaunchedMissingInfoThisSession = true
+            val intent = Intent(requireContext(), EnhancedOnboarding::class.java)
+            startActivity(intent)
+            requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+            return
+        }
+    }
+
+    companion object {
+        var isContribProfile = false
+        var signablePermission = false
+    }
 }
 
-interface OnHomeChangeLocationUpdate{
+interface OnHomeChangeLocationUpdate {
     fun onHomeChangeLocationUpdateClearFragment()
 }
