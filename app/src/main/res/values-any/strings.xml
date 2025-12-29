@@ -189,7 +189,7 @@ Découvrez les initiatives de votre quartier et tissez des liens avec vos voisin
     <string name="new_next">Suivant</string>
     <string name="back">Retour</string>
     <string name="cancel_event_continue">Continuer</string>
-    <string name="previous">Précedent</string>
+    <string name="previous">Précédent</string>
     <string name="add_location_subtitle">Entourage ne communique pas cette adresse aux utilisateurs.</string>
     <string name="new_group">Nouveau groupe</string>
     <string name="new_event">Nouvel événement</string>
@@ -1924,13 +1924,13 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="onboard_welcome_info_mandatory">*Champs obligatoires. Vos informations resteront confidentielles et ne seront jamais communiquées à des tiers.</string>
 
     <string name="onboard_welcome_title_phase2">Entrez le code reçu par SMS</string>
-    <string name="onboard_sms_sub">Un SMS vient juste de vous être envoyé au :</string>
+    <string name="onboard_sms_sub">Un SMS vient de vous être envoyé au :</string>
     <string name="onboard_sms_wait_retry">Pas de code ? Réessayez dans %s</string>
     <string name="onboard_sms_wait_retry_end">Renvoyer un code</string>
     <string name="mod_phone_code">- Modifier</string>
     <string name="onboard_code_placeholder">00000000</string>
 
-    <string name="onboard_welcome_title_phase3">Enchantés %s !</string>
+    <string name="onboard_welcome_title_phase3">Choisissez votre profil </string>
 
     <string name="onboard_phase3_entour_desc">En plus de faire des rencontres humaines, comment souhaitez-vous contribuer au sein de la Communauté Entourage ? </string>
     <string name="onboard_phase3_entour_title">Entourer</string>
@@ -1938,7 +1938,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="onboard_phase3_be_entour_title">Être entouré</string>
     <string name="onboard_phase3_be_entour_subtitle">Je suis en situation de vulnérabilité et recherche du soutien.</string>
     <string name="onboard_phase3_place_title">Quel est votre quartier ?</string>
-    <string name="onboard_phase3_asso_title">Je suis une association</string>
+    <string name="onboard_phase3_asso_title">Je travaille au sein d’une association</string>
 
     <string name="onboard_end_title">Bienvenue dans la Communauté Entourage </string>
     <string name="onboard_end_subtitle">Félicitations, vous voilà prêt à faire vivre la solidarité autour de vous.</string>
@@ -2376,7 +2376,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
 
     <string name="translate">"Traduction</string>
     <string name="title_language">"Langue</string>
-    <string name="select_language">"Sélectionner la langue</string>
+    <string name="select_language">"Sélectionner votre langue</string>
     <string name="all_event">"Tous les événements"</string>
     <string name="all_my_event">"Mes événements"</string>
 
@@ -2446,7 +2446,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="map_filter_entourage_contribution_text"><b>Voir les contributions concernant :</b></string>
     <string name="custom_dialog_action_content_one_contrib">Votre action \"<![CDATA[<b>%1$s</b>]]>\" est-elle terminée ?</string>
     <string name="search_member_hint">Chercher un membre</string>
-    <string name="terms_and_conditions_html">En cliquant sur &lt;b&gt;Suivant&lt;/b&gt;, vous acceptez les &lt;a href=\'https://www.entourage.social/cgu\'&gt;Conditions Générales d\'Utilisation&lt;/a&gt; et la &lt;a href=\'https://www.entourage.social/politique-de-confidentialite\'&gt;Politique de Confidentialité&lt;/a&gt;</string>
+    <string name="terms_and_conditions_html"><![CDATA[En vous inscrivant, vous acceptez nos <a href="https://www.entourage.social/conditions-generales-dutilisation">Conditions Générales d’Utilisation</a> et notre <a href="https://www.entourage.social/politique-de-confidentialite">Politique de confidentialité</a>.]]></string>
     <string name="action_crete_cat_about">Vous cherchez à proposer une %s qui ne rentre pas dans l\'une de ces catégories ? Il semble qu\'elle n\'ait pas sa place sur le réseau,mais vous pouvez toujours </string>
     <string name="action_create_cat_about_link"> en savoir plus par ici.</string>
     <string name="report_modal_title_translate">Traduire</string>

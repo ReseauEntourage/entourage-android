@@ -136,7 +136,7 @@
     <color name="custom_button_white_pressed">#F4F4F4</color>
     <color name="custom_button_white_disabled">#B2FFFFFF</color>
     <color name="onboard_black_36">#363636</color>
-    <color name="onboard_textfield_bg">#F6F6F6</color>
+    <color name="onboard_textfield_bg">#F5F5F5</color>
     <color name="onboard_button_unselect">#80FFFFFF</color>
     <color name="onboard_white_246">#F6F6F6</color>
     <!-- EditTexts -->

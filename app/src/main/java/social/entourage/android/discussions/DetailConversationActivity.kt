@@ -555,45 +555,94 @@ class DetailConversationActivity : CommentActivity() {
 
 
     // ===== Détails conversation =====
+// ===== Détails conversation =====
     private fun handleDetailConversation(conversation: Conversation?) {
         conversation ?: return
         this.detailConversation = conversation
+
+        // Contexte & état de base
         isMember = conversation.member == true
         updateView(false)
 
+        // Détermine le mode 1-to-1
         if (conversation.memberCount > 2) isOne2One = false
+        else isOne2One = true
 
-        if (isOne2One) {
+        val meId = EntourageApplication.get().me()?.id
+        val membersStr = conversation.members
+            ?.joinToString { "${it?.id}:${it?.displayName}" } ?: "no-members"
+
+        Timber.d(
+            "[DetailConversation] handleDetailConversation — convId=%s, type=%s, memberCount=%s, meId=%s, members=%s",
+            conversation.id, conversation.type, conversation.memberCount, meId, membersStr
+        )
+
+        // --- CLICK SUR LE TITRE HEADER ---
+        if (isOne2One && conversation.type != "outing") {
+            // Résoudre l'autre membre (≠ moi)
+            val otherUserId = conversation.members
+                ?.firstOrNull { it?.id != meId }
+                ?.id ?: 0
+
+            Timber.d(
+                "[DetailConversation] 1-to-1 mode — resolved otherUserId=%s (meId=%s)",
+                otherUserId, meId
+            )
+
             binding.header.headerTitle.setOnClickListener {
-                ProfileFullActivity.isMe = false
-                ProfileFullActivity.userId = postAuthorID.toString()
+                if (otherUserId <= 0) {
+                    Timber.e("[DetailConversation] Invalid otherUserId=%s — abort profile open", otherUserId)
+                    Toast.makeText(this, "Utilisateur introuvable", Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
+                }
+
+                ProfileFullActivity.isMe = (otherUserId == meId)
+                ProfileFullActivity.userId = otherUserId.toString()
+
+                Timber.i(
+                    "[DetailConversation] Opening ProfileFullActivity — userId=%s, isMe=%s",
+                    otherUserId, ProfileFullActivity.isMe
+                )
+
                 startActivityForResult(
                     Intent(this, ProfileFullActivity::class.java)
-                        .putExtra(Const.USER_ID, postAuthorID),
+                        .putExtra(Const.USER_ID, otherUserId),
                     0
                 )
             }
         } else {
+            // Groupe / multi / outing : ouvre la liste des membres
             binding.header.headerTitle.setOnClickListener {
+                Timber.d(
+                    "[DetailConversation] Group/Outing header click — opening MembersConversationFragment for convId=%s",
+                    id
+                )
                 MembersConversationFragment.newInstance(id).show(supportFragmentManager, "")
             }
         }
 
+        // Visibilité du bouton options (photos) : seulement pour outing (ou SmallTalk géré ailleurs)
         if (conversation.type == "outing") {
             binding.optionButton.visibility = View.VISIBLE
-        }else {
+        } else {
             binding.optionButton.visibility = View.GONE
         }
+
+        // Zone événement (outing) & SmallTalk
         if (conversation.type == "outing" || isSmallTalkMode) {
             binding.layoutEventConv.visibility = View.VISIBLE
             binding.layoutInfoNewDiscussion.visibility = View.GONE
-            conversation.id?.let { eventPresenter.getEvent(it.toString()) }
+            conversation.id?.let {
+                Timber.d("[DetailConversation] Fetching event for conv outing — eventId=%s", it)
+                eventPresenter.getEvent(it.toString())
+            }
         } else {
             binding.layoutEventConv.visibility = View.GONE
             binding.header.headerSubtitle.visibility = View.GONE
             SettingsDiscussionModalFragment.isEvent = false
         }
 
+        // Masquer le premier message si c'est l'équipe Entourage
         conversation.message?.forEach { msg ->
             msg.userRole?.let { role ->
                 if (role.contains("Équipe Entourage")) hasToShowFirstMessage = false
@@ -602,28 +651,28 @@ class DetailConversationActivity : CommentActivity() {
 
         checkAndShowPopWarning()
 
+        // Titre / sous-titre
         conversationTitle = conversation.title
         binding.header.title = conversationTitle
 
         val memberCount = conversation.members?.size ?: 0
         if (memberCount > 2) {
             hasSeveralPeople = true
-            val displayName = conversation.user?.displayName ?: ""
-            binding.header.title = "$displayName + ${conversation.memberCount - 1} membres"
-        }
-        if (conversation.memberCount > 2 && conversation.members != null) {
             val currentUserId = EntourageApplication.get().me()?.id
-
             val names = conversation.members
-                .filter { it?.id != currentUserId }
-                .take(5)
-                .mapNotNull { it?.displayName }
-                .map { if (it.length > 2) it.dropLast(3) else it }
+                ?.filter { it?.id != currentUserId }
+                ?.take(5)
+                ?.mapNotNull { it?.displayName }
+                ?.map { if (it.length > 2) it.dropLast(3) else it }
+                ?: emptyList()
             binding.header.title = names.joinToString(", ")
+            Timber.d("[DetailConversation] Header title (multi) — %s", binding.header.title)
         } else {
             binding.header.title = conversation.title
+            Timber.d("[DetailConversation] Header title (single) — %s", binding.header.title)
         }
 
+        // Blocage / signalement
         if (conversation.hasBlocker()) {
             binding.postBlocked.isVisible = true
             val name = conversationTitle ?: ""
@@ -632,10 +681,14 @@ class DetailConversationActivity : CommentActivity() {
             } else {
                 String.format(getString(R.string.message_user_blocked_by_other), name)
             }
+            Timber.w("[DetailConversation] Conversation blocked — imBlocker=%s", conversation.imBlocker())
         } else {
             binding.postBlocked.isVisible = false
         }
+
+        // Mémoriser les membres pour les mentions
         allMembers = conversation.members ?: emptyList()
+        Timber.d("[DetailConversation] allMembers.size=%s", allMembers.size)
     }
 
     private fun handleGetEvent(event: Events?) {

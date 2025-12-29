@@ -16,6 +16,7 @@ import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
@@ -98,6 +99,7 @@ class HomeFragment: Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocatio
     }
     private var isRequestLoaded = false
     private var currentRequests: List<UserSmallTalkRequest> = emptyList()
+    private val userObserver = Observer<User> { updateUser(it) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -122,7 +124,6 @@ class HomeFragment: Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocatio
         binding = FragmentHomeBinding.inflate(layoutInflater)
         disapearAllAtBeginning()
         mainPresenter = MainPresenter(requireActivity() as MainActivity)
-        userPresenter.user.observe(viewLifecycleOwner, ::updateUser)
         binding.progressBar.visibility = View.VISIBLE
         homePresenter = ViewModelProvider(requireActivity()).get(HomePresenter::class.java)
         actionsPresenter = ViewModelProvider(requireActivity()).get(ActionsPresenter::class.java)
@@ -210,6 +211,9 @@ class HomeFragment: Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocatio
         super.onViewCreated(view, savedInstanceState)
         user = EntourageApplication.me(activity) ?: return
         updateAvatar()
+        userPresenter.user.observe(viewLifecycleOwner, userObserver)
+
+
         if(MainActivity.shouldLaunchOnboarding){
             MainActivity.shouldLaunchOnboarding = false
             //launch onboarding activity
@@ -325,6 +329,12 @@ class HomeFragment: Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocatio
             binding.chevron3.scaleX = 1f
             binding.chevron4.scaleX = 1f
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        // ✅ Nettoyer pour éviter le "same observer with different lifecycles"
+        userPresenter.user.removeObserver(userObserver)
     }
 
     private fun checkNotifAndSendToken() {
@@ -746,12 +756,15 @@ class HomeFragment: Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocatio
             HomeFragment.signablePermission = summary.signablePermission!!
         }
         val me = EntourageApplication.me(activity)
-        if(summary.preference == null || me?.address == null){
-            OnboardingStartActivity.FRAGMENT_NUMBER = 3
-            //launch onboarding activity
-            val intent = Intent(requireActivity(), OnboardingStartActivity::class.java)
-            startActivity(intent)
-            requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+
+        if(false){
+            if(summary.preference == null || me?.address == null){
+                OnboardingStartActivity.FRAGMENT_NUMBER = 3
+                //launch onboarding activity
+                val intent = Intent(requireActivity(), OnboardingStartActivity::class.java)
+                startActivity(intent)
+                requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+            }
         }
         isContribution = summary.preference.equals("contribution")
 

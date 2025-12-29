@@ -8,7 +8,6 @@
     <string name="error_application_update">Die Version d\'Entourage installiert n\' wird nicht mehr unterstützt. Um unsere Dienste weiterhin zu nutzen und das bestmögliche Erlebnis zu erhalten, aktualisieren Sie bitte auf die neueste Version, indem Sie auf den folgenden Link klicken.</string>
     <string name="button_update_version">Aktualisieren</string>
     <string name="title_update_version">UPDATE VERFÜGBAR</string>
-    <string name="error_no_email">Keine E-Mail konfiguriert</string>
     <string name="yes">Ja</string>
     <string name="no">NEIN</string>
     <string name="button_OK">OK</string>
@@ -1914,7 +1913,7 @@ Sie werden diese Nachricht lesen, sobald sie der Gruppe beitreten.</string>
     <string name="mod_phone_code">- Ändern</string>
     <string name="onboard_code_placeholder">00000000</string>
 
-    <string name="onboard_welcome_title_phase3">Zufrieden mit %s!</string>
+    <string name="onboard_welcome_title_phase3">Wählen Sie Ihr Profil</string>
 
     <string name="onboard_phase3_entour_desc">Welchen Beitrag möchten Sie neben dem Kennenlernen von Menschen zur Entourage-Community leisten?</string>
     <string name="onboard_phase3_entour_title">Unterstütze</string>
@@ -1922,7 +1921,6 @@ Sie werden diese Nachricht lesen, sobald sie der Gruppe beitreten.</string>
     <string name="onboard_phase3_be_entour_title">Unterstützung erhalten</string>
     <string name="onboard_phase3_be_entour_subtitle">Ich befinde mich in einer verletzlichen Situation und suche Unterstützung.</string>
     <string name="onboard_phase3_place_title">Was ist deine Nachbarschaft?</string>
-    <string name="onboard_phase3_asso_title">Ich bin ein Verein</string>
 
     <string name="onboard_end_title">Willkommen in der Entourage-Community</string>
     <string name="onboard_end_subtitle">Herzlichen Glückwunsch, Sie sind bereit, Solidarität um Sie herum zum Leben zu erwecken.</string>
@@ -2419,7 +2417,6 @@ Sie werden diese Nachricht lesen, sobald sie der Gruppe beitreten.</string>
     <string name="map_filter_entourage_contribution_text"><b>Beiträge bezüglich:</b></string>
     <string name="custom_dialog_action_content_one_contrib">Ist Ihre Aktion \"<![CDATA[<b>%1$s</b>]]>\" abgeschlossen?</string>
     <string name="search_member_hint">Ein Mitglied suchen</string>
-    <string name="terms_and_conditions_html">Durch Klicken auf &lt;b&gt;Weiter&lt;/b&gt; akzeptieren Sie die &lt;a href=\'https://www.entourage.social/cgu\'&gt;Allgemeinen Geschäftsbedingungen&lt;/a&gt; und die &lt;a href=\'https://www.entourage.social/politique-de-confidentialite\'&gt;Datenschutzrichtlinie&lt;/a&gt;</string>
     <string name="action_crete_cat_about">Möchtest du ein %s anbieten, das in keine dieser Kategorien passt? Es scheint, dass \ keinen Platz im Netzwerk hat, aber du kannst immer </string>
     <string name="action_create_cat_about_link"> mehr hier erfahren.</string>
     <string name="report_modal_title_translate">Übersetzen</string>
@@ -2650,13 +2647,81 @@ Sie werden diese Nachricht lesen, sobald sie der Gruppe beitreten.</string>
     <string name="title_button_see_event">Finden Sie hier alle Informationen zur Veranstaltung</string>
     <string name="welcome" lang="de">Willkommen %1$s!</string>
     <string name="question" lang="de">Wie möchten Sie neben menschlichen Begegnungen zur Entourage-Community beitragen?</string>
-    <string name="option_surround" lang="de">Unterstützen</string>
-    <string name="option_surround_desc" lang="de">Ich möchte meine Nachbarn unterstützen, die es brauchen.</string>
-    <string name="option_supported" lang="de">Unterstützt werden</string>
-    <string name="option_supported_desc" lang="de">Ich bin in einer verletzlichen Situation und suche Unterstützung.</string>
     <string name="option_both" lang="de">Beides</string>
     <string name="option_both_desc" lang="de">Unterstützen und unterstützt werden.</string>
     <string name="question_location" lang="de">Was ist Ihr Viertel?</string>
     <string name="input_location" lang="de">Stadt oder Bezirksadresse</string>
+    <string name="sign_title">Registrierung</string>
+    <string name="onboard_profile_title">Wähle dein Profil</string>
+
+    <string name="option_surround">Ich möchte Unterstützung erhalten</string>
+    <string name="option_surround_desc">Ich befinde mich in einer schwierigen Phase (Jobsuche, Zeit der Unsicherheit, prekäre Situation usw.) und möchte Menschen treffen, die mich unterstützen.</string>
+
+    <string name="option_supported">Ich möchte in meiner Nähe helfen</string>
+    <string name="option_supported_desc">Ich möchte mich engagieren und Menschen in meiner Umgebung unterstützen.</string>
+
+    <string name="onboard_phase3_asso_title">Ich arbeite in einer Organisation</string>
+    <string name="onboard_phase3_asso_desc">Ich möchte mit Entourage zusammenarbeiten, Veranstaltungen organisieren und Begünstigte weiterleiten.</string>
+
+    <!-- Verschiedenes -->
+    <string name="contact_email">contact@entourage.social</string>
+    <string name="error_no_email">Keine E-Mail-App gefunden</string>
+    <string name="terms_and_conditions_html"><![CDATA[Mit der Registrierung akzeptieren Sie unsere <a href="https://www.entourage.social/conditions-generales-dutilisation">Nutzungsbedingungen</a> und unsere <a href="https://www.entourage.social/politique-de-confidentialite">Datenschutzerklärung</a>.]]></string>
+    <string name="onboard_welcome_title_gender">Ich bin</string>
+    <string name="onboard_welcome_title_how_did_you_hear">Wie hast du von uns erfahren?</string>
+    <string name="onboard_welcome_title_company_name">Name deines Unternehmens</string>
+    <string name="onboard_welcome_title_event_name">Veranstaltung, an der du teilnimmst</string>
+    <string name="onboard_welcome_error_company_name">Bitte wähle ein Unternehmen aus.</string>
+    <string name="onboard_welcome_error_event_name">Bitte wähle eine Veranstaltung aus.</string>
+    <string name="onboard_welcome_error_load_failed">Liste konnte nicht geladen werden. Bitte versuche es erneut.</string>
+    <string name="onboard_welcome_error_invalid_value">Ungültiger Wert. Bitte wähle aus der Liste.</string>
+    <string name="onboard_welcome_how_did_you_hear_word_of_mouth">Mundpropaganda</string>
+    <string name="onboard_welcome_how_did_you_hear_internet">Internet</string>
+    <string name="onboard_welcome_how_did_you_hear_tv_media">Fernsehen / Medien</string>
+    <string name="onboard_welcome_how_did_you_hear_social_media">Soziale Netzwerke</string>
+    <string name="onboard_welcome_how_did_you_hear_corporate_awareness">Unternehmenssensibilisierung</string>
+    <string name="onboard_welcome_title_birthdate">Geburtsdatum</string>
+    <string name="onboard_welcome_placeholder_birthdate">TT/MM/JJJJ</string>
+    <string name="onboard_welcome_gender_female">Weiblich</string>
+    <string name="onboard_welcome_gender_male">Männlich</string>
+    <string name="onboard_welcome_gender_other">Andere</string>
+    <string name="onboard_welcome_placeholder_firstname_new">z. B.: Marie</string>
+    <string name="onboard_welcome_placeholder_lastname_new">z. B.: Müller</string>
+    <string name="onboard_welcome_placeholder_phone_new">06 XX XX XX XX</string>
+    <string name="onboard_welcome_title_firstname_required">Vorname*</string>
+    <string name="onboard_welcome_title_lastname_required">Nachname*</string>
+    <string name="onboard_welcome_title_phone_required">Telefon*</string>
+    <string name="onboard_welcome_placeholder_email_new">z. B.: marie.mueller@email.com</string>
+
+    <string name="image_option_title">Fotos der Unterhaltung</string>
+    <string name="delete_event">Veranstaltung löschen</string>
+    <string name="delete_event_title">Veranstaltung löschen?</string>
+    <string name="delete_event_confirmation">Diese Aktion ist unwiderruflich. Die Teilnehmenden werden informiert.</string>
+
+    <string name="onboarding_zone_title">Dein Standort</string>
+    <string name="onboarding_zone_subtitle">Diese Information hilft uns, dir passende Aktionen in deiner Nähe vorzuschlagen.</string>
+    <string name="onboarding_zone_city_hint">z. B.: Valence</string>
+    <string name="onboarding_zone_radius_label">Im Umkreis von</string>
+    <string name="onboarding_zone_home_pin">Zuhause</string>
+    <string name="km_suffix">%1$d km</string>
+
+    <string name="onboard_retry_link">Neuen Code per SMS erhalten</string>
+    <string name="onboard_help_title">Brauchst du Hilfe?</string>
+    <string name="onboard_help_link">Das Entourage-Team kontaktieren</string>
+
+    <string name="onboard_asso_todo">Für den Vereinsmodus noch festzulegen</string>
+    <string name="onboarding_zone_pick_location_first">Wähle zuerst einen Standort</string>
+
+    <string name="onboard_asso_title">Wähle deine Organisation</string>
+    <string name="onboard_asso_subtitle">Wähle aus der Liste. Wenn sie nicht erscheint, gib sie ein.</string>
+    <string name="onboard_asso_dropdown_hint">Name deiner Organisation</string>
+    <string name="onboard_asso_info">Deine Organisation steht nicht in der Liste. Erstelle eine neue.</string>
+    <string name="onboard_asso_other_label">Name deiner Organisation</string>
+    <string name="onboard_asso_other_placeholder">z. B.: Utopia 56 oder Femmes solidaires</string>
+    <string name="onboard_asso_pick_first">Wähle zuerst eine Organisation</string>
+    <string name="onboard_asso_other_required">Bitte gib den Namen deiner Organisation ein</string>
+
+    <string name="onboard_sms_wait_title">Du hast deinen Anmeldecode nicht erhalten?</string>
+    <string name="onboard_sms_wait_countdown">Du kannst in %1$s einen neuen Code anfordern</string>
 
 </resources>

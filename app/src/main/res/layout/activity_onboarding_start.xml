@@ -4,95 +4,78 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/new_profile_header_orange"
+    android:id="@+id/layout_onboarding_activity"
     android:fitsSystemWindows="true"
     tools:context=".onboarding.onboard.OnboardingStartActivity">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/layout"
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/ui_header_title"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:paddingHorizontal="15dp"
-        android:minHeight="60dp"
+        android:maxLines="2"
+        android:fontFamily="@font/quicksand_bold"
+        android:textSize="20sp"
+        android:layout_marginStart="16dp"
+        android:textColor="@color/black"
+        android:text="@string/sign_title"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <ImageView
-            android:id="@+id/icon_back"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:padding="10dp"
-            android:src="@drawable/new_back_white"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:src="@drawable/new_back_white" />
-
-        <TextView
-            android:id="@+id/ui_header_title"
-            style="@style/h1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:layout_marginEnd="24dp"
-            android:layout_marginBottom="4dp"
-            android:maxLines="2"
-            android:text="@string/login_title"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/icon_back"
-            app:layout_constraintTop_toTopOf="parent" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <FrameLayout
         android:id="@+id/ui_main_container"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginHorizontal="7dp"
-        android:layout_marginBottom="16dp"
-        android:background="@drawable/new_bg_rounded_beige"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         app:layout_constraintBottom_toTopOf="@+id/ui_onboarding_bt_next"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/layout" />
+        app:layout_constraintTop_toBottomOf="@+id/ui_header_title" />
 
     <Button
-        android:id="@+id/ui_onboarding_bt_next"
-        style="@style/h2_white"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="8dp"
-        android:backgroundTint="@null"
-        android:background="@drawable/new_bg_rounded_button_orange_fill"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
-        android:text="@string/pre_onboard_button_next"
-        android:textAllCaps="false"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-    
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="46dp"
         android:id="@+id/ui_onboarding_bt_previous"
+        android:layout_width="0dp"
+        android:layout_height="46dp"
         android:gravity="center"
-        android:paddingTop="8dp"
-        android:paddingBottom="8dp"
-        android:textSize="15sp"
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
         android:fontFamily="@font/nunitosans_bold"
         android:text="@string/bt_previous"
         android:textColor="@color/black"
+        android:layout_marginBottom="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="4dp"
+        android:textAllCaps="false"
         android:background="@drawable/shape_button_v9_negative"
-        android:visibility="visible"
-        android:layout_marginStart="16dp"
-        android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/ui_onboarding_bt_next"
+        app:layout_constraintHorizontal_chainStyle="packed" />
+
+    <Button
+        android:id="@+id/ui_onboarding_bt_next"
+        style="?android:attr/borderlessButtonStyle"
+        android:layout_width="0dp"
+        android:layout_height="46dp"
+        android:backgroundTint="@null"
+        android:background="@drawable/shape_button_v9_positive"
+        android:fontFamily="@font/quicksand_bold"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginBottom="20dp"
+        android:layout_marginEnd="20dp"
+        android:text="@string/pre_onboard_button_next"
+        android:textColor="@android:color/white"
+        android:textAllCaps="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@id/ui_onboarding_bt_previous"
+        app:layout_constraintEnd_toEndOf="parent" />
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_bottom_margin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintGuide_begin="20dp"
+        android:orientation="horizontal" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

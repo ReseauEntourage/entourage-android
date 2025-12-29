@@ -8,7 +8,6 @@
     <string name="error_application_update">Versiunea d\'Entourage instalat n\' nu mai este acceptată. Pentru a continua să utilizați serviciile noastre și să obțineți cea mai bună experiență posibilă, vă rugăm să actualizați la cea mai recentă versiune făcând clic pe următorul link.</string>
     <string name="button_update_version">A updata</string>
     <string name="title_update_version">ACTUALIZARE DISPONIBILA</string>
-    <string name="error_no_email">Niciun e-mail configurat</string>
     <string name="yes">da</string>
     <string name="no">Nu</string>
     <string name="button_OK">Bine</string>
@@ -1922,7 +1921,7 @@ Ei vor citi acest mesaj imediat ce se vor alătura grupului.</string>
     <string name="mod_phone_code">- A modifica</string>
     <string name="onboard_code_placeholder">00000000</string>
 
-    <string name="onboard_welcome_title_phase3">Încântat de %s!</string>
+    <string name="onboard_welcome_title_phase3">Alegeți profilul dvs.</string>
 
     <string name="onboard_phase3_entour_desc">Pe lângă întâlnirea cu oameni, cum vrei să contribui la Comunitatea Entourage?</string>
     <string name="onboard_phase3_entour_title">Sprijină pe alții</string>
@@ -1930,7 +1929,6 @@ Ei vor citi acest mesaj imediat ce se vor alătura grupului.</string>
     <string name="onboard_phase3_be_entour_title">Primește sprijin</string>
     <string name="onboard_phase3_be_entour_subtitle">Sunt într-o situație vulnerabilă și caut sprijin.</string>
     <string name="onboard_phase3_place_title">Care este cartierul tău?</string>
-    <string name="onboard_phase3_asso_title">Sunt o asociatie</string>
 
     <string name="onboard_end_title">Bun venit în Comunitatea Entourage</string>
     <string name="onboard_end_subtitle">Felicitări, ești gata să aduci la viață solidaritatea în jurul tău.</string>
@@ -2426,7 +2424,6 @@ Ei vor citi acest mesaj imediat ce se vor alătura grupului.</string>
     <string name="map_filter_entourage_contribution_text"><b>Vezi contribuțiile referitoare la:</b></string>
     <string name="custom_dialog_action_content_one_contrib">Acțiunea ta \"<![CDATA[<b>%1$s</b>]]>\" este completă?</string>
     <string name="search_member_hint">Caută un membru</string>
-    <string name="terms_and_conditions_html">Făcând clic pe &lt;b&gt;Următorul&lt;/b&gt;, sunteți de acord cu &lt;a href=\'https://www.entourage.social/cgu\'&gt;Termenii și Condițiile&lt;/a&gt; și &lt;a href=\'https://www.entourage.social/politique-de-confidentialite\'&gt;Politica de Confidențialitate&lt;/a&gt;</string>
     <string name="action_crete_cat_about">Dorești să oferi un %s care nu se încadrează în niciuna dintre aceste categorii? Se pare că \ nu are loc în rețea, dar întotdeauna poți</string>
     <string name="action_create_cat_about_link"> afla mai multe aici.</string>
     <string name="report_modal_title_translate">Traduceți</string>
@@ -2660,13 +2657,83 @@ Ei vor citi acest mesaj imediat ce se vor alătura grupului.</string>
     <string name="title_button_see_event">Găsiți toate informațiile despre eveniment aici</string>
     <string name="welcome" lang="ro">Bine ai venit, %1$s!</string>
     <string name="question" lang="ro">Cum dorești să contribui la comunitatea Entourage?</string>
-    <string name="option_surround" lang="ro">Sprijin</string>
-    <string name="option_surround_desc" lang="ro">Vreau să ofer sprijin vecinilor mei care au nevoie.</string>
-    <string name="option_supported" lang="ro">A fi sprijinit</string>
-    <string name="option_supported_desc" lang="ro">Sunt într-o situație vulnerabilă și caut sprijin.</string>
     <string name="option_both" lang="ro">Ambele</string>
     <string name="option_both_desc" lang="ro">Oferă sprijin și primește-l.</string>
     <string name="question_location" lang="ro">Care este cartierul tău?</string>
     <string name="input_location" lang="ro">Adresă oraș sau județ</string>
+
+    <!-- Faza 3 - Alegerea profilului -->
+    <string name="onboard_profile_title">Alege-ţi profilul</string>
+
+    <string name="option_surround">Vreau să fiu sprijinit</string>
+    <string name="option_surround_desc">Trec printr-o perioadă dificilă (căutarea unui loc de muncă, perioadă de îndoială, situaţie precară etc.) şi aş dori să întâlnesc persoane care să mă susţină.</string>
+
+    <string name="option_supported">Vreau să ajut în apropiere</string>
+    <string name="option_supported_desc">Mi-aş dori să mă implic şi să sprijin persoane din apropierea locuinţei mele.</string>
+
+    <string name="onboard_phase3_asso_title">Lucrez într-o asociaţie</string>
+    <string name="onboard_phase3_asso_desc">Vreau să colaborez cu Entourage, să creez evenimente şi să orientez beneficiari.</string>
+
+    <!-- Diverse -->
+    <string name="contact_email">contact@entourage.social</string>
+    <string name="error_no_email">Nicio aplicaţie de e-mail găsită</string>
+    <string name="terms_and_conditions_html"><![CDATA[Prin înregistrare, accepți <a href="https://www.entourage.social/conditions-generales-dutilisation">Termenii de Utilizare</a> și <a href="https://www.entourage.social/politique-de-confidentialite">Politica noastră de Confidențialitate</a>.]]></string>
+    <string name="onboard_welcome_title_gender">Sunt</string>
+    <string name="onboard_welcome_title_how_did_you_hear">Cum ne-ai cunoscut?</string>
+    <string name="onboard_welcome_title_company_name">Numele companiei tale</string>
+    <string name="onboard_welcome_title_event_name">Evenimentul la care participi</string>
+    <string name="onboard_welcome_error_company_name">Selectează o companie.</string>
+    <string name="onboard_welcome_error_event_name">Selectează un eveniment.</string>
+    <string name="onboard_welcome_error_load_failed">Lista nu a putut fi încărcată. Încearcă din nou.</string>
+    <string name="onboard_welcome_error_invalid_value">Valoare invalidă. Selectează din listă.</string>
+    <string name="onboard_welcome_how_did_you_hear_word_of_mouth">Din vorbă în vorbă</string>
+    <string name="onboard_welcome_how_did_you_hear_internet">Internet</string>
+    <string name="onboard_welcome_how_did_you_hear_tv_media">Televiziune / media</string>
+    <string name="onboard_welcome_how_did_you_hear_social_media">Reţele sociale</string>
+    <string name="onboard_welcome_how_did_you_hear_corporate_awareness">Sensibilizare în companie</string>
+    <string name="onboard_welcome_title_birthdate">Data naşterii</string>
+    <string name="onboard_welcome_placeholder_birthdate">ZZ/LL/AAAA</string>
+    <string name="onboard_welcome_gender_female">Femeie</string>
+    <string name="onboard_welcome_gender_male">Bărbat</string>
+    <string name="onboard_welcome_gender_other">Altul</string>
+    <string name="onboard_welcome_placeholder_firstname_new">ex.: Maria</string>
+    <string name="onboard_welcome_placeholder_lastname_new">ex.: Popescu</string>
+    <string name="onboard_welcome_placeholder_phone_new">06 XX XX XX XX</string>
+    <string name="onboard_welcome_title_firstname_required">Prenume*</string>
+    <string name="onboard_welcome_title_lastname_required">Nume*</string>
+    <string name="onboard_welcome_title_phone_required">Telefon*</string>
+    <string name="onboard_welcome_placeholder_email_new">ex.: maria.popescu@email.com</string>
+
+    <string name="image_option_title">Fotografii ale conversaţiei</string>
+    <string name="delete_event">Şterge evenimentul</string>
+    <string name="delete_event_title">Ştergi evenimentul?</string>
+    <string name="delete_event_confirmation">Această acţiune este ireversibilă. Participanţii vor fi informaţi.</string>
+
+    <string name="onboarding_zone_title">Locaţia ta</string>
+    <string name="onboarding_zone_subtitle">Această informaţie ne ajută să îţi propunem acţiuni în apropiere.</string>
+    <string name="onboarding_zone_city_hint">ex.: Valence</string>
+    <string name="onboarding_zone_radius_label">Pe o rază de</string>
+    <string name="onboarding_zone_home_pin">Acasă</string>
+    <string name="km_suffix">%1$d km</string>
+
+    <string name="onboard_retry_link">Primeşte un cod nou prin SMS</string>
+    <string name="onboard_help_title">Ai nevoie de ajutor?</string>
+    <string name="onboard_help_link">Contactează echipa Entourage</string>
+
+    <string name="onboard_asso_todo">De definit pentru modul asociaţie</string>
+    <string name="onboarding_zone_pick_location_first">Alege mai întâi o locaţie</string>
+
+    <string name="onboard_asso_title">Selectează asociaţia ta</string>
+    <string name="onboard_asso_subtitle">Alege din listă. Dacă nu apare, introdu-o.</string>
+    <string name="onboard_asso_dropdown_hint">Numele asociaţiei tale</string>
+    <string name="onboard_asso_info">Asociaţia ta nu apare în listă. Creează una nouă.</string>
+    <string name="onboard_asso_other_label">Numele asociaţiei tale</string>
+    <string name="onboard_asso_other_placeholder">ex.: Utopia 56 sau Femmes solidaires</string>
+    <string name="onboard_asso_pick_first">Selectează mai întâi o asociaţie</string>
+    <string name="onboard_asso_other_required">Te rugăm să introduci numele asociaţiei</string>
+
+    <string name="onboard_sms_wait_title">Nu ai primit codul de conectare?</string>
+    <string name="onboard_sms_wait_countdown">Poţi solicita un cod nou peste %1$s</string>
+
 
 </resources>

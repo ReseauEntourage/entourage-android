@@ -9,7 +9,9 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import kotlinx.coroutines.launch
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent
@@ -64,6 +66,23 @@ class OnboardingPhase1Fragment : Fragment() {
     private var enterpriseModeKey: String? = null
     private var isDatePickerShowing = false
 
+    // ------------------ Helpers sûrs ------------------
+
+    private fun isViewUsable(): Boolean = isAdded && _binding != null && view != null
+
+    private inline fun safeUI(block: (Context) -> Unit) {
+        val ctx = view?.context
+        if (isAdded && _binding != null && ctx != null) block(ctx)
+    }
+
+    private fun tr(resId: Int): String = context?.getString(resId) ?: ""
+
+    private fun showError(message: String) {
+        safeUI { ctx -> Toast.makeText(ctx, message, Toast.LENGTH_SHORT).show() }
+    }
+
+    // ------------------ Cycle de vie ------------------
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -92,7 +111,8 @@ class OnboardingPhase1Fragment : Fragment() {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentOnboardingPhase1Binding.inflate(inflater, container, false)
@@ -107,29 +127,30 @@ class OnboardingPhase1Fragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupViews()
-        loadMetadata()
-        loadEnterprises()
+
+        // Charge les métadonnées et la liste d'entreprises
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                loadMetadata()
+                loadEnterprises()
+            }
+        }
     }
 
-    private fun isViewUsable(): Boolean = isAdded && _binding != null && view != null
-    private inline fun safeUI(block: () -> Unit) { if (isViewUsable()) block() }
+    // ------------------ UI Setup ------------------
 
     private fun setupViews() {
         setEditTextAlignmentBasedOnLocale()
 
-        // ==== Champ date : pas de clavier, clic uniquement ====
+        // Champ date : non éditable au clavier
         binding.uiOnboardBirthdate.apply {
-            // Empêche le clavier coûte que coûte
             keyListener = null
             try { showSoftInputOnFocus = false } catch (_: Throwable) {}
             isCursorVisible = false
             isLongClickable = false
             setTextIsSelectable(false)
-
-            // On ne prend pas le focus (sinon certains OEM affichent le clavier)
             isFocusable = false
             isFocusableInTouchMode = false
-
             setOnClickListener { showDatePicker() }
         }
 
@@ -152,7 +173,7 @@ class OnboardingPhase1Fragment : Fragment() {
         binding.uiOnboardNamesEtFirstname.setText(firstname)
         binding.uiOnboardBirthdate.setText(birthdate)
 
-        // Email change → propage à l'activité
+        // Email change → notifie l'activité si présente
         binding.uiOnboardEmail.addTextChangedListener(object : android.text.TextWatcher {
             override fun afterTextChanged(s: android.text.Editable?) {
                 (activity as? OnboardingStartActivity)?.setEmail(s?.toString().orEmpty())
@@ -201,83 +222,89 @@ class OnboardingPhase1Fragment : Fragment() {
         }
     }
 
-    // ====== Chargements distants ======
-    private fun loadMetadata() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            showLoading(true)
+    // ------------------ Chargements distants (suspend) ------------------
 
-            val metadata = runCatching { PreonboardingApiModuleKtorClient.fetchSummaryBeforeLogin() }
-                .onFailure { e ->
-                    Timber.wtf("metadata ${e.javaClass.simpleName}")
-                    showError(getString(R.string.onboard_welcome_error_load_failed) + " (metadata)")
-                }
-                .getOrNull() ?: run { showLoading(false); return@launch }
+    private suspend fun loadMetadata() {
+        showLoading(true)
 
-            hearOptions = metadata.user.discoverySources
-                .map { (key, label) -> LabeledOption(key, label) }
-                .sortedBy { it.label.lowercase(Locale.getDefault()) }
+        val metadata = runCatching { PreonboardingApiModuleKtorClient.fetchSummaryBeforeLogin() }
+            .onFailure { e ->
+                Timber.wtf("metadata ${e.javaClass.simpleName}")
+                showError(tr(R.string.onboard_welcome_error_load_failed) + " (metadata)")
+            }
+            .getOrNull() ?: run { showLoading(false); return }
 
-            enterpriseModeKey = hearOptions.firstOrNull { it.key == "entreprise" }?.key
-                ?: hearOptions.firstOrNull {
-                    val l = it.label.lowercase(Locale.getDefault())
-                    l.contains("entreprise") || l.contains("corporate")
-                }?.key
+        // Travail de données (hors UI)
+        val options = metadata.user.discoverySources
+            .map { (key, label) -> LabeledOption(key, label) }
+            .sortedBy { it.label.lowercase(Locale.getDefault()) }
 
-            runCatching { setupHowDidYouHearDropdown(hearOptions) }
-                .onFailure { showError("UI error (howDidYouHear)") }
+        val enterpriseKey = options.firstOrNull { it.key == "entreprise" }?.key
+            ?: options.firstOrNull {
+                val l = it.label.lowercase(Locale.getDefault())
+                l.contains("entreprise") || l.contains("corporate")
+            }?.key
 
-            showLoading(false)
-        }
+        if (!isViewUsable()) { showLoading(false); return }
+
+        hearOptions = options
+        enterpriseModeKey = enterpriseKey
+
+        runCatching { setupHowDidYouHearDropdown(hearOptions) }
+            .onFailure { showError("UI error (howDidYouHear)") }
+
+        showLoading(false)
     }
 
-    private fun loadEnterprises() {
+    private suspend fun loadEnterprises() {
         if (isLoading) return
         isLoading = true
         showLoading(true)
 
-        viewLifecycleOwner.lifecycleScope.launch {
-            val enterprises = runCatching { PreonboardingApiModuleKtorClient.fetchEnterprises() }
-                .onFailure { showError(getString(R.string.onboard_welcome_error_load_failed) + " (entreprises)") }
-                .getOrNull()
+        val enterprises = runCatching { PreonboardingApiModuleKtorClient.fetchEnterprises() }
+            .onFailure {
+                showError(tr(R.string.onboard_welcome_error_load_failed) + " (entreprises)")
+            }
+            .getOrNull()
 
-            if (!isViewUsable()) { isLoading = false; showLoading(false); return@launch }
-            if (enterprises == null) { isLoading = false; showLoading(false); return@launch }
+        if (!isViewUsable()) { isLoading = false; showLoading(false); return }
+        if (enterprises == null) { isLoading = false; showLoading(false); return }
 
-            enterpriseList.clear()
-            enterpriseList.addAll(enterprises)
+        enterpriseList.clear()
+        enterpriseList.addAll(enterprises)
 
-            runCatching { updateEnterpriseDropdown() }
-                .onFailure { showError("UI error (entreprises)") }
+        runCatching { updateEnterpriseDropdown() }
+            .onFailure { showError("UI error (entreprises)") }
 
-            isLoading = false
-            showLoading(false)
-        }
+        isLoading = false
+        showLoading(false)
     }
 
-    private fun loadEventsForEnterprise(enterpriseId: String) {
+    private suspend fun loadEventsForEnterprise(enterpriseId: String) {
         if (isLoading) return
         isLoading = true
         showLoading(true)
 
-        viewLifecycleOwner.lifecycleScope.launch {
-            val events = runCatching { PreonboardingApiModuleKtorClient.fetchEventsForEnterprise(enterpriseId) }
-                .onFailure { showError(getString(R.string.onboard_welcome_error_load_failed) + " (events)") }
-                .getOrNull()
+        val events = runCatching { PreonboardingApiModuleKtorClient.fetchEventsForEnterprise(enterpriseId) }
+            .onFailure {
+                showError(tr(R.string.onboard_welcome_error_load_failed) + " (events)")
+            }
+            .getOrNull()
 
-            if (!isViewUsable()) { isLoading = false; showLoading(false); return@launch }
-            if (events == null) { isLoading = false; showLoading(false); return@launch }
+        if (!isViewUsable()) { isLoading = false; showLoading(false); return }
+        if (events == null) { isLoading = false; showLoading(false); return }
 
-            eventListByEnterpriseId[enterpriseId] = events
+        eventListByEnterpriseId[enterpriseId] = events
 
-            runCatching { updateEventDropdown(enterpriseId) }
-                .onFailure { showError("UI error (events)") }
+        runCatching { updateEventDropdown(enterpriseId) }
+            .onFailure { showError("UI error (events)") }
 
-            isLoading = false
-            showLoading(false)
-        }
+        isLoading = false
+        showLoading(false)
     }
 
-    // ====== Dropdowns Material (remplacent les Spinners) ======
+    // ------------------ Dropdowns Material ------------------
+
     private fun findPreselectIndex(options: List<LabeledOption>, keyOrLabel: String?): Int {
         if (keyOrLabel.isNullOrBlank()) return -1
         val needle = keyOrLabel.trim()
@@ -291,16 +318,15 @@ class OnboardingPhase1Fragment : Fragment() {
         val ctx = binding.root.context
 
         val fixed = listOf(
-            LabeledOption("female", getString(R.string.onboard_welcome_gender_female)),
-            LabeledOption("male", getString(R.string.onboard_welcome_gender_male)),
-            LabeledOption("other", getString(R.string.onboard_welcome_gender_other))
+            LabeledOption("female", tr(R.string.onboard_welcome_gender_female)),
+            LabeledOption("male", tr(R.string.onboard_welcome_gender_male)),
+            LabeledOption("other", tr(R.string.onboard_welcome_gender_other))
         )
         val labels = fixed.map { it.label }
 
         val view = binding.uiOnboardSpinnerGender as MaterialAutoCompleteTextView
         view.setAdapter(ArrayAdapter(ctx, android.R.layout.simple_list_item_1, labels))
 
-        // préselect exact (clé OU libellé)
         val pre = findPreselectIndex(fixed, genderKey)
         view.setText(if (pre >= 0) fixed[pre].label else "", /*filter*/ false)
 
@@ -336,16 +362,18 @@ class OnboardingPhase1Fragment : Fragment() {
         val view = binding.uiOnboardSpinnerCompany as MaterialAutoCompleteTextView
         view.setAdapter(ArrayAdapter(ctx, android.R.layout.simple_list_item_1, names))
 
-        // préselect par ID (company contient un Id)
+        // Préselect par ID (company contient un Id)
         val preIndex = enterpriseList.indexOfFirst { it.Id == company }
         if (preIndex >= 0) {
             view.setText(enterpriseList[preIndex].Name, false)
             selectedEnterpriseId = enterpriseList[preIndex].Id
             // charge les events liés si pas déjà faits
-            if (!eventListByEnterpriseId.containsKey(selectedEnterpriseId!!)) {
-                loadEventsForEnterprise(selectedEnterpriseId!!)
+            val id = selectedEnterpriseId!!
+            if (!eventListByEnterpriseId.containsKey(id)) {
+                // lance la récupération en scope lié au viewLifecycleOwner (annulé si view détruite)
+                viewLifecycleOwner.lifecycleScope.launch { loadEventsForEnterprise(id) }
             } else {
-                updateEventDropdown(selectedEnterpriseId!!)
+                updateEventDropdown(id)
             }
         } else {
             view.setText("", false)
@@ -356,8 +384,8 @@ class OnboardingPhase1Fragment : Fragment() {
             val selected = enterpriseList.getOrNull(position) ?: return@setOnItemClickListener
             selectedEnterpriseId = selected.Id
             company = selected.Id
-            // on recharge la liste d’événements associée
-            loadEventsForEnterprise(selected.Id)
+            // recharge la liste d’événements associée
+            viewLifecycleOwner.lifecycleScope.launch { loadEventsForEnterprise(selected.Id) }
             updateButtonNext()
         }
     }
@@ -381,11 +409,9 @@ class OnboardingPhase1Fragment : Fragment() {
         }
     }
 
-
-
-
     private fun clearDropdown(dropdown: MaterialAutoCompleteTextView) {
-        dropdown.setAdapter(ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, emptyList<String>()))
+        val ctx = dropdown.context ?: return
+        dropdown.setAdapter(ArrayAdapter(ctx, android.R.layout.simple_list_item_1, emptyList<String>()))
         dropdown.setText("", false)
     }
 
@@ -402,13 +428,13 @@ class OnboardingPhase1Fragment : Fragment() {
         }
     }
 
-    // ====== Date ======
-// ====== Date ======
+    // ------------------ Date ------------------
+
     private fun showDatePicker() {
         if (!isViewUsable() || isDatePickerShowing) return
         isDatePickerShowing = true
 
-        val ctx = requireContext()
+        val ctx = context ?: run { isDatePickerShowing = false; return }
         val cal = Calendar.getInstance()
 
         // Pré-remplir depuis le champ si au format dd/MM/yyyy
@@ -422,7 +448,6 @@ class OnboardingPhase1Fragment : Fragment() {
         val startM = cal.get(Calendar.MONTH)
         val startD = cal.get(Calendar.DAY_OF_MONTH)
 
-        // Pas de listener ici : on gère nous-mêmes l'auto-close
         val dlg = DatePickerDialog(ctx, null, startY, startM, startD)
         val dp = dlg.datePicker
 
@@ -437,7 +462,7 @@ class OnboardingPhase1Fragment : Fragment() {
             dlg.dismiss()
         }
 
-        // --- MODE CALENDRIER : un tap sur un jour -> commit immédiat
+        // MODE CALENDRIER
         var calendarHooked = false
         try {
             val cv = dp.calendarView
@@ -448,32 +473,26 @@ class OnboardingPhase1Fragment : Fragment() {
                 }
             }
         } catch (_: Throwable) {
-            // certains OEM peuvent lancer ici si pas de CalendarView
+            // Certains OEM peuvent lancer si pas de CalendarView
         }
 
-        // --- MODE SPINNERS : commit sur premier changement != date de départ
+        // MODE SPINNERS
         if (!calendarHooked) {
             dp.init(startY, startM, startD) { _, y, m, d ->
-                // Ignore les callbacks qui redonnent la date de départ (init)
                 if (y == startY && m == startM && d == startD) return@init
                 commit(y, m, d)
             }
         }
 
-        // Bouton OK (fallback si l'utilisateur confirme au lieu de tap)
         dlg.setOnShowListener {
             dlg.getButton(DatePickerDialog.BUTTON_POSITIVE)?.setOnClickListener {
                 commit(dp.year, dp.month, dp.dayOfMonth)
             }
         }
 
-        // Libère le flag quel que soit le chemin (OK, tap, cancel)
         dlg.setOnDismissListener { isDatePickerShowing = false }
         dlg.show()
     }
-
-
-
 
     private fun formatBirthdateForAPI(displayDate: String?): String? {
         if (displayDate.isNullOrEmpty()) return null
@@ -485,7 +504,8 @@ class OnboardingPhase1Fragment : Fragment() {
         return "$day-$month-$year"
     }
 
-    // ====== Validation ======
+    // ------------------ Validation / erreurs ------------------
+
     fun updateButtonNext() {
         if (!isViewUsable()) return
         val ok = checkAndValidateInput()
@@ -503,10 +523,10 @@ class OnboardingPhase1Fragment : Fragment() {
             }
         }
 
-        // On notifie l'activité de l'état du bouton suivant
+        // Notifie l'activité
         callback?.updateButtonNext(ok)
 
-        // On envoie les infos uniquement si tout est valide
+        // Envoie les infos uniquement si tout est valide
         if (ok) {
             callback?.validateNames(
                 binding.uiOnboardNamesEtFirstname.text.toString(),
@@ -532,6 +552,7 @@ class OnboardingPhase1Fragment : Fragment() {
     private fun isValidFirstname() = (binding.uiOnboardNamesEtFirstname.text?.length ?: 0) >= minChars
     private fun isValidLastname() = (binding.uiOnboardNamesEtLastname.text?.length ?: 0) >= minChars
     private fun isValidPhone() = (binding.uiOnboardPhoneEtPhone.text?.length ?: 0) >= minCharsPhone
+
     private fun isValidEmail(): Boolean {
         val email = binding.uiOnboardEmail.text?.toString().orEmpty()
         return if (email.isNotEmpty()) email.isValidEmail() else true
@@ -568,12 +589,10 @@ class OnboardingPhase1Fragment : Fragment() {
 
     private fun showLoading(show: Boolean) {
         if (!isViewUsable()) return
-        // loader si besoin
+        // TODO: afficher/masquer un loader si vous en avez un
     }
 
-    private fun showError(message: String) {
-        context?.let { Toast.makeText(it, message, Toast.LENGTH_SHORT).show() }
-    }
+    // ------------------ Companion ------------------
 
     companion object {
         const val minChars = 2

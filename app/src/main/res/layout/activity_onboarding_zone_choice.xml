@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/layout_choice_zone"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:descendantFocusability="beforeDescendants"
+    android:fillViewport="true">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="22dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="22dp"
+            android:fontFamily="@font/quicksand_bold"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:text="@string/onboarding_zone_title"/>
+
+        <TextView
+            android:id="@+id/tv_subtitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="22dp"
+            android:layout_marginTop="6dp"
+            android:layout_marginEnd="22dp"
+            android:fontFamily="@font/nunitosans_regular"
+            android:textColor="@color/pre_onboard_black"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_title"
+            android:text="@string/onboarding_zone_subtitle"/>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layoutCity"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="22dp"
+            android:layout_marginTop="18dp"
+            android:layout_marginEnd="22dp"
+            android:background="@drawable/shape_grey_border"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_subtitle">
+
+            <AutoCompleteTextView
+                android:id="@+id/autoCompleteCityName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="12dp"
+                android:layout_marginBottom="12dp"
+                android:background="@null"
+                android:fontFamily="@font/nunitosans_regular"
+                android:hint="@string/onboarding_zone_city_hint"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/tv_radius_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="22dp"
+            android:layout_marginTop="18dp"
+            android:fontFamily="@font/nunitosans_regular"
+            android:text="@string/onboarding_zone_radius_label"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/layoutCity"/>
+
+        <TextView
+            android:id="@+id/tv_radius_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="22dp"
+            android:fontFamily="@font/quicksand_bold"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBaseline_toBaselineOf="@id/tv_radius_label"
+            android:text="20 km"/>
+
+        <SeekBar
+            android:id="@+id/radius_seek"
+            android:layout_width="0dp"
+            android:layout_height="35dp"
+            android:layout_marginStart="22dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="22dp"
+            android:max="100"
+            android:min="1"
+            android:progressDrawable="@drawable/seekbar_track"
+            android:thumb="@drawable/seekbar_thumb"
+            android:splitTrack="false"
+            android:thumbOffset="0dp"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp"
+            android:scaleY="1.0"
+            android:paddingTop="6dp"
+            android:paddingBottom="6dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_radius_label"/>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/map_card"
+            android:layout_width="0dp"
+            android:layout_height="220dp"
+            android:layout_marginStart="22dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="22dp"
+            app:cardCornerRadius="12dp"
+            app:cardUseCompatPadding="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/radius_seek">
+
+            <FrameLayout
+                android:id="@+id/map_fragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </androidx.cardview.widget.CardView>
+
+        <LinearLayout
+            android:id="@+id/bottom_buttons"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <Button
+                android:id="@+id/button_configure_later"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="0dp"
+                android:layout_height="47dp"
+                android:layout_marginEnd="4dp"
+                android:layout_weight="1"
+                android:background="@drawable/shape_button_v9_negative"
+                android:elevation="0dp"
+                android:fontFamily="@font/quicksand_bold"
+                android:paddingVertical="10dp"
+                android:text="@string/previous"
+                android:textAllCaps="false"
+                android:textColor="@color/black"
+                android:textSize="14sp" />
+
+            <Button
+                android:id="@+id/button_start"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="0dp"
+                android:layout_height="47dp"
+                android:layout_marginStart="4dp"
+                android:layout_weight="1"
+                android:background="@drawable/shape_button_v9_positive"
+                android:elevation="0dp"
+                android:fontFamily="@font/quicksand_bold"
+                android:paddingVertical="10dp"
+                android:text="@string/onboarding_btn_next"
+                android:textAllCaps="false"
+                android:textColor="@android:color/white"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>

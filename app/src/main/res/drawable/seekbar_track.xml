@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Barre grise (fond) -->
+    <item android:id="@android:id/background">
+        <shape android:shape="rectangle">
+            <size android:height="8dp" />
+            <corners android:radius="12dp" />
+            <solid android:color="@color/light_grey" />
+        </shape>
+    </item>
+
+    <!-- (optionnel) secondaryProgress -->
+    <item android:id="@android:id/secondaryProgress">
+        <clip>
+            <shape android:shape="rectangle">
+                <size android:height="8dp" />
+                <corners android:radius="12dp" />
+                <solid android:color="@color/light_grey" />
+            </shape>
+        </clip>
+    </item>
+
+    <!-- Barre orange (progression) -->
+    <item android:id="@android:id/progress">
+        <clip>
+            <shape android:shape="rectangle">
+                <size android:height="8dp" />
+                <corners android:radius="12dp" />
+                <gradient
+                    android:angle="0"
+                    android:startColor="#FF7F37"
+                    android:endColor="#FFA450"
+                    android:type="linear"/>
+            </shape>
+        </clip>
+    </item>
+</layer-list>

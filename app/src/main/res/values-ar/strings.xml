@@ -7,7 +7,6 @@
     <string name="error_application_update">لم يعد الإصدار d\'Entourage المثبت n\' مدعومًا. لمواصلة استخدام خدماتنا والحصول على أفضل تجربة ممكنة، يرجى التحديث إلى الإصدار الأحدث من خلال النقر على الرابط التالي.</string>
     <string name="button_update_version">تحديث</string>
     <string name="title_update_version">التحديث متاح</string>
-    <string name="error_no_email">لم يتم تكوين أي بريد إلكتروني</string>
     <string name="yes">نعم</string>
     <string name="no">لا</string>
     <string name="button_OK">نعم</string>
@@ -1911,7 +1910,7 @@
     <string name="mod_phone_code">- للتعديل</string>
     <string name="onboard_code_placeholder">00000000</string>
 
-    <string name="onboard_welcome_title_phase3">أنا سعيد بنسبة %s!</string>
+    <string name="onboard_welcome_title_phase3">اختر ملفك الشخصي</string>
 
     <string name="onboard_phase3_entour_desc">بالإضافة إلى مقابلة الأشخاص، كيف تريد المساهمة في مجتمع Entourage؟</string>
     <string name="onboard_phase3_entour_title">دعم الآخرين</string>
@@ -1919,7 +1918,6 @@
     <string name="onboard_phase3_be_entour_title">تلقي الدعم</string>
     <string name="onboard_phase3_be_entour_subtitle">أنا في وضع ضعيف وأبحث عن الدعم.</string>
     <string name="onboard_phase3_place_title">ما هو حيك؟</string>
-    <string name="onboard_phase3_asso_title">أنا جمعية</string>
 
     <string name="onboard_end_title">مرحبًا بك في مجتمع Entourage</string>
     <string name="onboard_end_subtitle">تهانينا، أنت على استعداد لجلب التضامن إلى الحياة من حولك.</string>
@@ -2400,7 +2398,6 @@
     <string name="menu_info_social">لتعيش <b>تضامنًا أكثر</b> تابع Entourage على شبكاتك!</string>
     <string name="custom_dialog_action_content_one_contrib">هل اكتملت مهمتك \"<![CDATA[<b>%1$s</b>]]>\"؟</string>
     <string name="search_member_hint">ابحث عن عضو</string>
-    <string name="terms_and_conditions_html">بالنقر على &lt;b&gt;التالي&lt;/b&gt;، فإنك توافق على &lt;a href=\'https://www.entourage.social/cgu</string>
     <string name="action_crete_cat_about">هل تبحث عن تقديم %s لا يندرج ضمن هذه الفئات؟ يبدو أن \ ليس له مكان في الشبكة، لكن يمكنك دائمًا </string>
     <string name="action_create_cat_about_link"> معرفة المزيد هنا</string>
     <string name="report_modal_title_translate">ترجمة</string>
@@ -2688,12 +2685,81 @@
     <string name="title_button_see_event">ابحث عن جميع معلومات الحدث هنا</string>
     <string name="welcome" lang="ar">مرحبًا %1$s!</string>
     <string name="question" lang="ar">كيف تود المساهمة في مجتمع Entourage إلى جانب تكوين علاقات إنسانية؟</string>
-    <string name="option_surround" lang="ar">الدعم</string>
-    <string name="option_surround_desc" lang="ar">أرغب في تقديم الدعم لجيراني الذين يحتاجونه.</string>
-    <string name="option_supported" lang="ar">أن تكون مدعومًا</string>
-    <string name="option_supported_desc" lang="ar">أنا في وضع ضعيف وأبحث عن الدعم.</string>
     <string name="option_both" lang="ar">كلاهما</string>
     <string name="option_both_desc" lang="ar">تقديم الدعم وتلقيه.</string>
     <string name="question_location" lang="ar">ما هو حيك؟</string>
     <string name="input_location" lang="ar">عنوان المدينة أو المنطقة</string>
+    <string name="sign_title">التسجيل</string>
+    <string name="onboard_profile_title">اختر ملفك الشخصي</string>
+
+    <string name="option_surround">أرغب في الحصول على دعم</string>
+    <string name="option_surround_desc">أمرّ بمرحلة صعبة (البحث عن عمل، فترة شك، وضع غير مستقر، إلخ) وأودّ لقاء أشخاص يمكنهم دعمي.</string>
+
+    <string name="option_supported">أرغب في المساعدة بالقرب مني</string>
+    <string name="option_supported_desc">أودّ أن أشارك وأدعم أشخاصاً قريبين من مكان سكني.</string>
+
+    <string name="onboard_phase3_asso_title">أعمل ضمن جمعية</string>
+    <string name="onboard_phase3_asso_desc">أرغب في التعاون مع Entourage، وإنشاء فعاليات، وتوجيه المستفيدين.</string>
+
+    <!-- متفرقات -->
+    <string name="contact_email">contact@entourage.social</string>
+<!--    <string name="error_no_email">لم يتم العثور على تطبيق بريد إلكتروني</string>-->
+    <string name="terms_and_conditions_html"><![CDATA[من خلال التسجيل، فإنك توافق على <a href="https://www.entourage.social/conditions-generales-dutilisation">شروط الاستخدام</a> و <a href="https://www.entourage.social/politique-de-confidentialite">سياسة الخصوصية</a>.]]></string>
+    <string name="onboard_welcome_title_gender">أنا</string>
+    <string name="onboard_welcome_title_how_did_you_hear">كيف عرفت بنا؟</string>
+    <string name="onboard_welcome_title_company_name">اسم شركتك</string>
+    <string name="onboard_welcome_title_event_name">الفعالية التي ستحضرها</string>
+    <string name="onboard_welcome_error_company_name">يرجى اختيار شركة.</string>
+    <string name="onboard_welcome_error_event_name">يرجى اختيار فعالية.</string>
+    <string name="onboard_welcome_error_load_failed">تعذّر تحميل القائمة. يرجى المحاولة مجدداً.</string>
+    <string name="onboard_welcome_error_invalid_value">قيمة غير صالحة. يرجى الاختيار من القائمة.</string>
+    <string name="onboard_welcome_how_did_you_hear_word_of_mouth">التناقل الشفهي</string>
+    <string name="onboard_welcome_how_did_you_hear_internet">الإنترنت</string>
+    <string name="onboard_welcome_how_did_you_hear_tv_media">التلفزيون / وسائل الإعلام</string>
+    <string name="onboard_welcome_how_did_you_hear_social_media">وسائل التواصل الاجتماعي</string>
+    <string name="onboard_welcome_how_did_you_hear_corporate_awareness">توعية داخل الشركات</string>
+    <string name="onboard_welcome_title_birthdate">تاريخ الميلاد</string>
+    <string name="onboard_welcome_placeholder_birthdate">DD/MM/YYYY</string>
+    <string name="onboard_welcome_gender_female">أنثى</string>
+    <string name="onboard_welcome_gender_male">ذكر</string>
+    <string name="onboard_welcome_gender_other">آخر</string>
+    <string name="onboard_welcome_placeholder_firstname_new">مثلاً: ماريا</string>
+    <string name="onboard_welcome_placeholder_lastname_new">مثلاً: دوبون</string>
+    <string name="onboard_welcome_placeholder_phone_new">06 XX XX XX XX</string>
+    <string name="onboard_welcome_title_firstname_required">الاسم الأول*</string>
+    <string name="onboard_welcome_title_lastname_required">اسم العائلة*</string>
+    <string name="onboard_welcome_title_phone_required">رقم الهاتف*</string>
+    <string name="onboard_welcome_placeholder_email_new">مثلاً: maria.dupont@email.com</string>
+
+    <string name="image_option_title">صور المحادثة</string>
+    <string name="delete_event">حذف الفعالية</string>
+    <string name="delete_event_title">هل تريد حذف الفعالية؟</string>
+    <string name="delete_event_confirmation">لا يمكن التراجع عن هذا الإجراء. سيتم إبلاغ المشاركين.</string>
+
+    <string name="onboarding_zone_title">موقعك</string>
+    <string name="onboarding_zone_subtitle">تساعدنا هذه المعلومة على تخصيص الإجراءات المقترحة بالقرب منك.</string>
+    <string name="onboarding_zone_city_hint">مثلاً: Valence</string>
+    <string name="onboarding_zone_radius_label">ضمن نصف قطر</string>
+    <string name="onboarding_zone_home_pin">المنزل</string>
+    <string name="km_suffix">%1$d كم</string>
+
+    <string name="onboard_retry_link">استلام رمز جديد عبر الرسائل القصيرة</string>
+    <string name="onboard_help_title">هل تحتاج إلى مساعدة؟</string>
+    <string name="onboard_help_link">التواصل مع فريق Entourage</string>
+
+    <string name="onboard_asso_todo">سيتم التحديد لوضع الجمعيات</string>
+    <string name="onboarding_zone_pick_location_first">اختر موقعاً أولاً</string>
+
+    <string name="onboard_asso_title">اختر جمعيتك</string>
+    <string name="onboard_asso_subtitle">اختر من القائمة. إذا لم تظهر، اكتبها.</string>
+    <string name="onboard_asso_dropdown_hint">اسم جمعيتك</string>
+    <string name="onboard_asso_info">جمعيتك غير موجودة في القائمة. أنشئ واحدة جديدة.</string>
+    <string name="onboard_asso_other_label">اسم جمعيتك</string>
+    <string name="onboard_asso_other_placeholder">مثلاً: Utopia 56 أو Femmes solidaires</string>
+    <string name="onboard_asso_pick_first">اختر جمعية أولاً</string>
+    <string name="onboard_asso_other_required">يرجى إدخال اسم الجمعية</string>
+
+    <string name="onboard_sms_wait_title">ألم تستلم رمز تسجيل الدخول بعد؟</string>
+    <string name="onboard_sms_wait_countdown">يمكنك طلب رمز جديد خلال %1$s</string>
+
 </resources>

@@ -144,6 +144,7 @@ class SettingProfileFullAdapter(
                                 context.getString(R.string.delete)
                             ) {
                                 EntourageApplication.get().deleteAccount()
+                                EntourageApplication.get().logOut()
                                 (context as Activity).finish()
                             }
                         }

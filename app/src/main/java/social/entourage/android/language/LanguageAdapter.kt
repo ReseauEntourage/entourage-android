@@ -8,16 +8,17 @@ import androidx.recyclerview.widget.RecyclerView
 import social.entourage.android.R
 import social.entourage.android.databinding.LanguageItemLayoutBinding
 
-
 class LanguageAdapter(var context: Context, var callback: OnLanguageClicked) : RecyclerView.Adapter<LanguageAdapter.LanguageViewHolder>() {
 
     private var languageItems: MutableList<LanguageItem> = arrayListOf()
     var actualClickedPosition:Int = -1
+
     fun setData(items:MutableList<LanguageItem>){
         this.languageItems.clear()
         this.languageItems.addAll(items)
         notifyDataSetChanged()
     }
+
     fun onItemChanged(position: Int){
         if(position == actualClickedPosition){
             return
@@ -32,8 +33,8 @@ class LanguageAdapter(var context: Context, var callback: OnLanguageClicked) : R
         this.languageItems[actualClickedPosition].isSelected = false
         notifyDataSetChanged()
         this.actualClickedPosition = position
-
     }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LanguageViewHolder {
         val binding = LanguageItemLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return LanguageViewHolder(binding)
@@ -52,11 +53,13 @@ class LanguageAdapter(var context: Context, var callback: OnLanguageClicked) : R
         fun bind(languageItem: LanguageItem) {
             binding.tvTitle.text = languageItem.lang
             if(languageItem.isSelected){
-                binding.buttonLang.background = context.getDrawable(R.drawable.language_layout_background_full)
+                binding.buttonLang.background = context.getDrawable(R.drawable.shape_border_orange)
+                binding.ivButton.setImageResource(R.drawable.ic_onboarding_check)
                 binding.ivButton.visibility = View.VISIBLE
                 binding.tvTrad.visibility = View.GONE
             }else{
-                binding.buttonLang.background = context.getDrawable(R.drawable.language_layout_background)
+                binding.buttonLang.background = context.getDrawable(R.drawable.shape_grey_border)
+                binding.ivButton.setImageResource(R.drawable.ic_onboarding_uncheck)
                 binding.ivButton.visibility = View.GONE
                 binding.tvTrad.visibility = View.VISIBLE
             }

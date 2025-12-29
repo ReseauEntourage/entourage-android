@@ -3,8 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:backgroundTint="@color/light_beige"
-    >
+    android:backgroundTint="@color/light_beige">
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/button_lang"
         android:layout_width="match_parent"
@@ -27,16 +27,14 @@
             android:src="@drawable/icon_fr"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-
-            />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
-            android:id="@+id/iv_button"
+            android:id="@+id/ivButton"
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:layout_marginEnd="25dp"
-            android:src="@drawable/ic_orange_check_quality"
+            android:src="@drawable/ic_onboarding_uncheck"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -53,8 +51,7 @@
             android:textSize="@dimen/entourage_font_medium"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/icon"
-            app:layout_constraintTop_toTopOf="parent"
-            />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/tv_trad"
@@ -66,10 +63,9 @@
             android:text="Français"
             android:textColor="@color/grey"
             android:textSize="@dimen/entourage_font_medium"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/tv_title"
-            app:layout_constraintTop_toTopOf="parent"
-            android:visibility="gone"
-            />
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

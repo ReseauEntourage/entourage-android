@@ -18,7 +18,7 @@
             android:id="@+id/profile_settings_item_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
+            android:layout_marginStart="0dp"
             android:layout_marginBottom="20dp"
             android:src="@{icon}"
             app:layout_constraintBottom_toTopOf="@id/profile_settings_item_divider"
@@ -60,7 +60,8 @@
             android:src="@drawable/new_arrow"
             app:layout_constraintBottom_toTopOf="@id/profile_settings_item_divider"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:visibility="gone"/>
 
         <View
             android:id="@+id/profile_settings_item_divider"

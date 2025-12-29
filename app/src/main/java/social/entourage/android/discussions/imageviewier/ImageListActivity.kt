@@ -26,7 +26,15 @@ class ImageListActivity : AppCompatActivity(), ImageGridAdapter.OnImageClickList
     private lateinit var emptyView: TextView
     private lateinit var backBtn: ImageView
     private lateinit var adapter: ImageGridAdapter
+
     private var conversationId: Int = -1
+
+    // Pagination state
+    private val images = mutableListOf<ConversationImage>()
+    private var currentPage = 1
+    private val perPage = 40
+    private var isLoadingPage = false
+    private var isLastPage = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,17 +48,36 @@ class ImageListActivity : AppCompatActivity(), ImageGridAdapter.OnImageClickList
         conversationId = intent.getIntExtra("conversation_id", -1)
 
         val span = 3
-        recycler.layoutManager = GridLayoutManager(this, span)
+        val layoutManager = GridLayoutManager(this, span)
+        recycler.layoutManager = layoutManager
         recycler.addItemDecoration(
             GridSpacingItemDecoration(span, resources.getDimensionPixelSize(R.dimen.grid_spacing_8))
         )
         adapter = ImageGridAdapter(emptyList(), this)
         recycler.adapter = adapter
 
+        // Scroll listener pour déclencher le chargement de la page suivante
+        recycler.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(rv: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(rv, dx, dy)
+                if (dy <= 0) return
+                if (isLoadingPage || isLastPage) return
+
+                val lastVisible = layoutManager.findLastVisibleItemPosition()
+                val total = layoutManager.itemCount
+
+                // Déclenche le chargement quand on approche de la fin
+                val threshold = 6
+                if (lastVisible >= total - threshold) {
+                    loadNextPage()
+                }
+            }
+        })
+
         backBtn.setOnClickListener { finish() }
 
         if (conversationId != -1) {
-            loadThumbnails()
+            loadFirstPage()
         } else {
             emptyView.visibility = View.VISIBLE
         }
@@ -60,24 +87,81 @@ class ImageListActivity : AppCompatActivity(), ImageGridAdapter.OnImageClickList
         progress.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
 
-    private fun loadThumbnails() {
+    private fun loadFirstPage() {
+        // reset complet
+        currentPage = 1
+        isLastPage = false
+        images.clear()
+        adapter.submitList(images.toList())
+        emptyView.visibility = View.GONE
+
         setLoading(true)
+        isLoadingPage = true
+
         EntourageApplication.get().apiModule.discussionsRequest
-            .getConversationImages(conversationId)
+            .getConversationImages(conversationId, currentPage, perPage)
             .enqueue(object : Callback<ConversationImagesWrapper> {
                 override fun onResponse(
                     call: Call<ConversationImagesWrapper>,
                     response: Response<ConversationImagesWrapper>
                 ) {
                     setLoading(false)
-                    val list: List<ConversationImage> = response.body()?.images.orEmpty()
-                    emptyView.visibility = if (list.isEmpty()) View.VISIBLE else View.GONE
-                    adapter.submitList(list)
+                    isLoadingPage = false
+
+                    val list = response.body()?.images.orEmpty()
+                    images.addAll(list)
+                    adapter.submitList(images.toList())
+
+                    // Empty state si 0 résultat
+                    emptyView.visibility = if (images.isEmpty()) View.VISIBLE else View.GONE
+
+                    // Marque fin si moins que perPage
+                    if (list.size < perPage) {
+                        isLastPage = true
+                    } else {
+                        currentPage += 1
+                    }
                 }
 
                 override fun onFailure(call: Call<ConversationImagesWrapper>, t: Throwable) {
                     setLoading(false)
-                    emptyView.visibility = View.VISIBLE
+                    isLoadingPage = false
+                    if (images.isEmpty()) {
+                        emptyView.visibility = View.VISIBLE
+                    }
+                }
+            })
+    }
+
+    private fun loadNextPage() {
+        if (isLoadingPage || isLastPage) return
+        isLoadingPage = true
+        // Pour la pagination, on ne bloque pas toute la vue : pas de progress global
+        EntourageApplication.get().apiModule.discussionsRequest
+            .getConversationImages(conversationId, currentPage, perPage)
+            .enqueue(object : Callback<ConversationImagesWrapper> {
+                override fun onResponse(
+                    call: Call<ConversationImagesWrapper>,
+                    response: Response<ConversationImagesWrapper>
+                ) {
+                    isLoadingPage = false
+                    val list = response.body()?.images.orEmpty()
+
+                    if (list.isNotEmpty()) {
+                        images.addAll(list)
+                        adapter.submitList(images.toList())
+                    }
+
+                    if (list.size < perPage) {
+                        isLastPage = true
+                    } else {
+                        currentPage += 1
+                    }
+                }
+
+                override fun onFailure(call: Call<ConversationImagesWrapper>, t: Throwable) {
+                    isLoadingPage = false
+                    // pas d'UI particulière, on laisse l'utilisateur rescroller pour retenter
                 }
             })
     }

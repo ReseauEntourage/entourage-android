@@ -21,7 +21,7 @@
                     android:id="@+id/eventInfo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="25dp"
+                    android:layout_marginStart="30dp"
                     android:layout_marginEnd="25dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
@@ -29,10 +29,11 @@
                     android:visibility="gone">
                     <TextView
                         android:id="@+id/eventTitle"
-                        style="@style/settings_items"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textColor="@color/black"
+                        android:fontFamily="@font/nunitosans_bold"
+                        android:textSize="15sp"
                         android:visibility="gone" />
                     <TextView
                         android:id="@+id/eventParticipants"
@@ -92,19 +93,20 @@
                         android:id="@+id/icon"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
+                        android:layout_marginStart="0dp"
                         android:layout_marginBottom="20dp"
                         app:layout_constraintBottom_toTopOf='@id/divider'
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:srcCompat="@drawable/new_icn_report_orange" />
+                        app:srcCompat="@drawable/ic_report_event_modal"
+                        app:tint="@color/black" />
                     <TextView
                         android:id="@+id/report"
-                        style="@style/report"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="20dp"
                         android:textColor="@color/black"
+                        android:fontFamily="@font/nunitosans_regular"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf='@id/icon'
                         app:layout_constraintTop_toTopOf="parent" />
@@ -123,7 +125,7 @@
                         android:id="@+id/divider"
                         android:layout_width="match_parent"
                         android:layout_height="1px"
-                        android:background="@color/light_orange"
+                        android:background="@color/new_light_grey"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent" />
@@ -170,7 +172,7 @@
                         android:id="@+id/divider_block"
                         android:layout_width="match_parent"
                         android:layout_height="1px"
-                        android:background="@color/light_orange"
+                        android:background="@color/new_light_grey"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent" />

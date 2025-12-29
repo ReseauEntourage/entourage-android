@@ -54,7 +54,7 @@ interface OnboardingStartCallback {
         event: String?
     )
     fun validatePasscode(password: String?)
-    fun updateUsertypeAndAddress(isEntour: Boolean, isBeEntour: Boolean, both: Boolean, isAsso: Boolean, address: User.Address?)
+    fun updateUsertype(isEntour: Boolean, isBeEntour: Boolean, both: Boolean, isAsso: Boolean)
     fun updateButtonNext(isValid: Boolean)
     fun goPreviousManually()
     fun requestNewCode()
