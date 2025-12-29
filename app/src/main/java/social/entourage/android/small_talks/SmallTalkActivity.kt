@@ -180,7 +180,7 @@ class SmallTalkActivity : BaseActivity() {
                     val genderValue = when (selectedItem?.id) {
                         "5" -> "male"
                         "6" -> "female"
-                        else -> "not_binary"
+                        else -> "secret"
                     }
                     selectedRequest = selectedRequest.copy(userGender = genderValue)
                     update["user_gender"] = genderValue

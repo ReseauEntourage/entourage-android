@@ -72,6 +72,7 @@
         <activity
             android:name=".onboarding.onboard.OnboardingStartActivity"
             android:exported="false"
+            android:theme="@style/AppMaterial"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".onboarding.onboard.OnboardingEndActivity"
@@ -121,6 +122,10 @@
             android:exported="false" />
         <activity
             android:name=".discussions.DetailConversationActivity"
+            android:windowSoftInputMode="adjustPan"
+            android:exported="false" />
+        <activity
+            android:name=".discussions.imageviewier.ImageListActivity"
             android:windowSoftInputMode="adjustPan"
             android:exported="false" />
         <activity

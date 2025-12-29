@@ -68,7 +68,26 @@ class GroupDetailsFragment : BottomSheetDialogFragment() {
         handleLeaveGroup()
         groupPresenter.hasUserLeftGroup.observe(requireActivity(), ::hasUserLeftGroup)
         setView()
+        setUI()
     }
+
+    private fun setUI() {
+        val black  = androidx.core.content.ContextCompat.getColor(requireContext(), R.color.black)
+        val orange = androidx.core.content.ContextCompat.getColor(requireContext(), R.color.orange)
+
+        // ✅ Utiliser l’API du composant
+        binding.share.setLabel(getString(R.string.group_share))         // "Partager le groupe"
+        binding.rules.setLabel(getString(R.string.rules_group))         // "Règlement du groupe"
+
+        // Forcer les couleurs des labels visibles
+        binding.share.profileSettingsItemLabel.setTextColor(black)
+        binding.rules.profileSettingsItemLabel.setTextColor(black)
+
+        // Ceux-ci restent en orange
+        binding.report.setTextColor(orange)
+        binding.leave.setTextColor(orange)
+    }
+
 
     private fun setView() {
         binding.header.title = getString(R.string.group_settings)

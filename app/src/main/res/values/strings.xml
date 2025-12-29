@@ -751,14 +751,26 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
 
     <string name="event_params_cgu_title">Charte des événements</string>
     <string name="event_params_cgu_description">Charte des événements, à lire attentivement.</string>
-    <string name="event_CGU_1_title">Être bienveillant</string>
-    <string name="event_CGU_1">J’utilise l’application à des fins d’entraide en faveur des personnes en situation de grande précarité ou d’exclusion.</string>
-    <string name="event_CGU_2_title">Recueillir l’accord</string>
-    <string name="event_CGU_2">Je m’assure du consentement des personnes concernées avant de créer une action.</string>
-    <string name="event_CGU_3_title">Assurer la protection des personnes</string>
-    <string name="event_CGU_3">Je garantie de ne pas communiquer de données personnelles sensibles (médicales, judiciaires…), ou permettant d’identifier ou de localiser précisément les personnes.</string>
-    <string name="event_CGU_4_title">Être solidaire, sans distinction</string>
-    <string name="event_CGU_4">Je m’engage à ne faire aucune distinction de race, de couleur, de sexe, de langue, de religion, d’opinion politique, de fortune, de naissance ou de toute autre situation.</string>
+
+    <string name="event_CGU_section_positive">Chez Entourage, nous venons pour :</string>
+    <string name="event_CGU_1_title">Créer des liens d’amitié</string>
+    <string name="event_CGU_1">Tissez des premiers liens avec les autres participants, respectez les limites de chacun et apprenez à vous connaître petit à petit. Posez des questions simples pour démarrer des échanges.</string>
+    <string name="event_CGU_2_title">Échanger d’égal à égal</string>
+    <string name="event_CGU_2">Soyez à l’écoute et laissez de l’espace à chacun. Vous êtes légitime d’être ici, comme tous les autres. Partagez et respectez la parole de chacun.</string>
+    <string name="event_CGU_3_title">Respecter toutes les différences</string>
+    <string name="event_CGU_3">Nous venons d’horizons divers et c’est ce qui enrichit le réseau Entourage. Soyez curieux, respectez les histoires et les parcours de chacun.</string>
+    <string name="event_CGU_4_title">Participer activement à la convivialité</string>
+    <string name="event_CGU_4">Faites l’effort de vous immerger dans l’ambiance et la chaleur humaine de l’événement. Contribuez à une atmosphère positive sans créer de tensions.</string>
+
+    <string name="event_CGU_section_negative">Ce qu’on ne peut pas accepter :</string>
+    <string name="event_CGU_5_title">Comportements insistants</string>
+    <string name="event_CGU_5">Respectez les limites de chacun. Si un participant vous demande d’arrêter un geste ou une parole, écoutez-le.</string>
+    <string name="event_CGU_6_title">Agressivité</string>
+    <string name="event_CGU_6">Toute forme de violence (verbale, physique ou morale) est proscrite. Cela inclut les insultes, moqueries, et menaces.</string>
+    <string name="event_CGU_7_title">Abus de substances</string>
+    <string name="event_CGU_7">Chacun est responsable de sa consommation. Si votre comportement nuit à la sécurité et au bien-être des autres, vous serez invité à quitter l\'événement.</string>
+    <string name="event_CGU_8_title">Attitudes intolérantes, sexistes et discriminantes\n</string>
+    <string name="event_CGU_8">Toute forme de discrimination, moquerie ou jugement malveillant est inacceptable. Respectez les particularités de chacun.</string>
 
     <string name="action_params_cgu_title">Charte éthique</string>
     <string name="action_params_cgu_description"></string>
@@ -2996,14 +3008,14 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="small_talk_step_subtitle_3">Cette information nous aide à personnaliser vos mises en relation. Vous pourrez choisir la mixité ou pas de votre groupe à l\'étape suivante.</string>
     <string name="small_talk_step3_item1_title">Homme</string>
     <string name="small_talk_step3_item2_title">Femme</string>
-    <string name="small_talk_step3_item3_title">Non binaire</string>
+    <string name="small_talk_step3_item3_title">Autre</string>
     <string name="small_talk_step3_item1_subtitle">Vous vous identifiez principalement comme un homme</string>
     <string name="small_talk_step3_item2_subtitle">Vous vous identifiez principalement comme une femme</string>
     <string name="small_talk_step3_item3_subtitle">Votre genre ne correspond pas exclusivement aux catégories "femme" ou "homme" </string>
 
     <!-- Step 4: Confort selon le genre -->
     <string name="small_talk_step_title_4">Avec qui vous sentez-vous le plus à l\'aise pour échanger ?</string>
-    <string name="small_talk_step_subtitle_4">Cette question concerne uniquement le genre : hommes, femmes, non binaires. Tous les groupes sont socialement mixtes.</string>
+    <string name="small_talk_step_subtitle_4">Cette question concerne uniquement le genre : hommes, femmes, autres. Tous les groupes sont socialement mixtes.</string>
     <string name="small_talk_step4_item1_title">Peu importe</string>
     <string name="small_talk_step4_item1_subtitle">Je suis à l\'aise pour échanger avec tout le monde, quel que soit le genre</string>
     <string name="small_talk_step4_item2_title">Avec des personnes du même genre</string>
@@ -3118,15 +3130,11 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
         <item>Femme</item>
         <item>Non-binaire</item>
     </string-array>
-    <string name="onboard_welcome_title_gender">Genre</string>
-    <string name="onboard_welcome_title_birthdate">Date d\'anniversaire</string>
-    <string name="onboard_welcome_placeholder_birthdate">JJ/MM/AAAA</string>
+    <string name="onboard_welcome_title_gender">Je suis</string>
 
-    <string name="onboard_welcome_title_how_did_you_hear">Comment vous nous avez connu ?</string>
+    <string name="onboard_welcome_title_how_did_you_hear">Comment nous avez-vous connu? </string>
     <string name="onboard_welcome_title_company_name">Nom de votre entreprise</string>
     <string name="onboard_welcome_title_event_name">Événement auquel vous participez</string>
-    <string name="onboard_welcome_placeholder_company_name">Sélectionnez une entreprise</string>
-    <string name="onboard_welcome_placeholder_event_name">Sélectionnez un événement</string>
     <string name="onboard_welcome_error_company_name">Merci de sélectionner une entreprise.</string>
     <string name="onboard_welcome_error_event_name">Merci de sélectionner un événement.</string>
     <string name="onboard_welcome_error_load_failed">Impossible de charger la liste, veuillez réessayer.</string>
@@ -3136,17 +3144,20 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="onboard_welcome_how_did_you_hear_tv_media">Télévision / média</string>
     <string name="onboard_welcome_how_did_you_hear_social_media">Réseaux sociaux</string>
     <string name="onboard_welcome_how_did_you_hear_corporate_awareness">Sensibilisation entreprise</string>
-    <string name="onboard_welcome_company_a">Entreprise A</string>
-    <string name="onboard_welcome_company_b">Entreprise B</string>
-    <string name="onboard_welcome_company_c">Entreprise C</string>
-    <string name="onboard_welcome_company_d">Entreprise D</string>
-    <string name="onboard_welcome_company_e">Entreprise E</string>
-    <string name="onboard_welcome_event_1">Événement 1</string>
-    <string name="onboard_welcome_event_2">Événement 2</string>
-    <string name="onboard_welcome_event_3">Événement 3</string>
-    <string name="onboard_welcome_event_4">Événement 4</string>
-    <string name="onboard_welcome_event_5">Événement 5</string>
+    <string name="onboard_welcome_title_birthdate">Date d\'anniversaire</string>
+    <string name="onboard_welcome_placeholder_birthdate">JJ/MM/AAAA</string>
+    <string name="onboard_welcome_gender_female">Femme</string>
+    <string name="onboard_welcome_gender_male">Homme</string>
+    <string name="onboard_welcome_gender_other">Autre</string>
+    <string name="onboard_welcome_placeholder_firstname_new">Ex. : Marie</string>
+    <string name="onboard_welcome_placeholder_lastname_new">Ex. : Dupont</string>
+    <string name="onboard_welcome_placeholder_phone_new">06 XX XX XX XX</string>
+    <string name="onboard_welcome_title_firstname_required">Prénom*</string>
+    <string name="onboard_welcome_title_lastname_required">Nom*</string>
+    <string name="onboard_welcome_title_phone_required">Téléphone*</string>
+    <string name="onboard_welcome_placeholder_email_new">Ex. : marie.dupont@email.com</string>
 
+    <string name="image_option_title">Photos de la conversation</string>
 
 
 </resources>

@@ -224,3 +224,17 @@ data class ConversationMembership(
 data class ConversationMembershipsWrapper(
     @SerializedName("memberships") val memberships: List<ConversationMembership>
 )
+
+
+data class ConversationImage(
+    @SerializedName("chat_message_id") val chatMessageId: Int?,
+    @SerializedName("url") val url: String?
+)
+
+data class ConversationImagesWrapper(
+    @SerializedName("images") val images: List<ConversationImage> = emptyList()
+)
+
+data class ConversationImageSingleWrapper(
+    @SerializedName("image") val image: ConversationImage?
+)

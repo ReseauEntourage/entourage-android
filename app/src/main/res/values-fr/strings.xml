@@ -740,14 +740,26 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
 
     <string name="event_params_cgu_title">Charte des événements</string>
     <string name="event_params_cgu_description">Charte des événements, à lire attentivement.</string>
-    <string name="event_CGU_1_title">Être bienveillant</string>
-    <string name="event_CGU_1">J’utilise l’application à des fins d’entraide en faveur des personnes en situation de grande précarité ou d’exclusion.</string>
-    <string name="event_CGU_2_title">Recueillir l’accord</string>
-    <string name="event_CGU_2">Je m’assure du consentement des personnes concernées avant de créer une action.</string>
-    <string name="event_CGU_3_title">Assurer la protection des personnes</string>
-    <string name="event_CGU_3">Je garantie de ne pas communiquer de données personnelles sensibles (médicales, judiciaires…), ou permettant d’identifier ou de localiser précisément les personnes.</string>
-    <string name="event_CGU_4_title">Être solidaire, sans distinction</string>
-    <string name="event_CGU_4">Je m’engage à ne faire aucune distinction de race, de couleur, de sexe, de langue, de religion, d’opinion politique, de fortune, de naissance ou de toute autre situation.</string>
+
+    <string name="event_CGU_section_positive">Chez Entourage, nous venons pour :</string>
+    <string name="event_CGU_1_title">Créer des liens d’amitié</string>
+    <string name="event_CGU_1">Tissez des premiers liens avec les autres participants, respectez les limites de chacun et apprenez à vous connaître petit à petit. Posez des questions simples pour démarrer des échanges.</string>
+    <string name="event_CGU_2_title">Échanger d’égal à égal</string>
+    <string name="event_CGU_2">Soyez à l’écoute et laissez de l’espace à chacun. Vous êtes légitime d’être ici, comme tous les autres. Partagez et respectez la parole de chacun.</string>
+    <string name="event_CGU_3_title">Respecter toutes les différences</string>
+    <string name="event_CGU_3">Nous venons d’horizons divers et c’est ce qui enrichit le réseau Entourage. Soyez curieux, respectez les histoires et les parcours de chacun.</string>
+    <string name="event_CGU_4_title">Participer activement à la convivialité</string>
+    <string name="event_CGU_4">Faites l’effort de vous immerger dans l’ambiance et la chaleur humaine de l’événement. Contribuez à une atmosphère positive sans créer de tensions.</string>
+
+    <string name="event_CGU_section_negative">Ce qu’on ne peut pas accepter :</string>
+    <string name="event_CGU_5_title">Comportements insistants</string>
+    <string name="event_CGU_5">Respectez les limites de chacun. Si un participant vous demande d’arrêter un geste ou une parole, écoutez-le.</string>
+    <string name="event_CGU_6_title">Agressivité</string>
+    <string name="event_CGU_6">Toute forme de violence (verbale, physique ou morale) est proscrite. Cela inclut les insultes, moqueries, et menaces.</string>
+    <string name="event_CGU_7_title">Abus de substances</string>
+    <string name="event_CGU_7">Chacun est responsable de sa consommation. Si votre comportement nuit à la sécurité et au bien-être des autres, vous serez invité à quitter l\'événement.</string>
+    <string name="event_CGU_8_title">Attitudes intolérantes, sexistes et discriminantes</string>
+    <string name="event_CGU_8">Toute forme de discrimination, moquerie ou jugement malveillant est inacceptable. Respectez les particularités de chacun.</string>
 
     <string name="action_params_cgu_title">Charte éthique</string>
     <string name="action_params_cgu_description"></string>

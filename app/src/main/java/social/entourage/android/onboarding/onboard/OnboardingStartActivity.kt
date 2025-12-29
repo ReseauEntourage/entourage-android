@@ -48,6 +48,8 @@ class OnboardingStartActivity : AppCompatActivity(), OnboardingStartCallback {
     private var temporaryHowDidYouHear: String? = null
     private var temporaryCompany: String? = null
     private var temporaryEvent: String? = null
+    private var nextBtnBgOriginal: android.graphics.drawable.Drawable? = null
+    private var nextBtnTextColorsOriginal: android.content.res.ColorStateList? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -89,7 +91,6 @@ class OnboardingStartActivity : AppCompatActivity(), OnboardingStartCallback {
     private fun callSignup() {
         alertDialog.show(R.string.onboard_waiting_dialog)
         OnboardingAPI.getInstance().createUser(temporaryUser, hasConsent) { isOK, error ->
-            Timber.wtf("wtf error $error")
             alertDialog.dismiss()
             if (isOK) {
                 showSmsAndGo(R.string.login_smscode_sent)
@@ -195,25 +196,23 @@ class OnboardingStartActivity : AppCompatActivity(), OnboardingStartCallback {
     private fun updateGoal() {
         alertDialog.show(R.string.onboard_waiting_dialog)
         var userType = UserTypeSelection.NEIGHBOUR
-        if (isAsso) {
-            userType = UserTypeSelection.ASSOS
-        } else if (isBeEntour) {
-            userType = UserTypeSelection.ALONE
-        } else if (isEntour) {
-            userType = UserTypeSelection.NEIGHBOUR
-        } else if (Both) {
-            userType = UserTypeSelection.BOTH
-        }
+        if (isAsso) userType = UserTypeSelection.ASSOS
+        else if (isBeEntour) userType = UserTypeSelection.ALONE
+        else if (isEntour) userType = UserTypeSelection.NEIGHBOUR
+        else if (Both) userType = UserTypeSelection.BOTH
+
         val currentGoal = userType.getGoalString()
+
         OnboardingAPI.getInstance().updateUserGoal(
             currentGoal,
             temporaryEmail,
             hasConsent,
             temporaryGender,
-            temporaryBirthdate,
+            // On s'assure d'envoyer yyyy-MM-dd au back
+            temporaryBirthdate?.let { formatBirthdateForAPI(it) },
             temporaryHowDidYouHear,
-            temporaryCompany,
-            temporaryEvent
+            temporaryCompany, // 👈 ID entreprise
+            temporaryEvent    // 👈 ID event
         ) { isOK, userResponse ->
             if (isOK && userResponse != null) {
                 authenticationController.saveUser(userResponse.user)
@@ -222,6 +221,7 @@ class OnboardingStartActivity : AppCompatActivity(), OnboardingStartCallback {
             updateAddress()
         }
     }
+
 
 
 
@@ -313,8 +313,11 @@ class OnboardingStartActivity : AppCompatActivity(), OnboardingStartCallback {
         finish()
     }
 
+    // Remplace entièrement ta méthode
     private fun changeFragment() {
-        binding.uiOnboardingBtNext.disable()
+        // s’assure que le style du bouton reste correct dès qu’on change d’écran
+        setNextEnabled(false)
+
         val fragment = when (currentFragmentPosition) {
             1 -> OnboardingPhase1Fragment.newInstance(
                 temporaryUser.firstName,
@@ -333,14 +336,15 @@ class OnboardingStartActivity : AppCompatActivity(), OnboardingStartCallback {
                 temporaryPhone,
                 temporaryCountrycode
             )
-            3 -> OnboardingPhase3Fragment.newInstance(isEntour, isBeEntour, isAsso, temporaryPlaceAddress)
+            3 -> OnboardingPhase3Fragment.newInstance(
+                isEntour, isBeEntour, isAsso, temporaryPlaceAddress
+            )
             else -> Fragment()
         }
-        binding.iconBack.visibility = if (currentFragmentPosition >= PositionsType.Type.pos) {
-            View.GONE
-        } else {
-            View.VISIBLE
-        }
+
+        binding.iconBack.visibility =
+            if (currentFragmentPosition >= PositionsType.Type.pos) View.GONE else View.VISIBLE
+
         try {
             supportFragmentManager
                 .beginTransaction()
@@ -356,19 +360,24 @@ class OnboardingStartActivity : AppCompatActivity(), OnboardingStartCallback {
      * Views Update
      */
     private fun setupViews() {
-        binding.uiOnboardingBtNext.setOnClickListener {
-            goNext()
-        }
-        binding.uiOnboardingBtPrevious.setOnClickListener {
-            goPrevious()
-        }
+        // capture le style d’origine une seule fois
+        nextBtnBgOriginal = binding.uiOnboardingBtNext.background?.mutate()
+        nextBtnTextColorsOriginal = binding.uiOnboardingBtNext.textColors
+        // évite tout tint auto qui blanchit le bouton
+        binding.uiOnboardingBtNext.backgroundTintList = null
+
+        binding.uiOnboardingBtNext.setOnClickListener { goNext() }
+        binding.uiOnboardingBtPrevious.setOnClickListener { goPrevious() }
         binding.iconBack.setOnClickListener {
             startActivity(Intent(this, PreOnboardingChoiceActivity::class.java))
             finish()
         }
+
         binding.uiOnboardingBtPrevious.visibility = View.INVISIBLE
-        binding.uiOnboardingBtNext.disable()
+        // démarrer désactivé mais avec la bonne apparence
+        setNextEnabled(false)
     }
+
 
     private fun updateButtons() {
         when (currentFragmentPosition) {
@@ -413,15 +422,15 @@ class OnboardingStartActivity : AppCompatActivity(), OnboardingStartCallback {
     override fun validateNames(
         firstname: String?,
         lastname: String?,
-        gender: String?,
-        birthdate: String?,
+        gender: String?,            // "male" / "female" / "secret"
+        birthdate: String?,         // dd-MM-yyyy (depuis le fragment)
         country: Country?,
         phoneNumber: String?,
         email: String?,
         hasConsent: Boolean,
-        howDidYouHear: String?,
-        company: String?,
-        event: String?
+        howDidYouHear: String?,     // clé ("entreprise", ...)
+        company: String?,           // 👈 ID entreprise
+        event: String?              // 👈 ID event
     ) {
         temporaryUser.firstName = firstname
         temporaryUser.lastName = lastname
@@ -430,19 +439,18 @@ class OnboardingStartActivity : AppCompatActivity(), OnboardingStartCallback {
         temporaryEmail = email
         this.hasConsent = hasConsent
         temporaryUser.phone = null
-        // Mapping des valeurs affichées vers les valeurs attendues par le back
-        temporaryGender = when (gender) {
-            "Homme" -> "male"
-            "Femme" -> "female"
-            "Non binaire" -> "not_binary"
-            else -> null
-        }
-        temporaryBirthdate = birthdate // Déjà au format dd-MM-yyyy
+
+        temporaryGender = gender
+        gender?.let { temporaryUser.gender = it }
+
+        // dd-MM-yyyy -> yyyy-MM-dd (pour stocker dans User)
+        temporaryBirthdate = birthdate
+        birthdate?.let { temporaryUser.birthday = formatBirthdateForAPI(it) } // yyyy-MM-dd
+
         temporaryHowDidYouHear = howDidYouHear
-        temporaryCompany = company
-        temporaryEvent = event
-        gender?.let { temporaryUser.gender = temporaryGender }
-        birthdate?.let { temporaryUser.birthday = formatBirthdateForAPI(it) } // Format yyyy-MM-dd
+        temporaryCompany = company   // IDs
+        temporaryEvent = event       // IDs
+
         if (phoneNumber != null) {
             val phoneWithCode = Utils.checkPhoneNumberFormat(country?.phoneCode, phoneNumber)
             if (phoneWithCode != null) {
@@ -450,6 +458,8 @@ class OnboardingStartActivity : AppCompatActivity(), OnboardingStartCallback {
             }
         }
     }
+
+
 
 
     override fun validatePasscode(password: String?) {
@@ -475,12 +485,20 @@ class OnboardingStartActivity : AppCompatActivity(), OnboardingStartCallback {
         }
     }
 
+    private fun setNextEnabled(enabled: Boolean) {
+        binding.uiOnboardingBtNext.isEnabled = enabled
+
+        // réapplique toujours le visuel d’origine (évite le “blanchiment”)
+        nextBtnBgOriginal?.let { binding.uiOnboardingBtNext.background = it }
+        binding.uiOnboardingBtNext.backgroundTintList = null
+        nextBtnTextColorsOriginal?.let { binding.uiOnboardingBtNext.setTextColor(it) }
+
+        // petit feedback visuel quand désactivé
+        binding.uiOnboardingBtNext.alpha = if (enabled) 1f else 0.5f
+    }
+
     override fun updateButtonNext(isValid: Boolean) {
-        if (isValid) {
-            binding.uiOnboardingBtNext.enable()
-        } else {
-            binding.uiOnboardingBtNext.disable()
-        }
+        setNextEnabled(isValid)
     }
 
     override fun goPreviousManually() {

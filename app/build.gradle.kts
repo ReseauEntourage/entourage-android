@@ -6,6 +6,7 @@ plugins {
     kotlin("android")
     //id("kotlin-android-extensions")
     id("com.google.firebase.crashlytics")
+    kotlin("plugin.serialization")
     //id("com.google.firebase.firebase-perf")
     kotlin("kapt")
     id("androidx.navigation.safeargs")
@@ -30,7 +31,7 @@ android {
 
     // App versions
     val versionMajor = 12
-    val versionMinor = 7
+    val versionMinor = 8
     val versionPatch = "git rev-list HEAD --count".runCommand().toInt()
     val versionBranchName = "git rev-parse --abbrev-ref HEAD".runCommand()
     val versionCodeInt = (versionMajor * 100 + versionMinor) * 10000 + versionPatch % 10000

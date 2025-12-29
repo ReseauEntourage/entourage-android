@@ -27,7 +27,7 @@ class User : Serializable {
     @SerializedName("last_name")
     var lastName: String? = null
 
-    @SerializedName("birthday")
+    @SerializedName("birthdate")
     var birthday: String? = null
     @SerializedName("gender")
     var gender: String? = null

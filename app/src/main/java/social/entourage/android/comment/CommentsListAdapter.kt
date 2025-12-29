@@ -436,9 +436,7 @@ class CommentsListAdapter(
                     bindingRight.comment.visibility = View.VISIBLE
                 }
                 bindingRight.commentImage.setOnLongClickListener {
-                    val commentLang = comment.contentTranslations?.fromLang ?: ""
-                    DataLanguageStock.updateContentToCopy(comment.content ?: "")
-                    onItemClick.onCommentReport(comment.id, isForEvent, isForGroup, isMe, commentLang)
+                    onItemClick.onMessageLongPress(comment, isMe)
                     true
                 }
             } else {

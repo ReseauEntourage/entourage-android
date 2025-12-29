@@ -702,4 +702,36 @@
         <item name="rippleColor">@android:color/transparent</item>
     </style>
 
+    <!-- Champ texte : Nunito 15 + couleurs -->
+    <style name="Ent.TextField">
+        <item name="android:fontFamily">@font/nunitosans_regular</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">@color/pre_onboard_black</item>
+        <item name="android:textColorHint">@color/onboard_black_36</item>
+        <item name="android:paddingStart">12dp</item>
+        <item name="android:paddingEnd">12dp</item>
+    </style>
+
+    <style name="Ent.TextInputLayout.Outlined" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="boxStrokeColor">@color/ent_textinput_stroke</item>
+        <item name="boxStrokeErrorColor">@color/tomato</item>        <!-- NEW -->
+        <item name="errorTextColor">@color/tomato</item>             <!-- NEW -->
+        <item name="hintTextColor">@color/ent_textinput_hint</item>
+        <item name="boxStrokeWidth">1dp</item>
+        <item name="boxStrokeWidthFocused">2dp</item>
+        <item name="endIconTint">@color/ent_end_icon_tint</item>
+    </style>
+
+    <!-- Style pour les TextInputLayout utilisés avec MaterialAutoCompleteTextView -->
+    <style name="Ent.TextInputLayout.Outlined.Dropdown" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
+        <item name="boxStrokeColor">@color/ent_textinput_stroke</item>
+        <item name="boxStrokeErrorColor">@color/tomato</item>
+        <item name="errorTextColor">@color/tomato</item>
+        <item name="hintTextColor">@color/ent_textinput_hint</item>
+        <item name="boxStrokeWidth">1dp</item>
+        <item name="boxStrokeWidthFocused">2dp</item>
+        <item name="endIconTint">@color/ent_end_icon_tint</item>
+    </style>
+
+    <style name="Ent"/>
 </resources>

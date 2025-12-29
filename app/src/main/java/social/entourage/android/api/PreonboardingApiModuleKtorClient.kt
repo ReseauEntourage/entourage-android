@@ -8,11 +8,13 @@ import io.ktor.client.request.header
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 import social.entourage.android.BuildConfig
+import social.entourage.android.api.model.Metadata
 import social.entourage.android.api.model.SalesforceEnterprise
 import social.entourage.android.api.model.SalesforceEvent
+import social.entourage.android.api.model.Summary
+import timber.log.Timber
 
 object PreonboardingApiModuleKtorClient {
-    private const val SALESFORCE_TOKEN = "b40fcc909c126f1d48f20314e1b64738"
 
     // Utilise l'URL de l'environnement courant (prod ou preprod)
     private val baseUrl: String = BuildConfig.ENTOURAGE_URL
@@ -22,6 +24,7 @@ object PreonboardingApiModuleKtorClient {
             json(Json {
                 ignoreUnknownKeys = true
                 isLenient = true
+                explicitNulls = false
             })
         }
         defaultRequest {
@@ -47,6 +50,10 @@ object PreonboardingApiModuleKtorClient {
      * @return Liste des événements ou une exception en cas d'erreur.
      */
     suspend fun fetchEventsForEnterprise(enterpriseId: String): List<SalesforceEvent> {
-        return client.get("salesforce/entreprises/$enterpriseId/outings?token=$SALESFORCE_TOKEN").body()
+        return client.get("salesforce/entreprises/$enterpriseId/outings").body()
+    }
+
+    suspend fun fetchSummaryBeforeLogin(): Metadata {
+        return client.get("home/metadata").body()
     }
 }
