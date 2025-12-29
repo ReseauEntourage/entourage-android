@@ -18,6 +18,7 @@ import social.entourage.android.comment.CommentActivity
 import social.entourage.android.discussions.DetailConversationActivity
 import social.entourage.android.events.details.feed.EventFeedFragment
 import social.entourage.android.groups.details.feed.GroupFeedActivity
+import social.entourage.android.groups.details.rules.GroupRulesActivity
 import social.entourage.android.guide.GDSMainActivity
 import social.entourage.android.home.pedago.PedagoDetailActivity
 import social.entourage.android.home.pedago.PedagoListActivity
@@ -119,7 +120,14 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
                             ),0
                     )
                 }*/
-                pathSegments.contains("outings") -> {
+                    pathSegments.contains("chart-event") -> {
+                        val intent = Intent(context, GroupRulesActivity::class.java).apply {
+                            putExtra(Const.RULES_TYPE, Const.RULES_EVENT)
+                        }
+                        (context as Activity).startActivity(intent)
+                    }
+
+                    pathSegments.contains("outings") -> {
                     if (pathSegments.size > 3) {
                         val outingId = pathSegments[2]
                         EventFeedFragment.shouldAddToAgenda = true

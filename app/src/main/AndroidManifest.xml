@@ -328,10 +328,6 @@
             android:name=".small_talks.SmallTalkGroupFoundActivity"
             android:windowSoftInputMode="adjustPan"
             />
-
-        <service
-             android:name=".service.EntService"
-             android:exported="false" />
          <service
              android:name=".notifications.EntourageFirebaseMessagingService"
              android:exported="false">

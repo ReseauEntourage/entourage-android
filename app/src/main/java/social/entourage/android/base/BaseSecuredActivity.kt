@@ -2,7 +2,6 @@ package social.entourage.android.base
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import social.entourage.android.BuildConfig
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
@@ -19,9 +18,7 @@ abstract class BaseSecuredActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val isMigrationAfterV7 = EntourageApplication.get().sharedPreferences.getBoolean(
-            EntourageApplication.KEY_MIGRATION_V7_OK, false)
-        if (authenticationController.isAuthenticated && isMigrationAfterV7) {
+        if (authenticationController.isAuthenticated) {
             entApp?.finishLoginActivity()
         } else {
             startActivity(Intent(this, PreOnboardingLanguage::class.java))

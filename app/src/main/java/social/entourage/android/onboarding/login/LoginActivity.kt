@@ -161,9 +161,9 @@ class LoginActivity : BaseActivity() {
     }
 
     private fun goMain() {
-        val sharedPreferences = EntourageApplication.get().sharedPreferences
-        sharedPreferences.edit().putBoolean(KEY_ONBOARDING_SHOW_POP_FIRSTLOGIN, true).apply()
-        sharedPreferences.edit().putBoolean(EntourageApplication.KEY_MIGRATION_V7_OK,true).apply()
+        EntourageApplication.get().sharedPreferences.edit {
+            putBoolean(KEY_ONBOARDING_SHOW_POP_FIRSTLOGIN, true)
+        }
         goRealMain()
     }
 

@@ -271,6 +271,7 @@ class SmallTalkViewModel(application: Application) : AndroidViewModel(applicatio
         request.leaveSmallTalk(id).enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 // On rafraîchit la liste des smallTalks après avoir quitté
+                shouldLeave.value = response.isSuccessful
                 listSmallTalks()
             }
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {

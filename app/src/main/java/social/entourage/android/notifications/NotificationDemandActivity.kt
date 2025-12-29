@@ -7,6 +7,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationManagerCompat
+import androidx.core.content.edit
 import social.entourage.android.EntourageApplication
 import social.entourage.android.MainActivity
 import social.entourage.android.api.OnboardingAPI
@@ -87,16 +88,10 @@ class NotificationDemandActivity : BaseActivity() {
                         EntourageApplication.get().authenticationController.saveUser(userResponse.user)
                     }
                 }
-                val sharedPreferences = EntourageApplication.get().sharedPreferences
-                sharedPreferences.edit()
-                    .putBoolean(EntourageApplication.KEY_IS_FROM_ONBOARDING, true)
-                    .apply()
-                sharedPreferences.edit()
-                    .putBoolean(EntourageApplication.KEY_ONBOARDING_SHOW_POP_FIRSTLOGIN, false)
-                    .apply()
-                sharedPreferences.edit()
-                    .putBoolean(EntourageApplication.KEY_MIGRATION_V7_OK, true)
-                    .apply()
+                EntourageApplication.get().sharedPreferences.edit {
+                    putBoolean(EntourageApplication.KEY_IS_FROM_ONBOARDING, true)
+                    putBoolean(EntourageApplication.KEY_ONBOARDING_SHOW_POP_FIRSTLOGIN, false)
+                }
                 MainActivity.shouldLaunchOnboarding = true
                 if(comeFromSettings) {
                     comeFromSettings = false
