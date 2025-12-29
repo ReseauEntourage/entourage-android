@@ -5,8 +5,6 @@ import android.app.TimePickerDialog
 import android.content.Context
 import android.text.SpannableString
 import android.text.Spanned
-import android.text.style.ForegroundColorSpan
-import android.text.style.StyleSpan
 import android.text.style.TextAppearanceSpan
 import android.text.style.UnderlineSpan
 import android.view.ViewTreeObserver
@@ -16,7 +14,8 @@ import android.widget.TextView
 import social.entourage.android.R
 import social.entourage.android.language.LanguageManager
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Calendar
+import java.util.Date
 
 fun EditText.transformIntoDatePicker(
     context: Context,
@@ -30,7 +29,8 @@ fun EditText.transformIntoDatePicker(
     var locale = LanguageManager.getLocaleFromPreferences(context)
     val myCalendar = Calendar.getInstance()
     val datePickerOnDataSetListener =
-        DatePickerDialog.OnDateSetListener { _, _, monthOfYear, dayOfMonth ->
+        DatePickerDialog.OnDateSetListener { _, year, monthOfYear, dayOfMonth ->
+            myCalendar.set(Calendar.YEAR, year)
             myCalendar.set(Calendar.MONTH, monthOfYear)
             myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
             val sdf = SimpleDateFormat(format, locale)
@@ -63,7 +63,6 @@ fun EditText.transformIntoTimePicker(context: Context, format: String) {
             myCalendar.set(Calendar.MINUTE, minute)
             val sdf = SimpleDateFormat(format, locale)
             setText(sdf.format(myCalendar.time))
-
         }
 
     setOnClickListener {
