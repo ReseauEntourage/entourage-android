@@ -43,17 +43,40 @@ class OnboardingAPI {
     fun createUser(
         tempUser: User,
         hasConsent: Boolean,
+        discoverySource: String?,
+        companyId: String?,
+        eventId: String?,
         listener: (isOK: Boolean, error: String?) -> Unit
     ) {
         val user: MutableMap<String, Any> = ArrayMap()
-        user["phone"] = tempUser.phone ?: ""
-        user["first_name"] = tempUser.firstName ?: ""
-        user["last_name"] = tempUser.lastName ?: ""
-        user["email"] = tempUser.email ?: ""
+
+        val phone = tempUser.phone?.trim().orEmpty()
+        val firstName = tempUser.firstName?.trim().orEmpty()
+        val lastName = tempUser.lastName?.trim().orEmpty()
+
+        user["phone"] = phone
+        user["first_name"] = firstName
+        user["last_name"] = lastName
+
+        val email = tempUser.email?.trim()
+        if (!email.isNullOrEmpty()) user["email"] = email
+
         user["newsletter_subscription"] = hasConsent
 
-        tempUser.gender?.let { user["gender"] = it }
-        tempUser.birthday?.let { user["birthdate"] = it } // ✅ birthdate (clé API)
+        val gender = tempUser.gender?.trim()
+        if (!gender.isNullOrEmpty()) user["gender"] = gender
+
+        val birthdate = tempUser.birthday?.trim()
+        if (!birthdate.isNullOrEmpty()) user["birthdate"] = birthdate
+
+        val ds = discoverySource?.trim()
+        if (!ds.isNullOrEmpty()) user["discovery_source"] = ds
+
+        val cid = companyId?.trim()
+        if (!cid.isNullOrEmpty()) user["sf_entreprise_id"] = cid
+
+        val eid = eventId?.trim()
+        if (!eid.isNullOrEmpty()) user["sf_campaign_id"] = eid
 
         val request = ArrayMap<String, Any>()
         request["user"] = user
@@ -79,6 +102,7 @@ class OnboardingAPI {
             }
         })
     }
+
 
     /**********************
      * Login
