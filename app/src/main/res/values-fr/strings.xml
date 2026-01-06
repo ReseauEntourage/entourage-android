@@ -2424,7 +2424,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="action_show_charte"><u>Charte éthique</u></string>
     <string name="signal_a_problem"><u>Signaler un problème</u></string>
     <string name="login_button_resend_code"><u>Redemander un code</u></string>
-    <string name="login_change_phone"><u>J’ai changé de numéro de téléphone</u></string>
+    <string name="login_change_phone"><u>Changer mon numéro</u></string>
     <string name="newsfeed_load_more_button"><u>Rechercher plus loin.</u></string>
     <string name="newsfeed_tab_events_no_items_button"><u>Retrouvez plus d\'événements d\'Entourage ici</u></string>
     <string name="pre_onboard_choice_about"><u>Qui est l’association Entourage ?</u></string>
@@ -2714,6 +2714,8 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="contact_email">contact@entourage.social</string>
     <string name="error_no_email">Aucune application e-mail trouvée</string>
     <string name="terms_and_conditions_html"><![CDATA[En vous inscrivant, vous acceptez nos <a href="https://www.entourage.social/conditions-generales-dutilisation">Conditions Générales d’Utilisation</a> et notre <a href="https://www.entourage.social/politique-de-confidentialite">Politique de confidentialité</a>.]]></string>
+    <string name="login_forgot_title">Vous avez oublié votre code ? </string>
+    <string name="login_change_phone_question">Vous avez changé de numéro de téléphone ?</string>
 
 </resources>
 
