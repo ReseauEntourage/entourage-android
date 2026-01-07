@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Présentez votre association à la communauté"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:paddingBottom="8dp"/>
+
+        <TextView
+            android:id="@+id/tv_subtitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Ajoutez votre logo et une courte description pour que les membres de la communauté sachent qui vous êtes et ce que vous faites."
+            android:textSize="14sp"
+            android:paddingBottom="16dp"/>
+
+        <ImageView
+            android:id="@+id/iv_logo"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_gravity="center_horizontal"
+            android:scaleType="centerCrop"
+            android:src="@drawable/placeholder_user"/>
+
+        <Button
+            android:id="@+id/btn_upload_logo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="Importer un logo"
+            android:layout_marginTop="8dp"/>
+
+        <TextView
+            android:id="@+id/tv_label_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Description de votre association"
+            android:layout_marginTop="16dp"
+            android:textStyle="bold"/>
+
+        <EditText
+            android:id="@+id/et_description"
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:hint="Ex. : Association de quartier œuvrant pour le lien social via des événements ouverts à tous."
+            android:gravity="top|start"
+            android:maxLength="800"
+            android:background="@android:drawable/editbox_background_normal"
+            android:padding="8dp"
+            android:inputType="textMultiLine"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="24dp"
+            android:gravity="end">
+
+            <Button
+                android:id="@+id/button_skip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Plus tard"
+                android:layout_marginEnd="8dp"/>
+
+            <Button
+                android:id="@+id/button_finish"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Terminer"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+</ScrollView>

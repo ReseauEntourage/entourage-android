@@ -8,7 +8,6 @@ import androidx.lifecycle.ViewModelProvider
 import social.entourage.android.EntourageApplication
 import social.entourage.android.MainActivity
 import social.entourage.android.R
-import social.entourage.android.api.model.User
 import social.entourage.android.base.BaseActivity
 import social.entourage.android.databinding.ActivityEnhancedOnboardingLayoutBinding
 import social.entourage.android.enhanced_onboarding.fragments.OnboardingActionWishesFragment
@@ -17,6 +16,8 @@ import social.entourage.android.enhanced_onboarding.fragments.OnboardingCongrats
 import social.entourage.android.enhanced_onboarding.fragments.OnboardingDisponibilityFragment
 import social.entourage.android.enhanced_onboarding.fragments.OnboardingInterestFragment
 import social.entourage.android.enhanced_onboarding.fragments.OnboardingPresentationFragment
+import social.entourage.android.enhanced_onboarding.fragments.EnhancedOnboardingAssoFragment
+import social.entourage.android.api.model.User
 
 class EnhancedOnboarding : BaseActivity() {
 
@@ -145,6 +146,15 @@ class EnhancedOnboarding : BaseActivity() {
 
     private fun handleOnboardingFourthStep(value: Boolean) {
         if (value) {
+            // Pour les comptes associations, on ignore complètement l'étape des catégories
+            // et on passe directement à l'étape suivante. On vérifie également les cas de retour
+            // depuis les paramètres qui imposent d'enregistrer et quitter immédiatement.
+            val userGoal = viewModel.user?.goal
+            if (userGoal != null && userGoal.equals(User.USER_GOAL_ASSO, ignoreCase = true)) {
+                // Passer directement à l'étape suivante (disponibilité) qui sera elle-même ignorée
+                viewModel.setOnboardingFifthStep(true)
+                return
+            }
             if (isFromSettingsinterest || isFromSettingsDisponibility || isFromSettingsWishes) {
                 viewModel.registerAndQuit()
                 return
@@ -160,6 +170,13 @@ class EnhancedOnboarding : BaseActivity() {
 
     private fun handleOnboardingDisponibilityStep(value: Boolean) {
         if (value) {
+            // L'étape de disponibilité est supprimée pour les associations. Si l'utilisateur
+            // a pour objectif "association", on passe directement à l'étape finale.
+            val userGoal = viewModel.user?.goal
+            if (userGoal != null && userGoal.equals(User.USER_GOAL_ASSO, ignoreCase = true)) {
+                viewModel.setOnboardingFifthStep(true)
+                return
+            }
             val fragment = OnboardingDisponibilityFragment()
             supportFragmentManager.beginTransaction().apply {
                 replace(binding.fragmentContainer.id, fragment)
@@ -171,11 +188,24 @@ class EnhancedOnboarding : BaseActivity() {
 
     private fun handleOnboardingFifthStep(value: Boolean) {
         if (value) {
-            val fragment = OnboardingCongratsFragment()
-            supportFragmentManager.beginTransaction().apply {
-                replace(binding.fragmentContainer.id, fragment)
-                addToBackStack(null)
-                commit()
+            // L'étape finale varie selon le type de compte :
+            // - pour les comptes classiques, on montre les félicitations
+            // - pour les associations, on présente un formulaire de présentation de l'association
+            val userGoal = viewModel.user?.goal
+            if (userGoal != null && userGoal.equals(User.USER_GOAL_ASSO, ignoreCase = true)) {
+                val fragment = EnhancedOnboardingAssoFragment()
+                supportFragmentManager.beginTransaction().apply {
+                    replace(binding.fragmentContainer.id, fragment)
+                    addToBackStack(null)
+                    commit()
+                }
+            } else {
+                val fragment = OnboardingCongratsFragment()
+                supportFragmentManager.beginTransaction().apply {
+                    replace(binding.fragmentContainer.id, fragment)
+                    addToBackStack(null)
+                    commit()
+                }
             }
         }
     }

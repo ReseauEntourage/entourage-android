@@ -16,6 +16,7 @@ import social.entourage.android.enhanced_onboarding.OnboardingViewModel
 import social.entourage.android.enhanced_onboarding.fragments.OnboardingInterestsAdapter
 import social.entourage.android.main_filter.MainFilterActivity
 import social.entourage.android.tools.log.AnalyticsEvents
+import social.entourage.android.api.model.User
 
 class OnboardingInterestFragment : Fragment() {
 
@@ -46,7 +47,14 @@ class OnboardingInterestFragment : Fragment() {
             if (EnhancedOnboarding.isFromSettingsinterest) {
                 viewModel.registerAndQuit()
             } else {
-                viewModel.setOnboardingFourthStep(true)
+                // Si l'utilisateur a le rôle "association", on ignore la sélection des catégories
+                // d'entraide et l'étape des disponibilités. On passe directement à l'étape finale.
+                val userGoal = viewModel.user?.goal
+                if (userGoal != null && userGoal.equals(User.USER_GOAL_ASSO, ignoreCase = true)) {
+                    viewModel.setOnboardingFifthStep(true)
+                } else {
+                    viewModel.setOnboardingFourthStep(true)
+                }
             }
         }
 

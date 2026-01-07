@@ -13,6 +13,7 @@ import social.entourage.android.enhanced_onboarding.EnhancedOnboarding
 import social.entourage.android.enhanced_onboarding.InterestForAdapter
 import social.entourage.android.enhanced_onboarding.OnboardingViewModel
 import social.entourage.android.enhanced_onboarding.fragments.OnboardingInterestsAdapter
+import social.entourage.android.api.model.User
 import social.entourage.android.tools.log.AnalyticsEvents
 
 class OnboardingActionWishesFragment : Fragment() {
@@ -82,90 +83,147 @@ class OnboardingActionWishesFragment : Fragment() {
     }
 
     private fun loadAndSendActionWishes() {
-        val user = viewModel.user
+        val user = viewModel.user ?: run {
+            viewModel.setActionsWishes(emptyList())
+            return
+        }
 
-        val actionWishes = if (EnhancedOnboarding.preference == "contribution") {
-            listOf(
-                user?.involvements?.contains("outings")?.let {
-                    InterestForAdapter(
-                        icon = getIconForActionWish("outings"),
-                        title = getString(R.string.onboarding_action_wish_event_contrib),
-                        isSelected = it,
-                        id = "outings",
-                        subtitle = ""
+        val actionWishes = if (user.goal.equals(User.USER_GOAL_ASSO, ignoreCase = true)) {
+            buildList {
+                // Relayer ses événements de convivialité sur l'application
+                user.involvements?.contains("outings")?.let { isSelected ->
+                    add(
+                        InterestForAdapter(
+                            icon = getIconForActionWish("outings"),
+                            title = "Relayer vos événements de convivialité sur l'application",
+                            isSelected = isSelected,
+                            id = "outings",
+                            subtitle = ""
+                        )
                     )
-                },
-                user?.involvements?.contains("both_actions")?.let {
+                }
+                // Orienter ses bénéficiaires vers les événements de convivialité
+                user.involvements?.contains("neighborhoods")?.let { isSelected ->
+                    add(
+                        InterestForAdapter(
+                            icon = getIconForActionWish("neighborhoods"),
+                            title = "Orienter vos bénéficiaires aux événements de convivialité",
+                            isSelected = isSelected,
+                            id = "neighborhoods",
+                            subtitle = ""
+                        )
+                    )
+                }
+                // Donner ou solliciter un coup de pouce
+                add(
                     InterestForAdapter(
                         icon = getIconForActionWish("actions"),
-                        title = getString(R.string.onboarding_action_wish_services_contrib),
-                        isSelected = it,
+                        title = "Donner ou solliciter un coup de pouce",
+                        isSelected = user.involvements?.contains("both_actions") ?: false,
                         id = "both_actions",
                         subtitle = ""
                     )
-                },
-                user?.involvements?.contains("neighborhoods")?.let {
-                    InterestForAdapter(
-                        icon = getIconForActionWish("neighborhoods"),
-                        title = getString(R.string.onboarding_action_wish_network_contrib),
-                        isSelected = it,
-                        id = "neighborhoods",
-                        subtitle = ""
-                    )
-                },
-                user?.involvements?.contains("resources")?.let {
-                    InterestForAdapter(
-                        icon = R.drawable.ic_onboarding_interest_name_rencontre_nomade,
-                        title = getString(R.string.onboarding_action_wish_pedago_contrib),
-                        isSelected = it,
-                        id = "pois",
-                        subtitle = ""
-                    )
-                }
-            ).filterNotNull()
+                )
+            }
         } else {
-            listOf(
-                user?.involvements?.contains("resources")?.let {
-                    InterestForAdapter(
-                        icon = getIconForActionWish("resources"),
-                        title = getString(R.string.onboarding_action_wish_pedago),
-                        isSelected = it,
-                        id = "resources",
-                        subtitle = ""
-                    )
-                },
-                user?.involvements?.contains("outings")?.let {
-                    InterestForAdapter(
-                        icon = getIconForActionWish("outings"),
-                        title = getString(R.string.onboarding_action_wish_event),
-                        isSelected = it,
-                        id = "outings",
-                        subtitle = ""
-                    )
-                },
-                user?.involvements?.contains("both_actions")?.let {
-                    InterestForAdapter(
-                        icon = getIconForActionWish("actions"),
-                        title = getString(R.string.onboarding_action_wish_services),
-                        isSelected = it,
-                        id = "both_actions",
-                        subtitle = ""
-                    )
-                },
-                user?.involvements?.contains("neighborhoods")?.let {
-                    InterestForAdapter(
-                        icon = getIconForActionWish("neighborhoods"),
-                        title = getString(R.string.onboarding_action_wish_network),
-                        isSelected = it,
-                        id = "neighborhoods",
-                        subtitle = ""
-                    )
+            buildList {
+                if (EnhancedOnboarding.preference == "contribution") {
+                    user.involvements?.contains("outings")?.let { isSelected ->
+                        add(
+                            InterestForAdapter(
+                                icon = getIconForActionWish("outings"),
+                                title = getString(R.string.onboarding_action_wish_event_contrib),
+                                isSelected = isSelected,
+                                id = "outings",
+                                subtitle = ""
+                            )
+                        )
+                    }
+                    user.involvements?.contains("both_actions")?.let { isSelected ->
+                        add(
+                            InterestForAdapter(
+                                icon = getIconForActionWish("actions"),
+                                title = getString(R.string.onboarding_action_wish_services_contrib),
+                                isSelected = isSelected,
+                                id = "both_actions",
+                                subtitle = ""
+                            )
+                        )
+                    }
+                    user.involvements?.contains("neighborhoods")?.let { isSelected ->
+                        add(
+                            InterestForAdapter(
+                                icon = getIconForActionWish("neighborhoods"),
+                                title = getString(R.string.onboarding_action_wish_network_contrib),
+                                isSelected = isSelected,
+                                id = "neighborhoods",
+                                subtitle = ""
+                            )
+                        )
+                    }
+                    user.involvements?.contains("resources")?.let { isSelected ->
+                        add(
+                            InterestForAdapter(
+                                icon = R.drawable.ic_onboarding_interest_name_rencontre_nomade,
+                                title = getString(R.string.onboarding_action_wish_pedago_contrib),
+                                isSelected = isSelected,
+                                id = "pois",
+                                subtitle = ""
+                            )
+                        )
+                    }
+                } else {
+                    user.involvements?.contains("resources")?.let { isSelected ->
+                        add(
+                            InterestForAdapter(
+                                icon = getIconForActionWish("resources"),
+                                title = getString(R.string.onboarding_action_wish_pedago),
+                                isSelected = isSelected,
+                                id = "resources",
+                                subtitle = ""
+                            )
+                        )
+                    }
+                    user.involvements?.contains("outings")?.let { isSelected ->
+                        add(
+                            InterestForAdapter(
+                                icon = getIconForActionWish("outings"),
+                                title = getString(R.string.onboarding_action_wish_event),
+                                isSelected = isSelected,
+                                id = "outings",
+                                subtitle = ""
+                            )
+                        )
+                    }
+                    user.involvements?.contains("both_actions")?.let { isSelected ->
+                        add(
+                            InterestForAdapter(
+                                icon = getIconForActionWish("actions"),
+                                title = getString(R.string.onboarding_action_wish_services),
+                                isSelected = isSelected,
+                                id = "both_actions",
+                                subtitle = ""
+                            )
+                        )
+                    }
+                    user.involvements?.contains("neighborhoods")?.let { isSelected ->
+                        add(
+                            InterestForAdapter(
+                                icon = getIconForActionWish("neighborhoods"),
+                                title = getString(R.string.onboarding_action_wish_network),
+                                isSelected = isSelected,
+                                id = "neighborhoods",
+                                subtitle = ""
+                            )
+                        )
+                    }
                 }
-            ).filterNotNull()
+            }
         }
 
         viewModel.setActionsWishes(actionWishes)
     }
+
 
     private fun getIconForActionWish(id: String): Int {
         return when (id) {
