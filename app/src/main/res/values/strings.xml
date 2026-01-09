@@ -3218,4 +3218,18 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
 
     <string name="login_change_phone_question">Vous avez changé de numéro de téléphone ?</string>
 
+    <string name="enhanced_onboarding_asso_wishes_title">Envies d’agir</string>
+    <string name="enhanced_onboarding_asso_wishes_description">Choisissez comment vous souhaitez utiliser l\’application avec votre association.</string>
+
+    <string name="enhanced_onboarding_asso_wish_outings">Relayer vos événements de convivialité sur l\’application</string>
+    <string name="enhanced_onboarding_asso_wish_neighborhoods">Orienter vos bénéficiaires aux événements de convivialité</string>
+    <string name="enhanced_onboarding_asso_wish_both_actions">Donner ou solliciter un coup de pouce</string>
+    <string name="enhanced_onboarding_asso_title">Présentez votre association à la communauté</string>
+    <string name="enhanced_onboarding_asso_subtitle">Ajoutez votre logo et une courte description pour que les membres de la communauté sachent qui vous êtes et ce que vous faites.</string>
+    <string name="enhanced_onboarding_asso_btn_upload_logo">Importer un logo</string>
+    <string name="enhanced_onboarding_asso_description_label">Description de votre association</string>
+    <string name="enhanced_onboarding_asso_description_hint">Ex. : Association de quartier œuvrant pour le lien social via des événements ouverts à tous.</string>
+    <string name="enhanced_onboarding_asso_btn_later">Plus tard</string>
+    <string name="enhanced_onboarding_asso_btn_finish">Terminer</string>
+
 </resources>

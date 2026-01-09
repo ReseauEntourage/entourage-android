@@ -3,35 +3,47 @@ package social.entourage.android.enhanced_onboarding
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.view.WindowManager
 import androidx.activity.OnBackPressedCallback
 import androidx.lifecycle.ViewModelProvider
 import social.entourage.android.EntourageApplication
 import social.entourage.android.MainActivity
 import social.entourage.android.R
+import social.entourage.android.api.model.User
 import social.entourage.android.base.BaseActivity
 import social.entourage.android.databinding.ActivityEnhancedOnboardingLayoutBinding
+import social.entourage.android.enhanced_onboarding.fragments.EnhancedOnboardingAssoFragment
 import social.entourage.android.enhanced_onboarding.fragments.OnboardingActionWishesFragment
 import social.entourage.android.enhanced_onboarding.fragments.OnboardingCategorieFragment
 import social.entourage.android.enhanced_onboarding.fragments.OnboardingCongratsFragment
 import social.entourage.android.enhanced_onboarding.fragments.OnboardingDisponibilityFragment
 import social.entourage.android.enhanced_onboarding.fragments.OnboardingInterestFragment
 import social.entourage.android.enhanced_onboarding.fragments.OnboardingPresentationFragment
-import social.entourage.android.enhanced_onboarding.fragments.EnhancedOnboardingAssoFragment
-import social.entourage.android.api.model.User
 
 class EnhancedOnboarding : BaseActivity() {
 
     private lateinit var binding: ActivityEnhancedOnboardingLayoutBinding
     private lateinit var viewModel: OnboardingViewModel
-    //private val userPresenter: UserPresenter by lazy { UserPresenter() }
+    private var backCallback: OnBackPressedCallback? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        window.setSoftInputMode(
+            WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN or
+                    WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE
+        )
+
         binding = ActivityEnhancedOnboardingLayoutBinding.inflate(layoutInflater)
         viewModel = ViewModelProvider(this).get(OnboardingViewModel::class.java)
         viewModel.user = EntourageApplication.me(this)
 
-        // Observateurs pour chaque étape
+        val userGoal = viewModel.user?.goal
+        if (userGoal != null && userGoal.equals(User.USER_GOAL_ASSO, ignoreCase = true)) {
+            isAssociationFromSummary = true
+            EntourageApplication.get().sharedPreferences.edit().putBoolean(PREF_IS_ASSOCIATION_FROM_SUMMARY, true).apply()
+        }
+
         viewModel.onboardingFirstStep.observe(this, ::handleOnboardingFirstStep)
         viewModel.onboardingSecondStep.observe(this, ::handleOnboardingSecondStep)
         viewModel.onboardingThirdStep.observe(this, ::handleOnboardingThirdStep)
@@ -40,27 +52,24 @@ class EnhancedOnboarding : BaseActivity() {
         viewModel.onboardingFifthStep.observe(this, ::handleOnboardingFifthStep)
         viewModel.onboardingShouldQuit.observe(this, ::handleOnboardingShouldQuit)
         viewModel.shouldDismissBtnBack.observe(this, ::toggleBtnBack)
-        //userPresenter.user.observe(this, ::updateUser)
 
         setContentView(binding.root)
+
+        binding.btnBack.setOnClickListener {
+            handleBackNavigation()
+        }
+
+        backCallback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                handleBackNavigation()
+            }
+        }
+        onBackPressedDispatcher.addCallback(this, backCallback!!)
     }
 
     override fun onResume() {
         super.onResume()
 
-        // Gestion du clic sur le bouton retour
-        binding.btnBack.setOnClickListener {
-            handleBackNavigation()
-        }
-
-        // Callback pour la touche physique retour
-        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                handleBackNavigation()
-            }
-        })
-
-        // Déclenchement de l'étape d'onboarding selon le contexte
         if (isFromSettingsinterest) {
             viewModel.setOnboardingThirdStep(true)
         } else if (isFromSettingsDisponibility) {
@@ -75,17 +84,18 @@ class EnhancedOnboarding : BaseActivity() {
                 2 -> viewModel.setOnboardingSecondStep(true)
                 3 -> viewModel.setOnboardingThirdStep(true)
                 4 -> viewModel.setOnboardingFourthStep(true)
-                5 -> viewModel.onboardingDisponibilityStep.postValue(true) // Étape des disponibilités
+                5 -> viewModel.onboardingDisponibilityStep.postValue(true)
                 6 -> viewModel.setOnboardingFifthStep(true)
             }
         }
     }
 
-    /**
-     * Méthode centralisée de gestion du retour.
-     * Elle décrémente le step, appelle register() puis, si nécessaire, quitte l'onboarding
-     * ou effectue un popBackStack pour revenir au fragment précédent.
-     */
+    override fun onDestroy() {
+        backCallback?.remove()
+        backCallback = null
+        super.onDestroy()
+    }
+
     private fun handleBackNavigation() {
         if (isFromSettingsinterest || isFromSettingsDisponibility || isFromSettingsWishes || isFromSettingsActionCategorie) {
             viewModel.registerAndQuit()
@@ -95,7 +105,6 @@ class EnhancedOnboarding : BaseActivity() {
             if (viewModel.step < 1) {
                 viewModel.registerAndQuit()
             } else {
-                // Retour au fragment précédent sans appeler onBackPressed() récursivement
                 supportFragmentManager.popBackStack()
             }
         }
@@ -109,7 +118,11 @@ class EnhancedOnboarding : BaseActivity() {
         binding.btnBack.visibility = if (value) View.VISIBLE else View.GONE
     }
 
-    // Gestion des différentes étapes d'onboarding en remplaçant le fragment courant
+    private fun isAssociationMode(): Boolean {
+        val local = isAssociationFromSummary
+        if (local != null) return local
+        return EntourageApplication.get().sharedPreferences.getBoolean(PREF_IS_ASSOCIATION_FROM_SUMMARY, false)
+    }
 
     private fun handleOnboardingFirstStep(value: Boolean) {
         if (value) {
@@ -146,12 +159,7 @@ class EnhancedOnboarding : BaseActivity() {
 
     private fun handleOnboardingFourthStep(value: Boolean) {
         if (value) {
-            // Pour les comptes associations, on ignore complètement l'étape des catégories
-            // et on passe directement à l'étape suivante. On vérifie également les cas de retour
-            // depuis les paramètres qui imposent d'enregistrer et quitter immédiatement.
-            val userGoal = viewModel.user?.goal
-            if (userGoal != null && userGoal.equals(User.USER_GOAL_ASSO, ignoreCase = true)) {
-                // Passer directement à l'étape suivante (disponibilité) qui sera elle-même ignorée
+            if (isAssociationMode()) {
                 viewModel.setOnboardingFifthStep(true)
                 return
             }
@@ -170,10 +178,7 @@ class EnhancedOnboarding : BaseActivity() {
 
     private fun handleOnboardingDisponibilityStep(value: Boolean) {
         if (value) {
-            // L'étape de disponibilité est supprimée pour les associations. Si l'utilisateur
-            // a pour objectif "association", on passe directement à l'étape finale.
-            val userGoal = viewModel.user?.goal
-            if (userGoal != null && userGoal.equals(User.USER_GOAL_ASSO, ignoreCase = true)) {
+            if (isAssociationMode()) {
                 viewModel.setOnboardingFifthStep(true)
                 return
             }
@@ -188,11 +193,7 @@ class EnhancedOnboarding : BaseActivity() {
 
     private fun handleOnboardingFifthStep(value: Boolean) {
         if (value) {
-            // L'étape finale varie selon le type de compte :
-            // - pour les comptes classiques, on montre les félicitations
-            // - pour les associations, on présente un formulaire de présentation de l'association
-            val userGoal = viewModel.user?.goal
-            if (userGoal != null && userGoal.equals(User.USER_GOAL_ASSO, ignoreCase = true)) {
+            if (isAssociationMode()) {
                 val fragment = EnhancedOnboardingAssoFragment()
                 supportFragmentManager.beginTransaction().apply {
                     replace(binding.fragmentContainer.id, fragment)
@@ -223,7 +224,6 @@ class EnhancedOnboarding : BaseActivity() {
                 isFromSettingsinterest = false
                 MainActivity.shouldLaunchEvent = false
                 MainActivity.shouldLaunchProfile = true
-
             }
             if (MainActivity.isFromProfile) {
                 MainActivity.shouldLaunchEvent = false
@@ -245,5 +245,7 @@ class EnhancedOnboarding : BaseActivity() {
         var isFromSettingsWishes: Boolean = false
         var isFromSettingsActionCategorie: Boolean = false
         var shouldNotDisplayCampain: Boolean = false
+        var isAssociationFromSummary: Boolean? = null
+        private const val PREF_IS_ASSOCIATION_FROM_SUMMARY = "PREF_IS_ASSOCIATION_FROM_SUMMARY"
     }
 }

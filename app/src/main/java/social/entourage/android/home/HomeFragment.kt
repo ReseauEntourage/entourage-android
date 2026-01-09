@@ -815,6 +815,14 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
 
     private fun updateContributionsView(summary: Summary) {
         if (!isAdded) return
+
+        val isAssociationFromSummary = summary.association == true
+        EntourageApplication.get().sharedPreferences.edit {
+            putBoolean(PREF_IS_ASSOCIATION_FROM_SUMMARY, isAssociationFromSummary)
+        }
+        presentEnhancedOnboardingIntro()
+        EnhancedOnboarding.isAssociationFromSummary = isAssociationFromSummary
+
         EnhancedOnboarding.preference = summary.preference ?: ""
         onActionUnclosed(summary)
         handleHelps(summary)
@@ -1086,6 +1094,7 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
         private const val PREF_ENHANCED_ONBOARDING_LAUNCHED = "PREF_ENHANCED_ONBOARDING_LAUNCHED"
         private const val PREF_ENHANCED_ONBOARDING_SKIPPED = "PREF_ENHANCED_ONBOARDING_SKIPPED"
         private const val PREF_NOTIF_SHOULD_SHOW_NEXT = "PREF_NOTIF_SHOULD_SHOW_NEXT"
+        private const val PREF_IS_ASSOCIATION_FROM_SUMMARY = "PREF_IS_ASSOCIATION_FROM_SUMMARY"
     }
 
     private object HomeEntryGatingSession {

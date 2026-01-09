@@ -8,12 +8,11 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import social.entourage.android.R
+import social.entourage.android.api.model.User
 import social.entourage.android.databinding.FragmentOnboardingActionWishesLayoutBinding
 import social.entourage.android.enhanced_onboarding.EnhancedOnboarding
 import social.entourage.android.enhanced_onboarding.InterestForAdapter
 import social.entourage.android.enhanced_onboarding.OnboardingViewModel
-import social.entourage.android.enhanced_onboarding.fragments.OnboardingInterestsAdapter
-import social.entourage.android.api.model.User
 import social.entourage.android.tools.log.AnalyticsEvents
 
 class OnboardingActionWishesFragment : Fragment() {
@@ -51,8 +50,13 @@ class OnboardingActionWishesFragment : Fragment() {
             }
         }
 
-        binding.tvTitle.text = getString(R.string.onboarding_action_wish_title)
-        binding.tvDescription.text = getString(R.string.onboarding_action_wish_content)
+        if (isAssociationMode()) {
+            binding.tvTitle.text = getString(R.string.enhanced_onboarding_asso_wishes_title)
+            binding.tvDescription.text = getString(R.string.enhanced_onboarding_asso_wishes_description)
+        } else {
+            binding.tvTitle.text = getString(R.string.onboarding_action_wish_title)
+            binding.tvDescription.text = getString(R.string.onboarding_action_wish_content)
+        }
     }
 
     override fun onResume() {
@@ -67,6 +71,12 @@ class OnboardingActionWishesFragment : Fragment() {
         }
 
         loadAndSendActionWishes()
+    }
+
+    private fun isAssociationMode(): Boolean {
+        if (EnhancedOnboarding.isAssociationFromSummary == true) return true
+        val goal = viewModel.user?.goal
+        return goal != null && goal.equals(User.USER_GOAL_ASSO, ignoreCase = true)
     }
 
     private fun setupRecyclerView() {
@@ -88,37 +98,36 @@ class OnboardingActionWishesFragment : Fragment() {
             return
         }
 
-        val actionWishes = if (user.goal.equals(User.USER_GOAL_ASSO, ignoreCase = true)) {
+        val actionWishes = if (isAssociationMode()) {
             buildList {
-                // Relayer ses événements de convivialité sur l'application
                 user.involvements?.contains("outings")?.let { isSelected ->
                     add(
                         InterestForAdapter(
                             icon = getIconForActionWish("outings"),
-                            title = "Relayer vos événements de convivialité sur l'application",
+                            title = getString(R.string.enhanced_onboarding_asso_wish_outings),
                             isSelected = isSelected,
                             id = "outings",
                             subtitle = ""
                         )
                     )
                 }
-                // Orienter ses bénéficiaires vers les événements de convivialité
+
                 user.involvements?.contains("neighborhoods")?.let { isSelected ->
                     add(
                         InterestForAdapter(
                             icon = getIconForActionWish("neighborhoods"),
-                            title = "Orienter vos bénéficiaires aux événements de convivialité",
+                            title = getString(R.string.enhanced_onboarding_asso_wish_neighborhoods),
                             isSelected = isSelected,
                             id = "neighborhoods",
                             subtitle = ""
                         )
                     )
                 }
-                // Donner ou solliciter un coup de pouce
+
                 add(
                     InterestForAdapter(
                         icon = getIconForActionWish("actions"),
-                        title = "Donner ou solliciter un coup de pouce",
+                        title = getString(R.string.enhanced_onboarding_asso_wish_both_actions),
                         isSelected = user.involvements?.contains("both_actions") ?: false,
                         id = "both_actions",
                         subtitle = ""
@@ -223,7 +232,6 @@ class OnboardingActionWishesFragment : Fragment() {
 
         viewModel.setActionsWishes(actionWishes)
     }
-
 
     private fun getIconForActionWish(id: String): Int {
         return when (id) {
