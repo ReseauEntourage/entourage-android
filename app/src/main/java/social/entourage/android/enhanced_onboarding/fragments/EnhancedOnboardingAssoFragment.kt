@@ -1,6 +1,5 @@
 package social.entourage.android.enhanced_onboarding.fragments
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -10,6 +9,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.edit
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -28,51 +29,36 @@ class EnhancedOnboardingAssoFragment : Fragment() {
 
     private var partnerId: Int? = null
     private var logoUri: Uri? = null
-
     private var initialDescription: String? = null
-    private var initialLogoUrl: String? = null
+    private var userHasEditedDescription: Boolean = false
+    private var userHasPickedLogo: Boolean = false
+    private var lastLoadedPartnerId: Int? = null
 
     private var pendingDescription: String? = null
     private var pendingUploadKey: String? = null
     private var waitingUpload: Boolean = false
     private var waitingUpdate: Boolean = false
 
-    private var userHasEditedDescription: Boolean = false
-    private var userHasPickedLogo: Boolean = false
-
-    private var lastLoadedPartnerId: Int? = null
-
     private val pickLogoLauncher =
         registerForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
             if (uri == null) return@registerForActivityResult
-
             runCatching {
                 requireContext().contentResolver.takePersistableUriPermission(
-                    uri,
-                    Intent.FLAG_GRANT_READ_URI_PERMISSION
+                    uri, Intent.FLAG_GRANT_READ_URI_PERMISSION
                 )
             }
-
             logoUri = uri
             userHasPickedLogo = true
-
             Glide.with(this).load(uri).into(binding.ivLogo)
             saveDraft(logoUri = uri)
         }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        restoreDraftIntoMemory()
-        if (!getDraftDescription().isNullOrBlank()) userHasEditedDescription = true
-        if (getDraftLogoUri() != null) userHasPickedLogo = true
-        logoUri = getDraftLogoUri()
+
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentEnhancedOnboardingAssoBinding.inflate(inflater, container, false)
         viewModel = ViewModelProvider(requireActivity())[OnboardingViewModel::class.java]
         return binding.root
@@ -81,33 +67,24 @@ class EnhancedOnboardingAssoFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        restoreDraftIntoUi()
+        // On force l'affichage du bouton retour dans l'Activity
+        viewModel.shouldDismissBtnBack.postValue(true)
 
-        binding.etDescription.setOnTouchListener { v, event ->
-            v.parent?.requestDisallowInterceptTouchEvent(true)
-            if (event.actionMasked == android.view.MotionEvent.ACTION_UP ||
-                event.actionMasked == android.view.MotionEvent.ACTION_CANCEL
-            ) {
-                v.parent?.requestDisallowInterceptTouchEvent(false)
-            }
-            false
-        }
+        restoreDraftIntoUi()
+        setupKeyboardHandling()
 
         binding.etDescription.doAfterTextChanged {
             userHasEditedDescription = true
             saveDraft(description = it?.toString())
         }
 
-        bindPresenter()
-
-        binding.btnUploadLogo.setOnClickListener {
-            pickLogoLauncher.launch(arrayOf("image/*"))
-        }
+        binding.ivLogo.setOnClickListener { pickLogoLauncher.launch(arrayOf("image/*")) }
+        binding.btnUploadLogo.setOnClickListener { pickLogoLauncher.launch(arrayOf("image/*")) }
 
         binding.buttonSkip.setOnClickListener {
             AnalyticsEvents.logEvent("onboarding_asso_skip_clic")
             clearDraft()
-            viewModel.registerAndQuit()
+            viewModel.quitNow()
         }
 
         binding.buttonFinish.setOnClickListener {
@@ -115,133 +92,72 @@ class EnhancedOnboardingAssoFragment : Fragment() {
             onFinishClicked()
         }
 
+        bindPresenter()
         loadMyAssociationIntoUi()
     }
 
-    override fun onPause() {
-        saveDraft(description = binding.etDescription.text?.toString(), logoUri = logoUri)
-        super.onPause()
+    private fun setupKeyboardHandling() {
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { _, insets ->
+            val keyboardHeight = insets.getInsets(WindowInsetsCompat.Type.ime()).bottom
+            binding.scroll.setPadding(0, 0, 0, keyboardHeight)
+            if (insets.isVisible(WindowInsetsCompat.Type.ime()) && binding.etDescription.hasFocus()) {
+                binding.scroll.postDelayed({
+                    binding.scroll.smoothScrollTo(0, binding.scroll.bottom)
+                }, 100)
+            }
+            insets
+        }
     }
 
     private fun bindPresenter() {
         assoPresenter.partner.observe(viewLifecycleOwner) { partner ->
-            val desc = readStringField(partner, "about")
-                ?: readStringField(partner, "description")
-                ?: ""
-
-            val logoUrl = readStringField(partner, "logoUrl")
-                ?: readStringField(partner, "logo_url")
-                ?: readStringField(partner, "avatarUrl")
-                ?: readStringField(partner, "avatar_url")
-                ?: readStringField(partner, "imageUrl")
-                ?: readStringField(partner, "image_url")
-
+            val desc = readStringField(partner, "about") ?: readStringField(partner, "description") ?: ""
+            val logoUrl = readStringField(partner, "logoUrl") ?: readStringField(partner, "imageUrl") ?: ""
             initialDescription = desc
-            initialLogoUrl = logoUrl
 
-            val hasDraftDesc = !getDraftDescription().isNullOrBlank()
-            val hasDraftLogo = getDraftLogoUri() != null
-
-            if (!userHasEditedDescription && !hasDraftDesc && binding.etDescription.text?.toString().isNullOrBlank()) {
+            if (!userHasEditedDescription && getDraftDescription().isNullOrBlank()) {
                 binding.etDescription.setText(desc)
             }
-
-            if (!userHasPickedLogo && !hasDraftLogo && logoUri == null && !logoUrl.isNullOrBlank()) {
+            if (!userHasPickedLogo && getDraftLogoUri() == null && logoUrl.isNotBlank()) {
                 Glide.with(this).load(logoUrl).into(binding.ivLogo)
             }
         }
 
         assoPresenter.presignedUrl.observe(viewLifecycleOwner) { presigned ->
-            if (presigned == null) {
+            val uri = logoUri ?: return@observe
+            if (presigned == null) { waitingUpload = false; tryComplete(); return@observe }
+
+            val bytes = readBytes(uri) ?: return@observe
+            assoPresenter.uploadToPresignedUrl(presigned.presignedUrl!!, "image/jpeg", bytes) { ok ->
                 waitingUpload = false
-                tryComplete()
-                return@observe
-            }
-
-            val uri = logoUri
-            if (uri == null) {
-                waitingUpload = false
-                tryComplete()
-                return@observe
-            }
-
-            val presignedUrl = presigned.presignedUrl
-            val uploadKey = presigned.uploadKey
-
-            if (presignedUrl.isNullOrBlank() || uploadKey.isNullOrBlank()) {
-                waitingUpload = false
-                tryComplete()
-                return@observe
-            }
-
-            val ct = resolveContentType(uri) ?: "image/jpeg"
-            val bytes = readBytes(uri)
-
-            if (bytes == null || bytes.isEmpty()) {
-                waitingUpload = false
-                tryComplete()
-                return@observe
-            }
-
-            assoPresenter.uploadToPresignedUrl(
-                uploadUrl = presignedUrl,
-                contentType = ct,
-                bytes = bytes
-            ) { ok ->
-                waitingUpload = false
-                if (ok) {
-                    pendingUploadKey = uploadKey
-                }
+                if (ok) pendingUploadKey = presigned.uploadKey
                 tryComplete()
             }
         }
 
         assoPresenter.updatePartnerSuccess.observe(viewLifecycleOwner) { success ->
-            if (success == true) {
-                waitingUpdate = false
-                clearDraft()
-                viewModel.registerAndQuit()
-            }
+            waitingUpdate = false
+            if (success == true) { clearDraft(); viewModel.quitNow() }
         }
     }
 
     private fun loadMyAssociationIntoUi() {
-        val me = activity?.let { EntourageApplication.me(it) }
-        val partner = me?.partner
-        val id = readIntField(partner, "id")
-            ?: readIntField(partner, "partnerId")
-            ?: readIntField(partner, "partner_id")
-
-        if (id != null && id > 0) {
+        val me = EntourageApplication.me(requireContext())
+        val id = readIntField(me?.partner, "id")
+        if (id != null && id > 0 && id != lastLoadedPartnerId) {
             partnerId = id
-            if (lastLoadedPartnerId == id) return
             lastLoadedPartnerId = id
             assoPresenter.getPartnerInfos(id)
         }
     }
 
     private fun onFinishClicked() {
-        val pid = partnerId
-        if (pid == null || pid <= 0) {
-            val description = binding.etDescription.text?.toString()?.trim()
-            if (!description.isNullOrEmpty()) {
-                viewModel.user?.about = description
-            }
-            clearDraft()
-            viewModel.registerAndQuit()
-            return
-        }
-
         val currentDesc = binding.etDescription.text?.toString()?.trim().orEmpty()
-        val descChanged = currentDesc != (initialDescription ?: "")
+        pendingDescription = if (currentDesc != initialDescription) currentDesc else null
 
-        pendingDescription = if (descChanged) currentDesc else null
-
-        val hasNewLogo = logoUri != null
-        if (hasNewLogo) {
+        if (logoUri != null) {
             waitingUpload = true
-            val ct = resolveContentType(logoUri!!) ?: "image/jpeg"
-            assoPresenter.getPresignedUploadUrl(ct)
+            assoPresenter.getPresignedUploadUrl("image/jpeg")
         } else {
             tryComplete()
         }
@@ -249,178 +165,80 @@ class EnhancedOnboardingAssoFragment : Fragment() {
 
     private fun tryComplete() {
         val pid = partnerId ?: return
-
-        if (waitingUpload) return
-        if (waitingUpdate) return
-
-        val needsDesc = !pendingDescription.isNullOrEmpty()
-        val needsLogo = logoUri != null
-
-        if (!needsDesc && !needsLogo) {
-            clearDraft()
-            viewModel.registerAndQuit()
-            return
-        }
-
-        if (needsLogo && pendingUploadKey.isNullOrBlank()) {
-            clearDraft()
-            viewModel.registerAndQuit()
-            return
-        }
+        if (waitingUpload || waitingUpdate) return
 
         val updateData = assoPresenter.newPartnerUpdateData()
+        var hasChange = false
 
-        if (needsDesc) {
-            setFieldIfExists(updateData, "about", pendingDescription)
-            setFieldIfExists(updateData, "description", pendingDescription)
+        pendingDescription?.let {
+            setFieldIfExists(updateData, "about", it)
+            hasChange = true
+        }
+        pendingUploadKey?.let {
+            setFieldIfExists(updateData, "logoKey", it)
+            hasChange = true
         }
 
-        if (needsLogo) {
-            val key = pendingUploadKey
-            setFieldIfExists(updateData, "logoKey", key)
-            setFieldIfExists(updateData, "logo_key", key)
-            setFieldIfExists(updateData, "imageKey", key)
-            setFieldIfExists(updateData, "image_key", key)
-            setFieldIfExists(updateData, "avatarKey", key)
-            setFieldIfExists(updateData, "avatar_key", key)
-            setFieldIfExists(updateData, "uploadKey", key)
-            setFieldIfExists(updateData, "upload_key", key)
+        if (!hasChange) {
+            viewModel.quitNow()
+        } else {
+            waitingUpdate = true
+            assoPresenter.updatePartner(pid, updateData)
         }
-
-        waitingUpdate = true
-        assoPresenter.updatePartner(pid, updateData)
     }
 
-    private fun restoreDraftIntoMemory() {
-        val desc = draftPrefs().getString(KEY_DRAFT_DESC, null)
-        val logo = draftPrefs().getString(KEY_DRAFT_LOGO_URI, null)
-        cachedDraftDesc = desc
-        cachedDraftLogo = logo?.let { runCatching { Uri.parse(it) }.getOrNull() }
+    // --- Draft Logic ---
+    private fun saveDraft(description: String? = null, logoUri: Uri? = null) {
+        draftPrefs().edit {
+            putString(KEY_DRAFT_DESC, description ?: binding.etDescription.text?.toString())
+            putString(KEY_DRAFT_LOGO_URI, (logoUri ?: this@EnhancedOnboardingAssoFragment.logoUri)?.toString())
+        }
     }
 
     private fun restoreDraftIntoUi() {
-        val draftDesc = getDraftDescription()
-        if (!draftDesc.isNullOrBlank()) {
-            if (binding.etDescription.text?.toString().isNullOrBlank()) {
-                binding.etDescription.setText(draftDesc)
-            }
+        val d = draftPrefs().getString(KEY_DRAFT_DESC, null)
+        val l = draftPrefs().getString(KEY_DRAFT_LOGO_URI, null)
+        if (!d.isNullOrBlank()) {
+            binding.etDescription.setText(d)
             userHasEditedDescription = true
         }
-
-        val draftLogo = getDraftLogoUri()
-        if (draftLogo != null) {
-            logoUri = draftLogo
-            runCatching {
-                Glide.with(this).load(draftLogo).into(binding.ivLogo)
-            }.onFailure {
-                logoUri = null
-                saveDraft(logoUri = null)
-            }
-            userHasPickedLogo = logoUri != null
+        l?.let {
+            logoUri = Uri.parse(it)
+            Glide.with(this).load(logoUri).into(binding.ivLogo)
+            userHasPickedLogo = true
         }
     }
 
-    private fun saveDraft(description: String? = null, logoUri: Uri? = null) {
-        val d = description ?: binding.etDescription.text?.toString()
-        val l = logoUri ?: this.logoUri
-        cachedDraftDesc = d
-        cachedDraftLogo = l
-        draftPrefs().edit {
-            putString(KEY_DRAFT_DESC, d)
-            putString(KEY_DRAFT_LOGO_URI, l?.toString())
-        }
-    }
+    private fun clearDraft() = draftPrefs().edit().clear().apply()
+    private fun draftPrefs() = requireContext().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+    private fun getDraftDescription() = draftPrefs().getString(KEY_DRAFT_DESC, null)
+    private fun getDraftLogoUri() = draftPrefs().getString(KEY_DRAFT_LOGO_URI, null)?.let { Uri.parse(it) }
 
-    private fun clearDraft() {
-        cachedDraftDesc = null
-        cachedDraftLogo = null
-        draftPrefs().edit {
-            remove(KEY_DRAFT_DESC)
-            remove(KEY_DRAFT_LOGO_URI)
-        }
-    }
+    // --- Helper Reflection Methods (Simplified) ---
+    private fun readStringField(obj: Any?, name: String): String? = runCatching {
+        val f = obj?.javaClass?.getDeclaredField(name)?.apply { isAccessible = true }
+        f?.get(obj) as? String
+    }.getOrNull()
 
-    private fun getDraftDescription(): String? = cachedDraftDesc
-    private fun getDraftLogoUri(): Uri? = cachedDraftLogo
+    private fun readIntField(obj: Any?, name: String): Int? = runCatching {
+        val f = obj?.javaClass?.getDeclaredField(name)?.apply { isAccessible = true }
+        (f?.get(obj) as? Number)?.toInt()
+    }.getOrNull()
 
-    private fun draftPrefs() =
-        requireContext().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
-
-    private fun resolveContentType(uri: Uri): String? {
-        return try {
-            requireContext().contentResolver.getType(uri)
-        } catch (_: Throwable) {
-            null
-        }
-    }
-
-    private fun readBytes(uri: Uri): ByteArray? {
-        return try {
-            requireContext().contentResolver.openInputStream(uri)?.use { it.readBytes() }
-        } catch (_: Throwable) {
-            null
-        }
-    }
-
-    private fun readStringField(obj: Any?, fieldName: String): String? {
-        if (obj == null) return null
-        return try {
-            val f = obj.javaClass.getDeclaredField(fieldName)
-            f.isAccessible = true
-            (f.get(obj) as? String)
-        } catch (_: Throwable) {
-            try {
-                val getter = "get" + fieldName.replaceFirstChar { it.uppercase() }
-                val m = obj.javaClass.methods.firstOrNull { it.name == getter && it.parameterTypes.isEmpty() }
-                (m?.invoke(obj) as? String)
-            } catch (_: Throwable) {
-                null
-            }
-        }
-    }
-
-    private fun readIntField(obj: Any?, fieldName: String): Int? {
-        if (obj == null) return null
-        return try {
-            val f = obj.javaClass.getDeclaredField(fieldName)
-            f.isAccessible = true
-            val v = f.get(obj)
-            when (v) {
-                is Int -> v
-                is Long -> v.toInt()
-                is String -> v.toIntOrNull()
-                else -> null
-            }
-        } catch (_: Throwable) {
-            null
-        }
-    }
-
-    private fun setFieldIfExists(obj: Any, fieldName: String, value: Any?) {
-        try {
-            val f = obj.javaClass.getDeclaredField(fieldName)
-            f.isAccessible = true
+    private fun setFieldIfExists(obj: Any, name: String, value: Any?) {
+        runCatching {
+            val f = obj.javaClass.getDeclaredField(name).apply { isAccessible = true }
             f.set(obj, value)
-            return
-        } catch (_: Throwable) {
-        }
-
-        try {
-            val setterName = "set" + fieldName.replaceFirstChar { it.uppercase() }
-            val m = obj.javaClass.methods.firstOrNull { it.name == setterName && it.parameterTypes.size == 1 }
-            if (m != null) {
-                m.invoke(obj, value)
-            }
-        } catch (_: Throwable) {
         }
     }
+
+    private fun readBytes(uri: Uri): ByteArray? = runCatching {
+        requireContext().contentResolver.openInputStream(uri)?.use { it.readBytes() }
+    }.getOrNull()
 
     companion object {
         private const val PREFS_NAME = "enhanced_onboarding_asso_draft_prefs"
         private const val KEY_DRAFT_DESC = "enhanced_onboarding_asso_draft_desc"
         private const val KEY_DRAFT_LOGO_URI = "enhanced_onboarding_asso_draft_logo_uri"
-
-        private var cachedDraftDesc: String? = null
-        private var cachedDraftLogo: Uri? = null
     }
 }

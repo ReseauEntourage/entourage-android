@@ -12,48 +12,46 @@ import social.entourage.android.R
 import social.entourage.android.api.model.User
 import social.entourage.android.base.BaseActivity
 import social.entourage.android.databinding.ActivityEnhancedOnboardingLayoutBinding
-import social.entourage.android.enhanced_onboarding.fragments.EnhancedOnboardingAssoFragment
-import social.entourage.android.enhanced_onboarding.fragments.OnboardingActionWishesFragment
-import social.entourage.android.enhanced_onboarding.fragments.OnboardingCategorieFragment
-import social.entourage.android.enhanced_onboarding.fragments.OnboardingCongratsFragment
-import social.entourage.android.enhanced_onboarding.fragments.OnboardingDisponibilityFragment
-import social.entourage.android.enhanced_onboarding.fragments.OnboardingInterestFragment
-import social.entourage.android.enhanced_onboarding.fragments.OnboardingPresentationFragment
+import social.entourage.android.enhanced_onboarding.fragments.*
+import social.entourage.android.tools.updatePaddingBottomForEdgeToEdge
 
 class EnhancedOnboarding : BaseActivity() {
-
     private lateinit var binding: ActivityEnhancedOnboardingLayoutBinding
     private lateinit var viewModel: OnboardingViewModel
     private var backCallback: OnBackPressedCallback? = null
 
+    // Variables de contexte (assumées présentes dans ton projet)
+    private var isAssociationFromSummary: Boolean? = null
+    private val PREF_IS_ASSOCIATION_FROM_SUMMARY = "is_asso_from_summary"
+    var isFromSettingsinterest = false
+    var isFromSettingsDisponibility = false
+    var isFromSettingsWishes = false
+    var isFromSettingsActionCategorie = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        // Permet au layout de se redimensionner quand le clavier apparaît
         window.setSoftInputMode(
             WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN or
                     WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE
         )
 
         binding = ActivityEnhancedOnboardingLayoutBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
         viewModel = ViewModelProvider(this).get(OnboardingViewModel::class.java)
         viewModel.user = EntourageApplication.me(this)
 
         val userGoal = viewModel.user?.goal
         if (userGoal != null && userGoal.equals(User.USER_GOAL_ASSO, ignoreCase = true)) {
             isAssociationFromSummary = true
-            EntourageApplication.get().sharedPreferences.edit().putBoolean(PREF_IS_ASSOCIATION_FROM_SUMMARY, true).apply()
+            EntourageApplication.get().sharedPreferences.edit()
+                .putBoolean(PREF_IS_ASSOCIATION_FROM_SUMMARY, true)
+                .apply()
         }
 
-        viewModel.onboardingFirstStep.observe(this, ::handleOnboardingFirstStep)
-        viewModel.onboardingSecondStep.observe(this, ::handleOnboardingSecondStep)
-        viewModel.onboardingThirdStep.observe(this, ::handleOnboardingThirdStep)
-        viewModel.onboardingFourthStep.observe(this, ::handleOnboardingFourthStep)
-        viewModel.onboardingDisponibilityStep.observe(this, ::handleOnboardingDisponibilityStep)
-        viewModel.onboardingFifthStep.observe(this, ::handleOnboardingFifthStep)
-        viewModel.onboardingShouldQuit.observe(this, ::handleOnboardingShouldQuit)
-        viewModel.shouldDismissBtnBack.observe(this, ::toggleBtnBack)
-
-        setContentView(binding.root)
+        setupObservers()
 
         binding.btnBack.setOnClickListener {
             handleBackNavigation()
@@ -67,18 +65,31 @@ class EnhancedOnboarding : BaseActivity() {
         onBackPressedDispatcher.addCallback(this, backCallback!!)
     }
 
+    private fun setupObservers() {
+        viewModel.onboardingFirstStep.observe(this, ::handleOnboardingFirstStep)
+        viewModel.onboardingSecondStep.observe(this, ::handleOnboardingSecondStep)
+        viewModel.onboardingThirdStep.observe(this, ::handleOnboardingThirdStep)
+        viewModel.onboardingFourthStep.observe(this, ::handleOnboardingFourthStep)
+        viewModel.onboardingDisponibilityStep.observe(this, ::handleOnboardingDisponibilityStep)
+        viewModel.onboardingFifthStep.observe(this, ::handleOnboardingFifthStep)
+        viewModel.onboardingShouldQuit.observe(this, ::handleOnboardingShouldQuit)
+        viewModel.shouldDismissBtnBack.observe(this, ::toggleBtnBack)
+    }
+
     override fun onResume() {
         super.onResume()
+        // On ne recharge les fragments que si aucun n'est affiché (gestion de la rotation/reprise)
+        if (supportFragmentManager.backStackEntryCount == 0) {
+            loadInitialStep()
+        }
+    }
 
-        if (isFromSettingsinterest) {
-            viewModel.setOnboardingThirdStep(true)
-        } else if (isFromSettingsDisponibility) {
-            viewModel.onboardingDisponibilityStep.postValue(true)
-        } else if (isFromSettingsWishes) {
-            viewModel.setOnboardingSecondStep(true)
-        } else if (isFromSettingsActionCategorie) {
-            viewModel.setOnboardingFourthStep(true)
-        } else {
+    private fun loadInitialStep() {
+        if (isFromSettingsinterest) viewModel.setOnboardingThirdStep(true)
+        else if (isFromSettingsDisponibility) viewModel.onboardingDisponibilityStep.postValue(true)
+        else if (isFromSettingsWishes) viewModel.setOnboardingSecondStep(true)
+        else if (isFromSettingsActionCategorie) viewModel.setOnboardingFourthStep(true)
+        else {
             when (viewModel.step) {
                 1 -> viewModel.setOnboardingFirstStep(true)
                 2 -> viewModel.setOnboardingSecondStep(true)
@@ -86,92 +97,59 @@ class EnhancedOnboarding : BaseActivity() {
                 4 -> viewModel.setOnboardingFourthStep(true)
                 5 -> viewModel.onboardingDisponibilityStep.postValue(true)
                 6 -> viewModel.setOnboardingFifthStep(true)
+                else -> viewModel.setOnboardingFirstStep(true)
             }
         }
-    }
-
-    override fun onDestroy() {
-        backCallback?.remove()
-        backCallback = null
-        super.onDestroy()
     }
 
     private fun handleBackNavigation() {
-        if (isFromSettingsinterest || isFromSettingsDisponibility || isFromSettingsWishes || isFromSettingsActionCategorie) {
-            viewModel.registerAndQuit()
-        } else {
-            viewModel.register()
+        val currentFragment = supportFragmentManager.findFragmentById(binding.fragmentContainer.id)
+
+        // Logique spécifique pour le mode Association
+        if (isAssociationMode() && currentFragment is EnhancedOnboardingAssoFragment) {
+            viewModel.step = 3 // On revient direct aux intérêts (étape 3)
+            supportFragmentManager.popBackStack()
+            return
+        }
+
+        // Logique générique
+        if (supportFragmentManager.backStackEntryCount > 1) {
             viewModel.step -= 1
-            if (viewModel.step < 1) {
-                viewModel.registerAndQuit()
-            } else {
-                supportFragmentManager.popBackStack()
-            }
+            supportFragmentManager.popBackStack()
+        } else {
+            viewModel.registerAndQuit()
         }
     }
 
-    private fun updateUser(user: User) {
-        viewModel.user = user
-    }
-
-    private fun toggleBtnBack(value: Boolean) {
-        binding.btnBack.visibility = if (value) View.VISIBLE else View.GONE
+    private fun toggleBtnBack(shouldShow: Boolean) {
+        binding.btnBack.visibility = if (shouldShow) View.VISIBLE else View.GONE
     }
 
     private fun isAssociationMode(): Boolean {
-        val local = isAssociationFromSummary
-        if (local != null) return local
-        return EntourageApplication.get().sharedPreferences.getBoolean(PREF_IS_ASSOCIATION_FROM_SUMMARY, false)
+        return isAssociationFromSummary ?: EntourageApplication.get().sharedPreferences
+            .getBoolean(PREF_IS_ASSOCIATION_FROM_SUMMARY, false)
     }
 
+    // --- Gestion des transactions de fragments ---
+
     private fun handleOnboardingFirstStep(value: Boolean) {
-        if (value) {
-            val fragment = OnboardingPresentationFragment()
-            supportFragmentManager.beginTransaction().apply {
-                replace(binding.fragmentContainer.id, fragment)
-                addToBackStack(null)
-                commit()
-            }
-        }
+        if (value) replaceFragment(OnboardingPresentationFragment())
     }
 
     private fun handleOnboardingSecondStep(value: Boolean) {
-        if (value) {
-            val fragment = OnboardingActionWishesFragment()
-            supportFragmentManager.beginTransaction().apply {
-                replace(binding.fragmentContainer.id, fragment)
-                addToBackStack(null)
-                commit()
-            }
-        }
+        if (value) replaceFragment(OnboardingActionWishesFragment())
     }
 
     private fun handleOnboardingThirdStep(value: Boolean) {
-        if (value) {
-            val fragment = OnboardingInterestFragment()
-            supportFragmentManager.beginTransaction().apply {
-                replace(binding.fragmentContainer.id, fragment)
-                addToBackStack(null)
-                commit()
-            }
-        }
+        if (value) replaceFragment(OnboardingInterestFragment())
     }
 
     private fun handleOnboardingFourthStep(value: Boolean) {
         if (value) {
             if (isAssociationMode()) {
                 viewModel.setOnboardingFifthStep(true)
-                return
-            }
-            if (isFromSettingsinterest || isFromSettingsDisponibility || isFromSettingsWishes) {
-                viewModel.registerAndQuit()
-                return
-            }
-            val fragment = OnboardingCategorieFragment()
-            supportFragmentManager.beginTransaction().apply {
-                replace(binding.fragmentContainer.id, fragment)
-                addToBackStack(null)
-                commit()
+            } else {
+                replaceFragment(OnboardingCategorieFragment())
             }
         }
     }
@@ -180,13 +158,8 @@ class EnhancedOnboarding : BaseActivity() {
         if (value) {
             if (isAssociationMode()) {
                 viewModel.setOnboardingFifthStep(true)
-                return
-            }
-            val fragment = OnboardingDisponibilityFragment()
-            supportFragmentManager.beginTransaction().apply {
-                replace(binding.fragmentContainer.id, fragment)
-                addToBackStack(null)
-                commit()
+            } else {
+                replaceFragment(OnboardingDisponibilityFragment())
             }
         }
     }
@@ -194,58 +167,40 @@ class EnhancedOnboarding : BaseActivity() {
     private fun handleOnboardingFifthStep(value: Boolean) {
         if (value) {
             if (isAssociationMode()) {
-                val fragment = EnhancedOnboardingAssoFragment()
-                supportFragmentManager.beginTransaction().apply {
-                    replace(binding.fragmentContainer.id, fragment)
-                    addToBackStack(null)
-                    commit()
-                }
+                viewModel.step = 6
+                replaceFragment(EnhancedOnboardingAssoFragment())
             } else {
-                val fragment = OnboardingCongratsFragment()
-                supportFragmentManager.beginTransaction().apply {
-                    replace(binding.fragmentContainer.id, fragment)
-                    addToBackStack(null)
-                    commit()
-                }
+                replaceFragment(OnboardingCongratsFragment())
             }
+        }
+    }
+
+    private fun replaceFragment(fragment: androidx.fragment.app.Fragment) {
+        supportFragmentManager.beginTransaction().apply {
+            replace(binding.fragmentContainer.id, fragment)
+            addToBackStack(null)
+            commit()
         }
     }
 
     private fun handleOnboardingShouldQuit(value: Boolean) {
         if (value) {
-            when (viewModel.selectedCategory) {
-                "both_actions" -> MainActivity.shouldLaunchActionCreation = true
-                "event" -> MainActivity.shouldLaunchEvent = true
-                "no_event" -> MainActivity.shouldLaunchActionCreation = true
-                "resources" -> MainActivity.shouldLaunchQuizz = true
-                "neighborhoods" -> MainActivity.shouldLaunchWelcomeGroup = true
-            }
-            if (isFromSettingsinterest || isFromSettingsDisponibility || isFromSettingsWishes || isFromSettingsActionCategorie) {
-                isFromSettingsinterest = false
-                MainActivity.shouldLaunchEvent = false
-                MainActivity.shouldLaunchProfile = true
-            }
-            if (MainActivity.isFromProfile) {
-                MainActivity.shouldLaunchEvent = false
-                MainActivity.shouldLaunchProfile = true
-            }
             val intent = Intent(this, MainActivity::class.java).apply {
-                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             }
             startActivity(intent)
-            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
             finish()
         }
     }
-
     companion object {
-        var preference: String = ""
-        var isFromSettingsinterest: Boolean = false
-        var isFromSettingsDisponibility: Boolean = false
-        var isFromSettingsWishes: Boolean = false
-        var isFromSettingsActionCategorie: Boolean = false
-        var shouldNotDisplayCampain: Boolean = false
+        // Ces variables sont utilisées par les fragments et les réglages du profil
+        var isFromSettingsinterest = false
+        var isFromSettingsDisponibility = false
+        var isFromSettingsWishes = false
+        var isFromSettingsActionCategorie = false
+
+        // Utilisé pour le mode association
         var isAssociationFromSummary: Boolean? = null
-        private const val PREF_IS_ASSOCIATION_FROM_SUMMARY = "PREF_IS_ASSOCIATION_FROM_SUMMARY"
+        const val PREF_IS_ASSOCIATION_FROM_SUMMARY = "is_asso_from_summary"
     }
 }

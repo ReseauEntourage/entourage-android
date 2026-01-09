@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/root_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -9,14 +10,16 @@
         android:id="@+id/scroll"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:fillViewport="true"
+        android:clipToPadding="false"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/bottom_buttons"
-        android:layout_marginTop="30dp"
-        android:fillViewport="true">
+        app:layout_constraintBottom_toTopOf="@+id/bottom_buttons">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/inner_container"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:paddingBottom="20dp">
 
             <TextView
                 android:id="@+id/tv_title"
@@ -52,29 +55,23 @@
                 android:id="@+id/iv_logo"
                 android:layout_width="120dp"
                 android:layout_height="120dp"
-                android:layout_marginTop="28dp"
+                android:layout_marginTop="32dp"
                 android:scaleType="centerCrop"
                 android:src="@drawable/placeholder_user"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_subtitle" />
 
-            <Button
+            <ImageView
                 android:id="@+id/btn_upload_logo"
-                style="?android:attr/borderlessButtonStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="47dp"
-                android:layout_marginTop="12dp"
-                android:background="@drawable/shape_button_v9_negative"
-                android:fontFamily="@font/quicksand_bold"
-                android:paddingHorizontal="18dp"
-                android:text="@string/enhanced_onboarding_asso_btn_upload_logo"
-                android:textAllCaps="false"
-                android:textColor="@color/black"
-                android:textSize="14sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/iv_logo" />
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginEnd="-15dp"
+                android:background="@color/transparent"
+                android:elevation="2dp"
+                android:src="@drawable/ic_modify_photo_profile_full"
+                app:layout_constraintEnd_toEndOf="@+id/iv_logo"
+                app:layout_constraintTop_toTopOf="@+id/iv_logo" />
 
             <TextView
                 android:id="@+id/tv_label_description"
@@ -82,19 +79,20 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
                 android:layout_marginEnd="24dp"
-                android:layout_marginTop="28dp"
+                android:layout_marginTop="32dp"
                 android:fontFamily="@font/quicksand_bold"
                 android:text="@string/enhanced_onboarding_asso_description_label"
                 android:textColor="@color/black"
-                android:textSize="16sp"
+                android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/btn_upload_logo" />
+                app:layout_constraintTop_toBottomOf="@id/iv_logo" />
 
             <EditText
                 android:id="@+id/et_description"
                 android:layout_width="0dp"
-                android:layout_height="0dp"
+                android:layout_height="wrap_content"
+                android:minHeight="180dp"
                 android:layout_marginStart="24dp"
                 android:layout_marginEnd="24dp"
                 android:layout_marginTop="10dp"
@@ -107,7 +105,7 @@
                 android:padding="14dp"
                 android:textColor="@color/black"
                 android:textColorHint="@color/grey"
-                android:textSize="16sp"
+                android:textSize="15sp"
                 android:overScrollMode="always"
                 android:scrollbars="vertical"
                 android:scrollbarStyle="insideInset"
@@ -115,20 +113,19 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_label_description"
-                app:layout_constraintBottom_toBottomOf="parent"/>
-
-
+                app:layout_constraintBottom_toBottomOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
+
     <LinearLayout
         android:id="@+id/bottom_buttons"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:background="@color/transparent"
+        android:background="@color/white"
         android:orientation="horizontal"
         android:padding="20dp"
+        android:elevation="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
@@ -142,7 +139,6 @@
             android:layout_weight="1"
             android:background="@drawable/shape_button_v9_negative"
             android:fontFamily="@font/quicksand_bold"
-            android:paddingVertical="10dp"
             android:text="@string/enhanced_onboarding_asso_btn_later"
             android:textAllCaps="false"
             android:textColor="@color/black"
@@ -157,13 +153,10 @@
             android:layout_weight="1"
             android:background="@drawable/shape_button_v9_positive"
             android:fontFamily="@font/quicksand_bold"
-            android:paddingVertical="10dp"
             android:text="@string/enhanced_onboarding_asso_btn_finish"
             android:textAllCaps="false"
             android:textColor="@android:color/white"
             android:textSize="14sp" />
 
     </LinearLayout>
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>

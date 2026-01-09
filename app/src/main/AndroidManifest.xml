@@ -81,7 +81,6 @@
             android:name=".welcome.WelcomeOneActivity"
             android:exported="false" />
         <activity android:name=".enhanced_onboarding.EnhancedOnboarding"
-            android:windowSoftInputMode="stateHidden|adjustResize"
             android:exported="false"/>
         <activity android:name=".notifications.NotificationDemandActivity"
             android:exported="false"/>

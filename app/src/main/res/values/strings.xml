@@ -3218,8 +3218,8 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
 
     <string name="login_change_phone_question">Vous avez changé de numéro de téléphone ?</string>
 
-    <string name="enhanced_onboarding_asso_wishes_title">Envies d’agir</string>
-    <string name="enhanced_onboarding_asso_wishes_description">Choisissez comment vous souhaitez utiliser l\’application avec votre association.</string>
+    <string name="enhanced_onboarding_asso_wishes_title">Comment souhaitez-vous agir au sein de la communauté d\’Entourage</string>
+    <string name="enhanced_onboarding_asso_wishes_description">(Eh oui, Vous avez le droit de choisir plusieurs options !)</string>
 
     <string name="enhanced_onboarding_asso_wish_outings">Relayer vos événements de convivialité sur l\’application</string>
     <string name="enhanced_onboarding_asso_wish_neighborhoods">Orienter vos bénéficiaires aux événements de convivialité</string>
