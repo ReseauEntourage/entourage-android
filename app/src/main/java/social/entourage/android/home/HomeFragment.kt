@@ -820,7 +820,6 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
         EntourageApplication.get().sharedPreferences.edit {
             putBoolean(PREF_IS_ASSOCIATION_FROM_SUMMARY, isAssociationFromSummary)
         }
-        presentEnhancedOnboardingIntro()
         EnhancedOnboarding.isAssociationFromSummary = isAssociationFromSummary
 
         EnhancedOnboarding.preference = summary.preference ?: ""

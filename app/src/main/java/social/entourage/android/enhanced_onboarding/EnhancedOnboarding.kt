@@ -12,21 +12,18 @@ import social.entourage.android.R
 import social.entourage.android.api.model.User
 import social.entourage.android.base.BaseActivity
 import social.entourage.android.databinding.ActivityEnhancedOnboardingLayoutBinding
-import social.entourage.android.enhanced_onboarding.fragments.*
-import social.entourage.android.tools.updatePaddingBottomForEdgeToEdge
+import social.entourage.android.enhanced_onboarding.fragments.EnhancedOnboardingAssoFragment
+import social.entourage.android.enhanced_onboarding.fragments.OnboardingActionWishesFragment
+import social.entourage.android.enhanced_onboarding.fragments.OnboardingCategorieFragment
+import social.entourage.android.enhanced_onboarding.fragments.OnboardingCongratsFragment
+import social.entourage.android.enhanced_onboarding.fragments.OnboardingDisponibilityFragment
+import social.entourage.android.enhanced_onboarding.fragments.OnboardingInterestFragment
+import social.entourage.android.enhanced_onboarding.fragments.OnboardingPresentationFragment
 
 class EnhancedOnboarding : BaseActivity() {
     private lateinit var binding: ActivityEnhancedOnboardingLayoutBinding
     private lateinit var viewModel: OnboardingViewModel
     private var backCallback: OnBackPressedCallback? = null
-
-    // Variables de contexte (assumées présentes dans ton projet)
-    private var isAssociationFromSummary: Boolean? = null
-    private val PREF_IS_ASSOCIATION_FROM_SUMMARY = "is_asso_from_summary"
-    var isFromSettingsinterest = false
-    var isFromSettingsDisponibility = false
-    var isFromSettingsWishes = false
-    var isFromSettingsActionCategorie = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -78,18 +75,21 @@ class EnhancedOnboarding : BaseActivity() {
 
     override fun onResume() {
         super.onResume()
-        // On ne recharge les fragments que si aucun n'est affiché (gestion de la rotation/reprise)
         if (supportFragmentManager.backStackEntryCount == 0) {
             loadInitialStep()
         }
     }
 
     private fun loadInitialStep() {
-        if (isFromSettingsinterest) viewModel.setOnboardingThirdStep(true)
-        else if (isFromSettingsDisponibility) viewModel.onboardingDisponibilityStep.postValue(true)
-        else if (isFromSettingsWishes) viewModel.setOnboardingSecondStep(true)
-        else if (isFromSettingsActionCategorie) viewModel.setOnboardingFourthStep(true)
-        else {
+        if (isFromSettingsinterest) {
+            viewModel.setOnboardingThirdStep(true)
+        } else if (isFromSettingsDisponibility) {
+            viewModel.onboardingDisponibilityStep.postValue(true)
+        } else if (isFromSettingsWishes) {
+            viewModel.setOnboardingSecondStep(true)
+        } else if (isFromSettingsActionCategorie) {
+            viewModel.setOnboardingFourthStep(true)
+        } else {
             when (viewModel.step) {
                 1 -> viewModel.setOnboardingFirstStep(true)
                 2 -> viewModel.setOnboardingSecondStep(true)
@@ -105,19 +105,22 @@ class EnhancedOnboarding : BaseActivity() {
     private fun handleBackNavigation() {
         val currentFragment = supportFragmentManager.findFragmentById(binding.fragmentContainer.id)
 
-        // Logique spécifique pour le mode Association
+        // Logique spécifique pour sortir du mode Association vers l'étape 3 (intérêts)
         if (isAssociationMode() && currentFragment is EnhancedOnboardingAssoFragment) {
-            viewModel.step = 3 // On revient direct aux intérêts (étape 3)
+            viewModel.step = 3
             supportFragmentManager.popBackStack()
             return
         }
 
-        // Logique générique
-        if (supportFragmentManager.backStackEntryCount > 1) {
-            viewModel.step -= 1
-            supportFragmentManager.popBackStack()
-        } else {
+        if (isFromSettingsinterest || isFromSettingsDisponibility || isFromSettingsWishes || isFromSettingsActionCategorie) {
             viewModel.registerAndQuit()
+        } else {
+            if (supportFragmentManager.backStackEntryCount > 1) {
+                viewModel.step -= 1
+                supportFragmentManager.popBackStack()
+            } else {
+                viewModel.registerAndQuit()
+            }
         }
     }
 
@@ -129,8 +132,6 @@ class EnhancedOnboarding : BaseActivity() {
         return isAssociationFromSummary ?: EntourageApplication.get().sharedPreferences
             .getBoolean(PREF_IS_ASSOCIATION_FROM_SUMMARY, false)
     }
-
-    // --- Gestion des transactions de fragments ---
 
     private fun handleOnboardingFirstStep(value: Boolean) {
         if (value) replaceFragment(OnboardingPresentationFragment())
@@ -192,15 +193,20 @@ class EnhancedOnboarding : BaseActivity() {
             finish()
         }
     }
+
     companion object {
-        // Ces variables sont utilisées par les fragments et les réglages du profil
+        // Flags de provenance (Settings)
         var isFromSettingsinterest = false
         var isFromSettingsDisponibility = false
         var isFromSettingsWishes = false
         var isFromSettingsActionCategorie = false
 
-        // Utilisé pour le mode association
+        // Mode Association
         var isAssociationFromSummary: Boolean? = null
         const val PREF_IS_ASSOCIATION_FROM_SUMMARY = "is_asso_from_summary"
+
+        // Variables manquantes signalées par ton build
+        var preference: String? = null
+        var shouldNotDisplayCampain = false
     }
 }
