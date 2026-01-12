@@ -74,9 +74,11 @@
 
                 <social.entourage.android.tools.view.countrycodepicker.CountryCodePicker
                     android:id="@+id/ui_login_phone_ccp_code"
+                    android:background="@drawable/bg_ccp_border"
                     android:layout_width="56dp"
                     android:layout_height="match_parent"
                     android:layout_marginEnd="8dp"
+                    android:layout_marginTop="5dp"
                     app:ccp_alternative_layout="false"
                     app:ccp_defaultNameCode="FR"
                     app:ccp_hideNameCode="true"
@@ -140,7 +142,7 @@
                 app:cardCornerRadius="12dp"
                 app:cardElevation="0dp"
                 app:strokeWidth="1dp"
-                app:strokeColor="@color/light_grey"
+                app:strokeColor="@color/grey_contour"
                 app:cardBackgroundColor="@color/white">
 
                 <LinearLayout
