@@ -309,6 +309,7 @@
          <activity
              android:name=".onboarding.login.LoginActivity"
              android:screenOrientation="portrait"
+             android:theme="@style/AppMaterial"
              android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".profile.ProfileFullActivity"

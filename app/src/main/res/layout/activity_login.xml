@@ -60,13 +60,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp">
 
             <LinearLayout
                 android:id="@+id/phone_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="16dp"
                 android:orientation="horizontal">
 
                 <social.entourage.android.tools.view.countrycodepicker.CountryCodePicker
@@ -80,8 +83,7 @@
                     app:ccp_hidePhoneCode="true"
                     app:ccp_selectionDialogShowSearch="false"
                     app:ccp_showFlag="false"
-                    app:ccp_textSize="14sp"
-                    app:ccp_textColor="@color/pre_onboard_black" />
+                    app:ccp_textSize="14sp" />
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/ui_login_phone_input_layout"
