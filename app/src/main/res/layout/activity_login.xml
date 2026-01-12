@@ -212,6 +212,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="18dp"
+            app:backgroundTint="@null"
             android:background="@drawable/new_bg_rounded_button_orange_fill"
             android:fontFamily="@font/nunitosans_bold"
             android:paddingHorizontal="34dp"
