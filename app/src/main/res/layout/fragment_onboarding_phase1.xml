@@ -26,6 +26,7 @@
                 style="@style/Ent.TextInputLayout.Outlined.Dropdown"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+
                 android:hint="@string/onboard_welcome_title_gender"
                 app:endIconMode="dropdown_menu">
 

@@ -91,7 +91,11 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:hint="@string/login_phone_placeholder">
+                    android:hint="@string/login_phone_placeholder"
+                    app:boxCornerRadiusTopStart="4dp"
+                    app:boxCornerRadiusTopEnd="4dp"
+                    app:boxCornerRadiusBottomStart="4dp"
+                    app:boxCornerRadiusBottomEnd="4dp">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/ui_login_phone_et_phone"
@@ -112,7 +116,11 @@
                 android:layout_marginTop="12dp"
                 android:hint="@string/login_placeholder_code"
                 app:endIconMode="password_toggle"
-                app:endIconTint="@color/pre_onboard_orange">
+                app:endIconTint="@color/pre_onboard_orange"
+                app:boxCornerRadiusTopStart="4dp"
+                app:boxCornerRadiusTopEnd="4dp"
+                app:boxCornerRadiusBottomStart="4dp"
+                app:boxCornerRadiusBottomEnd="4dp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/ui_login_et_code"
