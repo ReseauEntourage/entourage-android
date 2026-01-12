@@ -13,8 +13,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:minHeight="60dp"
-        android:layout_marginTop="30dp"
         android:paddingHorizontal="15dp"
+        android:layout_marginTop="30dp"
         android:paddingBottom="@dimen/entourage_padding_10"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -56,101 +56,65 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/layout_header">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
-            android:paddingTop="18dp"
-            android:paddingBottom="18dp">
+            android:orientation="vertical"
+            android:padding="16dp">
 
-            <TextView
-                android:id="@+id/ui_label_country"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/phone_container"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/login_label_country"
-                android:textColor="@color/pre_onboard_black"
-                android:textSize="13sp"
-                android:fontFamily="@font/nunitosans_bold"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/ui_ccp_card"
-                android:layout_width="56dp"
-                android:layout_height="56dp"
                 android:layout_marginTop="8dp"
-                app:cardCornerRadius="10dp"
-                app:cardElevation="0dp"
-                app:strokeWidth="1dp"
-                app:strokeColor="@color/light_grey"
-                app:cardBackgroundColor="@color/white"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/ui_label_country">
+                android:orientation="horizontal">
 
                 <social.entourage.android.tools.view.countrycodepicker.CountryCodePicker
                     android:id="@+id/ui_login_phone_ccp_code"
-                    android:layout_width="match_parent"
+                    android:layout_width="56dp"
                     android:layout_height="match_parent"
-                    android:gravity="center"
+                    android:layout_marginEnd="8dp"
                     app:ccp_alternative_layout="false"
                     app:ccp_defaultNameCode="FR"
                     app:ccp_hideNameCode="true"
                     app:ccp_hidePhoneCode="true"
                     app:ccp_selectionDialogShowSearch="false"
-                    app:ccp_showFlag="true"
-                    app:ccp_textColor="@color/pre_onboard_black"
-                    app:ccp_textSize="14sp" />
-            </com.google.android.material.card.MaterialCardView>
+                    app:ccp_showFlag="false"
+                    app:ccp_textSize="14sp"
+                    app:ccp_textColor="@color/pre_onboard_black" />
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/ui_login_phone_input_layout"
-                style="@style/Ent.TextInputLayout.Outlined"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="12dp"
-                android:hint="@string/login_phone_placeholder"
-                app:layout_constraintBottom_toBottomOf="@+id/ui_ccp_card"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/ui_ccp_card"
-                app:layout_constraintTop_toTopOf="@+id/ui_ccp_card">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/ui_login_phone_et_phone"
-                    android:layout_width="match_parent"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/ui_login_phone_input_layout"
+                    style="@style/Ent.TextInputLayout.Outlined"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:autofillHints="phoneNumber"
-                    android:inputType="phone"
-                    android:maxLines="1" />
-            </com.google.android.material.textfield.TextInputLayout>
+                    android:layout_weight="1"
+                    android:hint="@string/login_phone_placeholder">
 
-            <TextView
-                android:id="@+id/ui_label_code"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="@string/login_label_code"
-                android:textColor="@color/pre_onboard_black"
-                android:textSize="13sp"
-                android:fontFamily="@font/nunitosans_bold"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/ui_ccp_card" />
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/ui_login_phone_et_phone"
+                        style="@style/Ent.TextField"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:autofillHints="phoneNumber"
+                        android:inputType="phone"
+                        android:maxLines="1" />
+                </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/ui_login_code_input_layout"
                 style="@style/Ent.TextInputLayout.Outlined"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="12dp"
                 android:hint="@string/login_placeholder_code"
                 app:endIconMode="password_toggle"
-                app:endIconTint="@color/pre_onboard_orange"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/ui_label_code">
+                app:endIconTint="@color/pre_onboard_orange">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/ui_login_et_code"
+                    style="@style/Ent.TextField"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:autofillHints="password"
@@ -160,27 +124,21 @@
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/ui_forgot_card"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="14dp"
+                android:layout_marginTop="16dp"
                 app:cardCornerRadius="12dp"
                 app:cardElevation="0dp"
                 app:strokeWidth="1dp"
                 app:strokeColor="@color/light_grey"
-                app:cardBackgroundColor="@color/white"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/ui_login_code_input_layout">
+                app:cardBackgroundColor="@color/white">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:gravity="center"
-                    android:paddingStart="16dp"
-                    android:paddingEnd="16dp"
-                    android:paddingTop="18dp"
-                    android:paddingBottom="18dp">
+                    android:padding="16dp">
 
                     <TextView
                         android:id="@+id/ui_forgot_title"
@@ -203,7 +161,7 @@
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
     </ScrollView>
 
     <LinearLayout
@@ -212,8 +170,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:gravity="center_horizontal"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginHorizontal="16dp"
         android:layout_marginBottom="18dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -236,8 +193,7 @@
             android:text="@string/login_change_phone"
             android:textColor="@color/black"
             android:textSize="13sp"
-            android:fontFamily="@font/nunitosans_regular"
-            />
+            android:fontFamily="@font/nunitosans_regular" />
 
         <Button
             android:id="@+id/ui_login_button_signup"
@@ -246,8 +202,7 @@
             android:layout_marginTop="18dp"
             android:background="@drawable/new_bg_rounded_button_orange_fill"
             android:fontFamily="@font/nunitosans_bold"
-            android:paddingStart="34dp"
-            android:paddingEnd="34dp"
+            android:paddingHorizontal="34dp"
             android:text="@string/login_button_connect"
             android:textAllCaps="false"
             android:textColor="@color/white" />
