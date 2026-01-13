@@ -100,25 +100,25 @@ class OnboardingActionWishesFragment : Fragment() {
 
         val actionWishes = if (isAssociationMode()) {
             buildList {
-                user.involvements?.contains("outings")?.let { isSelected ->
+                user.involvements?.contains("resources")?.let { isSelected ->
                     add(
                         InterestForAdapter(
-                            icon = getIconForActionWish("outings"),
+                            icon = getIconForActionWish("resources"),
                             title = getString(R.string.enhanced_onboarding_asso_wish_outings),
                             isSelected = isSelected,
-                            id = "outings",
+                            id = "resources",
                             subtitle = ""
                         )
                     )
                 }
 
-                user.involvements?.contains("neighborhoods")?.let { isSelected ->
+                user.involvements?.contains("outings")?.let { isSelected ->
                     add(
                         InterestForAdapter(
-                            icon = getIconForActionWish("neighborhoods"),
+                            icon = getIconForActionWish("outings"),
                             title = getString(R.string.enhanced_onboarding_asso_wish_neighborhoods),
                             isSelected = isSelected,
-                            id = "neighborhoods",
+                            id = "outings",
                             subtitle = ""
                         )
                     )

@@ -66,10 +66,10 @@
                 android:id="@+id/btn_upload_logo"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:layout_marginEnd="-15dp"
+                android:layout_marginEnd="0dp"
                 android:background="@color/transparent"
                 android:elevation="2dp"
-                android:src="@drawable/ic_modify_photo_profile_full"
+                android:src="@drawable/ic_modifiy_asso_enhanced_onboarding"
                 app:layout_constraintEnd_toEndOf="@+id/iv_logo"
                 app:layout_constraintTop_toTopOf="@+id/iv_logo" />
 
