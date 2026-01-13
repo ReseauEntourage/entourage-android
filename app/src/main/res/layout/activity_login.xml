@@ -207,22 +207,21 @@
             android:fontFamily="@font/nunitosans_regular" />
 
 
-        <com.google.android.material.button.MaterialButton
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/ui_login_button_signup"
             android:layout_width="wrap_content"
             android:layout_height="47dp"
             android:layout_marginTop="18dp"
             android:gravity="center"
-            app:backgroundTint="@color/pre_onboard_orange"
-            app:cornerRadius="25dp"
-            android:fontFamily="@font/quicksand_bold"
-            app:fontFamily="@font/quicksand_bold"
-            android:textSize="13sp"
+            android:background="@drawable/bg_rounded_orange"
+
             android:paddingHorizontal="34dp"
             android:text="@string/login_button_connect"
-            android:textAppearance="@style/LoginButtonAppearance"
             android:textAllCaps="false"
-            android:textColor="@color/white" />
+            android:textColor="@color/white"
+
+            android:fontFamily="@font/quicksand_bold"
+            android:textSize="13sp" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
