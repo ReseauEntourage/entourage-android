@@ -62,14 +62,13 @@
             android:orientation="vertical"
             android:paddingStart="16dp"
             android:paddingEnd="16dp"
-            android:paddingTop="16dp"
+
             android:paddingBottom="16dp">
 
             <LinearLayout
                 android:id="@+id/phone_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
                 android:orientation="horizontal">
 
                 <social.entourage.android.tools.view.countrycodepicker.CountryCodePicker
@@ -207,14 +206,17 @@
             android:textSize="13sp"
             android:fontFamily="@font/nunitosans_regular" />
 
-        <Button
+
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/ui_login_button_signup"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="47dp"
             android:layout_marginTop="18dp"
-            app:backgroundTint="@null"
-            android:background="@drawable/new_bg_rounded_button_orange_fill"
-            android:fontFamily="@font/nunitosans_bold"
+            android:gravity="center"
+            app:backgroundTint="@color/pre_onboard_orange"
+            app:cornerRadius="25dp"
+            android:fontFamily="@font/quicksand_bold"
+            app:fontFamily="@font/quicksand_bold"
             android:paddingHorizontal="34dp"
             android:text="@string/login_button_connect"
             android:textAllCaps="false"
