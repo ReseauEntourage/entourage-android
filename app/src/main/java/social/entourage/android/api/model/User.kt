@@ -38,6 +38,9 @@ class User : Serializable {
     @SerializedName("involvements")
     var involvements: ArrayList<String> = ArrayList()
 
+    @SerializedName("orientations")
+    var orientations: ArrayList<String> = ArrayList()
+
     @SerializedName("concerns")
     var concerns: ArrayList<String> = ArrayList()
 

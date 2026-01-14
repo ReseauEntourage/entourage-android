@@ -101,7 +101,7 @@
                 android:gravity="top|start"
                 android:hint="@string/enhanced_onboarding_asso_description_hint"
                 android:inputType="textMultiLine"
-                android:maxLength="1000"
+                android:maxLength="800"
                 android:padding="14dp"
                 android:textColor="@color/black"
                 android:textColorHint="@color/grey"

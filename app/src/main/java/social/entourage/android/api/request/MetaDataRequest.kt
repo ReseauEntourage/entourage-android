@@ -13,6 +13,7 @@ class MetaDataResponse(
     val interests: MutableList<userConfig>,
     val involvements: MutableList<userConfig>,
     val concerns: MutableList<userConfig>,
+    val orientations: MutableList<userConfig>,
 )
 
 class userConfig(

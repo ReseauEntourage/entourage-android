@@ -620,6 +620,7 @@ class MainActivity : BaseSecuredActivity() {
         var interest: MutableList<userConfig>? = null
         var concerns: MutableList<userConfig>? = null
         var involvements: MutableList<userConfig>? = null
+        var orientations: MutableList<userConfig>? = null
         var shouldLaunchEventPopUp:Int = 0
         var shouldLaunchOnboarding:Boolean = false
         var shouldLaunchProfile:Boolean = false
