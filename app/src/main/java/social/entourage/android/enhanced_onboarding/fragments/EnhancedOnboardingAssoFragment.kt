@@ -1,6 +1,5 @@
 package social.entourage.android.enhanced_onboarding.fragments
 
-import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -8,13 +7,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.content.edit
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import social.entourage.android.EntourageApplication
 import social.entourage.android.databinding.FragmentEnhancedOnboardingAssoBinding
 import social.entourage.android.enhanced_onboarding.OnboardingViewModel
@@ -27,30 +25,34 @@ class EnhancedOnboardingAssoFragment : Fragment() {
     private lateinit var viewModel: OnboardingViewModel
     private val assoPresenter = AssociationPresenter()
 
+    // L'ID du partenaire chargé
     private var partnerId: Int? = null
-    private var logoUri: Uri? = null
+    // L'URI locale si l'utilisateur change l'image (sinon null)
+    private var newLogoUri: Uri? = null
+    // La description initiale pour vérifier s'il y a eu modif
     private var initialDescription: String? = null
-    private var userHasEditedDescription: Boolean = false
-    private var userHasPickedLogo: Boolean = false
-    private var lastLoadedPartnerId: Int? = null
 
-    private var pendingDescription: String? = null
-    private var pendingUploadKey: String? = null
-    private var waitingUpload: Boolean = false
-    private var waitingUpdate: Boolean = false
+    // Drapeaux pour éviter les doubles clics pendant l'upload
+    private var isSaving: Boolean = false
 
     private val pickLogoLauncher =
         registerForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
             if (uri == null) return@registerForActivityResult
+
+            // On garde les droits de lecture (nécessaire sur certains appareils)
             runCatching {
                 requireContext().contentResolver.takePersistableUriPermission(
                     uri, Intent.FLAG_GRANT_READ_URI_PERMISSION
                 )
             }
-            logoUri = uri
-            userHasPickedLogo = true
-            Glide.with(this).load(uri).into(binding.ivLogo)
-            saveDraft(logoUri = uri)
+
+            // On stocke la nouvelle URI et on l'affiche direct
+            newLogoUri = uri
+            // AJOUT ICI : .transform(CircleCrop()) pour arrondir l'image locale choisie
+            Glide.with(this)
+                .load(uri)
+                .transform(CircleCrop())
+                .into(binding.ivLogo)
         }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -63,21 +65,14 @@ class EnhancedOnboardingAssoFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.shouldDismissBtnBack.postValue(true)
-
-        restoreDraftIntoUi()
         setupKeyboardHandling()
 
-        binding.etDescription.doAfterTextChanged {
-            userHasEditedDescription = true
-            saveDraft(description = it?.toString())
-        }
-
-        binding.ivLogo.setOnClickListener { pickLogoLauncher.launch(arrayOf("image/*")) }
-        binding.btnUploadLogo.setOnClickListener { pickLogoLauncher.launch(arrayOf("image/*")) }
+        // --- Listeners UI ---
+        binding.ivLogo.setOnClickListener { pickImage() }
+        binding.btnUploadLogo.setOnClickListener { pickImage() }
 
         binding.buttonSkip.setOnClickListener {
             AnalyticsEvents.logEvent("onboarding_asso_skip_clic")
-            clearDraft()
             viewModel.quitNow()
         }
 
@@ -86,16 +81,23 @@ class EnhancedOnboardingAssoFragment : Fragment() {
             onFinishClicked()
         }
 
+        // --- Chargement des données ---
         bindPresenter()
         loadMyAssociationIntoUi()
     }
 
+    private fun pickImage() {
+        pickLogoLauncher.launch(arrayOf("image/*"))
+    }
+
+    // --- CORRECTION ICI : On a enlevé le setPadding ---
     private fun setupKeyboardHandling() {
         ViewCompat.setOnApplyWindowInsetsListener(binding.root) { _, insets ->
-            val keyboardHeight = insets.getInsets(WindowInsetsCompat.Type.ime()).bottom
-            binding.scroll.setPadding(0, 0, 0, keyboardHeight)
+            // On vérifie juste si le clavier est visible pour scroller en bas
+            // On ne touche plus au padding du scrollview
             if (insets.isVisible(WindowInsetsCompat.Type.ime()) && binding.etDescription.hasFocus()) {
                 binding.scroll.postDelayed({
+                    // On scroll tout en bas pour être sûr que le curseur est visible
                     binding.scroll.smoothScrollTo(0, binding.scroll.bottom)
                 }, 100)
             }
@@ -104,53 +106,69 @@ class EnhancedOnboardingAssoFragment : Fragment() {
     }
 
     private fun bindPresenter() {
+        // 1. Réception des infos de l'asso
         assoPresenter.partner.observe(viewLifecycleOwner) { partner ->
+            if (partner == null) return@observe
+
             val desc = partner.description ?: ""
-
-            // --- C'est ici que tu peux supprimer la logique de nettoyage "Double URL" ---
-            // Si tes données en base sont propres grâce au fix d'upload,
-            // partner.largeLogoUrl suffira.
-            val logoUrl = partner.largeLogoUrl ?: partner.smallLogoUrl ?: ""
-            // --------------------------------------------------------------------------
-
             initialDescription = desc
 
-            if (!userHasEditedDescription && getDraftDescription().isNullOrBlank()) {
+            // On remplit la description si le champ est vide (premier chargement)
+            if (binding.etDescription.text.isNullOrBlank()) {
                 binding.etDescription.setText(desc)
             }
-            if (!userHasPickedLogo && getDraftLogoUri() == null && logoUrl.isNotBlank()) {
-                Glide.with(this).load(logoUrl).into(binding.ivLogo)
+
+            // On affiche l'image distante SEULEMENT si l'utilisateur n'en a pas déjà choisi une nouvelle localement
+            if (newLogoUri == null) {
+                // Priorité à imageUrl, puis fallback sur large/small
+                val remoteUrl = partner.imageUrl ?: partner.largeLogoUrl ?: partner.smallLogoUrl
+
+                if (!remoteUrl.isNullOrBlank()) {
+                    // AJOUT ICI : .transform(CircleCrop()) pour arrondir l'image distante
+                    Glide.with(this)
+                        .load(remoteUrl)
+                        .transform(CircleCrop())
+                        .into(binding.ivLogo)
+                }
+                // Sinon, le placeholder du XML reste affiché par défaut
             }
         }
 
+        // 2. Réception de l'URL pour uploader l'image S3
         assoPresenter.presignedUrl.observe(viewLifecycleOwner) { presigned ->
-            val uri = logoUri ?: return@observe
+            val uriToUpload = newLogoUri
 
-            if (presigned == null || presigned.presignedUrl == null) {
-                waitingUpload = false
-                tryComplete()
+            // Cas d'erreur ou d'annulation
+            if (presigned?.presignedUrl == null || uriToUpload == null) {
+                isSaving = false
+                // On tente quand même de sauvegarder la description s'il y a erreur image
+                finalizeUpdate(null)
                 return@observe
             }
 
-            val bytes = readBytes(uri) ?: return@observe
+            val bytes = readBytes(uriToUpload)
+            if (bytes == null) {
+                isSaving = false
+                return@observe
+            }
 
-            assoPresenter.uploadToPresignedUrl(presigned.presignedUrl, "image/jpeg", bytes) { ok ->
-                waitingUpload = false
-                if (ok) {
-                    // --- CORRECTION MAJEURE ICI ---
-                    // On n'utilise plus l'URL, mais la CLE (upload_key) renvoyée par l'API
-                    // Assure-toi que ton modèle PresignedUrlResponse expose bien "uploadKey"
-                    // (correspondant au champ JSON "upload_key")
-                    pendingUploadKey = presigned.uploadKey
+            // Upload effectif vers S3
+            assoPresenter.uploadToPresignedUrl(presigned.presignedUrl, "image/jpeg", bytes) { success ->
+                if (success) {
+                    // Si succès, on a la clé (presigned.uploadKey) qu'on passera au backend
+                    finalizeUpdate(presigned.uploadKey)
+                } else {
+                    isSaving = false
+                    // Erreur upload : on sauvegarde au moins la description
+                    finalizeUpdate(null)
                 }
-                tryComplete()
             }
         }
 
+        // 3. Succès de la mise à jour finale
         assoPresenter.updatePartnerSuccess.observe(viewLifecycleOwner) { success ->
-            waitingUpdate = false
+            isSaving = false
             if (success == true) {
-                clearDraft()
                 viewModel.quitNow()
             }
         }
@@ -159,77 +177,45 @@ class EnhancedOnboardingAssoFragment : Fragment() {
     private fun loadMyAssociationIntoUi() {
         val me = EntourageApplication.me(requireContext())
         val id = me?.partner?.id?.toInt()
-        if (id != null && id > 0 && id != lastLoadedPartnerId) {
+        if (id != null && id > 0) {
             partnerId = id
-            lastLoadedPartnerId = id
             assoPresenter.getPartnerInfos(id)
         }
     }
 
     private fun onFinishClicked() {
-        val currentDesc = binding.etDescription.text?.toString()?.trim().orEmpty()
-        pendingDescription = if (currentDesc != initialDescription) currentDesc else null
+        if (isSaving) return
 
-        if (logoUri != null) {
-            waitingUpload = true
+        val currentDesc = binding.etDescription.text?.toString()?.trim().orEmpty()
+        val descHasChanged = currentDesc != initialDescription
+        val hasNewImage = newLogoUri != null
+
+        // Si rien n'a changé, on sort direct
+        if (!descHasChanged && !hasNewImage) {
+            viewModel.quitNow()
+            return
+        }
+
+        isSaving = true
+
+        if (hasNewImage) {
+            // S'il y a une image, on demande l'URL d'upload -> upload S3 -> updatePartner avec la clé
             assoPresenter.getPresignedUploadUrl("image/jpeg")
         } else {
-            tryComplete()
+            // Sinon on met juste à jour le texte
+            finalizeUpdate(null)
         }
     }
 
-    private fun tryComplete() {
+    private fun finalizeUpdate(uploadedImageKey: String?) {
         val pid = partnerId ?: return
-        if (waitingUpload || waitingUpdate) return
+        val currentDesc = binding.etDescription.text?.toString()?.trim().orEmpty()
 
-        val descToUpdate = pendingDescription
-        val keyToUpdate = pendingUploadKey
-
-        val hasChange = descToUpdate != null || keyToUpdate != null
-
-        if (!hasChange) {
-            viewModel.quitNow()
-        } else {
-            waitingUpdate = true
-            // Le presenter enverra keyToUpdate dans le champ "logo_key" (ou image_url mappé correctement)
-            assoPresenter.updatePartner(pid, descToUpdate, keyToUpdate)
-        }
+        // Le Presenter mappera 'uploadedImageKey' vers le champ "image_url" (qui attend la clé)
+        assoPresenter.updatePartner(pid, currentDesc, uploadedImageKey)
     }
-
-    // --- Draft Logic & Helpers (Inchangés) ---
-    private fun saveDraft(description: String? = null, logoUri: Uri? = null) {
-        draftPrefs().edit {
-            putString(KEY_DRAFT_DESC, description ?: binding.etDescription.text?.toString())
-            putString(KEY_DRAFT_LOGO_URI, (logoUri ?: this@EnhancedOnboardingAssoFragment.logoUri)?.toString())
-        }
-    }
-
-    private fun restoreDraftIntoUi() {
-        val d = draftPrefs().getString(KEY_DRAFT_DESC, null)
-        val l = draftPrefs().getString(KEY_DRAFT_LOGO_URI, null)
-        if (!d.isNullOrBlank()) {
-            binding.etDescription.setText(d)
-            userHasEditedDescription = true
-        }
-        l?.let {
-            logoUri = Uri.parse(it)
-            Glide.with(this).load(logoUri).into(binding.ivLogo)
-            userHasPickedLogo = true
-        }
-    }
-
-    private fun clearDraft() = draftPrefs().edit().clear().apply()
-    private fun draftPrefs() = requireContext().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
-    private fun getDraftDescription() = draftPrefs().getString(KEY_DRAFT_DESC, null)
-    private fun getDraftLogoUri() = draftPrefs().getString(KEY_DRAFT_LOGO_URI, null)?.let { Uri.parse(it) }
 
     private fun readBytes(uri: Uri): ByteArray? = runCatching {
         requireContext().contentResolver.openInputStream(uri)?.use { it.readBytes() }
     }.getOrNull()
-
-    companion object {
-        private const val PREFS_NAME = "enhanced_onboarding_asso_draft_prefs"
-        private const val KEY_DRAFT_DESC = "enhanced_onboarding_asso_draft_desc"
-        private const val KEY_DRAFT_LOGO_URI = "enhanced_onboarding_asso_draft_logo_uri"
-    }
 }

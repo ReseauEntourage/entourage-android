@@ -20,7 +20,8 @@ class Partner : BaseOrganization(), Serializable {
 
     @SerializedName("large_logo_url")
     override var largeLogoUrl: String? = null
-
+    @SerializedName("image_url")
+    var imageUrl: String? = null
     @SerializedName("default")
     var isDefault = false
     val description: String? = null
@@ -72,6 +73,9 @@ data class PartnerResponse(
 data class PartnerCreateBody(
     @SerializedName("name")
     val name: String,
+
+    @SerializedName("image_url")
+    var imageUrl: String? = null,
 
     @SerializedName("description")
     val description: String? = null,
