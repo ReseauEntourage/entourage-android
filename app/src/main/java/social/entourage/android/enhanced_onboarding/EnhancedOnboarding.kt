@@ -168,8 +168,11 @@ class EnhancedOnboarding : BaseActivity() {
     private fun handleOnboardingFifthStep(value: Boolean) {
         if (value) {
             if (isAssociationMode()) {
-                viewModel.step = 6
-                replaceFragment(EnhancedOnboardingAssoFragment())
+
+                viewModel.register { success ->
+                    viewModel.step = 6
+                    replaceFragment(EnhancedOnboardingAssoFragment())
+                }
             } else {
                 replaceFragment(OnboardingCongratsFragment())
             }

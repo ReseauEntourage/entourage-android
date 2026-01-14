@@ -17,7 +17,6 @@ import social.entourage.android.api.model.PartnerUpdateData
 import social.entourage.android.api.model.PartnerUpdateWrapper
 import social.entourage.android.api.model.PresignedUploadBody
 import social.entourage.android.api.model.PresignedUrlResponse
-import social.entourage.android.api.request.PresignedUrlWrapper
 import java.util.concurrent.Executors
 
 class AssociationPresenter {
@@ -76,8 +75,17 @@ class AssociationPresenter {
             })
     }
 
-    fun updatePartner(partnerId: Int, data: PartnerUpdateData) {
+    // CORRECTION MAJEURE ICI : On construit l'objet manuellement
+    // On mappe "uploadKey" vers le champ "imageUrl"
+    fun updatePartner(partnerId: Int, description: String?, uploadKey: String?) {
+
+        val data = PartnerUpdateData(
+            description = description,
+            imageUrl = uploadKey // La key va dans image_url
+        )
+
         val requestBody = PartnerUpdateWrapper(data)
+
         EntourageApplication.get().apiModule.associationsRequest
             .updateAssociation(partnerId, requestBody)
             .enqueue(object : Callback<PartnerResponse> {
@@ -140,9 +148,5 @@ class AssociationPresenter {
             }
             onDone(ok)
         }
-    }
-
-    fun newPartnerUpdateData(): PartnerUpdateData {
-        return PartnerUpdateData()
     }
 }

@@ -37,13 +37,16 @@ class Partner : BaseOrganization(), Serializable {
     @SerializedName("postal_code")
     var postalCode: String? = null
     var isCreation = false
+
     @SerializedName("donations_needs")
     var donationsNeeds: String? = null
+
     @SerializedName("volunteers_needs")
     var volunteersNeeds: String? = null
 
     @SerializedName("following")
     var isFollowing = false
+
     // ----------------------------------
     // PUBLIC METHODS
     // ----------------------------------
@@ -65,6 +68,7 @@ class Partner : BaseOrganization(), Serializable {
 data class PartnerResponse(
     @SerializedName("partner") val partner: Partner
 )
+
 data class PartnerCreateBody(
     @SerializedName("name")
     val name: String,
@@ -112,22 +116,20 @@ data class PartnerUpdateWrapper(
 )
 
 // Données pour la mise à jour du partenaire
+// CORRECTION ICI : image_url recevra la key
 data class PartnerUpdateData(
-    val name: String? = null,
-    val description: String? = null,
-    val phone: String? = null,
-    val address: String? = null,
-    @SerializedName("website_url")
-    val websiteUrl: String? = null,
-    val email: String? = null,
-    val latitude: Double? = null,
-    val longitude: Double? = null,
-    @SerializedName("donations_needs")
-    val donationsNeeds: String? = null,
-    @SerializedName("volunteers_needs")
-    val volunteersNeeds: String? = null,
-    @SerializedName("image_url")
-    val imageUrl: String? = null
+    @SerializedName("name") val name: String? = null,
+    @SerializedName("description") val description: String? = null,
+    @SerializedName("phone") val phone: String? = null,
+    @SerializedName("address") val address: String? = null,
+    @SerializedName("website_url") val websiteUrl: String? = null,
+    @SerializedName("email") val email: String? = null,
+    @SerializedName("latitude") val latitude: Double? = null,
+    @SerializedName("longitude") val longitude: Double? = null,
+    @SerializedName("donations_needs") val donationsNeeds: String? = null,
+    @SerializedName("volunteers_needs") val volunteersNeeds: String? = null,
+
+    @SerializedName("image_url") val imageUrl: String? = null
 )
 
 // Classes pour le presigned URL upload
@@ -138,9 +140,9 @@ data class PresignedUploadBody(
 
 data class PresignedUrlResponse(
     @SerializedName("upload_key")
-    val uploadKey: String,
+    val uploadKey: String? = null,
     @SerializedName("presigned_url")
-    val presignedUrl: String
+    val presignedUrl: String? = null
 )
 
 data class PartnersWrapper(

@@ -1,13 +1,11 @@
 package social.entourage.android.api.request
 
-import com.google.gson.annotations.SerializedName
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
-import retrofit2.http.PUT // J'ai ajouté cet import
+import retrofit2.http.PUT
 import retrofit2.http.Path
-import social.entourage.android.api.model.Partner
 import social.entourage.android.api.model.PartnerCreateWrapper
 import social.entourage.android.api.model.PartnerResponse
 import social.entourage.android.api.model.PartnerUpdateWrapper
@@ -25,8 +23,7 @@ interface AssociationsRequest {
     @POST("partners")
     fun createAssociation(@Body body: PartnerCreateWrapper): Call<PartnerResponse>
 
-    // Ajout de la nouvelle fonction pour mettre à jour l'association
-    @POST("partners/{partner_id}")
+    @PUT("partners/{partner_id}")
     fun updateAssociation(
         @Path("partner_id") partnerId: Int,
         @Body body: PartnerUpdateWrapper
@@ -36,12 +33,3 @@ interface AssociationsRequest {
     @POST("partners/presigned_upload")
     fun getPresignedUploadUrl(@Body body: PresignedUploadBody): Call<PresignedUrlResponse>
 }
-
-class PresignedUrlResponse(
-    @SerializedName("presigned_url") val presignedUrl: String? = null,
-    @SerializedName("upload_key") val uploadKey: String? = null
-)
-
-class PresignedUrlWrapper(
-    @SerializedName("image_upload") val imageUpload: PresignedUrlResponse? = null
-)

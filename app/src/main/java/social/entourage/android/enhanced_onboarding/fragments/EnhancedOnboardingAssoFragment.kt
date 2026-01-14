@@ -55,7 +55,6 @@ class EnhancedOnboardingAssoFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -111,8 +110,8 @@ class EnhancedOnboardingAssoFragment : Fragment() {
 
     private fun bindPresenter() {
         assoPresenter.partner.observe(viewLifecycleOwner) { partner ->
-            val desc = readStringField(partner, "about") ?: readStringField(partner, "description") ?: ""
-            val logoUrl = readStringField(partner, "logoUrl") ?: readStringField(partner, "imageUrl") ?: ""
+            val desc = partner.description ?: ""
+            val logoUrl = partner.largeLogoUrl ?: partner.smallLogoUrl ?: ""
             initialDescription = desc
 
             if (!userHasEditedDescription && getDraftDescription().isNullOrBlank()) {
@@ -125,25 +124,40 @@ class EnhancedOnboardingAssoFragment : Fragment() {
 
         assoPresenter.presignedUrl.observe(viewLifecycleOwner) { presigned ->
             val uri = logoUri ?: return@observe
-            if (presigned == null) { waitingUpload = false; tryComplete(); return@observe }
+
+            // Si pas de presigned url (erreur), on tente quand même de finir (peut-être juste update desc)
+            if (presigned == null || presigned.presignedUrl == null) {
+                waitingUpload = false
+                tryComplete()
+                return@observe
+            }
 
             val bytes = readBytes(uri) ?: return@observe
-            assoPresenter.uploadToPresignedUrl(presigned.presignedUrl!!, "image/jpeg", bytes) { ok ->
+
+            assoPresenter.uploadToPresignedUrl(presigned.presignedUrl, "image/jpeg", bytes) { ok ->
                 waitingUpload = false
-                if (ok) pendingUploadKey = presigned.uploadKey
+                if (ok) {
+                    // CORRECTION : On extrait l'URL de base sans les paramètres de sécurité (?x-amz...)
+                    // Cela donne une URL du type : https://.../uuid.jpeg
+                    pendingUploadKey = presigned.presignedUrl.substringBefore("?")
+                }
                 tryComplete()
             }
         }
 
         assoPresenter.updatePartnerSuccess.observe(viewLifecycleOwner) { success ->
             waitingUpdate = false
-            if (success == true) { clearDraft(); viewModel.quitNow() }
+            if (success == true) {
+                clearDraft()
+                viewModel.quitNow()
+            }
         }
     }
 
     private fun loadMyAssociationIntoUi() {
         val me = EntourageApplication.me(requireContext())
-        val id = readIntField(me?.partner, "id")
+        // CORRECTION : Accès direct à l'ID
+        val id = me?.partner?.id?.toInt()
         if (id != null && id > 0 && id != lastLoadedPartnerId) {
             partnerId = id
             lastLoadedPartnerId = id
@@ -153,6 +167,7 @@ class EnhancedOnboardingAssoFragment : Fragment() {
 
     private fun onFinishClicked() {
         val currentDesc = binding.etDescription.text?.toString()?.trim().orEmpty()
+        // On ne met à jour que si ça a changé
         pendingDescription = if (currentDesc != initialDescription) currentDesc else null
 
         if (logoUri != null) {
@@ -167,23 +182,18 @@ class EnhancedOnboardingAssoFragment : Fragment() {
         val pid = partnerId ?: return
         if (waitingUpload || waitingUpdate) return
 
-        val updateData = assoPresenter.newPartnerUpdateData()
-        var hasChange = false
+        // CORRECTION MAJEURE ICI : Plus de réflexion, appel direct au presenter
+        val descToUpdate = pendingDescription
+        val keyToUpdate = pendingUploadKey
 
-        pendingDescription?.let {
-            setFieldIfExists(updateData, "about", it)
-            hasChange = true
-        }
-        pendingUploadKey?.let {
-            setFieldIfExists(updateData, "logoKey", it)
-            hasChange = true
-        }
+        val hasChange = descToUpdate != null || keyToUpdate != null
 
         if (!hasChange) {
             viewModel.quitNow()
         } else {
             waitingUpdate = true
-            assoPresenter.updatePartner(pid, updateData)
+            // Le presenter va mettre keyToUpdate dans le champ "image_url"
+            assoPresenter.updatePartner(pid, descToUpdate, keyToUpdate)
         }
     }
 
@@ -214,27 +224,13 @@ class EnhancedOnboardingAssoFragment : Fragment() {
     private fun getDraftDescription() = draftPrefs().getString(KEY_DRAFT_DESC, null)
     private fun getDraftLogoUri() = draftPrefs().getString(KEY_DRAFT_LOGO_URI, null)?.let { Uri.parse(it) }
 
-    // --- Helper Reflection Methods (Simplified) ---
-    private fun readStringField(obj: Any?, name: String): String? = runCatching {
-        val f = obj?.javaClass?.getDeclaredField(name)?.apply { isAccessible = true }
-        f?.get(obj) as? String
-    }.getOrNull()
-
-    private fun readIntField(obj: Any?, name: String): Int? = runCatching {
-        val f = obj?.javaClass?.getDeclaredField(name)?.apply { isAccessible = true }
-        (f?.get(obj) as? Number)?.toInt()
-    }.getOrNull()
-
-    private fun setFieldIfExists(obj: Any, name: String, value: Any?) {
-        runCatching {
-            val f = obj.javaClass.getDeclaredField(name).apply { isAccessible = true }
-            f.set(obj, value)
-        }
-    }
+    // --- Helpers ---
 
     private fun readBytes(uri: Uri): ByteArray? = runCatching {
         requireContext().contentResolver.openInputStream(uri)?.use { it.readBytes() }
     }.getOrNull()
+
+    // J'ai supprimé les méthodes readStringField, readIntField, setFieldIfExists car elles ne servent plus
 
     companion object {
         private const val PREFS_NAME = "enhanced_onboarding_asso_draft_prefs"
