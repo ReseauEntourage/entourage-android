@@ -53,10 +53,6 @@ class EnhancedOnboardingAssoFragment : Fragment() {
             saveDraft(logoUri = uri)
         }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentEnhancedOnboardingAssoBinding.inflate(inflater, container, false)
         viewModel = ViewModelProvider(requireActivity())[OnboardingViewModel::class.java]
@@ -66,7 +62,6 @@ class EnhancedOnboardingAssoFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // On force l'affichage du bouton retour dans l'Activity
         viewModel.shouldDismissBtnBack.postValue(true)
 
         restoreDraftIntoUi()
@@ -111,7 +106,13 @@ class EnhancedOnboardingAssoFragment : Fragment() {
     private fun bindPresenter() {
         assoPresenter.partner.observe(viewLifecycleOwner) { partner ->
             val desc = partner.description ?: ""
+
+            // --- C'est ici que tu peux supprimer la logique de nettoyage "Double URL" ---
+            // Si tes données en base sont propres grâce au fix d'upload,
+            // partner.largeLogoUrl suffira.
             val logoUrl = partner.largeLogoUrl ?: partner.smallLogoUrl ?: ""
+            // --------------------------------------------------------------------------
+
             initialDescription = desc
 
             if (!userHasEditedDescription && getDraftDescription().isNullOrBlank()) {
@@ -125,7 +126,6 @@ class EnhancedOnboardingAssoFragment : Fragment() {
         assoPresenter.presignedUrl.observe(viewLifecycleOwner) { presigned ->
             val uri = logoUri ?: return@observe
 
-            // Si pas de presigned url (erreur), on tente quand même de finir (peut-être juste update desc)
             if (presigned == null || presigned.presignedUrl == null) {
                 waitingUpload = false
                 tryComplete()
@@ -137,9 +137,11 @@ class EnhancedOnboardingAssoFragment : Fragment() {
             assoPresenter.uploadToPresignedUrl(presigned.presignedUrl, "image/jpeg", bytes) { ok ->
                 waitingUpload = false
                 if (ok) {
-                    // CORRECTION : On extrait l'URL de base sans les paramètres de sécurité (?x-amz...)
-                    // Cela donne une URL du type : https://.../uuid.jpeg
-                    pendingUploadKey = presigned.presignedUrl.substringBefore("?")
+                    // --- CORRECTION MAJEURE ICI ---
+                    // On n'utilise plus l'URL, mais la CLE (upload_key) renvoyée par l'API
+                    // Assure-toi que ton modèle PresignedUrlResponse expose bien "uploadKey"
+                    // (correspondant au champ JSON "upload_key")
+                    pendingUploadKey = presigned.uploadKey
                 }
                 tryComplete()
             }
@@ -156,7 +158,6 @@ class EnhancedOnboardingAssoFragment : Fragment() {
 
     private fun loadMyAssociationIntoUi() {
         val me = EntourageApplication.me(requireContext())
-        // CORRECTION : Accès direct à l'ID
         val id = me?.partner?.id?.toInt()
         if (id != null && id > 0 && id != lastLoadedPartnerId) {
             partnerId = id
@@ -167,7 +168,6 @@ class EnhancedOnboardingAssoFragment : Fragment() {
 
     private fun onFinishClicked() {
         val currentDesc = binding.etDescription.text?.toString()?.trim().orEmpty()
-        // On ne met à jour que si ça a changé
         pendingDescription = if (currentDesc != initialDescription) currentDesc else null
 
         if (logoUri != null) {
@@ -182,7 +182,6 @@ class EnhancedOnboardingAssoFragment : Fragment() {
         val pid = partnerId ?: return
         if (waitingUpload || waitingUpdate) return
 
-        // CORRECTION MAJEURE ICI : Plus de réflexion, appel direct au presenter
         val descToUpdate = pendingDescription
         val keyToUpdate = pendingUploadKey
 
@@ -192,12 +191,12 @@ class EnhancedOnboardingAssoFragment : Fragment() {
             viewModel.quitNow()
         } else {
             waitingUpdate = true
-            // Le presenter va mettre keyToUpdate dans le champ "image_url"
+            // Le presenter enverra keyToUpdate dans le champ "logo_key" (ou image_url mappé correctement)
             assoPresenter.updatePartner(pid, descToUpdate, keyToUpdate)
         }
     }
 
-    // --- Draft Logic ---
+    // --- Draft Logic & Helpers (Inchangés) ---
     private fun saveDraft(description: String? = null, logoUri: Uri? = null) {
         draftPrefs().edit {
             putString(KEY_DRAFT_DESC, description ?: binding.etDescription.text?.toString())
@@ -224,13 +223,9 @@ class EnhancedOnboardingAssoFragment : Fragment() {
     private fun getDraftDescription() = draftPrefs().getString(KEY_DRAFT_DESC, null)
     private fun getDraftLogoUri() = draftPrefs().getString(KEY_DRAFT_LOGO_URI, null)?.let { Uri.parse(it) }
 
-    // --- Helpers ---
-
     private fun readBytes(uri: Uri): ByteArray? = runCatching {
         requireContext().contentResolver.openInputStream(uri)?.use { it.readBytes() }
     }.getOrNull()
-
-    // J'ai supprimé les méthodes readStringField, readIntField, setFieldIfExists car elles ne servent plus
 
     companion object {
         private const val PREFS_NAME = "enhanced_onboarding_asso_draft_prefs"

@@ -70,18 +70,20 @@ class AssociationPresenter {
                 }
 
                 override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                    followSuccess.value = true
+                    followSuccess.value = false
                 }
             })
     }
 
-    // CORRECTION MAJEURE ICI : On construit l'objet manuellement
-    // On mappe "uploadKey" vers le champ "imageUrl"
+    // MARK: - Update Partner (Description + Logo Key)
     fun updatePartner(partnerId: Int, description: String?, uploadKey: String?) {
 
+        // On construit l'objet de données
+        // Note : Ici on passe le "uploadKey" dans le champ "imageUrl" de l'objet Kotlin,
+        // en supposant que PartnerUpdateData ou le backend mappe cela correctement vers "logo_key" ou "image_url".
         val data = PartnerUpdateData(
             description = description,
-            imageUrl = uploadKey // La key va dans image_url
+            imageUrl = uploadKey
         )
 
         val requestBody = PartnerUpdateWrapper(data)
@@ -126,7 +128,6 @@ class AssociationPresenter {
                 }
             })
     }
-
 
     fun uploadToPresignedUrl(
         uploadUrl: String,
