@@ -99,9 +99,10 @@ class OnboardingViewModel : ViewModel() {
                 put("concerns", finalConcerns)
             }
             if (EnhancedOnboarding.isFromSettingsWishes || !EnhancedOnboarding.isFromSettingsDisponibility) {
-                put("involvements", finalInvolvements)
                 if(EnhancedOnboarding.isAssociationFromSummary == true){
                     put("orientations", finalInvolvements)
+                }else {
+                    put("involvements", finalInvolvements)
                 }
             }
             if (availability.isNotEmpty()) {
