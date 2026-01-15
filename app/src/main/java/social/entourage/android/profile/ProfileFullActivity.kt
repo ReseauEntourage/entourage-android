@@ -32,6 +32,7 @@ import social.entourage.android.discussions.DiscussionsPresenter
 import social.entourage.android.enhanced_onboarding.EnhancedOnboarding
 import social.entourage.android.home.HomePresenter
 import social.entourage.android.language.LanguageManager
+import social.entourage.android.profile.association.AssociationProfileActivity
 import social.entourage.android.profile.editProfile.EditPhotoActivity
 import social.entourage.android.profile.settings.ProfilFullViewModel
 import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
@@ -90,6 +91,7 @@ class MyProfileFullActivity : BaseSecuredActivity() {
         initializeStats()
         updateUserView()
         setButtonListeners()
+        setPartnerClickListener()
         binding.iconOption.visibility = View.GONE
     }
 
@@ -177,6 +179,19 @@ class MyProfileFullActivity : BaseSecuredActivity() {
         if (forceInit) {
             Timber.e("user reinit")
             initUserInfo()
+        }
+    }
+
+    private fun setPartnerClickListener() {
+        binding.ivAssoBadge.setOnClickListener {
+            VibrationUtil.vibrate(this)
+            user?.partner?.id?.let { partnerId ->
+                val intent = Intent(this, AssociationProfileActivity::class.java).apply {
+                    putExtra(Const.PARTNER_ID, partnerId.toInt())
+                }
+                startActivity(intent)
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+            }
         }
     }
 
@@ -756,6 +771,7 @@ class ProfileFullActivity : BaseSecuredActivity() {
         initializeStats()
         updateUserView()
         setButtonListeners()
+        setPartnerClickListener()
         setSignalButton()
     }
 
@@ -1288,6 +1304,19 @@ class ProfileFullActivity : BaseSecuredActivity() {
             confetti.translationY = y.toFloat() + Random.nextInt(-50, 50)
             parentView.addView(confetti)
             animateConfetti(confetti, parentView)
+        }
+    }
+
+    private fun setPartnerClickListener() {
+        binding.ivAssoBadge.setOnClickListener {
+            VibrationUtil.vibrate(this)
+            user?.partner?.id?.let { partnerId ->
+                val intent = Intent(this, AssociationProfileActivity::class.java).apply {
+                    putExtra(Const.PARTNER_ID, partnerId.toInt())
+                }
+                startActivity(intent)
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+            }
         }
     }
 

@@ -121,6 +121,11 @@
         <activity android:name=".comment.ImageZoomActivity"
             />
         <activity
+            android:name=".profile.association.AssociationProfileActivity"
+            android:exported="false"
+            />
+
+        <activity
             android:name=".home.pedago.PedagoDetailActivity"
             android:exported="false" />
         <activity android:name=".discussions.WebViewActivityForTest">
