@@ -312,11 +312,13 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
     }
 
     private fun runHomeEntryGatingIfNeeded() {
+        // 1. Vérifications de base (Fragment attaché, déjà exécuté)
         if (!isAdded) return
         if (hasRunEntryGating) return
 
         val currentUser = user ?: return
 
+        // 2. Vérification Session (RAM)
         if (HomeEntryGatingSession.didPresentCriticalThisSession ||
             HomeEntryGatingSession.didPresentNotifThisSession ||
             HomeEntryGatingSession.didPresentEnhancedThisSession
@@ -325,6 +327,7 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
             return
         }
 
+        // 3. Critical Onboarding (Goal / Zone)
         val missingGoal = isUserMissingRole(currentUser)
         val missingZone = isUserMissingZone(currentUser)
 
@@ -337,29 +340,48 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
             return
         }
 
+        // 4. Vérification Notifications
         val notifAllowed = NotificationManagerCompat.from(requireContext()).areNotificationsEnabled()
         updateTokenForNotificationState(notifAllowed)
 
         if (!notifAllowed) {
             val shared = EntourageApplication.get().sharedPreferences
-            val shouldShowNow = shared.getBoolean(PREF_NOTIF_SHOULD_SHOW_NEXT, false)
-            if (shouldShowNow) {
-                shared.edit { putBoolean(PREF_NOTIF_SHOULD_SHOW_NEXT, false) }
-                HomeEntryGatingSession.didPresentNotifThisSession = true
-                presentNotificationDemand()
-                hasRunEntryGating = true
-                return
-            } else {
-                val reachedThreshold = incrementAndCheckNotificationDemand()
-                if (reachedThreshold) {
-                    shared.edit { putBoolean(PREF_NOTIF_SHOULD_SHOW_NEXT, true) }
+
+            // --- COOKIE CHECK (Android) ---
+            // On lit le fichier de préférences (Disque)
+            val alreadyShownHistory = shared.getBoolean(PREF_NOTIF_DEMAND_ALREADY_SHOWN, false)
+
+            if (!alreadyShownHistory) {
+                // Si on ne l'a JAMAIS montré
+                val shouldShowNow = shared.getBoolean(PREF_NOTIF_SHOULD_SHOW_NEXT, false)
+
+                if (shouldShowNow) {
+                    shared.edit {
+                        putBoolean(PREF_NOTIF_SHOULD_SHOW_NEXT, false)
+                        // IMPORTANT: On écrit le cookie MAINTENANT sur le disque
+                        putBoolean(PREF_NOTIF_DEMAND_ALREADY_SHOWN, true)
+                    }
+                    HomeEntryGatingSession.didPresentNotifThisSession = true
+                    presentNotificationDemand()
+                    hasRunEntryGating = true
+                    return
+                } else {
+                    // Logique compteur (2e, 5e, 10e connexion)
+                    val reachedThreshold = incrementAndCheckNotificationDemand()
+                    if (reachedThreshold) {
+                        shared.edit { putBoolean(PREF_NOTIF_SHOULD_SHOW_NEXT, true) }
+                    }
                 }
             }
+            // Si alreadyShownHistory est true, on ne fait rien (pas de return) et on continue.
+            // --- FIN COOKIE CHECK ---
+
         } else {
             resetNotificationDemandCounter()
             EntourageApplication.get().sharedPreferences.edit { putBoolean(PREF_NOTIF_SHOULD_SHOW_NEXT, false) }
         }
 
+        // 5. Enhanced Onboarding
         val sp = EntourageApplication.get().sharedPreferences
         val needsEnhanced = userNeedsEnhancedOnboarding(currentUser)
         val hasSkippedEnhanced = sp.getBoolean(PREF_ENHANCED_ONBOARDING_SKIPPED, false)
@@ -1094,6 +1116,7 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
         private const val PREF_ENHANCED_ONBOARDING_SKIPPED = "PREF_ENHANCED_ONBOARDING_SKIPPED"
         private const val PREF_NOTIF_SHOULD_SHOW_NEXT = "PREF_NOTIF_SHOULD_SHOW_NEXT"
         private const val PREF_IS_ASSOCIATION_FROM_SUMMARY = "PREF_IS_ASSOCIATION_FROM_SUMMARY"
+        private const val PREF_NOTIF_DEMAND_ALREADY_SHOWN = "PREF_NOTIF_DEMAND_ALREADY_SHOWN"
     }
 
     private object HomeEntryGatingSession {
