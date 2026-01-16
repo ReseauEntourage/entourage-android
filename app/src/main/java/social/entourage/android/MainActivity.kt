@@ -77,6 +77,7 @@ class MainActivity : BaseSecuredActivity() {
         eventPresenter = ViewModelProvider(this).get(EventsPresenter::class.java)
         viewModel.badgeCount.observe(this,::handleUpdateBadgeResponse)
         userPresenter.isGetUserSuccess.observe(this, ::handleResponse)
+        userPresenter.user.observe(this, handleUserResponse)
         eventPresenter.getEvent.observe(this, ::handleEventResponse)
         initializeNavBar()
         if (authenticationController.isAuthenticated) {
@@ -258,6 +259,11 @@ class MainActivity : BaseSecuredActivity() {
 
     fun handleResponse(success: Boolean){
 
+    }
+    private val handleUserResponse: (social.entourage.android.api.model.User?) -> Unit = { user ->
+        user?.let {
+            EntourageApplication.get().saveUser(user)
+        }
     }
 
     fun useIntentForRedictection(intent: Intent){
