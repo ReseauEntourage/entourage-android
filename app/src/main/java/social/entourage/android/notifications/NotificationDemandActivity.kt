@@ -88,10 +88,15 @@ class NotificationDemandActivity : BaseActivity() {
                         EntourageApplication.get().authenticationController.saveUser(userResponse.user)
                     }
                 }
+
+                // AJOUT DU COOKIE ICI
                 EntourageApplication.get().sharedPreferences.edit {
                     putBoolean(EntourageApplication.KEY_IS_FROM_ONBOARDING, true)
                     putBoolean(EntourageApplication.KEY_ONBOARDING_SHOW_POP_FIRSTLOGIN, false)
+                    // On marque que la demande de notif a été vue pour le Gating de la Home
+                    putBoolean("PREF_GATING_NOTIF_SHOWN", true)
                 }
+
                 MainActivity.shouldLaunchOnboarding = true
                 if(comeFromSettings) {
                     comeFromSettings = false

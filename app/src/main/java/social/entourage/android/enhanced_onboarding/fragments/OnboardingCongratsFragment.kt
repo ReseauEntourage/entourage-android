@@ -97,8 +97,6 @@ class OnboardingCongratsFragment: Fragment() {
             binding.tvTitle.setText(titleRes)
             binding.tvDescription.setText(contentRes)
             binding.buttonStart.setText(buttonTextRes)
-
-            // CORRECTION ICI : On définit la catégorie sur "contribution" au lieu de "event"
             category = "contribution"
         }
         // Priorité 1 : Présence de "both_actions" dans la liste
