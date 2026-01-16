@@ -100,6 +100,8 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
     }
     private var isRequestLoaded = false
     private var currentRequests: List<UserSmallTalkRequest> = emptyList()
+
+    // Gère uniquement le cycle de vie du fragment pour ne pas lancer plusieurs popups en même temps
     private var hasRunEntryGating = false
 
     private val userObserver = Observer<User> {
@@ -215,16 +217,9 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
         updateAvatar()
         userPresenter.user.observe(viewLifecycleOwner, userObserver)
 
-        // On vérifie directement le cookie ici aussi pour éviter le lancement depuis MainActivity si besoin
-        val hasCompletedEnhanced = EntourageApplication.get().sharedPreferences
-            .getBoolean(PREF_ENHANCED_ONBOARDING_COMPLETED, false)
-
-        if (MainActivity.shouldLaunchOnboarding && !hasCompletedEnhanced) {
-            MainActivity.shouldLaunchOnboarding = false
-            val intent = Intent(requireActivity(), EnhancedOnboarding::class.java)
-            startActivity(intent)
-            requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
-        } else if (MainActivity.shouldLaunchOnboarding) {
+        // Gestion manuelle de l'enhanced onboarding si lancé depuis MainActivity
+        // (La logique principale est maintenant dans runHomeEntryGatingIfNeeded)
+        if (MainActivity.shouldLaunchOnboarding) {
             MainActivity.shouldLaunchOnboarding = false
         }
     }
@@ -280,18 +275,6 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
         }
     }
 
-    private fun testToken() {
-        binding.ivLogoHome.setOnLongClickListener {
-            FirebaseMessaging.getInstance().token.addOnSuccessListener { token ->
-                val clipboard = requireContext().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-                val clip = ClipData.newPlainText("FCM Token", token)
-                clipboard.setPrimaryClip(clip)
-                Toast.makeText(requireContext(), "Token copié dans le presse-papiers", Toast.LENGTH_LONG).show()
-            }
-            true
-        }
-    }
-
     private fun adjustChevronForRTL() {
         val isRTL = resources.configuration.layoutDirection == View.LAYOUT_DIRECTION_RTL
         if (isRTL) {
@@ -312,93 +295,72 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
         userPresenter.user.removeObserver(userObserver)
     }
 
+    /**
+     * Logique de Gating simplifiée et persistante via SharedPreferences.
+     * Chaque popup ne s'affiche qu'une seule fois dans la vie de l'app (cookies dédiés).
+     */
     private fun runHomeEntryGatingIfNeeded() {
-        // 1. Vérifications de base (Fragment attaché, déjà exécuté)
+        // 1. Vérifications de base (Fragment attaché, déjà exécuté lors de cette instance de vue)
         if (!isAdded) return
         if (hasRunEntryGating) return
 
         val currentUser = user ?: return
+        val prefs = EntourageApplication.get().sharedPreferences
 
-        // 2. Vérification Session (RAM)
-        if (HomeEntryGatingSession.didPresentCriticalThisSession ||
-            HomeEntryGatingSession.didPresentNotifThisSession ||
-            HomeEntryGatingSession.didPresentEnhancedThisSession
-        ) {
-            hasRunEntryGating = true
-            return
-        }
+        // -------------------------------------------------------------------------------------
+        // STEP 1 : Gating ZONE / GOAL
+        // -------------------------------------------------------------------------------------
+        val isZonePopupAlreadyShown = prefs.getBoolean(PREF_GATING_ZONE_SHOWN, false)
 
-        // 3. Critical Onboarding (Goal / Zone)
-        val missingGoal = isUserMissingRole(currentUser)
-        val missingZone = isUserMissingZone(currentUser)
+        if (!isZonePopupAlreadyShown) {
+            // Si jamais montré, on vérifie si l'utilisateur en a besoin
+            val missingGoal = isUserMissingRole(currentUser)
+            val missingZone = isUserMissingZone(currentUser)
 
-        Timber.wtf("wtf gating missingGoal=$missingGoal missingZone=$missingZone goal=${currentUser.goal} zone a1=${Gson().toJson(currentUser.address)} a2=${Gson().toJson(currentUser.addressSecondary)}")
-
-        if (missingGoal || missingZone) {
-            HomeEntryGatingSession.didPresentCriticalThisSession = true
-            presentCriticalOnboarding(currentUser, missingGoal, missingZone)
-            hasRunEntryGating = true
-            return
-        }
-
-        // 4. Vérification Notifications
-        val notifAllowed = NotificationManagerCompat.from(requireContext()).areNotificationsEnabled()
-        updateTokenForNotificationState(notifAllowed)
-
-        if (!notifAllowed) {
-            val shared = EntourageApplication.get().sharedPreferences
-
-            // --- COOKIE CHECK (Android) ---
-            val alreadyShownHistory = shared.getBoolean(PREF_NOTIF_DEMAND_ALREADY_SHOWN, false)
-
-            if (!alreadyShownHistory) {
-                // Si on ne l'a JAMAIS montré
-                val shouldShowNow = shared.getBoolean(PREF_NOTIF_SHOULD_SHOW_NEXT, false)
-
-                if (shouldShowNow) {
-                    shared.edit {
-                        putBoolean(PREF_NOTIF_SHOULD_SHOW_NEXT, false)
-                        putBoolean(PREF_NOTIF_DEMAND_ALREADY_SHOWN, true)
-                    }
-                    HomeEntryGatingSession.didPresentNotifThisSession = true
-                    presentNotificationDemand()
-                    hasRunEntryGating = true
-                    return
-                } else {
-                    // Logique compteur (2e, 5e, 10e connexion)
-                    val reachedThreshold = incrementAndCheckNotificationDemand()
-                    if (reachedThreshold) {
-                        shared.edit { putBoolean(PREF_NOTIF_SHOULD_SHOW_NEXT, true) }
-                    }
-                }
-            }
-
-        } else {
-            resetNotificationDemandCounter()
-            EntourageApplication.get().sharedPreferences.edit { putBoolean(PREF_NOTIF_SHOULD_SHOW_NEXT, false) }
-        }
-
-        // 5. Enhanced Onboarding (LOGIQUE SIMPLIFIÉE)
-        val sp = EntourageApplication.get().sharedPreferences
-
-        // On vérifie le cookie de complétion
-        val hasCompletedEnhanced = sp.getBoolean(PREF_ENHANCED_ONBOARDING_COMPLETED, false)
-
-        // Si ce n'est PAS complété (cookie false)
-        if (!hasCompletedEnhanced) {
-            // On vérifie qu'on ne l'a pas déjà lancé dans cette session (pour éviter les boucles)
-            if (!HomeEntryGatingSession.didPresentEnhancedThisSession) {
-                HomeEntryGatingSession.didPresentEnhancedThisSession = true
-                presentEnhancedOnboardingIntro()
-                hasRunEntryGating = true
+            if (missingGoal || missingZone) {
+                // On marque immédiatement comme montré pour ne plus jamais redemander
+                prefs.edit { putBoolean(PREF_GATING_ZONE_SHOWN, true) }
+                hasRunEntryGating = true // Stop le flux pour cette vue
+                presentCriticalOnboarding(currentUser, missingGoal, missingZone)
                 return
             }
         }
 
-        if (MainActivity.shouldLaunchOnboarding) {
-            MainActivity.shouldLaunchOnboarding = false
+        // -------------------------------------------------------------------------------------
+        // STEP 2 : Gating NOTIFICATIONS
+        // -------------------------------------------------------------------------------------
+        val isNotifPopupAlreadyShown = prefs.getBoolean(PREF_GATING_NOTIF_SHOWN, false)
+        val areNotificationsEnabled = NotificationManagerCompat.from(requireContext()).areNotificationsEnabled()
+
+        // Mise à jour technique du token si activé
+        updateTokenForNotificationState(areNotificationsEnabled)
+
+        if (!isNotifPopupAlreadyShown) {
+            // Si jamais montré ET que les notifications système sont désactivées
+            if (!areNotificationsEnabled) {
+                // On marque immédiatement comme montré pour ne plus jamais redemander
+                prefs.edit { putBoolean(PREF_GATING_NOTIF_SHOWN, true) }
+                hasRunEntryGating = true
+                presentNotificationDemand()
+                return
+            }
         }
 
+        // -------------------------------------------------------------------------------------
+        // STEP 3 : Gating ENHANCED ONBOARDING
+        // -------------------------------------------------------------------------------------
+        val isEnhancedPopupAlreadyShown = prefs.getBoolean(PREF_GATING_ENHANCED_ONBOARDING_SHOWN, false)
+        val hasCompletedEnhanced = prefs.getBoolean(PREF_ENHANCED_ONBOARDING_COMPLETED, false)
+
+        if (!isEnhancedPopupAlreadyShown && !hasCompletedEnhanced) {
+            // On marque immédiatement comme montré pour ne plus jamais redemander
+            prefs.edit { putBoolean(PREF_GATING_ENHANCED_ONBOARDING_SHOWN, true) }
+            hasRunEntryGating = true
+            presentEnhancedOnboardingIntro()
+            return
+        }
+
+        // Fin de la chaîne
         hasRunEntryGating = true
     }
 
@@ -433,7 +395,7 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
         val a2 = user.addressSecondary
         val ok1 = isAddressValid(a1)
         val ok2 = isAddressValid(a2)
-        Timber.wtf("wtf zone a1=${Gson().toJson(a1)} a2=${Gson().toJson(a2)} ok1=$ok1 ok2=$ok2")
+        // Timber.wtf("wtf zone a1=${Gson().toJson(a1)} a2=${Gson().toJson(a2)} ok1=$ok1 ok2=$ok2")
         return !(ok1 || ok2)
     }
 
@@ -464,19 +426,6 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
             deleteToken()
             mainPresenter.updateApplicationInfo("")
         }
-    }
-
-    private fun incrementAndCheckNotificationDemand(): Boolean {
-        val sharedPreferences = EntourageApplication.get().sharedPreferences
-        var connectionCount = sharedPreferences.getInt(PREF_NOTIFICATION_CONNECTION_COUNT, 0)
-        connectionCount++
-        sharedPreferences.edit { putInt(PREF_NOTIFICATION_CONNECTION_COUNT, connectionCount) }
-        return connectionCount == 2 || connectionCount == 5 || connectionCount == 10
-    }
-
-    private fun resetNotificationDemandCounter() {
-        val sharedPreferences = EntourageApplication.get().sharedPreferences
-        sharedPreferences.edit { putInt(PREF_NOTIFICATION_CONNECTION_COUNT, 0) }
     }
 
     private fun checkNotificationStatus() {
@@ -1101,19 +1050,13 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
         var isContribProfile = false
         var signablePermission = false
 
-        private const val PREF_NOTIFICATION_CONNECTION_COUNT = "connectionCount"
-        private const val PREF_ENHANCED_ONBOARDING_LAUNCHED = "PREF_ENHANCED_ONBOARDING_LAUNCHED"
-        private const val PREF_ENHANCED_ONBOARDING_SKIPPED = "PREF_ENHANCED_ONBOARDING_SKIPPED"
-        const val PREF_ENHANCED_ONBOARDING_COMPLETED = "PREF_ENHANCED_ONBOARDING_COMPLETED" // AJOUT
-        private const val PREF_NOTIF_SHOULD_SHOW_NEXT = "PREF_NOTIF_SHOULD_SHOW_NEXT"
-        private const val PREF_IS_ASSOCIATION_FROM_SUMMARY = "PREF_IS_ASSOCIATION_FROM_SUMMARY"
-        private const val PREF_NOTIF_DEMAND_ALREADY_SHOWN = "PREF_NOTIF_DEMAND_ALREADY_SHOWN"
-    }
+        // NOUVEAUX COOKIES POUR LE GATING PERSISTANT
+        private const val PREF_GATING_ZONE_SHOWN = "PREF_GATING_ZONE_SHOWN"
+        private const val PREF_GATING_NOTIF_SHOWN = "PREF_GATING_NOTIF_SHOWN"
+        private const val PREF_GATING_ENHANCED_ONBOARDING_SHOWN = "PREF_GATING_ENHANCED_ONBOARDING_SHOWN"
 
-    private object HomeEntryGatingSession {
-        var didPresentCriticalThisSession: Boolean = false
-        var didPresentNotifThisSession: Boolean = false
-        var didPresentEnhancedThisSession: Boolean = false
+        const val PREF_ENHANCED_ONBOARDING_COMPLETED = "PREF_ENHANCED_ONBOARDING_COMPLETED"
+        private const val PREF_IS_ASSOCIATION_FROM_SUMMARY = "PREF_IS_ASSOCIATION_FROM_SUMMARY"
     }
 }
 
