@@ -189,16 +189,43 @@ class EnhancedOnboarding : BaseActivity() {
         }
     }
 
+// Dans EnhancedOnboarding.kt
+
+// Dans EnhancedOnboarding.kt
+
     private fun handleOnboardingShouldQuit(value: Boolean) {
         if (value) {
-            // AJOUT DU COOKIE DE COMPLÉTION
             EntourageApplication.get().sharedPreferences.edit {
                 putBoolean("PREF_ENHANCED_ONBOARDING_COMPLETED", true)
             }
+            val intent = Intent(this, MainActivity::class.java)
+            when (viewModel.selectedCategory) {
+                "neighborhoods" -> {
+                    intent.putExtra("goDiscoverGroup", true)
+                }
+                "event" -> {
+                    intent.putExtra("goDiscoverEvent", true)
+                }
+                "contribution" -> {
+                    intent.putExtra("goContrib", true)
+                }
+                "both_actions" -> {
+                    intent.putExtra("goDemand", true)
+                }
+                "resources" -> {
+                    MainActivity.shouldLaunchQuizz = true
 
-            val intent = Intent(this, MainActivity::class.java).apply {
-                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                }
+                "no_event" -> {
+                    intent.putExtra("goContrib", true)
+                }
+                else -> {
+                    // Cas par défaut (Home)
+                }
             }
+            // -------------------------------------
+
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             startActivity(intent)
             finish()
         }

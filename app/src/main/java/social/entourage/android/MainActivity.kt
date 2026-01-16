@@ -43,6 +43,7 @@ import social.entourage.android.guide.GDSMainActivity
 import social.entourage.android.home.CommunicationHandlerBadgeViewModel
 import social.entourage.android.home.EventConfirmationDialogFragment
 import social.entourage.android.home.UnreadMessages
+import social.entourage.android.home.pedago.PedagoListActivity
 import social.entourage.android.language.LanguageManager
 import social.entourage.android.main_filter.MainFilterActivity
 import social.entourage.android.notifications.NotificationActionManager
@@ -186,7 +187,6 @@ class MainActivity : BaseSecuredActivity() {
         }
         if(shouldLaunchQuizz){
             shouldLaunchQuizz = false
-            //TODO replace with with an alias on our site
             val urlString = "https://kahoot.it/challenge/45371e80-fe50-4be5-afec-b37e3d50ede2_1733228323615"
             WebViewFragment.newInstance(urlString, 0, true)
                 .show(supportFragmentManager, WebViewFragment.TAG)
@@ -291,6 +291,7 @@ class MainActivity : BaseSecuredActivity() {
             goContrib()
             return
         }
+
         if(goDiscoverGroup){
             this.setGoDiscoverGroupFromDeepL(goDiscoverGroup)
             goGroup()
@@ -515,6 +516,7 @@ class MainActivity : BaseSecuredActivity() {
         navController.navigate(R.id.navigation_donations, bundle)
 
     }
+
     fun goDemand(){
         val bundle = bundleOf("isActionDemand" to true) // Mettez ici la valeur souhaitée pour "isActionDemand"
         navController.navigate(R.id.navigation_donations, bundle)
