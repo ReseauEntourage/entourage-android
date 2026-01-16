@@ -6,6 +6,7 @@ import android.view.View
 import android.view.WindowManager
 import androidx.activity.OnBackPressedCallback
 import androidx.lifecycle.ViewModelProvider
+import androidx.core.content.edit // Important pour .edit { }
 import social.entourage.android.EntourageApplication
 import social.entourage.android.MainActivity
 import social.entourage.android.R
@@ -19,6 +20,7 @@ import social.entourage.android.enhanced_onboarding.fragments.OnboardingCongrats
 import social.entourage.android.enhanced_onboarding.fragments.OnboardingDisponibilityFragment
 import social.entourage.android.enhanced_onboarding.fragments.OnboardingInterestFragment
 import social.entourage.android.enhanced_onboarding.fragments.OnboardingPresentationFragment
+import social.entourage.android.home.HomeFragment // Si besoin d'accès à la constante, sinon chaîne en dur
 
 class EnhancedOnboarding : BaseActivity() {
     private lateinit var binding: ActivityEnhancedOnboardingLayoutBinding
@@ -189,6 +191,11 @@ class EnhancedOnboarding : BaseActivity() {
 
     private fun handleOnboardingShouldQuit(value: Boolean) {
         if (value) {
+            // AJOUT DU COOKIE DE COMPLÉTION
+            EntourageApplication.get().sharedPreferences.edit {
+                putBoolean("PREF_ENHANCED_ONBOARDING_COMPLETED", true)
+            }
+
             val intent = Intent(this, MainActivity::class.java).apply {
                 flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             }

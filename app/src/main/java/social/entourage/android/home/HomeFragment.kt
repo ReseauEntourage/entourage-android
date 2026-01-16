@@ -215,10 +215,11 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
         updateAvatar()
         userPresenter.user.observe(viewLifecycleOwner, userObserver)
 
-        val hasSkippedEnhancedOnboarding = EntourageApplication.get().sharedPreferences
-            .getBoolean(PREF_ENHANCED_ONBOARDING_SKIPPED, false)
+        // On vérifie directement le cookie ici aussi pour éviter le lancement depuis MainActivity si besoin
+        val hasCompletedEnhanced = EntourageApplication.get().sharedPreferences
+            .getBoolean(PREF_ENHANCED_ONBOARDING_COMPLETED, false)
 
-        if (MainActivity.shouldLaunchOnboarding && !hasSkippedEnhancedOnboarding) {
+        if (MainActivity.shouldLaunchOnboarding && !hasCompletedEnhanced) {
             MainActivity.shouldLaunchOnboarding = false
             val intent = Intent(requireActivity(), EnhancedOnboarding::class.java)
             startActivity(intent)
@@ -348,7 +349,6 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
             val shared = EntourageApplication.get().sharedPreferences
 
             // --- COOKIE CHECK (Android) ---
-            // On lit le fichier de préférences (Disque)
             val alreadyShownHistory = shared.getBoolean(PREF_NOTIF_DEMAND_ALREADY_SHOWN, false)
 
             if (!alreadyShownHistory) {
@@ -358,7 +358,6 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
                 if (shouldShowNow) {
                     shared.edit {
                         putBoolean(PREF_NOTIF_SHOULD_SHOW_NEXT, false)
-                        // IMPORTANT: On écrit le cookie MAINTENANT sur le disque
                         putBoolean(PREF_NOTIF_DEMAND_ALREADY_SHOWN, true)
                     }
                     HomeEntryGatingSession.didPresentNotifThisSession = true
@@ -373,28 +372,27 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
                     }
                 }
             }
-            // Si alreadyShownHistory est true, on ne fait rien (pas de return) et on continue.
-            // --- FIN COOKIE CHECK ---
 
         } else {
             resetNotificationDemandCounter()
             EntourageApplication.get().sharedPreferences.edit { putBoolean(PREF_NOTIF_SHOULD_SHOW_NEXT, false) }
         }
 
-        // 5. Enhanced Onboarding
+        // 5. Enhanced Onboarding (LOGIQUE SIMPLIFIÉE)
         val sp = EntourageApplication.get().sharedPreferences
-        val needsEnhanced = userNeedsEnhancedOnboarding(currentUser)
-        val hasSkippedEnhanced = sp.getBoolean(PREF_ENHANCED_ONBOARDING_SKIPPED, false)
-        val alreadyLaunchedEnhanced = sp.getBoolean(PREF_ENHANCED_ONBOARDING_LAUNCHED, false)
 
-        Timber.wtf("wtf enhanced needs=$needsEnhanced skipped=$hasSkippedEnhanced launched=$alreadyLaunchedEnhanced")
+        // On vérifie le cookie de complétion
+        val hasCompletedEnhanced = sp.getBoolean(PREF_ENHANCED_ONBOARDING_COMPLETED, false)
 
-        if (!hasSkippedEnhanced && !alreadyLaunchedEnhanced && needsEnhanced) {
-            sp.edit { putBoolean(PREF_ENHANCED_ONBOARDING_LAUNCHED, true) }
-            HomeEntryGatingSession.didPresentEnhancedThisSession = true
-            presentEnhancedOnboardingIntro()
-            hasRunEntryGating = true
-            return
+        // Si ce n'est PAS complété (cookie false)
+        if (!hasCompletedEnhanced) {
+            // On vérifie qu'on ne l'a pas déjà lancé dans cette session (pour éviter les boucles)
+            if (!HomeEntryGatingSession.didPresentEnhancedThisSession) {
+                HomeEntryGatingSession.didPresentEnhancedThisSession = true
+                presentEnhancedOnboardingIntro()
+                hasRunEntryGating = true
+                return
+            }
         }
 
         if (MainActivity.shouldLaunchOnboarding) {
@@ -445,13 +443,6 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
         val hasLabel = address.displayAddress.isNotBlank()
         val hasPlaceId = !address.googlePlaceId.isNullOrBlank()
         return hasCoords || hasLabel || hasPlaceId
-    }
-
-    private fun userNeedsEnhancedOnboarding(user: User): Boolean {
-        val interestsEmpty = user.interests.isEmpty()
-        val involvementsEmpty = user.involvements.isEmpty()
-        val concernsEmpty = user.concerns.isEmpty()
-        return interestsEmpty && involvementsEmpty && concernsEmpty
     }
 
     private fun presentNotificationDemand() {
@@ -1114,6 +1105,7 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
         private const val PREF_NOTIFICATION_CONNECTION_COUNT = "connectionCount"
         private const val PREF_ENHANCED_ONBOARDING_LAUNCHED = "PREF_ENHANCED_ONBOARDING_LAUNCHED"
         private const val PREF_ENHANCED_ONBOARDING_SKIPPED = "PREF_ENHANCED_ONBOARDING_SKIPPED"
+        const val PREF_ENHANCED_ONBOARDING_COMPLETED = "PREF_ENHANCED_ONBOARDING_COMPLETED" // AJOUT
         private const val PREF_NOTIF_SHOULD_SHOW_NEXT = "PREF_NOTIF_SHOULD_SHOW_NEXT"
         private const val PREF_IS_ASSOCIATION_FROM_SUMMARY = "PREF_IS_ASSOCIATION_FROM_SUMMARY"
         private const val PREF_NOTIF_DEMAND_ALREADY_SHOWN = "PREF_NOTIF_DEMAND_ALREADY_SHOWN"
