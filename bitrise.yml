@@ -22,7 +22,7 @@ app:
 meta:
   bitrise.io:
     stack: ubuntu-noble-24.04-bitrise-2025-android
-    machine_type_id: elite
+    machine_type_id: g2.linux.2medium
 trigger_map:
 - push_branch: develop
   workflow: dev_entourage
