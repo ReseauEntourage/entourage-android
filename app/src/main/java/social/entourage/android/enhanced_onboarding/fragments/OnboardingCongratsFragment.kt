@@ -30,11 +30,7 @@ class OnboardingCongratsFragment: Fragment() {
     private lateinit var eventsPresenter: EventsPresenter
     private var currentFilters = EventActionLocationFilters()
     var haveEvent = false
-
-
     var category: String? = "both_actions"
-
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentOnboardingCongratsFragmentBinding.inflate(inflater, container, false)
         viewModel = ViewModelProvider(requireActivity()).get(OnboardingViewModel::class.java)

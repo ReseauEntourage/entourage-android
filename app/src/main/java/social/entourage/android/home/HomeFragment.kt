@@ -835,7 +835,6 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
         }
         EnhancedOnboarding.isAssociationFromSummary = isAssociationFromSummary
         EnhancedOnboarding.preference = summary.preference ?: ""
-        //presentEnhancedOnboardingIntro()
         onActionUnclosed(summary)
         handleHelps(summary)
         if (summary.signablePermission != null) {
