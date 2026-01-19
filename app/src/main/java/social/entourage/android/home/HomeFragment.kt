@@ -144,7 +144,10 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
                     intent.putExtra(Const.ID, pedagogicalContent.id)
                     PedagoDetailActivity.setPedagoId(pedagogicalContent.id)
                     requireActivity().startActivity(intent)
-                    requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+                    requireActivity().overridePendingTransition(
+                        R.anim.slide_in_right,
+                        R.anim.slide_out_left
+                    )
                 }
             }
         })
@@ -155,7 +158,10 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
                     intent.putExtra(Const.ID, pedagogicalContent.id)
                     PedagoDetailActivity.setPedagoId(pedagogicalContent.id)
                     requireActivity().startActivity(intent)
-                    requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+                    requireActivity().overridePendingTransition(
+                        R.anim.slide_in_right,
+                        R.anim.slide_out_left
+                    )
                 }
             }
         })
@@ -171,12 +177,17 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
                 startActivity(intent)
             },
             onMatchingClick = {
-                Toast.makeText(requireContext(), getString(R.string.small_talk_subtitle_waiting), Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    requireContext(),
+                    getString(R.string.small_talk_subtitle_waiting),
+                    Toast.LENGTH_SHORT
+                ).show()
             },
             requireContext()
         )
 
-        binding.rvHomeSmallTalk.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        binding.rvHomeSmallTalk.layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         binding.rvHomeSmallTalk.adapter = homeSmallTalkAdapter
 
         AnalyticsEvents.logEvent(AnalyticsEvents.View__Home)
@@ -230,11 +241,9 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
         resetFilter()
         callToInitHome()
         actionsPresenter.getUnreadCount()
-        if (MainActivity.shouldLaunchProfile) {
-            MainActivity.shouldLaunchProfile = false
-            AnalyticsEvents.logEvent(AnalyticsEvents.Action__Tab__Profil)
-            startActivityForResult(Intent(context, MyProfileFullActivity::class.java), 0)
-        }
+
+        // SUPPRESSION DE LA REDIRECTION PROFIL ICI (Géré par MainActivity pour éviter le conflit)
+
         testNotifDemandePage()
         sendUserDiscussionStatus()
         loadSmallTalkItems()
@@ -256,9 +265,11 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
         when {
             matchedItems.size >= 3 -> {
             }
+
             hasUnmatchedRequest -> {
                 items.add(HomeSmallTalkItem.Waiting)
             }
+
             else -> {
                 items.add(HomeSmallTalkItem.MatchPossible)
             }
@@ -270,7 +281,10 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
         binding.ivLogoHome.setOnLongClickListener {
             val intent = Intent(requireContext(), SmallTalkIntroActivity::class.java)
             startActivity(intent)
-            requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+            requireActivity().overridePendingTransition(
+                R.anim.slide_in_right,
+                R.anim.slide_out_left
+            )
             true
         }
     }
@@ -330,7 +344,8 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
         // STEP 2 : Gating NOTIFICATIONS
         // -------------------------------------------------------------------------------------
         val isNotifPopupAlreadyShown = prefs.getBoolean(PREF_GATING_NOTIF_SHOWN, false)
-        val areNotificationsEnabled = NotificationManagerCompat.from(requireContext()).areNotificationsEnabled()
+        val areNotificationsEnabled =
+            NotificationManagerCompat.from(requireContext()).areNotificationsEnabled()
 
         // Mise à jour technique du token si activé
         updateTokenForNotificationState(areNotificationsEnabled)
@@ -349,7 +364,8 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
         // -------------------------------------------------------------------------------------
         // STEP 3 : Gating ENHANCED ONBOARDING
         // -------------------------------------------------------------------------------------
-        val isEnhancedPopupAlreadyShown = prefs.getBoolean(PREF_GATING_ENHANCED_ONBOARDING_SHOWN, false)
+        val isEnhancedPopupAlreadyShown =
+            prefs.getBoolean(PREF_GATING_ENHANCED_ONBOARDING_SHOWN, false)
         val hasCompletedEnhanced = prefs.getBoolean(PREF_ENHANCED_ONBOARDING_COMPLETED, false)
 
         if (!isEnhancedPopupAlreadyShown && !hasCompletedEnhanced) {
@@ -368,7 +384,10 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
         if (missingGoal) {
             OnboardingStartActivity.FRAGMENT_NUMBER = 3
             startActivity(Intent(requireActivity(), OnboardingStartActivity::class.java))
-            requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+            requireActivity().overridePendingTransition(
+                R.anim.slide_in_right,
+                R.anim.slide_out_left
+            )
             return
         }
 
@@ -380,7 +399,10 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
                 else -> OnboardingZoneChoiceActivity.UserType.ENTOUR
             }
             startActivity(OnboardingZoneChoiceActivity.newIntent(requireContext(), typeForZone))
-            requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+            requireActivity().overridePendingTransition(
+                R.anim.slide_in_right,
+                R.anim.slide_out_left
+            )
             return
         }
     }
@@ -429,7 +451,8 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
     }
 
     private fun checkNotificationStatus() {
-        val areNotificationsEnabled = NotificationManagerCompat.from(requireContext()).areNotificationsEnabled()
+        val areNotificationsEnabled =
+            NotificationManagerCompat.from(requireContext()).areNotificationsEnabled()
         if (areNotificationsEnabled) {
             AnalyticsEvents.logEvent(AnalyticsEvents.has_user_activated_notif)
             FirebaseMessaging.getInstance().token.addOnSuccessListener { _ ->
@@ -513,7 +536,8 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
             }
         }
         binding.itemHz.buttonHzItem.setOnClickListener {
-            val urlString = "https://reseauentourage.notion.site/Buffet-du-lien-social-69c20e089dbd483cb093e90ae2953a54"
+            val urlString =
+                "https://reseauentourage.notion.site/Buffet-du-lien-social-69c20e089dbd483cb093e90ae2953a54"
             WebViewFragment.newInstance(urlString, 0, true)
                 .show(requireActivity().supportFragmentManager, WebViewFragment.TAG)
         }
@@ -555,7 +579,8 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
     }
 
     private fun setRecyclerViews() {
-        val settingGrouplayoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        val settingGrouplayoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         val offsetInPixels = resources.getDimensionPixelSize(R.dimen.horizontal_offset_home)
 
         binding.rvHomeGroup.adapter = homeGroupAdapter
@@ -563,25 +588,30 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
         binding.rvHomeGroup.setPadding(offsetInPixels, 0, 0, 0)
         binding.rvHomeGroup.clipToPadding = false
 
-        val settingEventlayoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        val settingEventlayoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         binding.rvHomeEvent.adapter = homeEventAdapter
         binding.rvHomeEvent.layoutManager = settingEventlayoutManager
         binding.rvHomeEvent.setPadding(offsetInPixels, 0, 0, 0)
         binding.rvHomeEvent.clipToPadding = false
 
-        val settingActionlayoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        val settingActionlayoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         binding.rvHomeAction.adapter = homeActionAdapter
         binding.rvHomeAction.layoutManager = settingActionlayoutManager
 
-        val settingPedagolayoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        val settingPedagolayoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         binding.rvHomePedago.adapter = homePedagoAdapter
         binding.rvHomePedago.layoutManager = settingPedagolayoutManager
 
         binding.rvHomeSensibilisation.adapter = homeInitialPedagoAdapter
-        binding.rvHomeSensibilisation.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        binding.rvHomeSensibilisation.layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         binding.rvHomeSensibilisation.setPadding(offsetInPixels, 0, 0, 0)
 
-        val settingHelplayoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        val settingHelplayoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         binding.rvHomeHelp.adapter = homeHelpAdapter
         binding.rvHomeHelp.layoutManager = settingHelplayoutManager
     }
@@ -605,7 +635,10 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
             AnalyticsEvents.logEvent(AnalyticsEvents.Action__Home__Pedago)
             val intent = Intent(requireActivity(), PedagoListActivity::class.java)
             requireContext().startActivity(intent)
-            requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+            requireActivity().overridePendingTransition(
+                R.anim.slide_in_right,
+                R.anim.slide_out_left
+            )
         }
     }
 
@@ -821,7 +854,10 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
     private fun handleHelps(summary: Summary) {
         if (isAdded) {
             doTotalchecksumToDisplayHomeFirstTime()
-            val formattedString = requireContext().getString(R.string.home_help_title_three, summary.moderator?.displayName)
+            val formattedString = requireContext().getString(
+                R.string.home_help_title_three,
+                summary.moderator?.displayName
+            )
             val help3 = Help(formattedString, R.drawable.first_help_item_illu)
             val helps: MutableList<Help> = mutableListOf()
             helps.add(help3)
@@ -890,7 +926,8 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
 
     private fun setNestedScrollViewAnimation() {
         binding.homeNestedScrollView.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { _, _, scrollY, _, oldScrollY ->
-            val layoutParamsHomeHeader = binding.homeHeader.layoutParams as ViewGroup.MarginLayoutParams
+            val layoutParamsHomeHeader =
+                binding.homeHeader.layoutParams as ViewGroup.MarginLayoutParams
 
             if (isAnimating) {
                 return@OnScrollChangeListener
@@ -911,7 +948,10 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
         })
     }
 
-    private fun startAnimation(layoutParamsHomeHeader: ViewGroup.MarginLayoutParams, titleVisibility: Int) {
+    private fun startAnimation(
+        layoutParamsHomeHeader: ViewGroup.MarginLayoutParams,
+        titleVisibility: Int
+    ) {
         val animator = ValueAnimator.ofInt(
             layoutParamsHomeHeader.topMargin,
             if (titleVisibility == View.GONE) NEW_MARGIN else DEFAULT_MARGIN
@@ -938,7 +978,10 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
             PedagoDetailActivity.setPedagoId(pedagoItemForCreateGroup?.id!!)
             PedagoDetailActivity.setHtmlContent(pedagoItemForCreateGroup?.html!!)
             requireActivity().startActivity(intent)
-            requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+            requireActivity().overridePendingTransition(
+                R.anim.slide_in_right,
+                R.anim.slide_out_left
+            )
         }
         if (position == 1) {
             AnalyticsEvents.logEvent(AnalyticsEvents.Action_Home_CreateEvent)
@@ -947,7 +990,10 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
             PedagoDetailActivity.setPedagoId(pedagoItemForCreateEvent?.id!!)
             PedagoDetailActivity.setHtmlContent(pedagoItemForCreateEvent?.html!!)
             requireActivity().startActivity(intent)
-            requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+            requireActivity().overridePendingTransition(
+                R.anim.slide_in_right,
+                R.anim.slide_out_left
+            )
         }
         if (position == 0) {
             AnalyticsEvents.logEvent(AnalyticsEvents.Action__Home__Moderator)
@@ -1053,7 +1099,8 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
         // NOUVEAUX COOKIES POUR LE GATING PERSISTANT
         private const val PREF_GATING_ZONE_SHOWN = "PREF_GATING_ZONE_SHOWN"
         private const val PREF_GATING_NOTIF_SHOWN = "PREF_GATING_NOTIF_SHOWN"
-        private const val PREF_GATING_ENHANCED_ONBOARDING_SHOWN = "PREF_GATING_ENHANCED_ONBOARDING_SHOWN"
+        private const val PREF_GATING_ENHANCED_ONBOARDING_SHOWN =
+            "PREF_GATING_ENHANCED_ONBOARDING_SHOWN"
 
         const val PREF_ENHANCED_ONBOARDING_COMPLETED = "PREF_ENHANCED_ONBOARDING_COMPLETED"
         private const val PREF_IS_ASSOCIATION_FROM_SUMMARY = "PREF_IS_ASSOCIATION_FROM_SUMMARY"
