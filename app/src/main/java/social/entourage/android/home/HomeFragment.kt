@@ -1,9 +1,6 @@
 package social.entourage.android.home
 
 import android.animation.ValueAnimator
-import android.content.ClipData
-import android.content.ClipboardManager
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -15,14 +12,14 @@ import androidx.core.animation.doOnEnd
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.edit
 import androidx.core.content.res.ResourcesCompat
-import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.firebase.messaging.FirebaseMessaging
-import com.google.gson.Gson
 import social.entourage.android.BuildConfig
 import social.entourage.android.EntourageApplication
 import social.entourage.android.MainActivity
@@ -68,16 +65,8 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
 
     private lateinit var binding: FragmentHomeBinding
     private lateinit var homePresenter: HomePresenter
-    private var homeGroupAdapter = HomeGroupAdapter()
-    private lateinit var homeEventAdapter: HomeEventAdapter
-    private lateinit var homeSmallTalkAdapter: HomeSmallTalkAdapter
-    private var homeActionAdapter = HomeActionAdapter(false)
     private val userPresenter: UserPresenter by lazy { UserPresenter() }
-    private lateinit var homeHelpAdapter: HomeHelpAdapter
-    private var homePedagoAdapter: HomePedagoAdapter? = null
-    private var homeInitialPedagoAdapter: HomeInitialPedagoAdapter? = null
     private lateinit var mainPresenter: MainPresenter
-    private var pagegroup = 0
     private var pageEvent = 0
     private var nbOfItemForHozrizontalList = 10
     private var nbOfItemForVerticalList = 3
@@ -100,6 +89,51 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
     }
     private var isRequestLoaded = false
     private var currentRequests: List<UserSmallTalkRequest> = emptyList()
+
+    // Adapters
+    private lateinit var concatAdapter: ConcatAdapter
+
+    // Sensibilisation (Initial Pedago)
+    private lateinit var initialPedagoHeaderAdapter: HomeSectionHeaderAdapter
+    private lateinit var homeInitialPedagoAdapter: HomeInitialPedagoAdapter
+    private lateinit var initialPedagoWrapperAdapter: HomeHorizontalWrapperAdapter
+
+    // Small Talk
+    private lateinit var smallTalkHeaderAdapter: HomeSectionHeaderAdapter
+    private lateinit var homeSmallTalkAdapter: HomeSmallTalkAdapter
+    private lateinit var smallTalkWrapperAdapter: HomeHorizontalWrapperAdapter
+
+    // Actions
+    private lateinit var actionHeaderAdapter: HomeSectionHeaderAdapter
+    private lateinit var homeActionAdapter: HomeActionAdapter
+    private lateinit var actionButtonAdapter: HomeSectionButtonAdapter
+
+    // Events
+    private lateinit var eventHeaderAdapter: HomeSectionHeaderAdapter
+    private lateinit var homeEventAdapter: HomeEventAdapter
+    private lateinit var eventWrapperAdapter: HomeHorizontalWrapperAdapter
+    private lateinit var eventButtonAdapter: HomeSectionButtonAdapter
+
+    // Groups
+    private lateinit var groupHeaderAdapter: HomeSectionHeaderAdapter
+    private lateinit var homeGroupAdapter: HomeGroupAdapter
+    private lateinit var groupWrapperAdapter: HomeHorizontalWrapperAdapter
+    private lateinit var groupButtonAdapter: HomeSectionButtonAdapter
+
+    // Map & Hors Zone
+    private lateinit var mapHeaderAdapter: HomeSectionHeaderAdapter
+    private lateinit var mapSingleViewAdapter: HomeSingleLayoutAdapter
+    private lateinit var horsZoneAdapter: HomeSingleLayoutAdapter
+
+    // Pedago
+    private lateinit var pedagoHeaderAdapter: HomeSectionHeaderAdapter
+    private lateinit var homePedagoAdapter: HomePedagoAdapter
+    private lateinit var pedagoButtonAdapter: HomeSectionButtonAdapter
+
+    // Help
+    private lateinit var helpHeaderAdapter: HomeSectionHeaderAdapter
+    private lateinit var homeHelpAdapter: HomeHelpAdapter
+
 
     // Gère uniquement le cycle de vie du fragment pour ne pas lancer plusieurs popups en même temps
     private var hasRunEntryGating = false
@@ -130,27 +164,50 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
         totalchecksum = 0
         hasRunEntryGating = false
         binding = FragmentHomeBinding.inflate(layoutInflater)
-        disapearAllAtBeginning()
+        // disapearAllAtBeginning() -> Managed by adapters visibility now
+
         mainPresenter = MainPresenter(requireActivity() as MainActivity)
         binding.progressBar.visibility = View.VISIBLE
         homePresenter = ViewModelProvider(requireActivity()).get(HomePresenter::class.java)
         actionsPresenter = ViewModelProvider(requireActivity()).get(ActionsPresenter::class.java)
-        homeHelpAdapter = HomeHelpAdapter(this)
-        homeEventAdapter = HomeEventAdapter(requireContext())
-        homePedagoAdapter = HomePedagoAdapter(object : OnItemClick {
-            override fun onItemClick(pedagogicalContent: Pedago) {
-                if (pedagogicalContent.html != null && pedagogicalContent.id != null) {
-                    val intent = Intent(requireActivity(), PedagoDetailActivity::class.java)
-                    intent.putExtra(Const.ID, pedagogicalContent.id)
-                    PedagoDetailActivity.setPedagoId(pedagogicalContent.id)
-                    requireActivity().startActivity(intent)
-                    requireActivity().overridePendingTransition(
-                        R.anim.slide_in_right,
-                        R.anim.slide_out_left
-                    )
-                }
-            }
-        })
+
+        setupAdapters()
+        setupRecyclerView()
+
+        AnalyticsEvents.logEvent(AnalyticsEvents.View__Home)
+        if (EnhancedOnboarding.shouldNotDisplayCampain == true) {
+        } else {
+            AnalyticsEvents.logEvent(AnalyticsEvents.home_activate_firebase_message)
+        }
+
+        setObservations()
+        setNotifButton()
+        setProfileButton()
+        setRecyclerViewScrollListener()
+        checkNotificationStatus()
+        increaseCounter()
+        adjustChevronForRTL()
+        updatePaddingTopForEdgeToEdge(binding.homeHeader)
+
+        binding.chatbotButton.setOnClickListener {
+            ChatBotBottomSheet().show(parentFragmentManager, "chatbot")
+        }
+
+        smallTalkViewModel.userRequests.observe(viewLifecycleOwner) { requests ->
+            currentRequests = requests
+            composeSmallTalkItemsSimplified()
+        }
+
+        loadSmallTalkItems()
+
+        return binding.root
+    }
+
+    private fun setupAdapters() {
+        val viewPool = RecyclerView.RecycledViewPool()
+
+        // 1. Initial Pedago
+        initialPedagoHeaderAdapter = HomeSectionHeaderAdapter()
         homeInitialPedagoAdapter = HomeInitialPedagoAdapter(object : OnItemClick {
             override fun onItemClick(pedagogicalContent: Pedago) {
                 if (pedagogicalContent.html != null && pedagogicalContent.id != null) {
@@ -165,7 +222,10 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
                 }
             }
         })
+        initialPedagoWrapperAdapter = HomeHorizontalWrapperAdapter(homeInitialPedagoAdapter, viewPool)
 
+        // 2. Small Talk
+        smallTalkHeaderAdapter = HomeSectionHeaderAdapter()
         homeSmallTalkAdapter = HomeSmallTalkAdapter(
             onStartClick = {
                 startActivity(Intent(requireContext(), SmallTalkIntroActivity::class.java))
@@ -185,41 +245,121 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
             },
             requireContext()
         )
+        smallTalkWrapperAdapter = HomeHorizontalWrapperAdapter(homeSmallTalkAdapter, viewPool)
 
-        binding.rvHomeSmallTalk.layoutManager =
-            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        binding.rvHomeSmallTalk.adapter = homeSmallTalkAdapter
-
-        AnalyticsEvents.logEvent(AnalyticsEvents.View__Home)
-        if (EnhancedOnboarding.shouldNotDisplayCampain == true) {
-        } else {
-            AnalyticsEvents.logEvent(AnalyticsEvents.home_activate_firebase_message)
+        // 3. Actions
+        actionHeaderAdapter = HomeSectionHeaderAdapter()
+        homeActionAdapter = HomeActionAdapter(false)
+        actionButtonAdapter = HomeSectionButtonAdapter {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Action_Home_Demand_All)
+            (requireActivity() as? MainActivity)?.goDemand()
         }
 
-        setRecyclerViews()
-        setSeeAllButtons()
-        setObservations()
-        setNotifButton()
-        setMapButton()
-        setProfileButton()
-        setNestedScrollViewAnimation()
-        checkNotificationStatus()
-        increaseCounter()
-        adjustChevronForRTL()
-        updatePaddingTopForEdgeToEdge(binding.homeHeader)
-
-        binding.chatbotButton.setOnClickListener {
-            ChatBotBottomSheet().show(parentFragmentManager, "chatbot")
+        // 4. Events
+        eventHeaderAdapter = HomeSectionHeaderAdapter()
+        homeEventAdapter = HomeEventAdapter(requireContext())
+        eventWrapperAdapter = HomeHorizontalWrapperAdapter(homeEventAdapter, viewPool)
+        eventButtonAdapter = HomeSectionButtonAdapter {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Action_Home_Event_All)
+            (requireActivity() as? MainActivity)?.goEvent()
         }
 
-        smallTalkViewModel.userRequests.observe(viewLifecycleOwner) { requests ->
-            currentRequests = requests
-            composeSmallTalkItemsSimplified()
+        // 5. Groups
+        groupHeaderAdapter = HomeSectionHeaderAdapter()
+        homeGroupAdapter = HomeGroupAdapter()
+        groupWrapperAdapter = HomeHorizontalWrapperAdapter(homeGroupAdapter, viewPool)
+        groupButtonAdapter = HomeSectionButtonAdapter {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Action_Home_Group_All)
+            val mainActivity = (requireActivity() as? MainActivity)
+            mainActivity?.setGoDiscoverGroupFromDeepL(true)
+            mainActivity?.goGroup()
         }
 
-        loadSmallTalkItems()
+        // 6. Map & Hors Zone
+        horsZoneAdapter = HomeSingleLayoutAdapter(R.layout.home_hors_zone) { view ->
+            val button = view.findViewById<View>(R.id.button_hz_item)
+            button.setOnClickListener {
+                val urlString =
+                    "https://reseauentourage.notion.site/Buffet-du-lien-social-69c20e089dbd483cb093e90ae2953a54"
+                WebViewFragment.newInstance(urlString, 0, true)
+                    .show(requireActivity().supportFragmentManager, WebViewFragment.TAG)
+            }
+        }
+        horsZoneAdapter.setVisible(false)
 
-        return binding.root
+        mapHeaderAdapter = HomeSectionHeaderAdapter()
+        mapSingleViewAdapter = HomeSingleLayoutAdapter(R.layout.home_map_card) { view ->
+             view.findViewById<View>(R.id.home_button_map).setOnClickListener {
+                AnalyticsEvents.logEvent(AnalyticsEvents.Action__Home__Map)
+                val intent = Intent(requireContext(), GDSMainActivity::class.java)
+                startActivityForResult(intent, 0)
+             }
+        }
+
+        // 7. Pedago
+        pedagoHeaderAdapter = HomeSectionHeaderAdapter()
+        homePedagoAdapter = HomePedagoAdapter(object : OnItemClick {
+            override fun onItemClick(pedagogicalContent: Pedago) {
+                if (pedagogicalContent.html != null && pedagogicalContent.id != null) {
+                    val intent = Intent(requireActivity(), PedagoDetailActivity::class.java)
+                    intent.putExtra(Const.ID, pedagogicalContent.id)
+                    PedagoDetailActivity.setPedagoId(pedagogicalContent.id)
+                    requireActivity().startActivity(intent)
+                    requireActivity().overridePendingTransition(
+                        R.anim.slide_in_right,
+                        R.anim.slide_out_left
+                    )
+                }
+            }
+        })
+        pedagoButtonAdapter = HomeSectionButtonAdapter {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Action__Home__Pedago)
+            val intent = Intent(requireActivity(), PedagoListActivity::class.java)
+            requireContext().startActivity(intent)
+            requireActivity().overridePendingTransition(
+                R.anim.slide_in_right,
+                R.anim.slide_out_left
+            )
+        }
+
+        // 8. Help
+        helpHeaderAdapter = HomeSectionHeaderAdapter()
+        homeHelpAdapter = HomeHelpAdapter(this)
+    }
+
+    private fun setupRecyclerView() {
+        concatAdapter = ConcatAdapter(
+            initialPedagoHeaderAdapter,
+            initialPedagoWrapperAdapter,
+            smallTalkHeaderAdapter,
+            smallTalkWrapperAdapter,
+            actionHeaderAdapter,
+            homeActionAdapter,
+            actionButtonAdapter,
+            eventHeaderAdapter,
+            eventWrapperAdapter,
+            eventButtonAdapter,
+            groupHeaderAdapter,
+            groupWrapperAdapter,
+            groupButtonAdapter,
+            horsZoneAdapter,
+            mapHeaderAdapter,
+            mapSingleViewAdapter,
+            pedagoHeaderAdapter,
+            homePedagoAdapter,
+            pedagoButtonAdapter,
+            helpHeaderAdapter,
+            homeHelpAdapter
+        )
+
+        binding.rvHome.layoutManager = LinearLayoutManager(requireContext())
+        binding.rvHome.adapter = concatAdapter
+
+        // Initial visibility setup
+        binding.rvHome.visibility = View.GONE
+
+        // Hide map initially
+        mapHeaderAdapter.update(getString(R.string.home_title_map), getString(R.string.home_subtitle_map), true)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -275,6 +415,11 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
             }
         }
         homeSmallTalkAdapter.submitList(items)
+
+        // Update headers visibility
+        val hasItems = items.isNotEmpty()
+        smallTalkHeaderAdapter.update(getString(R.string.home_title_small_talk), null, hasItems)
+        smallTalkWrapperAdapter.setVisible(hasItems)
     }
 
     private fun testNotifDemandePage() {
@@ -528,25 +673,14 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
 
     private fun checkSumEventAction() {
         checksum++
-        if (checksum == 2) {
-            if (isEventsEmpty && isActionEmpty) {
-                binding.itemHz.layoutItemHz.visibility = View.VISIBLE
-            } else {
-                binding.itemHz.layoutItemHz.visibility = View.GONE
-            }
-        }
-        binding.itemHz.buttonHzItem.setOnClickListener {
-            val urlString =
-                "https://reseauentourage.notion.site/Buffet-du-lien-social-69c20e089dbd483cb093e90ae2953a54"
-            WebViewFragment.newInstance(urlString, 0, true)
-                .show(requireActivity().supportFragmentManager, WebViewFragment.TAG)
-        }
+        val showHorsZone = (checksum == 2) && (isEventsEmpty && isActionEmpty)
+        horsZoneAdapter.setVisible(showHorsZone)
     }
 
     private fun doTotalchecksumToDisplayHomeFirstTime() {
         totalchecksum++
         if (totalchecksum == 4) {
-            binding.homeNestedScrollView.visibility = View.VISIBLE
+            binding.rvHome.visibility = View.VISIBLE
             binding.homeHeader.visibility = View.VISIBLE
             binding.progressBar.visibility = View.GONE
         }
@@ -555,91 +689,6 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
     private fun resetFilter() {
         currentFilters = EventActionLocationFilters()
         currentSectionsFilters = ActionSectionFilters()
-    }
-
-    private fun disapearAllAtBeginning() {
-        binding.homeNestedScrollView.visibility = View.GONE
-        binding.homeHeader.visibility = View.GONE
-        binding.btnMoreGroup.visibility = View.GONE
-        binding.rvHomeGroup.visibility = View.GONE
-        binding.homeSubtitleGroup.visibility = View.GONE
-        binding.homeTitleGroup.visibility = View.GONE
-        binding.btnMoreEvent.visibility = View.GONE
-        binding.rvHomeEvent.visibility = View.GONE
-        binding.homeSubtitleEvent.visibility = View.GONE
-        binding.homeTitleEvent.visibility = View.GONE
-        binding.btnMoreAction.visibility = View.GONE
-        binding.rvHomeAction.visibility = View.GONE
-        binding.homeSubtitleAction.visibility = View.GONE
-        binding.homeTitleAction.visibility = View.GONE
-        binding.btnMorePedago.visibility = View.GONE
-        binding.rvHomePedago.visibility = View.GONE
-        binding.homeSubtitlePedago.visibility = View.GONE
-        binding.homeTitlePedago.visibility = View.GONE
-    }
-
-    private fun setRecyclerViews() {
-        val settingGrouplayoutManager =
-            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        val offsetInPixels = resources.getDimensionPixelSize(R.dimen.horizontal_offset_home)
-
-        binding.rvHomeGroup.adapter = homeGroupAdapter
-        binding.rvHomeGroup.layoutManager = settingGrouplayoutManager
-        binding.rvHomeGroup.setPadding(offsetInPixels, 0, 0, 0)
-        binding.rvHomeGroup.clipToPadding = false
-
-        val settingEventlayoutManager =
-            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        binding.rvHomeEvent.adapter = homeEventAdapter
-        binding.rvHomeEvent.layoutManager = settingEventlayoutManager
-        binding.rvHomeEvent.setPadding(offsetInPixels, 0, 0, 0)
-        binding.rvHomeEvent.clipToPadding = false
-
-        val settingActionlayoutManager =
-            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-        binding.rvHomeAction.adapter = homeActionAdapter
-        binding.rvHomeAction.layoutManager = settingActionlayoutManager
-
-        val settingPedagolayoutManager =
-            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-        binding.rvHomePedago.adapter = homePedagoAdapter
-        binding.rvHomePedago.layoutManager = settingPedagolayoutManager
-
-        binding.rvHomeSensibilisation.adapter = homeInitialPedagoAdapter
-        binding.rvHomeSensibilisation.layoutManager =
-            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        binding.rvHomeSensibilisation.setPadding(offsetInPixels, 0, 0, 0)
-
-        val settingHelplayoutManager =
-            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-        binding.rvHomeHelp.adapter = homeHelpAdapter
-        binding.rvHomeHelp.layoutManager = settingHelplayoutManager
-    }
-
-    private fun setSeeAllButtons() {
-        val mainActivity = (requireActivity() as? MainActivity)
-        binding.btnMoreGroup.setOnClickListener {
-            AnalyticsEvents.logEvent(AnalyticsEvents.Action_Home_Group_All)
-            mainActivity?.setGoDiscoverGroupFromDeepL(true)
-            mainActivity?.goGroup()
-        }
-        binding.btnMoreEvent.setOnClickListener {
-            AnalyticsEvents.logEvent(AnalyticsEvents.Action_Home_Event_All)
-            mainActivity?.goEvent()
-        }
-        binding.btnMoreAction.setOnClickListener {
-            AnalyticsEvents.logEvent(AnalyticsEvents.Action_Home_Demand_All)
-            mainActivity?.goDemand()
-        }
-        binding.btnMorePedago.setOnClickListener {
-            AnalyticsEvents.logEvent(AnalyticsEvents.Action__Home__Pedago)
-            val intent = Intent(requireActivity(), PedagoListActivity::class.java)
-            requireContext().startActivity(intent)
-            requireActivity().overridePendingTransition(
-                R.anim.slide_in_right,
-                R.anim.slide_out_left
-            )
-        }
     }
 
     private fun setNotifButton() {
@@ -662,125 +711,98 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
     }
 
     fun handleGroup(allGroup: MutableList<Group>?) {
-        if (allGroup == null) {
-            return
-        }
+        if (allGroup == null) return
         doTotalchecksumToDisplayHomeFirstTime()
 
-        if (allGroup.size > 0) {
-            binding.btnMoreGroup.visibility = View.GONE
-            binding.rvHomeGroup.visibility = View.GONE
-            binding.homeSubtitleGroup.visibility = View.GONE
-            binding.homeTitleGroup.visibility = View.GONE
-        } else {
-            binding.btnMoreGroup.visibility = View.GONE
-            binding.rvHomeGroup.visibility = View.GONE
-            binding.homeSubtitleGroup.visibility = View.GONE
-            binding.homeTitleGroup.visibility = View.GONE
-        }
         this.homeGroupAdapter.resetData(allGroup)
+
+        // Groups section is kept hidden as per requirements/existing logic
+        groupHeaderAdapter.update(getString(R.string.home_title_group), getString(R.string.home_subtitle_group), false)
+        groupWrapperAdapter.setVisible(false)
+        groupButtonAdapter.update(getString(R.string.home_btn_more_group), false)
     }
 
     fun handleEvent(allEvent: MutableList<Events>?) {
-        if (allEvent == null) {
-            return
-        }
+        if (allEvent == null) return
         doTotalchecksumToDisplayHomeFirstTime()
 
-        if (allEvent.size > 0) {
-            val _offline_events: MutableList<Events> = mutableListOf()
+        val _offline_events: MutableList<Events> = mutableListOf()
+        if (allEvent.isNotEmpty()) {
             for (event in allEvent) {
                 if (event.online == false) {
                     _offline_events.add(event)
                 }
             }
             isEventsEmpty = _offline_events.size == 0
-
-            binding.btnMoreEvent.visibility = View.VISIBLE
-            binding.rvHomeEvent.visibility = View.VISIBLE
-            binding.homeSubtitleEvent.visibility = View.GONE
-            binding.homeTitleEvent.visibility = View.VISIBLE
         } else {
             isEventsEmpty = true
-            binding.btnMoreEvent.visibility = View.GONE
-            binding.rvHomeEvent.visibility = View.GONE
-            binding.homeSubtitleEvent.visibility = View.GONE
-            binding.homeTitleEvent.visibility = View.GONE
         }
+
         checkSumEventAction()
         this.homeEventAdapter.resetData(allEvent)
+
+        val hasEvents = !isEventsEmpty // Or allEvent.isNotEmpty()? Original code checked size > 0 then set visible.
+        // Actually original code checked allEvent.size > 0.
+        // But then calculated isEventsEmpty based on offline events.
+        // BUT visibility was based on allEvent.size > 0.
+
+        val showEvents = allEvent.isNotEmpty()
+        eventHeaderAdapter.update(getString(R.string.home_title_event), getString(R.string.home_subtitle_event), showEvents)
+        eventWrapperAdapter.setVisible(showEvents)
+        eventButtonAdapter.update(getString(R.string.home_btn_more_event), showEvents)
     }
 
     fun handleAction(allAction: MutableList<Action>?) {
-        if (allAction == null) {
-            return
-        }
+        if (allAction == null) return
         doTotalchecksumToDisplayHomeFirstTime()
 
-        if (allAction.size > 0) {
-            if (isContribution) {
-                binding.homeTitleAction.text = getString(R.string.home_title_action_contrib)
-                binding.homeSubtitleAction.text = getString(R.string.home_subtitle_action_contrib)
-                binding.titleButtonAction.text = getString(R.string.home_btn_more_action_contrib)
-                binding.btnMoreAction.setOnClickListener {
-                    AnalyticsEvents.logEvent(AnalyticsEvents.Action_Home_Contrib_All)
-                    val mainActivity = (requireActivity() as? MainActivity)
-                    mainActivity?.goContrib()
-                }
-            }
-            isActionEmpty = false
-            binding.btnMoreAction.visibility = View.VISIBLE
-            binding.rvHomeAction.visibility = View.VISIBLE
-            binding.homeSubtitleAction.visibility = View.GONE
-            binding.homeTitleAction.visibility = View.VISIBLE
-        } else {
-            isActionEmpty = true
-            binding.btnMoreAction.visibility = View.GONE
-            binding.rvHomeAction.visibility = View.GONE
-            binding.homeSubtitleAction.visibility = View.GONE
-            binding.homeTitleAction.visibility = View.GONE
-        }
+        isActionEmpty = allAction.isEmpty()
+
         if (!isContribution) {
             checkSumEventAction()
         }
         this.homeActionAdapter.resetData(allAction)
+
+        val showActions = !isActionEmpty
+
+        var title = getString(R.string.home_title_action)
+        var subtitle = getString(R.string.home_subtitle_action)
+        var btnText = getString(R.string.home_btn_more_action)
+        var clickListener: () -> Unit = {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Action_Home_Demand_All)
+            (requireActivity() as? MainActivity)?.goDemand()
+        }
+
+        if (isContribution) {
+             title = getString(R.string.home_title_action_contrib)
+             subtitle = getString(R.string.home_subtitle_action_contrib)
+             btnText = getString(R.string.home_btn_more_action_contrib)
+             clickListener = {
+                AnalyticsEvents.logEvent(AnalyticsEvents.Action_Home_Contrib_All)
+                val mainActivity = (requireActivity() as? MainActivity)
+                mainActivity?.goContrib()
+             }
+        }
+
+        actionHeaderAdapter.update(title, subtitle, showActions)
+        actionButtonAdapter.update(btnText, showActions, clickListener)
     }
 
     fun handleInitialPedago(allPedago: MutableList<Pedago>?) {
-        if (allPedago == null) {
-            return
-        }
+        if (allPedago == null) return
         doTotalchecksumToDisplayHomeFirstTime()
-        if (allPedago.size > 0) {
-            binding.rvHomeSensibilisation.visibility = View.VISIBLE
-            binding.homeSubtitleSensibilisation.visibility = View.GONE
-            binding.homeTitleSensibilisation.visibility = View.VISIBLE
-            setMarginTop(binding.homeTitleAction, 16)
-        } else {
-            binding.rvHomeSensibilisation.visibility = View.GONE
-            binding.homeSubtitleSensibilisation.visibility = View.GONE
-            binding.homeTitleSensibilisation.visibility = View.GONE
-            setMarginTop(binding.homeTitleAction, 0)
-        }
-        this.homeInitialPedagoAdapter?.resetData(allPedago)
+
+        this.homeInitialPedagoAdapter.resetData(allPedago)
+
+        val show = allPedago.isNotEmpty()
+        initialPedagoHeaderAdapter.update(getString(R.string.home_title_sensibilisation), getString(R.string.home_subtitle_sensibilisation), show)
+        initialPedagoWrapperAdapter.setVisible(show)
     }
 
     fun handlePedago(allPedago: MutableList<Pedago>?) {
-        if (allPedago == null) {
-            return
-        }
+        if (allPedago == null) return
         doTotalchecksumToDisplayHomeFirstTime()
-        if (allPedago.size > 0) {
-            binding.btnMorePedago.visibility = View.VISIBLE
-            binding.rvHomePedago.visibility = View.VISIBLE
-            binding.homeSubtitlePedago.visibility = View.GONE
-            binding.homeTitlePedago.visibility = View.VISIBLE
-        } else {
-            binding.btnMorePedago.visibility = View.GONE
-            binding.rvHomePedago.visibility = View.GONE
-            binding.homeSubtitlePedago.visibility = View.GONE
-            binding.homeTitlePedago.visibility = View.GONE
-        }
+
         val pedagos: MutableList<Pedago> = mutableListOf()
         for (pedago in allPedago) {
             if (pedagos.size > 1) {
@@ -806,6 +828,10 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
 
         this.homePedagoAdapter?.resetData(pedagos)
         homePresenter.getSummary()
+
+        val show = allPedago.isNotEmpty()
+        pedagoHeaderAdapter.update(getString(R.string.home_title_pedago), getString(R.string.home_subtitle_pedago), show)
+        pedagoButtonAdapter.update(getString(R.string.home_btn_more_pedago), show)
     }
 
     private fun updateContributionsView(summary: Summary) {
@@ -826,11 +852,10 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
         isContribution = summary.preference.equals("contribution")
         isContribProfile = isContribution
 
+        // Update Action Adapter type
+        homeActionAdapter.setContrib(isContribution)
+
         if (isContribution) {
-            if (!homeActionAdapter.getIsContrib()) {
-                homeActionAdapter = HomeActionAdapter(isContribution)
-            }
-            binding.rvHomeAction.adapter = homeActionAdapter
             homePresenter.getAllContribs(
                 0,
                 nbOfItemForVerticalList,
@@ -862,6 +887,8 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
             val helps: MutableList<Help> = mutableListOf()
             helps.add(help3)
             homeHelpAdapter.resetData(helps, summary)
+
+            helpHeaderAdapter.update(getString(R.string.home_title_help), getString(R.string.home_subtitle_help), true)
         }
     }
 
@@ -909,14 +936,6 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
         updateAvatar()
     }
 
-    private fun setMapButton() {
-        binding.homeButtonMap.setOnClickListener {
-            AnalyticsEvents.logEvent(AnalyticsEvents.Action__Home__Map)
-            val intent = Intent(requireContext(), GDSMainActivity::class.java)
-            startActivityForResult(intent, 0)
-        }
-    }
-
     private fun setProfileButton() {
         binding.avatar.setOnClickListener {
             AnalyticsEvents.logEvent(AnalyticsEvents.Action__Tab__Profil)
@@ -924,26 +943,37 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
         }
     }
 
-    private fun setNestedScrollViewAnimation() {
-        binding.homeNestedScrollView.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { _, _, scrollY, _, oldScrollY ->
-            val layoutParamsHomeHeader =
-                binding.homeHeader.layoutParams as ViewGroup.MarginLayoutParams
+    private fun setRecyclerViewScrollListener() {
+        binding.rvHome.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
 
-            if (isAnimating) {
-                return@OnScrollChangeListener
-            }
+                val scrollY = binding.rvHome.computeVerticalScrollOffset()
+                val layoutParamsHomeHeader = binding.homeHeader.layoutParams as ViewGroup.MarginLayoutParams
 
-            if (scrollY == 0) {
-                isAnimating = false
-                layoutParamsHomeHeader.topMargin = DEFAULT_MARGIN
-                binding.homeHeader.layoutParams = layoutParamsHomeHeader
-                binding.homeTitle.visibility = View.VISIBLE
-            } else if (scrollY > 50 && oldScrollY <= 50) {
-                isAnimating = true
-                startAnimation(layoutParamsHomeHeader, View.GONE)
-            } else if (scrollY <= 50 && oldScrollY > 50) {
-                isAnimating = true
-                startAnimation(layoutParamsHomeHeader, View.VISIBLE)
+                if (isAnimating) {
+                    return
+                }
+
+                // We need to keep track of state to know "oldScrollY" logic roughly,
+                // or just threshold based.
+                // The original code compared scrollY and oldScrollY.
+                // Here we just have dy.
+                // If scrollY > 50 and we are scrolling down (dy > 0), hide.
+                // If scrollY <= 50, show.
+
+                if (scrollY == 0) {
+                    isAnimating = false
+                    layoutParamsHomeHeader.topMargin = DEFAULT_MARGIN
+                    binding.homeHeader.layoutParams = layoutParamsHomeHeader
+                    binding.homeTitle.visibility = View.VISIBLE
+                } else if (scrollY > 50 && dy > 0 && binding.homeTitle.visibility == View.VISIBLE) {
+                    isAnimating = true
+                    startAnimation(layoutParamsHomeHeader, View.GONE)
+                } else if (scrollY <= 50 && dy < 0 && binding.homeTitle.visibility == View.GONE) {
+                    isAnimating = true
+                    startAnimation(layoutParamsHomeHeader, View.VISIBLE)
+                }
             }
         })
     }
