@@ -476,9 +476,9 @@ class CommentsListAdapter(
             }
 
             var displayName = comment.user?.displayName ?: "-"
-            if (comment.user?.isBirthday == true) {
+            /*if (comment.user?.isBirthday == true) {
                 displayName = "$displayName 🎂"
-            }
+            }*/
             bindingDetail.authorNamePost.text = displayName
 
             comment.user?.avatarURLAsString?.let { avatarURL ->
@@ -704,9 +704,9 @@ class CommentsListAdapter(
         ) {
             comment.user?.let { user ->
                 var displayName = if (isMe) "" else user.displayName
-                if (!isMe && user.isBirthday) {
+                /*if (!isMe && user.isBirthday) {
                     displayName = "$displayName 🎂"
-                }
+                }*/
                 binding.authorName.text = displayName
                 user.avatarURLAsString?.let { url ->
                     Glide.with(binding.root.context)
@@ -742,9 +742,9 @@ class CommentsListAdapter(
         ) {
             comment.user?.let { user ->
                 var displayName = if (isMe) "" else user.displayName
-                if (!isMe && user.isBirthday) {
+                /*if (!isMe && user.isBirthday) {
                     displayName = "$displayName 🎂"
-                }
+                }*/
                 binding.authorName.text = displayName
                 user.avatarURLAsString?.let { url ->
                     Glide.with(binding.root.context)
