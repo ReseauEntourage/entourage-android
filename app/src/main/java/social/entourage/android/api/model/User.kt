@@ -86,6 +86,9 @@ class User : Serializable {
     @SerializedName("created_at")
     var createdAt: Date? = null
 
+    @SerializedName("is_birthday")
+    var isBirthday: Boolean = false
+
     // ----------------------------------
     // ATTRIBUTES (Not Serialized)
     // ----------------------------------

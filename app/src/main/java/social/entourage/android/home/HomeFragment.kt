@@ -907,6 +907,22 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
     private fun updateUser(user: User) {
         this.user = user
         updateAvatar()
+        checkBirthday()
+    }
+
+    private fun checkBirthday() {
+        if (user?.isBirthday == true) {
+            val prefs = EntourageApplication.get().sharedPreferences
+            val lastShownYear = prefs.getInt(PREF_BIRTHDAY_SHOWN_YEAR, -1)
+            val currentYear = java.util.Calendar.getInstance().get(java.util.Calendar.YEAR)
+
+            if (lastShownYear != currentYear) {
+                prefs.edit { putInt(PREF_BIRTHDAY_SHOWN_YEAR, currentYear) }
+                if (isAdded) {
+                    startActivity(Intent(requireContext(), BirthdayActivity::class.java))
+                }
+            }
+        }
     }
 
     private fun setMapButton() {
@@ -1104,6 +1120,7 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
 
         const val PREF_ENHANCED_ONBOARDING_COMPLETED = "PREF_ENHANCED_ONBOARDING_COMPLETED"
         private const val PREF_IS_ASSOCIATION_FROM_SUMMARY = "PREF_IS_ASSOCIATION_FROM_SUMMARY"
+        private const val PREF_BIRTHDAY_SHOWN_YEAR = "PREF_BIRTHDAY_SHOWN_YEAR"
     }
 }
 
